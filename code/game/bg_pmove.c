@@ -4506,7 +4506,7 @@ void PM_BeginM97Reload( void )
 		pm->ps->weaponTime += M97_RLT_ALTSWITCHFROM;
 		pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_BEGIN_PUMP;
 
-        // 3rd person
+        // removed prone stuff 3rd person
 	    //if( pm->ps->eFlags & EF_PRONE ) {
 		    //BG_AnimScriptEvent( pm->ps, pm->character->animModelInfo, ANIM_ET_RELOADPRONE_SG1, qfalse, qtrue );
 	   // } else {
@@ -4570,7 +4570,7 @@ void PM_M97Reload() {
 		PM_AddEvent( EV_FILL_CLIP );
 		PM_StartWeaponAnim(WEAP_RELOAD2);
 	
-	
+	     // removed skill stuff
 		// Delay time - support quick reload
 		//if (pm->skill[SK_LIGHT_WEAPONS] >= 2)
 		//pm->ps->weaponTime += M97_RLT_RELOAD2_QUICK;
@@ -4579,7 +4579,7 @@ void PM_M97Reload() {
 
 	pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_LOOP;
 
-	// 3rd person
+	// removed prone stuff //3rd person
 	//if( pm->ps->eFlags & EF_PRONE ) {
 		//BG_AnimScriptEvent( pm->ps, pm->character->animModelInfo, ANIM_ET_RELOADPRONE_SG2, qfalse, qtrue );
 	//} else {

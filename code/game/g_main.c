@@ -30,7 +30,6 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 level_locals_t level;
 
@@ -143,90 +142,6 @@ vmCvar_t g_soldierChargeTime;
 
 vmCvar_t g_playerStart;         // set when the player enters the game
 
-// RealRTCW knightmare code from 1.42d
-
-vmCvar_t		sk_plr_dmg_knife;
-vmCvar_t		sk_plr_dmg_kick;
-vmCvar_t		sk_plr_dmg_luger;
-vmCvar_t		sk_plr_dmg_colt;
-vmCvar_t		sk_plr_dmg_mp40;
-vmCvar_t		sk_plr_dmg_thompson;
-vmCvar_t		sk_plr_dmg_sten;
-vmCvar_t		sk_plr_dmg_mauser;
-vmCvar_t		sk_plr_dmg_sniperrifle;
-vmCvar_t		sk_plr_dmg_garand;
-vmCvar_t		sk_plr_dmg_snooperscope;
-vmCvar_t		sk_plr_dmg_fg42;
-vmCvar_t		sk_plr_dmg_fg42scope;
-vmCvar_t		sk_plr_dmg_panzerfaust;
-vmCvar_t		sk_plr_dmg_panzerfaust_splash;
-vmCvar_t		sk_plr_dmg_venom;
-vmCvar_t		sk_plr_dmg_flamethrower;
-vmCvar_t		sk_plr_dmg_tesla;
-vmCvar_t		sk_plr_dmg_grenade;
-vmCvar_t		sk_plr_dmg_grenade_radius;
-vmCvar_t		sk_plr_dmg_pineapple;
-vmCvar_t		sk_plr_dmg_pineapple_radius;
-vmCvar_t		sk_plr_dmg_dynamite;
-vmCvar_t		sk_plr_dmg_dynamite_radius;
-
-// RealRTCW weapons
-
-vmCvar_t		sk_plr_dmg_mp34;
-vmCvar_t		sk_plr_dmg_tt33;
-vmCvar_t		sk_plr_dmg_ppsh;
-vmCvar_t		sk_plr_dmg_mosin;
-vmCvar_t		sk_plr_dmg_g43;
-vmCvar_t		sk_plr_dmg_m1garand;
-vmCvar_t		sk_plr_dmg_bar;
-vmCvar_t		sk_plr_dmg_mp44;
-vmCvar_t		sk_plr_dmg_p38;
-vmCvar_t		sk_plr_dmg_m97;
-vmCvar_t		sk_plr_dmg_revolver;
-vmCvar_t		sk_plr_dmg_m1garandsniper;
-vmCvar_t		sk_plr_dmg_mg42m;
-
-vmCvar_t		sk_ai_dmg_knife;
-vmCvar_t		sk_ai_dmg_luger;
-vmCvar_t		sk_ai_dmg_colt;
-vmCvar_t		sk_ai_dmg_mp40;
-vmCvar_t		sk_ai_dmg_thompson;
-vmCvar_t		sk_ai_dmg_sten;
-vmCvar_t		sk_ai_dmg_mauser;
-vmCvar_t		sk_ai_dmg_sniperrifle;
-vmCvar_t		sk_ai_dmg_garand;
-vmCvar_t		sk_ai_dmg_snooperscope;
-vmCvar_t		sk_ai_dmg_fg42;
-vmCvar_t		sk_ai_dmg_fg42scope;
-vmCvar_t		sk_ai_dmg_panzerfaust;
-vmCvar_t		sk_ai_dmg_panzerfaust_splash;
-vmCvar_t		sk_ai_dmg_venom;
-vmCvar_t		sk_ai_dmg_flamethrower;
-vmCvar_t		sk_ai_dmg_tesla;
-vmCvar_t		sk_ai_dmg_grenade;
-vmCvar_t		sk_ai_dmg_grenade_radius;
-vmCvar_t		sk_ai_dmg_pineapple;
-vmCvar_t		sk_ai_dmg_pineapple_radius;
-vmCvar_t		sk_ai_dmg_dynamite;
-vmCvar_t		sk_ai_dmg_dynamite_radius;
-
-//RealRTCW weapons
-
-vmCvar_t		sk_ai_dmg_mp34;
-vmCvar_t		sk_ai_dmg_tt33;
-vmCvar_t		sk_ai_dmg_ppsh;
-vmCvar_t		sk_ai_dmg_mosin;
-vmCvar_t		sk_ai_dmg_g43;
-vmCvar_t		sk_ai_dmg_m1garand;
-vmCvar_t		sk_ai_dmg_bar;
-vmCvar_t		sk_ai_dmg_mp44;
-vmCvar_t		sk_ai_dmg_p38;
-vmCvar_t		sk_ai_dmg_m97;
-vmCvar_t		sk_ai_dmg_revolver;
-vmCvar_t		sk_ai_dmg_m1garandsniper;
-vmCvar_t		sk_ai_dmg_mg42m;
-
-
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
 	{ &g_cheats, "sv_cheats", "", 0, qfalse },
@@ -242,91 +157,6 @@ cvarTable_t gameCvarTable[] = {
 	// Rafael gameskill
 	{ &g_gameskill, "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse  },   // (SA) new default '2' (was '1')
 	// done
-
-     // RealRTCW knightmare 1.42d changes
-
-	{ &sk_plr_dmg_knife, "sk_plr_dmg_knife", "6", 0, 0, qfalse  },
-	{ &sk_plr_dmg_kick, "sk_plr_dmg_kick", "15", 0, 0, qfalse  },
-	{ &sk_plr_dmg_luger, "sk_plr_dmg_luger", "7", 0, 0, qfalse  },
-	{ &sk_plr_dmg_colt, "sk_plr_dmg_colt", "8", 0, 0, qfalse  },
-	{ &sk_plr_dmg_mp40, "sk_plr_dmg_mp40", "6", 0, 0, qfalse  },
-	{ &sk_plr_dmg_thompson, "sk_plr_dmg_thompson", "7", 0, 0, qfalse  },
-	{ &sk_plr_dmg_sten, "sk_plr_dmg_sten", "7", 0, 0, qfalse  },
-	{ &sk_plr_dmg_mauser, "sk_plr_dmg_mauser", "30", 0, 0, qfalse  },
-	{ &sk_plr_dmg_sniperrifle, "sk_plr_dmg_sniperrifle", "35", 0, 0, qfalse  },
-	{ &sk_plr_dmg_garand, "sk_plr_dmg_garand", "30", 0, 0, qfalse  },
-	{ &sk_plr_dmg_snooperscope, "sk_plr_dmg_snooperscope", "30", 0, 0, qfalse  },
-	{ &sk_plr_dmg_fg42, "sk_plr_dmg_fg42", "10", 0, 0, qfalse  },
-	{ &sk_plr_dmg_fg42scope, "sk_plr_dmg_fg42scope", "15", 0, 0, qfalse  },
-	{ &sk_plr_dmg_panzerfaust, "sk_plr_dmg_panzerfaust", "200", 0, 0, qfalse  },
-	{ &sk_plr_dmg_panzerfaust_splash, "sk_plr_dmg_panzerfaust_splash", "200", 0, 0, qfalse  },
-	{ &sk_plr_dmg_venom, "sk_plr_dmg_venom", "13", 0, 0, qfalse  },
-	{ &sk_plr_dmg_flamethrower, "sk_plr_dmg_flamethrower", "6", 0, 0, qfalse  },
-	{ &sk_plr_dmg_tesla, "sk_plr_dmg_tesla", "10", 0, 0, qfalse  },
-	{ &sk_plr_dmg_grenade, "sk_plr_dmg_grenade", "170", 0, 0, qfalse  },
-	{ &sk_plr_dmg_grenade_radius, "sk_plr_dmg_grenade_radius", "310", 0, 0, qfalse  },
-	{ &sk_plr_dmg_pineapple, "sk_plr_dmg_pineapple", "220", 0, 0, qfalse  },
-	{ &sk_plr_dmg_pineapple_radius, "sk_plr_dmg_pineapple_radius", "270", 0, 0, qfalse  },
-	{ &sk_plr_dmg_dynamite, "sk_plr_dmg_dynamite", "800", 0, 0, qfalse  },
-	{ &sk_plr_dmg_dynamite_radius, "sk_plr_dmg_dynamite_radius", "450", 0, 0, qfalse  },
-
-	// New weapons
-	// Player
-	{ &sk_plr_dmg_mp34, "sk_plr_dmg_mp34", "6", 0, 0, qfalse  },
-	{ &sk_plr_dmg_tt33, "sk_plr_dmg_tt33", "8", 0, 0, qfalse  },
-	{ &sk_plr_dmg_ppsh, "sk_plr_dmg_ppsh", "6", 0, 0, qfalse  },	
-	{ &sk_plr_dmg_mosin, "sk_plr_dmg_mosin", "35", 0, 0, qfalse  },
-	{ &sk_plr_dmg_g43, "sk_plr_dmg_g43", "16", 0, 0, qfalse  },
-	{ &sk_plr_dmg_m1garand, "sk_plr_dmg_m1garand", "18", 0, 0, qfalse  },	
-	{ &sk_plr_dmg_bar, "sk_plr_dmg_bar", "13", 0, 0, qfalse  },
-	{ &sk_plr_dmg_mp44, "sk_plr_dmg_mp44", "9", 0, 0, qfalse  },
-	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "9", 0, 0, qfalse  },
-	{ &sk_plr_dmg_m97, "sk_plr_dmg_m97", "9", 0, 0, qfalse  },
-	{ &sk_plr_dmg_p38, "sk_plr_dmg_p38", "7", 0, 0, qfalse  },
-	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "16", 0, 0, qfalse  },
-	{ &sk_plr_dmg_m1garandsniper, "sk_plr_dmg_m1garandsniper", "18", 0, 0, qfalse  },
-	//AI	
-	{ &sk_ai_dmg_mp34, "sk_ai_dmg_mp34", "6", 0, 0, qfalse  },
-	{ &sk_ai_dmg_tt33, "sk_ai_dmg_tt33", "8", 0, 0, qfalse  },
-	{ &sk_ai_dmg_ppsh, "sk_ai_dmg_ppsh", "6", 0, 0, qfalse  },
-	{ &sk_ai_dmg_mosin, "sk_ai_dmg_mosin", "35", 0, 0, qfalse  },
-	{ &sk_ai_dmg_g43, "sk_ai_dmg_g43", "16", 0, 0, qfalse  },
-	{ &sk_ai_dmg_m1garand, "sk_ai_dmg_m1garand", "18", 0, 0, qfalse  },
-	{ &sk_ai_dmg_bar, "sk_ai_dmg_bar", "13", 0, 0, qfalse  },
-	{ &sk_ai_dmg_mp44, "sk_ai_dmg_mp44", "9", 0, 0, qfalse  },
-	{ &sk_ai_dmg_mg42m, "sk_ai_dmg_mg42m", "9", 0, 0, qfalse  },
-	{ &sk_ai_dmg_m97, "sk_ai_dmg_m97", "9", 0, 0, qfalse  },
-	{ &sk_ai_dmg_p38, "sk_ai_dmg_p38", "7", 0, 0, qfalse  },
-	{ &sk_ai_dmg_revolver, "sk_ai_dmg_revolver", "16", 0, 0, qfalse  },	
-	{ &sk_ai_dmg_m1garandsniper, "sk_ai_dmg_m1garandsniper", "18", 0, 0, qfalse  },
-	// End new weapons								
-
-
-	{ &sk_ai_dmg_knife, "sk_ai_dmg_knife", "6", 0, 0, qfalse  },
-	{ &sk_ai_dmg_luger, "sk_ai_dmg_luger", "7", 0, 0, qfalse  },
-	{ &sk_ai_dmg_colt, "sk_ai_dmg_colt", "8", 0, 0, qfalse  },
-	{ &sk_ai_dmg_mp40, "sk_ai_dmg_mp40", "6", 0, 0, qfalse  },
-	{ &sk_ai_dmg_thompson, "sk_ai_dmg_thompson", "7", 0, 0, qfalse  },
-	{ &sk_ai_dmg_sten, "sk_ai_dmg_sten", "7", 0, 0, qfalse  },
-	{ &sk_ai_dmg_mauser, "sk_ai_dmg_mauser", "30", 0, 0, qfalse  },
-	{ &sk_ai_dmg_sniperrifle, "sk_ai_dmg_sniperrifle", "30", 0, 0, qfalse  },
-	{ &sk_ai_dmg_garand, "sk_ai_dmg_garand", "30", 0, 0, qfalse  },
-	{ &sk_ai_dmg_snooperscope, "sk_ai_dmg_snooperscope", "30", 0, 0, qfalse  },
-	{ &sk_ai_dmg_fg42, "sk_ai_dmg_fg42", "10", 0, 0, qfalse  },
-	{ &sk_ai_dmg_fg42scope, "sk_ai_dmg_fg42scope", "15", 0, 0, qfalse  },
-	{ &sk_ai_dmg_panzerfaust, "sk_ai_dmg_panzerfaust", "200", 0, 0, qfalse  },
-	{ &sk_ai_dmg_panzerfaust_splash, "sk_ai_dmg_panzerfaust_splash", "200", 0, 0, qfalse  },
-	{ &sk_ai_dmg_venom, "sk_ai_dmg_venom", "13", 0, 0, qfalse  },
-	{ &sk_ai_dmg_flamethrower, "sk_ai_dmg_flamethrower", "1", 0, 0, qfalse  },
-	{ &sk_ai_dmg_tesla, "sk_ai_dmg_tesla", "4", 0, 0, qfalse  },
-	{ &sk_ai_dmg_grenade, "sk_ai_dmg_grenade", "170", 0, 0, qfalse  },
-	{ &sk_ai_dmg_grenade_radius, "sk_ai_dmg_grenade_radius", "310", 0, 0, qfalse  },
-	{ &sk_ai_dmg_pineapple, "sk_ai_dmg_pineapple", "220", 0, 0, qfalse  },
-	{ &sk_ai_dmg_pineapple_radius, "sk_ai_dmg_pineapple_radius", "270", 0, 0, qfalse  },
-	{ &sk_ai_dmg_dynamite, "sk_ai_dmg_dynamite", "800", 0, 0, qfalse  },
-	{ &sk_ai_dmg_dynamite_radius, "sk_ai_dmg_dynamite_radius", "450", 0, 0, qfalse  },
-
-	// end RealRTCW
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 
@@ -821,8 +651,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 				else {
 					if ( ent->s.weapon != WP_SNIPERRIFLE &&
 						 ent->s.weapon != WP_SNOOPERSCOPE &&
-						 ent->s.weapon != WP_FG42SCOPE &&
-						 ent->s.weapon != WP_M1GARANDSNIPER) {
+						 ent->s.weapon != WP_FG42SCOPE ) {
 						if ( traceEnt->takedamage ) {
 							hintDist = CH_ACTIVATE_DIST;
 							hintType = HINT_MG42;

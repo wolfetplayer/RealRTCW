@@ -28,7 +28,6 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 #include "ai_cast_fight.h"   // need these for avoidance
 
@@ -518,8 +517,8 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			}
 		}
 // jpw
-		// count down armor when over max // RealRTCW if more than 100
-		if ( client->ps.stats[STAT_ARMOR] > 100 ) {
+		// count down armor when over max
+		if ( client->ps.stats[STAT_ARMOR] > client->ps.stats[STAT_MAX_HEALTH] ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 	}

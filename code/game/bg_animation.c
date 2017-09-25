@@ -124,9 +124,6 @@ static animStringItem_t animEventTypesStr[] =
 	{"PRONE_TO_CROUCH", -1},
 	{"BULLETIMPACT", -1},
 	{"INSPECTSOUND", -1},
-	{"RELOAD_SG_BEGIN"	, -1}, //jaymod
-	{"RELOAD_SG_LOOP"	, -1},
-	{"RELOAD_SG_END"	, -1},
 
 	{NULL, -1},
 };

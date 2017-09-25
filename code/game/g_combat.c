@@ -321,7 +321,6 @@ char    *modNames[] = {
 	"MOD_LT_AIRSTRIKE",
 	"MOD_ENGINEER",  // not sure if we'll use
 	"MOD_MEDIC",     // these like this or not
-	"MOD_M97", // jaymod
 // jpw
 	"MOD_BAT"
 };
@@ -642,8 +641,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	if ( attacker->aiCharacter ) {
 		// ai's are always allowed headshots from these weapons
 		if ( mod == MOD_SNIPERRIFLE ||
-			 mod == MOD_SNOOPERSCOPE ||
-			 mod == MOD_M1GARANDSNIPER ) {
+			 mod == MOD_SNOOPERSCOPE ) {
 			return qtrue;
 		}
 
@@ -681,8 +679,6 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_BAR:
 	case MOD_MP44:
 	case MOD_P38:
-	case MOD_REVOLVER:
-	case MOD_M1GARANDSNIPER:
 	
 	case MOD_THOMPSON:
 	case MOD_STEN:

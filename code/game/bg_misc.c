@@ -36,7 +36,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "../qcommon/q_shared.h"
 #include "bg_public.h"
-#include "km_cvar.h"	// Knightmare added
 
 
 #ifdef CGAMEDLL
@@ -48,20 +47,18 @@ extern vmCvar_t g_gametype;
 
 
 // NOTE: weapons that share ammo (ex. colt/thompson) need to share max ammo, but not necessarily uses or max clip
-// RealRTCW ammo depends on difficulty level now. So look for the ammo references in g_client.c. Values in bg misc should be the LOWEST to avoid auto pickup bug.
-#define MAX_AMMO_45     150
-#define MAX_AMMO_9MM    180
-#define MAX_AMMO_VENOM  500
-#define MAX_AMMO_MAUSER 150
-#define MAX_AMMO_GARAND 5
+#define MAX_AMMO_45     300
+#define MAX_AMMO_9MM    300
+#define MAX_AMMO_VENOM  1000
+#define MAX_AMMO_MAUSER 300
+#define MAX_AMMO_GARAND 10
 #define MAX_AMMO_FG42   MAX_AMMO_MAUSER
-#define MAX_AMMO_BAR    150
-#define MAX_AMMO_TTAMMO 200
-#define MAX_AMMO_MOSINA 50
-#define MAX_AMMO_BARAMMO    150  
-#define MAX_AMMO_44AMMO     120
-#define MAX_AMMO_M97        20
-#define MAX_AMMO_REVOLVER   24
+#define MAX_AMMO_BAR    200
+#define MAX_AMMO_TTAMMO 300
+#define MAX_AMMO_MOSINA 100
+#define MAX_AMMO_BARAMMO    200  
+#define MAX_AMMO_44AMMO     180
+#define MAX_AMMO_M97        50
 
 
 // these defines are matched with the character torso animations
@@ -99,18 +96,18 @@ ammotable_t ammoTable[] = {
 
 	{   999,            0,      999,    0,      50,             200,    0,      0,      MOD_KNIFE               },  //	WP_KNIFE				// 1
 
-	{   MAX_AMMO_9MM,   1,      8,      1500,   DELAY_PISTOL,   350,    0,      0,      MOD_LUGER               },  //	WP_LUGER				// 2	// NOTE: also 32 round 'snail' magazine
+	{   MAX_AMMO_9MM,   1,      8,      1500,   DELAY_PISTOL,   400,    0,      0,      MOD_LUGER               },  //	WP_LUGER				// 2	// NOTE: also 32 round 'snail' magazine
 	{   MAX_AMMO_9MM,   1,      32,     2600,   DELAY_LOW,      100,    0,      0,      MOD_MP40                },  //	WP_MP40					// 3
 	{   MAX_AMMO_MAUSER,1,      5,      2500,   DELAY_HIGH,     1400,   0,      0,      MOD_MAUSER              },  //	WP_MAUSER				// 4	// NOTE: authentic clips are 5/10/25 rounds
 	{   MAX_AMMO_FG42,  1,      20,     2000,   DELAY_LOW,      180,    0,      0,      MOD_FG42                },  //	WP_FG42					// 5
-	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
-	{   1,              1,      1,      1000,   DELAY_SHOULDER, 2000,   0,      0,      MOD_PANZERFAUST         },  //	WP_PANZERFAUST			// 7
+	{   8,              1,      8,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
+	{   5,              1,      1,      1000,   DELAY_SHOULDER, 2000,   0,      0,      MOD_PANZERFAUST         },  //	WP_PANZERFAUST			// 7
 //	{	MAX_AMMO_VENOM,	1,		500,	3000,	750,			30,		5000,	200,	MOD_VENOM				},	//	WP_VENOM				// -
 	{   MAX_AMMO_VENOM, 1,      500,    3000,   750,            45,     3500,   200,    MOD_VENOM               },  //	WP_VENOM				// 8	// JPW NOTE: changed next_shot 50->45 to genlock firing to every server frame (fire rate shouldn't be framerate dependent now)
-	{   100,            1,      100,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
-	{   50,             1,       50,     1000,   DELAY_LOW,      0,      0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
+	{   200,            1,      200,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
+	{   100,            1,      100,    1000,   DELAY_LOW,      0,      0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
 	{   MAX_AMMO_9MM,   1,      24,     3100,   DELAY_LOW,      120,    0,      0,      MOD_MP34                },  //	WP_MP34					// RealRTCW
-	{   MAX_AMMO_TTAMMO,  1,    8,      1600,   DELAY_PISTOL,   350,    0,      0,      MOD_TT33                },  //	WP_TT33					//
+	{   MAX_AMMO_TTAMMO,  1,    8,      1600,   DELAY_PISTOL,   400,    0,      0,      MOD_TT33                },  //	WP_TT33					//
 	{   MAX_AMMO_TTAMMO,  1,    71,     2900,   DELAY_LOW,      70,     0,      0,      MOD_PPSH                },  //	WP_PPSH					// 
 	{   MAX_AMMO_MOSINA,  1,    5,      2400,   DELAY_HIGH,     1400,   0,      0,      MOD_MOSIN               },  //	WP_MOSIN				//
 	{   MAX_AMMO_MAUSER,  1,    10,     1800,   DELAY_LOW,      300,    0,      0,      MOD_G43                 },  //	WP_G43				    //
@@ -118,22 +115,19 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_BARAMMO, 1,    20,     2250,   DELAY_LOW,      140,    0,      0,      MOD_BAR                 },  //	WP_BAR					//
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      100,    0,      0,      MOD_MP44                },  //	WP_MP44					//
 	{   MAX_AMMO_MAUSER,  1,    50,     2600,   DELAY_LOW,      60,     1500,   250,    MOD_MG42M               },  //	WP_MG42M                //
-	{   MAX_AMMO_M97,     1,    5,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  //
-	{   MAX_AMMO_9MM,     1,    8,      1500,   DELAY_PISTOL,   330,    0,      0,      MOD_P38                 },  //	WP_P38                 //
-	{   MAX_AMMO_REVOLVER,     1,    6,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER                 },  //	WP_REVOLVER                 //
-	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      700,    0,      0,      MOD_M1GARANDSNIPER            },  //	WP_M1GARANDSNIPER				//
-
+	{   MAX_AMMO_M97,     1,    5,      2000,   DELAY_LOW,      1400,   0,      0,      MOD_M97                 },  //	WP_M97                  //
+	{   MAX_AMMO_9MM,     1,    8,      1500,   DELAY_PISTOL,   430,    0,      0,      MOD_P38                 },  //	WP_P38                 //
 
 
 
 //	{	50,				1,		50,		1000,	DELAY_LOW,		1200,	0,		0,		MOD_SPEARGUN			},	//	WP_SPEARGUN				// 11
 
 //	{	999,			0,		999,	0,		50,				200,	0,		0,		MOD_KNIFE2				},	//	WP_KNIFE2				// 12
-	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   350,    0,      0,      MOD_COLT                },  //	WP_COLT					// 13
+	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   400,    0,      0,      MOD_COLT                },  //	WP_COLT					// 13
 	{   MAX_AMMO_45,    1,      30,     2400,   DELAY_LOW,      90,     0,      0,      MOD_THOMPSON            },  //	WP_THOMPSON				// 14	// NOTE: also 50 round drum magazine
 	{   MAX_AMMO_GARAND,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 15	// NOTE: always 5 round clips
 //	{	MAX_AMMO_BAR,	1,		20,		2000,	DELAY_LOW,		200,	0,		0,		MOD_BAR					},	//	WP_BAR					// 16
-	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 17
+	{   8,              1,      8,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 17
 //	{	5,				1,		5,		1000,	DELAY_SHOULDER,	1200,	0,		0,		MOD_ROCKET_LAUNCHER		},	//	WP_ROCKET_LAUNCHER		// 18
 
 	{   MAX_AMMO_MAUSER,1,      5,      3000,   0,              1400,   0,      0,      MOD_SNIPERRIFLE         },  //	WP_SNIPER_GER			// 19
@@ -150,7 +144,7 @@ ammotable_t ammoTable[] = {
 
 	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_CLASS_SPECIAL		// 28	//	class_special
 //	{	100,			1,		100,	1000,	DELAY_PISTOL,	900,	0,		0,		MOD_CROSS				},	//	WP_CROSS				// 29
-	{   3,              1,      3,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_DYNAMITE            },  //	WP_DYNAMITE				// 30
+	{   4,              1,      4,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_DYNAMITE            },  //	WP_DYNAMITE				// 30
 //	{	10,				1,		10,		1000,	DELAY_THROW,	1600,	0,		0,		MOD_DYNAMITE			},	//	WP_DYNAMITE2			// 31
 
 // stubs for some "not-real" weapons (so they always return "yes, you have enough ammo for that gauntlet", etc.)
@@ -181,14 +175,12 @@ int weapAlts[] = {
 	WP_NONE,            // WP_PPSH
 	WP_NONE,            // WP_MOSIN
 	WP_NONE,            // WP_G43
-	WP_M1GARANDSNIPER,  // WP_M1GARAND
+	WP_NONE,            // WP_M1GARAND
 	WP_NONE,            // WP_BAR
 	WP_NONE,            // WP_MP44
 	WP_NONE,            // WP_MG42M
 	WP_NONE,            // WP_M97
 	WP_NONE,            // WP_P38
-	WP_NONE,            // WP_REVOLVER
-	WP_M1GARAND,        // WP_M1GARANDSNIPER
 //	WP_SPEARGUN_CO2,	// 11 WP_SPEARGUN
 //	WP_NONE,			// 12 WP_KNIFE2
 	WP_AKIMBO,          // 13 WP_COLT		//----(SA)	new
@@ -2108,31 +2100,6 @@ model="models/multiplayer/m1_garand/m1_garand_3rd.md3"
 		{0,0,0,0}
 	},
 
-/*QUAKED weapon_m1garandsniper (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/mauser/pu_mauser_scope.md3"
-*/
-	{
-		"weapon_m1garandsniper",
-		"sound/misc/w_pkup.wav",
-		{   "models/multiplayer/m1_garand/m1_garand_3rd.md3",
-			"models/multiplayer/m1_garand/v_m1_garand.md3",
-			"models/multiplayer/m1_garand/v_m1_garand_scope.md3",
-			0, 0 },
-
-		"icons/iconw_m1garand",  // icon
-		"icons/ammo10",              // ammo icon
-		"m1garandsniper",              // pickup
-		30,
-		IT_WEAPON,
-		WP_M1GARANDSNIPER,
-		WP_BAR,
-		WP_M1GARAND,
-		"",                          // precache
-		"",                          // sounds
-		{0,0,0,0}
-	},
-
 /*QUAKED weapon_bar (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
@@ -2221,9 +2188,9 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 	{
 		"weapon_m97",
 		"sound/misc/w_pkup.wav",
-		{ "models/weapons2/m97/m97_3rd.md3",
-			"models/weapons2/m97/v_m97.md3",
-			"models/weapons2/m97/m97_pickup.md3",
+		{ "models/weapons2/sgwt/shotgun.md3",
+			"models/weapons2/sgwt/v_shotgun.md3",
+			"models/weapons2/sgwt/shotgun_pickup.md3",
 			0, 0 },
 
 			"icons/iconw_m97",   // icon
@@ -2267,34 +2234,6 @@ model="models/weapons2/p38/luger.md3"
 		{0,0,0,0}
 	},
 
-
-	/*QUAKED weapon_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/p38/luger.md3"
-*/
-	{
-		"weapon_revolver",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/44magnum/44m_3rd.md3",
-			"models/weapons2/44magnum/v_44m.md3",
-			"models/weapons2/44magnum/44magnum_stand.md3",
-			0, 0 },
-
-		"icons/iconw_revolver",    // icon
-		"icons/ammo9mm",      // ammo icon
-		"revolver",              // pickup
-		30,
-		IT_WEAPON,
-		WP_REVOLVER,
-		WP_REVOLVER,
-		WP_REVOLVER,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0}
-	},
 
 
 	//
@@ -2494,31 +2433,6 @@ model="models/powerups/ammo/44ammo_l.md3"
 		"",                  // sounds
 		{ 15,15,10,10 }
 	},
-
-			/*QUAKED ammo_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-		used by: revolver
-
-		-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-		model="models/powerups/ammo/revolverammo.md3"
-		*/
-	{
-		"ammo_revolver",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/m97ammo.md3",
-		0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"revolverammo",           // pickup			
-		12,
-		IT_AMMO,
-		WP_REVOLVER,
-		WP_REVOLVER,
-		WP_REVOLVER,
-		"",                  // precache
-		"",                  // sounds
-		{ 12,12,12,12 }
-	},
-
 
 
 
@@ -4942,7 +4856,6 @@ char *eventnames[] = {
 	"EV_POPUPBOOK",
 	"EV_GIVEPAGE",
 	"EV_CLOSEMENU",
-	"EV_M97_PUMP", //jaymod
 
 	"EV_MAX_EVENTS"
 };

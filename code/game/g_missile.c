@@ -27,7 +27,6 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 #define MISSILE_PRESTEP_TIME    50
 
@@ -873,7 +872,7 @@ void G_RunCrowbar( gentity_t *ent ) {
 
 //----(SA) removed unused quake3 weapons.
 
-int G_GetWeaponDamage( int weapon, qboolean player ); // JPW NERVE
+int G_GetWeaponDamage( int weapon ); // JPW NERVE
 
 /*
 =================
@@ -889,7 +888,6 @@ fire_grenade
 gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeWPID ) {
 	gentity_t   *bolt, *hit; // JPW NERVE
 	qboolean noExplode = qfalse;
-	qboolean isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 	vec3_t mins, maxs;      // JPW NERVE
 	static vec3_t range = { 40, 40, 52 };   // JPW NERVE
 	int i,num,touch[MAX_GENTITIES];         // JPW NERVE
@@ -935,18 +933,15 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 	bolt->r.ownerNum    = self->s.number;
 	bolt->parent        = self;
 
-
 // JPW NERVE -- commented out bolt->damage and bolt->splashdamage, override with G_GetWeaponDamage()
 // so it works with different netgame balance.  didn't uncomment bolt->damage on dynamite 'cause its so *special*
-	bolt->damage = G_GetWeaponDamage( grenadeWPID, isPlayer ); // overridden for dynamite
-	bolt->splashDamage = G_GetWeaponDamage( grenadeWPID, isPlayer );
+	bolt->damage = G_GetWeaponDamage( grenadeWPID ); // overridden for dynamite
+	bolt->splashDamage = G_GetWeaponDamage( grenadeWPID );
 
-	// Knightmare- G_GetWeaponDamage handles this now
-/*	if ( self->client && !self->aiCharacter ) {
+	if ( self->client && !self->aiCharacter ) {
 		bolt->damage *= 2;
 		bolt->splashDamage *= 2;
 	}
-*/
 // jpw
 
 	switch ( grenadeWPID ) {
@@ -955,9 +950,9 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 //			bolt->damage				= 100;
 //			bolt->splashDamage			= 100;
 		if ( self->aiCharacter ) {
-			bolt->splashRadius          = sk_ai_dmg_grenade_radius.integer;		// Knightmare- was 150
+			bolt->splashRadius          = 310;
 		} else {
-			bolt->splashRadius          = sk_plr_dmg_grenade_radius.integer;	// Knightmare- was 150
+			bolt->splashRadius          = 310;
 		}
 		bolt->methodOfDeath         = MOD_GRENADE;
 		bolt->splashMethodOfDeath   = MOD_GRENADE_SPLASH;
@@ -965,11 +960,9 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		break;
 	case WP_GRENADE_PINEAPPLE:
 		bolt->classname             = "grenade";
-		if ( self->aiCharacter ) {
-			bolt->splashRadius          = sk_ai_dmg_pineapple_radius.integer;	// Knightmare- was 300
-		} else {
-			bolt->splashRadius          = sk_plr_dmg_pineapple_radius.integer;	// Knightmare- was 300
-		}
+//			bolt->damage				= 80;
+//			bolt->splashDamage			= 80;
+		bolt->splashRadius          = 270;
 		bolt->methodOfDeath         = MOD_GRENADE;
 		bolt->splashMethodOfDeath   = MOD_GRENADE_SPLASH;
 		bolt->s.eFlags              = EF_BOUNCE_HALF;
@@ -1015,11 +1008,8 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 // jpw
 		bolt->classname             = "dynamite";
 		bolt->damage                = 0;
-		if ( self->aiCharacter ) {
-			bolt->splashRadius          = sk_ai_dmg_dynamite_radius.integer;	// Knightmare- was 400
-		} else {
-			bolt->splashRadius          = sk_plr_dmg_dynamite_radius.integer;	// Knightmare- was 400
-		}
+//			bolt->splashDamage			= 300;
+		bolt->splashRadius          = 450;
 		bolt->methodOfDeath         = MOD_DYNAMITE;
 		bolt->splashMethodOfDeath   = MOD_DYNAMITE_SPLASH;
 		bolt->s.eFlags              = ( EF_BOUNCE | EF_BOUNCE_HALF );   // EF_BOUNCE_HEAVY;
@@ -1052,7 +1042,7 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 
 // JPW NERVE -- blast radius proportional to damage
 	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		bolt->splashRadius = G_GetWeaponDamage( grenadeWPID, isPlayer );
+		bolt->splashRadius = G_GetWeaponDamage( grenadeWPID );
 	}
 // jpw
 
@@ -1080,7 +1070,6 @@ fire_rocket
 */
 gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	gentity_t   *bolt;
-qboolean	isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 
 	VectorNormalize( dir );
 
@@ -1102,21 +1091,21 @@ qboolean	isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 	bolt->parent = self;
 
 	if ( self->aiCharacter ) { // ai keep the values they've been using
-		bolt->damage = sk_ai_dmg_panzerfaust.integer;					// Knightmare- was 100
-		bolt->splashDamage = sk_ai_dmg_panzerfaust_splash.integer;		// Knightmare- was 120
+		bolt->damage = 100;
+		bolt->splashDamage = 120;
 	} else {
-		bolt->damage = G_GetWeaponDamage( WP_PANZERFAUST, isPlayer );
-		bolt->splashDamage = G_GetWeaponDamage( WP_PANZERFAUST, isPlayer );
+		bolt->damage = G_GetWeaponDamage( WP_PANZERFAUST );
+		bolt->splashDamage = G_GetWeaponDamage( WP_PANZERFAUST );
 	}
 
 // JPW NERVE
 	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		bolt->splashRadius = G_GetWeaponDamage( WP_PANZERFAUST, isPlayer );
+		bolt->splashRadius = G_GetWeaponDamage( WP_PANZERFAUST );
 	} else {
 		if ( self->aiCharacter ) {
-			bolt->splashRadius = sk_ai_dmg_panzerfaust_splash.integer;	// Knightmare- was 120
+			bolt->splashRadius = 120;
 		} else {
-			bolt->splashRadius = G_GetWeaponDamage( WP_PANZERFAUST, isPlayer );
+			bolt->splashRadius = G_GetWeaponDamage( WP_PANZERFAUST );
 		}
 	}
 
@@ -1438,7 +1427,6 @@ fire_mortar
 */
 gentity_t *fire_mortar( gentity_t *self, vec3_t start, vec3_t dir ) {
 	gentity_t   *bolt;
-	qboolean	isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 
 //	VectorNormalize (dir);
 
@@ -1462,8 +1450,8 @@ gentity_t *fire_mortar( gentity_t *self, vec3_t start, vec3_t dir ) {
 	bolt->s.weapon = WP_MORTAR;
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
-	bolt->damage = G_GetWeaponDamage( WP_MORTAR, isPlayer ); // JPW NERVE
-	bolt->splashDamage = G_GetWeaponDamage( WP_MORTAR, isPlayer ); // JPW NERVE
+	bolt->damage = G_GetWeaponDamage( WP_MORTAR ); // JPW NERVE
+	bolt->splashDamage = G_GetWeaponDamage( WP_MORTAR ); // JPW NERVE
 	bolt->splashRadius = 120;
 	bolt->methodOfDeath = MOD_MORTAR;
 	bolt->splashMethodOfDeath = MOD_MORTAR_SPLASH;

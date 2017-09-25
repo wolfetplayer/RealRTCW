@@ -39,7 +39,6 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 
 
@@ -464,8 +463,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_FG42SCOPE );
 	} else if ( weapon == WP_SNIPERRIFLE ) {
 		COM_BitSet( other->client->ps.weapons, WP_MAUSER );
-	} else if ( weapon == WP_M1GARANDSNIPER ) {
-		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
 	}
 
 //----(SA)	end

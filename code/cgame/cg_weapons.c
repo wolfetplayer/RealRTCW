@@ -56,7 +56,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
 
 	{WP_KNIFE,              0,                      0,            0,               0            },  //	1
-	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_P38,          WP_REVOLVER  },  //	2
+	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_P38,          0            },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH      },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     0,               0            },  //	4
     {WP_G43,                WP_M1GARAND,            0,            0,               0            },  //	5
@@ -98,7 +98,7 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 		return;
 	}
 
-	if (cent->currentState.weapon == WP_M97) //jaymod
+	if (cent->currentState.weapon == WP_M97)
 		return;
 
 	le = CG_AllocLocalEntity();
@@ -1162,7 +1162,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 
 
 	// sniper scope model
-	if ( weaponNum == WP_MAUSER || weaponNum == WP_GARAND || weaponNum == WP_M1GARAND ) {
+	if ( weaponNum == WP_MAUSER || weaponNum == WP_GARAND ) {
 
 		if ( !item->world_model[W_FP_MODEL] ) {
 			Q_strncpyz( path, comppath, sizeof(path) );
@@ -1311,14 +1311,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 	
-	case WP_REVOLVER:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
-		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/revolver/revolver_fire.wav" );
-		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/revolver/revolver_far.wav" ); 
-		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/revolver/revolver_reload.wav" );
-		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
-		break;
-	
 	case WP_PPSH:
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/ppsh/ppsh_fire.wav" );
@@ -1344,14 +1336,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 	
 	case WP_M1GARAND:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
-		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_fire.wav" );
-		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_far.wav" );
-		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_reload.wav" );
-		weaponInfo->lastShotSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_fire_last.wav" );
-		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
-		break;
-	case WP_M1GARANDSNIPER:
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_far.wav" );
@@ -2555,8 +2539,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	// don't draw weapon stuff when looking through a scope
-	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE || weaponNum == WP_M1GARANDSNIPER ||
-		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE || weapSelect == WP_M1GARANDSNIPER ) {
+	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE ||
+		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE ) {
 		if ( isPlayer && !cg.renderingThirdPerson ) {
 			return;
 		}
@@ -2801,19 +2785,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		}
 	}
 
-		// add the scope model to the rifle if you've got it
-	if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
-		if ( weaponNum == WP_M1GARAND ) {
-			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_M1GARANDSNIPER ) ) {
-				barrel.hModel = weapon->modModel[0];
-				if ( barrel.hModel ) {
-					CG_PositionEntityOnTag( &barrel, &gun, "tag_scope", 0, NULL );
-					CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
-				}
-			}
-		}
-	}
-
 
 	// make sure we aren't looking at cg.predictedPlayerEntity for LG
 	nonPredictedCent = &cg_entities[cent->currentState.clientNum];
@@ -2966,7 +2937,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 				vec3_t angles;
 				AxisToAngles( flash.axis, angles );
 				CG_FireFlameChunks( cent, flash.origin, angles, 1.0, qfalse, 0 );
-			
 			}
 		}
 	}
@@ -3457,11 +3427,6 @@ static qboolean CG_WeaponSelectable( int i ) {
 			return qtrue;
 		}
 		break;
-	case WP_M1GARANDSNIPER:
-		if ( i == WP_M1GARAND ) {
-			return qtrue;
-		}
-		break;
 	case WP_FG42SCOPE:
 		if ( i == WP_FG42 ) {
 			return qtrue;
@@ -3819,10 +3784,6 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 //			cg.zoomedScope	= 500;	// TODO: add to zoomTable
 //			cg.zoomTime		= cg.time;
 		break;
-	case WP_M1GARANDSNIPER:
-//			cg.zoomedScope	= 500;	// TODO: add to zoomTable
-//			cg.zoomTime		= cg.time;
-		break;
 	case WP_SNOOPERSCOPE:
 //			cg.zoomedScope	= 500;	// TODO: add to zoomTable
 //			cg.zoomTime		= cg.time;
@@ -3839,11 +3800,6 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 		return;     // no sniper zoom, get out.
 
 	case WP_SNIPERRIFLE:
-		cg.zoomval = cg_zoomDefaultSniper.value;
-		cg.zoomedScope  = 900;      // TODO: add to zoomTable
-		zoomindex = ZOOM_SNIPER;
-		break;
-	case WP_M1GARANDSNIPER:
 		cg.zoomval = cg_zoomDefaultSniper.value;
 		cg.zoomedScope  = 900;      // TODO: add to zoomTable
 		zoomindex = ZOOM_SNIPER;
@@ -3929,7 +3885,6 @@ void CG_FinishWeaponChange( int lastweap, int newweap ) {
 		// don't set switchback for some weaps...
 		switch ( lastweap ) {
 		case WP_SNIPERRIFLE:
-		case WP_M1GARANDSNIPER:
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
 			break;
@@ -4740,21 +4695,18 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_TT33:
 	case WP_AKIMBO: 
 	case WP_P38:
-	break;
-	case WP_REVOLVER:
-	pitchAdd = 1;
-	yawRandom = 1;
 	     break;
 	case WP_MAUSER:
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_G43:
 	case WP_M1GARAND:
+		//pitchAdd = 4+rand()%3;
+		//yawRandom = 4;
 		pitchAdd = 2;   //----(SA)	for DM
 		yawRandom = 1;  //----(SA)	for DM
 		break;
 	case WP_SNIPERRIFLE:
-	case WP_M1GARANDSNIPER:
 	case WP_SNOOPERSCOPE:
 		pitchAdd = 0.6;
 		break;
@@ -4768,8 +4720,10 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_MP44:
 	case WP_THOMPSON:
 	case WP_STEN:
+		//pitchRecoilAdd = 1;
 		pitchAdd = 1 + rand() % 3;
 		yawRandom = 2;
+
 
 		pitchAdd *= 0.3;
 		yawRandom *= 0.3;
@@ -5258,8 +5212,6 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_MG42M:
 	case WP_M97:
 	case WP_P38:
-	case WP_REVOLVER:
-	case WP_M1GARANDSNIPER:
 	
 	case WP_FG42:
 	case WP_FG42SCOPE:
@@ -5373,7 +5325,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		// enough to see it, this way we can leave other marks around a lot
 		// longer, since most of the time we can't actually see the bullet holes
 // (SA) small modification.  only do this for non-rifles (so you can see your shots hitting when you're zooming with a rifle scope)
-		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_M1GARANDSNIPER || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
+		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
 
 			if ( clientNum ) {
 
@@ -6325,4 +6277,3 @@ void CG_ClientDamage( int entnum, int enemynum, int id ) {
 		trap_SendClientCommand( va( "cld %i %i %i", entnum, enemynum, id ) );
 	}
 }
-

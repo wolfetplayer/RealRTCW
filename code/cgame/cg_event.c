@@ -271,10 +271,6 @@ static void CG_Obituary( entityState_t *ent ) {
 			message = "was killed by";
 			message2 = "'s TT33";
 			break;
-		case MOD_REVOLVER:
-			message = "was killed by";
-			message2 = "'s REVOLVER";
-			break;
 		case MOD_PPSH:
 			message = "was killed by";
 			message2 = "'s PPSH";
@@ -306,10 +302,6 @@ static void CG_Obituary( entityState_t *ent ) {
 		case MOD_P38:
 			message = "was killed by";
 			message2 = "'s P38";
-			break;
-		case MOD_M1GARANDSNIPER:
-			message = "was killed by";
-			message2 = "'s M1GARANDSNIPER";
 			break;
 		case MOD_THOMPSON:
 			message = "was killed by";
@@ -518,7 +510,7 @@ static void CG_ItemPickup( int itemNum ) {
 			//	5 - "New and Better"
 
 			// don't ever autoswitch to secondary fire weapons
-			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE && weapon != WP_M1GARANDSNIPER ) {  //----(SA)	modified
+			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE ) {  //----(SA)	modified
 
 				// no weap currently selected, always just select the new one
 				if ( !cg.weaponSelect ) {
@@ -2023,12 +2015,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 
-		case EV_M97_PUMP:
-		DEBUGNAME("EV_M97_PUMP");
-		// Jaymod
-		trap_S_StartSound (NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
-		break;
-
 
 	case EV_NOAMMO:
 		DEBUGNAME( "EV_NOAMMO" );
@@ -2057,9 +2043,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			break;
 		case WP_FG42SCOPE:
 			newweap = WP_FG42;
-			break;
-		case WP_M1GARANDSNIPER:
-		    newweap = WP_M1GARAND;
 			break;
 		default:
 			break;

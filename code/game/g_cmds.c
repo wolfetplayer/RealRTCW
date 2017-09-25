@@ -27,7 +27,6 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 /*
 ==================
@@ -1528,7 +1527,6 @@ void Cmd_Activate_f( gentity_t *ent ) {
 					case WP_SNIPERRIFLE:
 					case WP_SNOOPERSCOPE:
 					case WP_FG42SCOPE:
-					case WP_M1GARANDSNIPER:
 						return;
 
 					default:
@@ -1626,7 +1624,7 @@ int Cmd_WolfKick_f( gentity_t *ent ) {
 	int kicktime = level.time;
 	qboolean solidKick = qfalse;    // don't play "hit" sound on a trigger unless it's an func_invisible_user
 
-	int damage = sk_plr_dmg_kick.integer;
+	int damage = 10;
 
 	if ( ent->client->ps.leanf ) {
 		return 0;   // no kick when leaning

@@ -695,7 +695,7 @@ float zoomTable[ZOOM_MAX_ZOOMS][2] = {
 	{36, 8},    //	binoc
 	{20, 4},    //	sniper
 	{60, 20},   //	snooper
-	{35, 35},   //	fg42 //RealRTCW was 55 55
+	{55, 55},   //	fg42
 	{55, 55}    //	mg42
 };
 
@@ -718,9 +718,7 @@ void CG_ZoomIn_f( void ) {
 		CG_AdjustZoomVal( -( cg_zoomStepSnooper.value ), ZOOM_FG42SCOPE );
 	} else if ( cg.zoomedBinoc )      {
 		CG_AdjustZoomVal( -( cg_zoomStepBinoc.value ), ZOOM_BINOC );
-	} else if ( cg_entities[cg.snap->ps.clientNum].currentState.weapon == WP_M1GARANDSNIPER ) {
-		CG_AdjustZoomVal( -( cg_zoomStepSniper.value ), ZOOM_SNIPER );
-    }
+	}
 }
 
 void CG_ZoomOut_f( void ) {
@@ -732,9 +730,7 @@ void CG_ZoomOut_f( void ) {
 		CG_AdjustZoomVal( cg_zoomStepSnooper.value, ZOOM_FG42SCOPE );
 	} else if ( cg.zoomedBinoc )      {
 		CG_AdjustZoomVal( cg_zoomStepBinoc.value, ZOOM_BINOC );
-	} else if ( cg_entities[cg.snap->ps.clientNum].currentState.weapon == WP_M1GARANDSNIPER ) {
-		CG_AdjustZoomVal( cg_zoomStepSniper.value, ZOOM_SNIPER );
-    }
+	}
 }
 
 
@@ -762,8 +758,6 @@ void CG_Zoom( void ) {
 		if ( cg.predictedPlayerState.weapon == WP_SNOOPERSCOPE ) {
 			cg.zoomval = cg_zoomDefaultSnooper.value;
 		} else if ( cg.predictedPlayerState.weapon == WP_SNIPERRIFLE ) {
-			cg.zoomval = cg_zoomDefaultSniper.value;
-		} else if ( cg.predictedPlayerState.weapon == WP_M1GARANDSNIPER ) {
 			cg.zoomval = cg_zoomDefaultSniper.value;
 		} else if ( cg.predictedPlayerState.weapon == WP_FG42SCOPE ) {
 			cg.zoomval = cg_zoomDefaultFG.value;
@@ -1505,7 +1499,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		return;
 	}
 
-	if ( cg.weaponSelect == WP_FG42SCOPE || cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE || cg.weaponSelect == WP_M1GARANDSNIPER ) {
+	if ( cg.weaponSelect == WP_FG42SCOPE || cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE ) {
 		float spd;
 		spd = VectorLength( cg.snap->ps.velocity );
 		if ( spd > 180.0f ) {
@@ -1518,9 +1512,6 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 				break;
 			case WP_SNIPERRIFLE:
 				CG_FinishWeaponChange( cg.weaponSelect, WP_MAUSER );
-				break;
-			case WP_M1GARANDSNIPER:
-				CG_FinishWeaponChange( cg.weaponSelect, WP_M1GARAND );
 				break;
 			}
 		}

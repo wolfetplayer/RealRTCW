@@ -36,13 +36,11 @@ If you have questions concerning this license or the applicable additional terms
 // because games can change separately from the main system version, we need a
 // second version that must match between game and cgame
 
-#include "../game/bg_jaymod.h"
-
 #define	GAME_VERSION		BASEGAME "-1"
 
 #define DEFAULT_GRAVITY     800
 #define GIB_HEALTH          -40
-#define ARMOR_PROTECTION    0.70 // RealRTCW was 0.66
+#define ARMOR_PROTECTION    0.66
 
 #define MAX_ITEMS           256
 
@@ -281,8 +279,7 @@ typedef enum {
 typedef struct {
 	// state (in / out)
 	playerState_t   *ps;
-    // Jaymod - Shotgun
-	qboolean	m97reloadInterrupt;
+
 	// command (in)
 	usercmd_t cmd, oldcmd;
 	int tracemask;                  // collide against these types of surfaces
@@ -488,8 +485,8 @@ typedef enum {
 	HI_12,
 	HI_13,
 	HI_14,
-	HOLDABLE_M97, //jaymod
 //	HI_15,	// ?
+
 	HI_NUM_HOLDABLE
 } holdable_t;
 
@@ -556,8 +553,6 @@ typedef enum {
 	WP_MG42M,
 	WP_M97,
 	WP_P38,
-	WP_REVOLVER,
-	WP_M1GARANDSNIPER,
 	
 //	WP_SPEARGUN,			// 11
 
@@ -642,7 +637,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_P38 ) | ( 1 << WP_REVOLVER ) )
+#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_P38 ) )
 //----(SA)	end
 
 typedef enum {
@@ -840,7 +835,6 @@ typedef enum {
 	EV_GIVEPAGE,    //----(SA)	added
 	EV_CLOSEMENU,   //----(SA)	added
 	EV_SPAWN_SPIRIT,
-	EV_M97_PUMP, // jaymod
 
 	EV_MAX_EVENTS   // just added as an 'endcap'
 
@@ -1068,7 +1062,6 @@ typedef enum {
 	WEAP_RELOAD3,
 	WEAP_ALTSWITCHFROM, // switch from alt fire mode weap (scoped/silencer/etc)
 	WEAP_ALTSWITCHTO,   // switch to alt fire mode weap
-	WEAP_DROP2,
 	MAX_WP_ANIMATIONS
 } weapAnimNumber_t;
 
@@ -1192,8 +1185,6 @@ typedef enum {
 	MOD_MG42M,
 	MOD_M97,
 	MOD_P38,
-	MOD_REVOLVER,
-	MOD_M1GARANDSNIPER,
 
 	MOD_SPEARGUN,
 	MOD_SPEARGUN_CO2,
@@ -1590,9 +1581,6 @@ typedef enum
 	ANIM_ET_BULLETIMPACT,
 	ANIM_ET_INSPECTSOUND,
 	ANIM_ET_SECONDLIFE,
-	ANIM_ET_RELOAD_SG1, //jaymod
-	ANIM_ET_RELOAD_SG2,
-	ANIM_ET_RELOAD_SG3,
 
 	NUM_ANIM_EVENTTYPES
 } scriptAnimEventTypes_t;

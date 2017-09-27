@@ -4506,12 +4506,6 @@ void PM_BeginM97Reload( void )
 		pm->ps->weaponTime += M97_RLT_ALTSWITCHFROM;
 		pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_BEGIN_PUMP;
 
-        // removed prone stuff 3rd person
-	    //if( pm->ps->eFlags & EF_PRONE ) {
-		    //BG_AnimScriptEvent( pm->ps, pm->character->animModelInfo, ANIM_ET_RELOADPRONE_SG1, qfalse, qtrue );
-	   // } else {
-		    //BG_AnimScriptEvent( pm->ps, pm->character->animModelInfo, ANIM_ET_RELOAD_SG1, qfalse, qtrue );
-	   // }
 	} else {
 		anim = WEAP_RELOAD1;
 		pm->ps->weaponTime += M97_RLT_RELOAD1;
@@ -4569,22 +4563,8 @@ void PM_M97Reload() {
 	if( pm->ps->ammoclip[WP_M97] < ammoTable[WP_M97].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] ) {
 		PM_AddEvent( EV_FILL_CLIP );
 		PM_StartWeaponAnim(WEAP_RELOAD2);
-	
-	     // removed skill stuff
-		// Delay time - support quick reload
-		//if (pm->skill[SK_LIGHT_WEAPONS] >= 2)
-		//pm->ps->weaponTime += M97_RLT_RELOAD2_QUICK;
-	//else
 	pm->ps->weaponTime += M97_RLT_RELOAD2;
-
 	pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_LOOP;
-
-	// removed prone stuff //3rd person
-	//if( pm->ps->eFlags & EF_PRONE ) {
-		//BG_AnimScriptEvent( pm->ps, pm->character->animModelInfo, ANIM_ET_RELOADPRONE_SG2, qfalse, qtrue );
-	//} else {
-		//BG_AnimScriptEvent( pm->ps, pm->character->animModelInfo, ANIM_ET_RELOAD_SG2, qfalse, qtrue );
-	//}
 } else {
 	PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
 	pm->ps->weaponTime += M97_RLT_RELOAD3;

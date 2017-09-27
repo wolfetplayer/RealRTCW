@@ -4499,7 +4499,7 @@ void PM_BeginM97Reload( void )
 {
 	int anim;
 
-	// Choose which first person animation to play
+	// Choose which first person animation to play 
 	if ( pm->ps->ammoclip[BG_FindClipForWeapon(WP_M97)] == 0 ) {
 		anim = WEAP_ALTSWITCHFROM;
 		PM_AddEvent( EV_M97_PUMP );

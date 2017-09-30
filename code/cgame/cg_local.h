@@ -616,6 +616,11 @@ typedef enum {
 	W_PART_5,
 	W_PART_6,
 	W_PART_7,
+	W_PART_8,
+	W_PART_9,
+	W_PART_10,
+	W_PART_11,
+	W_PART_12,
 	W_MAX_PARTS
 } barrelType_t;
 

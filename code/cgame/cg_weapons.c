@@ -994,6 +994,10 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi ) {
 	return qtrue;
 }
 
+// ET weapon system port
+
+
+
 
 /*
 =================

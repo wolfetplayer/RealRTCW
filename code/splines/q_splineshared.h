@@ -1376,8 +1376,6 @@ typedef struct playerState_s {
 	int bobCycle;               // for view bobbing and footstep generation
 	int pm_flags;               // ducked, jump_held, etc
 	int pm_time;
-	// Jaymod - Shotgun
-	qboolean	m97reloadInterrupt;
 
 	vec3_t origin;
 	vec3_t velocity;
@@ -1529,6 +1527,8 @@ typedef struct playerState_s {
 	aistateEnum_t aiState;
 
 	float footstepCount;
+	// Jaybird - Shotgun
+	qboolean	m97reloadInterrupt;
 
 } playerState_t;
 
@@ -1568,7 +1568,7 @@ typedef struct playerState_s {
 #define WBUTTON_LEANRIGHT   32
 
 // unused
-#define WBUTTON_EXTRA6      64
+#define WBUTTON_ADS         64
 #define WBUTTON_EXTRA7      128
 //----(SA) end
 

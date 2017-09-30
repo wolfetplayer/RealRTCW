@@ -281,8 +281,6 @@ typedef enum {
 typedef struct {
 	// state (in / out)
 	playerState_t   *ps;
-    // Jaymod - Shotgun
-	qboolean	m97reloadInterrupt;
 	// command (in)
 	usercmd_t cmd, oldcmd;
 	int tracemask;                  // collide against these types of surfaces
@@ -488,7 +486,7 @@ typedef enum {
 	HI_12,
 	HI_13,
 	HI_14,
-	HOLDABLE_M97, //jaymod
+	HI_M97, //jaymod
 //	HI_15,	// ?
 	HI_NUM_HOLDABLE
 } holdable_t;

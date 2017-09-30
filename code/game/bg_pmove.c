@@ -4504,12 +4504,12 @@ void PM_BeginM97Reload( void )
 		anim = WEAP_ALTSWITCHFROM;
 		PM_AddEvent( EV_M97_PUMP );
 		pm->ps->weaponTime += M97_RLT_ALTSWITCHFROM;
-		pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_BEGIN_PUMP;
+		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN_PUMP;
 
 	} else {
 		anim = WEAP_RELOAD1;
 		pm->ps->weaponTime += M97_RLT_RELOAD1;
-		pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_BEGIN;
+		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN;
 	}
 
 	// Play it
@@ -4526,7 +4526,7 @@ void PM_BeginM97Reload( void )
 void PM_M97Reload() {
 
 	// Transition from shell + pump
-	if( pm->ps->holdable[HOLDABLE_M97] == M97_RELOADING_BEGIN_PUMP ) {
+	if( pm->ps->holdable[HI_M97] == M97_RELOADING_BEGIN_PUMP ) {
 
 		// Load a shell
 		PM_ReloadClip( WP_M97 );
@@ -4541,18 +4541,18 @@ void PM_M97Reload() {
 			// Transition to load another shell
 			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
 			pm->ps->weaponTime += M97_RLT_ALTSWITCHTO;
-			pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_AFTER_PUMP;
+			pm->ps->holdable[HI_M97] = M97_RELOADING_AFTER_PUMP;
 		}
 		return;
 	}
 
 	// Load a shell on most states
-	if (pm->ps->holdable[HOLDABLE_M97] != M97_RELOADING_AFTER_PUMP && pm->ps->holdable[HOLDABLE_M97] != M97_RELOADING_BEGIN) {
+	if (pm->ps->holdable[HI_M97] != M97_RELOADING_AFTER_PUMP && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN) {
 		PM_ReloadClip( WP_M97 );
 	}
 
 	// Override - but must load at least one shell!
-	if( pm->ps->m97reloadInterrupt && pm->ps->holdable[HOLDABLE_M97] != M97_RELOADING_BEGIN ) {
+	if( pm->ps->m97reloadInterrupt && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN ) {
 		PM_StartWeaponAnim(WEAP_RELOAD3);
 		pm->ps->weaponTime += M97_RLT_RELOAD3;
 		pm->ps->weaponstate = WEAPON_READY;
@@ -4564,11 +4564,10 @@ void PM_M97Reload() {
 		PM_AddEvent( EV_FILL_CLIP );
 		PM_StartWeaponAnim(WEAP_RELOAD2);
 	pm->ps->weaponTime += M97_RLT_RELOAD2;
-	pm->ps->holdable[HOLDABLE_M97] = M97_RELOADING_LOOP;
+	pm->ps->holdable[HI_M97] = M97_RELOADING_LOOP;
 } else {
 	PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
 	pm->ps->weaponTime += M97_RLT_RELOAD3;
 	pm->ps->weaponstate = WEAPON_READY;
 }
 }
-

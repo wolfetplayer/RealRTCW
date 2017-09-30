@@ -3,10 +3,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// Various things both games should see
-
-#define SBW_M97            0x0400 // 1024
-
 // Shotgun
 // Animation time = 1000 / fps * numFrames
 #define M97_RLT_RELOAD1			400		// Reload normal shell start

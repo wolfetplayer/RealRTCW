@@ -2224,7 +2224,8 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		{ "models/weapons2/m97/m97_3rd.md3",
 			"models/weapons2/m97/v_m97.md3",
 			"models/weapons2/m97/m97_pickup.md3",
-			0, 0 },
+			0 
+		    },
 
 			"icons/iconw_m97",   // icon
 			"icons/ammo8",           // ammo icon

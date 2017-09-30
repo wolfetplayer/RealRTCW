@@ -709,8 +709,8 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_TT33:       return 750;
 			case WP_PPSH:       return 1200;
 			case WP_MOSIN:      return 400;
-			case WP_G43:        return 550; 
-			case WP_M1GARAND:   return 450; 
+			case WP_G43:        return 400; // was 550
+			case WP_M1GARAND:   return 400; // was 450
 		    case WP_BAR:        return 800;
 		    case WP_MP44:       return 900;  
 			case WP_MG42M:      return 1700;

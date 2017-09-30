@@ -2638,7 +2638,7 @@ void PM_AdjustAimSpreadScale( void ) {
 		wpnScale = 0.5f;        // 2 handed, but not as long as mauser, so harder to keep aim
 		break;
 	case WP_FG42:
-		wpnScale = 0.9f;
+		wpnScale = 0.7f; // was 0.9f
 		break;
 	case WP_FG42SCOPE:
 		wpnScale = 0.7f;
@@ -2690,8 +2690,8 @@ void PM_AdjustAimSpreadScale( void ) {
 	case WP_M97:  
 		wpnScale = 0.6f; // was 0.4f now jaymod values
 		break;
-	case WP_M1GARANDSNIPER:    // (SA) looong time to recover
-		wpnScale = 8.0f;
+	case WP_M1GARANDSNIPER:    
+		wpnScale = 0.9f;
 		break;
 	}
 
@@ -2716,7 +2716,7 @@ void PM_AdjustAimSpreadScale( void ) {
 		case WP_SNIPERRIFLE:
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
-		case WP_M1GARAND:
+		//case WP_M1GARAND: //haha no plz
 			for ( i = 0; i < 2; i++ )
 				viewchange += fabs( pm->ps->velocity[i] );
 			break;

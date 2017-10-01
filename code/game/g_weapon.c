@@ -590,6 +590,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_DYNAMITE: return sk_plr_dmg_dynamite.integer;
 			// RealRTCW weapons
 			case WP_MP34: return sk_plr_dmg_mp34.integer;
+			case WP_MP44: return sk_plr_dmg_mp44.integer;
 			case WP_TT33: return sk_plr_dmg_tt33.integer;
 			case WP_PPSH: return sk_plr_dmg_ppsh.integer;
 			case WP_MOSIN: return sk_plr_dmg_mosin.integer;
@@ -634,6 +635,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_DYNAMITE: return sk_ai_dmg_dynamite.integer;
 			// RealRTCW weapons
 			case WP_MP34: return sk_ai_dmg_mp34.integer;
+			case WP_MP44: return sk_ai_dmg_mp44.integer;
 			case WP_TT33: return sk_ai_dmg_tt33.integer;
 			case WP_PPSH: return sk_ai_dmg_ppsh.integer;
 			case WP_MOSIN: return sk_ai_dmg_mosin.integer;

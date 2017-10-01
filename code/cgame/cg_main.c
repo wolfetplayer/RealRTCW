@@ -336,7 +336,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_crosshairHealth, "cg_crosshairHealth", "1", CVAR_ARCHIVE },
 	{ &cg_crosshairX, "cg_crosshairX", "0", CVAR_ARCHIVE },
 	{ &cg_crosshairY, "cg_crosshairY", "0", CVAR_ARCHIVE },
-	{ &cg_brassTime, "cg_brassTime", "1250", CVAR_ARCHIVE },
+	{ &cg_brassTime, "cg_brassTime", "2500", CVAR_ARCHIVE }, // was 1250
 	{ &cg_simpleItems, "cg_simpleItems", "0", CVAR_ARCHIVE },
 	{ &cg_reticles, "cg_reticles", "1", CVAR_CHEAT },
 	{ &cg_reticleBrightness, "cg_reticleBrightness", "0.7", CVAR_ARCHIVE },
@@ -1053,6 +1053,24 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.sfx_bullet_glasshit[1] = trap_S_RegisterSound( "sound/weapons/bullethit_glass2.wav" );
 	cgs.media.sfx_bullet_glasshit[2] = trap_S_RegisterSound( "sound/weapons/bullethit_glass3.wav" );
 
+	// RealRTCW brass sound
+	cgs.media.sfx_brassSound_metal[0] = trap_S_RegisterSound("sound/weapons/misc/shell_metal1.wav" );
+	cgs.media.sfx_brassSound_metal[1] = trap_S_RegisterSound("sound/weapons/misc/shell_metal2.wav" );
+	cgs.media.sfx_brassSound_metal[2] = trap_S_RegisterSound("sound/weapons/misc/shell_metal3.wav" );
+
+	cgs.media.sfx_brassSound_soft[0] = trap_S_RegisterSound("sound/weapons/misc/shell_soft1.wav" );
+	cgs.media.sfx_brassSound_soft[1] = trap_S_RegisterSound("sound/weapons/misc/shell_soft2.wav" );
+	cgs.media.sfx_brassSound_soft[2] = trap_S_RegisterSound("sound/weapons/misc/shell_soft3.wav" );
+
+	cgs.media.sfx_brassSound_stone[0] = trap_S_RegisterSound("sound/weapons/misc/shell_stone1.wav" );
+	cgs.media.sfx_brassSound_stone[1] = trap_S_RegisterSound("sound/weapons/misc/shell_stone2.wav" );
+	cgs.media.sfx_brassSound_stone[2] = trap_S_RegisterSound("sound/weapons/misc/shell_stone3.wav" );
+
+	cgs.media.sfx_brassSound_wood[0] = trap_S_RegisterSound("sound/weapons/misc/shell_wood1.wav" );
+	cgs.media.sfx_brassSound_wood[1] = trap_S_RegisterSound("sound/weapons/misc/shell_wood2.wav" );
+	cgs.media.sfx_brassSound_wood[2] = trap_S_RegisterSound("sound/weapons/misc/shell_wood3.wav" );
+	
+	cgs.media.sfx_rubbleBounce[i]                    = trap_S_RegisterSound("sound/world/debris%i.wav" );
 
 	cgs.media.sparkSounds[0] = trap_S_RegisterSound( "sound/world/saarc2.wav" );
 	cgs.media.sparkSounds[1] = trap_S_RegisterSound( "sound/world/arc2.wav" );

@@ -7490,7 +7490,7 @@ cvarTable_t cvarTable[] = {
 	{ &ui_browserShowFull, "ui_browserShowFull", "1", CVAR_ARCHIVE },
 	{ &ui_browserShowEmpty, "ui_browserShowEmpty", "1", CVAR_ARCHIVE },
 
-	{ &ui_brassTime, "cg_brassTime", "1250", CVAR_ARCHIVE },
+	{ &ui_brassTime, "cg_brassTime", "2500", CVAR_ARCHIVE }, // was 1250
 	{ &ui_drawCrosshair, "cg_drawCrosshair", "4", CVAR_ARCHIVE },
 	{ &ui_drawCrosshairNames, "cg_drawCrosshairNames", "1", CVAR_ARCHIVE },
 	{ &ui_drawCrosshairPickups, "cg_drawCrosshairPickups", "1", CVAR_ARCHIVE },   //----(SA) added

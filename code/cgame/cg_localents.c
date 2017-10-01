@@ -242,13 +242,42 @@ void CG_FragmentBounceMark( localEntity_t *le, trace_t *trace ) {
 CG_FragmentBounceSound
 ================
 */
-void CG_FragmentBounceSound( localEntity_t *le, trace_t *trace ) {
-	if ( le->leBounceSoundType == LEBS_BLOOD ) {
-		// half the gibs will make splat sounds
-		if ( rand() & 1 ) {
+void CG_FragmentBounceSound( localEntity_t *le, trace_t *trace ) 
+{
+	switch (le->leBounceSoundType)
+	{
+	case LEBS_BRASS:
+
+		if (trace->surfaceFlags & SURF_METAL)
+		{
+			trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_metal[rand() % 3]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_metal[1]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_metal[2]);
+		}
+		else if (trace->surfaceFlags & SURF_WOOD)
+		{
+			trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_wood[rand() % 3]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_wood[1]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_wood[2]);
+		}
+		else if (trace->surfaceFlags & (SURF_GRAVEL | SURF_SNOW | SURF_CARPET | SURF_GRASS))
+		{
+			trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_soft[rand() % 3]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_soft[1]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_soft[2]);
+		}
+		else
+		{
+			trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_stone[rand() % 3]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_stone[1]);
+			//trap_S_StartSound(trace->endpos, -1, CHAN_AUTO, cgs.media.sfx_brassSound_stone[2]);
+		}
+		break;
+	case LEBS_BLOOD:
+		    if ( rand() & 1 ) {
 			int r = rand() & 3;
 			sfxHandle_t s;
-
+	
 			if ( r < 2 ) {
 				s = cgs.media.gibBounce1Sound;
 			} else if ( r == 2 ) {
@@ -257,12 +286,9 @@ void CG_FragmentBounceSound( localEntity_t *le, trace_t *trace ) {
 				s = cgs.media.gibBounce3Sound;
 			}
 			trap_S_StartSound( trace->endpos, ENTITYNUM_WORLD, CHAN_AUTO, s );
-		}
-	} else if ( le->leBounceSoundType == LEBS_BRASS ) {
-
-//----(SA) added
-	} else if ( le->leBounceSoundType == LEBS_ROCK ) {
-		// half the hits will make thunk sounds	(this is just to start since we don't even have the sound yet... (SA))
+			}
+			break;
+	case LEBS_ROCK:
 		if ( rand() & 1 ) {
 			int r = rand() & 3;
 			sfxHandle_t s;
@@ -276,18 +302,20 @@ void CG_FragmentBounceSound( localEntity_t *le, trace_t *trace ) {
 			}
 			trap_S_StartSound( trace->endpos, ENTITYNUM_WORLD, CHAN_AUTO, s );
 		}
-//----(SA) end
-
-	} else if ( le->leBounceSoundType == LEBS_BONE ) {
-
-		trap_S_StartSound( trace->endpos, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.boneBounceSound );
-
+		break;
+	case LEBS_BONE:
+	trap_S_StartSound( trace->endpos, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.boneBounceSound );
+		break;
+	default:
+		return;
 	}
 
 	// don't allow a fragment to make multiple bounce sounds,
 	// or it gets too noisy as they settle
 	le->leBounceSoundType = LEBS_NONE;
 }
+
+
 
 
 /*

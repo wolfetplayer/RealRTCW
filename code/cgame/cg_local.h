@@ -1335,7 +1335,11 @@ typedef struct {
 	sfxHandle_t landSound;
 	sfxHandle_t fallSound;
 	sfxHandle_t jumpPadSound;
-
+	// RealRTCW brassSound
+	sfxHandle_t sfx_brassSound_wood[3];
+	sfxHandle_t sfx_brassSound_metal[3];
+	sfxHandle_t sfx_brassSound_soft[3];
+	sfxHandle_t sfx_brassSound_stone[3];
 	sfxHandle_t oneMinuteSound;
 	sfxHandle_t fiveMinuteSound;
 	sfxHandle_t suddenDeathSound;

@@ -101,12 +101,19 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 	if (cent->currentState.weapon == WP_M97) //jaymod
 		return;
 
+	if (cent->currentState.weapon == WP_REVOLVER) // no brass for revolver
+		return;
+
 	le = CG_AllocLocalEntity();
 	re = &le->refEntity;
 
-	velocity[0] = 16;
-	velocity[1] = -50 + 40 * crandom();
-	velocity[2] = 100 + 50 * crandom();
+	//velocity[0] = 16;
+	//velocity[1] = -50 + 40 * crandom();
+	//velocity[2] = 100 + 50 * crandom();
+
+	velocity[0] = -50 + 25 * crandom(); // New eject brass RealRTCW
+	velocity[1] = -100 + 40 * crandom();
+	velocity[2] = 200 + 50 * random();
 
 	le->leType = LE_FRAGMENT;
 	le->startTime = cg.time;
@@ -138,9 +145,12 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 
 	le->angles.trType = TR_LINEAR;
 	le->angles.trTime = cg.time;
-	le->angles.trBase[0] = rand() & 31;
-	le->angles.trBase[1] = rand() & 31;
-	le->angles.trBase[2] = rand() & 31;
+	//le->angles.trBase[0] = rand() & 31;
+	//le->angles.trBase[1] = rand() & 31;
+	//le->angles.trBase[2] = rand() & 31;
+	le->angles.trBase[0]  = (rand() & 31) + 60;  // new eject brass RealRTCW
+	le->angles.trBase[1]  = rand() & 255; 
+	le->angles.trBase[2]  = rand() & 31;
 	le->angles.trDelta[0] = 2;
 	le->angles.trDelta[1] = 1;
 	le->angles.trDelta[2] = 0;
@@ -191,9 +201,13 @@ static void CG_MachineGunEjectBrass( centity_t *cent ) {
 	re = &le->refEntity;
 
 	// velocity[0] = 0;
-	velocity[0] = 16; // Maxx Kaufman offset value
-	velocity[1] = -50 + 40 * crandom();
-	velocity[2] = 100 + 50 * crandom();
+	//velocity[0] = 16; // Maxx Kaufman offset value
+	//velocity[1] = -50 + 40 * crandom();
+	//velocity[2] = 100 + 50 * crandom();
+
+	velocity[0]           = -20 + 40 * crandom(); // New eject brass RealRTCW
+	velocity[1]           = -150 + 40 * crandom();
+	velocity[2]           = 100 + 50 * crandom();
 
 	le->leType = LE_FRAGMENT;
 	le->startTime = cg.time;

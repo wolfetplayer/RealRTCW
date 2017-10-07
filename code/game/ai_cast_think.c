@@ -1136,6 +1136,7 @@ void AICast_PredictMovement( cast_state_t *cs, int numframes, float frametime, a
 	{
 		memset( &pm, 0, sizeof( pm ) );
 		pm.ps = &ps;
+		pm.pmext = &ent->client->pmext;
 		pm.cmd = *ucmd;
 		pm.oldcmd = *ucmd;
 		pm.ps->commandTime = 0;

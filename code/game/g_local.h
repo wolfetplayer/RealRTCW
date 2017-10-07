@@ -592,6 +592,8 @@ struct gclient_s {
 	float sniperRifleMuzzlePitch;       // (SA) added
 
 	int saved_persistant[MAX_PERSISTANT];           // DHM - Nerve :: Save ps->persistant here during Limbo
+	
+	pmoveExt_t pmext;
 };
 
 

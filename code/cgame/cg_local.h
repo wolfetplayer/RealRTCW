@@ -997,6 +997,7 @@ typedef struct {
 	vec3_t cameraShakeAngles;
 
 	float rumbleScale;          //RUMBLE FX using new shakeCamera code
+	pmoveExt_t pmext;
 
 } cg_t;
 
@@ -1323,6 +1324,7 @@ typedef struct {
 	sfxHandle_t sfx_bullet_roofhit[3];
 	sfxHandle_t sfx_bullet_ceramichit[3];
 	sfxHandle_t sfx_bullet_glasshit[3];
+	sfxHandle_t sfx_rubbleBounce[3];
 	sfxHandle_t gibSound;
 	sfxHandle_t gibBounce1Sound;
 	sfxHandle_t gibBounce2Sound;

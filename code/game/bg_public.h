@@ -278,9 +278,17 @@ typedef enum {
 #define PMF_ALL_TIMES   ( PMF_TIME_WATERJUMP | PMF_TIME_LAND | PMF_TIME_KNOCKBACK | PMF_TIME_LOAD )
 
 #define MAXTOUCH    32
+
+// data used both in client and server
+typedef struct
+{
+	qboolean m97reloadInterrupt;
+} pmoveExt_t;
+
 typedef struct {
 	// state (in / out)
-	playerState_t   *ps;
+	playerState_t *ps;
+	pmoveExt_t *pmext;
 	// command (in)
 	usercmd_t cmd, oldcmd;
 	int tracemask;                  // collide against these types of surfaces

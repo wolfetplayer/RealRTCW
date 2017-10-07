@@ -30,6 +30,11 @@ If you have questions concerning this license or the applicable additional terms
 
 // g_client.c -- client functions that don't happen every frame
 
+void SetupWeaponsForSkill_EASY();
+void SetupWeaponsForSkill_MEDIUM();
+void SetupWeaponsForSkill_HARD();
+void SetupWeaponsForSkill_MAX();
+
 // Ridah, new bounding box
 //static vec3_t	playerMins = {-15, -15, -24};
 //static vec3_t	playerMaxs = {15, 15, 32};

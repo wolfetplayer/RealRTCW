@@ -2308,11 +2308,11 @@ PM_FinishWeaponReload
 
 static void PM_FinishWeaponReload( void ) {
 
-		// Jaymod Overrides for Shotgun
-		if( pm->ps->weapon == WP_M97 ) {
-			PM_M97Reload();
-			return;
-		}
+	// Jaymod Overrides for Shotgun
+	if( pm->ps->weapon == WP_M97 ) {
+		PM_M97Reload();
+		return;
+	}
 
 	PM_ReloadClip( pm->ps->weapon );          // move ammo into clip
 	pm->ps->weaponstate = WEAPON_READY;     // ready to fire
@@ -2345,12 +2345,12 @@ void PM_CheckForReload( int weapon ) {
 	case WEAPON_RELAXING:
 	return;
 	case WEAPON_RELOADING:
-	// Jaymod
-	if( pm->ps->weapon == WP_M97 ) {
-		if( pm->cmd.buttons & BUTTON_ATTACK ) {
-			pm->ps->m97reloadInterrupt = qtrue;
+		// Jaymod
+		if( pm->ps->weapon == WP_M97 ) {
+			if( pm->cmd.buttons & BUTTON_ATTACK ) {
+				pm->pmext->m97reloadInterrupt = qtrue;
+			}
 		}
-	}
 		return;
 	default:
 		break;
@@ -2382,50 +2382,49 @@ void PM_CheckForReload( int weapon ) {
 	}
 
 
-//	if ( pm->ps->weaponTime <= 0) {
+	if ( pm->ps->weaponTime <= 0) {
 
-	if ( reloadRequested ) {
-		// don't allow a force reload if it won't have any effect (no more ammo reserves or full clip)
-		if ( pm->ps->ammo[ammoWeap] ) {
-			if ( pm->ps->ammoclip[clipWeap] < ammoTable[weapon].maxclip ) {
-				doReload = qtrue;
-			}
-			if ( weapon == WP_AKIMBO ) {
-				// akimbo should also check Colt status
-				if ( pm->ps->ammoclip[BG_FindClipForWeapon( WP_COLT )] < ammoTable[BG_FindClipForWeapon( WP_COLT )].maxclip ) {
+		if ( reloadRequested ) {
+			// don't allow a force reload if it won't have any effect (no more ammo reserves or full clip)
+			if ( pm->ps->ammo[ammoWeap] ) {
+				if ( pm->ps->ammoclip[clipWeap] < ammoTable[weapon].maxclip ) {
 					doReload = qtrue;
+				}
+				if ( weapon == WP_AKIMBO ) {
+					// akimbo should also check Colt status
+					if ( pm->ps->ammoclip[BG_FindClipForWeapon( WP_COLT )] < ammoTable[BG_FindClipForWeapon( WP_COLT )].maxclip ) {
+						doReload = qtrue;
+					}
 				}
 			}
 		}
-	}
-	// clip is empty, but you have reserves.  (auto reload)
-	else if ( !( pm->ps->ammoclip[clipWeap] ) ) {   // clip is empty...
-		if ( pm->ps->ammo[ammoWeap] ) {         // and you have reserves
-			if ( weapon == WP_AKIMBO ) {    // if colt's got ammo, don't force reload yet (you know you've got it 'out' since you've got the akimbo selected
-				if ( !( pm->ps->ammoclip[WP_COLT] ) ) {
-					doReload = qtrue;
-				}
-				// likewise.  however, you need to check if you've got the akimbo selected, since you could have the colt alone
-			} else if ( weapon == WP_COLT ) {   // weapon checking for reload is colt...
-				if ( pm->ps->weapon == WP_AKIMBO ) {    // you've got the akimbo selected...
-					if ( !( pm->ps->ammoclip[WP_AKIMBO] ) ) {   // and it's got no ammo either
+		// clip is empty, but you have reserves.  (auto reload)
+		else if ( !( pm->ps->ammoclip[clipWeap] ) ) {   // clip is empty...
+			if ( pm->ps->ammo[ammoWeap] ) {         // and you have reserves
+				if ( weapon == WP_AKIMBO ) {    // if colt's got ammo, don't force reload yet (you know you've got it 'out' since you've got the akimbo selected
+					if ( !( pm->ps->ammoclip[WP_COLT] ) ) {
+						doReload = qtrue;
+					}
+					// likewise.  however, you need to check if you've got the akimbo selected, since you could have the colt alone
+				} else if ( weapon == WP_COLT ) {   // weapon checking for reload is colt...
+					if ( pm->ps->weapon == WP_AKIMBO ) {    // you've got the akimbo selected...
+						if ( !( pm->ps->ammoclip[WP_AKIMBO] ) ) {   // and it's got no ammo either
+							doReload = qtrue;       // so reload
+						}
+					} else {     // single colt selected
 						doReload = qtrue;       // so reload
 					}
-				} else {     // single colt selected
-					doReload = qtrue;       // so reload
+				} else {
+					doReload = qtrue;
 				}
-			} else {
-				doReload = qtrue;
 			}
 		}
+
+		if (doReload) {
+			PM_BeginWeaponReload(weapon);
+		}
+
 	}
-
-//	}
-
-	if ( doReload ) {
-		PM_BeginWeaponReload( weapon );
-	}
-
 
 }
 
@@ -3096,6 +3095,11 @@ static void PM_Weapon( void ) {
 
 	if ( pm->ps->weaponstate == WEAPON_RELOADING ) {
 		PM_FinishWeaponReload();
+
+		// This will happen for chained shotgun reloads
+		if (pm->ps->weaponTime > 0) {
+			return;
+		}
 	}
 
 	// change weapon if time
@@ -4498,9 +4502,10 @@ PM_BeginM97Reload
 void PM_BeginM97Reload( void )
 {
 	int anim;
-
+	
 	// Choose which first person animation to play 
 	if ( pm->ps->ammoclip[BG_FindClipForWeapon(WP_M97)] == 0 ) {
+		
 		anim = WEAP_ALTSWITCHFROM;
 		PM_AddEvent( EV_M97_PUMP );
 		pm->ps->weaponTime += M97_RLT_ALTSWITCHFROM;
@@ -4516,7 +4521,7 @@ void PM_BeginM97Reload( void )
 	PM_StartWeaponAnim(anim);
 
 	// Initialize override
-	pm->ps->m97reloadInterrupt = qfalse;
+	pm->pmext->m97reloadInterrupt = qfalse;
 
 	// Set state to reloading
 	pm->ps->weaponstate = WEAPON_RELOADING;
@@ -4524,20 +4529,22 @@ void PM_BeginM97Reload( void )
 }
 // Jaymod
 void PM_M97Reload() {
-
+	
 	// Transition from shell + pump
 	if( pm->ps->holdable[HI_M97] == M97_RELOADING_BEGIN_PUMP ) {
-
+		
 		// Load a shell
 		PM_ReloadClip( WP_M97 );
 
 		// Branch depending on if we need another shell or not
-		if (!pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] || pm->ps->m97reloadInterrupt) {
+		if (!pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] || pm->pmext->m97reloadInterrupt) {
+			
 			// Break back to ready position
 			PM_StartWeaponAnim(WEAP_DROP2);
 			pm->ps->weaponTime += M97_RLT_DROP2;
 			pm->ps->weaponstate = WEAPON_READY;
 		} else {
+			
 			// Transition to load another shell
 			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
 			pm->ps->weaponTime += M97_RLT_ALTSWITCHTO;
@@ -4545,14 +4552,14 @@ void PM_M97Reload() {
 		}
 		return;
 	}
-
+	
 	// Load a shell on most states
 	if (pm->ps->holdable[HI_M97] != M97_RELOADING_AFTER_PUMP && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN) {
 		PM_ReloadClip( WP_M97 );
 	}
 
 	// Override - but must load at least one shell!
-	if( pm->ps->m97reloadInterrupt && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN ) {
+	if( pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN ) {
 		PM_StartWeaponAnim(WEAP_RELOAD3);
 		pm->ps->weaponTime += M97_RLT_RELOAD3;
 		pm->ps->weaponstate = WEAPON_READY;
@@ -4563,11 +4570,11 @@ void PM_M97Reload() {
 	if( pm->ps->ammoclip[WP_M97] < ammoTable[WP_M97].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] ) {
 		PM_AddEvent( EV_FILL_CLIP );
 		PM_StartWeaponAnim(WEAP_RELOAD2);
-	pm->ps->weaponTime += M97_RLT_RELOAD2;
-	pm->ps->holdable[HI_M97] = M97_RELOADING_LOOP;
-} else {
-	PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
-	pm->ps->weaponTime += M97_RLT_RELOAD3;
-	pm->ps->weaponstate = WEAPON_READY;
-}
+		pm->ps->weaponTime += M97_RLT_RELOAD2;
+		pm->ps->holdable[HI_M97] = M97_RELOADING_LOOP;
+	} else {
+		PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
+		pm->ps->weaponTime += M97_RLT_RELOAD3;
+		pm->ps->weaponstate = WEAPON_READY;
+	}
 }

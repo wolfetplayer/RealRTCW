@@ -245,17 +245,17 @@ cvarTable_t gameCvarTable[] = {
 
      // RealRTCW knightmare 1.42d changes
 
-	{ &sk_plr_dmg_knife, "sk_plr_dmg_knife", "6", 0, 0, qfalse  },
+	{ &sk_plr_dmg_knife, "sk_plr_dmg_knife", "10", 0, 0, qfalse  },
 	{ &sk_plr_dmg_kick, "sk_plr_dmg_kick", "15", 0, 0, qfalse  },
 	{ &sk_plr_dmg_luger, "sk_plr_dmg_luger", "7", 0, 0, qfalse  },
 	{ &sk_plr_dmg_colt, "sk_plr_dmg_colt", "9", 0, 0, qfalse  },  //was 8
 	{ &sk_plr_dmg_mp40, "sk_plr_dmg_mp40", "6", 0, 0, qfalse  },
-	{ &sk_plr_dmg_thompson, "sk_plr_dmg_thompson", "8", 0, 0, qfalse  }, // was 7
+	{ &sk_plr_dmg_thompson, "sk_plr_dmg_thompson", "9", 0, 0, qfalse  }, // was 7
 	{ &sk_plr_dmg_sten, "sk_plr_dmg_sten", "7", 0, 0, qfalse  },
 	{ &sk_plr_dmg_mauser, "sk_plr_dmg_mauser", "35", 0, 0, qfalse  }, // was 30
 	{ &sk_plr_dmg_sniperrifle, "sk_plr_dmg_sniperrifle", "35", 0, 0, qfalse  },
-	{ &sk_plr_dmg_garand, "sk_plr_dmg_garand", "30", 0, 0, qfalse  },
-	{ &sk_plr_dmg_snooperscope, "sk_plr_dmg_snooperscope", "30", 0, 0, qfalse  },
+	{ &sk_plr_dmg_garand, "sk_plr_dmg_garand", "40", 0, 0, qfalse  },
+	{ &sk_plr_dmg_snooperscope, "sk_plr_dmg_snooperscope", "40", 0, 0, qfalse  },
 	{ &sk_plr_dmg_fg42, "sk_plr_dmg_fg42", "8", 0, 0, qfalse  },  // was 10
 	{ &sk_plr_dmg_fg42scope, "sk_plr_dmg_fg42scope", "10", 0, 0, qfalse  }, // was 15
 	{ &sk_plr_dmg_panzerfaust, "sk_plr_dmg_panzerfaust", "250", 0, 0, qfalse  }, // was 200
@@ -278,33 +278,33 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_mosin, "sk_plr_dmg_mosin", "35", 0, 0, qfalse  },
 	{ &sk_plr_dmg_g43, "sk_plr_dmg_g43", "16", 0, 0, qfalse  },
 	{ &sk_plr_dmg_m1garand, "sk_plr_dmg_m1garand", "18", 0, 0, qfalse  },	
-	{ &sk_plr_dmg_bar, "sk_plr_dmg_bar", "13", 0, 0, qfalse  },
+	{ &sk_plr_dmg_bar, "sk_plr_dmg_bar", "15", 0, 0, qfalse  }, // was 13
 	{ &sk_plr_dmg_mp44, "sk_plr_dmg_mp44", "9", 0, 0, qfalse  },
 	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "10", 0, 0, qfalse  }, // was 9
 	{ &sk_plr_dmg_m97, "sk_plr_dmg_m97", "9", 0, 0, qfalse  },
 	{ &sk_plr_dmg_p38, "sk_plr_dmg_p38", "7", 0, 0, qfalse  },
 	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "16", 0, 0, qfalse  },
-	{ &sk_plr_dmg_m1garandsniper, "sk_plr_dmg_m1garandsniper", "18", 0, 0, qfalse  },
+	{ &sk_plr_dmg_m1garandsniper, "sk_plr_dmg_m1garandsniper", "20", 0, 0, qfalse  },
 	//AI	
 	{ &sk_ai_dmg_mp34, "sk_ai_dmg_mp34", "6", 0, 0, qfalse  },
 	{ &sk_ai_dmg_tt33, "sk_ai_dmg_tt33", "8", 0, 0, qfalse  },
 	{ &sk_ai_dmg_ppsh, "sk_ai_dmg_ppsh", "6", 0, 0, qfalse  },
 	{ &sk_ai_dmg_mosin, "sk_ai_dmg_mosin", "35", 0, 0, qfalse  },
-	{ &sk_ai_dmg_g43, "sk_ai_dmg_g43", "15", 0, 0, qfalse  },  // was 16
-	{ &sk_ai_dmg_m1garand, "sk_ai_dmg_m1garand", "15", 0, 0, qfalse  }, // was 18
+	{ &sk_ai_dmg_g43, "sk_ai_dmg_g43", "10", 0, 0, qfalse  },  // was 16
+	{ &sk_ai_dmg_m1garand, "sk_ai_dmg_m1garand", "10", 0, 0, qfalse  }, // was 18
 	{ &sk_ai_dmg_bar, "sk_ai_dmg_bar", "12", 0, 0, qfalse  }, // was 13
 	{ &sk_ai_dmg_mp44, "sk_ai_dmg_mp44", "8", 0, 0, qfalse  }, // was 9
 	{ &sk_ai_dmg_mg42m, "sk_ai_dmg_mg42m", "10", 0, 0, qfalse  }, // was 9
-	{ &sk_ai_dmg_m97, "sk_ai_dmg_m97", "9", 0, 0, qfalse  },
+	{ &sk_ai_dmg_m97, "sk_ai_dmg_m97", "6", 0, 0, qfalse  }, // was 9
 	{ &sk_ai_dmg_p38, "sk_ai_dmg_p38", "7", 0, 0, qfalse  },
-	{ &sk_ai_dmg_revolver, "sk_ai_dmg_revolver", "15", 0, 0, qfalse  },	// was 16
+	{ &sk_ai_dmg_revolver, "sk_ai_dmg_revolver", "10", 0, 0, qfalse  },	// was 16
 	{ &sk_ai_dmg_m1garandsniper, "sk_ai_dmg_m1garandsniper", "20", 0, 0, qfalse  },  // was 18
 	// End new weapons								
 
 
 	{ &sk_ai_dmg_knife, "sk_ai_dmg_knife", "6", 0, 0, qfalse  },
 	{ &sk_ai_dmg_luger, "sk_ai_dmg_luger", "7", 0, 0, qfalse  },
-	{ &sk_ai_dmg_colt, "sk_ai_dmg_colt", "9", 0, 0, qfalse  }, // was 8
+	{ &sk_ai_dmg_colt, "sk_ai_dmg_colt", "8", 0, 0, qfalse  }, 
 	{ &sk_ai_dmg_mp40, "sk_ai_dmg_mp40", "6", 0, 0, qfalse  },
 	{ &sk_ai_dmg_thompson, "sk_ai_dmg_thompson", "7", 0, 0, qfalse  },
 	{ &sk_ai_dmg_sten, "sk_ai_dmg_sten", "6", 0, 0, qfalse  }, // was 7
@@ -317,8 +317,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_ai_dmg_panzerfaust, "sk_ai_dmg_panzerfaust", "200", 0, 0, qfalse  },
 	{ &sk_ai_dmg_panzerfaust_splash, "sk_ai_dmg_panzerfaust_splash", "250", 0, 0, qfalse  }, // was 200
 	{ &sk_ai_dmg_venom, "sk_ai_dmg_venom", "15", 0, 0, qfalse  },  // was 13
-	{ &sk_ai_dmg_flamethrower, "sk_ai_dmg_flamethrower", "1", 0, 0, qfalse  },
-	{ &sk_ai_dmg_tesla, "sk_ai_dmg_tesla", "4", 0, 0, qfalse  },
+	{ &sk_ai_dmg_flamethrower, "sk_ai_dmg_flamethrower", "5", 0, 0, qfalse  },
+	{ &sk_ai_dmg_tesla, "sk_ai_dmg_tesla", "5", 0, 0, qfalse  },
 	{ &sk_ai_dmg_grenade, "sk_ai_dmg_grenade", "170", 0, 0, qfalse  },
 	{ &sk_ai_dmg_grenade_radius, "sk_ai_dmg_grenade_radius", "310", 0, 0, qfalse  },
 	{ &sk_ai_dmg_pineapple, "sk_ai_dmg_pineapple", "220", 0, 0, qfalse  },

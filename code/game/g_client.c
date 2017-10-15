@@ -1508,7 +1508,7 @@ void SetupWeaponsForSkill_EASY() // Easy
 	// mp44
 	ammoTable[WP_MP44].maxammo = 200;
 	// m97
-	ammoTable[WP_M97].maxammo = 50;
+	ammoTable[WP_M97].maxammo = 48;
 	// revolver
 	ammoTable[WP_REVOLVER].maxammo = 60;
 	// throwables
@@ -1563,7 +1563,7 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	// mp44
 	ammoTable[WP_MP44].maxammo = 180;
 	// m97
-	ammoTable[WP_M97].maxammo = 40;
+	ammoTable[WP_M97].maxammo = 36;
 	// revolver
 	ammoTable[WP_REVOLVER].maxammo = 42;
 	// throwables
@@ -1672,7 +1672,7 @@ void SetupWeaponsForSkill_MAX() // Max
 	// mp44
 	ammoTable[WP_MP44].maxammo = 120;
 	// m97
-	ammoTable[WP_M97].maxammo = 20;
+	ammoTable[WP_M97].maxammo = 24;
 	// revolver
 	ammoTable[WP_REVOLVER].maxammo = 24;
 	// throwables

@@ -601,7 +601,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_M97: return sk_plr_dmg_m97.integer;
 			case WP_P38: return sk_plr_dmg_p38.integer;
 			case WP_REVOLVER: return sk_plr_dmg_revolver.integer;
-			case WP_M1GARANDSNIPER: return sk_plr_dmg_m1garandsniper.integer;				
+			case WP_M1GARANDSNIPER: return sk_plr_dmg_m1garandsniper.integer;		
             // end RealRTCW
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
@@ -709,11 +709,11 @@ float G_GetWeaponSpread( int weapon ) {
 			// RealRTCW weapons
 			case WP_MP34:       return 1100;
 			case WP_TT33:       return 750;
-			case WP_PPSH:       return 1200;
+			case WP_PPSH:       return 1300; // was 1200
 			case WP_MOSIN:      return 400;
 			case WP_G43:        return 400; // was 550
 			case WP_M1GARAND:   return 400; // was 450
-		    case WP_BAR:        return 800;
+			case WP_BAR:        return 800;
 		    case WP_MP44:       return 900;  
 			case WP_MG42M:      return 1700;
 			case WP_M97:        return 4800;
@@ -722,7 +722,7 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_M1GARANDSNIPER:   return 350; 
 
 			case WP_FG42SCOPE:  return 250;
-			case WP_FG42:       return 700;
+			case WP_FG42:       return 850; // was 700
 			case WP_THOMPSON:   return 1100;
 			case WP_STEN:       return 1200;
 			case WP_MAUSER:     return 400;
@@ -822,7 +822,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 #define M1GARANDSNIPER_SPREAD   G_GetWeaponSpread( WP_M1GARANDSNIPER )
 #define M1GARANDSNIPER_DAMAGE(e)   G_GetWeaponDamage( WP_M1GARANDSNIPER, e ) // JPW
-
 
 #define THOMPSON_SPREAD G_GetWeaponSpread( WP_THOMPSON )
 #define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) // JPW

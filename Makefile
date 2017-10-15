@@ -123,14 +123,14 @@ endif
 export CROSS_COMPILING
 
 ifndef VERSION
-VERSION=3.0
+VERSION=1.51-SP
 endif
 
 ifndef CLIENTBIN
  ifdef MINGW
-    CLIENTBIN=RealRTCW
+    CLIENTBIN=ioWolfSP
   else
-    CLIENTBIN=RealRTCW
+    CLIENTBIN=iowolfsp
   endif
 endif
 

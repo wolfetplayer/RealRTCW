@@ -1359,7 +1359,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/g43/g43_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/g43/g43_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/g43/g43_reload.wav" );
-		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 	
 	case WP_M1GARAND:
@@ -1381,7 +1380,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 
 	case WP_BAR:
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
-		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/bar/bar_fire.wav" ); 
+		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/bar/bar_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/bar/bar_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/bar/bar_reload.wav" );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
@@ -1439,6 +1438,8 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/fg42/fg42_reload.wav" );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
+//----(SA)	end
+
 
 	case WP_PANZERFAUST:
 		weaponInfo->ejectBrassFunc      = CG_PanzerFaustEjectBrass;

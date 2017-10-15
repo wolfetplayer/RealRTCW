@@ -518,7 +518,7 @@ static void CG_ItemPickup( int itemNum ) {
 			//	5 - "New and Better"
 
 			// don't ever autoswitch to secondary fire weapons
-			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE && weapon != WP_M1GARANDSNIPER  ) {  //----(SA)	modified
+			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE && weapon != WP_M1GARANDSNIPER ) {  //----(SA)	modified
 
 				// no weap currently selected, always just select the new one
 				if ( !cg.weaponSelect ) {

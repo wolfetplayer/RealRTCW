@@ -541,15 +541,15 @@ typedef enum {
 
 	WP_KNIFE,               // 1
 	// German weapons
-	WP_LUGER,               
-	WP_MP40,                
-	WP_MAUSER,              
-	WP_FG42,                
-	WP_GRENADE_LAUNCHER,    
-	WP_PANZERFAUST,         
-	WP_VENOM,               
-	WP_FLAMETHROWER,        
-	WP_TESLA,               
+	WP_LUGER,               // 2
+	WP_MP40,                // 3
+	WP_MAUSER,              // 4
+	WP_FG42,                // 5
+	WP_GRENADE_LAUNCHER,    // 6
+	WP_PANZERFAUST,         // 7
+	WP_VENOM,               // 8
+	WP_FLAMETHROWER,        // 9
+	WP_TESLA,               // 10
 	// RealRTCW weapons
 	WP_MP34,
 	WP_TT33,
@@ -564,19 +564,32 @@ typedef enum {
 	WP_P38,
 	WP_REVOLVER,
 	WP_M1GARANDSNIPER,
-	// end RealRTCW weapons
-	WP_COLT,                	
-	WP_THOMPSON,            	
-	WP_GARAND,              	
-	WP_GRENADE_PINEAPPLE,   
+	
+//	WP_SPEARGUN,			// 11
+
+// weapon keys only go 1-0, so put the alternates above that (since selection will be a double click on the german weapon key)
+
+	// American equivalents
+//	WP_KNIFE2,				// 12
+	WP_COLT,                // 11	equivalent american weapon to german luger
+	WP_THOMPSON,            // 12	equivalent american weapon to german mp40
+	WP_GARAND,              // 13	equivalent american weapon to german mauser
+//	WP_BAR,					// 16	equivalent american weapon to german fg42
+	WP_GRENADE_PINEAPPLE,   // 14
+//	WP_ROCKET_LAUNCHER,		// 18	equivalent american weapon to german panzerfaust
 
 	// secondary fire weapons
 	WP_SNIPERRIFLE,         // 15
 	WP_SNOOPERSCOPE,        // 16
+//	WP_VENOM_FULL,			// 21
+//	WP_SPEARGUN_CO2,		// 22
 	WP_FG42SCOPE,           // 17	fg42 alt fire
-	WP_STEN,                // 18	
-	WP_SILENCER,            // 19	
-	WP_AKIMBO,              // 20	
+//	WP_BAR2,				// 24
+
+	// more weapons
+	WP_STEN,                // 18	silenced sten sub-machinegun
+	WP_SILENCER,            // 19	// used to be sp5
+	WP_AKIMBO,              // 20	//----(SA)	added
 
 	// specialized/one-time weapons
 // JPW NERVE -- swapped mortar & antitank (unused?) and added class_special

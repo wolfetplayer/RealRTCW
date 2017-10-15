@@ -55,16 +55,16 @@ If you have questions concerning this license or the applicable additional terms
   #define CINEMATICS_INTRO		"foointro.roq"
 //  #define LEGACY_PROTOCOL	// You probably don't need this for your standalone game
 #else
-  #define PRODUCT_NAME			"RealRTCW"  // iortcw
+  #define PRODUCT_NAME			"iortcw"
   #define BASEGAME			"main"
   #define CLIENT_WINDOW_TITLE     	"Return To Castle Wolfenstein"
-  #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" //iowolfsp
+  #define CLIENT_WINDOW_MIN_TITLE 	"iowolfsp"
 #ifdef USE_XDG
   #define HOMEPATH_NAME_UNIX		"iortcw"
 #else
   #define HOMEPATH_NAME_UNIX		".wolf"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW"
+  #define HOMEPATH_NAME_WIN		"RTCW"
   #define STEAMPATH_NAME		"Return To Castle Wolfenstein"
   #define STEAMPATH_APPID		"9010"
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
@@ -84,7 +84,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "3.0" // iortcw 1.51
+  #define PRODUCT_VERSION "1.51"
 #endif
 
 #ifndef PRODUCT_DATE

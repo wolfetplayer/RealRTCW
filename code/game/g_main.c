@@ -283,7 +283,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "10", 0, 0, qfalse  }, // was 9
 	{ &sk_plr_dmg_m97, "sk_plr_dmg_m97", "9", 0, 0, qfalse  },
 	{ &sk_plr_dmg_p38, "sk_plr_dmg_p38", "7", 0, 0, qfalse  },
-	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "16", 0, 0, qfalse  },
+	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "18", 0, 0, qfalse  },
 	{ &sk_plr_dmg_m1garandsniper, "sk_plr_dmg_m1garandsniper", "20", 0, 0, qfalse  },
 	//AI	
 	{ &sk_ai_dmg_mp34, "sk_ai_dmg_mp34", "6", 0, 0, qfalse  },

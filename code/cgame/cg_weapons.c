@@ -1411,6 +1411,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->lastShotSound[0] = trap_S_RegisterSound("sound/weapons/m97/m97_fire_last.wav");
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/m97/m97_far.wav");
 		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/m97/m97_reload.wav");
+		weaponInfo->reloadFastSound = trap_S_RegisterSound("sound/weapons/m97/m97_pump_reload.wav");
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 

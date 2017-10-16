@@ -2026,7 +2026,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_M97_PUMP:
 		DEBUGNAME("EV_M97_PUMP");
 		// Jaymod
-		trap_S_StartSound (NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
+		trap_S_StartSound (NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFastSound );
 		break;
 
 

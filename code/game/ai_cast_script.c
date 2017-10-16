@@ -362,7 +362,20 @@ void AICast_ScriptLoad( void ) {
 	} else {
 		trap_Cvar_Register( &mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM );
 	}
-	Q_strncpyz( filename, "maps/", sizeof( filename ) );
+	//Q_strncpyz( filename, "maps/", sizeof( filename ) );
+	// RealRTCW new difficulty system
+	if ( g_gameskill.integer == GSKILL_EASY ) {
+	Q_strncpyz( filename, "maps/easy/", sizeof( filename ) );
+    }
+    else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
+	Q_strncpyz( filename, "maps/medium/", sizeof( filename ) );
+	}
+	else if ( g_gameskill.integer == GSKILL_HARD ) {
+	Q_strncpyz( filename, "maps/hard/", sizeof( filename ) );
+	}
+	else if ( g_gameskill.integer == GSKILL_MAX ) {
+	Q_strncpyz( filename, "maps/max/", sizeof( filename ) );
+	}
 	Q_strcat( filename, sizeof( filename ), mapname.string );
 	Q_strcat( filename, sizeof( filename ), ".ai" );
 

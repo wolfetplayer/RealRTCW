@@ -60,7 +60,7 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_MOSINA 50
 #define MAX_AMMO_BARAMMO    150  
 #define MAX_AMMO_44AMMO     120
-#define MAX_AMMO_M97        20
+#define MAX_AMMO_M97        24
 #define MAX_AMMO_REVOLVER   24
 
 
@@ -120,7 +120,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  //
 	{   MAX_AMMO_9MM,     1,    8,      1500,   DELAY_PISTOL,   330,    0,      0,      MOD_P38                 },  //	WP_P38                 //
 	{   MAX_AMMO_REVOLVER,1,    6,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER            },  //	WP_REVOLVER             //
-	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      700,    0,      0,      MOD_M1GARANDSNIPER      },  //	WP_M1GARANDSNIPER	    //
+	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      500,    0,      0,      MOD_M1GARANDSNIPER      },  //	WP_M1GARANDSNIPER	    //
 
 
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   350,    0,      0,      MOD_COLT                },  //	WP_COLT					// 13

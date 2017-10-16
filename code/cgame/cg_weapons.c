@@ -3899,8 +3899,7 @@ CG_PlaySwitchSound
 void CG_PlaySwitchSound( int lastweap, int newweap ) {
 //	weaponInfo_t	*weap;
 //	weap = &cg_weapons[ ent->weapon ];
-	sfxHandle_t switchsound;
-
+	sfxHandle_t switchsound;	
 	switchsound = cgs.media.selectSound;
 
 	if ( getAltWeapon( lastweap ) == newweap ) { // alt switch

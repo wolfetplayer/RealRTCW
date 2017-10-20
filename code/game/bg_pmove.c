@@ -442,7 +442,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
 			scale *= 0.90; 
 		}
-		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_TT33 ) || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
+		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_TT33 ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
 			scale *= 0.95; 
 		}
 	}
@@ -2011,9 +2011,6 @@ static void PM_BeginWeaponReload( int weapon ) {
 	    if((weapon == WP_M1GARAND) && pm->ps->ammoclip[WP_M1GARAND] != 0) {
 			return;	
 		}
-			    if((weapon == WP_M1GARANDSNIPER) && pm->ps->ammoclip[WP_M1GARANDSNIPER] != 0) {
-			return;	
-		}
 
 	// no reload when you've got a chair in your hands
 	if ( pm->ps->eFlags & EF_MELEE_ACTIVE ) {
@@ -2214,7 +2211,6 @@ static void PM_FinishWeaponChange( void ) {
 		// However, need to set the animspreadscale so they are initally at worst accuracy
 	case WP_SNOOPERSCOPE:
 	case WP_SNIPERRIFLE:
-	case WP_M1GARANDSNIPER:
 	case WP_FG42SCOPE:
 		pm->ps->aimSpreadScale = 255;               // initially at lowest accuracy
 		pm->ps->aimSpreadScaleFloat = 255.0f;       // initially at lowest accuracy
@@ -2366,7 +2362,6 @@ void PM_CheckForReload( int weapon ) {
 		switch ( weapon ) {
 		case WP_SNOOPERSCOPE:
 		case WP_SNIPERRIFLE:
-		case WP_M1GARANDSNIPER:
 		case WP_FG42SCOPE:
 			if ( reloadRequested ) {
 				doReload = qtrue;
@@ -2659,9 +2654,6 @@ void PM_AdjustAimSpreadScale( void ) {
 	case WP_TT33:
 	    wpnScale = 0.3f;
 		break;
-	case WP_P38:
-	    wpnScale = 0.3f;
-		break;
 	case WP_REVOLVER:
 	    wpnScale = 0.4f;
 		break;
@@ -2688,9 +2680,6 @@ void PM_AdjustAimSpreadScale( void ) {
 		break;
 	case WP_M97:  
 		wpnScale = 0.6f; // was 0.4f now jaymod values
-		break;
-	case WP_M1GARANDSNIPER:    
-		wpnScale = 0.9f;
 		break;
 	}
 
@@ -3233,7 +3222,6 @@ static void PM_Weapon( void ) {
 	case WP_SILENCER:
 	case WP_LUGER:
 	case WP_TT33:
-	case WP_P38:
 	case WP_REVOLVER:
 	case WP_COLT:
 	case WP_AKIMBO:         
@@ -3243,7 +3231,6 @@ static void PM_Weapon( void ) {
 	case WP_MOSIN:
 	case WP_G43:
 	case WP_M1GARAND:
-	case WP_M1GARANDSNIPER:
 	case WP_GARAND:
 		if ( !weaponstateFiring ) {
 			// NERVE's panzerfaust spinup
@@ -3330,7 +3317,6 @@ static void PM_Weapon( void ) {
 			case WP_SNOOPERSCOPE:
 			case WP_SNIPERRIFLE:
 			case WP_FG42SCOPE:
-			case WP_M1GARANDSNIPER:
 				reloadingW = qfalse;
 				break;
 			}
@@ -3494,7 +3480,6 @@ static void PM_Weapon( void ) {
 		aimSpreadScaleAdd = 50;
 		break;
 	case WP_SNIPERRIFLE:
-	case WP_M1GARANDSNIPER:
 		// (SA) not so much added per shot.  these weapons mostly uses player movement to get out of whack
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 // JPW NERVE crippling the rifle a bit in multiplayer; it's way too strong so make it go completely out every time you fire
@@ -3555,10 +3540,6 @@ static void PM_Weapon( void ) {
 		break;
     
 	case WP_TT33:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 20;
-		break;
-	case WP_P38:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 20;
 		break;
@@ -4200,7 +4181,7 @@ void PmoveSingle( pmove_t *pmove ) {
 
 	if ( pm->cmd.wbuttons & WBUTTON_ZOOM ) {
 		if ( pm->ps->stats[STAT_KEYS] & ( 1 << INV_BINOCS ) ) {        // (SA) binoculars are an inventory item (inventory==keys)
-			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE && pm->ps->weapon != WP_M1GARANDSNIPER ) {   // don't allow binocs if using scope
+			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE ) {   // don't allow binocs if using scope
 				if ( !( pm->ps->eFlags & EF_MG42_ACTIVE ) ) {    // or if mounted on a weapon
 					pm->ps->eFlags |= EF_ZOOMING;
 				}

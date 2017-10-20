@@ -180,10 +180,8 @@ vmCvar_t		sk_plr_dmg_g43;
 vmCvar_t		sk_plr_dmg_m1garand;
 vmCvar_t		sk_plr_dmg_bar;
 vmCvar_t		sk_plr_dmg_mp44;
-vmCvar_t		sk_plr_dmg_p38;
 vmCvar_t		sk_plr_dmg_m97;
 vmCvar_t		sk_plr_dmg_revolver;
-vmCvar_t		sk_plr_dmg_m1garandsniper;
 vmCvar_t		sk_plr_dmg_mg42m;
 
 vmCvar_t		sk_ai_dmg_knife;
@@ -220,10 +218,8 @@ vmCvar_t		sk_ai_dmg_g43;
 vmCvar_t		sk_ai_dmg_m1garand;
 vmCvar_t		sk_ai_dmg_bar;
 vmCvar_t		sk_ai_dmg_mp44;
-vmCvar_t		sk_ai_dmg_p38;
 vmCvar_t		sk_ai_dmg_m97;
 vmCvar_t		sk_ai_dmg_revolver;
-vmCvar_t		sk_ai_dmg_m1garandsniper;
 vmCvar_t		sk_ai_dmg_mg42m;
 
 
@@ -282,9 +278,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_mp44, "sk_plr_dmg_mp44", "9", 0, 0, qfalse  },
 	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "10", 0, 0, qfalse  }, // was 9
 	{ &sk_plr_dmg_m97, "sk_plr_dmg_m97", "9", 0, 0, qfalse  },
-	{ &sk_plr_dmg_p38, "sk_plr_dmg_p38", "7", 0, 0, qfalse  },
 	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "18", 0, 0, qfalse  },
-	{ &sk_plr_dmg_m1garandsniper, "sk_plr_dmg_m1garandsniper", "20", 0, 0, qfalse  },
 	//AI	
 	{ &sk_ai_dmg_mp34, "sk_ai_dmg_mp34", "6", 0, 0, qfalse  },
 	{ &sk_ai_dmg_tt33, "sk_ai_dmg_tt33", "8", 0, 0, qfalse  },
@@ -296,9 +290,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_ai_dmg_mp44, "sk_ai_dmg_mp44", "8", 0, 0, qfalse  }, // was 9
 	{ &sk_ai_dmg_mg42m, "sk_ai_dmg_mg42m", "10", 0, 0, qfalse  }, // was 9
 	{ &sk_ai_dmg_m97, "sk_ai_dmg_m97", "6", 0, 0, qfalse  }, // was 9
-	{ &sk_ai_dmg_p38, "sk_ai_dmg_p38", "7", 0, 0, qfalse  },
 	{ &sk_ai_dmg_revolver, "sk_ai_dmg_revolver", "10", 0, 0, qfalse  },	// was 16
-	{ &sk_ai_dmg_m1garandsniper, "sk_ai_dmg_m1garandsniper", "20", 0, 0, qfalse  },  // was 18
 	// End new weapons								
 
 
@@ -821,8 +813,8 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 				else {
 					if ( ent->s.weapon != WP_SNIPERRIFLE &&
 						 ent->s.weapon != WP_SNOOPERSCOPE &&
-						 ent->s.weapon != WP_FG42SCOPE &&
-						 ent->s.weapon != WP_M1GARANDSNIPER) {
+						 ent->s.weapon != WP_FG42SCOPE ) 
+						{
 						if ( traceEnt->takedamage ) {
 							hintDist = CH_ACTIVATE_DIST;
 							hintType = HINT_MG42;

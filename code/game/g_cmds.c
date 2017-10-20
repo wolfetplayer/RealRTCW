@@ -1528,7 +1528,6 @@ void Cmd_Activate_f( gentity_t *ent ) {
 					case WP_SNIPERRIFLE:
 					case WP_SNOOPERSCOPE:
 					case WP_FG42SCOPE:
-					case WP_M1GARANDSNIPER:
 						return;
 
 					default:

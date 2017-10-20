@@ -1060,7 +1060,6 @@ void AIChar_Death( gentity_t *ent, gentity_t *attacker, int damage, int mod ) { 
 			switch ( mod ) {               //----(SA)	modified to add 'quiet' deaths
 			case MOD_KNIFE_STEALTH:
 			case MOD_SNIPERRIFLE:
-			case MOD_M1GARANDSNIPER:
 			case MOD_SNOOPERSCOPE:
 				G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT] ) );
 				break;

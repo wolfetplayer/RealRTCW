@@ -393,10 +393,7 @@ static void CG_TouchItem( centity_t *cent ) {
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_FG42SCOPE );
 		} else if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_MAUSER );
-		} else if ( weapon == WP_M1GARANDSNIPER ) {
-			COM_BitSet( cg.predictedPlayerState.weapons, WP_M1GARAND );
-		} 
-//----(SA)	end
+		}
 
 		if ( !cg.predictedPlayerState.ammo[ BG_FindAmmoForWeapon( weapon )] ) {
 			cg.predictedPlayerState.ammo[ BG_FindAmmoForWeapon( weapon )] = 1;

@@ -540,7 +540,6 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
-	case WP_M1GARANDSNIPER:
 		return 8000;
 		break;
 
@@ -1576,7 +1575,6 @@ qboolean AICast_CanMoveWhileFiringWeapon( int weaponnum ) {
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:    //----(SA)	added
-	case WP_M1GARANDSNIPER:
 	case WP_SNOOPERSCOPE:   //----(SA)	added
 //	case WP_FG42SCOPE:		//----(SA)	added
 	case WP_PANZERFAUST:
@@ -1845,7 +1843,6 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_COLT:
 	case    WP_AKIMBO:
 	case    WP_TT33:
-	case    WP_P38:
 		return 700;
 
 	case    WP_MONSTER_ATTACK1:
@@ -1874,7 +1871,6 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_MOSIN:
 	case    WP_G43:
 	case    WP_M1GARAND:
-	case    WP_M1GARANDSNIPER:
 		return 2000;
 
 	case    WP_DYNAMITE:

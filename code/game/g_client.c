@@ -1480,7 +1480,6 @@ void SetupWeaponsForSkill_EASY() // Easy
 {
 	// 9mm
 	ammoTable[WP_LUGER].maxammo = 400;
-	ammoTable[WP_P38].maxammo = 400;
 	ammoTable[WP_MP40].maxammo = 400;
 	ammoTable[WP_MP34].maxammo = 400;
 	ammoTable[WP_STEN].maxammo = 400;
@@ -1499,7 +1498,6 @@ void SetupWeaponsForSkill_EASY() // Easy
 	// barammo
 	ammoTable[WP_BAR].maxammo = 300;
 	ammoTable[WP_M1GARAND].maxammo = 300;
-	ammoTable[WP_M1GARANDSNIPER].maxammo = 300;
 	// ppsh,tt33
 	ammoTable[WP_TT33].maxammo = 400;
 	ammoTable[WP_PPSH].maxammo = 400;
@@ -1535,7 +1533,6 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 {
 	// 9mm
 	ammoTable[WP_LUGER].maxammo = 300;
-	ammoTable[WP_P38].maxammo = 300;
 	ammoTable[WP_MP40].maxammo = 300;
 	ammoTable[WP_MP34].maxammo = 300;
 	ammoTable[WP_STEN].maxammo = 300;
@@ -1554,7 +1551,6 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	// barammo
 	ammoTable[WP_BAR].maxammo = 200;
 	ammoTable[WP_M1GARAND].maxammo = 200;
-	ammoTable[WP_M1GARANDSNIPER].maxammo = 200;
 	// ppsh,tt33
 	ammoTable[WP_TT33].maxammo = 300;
 	ammoTable[WP_PPSH].maxammo = 300;
@@ -1589,7 +1585,6 @@ void SetupWeaponsForSkill_HARD() // Hard
 {
 	// 9mm
 	ammoTable[WP_LUGER].maxammo = 200;
-	ammoTable[WP_P38].maxammo = 200;
 	ammoTable[WP_MP40].maxammo = 200;
 	ammoTable[WP_MP34].maxammo = 200;
 	ammoTable[WP_STEN].maxammo = 200;
@@ -1608,7 +1603,6 @@ void SetupWeaponsForSkill_HARD() // Hard
 	// barammo
 	ammoTable[WP_BAR].maxammo = 180;
 	ammoTable[WP_M1GARAND].maxammo = 180;
-	ammoTable[WP_M1GARANDSNIPER].maxammo = 180;
 	// ppsh,tt33
 	ammoTable[WP_TT33].maxammo = 250;
 	ammoTable[WP_PPSH].maxammo = 250;
@@ -1644,7 +1638,6 @@ void SetupWeaponsForSkill_MAX() // Max
 {
 	// 9mm
 	ammoTable[WP_LUGER].maxammo = 180;
-	ammoTable[WP_P38].maxammo = 180;
 	ammoTable[WP_MP40].maxammo = 180;
 	ammoTable[WP_MP34].maxammo = 180;
 	ammoTable[WP_STEN].maxammo = 180;
@@ -1663,7 +1656,6 @@ void SetupWeaponsForSkill_MAX() // Max
 	// barammo
 	ammoTable[WP_BAR].maxammo = 150;
 	ammoTable[WP_M1GARAND].maxammo = 150;
-	ammoTable[WP_M1GARANDSNIPER].maxammo = 150;
 	// ppsh,tt33
 	ammoTable[WP_TT33].maxammo = 200;
 	ammoTable[WP_PPSH].maxammo = 200;

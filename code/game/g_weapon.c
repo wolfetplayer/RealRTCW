@@ -599,9 +599,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_BAR: return sk_plr_dmg_bar.integer;
 			case WP_MG42M: return sk_plr_dmg_mg42m.integer;
 			case WP_M97: return sk_plr_dmg_m97.integer;
-			case WP_P38: return sk_plr_dmg_p38.integer;
-			case WP_REVOLVER: return sk_plr_dmg_revolver.integer;
-			case WP_M1GARANDSNIPER: return sk_plr_dmg_m1garandsniper.integer;		
+			case WP_REVOLVER: return sk_plr_dmg_revolver.integer;	
             // end RealRTCW
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
@@ -644,9 +642,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_BAR: return sk_ai_dmg_bar.integer;
 			case WP_MG42M: return sk_ai_dmg_mg42m.integer;
 			case WP_M97: return sk_ai_dmg_m97.integer;
-			case WP_P38: return sk_ai_dmg_p38.integer;
 			case WP_REVOLVER: return sk_ai_dmg_revolver.integer;
-			case WP_M1GARANDSNIPER: return sk_ai_dmg_m1garandsniper.integer;
 			// end RealRTCW			
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
@@ -717,9 +713,7 @@ float G_GetWeaponSpread( int weapon ) {
 		    case WP_MP44:       return 900;  
 			case WP_MG42M:      return 1700;
 			case WP_M97:        return 4800;
-			case WP_P38:        return 600;
-			case WP_REVOLVER:   return 650;
-			case WP_M1GARANDSNIPER:   return 350; 
+			case WP_REVOLVER:   return 650; 
 
 			case WP_FG42SCOPE:  return 250;
 			case WP_FG42:       return 850; // was 700
@@ -789,9 +783,6 @@ float G_GetWeaponSpread( int weapon ) {
 #define TT33_SPREAD		G_GetWeaponSpread( WP_TT33 )
 #define TT33_DAMAGE(e)		G_GetWeaponDamage( WP_TT33, e )
 
-#define P38_SPREAD		G_GetWeaponSpread( WP_P38 )
-#define P38_DAMAGE(e)		G_GetWeaponDamage( WP_P38, e )
-
 #define REVOLVER_SPREAD		G_GetWeaponSpread( WP_REVOLVER )
 #define REVOLVER_DAMAGE(e)		G_GetWeaponDamage( WP_REVOLVER, e )
 
@@ -819,9 +810,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 #define M97_SPREAD     G_GetWeaponSpread( WP_M97 )
 #define M97_DAMAGE(e)     G_GetWeaponDamage( WP_M97, e ) 
-
-#define M1GARANDSNIPER_SPREAD   G_GetWeaponSpread( WP_M1GARANDSNIPER )
-#define M1GARANDSNIPER_DAMAGE(e)   G_GetWeaponDamage( WP_M1GARANDSNIPER, e ) // JPW
 
 #define THOMPSON_SPREAD G_GetWeaponSpread( WP_THOMPSON )
 #define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) // JPW
@@ -989,7 +977,7 @@ void Bullet_Endpos( gentity_t *ent, float spread, vec3_t *end ) {
 		r += crandom() * accuracy;
 		u += crandom() * ( accuracy * 1.25 );
 	} else {
-		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE || ent->s.weapon == WP_M1GARANDSNIPER ) {
+		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE ) {
 //		if(ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE) {
 			// aim dir already accounted for sway of scoped weapons in CalcMuzzlePoints()
 			dist *= 2;
@@ -1754,7 +1742,7 @@ void CalcMuzzlePoints( gentity_t *ent, int weapon ) {
 	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {   // non ai's take into account scoped weapon 'sway' (just another way aimspread is visualized/utilized)
 		float spreadfrac, phase;
 
-		if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE || weapon == WP_M1GARANDSNIPER ) {
+		if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE ) {
 			spreadfrac = ent->client->currentAimSpreadScale;
 
 			// rotate 'forward' vector by the sway
@@ -1885,20 +1873,7 @@ void FireWeapon( gentity_t *ent ) {
 		}
 // jpw
 		break;
-		case WP_M1GARANDSNIPER:
-		Bullet_Fire( ent, M1GARANDSNIPER_SPREAD * aimSpreadScale, M1GARANDSNIPER_DAMAGE(isPlayer) );
-// JPW NERVE -- added muzzle flip in multiplayer
-		if ( !ent->aiCharacter ) {
-//		if (g_gametype.integer != GT_SINGLE_PLAYER) {
-			VectorCopy( ent->client->ps.viewangles,viewang );
-//			viewang[PITCH] -= 6; // handled in clientthink instead
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
-			ent->client->sniperRifleMuzzlePitch = 0.8f;
-			ent->client->sniperRifleFiredTime = level.time;
-			SetClientViewAngle( ent,viewang );
-		}
-// jpw
-		break;
+		
 	case WP_SNOOPERSCOPE:
 		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer) );
 // JPW NERVE -- added muzzle flip in multiplayer
@@ -1948,9 +1923,6 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_TT33:
 		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer) );
-		break;
-	case WP_P38:
-		Bullet_Fire( ent, P38_SPREAD * aimSpreadScale, P38_DAMAGE(isPlayer) );
 		break;
 	case WP_REVOLVER:
 		Bullet_Fire( ent, REVOLVER_SPREAD * aimSpreadScale, REVOLVER_DAMAGE(isPlayer) );

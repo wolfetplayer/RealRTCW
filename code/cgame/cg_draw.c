@@ -2126,76 +2126,7 @@ static void CG_DrawWeapReticle( void ) {
 		CG_FillRect( 319, 300, 2, 178, color );  // center bot
 		CG_FillRect( 380, 239, 177, 2, color );  // right
 
-	} 
-	
-	else if ( weap == WP_M1GARANDSNIPER ) {
-		// sides
-		if ( cg_fixedAspect.integer ) {
-			if ( cgs.glconfig.vidWidth * 480.0 > cgs.glconfig.vidHeight * 640.0 ) {
-				mask = 0.5 * ( ( cgs.glconfig.vidWidth - ( cgs.screenXScale * 480.0 ) ) / cgs.screenXScale );
-
-				CG_SetScreenPlacement(PLACE_LEFT, PLACE_CENTER);
-				CG_FillRect( 0, 0, mask, 480, color );
-				CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
-				CG_FillRect( 640 - mask, 0, mask, 480, color );
-			} else if ( cgs.glconfig.vidWidth * 480.0 < cgs.glconfig.vidHeight * 640.0 ) {
-				// sides with letterbox
-				lb = 0.5 * ( ( cgs.glconfig.vidHeight - ( cgs.screenYScale * 480.0 ) ) / cgs.screenYScale );
-
-				CG_SetScreenPlacement(PLACE_LEFT, PLACE_CENTER);
-				CG_FillRect( 0, 0, 80, 480, color );
-				CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
-				CG_FillRect( 560, 0, 80, 480, color );
-
-				CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
-				CG_FillRect( 0, 480 - lb, 640, lb, color );
-				CG_SetScreenPlacement(PLACE_LEFT, PLACE_TOP);
-				CG_FillRect( 0, 0, 640, lb, color );
-			} else {
-				// resolution is 4:3
-				CG_SetScreenPlacement(PLACE_LEFT, PLACE_CENTER);
-				CG_FillRect( 0, 0, 80, 480, color );
-				CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
-				CG_FillRect( 560, 0, 80, 480, color );
-			}
-		} else {
-			CG_FillRect( 0, 0, 80, 480, color );
-			CG_FillRect( 560, 0, 80, 480, color );
-		}
-
-		// center
-		if ( cg_fixedAspect.integer ) {
-			CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
-		}
-
-		if ( cgs.media.reticleShaderSimpleQ ) {
-			if ( cg_fixedAspect.integer ) {
-				trap_R_DrawStretchPic( x, lb * cgs.screenYScale, w, h, 0, 0, 1, 1, cgs.media.reticleShaderSimpleQ );         // tl
-				trap_R_DrawStretchPic( x + w, lb * cgs.screenYScale, w, h, 1, 0, 0, 1, cgs.media.reticleShaderSimpleQ );     // tr
-				trap_R_DrawStretchPic( x, h + lb * cgs.screenYScale, w, h, 0, 1, 1, 0, cgs.media.reticleShaderSimpleQ );     // bl
-				trap_R_DrawStretchPic( x + w, h + lb * cgs.screenYScale, w, h, 1, 1, 0, 0, cgs.media.reticleShaderSimpleQ ); // br
-			} else {
-				trap_R_DrawStretchPic( x, 0, w, h, 0, 0, 1, 1, cgs.media.reticleShaderSimpleQ );      // tl
-				trap_R_DrawStretchPic( x + w, 0, w, h, 1, 0, 0, 1, cgs.media.reticleShaderSimpleQ );  // tr
-				trap_R_DrawStretchPic( x, h, w, h, 0, 1, 1, 0, cgs.media.reticleShaderSimpleQ );      // bl
-				trap_R_DrawStretchPic( x + w, h, w, h, 1, 1, 0, 0, cgs.media.reticleShaderSimpleQ );  // br
-			}
-		}
-
-		if ( cg_drawCrosshairReticle.integer ) {
-			CG_FillRect( 80, 239, 480, 1, color );	// horiz
-			CG_FillRect( 319, 0, 1, 480, color );   // vert
-		}
-
-		// hairs
-		CG_FillRect( 84, 239, 177, 2, color );   // left
-		CG_FillRect( 320, 242, 1, 58, color );   // center top
-		CG_FillRect( 319, 300, 2, 178, color );  // center bot
-		CG_FillRect( 380, 239, 177, 2, color );  // right
-	
-	
-	
-	} else if ( weap == WP_SNOOPERSCOPE ) {
+	}  else if ( weap == WP_SNOOPERSCOPE ) {
 		// sides
 		if ( cg_fixedAspect.integer ) {
 			if ( cgs.glconfig.vidWidth * 480.0 > cgs.glconfig.vidHeight * 640.0 ) {
@@ -2486,7 +2417,6 @@ static void CG_DrawCrosshair( void ) {
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
-	case WP_M1GARANDSNIPER:
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
 
 			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
@@ -2497,9 +2427,6 @@ static void CG_DrawCrosshair( void ) {
 					}
 					if ( cg.snap->ps.weapon == WP_SNOOPERSCOPE ) {
 						CG_FinishWeaponChange( WP_SNOOPERSCOPE, WP_GARAND );
-					}
-					if ( cg.snap->ps.weapon == WP_M1GARANDSNIPER ) {
-						CG_FinishWeaponChange( WP_M1GARANDSNIPER, WP_M1GARAND );
 					}
 				}
 			}
@@ -2673,7 +2600,6 @@ static void CG_DrawCrosshair3D( void ) {
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
-	case WP_M1GARANDSNIPER:
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
 
 			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
@@ -2684,9 +2610,6 @@ static void CG_DrawCrosshair3D( void ) {
 					}
 					if ( cg.snap->ps.weapon == WP_SNOOPERSCOPE ) {
 						CG_FinishWeaponChange( WP_SNOOPERSCOPE, WP_GARAND );
-					}
-					if ( cg.snap->ps.weapon == WP_M1GARANDSNIPER ) {
-						CG_FinishWeaponChange( WP_M1GARANDSNIPER, WP_M1GARAND );
 					}
 				}
 			}

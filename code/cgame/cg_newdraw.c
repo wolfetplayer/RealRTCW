@@ -262,7 +262,6 @@ static int weapIconDrawSize( int weap ) {
     case WP_MP44:
 	case WP_MG42M:
 	case WP_M97:
-	case WP_M1GARANDSNIPER:
 		return 2;
 	}
 
@@ -1563,12 +1562,6 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 		}
 	}
 
-		if ( flags & CG_SHOW_NOT_V_SNIPER ) {     // if looking through sniper scope
-		if ( cg.weaponSelect == WP_M1GARANDSNIPER ) {
-			return qfalse;
-		}
-	}
-
 	if ( flags & CG_SHOW_NOT_V_SNOOPER ) {        // if looking through snooper scope
 		if ( cg.weaponSelect == WP_SNOOPERSCOPE ) {
 			return qfalse;
@@ -1694,7 +1687,7 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 //----(SA)	added
 	if ( flags & CG_SHOW_NOT_V_CLEAR ) {
 		// if /not/ looking through binocs,snooper or sniper
-		if ( !cg.zoomedBinoc && !( cg.weaponSelect == WP_SNIPERRIFLE ) && !( cg.weaponSelect == WP_SNOOPERSCOPE ) && !( cg.weaponSelect == WP_FG42SCOPE ) && !( cg.weaponSelect == WP_M1GARANDSNIPER ) ) {
+		if ( !cg.zoomedBinoc && !( cg.weaponSelect == WP_SNIPERRIFLE ) && !( cg.weaponSelect == WP_SNOOPERSCOPE ) && !( cg.weaponSelect == WP_FG42SCOPE ) ) {
 			return qfalse;
 		}
 	}
@@ -2149,7 +2142,7 @@ void CG_DrawWeapStability( rectDef_t *rect, vec4_t color, int align ) {
 		return;
 	}
 
-	if ( cg_drawSpreadScale.integer == 1 && !( cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE || cg.weaponSelect == WP_FG42SCOPE || cg.weaponSelect == WP_M1GARANDSNIPER ) ) {
+	if ( cg_drawSpreadScale.integer == 1 && !( cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE || cg.weaponSelect == WP_FG42SCOPE ) ) {
 		// cg_drawSpreadScale of '1' means only draw for scoped weapons, '2' means draw all the time (for debugging)
 		return;
 	}

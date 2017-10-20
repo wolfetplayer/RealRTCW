@@ -35,10 +35,8 @@ extern vmCvar_t		sk_plr_dmg_g43;
 extern vmCvar_t		sk_plr_dmg_m1garand;
 extern vmCvar_t		sk_plr_dmg_bar;
 extern vmCvar_t		sk_plr_dmg_mp44;
-extern vmCvar_t		sk_plr_dmg_p38;
 extern vmCvar_t		sk_plr_dmg_m97;
 extern vmCvar_t		sk_plr_dmg_revolver;
-extern vmCvar_t		sk_plr_dmg_m1garandsniper;
 extern vmCvar_t		sk_plr_dmg_mg42m;
 
 
@@ -74,8 +72,6 @@ extern vmCvar_t		sk_ai_dmg_g43;
 extern vmCvar_t		sk_ai_dmg_m1garand;
 extern vmCvar_t		sk_ai_dmg_bar;
 extern vmCvar_t		sk_ai_dmg_mp44;
-extern vmCvar_t		sk_ai_dmg_p38;
 extern vmCvar_t		sk_ai_dmg_m97;
 extern vmCvar_t		sk_ai_dmg_revolver;
-extern vmCvar_t		sk_ai_dmg_m1garandsniper;
 extern vmCvar_t		sk_ai_dmg_mg42m;

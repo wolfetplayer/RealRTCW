@@ -118,9 +118,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					//
 	{   MAX_AMMO_MAUSER,  1,    50,     2600,   DELAY_LOW,      60,     1500,   250,    MOD_MG42M               },  //	WP_MG42M                //
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  //
-	{   MAX_AMMO_9MM,     1,    8,      1500,   DELAY_PISTOL,   330,    0,      0,      MOD_P38                 },  //	WP_P38                 //
 	{   MAX_AMMO_REVOLVER,1,    6,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER            },  //	WP_REVOLVER             //
-	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      500,    0,      0,      MOD_M1GARANDSNIPER      },  //	WP_M1GARANDSNIPER	    //
 
 
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   350,    0,      0,      MOD_COLT                },  //	WP_COLT					// 13
@@ -167,14 +165,12 @@ int weapAlts[] = {
 	WP_NONE,            // WP_PPSH
 	WP_NONE,            // WP_MOSIN
 	WP_NONE,            // WP_G43
-	WP_M1GARANDSNIPER,  // WP_M1GARAND
+	WP_NONE,            // WP_M1GARAND
 	WP_NONE,            // WP_BAR
 	WP_NONE,            // WP_MP44
 	WP_NONE,            // WP_MG42M
 	WP_NONE,            // WP_M97
-	WP_NONE,            // WP_P38
 	WP_NONE,            // WP_REVOLVER
-	WP_M1GARAND,        // WP_M1GARANDSNIPER
 	WP_AKIMBO,          // 13 WP_COLT		
 	WP_NONE,            // 14 WP_THOMPSON
 	WP_SNOOPERSCOPE,    // 15 WP_GARAND		
@@ -1816,31 +1812,6 @@ model="models/multiplayer/m1_garand/m1_garand_3rd.md3"
 		{0,0,0,0}
 	},
 
-/*QUAKED weapon_m1garandsniper (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/mauser/pu_mauser_scope.md3"
-*/
-	{
-		"weapon_m1garandsniper",
-		"sound/misc/w_pkup.wav",
-		{   "models/multiplayer/m1_garand/m1_garand_3rd.md3",
-			"models/multiplayer/m1_garand/v_m1_garand.md3",
-			"models/multiplayer/m1_garand/v_m1_garand_scope.md3",
-			0, 0 },
-
-		"icons/iconw_m1garand",  // icon
-		"icons/ammo10",              // ammo icon
-		"m1garandsniper",              // pickup
-		30,
-		IT_WEAPON,
-		WP_M1GARANDSNIPER,
-		WP_BAR,
-		WP_M1GARAND,
-		"",                          // precache
-		"",                          // sounds
-		{0,0,0,0}
-	},
-
 /*QUAKED weapon_bar (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
@@ -1946,34 +1917,6 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 			"",                      // precache
 			"",                      // sounds
 			{ 0,0,0,0 }
-	},
-
-		/*QUAKED weapon_p38 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/p38/luger.md3"
-*/
-	{
-		"weapon_p38",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/p38/luger.md3",
-			"models/weapons2/p38/v_luger.md3",
-			"models/weapons2/p38/pu_luger.md3",
-			0, 0 },
-
-		"icons/iconw_p38",    // icon
-		"icons/ammo9mm",      // ammo icon
-		"p38",              // pickup
-		30,
-		IT_WEAPON,
-		WP_P38,
-		WP_LUGER,
-		WP_P38,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0}
 	},
 
 

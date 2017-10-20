@@ -163,7 +163,7 @@ static vec3_t flameChunkMaxs = { 4,  4,  4};
 //#define FLAME_ENABLE_FUEL_STREAM
 
 // enable this for dynamic lighting around flames
-//#define FLAMETHROW_LIGHTS
+#define FLAMETHROW_LIGHTS
 
 // disable this to stop rotating flames (this is variable so we can change it at run-time)
 int rotatingFlames = qtrue;
@@ -1018,7 +1018,8 @@ void CG_AddFlameToScene( flameChunk_t *fHead ) {
 #ifdef FLAMETHROW_LIGHTS
 	vec3_t lastLightPos;
 	flameChunk_t *lastLightFlameChunk;
-	float lightSize, lastLightSize, lightAlpha;
+	//float lightSize, 
+	float lastLightSize, lightAlpha;
 #endif
 
 	vec3_t lightOrg;                // origin to place light at

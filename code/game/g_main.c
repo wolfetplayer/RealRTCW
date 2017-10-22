@@ -305,7 +305,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_ai_dmg_garand, "sk_ai_dmg_garand", "30", 0, 0, qfalse  },
 	{ &sk_ai_dmg_snooperscope, "sk_ai_dmg_snooperscope", "30", 0, 0, qfalse  },
 	{ &sk_ai_dmg_fg42, "sk_ai_dmg_fg42", "7", 0, 0, qfalse  },  // was 10
-	{ &sk_ai_dmg_fg42scope, "sk_ai_dmg_fg42scope", "14", 0, 0, qfalse  }, // was 15
+	{ &sk_ai_dmg_fg42scope, "sk_ai_dmg_fg42scope", "10", 0, 0, qfalse  }, // was 15
 	{ &sk_ai_dmg_panzerfaust, "sk_ai_dmg_panzerfaust", "200", 0, 0, qfalse  },
 	{ &sk_ai_dmg_panzerfaust_splash, "sk_ai_dmg_panzerfaust_splash", "250", 0, 0, qfalse  }, // was 200
 	{ &sk_ai_dmg_venom, "sk_ai_dmg_venom", "15", 0, 0, qfalse  },  // was 13

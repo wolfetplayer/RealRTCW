@@ -627,7 +627,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AITEAM_NAZI,
 		"blackguard/default",
 //		{WP_MP40, WP_GRENADE_LAUNCHER, WP_MONSTER_ATTACK1},					// attack1 is melee kick
-		{WP_FG42, WP_GRENADE_LAUNCHER, WP_MONSTER_ATTACK1},	// attack1 is melee kick RealRTCW removed fg42_scope
+		{WP_FG42SCOPE, WP_GRENADE_LAUNCHER, WP_MONSTER_ATTACK1},	// attack1 is melee kick
 		BBOX_SMALL, {32,48},
 		AIFL_CATCH_GRENADE | AIFL_FLIP_ANIM | AIFL_STAND_IDLE2,
 		AIFunc_BlackGuardAttack1Start, 0, 0,

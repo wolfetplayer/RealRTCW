@@ -50,7 +50,7 @@ extern vmCvar_t g_gametype;
 // NOTE: weapons that share ammo (ex. colt/thompson) need to share max ammo, but not necessarily uses or max clip
 // RealRTCW ammo depends on difficulty level now. So look for the ammo references in g_client.c. Values in bg misc should be the LOWEST to avoid auto pickup bug.
 #define MAX_AMMO_45     150
-#define MAX_AMMO_9MM    180
+#define MAX_AMMO_9MM    150
 #define MAX_AMMO_VENOM  500
 #define MAX_AMMO_MAUSER 150
 #define MAX_AMMO_GARAND 5

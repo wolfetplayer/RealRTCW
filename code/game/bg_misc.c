@@ -141,8 +141,8 @@ ammotable_t ammoTable[] = {
 //	{	5,				1,		5,		1000,	DELAY_SHOULDER,	1200,	0,		0,		0 /*mod_prox*/			},	//	WP_PROX					// 32
 	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_MONSTER_ATTACK1		// 33
 	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_MONSTER_ATTACK2		// 34
-	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_MONSTER_ATTACK3		// 35
-	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       }   //	WP_GAUNTLET				// 36
+	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       }  //	WP_MONSTER_ATTACK3		// 35
+	//{   999,            0,      999,    0,      50,             0,      0,      0,      0                       }   //	WP_GAUNTLET				// 36
 };
 
 
@@ -902,23 +902,23 @@ model="models/powerups/armor/armor_head1.md3"
 /*
 weapon_gauntlet
 */
-	{
-		"weapon_gauntlet",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/gauntlet/gauntlet.md3",
-			0, 0, 0,    0 },
-		"",  // icon
-		"icons/ammo1",           // ammo icon
-		"Gauntlet",              // pickup
-		0,
-		IT_WEAPON,
-		WP_GAUNTLET,
-		WP_GAUNTLET,
-		WP_GAUNTLET,
-		"",                      // precache
-		"",                      // sounds
-		{0,0,0,0}
-	},
+	//{
+		//"weapon_gauntlet",
+		//"sound/misc/w_pkup.wav",
+		//{   "models/weapons2/gauntlet/gauntlet.md3",
+			//0, 0, 0,    0 },
+		//"",  // icon
+		//"icons/ammo1",           // ammo icon
+		//"Gauntlet",              // pickup
+		//0,
+		//IT_WEAPON,
+		//WP_GAUNTLET,
+		//WP_GAUNTLET,
+		//WP_GAUNTLET,
+		//"",                      // precache
+		//"",                      // sounds
+		//{0,0,0,0}
+	//},
 
 
 

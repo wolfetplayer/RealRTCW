@@ -100,9 +100,9 @@ tryagain:
 	pi->flashModel = trap_R_RegisterModel( path );
 
 	switch ( weaponNum ) {
-	case WP_GAUNTLET:
-		MAKERGB( pi->flashDlightColor, 0.6, 0.6, 1 );
-		break;
+	//case WP_GAUNTLET:
+		//MAKERGB( pi->flashDlightColor, 0.6, 0.6, 1 );
+		//break;
 
 //	case WP_MACHINEGUN:
 //		MAKERGB( pi->flashDlightColor, 1, 1, 0 );
@@ -1564,7 +1564,7 @@ void UI_PlayerInfo_SetInfo( playerInfo_t *pi, int legsAnim, int torsoAnim, vec3_
 
 	// torso animation
 	if ( torsoAnim == TORSO_STAND || torsoAnim == TORSO_STAND2 ) {
-		if ( weaponNum == WP_NONE || weaponNum == WP_GAUNTLET ) {
+		if ( weaponNum == WP_NONE ) {
 			torsoAnim = TORSO_STAND2;
 		} else {
 			torsoAnim = TORSO_STAND;
@@ -1572,7 +1572,7 @@ void UI_PlayerInfo_SetInfo( playerInfo_t *pi, int legsAnim, int torsoAnim, vec3_
 	}
 
 	if ( torsoAnim == TORSO_ATTACK || torsoAnim == TORSO_ATTACK2 ) {
-		if ( weaponNum == WP_NONE || weaponNum == WP_GAUNTLET ) {
+		if ( weaponNum == WP_NONE ) {
 			torsoAnim = TORSO_ATTACK2;
 		} else {
 			torsoAnim = TORSO_ATTACK;

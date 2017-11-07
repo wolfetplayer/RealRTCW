@@ -470,7 +470,7 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 	// set aiming directions
 	AngleVectors( ent->client->ps.viewangles, forward, right, up );
 
-	CalcMuzzlePoint( ent, WP_GAUNTLET, forward, right, up, muzzleTrace );
+	//CalcMuzzlePoint( ent, WP_GAUNTLET, forward, right, up, muzzleTrace );
 
 	VectorMA( muzzleTrace, dist, forward, end );
 
@@ -602,7 +602,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_REVOLVER: return sk_plr_dmg_revolver.integer;	
             // end RealRTCW
 			case WP_MORTAR: return 100;
-			case WP_GAUNTLET: return 1;
+			//case WP_GAUNTLET: return 1;
 			case WP_SNIPER: return 1;
 			default:    return 1;
 			}
@@ -645,7 +645,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_REVOLVER: return sk_ai_dmg_revolver.integer;
 			// end RealRTCW			
 			case WP_MORTAR: return 100;
-			case WP_GAUNTLET: return 1;
+			//case WP_GAUNTLET: return 1;
 			case WP_SNIPER: return 1;
 			default:    return 1;
 			}
@@ -676,7 +676,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 		case WP_MORTAR: return 100;
 		case WP_FLAMETHROWER: return 1;
 		case WP_TESLA:
-		case WP_GAUNTLET:
+		//case WP_GAUNTLET:
 		case WP_SNIPER:
 		default:    return 1;
 		}
@@ -2022,9 +2022,9 @@ void FireWeapon( gentity_t *ent ) {
 			}
 		}
 		break;
-	case WP_GAUNTLET:
-		Weapon_Gauntlet( ent );
-		break;
+	//case WP_GAUNTLET:
+		//Weapon_Gauntlet( ent );
+		//break;
 
 	case WP_MONSTER_ATTACK1:
 		switch ( ent->aiCharacter ) {

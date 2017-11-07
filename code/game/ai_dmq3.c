@@ -471,7 +471,7 @@ void BotUpdateInventory( bot_state_t *bs ) {
 	bs->inventory[INVENTORY_GRENADELAUNCHER]    =   COM_BitCheck( bs->cur_ps.weapons, ( WP_GRENADE_LAUNCHER ) );
 	bs->inventory[INVENTORY_VENOM]              =   COM_BitCheck( bs->cur_ps.weapons, ( WP_VENOM ) );
 	bs->inventory[INVENTORY_FLAMETHROWER]       =   COM_BitCheck( bs->cur_ps.weapons, ( WP_FLAMETHROWER ) );
-	bs->inventory[INVENTORY_GAUNTLET]           =   COM_BitCheck( bs->cur_ps.weapons, ( WP_GAUNTLET ) );
+	//bs->inventory[INVENTORY_GAUNTLET]           =   COM_BitCheck( bs->cur_ps.weapons, ( WP_GAUNTLET ) );
 
 	// ammo
 	bs->inventory[INVENTORY_9MM]            = bs->cur_ps.ammo[BG_FindAmmoForWeapon( WP_MP40 )];
@@ -766,8 +766,7 @@ float BotAggression( bot_state_t *bs ) {
 	//if the bot has quad
 	if ( bs->inventory[INVENTORY_QUAD] ) {
 		//if the bot is not holding the gauntlet or the enemy is really nearby
-		if ( bs->weaponnum != WP_GAUNTLET ||
-			 bs->inventory[ENEMY_HORIZONTAL_DIST] < 80 ) {
+		if ( bs->inventory[ENEMY_HORIZONTAL_DIST] < 80 ) {
 			return 70;
 		}
 	}
@@ -1172,7 +1171,7 @@ bot_moveresult_t BotAttackMove( bot_state_t *bs, int tfl ) {
 			bs->attackjump_time = trap_AAS_Time() + 1;
 		}
 	}
-	if ( bs->cur_ps.weapon == WP_GAUNTLET ) {
+	if ( bs->cur_ps.weapon == WP_KNIFE ) {
 		attack_dist = 0;
 		attack_range = 0;
 	} else {

@@ -286,7 +286,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_ai_dmg_mosin, "sk_ai_dmg_mosin", "35", 0, 0, qfalse  },
 	{ &sk_ai_dmg_g43, "sk_ai_dmg_g43", "10", 0, 0, qfalse  },  // was 16
 	{ &sk_ai_dmg_m1garand, "sk_ai_dmg_m1garand", "10", 0, 0, qfalse  }, // was 18
-	{ &sk_ai_dmg_bar, "sk_ai_dmg_bar", "12", 0, 0, qfalse  }, // was 13
+	{ &sk_ai_dmg_bar, "sk_ai_dmg_bar", "10", 0, 0, qfalse  }, // was 13
 	{ &sk_ai_dmg_mp44, "sk_ai_dmg_mp44", "8", 0, 0, qfalse  }, // was 9
 	{ &sk_ai_dmg_mg42m, "sk_ai_dmg_mg42m", "10", 0, 0, qfalse  }, // was 9
 	{ &sk_ai_dmg_m97, "sk_ai_dmg_m97", "6", 0, 0, qfalse  }, // was 9

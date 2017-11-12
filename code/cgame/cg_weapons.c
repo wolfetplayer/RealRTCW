@@ -1201,6 +1201,15 @@ void CG_RegisterWeapon( int weaponNum ) {
 	Q_strcat( path, sizeof(path), "_hand.md3" );
 	weaponInfo->handsModel = trap_R_RegisterModel( path );
 
+char handsskin[128]; //eugeny
+char map[128];
+memset(handsskin, 0, sizeof(handsskin));
+memset(map, 0, sizeof(map));
+trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
+COM_StripExtension(path, path, sizeof (path) );
+Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", path, map);
+weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
+
 	if ( !weaponInfo->handsModel ) {
 		weaponInfo->handsModel = trap_R_RegisterModel( "models/weapons2/shotgun/shotgun_hand.md3" );
 	}
@@ -1214,6 +1223,9 @@ void CG_RegisterWeapon( int weaponNum ) {
 	COM_StripExtension( path, path, sizeof(path) );
 	Q_strcat( path, sizeof(path), "_stand.md3" );
 	weaponInfo->standModel = trap_R_RegisterModel( path );
+
+
+
 //----(SA)	end
 
 	switch ( weaponNum ) {
@@ -2688,6 +2700,9 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	if ( drawpart && drawrealweap ) {
+		if (isPlayer && weapon->handsSkin) { // Eugeny
+        gun.customSkin = weapon->handsSkin;
+        }
 		CG_AddWeaponWithPowerups( &gun, cent->currentState.powerups, ps, cent );
 	}
 
@@ -2722,6 +2737,9 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 			spunpart = qfalse;
 			barrel.hModel = weapon->wpPartModels[W_FP_MODEL][i];
+			if (isPlayer && weapon->handsSkin) { // eugeny
+            barrel.customSkin = weapon->handsSkin; }
+
 
 			// check for spinning
 			if ( weaponNum == WP_VENOM ) {

@@ -642,6 +642,9 @@ typedef struct weaponInfo_s {
 
 //----(SA)	weapon animation sequences loaded from the weapon.cfg
 	animation_t weapAnimations[MAX_WP_ANIMATIONS];
+
+	qhandle_t handsSkin; // eugeny
+
 //----(SA)	end
 
 	qhandle_t handsModel;               // the hands don't actually draw, they just position the weapon

@@ -591,7 +591,7 @@ typedef enum {
 	WP_MONSTER_ATTACK2,     // 24	// generic monster attack, slot 2
 	WP_MONSTER_ATTACK3,     // 25	// generic monster attack, slot 2
 
-	//WP_GAUNTLET,            // 26
+	WP_GAUNTLET,            // 26
 
 	WP_SNIPER,              // 27
 	WP_GRENADE_SMOKE,       // 28	// smoke grenade for LT multiplayer

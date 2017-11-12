@@ -1036,7 +1036,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 	case WP_MONSTER_ATTACK1:
 	case WP_MONSTER_ATTACK2:
 	case WP_MONSTER_ATTACK3:
-	//case WP_GAUNTLET:
+	case WP_GAUNTLET:
 	case WP_SNIPER:
 	case WP_MORTAR:
 
@@ -1510,11 +1510,11 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 
-	//case WP_GAUNTLET:
-		//MAKERGB( weaponInfo->flashDlightColor, 0.6, 0.6, 1 );
+	case WP_GAUNTLET:
+		MAKERGB( weaponInfo->flashDlightColor, 0.6, 0.6, 1 );
 		//weaponInfo->firingSound = trap_S_RegisterSound( "sound/weapons/melee/fstrun.wav" );
-		//weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav" );
-		//break;
+		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav" );
+		break;
 
 	default:
 		MAKERGB( weaponInfo->flashDlightColor, 1, 1, 1 );
@@ -2634,12 +2634,12 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		return;
 	}
 
-	//if ( weaponNum == WP_GAUNTLET ) {  // (SA) this is the 'knife'.  no model yet, so we can give it to the zombie and have him visually 'unarmed'
-		//if ( debuggingweapon ) {
-			//CG_Printf( "returning due to: weaponNum == WP_GAUNTLET\n" );
-		//}
-		//return;
-	//}
+	if ( weaponNum == WP_GAUNTLET ) {  // (SA) this is the 'knife'.  no model yet, so we can give it to the zombie and have him visually 'unarmed'
+		if ( debuggingweapon ) {
+			CG_Printf( "returning due to: weaponNum == WP_GAUNTLET\n" );
+		}
+		return;
+	}
 
 	if ( !ps && cg.snap->ps.pm_flags & PMF_LADDER && isPlayer ) {      //----(SA) player on ladder
 		if ( debuggingweapon ) {
@@ -3154,8 +3154,8 @@ WEAPON SELECTION
 */
 
 #define WP_ICON_X       38  // new sizes per MK
-#define WP_ICON_X_WIDE  72  // new sizes per MK 72
-#define WP_ICON_Y       38  // 38
+#define WP_ICON_X_WIDE  72  // new sizes per MK
+#define WP_ICON_Y       38
 #define WP_ICON_SPACE_Y 10
 #define WP_DRAW_X       640 - WP_ICON_X - 4 // 4 is 'selected' border width
 #define WP_DRAW_X_WIDE  640 - WP_ICON_X_WIDE - 4

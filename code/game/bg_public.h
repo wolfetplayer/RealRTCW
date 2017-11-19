@@ -541,66 +541,63 @@ typedef enum {
 
 	WP_KNIFE,               // 1
 	// German weapons
-	WP_LUGER,               
-	WP_MP40,                
-	WP_MAUSER,              
-	WP_FG42,                
-	WP_GRENADE_LAUNCHER,    
-	WP_PANZERFAUST,         
-	WP_VENOM,               
-	WP_FLAMETHROWER,        
-	WP_TESLA,               
+	WP_LUGER,               // 2
+	WP_MP40,                // 3
+	WP_MAUSER,              // 4
+	WP_FG42,                // 5
+	WP_GRENADE_LAUNCHER,    // 6
+	WP_PANZERFAUST,         // 7
+	WP_VENOM,               // 8
+	WP_FLAMETHROWER,        // 9
+	WP_TESLA,               // 10
 	// RealRTCW weapons
-	WP_MP34,
-	WP_TT33,
-	WP_PPSH,
-	WP_MOSIN,
-	WP_G43,
-	WP_M1GARAND,
-	WP_BAR,
-	WP_MP44,
-	WP_MG42M,
-	WP_M97,
-	WP_REVOLVER,
+	WP_MP34,                // 11
+	WP_TT33,                // 12
+	WP_PPSH,                // 13
+	WP_MOSIN,               // 14
+	WP_G43,                 // 15
+	WP_M1GARAND,            // 16
+	WP_BAR,                 // 17
+	WP_MP44,                // 18
+	WP_MG42M,               // 19
+	WP_M97,                 // 20
+	WP_REVOLVER,            // 21
 	// end RealRTCW weapons
-	WP_COLT,                	
-	WP_THOMPSON,            	
-	WP_GARAND,              	
-	WP_GRENADE_PINEAPPLE,   
+	WP_COLT,                // 22	
+	WP_THOMPSON,            // 23	
+	WP_GARAND,              // 24	
+	WP_GRENADE_PINEAPPLE,   // 25
 
 	// secondary fire weapons
-	WP_SNIPERRIFLE,         // 15
-	WP_SNOOPERSCOPE,        // 16
-	WP_FG42SCOPE,           // 17	fg42 alt fire
-	WP_STEN,                // 18	
-	WP_SILENCER,            // 19	
-	WP_AKIMBO,              // 20	
+	WP_SNIPERRIFLE,         // 26
+	WP_SNOOPERSCOPE,        // 27
+	WP_FG42SCOPE,           // 28	fg42 alt fire
+	WP_STEN,                // 29	
+	WP_SILENCER,            // 30	
+	WP_AKIMBO,              // 31	
 
 	// specialized/one-time weapons
 // JPW NERVE -- swapped mortar & antitank (unused?) and added class_special
-	WP_CLASS_SPECIAL,       // 21	// class-specific multiplayer weapon (airstrike, engineer, or medpack)
+	WP_CLASS_SPECIAL,       // 32	// class-specific multiplayer weapon (airstrike, engineer, or medpack)
 	// (SA) go ahead and take the 'freezeray' spot.  it ain't happenin
 	//      (I checked for instances of WP_CLASS_SPECIAL and I don't think this'll cause you a problem.  however, if it does, move it where you need to. ) (SA)
 // jpw
-//	WP_CROSS,				// 29
-	WP_DYNAMITE,            // 22
-//	WP_DYNAMITE2,			// 31
-//	WP_PROX,				// 32
+	WP_DYNAMITE,            // 33
 
-	WP_MONSTER_ATTACK1,     // 23	// generic monster attack, slot 1
-	WP_MONSTER_ATTACK2,     // 24	// generic monster attack, slot 2
-	WP_MONSTER_ATTACK3,     // 25	// generic monster attack, slot 2
+	WP_MONSTER_ATTACK1,     // 34	// generic monster attack, slot 1
+	WP_MONSTER_ATTACK2,     // 35	// generic monster attack, slot 2
+	WP_MONSTER_ATTACK3,     // 36	// generic monster attack, slot 2
 
-	WP_GAUNTLET,            // 26
+	WP_GAUNTLET,            // 37
 
-	WP_SNIPER,              // 27
-	WP_GRENADE_SMOKE,       // 28	// smoke grenade for LT multiplayer
-	WP_MEDIC_HEAL,          // 29	// DHM - Nerve :: Medic special weapon
-	WP_MORTAR,              // 30
+	WP_SNIPER,              // 38
+	WP_GRENADE_SMOKE,       // 39	// smoke grenade for LT multiplayer
+	WP_MEDIC_HEAL,          // 40	// DHM - Nerve :: Medic special weapon
+	WP_MORTAR,              // 41
 
-	VERYBIGEXPLOSION,       // 31	// explosion effect for airplanes
+	VERYBIGEXPLOSION,       // 42	// explosion effect for airplanes
 
-	WP_NUM_WEAPONS          // 32   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_NUM_WEAPONS          // 43   NOTE: this cannot be larger than 64 for AI/player weapons!
 
 } weapon_t;
 

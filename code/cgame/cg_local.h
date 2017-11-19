@@ -644,7 +644,7 @@ typedef struct weaponInfo_s {
 	animation_t weapAnimations[MAX_WP_ANIMATIONS];
 
 	qhandle_t handsSkin; // eugeny
-
+    qhandle_t legskin;
 //----(SA)	end
 
 	qhandle_t handsModel;               // the hands don't actually draw, they just position the weapon

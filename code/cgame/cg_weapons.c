@@ -40,6 +40,7 @@ int hWeaponSnd;
 int hflakWeaponSnd;
 int notebookModel;
 int propellerModel;
+int wolfkickSkin; // eugeny
 
 vec3_t ejectBrassCasingOrigin;
 
@@ -1572,8 +1573,17 @@ void CG_RegisterItemVisuals( int itemNum ) {
 	}
 
 	itemInfo->registered = qtrue;   //----(SA)	moved this down after the registerweapon()
-
+	
+	char legskin[128]; //eugeny
+    char map[128];
+    memset(legskin, 0, sizeof(legskin));
+    memset(map, 0, sizeof(map));
+    trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
+    Com_sprintf(legskin, sizeof(legskin), "%s_%s.skin", "models/weapons2/foot/legs", map);
+	wolfkickSkin = trap_R_RegisterSkin(legskin);
+	
 	wolfkickModel = trap_R_RegisterModel( "models/weapons2/foot/v_wolfoot_10f.md3" );
+	
 	hWeaponSnd = trap_S_RegisterSound( "sound/weapons/mg42/37mm.wav" );
 
 	hflakWeaponSnd = trap_S_RegisterSound( "sound/weapons/flak/flak.wav" );
@@ -2994,7 +3004,10 @@ void CG_AddPlayerFoot( refEntity_t *parent, playerState_t *ps, centity_t *cent )
 
 	// note to self we want this to lerp and advance frame
 	wolfkick.renderfx = RF_DEPTHHACK | RF_FIRST_PERSON;;
-	wolfkick.hModel = wolfkickModel;
+	wolfkick.hModel = wolfkickModel; // eugeny
+	if (wolfkickSkin) {
+     wolfkick.customSkin = wolfkickSkin;
+    }
 
 	VectorCopy( cg.refdef.vieworg, wolfkick.origin );
 	//----(SA)	allow offsets for testing boot model

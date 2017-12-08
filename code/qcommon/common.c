@@ -2310,7 +2310,7 @@ void Com_Init( char *commandLine ) {
 	// done early so bind command exists
 	CL_InitKeyCommands();
 
-	com_standalone = Cvar_Get("com_standalone", "0", CVAR_ROM);
+	com_standalone = Cvar_Get("com_standalone", "1", CVAR_ROM);
 	com_basegame = Cvar_Get("com_basegame", BASEGAME, CVAR_INIT);
 	com_homepath = Cvar_Get("com_homepath", "", CVAR_INIT);
 	

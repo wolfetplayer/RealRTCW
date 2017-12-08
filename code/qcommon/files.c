@@ -3714,10 +3714,10 @@ static void FS_CheckSPPaks( void )
 
 	if(!foundPak && Q_stricmp(com_basegame->string, BASEGAME))
 	{
-		Cvar_Set("com_standalone", "0");
+		Cvar_Set("com_standalone", "1");
 	}
-	//else
-		//Cvar_Set("com_standalone", "0");
+	else
+		Cvar_Set("com_standalone", "0");
 
 
 	if(!com_standalone->integer && (foundPak & 0xf) != 0xf)
@@ -3840,10 +3840,10 @@ static void FS_CheckPak0( void )
 
 	if(!foundPak && Q_stricmp(com_basegame->string, BASEGAME))
 	{
-		Cvar_Set("com_standalone", "0");
+		Cvar_Set("com_standalone", "1");
 	}
-	//else
-		//Cvar_Set("com_standalone", "0");
+	else
+		Cvar_Set("com_standalone", "0");
 
 	if(!com_standalone->integer)
 	{

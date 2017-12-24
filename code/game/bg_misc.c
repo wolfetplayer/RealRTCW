@@ -1931,7 +1931,7 @@ model="models/weapons2/p38/luger.md3"
 		"sound/misc/w_pkup.wav",
 		{   "models/weapons2/44magnum/44m_3rd.md3",
 			"models/weapons2/44magnum/v_44m.md3",
-			"models/weapons2/44magnum/44magnum_stand.md3",
+			"models/weapons2/44magnum/44m_3rd.md3",
 			0, 0 },
 
 		"icons/iconw_revolver",    // icon

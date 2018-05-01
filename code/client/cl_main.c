@@ -1471,7 +1471,7 @@ void CL_Disconnect( qboolean showMainMenu ) {
 	// allow cheats locally
 #ifndef WOLF_SP_DEMO
 	// except for demo
-	Cvar_Set( "sv_cheats", "1" );
+	Cvar_Set( "sv_cheats", "0" );
 #endif
 
 	// not connected to a pure server anymore

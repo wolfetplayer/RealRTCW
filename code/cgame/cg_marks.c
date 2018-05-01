@@ -138,14 +138,14 @@ passed to the renderer.
 =================
 */
 // Ridah, increased this since we leave them around for longer
-#define MAX_MARK_FRAGMENTS  384
-#define MAX_MARK_POINTS     1024
+#define MAX_MARK_FRAGMENTS  1024 // RealRTCW was 384
+#define MAX_MARK_POINTS     2048 // RealRTCW was 1024
 //#define	MAX_MARK_FRAGMENTS	128
 //#define	MAX_MARK_POINTS		384
 
 // these are ignored now for the most part
 //#define	MARK_TOTAL_TIME		20000	// (SA) made this a cvar: cg_markTime  (we could cap the time or remove marks quicker if too long a time starts to cause new marks to not appear)
-#define MARK_FADE_TIME      10000
+#define MARK_FADE_TIME      30000
 
 void CG_ImpactMark( qhandle_t markShader, const vec3_t origin, const vec3_t dir,
 					float orientation, float red, float green, float blue, float alpha,

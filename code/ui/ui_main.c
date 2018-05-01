@@ -7494,12 +7494,13 @@ cvarTable_t cvarTable[] = {
 	{ &ui_drawCrosshair, "cg_drawCrosshair", "4", CVAR_ARCHIVE },
 	{ &ui_drawCrosshairNames, "cg_drawCrosshairNames", "1", CVAR_ARCHIVE },
 	{ &ui_drawCrosshairPickups, "cg_drawCrosshairPickups", "1", CVAR_ARCHIVE },   //----(SA) added
-	{ &ui_marks, "cg_marktime", "20000", CVAR_ARCHIVE },
+	{ &ui_marks, "cg_marktime", "30000", CVAR_ARCHIVE },
 	{ &ui_autoactivate, "cg_autoactivate", "1", CVAR_ARCHIVE },
 	{ &ui_useSuggestedWeapons, "cg_useSuggestedWeapons", "1", CVAR_ARCHIVE }, //----(SA)	added
 	{ &ui_emptyswitch, "cg_emptyswitch", "0", CVAR_ARCHIVE }, //----(SA)	added
 
 	{ &ui_fixedAspect, "cg_fixedAspect", "2", CVAR_ARCHIVE | CVAR_LATCH },
+	{ &ui_fixedAspectFOV, "cg_fixedAspectFOV", "1", CVAR_ARCHIVE },
 
 	{ &ui_server1, "server1", "", CVAR_ARCHIVE },
 	{ &ui_server2, "server2", "", CVAR_ARCHIVE },

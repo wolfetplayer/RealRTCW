@@ -540,7 +540,7 @@ static qboolean PM_CheckJump( void ) {
 	// JPW NERVE -- jumping in multiplayer uses and requires sprint juice (to prevent turbo skating, sprint + jumps)
 	// don't allow jump accel
 //	if (pm->cmd.serverTime - pm->ps->jumpTime < 850)
-	if ( pm->cmd.serverTime - pm->ps->jumpTime < 950 ) {  // RealRTCW removed bunnyhop
+	if ( pm->cmd.serverTime - pm->ps->jumpTime < 850 ) {  // RealRTCW removed bunnyhop try 850 instead of 950
 		return qfalse;
 	}
 
@@ -935,14 +935,14 @@ static void PM_WalkMove( void ) {
 			if ( g_gametype.integer != GT_SINGLE_PLAYER )
 #endif
 			{
-				pm->ps->sprintTime -= 10000;
+				pm->ps->sprintTime -= 10000; 
 				if ( pm->ps->sprintTime < 0 ) {
 					pm->ps->sprintTime = 0;
 				}
 			} else {
 				pm->ps->jumpTime = pm->cmd.serverTime;
 
-				stamtake = 2000;    // amount to take for jump
+				stamtake = 1000;    // amount to take for jump RealRTCW was 2000
 
 				// take time from powerup before taking it from sprintTime
 				if ( pm->ps->powerups[PW_NOFATIGUE] ) {
@@ -4074,7 +4074,7 @@ void PM_Sprint( void ) {
 			) {
 
 		if ( pm->ps->powerups[PW_NOFATIGUE] ) {    // take time from powerup before taking it from sprintTime
-			pm->ps->powerups[PW_NOFATIGUE] -= 50;
+			pm->ps->powerups[PW_NOFATIGUE] -= 25; // RealRTCW was 50
 
 			pm->ps->sprintTime += 10;           // (SA) go ahead and continue to recharge stamina at double rate with stamina powerup even when exerting
 			if ( pm->ps->sprintTime > 20000 ) {
@@ -4087,7 +4087,7 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				pm->ps->sprintTime -= 50;
+				pm->ps->sprintTime -= 25; // RealRTCW was 50
 			}
 		}
 

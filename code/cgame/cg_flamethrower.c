@@ -1061,7 +1061,7 @@ void CG_AddFlameToScene( flameChunk_t *fHead ) {
 		if (    lastBlowChunk && ( centFlameStatus[f->ownerCent].blowVolume < 1.0 ) &&
 				( ( bdot = DotProduct( lastBlowChunk->startVelDir, f->startVelDir ) ) < 1.0 ) ) {
 			if ( vdist < FLAME_SOUND_RANGE ) {
-				centFlameStatus[f->ownerCent].blowVolume += 500.0 * ( 1.0 - bdot ) * ( 1.0 - ( vdist / FLAME_SOUND_RANGE ) );
+				centFlameStatus[f->ownerCent].blowVolume += 220.0 * ( 1.0 - bdot ) * ( 1.0 - ( vdist / FLAME_SOUND_RANGE ) ); // RealRTCW was 500
 				if ( centFlameStatus[f->ownerCent].blowVolume > 1.0 ) {
 					centFlameStatus[f->ownerCent].blowVolume = 1.0;
 				}
@@ -1495,17 +1495,17 @@ void CG_UpdateFlamethrowerSounds( void ) {
 		// update this entity?
 		if ( centFlameInfo[f->ownerCent].lastSoundUpdate != cg.time ) {
 			// blow/ignition sound
-			if ( centFlameStatus[f->ownerCent].blowVolume * 255.0 > MIN_BLOW_VOLUME ) {
-				CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameBlowSound, (int)( 255.0 * centFlameStatus[f->ownerCent].blowVolume ) );
+			if ( centFlameStatus[f->ownerCent].blowVolume * 155.0 > MIN_BLOW_VOLUME ) { // RealRTCW was 255
+				CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameBlowSound, (int)( 155.0 * centFlameStatus[f->ownerCent].blowVolume ) );
 			} else {
 				CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameBlowSound, MIN_BLOW_VOLUME );
 			}
 
 			if ( centFlameStatus[f->ownerCent].streamVolume ) {
 				if ( cg_entities[f->ownerCent].currentState.aiChar != AICHAR_ZOMBIE ) {
-					CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameStreamSound, (int)( 255.0 ) );
+					CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameStreamSound, (int)( 155.0 ) );
 				} else {
-					CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameCrackSound, (int)( 255.0 * centFlameStatus[f->ownerCent].streamVolume ) );
+					CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameCrackSound, (int)( 155.0 * centFlameStatus[f->ownerCent].streamVolume ) );
 				}
 			}
 

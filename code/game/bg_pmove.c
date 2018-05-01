@@ -410,6 +410,24 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 				  + cmd->rightmove * cmd->rightmove + cmd->upmove * cmd->upmove );
 	scale = (float)pm->ps->speed * max / ( 127.0 * total );
 
+if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { // RealRTCW
+		scale *= 1.1;
+	}
+
+	if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
+		scale *= 1.2;
+	}
+
+		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
+		scale *= 1.2;
+	}
+
+		if ( pm->ps->aiChar == AICHAR_HELGA ) {
+		scale *= 1.2;
+	}
+	
+	
+
 	if ( pm->cmd.buttons & BUTTON_SPRINT && pm->ps->sprintTime > 50 ) {
 		scale *= pm->ps->sprintSpeedScale;
 	} else {

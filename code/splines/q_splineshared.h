@@ -1333,8 +1333,8 @@ typedef enum
 
 
 // weapon grouping
-#define MAX_WEAP_BANKS      12
-#define MAX_WEAPS_IN_BANK   3
+#define MAX_WEAP_BANKS      15
+#define MAX_WEAPS_IN_BANK   10
 // JPW NERVE
 #define MAX_WEAPS_IN_BANK_MP    8
 #define MAX_WEAP_BANKS_MP   7

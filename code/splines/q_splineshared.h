@@ -1338,8 +1338,6 @@ typedef enum
 // JPW NERVE
 #define MAX_WEAPS_IN_BANK_MP    8
 #define MAX_WEAP_BANKS_MP   7
-// jpw
-#define MAX_WEAP_ALTS       WP_DYNAMITE
 
 
 // bit field limits

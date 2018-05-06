@@ -3816,10 +3816,7 @@ getAltWeapon
 ==============
 */
 static int getAltWeapon( int weapnum ) {
-	if ( weapnum > MAX_WEAP_ALTS ) {
-		return weapnum;
-	}
-
+	
 	if ( weapAlts[weapnum] ) {
 		return weapAlts[weapnum];
 	}

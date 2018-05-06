@@ -47,23 +47,6 @@ extern vmCvar_t cg_gameType;
 extern vmCvar_t g_gametype;
 #endif
 
-float Com_GetFlamethrowerRange( void ) {
-#ifdef CGAMEDLL
-	if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-		return 2500; // multiplayer range is longer for balance
-	} else {
-		return 1600; // single player range remains unchanged
-	}
-#endif
-#ifdef cGAMEDLL // RealRTCW SP Range was 1250. Now 1600. NOW OBSOLETE GO TO BG_PUBLIC
-	if ( g_gametype.integer != GT_WOLF ) {
-		return 1;
-	} else {
-		return 1;
-	}
-#endif
-}
-
 // jpw
 
 pmove_t     *pm;

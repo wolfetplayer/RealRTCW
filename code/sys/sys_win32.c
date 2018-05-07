@@ -45,6 +45,9 @@ static char homePath[ MAX_OSPATH ] = { 0 };
 #ifndef STANDALONE
 // Used to store the Steam RTCW installation path
 static char steamPath[ MAX_OSPATH ] = { 0 };
+
+// Used to store the GOG RTCW installation path
+static char gogPath[ MAX_OSPATH ] = { 0 };
 #endif
 
 #ifndef DEDICATED
@@ -152,6 +155,8 @@ char *Sys_SteamPath( void )
 		pathLen = MAX_OSPATH;
 		if (RegQueryValueEx(steamRegKey, "InstallLocation", NULL, NULL, (LPBYTE)steamPath, &pathLen))
 			steamPath[0] = '\0';
+
+			RegCloseKey(steamRegKey);
 	}
 #endif
 
@@ -165,6 +170,8 @@ char *Sys_SteamPath( void )
 
 		if (steamPath[0])
 			finishPath = qtrue;
+
+			RegCloseKey(steamRegKey);
 	}
 #endif
 
@@ -182,6 +189,39 @@ char *Sys_SteamPath( void )
 
 	return steamPath;
 }
+
+/*
+================
+Sys_GogPath
+================
+*/
+char *Sys_GogPath( void )
+{
+#ifdef GOGPATH_ID
+	HKEY gogRegKey;
+	DWORD pathLen = MAX_OSPATH;
+
+	if (!gogPath[0] && !RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\GOG.com\\Games\\" GOGPATH_ID, 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY, &gogRegKey))
+	{
+		pathLen = MAX_OSPATH;
+		if (RegQueryValueEx(gogRegKey, "PATH", NULL, NULL, (LPBYTE)gogPath, &pathLen))
+			gogPath[0] = '\0';
+
+		RegCloseKey(gogRegKey);
+	}
+
+	if (gogPath[0])
+	{
+		if (pathLen == MAX_OSPATH)
+			pathLen--;
+
+		gogPath[pathLen] = '\0';
+	}
+#endif
+
+	return gogPath;
+}
+
 #endif
 
 /*

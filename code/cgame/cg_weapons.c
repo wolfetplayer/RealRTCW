@@ -55,7 +55,6 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	// bank
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
-
 	{WP_KNIFE,              0,                      0,            0,               0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     0            },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH      },  //	3

@@ -377,8 +377,6 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	int s, t;
 	int firstVertex = tess.numVertexes;
 	//int firstIndex = tess.numIndexes;
-	int minIndex = tess.minIndex;
-	int maxIndex = tess.maxIndex;
 	vec4_t color;
 
 	//tess.numVertexes = 0;
@@ -428,8 +426,6 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 		}
 	}
 
-	tess.minIndex = firstVertex;
-	tess.maxIndex = tess.numVertexes;
 
 	// FIXME: A lot of this can probably be removed for speed, and refactored into a more convenient function
 	RB_UpdateTessVao(ATTR_POSITION | ATTR_TEXCOORD);
@@ -475,7 +471,7 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 		GLSL_SetUniformVec4(sp, UNIFORM_DIFFUSETEXOFFTURB, vector);
 	}
 
-	R_DrawElementsVao(tess.numIndexes - tess.firstIndex, tess.firstIndex, tess.minIndex, tess.maxIndex);
+	R_DrawElements(tess.numIndexes - tess.firstIndex, tess.firstIndex);
 
 	//qglDrawElements(GL_TRIANGLES, tess.numIndexes - tess.firstIndex, GL_INDEX_TYPE, BUFFER_OFFSET(tess.firstIndex * sizeof(glIndex_t)));
 	
@@ -485,8 +481,6 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	tess.numIndexes = tess.firstIndex;
 	tess.numVertexes = firstVertex;
 	tess.firstIndex = 0;
-	tess.minIndex = minIndex;
-	tess.maxIndex = maxIndex;
 }
 
 static void DrawSkySideInner( struct image_s *image, const int mins[2], const int maxs[2] )
@@ -494,8 +488,6 @@ static void DrawSkySideInner( struct image_s *image, const int mins[2], const in
 	int s, t;
 	int firstVertex = tess.numVertexes;
 	//int firstIndex = tess.numIndexes;
-	int minIndex = tess.minIndex;
-	int maxIndex = tess.maxIndex;
 	vec4_t color;
 
 	//tess.numVertexes = 0;
@@ -545,8 +537,6 @@ static void DrawSkySideInner( struct image_s *image, const int mins[2], const in
 		}
 	}
 
-	tess.minIndex = firstVertex;
-	tess.maxIndex = tess.numVertexes;
 
 	// FIXME: A lot of this can probably be removed for speed, and refactored into a more convenient function
 	RB_UpdateTessVao(ATTR_POSITION | ATTR_TEXCOORD);
@@ -592,7 +582,7 @@ static void DrawSkySideInner( struct image_s *image, const int mins[2], const in
 		GLSL_SetUniformVec4(sp, UNIFORM_DIFFUSETEXOFFTURB, vector);
 	}
 
-	R_DrawElementsVao(tess.numIndexes - tess.firstIndex, tess.firstIndex, tess.minIndex, tess.maxIndex);
+	R_DrawElements(tess.numIndexes - tess.firstIndex, tess.firstIndex);
 
 	//qglDrawElements(GL_TRIANGLES, tess.numIndexes - tess.firstIndex, GL_INDEX_TYPE, BUFFER_OFFSET(tess.firstIndex * sizeof(glIndex_t)));
 	
@@ -602,8 +592,6 @@ static void DrawSkySideInner( struct image_s *image, const int mins[2], const in
 	tess.numIndexes = tess.firstIndex;
 	tess.numVertexes = firstVertex;
 	tess.firstIndex = 0;
-	tess.minIndex = minIndex;
-	tess.maxIndex = maxIndex;
 }
 
 static void DrawSkyBox( shader_t *shader ) {

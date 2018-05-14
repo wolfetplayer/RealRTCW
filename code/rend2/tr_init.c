@@ -1100,7 +1100,7 @@ void GL_SetDefaultState( void ) {
 		// set Wolf defaults
 		qglPNTrianglesiATI( GL_PN_TRIANGLES_TESSELATION_LEVEL_ATI, r_ati_truform_tess->value );
 	}
-
+#if 0
 	if ( glConfig.anisotropicAvailable ) {
 		float maxAnisotropy;
 
@@ -1110,6 +1110,7 @@ void GL_SetDefaultState( void ) {
 		// set when rendering
 //	   qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, glConfig.maxAnisotropy);
 	}
+#endif
 //----(SA)	end
 }
 

@@ -1013,7 +1013,7 @@ void GL_SetDefaultState( void ) {
 	}
 //----(SA)	end
 #endif
-
+#if 0
 	if ( glConfig.anisotropicAvailable ) {
 		float maxAnisotropy;
 
@@ -1023,6 +1023,7 @@ void GL_SetDefaultState( void ) {
 		// set when rendering
 //	   qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, glConfig.maxAnisotropy);
 	}
+#endif
 }
 
 /*

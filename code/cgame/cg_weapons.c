@@ -5011,7 +5011,7 @@ void CG_FireWeapon( centity_t *cent ) {
 				VectorCopy( cg.refdef.vieworg, porg );
 				VectorSubtract( gorg, porg, norm );
 				gdist = VectorNormalize( norm );
-				if ( gdist > 512 && gdist < 4096 ) {   // temp dist.  TODO: use numbers that are weapon specific
+				if ( gdist > 512 && gdist < 8192 ) {   // temp dist.  TODO: use numbers that are weapon specific // RealRTCW was 4096
 					// use gorg as the new sound origin
 					VectorMA( cg.refdef.vieworg, 64, norm, gorg );    // sound-on-a-stick
 					trap_S_StartSound( gorg, ent->number, CHAN_WEAPON, fireEchosound[c] );

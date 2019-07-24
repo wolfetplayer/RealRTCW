@@ -834,15 +834,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 /*
 ==============
-SP5_Fire
-
-  dead code
-==============
-*/
-
-
-/*
-==============
 Cross_Fire
 ==============
 */

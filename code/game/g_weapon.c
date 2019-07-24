@@ -1509,7 +1509,7 @@ void Weapon_RocketLauncher_Fire( gentity_t *ent, float aimSpreadScale ) {
 		m = fire_rocket( ent, launchpos, dir );
 
 		// add kick-back
-		VectorMA( ent->client->ps.velocity, -64, forward, ent->client->ps.velocity );
+		VectorMA( ent->client->ps.velocity, -80, forward, ent->client->ps.velocity ); // RealRTCW was -64
 
 	} else {
 		m = fire_rocket( ent, muzzleEffect, forward );
@@ -1780,12 +1780,6 @@ void FireWeapon( gentity_t *ent ) {
 		s_quadFactor = 1;
 	}
 
-	// track shots taken for accuracy tracking.  Grapple is not a weapon and gauntet is just not tracked
-//----(SA)	removing old weapon references
-//	if( ent->s.weapon != WP_GRAPPLING_HOOK && ent->s.weapon != WP_GAUNTLET ) {
-//		ent->client->ps.persistant[PERS_ACCURACY_SHOTS]++;
-//	}
-
 	// Ridah, need to call this for AI prediction also
 	CalcMuzzlePoints( ent, ent->s.weapon );
 
@@ -1938,6 +1932,17 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_MG42M: 
 		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer) );
+		// RealRTCW added pushback for mg42
+		if (!ent->aiCharacter) {
+		vec3_t vec_forward, vec_vangle;
+		VectorCopy(ent->client->ps.viewangles, vec_vangle);
+		vec_vangle[PITCH] = 0;	
+		AngleVectors(vec_vangle, vec_forward, NULL, NULL);
+		if (ent->s.groundEntityNum == ENTITYNUM_NONE)
+			VectorMA(ent->client->ps.velocity, -8, vec_forward, ent->client->ps.velocity);
+		else
+			VectorMA(ent->client->ps.velocity, -24, vec_forward, ent->client->ps.velocity);
+		}
 		break;
 	
 		case WP_M97:

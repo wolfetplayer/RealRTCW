@@ -47,6 +47,29 @@ extern vmCvar_t cg_gameType;
 extern vmCvar_t g_gametype;
 #endif
 
+float BG_GetSkyHeightAtPoint(vec3_t pos) // RealRTCW
+{
+	int    i, j;
+	vec2_t point = { 0 };
+}
+
+float BG_GetSkyGroundHeightAtPoint(vec3_t pos)
+{
+	int    i, j;
+	vec2_t point = { 0 };
+	//int msec = trap_Milliseconds();
+}
+
+
+float BG_GetGroundHeightAtPoint(vec3_t pos)
+{
+	int    i, j;
+	vec2_t point = { 0 };
+	//int msec = trap_Milliseconds();
+
+	//n_getgroundtime++;
+}
+
 // jpw
 
 pmove_t     *pm;

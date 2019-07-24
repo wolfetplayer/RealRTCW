@@ -306,6 +306,15 @@ void    trap_R_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t
 	syscall( CG_R_ADDPOLYTOSCENE, hShader, numVerts, verts );
 }
 
+/**
+ * @brief trap_R_AddPolyBufferToScene RealRTCW
+ * @param[in] pPolyBuffer
+ */
+void trap_R_AddPolyBufferToScene(polyBuffer_t *pPolyBuffer)
+{
+	syscall(CG_R_ADDPOLYBUFFERTOSCENE, pPolyBuffer);
+}
+
 // Ridah
 void    trap_R_AddPolysToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts, int numPolys ) {
 	syscall( CG_R_ADDPOLYSTOSCENE, hShader, numVerts, verts, numPolys );

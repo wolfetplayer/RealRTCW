@@ -275,6 +275,9 @@ vmCvar_t mp_item2;
 vmCvar_t mp_mapDesc;
 vmCvar_t mp_mapTitle;
 vmCvar_t mp_itemDesc;
+
+vmCvar_t cg_atmosphericEffects; // RealRTCW
+
 // -NERVE - SMF
 
 typedef struct {
@@ -432,6 +435,8 @@ cvarTable_t cvarTable[] = {
 	// Rafael - particle switch
 	{ &cg_wolfparticles, "cg_wolfparticles", "1", CVAR_ARCHIVE },
 	// done
+
+	{ &cg_atmosphericEffects,     "cg_atmosphericEffects",     "1",           CVAR_ARCHIVE, }, // RealRTCW
 
 	// Ridah
 	{ &cg_gameType, "g_gametype", "0", 0 }, // communicated by systeminfo

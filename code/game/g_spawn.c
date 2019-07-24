@@ -989,6 +989,8 @@ void SP_worldspawn( void ) {
 	G_SpawnString( "gravity", "800", &s );
 	trap_Cvar_Set( "g_gravity", s );
 
+	G_SpawnString("atmosphere", "", &s); // RealRTCW
+
 	// (SA) FIXME: todo: sun shader set for worldspawn
 
 	g_entities[ENTITYNUM_WORLD].s.number = ENTITYNUM_WORLD;

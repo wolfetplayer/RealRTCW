@@ -805,6 +805,11 @@ typedef struct {
 	vec3_t autoAnglesFast;
 	vec3_t autoAxisFast[3];
 
+
+	vec2_t mapcoordsMins; // RealRTCW
+	vec2_t mapcoordsMaxs;
+
+	
 	// view rendering
 	refdef_t refdef;
 	vec3_t refdefViewAngles;	// will be converted to refdef.viewaxis
@@ -928,6 +933,8 @@ typedef struct {
 	int weaponSelectTime;
 	int weaponAnimation;
 	int weaponAnimationTime;
+
+    refdef_t *refdef_current;                       ///< Handling of some drawing elements for MV (not only MV!) RealRTCW
 
 	// blend blobs
 	viewDamage_t viewDamage[MAX_VIEWDAMAGE];
@@ -1552,6 +1559,7 @@ typedef struct {
 	int timelimit;
 	int maxclients;
 	char mapname[MAX_QPATH];
+	char rawmapname[MAX_QPATH]; // RealRTCW
 	char redTeam[MAX_QPATH];                // A team
 	char blueTeam[MAX_QPATH];               // B team
 
@@ -1750,6 +1758,7 @@ extern vmCvar_t cg_currentSelectedPlayerName;
 
 // Rafael - particle switch
 extern vmCvar_t cg_wolfparticles;
+extern vmCvar_t cg_atmosphericEffects; // RealRTCW
 // done
 
 // Ridah
@@ -1838,6 +1847,10 @@ void CG_ZoomUp_f( void );
 void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demoPlayback );
 
 void CG_Concussive( centity_t *cent );
+
+// cg_atmospheric.c RealRTCW
+void CG_EffectParse(const char *effectstr);
+void CG_AddAtmosphericEffects(void);
 
 //
 // cg_drawtools.c

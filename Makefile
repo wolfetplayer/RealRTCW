@@ -2330,6 +2330,7 @@ Q3CGOBJ_ = \
   $(B)/$(BASEGAME)/cgame/bg_pmove.o \
   $(B)/$(BASEGAME)/cgame/bg_slidemove.o \
   $(B)/$(BASEGAME)/cgame/bg_lib.o \
+  $(B)/$(BASEGAME)/cgame/cg_atmospheric.o \
   $(B)/$(BASEGAME)/cgame/cg_consolecmds.o \
   $(B)/$(BASEGAME)/cgame/cg_draw.o \
   $(B)/$(BASEGAME)/cgame/cg_drawtools.o \
@@ -2344,6 +2345,7 @@ Q3CGOBJ_ = \
   $(B)/$(BASEGAME)/cgame/cg_particles.o \
   $(B)/$(BASEGAME)/cgame/cg_players.o \
   $(B)/$(BASEGAME)/cgame/cg_playerstate.o \
+  $(B)/$(BASEGAME)/cgame/cg_polybus.o \
   $(B)/$(BASEGAME)/cgame/cg_predict.o \
   $(B)/$(BASEGAME)/cgame/cg_scoreboard.o \
   $(B)/$(BASEGAME)/cgame/cg_servercmds.o \

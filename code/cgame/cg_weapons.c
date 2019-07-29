@@ -107,10 +107,6 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 	le = CG_AllocLocalEntity();
 	re = &le->refEntity;
 
-	//velocity[0] = 16;
-	//velocity[1] = -50 + 40 * crandom();
-	//velocity[2] = 100 + 50 * crandom();
-
 	velocity[0] = -50 + 25 * crandom(); // New eject brass RealRTCW
 	velocity[1] = -100 + 40 * crandom();
 	velocity[2] = 200 + 50 * random();
@@ -145,9 +141,6 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 
 	le->angles.trType = TR_LINEAR;
 	le->angles.trTime = cg.time;
-	//le->angles.trBase[0] = rand() & 31;
-	//le->angles.trBase[1] = rand() & 31;
-	//le->angles.trBase[2] = rand() & 31;
 	le->angles.trBase[0]  = (rand() & 31) + 60;  // new eject brass RealRTCW
 	le->angles.trBase[1]  = rand() & 255; 
 	le->angles.trBase[2]  = rand() & 31;
@@ -200,11 +193,6 @@ static void CG_MachineGunEjectBrass( centity_t *cent ) {
 	le = CG_AllocLocalEntity();
 	re = &le->refEntity;
 
-	// velocity[0] = 0;
-	//velocity[0] = 16; // Maxx Kaufman offset value
-	//velocity[1] = -50 + 40 * crandom();
-	//velocity[2] = 100 + 50 * crandom();
-
 	velocity[0]           = -20 + 40 * crandom(); // New eject brass RealRTCW
 	velocity[1]           = -150 + 40 * crandom();
 	velocity[2]           = 100 + 50 * crandom();
@@ -242,7 +230,6 @@ static void CG_MachineGunEjectBrass( centity_t *cent ) {
 	VectorCopy( re->origin, le->pos.trBase );
 
 	if ( CG_PointContents( re->origin, -1 ) & ( CONTENTS_WATER | CONTENTS_SLIME ) ) { //----(SA)	modified since slime is no longer deadly
-//	if ( CG_PointContents( re->origin, -1 ) & CONTENTS_WATER ) {
 		waterScale = 0.10;
 	}
 
@@ -685,98 +672,6 @@ static void CG_GrenadeTrail( centity_t *ent, const weaponInfo_t *wi ) {
 
 
 
-
-/*
-==========================
-CG_NailgunEjectBrass
-==========================
-*/
-/*
-static void CG_NailgunEjectBrass( centity_t *cent ) {
-	localEntity_t	*smoke;
-	vec3_t			origin;
-	vec3_t			v[3];
-	vec3_t			offset;
-	vec3_t			xoffset;
-	vec3_t			up;
-
-	AnglesToAxis( cent->lerpAngles, v );
-
-	offset[0] = 0;
-	offset[1] = -12;
-	offset[2] = 24;
-
-	xoffset[0] = offset[0] * v[0][0] + offset[1] * v[1][0] + offset[2] * v[2][0];
-	xoffset[1] = offset[0] * v[0][1] + offset[1] * v[1][1] + offset[2] * v[2][1];
-	xoffset[2] = offset[0] * v[0][2] + offset[1] * v[1][2] + offset[2] * v[2][2];
-	VectorAdd( cent->lerpOrigin, xoffset, origin );
-
-	VectorSet( up, 0, 0, 64 );
-
-	smoke = CG_SmokePuff( origin, up, 32, 1, 1, 1, 0.33f, 700, cg.time, 0, 0, cgs.media.smokePuffShader );
-	// use the optimized local entity add
-	smoke->leType = LE_SCALE_FADE;
-}
-
-static void CG_NailTrail( centity_t *ent, const weaponInfo_t *wi ) {
-	int		step;
-	vec3_t	origin, lastPos;
-	int		t;
-	int		startTime, contents;
-	int		lastContents;
-	entityState_t	*es;
-	vec3_t	up;
-	localEntity_t	*smoke;
-
-	up[0] = 0;
-	up[1] = 0;
-	up[2] = 0;
-
-	step = 50;
-
-	es = &ent->currentState;
-	startTime = ent->trailTime;
-	t = step * ( (startTime + step) / step );
-
-	BG_EvaluateTrajectory( &es->pos, cg.time, origin );
-	contents = CG_PointContents( origin, -1 );
-
-	// if object (e.g. grenade) is stationary, don't toss up smoke
-	if ( es->pos.trType == TR_STATIONARY ) {
-		ent->trailTime = cg.time;
-		return;
-	}
-
-	BG_EvaluateTrajectory( &es->pos, ent->trailTime, lastPos );
-	lastContents = CG_PointContents( lastPos, -1 );
-
-	ent->trailTime = cg.time;
-
-	if ( contents & ( CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA ) ) {
-		if ( contents & lastContents & CONTENTS_WATER ) {
-			CG_BubbleTrail( lastPos, origin, 1, 8 );
-		}
-		return;
-	}
-
-	for ( ; t <= ent->trailTime ; t += step ) {
-		BG_EvaluateTrajectory( &es->pos, t, lastPos );
-
-		smoke = CG_SmokePuff( lastPos, up,
-					  wi->trailRadius,
-					  1, 1, 1, 0.33f,
-					  wi->wiTrailTime,
-					  t,
-					  0,
-					  0,
-					  cgs.media.nailPuffShader );
-		// use the optimized local entity add
-		smoke->leType = LE_SCALE_FADE;
-	}
-
-}
-*/
-
 /*
 ==========================
 CG_RailTrail
@@ -1007,10 +902,6 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi ) {
 
 	return qtrue;
 }
-
-// ET weapon system port
-
-
 
 
 /*

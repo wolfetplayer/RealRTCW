@@ -1146,7 +1146,7 @@ void G_RegisterCvars( void ) {
 	}
 
 	// Rafael gameskill
-	if ( g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_MAX ) {
+	if ( g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_REALISM ) {
 		G_Printf( "g_gameskill %i is out of range, default to medium\n", g_gameskill.integer );
 		trap_Cvar_Set( "g_gameskill", va( "%d", GSKILL_MEDIUM ) ); // default to medium
 	}

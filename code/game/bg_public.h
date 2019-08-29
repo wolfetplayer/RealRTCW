@@ -223,7 +223,8 @@ typedef enum {
 	GSKILL_EASY,
 	GSKILL_MEDIUM,
 	GSKILL_HARD,
-	GSKILL_MAX      // must always be last
+	GSKILL_MAX,
+	GSKILL_REALISM      // must always be last
 } gameskill_t;
 
 typedef enum { GENDER_MALE, GENDER_FEMALE, GENDER_NEUTER } gender_t;
@@ -1305,7 +1306,7 @@ typedef struct gitem_s {
 	char        *precaches;     // string of all models and images this item will use
 	char        *sounds;        // string of all sounds this item will use
 
-	int gameskillnumber[4];
+	int gameskillnumber[5];
 } gitem_t;
 // END JOSEPH
 

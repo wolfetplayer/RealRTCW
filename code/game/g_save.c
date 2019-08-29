@@ -1507,7 +1507,7 @@ void G_LoadGame( char *filename ) {
 			// set the skill level
 			trap_Cvar_Set( "g_gameskill", va( "%i",i ) );
 			// update this
-			aicast_skillscale = (float)i / (float)GSKILL_MAX;
+			aicast_skillscale = (float)i / (float)GSKILL_REALISM;
 		}
 	}
 
@@ -1628,7 +1628,7 @@ void G_LoadGame( char *filename ) {
 			// set the skill level
 			trap_Cvar_Set( "g_gameskill", va( "%i",i ) );
 			// update this
-			aicast_skillscale = (float)i / (float)GSKILL_MAX;
+			aicast_skillscale = (float)i / (float)GSKILL_REALISM;
 		}
 	}
 //----(SA)	end moved

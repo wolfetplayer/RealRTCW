@@ -3030,7 +3030,12 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		CG_CalculateWeaponPosition( hand.origin, angles );
         // REALRTCWEXP
 	    switch ( cg.predictedPlayerState.weapon ) {
-		case WP_MP44:
+			case WP_FLAMETHROWER:
+			 gunoff[0] = 10;
+		     gunoff[1] = 0;
+		     gunoff[2] = 0;
+		break;
+		 case WP_MP44:
 			 gunoff[0] = 1;
 		     gunoff[1] = 0;
 		     gunoff[2] = 0;

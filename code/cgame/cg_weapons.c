@@ -4678,67 +4678,68 @@ void CG_MortarEFX( centity_t *cent ) {
 // RF
 /*
 ==============
-CG_WeaponFireRecoil
+CG_WeaponFireRecoil (visual recoil)
 ==============
 */
 void CG_WeaponFireRecoil( int weapon ) {
-//	const	vec3_t maxKickAngles = {25, 30, 25};
 	float pitchRecoilAdd, pitchAdd;
 	float yawRandom;
 	vec3_t recoil;
-	//
 	pitchRecoilAdd = 0;
 	pitchAdd = 0;
 	yawRandom = 0;
-	//
 	switch ( weapon ) {
 	case WP_LUGER:
 	case WP_SILENCER:
 	case WP_COLT:
 	case WP_TT33:
 	case WP_AKIMBO: 
+	   yawRandom = 1;
+	   pitchRecoilAdd = 2;
+	   pitchAdd = 1;
 	break;
 	case WP_REVOLVER:
-	pitchAdd = 1;
-	yawRandom = 1;
-	     break;
+	    pitchAdd = 1;
+	    yawRandom = 1;
+    break;
 	case WP_MAUSER:
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_G43:
 	case WP_M1GARAND:
-		pitchAdd = 2;   //----(SA)	for DM
-		yawRandom = 1;  //----(SA)	for DM
-		break;
+		pitchAdd = 2.5;
+		yawRandom = 1; 
+	    pitchRecoilAdd = 2;   
+		yawRandom = 1
+	break;
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
-		pitchAdd = 0.6;
-		break;
-	case WP_FG42SCOPE:
-	case WP_FG42:
+		pitchAdd = 0.8;
+	break;
 	case WP_MP40:
-	// RealRTCW weapons
 	case WP_MP34:
 	case WP_PPSH:
-	case WP_BAR:
-	case WP_MP44:
 	case WP_THOMPSON:
 	case WP_STEN:
-		pitchAdd = 1 + rand() % 3;
+		pitchAdd = 2;
+		pitchRecoilAdd = 2;  
 		yawRandom = 2;
-
-		pitchAdd *= 0.3;
-		yawRandom *= 0.3;
-		break;
-
+	break;
+	case WP_FG42SCOPE:
+	case WP_FG42:
+	case WP_BAR:
+	case WP_MP44:
+		pitchAdd = 1.5;
+		pitchRecoilAdd = 2;   
+		yawRandom = 1;  
+	break;
 	case WP_M97:
 		pitchRecoilAdd = 1;
 		pitchAdd = 12 + rand() % 3;
 		yawRandom = 2;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
-		break;
-	
+	break;
 	case WP_MG42M:
 		pitchRecoilAdd = pow(random(), 8) * (10 + VectorLength(cg.snap->ps.velocity) / 5);
 		pitchAdd = (rand() % 5) - 2;
@@ -4746,26 +4747,18 @@ void CG_WeaponFireRecoil( int weapon ) {
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
-		break;
-
+	break;
 	case WP_PANZERFAUST:
-		//pitchAdd = 12+rand()%3;
-		//yawRandom = 6;
-
 		CG_StartShakeCamera( 0.05, 700, cg.snap->ps.origin, 100 );
-
-		// push the player back instead
 		break;
 	case WP_VENOM:
 		pitchRecoilAdd = pow( random(),8 ) * ( 10 + VectorLength( cg.snap->ps.velocity ) / 5 );
 		pitchAdd = ( rand() % 5 ) - 2;
 		yawRandom = 2;
-
-
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
-		break;
+	break;
 	default:
 		return;
 	}

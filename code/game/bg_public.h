@@ -286,9 +286,13 @@ typedef enum {
 
 #define MAXTOUCH    32
 
+// autoreload. Client flags for server processing
+#define CGF_AUTORELOAD      0x01
+
 // data used both in client and server
 typedef struct
 {
+	qboolean bAutoReload;
 	qboolean m97reloadInterrupt;
 } pmoveExt_t;
 
@@ -640,6 +644,32 @@ extern int weapAlts[];  // defined in bg_misc.c
 #define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_REVOLVER ) )
 //----(SA)	end
 
+
+// gothicstein
+#define IS_AUTORELOAD_WEAPON( weapon ) \
+	(	\
+		weapon == WP_LUGER    || weapon == WP_COLT          || weapon == WP_MP40          || \
+		weapon == WP_THOMPSON || weapon == WP_STEN      || \
+		weapon == WP_MAUSER    || weapon == WP_SNIPERRIFLE       || weapon == WP_M1GARAND  || \
+		weapon == WP_FG42     || weapon == WP_G43           || weapon == WP_MG42M   || \
+		weapon == WP_SILENCER    || weapon == WP_VENOM      || \
+		weapon == WP_GARAND   || weapon == WP_TT33     || weapon == WP_FG42SCOPE     || \
+		weapon == WP_BAR    || weapon == WP_MP44      || \
+		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
+		weapon == WP_PPSH    || weapon == WP_GARAND      || \
+		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER       \
+	)
+
+ // entityState_t->event values
+// entity events are for effects that take place reletive
+// to an existing entities origin.  Very network efficient.
+
+ // two bits at the top of the entityState->event field
+// will be incremented with each change in the event so
+// that an identical event started twice in a row can
+// be distinguished.  And off the value with ~EV_EVENT_BITS
+// to retrieve the actual event number
+
 typedef enum {
 	WPOS_HIGH,
 	WPOS_LOW,
@@ -729,6 +759,7 @@ typedef enum {
 	EV_GLOBAL_ITEM_PICKUP,  // powerup / team sounds are broadcast to everyone
 	EV_NOITEM,
 	EV_NOAMMO,
+	EV_WEAPONSWITCHED, // autoreload
 	EV_EMPTYCLIP,
 	EV_FILL_CLIP,
 	EV_WEAP_OVERHEAT,

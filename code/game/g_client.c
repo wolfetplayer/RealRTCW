@@ -1299,6 +1299,27 @@ void ClientUserinfoChanged( int clientNum ) {
 		client->pers.localClient = qtrue;
 	}
 
+	// autoreload - extra client info settings
+	//		 FIXME: move other userinfo flag settings in here
+	if ( ent->r.svFlags & SVF_BOT ) {
+		client->pers.bAutoReloadAux = qtrue;
+		client->pmext.bAutoReload = qtrue;
+	} else {
+		s = Info_ValueForKey( userinfo, "cg_uinfo" );
+		sscanf( s, "%i %i %i",
+				&client->pers.clientFlags,
+				&client->pers.clientTimeNudge,
+				&client->pers.clientMaxPackets );
+
+ 		if ( client->pers.clientFlags & CGF_AUTORELOAD ) {
+			client->pers.bAutoReloadAux = qtrue;
+			client->pmext.bAutoReload = qtrue;
+		} else {
+			client->pers.bAutoReloadAux = qfalse;
+			client->pmext.bAutoReload = qfalse;
+		}
+	}
+
 	// check the item prediction
 	s = Info_ValueForKey( userinfo, "cg_predictItems" );
 	if ( !atoi( s ) ) {
@@ -2029,6 +2050,10 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->ps.friction = 1.0;
 	// done.
+    
+	// autoreload
+	// retrieve from the persistant storage (we use this in pmoveExt_t beause we need it in bg_*)
+	client->pmext.bAutoReload = client->pers.bAutoReloadAux;
 
 	client->ps.clientNum = index;
 

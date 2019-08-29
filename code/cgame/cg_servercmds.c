@@ -687,6 +687,8 @@ static void CG_MapRestart( void ) {
 
 	cg.mapRestart = qtrue;
 
+	cg.pmext.bAutoReload = ( cg_autoReload.integer > 0 ); // autoreload
+
 	CG_StartMusic();
 
 	trap_S_ClearLoopingSounds( qtrue );

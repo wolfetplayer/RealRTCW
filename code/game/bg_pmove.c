@@ -2345,8 +2345,9 @@ PM_CheckforReload
 ==============
 */
 void PM_CheckForReload( int weapon ) {
+	qboolean autoreload;
 	qboolean reloadRequested;
-	qboolean doReload = qfalse;
+	//qboolean doReload = qfalse;
 	int clipWeap, ammoWeap;
 
 	if ( pm->noWeapClips ) { // no need to reload
@@ -2375,7 +2376,7 @@ void PM_CheckForReload( int weapon ) {
 	default:
 		break;
 	}
-
+    autoreload = pm->pmext->bAutoReload || !IS_AUTORELOAD_WEAPON( weapon ); // autoreload
 	clipWeap = BG_FindClipForWeapon( weapon );
 	ammoWeap = BG_FindAmmoForWeapon( weapon );
 
@@ -2387,12 +2388,8 @@ void PM_CheckForReload( int weapon ) {
 		case WP_SNOOPERSCOPE:
 		case WP_SNIPERRIFLE:
 		case WP_FG42SCOPE:
-			if ( reloadRequested ) {
-				doReload = qtrue;
-				if ( !( pm->ps->ammo[ammoWeap] ) ) { // no ammo left. when you switch out, don't try to reload
-					doReload = qfalse;
-				}
-				PM_BeginWeaponChange( weapon, weapAlts[weapon], doReload );
+            if ( reloadRequested && pm->ps->ammo[ammoWeap] ) {
+			PM_BeginWeaponChange( weapon, weapAlts[weapon], !( pm->ps->ammo[ammoWeap] ) ? qfalse : qtrue );
 			}
 			return;
 		default:
@@ -2401,7 +2398,11 @@ void PM_CheckForReload( int weapon ) {
 	}
 
 
+
+
+
 	if ( pm->ps->weaponTime <= 0) {
+		qboolean doReload = qfalse;
 
 		if ( reloadRequested ) {
 			// don't allow a force reload if it won't have any effect (no more ammo reserves or full clip)
@@ -2416,9 +2417,9 @@ void PM_CheckForReload( int weapon ) {
 					}
 				}
 			}
-		}
+		} else if ( autoreload ) {
 		// clip is empty, but you have reserves.  (auto reload)
-		else if ( !( pm->ps->ammoclip[clipWeap] ) ) {   // clip is empty...
+		if ( !( pm->ps->ammoclip[clipWeap] ) ) {    // clip is empty...
 			if ( pm->ps->ammo[ammoWeap] ) {         // and you have reserves
 				if ( weapon == WP_AKIMBO ) {    // if colt's got ammo, don't force reload yet (you know you've got it 'out' since you've got the akimbo selected
 					if ( !( pm->ps->ammoclip[WP_COLT] ) ) {
@@ -2438,7 +2439,7 @@ void PM_CheckForReload( int weapon ) {
 				}
 			}
 		}
-
+        }
 		if (doReload) {
 			PM_BeginWeaponReload(weapon);
 		}
@@ -3318,6 +3319,11 @@ static void PM_Weapon( void ) {
 
 			// you have ammo for this, just not in the clip
 			reloadingW = (qboolean)( ammoNeeded <= pm->ps->ammo[ BG_FindAmmoForWeapon( pm->ps->weapon )] );
+
+			// autoreload if not in auto-reload mode, and reload was not explicitely requested, just play the 'out of ammo' sound
+			if ( !pm->pmext->bAutoReload && IS_AUTORELOAD_WEAPON( pm->ps->weapon ) && !( pm->cmd.wbuttons & WBUTTON_RELOAD ) ) {
+				reloadingW = qfalse;
+			} 
 
 			if ( pm->ps->eFlags & EF_MELEE_ACTIVE ) {
 				// not going to be allowed to reload if holding a chair

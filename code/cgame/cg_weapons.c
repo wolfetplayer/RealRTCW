@@ -4710,7 +4710,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 		pitchAdd = 2.5;
 		yawRandom = 1; 
 	    pitchRecoilAdd = 2;   
-		yawRandom = 1
+		yawRandom = 1;
 	break;
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:

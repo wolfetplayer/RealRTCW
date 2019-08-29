@@ -259,6 +259,8 @@ void CG_Respawn( void ) {
 
 	cg.holdableSelectTime = 0;  //----(SA) reset holdable timer
 
+	cg.pmext.bAutoReload = ( cg_autoReload.integer > 0 ); // autoreload
+
 	cg.centerPrintTime = 0;     //----(SA)	reset centerprint counter so previous messages don't re-appear
 	cg.cursorHintIcon = 0;
 	cg.cursorHintTime = 0;

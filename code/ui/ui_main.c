@@ -7457,6 +7457,8 @@ vmCvar_t ui_prevClass;
 vmCvar_t ui_prevWeapon;
 
 vmCvar_t ui_limboMode;
+
+vmCvar_t  cg_autoReload;
 // -NERVE - SMF
 
 cvarTable_t cvarTable[] = {
@@ -7568,7 +7570,9 @@ cvarTable_t cvarTable[] = {
 	{ &ui_hunkUsed, "com_hunkused", "0", 0 },     //----(SA)	added
 	{ &ui_cameraMode, "com_cameraMode", "0", 0},  //----(SA)	added
 
-	{ &ui_savegameName, "ui_savegameName", "", CVAR_ROM}
+	{ &ui_savegameName, "ui_savegameName", "", CVAR_ROM},
+	
+	{ &cg_autoReload, "cg_autoReload", "1", CVAR_ARCHIVE }
 
 
 };

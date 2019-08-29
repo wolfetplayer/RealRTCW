@@ -3701,6 +3701,8 @@ void CL_Init( void ) {
 	Cvar_Get( "cg_wolfparticles", "1", CVAR_ARCHIVE );
 	// done
 
+	Cvar_Get( "cg_autoReload", "1", CVAR_ARCHIVE ); // autoreload
+
 	cl_conXOffset = Cvar_Get( "cl_conXOffset", "0", 0 );
 	cl_inGameVideo = Cvar_Get( "r_inGameVideo", "1", CVAR_ARCHIVE );
 

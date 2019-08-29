@@ -214,6 +214,10 @@ vmCvar_t pmove_msec;
 
 // Rafael - particle switch
 vmCvar_t cg_wolfparticles;
+vmCvar_t cg_autoReload;
+vmCvar_t cg_uinfo;
+vmCvar_t int_cl_maxpackets;
+vmCvar_t int_cl_timenudge;
 // done
 
 // Ridah
@@ -438,6 +442,11 @@ cvarTable_t cvarTable[] = {
 
 	{ &cg_atmosphericEffects,     "cg_atmosphericEffects",     "1",           CVAR_ARCHIVE, }, // RealRTCW
 
+	{ &cg_autoReload, "cg_autoReload", "1", CVAR_ARCHIVE },
+	{ &cg_uinfo, "cg_uinfo", "0", CVAR_ROM | CVAR_USERINFO },
+	{ &int_cl_maxpackets, "cl_maxpackets", "30", CVAR_ARCHIVE },
+	{ &int_cl_timenudge, "cl_timenudge", "0", CVAR_ARCHIVE },
+
 	// Ridah
 	{ &cg_gameType, "g_gametype", "0", 0 }, // communicated by systeminfo
 	{ &cg_norender, "cg_norender", "0", 0 },  // only used during single player, to suppress rendering until the server is ready
@@ -484,6 +493,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_showAIState, "cg_showAIState", "0", CVAR_CHEAT},
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
+void CG_setClientFlags( void );
 
 /*
 =================
@@ -542,10 +552,13 @@ CG_UpdateCvars
 */
 void CG_UpdateCvars( void ) {
 	int i;
+	qboolean fSetFlags = qfalse;
 	cvarTable_t *cv;
 
 	for ( i = 0, cv = cvarTable ; i < cvarTableSize ; i++, cv++ ) {
 		trap_Cvar_Update( cv->vmCvar );
+		if ( cv->vmCvar == &cg_autoReload || cv->vmCvar == &int_cl_timenudge || cv->vmCvar == &int_cl_maxpackets ) {
+		fSetFlags = qtrue;
 	}
 
 /* RF, disabled this, not needed anymore
@@ -557,7 +570,31 @@ void CG_UpdateCvars( void ) {
 */
 
 }
+	// Send any relevent updates
+	if ( fSetFlags ) {
+		CG_setClientFlags();
+	}
+}
 
+ void CG_setClientFlags( void ) {
+	if ( cg.demoPlayback ) {
+		return;
+	}
+
+ 	cg.pmext.bAutoReload = ( cg_autoReload.integer > 0 );
+	trap_Cvar_Set( "cg_uinfo", va( "%d %d %d",
+								   // Client Flags
+								   (
+									   ( ( cg_autoReload.integer > 0 ) ? CGF_AUTORELOAD : 0 ) 
+									   // Add more in here, as needed
+								   ),
+
+ 								   // Timenudge
+								   int_cl_timenudge.integer,
+								   // MaxPackets
+								   int_cl_maxpackets.integer
+								   ) );
+}
 
 int CG_CrosshairPlayer( void ) {
 	if ( cg.time > ( cg.crosshairClientTime + 1000 ) ) {

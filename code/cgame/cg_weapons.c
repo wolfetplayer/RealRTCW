@@ -4742,7 +4742,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	break;
 	case WP_MG42M:
 		pitchRecoilAdd = pow(random(), 8) * (10 + VectorLength(cg.snap->ps.velocity) / 5);
-		pitchAdd = (rand() % 5) - 2;
+		pitchAdd = 5 + rand() % 3;
 		yawRandom = 2;
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;

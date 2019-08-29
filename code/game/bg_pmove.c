@@ -2911,6 +2911,51 @@ static void PM_Weapon( void ) {
 	// weapon cool down
 	PM_CoolWeapons();
 
+
+	
+ 	// RealRTCW check for weapon recoil
+	// do the recoil before setting the values, that way it will be shown next frame and not this
+	if ( pm->pmext->weapRecoilTime ) {
+		vec3_t muzzlebounce;
+		int i, deltaTime;
+
+ 		deltaTime = pm->cmd.serverTime - pm->pmext->weapRecoilTime;
+		VectorCopy( pm->ps->viewangles, muzzlebounce );
+
+ 		if ( deltaTime > pm->pmext->weapRecoilDuration ) {
+			deltaTime = pm->pmext->weapRecoilDuration;
+		}
+
+ 		for ( i = pm->pmext->lastRecoilDeltaTime; i < deltaTime; i += 15 ) {
+			if ( pm->pmext->weapRecoilPitch > 0.f ) {
+				muzzlebounce[PITCH] -= 2*pm->pmext->weapRecoilPitch*cos( 2.5*(i) / pm->pmext->weapRecoilDuration );
+				muzzlebounce[PITCH] -= 0.25 * random() * ( 1.0f - ( i ) / pm->pmext->weapRecoilDuration );
+			}
+
+ 			if ( pm->pmext->weapRecoilYaw > 0.f ) {
+				muzzlebounce[YAW] += 0.5*pm->pmext->weapRecoilYaw*cos( 1.0 - (i)*3 / pm->pmext->weapRecoilDuration );
+				muzzlebounce[YAW] += 0.5 * crandom() * ( 1.0f - ( i ) / pm->pmext->weapRecoilDuration );
+			}
+		}
+
+ 		// set the delta angle
+		for ( i = 0; i < 3; i++ ) {
+			int cmdAngle;
+
+ 			cmdAngle = ANGLE2SHORT( muzzlebounce[i] );
+			pm->ps->delta_angles[i] = cmdAngle - pm->cmd.angles[i];
+		}
+		VectorCopy( muzzlebounce, pm->ps->viewangles );
+
+ 		if ( deltaTime == pm->pmext->weapRecoilDuration ) {
+			pm->pmext->weapRecoilTime = 0;
+			pm->pmext->lastRecoilDeltaTime = 0;
+		} else {
+			pm->pmext->lastRecoilDeltaTime = deltaTime;
+		}
+	}
+
+
 	// check for item using
 	if ( pm->cmd.buttons & BUTTON_USE_HOLDABLE ) {
 		if ( !( pm->ps->pm_flags & PMF_USE_ITEM_HELD ) ) {
@@ -3610,6 +3655,142 @@ static void PM_Weapon( void ) {
 		}
 		break;
 	}
+
+// real recoil
+	pm->pmext->lastRecoilDeltaTime = 0;
+
+ 	switch ( pm->ps->weapon ) {
+case WP_MG42M:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 200;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .5f;
+			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .25f;
+			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
+		}
+		break;
+	// Semi-automatic rifles - Medium recoil
+	case WP_M1GARAND: 
+	case WP_G43:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 150;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .1f;
+			pm->pmext->weapRecoilPitch = .1f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .2f;
+			pm->pmext->weapRecoilPitch = .2f * random();
+		}
+		break;
+	// Shotgun - High recoil
+	case WP_M97: 
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 150;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .5f;
+			pm->pmext->weapRecoilPitch = .5f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .9f;
+			pm->pmext->weapRecoilPitch = .95f * random();
+		}
+		break;
+	// bolt-action rifles - High recoil to compensate for superb stopping power
+	case WP_MOSIN:
+	case WP_MAUSER:
+	case WP_GARAND:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+		    pm->pmext->weapRecoilYaw = crandom() * 1.0f; 
+		    pm->pmext->weapRecoilPitch = .9f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * 1.5f;
+			pm->pmext->weapRecoilPitch = 1.0f * random();
+		}
+		break;
+	// Pistols - medium recoil
+	case WP_LUGER:
+	case WP_SILENCER:
+	case WP_COLT:
+	case WP_TT33:
+	case WP_REVOLVER:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		pm->pmext->weapRecoilYaw = 0.f;
+		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
+		break;
+		// SMGs - Low recoil
+	case WP_MP40:
+	case WP_STEN:
+	case WP_MP34:
+	case WP_PPSH: 
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .01f;
+			pm->pmext->weapRecoilPitch = .01f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .1f;
+			pm->pmext->weapRecoilPitch = .1f * random();
+		}
+		break;
+	case WP_THOMPSON:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .1f;
+			pm->pmext->weapRecoilPitch = .1f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .2f;
+			pm->pmext->weapRecoilPitch = .2f * random();
+		}
+		break;
+		// Assault Rifles - Low recoil
+	case WP_FG42:
+	case WP_BAR:
+	case WP_MP44: 
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .01f;
+			pm->pmext->weapRecoilPitch = .01f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .1f;
+			pm->pmext->weapRecoilPitch = .1f * random();
+		}
+		break;
+		// Venom Gun - Low recoil
+	case WP_VENOM:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .1f;
+			pm->pmext->weapRecoilPitch = .1f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * .2f;
+			pm->pmext->weapRecoilPitch = .2f * random();
+		}
+		break;
+         // Panzerfaust - Medium recoil
+	case WP_PANZERFAUST:
+		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
+		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilYaw = crandom() * .5f;
+			pm->pmext->weapRecoilPitch = .5f * random();
+		} else {
+			pm->pmext->weapRecoilYaw = crandom() * 1.0f;
+			pm->pmext->weapRecoilPitch = 1.0f * random();
+		}
+		break;	
+	default:
+		pm->pmext->weapRecoilTime = 0;
+		pm->pmext->weapRecoilYaw = 0.f;
+		break;
+	}
+
 
 	// check for overheat
 

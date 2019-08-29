@@ -460,7 +460,21 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 #endif
 if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 	{
-		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
+		if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
+		if ( ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
+			scale *= 0.65; 
+        }
+		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST )) {
+			scale *= 0.75; 
+		}
+		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
+			scale *= 0.80; 
+		}
+		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_TT33 ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
+			scale *= 0.85; 
+		}
+		} else {
+			if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
 			scale *= 0.75; 
         }
 		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
@@ -468,6 +482,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		}
 		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_TT33 ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
 			scale *= 0.95; 
+		}
 		}
 	}
 // jpw
@@ -966,7 +981,11 @@ static void PM_WalkMove( void ) {
 			} else {
 				pm->ps->jumpTime = pm->cmd.serverTime;
 
-				stamtake = 1000;    // amount to take for jump RealRTCW was 2000
+				if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
+				stamtake = 4000;    // amount to take for jump RealRTCW
+				} else {
+					stamtake = 1000;
+				}
 
 				// take time from powerup before taking it from sprintTime
 				if ( pm->ps->powerups[PW_NOFATIGUE] ) {
@@ -4298,7 +4317,11 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				pm->ps->sprintTime -= 25; // RealRTCW was 50
+				if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
+				pm->ps->sprintTime -= 75; 
+				} else {
+				pm->ps->sprintTime -= 25; 
+				}
 			}
 		}
 

@@ -4522,7 +4522,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "r_texturebits", 0 );
 			trap_Cvar_SetValue( "cg_shadows", 0 );
 			trap_Cvar_SetValue( "r_fastSky", 1 );
-			trap_Cvar_SetValue( "r_dynamiclight", 0 );
+			trap_Cvar_SetValue( "r_dynamiclight", 1 );
 			trap_Cvar_SetValue( "r_inGameVideo", 0 );
 			trap_Cvar_SetValue( "cg_brassTime", 0 );
 			trap_Cvar_Set( "r_texturemode", "GL_LINEAR_MIPMAP_NEAREST" );
@@ -4545,7 +4545,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "cg_shadows", 0 );
 			trap_Cvar_SetValue( "cg_brassTime", 0 );
 			trap_Cvar_SetValue( "r_fastSky", 1 );
-			trap_Cvar_SetValue( "r_dynamiclight", 0 );
+			trap_Cvar_SetValue( "r_dynamiclight", 1 );
 			trap_Cvar_SetValue( "r_inGameVideo", 0 );
 			trap_Cvar_Set( "r_texturemode", "GL_LINEAR_MIPMAP_NEAREST" );
 			trap_Cvar_SetValue( "r_ext_compressed_textures", 1 );

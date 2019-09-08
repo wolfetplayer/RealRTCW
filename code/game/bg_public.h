@@ -170,6 +170,7 @@ typedef enum {
 
 #define CS_SHADERSTATE      24
 #define CS_MUSIC_QUEUE      25
+#define	CS_ATMOSEFFECT		26  	  	// Atmospheric effect, if any.
 #define CS_ITEMS            27      // string of 0's and 1's that tell which items are present
 
 #define CS_SCREENFADE       28      // Ridah, used to tell clients to fade their screen to black/normal

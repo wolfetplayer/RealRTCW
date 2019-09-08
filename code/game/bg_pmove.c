@@ -3092,63 +3092,8 @@ static void PM_Weapon( void ) {
 		if ( pm->ps->weaponTime < 0 ) {
 			pm->ps->weaponTime = 0;
 		}
+		
 
-//----(SA)	removed for DM and id
-/*
-		// RF, testing special case Pistol, which fires faster if you tap the fire button
-		if ( pm->ps->weapon == WP_LUGER ) {
-			if ( pm->ps->releasedFire ) {
-				if (pm->ps->weaponTime <= 250 && (pm->cmd.buttons & BUTTON_ATTACK)) {
-					pm->ps->weaponTime = 0;
-				}
-			} else if (!(pm->cmd.buttons & BUTTON_ATTACK)) {
-				pm->ps->releasedFire = qtrue;
-			}
-		} else if ( pm->ps->weapon == WP_COLT ) {
-			if ( pm->ps->releasedFire ) {
-				if (pm->ps->weaponTime <= 150 && (pm->cmd.buttons & BUTTON_ATTACK)) {
-					pm->ps->weaponTime = 0;
-				}
-			} else if (!(pm->cmd.buttons & BUTTON_ATTACK)) {
-				pm->ps->releasedFire = qtrue;
-			}
-		} else if ( pm->ps->weapon == WP_SILENCER ) {
-			if ( pm->ps->releasedFire ) {
-				if (pm->ps->weaponTime <= 250 && (pm->cmd.buttons & BUTTON_ATTACK)) {
-					pm->ps->weaponTime = 0;
-				}
-			} else if (!(pm->cmd.buttons & BUTTON_ATTACK)) {
-				pm->ps->releasedFire = qtrue;
-			}
-		}
-*/
-//----(SA)	end
-
-// JPW NERVE -- added back for multiplayer pistol balancing
-#ifdef CGAMEDLL
-	if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-#endif
-#ifdef GAMEDLL
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-#endif
-		if ( pm->ps->weapon == WP_LUGER ) {
-			if ( pm->ps->releasedFire ) {
-				if ( pm->ps->weaponTime <= 150 && ( pm->cmd.buttons & BUTTON_ATTACK ) ) {
-					pm->ps->weaponTime = 0;
-				}
-			} else if ( !( pm->cmd.buttons & BUTTON_ATTACK ) && ( pm->ps->weaponTime >= 50 ) ) {
-				pm->ps->releasedFire = qtrue;
-			}
-		} else if ( pm->ps->weapon == WP_COLT ) {
-			if ( pm->ps->releasedFire ) {
-				if ( pm->ps->weaponTime <= 150 && ( pm->cmd.buttons & BUTTON_ATTACK ) ) {
-					pm->ps->weaponTime = 0;
-				}
-			} else if ( !( pm->cmd.buttons & BUTTON_ATTACK ) && ( pm->ps->weaponTime >= 100 ) ) {
-				pm->ps->releasedFire = qtrue;
-			}
-		}
-	}
 // jpw
 
 }

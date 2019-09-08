@@ -41,6 +41,7 @@
 //#define MIN_ATMOSPHERIC_HEIGHT          -MAX_MAP_SIZE   // minimum world height
 
 #define MAX_ATMOSPHERIC_PARTICLES       4000    // maximum # of particles
+#define MAX_ATMOSPHERIC_PARTICLES       8192    // maximum # of particles
 #define MAX_ATMOSPHERIC_DISTANCE        1000    // maximum distance from refdef origin that particles are visible
 #define MAX_ATMOSPHERIC_EFFECTSHADERS   4       // maximum different effectshaders for an atmospheric effect
 

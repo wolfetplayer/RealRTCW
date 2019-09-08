@@ -281,6 +281,8 @@ vmCvar_t mp_mapTitle;
 vmCvar_t mp_itemDesc;
 
 vmCvar_t cg_atmosphericEffects; // RealRTCW
+vmCvar_t  	cg_lowAtmosphericEffects;
+vmCvar_t  	cg_forceAtmosphericEffects;
 
 // -NERVE - SMF
 
@@ -441,6 +443,8 @@ cvarTable_t cvarTable[] = {
 	// done
 
 	{ &cg_atmosphericEffects,     "cg_atmosphericEffects",     "1",           CVAR_ARCHIVE, }, // RealRTCW
+	{ &cg_lowAtmosphericEffects, "cg_lowAtmosphericEffects", "0", 0 },		/// added by Berserker
+	{ &cg_forceAtmosphericEffects, "cg_forceAtmosphericEffects", "0", CVAR_LATCH },		/// added by Berserker
 
 	{ &cg_autoReload, "cg_autoReload", "1", CVAR_ARCHIVE },
 	{ &cg_uinfo, "cg_uinfo", "0", CVAR_ROM | CVAR_USERINFO },

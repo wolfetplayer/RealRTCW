@@ -99,6 +99,7 @@ cvar_t	*com_maxfpsMinimized;
 cvar_t	*com_abnormalExit;
 cvar_t	*com_standalone;
 cvar_t	*com_gamename;
+cvar_t	*com_atmosphericEffect;	/// Berserker
 cvar_t	*com_protocol;
 #ifdef LEGACY_PROTOCOL
 cvar_t	*com_legacyprotocol;
@@ -2361,6 +2362,7 @@ void Com_Init( char *commandLine ) {
 	com_altivec = Cvar_Get ("com_altivec", "1", CVAR_ARCHIVE);
 	com_maxfps = Cvar_Get( "com_maxfps", "76", CVAR_ARCHIVE );
 	com_blood = Cvar_Get( "com_blood", "1", CVAR_ARCHIVE );
+	com_atmosphericEffect = Cvar_Get("com_atmosphericEffect", "", CVAR_ROM);
 
 	com_logfile = Cvar_Get( "logfile", "0", CVAR_TEMP );
 

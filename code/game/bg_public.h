@@ -48,8 +48,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #define RANK_TIED_FLAG      0x4000
 
-#define MAX_MAP_SIZE 65536 // RealRTCW
-
 #define DEFAULT_SHOTGUN_SPREAD  700
 #define DEFAULT_SHOTGUN_COUNT   11
 
@@ -85,11 +83,6 @@ If you have questions concerning this license or the applicable additional terms
 //#define	DEFAULT_VIEWHEIGHT	26
 //#define CROUCH_VIEWHEIGHT	12
 // done.
-
-qboolean BG_LoadTraceMap(char *rawmapname, vec2_t world_mins, vec2_t world_maxs); // RealRTCW
-float BG_GetSkyHeightAtPoint(vec3_t pos);
-float BG_GetSkyGroundHeightAtPoint(vec3_t pos);
-float BG_GetGroundHeightAtPoint(vec3_t pos);
 
 // Rafael
 // note to self: Corky test

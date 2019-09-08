@@ -335,27 +335,5 @@ typedef struct {
 	qboolean textureFilterAnisotropicAvailable;                 //DAJ
 } glconfig_t;
 
-// these MUST NOT exceed the values for SHADER_MAX_VERTEXES/SHADER_MAX_INDEXES // RealRTCW
-#define MAX_PB_VERTS    1025
-#define MAX_PB_INDICIES (MAX_PB_VERTS * 6)
-
-/**
- * @struct polyBuffer_s
- * @typedef polyBuffer_t
- * @brief
- */
-typedef struct polyBuffer_s
-{
-	vec4_t xyz[MAX_PB_VERTS];
-	vec2_t st[MAX_PB_VERTS];
-	byte color[MAX_PB_VERTS][4];
-	int numVerts;
-
-	unsigned int indicies[MAX_PB_INDICIES];
-	int numIndicies;
-
-	qhandle_t shader;
-} polyBuffer_t;
-
 
 #endif  // __TR_TYPES_H

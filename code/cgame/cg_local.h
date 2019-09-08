@@ -806,9 +806,6 @@ typedef struct {
 	vec3_t autoAxisFast[3];
 
 
-	vec2_t mapcoordsMins; // RealRTCW
-	vec2_t mapcoordsMaxs;
-
 	
 	// view rendering
 	refdef_t refdef;
@@ -1559,7 +1556,6 @@ typedef struct {
 	int timelimit;
 	int maxclients;
 	char mapname[MAX_QPATH];
-	char rawmapname[MAX_QPATH]; // RealRTCW
 	char redTeam[MAX_QPATH];                // A team
 	char blueTeam[MAX_QPATH];               // B team
 
@@ -1759,6 +1755,8 @@ extern vmCvar_t cg_currentSelectedPlayerName;
 // Rafael - particle switch
 extern vmCvar_t cg_wolfparticles;
 extern vmCvar_t cg_atmosphericEffects; // RealRTCW
+extern	vmCvar_t  	  	cg_lowAtmosphericEffects;
+extern	vmCvar_t  	  	cg_forceAtmosphericEffects;
 extern vmCvar_t cg_autoReload;
 extern vmCvar_t cg_uinfo;
 extern vmCvar_t int_cl_maxpackets;
@@ -1855,6 +1853,7 @@ void CG_Concussive( centity_t *cent );
 // cg_atmospheric.c RealRTCW
 void CG_EffectParse(const char *effectstr);
 void CG_AddAtmosphericEffects(void);
+qboolean CG_AtmosphericKludge();
 
 //
 // cg_drawtools.c

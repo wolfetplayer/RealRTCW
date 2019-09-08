@@ -990,6 +990,7 @@ void SP_worldspawn( void ) {
 	trap_Cvar_Set( "g_gravity", s );
 
 	G_SpawnString("atmosphere", "", &s); // RealRTCW
+	trap_SetConfigstring(CS_ATMOSEFFECT, s);  	  	  	// Atmospheric effect
 
 	// (SA) FIXME: todo: sun shader set for worldspawn
 

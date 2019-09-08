@@ -330,6 +330,9 @@ void CG_SetConfigValues( void ) {
 	}
 #endif
 	cg.warmup = atoi( CG_ConfigString( CS_WARMUP ) );
+
+	if (cg_atmosphericEffects.integer)
+		CG_EffectParse(CG_ConfigString(CS_ATMOSEFFECT));
 }
 
 /*
@@ -466,6 +469,9 @@ static void CG_ConfigStringModified( void ) {
 //----(SA)
 	} else if ( num == CS_SHADERSTATE )   {
 		CG_ShaderStateChanged();
+	}
+	else if (num == CS_ATMOSEFFECT) {
+		CG_EffectParse(str);
 	}
 }
 

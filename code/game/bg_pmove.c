@@ -3603,11 +3603,12 @@ static void PM_Weapon( void ) {
  	switch ( pm->ps->weapon ) {
 case WP_MG42M:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 200;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 150;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
 		} else {
+			pm->pmext->weapRecoilDuration = 200;
 			pm->pmext->weapRecoilYaw = crandom() * .25f;
 			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
 		}
@@ -3616,11 +3617,12 @@ case WP_MG42M:
 	case WP_M1GARAND: 
 	case WP_G43:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 150;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 30;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 60;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3628,11 +3630,12 @@ case WP_MG42M:
 	// Shotgun - High recoil
 	case WP_M97: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 150;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 100;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .5f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 150;
 			pm->pmext->weapRecoilYaw = crandom() * .9f;
 			pm->pmext->weapRecoilPitch = .95f * random();
 		}
@@ -3642,11 +3645,12 @@ case WP_MG42M:
 	case WP_MAUSER:
 	case WP_GARAND:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 50;
 		    pm->pmext->weapRecoilYaw = crandom() * 1.0f; 
 		    pm->pmext->weapRecoilPitch = .9f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 100;
 			pm->pmext->weapRecoilYaw = crandom() * 1.5f;
 			pm->pmext->weapRecoilPitch = 1.0f * random();
 		}
@@ -3655,12 +3659,19 @@ case WP_MG42M:
 	case WP_LUGER:
 	case WP_SILENCER:
 	case WP_COLT:
+	case WP_AKIMBO:
 	case WP_TT33:
 	case WP_REVOLVER:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
+		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+		pm->pmext->weapRecoilDuration = 30;
 		pm->pmext->weapRecoilYaw = 0.f;
 		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
+		} else {
+		pm->pmext->weapRecoilDuration = 60;
+		pm->pmext->weapRecoilYaw = 0.f;
+		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
+		}
 		break;
 		// SMGs - Low recoil
 	case WP_MP40:
@@ -3668,22 +3679,24 @@ case WP_MG42M:
 	case WP_MP34:
 	case WP_PPSH: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 10;
 			pm->pmext->weapRecoilYaw = crandom() * .01f;
 			pm->pmext->weapRecoilPitch = .01f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 30;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		}
 		break;
 	case WP_THOMPSON:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 20;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 40;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3693,11 +3706,12 @@ case WP_MG42M:
 	case WP_BAR:
 	case WP_MP44: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 15;
 			pm->pmext->weapRecoilYaw = crandom() * .01f;
 			pm->pmext->weapRecoilPitch = .01f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 40;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		}
@@ -3705,11 +3719,12 @@ case WP_MG42M:
 		// Venom Gun - Low recoil
 	case WP_VENOM:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
+			pm->pmext->weapRecoilDuration = 70;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
+			pm->pmext->weapRecoilDuration = 100;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}

@@ -224,11 +224,12 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		}
 		break;
 
-	case HI_STAMINA:        // restores fatigue bar and sets "nofatigue" for a time period (currently forced to 60 sec)
-		//----(SA)	NOTE:	currently only gives free nofatigue time, doesn't reset fatigue bar.
-		//					(this is because I'd like the restore to be visually gradual (on the HUD item representing
-		//					current status of your fatigue) rather than snapping back to 'full')
+	case HI_ADRENALINE:       
 		ent->client->ps.powerups[PW_NOFATIGUE] = 60000;
+		ent->health += 100;
+			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
+			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 2;
+		}
 		break;
 
 	case HI_BOOK1:

@@ -497,7 +497,7 @@ typedef enum {
 //	HI_WATER,
 //	HI_ELECTRIC,
 //	HI_FIRE,
-	HI_STAMINA,
+	HI_ADRENALINE,
 	HI_BOOK1,   //----(SA)	added
 	HI_BOOK2,   //----(SA)	added
 	HI_BOOK3,   //----(SA)	added

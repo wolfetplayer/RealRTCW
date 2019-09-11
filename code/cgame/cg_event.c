@@ -458,8 +458,8 @@ static void CG_UseItem( centity_t *cent ) {
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.wineSound );
 		break;
 
-	case HI_STAMINA:
-		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.staminaSound );
+	case HI_ADRENALINE:
+		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.adrenalineSound );
 		break;
 	}
 }

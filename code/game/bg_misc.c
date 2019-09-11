@@ -2652,24 +2652,24 @@ use sound : "sound/pickup/holdable/use_stamina.wav"
 model="models/powerups/holdable/stamina.md3"
 */
 	{
-		"holdable_stamina",
-		"sound/pickup/holdable/get_stamina.wav",
+		"holdable_adrenaline",
+		"sound/pickup/holdable/get_adrenaline.wav",
 		{
-			"models/powerups/holdable/stamina.md3",
+			"models/powerups/holdable/adrenaline.md3",
 			0, 0, 0
 			,   0
 		},
-		"icons/stamina",             // icon
+		"icons/adrenaline",             // icon
 		NULL,                           // ammo icon
-		"Added Stamina",             // pickup
+		"Adrenaline used",             // pickup
 		1,
 		IT_HOLDABLE,
-		HI_STAMINA,
+		HI_ADRENALINE,
 		0,
 		0,
 		"",                              // precache
-		"sound/pickup/holdable/use_stamina.wav", // sounds
-		{0,0,0,0,0}
+		"sound/pickup/holdable/use_adrenaline.wav", // sounds
+		{1,1,1,1,1}
 	},
 
 

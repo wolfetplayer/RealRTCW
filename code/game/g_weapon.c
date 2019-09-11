@@ -696,31 +696,30 @@ float G_GetWeaponSpread( int weapon ) {
 		if ( g_userAim.integer ) {
 			// these should be higher since they become erratic if aiming is out
 			switch ( weapon ) {
-			case WP_LUGER:      return 500; // RealRTCW was 600
-			case WP_SILENCER:   return 500; // RealRTCW was 600
-			case WP_COLT:       return 550; // RealRTCW was 700
-			case WP_AKIMBO:     return 600; // RealRTCW was 700
-			case WP_VENOM:      return 1100;
-			case WP_MP40:       return 950; // RealRTCW was 1000
+			case WP_LUGER:      return 400; // RealRTCW was 600
+			case WP_SILENCER:   return 400; // RealRTCW was 600
+			case WP_COLT:       return 400; // RealRTCW was 700
+			case WP_AKIMBO:     return 500; // RealRTCW was 700
+			case WP_VENOM:      return 1000;
+			case WP_MP40:       return 850; // RealRTCW was 1000
 			// RealRTCW weapons
-			case WP_MP34:       return 1050; // RealRTCW was 1100
-			case WP_TT33:       return 550; // RealRTCW was 750
-			case WP_PPSH:       return 1200; 
-			case WP_MOSIN:      return 400;
-			case WP_G43:        return 400; // was 550
-			case WP_M1GARAND:   return 400; // was 450
-			case WP_BAR:        return 800;
-		    case WP_MP44:       return 900;  
-			case WP_MG42M:      return 1700;
-			case WP_M97:        return 4800;
-			case WP_REVOLVER:   return 500; // RealRTCW was 650 
-
+			case WP_MP34:       return 900; // RealRTCW was 1100
+			case WP_TT33:       return 450; // RealRTCW was 750
+			case WP_PPSH:       return 1100; 
+			case WP_MOSIN:      return 300;
+			case WP_G43:        return 350; // was 550
+			case WP_M1GARAND:   return 350; // was 450
+			case WP_BAR:        return 700;
+		    case WP_MP44:       return 800;  
+			case WP_MG42M:      return 1500;
+			case WP_M97:        return 4500;
+			case WP_REVOLVER:   return 400; // RealRTCW was 650 
 			case WP_FG42SCOPE:  return 250;
-			case WP_FG42:       return 700; 
-			case WP_THOMPSON:   return 1050; // RealRTCW was 1100
-			case WP_STEN:       return 1100; // RealRTCW was 1200
-			case WP_MAUSER:     return 400;
-			case WP_GARAND:     return 500;
+			case WP_FG42:       return 600; 
+			case WP_THOMPSON:   return 950; // RealRTCW was 1100
+			case WP_STEN:       return 950; // RealRTCW was 1200
+			case WP_MAUSER:     return 300;
+			case WP_GARAND:     return 400;
 			case WP_SNIPERRIFLE:    return 300;
 			case WP_SNOOPERSCOPE:   return 300;
 			}

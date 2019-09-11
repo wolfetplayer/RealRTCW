@@ -204,6 +204,7 @@ void    trap_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t
 	syscall( CG_S_ADDLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );     // volume was previously removed from CG_S_ADDLOOPINGSOUND.  I added 'range'
 }
 
+
 // not in use
 //void    trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume ) {
 //	syscall( CG_S_ADDREALLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );	//----(SA)	modified

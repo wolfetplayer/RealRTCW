@@ -51,14 +51,14 @@
 */
 
 
-#define MAX_ATMOSPHERIC_PARTICLES  	  	8192	/// was 1000  	// maximum # of particles
+#define MAX_ATMOSPHERIC_PARTICLES  	  	20000	/// was 1000  	// maximum # of particles
 
-#define MAX_RAIN_DISTANCE		 	  	3000  	// maximum distance from refdef origin that RAIN particles are generated
+#define MAX_RAIN_DISTANCE		 	  	4000  	// maximum distance from refdef origin that RAIN particles are generated
 #define MAX_RAIN_DISTANCE_2  			(MAX_RAIN_DISTANCE * MAX_RAIN_DISTANCE)  	/// for fast calculations
 #define RAIN_CUTHEIGHT  		  	  	500
 #define MAX_SPLASH_DISTANCE_2			(750 * 750)
 
-#define MAX_SNOW_DISTANCE  	  			5000	// maximum distance from refdef origin that SNOW particles are generated
+#define MAX_SNOW_DISTANCE  	  			6000	// maximum distance from refdef origin that SNOW particles are generated
 #define MAX_SNOW_DISTANCE_2  			(MAX_SNOW_DISTANCE * MAX_SNOW_DISTANCE)  	/// for fast calculations
 #define SNOW_CUTHEIGHT  		  	  	800
 
@@ -70,7 +70,7 @@
 #define ATMOSPHERIC_RAIN_HEIGHT  	  	96	/// was 150			размер капли дождя
 
 #define ATMOSPHERIC_SNOW_SPEED  	  	0.1f * DEFAULT_GRAVITY
-#define ATMOSPHERIC_SNOW_HEIGHT  	  	3	/// размер снежинки
+#define ATMOSPHERIC_SNOW_HEIGHT  	  	6	/// размер снежинки
 
 #define FLAG_atmosphericParticle_ACTIVE	1
 #define FLAG_atmosphericParticle_SPLASH	2
@@ -905,13 +905,15 @@ noSky:	cg_atmFx.skyOverMe = qfalse;
 	if (rainSFX && cg_lowAtmosphericEffects.integer != 2)
 	{
 		if (cg_atmFx.skyOverMe)
-			trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, 0, rainSFX, 255);
+			//trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
+			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 5);
 		else
 		{
-			int	vol = 255 * (1.0 - SQRTFAST(cg_atmFx.nearDist2) / 512.0);
+			int	vol = 5 * (1.0 - SQRTFAST(cg_atmFx.nearDist2) / 512.0);
 			if (vol < 0)		vol = 0;
 			else if (vol > 255)	vol = 255;
-			trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, 0, rainSFX, vol);
+			//trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, vol);
+			CG_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, vol);
 		}
 	}
 
@@ -934,11 +936,48 @@ qboolean CG_AtmosphericKludge()
   	kludgeChecked = qtrue;
   	kludgeResult = qfalse;
 
+  	if( !Q_stricmp( cgs.mapname, "maps/norway.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=50 50,GV=30 80,W=1 2,D=15000" ); // strong snow
+  	  	return( kludgeResult = qtrue );
+  	}
+	
+	  	if( !Q_stricmp( cgs.mapname, "maps/escape1.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	return( kludgeResult = qtrue );
+  	}
+
+	  	if( !Q_stricmp( cgs.mapname, "maps/escape2.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	return( kludgeResult = qtrue );
+  	}
+
+		if( !Q_stricmp( cgs.mapname, "maps/tram.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	return( kludgeResult = qtrue );
+  	}
+
+		if( !Q_stricmp( cgs.mapname, "maps/village1.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	return( kludgeResult = qtrue );
+  	}
+
+	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
+  	  	return( kludgeResult = qtrue );
+  	}
+
+
 
 #if 0
-///  	if( !Q_stricmp( cgs.mapname, "maps/q3dm0.bsp" ) )
+  	if( !Q_stricmp( cgs.mapname, "maps/q3dm0.bsp" ) )
   	{
-//  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=4000" );
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=4000" );
 		CG_EffectParse("T=RAIN");
   	  	return( kludgeResult = true );
   	}

@@ -3030,75 +3030,73 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		CG_CalculateWeaponPosition( hand.origin, angles );
         // REALRTCWEXP
 	    switch ( cg.predictedPlayerState.weapon ) {
-			case WP_FLAMETHROWER:
+		case WP_FLAMETHROWER:
 			 gunoff[0] = 10;
-		     gunoff[1] = 0;
-		     gunoff[2] = 0;
-		break;
-		 case WP_MP44:
-			 gunoff[0] = 1;
-		     gunoff[1] = 0;
-		     gunoff[2] = 0;
-		break;
-		case WP_MP40:
-			 gunoff[0] = 0;
-		     gunoff[1] = 1;
+		     gunoff[1] = 2;
 		     gunoff[2] = 0;
 		break;
 		case WP_LUGER:
 		case WP_SILENCER:
-		case WP_TT33:
+			 gunoff[0] = 0;
+		     gunoff[1] = 2;
+		     gunoff[2] = 3;
+		break;
+		case WP_COLT:
 		case WP_AKIMBO:
-			 gunoff[0] = -2;
-		     gunoff[1] = 0;
+			 gunoff[0] = 0;
+		     gunoff[1] = 2;
 		     gunoff[2] = 2;
 		break;
-		case WP_STEN:
-			 gunoff[0] = -1;
-		     gunoff[1] = -1;
-		     gunoff[2] = 0;
-	    break;
 		case WP_REVOLVER:
-			 gunoff[0] = -2;
-		     gunoff[1] = 0;
-		     gunoff[2] = 0;
-	    break;
-		case WP_PPSH:
-			 gunoff[0] = -1;
-		     gunoff[1] = 0;
-		     gunoff[2] = 0;
-		break;
-		case WP_MAUSER:
-		case WP_SNIPERRIFLE:
-			 gunoff[0] = -2;
-		     gunoff[1] = 0;
-		     gunoff[2] = 1;
-		break;
-		case WP_MOSIN:
-			 gunoff[0] = -2;
-		     gunoff[1] = 1;
-		     gunoff[2] = 2;
-		break;
-		case WP_G43:
 			 gunoff[0] = 0;
 		     gunoff[1] = 0;
-		     gunoff[2] = 1;
+		     gunoff[2] = -1;
 		break;
-		case WP_M1GARAND:
-			 gunoff[0] = -1;
-		     gunoff[1] = 0;
-		     gunoff[2] = 1;
-		break;
-		case WP_BAR:
-			 gunoff[0] = -3;
+		case WP_MP34:
+			 gunoff[0] = 0;
 		     gunoff[1] = 1;
 		     gunoff[2] = 0;
-		break;	
+		break;
+		case WP_MP40:
+			 gunoff[0] = 0;
+		     gunoff[1] = 3;
+		     gunoff[2] = 1;
+		break;
 		case WP_M97:
 			 gunoff[0] = -3;
 		     gunoff[1] = 0;
+		     gunoff[2] = -1;
+		break;
+		case WP_VENOM:
+			 gunoff[0] = -1;
+		     gunoff[1] = 2;
 		     gunoff[2] = 0;
-		break;				
+		break;
+		case WP_MG42M:
+			 gunoff[0] = 0;
+		     gunoff[1] = 3;
+		     gunoff[2] = 0;
+		break;
+		case WP_G43:
+			 gunoff[0] = 0;
+		     gunoff[1] = 1;
+		     gunoff[2] = 1;
+		break;
+		case WP_MP44:
+			 gunoff[0] = 0;
+		     gunoff[1] = 1;
+		     gunoff[2] = 0;
+		break;
+		case WP_FG42:
+			 gunoff[0] = 0;
+		     gunoff[1] = 2;
+		     gunoff[2] = -1;
+		break;
+		case WP_BAR:
+			 gunoff[0] = -3;
+		     gunoff[1] = 3;
+		     gunoff[2] = -1;
+		break;
 		default:
 		    gunoff[0] = cg_gun_x.value;
 		    gunoff[1] = cg_gun_y.value;

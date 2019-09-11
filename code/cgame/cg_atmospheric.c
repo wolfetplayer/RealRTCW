@@ -905,15 +905,13 @@ noSky:	cg_atmFx.skyOverMe = qfalse;
 	if (rainSFX && cg_lowAtmosphericEffects.integer != 2)
 	{
 		if (cg_atmFx.skyOverMe)
-			//trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
-			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
+			CG_S_AddLoopingSound (0, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
 		else
 		{
 			int	vol = 255 * (1.0 - SQRTFAST(cg_atmFx.nearDist2) / 512.0);
 			if (vol < 0)		vol = 0;
 			else if (vol > 255)	vol = 255;
-			//trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, vol);
-			CG_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, vol);
+				CG_S_AddLoopingSound (0,cg.refdef.vieworg, vec3_origin, rainSFX, vol);
 		}
 	}
 
@@ -967,6 +965,18 @@ qboolean CG_AtmosphericKludge()
   	}
 
 	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
+  	  	return( kludgeResult = qtrue );
+  	}
+
+	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
+  	  	return( kludgeResult = qtrue );
+  	}
+
+	  	if( !Q_stricmp( cgs.mapname, "maps/hiddenwolf.bsp" ) )
   	{
   	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
   	  	return( kludgeResult = qtrue );

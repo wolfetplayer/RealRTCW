@@ -906,10 +906,10 @@ noSky:	cg_atmFx.skyOverMe = qfalse;
 	{
 		if (cg_atmFx.skyOverMe)
 			//trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
-			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 5);
+			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
 		else
 		{
-			int	vol = 5 * (1.0 - SQRTFAST(cg_atmFx.nearDist2) / 512.0);
+			int	vol = 255 * (1.0 - SQRTFAST(cg_atmFx.nearDist2) / 512.0);
 			if (vol < 0)		vol = 0;
 			else if (vol > 255)	vol = 255;
 			//trap_S_AddLoopingSound(ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, vol);

@@ -49,19 +49,19 @@ extern vmCvar_t g_gametype;
 
 // NOTE: weapons that share ammo (ex. colt/thompson) need to share max ammo, but not necessarily uses or max clip
 // RealRTCW ammo depends on difficulty level now. So look for the ammo references in g_client.c. Values in bg misc should be the LOWEST to avoid auto pickup bug.
-#define MAX_AMMO_45     150
-#define MAX_AMMO_9MM    150
+#define MAX_AMMO_45     90
+#define MAX_AMMO_9MM    96
 #define MAX_AMMO_VENOM  500
-#define MAX_AMMO_MAUSER 150
+#define MAX_AMMO_MAUSER 120
 #define MAX_AMMO_GARAND 5
 #define MAX_AMMO_FG42   MAX_AMMO_MAUSER
-#define MAX_AMMO_BAR    150
+#define MAX_AMMO_BAR    120
 #define MAX_AMMO_TTAMMO 200
-#define MAX_AMMO_MOSINA 50
-#define MAX_AMMO_BARAMMO    150  
-#define MAX_AMMO_44AMMO     120
-#define MAX_AMMO_M97        24
-#define MAX_AMMO_REVOLVER   24
+#define MAX_AMMO_MOSINA 30
+#define MAX_AMMO_BARAMMO    120  
+#define MAX_AMMO_44AMMO     90
+#define MAX_AMMO_M97        12
+#define MAX_AMMO_REVOLVER   18
 
 
 // these defines are matched with the character torso animations
@@ -103,11 +103,11 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_9MM,   1,      32,     2600,   DELAY_LOW,      110,    0,      0,      MOD_MP40                },  //	WP_MP40					// 3
 	{   MAX_AMMO_MAUSER,1,      5,      2500,   DELAY_HIGH,     1400,   0,      0,      MOD_MAUSER              },  //	WP_MAUSER				// 4	
 	{   MAX_AMMO_FG42,  1,      20,     2000,   DELAY_LOW,      170,    0,      0,      MOD_FG42                },  //	WP_FG42					// 5
-	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
+	{   3,              1,      3,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
 	{   1,              1,      1,      1000,   DELAY_SHOULDER, 2000,   0,      0,      MOD_PANZERFAUST         },  //	WP_PANZERFAUST			// 7
 	{   MAX_AMMO_VENOM, 1,      500,    3000,   750,            45,     3500,   200,    MOD_VENOM               },  //	WP_VENOM				// 8	
 	{   100,            1,      100,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
-	{   50,             1,      50,     1000,    DELAY_LOW,      0,     0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
+	{   50,             1,      30,     1000,    DELAY_LOW,      0,     0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
 	{   MAX_AMMO_9MM,   1,      32,     3100,   DELAY_LOW,      105,    0,      0,      MOD_MP34                },  //	WP_MP34					// 11
 	{   MAX_AMMO_TTAMMO,  1,    8,      1600,   DELAY_PISTOL,   350,    0,      0,      MOD_TT33                },  //	WP_TT33					// 12
 	{   MAX_AMMO_TTAMMO,  1,    71,     2900,   DELAY_LOW,      65,     0,      0,      MOD_PPSH                },  //	WP_PPSH					// 13
@@ -124,7 +124,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
 	{   MAX_AMMO_45,    1,      30,     2400,   DELAY_LOW,      90,     0,      0,      MOD_THOMPSON            },  //	WP_THOMPSON				// 23
 	{   MAX_AMMO_GARAND,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
-	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 25
+	{   3,              1,      3,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 25
 
 	{   MAX_AMMO_MAUSER,1,      5,      3000,   0,              1400,   0,      0,      MOD_SNIPERRIFLE         },  //	WP_SNIPER_GER			// 26
 	{   MAX_AMMO_GARAND,1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
@@ -135,7 +135,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_45,    1,      7,      2700,   DELAY_PISTOL,   200,    0,      0,      MOD_AKIMBO              },  //	WP_AKIMBO				// 31
 
 	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_CLASS_SPECIAL		// 32	
-	{   3,              1,      3,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_DYNAMITE            },  //	WP_DYNAMITE				// 33
+	{   2,              1,      2,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_DYNAMITE            },  //	WP_DYNAMITE				// 33
 
 // stubs for some "not-real" weapons (so they always return "yes, you have enough ammo for that gauntlet", etc.)
 //	{	5,				1,		5,		1000,	DELAY_SHOULDER,	1200,	0,		0,		0 /*mod_prox*/			},	//	WP_PROX					// 34

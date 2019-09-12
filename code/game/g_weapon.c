@@ -121,6 +121,21 @@ void Weapon_Knife( gentity_t *ent ) {
 		return;
 	}
 
+	 if ( g_gameskill.integer == GSKILL_REALISM ) {
+	switch ( traceEnt->aiCharacter ) {
+	case AICHAR_PROTOSOLDIER:
+	case AICHAR_SUPERSOLDIER:
+	case AICHAR_HEINRICH:
+	case AICHAR_WARZOMBIE:
+	case AICHAR_LOPER:
+	case AICHAR_ZOMBIE:
+		return;
+			}
+	 }
+
+
+	// realism
+
 	damage = G_GetWeaponDamage( ent->s.weapon, isPlayer ); // JPW		// default knife damage for frontal attacks
 
 	if ( traceEnt->client ) {

@@ -494,7 +494,7 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			if ( cs->weaponFireTimes[weaponnum] < level.time - 8000 ) {
 				return 500;     // lots of room for stomping
 			} else {
-				return 120;     // come in real close
+				return 150;     // come in real close // was 120
 			}
 		case AICHAR_HELGA:  // helga BOSS1 melee
 			return 100;  // RealRTCW was 80

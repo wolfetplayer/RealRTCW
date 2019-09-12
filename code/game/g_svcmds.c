@@ -473,6 +473,10 @@ qboolean    ConsoleCommand( void ) {
 		if ( g_reloading.integer ) {
 			return qtrue;
 		}
+		// Realism mode disabled manual saves
+        if ( g_gameskill.integer == GSKILL_REALISM ) {
+			return qtrue;
+			}
 		if ( saveGamePending ) {
 			return qtrue;
 		}

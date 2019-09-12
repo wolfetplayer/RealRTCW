@@ -1390,8 +1390,8 @@ void ClientUserinfoChanged( int clientNum ) {
 		SetupWeaponsForSkill_MAX();
 	    }
 	else if ( g_gameskill.integer == GSKILL_REALISM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 ) {
-			client->pers.maxHealth = 50;
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 ) {
+			client->pers.maxHealth = 25;
 		}
 		SetupWeaponsForSkill_REALISM();
 	    }

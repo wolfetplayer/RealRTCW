@@ -723,6 +723,9 @@ typedef struct {
 	// RF, entity scripting
 	char        *scriptEntity;
 
+	// ents file
+	char        *extraEntsScript;
+
 	// player/AI model scripting (server repository)
 	animScriptData_t animScriptData;
 

@@ -1813,7 +1813,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 
 /*QUAKED weapon_m97 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 			-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-			model="models/weapons2/sgwt/shotgun.md3"
+			model="models/weapons2/m97/m97_3rd.md3"
 			*/
 	{
 		"weapon_m97",
@@ -2642,14 +2642,14 @@ model="models/powerups/holdable/wine.md3"
 	},
 
 
-/*QUAKED holdable_stamina(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+/*QUAKED holdable_adrenaline(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 Protection from fatigue
 Using the "sprint" key will not fatigue the character
 
-pickup sound : "sound/pickup/holdable/get_stamina.wav"
-use sound : "sound/pickup/holdable/use_stamina.wav"
+pickup sound : "sound/pickup/holdable/get_adrenaline.wav"
+use sound : "sound/pickup/holdable/use_adrenaline.wav"
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/holdable/stamina.md3"
+model="models/powerups/holdable/adrenaline.md3"
 */
 	{
 		"holdable_adrenaline",

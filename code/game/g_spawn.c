@@ -947,7 +947,23 @@ qboolean G_LoadEntsFile( void ) {
 	} else {
 		trap_Cvar_Register( &mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM );
 	}
-	Q_strncpyz( filename, "maps/", sizeof( filename ) );
+	
+	if ( g_gameskill.integer == GSKILL_EASY ) {
+	Q_strncpyz( filename, "maps/easy/", sizeof( filename ) );
+    }
+    else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
+	Q_strncpyz( filename, "maps/medium/", sizeof( filename ) );
+	}
+	else if ( g_gameskill.integer == GSKILL_HARD ) {
+	Q_strncpyz( filename, "maps/hard/", sizeof( filename ) );
+	}
+	else if ( g_gameskill.integer == GSKILL_MAX ) {
+	Q_strncpyz( filename, "maps/max/", sizeof( filename ) );
+	}
+	else if ( g_gameskill.integer == GSKILL_REALISM ) {
+	Q_strncpyz( filename, "maps/realism/", sizeof( filename ) );
+	}
+	
 	Q_strcat( filename, sizeof( filename ), mapname.string );
 	Q_strcat( filename, sizeof( filename ), ".ents" );
 
@@ -1181,6 +1197,8 @@ Parses textual entity definitions out of an entstring and spawns gentities.
 void G_SpawnEntitiesFromString( void ) {
 	// allow calls to G_Spawn*()
 	level.spawning = qtrue;
+	G_LoadEntsFile();
+	G_ParseExtraSpawnVars();
 	level.numSpawnVars = 0;
 
 	// the worldspawn is not an actual entity, but it still

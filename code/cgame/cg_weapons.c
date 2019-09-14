@@ -2355,10 +2355,14 @@ void CG_PlayerTeslaCoilFire( centity_t *cent, vec3_t flashorigin ) {
 		}
 	}
 
-	if ( cg.time % 3 ) {  // break it up a bit
+	//if ( cg.time % 3 ) {  // break it up a bit
 		// add the looping sound
-		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 255 );
-	}
+		//CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 255 );
+	//}
+
+	//if (cent->currentState.weapon == WP_TESLA && ( (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE1) || (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE2) {
+	//CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 255 );
+//}
 
 	// drop a dynamic light out infront of us
 	AngleVectors( viewAngles, vec, NULL, NULL );
@@ -2571,6 +2575,11 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 			CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, weapon->readySound, 255 );
 		}
 	}
+    
+	// RealRTCW
+	if (cent->currentState.weapon == WP_TESLA && ( (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE1) || (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE2) {
+	CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 255 );
+}
 
 
 	// Ridah

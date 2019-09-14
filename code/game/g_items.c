@@ -227,8 +227,19 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_ADRENALINE:       
 		ent->client->ps.powerups[PW_NOFATIGUE] = 60000;
 		ent->health += 100;
+		if ( g_gameskill.integer == GSKILL_REALISM || g_gameskill.integer == GSKILL_MAX ) {
 			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 2;
+			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 3.0;
+		}
+		} else if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
+			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 1.5;
+		}
+		break;
+
+	case HI_BANDAGES:       
+		ent->health += 20;
+			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
+			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 		}
 		break;
 

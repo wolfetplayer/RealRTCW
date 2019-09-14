@@ -487,17 +487,9 @@ typedef enum {
 
 typedef enum {
 	HI_NONE,
-
-//	HI_TELEPORTER,
-//	HI_MEDKIT,
-
-	// new for Wolf
 	HI_WINE,
-//	HI_SKULL,
-//	HI_WATER,
-//	HI_ELECTRIC,
-//	HI_FIRE,
 	HI_ADRENALINE,
+	HI_BANDAGES,
 	HI_BOOK1,   //----(SA)	added
 	HI_BOOK2,   //----(SA)	added
 	HI_BOOK3,   //----(SA)	added
@@ -506,7 +498,6 @@ typedef enum {
 	HI_13,
 	HI_14,
 	HI_M97, //jaymod
-//	HI_15,	// ?
 	HI_NUM_HOLDABLE
 } holdable_t;
 

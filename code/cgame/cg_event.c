@@ -461,6 +461,9 @@ static void CG_UseItem( centity_t *cent ) {
 	case HI_ADRENALINE:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.adrenalineSound );
 		break;
+	case HI_BANDAGES:
+		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.bandagesSound );
+		break;
 	}
 }
 

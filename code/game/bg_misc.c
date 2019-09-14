@@ -2673,6 +2673,37 @@ model="models/powerups/holdable/adrenaline.md3"
 	},
 
 
+	/*QUAKED holdable_bandages(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_bandages.wav"
+use sound : "sound/pickup/holdable/use_bandages.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/bandages.md3"
+*/
+	{
+		"holdable_bandages",
+		"sound/pickup/holdable/get_bandages.wav",
+		{
+			"models/powerups/holdable/bandages.md3",
+			0, 0, 0
+			,   0
+		},
+		"icons/bandages",             // icon
+		NULL,                           // ammo icon
+		"Bandages used",             // pickup
+		1,
+		IT_HOLDABLE,
+		HI_BANDAGES,
+		0,
+		0,
+		"",                              // precache
+		"sound/pickup/holdable/use_bandages.wav", // sounds
+		{1,1,1,1,1}
+	},
+
+
 
 /*QUAKED holdable_book1(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------

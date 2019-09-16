@@ -128,7 +128,7 @@ static float shaderAnimSTRatio[MAX_SHADER_ANIMS] = {
 static int numShaderAnims;
 
 #define     PARTICLE_GRAVITY    40
-#define     MAX_PARTICLES   2048 * 8 // RealRTCW was 1024
+#define     MAX_PARTICLES   16384 * 8 // RealRTCW was 1024
 
 cparticle_t *active_particles, *free_particles;
 cparticle_t particles[MAX_PARTICLES];

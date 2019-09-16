@@ -51,14 +51,14 @@
 */
 
 
-#define MAX_ATMOSPHERIC_PARTICLES  	  	20000	/// was 1000  	// maximum # of particles
+#define MAX_ATMOSPHERIC_PARTICLES  	  	8192	/// was 1000  	// maximum # of particles
 
-#define MAX_RAIN_DISTANCE		 	  	4000  	// maximum distance from refdef origin that RAIN particles are generated
+#define MAX_RAIN_DISTANCE		 	  	3000  	// maximum distance from refdef origin that RAIN particles are generated
 #define MAX_RAIN_DISTANCE_2  			(MAX_RAIN_DISTANCE * MAX_RAIN_DISTANCE)  	/// for fast calculations
 #define RAIN_CUTHEIGHT  		  	  	500
 #define MAX_SPLASH_DISTANCE_2			(750 * 750)
 
-#define MAX_SNOW_DISTANCE  	  			6000	// maximum distance from refdef origin that SNOW particles are generated
+#define MAX_SNOW_DISTANCE  	  			5000	// maximum distance from refdef origin that SNOW particles are generated
 #define MAX_SNOW_DISTANCE_2  			(MAX_SNOW_DISTANCE * MAX_SNOW_DISTANCE)  	/// for fast calculations
 #define SNOW_CUTHEIGHT  		  	  	800
 
@@ -935,7 +935,7 @@ qboolean CG_AtmosphericKludge()
 
   	if( !Q_stricmp( cgs.mapname, "maps/norway.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=50 50,GV=30 80,W=1 2,D=15000" ); // strong snow
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=50 50,GV=30 80,W=1 2,D=10000" ); // strong snow
   	  	return( kludgeResult = qtrue );
   	}
 	
@@ -965,19 +965,14 @@ qboolean CG_AtmosphericKludge()
 
 	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=4000" ); // strong rain
   	  	return( kludgeResult = qtrue );
   	}
 
-	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
-  	{
-  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
-  	  	return( kludgeResult = qtrue );
-  	}
 
 	  	if( !Q_stricmp( cgs.mapname, "maps/hiddenwolf.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // strong rain
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // medium rain
   	  	return( kludgeResult = qtrue );
   	}
 

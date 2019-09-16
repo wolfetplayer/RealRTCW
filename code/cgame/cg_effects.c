@@ -507,7 +507,8 @@ void CG_LoseHat( centity_t *cent, vec3_t dir ) {
 	clientInfo_t    *ci;
 	int clientNum;
 //	int i, count, tagIndex, gibIndex;
-	vec3_t origin = { 0 }, velocity = { 0 };
+	int tagIndex;
+	vec3_t origin, velocity;
 
 	clientNum = cent->currentState.clientNum;
 	if ( clientNum < 0 || clientNum >= MAX_CLIENTS ) {
@@ -518,6 +519,8 @@ void CG_LoseHat( centity_t *cent, vec3_t dir ) {
 	if ( !ci->accModels[ACC_HAT] ) {  // don't launch anything if they don't have one
 		return;
 	}
+
+	tagIndex = CG_GetOriginForTag( cent, &cent->pe.headRefEnt, "tag_mouth", 0, origin, NULL );
 
 	velocity[0] = dir[0] * ( 0.75 + random() ) * GIB_VELOCITY;
 	velocity[1] = dir[1] * ( 0.75 + random() ) * GIB_VELOCITY;

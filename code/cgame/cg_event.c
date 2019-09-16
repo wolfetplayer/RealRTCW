@@ -431,6 +431,12 @@ static void CG_UseItem( centity_t *cent ) {
 				case HI_BOOK2:
 				case HI_BOOK3:
 					break;
+				case HI_ADRENALINE:
+					CG_CenterPrint( "usedadrenaline", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
+				case HI_BANDAGES:
+					CG_CenterPrint( "usedbandages", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
 				case HI_WINE:
 					CG_CenterPrint( "drankwine", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;

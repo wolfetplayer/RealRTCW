@@ -1627,10 +1627,6 @@ int Cmd_WolfKick_f( gentity_t *ent ) {
 
 	int damage = sk_plr_dmg_kick.integer;
 
-	if ( g_gameskill.integer == GSKILL_REALISM ) {
-		 damage = 0 ;
-	}
-
 	if ( ent->client->ps.leanf ) {
 		return 0;   // no kick when leaning
 

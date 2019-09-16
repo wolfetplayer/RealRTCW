@@ -110,6 +110,7 @@ typedef struct cg_atmosphericEffect_s {
 static cg_atmosphericEffect_t cg_atmFx;
 
 static sfxHandle_t rainSFX;
+static sfxHandle_t rainSFXindoor;
 
 /*
 **  Render utility functions
@@ -731,6 +732,7 @@ void CG_EffectParse( const char *effectstr )
 			cg_atmFx.effectsplashshader = trap_R_RegisterShader("gfx/atmosphere/rainsplash");
 			if (cg_atmFx.effectsplashshader)
 				rainSFX = trap_S_RegisterSound("sound/atmosphere/rain.wav");
+				rainSFXindoor = trap_S_RegisterSound("sound/atmosphere/rain_indoor.wav");
 		}
 
 		cg_atmFx.verts[0].st[0] = 1;
@@ -905,13 +907,10 @@ noSky:	cg_atmFx.skyOverMe = qfalse;
 	if (rainSFX && cg_lowAtmosphericEffects.integer != 2)
 	{
 		if (cg_atmFx.skyOverMe)
-			CG_S_AddLoopingSound (0, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
+			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
 		else
 		{
-			int	vol = 255 * (1.0 - SQRTFAST(cg_atmFx.nearDist2) / 512.0);
-			if (vol < 0)		vol = 0;
-			else if (vol > 255)	vol = 255;
-				CG_S_AddLoopingSound (0,cg.refdef.vieworg, vec3_origin, rainSFX, vol);
+			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFXindoor, 255);
 		}
 	}
 

@@ -335,7 +335,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_drawCrosshairBinoc, "cg_drawCrosshairBinoc", "0", CVAR_ARCHIVE },
 	{ &cg_drawCrosshairNames, "cg_drawCrosshairNames", "1", CVAR_ARCHIVE },
 	{ &cg_drawCrosshairPickups, "cg_drawCrosshairPickups", "1", CVAR_ARCHIVE },
-	{ &cg_drawCrosshairReticle, "cg_drawCrosshairReticle", "1", CVAR_ARCHIVE },
+	{ &cg_drawCrosshairReticle, "cg_drawCrosshairReticle", "0", CVAR_ARCHIVE },
 	{ &cg_drawRewards, "cg_drawRewards", "1", CVAR_ARCHIVE },
 	{ &cg_hudAlpha, "cg_hudAlpha", "0.8", CVAR_ARCHIVE },
 	{ &cg_useWeapsForZoom,  "cg_useWeapsForZoom", "1", CVAR_ARCHIVE },

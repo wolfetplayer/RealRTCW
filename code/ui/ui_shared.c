@@ -102,6 +102,8 @@ translateString_t translateStrings[] = {
 	{"secretarea"},              //	"You found a secret area"
 	{"objectivesnotcomplete"},   //	"Objectives not complete"
 	{"drankwine"},               //	"You drank the wine"
+	{"usedbandages"},            //	
+	{"usedadrenaline"},          //	
 	{"noitem"},                  //	"No item to use"
 	{"gamesaved"},               //	"Game Saved"
 

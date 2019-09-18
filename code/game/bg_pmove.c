@@ -398,7 +398,7 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 	}
 
 	if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
-		scale *= 1.2;
+		scale *= 1.1;
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
@@ -411,13 +411,13 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 
 	if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
 		if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
-		scale *= 1.5;
-	} 	if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.4;
-	}  	if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.4;
-	}   if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) {
 		scale *= 1.3;
+	} 	if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
+		scale *= 1.3;
+	}  	if ( pm->ps->aiChar == AICHAR_HELGA ) {
+		scale *= 1.3;
+	}   if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) {
+		scale *= 1.2;
 	}
 	}
 

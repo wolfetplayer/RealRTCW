@@ -476,7 +476,7 @@ static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
   	// Draw a snowflake
   	vec3_t  	  	forward, right;
   	vec2_t  	  	line;
-  	float  	  		len, frac, sinTumbling, cosTumbling, particleWidth;
+  	float  	  		len, sinTumbling, cosTumbling, particleWidth;
   	vec3_t  	  	start, finish;
 
 	if (!(particle->flags & FLAG_atmosphericParticle_ACTIVE))
@@ -499,7 +499,6 @@ static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
   	{
   	  	// Stop snow going through surfaces.
   	  	len = particle->height - particle->minz + start[2];
-  	  	frac = start[2];
   	  	VectorMA( start, len - particle->height, particle->deltaNormalized, start );
   	}
   	if( len <= 0 )

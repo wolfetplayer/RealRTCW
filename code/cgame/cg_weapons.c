@@ -1098,14 +1098,15 @@ void CG_RegisterWeapon( int weaponNum ) {
 	Q_strcat( path, sizeof(path), "_hand.md3" );
 	weaponInfo->handsModel = trap_R_RegisterModel( path );
 
-char handsskin[128]; //eugeny
-char map[128];
-memset(handsskin, 0, sizeof(handsskin));
-memset(map, 0, sizeof(map));
-trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
-COM_StripExtension(path, path, sizeof (path) );
-Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", path, map);
-weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
+	char handsskin[128]; //eugeny
+	char map[128];
+
+	memset( handsskin, 0, sizeof( handsskin ) );
+	memset( map, 0, sizeof( map ) );
+	trap_Cvar_VariableStringBuffer( "mapname", map, sizeof( map ) );
+	COM_StripExtension( path, path, sizeof ( path ) );
+	Com_sprintf( handsskin, sizeof( handsskin ), "%s_%s.skin", path, map );
+	weaponInfo->handsSkin = trap_R_RegisterSkin( handsskin );
 
 	if ( !weaponInfo->handsModel ) {
 		weaponInfo->handsModel = trap_R_RegisterModel( "models/weapons2/shotgun/shotgun_hand.md3" );
@@ -1471,12 +1472,13 @@ void CG_RegisterItemVisuals( int itemNum ) {
 	itemInfo->registered = qtrue;   //----(SA)	moved this down after the registerweapon()
 	
 	char legskin[128]; //eugeny
-    char map[128];
-    memset(legskin, 0, sizeof(legskin));
-    memset(map, 0, sizeof(map));
-    trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
-    Com_sprintf(legskin, sizeof(legskin), "%s_%s.skin", "models/weapons2/foot/legs", map);
-	wolfkickSkin = trap_R_RegisterSkin(legskin);
+	char map[128];
+
+	memset( legskin, 0, sizeof( legskin ) );
+	memset( map, 0, sizeof( map ) );
+	trap_Cvar_VariableStringBuffer( "mapname", map, sizeof( map ) );
+	Com_sprintf( legskin, sizeof( legskin ), "%s_%s.skin", "models/weapons2/foot/legs", map );
+	wolfkickSkin = trap_R_RegisterSkin( legskin );
 	
 	wolfkickModel = trap_R_RegisterModel( "models/weapons2/foot/v_wolfoot_10f.md3" );
 	
@@ -2583,10 +2585,9 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
     
 	// RealRTCW
-	if (cent->currentState.weapon == WP_TESLA && ( (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE1) || (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE2) {
-	CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 100 );
-}
-
+	if ( cent->currentState.weapon == WP_TESLA && ( ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_IDLE1 ) || ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_IDLE2 ) ) ) {
+		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 100 );
+	}
 
 	// Ridah
 	firing = ( ( cent->currentState.eFlags & EF_FIRING ) != 0 );
@@ -2652,9 +2653,10 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 			spunpart = qfalse;
 			barrel.hModel = weapon->wpPartModels[W_FP_MODEL][i];
-			if (isPlayer && weapon->handsSkin) { // eugeny
-            barrel.customSkin = weapon->handsSkin; }
 
+			if ( isPlayer && weapon->handsSkin ) { // eugeny
+				barrel.customSkin = weapon->handsSkin;
+			}
 
 			// check for spinning
 			if ( weaponNum == WP_VENOM ) {
@@ -2910,9 +2912,10 @@ void CG_AddPlayerFoot( refEntity_t *parent, playerState_t *ps, centity_t *cent )
 	// note to self we want this to lerp and advance frame
 	wolfkick.renderfx = RF_DEPTHHACK | RF_FIRST_PERSON;;
 	wolfkick.hModel = wolfkickModel; // eugeny
-	if (wolfkickSkin) {
-     wolfkick.customSkin = wolfkickSkin;
-    }
+
+	if ( wolfkickSkin ) {
+		wolfkick.customSkin = wolfkickSkin;
+	}
 
 	VectorCopy( cg.refdef.vieworg, wolfkick.origin );
 	//----(SA)	allow offsets for testing boot model

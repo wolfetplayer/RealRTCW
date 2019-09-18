@@ -609,7 +609,7 @@ void CG_PredictPlayerState( void ) {
 
 	if ( pmove_msec.integer < 8 ) {
 		trap_Cvar_Set( "pmove_msec", "8" );
-	    trap_Cvar_Update( &pmove_msec );
+		trap_Cvar_Update( &pmove_msec );
 	} else if ( pmove_msec.integer > 33 ) {
 		trap_Cvar_Set( "pmove_msec", "33" );
 		trap_Cvar_Update( &pmove_msec );

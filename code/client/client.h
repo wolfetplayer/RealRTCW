@@ -43,8 +43,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #ifdef USE_VOIP
 #ifdef USE_LOCAL_HEADERS
-  #include "../opus-1.1.2/include/opus.h"
-  #include "../opusfile-0.7/include/opusfile.h"
+  #include "../opus-1.2.1/include/opus.h"
+  #include "../opusfile-0.9/include/opusfile.h"
 #else
   #include <opus/opus.h>
   #include <opus/opusfile.h>
@@ -369,6 +369,8 @@ typedef struct {
 	char updateInfoString[MAX_INFO_STRING];
 
 	netadr_t authorizeServer;
+
+	netadr_t rconAddress;
 
 	// rendering info
 	glconfig_t glconfig;

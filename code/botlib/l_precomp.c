@@ -956,7 +956,7 @@ void PC_ConvertPath( char *path ) {
 int PC_Directive_include( source_t *source ) {
 	script_t *script;
 	token_t token;
-	char path[_MAX_PATH];
+	char path[MAX_QPATH];
 #ifdef QUAKE
 	foundfile_t file;
 #endif //QUAKE
@@ -1295,7 +1295,7 @@ define_t *PC_DefineFromString( char *string ) {
 	script = LoadScriptMemory( string, strlen( string ), "*extern" );
 	//create a new source
 	memset( &src, 0, sizeof( source_t ) );
-	strncpy( src.filename, "*extern", sizeof( src.filename ) - 1 );
+	Q_strncpyz( src.filename, "*extern", sizeof( src.filename ) );
 	src.scriptstack = script;
 #if DEFINEHASHING
 	src.definehash = GetClearedMemory( DEFINEHASHSIZE * sizeof( define_t * ) );

@@ -28,9 +28,6 @@ If you have questions concerning this license or the applicable additional terms
 
 // tr_surf.c
 #include "tr_local.h"
-#if idppc_altivec && !defined(__APPLE__)
-#include <altivec.h>
-#endif
 
 /*
 
@@ -483,7 +480,6 @@ return qtrue;
 }
 
 
-
 /*
 =============
 RB_SurfaceTriangles
@@ -577,6 +573,8 @@ static void RB_SurfaceBeam( void ) {
 	GLSL_SetUniformMat4(sp, UNIFORM_MODELVIEWPROJECTIONMATRIX, glState.modelviewProjection);
 
 	GLSL_SetUniformVec4(sp, UNIFORM_COLOR, colorRed);
+
+	GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
 	R_DrawElements(tess.numIndexes, tess.firstIndex);
 
@@ -1354,4 +1352,5 @@ void( *rb_surfaceTable[SF_NUM_SURFACE_TYPES] ) ( void * ) = {
 	( void( * ) ( void* ) )RB_SurfaceFlare,		// SF_FLARE,
 	( void( * ) ( void* ) )RB_SurfaceEntity,	// SF_ENTITY
 	( void( * ) ( void* ) )RB_SurfaceVaoMdvMesh,	// SF_VAO_MDVMESH
+	( void( * ) ( void* ) )RB_IQMSurfaceAnimVao,	// SF_VAO_IQM
 };

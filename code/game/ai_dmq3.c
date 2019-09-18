@@ -305,12 +305,8 @@ ClientFromName
 int ClientFromName( char *name ) {
 	int i;
 	char buf[MAX_INFO_STRING];
-	static int maxclients;
 
-	if ( !maxclients ) {
-		maxclients = trap_Cvar_VariableIntegerValue( "sv_maxclients" );
-	}
-	for ( i = 0; i < maxclients && i < MAX_CLIENTS; i++ ) {
+	for ( i = 0; i < level.maxclients; i++ ) {
 		trap_GetConfigstring( CS_PLAYERS + i, buf, sizeof( buf ) );
 		Q_CleanStr( buf );
 		if ( !Q_stricmp( Info_ValueForKey( buf, "n" ), name ) ) {
@@ -616,7 +612,10 @@ qboolean EntityIsDead( aas_entityinfo_t *entinfo ) {
 
 	if ( entinfo->number >= 0 && entinfo->number < MAX_CLIENTS ) {
 		//retrieve the current client state
-		BotAI_GetClientState( entinfo->number, &ps );
+		if ( !BotAI_GetClientState( entinfo->number, &ps ) ) {
+			return qfalse;
+		}
+
 		if ( ps.pm_type != PM_NORMAL ) {
 			return qtrue;
 		}
@@ -1316,8 +1315,12 @@ float BotEntityVisible( int viewer, vec3_t eye, vec3_t viewangles, float fov, in
 	aas_entityinfo_t entinfo;
 	vec3_t dir, entangles, start, end, middle;
 
-	//calculate middle of bounding box
 	BotEntityInfo( ent, &entinfo );
+	if (!entinfo.valid) {
+		return 0;
+	}
+
+	//calculate middle of bounding box
 	VectorAdd( entinfo.mins, entinfo.maxs, middle );
 	VectorScale( middle, 0.5, middle );
 	VectorAdd( entinfo.origin, middle, middle );
@@ -1441,7 +1444,7 @@ int BotFindEnemy( bot_state_t *bs, int curenemy ) {
 		curdist = 0;
 	}
 	//
-	for ( i = 0; i < MAX_CLIENTS; i++ ) {
+	for ( i = 0; i < level.maxclients; i++ ) {
 
 		if ( i == bs->client ) {
 			continue;
@@ -1939,22 +1942,27 @@ void BotMapScripts( bot_state_t *bs ) {
 	strncpy( mapname, Info_ValueForKey( info, "mapname" ), sizeof( mapname ) - 1 );
 	mapname[sizeof( mapname ) - 1] = '\0';
 
-	if ( !Q_stricmp( mapname, "q3tourney6" ) ) {
-		vec3_t mins = {700, 204, 672}, maxs = {964, 468, 680};
+	if (!Q_stricmp(mapname, "q3tourney6") || !Q_stricmp(mapname, "q3tourney6_ctf") || !Q_stricmp(mapname, "mpq3tourney6")) {
+		vec3_t mins = {694, 200, 480}, maxs = {968, 472, 680};
 		vec3_t buttonorg = {304, 352, 920};
 		//NOTE: NEVER use the func_bobbing in q3tourney6
 		bs->tfl &= ~TFL_FUNCBOB;
-		//if the bot is below the bounding box
+		//crush area is higher in mpq3tourney6
+		if (!Q_stricmp(mapname, "mpq3tourney6")) {
+			mins[2] += 64;
+			maxs[2] += 64;
+		}
+		//if the bot is in the bounding box of the crush area
 		if ( bs->origin[0] > mins[0] && bs->origin[0] < maxs[0] ) {
 			if ( bs->origin[1] > mins[1] && bs->origin[1] < maxs[1] ) {
-				if ( bs->origin[2] < mins[2] ) {
+				if (bs->origin[2] > mins[2] && bs->origin[2] < maxs[2]) {
 					return;
 				}
 			}
 		}
 		shootbutton = qfalse;
-		//if an enemy is below this bounding box then shoot the button
-		for ( i = 0; i < MAX_CLIENTS; i++ ) {
+		//if an enemy is in the bounding box then shoot the button
+		for ( i = 0; i < level.maxclients; i++ ) {
 
 			if ( i == bs->client ) {
 				continue;
@@ -1972,12 +1980,12 @@ void BotMapScripts( bot_state_t *bs ) {
 			//
 			if ( entinfo.origin[0] > mins[0] && entinfo.origin[0] < maxs[0] ) {
 				if ( entinfo.origin[1] > mins[1] && entinfo.origin[1] < maxs[1] ) {
-					if ( entinfo.origin[2] < mins[2] ) {
+					if (entinfo.origin[2] > mins[2] && entinfo.origin[2] < maxs[2]) {
 						//if there's a team mate below the crusher
 						if ( BotSameTeam( bs, i ) ) {
 							shootbutton = qfalse;
 							break;
-						} else {
+						} else if (bs->enemy == i) {
 							shootbutton = qtrue;
 						}
 					}
@@ -2755,7 +2763,7 @@ BotDeathmatchAI
 ==================
 */
 void BotDeathmatchAI( bot_state_t *bs, float thinktime ) {
-	char gender[144], name[144], buf[144];
+	char gender[144], name[144];
 	char userinfo[MAX_INFO_STRING];
 	int i;
 
@@ -2771,11 +2779,6 @@ void BotDeathmatchAI( bot_state_t *bs, float thinktime ) {
 		trap_GetUserinfo( bs->client, userinfo, sizeof( userinfo ) );
 		Info_SetValueForKey( userinfo, "sex", gender );
 		trap_SetUserinfo( bs->client, userinfo );
-		//set the team
-		if ( g_gametype.integer != GT_TOURNAMENT ) {
-			Com_sprintf( buf, sizeof( buf ), "team %s", bs->settings.team );
-			trap_EA_Command( bs->client, buf );
-		}
 		//set the chat gender
 		if ( gender[0] == 'm' ) {
 			trap_BotSetChatGender( bs->cs, CHAT_GENDERMALE );

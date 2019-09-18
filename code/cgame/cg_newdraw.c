@@ -158,7 +158,7 @@ void CG_SelectNextPlayer( void ) {
 
 void CG_SelectPrevPlayer( void ) {
 	CG_CheckOrderPending();
-	if ( cg_currentSelectedPlayer.integer > 0 && cg_currentSelectedPlayer.integer < numSortedTeamPlayers ) {
+	if ( cg_currentSelectedPlayer.integer > 0 && cg_currentSelectedPlayer.integer <= numSortedTeamPlayers ) {
 		cg_currentSelectedPlayer.integer--;
 	} else {
 		cg_currentSelectedPlayer.integer = numSortedTeamPlayers;
@@ -1368,10 +1368,15 @@ static void CG_DrawAreaPowerUp( rectDef_t *rect, int align, float spacing, int f
 		if ( !ps->powerups[ i ] ) {
 			continue;
 		}
-		t = ps->powerups[ i ] - cg.time;
-		// ZOID--don't draw if the power up has unlimited time (999 seconds)
+
+		// ZOID--don't draw if the power up has unlimited time
 		// This is true of the CTF flags
-		if ( t <= 0 || t >= 999000 ) {
+		if ( ps->powerups[ i ] == INT_MAX ) {
+			continue;
+		}
+
+		t = ps->powerups[ i ] - cg.time;
+		if ( t <= 0 ) {
 			continue;
 		}
 
@@ -2586,8 +2591,14 @@ int CG_ClientNumFromName( const char *p ) {
 }
 
 void CG_ShowResponseHead( void ) {
+	float x, y, w, h;
+
+	x = 72;
+	y = w = h = 0;
+	CG_AdjustFrom640( &x, &y, &w, &h );
+
 	Menus_OpenByName( "voiceMenu" );
-	trap_Cvar_Set( "cl_conXOffset", "72" );
+	trap_Cvar_Set( "cl_conXOffset", va( "%d", (int)x ) );
 	cg.voiceTime = cg.time;
 }
 

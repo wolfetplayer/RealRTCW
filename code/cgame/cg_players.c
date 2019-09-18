@@ -165,7 +165,7 @@ static qboolean CG_ParseGibModels( const char *filename, clientInfo_t *ci ) {
 
 	for ( i = 0; i < MAX_GIB_MODELS; i++ ) {
 		token = COM_Parse( &text_p );
-		if ( !token ) {
+		if ( !token[0] ) {
 			break;
 		}
 		// cache this model
@@ -509,7 +509,7 @@ qboolean CG_ParseAnimationFiles( char *modelname, animModelInfo_t *modelInfo, in
 	Com_sprintf( filename, sizeof( filename ), "models/players/%s/wolfanim.cfg", modelname );
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
 	if ( len <= 0 ) {
-		CG_Printf( "G_ParseAnimationFiles(): file '%s' not found\n", filename );       //----(SA)	added
+		CG_Printf( "CG_ParseAnimationFiles(): file '%s' not found\n", filename );       //----(SA)	added
 		return qfalse;
 	}
 	if ( len >= sizeof( text ) - 1 ) {

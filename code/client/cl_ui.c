@@ -396,6 +396,7 @@ LAN_CompareServers
 static int LAN_CompareServers( int source, int sortKey, int sortDir, int s1, int s2 ) {
 	int res;
 	serverInfo_t *server1, *server2;
+	int clients1, clients2;
 
 	server1 = LAN_GetServerPtr( source, s1 );
 	server2 = LAN_GetServerPtr( source, s2 );
@@ -408,14 +409,22 @@ static int LAN_CompareServers( int source, int sortKey, int sortDir, int s1, int
 	case SORT_HOST:
 		res = Q_stricmp( server1->hostName, server2->hostName );
 		break;
-
 	case SORT_MAP:
 		res = Q_stricmp( server1->mapName, server2->mapName );
 		break;
 	case SORT_CLIENTS:
-		if ( server1->clients < server2->clients ) {
+		// sub sort by max clients
+		if ( server1->clients == server2->clients ) {
+			clients1 = server1->maxClients;
+			clients2 = server2->maxClients;
+		} else {
+			clients1 = server1->clients;
+			clients2 = server2->clients;
+		}
+
+		if ( clients1 < clients2 ) {
 			res = -1;
-		} else if ( server1->clients > server2->clients )     {
+		} else if ( clients1 > clients2 ) {
 			res = 1;
 		} else {
 			res = 0;
@@ -646,13 +655,13 @@ CLUI_GetCDKey
 */
 static void CLUI_GetCDKey( char *buf, int buflen ) {
 #ifndef STANDALONE
-	cvar_t  *fs;
-	fs = Cvar_Get( "fs_game", "", CVAR_INIT | CVAR_SYSTEMINFO );
-	if ( UI_usesUniqueCDKey() && fs && fs->string[0] != 0 ) {
-		memcpy( buf, &cl_cdkey[16], 16 );
+	const char *gamedir;
+	gamedir = Cvar_VariableString( "fs_game" );
+	if ( UI_usesUniqueCDKey() && gamedir[0] != 0 ) {
+ 		Com_Memcpy( buf, &cl_cdkey[16], 16 );
 		buf[16] = 0;
 	} else {
-		memcpy( buf, cl_cdkey, 16 );
+		Com_Memcpy( buf, cl_cdkey, 16 );
 		buf[16] = 0;
 	}
 #else
@@ -668,15 +677,15 @@ CLUI_SetCDKey
 */
 #ifndef STANDALONE
 static void CLUI_SetCDKey( char *buf ) {
-	cvar_t  *fs;
-	fs = Cvar_Get( "fs_game", "", CVAR_INIT | CVAR_SYSTEMINFO );
-	if ( UI_usesUniqueCDKey() && fs && fs->string[0] != 0 ) {
-		memcpy( &cl_cdkey[16], buf, 16 );
+	const char *gamedir;
+	gamedir = Cvar_VariableString( "fs_game" );
+	if ( UI_usesUniqueCDKey() && gamedir[0] != 0 ) {
+ 		Com_Memcpy( &cl_cdkey[16], buf, 16 );
 		cl_cdkey[32] = 0;
 		// set the flag so the file will be written at the next opportunity
 		cvar_modifiedFlags |= CVAR_ARCHIVE;
 	} else {
-		memcpy( cl_cdkey, buf, 16 );
+		Com_Memcpy( cl_cdkey, buf, 16 );
 		// set the flag so the file will be written at the next opportunity
 		cvar_modifiedFlags |= CVAR_ARCHIVE;
 	}

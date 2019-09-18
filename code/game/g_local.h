@@ -759,7 +759,7 @@ qboolean G_CallSpawn( gentity_t *ent );
 void Cmd_Score_f( gentity_t *ent );
 void StopFollowing( gentity_t *ent );
 //void BroadcastTeamChange( gclient_t *client, int oldTeam );
-void SetTeam( gentity_t *ent, char *s );
+void SetTeam( gentity_t *ent, const char *s );
 void SetWolfData( gentity_t *ent, char *ptype, char *weap, char *pistol, char *grenade, char *skinnum );    // DHM - Nerve
 void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 
@@ -926,6 +926,7 @@ void CalcMuzzlePointForActivate( gentity_t *ent, vec3_t forward, vec3_t right, v
 //
 // g_client.c
 //
+int TeamCount( int ignoreClientNum, team_t team );
 team_t PickTeam( int ignoreClientNum );
 void SetClientViewAngle( gentity_t *ent, vec3_t angle );
 gentity_t *SelectSpawnPoint( vec3_t avoidPoint, vec3_t origin, vec3_t angles );
@@ -1033,7 +1034,6 @@ typedef struct bot_settings_s
 {
 	char characterfile[MAX_FILEPATH];
 	float skill;
-	char team[MAX_FILEPATH];
 } bot_settings_t;
 
 int BotAISetup( int restart );
@@ -1077,8 +1077,6 @@ extern gentity_t       *g_camEnt;
 #define	FOFS(x) ((size_t)&(((gentity_t *)0)->x))
 
 extern vmCvar_t g_gametype;
-
-extern vmCvar_t g_skipcutscenes;
 
 // Rafael gameskill
 extern vmCvar_t g_gameskill;
@@ -1162,6 +1160,7 @@ extern vmCvar_t g_soldierChargeTime;
 
 extern vmCvar_t g_playerStart;      //----(SA)	added
 
+extern vmCvar_t g_localTeamPref;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));

@@ -690,6 +690,33 @@ void ClientRespawn( gentity_t *ent ) {
 	ClientSpawn( ent );
 }
 
+// NERVE - SMF - merge from team arena
+/*
+================
+TeamCount
+
+Returns number of players on a team
+================
+*/
+int TeamCount( int ignoreClientNum, team_t team ) {
+	int i;
+	int count = 0;
+
+	for ( i = 0 ; i < level.maxclients ; i++ ) {
+		if ( i == ignoreClientNum ) {
+			continue;
+		}
+		if ( level.clients[i].pers.connected == CON_DISCONNECTED ) {
+			continue;
+		}
+		if ( level.clients[i].sess.sessionTeam == team ) {
+			count++;
+		}
+	}
+
+	return count;
+}
+// -NERVE - SMF
 
 /*
 ================
@@ -1294,12 +1321,6 @@ void ClientUserinfoChanged( int clientNum ) {
 		trap_DropClient(clientNum, "Invalid userinfo");
 	}
 
-	// check for local client
-	s = Info_ValueForKey( userinfo, "ip" );
-	if ( !strcmp( s, "localhost" ) ) {
-		client->pers.localClient = qtrue;
-	}
-
 	// autoreload - extra client info settings
 	//		 FIXME: move other userinfo flag settings in here
 	if ( ent->r.svFlags & SVF_BOT ) {
@@ -1827,11 +1848,11 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 
 	client->pers.connected = CON_CONNECTING;
 
-	// read or initialize the session data
-	if ( firstTime || level.newSession ) {
-		G_InitSessionData( client, userinfo );
-	}
-	G_ReadSessionData( client );
+	// check for local client
+	value = Info_ValueForKey( userinfo, "ip" );
+	if ( !strcmp( value, "localhost" ) ) {
+		client->pers.localClient = qtrue;
+ 	}
 
 	if ( isBot ) {
 		ent->r.svFlags |= SVF_BOT;
@@ -1840,6 +1861,12 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 			return "BotConnectfailed";
 		}
 	}
+
+	// read or initialize the session data
+	if ( firstTime || level.newSession ) {
+		G_InitSessionData( client, userinfo );
+	}
+	G_ReadSessionData( client );
 
 	// get and distribute relevent paramters
 	G_LogPrintf( "ClientConnect: %i\n", clientNum );
@@ -2327,7 +2354,7 @@ void G_RetrieveMoveSpeedsFromClient( int entnum, char *text ) {
 
 	// get the model name
 	token = COM_Parse( &text_p );
-	if ( !token || !token[0] ) {
+	if ( !token[0] ) {
 		G_Error( "G_RetrieveMoveSpeedsFromClient: internal error" );
 	}
 
@@ -2340,7 +2367,7 @@ void G_RetrieveMoveSpeedsFromClient( int entnum, char *text ) {
 
 	while ( 1 ) {
 		token = COM_Parse( &text_p );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			break;
 		}
 
@@ -2352,14 +2379,14 @@ void G_RetrieveMoveSpeedsFromClient( int entnum, char *text ) {
 
 		// get the movespeed
 		token = COM_Parse( &text_p );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			G_Error( "G_RetrieveMoveSpeedsFromClient: missing movespeed" );
 		}
 		anim->moveSpeed = atoi( token );
 
 		// get the stepgap
 		token = COM_Parse( &text_p );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			G_Error( "G_RetrieveMoveSpeedsFromClient: missing stepGap" );
 		}
 		anim->stepGap = atoi( token );

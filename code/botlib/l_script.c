@@ -161,9 +161,7 @@ punctuation_t default_punctuations[] =
 	{NULL, 0}
 };
 
-#ifdef BSPC
-char basefolder[MAX_PATH];
-#else
+#ifdef BOTLIB
 char basefolder[MAX_QPATH];
 #endif
 
@@ -812,7 +810,7 @@ int PS_ReadPunctuation( script_t *script, token_t *token ) {
 		if ( script->script_p + len <= script->end_p ) {
 			//if the script contains the punctuation
 			if ( !strncmp( script->script_p, p, len ) ) {
-				strncpy( token->string, p, MAX_TOKEN );
+				Q_strncpyz( token->string, p, MAX_TOKEN );
 				script->script_p += len;
 				token->type = TT_PUNCTUATION;
 				//sub type is the number of the punctuation
@@ -1446,9 +1444,7 @@ void FreeScript( script_t *script ) {
 // Changes Globals:		-
 //============================================================================
 void PS_SetBaseFolder( char *path ) {
-#ifdef BSPC
-	sprintf( basefolder, path );
-#else
+#ifdef BOTLIB
 	Com_sprintf(basefolder, sizeof(basefolder), "%s", path);
 #endif
 } //end of the function PS_SetBaseFolder

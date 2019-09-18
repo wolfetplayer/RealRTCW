@@ -1949,6 +1949,9 @@ Visualization aid for movement clipping debugging
 ====================
 */
 void R_DebugGraphics( void ) {
+	if ( tr.refdef.rdflags & RDF_NOWORLDMODEL ) {
+		return;
+	}
 	if ( !r_debugSurface->integer ) {
 		return;
 	}
@@ -2131,7 +2134,7 @@ void R_RenderPshadowMaps(const refdef_t *fd)
 				break;
 				case MOD_MDS:
 				{
-					mdsHeader_t *header = model->modelData;
+					mdsHeader_t *header = model->mds;
 					int frameSize = (size_t)( &((mdsFrame_t *)0)->bones[ header->numBones ] );
 					mdsFrame_t *frame = ( mdsFrame_t * ) ( ( byte * ) header + header->ofsFrames + frameSize * ent->e.frame);
 
@@ -2339,7 +2342,7 @@ void R_RenderPshadowMaps(const refdef_t *fd)
 		if (glRefConfig.framebufferObject)
 			shadowParms.targetFbo = tr.pshadowFbos[i];
 
-		shadowParms.flags = VPF_SHADOWMAP | VPF_DEPTHSHADOW | VPF_NOVIEWMODEL;
+		shadowParms.flags = VPF_DEPTHSHADOW | VPF_NOVIEWMODEL;
 		shadowParms.zFar = shadow->lightRadius;
 
 		VectorCopy(shadow->lightOrigin, shadowParms.or.origin);

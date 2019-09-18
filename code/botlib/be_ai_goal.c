@@ -229,6 +229,9 @@ void BotInterbreedGoalFuzzyLogic( int parent1, int parent2, int child ) {
 	p2 = BotGoalStateFromHandle( parent2 );
 	c = BotGoalStateFromHandle( child );
 
+	if (!p1 || !p2 || !c)
+		return;
+
 	InterbreedWeightConfigs( p1->itemweightconfig, p2->itemweightconfig,
 							 c->itemweightconfig );
 } //end of the function BotInterbreedingGoalFuzzyLogic
@@ -243,6 +246,7 @@ void BotSaveGoalFuzzyLogic( int goalstate, char *filename ) {
 
 	//gs = BotGoalStateFromHandle( goalstate );
 
+	//if (!gs) return;
 	//WriteWeightConfig(filename, gs->itemweightconfig);
 } //end of the function BotSaveGoalFuzzyLogic
 //===========================================================================
@@ -256,6 +260,7 @@ void BotMutateGoalFuzzyLogic( int goalstate, float range ) {
 
 	gs = BotGoalStateFromHandle( goalstate );
 
+	if (!gs) return;
 	EvolveWeightConfig( gs->itemweightconfig );
 } //end of the function BotMutateGoalFuzzyLogic
 //===========================================================================
@@ -267,7 +272,7 @@ void BotMutateGoalFuzzyLogic( int goalstate, float range ) {
 itemconfig_t *LoadItemConfig( char *filename ) {
 	int max_iteminfo;
 	token_t token;
-	char path[MAX_PATH];
+	char path[MAX_QPATH];
 	source_t *source;
 	itemconfig_t *ic;
 	iteminfo_t *ii;
@@ -279,7 +284,7 @@ itemconfig_t *LoadItemConfig( char *filename ) {
 		LibVarSet( "max_iteminfo", "128" );
 	}
 
-	strncpy( path, filename, MAX_PATH );
+	Q_strncpyz( path, filename, sizeof( path ) );
 	source = LoadSourceFile( path );
 	if ( !source ) {
 		botimport.Print( PRT_ERROR, "counldn't load %s\n", path );
@@ -308,7 +313,7 @@ itemconfig_t *LoadItemConfig( char *filename ) {
 				return NULL;
 			} //end if
 			StripDoubleQuotes( token.string );
-			strncpy( ii->classname, token.string, sizeof( ii->classname ) - 1 );
+			Q_strncpyz( ii->classname, token.string, sizeof( ii->classname ) );
 			if ( !ReadStructure( source, &iteminfo_struct, (char *) ii ) ) {
 				FreeMemory( ic );
 				FreeSource( source );
@@ -788,6 +793,7 @@ int BotGetLevelItemGoal( int index, char *name, bot_goal_t *goal ) {
 			VectorCopy( itemconfig->iteminfo[li->iteminfo].mins, goal->mins );
 			VectorCopy( itemconfig->iteminfo[li->iteminfo].maxs, goal->maxs );
 			goal->number = li->number;
+			goal->iteminfo = li->iteminfo;
 			//botimport.Print(PRT_MESSAGE, "found li %s\n", itemconfig->iteminfo[li->iteminfo].name);
 			return li->number;
 		} //end if
@@ -812,6 +818,9 @@ int BotGetMapLocationGoal( char *name, bot_goal_t *goal ) {
 			goal->entitynum = 0;
 			VectorCopy( mins, goal->mins );
 			VectorCopy( maxs, goal->maxs );
+			goal->number = 0;
+			goal->flags = 0;
+			goal->iteminfo = 0;
 			return qtrue;
 		} //end if
 	} //end for
@@ -840,6 +849,9 @@ int BotGetNextCampSpotGoal( int num, bot_goal_t *goal ) {
 			goal->entitynum = 0;
 			VectorCopy( mins, goal->mins );
 			VectorCopy( maxs, goal->maxs );
+			goal->number = 0;
+			goal->flags = 0;
+			goal->iteminfo = 0;
 			return num + 1;
 		} //end if
 	} //end for

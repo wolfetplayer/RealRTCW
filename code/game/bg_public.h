@@ -636,7 +636,6 @@ extern int weapAlts[];  // defined in bg_misc.c
 //----(SA)	end
 
 
-// gothicstein
 #define IS_AUTORELOAD_WEAPON( weapon ) \
 	(	\
 		weapon == WP_LUGER    || weapon == WP_COLT          || weapon == WP_MP40          || \
@@ -648,7 +647,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 		weapon == WP_BAR    || weapon == WP_MP44      || \
 		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
-		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER       \
+		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO       \
 	)
 
  // entityState_t->event values

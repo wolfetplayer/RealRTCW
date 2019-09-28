@@ -29,12 +29,9 @@ If you have questions concerning this license or the applicable additional terms
 // tr_shade_calc.c
 
 #include "tr_local.h"
-#if idppc_altivec && !defined(__APPLE__)
-#include <altivec.h>
-#endif
 
 
-#define	WAVEVALUE( table, base, amplitude, phase, freq )  ((base) + table[ ri.ftol( ( ( (phase) + tess.shaderTime * (freq) ) * FUNCTABLE_SIZE ) ) & FUNCTABLE_MASK ] * (amplitude))
+#define	WAVEVALUE( table, base, amplitude, phase, freq )  ( ( base ) + table[ ( ( int64_t ) ( ( ( phase ) + tess.shaderTime * ( freq ) ) * FUNCTABLE_SIZE ) ) & FUNCTABLE_MASK ] * ( amplitude ) )
 
 static float *TableForFunc( genFunc_t func ) {
 	switch ( func )
@@ -257,12 +254,12 @@ void RB_CalcBulgeVertexes( deformStage_t *ds ) {
 	const float *st = ( const float * ) tess.texCoords[0];
 	float       *xyz = ( float * ) tess.xyz;
 	float       *normal = ( float * ) tess.normal;
-	float now;
+	double now;
 
-	now = backEnd.refdef.time * ds->bulgeSpeed * 0.001f;
+	now = backEnd.refdef.time * 0.001 * ds->bulgeSpeed;
 
 	for ( i = 0; i < tess.numVertexes; i++, xyz += 4, st += 4, normal += 4 ) {
-		int off;
+		int64_t off;
 		float scale;
 
 		off = (float)( FUNCTABLE_SIZE / ( M_PI * 2 ) ) * ( st[0] * ds->bulgeWidth + now );
@@ -1011,7 +1008,7 @@ void RB_CalcSwapTexCoords( float *st ) {
 */
 void RB_CalcTurbulentTexCoords( const waveForm_t *wf, float *st ) {
 	int i;
-	float now;
+	double now;
 
 	now = ( wf->phase + tess.shaderTime * wf->frequency );
 
@@ -1020,8 +1017,8 @@ void RB_CalcTurbulentTexCoords( const waveForm_t *wf, float *st ) {
 		float s = st[0];
 		float t = st[1];
 
-		st[0] = s + tr.sinTable[ ( ( int ) ( ( ( tess.xyz[i][0] + tess.xyz[i][2] ) * 1.0 / 128 * 0.125 + now ) * FUNCTABLE_SIZE ) ) & ( FUNCTABLE_MASK ) ] * wf->amplitude;
-		st[1] = t + tr.sinTable[ ( ( int ) ( ( tess.xyz[i][1] * 1.0 / 128 * 0.125 + now ) * FUNCTABLE_SIZE ) ) & ( FUNCTABLE_MASK ) ] * wf->amplitude;
+		st[0] = s + tr.sinTable[ ( ( int64_t ) ( ( ( tess.xyz[i][0] + tess.xyz[i][2] )* 1.0/128 * 0.125 + now ) * FUNCTABLE_SIZE ) ) & ( FUNCTABLE_MASK ) ] * wf->amplitude;
+		st[1] = t + tr.sinTable[ ( ( int64_t ) ( ( tess.xyz[i][1] * 1.0/128 * 0.125 + now ) * FUNCTABLE_SIZE ) ) & ( FUNCTABLE_MASK ) ] * wf->amplitude;
 	}
 }
 
@@ -1043,8 +1040,8 @@ void RB_CalcScaleTexCoords( const float scale[2], float *st ) {
 */
 void RB_CalcScrollTexCoords( const float scrollSpeed[2], float *st ) {
 	int i;
-	float timeScale = tess.shaderTime;
-	float adjustedScrollS, adjustedScrollT;
+	double timeScale = tess.shaderTime;
+	double adjustedScrollS, adjustedScrollT;
 
 	adjustedScrollS = scrollSpeed[0] * timeScale;
 	adjustedScrollT = scrollSpeed[1] * timeScale;
@@ -1081,9 +1078,9 @@ void RB_CalcTransformTexCoords( const texModInfo_t *tmi, float *st  ) {
 ** RB_CalcRotateTexCoords
 */
 void RB_CalcRotateTexCoords( float degsPerSecond, float *st ) {
-	float timeScale = tess.shaderTime;
-	float degs;
-	int index;
+	double timeScale = tess.shaderTime;
+	double degs;
+	int64_t index;
 	float sinValue, cosValue;
 	texModInfo_t tmi;
 
@@ -1174,75 +1171,6 @@ void RB_CalcSpecularAlpha( unsigned char *alphas ) {
 **
 ** The basic vertex lighting calc
 */
-#if idppc_altivec
-static void RB_CalcDiffuseColor_altivec( unsigned char *colors )
-{
-	int				i;
-	float			*v, *normal;
-	trRefEntity_t	*ent;
-	vec3_t			lightDir;
-	int				numVertexes;
-	vector unsigned char vSel = VECCONST_UINT8(0x00, 0x00, 0x00, 0xff,
-                                               0x00, 0x00, 0x00, 0xff,
-                                               0x00, 0x00, 0x00, 0xff,
-                                               0x00, 0x00, 0x00, 0xff);
-	vector float ambientLightVec;
-	vector float directedLightVec;
-	vector float lightDirVec;
-	vector float normalVec0, normalVec1;
-	vector float incomingVec0, incomingVec1, incomingVec2;
-	vector float zero, jVec;
-	vector signed int jVecInt;
-	vector signed short jVecShort;
-	vector unsigned char jVecChar, normalPerm;
-	ent = backEnd.currentEntity;
-	// A lot of this could be simplified if we made sure
-	// entities light info was 16-byte aligned.
-	jVecChar = vec_lvsl(0, ent->ambientLight);
-	ambientLightVec = vec_ld(0, (vector float *)ent->ambientLight);
-	jVec = vec_ld(11, (vector float *)ent->ambientLight);
-	ambientLightVec = vec_perm(ambientLightVec,jVec,jVecChar);
-
-	jVecChar = vec_lvsl(0, ent->directedLight);
-	directedLightVec = vec_ld(0,(vector float *)ent->directedLight);
-	jVec = vec_ld(11,(vector float *)ent->directedLight);
-	directedLightVec = vec_perm(directedLightVec,jVec,jVecChar);	 
-
-	jVecChar = vec_lvsl(0, ent->lightDir);
-	lightDirVec = vec_ld(0,(vector float *)ent->lightDir);
-	jVec = vec_ld(11,(vector float *)ent->lightDir);
-	lightDirVec = vec_perm(lightDirVec,jVec,jVecChar);	 
- 
-	zero = (vector float)vec_splat_s8(0);
-	VectorCopy( ent->lightDir, lightDir );
-
-	v = tess.xyz[0];
-	normal = tess.normal[0];
-
-	normalPerm = vec_lvsl(0,normal);
-	numVertexes = tess.numVertexes;
-	for (i = 0 ; i < numVertexes ; i++, v += 4, normal += 4) {
-		normalVec0 = vec_ld(0,(vector float *)normal);
-		normalVec1 = vec_ld(11,(vector float *)normal);
-		normalVec0 = vec_perm(normalVec0,normalVec1,normalPerm);
-		incomingVec0 = vec_madd(normalVec0, lightDirVec, zero);
-		incomingVec1 = vec_sld(incomingVec0,incomingVec0,4);
-		incomingVec2 = vec_add(incomingVec0,incomingVec1);
-		incomingVec1 = vec_sld(incomingVec1,incomingVec1,4);
-		incomingVec2 = vec_add(incomingVec2,incomingVec1);
-		incomingVec0 = vec_splat(incomingVec2,0);
-		incomingVec0 = vec_max(incomingVec0,zero);
-		normalPerm = vec_lvsl(12,normal);
-		jVec = vec_madd(incomingVec0, directedLightVec, ambientLightVec);
-		jVecInt = vec_cts(jVec,0);	// RGBx
-		jVecShort = vec_pack(jVecInt,jVecInt);		// RGBxRGBx
-		jVecChar = vec_packsu(jVecShort,jVecShort);	// RGBxRGBxRGBxRGBx
-		jVecChar = vec_sel(jVecChar,vSel,vSel);		// RGBARGBARGBARGBA replace alpha with 255
-		vec_ste((vector unsigned int)jVecChar,0,(unsigned int *)&colors[i*4]);	// store color
-	}
-}
-#endif
-
 static void RB_CalcDiffuseColor_scalar( unsigned char *colors )
 {
 	int				i, j;
@@ -1294,7 +1222,7 @@ void RB_CalcDiffuseColor( unsigned char *colors )
 {
 #if idppc_altivec
 	if (com_altivec->integer) {
-		// must be in a seperate function or G3 systems will crash.
+		// must be in a separate translation unit or G3 systems will crash.
 		RB_CalcDiffuseColor_altivec( colors );
 		return;
 	}

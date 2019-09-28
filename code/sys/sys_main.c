@@ -112,6 +112,14 @@ Restart the input subsystem
 */
 void Sys_In_Restart_f( void )
 {
+#ifndef DEDICATED
+	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
+	{
+		Com_Printf( "in_restart: Cannot restart input while video is shutdown\n" );
+		return;
+	}
+#endif
+
 	IN_Restart( );
 }
 
@@ -500,8 +508,7 @@ void *Sys_LoadDll(const char *name, qboolean useSystemLib)
 {
 	void *dllhandle = NULL;
 
-    if(!Sys_DllExtension(name))
-
+	if(!Sys_DllExtension(name))
 	{
 		Com_Printf("Refusing to attempt to load library \"%s\": Extension not allowed.\n", name);
 		return NULL;
@@ -511,7 +518,7 @@ void *Sys_LoadDll(const char *name, qboolean useSystemLib)
 	{
 		Com_Printf("Trying to load \"%s\"...\n", name);
 		dllhandle = Sys_LoadLibrary(name);
-		}
+	}
 	
 	if(!dllhandle)
 	{
@@ -529,13 +536,13 @@ void *Sys_LoadDll(const char *name, qboolean useSystemLib)
 			{
 				Com_Printf("Trying to load \"%s\" from \"%s\"...\n", name, topDir);
 				dllhandle = Sys_LoadLibrary(libPath);
-				}
-				else
-				{
-					Com_Printf("Skipping trying to load \"%s\" from \"%s\", file name is too long.\n", name, topDir);
-					}
-					if(!dllhandle)
+			}
+			else
+			{
+				Com_Printf("Skipping trying to load \"%s\" from \"%s\", file name is too long.\n", name, topDir);
+			}
 
+		if(!dllhandle)
 		{
 			const char *basePath = Cvar_VariableString("fs_basepath");
 			
@@ -581,7 +588,7 @@ void *Sys_LoadGameDll(const char *name,
 
 	assert(name);
 
-		if(!Sys_DllExtension(name))
+	if(!Sys_DllExtension(name))
 	{
 		Com_Printf("Refusing to attempt to load library \"%s\": Extension not allowed.\n", name);
 		return NULL;
@@ -743,10 +750,9 @@ int main( int argc, char **argv )
 		Q_strcat( commandLine, sizeof( commandLine ), " " );
 	}
 
+	CON_Init( );
 	Com_Init( commandLine );
 	NET_Init( );
-
-	CON_Init( );
 
 	signal( SIGILL, Sys_SigHandler );
 	signal( SIGFPE, Sys_SigHandler );

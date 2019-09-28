@@ -147,7 +147,7 @@ void SV_GetChallenge(netadr_t from)
 	}
 
 	// always generate a new challenge number, so the client cannot circumvent sv_maxping
-	challenge->challenge = ( (rand() << 16) ^ rand() ) ^ svs.time;
+	challenge->challenge = ( ( (unsigned int)rand() << 16 ) ^ (unsigned int)rand() ) ^ svs.time;
 	challenge->wasrefused = qfalse;
 	challenge->time = svs.time;
 
@@ -183,16 +183,16 @@ void SV_GetChallenge(netadr_t from)
 		else
 		{
 			// otherwise send their ip to the authorize server
-			cvar_t	*fs;
-			char	game[1024];
+			cvar_t *fs;
+			const char *game;
 
 			Com_DPrintf( "sending getIpAuthorize for %s\n", NET_AdrToString( from ));
 		
-			game[0] = 0;
-			fs = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO );
-			if (fs && fs->string[0] != 0) {
-				strcpy(game, fs->string);
+			game = Cvar_VariableString( "fs_game" );
+			if (game[0] == 0) {
+				game = BASEGAME;
 			}
+
 			fs = Cvar_Get( "sv_allowAnonymous", "0", CVAR_SERVERINFO );
 
 			// NERVE - SMF - fixed parsing on sv_allowAnonymous
@@ -675,18 +675,16 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 
 	if ( isBot ) {
 		SV_BotFreeClient( drop - svs.clients );
-	}
 
-	// nuke user info
-	SV_SetUserinfo( drop - svs.clients, "" );
-
-	if ( isBot ) {
 		// bots shouldn't go zombie, as there's no real net connection.
 		drop->state = CS_FREE;
 	} else {
 		Com_DPrintf( "Going to CS_ZOMBIE for %s\n", drop->name );
 		drop->state = CS_ZOMBIE;		// become free in a few seconds
 	}
+
+	// nuke user info
+	SV_SetUserinfo( drop - svs.clients, "" );
 
 	// RF, nuke reliable commands
 	SV_FreeReliableCommandsForClient( drop );
@@ -1905,7 +1903,7 @@ void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) {
 		}
 		// if we can tell that the client has dropped the last
 		// gamestate we sent them, resend it
-		if ( cl->messageAcknowledge > cl->gamestateMessageNum ) {
+		if ( cl->state != CS_ACTIVE && cl->messageAcknowledge > cl->gamestateMessageNum ) {
 			Com_DPrintf( "%s : dropped gamestate, resending\n", cl->name );
 			SV_SendClientGameState( cl );
 		}

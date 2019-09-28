@@ -50,8 +50,8 @@ typedef struct {
 
 static edgeDef_t edgeDefs[SHADER_MAX_VERTEXES][MAX_EDGE_DEFS];
 static int numEdgeDefs[SHADER_MAX_VERTEXES];
-static int facing[SHADER_MAX_INDEXES / 3];
-static vec3_t shadowXyz[SHADER_MAX_VERTEXES];
+//static int facing[SHADER_MAX_INDEXES / 3];
+//static vec3_t shadowXyz[SHADER_MAX_VERTEXES];
 
 void R_AddEdgeDef( int i1, int i2, int facing ) {
 	int c;
@@ -67,6 +67,8 @@ void R_AddEdgeDef( int i1, int i2, int facing ) {
 }
 
 void R_RenderShadowEdges( void ) {
+	// FIXME: implement this
+#if 0
 	int i;
 
 #if 0
@@ -145,6 +147,7 @@ void R_RenderShadowEdges( void ) {
 		}
 	}
 #endif
+#endif
 }
 
 /*
@@ -160,6 +163,8 @@ triangleFromEdge[ v1 ][ v2 ]
 =================
 */
 void RB_ShadowTessEnd( void ) {
+	// FIXME: implement this
+#if 0
 	int i;
 	int numTris;
 	vec3_t lightDir;
@@ -236,6 +241,7 @@ void RB_ShadowTessEnd( void ) {
 
 	// reenable writing to the color buffer
 	qglColorMask(rgba[0], rgba[1], rgba[2], rgba[3]);
+#endif
 }
 
 
@@ -250,6 +256,8 @@ overlap and double darken.
 =================
 */
 void RB_ShadowFinish( void ) {
+	// FIXME: implement this
+#if 0
 	if ( r_shadows->integer != 2 ) {
 		return;
 	}
@@ -259,7 +267,6 @@ void RB_ShadowFinish( void ) {
 	qglEnable( GL_STENCIL_TEST );
 	qglStencilFunc( GL_NOTEQUAL, 0, 255 );
 
-	qglDisable( GL_CLIP_PLANE0 );
 	GL_Cull( CT_TWO_SIDED );
 
 	GL_BindToTMU( tr.whiteImage, TB_COLORMAP );
@@ -281,6 +288,7 @@ void RB_ShadowFinish( void ) {
 
 	qglColor4f( 1,1,1,1 );
 	qglDisable( GL_STENCIL_TEST );
+#endif
 }
 
 

@@ -51,9 +51,6 @@ static float frontlerp, backlerp;
 static float torsoFrontlerp, torsoBacklerp;
 static int *triangles;
 static glIndex_t *pIndexes;
-#ifndef USE_OPENGLES
-static int *boneRefs;
-#endif
 static int indexes;
 static int baseIndex, baseVertex, oldIndexes;
 static int numVerts;
@@ -385,8 +382,8 @@ void R_AddAnimSurfaces( trRefEntity_t *ent ) {
 			shader = tr.defaultShader;
 			for ( j = 0 ; j < skin->numSurfaces ; j++ ) {
 				// the names have both been lowercased
-				if ( !strcmp( skin->surfaces[j]->name, surface->name ) ) {
-					shader = skin->surfaces[j]->shader;
+				if ( !strcmp( skin->surfaces[j].name, surface->name ) ) {
+					shader = skin->surfaces[j].shader;
 					break;
 				}
 			}
@@ -1050,9 +1047,6 @@ RB_SurfaceAnim
 ==============
 */
 void RB_SurfaceAnim( mdsSurface_t *surface ) {
-#ifndef USE_OPENGLES
-	int i;
-#endif
 	int j, k;
 	refEntity_t *refent;
 	int             *boneList;
@@ -1204,7 +1198,7 @@ void RB_SurfaceAnim( mdsSurface_t *surface ) {
 	if ( r_bonesDebug->integer ) {
 		if ( r_bonesDebug->integer < 3 ) {
 			// DEBUG: show the bones as a stick figure with axis at each bone
-			boneRefs = ( int * )( (byte *)surface + surface->ofsBoneReferences );
+			int i, *boneRefs = ( int * )( (byte *)surface + surface->ofsBoneReferences );
 			for ( i = 0; i < surface->numBoneReferences; i++, boneRefs++ ) {
 				bonePtr = &bones[*boneRefs];
 
@@ -1593,9 +1587,9 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent ) {
 			
 			for(j = 0; j < skin->numSurfaces; j++)
 			{
-				if (!strcmp(skin->surfaces[j]->name, surface->name))
+				if (!strcmp(skin->surfaces[j].name, surface->name))
 				{
-					shader = skin->surfaces[j]->shader;
+					shader = skin->surfaces[j].shader;
 					break;
 				}
 			}
@@ -1626,7 +1620,7 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent ) {
 			R_AddDrawSurf( (void *)surface, tr.projectionShadowShader, 0, qfalse, ATI_TESS_TRUFORM );
 		}
 
-		if (!personalModel)
+		if ( !personalModel )
 			R_AddDrawSurf( (void *)surface, shader, fogNum, qfalse, ATI_TESS_TRUFORM );
 
 		surface = (mdrSurface_t *)( (byte *)surface + surface->ofsEnd );

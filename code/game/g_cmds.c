@@ -37,12 +37,17 @@ DeathmatchScoreboardMessage
 */
 void DeathmatchScoreboardMessage( gentity_t *ent ) {
 	char entry[1024];
-	char string[1400];
+	char string[1000];
 	int stringlength;
 	int i, j;
 	gclient_t   *cl;
 	int numSorted;
 	int scoreFlags;
+
+	// don't send scores to bots, they don't parse it
+	if ( ent->r.svFlags & SVF_BOT ) {
+		return;
+	}
 
 	// send the latest information on all clients
 	string[0] = 0;
@@ -177,32 +182,35 @@ Returns a player number for either a number or name string
 Returns -1 if invalid
 ==================
 */
-int ClientNumberFromString( gentity_t *to, char *s ) {
+int ClientNumberFromString( gentity_t *to, char *s, qboolean checkNums, qboolean checkNames ) {
 	gclient_t   *cl;
 	int idnum;
 	char		cleanName[MAX_STRING_CHARS];
 
-	// numeric values could be slot numbers
-	if ( StringIsInteger( s ) ) {
-		idnum = atoi( s );
-
-		if ( idnum >= 0 && idnum < level.maxclients ) {
-			cl = &level.clients[idnum];
-			if ( cl->pers.connected == CON_CONNECTED ) {
-				return idnum;
+	if ( checkNums ) {
+		// numeric values could be slot numbers
+		if ( StringIsInteger( s ) ) {
+			idnum = atoi( s );
+			if ( idnum >= 0 && idnum < level.maxclients ) {
+				cl = &level.clients[idnum];
+				if ( cl->pers.connected == CON_CONNECTED ) {
+					return idnum;
+				}
 			}
 		}
 	}
 
-	// check for a name match
-	for ( idnum = 0,cl = level.clients ; idnum < level.maxclients ; idnum++,cl++ ) {
-		if ( cl->pers.connected != CON_CONNECTED ) {
-			continue;
-		}
-		Q_strncpyz(cleanName, cl->pers.netname, sizeof(cleanName));
-		Q_CleanStr(cleanName);
-		if ( !Q_stricmp( cleanName, s ) ) {
-			return idnum;
+	if ( checkNames ) {
+		// check for a name match
+		for ( idnum = 0, cl = level.clients; idnum < level.maxclients; idnum++, cl++ ) {
+			if ( cl->pers.connected != CON_CONNECTED ) {
+				continue;
+			}
+			Q_strncpyz( cleanName, cl->pers.netname, sizeof( cleanName ) );
+			Q_CleanStr( cleanName );
+			if ( !Q_stricmp( cleanName, s ) ) {
+				return idnum;
+			}
 		}
 	}
 
@@ -555,7 +563,7 @@ void Cmd_Kill_f( gentity_t *ent ) {
 SetTeam
 =================
 */
-void SetTeam( gentity_t *ent, char *s ) {
+void SetTeam( gentity_t *ent, const char *s ) {
 	int team, oldTeam;
 	gclient_t           *client;
 	int clientNum;
@@ -596,6 +604,29 @@ void SetTeam( gentity_t *ent, char *s ) {
 			// pick the team with the least number of players
 			team = PickTeam( clientNum );
 		}
+
+		// NERVE - SMF - merge from team arena
+		if ( g_teamForceBalance.integer && !client->pers.localClient && !( ent->r.svFlags & SVF_BOT ) ) {
+			int counts[TEAM_NUM_TEAMS];
+
+			counts[TEAM_BLUE] = TeamCount( clientNum, TEAM_BLUE );
+			counts[TEAM_RED] = TeamCount( clientNum, TEAM_RED );
+
+			// We allow a spread of one
+			if ( team == TEAM_RED && counts[TEAM_RED] - counts[TEAM_BLUE] >= 1 ) {
+				trap_SendServerCommand( clientNum,
+										"cp \"The Axis has too many players.\n\"" );
+				return; // ignore the request
+			}
+			if ( team == TEAM_BLUE && counts[TEAM_BLUE] - counts[TEAM_RED] >= 1 ) {
+				trap_SendServerCommand( clientNum,
+										"cp \"The Allies have too many players.\n\"" );
+				return; // ignore the request
+			}
+
+			// It's ok, the team we are switching to has less or same number of players
+		}
+		// -NERVE - SMF
 	} else {
 		// force them to spectators if there aren't any spots free
 		team = TEAM_FREE;
@@ -655,6 +686,11 @@ void SetTeam( gentity_t *ent, char *s ) {
 
 	// get and distribute relevent paramters
 	ClientUserinfoChanged( clientNum );
+
+	// client hasn't spawned yet, they sent an early team command, teampref userinfo, or g_teamAutoJoin is enabled
+	if ( client->pers.connected != CON_CONNECTED ) {
+		return;
+	}
 
 	ClientBegin( clientNum );
 }
@@ -765,7 +801,7 @@ void Cmd_Follow_f( gentity_t *ent ) {
 	}
 
 	trap_Argv( 1, arg, sizeof( arg ) );
-	i = ClientNumberFromString( ent, arg );
+	i = ClientNumberFromString( ent, arg, qtrue, qtrue );
 	if ( i == -1 ) {
 		return;
 	}
@@ -988,6 +1024,15 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 	}
 }
 
+static void SanitizeChatText( char *text ) {
+	int i;
+
+	for ( i = 0; text[i]; i++ ) {
+		if ( text[i] == '\n' || text[i] == '\r' ) {
+			text[i] = ' ';
+		}
+	}
+}
 
 /*
 ==================
@@ -1007,6 +1052,8 @@ static void Cmd_Say_f( gentity_t *ent, int mode, qboolean arg0 ) {
 	{
 		p = ConcatArgs( 1 );
 	}
+
+	SanitizeChatText( p );
 
 	G_Say( ent, NULL, mode, p );
 }
@@ -1028,7 +1075,7 @@ static void Cmd_Tell_f( gentity_t *ent ) {
 	}
 
 	trap_Argv( 1, arg, sizeof( arg ) );
-	targetNum = ClientNumberFromString( ent, arg );
+	targetNum = ClientNumberFromString( ent, arg, qtrue, qtrue );
 	if ( targetNum == -1 ) {
 		return;
 	}
@@ -1039,6 +1086,8 @@ static void Cmd_Tell_f( gentity_t *ent ) {
 	}
 
 	p = ConcatArgs( 2 );
+
+	SanitizeChatText( p );
 
 	G_LogPrintf( "tell: %s to %s: %s\n", ent->client->pers.netname, target->client->pers.netname, p );
 	G_Say( ent, target, SAY_TELL, p );
@@ -1078,7 +1127,7 @@ void Cmd_GameCommand_f( gentity_t *ent ) {
 	}
 
 	trap_Argv( 1, arg, sizeof( arg ) );
-	targetNum = ClientNumberFromString( ent, arg );
+	targetNum = ClientNumberFromString( ent, arg, qtrue, qtrue );
 	if ( targetNum == -1 ) {
 		return;
 	}
@@ -1152,10 +1201,12 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 	} else if ( !Q_stricmp( arg1, "map" ) ) {
 	} else if ( !Q_stricmp( arg1, "g_gametype" ) ) {
 	} else if ( !Q_stricmp( arg1, "kick" ) ) {
+	} else if ( !Q_stricmp( arg1, "clientkick" ) ) {
 	} else {
 		trap_SendServerCommand( ent - g_entities, "print \"Invalid vote string.\n\"" );
 		return;
 	}
+	
 	Com_sprintf( level.voteString, sizeof( level.voteString ), "%s %s", arg1, arg2 );
 
 	trap_SendServerCommand( -1, va( "print \"%s called a vote.\n\"", ent->client->pers.netname ) );
@@ -1280,9 +1331,6 @@ void Cmd_StartCamera_f( gentity_t *ent ) {
 	ent->client->cameraPortal = g_camEnt;
 	ent->client->ps.eFlags |= EF_VIEWING_CAMERA;
 	ent->s.eFlags |= EF_VIEWING_CAMERA;
-
-	if ( g_skipcutscenes.integer )
-		AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "trigger", "cameraInterrupt" );
 
 // (SA) trying this in client to avoid 1 frame of player drawing
 //	ent->client->ps.eFlags |= EF_NODRAW;

@@ -1571,7 +1571,7 @@ void Console_Key( int key ) {
 	// enter finishes the line
 	if ( key == K_ENTER || key == K_KP_ENTER ) {
 		// if not in the game explicitly prepend a slash if needed
-		if ( clc.state != CA_ACTIVE &&
+		if ( clc.state != CA_ACTIVE && con_autochat->integer &&
 				g_consoleField.buffer[0] &&
 				g_consoleField.buffer[0] != '\\' &&
 				g_consoleField.buffer[0] != '/' ) {
@@ -1593,7 +1593,9 @@ void Console_Key( int key ) {
 			if ( !g_consoleField.buffer[0] ) {
 				return; // empty lines just scroll the console without adding to history
 			} else {
-				Cbuf_AddText( "cmd say " );
+				if ( con_autochat->integer ) {
+					Cbuf_AddText ( "cmd say " );
+				}
 				Cbuf_AddText( g_consoleField.buffer );
 				Cbuf_AddText( "\n" );
 			}
@@ -1787,6 +1789,7 @@ to be configured even if they don't have defined names.
 */
 int Key_StringToKeynum( char *str ) {
 	keyname_t   *kn;
+	int			n;
 
 	if ( !str || !str[0] ) {
 		return -1;
@@ -1796,12 +1799,9 @@ int Key_StringToKeynum( char *str ) {
 	}
 
 	// check for hex code
-	if ( strlen( str ) == 4 ) {
-		int n = Com_HexStrToInt( str );
-
-		if ( n >= 0 ) {
-			return n;
-		}
+	n = Com_HexStrToInt( str );
+	if ( n >= 0 && n < MAX_KEYS ) {
+		return n;
 	}
 
 	// scan for a text match

@@ -481,7 +481,13 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 	case BOTLIB_GET_CONSOLE_MESSAGE:
 		return SV_BotGetConsoleMessage( args[1], VMA( 2 ), args[3] );
 	case BOTLIB_USER_COMMAND:
-		SV_ClientThink( &svs.clients[args[1]], VMA( 2 ) );
+		{
+			int clientNum = args[1];
+
+			if ( clientNum >= 0 && clientNum < sv_maxclients->integer ) {
+				SV_ClientThink( &svs.clients[clientNum], VMA(2) );
+			}
+		}
 		return 0;
 
 	case BOTLIB_AAS_ENTITY_INFO:
@@ -1068,5 +1074,24 @@ qboolean SV_GetModelInfo( int clientNum, char *modelName, animModelInfo_t **mode
 	if ( !gvm ) {
 		return qfalse;
 	}
-	return VM_Call( gvm, GAME_GETMODELINFO, clientNum, modelName, modelInfo );
+
+	if ( VM_IsNative( gvm ) ) {
+		return VM_Call( gvm, GAME_GETMODELINFO, clientNum, modelName, modelInfo );
+	} else {
+		// Setting a pointer to Game QVM animModelInfo_t struct won't work
+		// as it contains pointers (offset in QVM memory block) that will
+		// have to be converted to a real pointers for CGame DLL to use it.
+		// Additionally, there may be different struct alignment.
+		//
+		// That would require making a copy for CGame using VM_Alloc()
+		// (and tracking modelinfo to reuse?) to fix pointers and alignment
+		// issues. That would need means having to hard code animModelInfo_t.
+		// Which is a lot of weird hard coding work and iortcw already added
+		// a fall back for trap_GetModelInfo() in CGame to allow demo playback
+		// so this is unnecessary.
+		//
+		// FIXME: It would be necessary for using Game QVM with vanilla CGame DLL.
+		// --zturtleman
+		return qfalse;
+	}
 }

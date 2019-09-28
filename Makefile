@@ -270,10 +270,6 @@ ifndef USE_OPENGLES
 USE_OPENGLES=0
 endif
 
-ifndef RASPBERRY_PI
-RASPBERRY_PI=0
-endif
-
 ifndef USE_AUTHORIZE_SERVER
 USE_AUTHORIZE_SERVER=0
 endif
@@ -297,12 +293,12 @@ BLIBDIR=$(MOUNT_DIR)/botlib
 NDIR=$(MOUNT_DIR)/null
 UIDIR=$(MOUNT_DIR)/ui
 JPDIR=$(MOUNT_DIR)/jpeg-8c
-OGGDIR=$(MOUNT_DIR)/libogg-1.3.2
-VORBISDIR=$(MOUNT_DIR)/libvorbis-1.3.5
-OPUSDIR=$(MOUNT_DIR)/opus-1.1.2
-OPUSFILEDIR=$(MOUNT_DIR)/opusfile-0.7
-ZDIR=$(MOUNT_DIR)/zlib-1.2.8
-FTDIR=$(MOUNT_DIR)/freetype-2.6.4
+OGGDIR=$(MOUNT_DIR)/libogg-1.3.3
+VORBISDIR=$(MOUNT_DIR)/libvorbis-1.3.6
+OPUSDIR=$(MOUNT_DIR)/opus-1.2.1
+OPUSFILEDIR=$(MOUNT_DIR)/opusfile-0.9
+ZDIR=$(MOUNT_DIR)/zlib-1.2.11
+FTDIR=$(MOUNT_DIR)/freetype-2.9
 SPLDIR=$(MOUNT_DIR)/splines
 Q3ASMDIR=$(MOUNT_DIR)/tools/asm
 LBURGDIR=$(MOUNT_DIR)/tools/lcc/lburg
@@ -316,15 +312,28 @@ bin_path=$(shell which $(1) 2> /dev/null)
 
 # We won't need this if we only build the server
 ifneq ($(BUILD_CLIENT),0)
-  # set PKG_CONFIG_PATH to influence this, e.g.
-  # PKG_CONFIG_PATH=/opt/cross/i386-mingw32msvc/lib/pkgconfig
-  ifneq ($(call bin_path, pkg-config),)
-    CURL_CFLAGS ?= $(shell pkg-config --silence-errors --cflags libcurl)
-    CURL_LIBS ?= $(shell pkg-config --silence-errors --libs libcurl)
-    OPENAL_CFLAGS ?= $(shell pkg-config --silence-errors --cflags openal)
-    OPENAL_LIBS ?= $(shell pkg-config --silence-errors --libs openal)
-    SDL_CFLAGS ?= $(shell pkg-config --silence-errors --cflags sdl2|sed 's/-Dmain=SDL_main//')
-    SDL_LIBS ?= $(shell pkg-config --silence-errors --libs sdl2)
+  # set PKG_CONFIG_PATH or PKG_CONFIG to influence this, e.g.
+  # PKG_CONFIG_PATH=/opt/cross/i386-mingw32msvc/lib/pkgconfig or
+  # PKG_CONFIG=arm-linux-gnueabihf-$(PKG_CONFIG)
+  ifeq ($(CROSS_COMPILING),0)
+    PKG_CONFIG ?= pkg-config
+  else
+  ifneq ($(PKG_CONFIG_PATH),)
+    PKG_CONFIG ?= pkg-config
+  else
+    # Don't use host pkg-config when cross-compiling.
+    # (unknown-pkg-config is meant to be a non-existant command.)
+    PKG_CONFIG ?= unknown-pkg-config
+  endif
+  endif
+
+  ifneq ($(call bin_path, $(PKG_CONFIG)),)
+    CURL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags libcurl)
+    CURL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs libcurl)
+    OPENAL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags openal)
+    OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal)
+    SDL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags sdl2|sed 's/-Dmain=SDL_main//')
+    SDL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs sdl2)
   else
     # assume they're in the system default paths (no -I or -L needed)
     CURL_LIBS ?= -lcurl
@@ -333,8 +342,8 @@ ifneq ($(BUILD_CLIENT),0)
   # Use sdl2-config if all else fails
   ifeq ($(SDL_CFLAGS),)
     ifneq ($(call bin_path, sdl2-config),)
-      SDL_CFLAGS ?= $(shell sdl2-config --cflags)
-      SDL_LIBS ?= $(shell sdl2-config --libs)
+      SDL_CFLAGS = $(shell sdl2-config --cflags)
+      SDL_LIBS = $(shell sdl2-config --libs)
     endif
   endif
 endif
@@ -356,7 +365,7 @@ endif
 
 ## Defaults
 INSTALL=install
-MKDIR=mkdir
+MKDIR=mkdir -p
 EXTRA_FILES=
 CLIENT_EXTRA_FILES=
 
@@ -382,10 +391,10 @@ ifneq (,$(findstring "$(PLATFORM)", "linux" "gnu_kfreebsd" "kfreebsd-gnu" "gnu")
     OPTIMIZE = $(OPTIMIZEVM) -ffast-math
   endif
   ifeq ($(ARCH),ppc)
-    BASE_CFLAGS += -maltivec
+    ALTIVEC_CFLAGS = -maltivec
   endif
   ifeq ($(ARCH),ppc64)
-    BASE_CFLAGS += -maltivec
+    ALTIVEC_CFLAGS = -maltivec
   endif
   ifeq ($(ARCH),sparc)
     OPTIMIZE += -mtune=ultrasparc3 -mv8plus
@@ -416,34 +425,25 @@ ifneq (,$(findstring "$(PLATFORM)", "linux" "gnu_kfreebsd" "kfreebsd-gnu" "gnu")
     ifeq ($(CROSS_COMPILING),1)
       ifeq ($(ARCH),x86)
       SDL_LIBS = $(LIBSDIR)/linux32/libSDL2main.a \
-                 $(LIBSDIR)/linux32/libSDL2-2.0.so.0.4.1
+                 $(LIBSDIR)/linux32/libSDL2-2.0.so.0.9.0
       endif
       ifeq ($(ARCH),x86_64)
       SDL_LIBS = $(LIBSDIR)/linux64/libSDL2main.a \
-                 $(LIBSDIR)/linux64/libSDL2-2.0.so.0.4.1
+                 $(LIBSDIR)/linux64/libSDL2-2.0.so.0.9.0
       endif
     endif
   endif
 
   ifeq ($(USE_OPENGLES),1)
-    ifeq ($(RASPBERRY_PI),1)
-      BUILD_RENDERER_REND2 = 0
-      BASE_CFLAGS += -DUSE_OPENGLES
-      LDFLAGS += -L/opt/vc/lib
-      CLIENT_LIBS = $(SDL_LIBS) -lbcm_host
-      RENDERER_LIBS = $(SDL_LIBS) -lEGL -lGLESv1_CM -lbcm_host
-      SERVER_LIBS = -lbcm_host
-    else
-      BUILD_RENDERER_REND2 = 0
-      BASE_CFLAGS += -DUSE_OPENGLES
-      CLIENT_LIBS = $(SDL_LIBS)
-      RENDERER_LIBS = $(SDL_LIBS) -lEGL -lGLESv1_CM
-      SERVER_LIBS =
-    endif
+    BUILD_RENDERER_REND2 = 0
+    BASE_CFLAGS += -DUSE_OPENGLES
+    CLIENT_LIBS = $(SDL_LIBS)
+    RENDERER_LIBS = $(SDL_LIBS)
+    SERVER_LIBS =
   else
     CLIENT_CFLAGS += $(SDL_CFLAGS)
     CLIENT_LIBS += $(SDL_LIBS)
-    RENDERER_LIBS += $(SDL_LIBS) -lGL
+    RENDERER_LIBS += $(SDL_LIBS)
     SERVER_LIBS =
   endif
 
@@ -474,26 +474,31 @@ ifeq ($(PLATFORM),darwin)
   LIBS = -framework Cocoa
   CLIENT_LIBS=
   RENDERER_LIBS=
-  OPTIMIZEVM=
+  OPTIMIZEVM= -O3
 
-  BASE_CFLAGS = -Wall -mmacosx-version-min=10.5 \
-    -DMAC_OS_X_VERSION_MIN_REQUIRED=1050
+  BASE_CFLAGS = -Wall
 
   ifeq ($(ARCH),ppc)
-    BASE_CFLAGS += -arch ppc -faltivec
-    OPTIMIZEVM += -O3
+    BASE_CFLAGS += -arch ppc -mmacosx-version-min=10.5 \
+      -DMAC_OS_X_VERSION_MIN_REQUIRED=1050 -DMAC_OS_X_VERSION_MAX_ALLOWED=1060
+    ALTIVEC_CFLAGS = -faltivec
   endif
   ifeq ($(ARCH),ppc64)
-    BASE_CFLAGS += -arch ppc64 -faltivec
+    BASE_CFLAGS += -arch ppc64 -mmacosx-version-min=10.5 \
+      -DMAC_OS_X_VERSION_MIN_REQUIRED=1050 -DMAC_OS_X_VERSION_MAX_ALLOWED=1060
+    ALTIVEC_CFLAGS = -faltivec
   endif
   ifeq ($(ARCH),x86)
     OPTIMIZEVM += -march=prescott -mfpmath=sse
     # x86 vm will crash without -mstackrealign since MMX instructions will be
     # used no matter what and they corrupt the frame pointer in VM calls
-    BASE_CFLAGS += -arch i386 -mstackrealign
+    BASE_CFLAGS += -arch i386 -mstackrealign -mmacosx-version-min=10.6 \
+      -DMAC_OS_X_VERSION_MIN_REQUIRED=1060
   endif
   ifeq ($(ARCH),x86_64)
-    OPTIMIZEVM += -arch x86_64 -mfpmath=sse
+    OPTIMIZEVM += -mfpmath=sse
+    BASE_CFLAGS += -arch x86_64 -mmacosx-version-min=10.6 \
+      -DMAC_OS_X_VERSION_MIN_REQUIRED=1060
   endif
 
   # When compiling on OSX for OSX, we're not cross compiling as far as the
@@ -540,7 +545,11 @@ ifeq ($(PLATFORM),darwin)
   BASE_CFLAGS += -D_THREAD_SAFE=1
 
   ifeq ($(USE_LOCAL_HEADERS),1)
-    CLIENT_CFLAGS += -I$(SDLHDIR)/include
+    ifneq ($(findstring $(ARCH),ppc ppc64),)
+      CLIENT_CFLAGS += -I$(SDLHDIR)/include-2.0.1
+    else
+      CLIENT_CFLAGS += -I$(SDLHDIR)/include
+    endif
   else
     CLIENT_CFLAGS += $(SDL_CFLAGS)
   endif
@@ -678,7 +687,7 @@ ifdef MINGW
     CLIENT_LDFLAGS += -mwindows -static -static-libgcc -static-libstdc++
   endif
   CLIENT_LIBS = -lgdi32 -lole32
-  RENDERER_LIBS = -lgdi32 -lole32 -lopengl32
+  RENDERER_LIBS = -lgdi32 -lole32
 
   ifeq ($(USE_FREETYPE),1)
     ifneq ($(USE_INTERNAL_FREETYPE),1)
@@ -692,9 +701,9 @@ ifdef MINGW
       ifeq ($(USE_LOCAL_HEADERS),1)
         CLIENT_CFLAGS += -DCURL_STATICLIB
         ifeq ($(ARCH),x86_64)
-          CLIENT_LIBS += $(LIBSDIR)/win64/libcurl.a
+          CLIENT_LIBS += $(LIBSDIR)/win64/libcurl.a -lcrypt32
         else
-          CLIENT_LIBS += $(LIBSDIR)/win32/libcurl.a
+          CLIENT_LIBS += $(LIBSDIR)/win32/libcurl.a -lcrypt32
         endif
       else
         CLIENT_LIBS += $(CURL_LIBS)
@@ -759,10 +768,10 @@ ifneq (,$(findstring "$(PLATFORM)", "freebsd" "openbsd" "netbsd"))
     OPTIMIZE = $(OPTIMIZEVM) -ffast-math
   endif
   ifeq ($(ARCH),ppc)
-    BASE_CFLAGS += -maltivec
+    ALTIVEC_CFLAGS = -maltivec
   endif
   ifeq ($(ARCH),ppc64)
-    BASE_CFLAGS += -maltivec
+    ALTIVEC_CFLAGS = -maltivec
   endif
   ifeq ($(ARCH),sparc)
     OPTIMIZE += -mtune=ultrasparc3 -mv8plus
@@ -793,7 +802,7 @@ ifneq (,$(findstring "$(PLATFORM)", "freebsd" "openbsd" "netbsd"))
   CLIENT_LIBS =
 
   CLIENT_LIBS += $(SDL_LIBS)
-  RENDERER_LIBS = $(SDL_LIBS) -lGL
+  RENDERER_LIBS = $(SDL_LIBS)
 
   ifeq ($(USE_OPENAL),1)
     ifneq ($(USE_OPENAL_DLOPEN),1)
@@ -818,7 +827,6 @@ ifeq ($(PLATFORM),irix64)
   ARCH=mips
 
   CC = c99
-  MKDIR = mkdir -p
 
   BASE_CFLAGS=-Dstricmp=strcasecmp -Xcpluscomm -woff 1185 \
     -I. -I$(ROOT)/usr/include
@@ -833,7 +841,7 @@ ifeq ($(PLATFORM),irix64)
   # FIXME: The X libraries probably aren't necessary?
   CLIENT_LIBS=-L/usr/X11/$(LIB) $(SDL_LIBS) \
     -lX11 -lXext -lm
-  RENDERER_LIBS = $(SDL_LIBS) -lGL
+  RENDERER_LIBS = $(SDL_LIBS)
 
 else # ifeq IRIX
 
@@ -845,7 +853,7 @@ ifeq ($(PLATFORM),sunos)
 
   CC=gcc
   INSTALL=ginstall
-  MKDIR=gmkdir
+  MKDIR=gmkdir -p
   COPYDIR="/usr/local/share/games/wolf"
 
   ifneq ($(ARCH),x86)
@@ -881,7 +889,7 @@ ifeq ($(PLATFORM),sunos)
   BOTCFLAGS=-O0
 
   CLIENT_LIBS +=$(SDL_LIBS) -lX11 -lXext -liconv -lm
-  RENDERER_LIBS = $(SDL_LIBS) -lGL
+  RENDERER_LIBS = $(SDL_LIBS)
 
 else # ifeq sunos
 
@@ -953,7 +961,11 @@ endif
 TARGETS =
 
 ifndef FULLBINEXT
-  FULLBINEXT=.$(ARCH)$(BINEXT)
+  ifndef MINGW
+    FULLBINEXT=.$(ARCH)$(BINEXT)
+  else
+    FULLBINEXT=.$(FILE_ARCH)$(BINEXT)
+  endif
 endif
 
 ifndef SHLIBNAME
@@ -1034,8 +1046,8 @@ ifeq ($(NEED_OPUS),1)
       -I$(OPUSDIR)/include -I$(OPUSDIR)/celt -I$(OPUSDIR)/silk \
       -I$(OPUSDIR)/silk/float -I$(OPUSFILEDIR)/include
   else
-    OPUS_CFLAGS ?= $(shell pkg-config --silence-errors --cflags opusfile opus || true)
-    OPUS_LIBS ?= $(shell pkg-config --silence-errors --libs opusfile opus || echo -lopusfile -lopus)
+    OPUS_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags opusfile opus || true)
+    OPUS_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs opusfile opus || echo -lopusfile -lopus)
   endif
   CLIENT_CFLAGS += $(OPUS_CFLAGS)
   CLIENT_LIBS += $(OPUS_LIBS)
@@ -1047,8 +1059,8 @@ ifeq ($(USE_CODEC_VORBIS),1)
   ifeq ($(USE_INTERNAL_VORBIS),1)
     CLIENT_CFLAGS += -I$(VORBISDIR)/include -I$(VORBISDIR)/lib
   else
-    VORBIS_CFLAGS ?= $(shell pkg-config --silence-errors --cflags vorbisfile vorbis || true)
-    VORBIS_LIBS ?= $(shell pkg-config --silence-errors --libs vorbisfile vorbis || echo -lvorbisfile -lvorbis)
+    VORBIS_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags vorbisfile vorbis || true)
+    VORBIS_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs vorbisfile vorbis || echo -lvorbisfile -lvorbis)
   endif
   CLIENT_CFLAGS += $(VORBIS_CFLAGS)
   CLIENT_LIBS += $(VORBIS_LIBS)
@@ -1059,8 +1071,8 @@ ifeq ($(NEED_OGG),1)
   ifeq ($(USE_INTERNAL_OGG),1)
     OGG_CFLAGS = -I$(OGGDIR)/include
   else
-    OGG_CFLAGS ?= $(shell pkg-config --silence-errors --cflags ogg || true)
-    OGG_LIBS ?= $(shell pkg-config --silence-errors --libs ogg || echo -logg)
+    OGG_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags ogg || true)
+    OGG_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs ogg || echo -logg)
   endif
   CLIENT_CFLAGS += $(OGG_CFLAGS)
   CLIENT_LIBS += $(OGG_LIBS)
@@ -1082,8 +1094,8 @@ endif
 ifeq ($(USE_INTERNAL_ZLIB),1)
   ZLIB_CFLAGS = -DNO_GZIP -I$(ZDIR)
 else
-  ZLIB_CFLAGS ?= $(shell pkg-config --silence-errors --cflags zlib || true)
-  ZLIB_LIBS ?= $(shell pkg-config --silence-errors --libs zlib || echo -lz)
+  ZLIB_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags zlib || true)
+  ZLIB_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs zlib || echo -lz)
 endif
 BASE_CFLAGS += $(ZLIB_CFLAGS)
 LIBS += $(ZLIB_LIBS)
@@ -1092,10 +1104,10 @@ ifeq ($(USE_INTERNAL_JPEG),1)
   BASE_CFLAGS += -DUSE_INTERNAL_JPEG
   BASE_CFLAGS += -I$(JPDIR)
 else
-  # IJG libjpeg doesn't have pkg-config, but libjpeg-turbo uses libjpeg.pc;
+  # IJG libjpeg doesn't have $(PKG_CONFIG), but libjpeg-turbo uses libjpeg.pc;
   # we fall back to hard-coded answers if libjpeg.pc is unavailable
-  JPEG_CFLAGS ?= $(shell pkg-config --silence-errors --cflags libjpeg || true)
-  JPEG_LIBS ?= $(shell pkg-config --silence-errors --libs libjpeg || echo -ljpeg)
+  JPEG_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags libjpeg || true)
+  JPEG_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs libjpeg || echo -ljpeg)
   BASE_CFLAGS += $(JPEG_CFLAGS)
   RENDERER_LIBS += $(JPEG_LIBS)
 endif
@@ -1104,8 +1116,8 @@ ifeq ($(USE_FREETYPE),1)
   ifeq ($(USE_INTERNAL_FREETYPE),1)
     FREETYPE_CFLAGS += -I$(FTDIR)/include -DFT2_BUILD_LIBRARY
   else
-    FREETYPE_CFLAGS ?= $(shell pkg-config --silence-errors --cflags freetype2 || true)
-    FREETYPE_LIBS ?= $(shell pkg-config --silence-errors --libs freetype2 || echo -lfreetype)
+    FREETYPE_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags freetype2 || true)
+    FREETYPE_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs freetype2 || echo -lfreetype)
   endif
   BASE_CFLAGS += -DBUILD_FREETYPE $(FREETYPE_CFLAGS)
   RENDERER_LIBS += $(FREETYPE_LIBS)
@@ -1174,16 +1186,26 @@ $(echo_cmd) "CC $<"
 $(Q)$(CC) $(NOTSHLIBCFLAGS) $(CFLAGS) $(CLIENT_CFLAGS) $(OPTIMIZE) -o $@ -c $<
 endef
 
+define DO_CC_ALTIVEC
+$(echo_cmd) "CC $<"
+$(Q)$(CC) $(NOTSHLIBCFLAGS) $(CFLAGS) $(CLIENT_CFLAGS) $(OPTIMIZE) $(ALTIVEC_CFLAGS) -o $@ -c $<
+endef
+
 define DO_REF_CC
 $(echo_cmd) "REF_CC $<"
 $(Q)$(CC) $(SHLIBCFLAGS) $(CFLAGS) $(CLIENT_CFLAGS) $(OPTIMIZE) -o $@ -c $<
+endef
+
+define DO_REF_CC_ALTIVEC
+$(echo_cmd) "REF_CC $<"
+$(Q)$(CC) $(SHLIBCFLAGS) $(CFLAGS) $(CLIENT_CFLAGS) $(OPTIMIZE) $(ALTIVEC_CFLAGS) -o $@ -c $<
 endef
 
 define DO_REF_STR
 $(echo_cmd) "REF_STR $<"
 $(Q)rm -f $@
 $(Q)echo "const char *fallbackShader_$(notdir $(basename $<)) =" >> $@
-$(Q)cat $< | sed 's/^/\"/;s/$$/\\n\"/' >> $@
+$(Q)cat $< | sed -e 's/^/\"/;s/$$/\\n\"/' | tr -d '\r' >> $@
 $(Q)echo ";" >> $@
 endef
 
@@ -1311,6 +1333,7 @@ targets: makedirs
 	@echo "  COMPILE_PLATFORM: $(COMPILE_PLATFORM)"
 	@echo "  COMPILE_ARCH: $(COMPILE_ARCH)"
 	@echo "  HAVE_VM_COMPILED: $(HAVE_VM_COMPILED)"
+	@echo "  PKG_CONFIG: $(PKG_CONFIG)"
 	@echo "  CC: $(CC)"
 	@echo "  CXX: $(CXX)"
 ifdef MINGW
@@ -1359,28 +1382,23 @@ $(B).zip: $(TARGETS)
 	@(cd $(B) && zip -r9 ../../$@ $(NAKED_TARGETS))
 
 makedirs:
-	@if [ ! -d $(BUILD_DIR) ];then $(MKDIR) $(BUILD_DIR);fi
-	@if [ ! -d $(B) ];then $(MKDIR) $(B);fi
-	@if [ ! -d $(B)/client ];then $(MKDIR) $(B)/client;fi
-	@if [ ! -d $(B)/splines ];then $(MKDIR) $(B)/splines;fi
-	@if [ ! -d $(B)/client/opus ];then $(MKDIR) $(B)/client/opus;fi
-	@if [ ! -d $(B)/client/vorbis ];then $(MKDIR) $(B)/client/vorbis;fi
-	@if [ ! -d $(B)/renderer ];then $(MKDIR) $(B)/renderer;fi
-	@if [ ! -d $(B)/rend2 ];then $(MKDIR) $(B)/rend2;fi
-	@if [ ! -d $(B)/rend2/glsl ];then $(MKDIR) $(B)/rend2/glsl;fi
-	@if [ ! -d $(B)/ded ];then $(MKDIR) $(B)/ded;fi
-	@if [ ! -d $(B)/$(BASEGAME) ];then $(MKDIR) $(B)/$(BASEGAME);fi
-	@if [ ! -d $(B)/$(BASEGAME)/cgame ];then $(MKDIR) $(B)/$(BASEGAME)/cgame;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game ];then $(MKDIR) $(B)/$(BASEGAME)/game;fi
-	@if [ ! -d $(B)/$(BASEGAME)/ui ];then $(MKDIR) $(B)/$(BASEGAME)/ui;fi
-	@if [ ! -d $(B)/$(BASEGAME)/qcommon ];then $(MKDIR) $(B)/$(BASEGAME)/qcommon;fi
-	@if [ ! -d $(B)/$(BASEGAME)/vm ];then $(MKDIR) $(B)/$(BASEGAME)/vm;fi
-	@if [ ! -d $(B)/tools ];then $(MKDIR) $(B)/tools;fi
-	@if [ ! -d $(B)/tools/asm ];then $(MKDIR) $(B)/tools/asm;fi
-	@if [ ! -d $(B)/tools/etc ];then $(MKDIR) $(B)/tools/etc;fi
-	@if [ ! -d $(B)/tools/rcc ];then $(MKDIR) $(B)/tools/rcc;fi
-	@if [ ! -d $(B)/tools/cpp ];then $(MKDIR) $(B)/tools/cpp;fi
-	@if [ ! -d $(B)/tools/lburg ];then $(MKDIR) $(B)/tools/lburg;fi
+	@$(MKDIR) $(B)/splines
+	@$(MKDIR) $(B)/client/opus
+	@$(MKDIR) $(B)/client/vorbis
+	@$(MKDIR) $(B)/renderer
+	@$(MKDIR) $(B)/rend2
+	@$(MKDIR) $(B)/rend2/glsl
+	@$(MKDIR) $(B)/ded
+	@$(MKDIR) $(B)/$(BASEGAME)/cgame
+	@$(MKDIR) $(B)/$(BASEGAME)/game
+	@$(MKDIR) $(B)/$(BASEGAME)/ui
+	@$(MKDIR) $(B)/$(BASEGAME)/qcommon
+	@$(MKDIR) $(B)/$(BASEGAME)/vm
+	@$(MKDIR) $(B)/tools/asm
+	@$(MKDIR) $(B)/tools/etc
+	@$(MKDIR) $(B)/tools/rcc
+	@$(MKDIR) $(B)/tools/cpp
+	@$(MKDIR) $(B)/tools/lburg
 
 #############################################################################
 # QVM BUILD TOOLS
@@ -1588,6 +1606,7 @@ Q3OBJ = \
   $(B)/client/net_ip.o \
   $(B)/client/huffman.o \
   \
+  $(B)/client/snd_altivec.o \
   $(B)/client/snd_adpcm.o \
   $(B)/client/snd_dma.o \
   $(B)/client/snd_mem.o \
@@ -1749,6 +1768,7 @@ Q3R2STRINGOBJ = \
   $(B)/rend2/glsl/tonemap_vp.o
 
 Q3ROBJ = \
+  $(B)/renderer/tr_altivec.o \
   $(B)/renderer/tr_animation.o \
   $(B)/renderer/tr_backend.o \
   $(B)/renderer/tr_bsp.o \
@@ -2021,6 +2041,7 @@ Q3OBJ += \
   $(B)/client/opus/stereo_encode_pred.o \
   $(B)/client/opus/stereo_find_predictor.o \
   $(B)/client/opus/stereo_quant_pred.o \
+  $(B)/client/opus/LPC_fit.o \
   \
   $(B)/client/opus/apply_sine_window_FLP.o \
   $(B)/client/opus/corrMatrix_FLP.o \
@@ -2033,11 +2054,9 @@ Q3OBJ += \
   $(B)/client/opus/LTP_analysis_filter_FLP.o \
   $(B)/client/opus/LTP_scale_ctrl_FLP.o \
   $(B)/client/opus/noise_shape_analysis_FLP.o \
-  $(B)/client/opus/prefilter_FLP.o \
   $(B)/client/opus/process_gains_FLP.o \
   $(B)/client/opus/regularize_correlations_FLP.o \
   $(B)/client/opus/residual_energy_FLP.o \
-  $(B)/client/opus/solve_LS_FLP.o \
   $(B)/client/opus/warped_autocorrelation_FLP.o \
   $(B)/client/opus/wrappers_FLP.o \
   $(B)/client/opus/autocorrelation_FLP.o \
@@ -2046,7 +2065,6 @@ Q3OBJ += \
   $(B)/client/opus/energy_FLP.o \
   $(B)/client/opus/inner_product_FLP.o \
   $(B)/client/opus/k2a_FLP.o \
-  $(B)/client/opus/levinsondurbin_FLP.o \
   $(B)/client/opus/LPC_inv_pred_gain_FLP.o \
   $(B)/client/opus/pitch_analysis_core_FLP.o \
   $(B)/client/opus/scale_copy_vector_FLP.o \
@@ -2054,11 +2072,11 @@ Q3OBJ += \
   $(B)/client/opus/schur_FLP.o \
   $(B)/client/opus/sort_FLP.o \
   \
-  $(B)/client/http.o \
   $(B)/client/info.o \
   $(B)/client/internal.o \
   $(B)/client/opusfile.o \
-  $(B)/client/stream.o
+  $(B)/client/stream.o \
+  $(B)/client/http.o
 ifdef MINGW
 Q3OBJ += \
   $(B)/client/wincerts.o
@@ -2093,9 +2111,10 @@ Q3OBJ += \
   $(B)/client/vorbis/psy.o \
   $(B)/client/vorbis/registry.o \
   $(B)/client/vorbis/res0.o \
-  $(B)/client/vorbis/smallft.o \
   $(B)/client/vorbis/sharedbook.o \
+  $(B)/client/vorbis/smallft.o \
   $(B)/client/vorbis/synthesis.o \
+  $(B)/client/vorbis/vorbisenc.o \
   $(B)/client/vorbis/vorbisfile.o \
   $(B)/client/vorbis/window.o
 endif
@@ -2496,6 +2515,9 @@ $(B)/client/%.o: $(ASMDIR)/%.s
 $(B)/client/%.o: $(ASMDIR)/%.c
 	$(DO_CC) -march=k8
 
+$(B)/client/snd_altivec.o: $(CDIR)/snd_altivec.c
+	$(DO_CC_ALTIVEC)
+
 $(B)/client/%.o: $(CDIR)/%.c
 	$(DO_CC)
 
@@ -2541,7 +2563,7 @@ $(B)/client/%.o: $(SYSDIR)/%.c
 $(B)/client/%.o: $(SYSDIR)/%.m
 	$(DO_CC)
 
-$(B)/client/%.o: $(SYSDIR)/%.rc
+$(B)/client/win_resource.o: $(SYSDIR)/win_resource.rc $(SYSDIR)/win_manifest.xml
 	$(DO_WINDRES)
 
 $(B)/splines/%.o: $(SPLDIR)/%.cpp
@@ -2558,6 +2580,9 @@ $(B)/renderer/%.o: $(JPDIR)/%.c
 
 $(B)/renderer/%.o: $(RDIR)/%.c
 	$(DO_REF_CC)
+
+$(B)/renderer/tr_altivec.o: $(RDIR)/tr_altivec.c
+	$(DO_REF_CC_ALTIVEC)
 
 $(B)/rend2/glsl/%.c: $(R2DIR)/glsl/%.glsl
 	$(DO_REF_STR)
@@ -2665,7 +2690,7 @@ $(B)/ded/%.o: $(SYSDIR)/%.c
 $(B)/ded/%.o: $(SYSDIR)/%.m
 	$(DO_DED_CC)
 
-$(B)/ded/%.o: $(SYSDIR)/%.rc
+$(B)/ded/win_resource.o: $(SYSDIR)/win_resource.rc $(SYSDIR)/win_manifest.xml
 	$(DO_WINDRES)
 
 $(B)/ded/%.o: $(NDIR)/%.c
@@ -2734,7 +2759,7 @@ copyfiles: release
 	@if [ ! -d $(COPYDIR)/$(BASEGAME) ]; then echo "You need to set COPYDIR to where your RTCW data is!"; fi
 ifneq ($(BUILD_GAME_SO),0)
   ifneq ($(BUILD_BASEGAME),0)
-	-$(MKDIR) -p -m 0755 $(COPYDIR)/$(BASEGAME)
+	-$(MKDIR) -m 0755 $(COPYDIR)/$(BASEGAME)
   endif
 endif
 

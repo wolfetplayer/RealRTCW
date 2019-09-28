@@ -55,8 +55,6 @@ extern int bg_pmove_gameskill_integer;
 
 vmCvar_t g_gametype;
 
-vmCvar_t g_skipcutscenes;
-
 // Rafael gameskill
 vmCvar_t g_gameskill;
 // done
@@ -142,6 +140,8 @@ vmCvar_t g_soldierChargeTime;
 // jpw
 
 vmCvar_t g_playerStart;         // set when the player enters the game
+
+vmCvar_t g_localTeamPref;
 
 // RealRTCW knightmare code from 1.42d
 
@@ -331,8 +331,6 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 // jpw
 
-	{ &g_skipcutscenes, "g_skipcutscenes", "0", CVAR_ARCHIVE, 0, qtrue  },
-
 	{ &g_playerStart, "g_playerStart", "0", CVAR_ROM, 0, qfalse  },
 
 	{ &g_maxclients, "sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse  },
@@ -347,6 +345,9 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse  },
 
 	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_ARCHIVE, 0, qtrue  },
+
+	{ &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE  },
+	{ &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE  },                            // NERVE - SMF - merge from team arena
 
 	{ &g_warmup, "g_warmup", "20", CVAR_ARCHIVE, 0, qtrue  },
 	{ &g_doWarmup, "g_doWarmup", "0", CVAR_ARCHIVE, 0, qtrue  },
@@ -411,6 +412,8 @@ cvarTable_t gameCvarTable[] = {
 
 	{&g_scriptName, "g_scriptName", "", CVAR_ROM, 0, qfalse},
 	{&ai_scriptName, "ai_scriptName", "", CVAR_ROM, 0, qfalse},
+
+	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse }
 };
 
 static int gameCvarTableSize = ARRAY_LEN( gameCvarTable );
@@ -1021,7 +1024,7 @@ void G_FindTeams( void ) {
 
 	c = 0;
 	c2 = 0;
-	for ( i = 1, e = g_entities + i ; i < level.num_entities ; i++,e++ ) {
+	for ( i = MAX_CLIENTS, e = g_entities + i ; i < level.num_entities ; i++,e++ ) {
 		if ( !e->inuse ) {
 			continue;
 		}
@@ -2316,6 +2319,12 @@ void CheckExitRules( void ) {
 		return;
 	}
 
+	if ( g_timelimit.integer < 0 || g_timelimit.integer > INT_MAX / 60000 ) {
+		G_Printf( "timelimit %i is out of range, defaulting to 0\n", g_timelimit.integer );
+		trap_Cvar_Set( "timelimit", "0" );
+		trap_Cvar_Update( &g_timelimit );
+	}
+
 	if ( g_timelimit.integer && !level.warmupTime ) {
 		if ( level.time - level.startTime >= g_timelimit.integer * 60000 ) {
 			// check for sudden death
@@ -2328,6 +2337,12 @@ void CheckExitRules( void ) {
 			LogExit( "Timelimit hit." );
 			return;
 		}
+	}
+
+	if ( g_fraglimit.integer < 0 ) {
+		G_Printf( "fraglimit %i is out of range, defaulting to 0\n", g_fraglimit.integer );
+		trap_Cvar_Set( "fraglimit", "0" );
+		trap_Cvar_Update( &g_fraglimit );
 	}
 
 	if ( g_gametype.integer != GT_CTF && g_fraglimit.integer ) {
@@ -2359,6 +2374,12 @@ void CheckExitRules( void ) {
 				return;
 			}
 		}
+	}
+
+	if ( g_capturelimit.integer < 0 ) {
+		G_Printf( "capturelimit %i is out of range, defaulting to 8\n", g_capturelimit.integer );
+		trap_Cvar_Set( "capturelimit", "8" );
+		trap_Cvar_Update( &g_capturelimit );
 	}
 
 	if ( g_gametype.integer == GT_CTF && g_capturelimit.integer ) {
@@ -2737,9 +2758,6 @@ void G_RunFrame( int levelTime ) {
 			ClientEndFrame( ent );
 		}
 	}
-
-	// see if it is time to do a tournement restart
-//	CheckTournament();
 
 	// see if it is time to end the level
 	CheckExitRules();

@@ -1034,12 +1034,12 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 	// read optional parameters
 	while ( 1 ) {
 		token = COM_Parse( &text_p );
-		if ( !token ) {
+		if ( !token[0] ) {
 			break;
 		}
 		if ( !Q_stricmp( token, "footsteps" ) ) {
 			token = COM_Parse( &text_p );
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			if ( !Q_stricmp( token, "default" ) || !Q_stricmp( token, "normal" ) ) {
@@ -1059,7 +1059,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 		} else if ( !Q_stricmp( token, "headoffset" ) ) {
 			for ( i = 0 ; i < 3 ; i++ ) {
 				token = COM_Parse( &text_p );
-				if ( !token ) {
+				if ( !token[0] ) {
 					break;
 				}
 				animModelInfo->headOffset[i] = atof( token );
@@ -1067,7 +1067,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 			continue;
 		} else if ( !Q_stricmp( token, "sex" ) ) {
 			token = COM_Parse( &text_p );
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			if ( token[0] == 'f' || token[0] == 'F' ) {
@@ -1080,7 +1080,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 			continue;
 		} else if ( !Q_stricmp( token, "version" ) ) {
 			token = COM_Parse( &text_p );
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			animModelInfo->version = atoi( token );
@@ -1109,7 +1109,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 	for ( i = 0 ; ( animModelInfo->version > 1 ) || ( i < MAX_ANIMATIONS ) ; i++ ) {
 
 		token = COM_Parse( &text_p );
-		if ( !token ) {
+		if ( !token[0] ) {
 			break;
 		}
 
@@ -1124,7 +1124,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 			Q_strlwr( animations[i].name );
 			//
 			token = COM_ParseExt( &text_p, qfalse );
-			if ( !token || !token[0] ) {
+			if ( !token[0] ) {
 //				BG_AnimParseError( "end of file without ENDANIMS" );
 				break;
 			}
@@ -1150,21 +1150,21 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 		}
 
 		token = COM_ParseExt( &text_p, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 //			BG_AnimParseError( "end of file without ENDANIMS" );
 			break;
 		}
 		animations[i].numFrames = atoi( token );
 
 		token = COM_ParseExt( &text_p, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 //			BG_AnimParseError( "end of file without ENDANIMS: line %i" );
 			break;
 		}
 		animations[i].loopFrames = atoi( token );
 
 		token = COM_ParseExt( &text_p, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 //			BG_AnimParseError( "end of file without ENDANIMS: line %i" );
 			break;
 		}
@@ -1177,7 +1177,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 
 		// movespeed
 		token = COM_ParseExt( &text_p, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 //			BG_AnimParseError( "end of file without ENDANIMS" );
 			break;
 		}
@@ -1185,7 +1185,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 
 		// animation blending
 		token = COM_ParseExt( &text_p, qfalse );    // must be on same line
-		if ( !token ) {
+		if ( !token[0] ) {
 			animations[i].animBlend = 0;
 		} else {
 			animations[i].animBlend = atoi( token );
@@ -1226,14 +1226,14 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 			for ( i = 0 ; i < MAX_HEAD_ANIMS ; i++ ) {
 
 				token = COM_Parse( &text_p );
-				if ( !token || !token[0] ) {
+				if ( !token[0] ) {
 					break;
 				}
 
 				if ( animModelInfo->version > 1 ) {   // includes animation names at start of each line
 					// just throw this information away, not required for head
 					token = COM_ParseExt( &text_p, qfalse );
-					if ( !token || !token[0] ) {
+					if ( !token[0] ) {
 						break;
 					}
 				}
@@ -1247,7 +1247,7 @@ static qboolean AnimParseAnimConfig( playerInfo_t *animModelInfo, const char *fi
 				headAnims[i].firstFrame -= animations[MAX_ANIMATIONS - 1].firstFrame + animations[MAX_ANIMATIONS - 1].numFrames + skip;
 
 				token = COM_ParseExt( &text_p, qfalse );
-				if ( !token || !token[0] ) {
+				if ( !token[0] ) {
 					break;
 				}
 				headAnims[i].numFrames = atoi( token );

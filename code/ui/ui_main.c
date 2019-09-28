@@ -61,21 +61,23 @@ static const char *skillLevels[] = {
 static const int numSkillLevels = ARRAY_LEN( skillLevels );
  
  
-#define UIAS_LOCAL				0
-#define UIAS_GLOBAL1			1
-#define UIAS_GLOBAL2			2
-#define UIAS_GLOBAL3			3
-#define UIAS_GLOBAL4			4
-#define UIAS_GLOBAL5			5
-#define UIAS_FAVORITES			6
+#define UIAS_LOCAL			0
+#define UIAS_GLOBAL0			1
+#define UIAS_GLOBAL1			2
+#define UIAS_GLOBAL2			3
+#define UIAS_GLOBAL3			4
+#define UIAS_GLOBAL4			5
+#define UIAS_GLOBAL5			6
+#define UIAS_FAVORITES			7
 
 static const char *netSources[] = {
 	"Local",
-	"Internet1",
-	"Internet2",
-	"Internet3",
-	"Internet4",
-	"Internet5",
+	"Internet",
+	"Master1",
+	"Master2",
+	"Master3",
+	"Master4",
+	"Master5",
 	"Favorites"
 };
 static const int numNetSources = ARRAY_LEN( netSources );
@@ -117,7 +119,7 @@ static int uitogamecode[] = {4,6,2,3,1,5,7};
 
 
 // NERVE - SMF - enabled for multiplayer
-static void UI_StartServerRefresh( qboolean full );
+static void UI_StartServerRefresh( qboolean full, qboolean force );
 static void UI_StopServerRefresh( void );
 static void UI_DoServerRefresh( void );
 static void UI_FeederSelection( float feederID, int index );
@@ -1155,6 +1157,7 @@ int UI_SourceForLAN(void) {
 		default:
 		case UIAS_LOCAL:
 			return AS_LOCAL;
+		case UIAS_GLOBAL0:
 		case UIAS_GLOBAL1:
 		case UIAS_GLOBAL2:
 		case UIAS_GLOBAL3:
@@ -2357,16 +2360,10 @@ static void UI_DrawBotName( rectDef_t *rect, int font, float scale, vec4_t color
 #ifdef MISSIONPACK
 	int value = uiInfo.botIndex;
 	int game = trap_Cvar_VariableValue( "g_gametype" );
-	const char *text = "";
+	const char *text;
 	if ( game >= GT_TEAM ) {
-		if ( value >= uiInfo.characterCount ) {
-			value = 0;
-		}
 		text = uiInfo.characterList[value].name;
 	} else {
-		if ( value >= UI_GetNumBots() ) {
-			value = 0;
-		}
 		text = UI_GetBotNameByNumber( value );
 	}
 	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
@@ -3209,7 +3206,7 @@ static qboolean UI_NetSource_HandleKey(int flags, float *special, int key) {
 		
 			while(ui_netSource.integer >= UIAS_GLOBAL1 && ui_netSource.integer <= UIAS_GLOBAL5)
 			{
-				Com_sprintf(cvarname, sizeof(cvarname), "sv_master%d", ui_netSource.integer);
+				Com_sprintf(cvarname, sizeof(cvarname), "sv_master%d", ui_netSource.integer - UIAS_GLOBAL0);
 				trap_Cvar_VariableStringBuffer(cvarname, masterstr, sizeof(masterstr));
 				if(*masterstr)
 					break;
@@ -3225,9 +3222,7 @@ static qboolean UI_NetSource_HandleKey(int flags, float *special, int key) {
 		}
 
 		UI_BuildServerDisplayList(qtrue);
-		if (!(ui_netSource.integer >= UIAS_GLOBAL1 && ui_netSource.integer <= UIAS_GLOBAL5)) {
-			UI_StartServerRefresh(qtrue);
-		}
+		UI_StartServerRefresh(qtrue, qfalse);
 		trap_Cvar_SetValue( "ui_netSource", ui_netSource.integer);
 		return qtrue;
 	}
@@ -3275,16 +3270,16 @@ static qboolean UI_BotName_HandleKey(int flags, float *special, int key) {
 		value += select;
 
 		if (game >= GT_TEAM) {
-			if (value >= uiInfo.characterCount + 2) {
+			if (value >= uiInfo.characterCount) {
 				value = 0;
 			} else if (value < 0) {
-				value = uiInfo.characterCount + 2 - 1;
+				value = uiInfo.characterCount - 1;
 			}
 		} else {
-			if (value >= UI_GetNumBots() + 2) {
+			if (value >= UI_GetNumBots()) {
 				value = 0;
 			} else if (value < 0) {
-				value = UI_GetNumBots() + 2 - 1;
+				value = UI_GetNumBots() - 1;
 			}
 		}
 		uiInfo.botIndex = value;
@@ -3479,6 +3474,9 @@ void UI_ServersSort( int column, qboolean force ) {
 
 	uiInfo.serverStatus.sortKey = column;
 	qsort( &uiInfo.serverStatus.displayServers[0], uiInfo.serverStatus.numDisplayServers, sizeof( int ), UI_ServersQsortCompare );
+
+	// update displayed levelshot
+	UI_FeederSelection( FEEDER_SERVERS, uiInfo.serverStatus.currentServer );
 }
 
 
@@ -4056,7 +4054,11 @@ static void UI_StartSkirmish( qboolean next ) {
 		}
 	}
 	if ( g >= GT_TEAM ) {
+		// send team command for vanilla q3 game qvm
 		trap_Cmd_ExecuteText( EXEC_APPEND, "wait 5; team Red\n" );
+
+		// set g_localTeamPref for ioq3 game qvm
+		trap_Cvar_Set( "g_localTeamPref", "Red" );
 	}
 #endif  // #ifdef MISSIONPACK
 }
@@ -4440,6 +4442,7 @@ static void UI_Update( const char *name ) {
 			break;
 		case 32:
 			trap_Cvar_SetValue( "r_depthbits", 24 );
+			trap_Cvar_SetValue( "r_stencilbits", 8 );
 			break;
 		}
 	} else if ( Q_stricmp( name, "r_lodbias" ) == 0 ) {
@@ -4462,6 +4465,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "r_lodbias", 0 );
 			trap_Cvar_SetValue( "r_colorbits", 32 );
 			trap_Cvar_SetValue( "r_depthbits", 24 );
+			trap_Cvar_SetValue( "r_stencilbits", 8 );
 			trap_Cvar_SetValue( "r_picmip", 0 );
 			trap_Cvar_SetValue( "r_picmip2", 0 );
 			trap_Cvar_SetValue( "r_texturebits", 32 );
@@ -4495,6 +4499,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "r_lodbias", 0 );
 			trap_Cvar_SetValue( "r_colorbits", 0 );
 			trap_Cvar_SetValue( "r_depthbits", 0 );
+			trap_Cvar_SetValue( "r_stencilbits", 0 );
 			trap_Cvar_SetValue( "r_picmip", 0 );
 			trap_Cvar_SetValue( "r_picmip2", 1 );
 			trap_Cvar_SetValue( "r_texturebits", 0 );
@@ -4517,6 +4522,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "r_lodbias", 1 );
 			trap_Cvar_SetValue( "r_colorbits", 0 );
 			trap_Cvar_SetValue( "r_depthbits", 0 );
+			trap_Cvar_SetValue( "r_stencilbits", 0 );
 			trap_Cvar_SetValue( "r_picmip", 1 );
 			trap_Cvar_SetValue( "r_picmip2", 2 );
 			trap_Cvar_SetValue( "r_texturebits", 0 );
@@ -4539,6 +4545,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "r_lodbias", 2 );
 			trap_Cvar_SetValue( "r_colorbits", 0 );
 			trap_Cvar_SetValue( "r_depthbits", 0 );
+			trap_Cvar_SetValue( "r_stencilbits", 0 );
 			trap_Cvar_SetValue( "r_picmip", 2 );
 			trap_Cvar_SetValue( "r_picmip2", 3 );
 			trap_Cvar_SetValue( "r_texturebits", 0 );
@@ -4710,7 +4717,7 @@ static void UI_RunMenuScript( char **args ) {
 			}
 			//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
 		} else if ( Q_stricmp( name, "loadArenas" ) == 0 ) {
-			UI_LoadArenas();
+			UI_LoadArenasIntoMapList();
 			UI_MapCountByGameType( qfalse );
 			Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, "createserver" );
 			//#endif	// #ifdef MISSIONPACK
@@ -4729,10 +4736,10 @@ static void UI_RunMenuScript( char **args ) {
 			UI_ClearScores();
 			//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
 		} else if ( Q_stricmp( name, "RefreshServers" ) == 0 ) {
-			UI_StartServerRefresh( qtrue );
+			UI_StartServerRefresh( qtrue, qtrue );
 			UI_BuildServerDisplayList( qtrue );
 		} else if ( Q_stricmp( name, "RefreshFilter" ) == 0 ) {
-			UI_StartServerRefresh( qfalse );
+			UI_StartServerRefresh( qfalse, qtrue );
 			UI_BuildServerDisplayList( qtrue );
 		} else if ( Q_stricmp( name, "RunSPDemo" ) == 0 ) {
 			if ( uiInfo.demoAvailable ) {
@@ -4849,9 +4856,8 @@ static void UI_RunMenuScript( char **args ) {
 			uiInfo.nextServerStatusRefresh = 0;
 			uiInfo.nextFindPlayerRefresh = 0;
 		} else if ( Q_stricmp( name, "UpdateFilter" ) == 0 ) {
-			if ( ui_netSource.integer == UIAS_LOCAL ) {
-				UI_StartServerRefresh( qtrue );
-			}
+			// UpdateFilter is called when server broser menu is opened and when a favorite server is deleted.
+			UI_StartServerRefresh(qtrue, qfalse);
 			UI_BuildServerDisplayList( qtrue );
 			UI_FeederSelection( FEEDER_SERVERS, 0 );
 		} else if ( Q_stricmp( name, "ServerStatus" ) == 0 ) {
@@ -5193,6 +5199,11 @@ static void UI_InsertServerIntoDisplayList( int num, int position ) {
 		uiInfo.serverStatus.displayServers[i] = uiInfo.serverStatus.displayServers[i - 1];
 	}
 	uiInfo.serverStatus.displayServers[position] = num;
+
+	// update displayed levelshot
+	if ( position == uiInfo.serverStatus.currentServer ) {
+		UI_FeederSelection( FEEDER_SERVERS, uiInfo.serverStatus.currentServer );
+	}
 }
 
 /*
@@ -5322,15 +5333,22 @@ static void UI_BuildServerDisplayList( int force ) {
 		// get the ping for this server
 		ping = trap_LAN_GetServerPing(lanSource, i);
 		if (ping > 0 || ui_netSource.integer == UIAS_FAVORITES) {
+			// Remove favorite servers so they do not appear multiple times
+			// or appear when the cached server info was not filtered out
+			// but the new server info is filtered out.
+			if (ui_netSource.integer == UIAS_FAVORITES) {
+				UI_RemoveServerFromDisplayList(i);
+			}
 
 			trap_LAN_GetServerInfo(lanSource, i, info, MAX_STRING_CHARS);
 
 			clients = atoi( Info_ValueForKey( info, "clients" ) );
-			uiInfo.serverStatus.numPlayersOnServers += clients;
 
 			if ( ui_browserShowEmpty.integer == 0 ) {
 				if ( clients == 0 ) {
-					trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					if (ping > 0) {
+						trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					}
 					continue;
 				}
 			}
@@ -5338,35 +5356,40 @@ static void UI_BuildServerDisplayList( int force ) {
 			if ( ui_browserShowFull.integer == 0 ) {
 				maxClients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
 				if ( clients == maxClients ) {
-					trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					if (ping > 0) {
+						trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					}
 					continue;
 				}
 			}
-			/*			// NERVE - SMF - comment out for now, not recognizing "gametype" properly
+
+			/*
+			// NERVE - SMF - comment out for now, not recognizing "gametype" properly
 			if (uiInfo.joinGameTypes[ui_joinGameType.integer].gtEnum != -1) {
-			game = atoi(Info_ValueForKey(info, "gametype"));
-			if (game != uiInfo.joinGameTypes[ui_joinGameType.integer].gtEnum) {
-			trap_LAN_MarkServerVisible(lanSource, i, qfalse);
-			continue;
-			}
+				game = atoi(Info_ValueForKey(info, "gametype"));
+				if (game != uiInfo.joinGameTypes[ui_joinGameType.integer].gtEnum) {
+					if (ping > 0) {
+						trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					}
+					continue;
+				}
 			}
 			*/
 
 			if ( ui_serverFilterType.integer > 0 ) {
 				if ( Q_stricmp( Info_ValueForKey( info, "game" ), serverFilters[ui_serverFilterType.integer].basedir ) != 0 ) {
-					trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					if (ping > 0) {
+						trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+					}
 					continue;
 				}
-			}
-			// make sure we never add a favorite server twice
-			if ( ui_netSource.integer == UIAS_FAVORITES ) {
-				UI_RemoveServerFromDisplayList( i );
 			}
 			// insert the server into the list
 			UI_BinaryServerInsertion( i );
 			// done with this server
 			if ( ping > 0 ) {
 				trap_LAN_MarkServerVisible(lanSource, i, qfalse);
+				uiInfo.serverStatus.numPlayersOnServers += clients;
 				numinvisible++;
 			}
 		}
@@ -5376,10 +5399,10 @@ static void UI_BuildServerDisplayList( int force ) {
 
 	// if there were no servers visible for ping updates
 	if ( !visible ) {
-		//		UI_StopServerRefresh();
-		//		uiInfo.serverStatus.nextDisplayRefresh = 0;
+//		UI_StopServerRefresh();
+//		uiInfo.serverStatus.nextDisplayRefresh = 0;
 	}
-	//#endif	// #ifdef MISSIONPACK
+//#endif	// #ifdef MISSIONPACK
 }
 
 typedef struct
@@ -5442,15 +5465,25 @@ UI_GetServerStatusInfo
 ==================
 */
 static int UI_GetServerStatusInfo( const char *serverAddress, serverStatusInfo_t *info ) {
-	//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
+//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
 	char *p, *score, *ping, *name;
 	int i, len;
 
+	if (info) {
+		memset(info, 0, sizeof(*info));
+	}
+
+	// ignore initial unset addresses
+	if (serverAddress && *serverAddress == '\0') {
+		return qfalse;
+	}
+
+	// reset server status request for this address
 	if ( !info ) {
 		trap_LAN_ServerStatus( serverAddress, NULL, 0 );
 		return qfalse;
 	}
-	memset( info, 0, sizeof( *info ) );
+
 	if ( trap_LAN_ServerStatus( serverAddress, info->text, sizeof( info->text ) ) ) {
 		Q_strncpyz( info->address, serverAddress, sizeof( info->address ) );
 		p = info->text;
@@ -6176,7 +6209,7 @@ static qboolean Team_Parse(char **p) {
 			return qtrue;
 		}
 
-		if ( !token || token[0] == 0 ) {
+		if ( !token[0] ) {
 			return qfalse;
 		}
 
@@ -6237,7 +6270,7 @@ static qboolean Character_Parse(char **p) {
 			return qtrue;
 		}
 
-		if ( !token || token[0] == 0 ) {
+		if ( !token[0] ) {
 			return qfalse;
 		}
 
@@ -6290,7 +6323,7 @@ static qboolean Alias_Parse(char **p) {
 			return qtrue;
 		}
 
-		if ( !token || token[0] == 0 ) {
+		if ( !token[0] ) {
 			return qfalse;
 		}
 
@@ -6340,7 +6373,7 @@ static void UI_ParseTeamInfo(const char *teamFile) {
 
 	while ( 1 ) {
 		token = COM_ParseExt( &p, qtrue );
-		if( !token || token[0] == 0 || token[0] == '}') {
+		if( !token[0] || token[0] == '}') {
 			break;
 		}
 
@@ -6397,7 +6430,7 @@ static qboolean GameType_Parse( char **p, qboolean join ) {
 			return qtrue;
 		}
 
-		if ( !token || token[0] == 0 ) {
+		if ( !token[0] ) {
 			return qfalse;
 		}
 
@@ -6454,7 +6487,7 @@ static qboolean MapList_Parse( char **p ) {
 			return qtrue;
 		}
 
-		if ( !token || token[0] == 0 ) {
+		if ( !token[0] ) {
 			return qfalse;
 		}
 
@@ -6515,7 +6548,7 @@ static void UI_ParseGameInfo( const char *teamFile ) {
 
 	while ( 1 ) {
 		token = COM_ParseExt( &p, qtrue );
-		if ( !token || token[0] == 0 || token[0] == '}' ) {
+		if ( !token[0] || token[0] == '}' ) {
 			break;
 		}
 
@@ -6815,6 +6848,7 @@ void _UI_Init( qboolean inGameLoad ) {
 //	UI_ParseTeamInfo("teaminfo.txt");
 //	UI_LoadTeams();
 //	UI_ParseGameInfo("gameinfo.txt");
+//	UI_LoadArenas();
 
 	menuSet = UI_Cvar_VariableString( "ui_menuFiles" );
 	if ( menuSet == NULL || menuSet[0] == '\0' ) {
@@ -7529,7 +7563,7 @@ cvarTable_t cvarTable[] = {
 	{ &ui_cdkeychecked, "ui_cdkeychecked", "0", CVAR_ROM },
 	{ &ui_selectedPlayer, "cg_selectedPlayer", "0", CVAR_ARCHIVE},
 	{ &ui_selectedPlayerName, "cg_selectedPlayerName", "", CVAR_ARCHIVE},
-	{ &ui_netSource, "ui_netSource", "0", CVAR_ARCHIVE },
+	{ &ui_netSource, "ui_netSource", "1", CVAR_ARCHIVE },
 #ifdef WOLF_SP_DEMO
 	{ &ui_menuFiles, "ui_menuFiles", "ui/demomenus.txt", CVAR_ARCHIVE },
 #else
@@ -7572,9 +7606,9 @@ cvarTable_t cvarTable[] = {
 
 	{ &ui_savegameName, "ui_savegameName", "", CVAR_ROM},
 	
-	{ &cg_autoReload, "cg_autoReload", "1", CVAR_ARCHIVE }
+	{ &cg_autoReload, "cg_autoReload", "1", CVAR_ARCHIVE },
 
-
+	{ NULL, "g_localTeamPref", "", 0 },
 };
 
 static int		cvarTableSize = ARRAY_LEN( cvarTable );
@@ -7604,6 +7638,10 @@ void UI_UpdateCvars( void ) {
 	cvarTable_t *cv;
 
 	for ( i = 0, cv = cvarTable ; i < cvarTableSize ; i++, cv++ ) {
+		if ( !cv->vmCvar ) {
+			continue;
+		}
+
 		trap_Cvar_Update( cv->vmCvar );
 	}
 }
@@ -7671,6 +7709,10 @@ static void UI_DoServerRefresh( void ) {
 		UI_BuildServerDisplayList( 2 );
 		// stop the refresh
 		UI_StopServerRefresh();
+	} else if ( ui_netSource.integer == UIAS_LOCAL ) {
+		// no local servers found, check again
+		trap_Cmd_ExecuteText( EXEC_NOW, "localservers\n" );
+		uiInfo.serverStatus.refreshtime = uiInfo.uiDC.realTime + 5000;
 	}
 	//
 	UI_BuildServerDisplayList( qfalse );
@@ -7681,11 +7723,20 @@ static void UI_DoServerRefresh( void ) {
 UI_StartServerRefresh
 =================
 */
-static void UI_StartServerRefresh( qboolean full ) {
+static void UI_StartServerRefresh( qboolean full, qboolean force ) {
 	char    *ptr;
 	int		lanSource;
-
 	qtime_t q;
+
+	// This function is called with force=qfalse when server browser menu opens or net source changes.
+	// Automatically update local and favorite servers.
+	// Only auto update master server list if there is no server info cache.
+	if ( !force && ( ui_netSource.integer >= UIAS_GLOBAL0 && ui_netSource.integer <= UIAS_GLOBAL5 ) ) {
+		if ( trap_LAN_GetServerCount( UI_SourceForLAN() ) > 0 ) {
+			return; // have cached list
+		}
+	}
+
 	trap_RealTime( &q );
 	trap_Cvar_Set( va( "ui_lastServerRefresh_%i", ui_netSource.integer ), va( "%s-%i, %i at %02i:%02i", MonthAbbrev[q.tm_mon],q.tm_mday, 1900 + q.tm_year,q.tm_hour,q.tm_min ) );
 
@@ -7708,17 +7759,18 @@ static void UI_StartServerRefresh( qboolean full ) {
 	//
 	if ( ui_netSource.integer == UIAS_LOCAL ) {
 		trap_Cmd_ExecuteText( EXEC_NOW, "localservers\n" );
-		uiInfo.serverStatus.refreshtime = uiInfo.uiDC.realTime + 1000;
+		uiInfo.serverStatus.refreshtime = uiInfo.uiDC.realTime + 5000;
 		return;
 	}
 
 	uiInfo.serverStatus.refreshtime = uiInfo.uiDC.realTime + 5000;
-	if( ui_netSource.integer >= UIAS_GLOBAL1 && ui_netSource.integer <= UIAS_GLOBAL5 ) {
+	if( ui_netSource.integer >= UIAS_GLOBAL0 && ui_netSource.integer <= UIAS_GLOBAL5 ) {
+
 		ptr = UI_Cvar_VariableString( "debug_protocol" );
 		if ( strlen( ptr ) ) {
-			trap_Cmd_ExecuteText( EXEC_NOW, va( "globalservers %d %s full empty\n", ui_netSource.integer-1, ptr));
+			trap_Cmd_ExecuteText( EXEC_NOW, va( "globalservers %d %s full empty\n", ui_netSource.integer - UIAS_GLOBAL0, ptr ) );
 		} else {
-			trap_Cmd_ExecuteText( EXEC_NOW, va( "globalservers %d %d full empty\n", ui_netSource.integer-1, (int)trap_Cvar_VariableValue( "protocol" ) ) );
+			trap_Cmd_ExecuteText( EXEC_NOW, va( "globalservers %d %d full empty\n", ui_netSource.integer - UIAS_GLOBAL0, (int)trap_Cvar_VariableValue( "protocol" ) ) );
 		}
 	}
 }

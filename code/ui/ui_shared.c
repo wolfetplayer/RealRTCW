@@ -356,6 +356,9 @@ const char *String_Alloc( const char *p ) {
 		}
 
 		str  = UI_Alloc( sizeof( stringDef_t ) );
+		if ( !str ) {
+			return NULL;
+		}
 		str->next = NULL;
 		str->str = &strPool[ph];
 		if ( last ) {
@@ -849,7 +852,7 @@ void Window_Paint( Window *w, float fadeAmount, float fadeClamp, float fadeCycle
 		if ( w->background ) {
 			Fade( &w->flags, &w->backColor[3], fadeClamp, &w->nextTime, fadeCycle, qtrue, fadeAmount );
 			DC->setColor( w->backColor );
-            if ( ui_fixedAspect.integer == 2 ) {
+			if ( ui_fixedAspect.integer == 2 ) {
 				if ( DC->glconfig.vidWidth * 480 > DC->glconfig.vidHeight * 640 ) {
 					// HACK ... stretch fadebox when using widescreen
 					if ( !Q_stricmpn( w->name, "fadebox", 7 ) ) {
@@ -4010,21 +4013,19 @@ qboolean Item_Bind_HandleKey( itemDef_t *item, int key, qboolean down ) {
 		case K_BACKSPACE:
 			id = BindingIDFromName( item->cvar );
 			if ( id != -1 ) {
-				key = -1;       // null out the key, but let it pass down so it can get 'unbound'
-								// if it just returns here, the old bindings don't get cleared out.
-								// so if user has both 'r' and 'g' bound to '+attack' and they only want the 'r',
-								// they click to bind the key, <backsp> to kill the bindings (which appears to the user to work)
-								// then they click to bind and hit 'r'.  now the menu looks right to them, but if you drop the menu
-								// and come back, the 'g' is magically re-bound since it didn't get bound to "" on the <backsp>.  <phew>
-								// does this seem reasonable to anybody reading this? (SA)
-//					g_bindings[id].bind1 = -1;
-//					g_bindings[id].bind2 = -1;
+				if( g_bindings[id].bind1 != -1 ) {
+						DC->setBinding( g_bindings[id].bind1, "" );
+						g_bindings[id].bind1 = -1;
+					}
+					if( g_bindings[id].bind2 != -1 ) {
+						DC->setBinding( g_bindings[id].bind2, "" );
+						g_bindings[id].bind2 = -1;
+					}
 			}
-//				Controls_SetConfig(qtrue);
-//				g_waitingForKey = qfalse;
-//				g_bindItem = NULL;
-//				return qtrue;
-			break;
+			Controls_SetConfig( qtrue );
+			g_waitingForKey = qfalse;
+			g_bindItem = NULL;
+			return qtrue;
 
 		case '`':
 			return qtrue;

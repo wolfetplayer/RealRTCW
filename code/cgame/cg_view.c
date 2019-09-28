@@ -80,6 +80,7 @@ can then be moved around
 void CG_TestModel_f( void ) {
 	vec3_t angles;
 
+	cg.testGun = qfalse;
 	memset( &cg.testModelEntity, 0, sizeof( cg.testModelEntity ) );
 	if ( trap_Argc() < 2 ) {
 		return;
@@ -105,7 +106,6 @@ void CG_TestModel_f( void ) {
 	angles[ROLL] = 0;
 
 	AnglesToAxis( angles, cg.testModelEntity.axis );
-	cg.testGun = qfalse;
 }
 
 /*
@@ -117,6 +117,11 @@ Replaces the current view weapon with the given model
 */
 void CG_TestGun_f( void ) {
 	CG_TestModel_f();
+
+	if ( !cg.testModelEntity.hModel ) {
+		return;
+	}
+
 	cg.testGun = qtrue;
 	cg.testModelEntity.renderfx = RF_MINLIGHT | RF_DEPTHHACK | RF_FIRST_PERSON;
 }
@@ -1239,31 +1244,31 @@ void CG_DrawSkyBoxPortal( void ) {
 
 	if ( cg_skybox.integer ) {
 		token = COM_ParseExt( &cstr, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring\n" );
 		}
 		cg.refdef.vieworg[0] = atof( token );
 
 		token = COM_ParseExt( &cstr, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring\n" );
 		}
 		cg.refdef.vieworg[1] = atof( token );
 
 		token = COM_ParseExt( &cstr, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring\n" );
 		}
 		cg.refdef.vieworg[2] = atof( token );
 
 		token = COM_ParseExt( &cstr, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring\n" );
 		}
 
 		// setup fog the first time, ignore this part of the configstring after that
 		token = COM_ParseExt( &cstr, qfalse );
-		if ( !token || !token[0] ) {
+		if ( !token[0] ) {
 			CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring.  No fog state\n" );
 		} else {
 			vec4_t fogColor;
@@ -1272,32 +1277,32 @@ void CG_DrawSkyBoxPortal( void ) {
 			if ( atoi( token ) ) {   // this camera has fog
 				if ( 1 ) {
 					token = COM_ParseExt( &cstr, qfalse );
-					if ( !token || !token[0] ) {
+					if ( !token[0] ) {
 						CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring.  No fog[0]\n" );
 					}
 					fogColor[0] = atof( token );
 
 					token = COM_ParseExt( &cstr, qfalse );
-					if ( !token || !token[0] ) {
+					if ( !token[0] ) {
 						CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring.  No fog[1]\n" );
 					}
 					fogColor[1] = atof( token );
 
 					token = COM_ParseExt( &cstr, qfalse );
-					if ( !token || !token[0] ) {
+					if ( !token[0] ) {
 						CG_Error( "CG_DrawSkyBoxPortal: error parsing skybox configstring.  No fog[2]\n" );
 					}
 					fogColor[2] = atof( token );
 
 					token = COM_ParseExt( &cstr, qfalse );
-					if ( !token || !token[0] ) {
+					if ( !token[0] ) {
 						fogStart = 0;
 					} else {
 						fogStart = atoi( token );
 					}
 
 					token = COM_ParseExt( &cstr, qfalse );
-					if ( !token || !token[0] ) {
+					if ( !token[0] ) {
 						fogEnd = 0;
 					} else {
 						fogEnd = atoi( token );
@@ -1538,7 +1543,8 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	DEBUGTIME
 
 	// decide on third person view
-	cg.renderingThirdPerson = cg_thirdPerson.integer /*|| (cg.snap->ps.stats[STAT_HEALTH] <= 0)*/;
+	cg.renderingThirdPerson = cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR
+							&& ( cg_thirdPerson.integer || ( cg.snap->ps.stats[STAT_HEALTH] <= 0 ) );
 
 	// build cg.refdef
 	inwater = CG_CalcViewValues();

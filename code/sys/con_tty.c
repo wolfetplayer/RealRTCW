@@ -75,20 +75,6 @@ static int hist_current = -1, hist_count = 0;
 
 /*
 ==================
-CON_FlushIn
-
-Flush stdin, I suspect some terminals are sending a LOT of shit
-FIXME relevant?
-==================
-*/
-static void CON_FlushIn( void )
-{
-	char key;
-	while (read(STDIN_FILENO, &key, 1)!=-1);
-}
-
-/*
-==================
 CON_Back
 
 Output a backspace
@@ -378,7 +364,7 @@ char *CON_Input( void )
 				{
 #ifndef DEDICATED
 					// if not in the game explicitly prepend a slash if needed
-					if (clc.state != CA_ACTIVE && TTY_con.cursor &&
+					if (clc.state != CA_ACTIVE && con_autochat->integer && TTY_con.cursor &&
 						TTY_con.buffer[0] != '/' && TTY_con.buffer[0] != '\\')
 					{
 						memmove(TTY_con.buffer + 1, TTY_con.buffer, sizeof(TTY_con.buffer) - 1);
@@ -389,7 +375,11 @@ char *CON_Input( void )
 					if (TTY_con.buffer[0] == '/' || TTY_con.buffer[0] == '\\') {
 						Q_strncpyz(text, TTY_con.buffer + 1, sizeof(text));
 					} else if (TTY_con.cursor) {
-						Com_sprintf(text, sizeof(text), "cmd say %s", TTY_con.buffer);
+						if (con_autochat->integer) {
+							Com_sprintf(text, sizeof(text), "cmd say %s", TTY_con.buffer);
+						} else {
+							Q_strncpyz(text, TTY_con.buffer, sizeof(text));
+						}
 					} else {
 						text[0] = '\0';
 					}
@@ -437,7 +427,7 @@ char *CON_Input( void )
 										TTY_con = *history;
 										CON_Show();
 									}
-									CON_FlushIn();
+									tcflush(STDIN_FILENO, TCIFLUSH);
 									return NULL;
 									break;
 								case 'B':
@@ -451,7 +441,7 @@ char *CON_Input( void )
 										Field_Clear(&TTY_con);
 									}
 									CON_Show();
-									CON_FlushIn();
+									tcflush(STDIN_FILENO, TCIFLUSH);
 									return NULL;
 									break;
 								case 'C':
@@ -463,7 +453,7 @@ char *CON_Input( void )
 					}
 				}
 				Com_DPrintf("droping ISCTL sequence: %d, TTY_erase: %d\n", key, TTY_erase);
-				CON_FlushIn();
+				tcflush(STDIN_FILENO, TCIFLUSH);
 				return NULL;
 			}
 			if (TTY_con.cursor >= sizeof(text) - 1)

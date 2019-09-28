@@ -285,7 +285,7 @@ static void CG_ParseFog( void ) {
 	token = COM_Parse( (char **)&info );    ne = atof( token );
 	token = COM_Parse( (char **)&info );
 
-	if ( !token || !token[0] ) {
+	if ( !token[0] ) {
 		// set to  'no fog'
 		// 'FOG_MAP' is not registered, so it will always make fog go away
 		trap_R_SetFog( FOG_CMD_SWITCHFOG, FOG_MAP, (int)ne, 0, 0, 0, 0 );
@@ -854,12 +854,14 @@ static void CG_ServerCommand( void ) {
 	}
 
 	if ( !strcmp( cmd, "chat" ) ) {
-		if ( !cg_teamChatsOnly.integer ) {
-			trap_S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-			Q_strncpyz( text, CG_Argv( 1 ), MAX_SAY_TEXT );
-			CG_RemoveChatEscapeChar( text );
-			CG_Printf( "%s\n", text );
-		}
+		if ( cgs.gametype >= GT_TEAM && cg_teamChatsOnly.integer ) {
+			return;
+ 		}
+
+		trap_S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
+		Q_strncpyz( text, CG_Argv( 1 ), MAX_SAY_TEXT );
+		CG_RemoveChatEscapeChar( text );
+		CG_Printf( "%s\n", text );
 		return;
 	}
 

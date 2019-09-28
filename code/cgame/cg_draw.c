@@ -1395,10 +1395,15 @@ static float CG_DrawPowerups( float y ) {
 		if ( !ps->powerups[ i ] ) {
 			continue;
 		}
-		t = ps->powerups[ i ] - cg.time;
-		// ZOID--don't draw if the power up has unlimited time (999 seconds)
+
+		// ZOID--don't draw if the power up has unlimited time
 		// This is true of the CTF flags
-		if ( t < 0 || t > 999000 ) {
+		if ( ps->powerups[ i ] == INT_MAX ) {
+			continue;
+		}
+
+		t = ps->powerups[ i ] - cg.time;
+		if ( t <= 0 ) {
 			continue;
 		}
 
@@ -1516,12 +1521,12 @@ static void CG_DrawTeamInfo( void ) {
 
 		h = ( cgs.teamChatPos - cgs.teamLastChatPos ) * TINYCHAR_HEIGHT;
 
-		if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED ) {
+		if ( cgs.clientinfo[cg.clientNum].team == TEAM_RED ) {
 			hcolor[0] = 1;
 			hcolor[1] = 0;
 			hcolor[2] = 0;
 			hcolor[3] = 0.33;
-		} else if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_BLUE ) {
+		} else if ( cgs.clientinfo[cg.clientNum].team == TEAM_BLUE ) {
 			hcolor[0] = 0;
 			hcolor[1] = 0;
 			hcolor[2] = 1;
@@ -3798,9 +3803,10 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			CG_DrawPickupItem();
 			CG_DrawReward();
 		}
-		if ( cgs.gametype >= GT_TEAM ) {
-			CG_DrawTeamInfo();
-		}
+	}
+
+	if ( cgs.gametype >= GT_TEAM ) {
+		CG_DrawTeamInfo();
 	}
 
 	CG_DrawVote();

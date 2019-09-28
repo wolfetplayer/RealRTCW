@@ -907,7 +907,8 @@ static void S_AL_NewLoopMaster(src_t *rmSource, qboolean iskilled)
 				S_AL_SaveLoopPos(rmSource, rmSource->alSource);
 			}
 		}
-		else if(rmSource == &srcList[curSfx->masterLoopSrc])
+		else if(curSfx->masterLoopSrc != -1 &&
+		        rmSource == &srcList[curSfx->masterLoopSrc])
 		{
 			int firstInactive = -1;
 
@@ -2361,7 +2362,9 @@ static ALCdevice *alCaptureDevice;
 static cvar_t *s_alCapture;
 #endif
 
-#ifdef _WIN32
+#if defined( _WIN32 ) && defined( _WIN64 )
+#define ALDRIVER_DEFAULT "OpenAL64.dll"
+#elif defined( _WIN32 )
 #define ALDRIVER_DEFAULT "OpenAL32.dll"
 #elif defined(__APPLE__)
 #define ALDRIVER_DEFAULT "libopenal.dylib"

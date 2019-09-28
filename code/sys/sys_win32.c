@@ -363,6 +363,14 @@ Sys_FOpen
 ==============
 */
 FILE *Sys_FOpen( const char *ospath, const char *mode ) {
+	size_t length;
+
+	// Windows API ignores all trailing spaces and periods which can get around Quake 3 file system restrictions.
+	length = strlen( ospath );
+	if ( length == 0 || ospath[length-1] == ' ' || ospath[length-1] == '.' ) {
+		return NULL;
+	}
+
 	return fopen( ospath, mode );
 }
 
@@ -886,14 +894,14 @@ Sys_StartProcess
 ==================
 */
 void Sys_StartProcess( char *exeName, qboolean doexit ) {           // NERVE - SMF
-	TCHAR szPathOrig[_MAX_PATH];
+	TCHAR szPathOrig[MAX_PATH];
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 
 	ZeroMemory( &si, sizeof( si ) );
 	si.cb = sizeof( si );
 
-	GetCurrentDirectory( _MAX_PATH, szPathOrig );
+	GetCurrentDirectory( MAX_PATH, szPathOrig );
 	Cbuf_ExecuteText( EXEC_NOW, "net_stop" );
 	if ( !CreateProcess( NULL, va( "%s\\%s", szPathOrig, exeName ), NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ) )
 	{

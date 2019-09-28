@@ -323,7 +323,7 @@ static void SV_MapRestart_f( void ) {
 	client_t    *client;
 	char        *denied;
 	qboolean isBot;
-	int delay;
+	int delay = 0;
 
 	// make sure we aren't restarting twice in the same frame
 	if ( com_frameTime == sv.serverId ) {
@@ -340,11 +340,11 @@ static void SV_MapRestart_f( void ) {
 		return;
 	}
 
-	if ( Cmd_Argc() > 1 ) {
-		delay = atoi( Cmd_Argv( 1 ) );
+	if ( sv_gametype->integer == GT_SINGLE_PLAYER ) { // (SA) no pause by default in sp
+		delay = 0;
 	} else {
-		if ( sv_gametype->integer == GT_SINGLE_PLAYER ) { // (SA) no pause by default in sp
-			delay = 0;
+		if ( Cmd_Argc() > 1 ) {
+			delay = atoi( Cmd_Argv( 1 ) );
 		} else {
 			delay = 5;
 		}
@@ -746,7 +746,7 @@ static void SV_Ban_f( void ) {
 	}
 
 	if ( cl->netchan.remoteAddress.type == NA_LOOPBACK ) {
-		Com_Printf("Cannot kick host player\n");
+		Com_Printf("Cannot ban host player\n");
 		return;
 	}
 
@@ -1464,6 +1464,7 @@ static void SV_ConSay_f( void ) {
 
 	strcat( text, p );
 
+	Com_Printf("%s\n", text);
 	SV_SendServerCommand( NULL, "chat \"%s\"", text );
 }
 
@@ -1503,6 +1504,7 @@ static void SV_ConTell_f(void) {
 
 	strcat(text, p);
 
+	Com_Printf("%s\n", text);
 	SV_SendServerCommand(cl, "chat \"%s\"", text);
 }
 

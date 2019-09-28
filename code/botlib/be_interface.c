@@ -82,10 +82,7 @@ int botlibsetup = qfalse;
 //===========================================================================
 // Ridah, faster Win32 code
 #ifdef _WIN32
-#undef MAX_PATH     // this is an ugly hack, to temporarily ignore the current definition, since it's also defined in windows.h
 #include <windows.h>
-#undef MAX_PATH
-#define MAX_PATH    MAX_QPATH
 #endif
 
 int Sys_MilliSeconds( void ) {
@@ -164,28 +161,9 @@ int Export_BotLibSetup( void ) {
 	//initialize byte swapping (litte endian etc.)
 //	Swap_Init();
 
-	if(botDeveloper)
+	if( botDeveloper )
 	{
-		char *homedir, *gamedir, *basegame;
-		char logfilename[MAX_OSPATH];
-
-		homedir = LibVarGetString("homedir");
-		gamedir = LibVarGetString("gamedir");
-		basegame = LibVarGetString("basegame");
-
-		if (*homedir)
-		{
-			if(*gamedir)
-				Com_sprintf(logfilename, sizeof(logfilename), "%s%c%s%cbotlib.log", homedir, PATH_SEP, gamedir, PATH_SEP);
-			else if(*basegame)
-				Com_sprintf(logfilename, sizeof(logfilename), "%s%c%s%cbotlib.log", homedir, PATH_SEP, basegame, PATH_SEP);
-			else
-				Com_sprintf(logfilename, sizeof(logfilename), "%s%c" BASEGAME "%cbotlib.log", homedir, PATH_SEP, PATH_SEP);
-		}
-		else
-			Com_sprintf(logfilename, sizeof(logfilename), "botlib.log");
-	
-		Log_Open(logfilename);
+		Log_Open( "botlib.log" );
 	}
 
 	botimport.Print( PRT_MESSAGE, "------- BotLib Initialization -------\n" );
@@ -271,7 +249,7 @@ int Export_BotLibShutdown( void ) {
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int Export_BotLibVarSet( char *var_name, char *value ) {
+int Export_BotLibVarSet( const char *var_name, const char *value ) {
 	LibVarSet( var_name, value );
 	return BLERR_NOERROR;
 } //end of the function Export_BotLibVarSet
@@ -281,7 +259,7 @@ int Export_BotLibVarSet( char *var_name, char *value ) {
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int Export_BotLibVarGet( char *var_name, char *value, int size ) {
+int Export_BotLibVarGet( const char *var_name, char *value, int size ) {
 	char *varvalue;
 
 	varvalue = LibVarGetString( var_name );

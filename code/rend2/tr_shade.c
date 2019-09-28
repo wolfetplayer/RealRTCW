@@ -28,9 +28,6 @@ If you have questions concerning this license or the applicable additional terms
 // tr_shade.c
 
 #include "tr_local.h" 
-#if idppc_altivec && !defined(__APPLE__)
-#include <altivec.h>
-#endif
 
 /*
 
@@ -40,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 
-void R_DrawElements( int numIndexes, glIndex_t firstIndex)
+void R_DrawElements( int numIndexes, int firstIndex )
 {
 	
 	qglDrawElements(GL_TRIANGLES, numIndexes, GL_INDEX_TYPE, BUFFER_OFFSET(firstIndex * sizeof(glIndex_t)));
@@ -66,7 +63,7 @@ R_BindAnimatedImageToTMU
 =================
 */
 static void R_BindAnimatedImageToTMU( textureBundle_t *bundle, int tmu ) {
-	int		index;
+	int64_t index;
 
 	if ( bundle->isVideoMap ) {
 		ri.CIN_RunCinematic(bundle->videoMapHandle);
@@ -86,13 +83,18 @@ static void R_BindAnimatedImageToTMU( textureBundle_t *bundle, int tmu ) {
 
 	// it is necessary to do this messy calc to make sure animations line up
 	// exactly with waveforms of the same frequency
-	index = ri.ftol(tess.shaderTime * bundle->imageAnimationSpeed * FUNCTABLE_SIZE);
+	index = tess.shaderTime * bundle->imageAnimationSpeed * FUNCTABLE_SIZE;
 	index >>= FUNCTABLE_SIZE2;
 
 	if ( index < 0 ) {
 		index = 0;	// may happen with shader time offsets
 	}
-	index %= bundle->numImageAnimations;
+
+	// Windows x86 doesn't load renderer DLL with 64 bit modulus
+	//index %= bundle->numImageAnimations;
+	while ( index >= bundle->numImageAnimations ) {
+		index -= bundle->numImageAnimations;
+	}
 
 	if ( bundle->isLightmap && ( backEnd.refdef.rdflags & RDF_SNOOPERVIEW ) ) {
 		GL_BindToTMU( tr.whiteImage, tmu );
@@ -124,6 +126,7 @@ static void DrawTris (shaderCommands_t *input) {
 		GLSL_SetUniformMat4(sp, UNIFORM_MODELVIEWPROJECTIONMATRIX, glState.modelviewProjection);
 		VectorSet4(color, 1, 1, 1, 1);
 		GLSL_SetUniformVec4(sp, UNIFORM_COLOR, color);
+		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
         R_DrawElements(input->numIndexes, input->firstIndex);
 	}
@@ -414,6 +417,8 @@ static void ProjectDlightTexture( void ) {
 			GL_State( GLS_ATEST_GT_0 | GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ONE | GLS_DEPTHFUNC_EQUAL );
 		}
         
+		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 1);
+
 		R_DrawElements(tess.numIndexes, tess.firstIndex);
 
 		backEnd.pc.c_totalIndexes += tess.numIndexes;
@@ -840,6 +845,7 @@ static void ForwardDlight( void ) {
 		// include GLS_DEPTHFUNC_EQUAL so alpha tested surfaces don't add light
 		// where they aren't rendered
 		GL_State( GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE | GLS_DEPTHFUNC_EQUAL );
+		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
 		GLSL_SetUniformMat4(sp, UNIFORM_MODELMATRIX, backEnd.or.transformMatrix);
 
@@ -952,6 +958,7 @@ static void ProjectPshadowVBOGLSL( void ) {
 		// include GLS_DEPTHFUNC_EQUAL so alpha tested surfaces don't add light
 		// where they aren't rendered
 		GL_State( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHFUNC_EQUAL );
+		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
 		GL_BindToTMU( tr.pshadowMaps[l], TB_DIFFUSEMAP );
 
@@ -1024,6 +1031,8 @@ static void RB_FogPass( int wolfFog ) {
 
 		if (glState.vertexAnimation)
 			index |= FOGDEF_USE_VERTEX_ANIMATION;
+		else if (glState.boneAnimation)
+			index |= FOGDEF_USE_BONE_ANIMATION;
 
 		if (wolfFog)
 		{
@@ -1046,6 +1055,11 @@ static void RB_FogPass( int wolfFog ) {
 	GLSL_SetUniformMat4(sp, UNIFORM_MODELVIEWPROJECTIONMATRIX, glState.modelviewProjection);
 
 	GLSL_SetUniformFloat(sp, UNIFORM_VERTEXLERP, glState.vertexAttribsInterpolation);
+
+	if (glState.boneAnimation)
+	{
+		GLSL_SetUniformMat4BoneMatrix(sp, UNIFORM_BONEMATRIX, glState.boneMatrix, glState.boneAnimation);
+	}
 	
 	GLSL_SetUniformInt(sp, UNIFORM_DEFORMGEN, deformGen);
 	if (deformGen != DGEN_NONE)
@@ -1098,8 +1112,9 @@ static void RB_FogPass( int wolfFog ) {
 	} else {
 		GL_State( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA );
 	}
+	GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
-    R_DrawElements(tess.numIndexes, tess.firstIndex);
+	R_DrawElements(tess.numIndexes, tess.firstIndex);
 
 }
 
@@ -1158,7 +1173,14 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input )
 
 				if (backEnd.currentEntity && backEnd.currentEntity != &tr.worldEntity)
 				{
-					index |= LIGHTDEF_ENTITY;
+					if (glState.boneAnimation)
+					{
+						index |= LIGHTDEF_ENTITY_BONE_ANIMATION;
+					}
+					else
+					{
+						index |= LIGHTDEF_ENTITY_VERTEX_ANIMATION;
+					}
 				}
 
 				if (pStage->stateBits & GLS_ATEST_BITS)
@@ -1181,6 +1203,10 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input )
 				{
 					shaderAttribs |= GENERICDEF_USE_VERTEX_ANIMATION;
 				}
+				else if (glState.boneAnimation)
+				{
+					shaderAttribs |= GENERICDEF_USE_BONE_ANIMATION;
+				}
 
 				if (pStage->stateBits & GLS_ATEST_BITS)
 				{
@@ -1196,7 +1222,14 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input )
 
 			if (backEnd.currentEntity && backEnd.currentEntity != &tr.worldEntity)
 			{
-				index |= LIGHTDEF_ENTITY;
+				if (glState.boneAnimation)
+				{
+					index |= LIGHTDEF_ENTITY_BONE_ANIMATION;
+				}
+				else
+				{
+					index |= LIGHTDEF_ENTITY_VERTEX_ANIMATION;
+				}
 			}
 
 			if (r_sunlightMode->integer && (backEnd.viewParms.flags & VPF_USESUNLIGHT) && (index & LIGHTDEF_LIGHTTYPE_MASK))
@@ -1249,6 +1282,11 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input )
 
 		GLSL_SetUniformFloat(sp, UNIFORM_VERTEXLERP, glState.vertexAttribsInterpolation);
 
+		if (glState.boneAnimation)
+		{
+			GLSL_SetUniformMat4BoneMatrix(sp, UNIFORM_BONEMATRIX, glState.boneMatrix, glState.boneAnimation);
+		}
+
 		if ((deformGen != DGEN_NONE && tess.shader->deforms[0].deformationWave.frequency < 0 )
 			|| pStage->alphaGen == AGEN_NORMALZFADE)
 		{
@@ -1281,6 +1319,24 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input )
 			GLSL_SetUniformVec4(sp, UNIFORM_FOGDEPTH, fogDepthVector);
 			GLSL_SetUniformFloat(sp, UNIFORM_FOGEYET, eyeT);
 		}
+
+		if ((pStage->stateBits & GLS_ATEST_BITS) == GLS_ATEST_GT_0)
+		{
+			GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 1);
+		}
+		else if ((pStage->stateBits & GLS_ATEST_BITS) == GLS_ATEST_LT_80)
+		{
+			GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 2);
+		}
+		else if ((pStage->stateBits & GLS_ATEST_BITS) == GLS_ATEST_GE_80)
+		{
+			GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 3);
+		}
+		else
+		{
+			GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
+		}
+
 
 		{
 			vec4_t baseColor;
@@ -1617,7 +1673,15 @@ static void RB_RenderShadowmap( shaderCommands_t *input )
 	ComputeDeformValues(&deformGen, deformParams);
 
 	{
-		shaderProgram_t *sp = &tr.shadowmapShader;
+		shaderProgram_t *sp = &tr.shadowmapShader[0];
+		if (glState.vertexAnimation)
+		{
+			sp = &tr.shadowmapShader[SHADOWMAPDEF_USE_VERTEX_ANIMATION];
+		}
+		else if (glState.boneAnimation)
+		{
+			sp = &tr.shadowmapShader[SHADOWMAPDEF_USE_BONE_ANIMATION];
+		}
 
 		vec4_t vector;
 
@@ -1628,6 +1692,11 @@ static void RB_RenderShadowmap( shaderCommands_t *input )
 		GLSL_SetUniformMat4(sp, UNIFORM_MODELMATRIX, backEnd.or.transformMatrix);
 
 		GLSL_SetUniformFloat(sp, UNIFORM_VERTEXLERP, glState.vertexAttribsInterpolation);
+
+		if (glState.boneAnimation)
+		{
+			GLSL_SetUniformMat4BoneMatrix(sp, UNIFORM_BONEMATRIX, glState.boneMatrix, glState.boneAnimation);
+		}
 
 		GLSL_SetUniformInt(sp, UNIFORM_DEFORMGEN, deformGen);
 		if (deformGen != DGEN_NONE)
@@ -1659,6 +1728,7 @@ static void RB_RenderShadowmap( shaderCommands_t *input )
 		GLSL_SetUniformFloat(sp, UNIFORM_LIGHTRADIUS, backEnd.viewParms.zFar);
 
 		GL_State( 0 );
+		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
 		//
 		// do multitexture
@@ -1720,7 +1790,7 @@ void RB_StageIteratorGeneric( void )
 
 	if ( qglPNTrianglesiATI && tess.ATI_tess ) {
 		// RF< so we can send the normals as an array
-		qglEnableClientState( GL_NORMAL_ARRAY );
+		//qglEnableClientState( GL_NORMAL_ARRAY );
 		qglEnable( GL_PN_TRIANGLES_ATI ); // ATI PN-Triangles extension
 	}
 
@@ -1876,7 +1946,7 @@ void RB_StageIteratorGeneric( void )
 	// turn truform back off
 	if ( qglPNTrianglesiATI && tess.ATI_tess ) {
 		qglDisable( GL_PN_TRIANGLES_ATI );    // ATI PN-Triangles extension
-		qglDisableClientState( GL_NORMAL_ARRAY );
+		//qglDisableClientState( GL_NORMAL_ARRAY );
 	}
 
 }

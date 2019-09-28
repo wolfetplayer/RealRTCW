@@ -766,6 +766,7 @@ void FS_PureServerSetLoadedPaks( const char *pakSums, const char *pakNames );
 // sole exception of .cfg files.
 
 qboolean FS_CheckDirTraversal(const char *checkdir);
+qboolean FS_InvalidGameDir(const char *gamedir);
 qboolean FS_idPak(char *pak, char *base, int numPaks);
 qboolean FS_ComparePaks( char *neededpaks, int len, qboolean dlstring );
 
@@ -917,6 +918,9 @@ extern	cvar_t	*com_gamename;
 extern	cvar_t	*com_protocol;
 #ifdef LEGACY_PROTOCOL
 extern	cvar_t	*com_legacyprotocol;
+#endif
+#ifndef DEDICATED
+extern  cvar_t  *con_autochat;
 #endif
 
 // com_speeds times
@@ -1252,9 +1256,9 @@ void    Huff_Decompress( msg_t *buf, int offset );
 void    Huff_Init( huffman_t *huff );
 void    Huff_addRef( huff_t* huff, byte ch );
 int     Huff_Receive( node_t *node, int *ch, byte *fin );
-void    Huff_transmit( huff_t *huff, int ch, byte *fout );
-void    Huff_offsetReceive( node_t *node, int *ch, byte *fin, int *offset );
-void    Huff_offsetTransmit( huff_t *huff, int ch, byte *fout, int *offset );
+void    Huff_transmit( huff_t *huff, int ch, byte *fout, int maxoffset );
+void    Huff_offsetReceive( node_t *node, int *ch, byte *fin, int *offset, int maxoffset );
+void    Huff_offsetTransmit( huff_t *huff, int ch, byte *fout, int *offset, int maxoffset );
 void    Huff_putBit( int bit, byte *fout, int *offset );
 int     Huff_getBit( byte *fout, int *offset );
 

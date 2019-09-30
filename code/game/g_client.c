@@ -1399,8 +1399,8 @@ void ClientUserinfoChanged( int clientNum ) {
 		SetupWeaponsForSkill_MEDIUM(); 
 	    }
 	else if ( g_gameskill.integer == GSKILL_HARD ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 75 ) {
-			client->pers.maxHealth = 75;
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 ) {
+			client->pers.maxHealth = 100;
 		}
 		SetupWeaponsForSkill_HARD();
 		}

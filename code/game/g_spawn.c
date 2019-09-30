@@ -969,12 +969,12 @@ qboolean G_LoadEntsFile( void ) {
 
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
 
-	if ( len < 0 ) {
-		G_Printf( "Failed to load: %s\n", filename );
-		return qfalse;
-	}
+	//if ( len < 0 ) {
+		//G_Printf( "Failed to load: %s\n", filename );
+		//return qfalse;
+	//}
 
-	G_Printf( "Loading: %s\n", filename );
+	//G_Printf( "Loading: %s\n", filename );
 
 	level.extraEntsScript = G_Alloc( len );
 	trap_FS_Read( level.extraEntsScript, len, f );

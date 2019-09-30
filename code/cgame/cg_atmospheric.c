@@ -934,47 +934,39 @@ qboolean CG_AtmosphericKludge()
 
   	if( !Q_stricmp( cgs.mapname, "maps/norway.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=50 50,GV=30 80,W=1 2,D=10000" ); // strong snow
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=50 50,GV=30 80,W=1 2,D=15000" ); // strong snow
   	  	return( kludgeResult = qtrue );
   	}
 	
 	  	if( !Q_stricmp( cgs.mapname, "maps/escape1.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=5000" ); // weak snow
   	  	return( kludgeResult = qtrue );
   	}
 
 	  	if( !Q_stricmp( cgs.mapname, "maps/escape2.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=5000" ); // weak snow
   	  	return( kludgeResult = qtrue );
   	}
 
 		if( !Q_stricmp( cgs.mapname, "maps/tram.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=5000" ); // weak snow
   	  	return( kludgeResult = qtrue );
   	}
 
 		if( !Q_stricmp( cgs.mapname, "maps/village1.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=2000" ); // weak snow
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=5000" ); // weak snow
   	  	return( kludgeResult = qtrue );
   	}
 
 	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
   	{
-  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=4000" ); // strong rain
+  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=5000" ); // strong rain
   	  	return( kludgeResult = qtrue );
   	}
-
-
-	  	if( !Q_stricmp( cgs.mapname, "maps/hiddenwolf.bsp" ) )
-  	{
-  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=2000" ); // medium rain
-  	  	return( kludgeResult = qtrue );
-  	}
-
 
 
 #if 0

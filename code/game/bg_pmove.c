@@ -405,6 +405,10 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 		scale *= 1.2;
 	}
 
+			if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER ) {
+		scale *= 1.2;
+	}
+
 		if ( pm->ps->aiChar == AICHAR_HELGA ) {
 		scale *= 1.2;
 	}

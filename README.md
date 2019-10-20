@@ -1,12 +1,17 @@
 # RealRTCW
-RealRTCW mod brings some realism to the classic Wolfenstein game. You can expect ruthless AI, new weapons and rebalanced gameplay.
+RealRTCW aiming to enhance the classic Wolfenstein experience. You can expect overhauled AI, new weapons, rebalanced gameplay, new textures and sounds.
 Most of the code changes marked with "RealRTCW" tag.
 
 
 Features:
-* Based on ioRTCW engine, which provides widescreen support, better sounds and x64 support
-* New weapons: TT33, MP34, PPSH, Mosin Nagant, M1 Garand, BAR, MP44, MG42, G43, M97, Revolver
-* New models for the vanilla weapons, including world models
+* Mod is based on ioRTCW engine, which provides widescreen support, high quality sounds and x64 support
+* New weapons: MP34, PPSH, Mosin Nagant, M1 Garand, BAR, MP44, MG42, G43, M97, Revolver, MG34
+* New high poly models for the vanilla weapons, including world models
+* New high poly models and textures for BJ's hands and sleeves
+* New high quality textures
+* Atmospheric effects support (rain & snow)
+* New holdable items: Adrenaline and Bandages
+* Real recoil system
 * Rebalanced weapons characteristics
 * Rebalanced AI
 * Overhauled sounds

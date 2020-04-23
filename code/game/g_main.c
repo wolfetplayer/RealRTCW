@@ -276,7 +276,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_m1garand, "sk_plr_dmg_m1garand", "18", CVAR_CHEAT, 0, qfalse  },	
 	{ &sk_plr_dmg_bar, "sk_plr_dmg_bar", "15", CVAR_CHEAT, 0, qfalse  }, // was 13
 	{ &sk_plr_dmg_mp44, "sk_plr_dmg_mp44", "9", CVAR_CHEAT, 0, qfalse  },
-	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "10", CVAR_CHEAT, 0, qfalse  }, // was 9
+	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "12", CVAR_CHEAT, 0, qfalse  }, // was 9
 	{ &sk_plr_dmg_m97, "sk_plr_dmg_m97", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "20", CVAR_CHEAT, 0, qfalse  },
 	//AI	

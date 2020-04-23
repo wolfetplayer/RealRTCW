@@ -3608,11 +3608,11 @@ static void PM_Weapon( void ) {
 case WP_MG42M:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 150;
+			pm->pmext->weapRecoilDuration = 120;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
 		} else {
-			pm->pmext->weapRecoilDuration = 200;
+			pm->pmext->weapRecoilDuration = 180;
 			pm->pmext->weapRecoilYaw = crandom() * .25f;
 			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
 		}
@@ -3622,11 +3622,11 @@ case WP_MG42M:
 	case WP_G43:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 30;
+			pm->pmext->weapRecoilDuration = 20;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 60;
+			pm->pmext->weapRecoilDuration = 45;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3635,11 +3635,11 @@ case WP_MG42M:
 	case WP_M97: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 100;
+			pm->pmext->weapRecoilDuration = 80;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .5f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 150;
+			pm->pmext->weapRecoilDuration = 120;
 			pm->pmext->weapRecoilYaw = crandom() * .9f;
 			pm->pmext->weapRecoilPitch = .95f * random();
 		}
@@ -3650,11 +3650,11 @@ case WP_MG42M:
 	case WP_GARAND:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 50;
+			pm->pmext->weapRecoilDuration = 40;
 		    pm->pmext->weapRecoilYaw = crandom() * 1.0f; 
 		    pm->pmext->weapRecoilPitch = .9f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 100;
+			pm->pmext->weapRecoilDuration = 80;
 			pm->pmext->weapRecoilYaw = crandom() * 1.5f;
 			pm->pmext->weapRecoilPitch = 1.0f * random();
 		}
@@ -3684,11 +3684,11 @@ case WP_MG42M:
 	case WP_PPSH: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 10;
+			pm->pmext->weapRecoilDuration = 5;
 			pm->pmext->weapRecoilYaw = crandom() * .01f;
 			pm->pmext->weapRecoilPitch = .01f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 30;
+			pm->pmext->weapRecoilDuration = 20;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		}
@@ -3696,11 +3696,11 @@ case WP_MG42M:
 	case WP_THOMPSON:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 20;
+			pm->pmext->weapRecoilDuration = 10;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 40;
+			pm->pmext->weapRecoilDuration = 30;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3711,11 +3711,11 @@ case WP_MG42M:
 	case WP_MP44: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 15;
+			pm->pmext->weapRecoilDuration = 10;
 			pm->pmext->weapRecoilYaw = crandom() * .01f;
 			pm->pmext->weapRecoilPitch = .01f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 40;
+			pm->pmext->weapRecoilDuration = 30;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		}
@@ -3724,11 +3724,11 @@ case WP_MG42M:
 	case WP_VENOM:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 70;
+			pm->pmext->weapRecoilDuration = 40;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 100;
+			pm->pmext->weapRecoilDuration = 60;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3736,7 +3736,7 @@ case WP_MG42M:
          // Panzerfaust - Medium recoil
 	case WP_PANZERFAUST:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 100;
+		pm->pmext->weapRecoilDuration = 60;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .5f * random();

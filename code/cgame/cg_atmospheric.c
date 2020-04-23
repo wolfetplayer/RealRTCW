@@ -998,12 +998,6 @@ qboolean CG_AtmosphericKludge()
   	  	return( kludgeResult = qtrue );
   	}
 
-	  	  	  	  	if( !Q_stricmp( cgs.mapname, "maps/wotan.bsp" ) )
-  	{
-  	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=5000" ); // strong rain
-  	  	return( kludgeResult = qtrue );
-  	}
-
 
 #if 0
   	if( !Q_stricmp( cgs.mapname, "maps/q3dm0.bsp" ) )

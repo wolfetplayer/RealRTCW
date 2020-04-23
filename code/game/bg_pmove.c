@@ -964,11 +964,9 @@ static void PM_WalkMove( void ) {
 			} else {
 				pm->ps->jumpTime = pm->cmd.serverTime;
 
-				if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
-				stamtake = 3000;    // amount to take for jump RealRTCW
-				} else {
+
 					stamtake = 1000;
-				}
+				
 
 				// take time from powerup before taking it from sprintTime
 				if ( pm->ps->powerups[PW_NOFATIGUE] ) {
@@ -4260,11 +4258,7 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
-				pm->ps->sprintTime -= 50; 
-				} else {
-				pm->ps->sprintTime -= 25; 
-				}
+				pm->ps->sprintTime -= 15; 
 			}
 		}
 

@@ -587,7 +587,7 @@ model="models/powerups/health/health_s.md3"
 		0,
 		"",
 		"",
-		{15,10,5,5,5}
+		{15,10,5,5,1}
 	},
 
 /*QUAKED item_health (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -610,7 +610,7 @@ model="models/powerups/health/health_m.md3"
 		0,
 		"",
 		"",
-		{30,25,15,10,10}
+		{30,25,15,10,5}
 	},
 
 /*QUAKED item_health_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -632,7 +632,7 @@ model="models/powerups/health/health_l.md3"
 		0,
 		"",
 		"",
-		{50,40,30,20,20}
+		{50,40,30,20,10}
 	},
 
 /*QUAKED item_health_turkey (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -667,7 +667,7 @@ model="models/powerups/health/health_t1.md3"
 		0,
 		"",
 		"",
-		{45,35,25,10,10}   // amount given in first stage based on gameskill level
+		{45,35,25,10,1}   // amount given in first stage based on gameskill level
 	},
 
 /*QUAKED item_health_breadandmeat (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -700,7 +700,7 @@ model="models/powerups/health/health_b1.md3"
 		0,
 		"",
 		"",
-		{30,30,20,10,10}   // amount given in first stage based on gameskill level
+		{30,30,20,10,1}   // amount given in first stage based on gameskill level
 	},
 
 /*QUAKED item_health_wall_box (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED - - RESPAWN
@@ -726,7 +726,7 @@ model="models/powerups/health/health_wallbox.md3"
 		0,
 		"",
 		"",
-		{25,25,25,15,15}
+		{25,25,25,15,5}
 	},
 
 /*QUAKED item_health_wall (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED - - RESPAWN
@@ -750,7 +750,7 @@ model="models/powerups/health/health_w.md3"
 		0,
 		"",
 		"",
-		{30,20,15,15,15}
+		{30,20,15,15,5}
 	},
 
 	//
@@ -779,7 +779,7 @@ model="models/powerups/instant/stamina_stein.md3"
 		0,
 		"",
 		"",
-		{30,25,20,15,15}
+		{30,25,20,15,1}
 	},
 
 
@@ -817,7 +817,7 @@ model="models/powerups/instant/stamina_brandy1.md3"
 		0,
 		"",
 		"",
-		{30,25,20,15,15}
+		{30,25,20,15,1}
 	},
 
 

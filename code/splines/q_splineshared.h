@@ -56,11 +56,11 @@ If you have questions concerning this license or the applicable additional terms
   #define CLIENT_WINDOW_TITLE     	"Return To Castle Wolfenstein"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" // iowolfsp
 #ifdef USE_XDG
-  #define HOMEPATH_NAME_UNIX		"RealRTCW"
+  #define HOMEPATH_NAME_UNIX		"RealRTCW3"
 #else
   #define HOMEPATH_NAME_UNIX		".wolf"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW"
+  #define HOMEPATH_NAME_WIN		"RealRTCW3"
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
   #define GAMENAME_FOR_MASTER		"wolfsp"
   #define LEGACY_PROTOCOL

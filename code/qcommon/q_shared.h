@@ -62,9 +62,9 @@ If you have questions concerning this license or the applicable additional terms
 #ifdef USE_XDG
   #define HOMEPATH_NAME_UNIX		"RealRTCW"
 #else
-  #define HOMEPATH_NAME_UNIX		".realrtcw"
+  #define HOMEPATH_NAME_UNIX		".realrtcw3"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW"
+  #define HOMEPATH_NAME_WIN		"RealRTCW3"
   #define STEAMPATH_NAME		"Return To Castle Wolfenstein"
   #define STEAMPATH_APPID		"9010"
   #define GOGPATH_ID			"1441704976"

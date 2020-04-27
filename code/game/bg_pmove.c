@@ -4258,7 +4258,7 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				pm->ps->sprintTime -= 15; 
+				pm->ps->sprintTime -= 25; 
 			}
 		}
 

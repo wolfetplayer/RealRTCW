@@ -84,7 +84,6 @@ void CG_CheckAmmo( void ) {
 		case WP_MAUSER:
 		case WP_GARAND:
 		// RealRTCW weapons
-		case WP_MP34:
 		case WP_PPSH:
 		case WP_TT33:
 		case WP_MOSIN:

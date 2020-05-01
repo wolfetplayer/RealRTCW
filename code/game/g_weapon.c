@@ -589,7 +589,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_GRENADE_PINEAPPLE: return sk_plr_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_plr_dmg_dynamite.integer;
 			// RealRTCW weapons
-			case WP_MP34: return sk_plr_dmg_mp34.integer;
 			case WP_MP44: return sk_plr_dmg_mp44.integer;
 			case WP_TT33: return sk_plr_dmg_tt33.integer;
 			case WP_PPSH: return sk_plr_dmg_ppsh.integer;
@@ -632,7 +631,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_GRENADE_PINEAPPLE: return sk_ai_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_ai_dmg_dynamite.integer;
 			// RealRTCW weapons
-			case WP_MP34: return sk_ai_dmg_mp34.integer;
 			case WP_MP44: return sk_ai_dmg_mp44.integer;
 			case WP_TT33: return sk_ai_dmg_tt33.integer;
 			case WP_PPSH: return sk_ai_dmg_ppsh.integer;
@@ -703,7 +701,6 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_VENOM:      return 1000;
 			case WP_MP40:       return 850; // RealRTCW was 1000
 			// RealRTCW weapons
-			case WP_MP34:       return 900; // RealRTCW was 1100
 			case WP_TT33:       return 450; // RealRTCW was 750
 			case WP_PPSH:       return 1100; 
 			case WP_MOSIN:      return 300;
@@ -776,8 +773,6 @@ float G_GetWeaponSpread( int weapon ) {
 #define MP40_SPREAD     G_GetWeaponSpread( WP_MP40 )
 #define MP40_DAMAGE(e)     G_GetWeaponDamage( WP_MP40, e ) // JPW
 // RealRTCW weapons
-#define MP34_SPREAD     G_GetWeaponSpread( WP_MP34 )
-#define MP34_DAMAGE(e)     G_GetWeaponDamage( WP_MP34, e ) 
 
 #define TT33_SPREAD		G_GetWeaponSpread( WP_TT33 )
 #define TT33_DAMAGE(e)		G_GetWeaponDamage( WP_TT33, e )
@@ -1902,9 +1897,6 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	// RealRTCW weapons
 	
-	case WP_MP34: 
-		Bullet_Fire( ent, MP34_SPREAD * aimSpreadScale, MP34_DAMAGE(isPlayer) );
-		break;
 	case WP_TT33:
 		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer) );
 		break;

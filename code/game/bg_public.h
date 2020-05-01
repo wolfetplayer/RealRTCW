@@ -553,7 +553,6 @@ typedef enum {
 	WP_FLAMETHROWER,        // 9
 	WP_TESLA,               // 10
 	// RealRTCW weapons
-	WP_MP34,                // 11
 	WP_TT33,                // 12
 	WP_PPSH,                // 13
 	WP_MOSIN,               // 14
@@ -645,7 +644,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 		weapon == WP_SILENCER    || weapon == WP_VENOM      || \
 		weapon == WP_GARAND   || weapon == WP_TT33     || weapon == WP_FG42SCOPE     || \
 		weapon == WP_BAR    || weapon == WP_MP44      || \
-		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
+		weapon == WP_M97       || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO       \
 	)
@@ -1197,7 +1196,6 @@ typedef enum {
 	MOD_FLAMETHROWER,
 	MOD_TESLA,
 	// RealRTCW weapons
-	MOD_MP34,
 	MOD_TT33,
 	MOD_PPSH,
 	MOD_MOSIN,

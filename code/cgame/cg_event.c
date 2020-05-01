@@ -263,10 +263,6 @@ static void CG_Obituary( entityState_t *ent ) {
 			message2 = "'s MP40";
 			break;
 			// RealRTCW weapons
-		case MOD_MP34:
-			message = "was killed by";
-			message2 = "'s MP34";
-			break;
 		case MOD_TT33:
 			message = "was killed by";
 			message2 = "'s TT33";

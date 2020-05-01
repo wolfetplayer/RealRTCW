@@ -253,7 +253,6 @@ static int weapIconDrawSize( int weap ) {
 	case WP_SNOOPERSCOPE:
 	case WP_SNIPERRIFLE:
 	// RealRTCW weapons
-	case WP_MP34:
 	case WP_PPSH:
 	case WP_MOSIN:
 	case WP_G43:

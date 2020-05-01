@@ -57,7 +57,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
 	{WP_KNIFE,              0,                      0,            0,               0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     0            },  //	2
-	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH      },  //	3
+	{WP_MP40,               WP_STEN,                WP_THOMPSON,  WP_PPSH,         0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     0,               0            },  //	4
     {WP_G43,                WP_M1GARAND,            0,            0,               0            },  //	5
 	{WP_FG42,               WP_MP44,                WP_BAR,       0,               0            },  //	6
@@ -1221,15 +1221,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	// RealRTCW weapons
-
-	case WP_MP34:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
-		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/mp34/mp34_fire.wav" );
-		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/mp34/mp34_far.wav" );
-		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/mp34/mp34_reload.wav" );
-		weaponInfo->overheatSound = trap_S_RegisterSound( "sound/weapons/mp40/mp40_overheat.wav" );
-		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
-		break;
 	
 	 case WP_TT33:
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
@@ -3070,11 +3061,6 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[1] = 0;
 		     gunoff[2] = -1;
 		break;
-		case WP_MP34:
-			 gunoff[0] = 0;
-		     gunoff[1] = 1;
-		     gunoff[2] = 0;
-		break;
 		case WP_MP40:
 			 gunoff[0] = 0;
 		     gunoff[1] = 3;
@@ -3250,7 +3236,6 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_THOMPSON:
 		case WP_MP40:
 		// RealRTCW weapons
-		case WP_MP34:
 		case WP_PPSH:
 		case WP_MOSIN:
 		case WP_G43:
@@ -4738,7 +4723,6 @@ void CG_WeaponFireRecoil( int weapon ) {
 		pitchAdd = 0.8;
 	break;
 	case WP_MP40:
-	case WP_MP34:
 	case WP_PPSH:
 	case WP_THOMPSON:
 	case WP_STEN:
@@ -5217,7 +5201,6 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_SNOOPERSCOPE:
 	case WP_MP40:
 	// RealRTCW weapons
-	case WP_MP34:
 	case WP_TT33:
 	case WP_PPSH:
 	case WP_MOSIN:

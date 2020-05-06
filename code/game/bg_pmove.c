@@ -464,7 +464,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
 			scale *= 0.90; 
 		}
-		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
+		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_WELROD ) ) {
 			scale *= 0.95; 
 		}
 	}
@@ -2676,7 +2676,7 @@ void PM_AdjustAimSpreadScale( void ) {
 	case WP_P38:
 	    wpnScale = 0.3f;
 		break;
-	case WP_REVOLVER:
+	case WP_WELROD:
 	    wpnScale = 0.4f;
 		break;
 	case WP_MOSIN:
@@ -3229,7 +3229,7 @@ static void PM_Weapon( void ) {
 	case WP_SILENCER:
 	case WP_LUGER:
 	case WP_P38:
-	case WP_REVOLVER:
+	case WP_WELROD:
 	case WP_COLT:
 	case WP_AKIMBO:         
 	case WP_SNIPERRIFLE:
@@ -3551,7 +3551,7 @@ static void PM_Weapon( void ) {
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 20;
 		break;
-	case WP_REVOLVER:
+	case WP_WELROD:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 20 + rand() % 5;
 		break;
@@ -3653,7 +3653,7 @@ case WP_MG42M:
 	case WP_COLT:
 	case WP_AKIMBO:
 	case WP_P38:
-	case WP_REVOLVER:
+	case WP_WELROD:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
 		pm->pmext->weapRecoilDuration = 30;

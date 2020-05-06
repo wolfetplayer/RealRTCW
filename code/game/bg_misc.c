@@ -60,7 +60,6 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_BARAMMO    120  
 #define MAX_AMMO_44AMMO     120
 #define MAX_AMMO_M97        24
-#define MAX_AMMO_REVOLVER   24
 
 
 // these defines are matched with the character torso animations
@@ -113,18 +112,18 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
 	{   MAX_AMMO_BARAMMO, 1,    20,     2250,   DELAY_LOW,      140,    0,      0,      MOD_BAR                 },  //	WP_BAR					// 17
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
-	{   MAX_AMMO_MAUSER,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,     MOD_MG42M              },  //	WP_MG42M                // 19
+	{   MAX_AMMO_MAUSER,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,    MOD_MG42M              },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
-	{   MAX_AMMO_REVOLVER,1,    6,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER            },  //	WP_REVOLVER             // 21
+	{   MAX_AMMO_GARAND, 1,     1,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
 
 
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
 	{   MAX_AMMO_45,    1,      30,     2400,   DELAY_LOW,      90,     0,      0,      MOD_THOMPSON            },  //	WP_THOMPSON				// 23
-	{   MAX_AMMO_GARAND,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
+	{   MAX_AMMO_BARAMMO,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
 	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 25
 
 	{   MAX_AMMO_MAUSER,1,      5,      3000,   0,              1400,   0,      0,      MOD_SNIPERRIFLE         },  //	WP_SNIPER_GER			// 26
-	{   MAX_AMMO_GARAND,1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
+	{   MAX_AMMO_BARAMMO,1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
 
 	{   MAX_AMMO_FG42,  1,      20,     2000,   DELAY_LOW,      170,    0,      0,      MOD_FG42SCOPE           },  //	WP_FG42SCOPE			// 28
 	{   MAX_AMMO_9MM,   1,      32,     3100,   DELAY_LOW,      115,    900,    500,    MOD_STEN                },  //	WP_STEN					// 29
@@ -164,7 +163,7 @@ int weapAlts[] = {
 	WP_NONE,            // 18 WP_MP44
 	WP_NONE,            // 19 WP_MG42M
 	WP_NONE,            // 20 WP_M97
-	WP_NONE,            // 21 WP_REVOLVER
+	WP_NONE,            // 21 WP_WELROD
 	WP_AKIMBO,          // 22 WP_COLT		
 	WP_NONE,            // 23 WP_THOMPSON
 	WP_SNOOPERSCOPE,    // 24 WP_GARAND		
@@ -1777,7 +1776,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 	},
 
 
-	/*QUAKED weapon_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+	/*QUAKED weapon_welrod (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
 	2:			upright, barrel pointing up, slightly angled (rack mount)
@@ -1785,21 +1784,21 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 model="models/weapons2/p38/luger.md3"
 */
 	{
-		"weapon_revolver",
+		"weapon_welrod",
 		"sound/misc/w_pkup.wav",
 		{   "models/weapons2/44magnum/44m_3rd.md3",
 			"models/weapons2/44magnum/v_44m.md3",
 			"models/weapons2/44magnum/44m_pickup.md3",
 			0, 0 },
 
-		"icons/iconw_revolver",    // icon
+		"icons/iconw_welrod",    // icon
 		"icons/ammo9mm",      // ammo icon
-		"revolver",              // pickup
+		"welrod",              // pickup
 		30,
 		IT_WEAPON,
-		WP_REVOLVER,
-		WP_REVOLVER,
-		WP_REVOLVER,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                  // precache
 		"",                  // sounds
 		{0,0,0,0,0}
@@ -1951,30 +1950,6 @@ model="models/powerups/ammo/44ammo_l.md3"
 		WP_M97,
 		WP_M97,
 		WP_M97,
-		"",                  // precache
-		"",                  // sounds
-		{ 6,6,6,6,6 }
-	},
-
-			/*QUAKED ammo_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-		used by: revolver
-
-		-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-		model="models/powerups/ammo/revolverammo.md3"
-		*/
-	{
-		"ammo_revolver",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/revolverammo.md3",
-		0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"revolverammo",           // pickup			
-		12,
-		IT_AMMO,
-		WP_REVOLVER,
-		WP_REVOLVER,
-		WP_REVOLVER,
 		"",                  // precache
 		"",                  // sounds
 		{ 6,6,6,6,6 }
@@ -2217,9 +2192,9 @@ model="models/powerups/ammo/am30cal_s.md3"
 		".30cal Rounds",         // pickup
 		50,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
 		{5,2,2,2,2}
@@ -2240,9 +2215,9 @@ model="models/powerups/ammo/am30cal_m.md3"
 		".30cal",                // pickup			//----(SA)	changed
 		50,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
 		{5,5,5,5,5}
@@ -2263,9 +2238,9 @@ model="models/powerups/ammo/am30cal_l.md3"
 		".30cal Box",                // pickup
 		50,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
 		{10,10,10,10,10}

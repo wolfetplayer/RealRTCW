@@ -553,7 +553,7 @@ typedef enum {
 	WP_FLAMETHROWER,        // 9
 	WP_TESLA,               // 10
 	// RealRTCW weapons
-	WP_TT33,                // 12
+	WP_P38,                // 12
 	WP_MOSIN,               // 14
 	WP_G43,                 // 15
 	WP_M1GARAND,            // 16
@@ -630,7 +630,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_REVOLVER ) )
+#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_P38 ) | ( 1 << WP_REVOLVER ) )
 //----(SA)	end
 
 
@@ -641,7 +641,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 		weapon == WP_MAUSER    || weapon == WP_SNIPERRIFLE       || weapon == WP_M1GARAND  || \
 		weapon == WP_FG42     || weapon == WP_G43           || weapon == WP_MG42M   || \
 		weapon == WP_SILENCER    || weapon == WP_VENOM      || \
-		weapon == WP_GARAND   || weapon == WP_TT33     || weapon == WP_FG42SCOPE     || \
+		weapon == WP_GARAND   || weapon == WP_P38     || weapon == WP_FG42SCOPE     || \
 		weapon == WP_BAR    || weapon == WP_MP44      || \
 		weapon == WP_M97       || weapon == WP_MOSIN     || \
 		weapon == WP_GARAND      || \
@@ -1195,7 +1195,7 @@ typedef enum {
 	MOD_FLAMETHROWER,
 	MOD_TESLA,
 	// RealRTCW weapons
-	MOD_TT33,
+	MOD_P38,
 	MOD_MOSIN,
 	MOD_G43,
 	MOD_M1GARAND,

@@ -1532,6 +1532,7 @@ void SetupWeaponsForSkill_EASY() // Easy
 	ammoTable[WP_MP40].maxammo = 400;
 	ammoTable[WP_STEN].maxammo = 400;
 	ammoTable[WP_SILENCER].maxammo = 400;
+	ammoTable[WP_P38].maxammo = 400;
 	// 45cal
 	ammoTable[WP_COLT].maxammo = 300;
 	ammoTable[WP_AKIMBO].maxammo = 300;
@@ -1546,8 +1547,6 @@ void SetupWeaponsForSkill_EASY() // Easy
 	// barammo
 	ammoTable[WP_BAR].maxammo = 300;
 	ammoTable[WP_M1GARAND].maxammo = 300;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 400;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 150;
 	// mp44
@@ -1583,6 +1582,7 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	ammoTable[WP_MP40].maxammo = 300;
 	ammoTable[WP_STEN].maxammo = 300;
 	ammoTable[WP_SILENCER].maxammo = 300;
+	ammoTable[WP_P38].maxammo = 300;
 	// 45cal
 	ammoTable[WP_COLT].maxammo = 250;
 	ammoTable[WP_AKIMBO].maxammo = 250;
@@ -1597,8 +1597,6 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	// barammo
 	ammoTable[WP_BAR].maxammo = 200;
 	ammoTable[WP_M1GARAND].maxammo = 200;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 300;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 100;
 	// mp44
@@ -1633,6 +1631,7 @@ void SetupWeaponsForSkill_HARD() // Hard
 	ammoTable[WP_MP40].maxammo = 200;
 	ammoTable[WP_STEN].maxammo = 200;
 	ammoTable[WP_SILENCER].maxammo = 200;
+	ammoTable[WP_P38].maxammo = 200;
 	// 45cal
 	ammoTable[WP_COLT].maxammo = 200;
 	ammoTable[WP_AKIMBO].maxammo = 200;
@@ -1647,8 +1646,6 @@ void SetupWeaponsForSkill_HARD() // Hard
 	// barammo
 	ammoTable[WP_BAR].maxammo = 180;
 	ammoTable[WP_M1GARAND].maxammo = 180;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 250;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
@@ -1684,6 +1681,7 @@ void SetupWeaponsForSkill_MAX() // Max
 	ammoTable[WP_MP40].maxammo = 150;
 	ammoTable[WP_STEN].maxammo = 150;
 	ammoTable[WP_SILENCER].maxammo = 150;
+	ammoTable[WP_P38].maxammo = 150;
 	// 45cal
 	ammoTable[WP_COLT].maxammo = 150;
 	ammoTable[WP_AKIMBO].maxammo = 150;
@@ -1698,8 +1696,6 @@ void SetupWeaponsForSkill_MAX() // Max
 	// barammo
 	ammoTable[WP_BAR].maxammo = 150;
 	ammoTable[WP_M1GARAND].maxammo = 150;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 200;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
@@ -1736,6 +1732,7 @@ void SetupWeaponsForSkill_REALISM() // Realism
 	ammoTable[WP_MP40].maxammo = 150;
 	ammoTable[WP_STEN].maxammo = 150;
 	ammoTable[WP_SILENCER].maxammo = 150;
+	ammoTable[WP_P38].maxammo = 150;
 	// 45cal
 	ammoTable[WP_COLT].maxammo = 150;
 	ammoTable[WP_AKIMBO].maxammo = 150;
@@ -1750,8 +1747,6 @@ void SetupWeaponsForSkill_REALISM() // Realism
 	// barammo
 	ammoTable[WP_BAR].maxammo = 150;
 	ammoTable[WP_M1GARAND].maxammo = 150;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 200;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44

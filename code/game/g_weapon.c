@@ -591,7 +591,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			// RealRTCW weapons
 			case WP_MP44: return sk_plr_dmg_mp44.integer;
 			case WP_TT33: return sk_plr_dmg_tt33.integer;
-			case WP_PPSH: return sk_plr_dmg_ppsh.integer;
 			case WP_MOSIN: return sk_plr_dmg_mosin.integer;
 			case WP_G43: return sk_plr_dmg_g43.integer;
 			case WP_M1GARAND: return sk_plr_dmg_m1garand.integer;
@@ -633,7 +632,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			// RealRTCW weapons
 			case WP_MP44: return sk_ai_dmg_mp44.integer;
 			case WP_TT33: return sk_ai_dmg_tt33.integer;
-			case WP_PPSH: return sk_ai_dmg_ppsh.integer;
 			case WP_MOSIN: return sk_ai_dmg_mosin.integer;
 			case WP_G43: return sk_ai_dmg_g43.integer;
 			case WP_M1GARAND: return sk_ai_dmg_m1garand.integer;
@@ -702,7 +700,6 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_MP40:       return 850; // RealRTCW was 1000
 			// RealRTCW weapons
 			case WP_TT33:       return 450; // RealRTCW was 750
-			case WP_PPSH:       return 1100; 
 			case WP_MOSIN:      return 300;
 			case WP_G43:        return 350; // was 550
 			case WP_M1GARAND:   return 350; // was 450
@@ -779,10 +776,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 #define REVOLVER_SPREAD		G_GetWeaponSpread( WP_REVOLVER )
 #define REVOLVER_DAMAGE(e)		G_GetWeaponDamage( WP_REVOLVER, e )
-
-
-#define PPSH_SPREAD     G_GetWeaponSpread( WP_PPSH )
-#define PPSH_DAMAGE(e)     G_GetWeaponDamage( WP_PPSH, e ) 
 
 #define MOSIN_SPREAD     G_GetWeaponSpread( WP_MOSIN )
 #define MOSIN_DAMAGE(e)     G_GetWeaponDamage( WP_MOSIN, e ) 
@@ -1902,9 +1895,6 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_REVOLVER:
 		Bullet_Fire( ent, REVOLVER_SPREAD * aimSpreadScale, REVOLVER_DAMAGE(isPlayer) );
-		break;
-	case WP_PPSH: 
-		Bullet_Fire( ent, PPSH_SPREAD * aimSpreadScale, PPSH_DAMAGE(isPlayer) );
 		break;
 	case WP_MOSIN: 
 		Bullet_Fire( ent, MOSIN_SPREAD * aimSpreadScale, MOSIN_DAMAGE(isPlayer) );

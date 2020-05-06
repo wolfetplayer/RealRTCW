@@ -109,7 +109,6 @@ ammotable_t ammoTable[] = {
 	{   100,            1,      100,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
 	{   50,             1,      50,     1000,    DELAY_LOW,      0,     0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
 	{   MAX_AMMO_TTAMMO,  1,    8,      1600,   DELAY_PISTOL,   350,    0,      0,      MOD_TT33                },  //	WP_TT33					// 12
-	{   MAX_AMMO_TTAMMO,  1,    71,     2900,   DELAY_LOW,      65,     0,      0,      MOD_PPSH                },  //	WP_PPSH					// 13
 	{   MAX_AMMO_MOSINA,  1,    5,      2400,   DELAY_HIGH,     1400,   0,      0,      MOD_MOSIN               },  //	WP_MOSIN				// 14
 	{   MAX_AMMO_MAUSER,  1,    10,     1800,   DELAY_LOW,      300,    0,      0,      MOD_G43                 },  //	WP_G43				    // 15
 	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
@@ -159,7 +158,6 @@ int weapAlts[] = {
 	WP_NONE,            // 9 WP_FLAMETHROWER
 	WP_NONE,            // 10 WP_TESLA
 	WP_NONE,            // 12 WP_TT33
-	WP_NONE,            // 13 WP_PPSH
 	WP_NONE,            // 14 WP_MOSIN
 	WP_NONE,            // 15 WP_G43
 	WP_NONE,            // 16 WP_M1GARAND
@@ -1587,34 +1585,6 @@ model="models/weapons2/tt33/tt33.md3"
 		{0,0,0,0,0}
 	},
 
-/*QUAKED weapon_ppsh (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/ppsh/ppsh.md3"
-*/
-	{
-		"weapon_ppsh",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/ppsh/ppsh.md3",
-			"models/weapons2/ppsh/v_ppsh.md3",
-			"models/weapons2/ppsh/pu_ppsh.md3",
-			0, 0 },
-
-		"icons/iconw_ppsh_1",   // icon
-		"icons/ammo9",       // ammo icon
-		"ppsh",              // pickup
-		30,
-		IT_WEAPON,
-		WP_PPSH,
-		WP_TT33,
-		WP_PPSH,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0,0}
-	},
-
 /*QUAKED weapon_mosin (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
@@ -1859,9 +1829,9 @@ model="models/powerups/ammo/ttammo.md3"
 		"ttammo",           // pickup			
 		60,
 		IT_AMMO,
-		WP_PPSH,
 		WP_TT33,
-		WP_PPSH,
+		WP_TT33,
+		WP_TT33,
 		"",                  // precache
 		"",                  // sounds
 		{71,71,50,50,50}	
@@ -1883,9 +1853,9 @@ model="models/powerups/ammo/ttammo.md3"
 		"ttammol",           // pickup			
 		60,
 		IT_AMMO,
-		WP_PPSH,
 		WP_TT33,
-		WP_PPSH,
+		WP_TT33,
+		WP_TT33,
 		"",                  // precache
 		"",                  // sounds
 		{142,142,100,100,100}	

@@ -1576,7 +1576,7 @@ model="models/weapons2/p38/p38.md3"
 		30,
 		IT_WEAPON,
 		WP_P38,
-		WP_P38,
+		WP_LUGER,
 		WP_P38,
 		"",                  // precache
 		"",                  // sounds

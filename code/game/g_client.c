@@ -1547,8 +1547,9 @@ void SetupWeaponsForSkill_EASY() // Easy
 	// barammo
 	ammoTable[WP_BAR].maxammo = 300;
 	ammoTable[WP_M1GARAND].maxammo = 300;
-	ammoTable[WP_GARAND].maxammo = 300;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 300;
+	// 30cal
+	ammoTable[WP_GARAND].maxammo = 15;
+	ammoTable[WP_SNOOPERSCOPE].maxammo = 15;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 150;
 	// mp44
@@ -1570,7 +1571,8 @@ void SetupWeaponsForSkill_EASY() // Easy
 	ammoTable[WP_TESLA].maxclip = 150;
 	ammoTable[WP_VENOM].maxammo = 1500;
 	// welrod
-	ammoTable[WP_WELROD].maxammo = 15;
+	ammoTable[WP_WELROD].maxammo = 6;
+	ammoTable[WP_WELROD].maxclip = 6;
 	 
 }
 
@@ -1596,8 +1598,9 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	// barammo
 	ammoTable[WP_BAR].maxammo = 200;
 	ammoTable[WP_M1GARAND].maxammo = 200;
-	ammoTable[WP_GARAND].maxammo = 200;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 200;
+	// 30cal
+	ammoTable[WP_GARAND].maxammo = 10;
+	ammoTable[WP_SNOOPERSCOPE].maxammo = 10;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 100;
 	// mp44
@@ -1619,7 +1622,8 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	ammoTable[WP_TESLA].maxclip = 100;
 	ammoTable[WP_VENOM].maxammo = 1000;
 	// welrod
-	ammoTable[WP_WELROD].maxammo = 10;
+	ammoTable[WP_WELROD].maxammo = 6;
+	ammoTable[WP_WELROD].maxclip = 6;
 }
 
 void SetupWeaponsForSkill_HARD() // Hard
@@ -1644,8 +1648,9 @@ void SetupWeaponsForSkill_HARD() // Hard
 	// barammo
 	ammoTable[WP_BAR].maxammo = 180;
 	ammoTable[WP_M1GARAND].maxammo = 180;
-	ammoTable[WP_GARAND].maxammo = 180;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 180;
+	// 30cal
+	ammoTable[WP_GARAND].maxammo = 10;
+	ammoTable[WP_SNOOPERSCOPE].maxammo = 10;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
@@ -1667,7 +1672,8 @@ void SetupWeaponsForSkill_HARD() // Hard
 	ammoTable[WP_TESLA].maxclip = 100;
 	ammoTable[WP_VENOM].maxammo = 1000;
 	// welrod
-	ammoTable[WP_WELROD].maxammo = 10;
+	ammoTable[WP_WELROD].maxammo = 6;
+	ammoTable[WP_WELROD].maxclip = 6;
 
 }
 
@@ -1693,8 +1699,9 @@ void SetupWeaponsForSkill_MAX() // Max
 	// barammo
 	ammoTable[WP_BAR].maxammo = 150;
 	ammoTable[WP_M1GARAND].maxammo = 150;
-	ammoTable[WP_GARAND].maxammo = 150;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 150;
+	// 30cal
+	ammoTable[WP_GARAND].maxammo = 5;
+	ammoTable[WP_SNOOPERSCOPE].maxammo = 5;
 	// mosin
 	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
@@ -1716,7 +1723,8 @@ void SetupWeaponsForSkill_MAX() // Max
 	ammoTable[WP_TESLA].maxclip = 50;
 	ammoTable[WP_VENOM].maxammo = 500;
 	// snooper
-	ammoTable[WP_WELROD].maxammo = 5;
+	ammoTable[WP_WELROD].maxammo = 6;
+	ammoTable[WP_WELROD].maxclip = 6;
 
 
 }
@@ -1766,7 +1774,8 @@ void SetupWeaponsForSkill_REALISM() // Realism
 	ammoTable[WP_TESLA].maxclip = 50;
 	ammoTable[WP_VENOM].maxammo = 500;
 	// welrod
-	ammoTable[WP_WELROD].maxammo = 5;
+	ammoTable[WP_WELROD].maxammo = 6;
+	ammoTable[WP_WELROD].maxclip = 6;
 
 
 }

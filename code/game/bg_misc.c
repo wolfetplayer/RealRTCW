@@ -60,6 +60,7 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_BARAMMO    120  
 #define MAX_AMMO_44AMMO     120
 #define MAX_AMMO_M97        24
+#define MAX_AMMO_WELROD 6
 
 
 // these defines are matched with the character torso animations
@@ -114,16 +115,16 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
 	{   MAX_AMMO_MAUSER,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,    MOD_MG42M              },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
-	{   MAX_AMMO_GARAND, 1,     1,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
+	{   MAX_AMMO_WELROD,                1,    6,     2000,   DELAY_PISTOL,   2000,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
 
 
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
 	{   MAX_AMMO_45,    1,      30,     2400,   DELAY_LOW,      90,     0,      0,      MOD_THOMPSON            },  //	WP_THOMPSON				// 23
-	{   MAX_AMMO_BARAMMO,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
+	{   MAX_AMMO_GARAND,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
 	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 25
 
 	{   MAX_AMMO_MAUSER,1,      5,      3000,   0,              1400,   0,      0,      MOD_SNIPERRIFLE         },  //	WP_SNIPER_GER			// 26
-	{   MAX_AMMO_BARAMMO,1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
+	{   MAX_AMMO_GARAND,1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
 
 	{   MAX_AMMO_FG42,  1,      20,     2000,   DELAY_LOW,      170,    0,      0,      MOD_FG42SCOPE           },  //	WP_FG42SCOPE			// 28
 	{   MAX_AMMO_9MM,   1,      32,     3100,   DELAY_LOW,      115,    900,    500,    MOD_STEN                },  //	WP_STEN					// 29
@@ -1786,9 +1787,9 @@ model="models/weapons2/p38/luger.md3"
 	{
 		"weapon_welrod",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/44magnum/44m_3rd.md3",
-			"models/weapons2/44magnum/v_44m.md3",
-			"models/weapons2/44magnum/44m_pickup.md3",
+		{   "models/weapons2/dartgun/dartgun.md3",
+			"models/weapons2/dartgun/v_dartgun.md3",
+			"models/weapons2/dartgun/dartgun.md3",
 			0, 0 },
 
 		"icons/iconw_welrod",    // icon
@@ -1833,6 +1834,30 @@ model="models/powerups/ammo/mosina.md3"
 		"",                          // precache
 		"",                          // sounds
 		{20,20,15,15,15}		
+	},
+
+	/*QUAKED ammo_welrod (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: mosin nagant
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/welrod.md3"
+*/
+	{
+		"ammo_welrod",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/welrod.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"mosina",			       // pickup
+		50,
+		IT_AMMO,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
+		"",                          // precache
+		"",                          // sounds
+		{5,5,5,5,5}		
 	},
 
 /*QUAKED ammo_barammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -2192,9 +2217,9 @@ model="models/powerups/ammo/am30cal_s.md3"
 		".30cal Rounds",         // pickup
 		50,
 		IT_AMMO,
-		WP_WELROD,
-		WP_WELROD,
-		WP_WELROD,
+		WP_GARAND,
+		WP_GARAND,
+		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
 		{5,2,2,2,2}
@@ -2215,9 +2240,9 @@ model="models/powerups/ammo/am30cal_m.md3"
 		".30cal",                // pickup			//----(SA)	changed
 		50,
 		IT_AMMO,
-		WP_WELROD,
-		WP_WELROD,
-		WP_WELROD,
+		WP_GARAND,
+		WP_GARAND,
+		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
 		{5,5,5,5,5}
@@ -2238,9 +2263,9 @@ model="models/powerups/ammo/am30cal_l.md3"
 		".30cal Box",                // pickup
 		50,
 		IT_AMMO,
-		WP_WELROD,
-		WP_WELROD,
-		WP_WELROD,
+		WP_GARAND,
+		WP_GARAND,
+		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
 		{10,10,10,10,10}

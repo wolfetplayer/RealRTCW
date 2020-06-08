@@ -2055,6 +2055,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 		// no reloading
 	case WP_KNIFE:
 	case WP_TESLA:
+	case WP_WELROD:
 		return;
 
 	default:

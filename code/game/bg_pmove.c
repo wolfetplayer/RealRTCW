@@ -461,7 +461,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
 			scale *= 0.75; 
         }
-		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
+		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND ) || (pm->ps->weapon == WP_M97) )  {
 			scale *= 0.90; 
 		}
 		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_WELROD ) ) {
@@ -2680,9 +2680,6 @@ void PM_AdjustAimSpreadScale( void ) {
 	case WP_WELROD:
 	    wpnScale = 0.4f;
 		break;
-	case WP_MOSIN:
-		wpnScale = 0.5f;
-		break;
 	case WP_G43:
 		wpnScale = 0.4f;  
 		break;
@@ -3236,7 +3233,6 @@ static void PM_Weapon( void ) {
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_MAUSER:
-	case WP_MOSIN:
 	case WP_G43:
 	case WP_M1GARAND:
 	case WP_GARAND:
@@ -3397,7 +3393,6 @@ static void PM_Weapon( void ) {
 
 	switch ( pm->ps->weapon ) {
 	case WP_MAUSER:
-	case WP_MOSIN:
 	case WP_G43:
 	case WP_M1GARAND:
 	case WP_GRENADE_LAUNCHER:
@@ -3483,7 +3478,6 @@ static void PM_Weapon( void ) {
 		break;
 //----(SA)	end
 	case WP_MAUSER:
-	case WP_MOSIN:
 	case WP_G43:
 	case WP_M1GARAND:
 	case WP_GARAND:
@@ -3634,7 +3628,6 @@ case WP_MG42M:
 		}
 		break;
 	// bolt-action rifles - High recoil to compensate for superb stopping power
-	case WP_MOSIN:
 	case WP_MAUSER:
 	case WP_GARAND:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;

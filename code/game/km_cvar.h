@@ -28,7 +28,6 @@ extern vmCvar_t		sk_plr_dmg_dynamite_radius;
 
 //RealRTCW weapons
 extern vmCvar_t		sk_plr_dmg_p38;
-extern vmCvar_t		sk_plr_dmg_mosin;
 extern vmCvar_t		sk_plr_dmg_g43;
 extern vmCvar_t		sk_plr_dmg_m1garand;
 extern vmCvar_t		sk_plr_dmg_bar;
@@ -63,7 +62,6 @@ extern vmCvar_t		sk_ai_dmg_dynamite;
 extern vmCvar_t		sk_ai_dmg_dynamite_radius;
 
 extern vmCvar_t		sk_ai_dmg_p38;
-extern vmCvar_t		sk_ai_dmg_mosin;
 extern vmCvar_t		sk_ai_dmg_g43;
 extern vmCvar_t		sk_ai_dmg_m1garand;
 extern vmCvar_t		sk_ai_dmg_bar;

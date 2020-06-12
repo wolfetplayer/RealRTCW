@@ -1550,8 +1550,6 @@ void SetupWeaponsForSkill_EASY() // Easy
 	// 30cal
 	ammoTable[WP_GARAND].maxammo = 15;
 	ammoTable[WP_SNOOPERSCOPE].maxammo = 15;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 150;
 	// mp44
 	ammoTable[WP_MP44].maxammo = 200;
 	// m97
@@ -1601,8 +1599,6 @@ void SetupWeaponsForSkill_MEDIUM() // Medium
 	// 30cal
 	ammoTable[WP_GARAND].maxammo = 10;
 	ammoTable[WP_SNOOPERSCOPE].maxammo = 10;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 100;
 	// mp44
 	ammoTable[WP_MP44].maxammo = 180;
 	// m97
@@ -1651,8 +1647,6 @@ void SetupWeaponsForSkill_HARD() // Hard
 	// 30cal
 	ammoTable[WP_GARAND].maxammo = 10;
 	ammoTable[WP_SNOOPERSCOPE].maxammo = 10;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
 	ammoTable[WP_MP44].maxammo = 150;
 	// m97
@@ -1702,8 +1696,6 @@ void SetupWeaponsForSkill_MAX() // Max
 	// 30cal
 	ammoTable[WP_GARAND].maxammo = 5;
 	ammoTable[WP_SNOOPERSCOPE].maxammo = 5;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
 	ammoTable[WP_MP44].maxammo = 120;
 	// m97
@@ -1753,8 +1745,6 @@ void SetupWeaponsForSkill_REALISM() // Realism
 	ammoTable[WP_M1GARAND].maxammo = 150;
 	ammoTable[WP_GARAND].maxammo = 150;
 	ammoTable[WP_SNOOPERSCOPE].maxammo = 150;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 50;
 	// mp44
 	ammoTable[WP_MP44].maxammo = 120;
 	// m97

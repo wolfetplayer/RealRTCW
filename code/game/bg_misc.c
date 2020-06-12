@@ -56,7 +56,6 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_GARAND 5
 #define MAX_AMMO_FG42   MAX_AMMO_MAUSER
 #define MAX_AMMO_BAR    150
-#define MAX_AMMO_MOSINA 50
 #define MAX_AMMO_BARAMMO    120  
 #define MAX_AMMO_44AMMO     120
 #define MAX_AMMO_M97        24
@@ -108,7 +107,6 @@ ammotable_t ammoTable[] = {
 	{   100,            1,      100,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
 	{   50,             1,      50,     1000,    DELAY_LOW,      0,     0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
 	{   MAX_AMMO_9MM,   1,      8,      1600, DELAY_PISTOL,     350,    0,      0,      MOD_P38                 },  //	WP_P38					// 12
-	{   MAX_AMMO_MOSINA,  1,    5,      2400,   DELAY_HIGH,     1400,   0,      0,      MOD_MOSIN               },  //	WP_MOSIN				// 14
 	{   MAX_AMMO_MAUSER,  1,    10,     1800,   DELAY_LOW,      300,    0,      0,      MOD_G43                 },  //	WP_G43				    // 15
 	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
 	{   MAX_AMMO_BARAMMO, 1,    20,     2250,   DELAY_LOW,      140,    0,      0,      MOD_BAR                 },  //	WP_BAR					// 17
@@ -157,7 +155,6 @@ int weapAlts[] = {
 	WP_NONE,            // 9 WP_FLAMETHROWER
 	WP_NONE,            // 10 WP_TESLA
 	WP_NONE,            // 12 WP_P38
-	WP_NONE,            // 14 WP_MOSIN
 	WP_NONE,            // 15 WP_G43
 	WP_NONE,            // 16 WP_M1GARAND
 	WP_NONE,            // 17 WP_BAR
@@ -1584,34 +1581,6 @@ model="models/weapons2/p38/p38.md3"
 		{0,0,0,0,0}
 	},
 
-/*QUAKED weapon_mosin (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/mosin/mosin.md3"
-*/
-	{
-		"weapon_mosin",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/mosin/mosin.md3",
-			"models/weapons2/mosin/v_mosin.md3",
-			"models/weapons2/mosin/pu_mosin.md3",
-			0, 0 },
-
-		"icons/iconw_mosin",    // icon
-		"icons/ammomosin",      // ammo icon
-		"mosin",               // pickup
-		30,
-		IT_WEAPON,
-		WP_MOSIN,
-		WP_MOSIN,
-		WP_MOSIN,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0,0}
-	},
-
 /*QUAKED weapon_g43 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
@@ -1812,32 +1781,9 @@ model="models/weapons2/p38/luger.md3"
 
 // RealRTCW ammo
 
-/*QUAKED ammo_mosina (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: mosin nagant
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/mosina.md3"
-*/
-	{
-		"ammo_mosina",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/mosina.md3",
-		  0, 0, 0,    0 },
-		"icons/icona_machinegun",    // icon
-		NULL,                       // ammo icon
-		"mosina",			       // pickup
-		50,
-		IT_AMMO,
-		WP_MOSIN,
-		WP_MOSIN,
-		WP_MOSIN,
-		"",                          // precache
-		"",                          // sounds
-		{20,20,15,15,15}		
-	},
 
 	/*QUAKED ammo_welrod (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: mosin nagant
+used by: welrod
 
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
 model="models/powerups/ammo/welrod.md3"
@@ -1849,7 +1795,7 @@ model="models/powerups/ammo/welrod.md3"
 		  0, 0, 0,    0 },
 		"icons/icona_machinegun",    // icon
 		NULL,                       // ammo icon
-		"mosina",			       // pickup
+		"welrodammo",			       // pickup
 		50,
 		IT_AMMO,
 		WP_WELROD,

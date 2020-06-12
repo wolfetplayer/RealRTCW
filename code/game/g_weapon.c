@@ -591,7 +591,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			// RealRTCW weapons
 			case WP_MP44: return sk_plr_dmg_mp44.integer;
 			case WP_P38: return sk_plr_dmg_p38.integer;
-			case WP_MOSIN: return sk_plr_dmg_mosin.integer;
 			case WP_G43: return sk_plr_dmg_g43.integer;
 			case WP_M1GARAND: return sk_plr_dmg_m1garand.integer;
 			case WP_BAR: return sk_plr_dmg_bar.integer;
@@ -632,7 +631,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			// RealRTCW weapons
 			case WP_MP44: return sk_ai_dmg_mp44.integer;
 			case WP_P38: return sk_ai_dmg_p38.integer;
-			case WP_MOSIN: return sk_ai_dmg_mosin.integer;
 			case WP_G43: return sk_ai_dmg_g43.integer;
 			case WP_M1GARAND: return sk_ai_dmg_m1garand.integer;
 			case WP_BAR: return sk_ai_dmg_bar.integer;
@@ -700,7 +698,6 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_MP40:       return 850; // RealRTCW was 1000
 			// RealRTCW weapons
 			case WP_P38:        return 450; // RealRTCW was 750
-			case WP_MOSIN:      return 300;
 			case WP_G43:        return 350; // was 550
 			case WP_M1GARAND:   return 350; // was 450
 			case WP_BAR:        return 700;
@@ -776,9 +773,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 #define WELROD_SPREAD		G_GetWeaponSpread( WP_WELROD )
 #define WELROD_DAMAGE(e)		G_GetWeaponDamage( WP_WELROD, e )
-
-#define MOSIN_SPREAD     G_GetWeaponSpread( WP_MOSIN )
-#define MOSIN_DAMAGE(e)     G_GetWeaponDamage( WP_MOSIN, e ) 
 
 #define G43_SPREAD     G_GetWeaponSpread( WP_G43 )
 #define G43_DAMAGE(e)     G_GetWeaponDamage( WP_G43, e ) 
@@ -1895,9 +1889,6 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_WELROD:
 		Bullet_Fire( ent, WELROD_SPREAD * aimSpreadScale, WELROD_DAMAGE(isPlayer) );
-		break;
-	case WP_MOSIN: 
-		Bullet_Fire( ent, MOSIN_SPREAD * aimSpreadScale, MOSIN_DAMAGE(isPlayer) );
 		break;
 	case WP_G43: 
 		Bullet_Fire( ent, G43_SPREAD * aimSpreadScale, G43_DAMAGE(isPlayer) );

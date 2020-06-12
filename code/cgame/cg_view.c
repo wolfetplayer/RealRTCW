@@ -866,11 +866,11 @@ static int CG_CalcFov( void ) {
 	}
 	// dhm - end
 
-	if ( !dead && ( cg.weaponSelect == WP_SNOOPERSCOPE ) ) {
+	/*if ( !dead && ( cg.weaponSelect == WP_SNOOPERSCOPE ) ) {
 		cg.refdef.rdflags |= RDF_SNOOPERVIEW;
 	} else {
 		cg.refdef.rdflags &= ~RDF_SNOOPERVIEW;
-	}
+	}*/
 
 	if ( cg.snap->ps.persistant[PERS_HWEAPON_USE] ) {
 		fov_x = 55;
@@ -1372,11 +1372,11 @@ void CG_DrawSkyBoxPortal( void ) {
 			}
 		}
 
-		if ( cg.weaponSelect == WP_SNOOPERSCOPE ) {
+		/*if ( cg.weaponSelect == WP_SNOOPERSCOPE ) {
 			cg.refdef.rdflags |= RDF_SNOOPERVIEW;
 		} else {
 			cg.refdef.rdflags &= ~RDF_SNOOPERVIEW;
-		}
+		}*/
 
 		if ( cg.snap->ps.persistant[PERS_HWEAPON_USE] ) {
 			fov_x = 55;

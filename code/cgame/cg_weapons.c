@@ -102,7 +102,7 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 		return;
 
 	if (cent->currentState.weapon == WP_WELROD) // no brass
-		return;
+	return;
 
 	le = CG_AllocLocalEntity();
 	re = &le->refEntity;

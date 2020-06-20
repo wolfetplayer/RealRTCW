@@ -145,7 +145,7 @@ ammotable_t ammoTable[] = {
 int weapAlts[] = {
 	WP_NONE,            // 0 WP_NONE
 	WP_NONE,            // 1 WP_KNIFE
-	WP_SILENCER,        // 2 WP_LUGER
+	WP_NONE,            // 2 WP_LUGER
 	WP_NONE,            // 3 WP_MP40
 	WP_SNIPERRIFLE,     // 4 WP_MAUSER
 	WP_FG42SCOPE,       // 5 WP_FG42	
@@ -170,7 +170,7 @@ int weapAlts[] = {
 	WP_GARAND,          // 27 WP_SNOOPERSCOPE
 	WP_FG42,            // 28 WP_FG42SCOPE
 	WP_NONE,            // 29 WP_STEN
-	WP_LUGER,           // 30 WP_SILENCER	
+	WP_NONE,           // 30 WP_SILENCER	
 	WP_NONE,            // 31 WP_AKIMBO		
 	WP_NONE,            // 32 WP_CLASS_SPECIAL
 	WP_NONE             // 33 WP_DYNAMITE

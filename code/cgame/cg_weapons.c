@@ -1161,7 +1161,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
 		weaponInfo->switchSound[0] = trap_S_RegisterSound( "sound/weapons/luger/silencerremove.wav" );   //----(SA)	added
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/luger/luger_fire.wav" );
-		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/luger/luger_far.wav" ); // RealRTCW new echo sound
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/luger/luger_reload.wav" );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
@@ -3952,18 +3951,6 @@ void CG_AltWeapon_f( void ) {
 		//		 I still think I'm going to make the weapon banks stored in the config, so this will
 		//		just be a matter of resetting the banks to what's in the config.
 		switch ( original ) {
-		case WP_LUGER:
-			if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {   // if you're holding a chair, you can't screw on the silencer
-				return;
-			}
-			weapBanks[2][0] = WP_SILENCER;
-			break;
-		case WP_SILENCER:
-			if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {   // if you're holding a chair, you can't remove the silencer
-				return;
-			}
-			weapBanks[2][0] = WP_LUGER;
-			break;
 
 		}
 

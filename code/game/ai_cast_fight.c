@@ -1832,6 +1832,7 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_STEN:
 	case    WP_SILENCER:
 	case    WP_WELROD:
+	case    WP_LUGER:
 		return 64;
 	case    WP_GRENADE_LAUNCHER:
 	case    WP_GRENADE_PINEAPPLE:
@@ -1839,7 +1840,6 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_GARAND:
 	case    WP_SNOOPERSCOPE:
 		return 128;
-	case    WP_LUGER:
 	case    WP_COLT:
 	case    WP_AKIMBO:
 	case    WP_P38:

@@ -2810,6 +2810,14 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		flash.hModel = 0;
 	}
 
+	if ( weaponNum == WP_WELROD ) {  
+		flash.hModel = 0;
+	}
+
+	if ( weaponNum == WP_LUGER ) {  
+		flash.hModel = 0;
+	}
+
 	// weaps with barrel smoke
 	if ( ps || cg.renderingThirdPerson || !isPlayer ) {
 		if ( !cg_paused.integer ) {    // don't add while paused

@@ -53,13 +53,12 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_9MM    300
 #define MAX_AMMO_VENOM  500
 #define MAX_AMMO_MAUSER 200
-#define MAX_AMMO_GARAND 5
+#define MAX_AMMO_GARAND 6
 #define MAX_AMMO_FG42   MAX_AMMO_MAUSER
 #define MAX_AMMO_BAR    200
 #define MAX_AMMO_BARAMMO    120  
 #define MAX_AMMO_44AMMO     300
 #define MAX_AMMO_M97        30
-#define MAX_AMMO_WELROD 6
 
 
 // these defines are matched with the character torso animations
@@ -113,7 +112,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
 	{   MAX_AMMO_44AMMO,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,    MOD_MG42M              },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
-	{   MAX_AMMO_WELROD,  1,    8,     2000,   DELAY_PISTOL,   2000,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
+	{   MAX_AMMO_GARAND,  1,    6,     2000,   DELAY_PISTOL,   2000,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
 
 
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
@@ -2163,12 +2162,12 @@ model="models/powerups/ammo/am30cal_s.md3"
 		".30cal Rounds",         // pickup
 		50,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
-		{5,2,2,2,2}
+		{5,5,5,5,5}
 	},
 /*QUAKED ammo_30cal (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Garand rifle
@@ -2186,9 +2185,9 @@ model="models/powerups/ammo/am30cal_m.md3"
 		".30cal",                // pickup			//----(SA)	changed
 		50,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
 		{5,5,5,5,5}
@@ -2209,12 +2208,12 @@ model="models/powerups/ammo/am30cal_l.md3"
 		".30cal Box",                // pickup
 		50,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
+		WP_WELROD,
+		WP_WELROD,
+		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
-		{10,10,10,10,10}
+		{6,6,6,6,6}
 	},
 
 

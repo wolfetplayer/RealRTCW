@@ -101,8 +101,9 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 	if (cent->currentState.weapon == WP_M97) //jaymod
 		return;
 
-	if (cent->currentState.weapon == WP_WELROD) // no brass
-	return;
+	if (cent->currentState.weapon == WP_WELROD) 
+		return;
+
 
 	le = CG_AllocLocalEntity();
 	re = &le->refEntity;
@@ -1193,11 +1194,13 @@ void CG_RegisterWeapon( int weaponNum ) {
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/garand/garand_fire.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/garand/garand_reload.wav" );
+		weaponInfo->lastShotSound[0] = trap_S_RegisterSound( "sound/weapons/garand/garand_fire_last.wav" );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 	case WP_SNOOPERSCOPE:
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/garand/snooper_fire.wav" );
+		weaponInfo->lastShotSound[0] = trap_S_RegisterSound( "sound/weapons/garand/snooper_fire_last.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/garand/snooper_reload.wav" );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
@@ -3021,65 +3024,81 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		// set up gun position
 		CG_CalculateWeaponPosition( hand.origin, angles );
         // REALRTCWEXP
-	    switch ( cg.predictedPlayerState.weapon ) {
-		case WP_FLAMETHROWER:
-			 gunoff[0] = 10;
-		     gunoff[1] = 2;
-		     gunoff[2] = 0;
-		break;
-		case WP_LUGER:
-		case WP_SILENCER:
-			 gunoff[0] = 0;
-		     gunoff[1] = 2;
-		     gunoff[2] = 3;
-		break;
-		case WP_COLT:
-		case WP_AKIMBO:
-			 gunoff[0] = 0;
-		     gunoff[1] = 2;
-		     gunoff[2] = 2;
-		break;
-		break;
-		case WP_MP40:
-			 gunoff[0] = 0;
-		     gunoff[1] = 3;
-		     gunoff[2] = 1;
-		break;
-		case WP_M97:
-			 gunoff[0] = -3;
-		     gunoff[1] = 0;
-		     gunoff[2] = -1;
-		break;
-		case WP_VENOM:
-			 gunoff[0] = -1;
-		     gunoff[1] = 2;
-		     gunoff[2] = 0;
-		break;
-		case WP_MG42M:
-			 gunoff[0] = 0;
-		     gunoff[1] = 3;
-		     gunoff[2] = 0;
-		break;
-		case WP_G43:
-			 gunoff[0] = 0;
-		     gunoff[1] = 1;
-		     gunoff[2] = 1;
-		break;
-		case WP_MP44:
-			 gunoff[0] = 0;
-		     gunoff[1] = 1;
-		     gunoff[2] = 0;
-		break;
-		case WP_FG42:
-			 gunoff[0] = 0;
-		     gunoff[1] = 2;
-		     gunoff[2] = -1;
-		break;
-		case WP_BAR:
-			 gunoff[0] = -3;
-		     gunoff[1] = 3;
-		     gunoff[2] = -1;
-		break;
+	   switch ( cg.predictedPlayerState.weapon ) {
+		//case WP_FLAMETHROWER:
+			// gunoff[0] = 10;
+		     //gunoff[1] = 2;
+		    // gunoff[2] = 0;
+		//break;
+		//case WP_LUGER:
+		//case WP_P38:
+		//case WP_SILENCER:
+			 //gunoff[0] = 0;
+		    // gunoff[1] = 2;
+		    // gunoff[2] = 3;
+		//break;
+		//case WP_P38:
+			// gunoff[0] = 0;
+		    // gunoff[1] = 0;
+		    // gunoff[2] = 2;
+		//break;
+		//case WP_COLT:
+		//case WP_AKIMBO:
+			// gunoff[0] = 0;
+		    // gunoff[1] = 2;
+		    // gunoff[2] = 2;
+		//break;
+	//	break;
+		//case WP_MP40:
+			// gunoff[0] = 0;
+		   //  gunoff[1] = 1;
+		   //  gunoff[2] = 0;
+	//	break;
+		//case WP_M97:
+			// gunoff[0] = -3;
+		   //  gunoff[1] = 0;
+		  //   gunoff[2] = -1;
+		//break;
+		//case WP_VENOM:
+			// gunoff[0] = -1;
+		   //  gunoff[1] = 2;
+		   //  gunoff[2] = 0;
+	//	break;
+		//case WP_MG42M:
+			// gunoff[0] = 0;
+		   //  gunoff[1] = 3;
+		   //  gunoff[2] = 0;
+		//break;
+	//	case WP_G43:
+			// gunoff[0] = 0;
+		    // gunoff[1] = 1;
+		    // gunoff[2] = 1;
+	//	break;
+		//case WP_MP44:
+			// gunoff[0] = 0;
+		   //  gunoff[1] = 1;
+		  //   gunoff[2] = 0;
+	//	break;
+	//	case WP_FG42:
+		//	 gunoff[0] = -2;
+		   //  gunoff[1] = 2;
+		    // gunoff[2] = 0;
+		//break;
+		//case WP_BAR:
+			// gunoff[0] = -2;
+		  //  gunoff[1] = 3;
+		   //  gunoff[2] = -2;
+	//	break;
+		//case WP_WELROD:
+			// gunoff[0] = 1;
+		   //  gunoff[1] = 0;
+		   //  gunoff[2] = 1;
+		//break;
+	//	case WP_GARAND:
+			// gunoff[0] = 0;
+		    // gunoff[1] = -1;
+		    // gunoff[2] = -0.5;
+	//	break;
 		default:
 		    gunoff[0] = cg_gun_x.value;
 		    gunoff[1] = cg_gun_y.value;

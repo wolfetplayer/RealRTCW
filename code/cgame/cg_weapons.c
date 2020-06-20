@@ -3965,12 +3965,6 @@ void CG_AltWeapon_f( void ) {
 			weapBanks[2][0] = WP_LUGER;
 			break;
 
-		case WP_AKIMBO:
-			weapBanks[2][1] = WP_COLT;
-			break;
-		case WP_COLT:
-			weapBanks[2][1] = WP_AKIMBO;
-			break;
 		}
 
 //----(SA)	end

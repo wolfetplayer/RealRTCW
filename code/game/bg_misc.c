@@ -162,7 +162,7 @@ int weapAlts[] = {
 	WP_NONE,            // 19 WP_MG42M
 	WP_NONE,            // 20 WP_M97
 	WP_NONE,            // 21 WP_WELROD
-	WP_AKIMBO,          // 22 WP_COLT		
+	WP_NONE,          // 22 WP_COLT		
 	WP_NONE,            // 23 WP_THOMPSON
 	WP_SNOOPERSCOPE,    // 24 WP_GARAND		
 	WP_NONE,            // 25 WP_GRENADE_PINEAPPLE
@@ -171,7 +171,7 @@ int weapAlts[] = {
 	WP_FG42,            // 28 WP_FG42SCOPE
 	WP_NONE,            // 29 WP_STEN
 	WP_LUGER,           // 30 WP_SILENCER	
-	WP_COLT,            // 31 WP_AKIMBO		
+	WP_NONE,            // 31 WP_AKIMBO		
 	WP_NONE,            // 32 WP_CLASS_SPECIAL
 	WP_NONE             // 33 WP_DYNAMITE
 };

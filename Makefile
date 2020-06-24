@@ -128,9 +128,9 @@ endif
 
 ifndef CLIENTBIN
  ifdef MINGW
-    CLIENTBIN=RealRTCW
+    CLIENTBIN=CastleGothicstein
   else
-    CLIENTBIN=RealRTCW
+    CLIENTBIN=CastleGothicstein
   endif
 endif
 

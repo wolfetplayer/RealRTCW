@@ -284,7 +284,7 @@ G_Script_ScriptParse
   Parses the script for the given entity
 ==============
 */
-#define MAX_SCRIPT_EVENTS   64
+#define MAX_SCRIPT_EVENTS   128
 g_script_event_t g_temp_events[MAX_SCRIPT_EVENTS];
 void G_Script_ScriptParse( gentity_t *ent ) {
 	char        *pScript;

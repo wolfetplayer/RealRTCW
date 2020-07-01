@@ -692,16 +692,16 @@ float G_GetWeaponSpread( int weapon ) {
 			switch ( weapon ) {
 			case WP_LUGER:      return 400; // RealRTCW was 600
 			case WP_SILENCER:   return 400; // RealRTCW was 600
-			case WP_COLT:       return 400; // RealRTCW was 700
+			case WP_COLT:       return 450; // RealRTCW was 700
 			case WP_AKIMBO:     return 500; // RealRTCW was 700
 			case WP_VENOM:      return 1000;
 			case WP_MP40:       return 850; // RealRTCW was 1000
 			// RealRTCW weapons
-			case WP_P38:        return 450; // RealRTCW was 750
-			case WP_G43:        return 350; // was 550
-			case WP_M1GARAND:   return 350; // was 450
+			case WP_P38:        return 420; // RealRTCW was 750
+			case WP_G43:        return 320; // was 550
+			case WP_M1GARAND:   return 370; // was 450
 			case WP_BAR:        return 700;
-		    case WP_MP44:       return 800;  
+		    case WP_MP44:       return 700;  
 			case WP_MG42M:      return 1500;
 			case WP_M97:        return 4500;
 			case WP_WELROD:   return 400; // RealRTCW was 650 
@@ -710,7 +710,7 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_THOMPSON:   return 950; // RealRTCW was 1100
 			case WP_STEN:       return 950; // RealRTCW was 1200
 			case WP_MAUSER:     return 300;
-			case WP_GARAND:     return 400;
+			case WP_GARAND:     return 420;
 			case WP_SNIPERRIFLE:    return 300;
 			case WP_SNOOPERSCOPE:   return 300;
 			}

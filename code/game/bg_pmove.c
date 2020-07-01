@@ -965,7 +965,7 @@ static void PM_WalkMove( void ) {
 				pm->ps->jumpTime = pm->cmd.serverTime;
 
 
-					stamtake = 1000;
+					stamtake = 2000;
 				
 
 				// take time from powerup before taking it from sprintTime
@@ -3591,11 +3591,11 @@ static void PM_Weapon( void ) {
 case WP_MG42M:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 120;
+			pm->pmext->weapRecoilDuration = 150;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
 		} else {
-			pm->pmext->weapRecoilDuration = 180;
+			pm->pmext->weapRecoilDuration = 200;
 			pm->pmext->weapRecoilYaw = crandom() * .25f;
 			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
 		}
@@ -3605,11 +3605,11 @@ case WP_MG42M:
 	case WP_G43:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 20;
+			pm->pmext->weapRecoilDuration = 30;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 45;
+			pm->pmext->weapRecoilDuration = 50;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3632,11 +3632,11 @@ case WP_MG42M:
 	case WP_GARAND:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 40;
+			pm->pmext->weapRecoilDuration = 50;
 		    pm->pmext->weapRecoilYaw = crandom() * 1.0f; 
 		    pm->pmext->weapRecoilPitch = .9f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 80;
+			pm->pmext->weapRecoilDuration = 100;
 			pm->pmext->weapRecoilYaw = crandom() * 1.5f;
 			pm->pmext->weapRecoilPitch = 1.0f * random();
 		}
@@ -3650,11 +3650,11 @@ case WP_MG42M:
 	case WP_WELROD:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-		pm->pmext->weapRecoilDuration = 30;
+		pm->pmext->weapRecoilDuration = 40;
 		pm->pmext->weapRecoilYaw = 0.f;
 		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
 		} else {
-		pm->pmext->weapRecoilDuration = 60;
+		pm->pmext->weapRecoilDuration = 70;
 		pm->pmext->weapRecoilYaw = 0.f;
 		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
 		}
@@ -3664,11 +3664,11 @@ case WP_MG42M:
 	case WP_STEN:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 5;
+			pm->pmext->weapRecoilDuration = 15;
 			pm->pmext->weapRecoilYaw = crandom() * .01f;
 			pm->pmext->weapRecoilPitch = .01f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 20;
+			pm->pmext->weapRecoilDuration = 30;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		}
@@ -3676,11 +3676,11 @@ case WP_MG42M:
 	case WP_THOMPSON:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 10;
+			pm->pmext->weapRecoilDuration = 20;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 30;
+			pm->pmext->weapRecoilDuration = 40;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
 		}
@@ -3691,11 +3691,11 @@ case WP_MG42M:
 	case WP_MP44: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 10;
+			pm->pmext->weapRecoilDuration = 25;
 			pm->pmext->weapRecoilYaw = crandom() * .01f;
 			pm->pmext->weapRecoilPitch = .01f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 30;
+			pm->pmext->weapRecoilDuration = 50;
 			pm->pmext->weapRecoilYaw = crandom() * .1f;
 			pm->pmext->weapRecoilPitch = .1f * random();
 		}
@@ -4238,7 +4238,7 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				pm->ps->sprintTime -= 25; 
+				pm->ps->sprintTime -= 50; 
 			}
 		}
 

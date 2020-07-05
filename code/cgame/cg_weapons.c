@@ -1316,8 +1316,8 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->missileSound        = trap_S_RegisterSound( "sound/weapons/rocket/rockfly.wav" );
 		weaponInfo->missileTrailFunc    = CG_RocketTrail;
 		weaponInfo->missileDlight       = 200;
-		MAKERGB( weaponInfo->flashDlightColor, 0.75, 0.3, 0.0 );
-		MAKERGB( weaponInfo->missileDlightColor, 0.75, 0.3, 0.0 );
+		MAKERGB( weaponInfo->flashDlightColor, 0.75, 0.0, 0.0 );
+		MAKERGB( weaponInfo->missileDlightColor, 0.75, 0.0, 0.0 );
 		weaponInfo->flashSound[0]       = trap_S_RegisterSound( "sound/weapons/rocket/rocklf1a.wav" );
 		weaponInfo->reloadSound         = trap_S_RegisterSound( "sound/weapons/rocket/rocklf_reload.wav" );
 		cgs.media.rocketExplosionShader = trap_R_RegisterShader( "rocketExplosion" );

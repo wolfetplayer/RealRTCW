@@ -406,7 +406,7 @@ AICast_ScriptParse
   Parses the script for the given character
 ==============
 */
-#define MAX_SCRIPT_EVENTS   64
+#define MAX_SCRIPT_EVENTS   128
 cast_script_event_t cast_temp_events[MAX_SCRIPT_EVENTS];
 void AICast_ScriptParse( cast_state_t *cs ) {
 	gentity_t   *ent;

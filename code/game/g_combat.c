@@ -35,6 +35,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
+static vec3_t muzzleTrace;
+
 /*
 ============
 AddScore
@@ -896,8 +898,7 @@ dflags		these flags are used to control how T_Damage works
 ============
 */
 
-void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
-			   vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
+void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
 	gclient_t   *client;
 	int take;
 	int asave;
@@ -1192,6 +1193,48 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			} else {
 				take *= 2; // sniper rifles can do full-kill (and knock into limbo)
 			}
+					if ( dflags & DAMAGE_DISTANCEFALLOFF ) {
+			vec_t dist;
+			vec3_t shotvec;
+			float scale;
+
+			VectorSubtract( point, muzzleTrace, shotvec );
+			dist = VectorLength( shotvec );
+
+#if DO_BROKEN_DISTANCEFALLOFF
+			// ~~~___---___
+			if ( dist > 1500.f ) {
+				if ( dist > 2500.f ) {
+					take *= 0.2f;
+				} else {
+					float scale = 1.f - 0.2f * ( 1000.f / ( dist - 1000.f ) );
+
+					take *= scale;
+				}
+			}
+#else
+			// ~~~---______
+			// zinx - start at 100% at 1500 units (and before),
+			// and go to 20% at 2500 units (and after)
+
+			// 1500 to 2500 -> 0.0 to 1.0
+			scale = ( dist - 1500.f ) / ( 2500.f - 1500.f );
+			// 0.0 to 1.0 -> 0.0 to 0.8
+			scale *= 0.8f;
+			// 0.0 to 0.8 -> 1.0 to 0.2
+			scale = 1.0f - scale;
+
+			// And, finally, cap it.
+			if ( scale > 1.0f ) {
+				scale = 1.0f;
+			} else if ( scale < 0.2f ) {
+				scale = 0.2f;
+			}
+
+			take *= scale;
+#endif
+		}
+
 			if ( !( targ->client->ps.eFlags & EF_HEADSHOT ) ) {  // only toss hat on first headshot
 				G_AddEvent( targ, EV_LOSE_HAT, DirToByte( dir ) );
 			}

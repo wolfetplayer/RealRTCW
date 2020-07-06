@@ -1136,7 +1136,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 
 	case WP_AKIMBO: //----(SA)	added
 		// same as colt
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/colt/colt_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/colt/colt_far.wav" ); // RealRTCW new echo sound
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
@@ -1144,7 +1144,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_COLT:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/colt/colt_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/colt/colt_far.wav" ); // RealRTCW new echo sound
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/colt/colt_reload.wav" );
@@ -1158,7 +1158,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_LUGER:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->switchSound[0] = trap_S_RegisterSound( "sound/weapons/luger/silencerremove.wav" );   //----(SA)	added
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/luger/luger_fire.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/luger/luger_reload.wav" );
@@ -1166,7 +1166,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_SILENCER:   // luger mod
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->switchSound[0] = trap_S_RegisterSound( "sound/weapons/luger/silencerattatch.wav" );  //----(SA)	added
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/luger/silencer_fire.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/luger/luger_reload.wav" );
@@ -1174,7 +1174,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_MAUSER:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/mauser/mauser_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/mauser/mauser_far.wav" );
 		weaponInfo->lastShotSound[0] = trap_S_RegisterSound( "sound/weapons/mauser/mauser_fire_last.wav" );
@@ -1182,7 +1182,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 	case WP_SNIPERRIFLE:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/mauser/sniper_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/mauser/mauser_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/mauser/sniper_reload.wav" );
@@ -1190,14 +1190,14 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_GARAND:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/garand/garand_fire.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/garand/garand_reload.wav" );
 		weaponInfo->lastShotSound[0] = trap_S_RegisterSound( "sound/weapons/garand/garand_fire_last.wav" );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 	case WP_SNOOPERSCOPE:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/garand/snooper_fire.wav" );
 		weaponInfo->lastShotSound[0] = trap_S_RegisterSound( "sound/weapons/garand/snooper_fire_last.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/garand/snooper_reload.wav" );
@@ -1205,7 +1205,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_THOMPSON:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/thompson/thompson_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/thompson/thompson_far.wav" ); // RealRTCW new echo sound
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/thompson/thompson_reload.wav" );
@@ -1214,7 +1214,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_MP40:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/mp40/mp40_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/mp40/mp40_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/mp40/mp40_reload.wav" );
@@ -1225,7 +1225,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 	// RealRTCW weapons
 	
 	 case WP_P38:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/p38/p38_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/p38/p38_far.wav" ); 
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/p38/p38_reload.wav" );
@@ -1233,7 +1233,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 	
 	case WP_WELROD:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/welrod/welrod_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/welrod/welrod_far.wav" ); 
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/welrod/welrod_reload.wav" );
@@ -1241,7 +1241,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_G43:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/g43/g43_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/g43/g43_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/g43/g43_reload.wav" );
@@ -1249,7 +1249,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 	
 	case WP_M1GARAND:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/m1_garand/m1garand_reload.wav" );
@@ -1258,7 +1258,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_BAR:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/bar/bar_fire.wav" ); 
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/bar/bar_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/bar/bar_reload.wav" );
@@ -1266,7 +1266,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 	
 	case WP_MP44:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/mp44/mp44_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/mp44/mp44_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/mp44/mp44_reload.wav" );
@@ -1275,7 +1275,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 	
 	case WP_MG42M:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/mg42m/mg42m_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/mg42m/mg42m_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/mg42m/mg42m_reload.wav" );
@@ -1284,7 +1284,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 	
 	case WP_M97: 
-		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.6, 0.23);
+		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.0, 0.0);
 		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/m97/m97_fire.wav");
 		weaponInfo->lastShotSound[0] = trap_S_RegisterSound("sound/weapons/m97/m97_fire_last.wav");
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/m97/m97_far.wav");
@@ -1294,7 +1294,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_STEN:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/sten/sten_fire.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/sten/sten_reload.wav" );
 		weaponInfo->overheatSound = trap_S_RegisterSound( "sound/weapons/sten/sten_overheat.wav" );
@@ -1303,7 +1303,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 
 	case WP_FG42:
 	case WP_FG42SCOPE:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/fg42/fg42_fire.wav" );
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound( "sound/weapons/fg42/fg42_far.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/fg42/fg42_reload.wav" );
@@ -1330,7 +1330,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->missileSound = trap_S_RegisterSound( "sound/weapons/rocket/rockfly.wav" );
 		weaponInfo->wiTrailTime = 300;
 		weaponInfo->trailRadius = 32;
-		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );
+		MAKERGB( weaponInfo->flashDlightColor, 1, 0.0, 0.0 );
 		break;
 // JPW NERVE
 	case WP_GRENADE_SMOKE:
@@ -1360,7 +1360,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 //		weaponInfo->wiTrailTime = 2000;
 		weaponInfo->wiTrailTime = 1000;
 		weaponInfo->trailRadius = 32;
-		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );
+		MAKERGB( weaponInfo->flashDlightColor, 1, 0.0, 0.0 );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/grenade/grenlf1a.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/grenade/grenlf_reload.wav" );
 		cgs.media.grenadeExplosionShader = trap_R_RegisterShader( "grenadeExplosion" );
@@ -1374,7 +1374,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_VENOM:
-		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.6, 0.23 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		weaponInfo->spinupSound = trap_S_RegisterSound( "sound/weapons/venom/venomsu1.wav" );    //----(SA)	added
 		weaponInfo->spindownSound = trap_S_RegisterSound( "sound/weapons/venom/venomsd1.wav" );  //----(SA)	added
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/venom/venom_fire.wav" );
@@ -1385,7 +1385,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_FLAMETHROWER:
-		//MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.7, 0.4 );
+		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
 		break;
 
 	case WP_TESLA:
@@ -4628,7 +4628,7 @@ void CG_MG42EFX( centity_t *cent ) {
 	VectorCopy( cent->currentState.origin, point );
 	AngleVectors( cent->currentState.angles, forward, NULL, NULL );
 	VectorMA( point, 40, forward, point );
-	trap_R_AddLightToScene( point, 200 + ( rand() & 31 ),1.0, 0.6, 0.23, 0 );
+	trap_R_AddLightToScene( point, 200 + ( rand() & 31 ),1.0, 0.0, 0.0, 0 );
 
 	memset( &flash, 0, sizeof( flash ) );
 	flash.renderfx = RF_LIGHTING_ORIGIN;
@@ -4702,7 +4702,7 @@ void CG_MortarEFX( centity_t *cent ) {
 
 	if ( cent->currentState.density & 2 ) {
 		// light
-		trap_R_AddLightToScene( cent->currentState.origin, 200 + ( rand() & 31 ), 1.0, 1.0, 1.0, 0 );
+		trap_R_AddLightToScene( cent->currentState.origin, 200 + ( rand() & 31 ), 1.0, 0.0, 0.0, 0 );
 
 		// muzzle flash
 		memset( &flash, 0, sizeof( flash ) );
@@ -5200,7 +5200,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	shader = 0;
 	light = 0;
 	lightColor[0] = 1;
-	lightColor[1] = 1;
+	lightColor[1] = 0;
 	lightColor[2] = 0;
 	// Ridah
 	lightOverdraw = 0;
@@ -5447,8 +5447,8 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 		isSprite = qtrue;
 		duration = 1000;
 		lightColor[0] = 0.75;
-		lightColor[1] = 0.5;
-		lightColor[2] = 0.1;
+		lightColor[1] = 0.0;
+		lightColor[2] = 0.0;
 
 		shakeAmt = 0.15f;
 		shakeDur = 600;
@@ -5480,8 +5480,8 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 		isSprite = qtrue;
 		duration = 1000;
 		lightColor[0] = 0.75;
-		lightColor[1] = 0.5;
-		lightColor[2] = 0.1;
+		lightColor[1] = 0.0;
+		lightColor[2] = 0.0;
 
 		shakeAmt = 0.25f;
 		shakeDur = 2800;
@@ -5555,8 +5555,8 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 		isSprite = qtrue;
 		duration = 1000;
 		lightColor[0] = 0.75;
-		lightColor[1] = 0.5;
-		lightColor[2] = 0.1;
+		lightColor[1] = 0.0;
+		lightColor[2] = 0.0;
 
 		if ( weapon != WP_GRENADE_SMOKE ) {
 			shakeAmt = 0.15f;
@@ -5602,8 +5602,8 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 //		lightColor[1] = 1;//0.75;
 //		lightColor[2] = 0.6;//0.0;
 		lightColor[0] = 0.75;
-		lightColor[1] = 0.5;
-		lightColor[2] = 0.1;
+		lightColor[1] = 0.0;
+		lightColor[2] = 0.0;
 
 		// explosion sprite animation
 		VectorMA( origin, 24, dir, sprOrg );
@@ -5752,7 +5752,7 @@ void CG_MissileHitWallSmall( int weapon, int clientNum, vec3_t origin, vec3_t di
 
 	mod = 0;
 	lightColor[0] = 1;
-	lightColor[1] = 1;
+	lightColor[1] = 0;
 	lightColor[2] = 0;
 	// Ridah
 	lightOverdraw = 0;
@@ -5766,8 +5766,8 @@ void CG_MissileHitWallSmall( int weapon, int clientNum, vec3_t origin, vec3_t di
 	isSprite = qtrue;
 	duration = 1000;
 	lightColor[0] = 0.75;
-	lightColor[1] = 0.5;
-	lightColor[2] = 0.1;
+	lightColor[1] = 0.0;
+	lightColor[2] = 0.0;
 
 	// Ridah, explosion sprite animation
 	VectorMA( origin, 16, dir, sprOrg );

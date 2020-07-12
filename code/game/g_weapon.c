@@ -123,6 +123,13 @@ void Weapon_Knife( gentity_t *ent ) {
 
 	damage = G_GetWeaponDamage( ent->s.weapon, isPlayer ); // JPW		// default knife damage for frontal attacks
 
+	switch ( traceEnt->aiCharacter ) {
+	case AICHAR_ZOMBIE:
+	case AICHAR_WARZOMBIE:
+	case AICHAR_LOPER:
+		damage *= 0.3;
+	}
+
 	if ( traceEnt->client ) {
 		if ( ent->client->ps.serverCursorHint == HINT_KNIFE ) {
 //		AngleVectors (ent->client->ps.viewangles,		pforward, NULL, NULL);

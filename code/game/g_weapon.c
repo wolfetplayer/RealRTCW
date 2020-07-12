@@ -40,14 +40,14 @@ If you have questions concerning this license or the applicable additional terms
 static float s_quadFactor;
 static vec3_t forward, right, up;
 static vec3_t muzzleEffect;
-static vec3_t muzzleTrace;
+vec3_t muzzleTrace;
 
 
 // forward dec
 void weapon_zombiespit( gentity_t *ent );
 
 void Bullet_Fire( gentity_t *ent, float spread, int damage , qboolean distance_falloff );
-void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion , qboolean distance_falloff );
+qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion , qboolean distance_falloff );
 
 int G_GetWeaponDamage( int weapon, qboolean player ); // JPW
 
@@ -986,7 +986,7 @@ Bullet_Fire_Extended
 	uses for this include shooting through entities (windows, doors, other players, etc.) and reflecting bullets
 ==============
 */
-void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion , qboolean distance_falloff ) {
+qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion , qboolean distance_falloff ) {
 	trace_t tr;
 	gentity_t   *tent;
 	gentity_t   *traceEnt;
@@ -1022,7 +1022,7 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 		VectorCopy( tr.endpos, tent->s.origin2 );
 		tent->s.otherEntityNum2 = attacker->s.number;
 	}
-
+	
 
 	RubbleFlagCheck( attacker, tr );
 

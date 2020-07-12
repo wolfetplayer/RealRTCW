@@ -35,7 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
-static vec3_t muzzleTrace;
+extern vec3_t muzzleTrace;
 
 /*
 ============
@@ -1193,7 +1193,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			} else {
 				take *= 2; // sniper rifles can do full-kill (and knock into limbo)
 			}
-					if ( dflags & DAMAGE_DISTANCEFALLOFF ) {
+			if ( dflags & DAMAGE_DISTANCEFALLOFF ) {
 			vec_t dist;
 			vec3_t shotvec;
 			float scale;

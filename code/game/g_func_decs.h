@@ -174,7 +174,7 @@ extern void weapon_zombiespirit ( gentity_t * ent , gentity_t * missile ) ;
 extern void weapon_zombiespit ( gentity_t * ent ) ;
 extern gentity_t * weapon_grenadelauncher_fire ( gentity_t * ent , int grenType ) ;
 extern gentity_t * weapon_crowbar_throw ( gentity_t * ent ) ;
-extern void Bullet_Fire_Extended ( gentity_t * source , gentity_t * attacker , vec3_t start , vec3_t end , float spread , int damage , int recursion , qboolean distance_falloff ) ;
+extern qboolean Bullet_Fire_Extended ( gentity_t * source , gentity_t * attacker , vec3_t start , vec3_t end , float spread , int damage , int recursion , qboolean distance_falloff ) ;
 extern void Bullet_Fire ( gentity_t * ent , float spread , int damage , qboolean distance_falloff ) ;
 extern void Bullet_Endpos ( gentity_t * ent , float spread , vec3_t * end ) ;
 extern void SniperSoundEFX ( vec3_t pos ) ;

@@ -53,7 +53,6 @@ static qboolean CG_WeaponHasAmmo( int i );
 static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; // JPW NERVE
 
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
-	// bank
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
 	{WP_KNIFE,              0,                      0,            0,               0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     0            },  //	2
@@ -77,9 +76,7 @@ int weapBanksMultiPlayer[MAX_WEAP_BANKS_MP][MAX_WEAPS_IN_BANK_MP] = {
 	{WP_CLASS_SPECIAL,      0,                      0,          0,          0,          0,              0,          0,          },
 	{WP_DYNAMITE,           0,                      0,          0,          0,          0,              0,          0           }
 };
-// jpw
 
-//----(SA)	end
 
 
 /*

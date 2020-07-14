@@ -454,7 +454,7 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 	if ( cg_gameType.integer != GT_WOLF )
 #endif
 #ifdef GAMEDLL
-	if ( g_gametype.integer != GT_WOLF ) // RealRTCW weapon weight movement in SP was 80,90,95
+	if ( g_gametype.integer != GT_WOLF )
 #endif
 if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 	{ 
@@ -3546,7 +3546,7 @@ static void PM_Weapon( void ) {
 	case WP_MP44:
 	case WP_THOMPSON:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;       // (SA) new values for DM
+		aimSpreadScaleAdd = 15 + rand() % 10;       
 		break;
 
 	case WP_MG42M:
@@ -3569,7 +3569,7 @@ static void PM_Weapon( void ) {
 		break;
 	case WP_STEN:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;       // (SA) new values for DM
+		aimSpreadScaleAdd = 15 + rand() % 10;       
 		break;
 	case WP_SILENCER:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
@@ -3579,12 +3579,9 @@ static void PM_Weapon( void ) {
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 10;
 		break;
-// JPW NERVE
 	case WP_CLASS_SPECIAL:
-		// can't reliably get cvars for restart time in here, so set it small and check it in fireweapon routine
 		addTime = 50;
 		break;
-// jpw
 	case WP_MONSTER_ATTACK1:
 		addTime = 1000;
 		break;

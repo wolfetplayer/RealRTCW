@@ -286,8 +286,6 @@ char    *modNames[] = {
 	"MOD_VENOM_FULL",
 	"MOD_FLAMETHROWER",
 	"MOD_TESLA",
-	"MOD_SPEARGUN",
-	"MOD_SPEARGUN_CO2",
 	"MOD_GRENADE_PINEAPPLE",
 	"MOD_CROSS",
 	"MOD_MORTAR",
@@ -640,38 +638,37 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	}
 
 	if ( attacker->aiCharacter ) {
-		// ai's are always allowed headshots from these weapons
-		//if ( mod == MOD_SNIPERRIFLE ||
-			 //mod == MOD_SNOOPERSCOPE ) {
-			//return qtrue;
-		//}
-         // RealRTCW removed this,cause its overpowered
-		//if ( g_gameskill.integer != GSKILL_MAX ) { 
-			// ai's allowed headshots in skill==GSKILL_MAX
-			//return qfalse;
-		//}
+		/* ai's are always allowed headshots from these weapons
+		if ( mod == MOD_SNIPERRIFLE ||
+			 mod == MOD_SNOOPERSCOPE ) {
+			return qtrue;
+		}
+          RealRTCW removed this,cause its overpowered
+		if ( g_gameskill.integer != GSKILL_MAX ) { 
+			 ai's allowed headshots in skill==GSKILL_MAX
+			return qfalse;
+		}*/
 		return qfalse;
 	}
 
 	switch ( targ->aiCharacter ) {
-		// get out quick for ai's that don't take headshots
+	// get out quick for ai's that don't take headshots
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:
-	case AICHAR_HELGA:      // boss1 (beast)
+	case AICHAR_HELGA:     
 	case AICHAR_LOPER:
-	case AICHAR_VENOM:      //----(SA)	added
-		return qfalse;
+	case AICHAR_VENOM:      
+	return qfalse;
 	default:
-		break;
+	break;
 	}
 
 	switch ( mod ) {
-		// players are allowed headshots from these weapons
+	// players are allowed headshots from these weapons
 	case MOD_LUGER:
 	case MOD_COLT:
 	case MOD_AKIMBO:
 	case MOD_MP40:
-	// RealRTCW weapons
 	case MOD_MP34:
 	case MOD_TT33:
 	case MOD_PPSH:
@@ -690,9 +687,8 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_FG42SCOPE:
 	case MOD_SNOOPERSCOPE:
 	case MOD_SNIPERRIFLE:
-		return qtrue;
+	return qtrue;
 	}
-
 	return qfalse;
 }
 

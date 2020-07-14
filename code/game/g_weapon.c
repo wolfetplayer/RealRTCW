@@ -588,7 +588,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_GRENADE_LAUNCHER: return sk_plr_dmg_grenade.integer;	
 			case WP_GRENADE_PINEAPPLE: return sk_plr_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_plr_dmg_dynamite.integer;
-			// RealRTCW weapons
 			case WP_MP34: return sk_plr_dmg_mp34.integer;
 			case WP_MP44: return sk_plr_dmg_mp44.integer;
 			case WP_TT33: return sk_plr_dmg_tt33.integer;
@@ -600,7 +599,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_MG42M: return sk_plr_dmg_mg42m.integer;
 			case WP_M97: return sk_plr_dmg_m97.integer;
 			case WP_REVOLVER: return sk_plr_dmg_revolver.integer;	
-            // end RealRTCW
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
 			case WP_SNIPER: return 1;
@@ -631,7 +629,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_GRENADE_LAUNCHER: return sk_ai_dmg_grenade.integer;	
 			case WP_GRENADE_PINEAPPLE: return sk_ai_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_ai_dmg_dynamite.integer;
-			// RealRTCW weapons
 			case WP_MP34: return sk_ai_dmg_mp34.integer;
 			case WP_MP44: return sk_ai_dmg_mp44.integer;
 			case WP_TT33: return sk_ai_dmg_tt33.integer;
@@ -642,8 +639,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_BAR: return sk_ai_dmg_bar.integer;
 			case WP_MG42M: return sk_ai_dmg_mg42m.integer;
 			case WP_M97: return sk_ai_dmg_m97.integer;
-			case WP_REVOLVER: return sk_ai_dmg_revolver.integer;
-			// end RealRTCW			
+			case WP_REVOLVER: return sk_ai_dmg_revolver.integer;		
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
 			case WP_SNIPER: return 1;
@@ -682,42 +678,32 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 		}
 	}
 }
-// JPW - this chunk appears to not be used, right?
-/*
-#define MACHINEGUN_SPREAD	200
-#define	MACHINEGUN_DAMAGE	G_GetWeaponDamage(WP_MACHINEGUN) // JPW
-#define	MACHINEGUN_TEAM_DAMAGE	G_GetWeaponDamage(WP_MACHINEGUN) // JPW		// wimpier MG in teamplay
-*/
-// jpw
 
-// RF, wrote this so we can dynamically switch between old and new values while testing g_userAim
 float G_GetWeaponSpread( int weapon ) {
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {   // JPW NERVE -- don't affect SP game
+	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {  
 		if ( g_userAim.integer ) {
-			// these should be higher since they become erratic if aiming is out
 			switch ( weapon ) {
-			case WP_LUGER:      return 400; // RealRTCW was 600
-			case WP_SILENCER:   return 400; // RealRTCW was 600
-			case WP_COLT:       return 400; // RealRTCW was 700
-			case WP_AKIMBO:     return 500; // RealRTCW was 700
+			case WP_LUGER:      return 400; 
+			case WP_SILENCER:   return 400; 
+			case WP_COLT:       return 400; 
+			case WP_AKIMBO:     return 500; 
 			case WP_VENOM:      return 1000;
-			case WP_MP40:       return 850; // RealRTCW was 1000
-			// RealRTCW weapons
-			case WP_MP34:       return 900; // RealRTCW was 1100
-			case WP_TT33:       return 450; // RealRTCW was 750
+			case WP_MP40:       return 850; 
+			case WP_MP34:       return 900; 
+			case WP_TT33:       return 450; 
 			case WP_PPSH:       return 1100; 
 			case WP_MOSIN:      return 300;
-			case WP_G43:        return 350; // was 550
-			case WP_M1GARAND:   return 350; // was 450
+			case WP_G43:        return 350; 
+			case WP_M1GARAND:   return 350; 
 			case WP_BAR:        return 700;
 		    case WP_MP44:       return 800;  
 			case WP_MG42M:      return 1500;
 			case WP_M97:        return 4500;
-			case WP_REVOLVER:   return 400; // RealRTCW was 650 
+			case WP_REVOLVER:   return 400; 
 			case WP_FG42SCOPE:  return 250;
 			case WP_FG42:       return 600; 
-			case WP_THOMPSON:   return 950; // RealRTCW was 1100
-			case WP_STEN:       return 950; // RealRTCW was 1200
+			case WP_THOMPSON:   return 950; 
+			case WP_STEN:       return 950; 
 			case WP_MAUSER:     return 300;
 			case WP_GARAND:     return 400;
 			case WP_SNIPERRIFLE:    return 300;
@@ -728,7 +714,7 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_LUGER:      return 25;
 			case WP_SILENCER:   return 150;
 			case WP_COLT:       return 30;
-			case WP_AKIMBO:     return 30;      //----(SA)	added
+			case WP_AKIMBO:     return 30;      
 			case WP_VENOM:      return 200;
 			case WP_MP40:       return 200;
 			case WP_FG42SCOPE:  return 10;
@@ -765,17 +751,18 @@ float G_GetWeaponSpread( int weapon ) {
 }
 
 #define LUGER_SPREAD    G_GetWeaponSpread( WP_LUGER )
-#define LUGER_DAMAGE(e)    G_GetWeaponDamage( WP_LUGER, e ) // JPW
+#define LUGER_DAMAGE(e)    G_GetWeaponDamage( WP_LUGER, e ) 
 #define SILENCER_SPREAD G_GetWeaponSpread( WP_SILENCER )
+
 #define COLT_SPREAD     G_GetWeaponSpread( WP_COLT )
-#define COLT_DAMAGE(e)     G_GetWeaponDamage( WP_COLT, e ) // JPW
+#define COLT_DAMAGE(e)     G_GetWeaponDamage( WP_COLT, e ) 
 
 #define VENOM_SPREAD    G_GetWeaponSpread( WP_VENOM )
-#define VENOM_DAMAGE(e)    G_GetWeaponDamage( WP_VENOM, e ) // JPW
+#define VENOM_DAMAGE(e)    G_GetWeaponDamage( WP_VENOM, e ) 
 
 #define MP40_SPREAD     G_GetWeaponSpread( WP_MP40 )
-#define MP40_DAMAGE(e)     G_GetWeaponDamage( WP_MP40, e ) // JPW
-// RealRTCW weapons
+#define MP40_DAMAGE(e)     G_GetWeaponDamage( WP_MP40, e ) 
+
 #define MP34_SPREAD     G_GetWeaponSpread( WP_MP34 )
 #define MP34_DAMAGE(e)     G_GetWeaponDamage( WP_MP34, e ) 
 
@@ -784,7 +771,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 #define REVOLVER_SPREAD		G_GetWeaponSpread( WP_REVOLVER )
 #define REVOLVER_DAMAGE(e)		G_GetWeaponDamage( WP_REVOLVER, e )
-
 
 #define PPSH_SPREAD     G_GetWeaponSpread( WP_PPSH )
 #define PPSH_DAMAGE(e)     G_GetWeaponDamage( WP_PPSH, e ) 
@@ -811,25 +797,28 @@ float G_GetWeaponSpread( int weapon ) {
 #define M97_DAMAGE(e)     G_GetWeaponDamage( WP_M97, e ) 
 
 #define THOMPSON_SPREAD G_GetWeaponSpread( WP_THOMPSON )
-#define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) // JPW
+#define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) 
+
 #define STEN_SPREAD     G_GetWeaponSpread( WP_STEN )
-#define STEN_DAMAGE(e)     G_GetWeaponDamage( WP_STEN, e ) // JPW
+#define STEN_DAMAGE(e)     G_GetWeaponDamage( WP_STEN, e ) 
+
 #define FG42_SPREAD     G_GetWeaponSpread( WP_FG42 )
-#define FG42_DAMAGE(e)     G_GetWeaponDamage( WP_FG42, e ) // JPW
+#define FG42_DAMAGE(e)     G_GetWeaponDamage( WP_FG42, e ) 
 
 #define MAUSER_SPREAD   G_GetWeaponSpread( WP_MAUSER )
-#define MAUSER_DAMAGE(e)   G_GetWeaponDamage( WP_MAUSER, e ) // JPW
+#define MAUSER_DAMAGE(e)   G_GetWeaponDamage( WP_MAUSER, e ) 
+
 #define GARAND_SPREAD   G_GetWeaponSpread( WP_GARAND )
-#define GARAND_DAMAGE(e)   G_GetWeaponDamage( WP_GARAND, e ) // JPW
+#define GARAND_DAMAGE(e)   G_GetWeaponDamage( WP_GARAND, e ) 
 
 #define SNIPER_SPREAD   G_GetWeaponSpread( WP_SNIPERRIFLE )
-#define SNIPER_DAMAGE(e)   G_GetWeaponDamage( WP_SNIPERRIFLE, e ) // JPW
+#define SNIPER_DAMAGE(e)   G_GetWeaponDamage( WP_SNIPERRIFLE, e ) 
 
 #define SNOOPER_SPREAD  G_GetWeaponSpread( WP_SNOOPERSCOPE )
-#define SNOOPER_DAMAGE(e)  G_GetWeaponDamage( WP_SNOOPERSCOPE, e ) // JPW
+#define SNOOPER_DAMAGE(e)  G_GetWeaponDamage( WP_SNOOPERSCOPE, e )
 
-#define FG42SCOPE_SPREAD	G_GetWeaponSpread( WP_FG42SCOPE ) // Knightmare added
-#define	FG42SCOPE_DAMAGE(e)	G_GetWeaponDamage( WP_FG42SCOPE, e ) // Knightmare added
+#define FG42SCOPE_SPREAD	G_GetWeaponSpread( WP_FG42SCOPE ) 
+#define	FG42SCOPE_DAMAGE(e)	G_GetWeaponDamage( WP_FG42SCOPE, e ) 
 
 /*
 ==============

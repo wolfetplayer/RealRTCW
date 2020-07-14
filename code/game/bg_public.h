@@ -36,12 +36,12 @@ If you have questions concerning this license or the applicable additional terms
 // because games can change separately from the main system version, we need a
 // second version that must match between game and cgame
 
-#include "../game/bg_jaymod.h"
+#include "../game/bg_jaymod.h" // RealRTCW
 
 #define	GAME_VERSION		BASEGAME "-1"
 
 #define DEFAULT_GRAVITY     800
-#define GIB_HEALTH          -120 // was -40
+#define GIB_HEALTH          -120 // was -40 Increased in RealRTCW due to the increased grenade damage.
 #define ARMOR_PROTECTION    0.66 
 
 #define MAX_ITEMS           256
@@ -51,59 +51,43 @@ If you have questions concerning this license or the applicable additional terms
 #define DEFAULT_SHOTGUN_SPREAD  700
 #define DEFAULT_SHOTGUN_COUNT   11
 
-//#define	ITEM_RADIUS			15		// item sizes are needed for client side pickup detection
-#define ITEM_RADIUS     10 // Rafael changed the radius so that the items would fit in the 3 new containers
+#define ITEM_RADIUS     10 
 
-// RF, zombie getup
-#define TIMER_RESPAWN   ( 38 * ( 1000 / 15 ) + 100 )
+#define TIMER_RESPAWN   ( 38 * ( 1000 / 15 ) + 100 ) // RF, zombie getup
 
 #define LIGHTNING_RANGE     600
 #define TESLA_RANGE         1200
 #define TESLA_SUPERSOLDIER_RANGE    2000
 
-#define FLAMETHROWER_RANGE 2500 // WAS 2200
-//#define	FLAMETHROWER_RANGE	850
-// jpw
+#define FLAMETHROWER_RANGE 2500
+
 #define ZOMBIE_FLAME_SCALE  0.3
 #define ZOMBIE_FLAME_RADIUS ( FLAMETHROWER_RANGE * ZOMBIE_FLAME_SCALE )
 
-// RF, AI effects
 #define PORTAL_ZOMBIE_SPAWNTIME     3000
 #define PORTAL_FEMZOMBIE_SPAWNTIME  3000
 
-#define SCORE_NOT_PRESENT   -9999   // for the CS_SCORES[12] when only one player is present
+#define SCORE_NOT_PRESENT   -9999   
 
-#define VOTE_TIME           30000   // 30 seconds before vote times out
+#define VOTE_TIME           30000  
 
 #define DEAD_SINK_DURATION  12000
 #define DEAD_SINK_DEPTH     64
 
-// Ridah, disabled these
 #define	MINS_Z				-24
-//#define	DEFAULT_VIEWHEIGHT	26
-//#define CROUCH_VIEWHEIGHT	12
-// done.
 
-// Rafael
-// note to self: Corky test
-//#define	DEFAULT_VIEWHEIGHT	26
-//#define CROUCH_VIEWHEIGHT	12
 #define DEFAULT_VIEWHEIGHT  40
 #define CROUCH_VIEWHEIGHT   16
 #define DEAD_VIEWHEIGHT     -16
 
-// RF, temp only, use infantryss so we can test new anim system
-//#define	DEFAULT_MODEL		"american"
 #define DEFAULT_MODEL       "bj2"
-#define DEFAULT_HEAD        "default"    // technically the default head skin.  this means "head_default.skin" for the head
+#define DEFAULT_HEAD        "default"   
 
-// RF, on fire effects
 #define FIRE_FLASH_TIME         2000
 #define FIRE_FLASH_FADEIN_TIME  1000
 
 #define LIGHTNING_FLASH_TIME    150
 
-// RF, client damage identifiers
 typedef enum {
 	CLDMG_SPIRIT,
 	CLDMG_FLAMETHROWER,
@@ -113,10 +97,9 @@ typedef enum {
 	CLDMG_MAX
 } clientDamage_t;
 
-// RF
 #define MAX_TAGCONNECTS     32
 
-// (SA) zoom sway values
+// zoom sway values
 #define ZOOM_PITCH_AMPLITUDE        0.13f
 #define ZOOM_PITCH_FREQUENCY        0.24f
 #define ZOOM_PITCH_MIN_AMPLITUDE    0.1f        // minimum amount of sway even if completely settled on target
@@ -125,9 +108,7 @@ typedef enum {
 #define ZOOM_YAW_FREQUENCY          0.12f
 #define ZOOM_YAW_MIN_AMPLITUDE      0.2f
 
-// DHM - Nerve
 #define MAX_OBJECTIVES      6
-// dhm
 
 //
 // config strings are a general means of communicating variable length strings
@@ -159,11 +140,11 @@ typedef enum {
 #define CS_MULTI_OBJECTIVE6 22
 // dhm
 
-#define CS_MISSIONSTATS     23      //----(SA)	added
+#define CS_MISSIONSTATS     23      
 
 #define CS_SHADERSTATE      24
 #define CS_MUSIC_QUEUE      25
-#define	CS_ATMOSEFFECT		26  	  	// Atmospheric effect, if any.
+#define	CS_ATMOSEFFECT		26  	  	
 #define CS_ITEMS            27      // string of 0's and 1's that tell which items are present
 
 #define CS_SCREENFADE       28      // Ridah, used to tell clients to fade their screen to black/normal
@@ -202,23 +183,18 @@ typedef enum {
 	GT_FFA,             // free for all
 	GT_TOURNAMENT,      // one on one tournament
 	GT_SINGLE_PLAYER,   // single player tournament
-
-	//-- team games go after this --
-
 	GT_TEAM,            // team deathmatch
 	GT_CTF,             // capture the flag
 	GT_WOLF,            // DHM - Nerve :: Wolfenstein Multiplayer
-
 	GT_MAX_GAME_TYPE
 } gametype_t;
 
-// Rafael gameskill
 typedef enum {
 	GSKILL_EASY,
 	GSKILL_MEDIUM,
 	GSKILL_HARD,
 	GSKILL_MAX,
-	GSKILL_REALISM      // must always be last
+	GSKILL_REALISM      // RealRTCW. Must always be last.
 } gameskill_t;
 
 typedef enum { GENDER_MALE, GENDER_FEMALE, GENDER_NEUTER } gender_t;
@@ -246,16 +222,16 @@ typedef enum {
 typedef enum {
 	WEAPON_READY,
 	WEAPON_RAISING,
-	WEAPON_RAISING_TORELOAD,    //----(SA)	added
+	WEAPON_RAISING_TORELOAD,    
 	WEAPON_DROPPING,
-	WEAPON_DROPPING_TORELOAD,   //----(SA)	added.  will reload upon completion of weapon switch
+	WEAPON_DROPPING_TORELOAD,   // will reload upon completion of weapon switch
 	WEAPON_READYING,    // getting from 'ready' to 'firing'
 	WEAPON_RELAXING,    // weapon is ready, but since not firing, it's on it's way to a "relaxed" stance
 	WEAPON_VENOM_REST,
 	WEAPON_FIRING,
 	WEAPON_FIRINGALT,
-	WEAPON_WAITING,     //----(SA)	added.  player allowed to switch/reload, but not fire
-	WEAPON_RELOADING    //----(SA)	added
+	WEAPON_WAITING,     // player allowed to switch/reload, but not fire
+	WEAPON_RELOADING    
 } weaponstate_t;
 
 // pmove->pm_flags	(sent as max 16 bits in msg.c)
@@ -269,8 +245,6 @@ typedef enum {
 #define PMF_TIME_WATERJUMP  256     // pm_time is waterjump
 #define PMF_RESPAWNED       512     // clear after attack and jump buttons come up
 #define PMF_USE_ITEM_HELD   1024
-// RF, removed since it's not used
-//#define PMF_GRAPPLE_PULL	2048	// pull towards grapple location
 #define PMF_IGNORE_INPUT    2048    // no movement/firing commands allowed
 #define PMF_FOLLOW          4096    // spectate following another player
 #define PMF_SCOREBOARD      8192    // spectate as a scoreboard
@@ -284,7 +258,7 @@ typedef enum {
 // autoreload. Client flags for server processing
 #define CGF_AUTORELOAD      0x01
 
-// data used both in client and server
+// RealRTCW. Data used both in client and server
 typedef struct
 {
 	qboolean bAutoReload;
@@ -335,23 +309,19 @@ int Pmove( pmove_t *pmove );
 
 //===================================================================================
 
-// JPW NERVE
-#define PC_SOLDIER              0   //	shoot stuff
-#define PC_MEDIC                1   //	heal stuff
-#define PC_ENGINEER             2   //	build stuff
-#define PC_LT                   3   //	bomb stuff
-#define PC_MEDIC_CHARGETIME     30000   // FIXME just for testing, this will change to server cvars for each class
-// jpw
+#define PC_SOLDIER              0   
+#define PC_MEDIC                1   
+#define PC_ENGINEER             2   
+#define PC_LT                   3   
+#define PC_MEDIC_CHARGETIME     30000 
+
 
 // player_state->stats[] indexes
 typedef enum {
 	STAT_HEALTH,
 	STAT_HOLDABLE_ITEM,
-//	STAT_WEAPONS,					// 16 bit fields
 	STAT_ARMOR,
-//----(SA) Keys for Wolf
-	STAT_KEYS,                      // 16 bit fields
-//----(SA) end
+	STAT_KEYS,                      
 	STAT_DEAD_YAW,                  // look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,             // bit mask of clients wishing to exit the intermission (FIXME: configstring?)
 	STAT_MAX_HEALTH,                // health / armor limit, changable by handicap
@@ -378,12 +348,8 @@ typedef enum {
 	PERS_GAUNTLET_FRAG_COUNT,
 	PERS_ACCURACY_SHOTS,
 	PERS_ACCURACY_HITS,
-
-
-	// Rafael - mg42		// (SA) I don't understand these here.  can someone explain?
-	PERS_HWEAPON_USE,
-	// Rafael wolfkick
-	PERS_WOLFKICK
+	PERS_HWEAPON_USE, // Rafael - mg42
+	PERS_WOLFKICK // Rafael wolfkick
 
 } persEnum_t;
 
@@ -434,51 +400,24 @@ typedef enum {
 
 typedef enum {
 	PW_NONE,
-
 	PW_QUAD,
 	PW_BATTLESUIT,
 	PW_HASTE,
 	PW_INVIS,
 	PW_REGEN,
 	PW_FLIGHT,
-
-	// (SA) for Wolf
 	PW_INVULNERABLE,
-//	PW_FIRE,			//----(SA)
-//	PW_ELECTRIC,		//----(SA)
-//	PW_BREATHER,		//----(SA)
-	PW_NOFATIGUE,       //----(SA)
-
+	PW_NOFATIGUE,
 	PW_REDFLAG,
 	PW_BLUEFLAG,
 	PW_BALL,
-
 	PW_NUM_POWERUPS
 } powerup_t;
 
 typedef enum {
-	//----(SA)	These will probably all change to INV_n to get the word 'key' out of the game.
-	//			id and DM don't want references to 'keys' in the game.
-	//			I'll change to 'INV' as the item becomes 'permanent' and not a test item.
 	KEY_NONE,
-//	KEY_1,		// skull
-//	KEY_2,		// chalice
-//	KEY_3,		// eye
-//	KEY_4,		// field radio
-//	KEY_5,		// satchel charge
-	INV_BINOCS, // binoculars
-//	KEY_7,
-//	KEY_8,
-//	KEY_9,
-//	KEY_10,
-//	KEY_11,
-//	KEY_12,
-//	KEY_13,
-//	KEY_14,
-//	KEY_15,
-//	KEY_16,
+	INV_BINOCS, 
 	KEY_NUM_KEYS,
-
 	KEY_UNLOCKED_ENT,       // ent is unlocked (will be replaced by KEY_NONE after checks for all manners of being locked)
 	KEY_LOCKED_TARGET,      // ent is locked by virtue of being the target of another ent
 	KEY_LOCKED_ENT,         // ent has key set to -1 in entity
@@ -490,24 +429,20 @@ typedef enum {
 	HI_WINE,
 	HI_ADRENALINE,
 	HI_BANDAGES,
-	HI_BOOK1,   //----(SA)	added
-	HI_BOOK2,   //----(SA)	added
-	HI_BOOK3,   //----(SA)	added
+	HI_BOOK1,   
+	HI_BOOK2,   
+	HI_BOOK3,   
 	HI_11,
 	HI_12,
 	HI_13,
 	HI_14,
-	HI_M97, //jaymod
+	HI_M97,
 	HI_NUM_HOLDABLE
 } holdable_t;
 
-// Ridah
-//
-// character presets
 typedef enum
 {
 	AICHAR_NONE,
-
 	AICHAR_SOLDIER,
 	AICHAR_AMERICAN,
 	AICHAR_ZOMBIE,
@@ -521,28 +456,20 @@ typedef enum
 	AICHAR_SUPERSOLDIER,
 	AICHAR_BLACKGUARD,
 	AICHAR_PROTOSOLDIER,
-
 	AICHAR_FROGMAN,
 	AICHAR_HELGA,
-	AICHAR_HEINRICH,    //----(SA)	added
-
+	AICHAR_HEINRICH, 
 	AICHAR_PARTISAN,
 	AICHAR_RUSSIAN,
 	AICHAR_CIVILIAN,
-
 	NUM_CHARACTERS
 } AICharacters_t;
-// done.
-
-
 
 // NOTE: we can only use up to 15 in the client-server stream
 // SA NOTE: should be 31 now (I added 1 bit in msg.c)
 typedef enum {
 	WP_NONE,                // 0
-
 	WP_KNIFE,               // 1
-	// German weapons
 	WP_LUGER,               // 2
 	WP_MP40,                // 3
 	WP_MAUSER,              // 4
@@ -552,7 +479,6 @@ typedef enum {
 	WP_VENOM,               // 8
 	WP_FLAMETHROWER,        // 9
 	WP_TESLA,               // 10
-	// RealRTCW weapons
 	WP_MP34,                // 11
 	WP_TT33,                // 12
 	WP_PPSH,                // 13
@@ -564,66 +490,46 @@ typedef enum {
 	WP_MG42M,               // 19
 	WP_M97,                 // 20
 	WP_REVOLVER,            // 21
-	// end RealRTCW weapons
 	WP_COLT,                // 22	
 	WP_THOMPSON,            // 23	
 	WP_GARAND,              // 24	
 	WP_GRENADE_PINEAPPLE,   // 25
-
-	// secondary fire weapons
 	WP_SNIPERRIFLE,         // 26
 	WP_SNOOPERSCOPE,        // 27
-	WP_FG42SCOPE,           // 28	fg42 alt fire
+	WP_FG42SCOPE,           // 28
 	WP_STEN,                // 29	
 	WP_SILENCER,            // 30	
 	WP_AKIMBO,              // 31	
-
-	// specialized/one-time weapons
-// JPW NERVE -- swapped mortar & antitank (unused?) and added class_special
-	WP_CLASS_SPECIAL,       // 32	// class-specific multiplayer weapon (airstrike, engineer, or medpack)
-	// (SA) go ahead and take the 'freezeray' spot.  it ain't happenin
-	//      (I checked for instances of WP_CLASS_SPECIAL and I don't think this'll cause you a problem.  however, if it does, move it where you need to. ) (SA)
-// jpw
+	WP_CLASS_SPECIAL,       // 32
 	WP_DYNAMITE,            // 33
-
-	WP_MONSTER_ATTACK1,     // 34	// generic monster attack, slot 1
-	WP_MONSTER_ATTACK2,     // 35	// generic monster attack, slot 2
-	WP_MONSTER_ATTACK3,     // 36	// generic monster attack, slot 2
-
+	WP_MONSTER_ATTACK1,     // 34	
+	WP_MONSTER_ATTACK2,     // 35	
+	WP_MONSTER_ATTACK3,     // 36	
 	WP_GAUNTLET,            // 37
-
 	WP_SNIPER,              // 38
-	WP_GRENADE_SMOKE,       // 39	// smoke grenade for LT multiplayer
-	WP_MEDIC_HEAL,          // 40	// DHM - Nerve :: Medic special weapon
+	WP_GRENADE_SMOKE,       // 39	
+	WP_MEDIC_HEAL,          // 40	
 	WP_MORTAR,              // 41
-
-	VERYBIGEXPLOSION,       // 42	// explosion effect for airplanes
-
+	VERYBIGEXPLOSION,       // 42	
 	WP_NUM_WEAPONS          // 43   NOTE: this cannot be larger than 64 for AI/player weapons!
-
 } weapon_t;
 
 
 typedef struct ammotable_s {
-	int maxammo;            //
-	int uses;               //
-	int maxclip;            //
-	int reloadTime;         //
-	int fireDelayTime;      //
-	int nextShotTime;       //
-//----(SA)	added
-	int maxHeat;            // max active firing time before weapon 'overheats' (at which point the weapon will fail)
-	int coolRate;           // how fast the weapon cools down. (per second)
-//----(SA)	end
-	int mod;                // means of death
+	int maxammo;            
+	int uses;               
+	int maxclip;            
+	int reloadTime;         
+	int fireDelayTime;      
+	int nextShotTime;       
+	int maxHeat;            
+	int coolRate;           
+	int mod;               
 } ammotable_t;
 
-extern ammotable_t ammoTable[];     // defined in bg_misc.c
-extern int weapAlts[];  // defined in bg_misc.c
+extern ammotable_t ammoTable[];     
+extern int weapAlts[]; 
 
-
-//----(SA)
-// for routines that need to check if a WP_ is </=/> a given set of weapons
 #define WP_FIRST            WP_KNIFE
 #define WP_BEGINGERMAN      WP_KNIFE
 #define WP_LASTGERMAN       WP_TESLA
@@ -633,7 +539,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
 #define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_REVOLVER ) )
-//----(SA)	end
+
 
 
 #define IS_AUTORELOAD_WEAPON( weapon ) \
@@ -670,29 +576,9 @@ typedef enum {
 	WPOS_NUM_POSITIONS
 } pose_t;
 
-
-/*
-// Original Q3A weaps/order
-typedef enum {
-	WP_NONE,				// 0
-	WP_GAUNTLET,			// 1
-	WP_MACHINEGUN = 20,		// 2
-	WP_SHOTGUN,				// 3
-	WP_GRENADE_LAUNCHER,	// 4
-	WP_ROCKET_LAUNCHER,		// 5
-	WP_LIGHTNING,			// 6
-	WP_RAILGUN,				// 7
-	WP_PLASMAGUN,			// 8
-	WP_BFG,					// 9
-	WP_GRAPPLING_HOOK		// 10
-	WP_NUM_WEAPONS			// 11
-} weapon_t;
-
-*/
 // reward sounds
 typedef enum {
 	REWARD_BAD,
-
 	REWARD_IMPRESSIVE,
 	REWARD_EXCELLENT,
 	REWARD_DENIED,
@@ -760,8 +646,8 @@ typedef enum {
 	EV_FIRE_QUICKGREN,  // "Quickgrenade"
 	EV_NOFIRE_UNDERWATER,
 	EV_FIRE_WEAPON_MG42,
-	EV_SUGGESTWEAP,     //----(SA)	added
-	EV_GRENADE_SUICIDE, //----(SA)	added
+	EV_SUGGESTWEAP,     
+	EV_GRENADE_SUICIDE, 
 	EV_USE_ITEM0,
 	EV_USE_ITEM1,
 	EV_USE_ITEM2,
@@ -793,14 +679,14 @@ typedef enum {
 	EV_VENOM,
 	EV_VENOMFULL,
 	EV_BULLET,              // otherEntity is the shooter
-	EV_LOSE_HAT,            //----(SA)
+	EV_LOSE_HAT,            
 	EV_GIB_HEAD,            // only blow off the head
 	EV_PAIN,
 	EV_CROUCH_PAIN,
 	EV_DEATH1,
 	EV_DEATH2,
 	EV_DEATH3,
-	EV_ENTDEATH,    //----(SA)	added
+	EV_ENTDEATH,    
 	EV_OBITUARY,
 	EV_POWERUP_QUAD,
 	EV_POWERUP_BATTLESUIT,
@@ -853,61 +739,15 @@ typedef enum {
 	EV_SNIPER_SOUND,
 	EV_POPUP,
 	EV_POPUPBOOK,
-	EV_GIVEPAGE,    //----(SA)	added
-	EV_CLOSEMENU,   //----(SA)	added
+	EV_GIVEPAGE,    
+	EV_CLOSEMENU,   
 	EV_SPAWN_SPIRIT,
-	EV_M97_PUMP, // jaymod
-
+	EV_M97_PUMP, // RealRTCW
 	EV_MAX_EVENTS   // just added as an 'endcap'
-
 } entity_event_t;
-
-
-// animations
-/*	// straight Q3A for reference (SA)
-typedef enum {
-	BOTH_DEATH1,
-	BOTH_DEAD1,
-	BOTH_DEATH2,
-	BOTH_DEAD2,
-	BOTH_DEATH3,
-	BOTH_DEAD3,
-
-	TORSO_GESTURE,
-
-	TORSO_ATTACK,
-	TORSO_ATTACK2,
-
-	TORSO_DROP,
-	TORSO_RAISE,
-
-	TORSO_STAND,
-	TORSO_STAND2,
-
-	LEGS_WALKCR,
-	LEGS_WALK,
-	LEGS_RUN,
-	LEGS_BACK,
-	LEGS_SWIM,
-
-	LEGS_JUMP,
-	LEGS_LAND,
-
-	LEGS_JUMPB,
-	LEGS_LANDB,
-
-	LEGS_IDLE,
-	LEGS_IDLECR,
-
-	LEGS_TURN,
-
-	MAX_ANIMATIONS
-} animNumber_t;
-*/
 
 // NOTE: this must be synched with the text list below
 
-// new (10/18/00)
 typedef enum {
 	BOTH_DEATH1,
 	BOTH_DEAD1,
@@ -1149,7 +989,6 @@ typedef enum {
 	TEAM_RED,
 	TEAM_BLUE,
 	TEAM_SPECTATOR,
-
 	TEAM_NUM_TEAMS
 } team_t;
 
@@ -1185,8 +1024,8 @@ typedef enum {
 	MOD_SNIPERRIFLE,
 	MOD_GARAND,
 	MOD_SNOOPERSCOPE,
-	MOD_SILENCER,   //----(SA)
-	MOD_AKIMBO,     //----(SA)
+	MOD_SILENCER,   
+	MOD_AKIMBO,     
 	MOD_FG42,
 	MOD_FG42SCOPE,
 	MOD_PANZERFAUST,
@@ -1196,7 +1035,6 @@ typedef enum {
 	MOD_VENOM_FULL,
 	MOD_FLAMETHROWER,
 	MOD_TESLA,
-	// RealRTCW weapons
 	MOD_MP34,
 	MOD_TT33,
 	MOD_PPSH,
@@ -1208,9 +1046,6 @@ typedef enum {
 	MOD_MG42M,
 	MOD_M97,
 	MOD_REVOLVER,
-
-	MOD_SPEARGUN,
-	MOD_SPEARGUN_CO2,
 	MOD_GRENADE_PINEAPPLE,
 	MOD_CROSS,
 	MOD_MORTAR,
@@ -1219,7 +1054,7 @@ typedef enum {
 	MOD_GRABBER,
 	MOD_DYNAMITE,
 	MOD_DYNAMITE_SPLASH,
-	MOD_AIRSTRIKE, // JPW NERVE
+	MOD_AIRSTRIKE,
 	MOD_WATER,
 	MOD_SLIME,
 	MOD_LAVA,
@@ -1239,13 +1074,10 @@ typedef enum {
 	MOD_LOPER_LEAP,
 	MOD_LOPER_GROUND,
 	MOD_LOPER_HIT,
-
-// JPW NERVE multiplayer class-specific MODs
 	MOD_LT_ARTILLERY,
 	MOD_LT_AIRSTRIKE,
-	MOD_ENGINEER,   // not sure if we'll use
-	MOD_MEDIC,      // these like this or not
-//
+	MOD_ENGINEER,   
+	MOD_MEDIC,  
 	MOD_BAT
 
 } meansOfDeath_t;
@@ -1274,7 +1106,6 @@ typedef enum {
 #define MAX_ITEM_MODELS 5
 #define MAX_ITEM_ICONS 4
 
-// JOSEPH 4-17-00
 typedef struct gitem_s {
 	char        *classname; // spawning name
 	char        *pickup_sound;
@@ -1297,24 +1128,22 @@ typedef struct gitem_s {
 
 	int gameskillnumber[5];
 } gitem_t;
-// END JOSEPH
 
 // included in both the game dll and the client
 extern gitem_t bg_itemlist[];
 extern int bg_numItems;
 
 gitem_t *BG_FindItem( const char *pickupName );
-gitem_t *BG_FindItem2( const char *name );  //----(SA)	added
+gitem_t *BG_FindItem2( const char *name );  
 gitem_t *BG_FindItemForWeapon( weapon_t weapon );
 gitem_t *BG_FindItemForPowerup( powerup_t pw );
 gitem_t *BG_FindItemForHoldable( holdable_t pw );
-gitem_t *BG_FindItemForAmmo( int ammo );        //----(SA)	modified
+gitem_t *BG_FindItemForAmmo( int ammo );       
 gitem_t *BG_FindItemForKey( wkey_t k, int *index );
 weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
 weapon_t BG_FindClipForWeapon( weapon_t weapon );
 
 qboolean BG_AkimboFireSequence( int weapon, int akimboClip, int coltClip );
-//qboolean BG_AkimboFireSequence	( playerState_t *ps );	//----(SA)	added
 
 #define ITEM_INDEX( x ) ( ( x ) - bg_itemlist )
 
@@ -1333,8 +1162,7 @@ qboolean    BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *
 #define MASK_PLAYERSOLID        ( CONTENTS_SOLID | CONTENTS_PLAYERCLIP | CONTENTS_BODY )
 #define MASK_DEADSOLID          ( CONTENTS_SOLID | CONTENTS_PLAYERCLIP )
 #define MASK_WATER              ( CONTENTS_WATER | CONTENTS_LAVA | CONTENTS_SLIME )
-//#define	MASK_OPAQUE				(CONTENTS_SOLID|CONTENTS_SLIME|CONTENTS_LAVA)
-#define MASK_OPAQUE             ( CONTENTS_SOLID | CONTENTS_LAVA )      //----(SA)	modified since slime is no longer deadly
+#define MASK_OPAQUE             ( CONTENTS_SOLID | CONTENTS_LAVA )   
 #define MASK_SHOT               ( CONTENTS_SOLID | CONTENTS_BODY | CONTENTS_CORPSE | CONTENTS_CLIPSHOT )
 #define MASK_MISSILESHOT        ( MASK_SHOT | CONTENTS_MISSILECLIP )
 #define MASK_AISIGHT            ( CONTENTS_SOLID | CONTENTS_AI_NOSIGHT )
@@ -1354,52 +1182,35 @@ typedef enum {
 	ET_PUSH_TRIGGER,
 	ET_TELEPORT_TRIGGER,
 	ET_INVISIBLE,
-	ET_GRAPPLE,             // grapple hooked on wall
-
-	//---- (SA) Wolf
-	ET_EXPLOSIVE,           // brush that will break into smaller bits when damaged
+	ET_GRAPPLE,             
+	ET_EXPLOSIVE,           
 	ET_TESLA_EF,
 	ET_SPOTLIGHT_EF,
 	ET_EFFECT3,
 	ET_ALARMBOX,
 	ET_CORONA,
 	ET_TRAP,
-
 	ET_GAMEMODEL,           // misc_gamemodel.  similar to misc_model, but it's a dynamic model so we have LOD
-	ET_FOOTLOCKER,  //----(SA)	added
-	ET_LEAKY,       //----(SA)	added
-	ET_MG42,        //----(SA)	why didn't we do /this/ earlier...
-	//---- end
-
+	ET_FOOTLOCKER, 
+	ET_LEAKY,       
+	ET_MG42,        
 	ET_ZOMBIESPIT,
 	ET_FLAMEBARREL,
 	ET_ZOMBIESPIRIT,
-
 	ET_FP_PARTS,
-
-	// FIRE PROPS
 	ET_FIRE_COLUMN,
 	ET_FIRE_COLUMN_SMOKE,
 	ET_RAMJET,
-
 	ET_EXPLO_PART,
-
 	ET_CROWBAR,
-
 	ET_PROP,
 	ET_BAT,
-
 	ET_AI_EFFECT,
-
 	ET_CAMERA,
 	ET_MOVERSCALED,
-
 	ET_RUMBLE,
-
 	ET_SPIRIT_SPAWNER,
-
 	ET_FLAMETHROWER_PROP,
-
 	ET_EVENTS               // any of the EV_* events can be added freestanding
 							// by setting eType to ET_EVENTS + eventNum
 							// this avoids having to set eFlags and eventNum
@@ -1464,15 +1275,12 @@ void    BG_GetMarkDir( const vec3_t dir, const vec3_t normal, vec3_t out );
 
 void    BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps );
 
-//void	BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad );
-
 void    BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean snap );
 void    BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s, int time, qboolean snap );
 
 qboolean    BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime );
 qboolean    BG_PlayerSeesItem( playerState_t *ps, entityState_t *item, int atTime );
 
-//----(SA)	removed PM_ammoNeeded 11/27/00
 void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce );
 
 #define ARENAS_PER_TIER     4
@@ -1492,12 +1300,11 @@ typedef enum {
 	FOOTSTEP_WOOD,
 	FOOTSTEP_GRASS,
 	FOOTSTEP_GRAVEL,
-	// END JOSEPH
 	FOOTSTEP_SPLASH,
 
 	FOOTSTEP_ROOF,
 	FOOTSTEP_SNOW,
-	FOOTSTEP_CARPET,    //----(SA)	added
+	FOOTSTEP_CARPET,   
 
 	FOOTSTEP_ELITE_STEP,
 	FOOTSTEP_ELITE_METAL,
@@ -1533,7 +1340,7 @@ typedef enum {
 } footstep_t;
 
 
-//----(SA)	added
+
 typedef enum {
 	GRENBOUNCE_DIRT,
 	GRENBOUNCE_WOOD,
@@ -1541,7 +1348,7 @@ typedef enum {
 	GRENBOUNCE_DEFAULT,
 	GRENBOUNCE_TOTAL
 } grenbounde_t;
-//----(SA)	added
+
 
 //==================================================================
 // New Animation Scripting Defines
@@ -1604,7 +1411,7 @@ typedef enum
 	ANIM_ET_BULLETIMPACT,
 	ANIM_ET_INSPECTSOUND,
 	ANIM_ET_SECONDLIFE,
-	ANIM_ET_RELOAD_SG1, //jaymod
+	ANIM_ET_RELOAD_SG1, //RealRTCW
 	ANIM_ET_RELOAD_SG2,
 	ANIM_ET_RELOAD_SG3,
 
@@ -1667,8 +1474,8 @@ typedef struct
 	short int animIndex[2];     // animation index in our list of animations
 	short int animDuration[2];
 	short int soundIndex;
-	short int accShowBits;      //----(SA)	added
-	short int accHideBits;      //----(SA)	added
+	short int accShowBits;      
+	short int accHideBits;      
 } animScriptCommand_t;
 
 typedef struct

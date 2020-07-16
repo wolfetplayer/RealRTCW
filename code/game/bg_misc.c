@@ -112,6 +112,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
 	{   MAX_AMMO_44AMMO,  1,    75,    2600,   DELAY_LOW,      70,     2500,   350,    MOD_MG42M              },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
+	{   MAX_AMMO_M97,     2,    2,      2000,   DELAY_LOW,      1000,   0,      0,      MOD_M30                 },  //	WP_M30                  // 20
 	{   MAX_AMMO_GARAND,  1,    6,     2000,   DELAY_PISTOL,   2000,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
 
 
@@ -160,6 +161,7 @@ int weapAlts[] = {
 	WP_NONE,            // 18 WP_MP44
 	WP_NONE,            // 19 WP_MG42M
 	WP_NONE,            // 20 WP_M97
+	WP_NONE,            // 20 WP_M30
 	WP_NONE,            // 21 WP_WELROD
 	WP_NONE,          // 22 WP_COLT		
 	WP_NONE,            // 23 WP_THOMPSON
@@ -1739,6 +1741,33 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 			WP_M97,
 			WP_M97,
 			WP_M97,
+			"",                      // precache
+			"",                      // sounds
+			{ 0,0,0,0,0 }
+	},
+
+	
+/*QUAKED weapon_m30 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+			-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+			model="models/weapons2/m30/m30_3rd.md3"
+			*/
+	{
+		"weapon_m30",
+		"sound/misc/w_pkup.wav",
+		{ "models/weapons2/m30/m30_3rd.md3",
+			"models/weapons2/m30/v_m30.md3",
+			"models/weapons2/m30/m30_pickup.md3",
+			0 
+		    },
+
+			"icons/iconw_m30",   // icon
+			"icons/ammo8",           // ammo icon
+			"m30",             // pickup
+			700,
+			IT_WEAPON,
+			WP_M30,
+			WP_M97,
+			WP_M30,
 			"",                      // precache
 			"",                      // sounds
 			{ 0,0,0,0,0 }

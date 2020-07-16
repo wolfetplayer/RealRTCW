@@ -603,6 +603,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_BAR: return sk_plr_dmg_bar.integer;
 			case WP_MG42M: return sk_plr_dmg_mg42m.integer;
 			case WP_M97: return sk_plr_dmg_m97.integer;
+			case WP_M30: return sk_plr_dmg_m30.integer;
 			case WP_WELROD: return sk_plr_dmg_welrod.integer;	
             // end RealRTCW
 			case WP_MORTAR: return 100;
@@ -643,6 +644,7 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_BAR: return sk_ai_dmg_bar.integer;
 			case WP_MG42M: return sk_ai_dmg_mg42m.integer;
 			case WP_M97: return sk_ai_dmg_m97.integer;
+			case WP_M30: return sk_ai_dmg_m30.integer;
 			case WP_WELROD: return sk_ai_dmg_welrod.integer;
 			// end RealRTCW			
 			case WP_MORTAR: return 100;
@@ -711,6 +713,7 @@ float G_GetWeaponSpread( int weapon ) {
 		    case WP_MP44:       return 700;  
 			case WP_MG42M:      return 1500;
 			case WP_M97:        return 4500;
+			case WP_M30:        return 4500;
 			case WP_WELROD:   return 400; // RealRTCW was 650 
 			case WP_FG42SCOPE:  return 250;
 			case WP_FG42:       return 600; 
@@ -798,6 +801,9 @@ float G_GetWeaponSpread( int weapon ) {
 
 #define M97_SPREAD     G_GetWeaponSpread( WP_M97 )
 #define M97_DAMAGE(e)     G_GetWeaponDamage( WP_M97, e ) 
+
+#define M30_SPREAD     G_GetWeaponSpread( WP_M30 )
+#define M30_DAMAGE(e)     G_GetWeaponDamage( WP_M30, e ) 
 
 #define THOMPSON_SPREAD G_GetWeaponSpread( WP_THOMPSON )
 #define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) // JPW
@@ -1984,6 +1990,35 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
 		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
 		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+
+		 // push the player back a bit
+		if (!ent->aiCharacter) {
+			vec3_t vec_forward, vec_vangle;
+			VectorCopy(ent->client->ps.viewangles, vec_vangle);
+			vec_vangle[PITCH] = 0;	// nullify pitch so you can't lightning jump
+			AngleVectors(vec_vangle, vec_forward, NULL, NULL);
+			 // make it less if in the air
+			if (ent->s.groundEntityNum == ENTITYNUM_NONE)
+				VectorMA(ent->client->ps.velocity, -64, vec_forward, ent->client->ps.velocity);
+			else
+				VectorMA(ent->client->ps.velocity, -200, vec_forward, ent->client->ps.velocity);
+		}
+
+		break;
+
+				case WP_M30:
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
 
 		 // push the player back a bit
 		if (!ent->aiCharacter) {

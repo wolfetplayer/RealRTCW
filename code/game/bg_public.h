@@ -560,6 +560,7 @@ typedef enum {
 	WP_MP44,                // 18
 	WP_MG42M,               // 19
 	WP_M97,                 // 20
+	WP_M30,
 	WP_WELROD,            // 21
 	// end RealRTCW weapons
 	WP_COLT,                // 22	
@@ -642,7 +643,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 		weapon == WP_SILENCER    || weapon == WP_VENOM      || \
 		weapon == WP_GARAND   || weapon == WP_P38     || weapon == WP_FG42SCOPE     || \
 		weapon == WP_BAR    || weapon == WP_MP44      || \
-		weapon == WP_M97         || \
+		weapon == WP_M97         || weapon == WP_M30 || \
 		weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_WELROD || weapon == WP_AKIMBO       \
 	)
@@ -1201,6 +1202,7 @@ typedef enum {
 	MOD_MP44,
 	MOD_MG42M,
 	MOD_M97,
+	MOD_M30,
 	MOD_WELROD,
 
 	MOD_SPEARGUN,

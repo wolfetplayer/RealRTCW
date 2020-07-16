@@ -61,7 +61,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_MAUSER,             WP_GARAND,              0,            0,               0            },  //	4
     {WP_G43,                WP_M1GARAND,            0,            0,               0            },  //	5
 	{WP_FG42,               WP_MP44,                WP_BAR,       0,               0            },  //	6
-	{WP_M97,                0,                      0,            0,               0            },  //	7
+	{WP_M97,                WP_M30,                 0,            0,               0            },  //	7
 	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  0,               0            },  //	8
 	{WP_PANZERFAUST,        WP_FLAMETHROWER,        WP_MG42M,     0,               0            },  //	9
 	{WP_VENOM,              WP_TESLA,               0,            0,               0            }  //	10
@@ -99,6 +99,9 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 	}
 
 	if (cent->currentState.weapon == WP_M97) //jaymod
+		return;
+
+	if (cent->currentState.weapon == WP_M30) 
 		return;
 
 	if (cent->currentState.weapon == WP_WELROD) 
@@ -1290,6 +1293,14 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/m97/m97_far.wav");
 		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/m97/m97_reload.wav");
 		weaponInfo->reloadFastSound = trap_S_RegisterSound("sound/weapons/m97/m97_pump_reload.wav");
+		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
+		break;
+	case WP_M30: 
+		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.0, 0.0);
+		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/m30/m30_fire.wav");
+		weaponInfo->lastShotSound[0] = trap_S_RegisterSound("sound/weapons/m30/m30_fire_last.wav");
+		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/m30/m30_far.wav");
+		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/m30/m30_reload.wav");
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 
@@ -3298,6 +3309,7 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_MP44:
 		case WP_MG42M:
 		case WP_M97:
+		case WP_M30:
 
 		case WP_STEN:
 		case WP_MAUSER:
@@ -4779,6 +4791,13 @@ void CG_WeaponFireRecoil( int weapon ) {
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
 	break;
+	case WP_M30:
+		pitchRecoilAdd = 1;
+		pitchAdd = 12 + rand() % 3;
+		yawRandom = 2;
+		pitchAdd *= 0.5;
+		yawRandom *= 0.5;
+	break;
 	case WP_MG42M:
 		pitchRecoilAdd = pow(random(), 8) * (10 + VectorLength(cg.snap->ps.velocity) / 5);
 		pitchAdd = 5 + rand() % 3;
@@ -5242,6 +5261,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_MP44:
 	case WP_MG42M:
 	case WP_M97:
+	case WP_M30:
 	case WP_WELROD:
 	case WP_FG42:
 	case WP_FG42SCOPE:

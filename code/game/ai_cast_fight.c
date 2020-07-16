@@ -1861,6 +1861,7 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_MP44:
 	case    WP_BAR:
 	case    WP_M97:
+	case    WP_M30:
 		return 1500;
 
 	case    WP_SNIPERRIFLE:

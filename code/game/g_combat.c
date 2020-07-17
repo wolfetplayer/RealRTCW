@@ -94,7 +94,12 @@ void TossClientItems( gentity_t *self ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_LOPER:
-		return;         //----(SA)	removed DK's special case
+	case AICHAR_STIMSOLDIER1:
+	case AICHAR_SUPERSOLDIER:
+	case AICHAR_STIMSOLDIER2:
+	case AICHAR_STIMSOLDIER3:
+	case AICHAR_PROTOSOLDIER:
+	return;         //----(SA)	removed DK's special case
 	default:
 		break;
 	}

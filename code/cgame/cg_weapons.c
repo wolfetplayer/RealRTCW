@@ -1298,7 +1298,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 	case WP_M30: 
 		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.0, 0.0);
 		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/m30/m30_fire.wav");
-		weaponInfo->lastShotSound[0] = trap_S_RegisterSound("sound/weapons/m30/m30_fire_last.wav");
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/m30/m30_far.wav");
 		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/m30/m30_reload.wav");
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;

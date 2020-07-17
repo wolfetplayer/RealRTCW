@@ -704,7 +704,7 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_COLT:       return 450; // RealRTCW was 700
 			case WP_AKIMBO:     return 500; // RealRTCW was 700
 			case WP_VENOM:      return 1000;
-			case WP_MP40:       return 850; // RealRTCW was 1000
+			case WP_MP40:       return 950; // RealRTCW was 1000
 			// RealRTCW weapons
 			case WP_P38:        return 420; // RealRTCW was 750
 			case WP_G43:        return 320; // was 550
@@ -1074,7 +1074,7 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 		// and go to 50% at 2500 units (and after)
 
 		// Square(1500) to Square(2500) -> 0.0 to 1.0
-		scale = ( dist - Square( 1500.f ) ) / ( Square( 2500.f ) - Square( 1500.f ) );
+		scale = ( dist - Square( 1000.f ) ) / ( Square( 2000.f ) - Square( 1000.f ) );
 		// 0.0 to 1.0 -> 0.0 to 0.5
 		scale *= 0.5f;
 		// 0.0 to 0.5 -> 1.0 to 0.5

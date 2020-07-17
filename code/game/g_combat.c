@@ -1224,7 +1224,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			// and go to 20% at 2500 units (and after)
 
 			// 1500 to 2500 -> 0.0 to 1.0
-			scale = ( dist - 1500.f ) / ( 2500.f - 1500.f );
+			scale = ( dist - 1000.f ) / ( 2000.f - 1000.f );
 			// 0.0 to 1.0 -> 0.0 to 0.8
 			scale *= 0.8f;
 			// 0.0 to 0.8 -> 1.0 to 0.2

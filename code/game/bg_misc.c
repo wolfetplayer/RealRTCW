@@ -1786,7 +1786,7 @@ model="models/weapons2/p38/luger.md3"
 		"sound/misc/w_pkup.wav",
 		{   "models/weapons2/dartgun/dartgun.md3",
 			"models/weapons2/dartgun/v_dartgun.md3",
-			"models/weapons2/dartgun/dartgun.md3",
+			"models/weapons2/dartgun/dartgun_pickup.md3",
 			0, 0 },
 
 		"icons/iconw_welrod",    // icon

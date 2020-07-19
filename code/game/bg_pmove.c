@@ -3628,11 +3628,11 @@ case WP_MG42M:
 	case WP_M30:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 80;
+			pm->pmext->weapRecoilDuration = 90;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .5f * random();
 		} else {
-			pm->pmext->weapRecoilDuration = 120;
+			pm->pmext->weapRecoilDuration = 130;
 			pm->pmext->weapRecoilYaw = crandom() * .9f;
 			pm->pmext->weapRecoilPitch = .95f * random();
 		}

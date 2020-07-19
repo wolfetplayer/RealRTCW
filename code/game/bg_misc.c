@@ -112,7 +112,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
 	{   MAX_AMMO_44AMMO,  1,    75,    2600,   DELAY_LOW,      70,     2500,   350,    MOD_MG42M              },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
-	{   MAX_AMMO_M97,     2,    2,      2000,   DELAY_LOW,      1000,   0,      0,      MOD_M30                 },  //	WP_M30                  // 20
+	{   MAX_AMMO_M97,     2,    2,      2500,   DELAY_LOW,      1000,   0,      0,      MOD_M30                 },  //	WP_M30                  // 20
 	{   MAX_AMMO_GARAND,  1,    6,     2000,   DELAY_PISTOL,   2000,    0,      0,      MOD_WELROD            },  //	WP_WELROD             // 21
 
 

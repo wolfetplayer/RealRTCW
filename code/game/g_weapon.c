@@ -713,7 +713,7 @@ float G_GetWeaponSpread( int weapon ) {
 		    case WP_MP44:       return 700;  
 			case WP_MG42M:      return 1500;
 			case WP_M97:        return 4500;
-			case WP_M30:        return 4500;
+			case WP_M30:        return 6000;
 			case WP_WELROD:   return 400; // RealRTCW was 650 
 			case WP_FG42SCOPE:  return 250;
 			case WP_FG42:       return 600; 

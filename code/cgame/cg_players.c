@@ -3723,8 +3723,8 @@ void CG_AddLoperLightningEffect( centity_t *cent ) {
 	// color
 	colTake = 0.8 - fabs( sin( cg.time ) ) * 0.3;
 	c[0] = 1.0 - colTake;
-	c[1] = 1.0 - 0.7 * colTake;
-	c[2] = 1.0; //c[1] + 0.2;
+	c[1] = 0.0 - 0.0 * colTake;
+	c[2] = 0.0; //c[1] + 0.2;
 	if ( c[2] > 1.0 ) {
 		c[2] = 1.0;
 	}
@@ -3868,8 +3868,8 @@ void CG_AddLoperGroundEffect( centity_t *cent ) {
 	// color
 	colTake = 0.8 - fabs( sin( cg.time ) ) * 0.3;
 	c[0] = 1.0 - colTake;
-	c[1] = 1.0 - 0.8 * colTake;
-	c[2] = 1.0; //c[1] + 0.2;
+	c[1] = 0.0 - 0.0 * colTake;
+	c[2] = 0.0; //c[1] + 0.2;
 	if ( c[2] > 1.0 ) {
 		c[2] = 1.0;
 	}
@@ -3892,8 +3892,8 @@ void CG_AddLoperGroundEffect( centity_t *cent ) {
 			// random blue
 			colTake = 0.5 + random() * 0.5;
 			c[0] = 1.0 - colTake;
-			c[1] = 1.0 - /*(0.5 + 0.5*random())**/ colTake;
-			c[2] = c[1] + 0.2;
+			c[1] = 0.0 - /*(0.5 + 0.5*random())**/ colTake;
+			c[2] = c[1] + 0.0;
 			if ( c[2] > 1.0 ) {
 				c[2] = 1.0;
 			}

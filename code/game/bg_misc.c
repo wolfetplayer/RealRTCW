@@ -1432,7 +1432,7 @@ model="models/weapons2/garand/garand.md3"
 		20,
 		IT_WEAPON,
 		WP_SNOOPERSCOPE,
-		WP_GARAND,
+		WP_COLT,
 		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds

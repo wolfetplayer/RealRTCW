@@ -51,8 +51,6 @@ static const char DEFAULT_XDG_DATA_HOME[] = {'.', 'l', 'o', 'c', 'a', 'l', PATH_
 // Used to store the Steam RTCW installation path
 static char steamPath[ MAX_OSPATH ] = { 0 };
 
-// Used to store the GOG RTCW installation path
-static char gogPath[ MAX_OSPATH ] = { 0 };
 #endif
 
 /*
@@ -144,16 +142,6 @@ char *Sys_SteamPath( void )
 	return steamPath;
 }
 	
-/*
-================
-Sys_GogPath
-================
-*/
-char *Sys_GogPath( void )
-{
-	// GOG also doesn't let you install RTCW on Mac/Linux
-	return gogPath;
-}
 #endif
 
 /*

@@ -1166,6 +1166,7 @@ char    *Sys_DefaultInstallPath( void );
 
 #ifndef STANDALONE
 char    *Sys_SteamPath(void);
+char	*Sys_SteamWorkshopPath(void);
 #endif
 
 #ifdef __APPLE__

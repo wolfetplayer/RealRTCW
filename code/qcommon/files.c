@@ -283,6 +283,7 @@ static  cvar_t          *fs_apppath;
 
 #ifndef STANDALONE
 static	cvar_t		*fs_steampath;
+static	cvar_t		*fs_workshop;
 #endif
 
 static cvar_t      *fs_basepath;
@@ -904,7 +905,23 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 			fsh[f].handleFiles.file.o = Sys_FOpen( ospath, "rb" );
 			fsh[f].handleSync = qfalse;
 		}
-		
+
+
+		// Check fs_workshop
+		if (!fsh[f].handleFiles.file.o && fs_workshop->string[0])
+		{
+			ospath = FS_BuildOSPath( fs_workshop->string, filename, "" );
+			ospath[strlen(ospath)-1] = '\0';
+
+			if ( fs_debug->integer )
+			{
+				Com_Printf( "FS_SV_FOpenFileRead (fs_workshop): %s\n", ospath );
+			}
+
+			fsh[f].handleFiles.file.o = Sys_FOpen( ospath, "rb" );
+			fsh[f].handleSync = qfalse;
+		}		
+
 #endif
 
 		if ( !fsh[f].handleFiles.file.o )
@@ -2743,6 +2760,7 @@ void FS_GetModDescription( const char *modDir, char *description, int descriptio
 	FILE			*file;
 
 	Com_sprintf( descPath, sizeof ( descPath ), "%s%cdescription.txt", modDir, PATH_SEP );
+
 	nDescLen = FS_SV_FOpenFileRead( descPath, &descHandle );
 
 	if ( nDescLen > 0 ) {
@@ -2785,6 +2803,7 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 	char **pFiles3 = NULL;
 	char **pFiles4 = NULL;
 	char **pFiles5 = NULL;
+	char **pFiles6 = NULL;
 #endif
 	qboolean bDrop = qfalse;
 
@@ -2795,12 +2814,14 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 	pFiles1 = Sys_ListFiles( fs_basepath->string, NULL, NULL, &dummy, qtrue );
 #ifndef STANDALONE
 	pFiles2 = Sys_ListFiles( fs_steampath->string, NULL, NULL, &dummy, qtrue );
+	pFiles6 = Sys_ListFiles( fs_workshop->string, NULL, NULL, &dummy, qtrue );
 #endif
 	// we searched for mods in up to four paths
 	// it is likely that we have duplicate names now, which we will cleanup below
 #ifndef STANDALONE
 	pFiles4 = Sys_ConcatenateFileLists( pFiles0, pFiles1 );
 	pFiles5 = Sys_ConcatenateFileLists( pFiles2, pFiles3 );
+	pFiles5 = Sys_ConcatenateFileLists( pFiles5, pFiles6 );
 	pFiles = Sys_ConcatenateFileLists( pFiles4, pFiles5 );
 #else
 	pFiles = Sys_ConcatenateFileLists( pFiles0, pFiles1 );
@@ -2852,6 +2873,16 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 			if ( nPaks <= 0 )
 			{
 				path = FS_BuildOSPath( fs_steampath->string, name, "" );
+				nPaks = 0;
+				pPaks = Sys_ListFiles( path, ".pk3", NULL, &nPaks, qfalse );
+				Sys_FreeFileList( pPaks );
+			}
+
+
+			/* try on steam path */
+			if ( nPaks <= 0 )
+			{
+				path = FS_BuildOSPath( fs_workshop->string, name, "" );
 				nPaks = 0;
 				pPaks = Sys_ListFiles( path, ".pk3", NULL, &nPaks, qfalse );
 				Sys_FreeFileList( pPaks );
@@ -3587,6 +3618,10 @@ static void FS_Startup( const char *gameName )
 	if (fs_steampath->string[0]) {
 		FS_AddGameDirectory( fs_steampath->string, gameName );
 	}
+	fs_workshop = Cvar_Get("fs_workshop", Sys_SteamWorkshopPath(), CVAR_INIT|CVAR_PROTECTED );
+	if (fs_workshop->string[0]) {
+		FS_AddGameDirectory( fs_workshop->string, gameName );
+	}
 #endif
 
 	if ( fs_basepath->string[0] ) {
@@ -3629,6 +3664,9 @@ static void FS_Startup( const char *gameName )
 #ifndef STANDALONE
 		if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_gamedirvar->string );
+		}
+		if ( fs_workshop->string[0] ) {
+			FS_AddGameDirectory( fs_workshop->string, fs_gamedirvar->string );
 		}
 #endif
 		if ( fs_basepath->string[0] ) {

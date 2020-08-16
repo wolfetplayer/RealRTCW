@@ -915,7 +915,7 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 
 			if ( fs_debug->integer )
 			{
-				Com_Printf( "FS_SV_FOpenFileRead (fs_gogpath): %s\n", ospath );
+				Com_Printf( "FS_SV_FOpenFileRead (fs_workshop): %s\n", ospath );
 			}
 
 			fsh[f].handleFiles.file.o = Sys_FOpen( ospath, "rb" );
@@ -2898,7 +2898,6 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 				path = FS_BuildOSPath( fs_workshop->string, name, "" );
 				nPaks = 0;
 				pPaks = Sys_ListFiles( path, ".pk3", NULL, &nPaks, qfalse );
-			//	Com_Printf( "workshop %s %d count\n\n", path, nPaks );
 				Sys_FreeFileList( pPaks );
 			}
 
@@ -2916,7 +2915,6 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 				nLen = strlen(name) + 1;
 				// nLen is the length of the mod path
 				// we need to see if there is a description available
-		//		Com_Printf( "workshop %s\n\n", path );
 				FS_GetModDescription( name, description, sizeof( description ) );
 				nDescLen = strlen(description) + 1;
 
@@ -3103,7 +3101,6 @@ void FS_Path_f( void ) {
 
 	Com_Printf( "Current search path:\n" );
 	for ( s = fs_searchpaths; s; s = s->next ) {
-		Com_Printf( "workshop %s\n\n", s->dir->path );
 		if ( s->pack ) {
 			Com_Printf( "%s (%i files)\n", s->pack->pakFilename, s->pack->numfiles );
 			if ( fs_numServerPaks ) {

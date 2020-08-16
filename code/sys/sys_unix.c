@@ -51,6 +51,9 @@ static const char DEFAULT_XDG_DATA_HOME[] = {'.', 'l', 'o', 'c', 'a', 'l', PATH_
 // Used to store the Steam RTCW installation path
 static char steamPath[ MAX_OSPATH ] = { 0 };
 
+// Used to store the Steam RTCW installation path
+static char realsteamPath[ MAX_OSPATH ] = { 0 };
+
 // Used to store the GOG RTCW installation path
 static char gogPath[ MAX_OSPATH ] = { 0 };
 #endif

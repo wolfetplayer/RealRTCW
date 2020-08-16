@@ -50,6 +50,8 @@ static char homePath[ MAX_OSPATH ] = { 0 };
 // Used to store the Steam RTCW installation path
 static char steamPath[ MAX_OSPATH ] = { 0 };
 
+static char realsteamPath[ MAX_OSPATH ] = { 0 };
+
 // Used to store the GOG RTCW installation path
 static char gogPath[ MAX_OSPATH ] = { 0 };
 #endif
@@ -192,6 +194,46 @@ char *Sys_SteamPath( void )
 #endif
 
 	return steamPath;
+}
+
+/*
+================
+Sys_SteamPath
+================
+*/
+char *Sys_SteamWorkshopPath( void )
+{
+#if defined(STEAMPATH_REALAPPID)
+	HKEY steamRegKey;
+	DWORD pathLen = MAX_OSPATH;
+	qboolean finishPath = qfalse;
+
+
+	if (!realsteamPath[0] && !RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &steamRegKey))
+	{
+		pathLen = MAX_OSPATH;
+		if (RegQueryValueEx(steamRegKey, "SteamPath", NULL, NULL, (LPBYTE)realsteamPath, &pathLen))
+			realsteamPath[0] = '\0';
+
+		if (realsteamPath[0])
+			finishPath = qtrue;
+
+			RegCloseKey(steamRegKey);
+	}
+
+	if (realsteamPath[0])
+	{
+		if (pathLen == MAX_OSPATH)
+			pathLen--;
+
+		realsteamPath[pathLen] = '\0';
+
+		if (finishPath)
+			Q_strcat(realsteamPath, MAX_OSPATH, "\\SteamApps\\workshop\\content\\" STEAMPATH_REALAPPID );
+	}
+#endif
+
+	return realsteamPath;
 }
 
 /*
@@ -423,7 +465,7 @@ DIRECTORY SCANNING
 ==============================================================
 */
 
-#define MAX_FOUND_FILES 0x1000
+#define MAX_FOUND_FILES 0x2000
 
 /*
 ==============

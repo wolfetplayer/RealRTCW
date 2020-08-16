@@ -284,7 +284,6 @@ static  cvar_t          *fs_apppath;
 #ifndef STANDALONE
 static	cvar_t		*fs_steampath;
 static	cvar_t		*fs_workshop;
-static	cvar_t		*fs_gogpath;
 #endif
 
 static cvar_t      *fs_basepath;
@@ -907,6 +906,7 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 			fsh[f].handleSync = qfalse;
 		}
 
+
 		// Check fs_workshop
 		if (!fsh[f].handleFiles.file.o && fs_workshop->string[0])
 		{
@@ -921,20 +921,7 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 			fsh[f].handleFiles.file.o = Sys_FOpen( ospath, "rb" );
 			fsh[f].handleSync = qfalse;
 		}		
-		// Check fs_gogpath
-		if (!fsh[f].handleFiles.file.o && fs_gogpath->string[0])
-		{
-			ospath = FS_BuildOSPath( fs_gogpath->string, filename, "" );
-			ospath[strlen(ospath)-1] = '\0';
 
-			if ( fs_debug->integer )
-			{
-				Com_Printf( "FS_SV_FOpenFileRead (fs_gogpath): %s\n", ospath );
-			}
-
-			fsh[f].handleFiles.file.o = Sys_FOpen( ospath, "rb" );
-			fsh[f].handleSync = qfalse;
-		}
 #endif
 
 		if ( !fsh[f].handleFiles.file.o )
@@ -2827,7 +2814,6 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 	pFiles1 = Sys_ListFiles( fs_basepath->string, NULL, NULL, &dummy, qtrue );
 #ifndef STANDALONE
 	pFiles2 = Sys_ListFiles( fs_steampath->string, NULL, NULL, &dummy, qtrue );
-	pFiles3 = Sys_ListFiles( fs_gogpath->string, NULL, NULL, &dummy, qtrue );
 	pFiles6 = Sys_ListFiles( fs_workshop->string, NULL, NULL, &dummy, qtrue );
 #endif
 	// we searched for mods in up to four paths
@@ -2892,6 +2878,7 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 				Sys_FreeFileList( pPaks );
 			}
 
+
 			/* try on steam path */
 			if ( nPaks <= 0 )
 			{
@@ -2901,14 +2888,6 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 				Sys_FreeFileList( pPaks );
 			}
 
-			/* try on gog path */
-			if ( nPaks <= 0 )
-		    {
-				path = FS_BuildOSPath( fs_gogpath->string, name, "" );
-				nPaks = 0;
-				pPaks = Sys_ListFiles( path, ".pk3", NULL, &nPaks, qfalse );
-				Sys_FreeFileList( pPaks );
-			}
 #endif
 
 			if (nPaks > 0) {
@@ -3635,10 +3614,6 @@ static void FS_Startup( const char *gameName )
 
 	// add search path elements in reverse priority order
 #ifndef STANDALONE
-    fs_gogpath = Cvar_Get ("fs_gogpath", Sys_GogPath(), CVAR_INIT|CVAR_PROTECTED );
-	if (fs_gogpath->string[0]) {
-		FS_AddGameDirectory( fs_gogpath->string, gameName );
-		}
 	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_steampath->string[0]) {
 		FS_AddGameDirectory( fs_steampath->string, gameName );
@@ -3669,9 +3644,6 @@ static void FS_Startup( const char *gameName )
 	// check for additional base game so mods can be based upon other mods
 	if ( fs_basegame->string[0] && Q_stricmp( fs_basegame->string, gameName ) ) {
 #ifndef STANDALONE
-        if (fs_gogpath->string[0]) {
-			FS_AddGameDirectory( fs_gogpath->string, fs_basegame->string );
-			}
 
 		if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_basegame->string );
@@ -3690,9 +3662,6 @@ static void FS_Startup( const char *gameName )
 	// check for additional game folder for mods
 	if ( fs_gamedirvar->string[0] && Q_stricmp( fs_gamedirvar->string, gameName ) ) {
 #ifndef STANDALONE
-        if (fs_gogpath->string[0]) {
-			FS_AddGameDirectory( fs_gogpath->string, fs_gamedirvar->string );
-			}
 		if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_gamedirvar->string );
 		}

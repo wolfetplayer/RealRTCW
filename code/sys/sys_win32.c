@@ -50,6 +50,10 @@ static char homePath[ MAX_OSPATH ] = { 0 };
 // Used to store the Steam RTCW installation path
 static char steamPath[ MAX_OSPATH ] = { 0 };
 
+static char realsteamPath[ MAX_OSPATH ] = { 0 };
+
+// Used to store the GOG RTCW installation path
+static char gogPath[ MAX_OSPATH ] = { 0 };
 #endif
 
 #ifndef DEDICATED
@@ -190,6 +194,78 @@ char *Sys_SteamPath( void )
 #endif
 
 	return steamPath;
+}
+
+/*
+================
+Sys_SteamPath
+================
+*/
+char *Sys_SteamWorkshopPath( void )
+{
+#if defined(STEAMPATH_REALAPPID)
+	HKEY steamRegKey;
+	DWORD pathLen = MAX_OSPATH;
+	qboolean finishPath = qfalse;
+
+
+	if (!realsteamPath[0] && !RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &steamRegKey))
+	{
+		pathLen = MAX_OSPATH;
+		if (RegQueryValueEx(steamRegKey, "SteamPath", NULL, NULL, (LPBYTE)realsteamPath, &pathLen))
+			realsteamPath[0] = '\0';
+
+		if (realsteamPath[0])
+			finishPath = qtrue;
+
+			RegCloseKey(steamRegKey);
+	}
+
+	if (realsteamPath[0])
+	{
+		if (pathLen == MAX_OSPATH)
+			pathLen--;
+
+		realsteamPath[pathLen] = '\0';
+
+		if (finishPath)
+			Q_strcat(realsteamPath, MAX_OSPATH, "\\SteamApps\\workshop\\content\\" STEAMPATH_REALAPPID );
+	}
+#endif
+
+	return realsteamPath;
+}
+
+/*
+================
+Sys_GogPath
+================
+*/
+char *Sys_GogPath( void )
+{
+#ifdef GOGPATH_ID
+	HKEY gogRegKey;
+	DWORD pathLen = MAX_OSPATH;
+
+	if (!gogPath[0] && !RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\GOG.com\\Games\\" GOGPATH_ID, 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY, &gogRegKey))
+	{
+		pathLen = MAX_OSPATH;
+		if (RegQueryValueEx(gogRegKey, "PATH", NULL, NULL, (LPBYTE)gogPath, &pathLen))
+			gogPath[0] = '\0';
+
+		RegCloseKey(gogRegKey);
+	}
+
+	if (gogPath[0])
+	{
+		if (pathLen == MAX_OSPATH)
+			pathLen--;
+
+		gogPath[pathLen] = '\0';
+	}
+#endif
+
+	return gogPath;
 }
 
 #endif
@@ -389,7 +465,7 @@ DIRECTORY SCANNING
 ==============================================================
 */
 
-#define MAX_FOUND_FILES 0x1000
+#define MAX_FOUND_FILES 0x2000
 
 /*
 ==============

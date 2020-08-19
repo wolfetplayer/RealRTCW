@@ -384,11 +384,21 @@ void AICast_ScriptLoad( void ) {
 
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
 
-	// make sure we clear out the temporary scriptname
-	trap_Cvar_Set( "ai_scriptName", "" );
-
 	if ( len < 0 ) {
-		return;
+
+		// Check for original ai script
+		trap_Cvar_VariableStringBuffer( "ai_scriptName", filename, sizeof( filename ) );
+
+		Q_strncpyz( filename, "maps/", sizeof( filename ) );
+		Q_strcat( filename, sizeof( filename ), mapname.string );
+		Q_strcat( filename, sizeof( filename ), ".ai" );
+
+		len = trap_FS_FOpenFile( filename, &f, FS_READ );
+		// make sure we clear out the temporary scriptname
+		trap_Cvar_Set( "ai_scriptName", "" );
+		if ( len < 0 ) {
+			return;
+		}
 	}
 
 	level.scriptAI = G_Alloc( len );

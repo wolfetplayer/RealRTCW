@@ -1968,6 +1968,49 @@ void CG_CenterPrint( const char *str, int y, int charWidth ) {
 
 
 /*
+==============
+CG_CenterPrint
+
+Called for important messages that should stay in the center of the screen
+for a few moments
+==============
+*/
+void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
+	char   *s;
+	int len;
+//----(SA)	added translation lookup
+	Q_strncpyz( cg.centerPrint, CG_translateTextString( (char*)str ), sizeof( cg.centerPrint ) );
+//----(SA)	end
+
+
+	
+	cg.centerPrintY = y;
+	cg.centerPrintCharWidth = charWidth;
+
+	// count the number of lines for centering
+	cg.centerPrintLines = 1;
+	s = cg.centerPrint;
+	while ( *s ) {
+		if ( *s == '\n' ) {
+			cg.centerPrintLines++;
+		}
+		if ( !Q_strncmp( s, "\\n", 1 ) ) {
+			cg.centerPrintLines++;
+			s++;
+		}
+		s++;
+	}
+	len = CG_DrawStrlen(cg.centerPrint);
+	if (len > 85) {
+		cg.centerPrintTime = cg.time + len * 230;
+	} else if (len > 50) {
+		cg.centerPrintTime = cg.time + len * 125;
+	} else {
+		cg.centerPrintTime = cg.time;
+	}
+}
+
+/*
 ===================
 CG_DrawCenterString
 ===================
@@ -2000,7 +2043,7 @@ static void CG_DrawCenterString( void ) {
 	while ( 1 ) {
 		char linebuffer[1024];
 
-		for ( l = 0; l < 40; l++ ) {
+		for ( l = 0; l < 50; l++ ) {
 			if ( !start[l] || start[l] == '\n' || !Q_strncmp( &start[l], "\\n", 1 ) ) {
 				break;
 			}
@@ -3750,7 +3793,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 
 	if ( cg.cameraMode ) { //----(SA)	no 2d when in camera view
 		CG_DrawFlashBlend();    // (for fades)
-		return;
+	//	return;
 	}
 
 	if ( cg_draw2D.integer == 0 ) {
@@ -3775,7 +3818,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		CG_DrawCrosshairNames();
 	} else {
 		// don't draw any status if dead
-		if ( cg.snap->ps.stats[STAT_HEALTH] > 0 ) {
+		if ( cg.snap->ps.stats[STAT_HEALTH] > 0 && !cg.cameraMode) {
 
 			if(stereoFrame == STEREO_CENTER)
 				CG_DrawCrosshair();

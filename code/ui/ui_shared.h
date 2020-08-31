@@ -441,6 +441,17 @@ extern translateString_t translateStrings[MAX_TRANSLATESTRINGS];
 
 //----(SA)	end
 
+// added by Eugeny Panikarowsky
+typedef struct {
+	char *stringname;
+	char *stringtext;
+} translateTextString_t;
+
+
+#define MAX_TRANSLATETEXTSTRINGS 2048
+extern translateTextString_t translateTextStrings[MAX_TRANSLATETEXTSTRINGS];
+//----(SA)	end
+
 
 const char *String_Alloc( const char *p );
 void String_Init( void );

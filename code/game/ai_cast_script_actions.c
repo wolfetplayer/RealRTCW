@@ -680,7 +680,7 @@ qboolean AICast_ScriptAction_PlaySound( cast_state_t *cs, char *params ) {
 	if ( !params ) {
 		G_Error( "AI Scripting: syntax error\n\nplaysound <soundname OR scriptname>\n" );
 	}
-
+	trap_SendServerCommand( -1, va( "cpst %s", params ) );
 	G_AddEvent( &g_entities[cs->bs->entitynum], EV_GENERAL_SOUND, G_SoundIndex( params ) );
 
 	// assume we are talking

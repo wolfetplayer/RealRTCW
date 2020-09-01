@@ -289,7 +289,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		},
 		AITEAM_NAZI,
 		"venom/default",
-		{WP_FLAMETHROWER},
+		{WP_MG42M},
 		BBOX_SMALL, {32,48},
 		AIFL_NO_FLAME_DAMAGE | AIFL_WALKFORWARD | AIFL_NO_RELOAD,   // |AIFL_NO_HEADSHOT_DMG,
 		0, 0, 0,
@@ -386,7 +386,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		},
 		AITEAM_NAZI,
 		"eliteguard/default",
-		{WP_SILENCER},      //----(SA)	TODO: replace w/ "silenced luger"
+		{WP_LUGER},      //----(SA)	TODO: replace w/ "silenced luger"
 		BBOX_SMALL, {32,48},
 		AIFL_CATCH_GRENADE | AIFL_STAND_IDLE2,
 		0, 0, 0,
@@ -627,7 +627,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AITEAM_NAZI,
 		"blackguard/default",
 //		{WP_MP40, WP_GRENADE_LAUNCHER, WP_MONSTER_ATTACK1},					// attack1 is melee kick
-		{WP_FG42, WP_GRENADE_LAUNCHER, WP_MONSTER_ATTACK1},	// attack1 is melee kick
+		{WP_MP44, WP_GRENADE_LAUNCHER, WP_MONSTER_ATTACK1},	// attack1 is melee kick
 		BBOX_SMALL, {32,48},
 		AIFL_CATCH_GRENADE | AIFL_FLIP_ANIM | AIFL_STAND_IDLE2,
 		AIFunc_BlackGuardAttack1Start, 0, 0,
@@ -1184,7 +1184,7 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 	// now check the damageQuota to see if we should play a pain animation
 	// first reduce the current damageQuota with time
 	if ( cs->damageQuotaTime && cs->damageQuota > 0 ) {
-		cs->damageQuota -= (int)( ( 1.0 + ( g_gameskill.value / GSKILL_REALISM ) ) * ( (float)( level.time - cs->damageQuotaTime ) / 1000 ) * ( 7.5 + cs->attributes[ATTACK_SKILL] * 10.0 ) );
+		cs->damageQuota -= (int)( ( 1.0 + ( g_gameskill.value / GSKILL_MAX ) ) * ( (float)( level.time - cs->damageQuotaTime ) / 1000 ) * ( 7.5 + cs->attributes[ATTACK_SKILL] * 10.0 ) );
 		if ( cs->damageQuota < 0 ) {
 			cs->damageQuota = 0;
 		}
@@ -1197,13 +1197,13 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 		if ( scale > 4.0 ) {
 			scale = 4.0;
 		}
-		damage = (int)( (float)damage * ( 1.0 + ( scale * ( 1.0 - 0.5 * g_gameskill.value / GSKILL_REALISM ) ) ) );
+		damage = (int)( (float)damage * ( 1.0 + ( scale * ( 1.0 - 0.5 * g_gameskill.value / GSKILL_MAX ) ) ) );
 	}
 
 	// adjust the new damage with distance, if they are really close, scale it down, to make it
 	// harder to get through the game by continually rushing the enemies
 	if ( ( attacker->s.weapon != WP_TESLA ) && ( ( dist = VectorDistance( ent->r.currentOrigin, attacker->r.currentAngles ) ) < 384 ) ) {
-		damage -= (int)( (float)damage * ( 1.0 - ( dist / 384.0 ) ) * ( 0.5 + 0.5 * g_gameskill.value / GSKILL_REALISM ) );
+		damage -= (int)( (float)damage * ( 1.0 - ( dist / 384.0 ) ) * ( 0.5 + 0.5 * g_gameskill.value / GSKILL_MAX ) );
 	}
 
 	// add the new damage

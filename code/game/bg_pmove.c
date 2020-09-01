@@ -413,18 +413,6 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 		scale *= 1.2;
 	}
 
-	if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
-		if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
-		scale *= 1.3;
-	} 	if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.3;
-	}  	if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.3;
-	}   if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) {
-		scale *= 1.2;
-	}
-	}
-
 
 
 

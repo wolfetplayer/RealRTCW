@@ -960,9 +960,6 @@ qboolean G_LoadEntsFile( void ) {
 	else if ( g_gameskill.integer == GSKILL_MAX ) {
 	Q_strncpyz( filename, "maps/max/", sizeof( filename ) );
 	}
-	else if ( g_gameskill.integer == GSKILL_REALISM ) {
-	Q_strncpyz( filename, "maps/realism/", sizeof( filename ) );
-	}
 	
 	Q_strcat( filename, sizeof( filename ), mapname.string );
 	Q_strcat( filename, sizeof( filename ), ".ents" );

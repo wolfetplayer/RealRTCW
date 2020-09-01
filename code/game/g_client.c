@@ -34,7 +34,6 @@ void SetupWeaponsForSkill_EASY();
 void SetupWeaponsForSkill_MEDIUM();
 void SetupWeaponsForSkill_HARD();
 void SetupWeaponsForSkill_MAX();
-void SetupWeaponsForSkill_REALISM();
 
 // Ridah, new bounding box
 //static vec3_t	playerMins = {-15, -15, -24};
@@ -1410,12 +1409,6 @@ void ClientUserinfoChanged( int clientNum ) {
 		}
 		SetupWeaponsForSkill_MAX();
 	    }
-	else if ( g_gameskill.integer == GSKILL_REALISM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 ) {
-			client->pers.maxHealth = 25;
-		}
-		SetupWeaponsForSkill_REALISM();
-	    }
 	
 	client->ps.stats[STAT_MAX_HEALTH] = client->pers.maxHealth;
 
@@ -1724,58 +1717,6 @@ void SetupWeaponsForSkill_MAX() // Max
 
 
 }
-
-void SetupWeaponsForSkill_REALISM() // Realism
-{
-		// 9mm
-	ammoTable[WP_LUGER].maxammo = 300;
-	ammoTable[WP_MP40].maxammo = 300;
-	ammoTable[WP_STEN].maxammo = 300;
-	ammoTable[WP_SILENCER].maxammo = 300;
-	ammoTable[WP_P38].maxammo = 300;
-	// 45cal
-	ammoTable[WP_COLT].maxammo = 300;
-	ammoTable[WP_AKIMBO].maxammo = 300;
-	ammoTable[WP_THOMPSON].maxammo = 300;
-	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 200;
-	ammoTable[WP_FG42].maxammo = 200;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 200;
-	ammoTable[WP_FG42SCOPE].maxammo = 200;
-	ammoTable[WP_G43].maxammo = 200;
-	// barammo
-	ammoTable[WP_BAR].maxammo = 200;
-	ammoTable[WP_M1GARAND].maxammo = 200;
-	// 30cal
-	ammoTable[WP_GARAND].maxammo = 300;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 300;
-	// mp44
-	ammoTable[WP_MP44].maxammo = 300;
-	ammoTable[WP_MG42M].maxammo = 300;
-	// m97
-	ammoTable[WP_M97].maxammo = 30;
-	ammoTable[WP_M30].maxammo = 30;
-	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 10;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 10;
-	ammoTable[WP_DYNAMITE].maxammo = 5;
-	ammoTable[WP_DYNAMITE].maxclip = 5;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 10;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 10;
-	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 5;
-	ammoTable[WP_FLAMETHROWER].maxammo = 150;
-	ammoTable[WP_FLAMETHROWER].maxclip = 150;
-	ammoTable[WP_TESLA].maxammo = 150;
-	ammoTable[WP_TESLA].maxclip = 150;
-	ammoTable[WP_VENOM].maxammo = 500;
-	// welrod
-	ammoTable[WP_WELROD].maxammo = 6;
-	ammoTable[WP_WELROD].maxclip = 6;
-
-
-}
-
 
 /*
 ===========

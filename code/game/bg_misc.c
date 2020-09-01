@@ -482,7 +482,7 @@ gitem_t bg_itemlist[] =
 		0,          // cliptype
 		"",          // precache
 		"",          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},  // leave index 0 alone
 
 
@@ -520,7 +520,7 @@ model="models/powerups/clipboard/clipboard.md3"
 		0,
 		"",
 		"",
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED item_treasure (1 1 0) (-8 -8 -8) (8 8 8) SUSPENDED SPIN
@@ -551,7 +551,7 @@ model="models/powerups/treasure/goldbar.md3"
 		0,
 		"",
 		"",
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -580,7 +580,7 @@ model="models/powerups/health/health_s.md3"
 		0,
 		"",
 		"",
-		{15,10,5,5,1}
+		{15,10,5,5}
 	},
 
 /*QUAKED item_health (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -603,7 +603,7 @@ model="models/powerups/health/health_m.md3"
 		0,
 		"",
 		"",
-		{30,25,15,10,5}
+		{30,25,15,10}
 	},
 
 /*QUAKED item_health_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -625,7 +625,7 @@ model="models/powerups/health/health_l.md3"
 		0,
 		"",
 		"",
-		{50,40,30,20,10}
+		{50,40,30,20}
 	},
 
 /*QUAKED item_health_turkey (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -660,7 +660,7 @@ model="models/powerups/health/health_t1.md3"
 		0,
 		"",
 		"",
-		{45,35,25,10,1}   // amount given in first stage based on gameskill level
+		{45,35,25,10}   // amount given in first stage based on gameskill level
 	},
 
 /*QUAKED item_health_breadandmeat (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -693,7 +693,7 @@ model="models/powerups/health/health_b1.md3"
 		0,
 		"",
 		"",
-		{30,30,20,10,1}   // amount given in first stage based on gameskill level
+		{30,30,20,10}   // amount given in first stage based on gameskill level
 	},
 
 /*QUAKED item_health_wall_box (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED - - RESPAWN
@@ -719,7 +719,7 @@ model="models/powerups/health/health_wallbox.md3"
 		0,
 		"",
 		"",
-		{25,25,25,15,5}
+		{25,25,25,15}
 	},
 
 /*QUAKED item_health_wall (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED - - RESPAWN
@@ -743,7 +743,7 @@ model="models/powerups/health/health_w.md3"
 		0,
 		"",
 		"",
-		{30,20,15,15,5}
+		{30,20,15,15}
 	},
 
 	//
@@ -772,7 +772,7 @@ model="models/powerups/instant/stamina_stein.md3"
 		0,
 		"",
 		"",
-		{30,25,20,15,1}
+		{30,25,20,15}
 	},
 
 
@@ -810,7 +810,7 @@ model="models/powerups/instant/stamina_brandy1.md3"
 		0,
 		"",
 		"",
-		{30,25,20,15,1}
+		{30,25,20,15}
 	},
 
 
@@ -838,7 +838,7 @@ model="models/powerups/armor/armor_body1.md3"
 		0,
 		"",
 		"",
-		{75,75,75,75,75}
+		{75,75,75,75}
 	},
 
 /*QUAKED item_armor_body_hang (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED - - RESPAWN
@@ -860,7 +860,7 @@ model="models/powerups/armor/armor_body2.md3"
 		0,
 		"",
 		"",
-		{75,75,75,75,75}
+		{75,75,75,75}
 	},
 
 /*QUAKED item_armor_head (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -882,7 +882,7 @@ model="models/powerups/armor/armor_head1.md3"
 		0,
 		"",
 		"",
-		{25,25,25,25,25}
+		{25,25,25,25}
 	},
 
 
@@ -909,7 +909,7 @@ weapon_gauntlet
 		WP_GAUNTLET,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -938,7 +938,7 @@ model="models/weapons2/knife/knife.md3"
 		WP_KNIFE,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -964,7 +964,7 @@ model="models/weapons2/luger/luger.md3"
 		WP_LUGER,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -990,7 +990,7 @@ model="models/weapons2/mauser/mauser.md3"
 		WP_MAUSER,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_thompson (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1015,7 +1015,7 @@ model="models/weapons2/thompson/thompson.md3"
 		WP_THOMPSON,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_sten (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1039,7 +1039,7 @@ model="models/weapons2/sten/sten.md3"
 		WP_STEN,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*weapon_akimbo
@@ -1064,7 +1064,7 @@ dual colts
 		WP_AKIMBO,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_colt (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1089,7 +1089,7 @@ model="models/weapons2/colt/colt.md3"
 		WP_COLT,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1117,7 +1117,7 @@ model="models/weapons2/garand/garand.md3"
 		WP_GARAND,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_mp40 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1145,7 +1145,7 @@ model="models\weapons2\mp40\mp40.md3"
 		WP_MP40,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1172,7 +1172,7 @@ model="models/weapons2/fg42/fg42.md3"
 		WP_FG42,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1201,7 +1201,7 @@ model="models/weapons2/sp5/sp5.md3"
 		WP_LUGER,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_panzerfaust (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1226,7 +1226,7 @@ model="models/weapons2/panzerfaust/pf.md3"
 		WP_PANZERFAUST,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1253,7 +1253,7 @@ weapon_grenadelauncher
 		WP_GRENADE_LAUNCHER,
 		"",                      // precache
 		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",             // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*
@@ -1277,7 +1277,7 @@ weapon_grenadePineapple
 		WP_GRENADE_PINEAPPLE,
 		"",                      // precache
 		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",             // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 //weapon_dynamite
@@ -1300,7 +1300,7 @@ weapon_grenadePineapple
 		WP_DYNAMITE,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1328,7 +1328,7 @@ model="models/weapons2/venom/pu_venom.md3"
 		WP_VENOM,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1355,7 +1355,7 @@ model="models/weapons2/flamethrower/pu_flamethrower.md3"
 		WP_FLAMETHROWER,
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1382,7 +1382,7 @@ model="models/weapons2/tesla/pu_tesla.md3"
 		WP_TESLA,
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1411,7 +1411,7 @@ model="models/weapons2/mauser/pu_mauser_scope.md3"
 		WP_MAUSER,
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_snooperrifle (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1436,7 +1436,7 @@ model="models/weapons2/garand/garand.md3"
 		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /* weapon_fg42scope
@@ -1459,7 +1459,7 @@ model="models/weapons2/garand/garand.md3"
 		WP_FG42,        // shares clip w/
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1483,7 +1483,7 @@ weapon_monster_attack1 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 		WP_MONSTER_ATTACK1,         //
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 /*
 weapon_monster_attack2 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -1504,7 +1504,7 @@ weapon_monster_attack2 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 		WP_MONSTER_ATTACK2,         //
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 /*
 weapon_monster_attack3 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -1525,7 +1525,7 @@ weapon_monster_attack3 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 		WP_MONSTER_ATTACK3,
 		"",                          // precache
 		"",                          // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*
@@ -1548,7 +1548,7 @@ weapon_mortar (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 		WP_MORTAR,
 		"",                      // precache
 		"sound/weapons/mortar/mortarf1.wav",             // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1579,7 +1579,7 @@ model="models/weapons2/p38/p38.md3"
 		WP_P38,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_g43 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1607,7 +1607,7 @@ model="models/multiplayer/g43/g43_3rd.md3"
 		WP_G43,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1636,7 +1636,7 @@ model="models/multiplayer/m1_garand/m1_garand_3rd.md3"
 		WP_M1GARAND,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_bar (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1664,7 +1664,7 @@ model="models/weapons2/bar/bar3rd.md3"
 		WP_BAR,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_mp44 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1692,7 +1692,7 @@ model="models/weapons2/mp44/mp44.md3"
 		WP_MP44,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_mg42m (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1717,7 +1717,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		WP_MG42M,
 		"",                      // precache
 		"",                      // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED weapon_m97 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1743,7 +1743,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 			WP_M97,
 			"",                      // precache
 			"",                      // sounds
-			{ 0,0,0,0,0 }
+			{ 0,0,0,0}
 	},
 
 	
@@ -1770,7 +1770,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 			WP_M30,
 			"",                      // precache
 			"",                      // sounds
-			{ 0,0,0,0,0 }
+			{ 0,0,0,0}
 	},
 
 
@@ -1799,7 +1799,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_WELROD,
 		"",                  // precache
 		"",                  // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -1831,7 +1831,7 @@ model="models/powerups/ammo/welrod.md3"
 		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
-		{5,5,5,5,5}		
+		{5,5,5,5}		
 	},
 
 /*QUAKED ammo_barammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1855,7 +1855,7 @@ model="models/powerups/ammo/barammo.md3"
 		WP_BAR,
 		"",                  // precache
 		"",                  // sounds
-		{40,40,30,30,30}	
+		{40,40,30,30}	
 	},
 
 /*QUAKED ammo_barammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1879,7 +1879,7 @@ model="models/powerups/ammo/barammo_l.md3"
 		WP_BAR,
 		"",                  // precache
 		"",                  // sounds
-		{60,60,45,45,45}	
+		{60,60,45,45}	
 	},
 
 /*QUAKED ammo_44ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1903,7 +1903,7 @@ model="models/powerups/ammo/44ammo.md3"
 		WP_MP44,
 		"",                  // precache
 		"",                  // sounds
-		{60,60,45,45,45}	
+		{60,60,45,45}	
 	},
 
 /*QUAKED ammo_44ammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1927,7 +1927,7 @@ model="models/powerups/ammo/44ammo_l.md3"
 		WP_MP44,
 		"",                  // precache
 		"",                  // sounds
-		{90,90,75,75,75}	
+		{90,90,75,75}	
 	},
 
 		/*QUAKED ammo_m97ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1951,7 +1951,7 @@ model="models/powerups/ammo/44ammo_l.md3"
 		WP_M97,
 		"",                  // precache
 		"",                  // sounds
-		{ 6,6,6,6,6 }
+		{ 6,6,6,6}
 	},
 
 
@@ -1979,7 +1979,7 @@ model="models/powerups/ammo/am9mm_s.md3"
 		WP_LUGER,
 		"",                  // precache
 		"",                  // sounds
-		{32,24,16,16,16}
+		{32,24,16,16}
 	},
 /*QUAKED ammo_9mm (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Luger pistol, MP40 machinegun
@@ -2002,7 +2002,7 @@ model="models/powerups/ammo/am9mm_m.md3"
 		WP_LUGER,
 		"",                  // precache
 		"",                  // sounds
-		{64,48,32,16,16}
+		{64,48,32,16}
 	},
 /*QUAKED ammo_9mm_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Luger pistol, MP40 machinegun
@@ -2025,7 +2025,7 @@ model="models/powerups/ammo/am9mm_l.md3"
 		WP_LUGER,
 		"",                  // precache
 		"",                  // sounds
-		{96,64,48,48,48}
+		{96,64,48,48}
 	},
 
 
@@ -2050,7 +2050,7 @@ model="models/powerups/ammo/am45cal_s.md3"
 		WP_COLT,
 		"",                  // precache
 		"",                  // sounds
-		{40,30,20,20,20}
+		{40,30,20,20}
 	},
 /*QUAKED ammo_45cal (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Thompson, Colt
@@ -2073,7 +2073,7 @@ model="models/powerups/ammo/am45cal_m.md3"
 		WP_COLT,
 		"",                  // precache
 		"",                  // sounds
-		{60,45,30,30,30}
+		{60,45,30,30}
 	},
 /*QUAKED ammo_45cal_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Thompson, Colt
@@ -2096,7 +2096,7 @@ model="models/powerups/ammo/am45cal_l.md3"
 		WP_COLT,
 		"",                  // precache
 		"",                  // sounds
-		{90,60,45,45,45}
+		{90,60,45,45}
 	},
 
 
@@ -2123,7 +2123,7 @@ model="models/powerups/ammo/am792mm_s.md3"
 		WP_MAUSER,
 		"",                          // precache
 		"",                          // sounds
-		{20,15,10,5,5}
+		{20,15,10,5}
 	},
 /*QUAKED ammo_792mm (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Mauser rifle, FG42
@@ -2146,7 +2146,7 @@ model="models/powerups/ammo/am792mm_m.md3"
 		WP_MAUSER,
 		"",                          // precache
 		"",                          // sounds
-		{40,20,15,10,10}
+		{40,20,15,10}
 	},
 /*QUAKED ammo_792mm_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Mauser rifle, FG42
@@ -2169,7 +2169,7 @@ model="models/powerups/ammo/am792mm_l.md3"
 		WP_MAUSER,
 		"",                          // precache
 		"",                          // sounds
-		{60,40,30,20,20}
+		{60,40,30,20}
 	},
 
 
@@ -2196,7 +2196,7 @@ model="models/powerups/ammo/am30cal_s.md3"
 		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
-		{5,5,5,5,5}
+		{5,5,5,5}
 	},
 /*QUAKED ammo_30cal (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Garand rifle
@@ -2219,7 +2219,7 @@ model="models/powerups/ammo/am30cal_m.md3"
 		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
-		{5,5,5,5,5}
+		{5,5,5,5}
 	},
 /*QUAKED ammo_30cal_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Garand rifle
@@ -2242,7 +2242,7 @@ model="models/powerups/ammo/am30cal_l.md3"
 		WP_WELROD,
 		"",                          // precache
 		"",                          // sounds
-		{6,6,6,6,6}
+		{6,6,6,6}
 	},
 
 
@@ -2269,7 +2269,7 @@ model="models/powerups/ammo/am127mm.md3"
 		WP_VENOM,
 		"",                          // precache
 		"",                          // sounds
-		{100,75,50,50,50}
+		{100,75,50,50}
 	},
 
 /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -2292,7 +2292,7 @@ model="models/powerups/ammo/amgren_bag.md3"
 		WP_GRENADE_LAUNCHER,
 		"",                      // precache
 		"",                      // sounds
-		{4,3,2,2,2}
+		{4,3,2,2}
 	},
 
 /*QUAKED ammo_grenades_american (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -2315,7 +2315,7 @@ model="models/powerups/ammo/amgrenus_bag.md3"
 		WP_GRENADE_PINEAPPLE,
 		"",                      // precache
 		"",                      // sounds
-		{4,3,2,2,2}
+		{4,3,2,2}
 	},
 
 /*QUAKED ammo_dynamite (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -2338,7 +2338,7 @@ model="models/powerups/ammo/dynamite.md3"
 		WP_DYNAMITE,
 		"",                      // precache
 		"",                      // sounds
-		{1,1,1,1,1}
+		{1,1,1,1}
 	},
 
 
@@ -2364,7 +2364,7 @@ model="models/powerups/ammo/amcell.md3"
 		WP_TESLA,
 		"",                  // precache
 		"",                  // sounds
-		{75,50,30,25,25}
+		{75,50,30,25}
 	},
 
 
@@ -2390,7 +2390,7 @@ model="models/powerups/ammo/amfuel.md3"
 		WP_FLAMETHROWER,
 		"",                  // precache
 		"",                  // sounds
-		{100,75,50,50,50}
+		{100,75,50,50}
 	},
 
 
@@ -2415,7 +2415,7 @@ model="models/powerups/ammo/ampf.md3"
 		WP_PANZERFAUST,
 		"",                      // precache
 		"",                      // sounds
-		{4,3,2,2,2}
+		{4,3,2,2}
 	},
 
 
@@ -2440,7 +2440,7 @@ used by: Monster Attack 1 (specific to each monster)
 		WP_MONSTER_ATTACK1,
 		"",
 		"",
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -2503,7 +2503,7 @@ model="models/powerups/holdable/wine.md3"
 		0,
 		"",                              // precache
 		"sound/pickup/holdable/use_wine.wav",        // sounds
-		{3,0,0,0,0}
+		{3,0,0,0}
 	},
 
 
@@ -2534,7 +2534,7 @@ model="models/powerups/holdable/adrenaline.md3"
 		0,
 		"",                              // precache
 		"sound/pickup/holdable/use_adrenaline.wav", // sounds
-		{1,1,1,1,1}
+		{1,1,1,1}
 	},
 
 
@@ -2565,7 +2565,7 @@ model="models/powerups/holdable/bandages.md3"
 		0,
 		"",                              // precache
 		"sound/pickup/holdable/use_bandages.wav", // sounds
-		{1,1,1,1,1}
+		{1,1,1,1}
 	},
 
 
@@ -2592,7 +2592,7 @@ model="models/powerups/holdable/venom_book.md3"
 		0,
 		"",                              // precache
 		"sound/pickup/holdable/use_book.wav",    // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -2618,7 +2618,7 @@ model="models/powerups/holdable/paranormal_book.md3"
 		0,
 		"",                              // precache
 		"sound/pickup/holdable/use_book.wav",    // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -2644,7 +2644,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		0,
 		"",                              // precache
 		"sound/pickup/holdable/use_book.wav",    // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 	//
@@ -2671,7 +2671,7 @@ model="models/flags/r_flag.md3"
 		0,
 		"",                  // precache
 		"sound/teamplay/flagcap_red.wav sound/teamplay/flagtk_red.wav sound/teamplay/flagret_red.wav",   // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 /*QUAKED team_CTF_blueflag (0 0 1) (-16 -16 -16) (16 16 16)
@@ -2694,7 +2694,7 @@ model="models/flags/b_flag.md3"
 		0,
 		"",                  // precache
 		"sound/teamplay/flagcap_blu.wav sound/teamplay/flagtk_blu.wav sound/teamplay/flagret_blu.wav",   // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 
@@ -2723,7 +2723,7 @@ model="models/powerups/keys/binoculars.md3"
 		0,
 		"",                      // precache
 		"models/keys/key.wav",   // sounds
-		{0,0,0,0,0}
+		{0,0,0,0}
 	},
 
 	// end of list marker

@@ -1502,6 +1502,17 @@ typedef struct playerState_s {
 } playerState_t;
 
 
+// added by Eugeny Panikarowsky
+typedef struct translateTextString_s{
+	int *time;
+	char *stringname;
+	char *stringtext;
+} translateTextString_t;
+
+
+#define MAX_TRANSLATETEXTSTRINGS 2048
+extern translateTextString_t translateTextStrings[MAX_TRANSLATETEXTSTRINGS];
+//----(SA)	end
 //====================================================================
 
 

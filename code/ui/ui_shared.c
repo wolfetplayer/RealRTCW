@@ -148,6 +148,8 @@ translateString_t translateStrings[] = {
 	{"or"}                       //
 };
 
+translateTextString_t translateTextStrings[MAX_TRANSLATETEXTSTRINGS] = {
+};
 vmCvar_t ui_fixedAspect;
 vmCvar_t ui_fixedAspectFOV;
 

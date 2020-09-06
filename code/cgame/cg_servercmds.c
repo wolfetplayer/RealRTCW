@@ -829,6 +829,13 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	if ( !strcmp( cmd, "cpst" )) {    // dynamite print (what a hack :(
+		if (cg_drawSubtitles.value != 0) {
+			CG_SubtitlePrint( CG_Argv( 1 ), SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.33 ), 6 );
+		}
+		return;
+	}
+
 	if ( !strcmp( cmd, "cp" ) ) {
 		CG_CenterPrint( CG_Argv( 1 ), SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 		return;

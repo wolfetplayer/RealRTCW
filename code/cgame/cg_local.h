@@ -1666,6 +1666,7 @@ extern vmCvar_t cg_crosshairAlpha;          //----(SA)	added
 extern vmCvar_t cg_crosshairHealth;
 extern vmCvar_t cg_drawStatus;
 extern vmCvar_t cg_draw2D;
+extern vmCvar_t cg_drawSubtitles;
 extern vmCvar_t cg_drawFrags;
 extern vmCvar_t cg_animSpeed;
 extern vmCvar_t cg_debugAnim;

@@ -1595,6 +1595,9 @@ typedef struct {
 	int teamChatPos;
 	int teamLastChatPos;
 
+
+	char ignoredSubtitles[255][255];
+
 	char itemPrintNames[MAX_ITEMS][32];             //----(SA)	added
 
 	int cursorX;

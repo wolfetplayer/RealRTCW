@@ -2076,7 +2076,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FIRE_WEAPON_MG42:
 		// shake the camera a bit
 		CG_StartShakeCamera( 0.05, 100, cent->lerpOrigin, 100 );
-		trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, hWeaponSnd );
+	//	trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, hWeaponSnd );
 		DEBUGNAME( "EV_FIRE_WEAPON" );
 		CG_FireWeapon( cent );
 		break;
@@ -2341,6 +2341,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		DEBUGNAME( "EV_GENERAL_SOUND" );
 		// Ridah, check for a sound script
 		s = CG_ConfigString( CS_SOUNDS + es->eventParm );
+		//trap_SendServerCommand( -1, va( "cpst %s", s ) );
+//		CG_SubtitlePrint( s, SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.33 ), 6 );
 		if ( !strstr( s, ".wav" ) ) {
 			if ( CG_SoundPlaySoundScript( s, NULL, es->number ) ) {
 				break;

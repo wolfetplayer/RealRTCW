@@ -877,7 +877,6 @@ static void CG_LoadTranslationStrings( void ) {
 	}
 }
 
-// added by Eugeny Panikarowsky
 static void CG_LoadTranslationTextStrings(const char *file) {
 	char buffer[MAX_BUFFER];
 	char *text;

@@ -37,6 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 
 int wolfkickModel;
 int hWeaponSnd;
+int hWeaponEchoSnd;
 int hflakWeaponSnd;
 int notebookModel;
 int propellerModel;
@@ -1480,6 +1481,7 @@ void CG_RegisterItemVisuals( int itemNum ) {
 	wolfkickModel = trap_R_RegisterModel( "models/weapons2/foot/v_wolfoot_10f.md3" );
 	
 	hWeaponSnd = trap_S_RegisterSound( "sound/weapons/mg42/37mm.wav" );
+	hWeaponEchoSnd = trap_S_RegisterSound( "sound/weapons/mg42/e37mm.wav" );
 
 	hflakWeaponSnd = trap_S_RegisterSound( "sound/weapons/flak/flak.wav" );
 	notebookModel = trap_R_RegisterModel( "models/mapobjects/book/book.md3" );
@@ -4817,7 +4819,25 @@ void CG_FireWeapon( centity_t *cent ) {
 			return;
 		}
 
-		trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, hWeaponSnd );
+		trap_S_StartSound( NULL, ent->number, CHAN_WEAPON, hWeaponSnd );
+
+		if ( hWeaponEchoSnd ) { // check for echo
+			centity_t   *cent;
+			vec3_t porg, gorg, norm;    // player/gun origin
+			float gdist;
+
+			cent = &cg_entities[ent->number];
+			VectorCopy( cent->currentState.pos.trBase, gorg );
+			VectorCopy( cg.refdef.vieworg, porg );
+			VectorSubtract( gorg, porg, norm );
+			gdist = VectorNormalize( norm );
+			if ( gdist > 512 && gdist < 8192 ) {   // temp dist.  TODO: use numbers that are weapon specific // RealRTCW was 4096
+				// use gorg as the new sound origin
+				VectorMA( cg.refdef.vieworg, 64, norm, gorg );    // sound-on-a-stick
+				trap_S_StartSound( gorg, ent->number, CHAN_WEAPON, hWeaponEchoSnd );
+			}
+		}
+		//trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, hWeaponSnd );
 		//trap_S_StartSound( NULL, ent->number, CHAN_WEAPON, hWeaponSnd );
 		if ( cg_brassTime.integer > 0 ) {
 			CG_MachineGunEjectBrass( cent );

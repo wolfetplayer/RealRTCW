@@ -917,12 +917,48 @@ static void CG_LoadTranslationTextStrings(const char *file) {
 		if (token[0] == '}') {
 			break;
 		}
-		i++;
 		translateTextStrings[i].stringname = malloc(strlen(token) + 1);
 		strcpy(translateTextStrings[i].stringname, token);
 		token = COM_ParseExt(&text, qfalse);
 		translateTextStrings[i].stringtext = malloc(strlen(token) + 1);
 		strcpy(translateTextStrings[i].stringtext, token);
+		i++;
+	}
+}
+
+static void CG_LoadIgnoredTranslationTextStrings() {
+
+	char buffer[MAX_BUFFER];
+	char *text;
+	char filename[MAX_QPATH];
+	fileHandle_t f;
+	int len, i;
+	char *token;
+
+	Com_sprintf( filename, MAX_QPATH, "text/ignoredstitles.txt" );
+	len = trap_FS_FOpenFile( filename, &f, FS_READ );
+	if ( len <= 0 ) {
+		CG_Printf( S_COLOR_RED "WARNING: ignored name file (ignoredstitles.txt not found in main/text)\n" );
+		return;
+	}
+	if ( len > MAX_BUFFER ) {
+		CG_Error( "%s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER );
+	}
+
+	// load the file into memory
+	trap_FS_Read( buffer, len, f );
+	buffer[len] = 0;
+	trap_FS_FCloseFile( f );
+	// parse the list
+	text = buffer;
+
+	for ( i = 0; i < 255; i++ ) {
+		token = COM_ParseExt( &text, qtrue );
+		if ( !token[0] ) {
+			break;
+		}
+		CG_Printf("ignored text: %s\n", token);
+		Com_sprintf( cgs.ignoredSubtitles[i], MAX_QPATH, "%s", token );
 	}
 }
 
@@ -936,7 +972,7 @@ static void CG_LoadTranslateStrings( void ) {
 	CG_LoadPickupNames();
 	CG_LoadTranslationStrings();    // right now just centerprint
 	CG_LoadTranslationTextStrings(va("text/EnglishUSA/maps/%s.txt", mapname));
-	CG_LoadTranslationTextStrings("text/EnglishUSA/general.txt");
+	CG_LoadIgnoredTranslationTextStrings();
 }
 
 ////////
@@ -944,10 +980,17 @@ static void CG_LoadTranslateStrings( void ) {
 ////////
 const char *CG_translateTextString(const char *str) {
 	int i, numStrings;
+
+	numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
+	for (i = 0; i < numStrings; i++) {
+		if (!strcmp(str, cgs.ignoredSubtitles[i])) {
+			return "";
+		}
+	}
 	numStrings = sizeof(translateTextStrings) / sizeof(translateTextStrings[0]) - 1;
-	i = 1;
+	i = 0;
 	
-	for (i = 1; i < numStrings; i++) {
+	for (i = 0; i < numStrings; i++) {
 		if (!translateTextStrings[i].stringname || !strlen(translateTextStrings[i].stringname)) {
 			return str;
 		}

@@ -402,27 +402,15 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 			if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.2;
-	}
-
-	if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
-		if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
 		scale *= 1.3;
-	} 	if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.3;
-	}  	if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.3;
-	}   if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) {
-		scale *= 1.2;
-	}
 	}
 
 
@@ -459,7 +447,7 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 	{ 
 		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
-			scale *= 0.85; 
+			scale *= 0.90; 
         }
 		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
 			scale *= 0.90; 
@@ -468,7 +456,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 			scale *= 0.95; 
 		}
 		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE )  ) {
-			scale *= 0.35; 
+			scale *= 0.40; 
         }
 	}
 // jpw

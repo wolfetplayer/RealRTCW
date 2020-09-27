@@ -42,9 +42,11 @@ int bg_pmove_gameskill_integer;
 // JPW NERVE -- added because I need to check single/multiplayer instances and branch accordingly
 #ifdef CGAMEDLL
 extern vmCvar_t cg_gameType;
+extern vmCvar_t cg_jumptime;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_gametype;
+extern vmCvar_t g_jumptime;
 #endif
 
 // jpw
@@ -402,27 +404,15 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 			if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.2;
-	}
-
-	if ( bg_pmove_gameskill_integer == GSKILL_REALISM ) {
-		if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
 		scale *= 1.3;
-	} 	if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.3;
-	}  	if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.3;
-	}   if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) {
-		scale *= 1.2;
-	}
 	}
 
 
@@ -459,7 +449,7 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 	{ 
 		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
-			scale *= 0.85; 
+			scale *= 0.90; 
         }
 		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
 			scale *= 0.90; 
@@ -468,7 +458,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 			scale *= 0.95; 
 		}
 		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE )  ) {
-			scale *= 0.35; 
+			scale *= 0.40; 
         }
 	}
 // jpw
@@ -565,9 +555,30 @@ static qboolean PM_CheckJump( void ) {
 	// JPW NERVE -- jumping in multiplayer uses and requires sprint juice (to prevent turbo skating, sprint + jumps)
 	// don't allow jump accel
 //	if (pm->cmd.serverTime - pm->ps->jumpTime < 850)
-	if ( pm->cmd.serverTime - pm->ps->jumpTime < 850 ) {  // RealRTCW removed bunnyhop try 850 instead of 950
-		return qfalse;
-	}
+	
+	// JPW NERVE -- in multiplayer, don't allow panzerfaust or dynamite to fire if charge bar isn't full
+	int jumptime = 0;
+	#ifdef GAMEDLL
+		if (g_jumptime.value) {
+			jumptime = 850;
+		} else {
+			jumptime = 500;
+		}
+		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
+			return qfalse;
+		}
+	#endif
+	#ifdef CGAMEDLL
+		if (cg_jumptime.value) {
+			jumptime = 850;
+		} else {
+			jumptime = 500;
+		}
+		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
+			return qfalse;
+		}
+	#endif
+
 
 	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
 		return qfalse;      // don't allow jump until all buttons are up
@@ -2797,10 +2808,12 @@ Generates weapon events and modifes the weapon counter
 #ifdef CGAMEDLL
 extern vmCvar_t cg_soldierChargeTime;
 extern vmCvar_t cg_engineerChargeTime;
+extern vmCvar_t cg_jumptime;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_soldierChargeTime;
 extern vmCvar_t g_engineerChargeTime;
+extern vmCvar_t g_jumptime;
 #endif
 // jpw
 

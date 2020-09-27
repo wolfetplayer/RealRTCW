@@ -1160,6 +1160,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 		qboolean dynamite = (qboolean)( mod == MOD_DYNAMITE || mod == MOD_DYNAMITE_SPLASH );
 
+		qboolean venomgun = (qboolean)( mod == MOD_VENOM );
+
 		if ( targ == attacker ) {
 			if ( !dynamite ) {
 				damage *= 0.5;
@@ -1169,6 +1171,16 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		if ( dynamite && targ->aiCharacter == AICHAR_HELGA ) {
 			//helga gets special dynamite damage
 			damage *= 0.5;
+		}
+
+		if ( venomgun && targ->aiCharacter == AICHAR_HEINRICH ) {
+			//heinrich gets special venom damage
+			damage *= 0.5;
+		}
+
+		if ( venomgun && targ->aiCharacter == AICHAR_SUPERSOLDIER ) {
+			//supersoldier gets special venom damage
+			damage *= 0.6;
 		}
 
 	}

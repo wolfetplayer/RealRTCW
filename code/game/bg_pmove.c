@@ -42,9 +42,11 @@ int bg_pmove_gameskill_integer;
 // JPW NERVE -- added because I need to check single/multiplayer instances and branch accordingly
 #ifdef CGAMEDLL
 extern vmCvar_t cg_gameType;
+extern vmCvar_t cg_jumptime;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_gametype;
+extern vmCvar_t g_jumptime;
 #endif
 
 // jpw
@@ -562,9 +564,30 @@ static qboolean PM_CheckJump( void ) {
 	// JPW NERVE -- jumping in multiplayer uses and requires sprint juice (to prevent turbo skating, sprint + jumps)
 	// don't allow jump accel
 //	if (pm->cmd.serverTime - pm->ps->jumpTime < 850)
-	if ( pm->cmd.serverTime - pm->ps->jumpTime < 850 ) {  // RealRTCW removed bunnyhop try 850 instead of 950
-		return qfalse;
-	}
+	
+	// JPW NERVE -- in multiplayer, don't allow panzerfaust or dynamite to fire if charge bar isn't full
+	int jumptime = 0;
+	#ifdef GAMEDLL
+		if (g_jumptime.value) {
+			jumptime = 850;
+		} else {
+			jumptime = 500;
+		}
+		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
+			return qfalse;
+		}
+	#endif
+	#ifdef CGAMEDLL
+		if (cg_jumptime.value) {
+			jumptime = 850;
+		} else {
+			jumptime = 500;
+		}
+		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
+			return qfalse;
+		}
+	#endif
+
 
 	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
 		return qfalse;      // don't allow jump until all buttons are up
@@ -2794,10 +2817,12 @@ Generates weapon events and modifes the weapon counter
 #ifdef CGAMEDLL
 extern vmCvar_t cg_soldierChargeTime;
 extern vmCvar_t cg_engineerChargeTime;
+extern vmCvar_t cg_jumptime;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_soldierChargeTime;
 extern vmCvar_t g_engineerChargeTime;
+extern vmCvar_t g_jumptime;
 #endif
 // jpw
 

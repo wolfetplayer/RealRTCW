@@ -323,7 +323,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_bluelimbotime, "g_bluelimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_medicChargeTime, "g_medicChargeTime", "45000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_jumptime, "g_jumptime", "0", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_LTChargeTime, "g_LTChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 // jpw

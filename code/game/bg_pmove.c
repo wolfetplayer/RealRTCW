@@ -560,9 +560,9 @@ static qboolean PM_CheckJump( void ) {
 	int jumptime = 0;
 	#ifdef GAMEDLL
 		if (g_jumptime.value) {
-			jumptime = 850;
+			jumptime = 550;
 		} else {
-			jumptime = 500;
+			jumptime = 850;
 		}
 		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
 			return qfalse;
@@ -570,9 +570,9 @@ static qboolean PM_CheckJump( void ) {
 	#endif
 	#ifdef CGAMEDLL
 		if (cg_jumptime.value) {
-			jumptime = 850;
+			jumptime = 550;
 		} else {
-			jumptime = 500;
+			jumptime = 850;
 		}
 		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
 			return qfalse;

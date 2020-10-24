@@ -4459,9 +4459,9 @@ static void UI_Update( const char *name ) {
 		}
 	} else if ( Q_stricmp( name, "ui_glCustom" ) == 0 ) {
 		switch ( val ) {
-		case 0:     // Ultra quality with new renderer
+		case 0:     // Ultra quality
 
-			trap_Cvar_Set( "cl_renderer", "rend2" ); // renderer
+			trap_Cvar_Set( "cl_renderer", "opengl1" ); 
 
 			trap_Cvar_SetValue( "cg_coronafardist", 4096 );
 			trap_Cvar_SetValue("cg_markTime", 999999 );
@@ -4469,19 +4469,23 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("cg_particleDist", 2048 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
 
-            // rend2 specific
+			trap_Cvar_SetValue("r_ext_multisample", 4);
 			trap_Cvar_SetValue("r_ext_framebuffer_multisample", 16);
+			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 1);
+			trap_Cvar_SetValue("r_ext_max_anisotropy", 16);
+
+            // rend2 specific
 			trap_Cvar_SetValue( "r_hdr", 0 );
 			trap_Cvar_SetValue( "r_postProcess", 0 );
-			trap_Cvar_SetValue( "r_toneMap", 1 );
-			trap_Cvar_SetValue( "r_autoExposure", 1 );
+			trap_Cvar_SetValue( "r_toneMap", 0 );
+			trap_Cvar_SetValue( "r_autoExposure", 0 );
 			trap_Cvar_SetValue( "r_normalMapping", 0 );
 			trap_Cvar_SetValue( "r_specularMapping", 0 );
 			trap_Cvar_SetValue( "r_deluxeMapping", 0 );
 			trap_Cvar_SetValue( "r_forceSun", 0 );
 			trap_Cvar_SetValue( "r_drawSunRays", 0 );
 			trap_Cvar_SetValue( "r_sunShadows", 0 );
-			trap_Cvar_SetValue( "r_shadowFilter", 1 );
+			trap_Cvar_SetValue( "r_shadowFilter", 0 );
 
 
             // disable low quality stuff
@@ -4526,6 +4530,11 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("cg_particleDist", 2048 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
 
+			trap_Cvar_SetValue("r_ext_multisample", 0);
+			trap_Cvar_SetValue("r_ext_framebuffer_multisample", 0);
+			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 0);
+			trap_Cvar_SetValue("r_ext_max_anisotropy", 0);
+			
             // rend2 specific
 			trap_Cvar_SetValue( "r_hdr", 0 );
 			trap_Cvar_SetValue( "r_postProcess", 0 );
@@ -4578,6 +4587,11 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("cg_bloodTime", 10000 );
 			trap_Cvar_SetValue("cg_particleDist", 1024 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
+
+			trap_Cvar_SetValue("r_ext_multisample", 0);
+			trap_Cvar_SetValue("r_ext_framebuffer_multisample", 0);
+			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 0);
+			trap_Cvar_SetValue("r_ext_max_anisotropy", 0);
 
             // rend2 specific
 			trap_Cvar_SetValue( "r_hdr", 0 );
@@ -4632,6 +4646,11 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("cg_bloodTime", 5000 );
 			trap_Cvar_SetValue("cg_particleDist", 1024 );
 			trap_Cvar_SetValue( "cg_brassTime", 1000 );
+
+			trap_Cvar_SetValue("r_ext_multisample", 0);
+			trap_Cvar_SetValue("r_ext_framebuffer_multisample", 0);
+			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 0);
+			trap_Cvar_SetValue("r_ext_max_anisotropy", 0);
 
             // rend2 specific
 			trap_Cvar_SetValue( "r_hdr", 0 );

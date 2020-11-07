@@ -381,6 +381,7 @@ static snapshot_t *CG_ReadNextSnapshot( void ) {
 				cg.duckTime = -1;
 				cg.landTime = -1;
 				cg.stepTime = -1;
+				Com_Memset(&cg.pmext, 0, sizeof(pmoveExt_t));
 				// RF, loadgame hasn't occured yet, so this is likely wrong
 				//cg.weaponSelect = cg.snap->ps.weapon;
 				cg.weaponSelectTime = cg.time;

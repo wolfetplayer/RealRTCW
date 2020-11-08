@@ -1,23 +1,30 @@
 # RealRTCW
-RealRTCW aiming to enhance the classic Wolfenstein experience. You can expect overhauled AI, new weapons, rebalanced gameplay, new textures and sounds.
-Most of the code changes marked with "RealRTCW" tag.
+RealRTCW is an overhaul mod for critically acclaimed Wolfenstein classic. It features new renderer, expanded arsenal, rebalanced gunplay, new high quality models,textures and sounds.
 
 
 Features:
-* Mod is based on ioRTCW engine, which provides widescreen support, high quality sounds and x64 support
-* New weapons: MP34, PPSH, Mosin Nagant, M1 Garand, BAR, MP44, MG42, G43, M97, Revolver, MG34
-* New high poly models for the vanilla weapons, including world models
-* New high poly models and textures for BJ's hands and sleeves
-* New high quality textures
-* Atmospheric effects support (rain & snow)
-* New holdable items: Adrenaline and Bandages
+* Mod is based on ioRTCW source port, which provides proper widescreen support, high quality sound engine and 64-bit systems support
+* Expanded arsenal which includes 12 new weapons
+* New HQ models for the vanilla weapons
+* HQ textures for the environment and characters, which are still faithful to the original style and atmosphere
+* Atmospheric effects support - rain and snow
+* New inventory items - adrenaline and bandages
 * Real recoil system
 * Rebalanced weapons characteristics
 * Rebalanced AI
 * Overhauled sounds
 * New HUD and UI
 * New difficulty system
+* Subtitles support
+* Steam Workshop integration for custom maps\mods
+* Restored cut content including training level and unused soundtrack
 * And more!
+
+Available on ModDB:
+https://www.moddb.com/mods/realrtcw-realism-mod
+
+And on Steam:
+https://store.steampowered.com/app/1379630/RealRTCW/
 
 Arch Linux Repo by M0Rf30:
 https://aur.archlinux.org/packages/realrtcw/

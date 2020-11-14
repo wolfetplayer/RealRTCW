@@ -701,7 +701,7 @@ int main( int argc, char **argv )
     // steamworks integration
     
     if (steamRestartIfNecessary()){
-		OutputDebugStringA("restart true");
+		//OutputDebugStringA("restart true");
         Sys_Exit( 0 ); // or maybe just 'return 0' ?
 		//return 0;
 	}

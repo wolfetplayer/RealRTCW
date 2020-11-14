@@ -47,6 +47,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "../qcommon/q_shared.h"
 #include "../qcommon/qcommon.h"
 
+#include "../steam/steam.h"
+#include "stdbool.h"
+
+
 static char binaryPath[ MAX_OSPATH ] = { 0 };
 static char installPath[ MAX_OSPATH ] = { 0 };
 
@@ -691,6 +695,20 @@ int main( int argc, char **argv )
 {
 	int   i;
 	char  commandLine[ MAX_STRING_CHARS ] = { 0 };
+
+
+    //**************************************************************
+    // steamworks integration
+    
+    if (steamRestartIfNecessary()){
+		OutputDebugStringA("restart true");
+        Sys_Exit( 0 ); // or maybe just 'return 0' ?
+		//return 0;
+	}
+    //**************************************************************
+	//OutputDebugStringA("restart false");
+
+	steamInit();
 
 #ifndef DEDICATED
 	// SDL version check

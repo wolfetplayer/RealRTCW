@@ -286,6 +286,7 @@ R2DIR=$(MOUNT_DIR)/rend2
 CMDIR=$(MOUNT_DIR)/qcommon
 SDLDIR=$(MOUNT_DIR)/sdl
 ASMDIR=$(MOUNT_DIR)/asm
+STEAMDIR=$(MOUNT_DIR)/steam
 SYSDIR=$(MOUNT_DIR)/sys
 GDIR=$(MOUNT_DIR)/game
 CGDIR=$(MOUNT_DIR)/cgame
@@ -1262,6 +1263,32 @@ $(echo_cmd) "SPLINE_CXX $<"
 $(Q)$(CXX) $(NOTSHLIBCFLAGS) $(CFLAGS) $(CLIENT_CFLAGS) $(OPTIMIZE) -o $@ -c $<
 endef
 
+
+
+
+
+
+
+
+
+#############################################################################
+# STEAMWORKS INTEGRATION
+#############################################################################
+
+ifeq ($(ARCH),x86)
+  CFLAGS += -DARCH_32
+endif
+ifeq ($(ARCH),x86_64)
+  CFLAGS += -DARCH_64
+endif
+  
+
+
+
+
+
+
+
 #############################################################################
 # MAIN TARGETS
 #############################################################################
@@ -1685,6 +1712,7 @@ Q3OBJ = \
   $(B)/client/sdl_snd.o \
   \
   $(B)/client/con_log.o \
+  $(B)/client/steam.o \
   $(B)/client/sys_main.o
 
 ifdef MINGW
@@ -2277,6 +2305,7 @@ Q3DOBJ = \
   $(B)/ded/null_snddma.o \
   \
   $(B)/ded/con_log.o \
+  $(B)/ded/steam.o \
   $(B)/ded/sys_main.o
 
 ifeq ($(ARCH),x86)
@@ -2557,6 +2586,9 @@ $(B)/client/%.o: $(ZDIR)/%.c
 $(B)/client/%.o: $(SDLDIR)/%.c
 	$(DO_CC)
 
+$(B)/client/%.o: $(STEAMDIR)/%.c
+	$(DO_CC)
+
 $(B)/client/%.o: $(SYSDIR)/%.c
 	$(DO_CC)
 
@@ -2683,6 +2715,9 @@ $(B)/ded/%.o: $(ZDIR)/%.c
 
 $(B)/ded/%.o: $(BLIBDIR)/%.c
 	$(DO_BOT_CC)
+
+$(B)/ded/%.o: $(STEAMDIR)/%.c
+	$(DO_DED_CC)
 
 $(B)/ded/%.o: $(SYSDIR)/%.c
 	$(DO_DED_CC)

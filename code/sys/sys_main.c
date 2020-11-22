@@ -709,6 +709,9 @@ int main( int argc, char **argv )
 	//OutputDebugStringA("restart false");
 
 	steamInit();
+	
+	//steamSetAchievement("reached_100_kills"); // set achievement example
+	
 
 #ifndef DEDICATED
 	// SDL version check
@@ -781,6 +784,7 @@ int main( int argc, char **argv )
 	while( 1 )
 	{
 		Com_Frame( );
+		steamRun();
 	}
 
 	return 0;

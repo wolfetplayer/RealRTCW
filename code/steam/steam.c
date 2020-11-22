@@ -20,6 +20,21 @@ HMODULE getLib(void){
 	return mod;
 }
 
+void steamRun(void)
+{
+#ifdef WIN32
+
+	HMODULE mod = getLib();
+	FARPROC p = GetProcAddress(mod, "c_SteamAPI_Run");
+	void (*proc)(void) 	= p;
+	
+	p();
+	
+#endif
+
+	return;
+}
+
 bool steamInit(void)
 { 
 #ifdef WIN32
@@ -40,6 +55,23 @@ bool steamRestartIfNecessary(void){
 	bool r = p2(steam_app_id);
 	return r;
 #endif
+	return false;
+}
+
+bool steamSetAchievement(const char* id)
+{
+#ifdef WIN32
+
+	HMODULE mod = getLib();
+	FARPROC p = GetProcAddress(mod, "c_SteamAPI_SetAchievement");
+	
+	bool (*proc)(const char*) = p;
+	bool r = p(id);
+
+	return r;
+	
+#endif
+
 	return false;
 }
 

@@ -279,6 +279,7 @@ endif
 
 BD=$(BUILD_DIR)/debug-$(PLATFORM)-$(ARCH)
 BR=$(BUILD_DIR)/release-$(PLATFORM)-$(ARCH)
+STEAMDIR=$(MOUNT_DIR)/steam
 CDIR=$(MOUNT_DIR)/client
 SDIR=$(MOUNT_DIR)/server
 RDIR=$(MOUNT_DIR)/renderer
@@ -286,7 +287,6 @@ R2DIR=$(MOUNT_DIR)/rend2
 CMDIR=$(MOUNT_DIR)/qcommon
 SDLDIR=$(MOUNT_DIR)/sdl
 ASMDIR=$(MOUNT_DIR)/asm
-STEAMDIR=$(MOUNT_DIR)/steam
 SYSDIR=$(MOUNT_DIR)/sys
 GDIR=$(MOUNT_DIR)/game
 CGDIR=$(MOUNT_DIR)/cgame
@@ -1604,6 +1604,8 @@ $(Q3ASM): $(Q3ASMOBJ)
 #############################################################################
 
 Q3OBJ = \
+  $(B)/client/steam.o \
+  \
   $(B)/client/cl_cgame.o \
   $(B)/client/cl_cin.o \
   $(B)/client/cl_console.o \
@@ -1712,7 +1714,6 @@ Q3OBJ = \
   $(B)/client/sdl_snd.o \
   \
   $(B)/client/con_log.o \
-  $(B)/client/steam.o \
   $(B)/client/sys_main.o
 
 ifdef MINGW
@@ -2237,6 +2238,8 @@ endif
 #############################################################################
 
 Q3DOBJ = \
+  $(B)/ded/steam.o \
+  \
   $(B)/ded/sv_bot.o \
   $(B)/ded/sv_client.o \
   $(B)/ded/sv_ccmds.o \
@@ -2305,7 +2308,6 @@ Q3DOBJ = \
   $(B)/ded/null_snddma.o \
   \
   $(B)/ded/con_log.o \
-  $(B)/ded/steam.o \
   $(B)/ded/sys_main.o
 
 ifeq ($(ARCH),x86)
@@ -2429,6 +2431,7 @@ $(B)/$(BASEGAME)/vm/cgame.sp.qvm: $(Q3CGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 #############################################################################
 
 Q3GOBJ_ = \
+  $(B)/client/steam.o \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_cast.o \
   $(B)/$(BASEGAME)/game/ai_cast_characters.o \
@@ -2533,6 +2536,27 @@ $(B)/$(BASEGAME)/vm/ui.sp.qvm: $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm $(Q3ASM)
 	$(Q)$(Q3ASM) -o $@ $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm
 
 
+
+
+#############################################################################
+## STEAM INTEGRATION
+#############################################################################
+
+$(B)/client/%.o: $(STEAMDIR)/%.c
+	$(DO_CC)
+	
+$(B)/client/%.o: $(STEAMDIR)/%.m
+	$(DO_CC)
+	
+$(B)/ded/%.o: $(STEAMDIR)/%.c
+	$(DO_DED_CC)
+	
+$(B)/ded/%.o: $(STEAMDIR)/%.m
+	$(DO_DED_CC)
+
+$(B)/$(BASEGAME)/game/%.o: $(STEAMDIR)/%.c
+	$(DO_GAME_CC)
+
 #############################################################################
 ## CLIENT/SERVER RULES
 #############################################################################
@@ -2584,9 +2608,6 @@ $(B)/client/%.o: $(ZDIR)/%.c
 	$(DO_CC)
 
 $(B)/client/%.o: $(SDLDIR)/%.c
-	$(DO_CC)
-
-$(B)/client/%.o: $(STEAMDIR)/%.c
 	$(DO_CC)
 
 $(B)/client/%.o: $(SYSDIR)/%.c
@@ -2715,9 +2736,6 @@ $(B)/ded/%.o: $(ZDIR)/%.c
 
 $(B)/ded/%.o: $(BLIBDIR)/%.c
 	$(DO_BOT_CC)
-
-$(B)/ded/%.o: $(STEAMDIR)/%.c
-	$(DO_DED_CC)
 
 $(B)/ded/%.o: $(SYSDIR)/%.c
 	$(DO_DED_CC)

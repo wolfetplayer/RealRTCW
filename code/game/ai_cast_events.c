@@ -46,6 +46,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+#include "../steam/steam.h"
+
 /*
 Contains response functions for various events that require specific handling
 for Cast AI's.
@@ -161,6 +163,24 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	cast_state_t    *cs;
 	qboolean nogib = qtrue;
 	char mapname[MAX_QPATH];
+	
+	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
+	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
+	
+	/*{
+		char x[1000];
+		sprintf(x, "### died, char type: %d, attacker is client: %d, attacker ! ai char: %d, mod: %d, mod is panzerfaust: %d",
+				self->aiCharacter, (attacker && attacker->client), !( attacker->aiCharacter ), 
+				meansOfDeath, meansOfDeath == MOD_PANZERFAUST);
+		OutputDebugStringA(x);
+	}*/
+	
+	
+	if(self->aiCharacter == AICHAR_LOPER && killerPlayer && modPanzerfaust)
+	{
+		OutputDebugStringA("set achievement ACH_LOPER_ROCKET");
+		steamSetAchievement("ACH_LOPER_ROCKET");
+	}
 
 	// print debugging message
 	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {

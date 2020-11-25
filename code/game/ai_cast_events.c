@@ -165,6 +165,8 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	char mapname[MAX_QPATH];
 	
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
+	qboolean modKicked = (meansOfDeath == MOD_KICKED);
+	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	
 	/*{
@@ -178,9 +180,22 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	
 	if(self->aiCharacter == AICHAR_LOPER && killerPlayer && modPanzerfaust)
 	{
-		OutputDebugStringA("set achievement ACH_LOPER_ROCKET");
+		//OutputDebugStringA("set achievement ACH_LOPER_ROCKET");
 		steamSetAchievement("ACH_LOPER_ROCKET");
 	}
+
+		
+	if(self->aiCharacter == AICHAR_ELITEGUARD && killerPlayer && modKicked)
+	{
+		steamSetAchievement("ACH_ELITE_FOOT");
+	}
+
+	if(self->aiCharacter == AICHAR_PROTOSOLDIER && killerPlayer && modKnife)
+	{
+		steamSetAchievement("ACH_PROTO_KNIFE");
+	}
+
+
 
 	// print debugging message
 	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {

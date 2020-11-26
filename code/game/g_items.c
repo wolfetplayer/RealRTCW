@@ -41,6 +41,8 @@ If you have questions concerning this license or the applicable additional terms
 #include "g_local.h"
 #include "km_cvar.h"	// Knightmare added
 
+#include "../steam/steam.h"
+
 
 
 #define RESPAWN_SP          -1
@@ -219,6 +221,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	switch ( item ) {
 	case HI_WINE:           // 1921 Chateu Lafite - gives 25 pts health up to max health
 		ent->health += 25;
+		steamSetAchievement("ACH_WINE");
 		if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
 			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 		}
@@ -227,6 +230,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_ADRENALINE:       
 		ent->client->ps.powerups[PW_NOFATIGUE] = 60000;
 		ent->health += 100;
+		steamSetAchievement("ACH_ADRENALINE");
 		
 		if ( g_gameskill.integer == GSKILL_REALISM || g_gameskill.integer == GSKILL_MAX ) {
 			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
@@ -239,6 +243,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 
 	case HI_BANDAGES:       
 		ent->health += 20;
+		steamSetAchievement("ACH_BANDAGES");
 			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
 			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 		}

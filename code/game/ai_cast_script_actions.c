@@ -46,6 +46,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+#include "../steam/steam.h"
+
 /*
 Contains the code to handle the various commands available with an event script.
 
@@ -2273,6 +2275,13 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	gentity_t   *player;
 	qboolean silent = qfalse, endgame = qfalse, savepersist = qfalse;
 	int exitTime = 8000;
+	/*char mapname[MAX_QPATH];
+
+	if ( Q_stricmp( mapname, "escape2"))
+	{
+    steamSetAchievement("ACH_TRAINING");
+	}
+	*/
 
 	player = AICast_FindEntityForName( "player" );
 	// double check that they are still alive
@@ -2367,6 +2376,26 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	//else
 	//	trap_SendConsoleCommand( EXEC_APPEND, va("spmap %s\n", newstr ) );
 
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_AchievementMap_W3D
+==================
+*/
+qboolean AICast_ScriptAction_AchievementMap_W3D( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_W3D_1");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_AchievementMap_W3DSEC
+==================
+*/
+qboolean AICast_ScriptAction_AchievementMap_W3DSEC( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_W3D_2");
 	return qtrue;
 }
 

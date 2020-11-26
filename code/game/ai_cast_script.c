@@ -96,6 +96,8 @@ qboolean AICast_ScriptAction_SavePersistant( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_AchievementMap_W3D( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_AchievementMap_W3DSEC( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_goldchest( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_warcrime( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -185,6 +187,8 @@ cast_script_stack_action_t scriptActions[] =
 	{"changelevel",      AICast_ScriptAction_ChangeLevel},
 	{"achievement_map_w3d",      AICast_ScriptAction_AchievementMap_W3D},
 	{"achievement_map_w3dsec",      AICast_ScriptAction_AchievementMap_W3DSEC},
+	{"achievement_goldchest",      AICast_ScriptAction_Achievement_goldchest},
+	{"achievement_warcrime",      AICast_ScriptAction_Achievement_warcrime},
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added
 	{"foundsecret",      AICast_ScriptAction_FoundSecret},

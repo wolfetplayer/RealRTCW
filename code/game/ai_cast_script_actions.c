@@ -2401,10 +2401,31 @@ qboolean AICast_ScriptAction_AchievementMap_W3DSEC( cast_state_t *cs, char *para
 
 /*
 ==================
+AICast_ScriptAction_Achievement_goldchest
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_goldchest( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_SECRET_CRYPT2");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_warcrime
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_warcrime( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_KILL_CIVILIAN");
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params ) {
+	steamSetAchievement("ACH_SECRET");
 	gentity_t *player = AICast_FindEntityForName( "player" );
 //	level.numSecretsFound++;
 	player->numSecretsFound++;

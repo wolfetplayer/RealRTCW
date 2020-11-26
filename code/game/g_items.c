@@ -244,8 +244,8 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_BANDAGES:       
 		ent->health += 20;
 		steamSetAchievement("ACH_BANDAGES");
-			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+		if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
+		ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 		}
 		break;
 
@@ -450,6 +450,11 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 //			}
 //		}
 //----(SA) end
+	}
+
+	if (( weapon == WP_PPSH ) && strstr (level.scriptAI, "Village1"))
+	{
+    steamSetAchievement("ACH_PPSH");
 	}
 
 

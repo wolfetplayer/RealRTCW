@@ -167,7 +167,9 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
 	qboolean modKicked = (meansOfDeath == MOD_KICKED);
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
+	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
+	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
 	
 	/*{
 		char x[1000];
@@ -193,6 +195,11 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	if(self->aiCharacter == AICHAR_PROTOSOLDIER && killerPlayer && modKnife)
 	{
 		steamSetAchievement("ACH_PROTO_KNIFE");
+	}
+
+		if(self->aiCharacter == AICHAR_HEINRICH && killerEnv && modCrush)
+	{
+		steamSetAchievement("ACH_HEIN_NOSHOT");
 	}
 
 

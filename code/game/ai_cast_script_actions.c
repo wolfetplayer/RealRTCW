@@ -2421,6 +2421,60 @@ qboolean AICast_ScriptAction_Achievement_warcrime( cast_state_t *cs, char *param
 
 /*
 ==================
+AICast_ScriptAction_Achievement_speedrun
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_speedrun( cast_state_t *cs, char *params ) {
+	gentity_t   *player;
+	int playtime = 0;
+	player = AICast_FindEntityForName( "player" );
+	
+	if ( player ) 
+	{
+	AICast_AgePlayTime( player->s.number );
+	playtime = AICast_PlayTime( player->s.number );
+	}
+
+    if ( playtime <= 90000 ) 
+	{
+    steamSetAchievement("ACH_ESCAPE_SPEEDRUN");
+	}
+
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_training
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_training( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_TRAINING");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_strangelove
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_strangelove( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_MAGIC");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_rocketstealth
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_rocketstealth( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_ROCKET_STEALTH");
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

@@ -252,6 +252,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_BOOK1:
 	case HI_BOOK2:
 	case HI_BOOK3:
+	    steamSetAchievement("ACH_READ_BOOK");
 		G_AddEvent( ent, EV_POPUPBOOK, ( item - HI_BOOK1 ) + 1 );
 		break;
 	}

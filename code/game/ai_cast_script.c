@@ -98,6 +98,10 @@ qboolean AICast_ScriptAction_AchievementMap_W3D( cast_state_t *cs, char *params 
 qboolean AICast_ScriptAction_AchievementMap_W3DSEC( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_goldchest( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_warcrime( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_speedrun( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_training( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_strangelove( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_rocketstealth( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -189,6 +193,10 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_map_w3dsec",      AICast_ScriptAction_AchievementMap_W3DSEC},
 	{"achievement_goldchest",      AICast_ScriptAction_Achievement_goldchest},
 	{"achievement_warcrime",      AICast_ScriptAction_Achievement_warcrime},
+	{"achievement_speedrun",      AICast_ScriptAction_Achievement_speedrun},
+	{"achievement_training",      AICast_ScriptAction_Achievement_training},
+	{"achievement_strangelove",      AICast_ScriptAction_Achievement_strangelove},
+	{"achievement_rocketstealth",      AICast_ScriptAction_Achievement_rocketstealth},
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added
 	{"foundsecret",      AICast_ScriptAction_FoundSecret},

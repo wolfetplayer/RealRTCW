@@ -458,6 +458,11 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
     steamSetAchievement("ACH_PPSH");
 	}
 
+	if (( weapon == WP_MOSIN ) && strstr (level.scriptAI, "chateau"))
+	{
+    steamSetAchievement("ACH_MOSIN");
+	}
+
 
 	//----(SA)	added
 	// check for special colt->akimbo add (if you've got a colt already, add the second now)

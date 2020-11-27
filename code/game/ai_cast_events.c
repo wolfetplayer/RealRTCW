@@ -168,6 +168,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modKicked = (meansOfDeath == MOD_KICKED);
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
 	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
+	qboolean modFalling = (meansOfDeath == MOD_FALLING);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
 	
@@ -184,6 +185,11 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	{
 		//OutputDebugStringA("set achievement ACH_LOPER_ROCKET");
 		steamSetAchievement("ACH_LOPER_ROCKET");
+	}
+
+	if(self->aiCharacter == AICHAR_PROTOSOLDIER && killerEnv && modFalling)
+	{
+		steamSetAchievement("ACH_PROTO_FALL");
 	}
 
 		

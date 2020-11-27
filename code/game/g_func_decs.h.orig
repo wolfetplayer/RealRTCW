@@ -114,6 +114,7 @@ extern qboolean AICast_ScriptAction_Achievement_speedrun ( cast_state_t * cs , c
 extern qboolean AICast_ScriptAction_Achievement_training ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_strangelove ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_rocketstealth ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_crystal ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_EndGame ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Teleport ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SavePersistant ( cast_state_t * cs , char * params ) ;

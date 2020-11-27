@@ -1292,6 +1292,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_training", (byte *)AICast_ScriptAction_Achievement_training},
 {"AICast_ScriptAction_Achievement_strangelove", (byte *)AICast_ScriptAction_Achievement_strangelove},
 {"AICast_ScriptAction_Achievement_rocketstealth", (byte *)AICast_ScriptAction_Achievement_rocketstealth},
+{"AICast_ScriptAction_Achievement_crystal", (byte *)AICast_ScriptAction_Achievement_crystal},
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
 {"AICast_ScriptAction_Teleport", (byte *)AICast_ScriptAction_Teleport},
 {"AICast_ScriptAction_SavePersistant", (byte *)AICast_ScriptAction_SavePersistant},

@@ -2475,6 +2475,16 @@ qboolean AICast_ScriptAction_Achievement_rocketstealth( cast_state_t *cs, char *
 
 /*
 ==================
+AICast_ScriptAction_Achievement_crystal
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_crystal( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CRYSTALSKULL");
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

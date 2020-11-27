@@ -1295,6 +1295,13 @@ extern qboolean AICast_ScriptAction_Achievement_rocketstealth ( cast_state_t * c
 extern qboolean AICast_ScriptAction_Achievement_crystal ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_stealth1 ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_stealth2 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter1 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter2 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter3 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter4 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter5 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter6 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_chapter7 ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_EndGame ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Teleport ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SavePersistant ( cast_state_t * cs , char * params ) ;

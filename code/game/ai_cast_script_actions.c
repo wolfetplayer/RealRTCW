@@ -2531,6 +2531,76 @@ qboolean AICast_ScriptAction_Achievement_stealth2( cast_state_t *cs, char *param
 
 /*
 ==================
+AICast_ScriptAction_Achievement_chapter1
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter1( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_1");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter2( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_2");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter3
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter3( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_3");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter4
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter4( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_4");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter5
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter5( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_5");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter6
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter6( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_6");
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter7
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter7( cast_state_t *cs, char *params ) {
+    steamSetAchievement("ACH_CHAPTER_7");
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

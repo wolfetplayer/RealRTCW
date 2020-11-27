@@ -2385,7 +2385,10 @@ AICast_ScriptAction_AchievementMap_W3D
 ==================
 */
 qboolean AICast_ScriptAction_AchievementMap_W3D( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_W3D_1");
+	}
 	return qtrue;
 }
 
@@ -2395,7 +2398,10 @@ AICast_ScriptAction_AchievementMap_W3DSEC
 ==================
 */
 qboolean AICast_ScriptAction_AchievementMap_W3DSEC( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_W3D_2");
+	}
 	return qtrue;
 }
 
@@ -2405,7 +2411,10 @@ AICast_ScriptAction_Achievement_goldchest
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_goldchest( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_SECRET_CRYPT2");
+	}
 	return qtrue;
 }
 
@@ -2415,7 +2424,10 @@ AICast_ScriptAction_Achievement_warcrime
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_warcrime( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_KILL_CIVILIAN");
+	}
 	return qtrue;
 }
 
@@ -2437,7 +2449,10 @@ qboolean AICast_ScriptAction_Achievement_speedrun( cast_state_t *cs, char *param
 
     if ( playtime <= 90000 ) 
 	{
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_ESCAPE_SPEEDRUN");
+	}
 	}
 
 	return qtrue;
@@ -2459,7 +2474,10 @@ AICast_ScriptAction_Achievement_strangelove
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_strangelove( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_MAGIC");
+	}
 	return qtrue;
 }
 
@@ -2469,7 +2487,10 @@ AICast_ScriptAction_Achievement_rocketstealth
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_rocketstealth( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_ROCKET_STEALTH");
+	}
 	return qtrue;
 }
 
@@ -2479,7 +2500,10 @@ AICast_ScriptAction_Achievement_crystal
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_crystal( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CRYSTALSKULL");
+	}
 	return qtrue;
 }
 
@@ -2500,7 +2524,10 @@ qboolean AICast_ScriptAction_Achievement_stealth1( cast_state_t *cs, char *param
 
 	if ( attempts <= 1 ) 
 	{
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_STEALTH_1");
+	}
 	}
 
 	return qtrue;
@@ -2523,7 +2550,10 @@ qboolean AICast_ScriptAction_Achievement_stealth2( cast_state_t *cs, char *param
 
 	if ( attempts <= 1 ) 
 	{
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_STEALTH_2");
+	}
 	}
 
 	return qtrue;
@@ -2535,7 +2565,10 @@ AICast_ScriptAction_Achievement_chapter1
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter1( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_1");
+	}
 	return qtrue;
 }
 
@@ -2545,7 +2578,10 @@ AICast_ScriptAction_Achievement_chapter2
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter2( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_2");
+	}
 	return qtrue;
 }
 
@@ -2555,7 +2591,10 @@ AICast_ScriptAction_Achievement_chapter3
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter3( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_3");
+	}
 	return qtrue;
 }
 
@@ -2565,7 +2604,10 @@ AICast_ScriptAction_Achievement_chapter4
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter4( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_4");
+	}
 	return qtrue;
 }
 
@@ -2575,7 +2617,10 @@ AICast_ScriptAction_Achievement_chapter5
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter5( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_5");
+	}
 	return qtrue;
 }
 
@@ -2585,7 +2630,10 @@ AICast_ScriptAction_Achievement_chapter6
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter6( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_6");
+	}
 	return qtrue;
 }
 
@@ -2595,7 +2643,140 @@ AICast_ScriptAction_Achievement_chapter7
 ==================
 */
 qboolean AICast_ScriptAction_Achievement_chapter7( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
     steamSetAchievement("ACH_CHAPTER_7");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter1_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter1_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_1_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter2_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter2_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_2_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter3_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter3_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_3_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter4_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter4_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_4_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter5_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter5_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_5_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter6_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter6_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_6_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_chapter7_hard
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_chapter7_hard( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_CHAPTER_7_HARD");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_boss1
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_boss1( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_BOSS1");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_boss2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_boss2( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_BOSS2");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_boss3
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_boss3( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_BOSS3");
+	}
 	return qtrue;
 }
 
@@ -2605,7 +2786,10 @@ AICast_ScriptAction_FoundSecret
 ==================
 */
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
 	steamSetAchievement("ACH_SECRET");
+	}
 	gentity_t *player = AICast_FindEntityForName( "player" );
 //	level.numSecretsFound++;
 	player->numSecretsFound++;

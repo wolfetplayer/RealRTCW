@@ -112,6 +112,16 @@ qboolean AICast_ScriptAction_Achievement_chapter4( cast_state_t *cs, char *param
 qboolean AICast_ScriptAction_Achievement_chapter5( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_chapter6( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_chapter7( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter1_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter2_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter3_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter4_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter5_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter6_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_chapter7_hard( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_boss1( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_boss2( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_boss3( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -217,6 +227,16 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_chapter5",      AICast_ScriptAction_Achievement_chapter5},
 	{"achievement_chapter6",      AICast_ScriptAction_Achievement_chapter6},
 	{"achievement_chapter7",      AICast_ScriptAction_Achievement_chapter7},
+	{"achievement_chapter1_hard",      AICast_ScriptAction_Achievement_chapter1_hard},
+	{"achievement_chapter2_hard",      AICast_ScriptAction_Achievement_chapter2_hard},
+	{"achievement_chapter3_hard",      AICast_ScriptAction_Achievement_chapter3_hard},
+	{"achievement_chapter4_hard",      AICast_ScriptAction_Achievement_chapter4_hard},
+	{"achievement_chapter5_hard",      AICast_ScriptAction_Achievement_chapter5_hard},
+	{"achievement_chapter6_hard",      AICast_ScriptAction_Achievement_chapter6_hard},
+	{"achievement_chapter7_hard",      AICast_ScriptAction_Achievement_chapter7_hard},
+	{"achievement_boss1",      AICast_ScriptAction_Achievement_boss1},
+	{"achievement_boss2",      AICast_ScriptAction_Achievement_boss2},
+	{"achievement_boss3",      AICast_ScriptAction_Achievement_boss3},
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added
 	{"foundsecret",      AICast_ScriptAction_FoundSecret},

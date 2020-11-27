@@ -2485,6 +2485,52 @@ qboolean AICast_ScriptAction_Achievement_crystal( cast_state_t *cs, char *params
 
 /*
 ==================
+AICast_ScriptAction_Achievement_stealth1
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_stealth1( cast_state_t *cs, char *params ) {
+	gentity_t   *player;
+	player = AICast_FindEntityForName( "player" );
+	int attempts = 0;
+
+	if ( player ) 
+	{
+	attempts = AICast_NumAttempts( player->s.number ) + 1;
+	}
+
+	if ( attempts <= 1 ) 
+	{
+    steamSetAchievement("ACH_STEALTH_1");
+	}
+
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_stealth2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_stealth2( cast_state_t *cs, char *params ) {
+	gentity_t   *player;
+	player = AICast_FindEntityForName( "player" );
+	int attempts = 0;
+
+	if ( player ) 
+	{
+	attempts = AICast_NumAttempts( player->s.number ) + 1;
+	}
+
+	if ( attempts <= 1 ) 
+	{
+    steamSetAchievement("ACH_STEALTH_2");
+	}
+
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

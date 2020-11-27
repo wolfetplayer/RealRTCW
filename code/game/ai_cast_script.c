@@ -103,6 +103,8 @@ qboolean AICast_ScriptAction_Achievement_training( cast_state_t *cs, char *param
 qboolean AICast_ScriptAction_Achievement_strangelove( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_rocketstealth( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_crystal( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_stealth1( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_stealth2( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -199,6 +201,8 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_strangelove",      AICast_ScriptAction_Achievement_strangelove},
 	{"achievement_rocketstealth",      AICast_ScriptAction_Achievement_rocketstealth},
 	{"achievement_crystal",      AICast_ScriptAction_Achievement_crystal},
+	{"achievement_stealth1",      AICast_ScriptAction_Achievement_stealth1},
+	{"achievement_stealth2",      AICast_ScriptAction_Achievement_stealth2},
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added
 	{"foundsecret",      AICast_ScriptAction_FoundSecret},

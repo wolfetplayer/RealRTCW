@@ -115,7 +115,6 @@ void Weapon_Knife( gentity_t *ent ) {
 
 	// RF, no knife damage for big guys
 	switch ( traceEnt->aiCharacter ) {
-	case AICHAR_PROTOSOLDIER:
 	case AICHAR_SUPERSOLDIER:
 	case AICHAR_HEINRICH:
 		return;
@@ -691,7 +690,7 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_MP40:       return 850; 
 			case WP_MP34:       return 900; 
 			case WP_TT33:       return 450; 
-			case WP_PPSH:       return 1100; 
+			case WP_PPSH:       return 1000; 
 			case WP_MOSIN:      return 300;
 			case WP_G43:        return 350; 
 			case WP_M1GARAND:   return 350; 
@@ -1227,7 +1226,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 			upangle *= 800;
 		} else {
 // jpw
-			upangle *= 600;     //									    0.0 / 600.0
+			upangle *= 800;     //									    0.0 / 600.0
 		}
 	}
 // JPW NERVE

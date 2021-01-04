@@ -199,6 +199,13 @@ static void CG_DrawPlayerArmorValue( rectDef_t *rect, int font, float scale, vec
 
 	ps = &cg.snap->ps;
 
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
+
+
+
 	value = ps->stats[STAT_ARMOR];
 
 	if ( cg_fixedAspect.integer == 2 ) {
@@ -286,6 +293,11 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 
 	if ( cg_fixedAspect.integer == 2 ) {
 		CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
+	}
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
 	}
 
 	// DHM - Nerve :: special case for WP_CLASS_SPECIAL
@@ -404,7 +416,7 @@ static void CG_DrawPlayerAmmoIcon( rectDef_t *rect, qboolean draw2D ) {
 
 	cent = &cg_entities[cg.snap->ps.clientNum];
 
-	if ( draw2D || ( !cg_draw3dIcons.integer && cg_drawIcons.integer ) ) {
+	if (  draw2D || ( !cg_draw3dIcons.integer && cg_drawIcons.integer ) ) {
 		qhandle_t icon;
 		icon = cg_weapons[ cg.predictedPlayerState.weapon ].ammoIcon;
 		if ( icon ) {
@@ -445,6 +457,11 @@ static void CG_DrawCursorhint( rectDef_t *rect ) {
 	qhandle_t icon, icon2 = 0;
 	float scale, halfscale;
 	qboolean redbar = qfalse;
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
 
 	if ( !cg_cursorHints.integer ) {
 		return;
@@ -563,6 +580,11 @@ static void CG_DrawMessageIcon( rectDef_t *rect ) {
 	if ( !cg_youGotMail.integer ) {
 		return;
 	}
+	
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
 
 	if ( cg_youGotMail.integer == 2 ) {
 		icon = cgs.media.youGotObjectiveShader;
@@ -589,6 +611,11 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	playerState_t   *ps;
 	int weap;
 	qboolean special = qfalse;
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
 
 	cent = &cg_entities[cg.snap->ps.clientNum];
 	ps = &cg.snap->ps;
@@ -672,6 +699,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 
 
 static void CG_DrawPlayerHead( rectDef_t *rect, qboolean draw2D ) {
+	
 	vec3_t angles;
 	float size, stretch;
 	float frac;
@@ -1024,7 +1052,6 @@ static void CG_DrawSelectedPlayerHead( rectDef_t *rect, qboolean draw2D, qboolea
 	vec3_t origin;
 	vec3_t mins, maxs, angles;
 
-
 //	ci = cgs.clientinfo + ((voice) ? cgs.currentVoiceClient : sortedTeamPlayers[CG_GetSelectedPlayer()]);
 	ci = cgs.clientinfo + sortedTeamPlayers[CG_GetSelectedPlayer()];
 
@@ -1070,6 +1097,11 @@ static void CG_DrawPlayerHealth( rectDef_t *rect, int font, float scale, vec4_t 
 	playerState_t   *ps;
 	int value;
 	char num[16];
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
 
 	ps = &cg.snap->ps;
 
@@ -2147,6 +2179,11 @@ void CG_DrawWeapStability( rectDef_t *rect, vec4_t color, int align ) {
 		return;
 	}
 
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
+
 	if ( cg_drawSpreadScale.integer == 1 && !( cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE || cg.weaponSelect == WP_FG42SCOPE ) ) {
 		// cg_drawSpreadScale of '1' means only draw for scoped weapons, '2' means draw all the time (for debugging)
 		return;
@@ -2168,6 +2205,11 @@ CG_DrawWeapHeat
 void CG_DrawWeapHeat( rectDef_t *rect, int align ) {
 	vec4_t color = {1, 0, 0, 0.2f}, color2 = {1, 0, 0, 0.5f};
 	int flags = 0;
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
 
 	if ( !( cg.snap->ps.curWeapHeat ) ) {
 		return;
@@ -2201,6 +2243,11 @@ static void CG_DrawFatigue( rectDef_t *rect, vec4_t color, int align ) {
 	float barFrac;  //, omBarFrac;
 	int flags = 0;
 	float chargeTime;       // DHM - Nerve
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
 
 	if ( cg_fixedAspect.integer == 2 ) {
 		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);

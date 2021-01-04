@@ -3193,6 +3193,11 @@ void CG_DrawWeaponSelect( void ) {
 		return;
 	}
 
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
+
 	if ( !cg.weaponSelect ) {
 		return;
 	}

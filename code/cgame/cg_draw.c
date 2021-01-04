@@ -627,6 +627,7 @@ static void CG_DrawStatusBar( void ) {
 	vec3_t angles;
 //	vec3_t		origin;
 
+
 	static float colors[4][4] = {
 //		{ 0.2, 1.0, 0.2, 1.0 } , { 1.0, 0.2, 0.2, 1.0 }, {0.5, 0.5, 0.5, 1} };
 		{ 1, 0.69, 0, 1.0 },        // normal
@@ -1572,6 +1573,11 @@ static void CG_DrawPickupItem( void ) {
 
 	if ( cg_fixedAspect.integer == 2 ) {
 		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
+	}
+
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
 	}
 
 	value = cg.itemPickup;
@@ -2819,6 +2825,11 @@ static void CG_DrawDynamiteStatus( void ) {
 		return;
 	}
 
+	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
+	{
+	return;
+	}
+
 	if ( cg.snap->ps.grenadeTimeLeft <= 0 ) {
 		return;
 	}
@@ -3800,7 +3811,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		return;
 	}
 
-	CG_ScreenFade();
+	CG_ScreenFade(); 
 
 	if ( cg.snap->ps.pm_type == PM_INTERMISSION ) {
 		CG_DrawIntermission();

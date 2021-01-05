@@ -3839,7 +3839,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 					CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 				}
 
-				if ( !cg_oldWolfUI.integer ) {
+				if ( !(cg_oldWolfUI.integer) && !(cg_gameSkill.integer == GSKILL_REALISM )) {
 					Menu_PaintAll();
 					CG_DrawTimedMenus();
 				}

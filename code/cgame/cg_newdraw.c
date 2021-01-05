@@ -458,11 +458,6 @@ static void CG_DrawCursorhint( rectDef_t *rect ) {
 	float scale, halfscale;
 	qboolean redbar = qfalse;
 
-	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
-	{
-	return;
-	}
-
 	if ( !cg_cursorHints.integer ) {
 		return;
 	}

@@ -720,7 +720,7 @@ qboolean G_CallSpawn( gentity_t *ent ) {
 			return qtrue;
 		}
 	}
-	G_Printf( "%s doesn't have a spawn function\n", ent->classname );
+	//G_Printf( "%s doesn't have a spawn function\n", ent->classname ); //RealRTCW. Commented out due to map HEX editor modifications.
 	return qfalse;
 }
 

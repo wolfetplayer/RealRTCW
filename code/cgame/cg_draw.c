@@ -1575,11 +1575,6 @@ static void CG_DrawPickupItem( void ) {
 		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 	}
 
-	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
-	{
-	return;
-	}
-
 	value = cg.itemPickup;
 	if ( value ) {
 		fadeColor = CG_FadeColor( cg.itemPickupTime, 3000 );
@@ -2825,11 +2820,6 @@ static void CG_DrawDynamiteStatus( void ) {
 		return;
 	}
 
-	if ( cg_gameSkill.integer == GSKILL_REALISM ) 
-	{
-	return;
-	}
-
 	if ( cg.snap->ps.grenadeTimeLeft <= 0 ) {
 		return;
 	}
@@ -3839,7 +3829,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 					CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 				}
 
-				if ( !(cg_oldWolfUI.integer) && !(cg_gameSkill.integer == GSKILL_REALISM )) {
+if ( !cg_oldWolfUI.integer ) {
 					Menu_PaintAll();
 					CG_DrawTimedMenus();
 				}

@@ -97,7 +97,7 @@ typedef enum
 	P_SPRITE
 } particle_type_t;
 
-#define MAX_SHADER_ANIMS        16 // RealRTCW was 8
+#define MAX_SHADER_ANIMS        32 // RealRTCW was 8
 #define MAX_SHADER_ANIM_FRAMES  128 // RealRTCW was 64
 static char *shaderAnimNames[MAX_SHADER_ANIMS] = {
 	"explode1",

@@ -3958,14 +3958,15 @@ static void FS_CheckPak0( void )
 		if((foundPak & 0x01) != 0x01)
 		{
 			Q_strcat(errorText, sizeof(errorText),
-				"\n\n\"pak0.pk3\" is missing. Please copy it\n"
-				"from your legitimate RTCW CDROM.\n\n");
+				"\n\n\"pak0.pk3\" is missing. Please make sure that\n"
+				"Steam client,original RTCW and RealRTCW\n"
+				"are all installed on the same hard drive/Steam library. \n\n");
 		}
 
 		Q_strcat(errorText, sizeof(errorText),
-			va("Also check that your iortcw executable is in\n"
-				"the correct place and that every file\n"
-				"in the \"%s\" directory is present and readable.\n\n", BASEGAME));
+			va("Alternatively you can copy/paste\n"
+				"all .pk3 files from original RTCW Main folder\n"
+				"into RealRTCW Main folder.\n\n", BASEGAME));
 
 		Com_Error(ERR_FATAL, "%s", errorText);
 	}

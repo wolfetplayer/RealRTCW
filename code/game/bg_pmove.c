@@ -3621,11 +3621,11 @@ static void PM_Weapon( void ) {
 case WP_MG42M:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 120;
+			pm->pmext->weapRecoilDuration = 80;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
 		} else {
-			pm->pmext->weapRecoilDuration = 180;
+			pm->pmext->weapRecoilDuration = 100;
 			pm->pmext->weapRecoilYaw = crandom() * .25f;
 			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
 		}

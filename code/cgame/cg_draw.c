@@ -3376,6 +3376,12 @@ static void CG_DrawFlashDamage( void ) {
 		return;
 	}
 
+		// Blood blending
+	if ( cg_bloodBlend.integer ) {
+		return;
+	}
+	// end
+
 	if ( cg.v_dmg_time > cg.time ) {
 		redFlash = fabs( cg.v_dmg_pitch * ( ( cg.v_dmg_time - cg.time ) / DAMAGE_TIME ) );
 

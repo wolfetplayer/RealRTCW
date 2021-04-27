@@ -1814,6 +1814,7 @@ extern vmCvar_t mp_mapTitle;
 // -NERVE - SMF
 
 extern vmCvar_t cg_solidCrosshair;
+extern vmCvar_t cg_bloodBlend;
 
 //
 // cg_main.c

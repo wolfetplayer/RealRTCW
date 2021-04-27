@@ -288,6 +288,7 @@ vmCvar_t  	cg_lowAtmosphericEffects;
 vmCvar_t  	cg_forceAtmosphericEffects;
 
 vmCvar_t cg_solidCrosshair;
+vmCvar_t cg_bloodBlend;
 
 // -NERVE - SMF
 
@@ -506,6 +507,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_showAIState, "cg_showAIState", "0", CVAR_CHEAT},
 
 	{ &cg_solidCrosshair, "cg_solidCrosshair", "0", CVAR_ARCHIVE },
+	{ &cg_bloodBlend, "cg_bloodBlend", "0", CVAR_ARCHIVE },
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );

@@ -1873,7 +1873,7 @@ void FireWeapon( gentity_t *ent ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 //			ent->client->sniperRifleMuzzleYaw = crandom()*0.04; // used in clientthink
 			ent->client->sniperRifleMuzzleYaw = 0;
-			ent->client->sniperRifleMuzzlePitch = 0.07f;
+			ent->client->sniperRifleMuzzlePitch = 0.01f;
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}

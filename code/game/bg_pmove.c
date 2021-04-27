@@ -2749,7 +2749,7 @@ void PM_AdjustAimSpreadScale( void ) {
 			break;
 		case WP_PANZERFAUST:        // don't take movement into account as much
 			for ( i = 0; i < 2; i++ )
-				viewchange += ( 0.01f * fabs( pm->ps->velocity[i] ) );
+				viewchange += ( 0.001f * fabs( pm->ps->velocity[i] ) );
 			break;
 		default:
 			break;

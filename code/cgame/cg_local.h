@@ -1813,6 +1813,8 @@ extern vmCvar_t mp_mapDesc;
 extern vmCvar_t mp_mapTitle;
 // -NERVE - SMF
 
+extern vmCvar_t cg_solidCrosshair;
+
 //
 // cg_main.c
 //

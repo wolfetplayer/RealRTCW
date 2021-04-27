@@ -287,6 +287,8 @@ vmCvar_t cg_atmosphericEffects; // RealRTCW
 vmCvar_t  	cg_lowAtmosphericEffects;
 vmCvar_t  	cg_forceAtmosphericEffects;
 
+vmCvar_t cg_solidCrosshair;
+
 // -NERVE - SMF
 
 typedef struct {
@@ -502,6 +504,8 @@ cvarTable_t cvarTable[] = {
 	// -NERVE - SMF
 
 	{ &cg_showAIState, "cg_showAIState", "0", CVAR_CHEAT},
+
+	{ &cg_solidCrosshair, "cg_solidCrosshair", "0", CVAR_ARCHIVE },
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );

@@ -2397,9 +2397,9 @@ static void CG_DrawCrosshair( void ) {
 	vec4_t hcolor = {1, 1, 1, 1};
 	qboolean friendInSights = qfalse;
 
-	if ( cg.renderingThirdPerson ) {
+	/*if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	hcolor[3] = cg_crosshairAlpha.value;    //----(SA)	added
 
@@ -2585,9 +2585,9 @@ static void CG_DrawCrosshair3D( void ) {
 	char rendererinfos[128];
 	refEntity_t ent;
 
-	if ( cg.renderingThirdPerson ) {
+	/*if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	hcolor[3] = cg_crosshairAlpha.value;    //----(SA)	added
 
@@ -2863,9 +2863,9 @@ CG_CheckForCursorHints
 */
 void CG_CheckForCursorHints( void ) {
 
-	if ( cg.renderingThirdPerson ) {
+/*	if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	if ( cg.snap->ps.serverCursorHint != HINT_NONE ) { // let the client remember what was last looked at (for fading out)
 		cg.cursorHintTime = cg.time;
@@ -2895,9 +2895,9 @@ static void CG_DrawCrosshairNames( void ) {
 	if ( !cg_drawCrosshairNames.integer ) {
 		return;
 	}
-	if ( cg.renderingThirdPerson ) {
+	/*if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	// Ridah
 	if ( cg_gameType.integer == GT_SINGLE_PLAYER ) {

@@ -592,6 +592,9 @@ static void CG_OffsetFirstPersonView( void ) {
 #endif
 
 	// add angles based on velocity
+
+	if (cg_bobbing.integer)
+	{
 	VectorCopy( cg.predictedPlayerState.velocity, predictedVelocity );
 
 	delta = DotProduct( predictedVelocity, cg.refdef.viewaxis[0] );
@@ -618,6 +621,7 @@ static void CG_OffsetFirstPersonView( void ) {
 		delta = -delta;
 	}
 	angles[ROLL] += delta;
+	}
 
 //===================================
 
@@ -635,12 +639,15 @@ static void CG_OffsetFirstPersonView( void ) {
 	}
 
 	// add bob height
+	if (cg_bobbing.integer)
+	{
 	bob = cg.bobfracsin * cg.xyspeed * cg_bobup.value;
 	if ( bob > 6 ) {
 		bob = 6;
 	}
 
 	origin[2] += bob;
+	}
 
 
 	// add fall height

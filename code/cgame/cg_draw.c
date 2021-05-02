@@ -2432,15 +2432,22 @@ static void CG_DrawCrosshair( void ) {
 		weapnum = cg.weaponSelect;
 	}
 
+
+
 	switch ( weapnum ) {
 
 		// weapons that get no reticle
 	case WP_NONE:       // no weapon, no crosshair
-	//case WP_GARAND:
-		if ( cg.zoomedBinoc ) {
+	    return;
+	case WP_GARAND:
+		if ( cg.zoomedBinoc ) 
+		{
 			CG_DrawBinocReticle();
 		}
+	if ( !cg_snipersCrosshair.integer ) 
+	    {
 		return;
+	    }
 		break;
 
 		// special reticle for weapon
@@ -2496,11 +2503,14 @@ static void CG_DrawCrosshair( void ) {
 	}
 
 	// mauser only gets crosshair if you don't have the scope (I don't like this, but it's a test)
-	/*if ( cg.weaponSelect == WP_MAUSER ) {
+	if ( cg.weaponSelect == WP_MAUSER ) {
 		if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_SNIPERRIFLE ) ) {
-			return;
+		if ( !cg_snipersCrosshair.integer ) 
+	    {
+		return;
+	    }
 		}
-	}*/
+	}
 
 	if ( !cg_drawCrosshair.integer ) {	//----(SA)	moved down so it doesn't keep the scoped weaps from drawing reticles
 		return;

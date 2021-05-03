@@ -3394,7 +3394,7 @@ static void CG_DrawFlashDamage( void ) {
 	}
 
 		// Blood blending
-	if ( cg_bloodBlend.integer ) {
+	if ( !cg_bloodBlend.integer ) {
 		return;
 	}
 	// end

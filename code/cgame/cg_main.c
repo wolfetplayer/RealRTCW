@@ -512,7 +512,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_showAIState, "cg_showAIState", "0", CVAR_CHEAT},
 
 	{ &cg_solidCrosshair, "cg_solidCrosshair", "0", CVAR_ARCHIVE },
-	{ &cg_bloodBlend, "cg_bloodBlend", "0", CVAR_ARCHIVE },
+	{ &cg_bloodBlend, "cg_bloodBlend", "1", CVAR_ARCHIVE },
 	{ &cg_snipersCrosshair, "cg_snipersCrosshair", "1", CVAR_ARCHIVE },
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );

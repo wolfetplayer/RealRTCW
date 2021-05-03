@@ -981,7 +981,7 @@ static void CG_DamageBlendBlob( void ) {
 	}
 
 	//  we don't need this if bloodblend is enabled..
-	if ( cg_bloodBlend.integer ) {
+	if ( !cg_bloodBlend.integer ) {
 		return;
 	}
 

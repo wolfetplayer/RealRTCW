@@ -4708,6 +4708,11 @@ void CG_WeaponFireRecoil( int weapon ) {
 	pitchRecoilAdd = 0;
 	pitchAdd = 0;
 	yawRandom = 0;
+
+	if ( cg_thirdPerson.integer ) {
+		return;
+	}
+	
 	switch ( weapon ) {
 	case WP_LUGER:
 	case WP_SILENCER:

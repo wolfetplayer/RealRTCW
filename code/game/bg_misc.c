@@ -1113,7 +1113,7 @@ model="models/weapons2/garand/garand.md3"
 
 		"icons/iconw_garand_1",  // icon
 		"icons/ammo3",           // ammo icon
-		"",                      // pickup			//----(SA)	modified so it can no longer be given individually
+		"garand",                      // pickup			//----(SA)	modified so it can no longer be given individually
 		50,
 		IT_WEAPON,
 		WP_GARAND,

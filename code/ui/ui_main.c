@@ -7183,7 +7183,7 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			trap_Cvar_Set( "g_reloading", "0" );
 
 			trap_Key_SetCatcher( KEYCATCH_UI );
-			Menus_ActivateByName( "credit" );
+			Menus_ActivateByName( "main" );
 			return;
 //----(SA)	end
 

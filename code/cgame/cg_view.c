@@ -298,7 +298,7 @@ static void CG_OffsetThirdPersonView( void ) {
 	VectorMA( cg.refdef.vieworg, FOCUS_DISTANCE, forward, focusPoint );
 
 	VectorCopy( cg.refdef.vieworg, view );
-	view[1] += 20; //right left
+	view[1] += 10; //right left
 	view[2] += 10; //height
 
 	cg.refdefViewAngles[PITCH] *= 0.5;

@@ -1724,7 +1724,7 @@ void SetupWeaponsForSkill_MAX() // Max
 	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 5;
 	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 5;
 	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 1;
+	ammoTable[WP_PANZERFAUST].maxammo = 3;
 	ammoTable[WP_FLAMETHROWER].maxammo = 100;
 	ammoTable[WP_FLAMETHROWER].maxclip = 100;
 	ammoTable[WP_TESLA].maxammo = 50;
@@ -1778,7 +1778,7 @@ void SetupWeaponsForSkill_REALISM() // Realism
 	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 5;
 	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 5;
 	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 1;
+	ammoTable[WP_PANZERFAUST].maxammo = 3;
 	ammoTable[WP_FLAMETHROWER].maxammo = 100;
 	ammoTable[WP_FLAMETHROWER].maxclip = 100;
 	ammoTable[WP_TESLA].maxammo = 50;

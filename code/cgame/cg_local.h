@@ -70,7 +70,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #define MAX_STEP_CHANGE     32
 
-#define MAX_VERTS_ON_POLY   10
+#define MAX_VERTS_ON_POLY   64
 #define MAX_MARK_POLYS      1024
 
 #define STAT_MINUS          10  // num frame for '-' stats digit
@@ -1632,6 +1632,9 @@ extern itemInfo_t cg_items[MAX_ITEMS];
 extern markPoly_t cg_markPolys[MAX_MARK_POLYS];
 
 extern vmCvar_t cg_centertime;
+
+extern vmCvar_t cg_bobbing;
+
 extern vmCvar_t cg_runpitch;
 extern vmCvar_t cg_runroll;
 extern vmCvar_t cg_bobup;
@@ -1812,6 +1815,10 @@ extern vmCvar_t mp_item2;
 extern vmCvar_t mp_mapDesc;
 extern vmCvar_t mp_mapTitle;
 // -NERVE - SMF
+
+extern vmCvar_t cg_solidCrosshair;
+extern vmCvar_t cg_bloodBlend;
+extern vmCvar_t cg_snipersCrosshair;
 
 //
 // cg_main.c

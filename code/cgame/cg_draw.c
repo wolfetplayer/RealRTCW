@@ -627,6 +627,7 @@ static void CG_DrawStatusBar( void ) {
 	vec3_t angles;
 //	vec3_t		origin;
 
+
 	static float colors[4][4] = {
 //		{ 0.2, 1.0, 0.2, 1.0 } , { 1.0, 0.2, 0.2, 1.0 }, {0.5, 0.5, 0.5, 1} };
 		{ 1, 0.69, 0, 1.0 },        // normal
@@ -2396,9 +2397,9 @@ static void CG_DrawCrosshair( void ) {
 	vec4_t hcolor = {1, 1, 1, 1};
 	qboolean friendInSights = qfalse;
 
-	if ( cg.renderingThirdPerson ) {
+	/*if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	hcolor[3] = cg_crosshairAlpha.value;    //----(SA)	added
 
@@ -2431,15 +2432,22 @@ static void CG_DrawCrosshair( void ) {
 		weapnum = cg.weaponSelect;
 	}
 
+
+
 	switch ( weapnum ) {
 
 		// weapons that get no reticle
 	case WP_NONE:       // no weapon, no crosshair
+	    return;
 	case WP_GARAND:
-		if ( cg.zoomedBinoc ) {
+		if ( cg.zoomedBinoc ) 
+		{
 			CG_DrawBinocReticle();
 		}
+	if ( !cg_snipersCrosshair.integer ) 
+	    {
 		return;
+	    }
 		break;
 
 		// special reticle for weapon
@@ -2497,7 +2505,10 @@ static void CG_DrawCrosshair( void ) {
 	// mauser only gets crosshair if you don't have the scope (I don't like this, but it's a test)
 	if ( cg.weaponSelect == WP_MAUSER ) {
 		if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_SNIPERRIFLE ) ) {
-			return;
+		if ( !cg_snipersCrosshair.integer ) 
+	    {
+		return;
+	    }
 		}
 	}
 
@@ -2531,9 +2542,11 @@ static void CG_DrawCrosshair( void ) {
 	w = h = cg_crosshairSize.value;
 
 	// RF, crosshair size represents aim spread
-	f = (float)cg.snap->ps.aimSpreadScale / 255.0;
-	w *= ( 1 + f * 2.0 );
-	h *= ( 1 + f * 2.0 );
+	if ( !cg_solidCrosshair.integer ) {
+		f = (float)cg.snap->ps.aimSpreadScale / 255.0;
+		w *= ( 1 + f * 2.0 );
+		h *= ( 1 + f * 2.0 );
+	}
 
 	x = cg_crosshairX.integer;
 	y = cg_crosshairY.integer;
@@ -2582,9 +2595,9 @@ static void CG_DrawCrosshair3D( void ) {
 	char rendererinfos[128];
 	refEntity_t ent;
 
-	if ( cg.renderingThirdPerson ) {
+	/*if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	hcolor[3] = cg_crosshairAlpha.value;    //----(SA)	added
 
@@ -2618,13 +2631,17 @@ static void CG_DrawCrosshair3D( void ) {
 
 		// weapons that get no reticle
 	case WP_NONE:       // no weapon, no crosshair
+	    return;
 	case WP_GARAND:
-		if ( cg.zoomedBinoc ) {
+		if ( cg.zoomedBinoc ) 
+		{
 			CG_DrawBinocReticle();
 		}
+	if ( !cg_snipersCrosshair.integer ) 
+	    {
 		return;
+	    }
 		break;
-
 		// special reticle for weapon
 	case WP_KNIFE:
 		if ( cg.zoomedBinoc ) {
@@ -2680,7 +2697,10 @@ static void CG_DrawCrosshair3D( void ) {
 	// mauser only gets crosshair if you don't have the scope (I don't like this, but it's a test)
 	if ( cg.weaponSelect == WP_MAUSER ) {
 		if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_SNIPERRIFLE ) ) {
-			return;
+		if ( !cg_snipersCrosshair.integer ) 
+	    {
+		return;
+	    }
 		}
 	}
 
@@ -2860,9 +2880,9 @@ CG_CheckForCursorHints
 */
 void CG_CheckForCursorHints( void ) {
 
-	if ( cg.renderingThirdPerson ) {
+/*	if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	if ( cg.snap->ps.serverCursorHint != HINT_NONE ) { // let the client remember what was last looked at (for fading out)
 		cg.cursorHintTime = cg.time;
@@ -2892,9 +2912,9 @@ static void CG_DrawCrosshairNames( void ) {
 	if ( !cg_drawCrosshairNames.integer ) {
 		return;
 	}
-	if ( cg.renderingThirdPerson ) {
+	/*if ( cg.renderingThirdPerson ) {
 		return;
-	}
+	}*/
 
 	// Ridah
 	if ( cg_gameType.integer == GT_SINGLE_PLAYER ) {
@@ -3373,6 +3393,12 @@ static void CG_DrawFlashDamage( void ) {
 		return;
 	}
 
+		// Blood blending
+	if ( !cg_bloodBlend.integer ) {
+		return;
+	}
+	// end
+
 	if ( cg.v_dmg_time > cg.time ) {
 		redFlash = fabs( cg.v_dmg_pitch * ( ( cg.v_dmg_time - cg.time ) / DAMAGE_TIME ) );
 
@@ -3800,7 +3826,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		return;
 	}
 
-	CG_ScreenFade();
+	CG_ScreenFade(); 
 
 	if ( cg.snap->ps.pm_type == PM_INTERMISSION ) {
 		CG_DrawIntermission();
@@ -3828,7 +3854,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 					CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 				}
 
-				if ( !cg_oldWolfUI.integer ) {
+if ( !cg_oldWolfUI.integer ) {
 					Menu_PaintAll();
 					CG_DrawTimedMenus();
 				}

@@ -98,7 +98,7 @@ centity_t cg_entities[MAX_GENTITIES];
 weaponInfo_t cg_weapons[MAX_WEAPONS];
 itemInfo_t cg_items[MAX_ITEMS];
 
-
+vmCvar_t cg_bobbing;
 vmCvar_t cg_railTrailTime;
 vmCvar_t cg_centertime;
 vmCvar_t cg_runpitch;
@@ -287,6 +287,10 @@ vmCvar_t cg_atmosphericEffects; // RealRTCW
 vmCvar_t  	cg_lowAtmosphericEffects;
 vmCvar_t  	cg_forceAtmosphericEffects;
 
+vmCvar_t cg_solidCrosshair;
+vmCvar_t cg_bloodBlend;
+vmCvar_t cg_snipersCrosshair;
+
 // -NERVE - SMF
 
 typedef struct {
@@ -368,6 +372,10 @@ cvarTable_t cvarTable[] = {
 	{ &cg_bobpitch, "cg_bobpitch", "0.002", CVAR_ARCHIVE },
 	{ &cg_bobroll, "cg_bobroll", "0.002", CVAR_ARCHIVE },
 
+	{ &cg_bobbing, "cg_bobbing", "1", CVAR_ARCHIVE },
+
+	
+
 	// JOSEPH 10-27-99
 	{ &cg_autoactivate, "cg_autoactivate", "1", CVAR_ARCHIVE },
 	{ &cg_emptyswitch, "cg_emptyswitch", "0", CVAR_ARCHIVE },
@@ -401,7 +409,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_tracerWidth, "cg_tracerwidth", "0.8", CVAR_CHEAT },
 	{ &cg_tracerSpeed, "cg_tracerSpeed", "4500", CVAR_CHEAT },
 	{ &cg_tracerLength, "cg_tracerlength", "160", CVAR_CHEAT },
-	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "40", 0 },
+	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "50", 0 },
 	{ &cg_thirdPersonAngle, "cg_thirdPersonAngle", "0", CVAR_CHEAT },
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", 0 },
 	{ &cg_teamChatTime, "cg_teamChatTime", "3000", CVAR_ARCHIVE  },
@@ -502,6 +510,10 @@ cvarTable_t cvarTable[] = {
 	// -NERVE - SMF
 
 	{ &cg_showAIState, "cg_showAIState", "0", CVAR_CHEAT},
+
+	{ &cg_solidCrosshair, "cg_solidCrosshair", "0", CVAR_ARCHIVE },
+	{ &cg_bloodBlend, "cg_bloodBlend", "1", CVAR_ARCHIVE },
+	{ &cg_snipersCrosshair, "cg_snipersCrosshair", "1", CVAR_ARCHIVE },
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );

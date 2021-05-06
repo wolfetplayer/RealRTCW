@@ -298,8 +298,8 @@ static void CG_OffsetThirdPersonView( void ) {
 	VectorMA( cg.refdef.vieworg, FOCUS_DISTANCE, forward, focusPoint );
 
 	VectorCopy( cg.refdef.vieworg, view );
-
-	view[2] += 8;
+	view[1] += 10; //right left
+	view[2] += 10; //height
 
 	cg.refdefViewAngles[PITCH] *= 0.5;
 
@@ -592,6 +592,9 @@ static void CG_OffsetFirstPersonView( void ) {
 #endif
 
 	// add angles based on velocity
+
+	if (cg_bobbing.integer)
+	{
 	VectorCopy( cg.predictedPlayerState.velocity, predictedVelocity );
 
 	delta = DotProduct( predictedVelocity, cg.refdef.viewaxis[0] );
@@ -618,6 +621,7 @@ static void CG_OffsetFirstPersonView( void ) {
 		delta = -delta;
 	}
 	angles[ROLL] += delta;
+	}
 
 //===================================
 
@@ -635,12 +639,15 @@ static void CG_OffsetFirstPersonView( void ) {
 	}
 
 	// add bob height
+	if (cg_bobbing.integer)
+	{
 	bob = cg.bobfracsin * cg.xyspeed * cg_bobup.value;
 	if ( bob > 6 ) {
 		bob = 6;
 	}
 
 	origin[2] += bob;
+	}
 
 
 	// add fall height
@@ -970,6 +977,11 @@ static void CG_DamageBlendBlob( void ) {
 
 	// ragePro systems can't fade blends, so don't obscure the screen
 	if ( cgs.glconfig.hardwareType == GLHW_RAGEPRO ) {
+		return;
+	}
+
+	//  we don't need this if bloodblend is enabled..
+	if ( !cg_bloodBlend.integer ) {
 		return;
 	}
 

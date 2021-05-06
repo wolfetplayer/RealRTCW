@@ -2747,10 +2747,10 @@ void PM_AdjustAimSpreadScale( void ) {
 			for ( i = 0; i < 2; i++ )
 				viewchange += fabs( pm->ps->velocity[i] );
 			break;
-		case WP_PANZERFAUST:        // don't take movement into account as much
-			for ( i = 0; i < 2; i++ )
-				viewchange += ( 0.01f * fabs( pm->ps->velocity[i] ) );
-			break;
+	//	case WP_PANZERFAUST:        // don't take movement into account as much
+		//	for ( i = 0; i < 2; i++ )
+			//	viewchange += ( 0.0099f * fabs( pm->ps->velocity[i] ) );
+			//break;
 		default:
 			break;
 		}
@@ -3621,13 +3621,13 @@ static void PM_Weapon( void ) {
 case WP_MG42M:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 120;
+			pm->pmext->weapRecoilDuration = 80;
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
-			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
+			pm->pmext->weapRecoilPitch = .25f * random() * .15f;
 		} else {
-			pm->pmext->weapRecoilDuration = 180;
-			pm->pmext->weapRecoilYaw = crandom() * .25f;
-			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
+			pm->pmext->weapRecoilDuration = 100;
+			pm->pmext->weapRecoilYaw = crandom() * .20f;
+			pm->pmext->weapRecoilPitch = .55f * random() * .2f;
 		}
 		break;
 	// Semi-automatic rifles - Medium recoil
@@ -3749,7 +3749,7 @@ case WP_MG42M:
          // Panzerfaust - Medium recoil
 	case WP_PANZERFAUST:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 60;
+		pm->pmext->weapRecoilDuration = 30;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
 			pm->pmext->weapRecoilYaw = crandom() * .5f;
 			pm->pmext->weapRecoilPitch = .5f * random();

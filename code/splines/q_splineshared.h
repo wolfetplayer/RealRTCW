@@ -76,7 +76,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "3.1"
+  #define PRODUCT_VERSION "3.2"
 #endif
 
 #define Q3_VERSION PRODUCT_NAME " " PRODUCT_VERSION
@@ -1333,8 +1333,8 @@ typedef enum
 
 
 // weapon grouping
-#define MAX_WEAP_BANKS      15
-#define MAX_WEAPS_IN_BANK   10
+#define MAX_WEAP_BANKS      11
+#define MAX_WEAPS_IN_BANK   5
 // JPW NERVE
 #define MAX_WEAPS_IN_BANK_MP    8
 #define MAX_WEAP_BANKS_MP   7

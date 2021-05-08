@@ -3108,9 +3108,9 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[2] = -2;
 		break;
 		case WP_TESLA:
-			 gunoff[0] = 1;
-		     gunoff[1] = 2;
-		     gunoff[2] = 1;
+			 gunoff[0] = 2;
+		    gunoff[1] = 2;
+		    gunoff[2] = -1;
 		break;
 		/*case WP_PANZERFAUST:
 			 gunoff[0] = -3;
@@ -3163,9 +3163,9 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[2] = 1;
 		break;
 		case WP_GARAND:
-			 gunoff[0] = 0;
+			 gunoff[0] = -2;
 		     gunoff[1] = 1;
-		     gunoff[2] = 0;
+		     gunoff[2] = -2;
 		break;
 		case WP_KNIFE:
 			 gunoff[0] = 1;

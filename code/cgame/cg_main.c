@@ -98,7 +98,7 @@ centity_t cg_entities[MAX_GENTITIES];
 weaponInfo_t cg_weapons[MAX_WEAPONS];
 itemInfo_t cg_items[MAX_ITEMS];
 
-
+vmCvar_t cg_bobbing;
 vmCvar_t cg_railTrailTime;
 vmCvar_t cg_centertime;
 vmCvar_t cg_runpitch;
@@ -133,6 +133,7 @@ vmCvar_t cg_crosshairX;
 vmCvar_t cg_crosshairY;
 vmCvar_t cg_crosshairHealth;
 vmCvar_t cg_draw2D;
+vmCvar_t cg_drawSubtitles;
 vmCvar_t cg_drawFrags;
 vmCvar_t cg_teamChatsOnly;
 vmCvar_t cg_drawStatus;
@@ -235,6 +236,8 @@ vmCvar_t cg_reloading;      //----(SA)	added
 // JPW NERVE
 vmCvar_t cg_medicChargeTime;
 vmCvar_t cg_engineerChargeTime;
+vmCvar_t cg_jumptime;
+
 vmCvar_t cg_LTChargeTime;
 vmCvar_t cg_soldierChargeTime;
 vmCvar_t cg_redlimbotime;
@@ -284,6 +287,10 @@ vmCvar_t cg_atmosphericEffects; // RealRTCW
 vmCvar_t  	cg_lowAtmosphericEffects;
 vmCvar_t  	cg_forceAtmosphericEffects;
 
+vmCvar_t cg_solidCrosshair;
+vmCvar_t cg_bloodBlend;
+vmCvar_t cg_snipersCrosshair;
+
 // -NERVE - SMF
 
 typedef struct {
@@ -321,6 +328,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_shadows, "cg_shadows", "1", CVAR_ARCHIVE  },
 	{ &cg_gibs, "cg_gibs", "1", CVAR_ARCHIVE  },
 	{ &cg_draw2D, "cg_draw2D", "1", CVAR_ARCHIVE  },
+	{ &cg_drawSubtitles, "cg_drawSubtitles", "0", CVAR_ARCHIVE},
 	{ &cg_drawSpreadScale, "cg_drawSpreadScale", "1", CVAR_ARCHIVE },
 	{ &cg_drawFrags, "cg_drawFrags", "1", CVAR_ARCHIVE },
 	{ &cg_drawStatus, "cg_drawStatus", "1", CVAR_ARCHIVE  },
@@ -364,6 +372,10 @@ cvarTable_t cvarTable[] = {
 	{ &cg_bobpitch, "cg_bobpitch", "0.002", CVAR_ARCHIVE },
 	{ &cg_bobroll, "cg_bobroll", "0.002", CVAR_ARCHIVE },
 
+	{ &cg_bobbing, "cg_bobbing", "1", CVAR_ARCHIVE },
+
+	
+
 	// JOSEPH 10-27-99
 	{ &cg_autoactivate, "cg_autoactivate", "1", CVAR_ARCHIVE },
 	{ &cg_emptyswitch, "cg_emptyswitch", "0", CVAR_ARCHIVE },
@@ -397,7 +409,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_tracerWidth, "cg_tracerwidth", "0.8", CVAR_CHEAT },
 	{ &cg_tracerSpeed, "cg_tracerSpeed", "4500", CVAR_CHEAT },
 	{ &cg_tracerLength, "cg_tracerlength", "160", CVAR_CHEAT },
-	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "40", 0 },
+	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "50", 0 },
 	{ &cg_thirdPersonAngle, "cg_thirdPersonAngle", "0", CVAR_CHEAT },
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", 0 },
 	{ &cg_teamChatTime, "cg_teamChatTime", "3000", CVAR_ARCHIVE  },
@@ -459,6 +471,9 @@ cvarTable_t cvarTable[] = {
 
 	{ &cg_reloading, "g_reloading", "0", 0 }, //----(SA)	added
 
+	{ &cg_jumptime, "g_jumptime", "0", 0 }, //----(SA)	added
+	
+
 	// JPW NERVE
 	{ &cg_medicChargeTime,  "g_medicChargeTime", "10000", 0 }, // communicated by systeminfo
 	{ &cg_LTChargeTime, "g_LTChargeTime", "30000", 0 }, // communicated by systeminfo
@@ -495,6 +510,10 @@ cvarTable_t cvarTable[] = {
 	// -NERVE - SMF
 
 	{ &cg_showAIState, "cg_showAIState", "0", CVAR_CHEAT},
+
+	{ &cg_solidCrosshair, "cg_solidCrosshair", "0", CVAR_ARCHIVE },
+	{ &cg_bloodBlend, "cg_bloodBlend", "1", CVAR_ARCHIVE },
+	{ &cg_snipersCrosshair, "cg_snipersCrosshair", "1", CVAR_ARCHIVE },
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );
@@ -875,12 +894,133 @@ static void CG_LoadTranslationStrings( void ) {
 	}
 }
 
+static void CG_LoadTranslationTextStrings(const char *file) {
+	char buffer[MAX_BUFFER];
+	char *text;
+	char filename[MAX_QPATH];
+	fileHandle_t f;
+	int len, i;
+	char *token;
 
-static void CG_LoadTranslateStrings( void ) {
-	CG_LoadPickupNames();
-	CG_LoadTranslationStrings();    // right now just centerprint
+	Com_sprintf(filename, MAX_QPATH, file);
+	len = trap_FS_FOpenFile(filename, &f, FS_READ);
+	if (len <= 0) {
+		CG_Printf(S_COLOR_RED "WARNING: string translation file (main/%s)\n", filename);
+		return;
+	}
+	if (len > MAX_BUFFER) {
+		CG_Printf("%s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER);
+	}
+
+	// load the file into memory
+	trap_FS_Read(buffer, len, f);
+	buffer[len] = 0;
+	trap_FS_FCloseFile(f);
+	// parse the list
+	text = buffer;
+	token = COM_ParseExt(&text, qtrue);
+	if (token[0] != '{') {
+		CG_Printf("^1WARNING: expecting '{', found '%s' instead in translation file \"text/translate.txt\"\n", token);
+		return;
+	}
+	i = 0;
+	while (1)
+	{
+		token = COM_ParseExt(&text, qtrue);
+		if (!token[0]) {
+			CG_Printf("^1WARNING: no concluding '}' in translation file \"text/translate.txt\"\n");
+			break;
+		}
+		// end of shader definition
+		if (token[0] == '}') {
+			break;
+		}
+		translateTextStrings[i].stringname = malloc(strlen(token) + 1);
+		strcpy(translateTextStrings[i].stringname, token);
+		token = COM_ParseExt(&text, qfalse);
+		translateTextStrings[i].stringtext = malloc(strlen(token) + 1);
+		strcpy(translateTextStrings[i].stringtext, token);
+		i++;
+	}
 }
 
+static void CG_LoadIgnoredTranslationTextStrings() {
+
+	char buffer[MAX_BUFFER];
+	char *text;
+	char filename[MAX_QPATH];
+	fileHandle_t f;
+	int len, i;
+	char *token;
+
+	Com_sprintf( filename, MAX_QPATH, "text/ignoredstitles.txt" );
+	len = trap_FS_FOpenFile( filename, &f, FS_READ );
+	if ( len <= 0 ) {
+		CG_Printf( S_COLOR_RED "WARNING: ignored name file (ignoredstitles.txt not found in main/text)\n" );
+		return;
+	}
+	if ( len > MAX_BUFFER ) {
+		CG_Error( "%s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER );
+	}
+
+	// load the file into memory
+	trap_FS_Read( buffer, len, f );
+	buffer[len] = 0;
+	trap_FS_FCloseFile( f );
+	// parse the list
+	text = buffer;
+
+	for ( i = 0; i < 255; i++ ) {
+		token = COM_ParseExt( &text, qtrue );
+		if ( !token[0] ) {
+			break;
+		}
+		CG_Printf("ignored text: %s\n", token);
+		Com_sprintf( cgs.ignoredSubtitles[i], MAX_QPATH, "%s", token );
+	}
+}
+
+static void CG_LoadTranslateStrings( void ) {
+	const char  *info;
+	char    *mapname;
+
+	info = CG_ConfigString( CS_SERVERINFO );
+	mapname = Info_ValueForKey( info, "mapname" );
+
+	CG_LoadPickupNames();
+	CG_LoadTranslationStrings();    // right now just centerprint
+	CG_LoadTranslationTextStrings(va("text/EnglishUSA/maps/%s.txt", mapname));
+	CG_LoadIgnoredTranslationTextStrings();
+}
+
+////////
+/// Added by Eugeny Panikarowsky
+////////
+const char *CG_translateTextString(const char *str) {
+	int i, numStrings;
+
+	numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
+	for (i = 0; i < numStrings; i++) {
+		if (!strcmp(str, cgs.ignoredSubtitles[i])) {
+			return "";
+		}
+	}
+	numStrings = sizeof(translateTextStrings) / sizeof(translateTextStrings[0]) - 1;
+	i = 0;
+	
+	for (i = 0; i < numStrings; i++) {
+		if (!translateTextStrings[i].stringname || !strlen(translateTextStrings[i].stringname)) {
+			return str;
+		}
+		if (!strcmp(str, translateTextStrings[i].stringname)) {
+			if (translateTextStrings[i].stringtext && strlen(translateTextStrings[i].stringtext)) {
+				return translateTextStrings[i].stringtext;
+			}
+			break;
+		}
+	}
+	return str;
+}
 //----(SA)	end
 
 
@@ -902,7 +1042,7 @@ static void CG_RegisterSounds( void ) {
 	// done.
 
 	cgs.media.n_health = trap_S_RegisterSound( "sound/items/n_health.wav" );
-	cgs.media.noFireUnderwater = trap_S_RegisterSound( "sound/weapons/underwaterfire.wav" ); //----(SA)	added
+	cgs.media.noFireUnderwater = trap_S_RegisterSound( "sound/weapons/underwaterfire.wav" ); 
 
 	cgs.media.snipersound = trap_S_RegisterSound( "sound/weapons/mauser/mauserf1.wav" );
 	cgs.media.tracerSound = trap_S_RegisterSound( "sound/weapons/machinegun/buletby1.wav" );
@@ -913,11 +1053,6 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.gibBounce1Sound = trap_S_RegisterSound( "sound/player/gibimp1.wav" );
 	cgs.media.gibBounce2Sound = trap_S_RegisterSound( "sound/player/gibimp2.wav" );
 	cgs.media.gibBounce3Sound = trap_S_RegisterSound( "sound/player/gibimp3.wav" );
-
-//	cgs.media.teleInSound = trap_S_RegisterSound( "sound/world/telein.wav" );
-//	cgs.media.teleOutSound = trap_S_RegisterSound( "sound/world/teleout.wav" );
-//	cgs.media.respawnSound = trap_S_RegisterSound( "sound/items/respawn1.wav" );
-
 
 	cgs.media.grenadebounce[GRENBOUNCE_DEFAULT][0]  = trap_S_RegisterSound( "sound/weapons/grenade/hgrenb1a.wav" );
 	cgs.media.grenadebounce[GRENBOUNCE_DEFAULT][1]  = trap_S_RegisterSound( "sound/weapons/grenade/hgrenb2a.wav" );
@@ -1053,34 +1188,28 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.batsFlyingLoopSound = trap_S_RegisterSound( "sound/world/bats_flying.wav" );
 
-	// FIXME: only needed with item
-//	cgs.media.flightSound = trap_S_RegisterSound( "sound/items/flight.wav" );
-//	cgs.media.medkitSound = trap_S_RegisterSound ("sound/items/use_medkit.wav");
 	cgs.media.elecSound = trap_S_RegisterSound( "sound/items/use_elec.wav" );
 	cgs.media.fireSound = trap_S_RegisterSound( "sound/items/use_fire.wav" );
 	cgs.media.waterSound = trap_S_RegisterSound( "sound/items/use_water.wav" );
-	cgs.media.wineSound = trap_S_RegisterSound( "sound/pickup/holdable/use_wine.wav" );       //----(SA)	modified
-	cgs.media.bookSound = trap_S_RegisterSound( "sound/pickup/holdable/use_book.wav" );       //----(SA)	added
-	cgs.media.adrenalineSound = trap_S_RegisterSound( "sound/pickup/holdable/use_adrenaline.wav" ); //----(SA)	added
-	cgs.media.bandagesSound = trap_S_RegisterSound( "sound/pickup/holdable/use_bandages.wav" ); //----(SA)	added
+	cgs.media.wineSound = trap_S_RegisterSound( "sound/pickup/holdable/use_wine.wav" );       
+	cgs.media.bookSound = trap_S_RegisterSound( "sound/pickup/holdable/use_book.wav" );       
+	cgs.media.adrenalineSound = trap_S_RegisterSound( "sound/pickup/holdable/use_adrenaline.wav" ); 
+	cgs.media.bandagesSound = trap_S_RegisterSound( "sound/pickup/holdable/use_bandages.wav" ); 
 	cgs.media.quadSound = trap_S_RegisterSound( "sound/items/damage3.wav" );
 	cgs.media.sfx_ric1 = trap_S_RegisterSound( "sound/weapons/machinegun/ric1.wav" );
 	cgs.media.sfx_ric2 = trap_S_RegisterSound( "sound/weapons/machinegun/ric2.wav" );
 	cgs.media.sfx_ric3 = trap_S_RegisterSound( "sound/weapons/machinegun/ric3.wav" );
-//	cgs.media.sfx_railg = trap_S_RegisterSound( "sound/weapons/railgun/railgf1a.wav" );
 	cgs.media.sfx_rockexp = trap_S_RegisterSound( "sound/weapons/rocket/rocklx1a.wav" );
 	cgs.media.sfx_dynamiteexp = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp.wav" );
-	cgs.media.sfx_dynamiteexpDist = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp_dist.wav" );   //----(SA)	added
+	cgs.media.sfx_dynamiteexpDist = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp_dist.wav" );   
 
 
-	cgs.media.sfx_spearhit = trap_S_RegisterSound( "sound/weapons/speargun/spearhit.wav" );
-
-	cgs.media.sfx_knifehit[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_hit1.wav" ); // hitting player
+	cgs.media.sfx_knifehit[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_hit1.wav" ); 
 	cgs.media.sfx_knifehit[1] = trap_S_RegisterSound( "sound/weapons/knife/knife_hit2.wav" );
 	cgs.media.sfx_knifehit[2] = trap_S_RegisterSound( "sound/weapons/knife/knife_hit3.wav" );
 	cgs.media.sfx_knifehit[3] = trap_S_RegisterSound( "sound/weapons/knife/knife_hit4.wav" );
 
-	cgs.media.sfx_knifehit[4] = trap_S_RegisterSound( "sound/weapons/knife/knife_hitwall1.wav" ); // hitting wall
+	cgs.media.sfx_knifehit[4] = trap_S_RegisterSound( "sound/weapons/knife/knife_hitwall1.wav" ); 
 
 	cgs.media.sfx_bullet_metalhit[0] = trap_S_RegisterSound( "sound/weapons/bullethit_metal1.wav" );
 	cgs.media.sfx_bullet_metalhit[1] = trap_S_RegisterSound( "sound/weapons/bullethit_metal2.wav" );
@@ -1123,11 +1252,6 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.sparkSounds[0] = trap_S_RegisterSound( "sound/world/saarc2.wav" );
 	cgs.media.sparkSounds[1] = trap_S_RegisterSound( "sound/world/arc2.wav" );
-
-
-//----(SA)	doors and kick
-
-	//----(SA)	removed some unnecessary stuff
 
 	trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav" );
 	trap_S_RegisterSound( "sound/weapons/melee/fstmiss.wav" );
@@ -2233,6 +2357,7 @@ const char *CG_translateString( const char *str ) {
 
 	return str;
 }
+
 
 /*
 =================

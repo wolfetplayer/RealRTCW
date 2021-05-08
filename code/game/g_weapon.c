@@ -115,7 +115,6 @@ void Weapon_Knife( gentity_t *ent ) {
 
 	// RF, no knife damage for big guys
 	switch ( traceEnt->aiCharacter ) {
-	case AICHAR_PROTOSOLDIER:
 	case AICHAR_SUPERSOLDIER:
 	case AICHAR_HEINRICH:
 		return;
@@ -685,13 +684,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 		}
 	}
 }
-// JPW - this chunk appears to not be used, right?
-/*
-#define MACHINEGUN_SPREAD	200
-#define	MACHINEGUN_DAMAGE	G_GetWeaponDamage(WP_MACHINEGUN) // JPW
-#define	MACHINEGUN_TEAM_DAMAGE	G_GetWeaponDamage(WP_MACHINEGUN) // JPW		// wimpier MG in teamplay
-*/
-// jpw
 
 // RF, wrote this so we can dynamically switch between old and new values while testing g_userAim
 float G_GetWeaponSpread( int weapon ) {
@@ -1280,7 +1272,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 			upangle *= 800;
 		} else {
 // jpw
-			upangle *= 600;     //									    0.0 / 600.0
+			upangle *= 800;     //									    0.0 / 600.0
 		}
 	}
 // JPW NERVE

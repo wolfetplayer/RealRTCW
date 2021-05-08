@@ -2328,6 +2328,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		DEBUGNAME( "EV_GENERAL_SOUND" );
 		// Ridah, check for a sound script
 		s = CG_ConfigString( CS_SOUNDS + es->eventParm );
+		//trap_SendServerCommand( -1, va( "cpst %s", s ) );
+//		CG_SubtitlePrint( s, SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.33 ), 6 );
 		if ( !strstr( s, ".wav" ) ) {
 			if ( CG_SoundPlaySoundScript( s, NULL, es->number ) ) {
 				break;

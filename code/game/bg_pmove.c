@@ -42,9 +42,11 @@ int bg_pmove_gameskill_integer;
 // JPW NERVE -- added because I need to check single/multiplayer instances and branch accordingly
 #ifdef CGAMEDLL
 extern vmCvar_t cg_gameType;
+extern vmCvar_t cg_jumptime;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_gametype;
+extern vmCvar_t g_jumptime;
 #endif
 
 // jpw
@@ -402,15 +404,15 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 			if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.2;
+		scale *= 1.3;
 	}
 
 
@@ -455,6 +457,9 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_WELROD ) ) {
 			scale *= 0.95; 
 		}
+		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE )  ) {
+			scale *= 0.40; 
+        }
 	}
 // jpw
 
@@ -550,9 +555,30 @@ static qboolean PM_CheckJump( void ) {
 	// JPW NERVE -- jumping in multiplayer uses and requires sprint juice (to prevent turbo skating, sprint + jumps)
 	// don't allow jump accel
 //	if (pm->cmd.serverTime - pm->ps->jumpTime < 850)
-	if ( pm->cmd.serverTime - pm->ps->jumpTime < 850 ) {  // RealRTCW removed bunnyhop try 850 instead of 950
-		return qfalse;
-	}
+	
+	// JPW NERVE -- in multiplayer, don't allow panzerfaust or dynamite to fire if charge bar isn't full
+	int jumptime = 0;
+	#ifdef GAMEDLL
+		if (g_jumptime.value) {
+			jumptime = 550;
+		} else {
+			jumptime = 850;
+		}
+		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
+			return qfalse;
+		}
+	#endif
+	#ifdef CGAMEDLL
+		if (cg_jumptime.value) {
+			jumptime = 550;
+		} else {
+			jumptime = 850;
+		}
+		if ( pm->cmd.serverTime - pm->ps->jumpTime < jumptime ) {  // RealRTCW removed bunnyhop try 850 instead of 950
+			return qfalse;
+		}
+	#endif
+
 
 	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
 		return qfalse;      // don't allow jump until all buttons are up
@@ -2716,10 +2742,10 @@ void PM_AdjustAimSpreadScale( void ) {
 			for ( i = 0; i < 2; i++ )
 				viewchange += fabs( pm->ps->velocity[i] );
 			break;
-		case WP_PANZERFAUST:        // don't take movement into account as much
-			for ( i = 0; i < 2; i++ )
-				viewchange += ( 0.01f * fabs( pm->ps->velocity[i] ) );
-			break;
+	//	case WP_PANZERFAUST:        // don't take movement into account as much
+		//	for ( i = 0; i < 2; i++ )
+			//	viewchange += ( 0.0099f * fabs( pm->ps->velocity[i] ) );
+			//break;
 		default:
 			break;
 		}
@@ -2777,10 +2803,12 @@ Generates weapon events and modifes the weapon counter
 #ifdef CGAMEDLL
 extern vmCvar_t cg_soldierChargeTime;
 extern vmCvar_t cg_engineerChargeTime;
+extern vmCvar_t cg_jumptime;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_soldierChargeTime;
 extern vmCvar_t g_engineerChargeTime;
+extern vmCvar_t g_jumptime;
 #endif
 // jpw
 

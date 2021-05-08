@@ -1304,8 +1304,8 @@ typedef enum
 
 
 // weapon grouping
-#define MAX_WEAP_BANKS      15
-#define MAX_WEAPS_IN_BANK   10
+#define MAX_WEAP_BANKS      11
+#define MAX_WEAPS_IN_BANK   5
 // JPW NERVE
 #define MAX_WEAPS_IN_BANK_MP    8
 #define MAX_WEAP_BANKS_MP   7
@@ -1502,6 +1502,17 @@ typedef struct playerState_s {
 } playerState_t;
 
 
+// added by Eugeny Panikarowsky
+typedef struct translateTextString_s{
+	int *time;
+	char *stringname;
+	char *stringtext;
+} translateTextString_t;
+
+
+#define MAX_TRANSLATETEXTSTRINGS 2048
+extern translateTextString_t translateTextStrings[MAX_TRANSLATETEXTSTRINGS];
+//----(SA)	end
 //====================================================================
 
 

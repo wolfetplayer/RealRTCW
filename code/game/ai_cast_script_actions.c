@@ -680,7 +680,7 @@ qboolean AICast_ScriptAction_PlaySound( cast_state_t *cs, char *params ) {
 	if ( !params ) {
 		G_Error( "AI Scripting: syntax error\n\nplaysound <soundname OR scriptname>\n" );
 	}
-
+	trap_SendServerCommand( -1, va( "cpst %s", params ) );
 	G_AddEvent( &g_entities[cs->bs->entitynum], EV_GENERAL_SOUND, G_SoundIndex( params ) );
 
 	// assume we are talking
@@ -2352,7 +2352,7 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	trap_SendServerCommand( -1, va( "snd_fade 0 %d", 1000 + exitTime ) ); //----(SA)	added
 
 	// load the next map, after a delay
-	level.reloadDelayTime = level.time + 4000 + exitTime;
+	level.reloadDelayTime = level.time + 1000 + exitTime;
 	trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_NEXTMAP_WAITING ) );
 
 	if ( endgame ) {

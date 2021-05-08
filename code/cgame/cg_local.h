@@ -70,7 +70,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #define MAX_STEP_CHANGE     32
 
-#define MAX_VERTS_ON_POLY   10
+#define MAX_VERTS_ON_POLY   64
 #define MAX_MARK_POLYS      1024
 
 #define STAT_MINUS          10  // num frame for '-' stats digit
@@ -1595,6 +1595,9 @@ typedef struct {
 	int teamChatPos;
 	int teamLastChatPos;
 
+
+	char ignoredSubtitles[255][255];
+
 	char itemPrintNames[MAX_ITEMS][32];             //----(SA)	added
 
 	int cursorX;
@@ -1629,6 +1632,9 @@ extern itemInfo_t cg_items[MAX_ITEMS];
 extern markPoly_t cg_markPolys[MAX_MARK_POLYS];
 
 extern vmCvar_t cg_centertime;
+
+extern vmCvar_t cg_bobbing;
+
 extern vmCvar_t cg_runpitch;
 extern vmCvar_t cg_runroll;
 extern vmCvar_t cg_bobup;
@@ -1663,6 +1669,7 @@ extern vmCvar_t cg_crosshairAlpha;          //----(SA)	added
 extern vmCvar_t cg_crosshairHealth;
 extern vmCvar_t cg_drawStatus;
 extern vmCvar_t cg_draw2D;
+extern vmCvar_t cg_drawSubtitles;
 extern vmCvar_t cg_drawFrags;
 extern vmCvar_t cg_animSpeed;
 extern vmCvar_t cg_debugAnim;
@@ -1809,6 +1816,10 @@ extern vmCvar_t mp_mapDesc;
 extern vmCvar_t mp_mapTitle;
 // -NERVE - SMF
 
+extern vmCvar_t cg_solidCrosshair;
+extern vmCvar_t cg_bloodBlend;
+extern vmCvar_t cg_snipersCrosshair;
+
 //
 // cg_main.c
 //
@@ -1917,6 +1928,8 @@ extern char teamChat2[256];
 void CG_AddLagometerFrameInfo( void );
 void CG_AddLagometerSnapshotInfo( snapshot_t *snap );
 void CG_CenterPrint( const char *str, int y, int charWidth );
+void CG_SubtitlePrint( const char *str, int y, int charWidth );
+
 void CG_ObjectivePrint( const char *str, int charWidth, int team );     // NERVE - SMF
 void CG_DrawHead( float x, float y, float w, float h, int clientNum, vec3_t headAngles );
 void CG_DrawActive( stereoFrame_t stereoView );
@@ -2216,6 +2229,8 @@ void CG_LoadingItem( int itemNum );
 void CG_LoadingClient( int clientNum );
 void CG_DrawInformation( void );
 const char *CG_translateString( const char *str );
+const char *CG_translateTextString( const char *str );
+
 
 //
 // cg_scoreboard.c

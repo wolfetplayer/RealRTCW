@@ -183,6 +183,7 @@ LookAtKiller
 */
 void LookAtKiller( gentity_t *self, gentity_t *inflictor, gentity_t *attacker ) {
 	vec3_t dir;
+	vec3_t angles;
 
 	if ( attacker && attacker != self ) {
 		VectorSubtract( attacker->s.pos.trBase, self->s.pos.trBase, dir );
@@ -194,6 +195,10 @@ void LookAtKiller( gentity_t *self, gentity_t *inflictor, gentity_t *attacker ) 
 	}
 
 	self->client->ps.stats[STAT_DEAD_YAW] = vectoyaw( dir );
+
+	angles[YAW] = vectoyaw( dir );
+	angles[PITCH] = 0;
+	angles[ROLL] = 0;
 }
 
 
@@ -382,7 +387,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		killerName = "<world>";
 	}
 
-	if ( meansOfDeath < 0 || meansOfDeath >= ARRAY_LEN( modNames ) ) {
+	if ( meansOfDeath < 0 || meansOfDeath >= sizeof( modNames ) / sizeof( modNames[0] ) ) {
 		obit = "<bad obituary>";
 	} else {
 		obit = modNames[ meansOfDeath ];
@@ -532,8 +537,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 
 	// never gib in a nodrop
-	contents = trap_PointContents( self->r.currentOrigin, -1 );
-
 	if ( self->health <= GIB_HEALTH && !( contents & CONTENTS_NODROP ) && g_blood.integer ) {
 //		if(self->client->ps.eFlags & EF_HEADSHOT)
 //		{
@@ -594,7 +597,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 }
 
-
 /*
 ================
 CheckArmor
@@ -648,16 +650,16 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	}
 
 	if ( attacker->aiCharacter ) {
-		// ai's are always allowed headshots from these weapons
-		//if ( mod == MOD_SNIPERRIFLE ||
-			 //mod == MOD_SNOOPERSCOPE ) {
-			//return qtrue;
-		//}
-         // RealRTCW removed this,cause its overpowered
-		//if ( g_gameskill.integer != GSKILL_MAX ) { 
-			// ai's allowed headshots in skill==GSKILL_MAX
-			//return qfalse;
-		//}
+		/* ai's are always allowed headshots from these weapons
+		if ( mod == MOD_SNIPERRIFLE ||
+			 mod == MOD_SNOOPERSCOPE ) {
+			return qtrue;
+		}
+          RealRTCW removed this,cause its overpowered
+		if ( g_gameskill.integer != GSKILL_MAX ) { 
+			 ai's allowed headshots in skill==GSKILL_MAX
+			return qfalse;
+		}*/
 		return qfalse;
 	}
 
@@ -1168,6 +1170,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 		qboolean dynamite = (qboolean)( mod == MOD_DYNAMITE || mod == MOD_DYNAMITE_SPLASH );
 
+		qboolean venomgun = (qboolean)( mod == MOD_VENOM );
+
 		if ( targ == attacker ) {
 			if ( !dynamite ) {
 				damage *= 0.5;
@@ -1177,6 +1181,16 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		if ( dynamite && targ->aiCharacter == AICHAR_HELGA ) {
 			//helga gets special dynamite damage
 			damage *= 0.5;
+		}
+
+		if ( venomgun && targ->aiCharacter == AICHAR_HEINRICH ) {
+			//heinrich gets special venom damage
+			damage *= 0.5;
+		}
+
+		if ( venomgun && targ->aiCharacter == AICHAR_SUPERSOLDIER ) {
+			//supersoldier gets special venom damage
+			damage *= 0.6;
 		}
 
 	}

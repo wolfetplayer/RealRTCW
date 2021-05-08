@@ -199,6 +199,8 @@ static void CG_DrawPlayerArmorIcon( rectDef_t *rect, qboolean draw2D ) {
 
 	ps = &cg.snap->ps;
 
+
+
 	value = ps->stats[STAT_ARMOR];
 
 	if ( cg_fixedAspect.integer == 2 ) {
@@ -454,7 +456,7 @@ static void CG_DrawPlayerAmmoIcon( rectDef_t *rect, qboolean draw2D ) {
 
 	cent = &cg_entities[cg.snap->ps.clientNum];
 
-	if ( draw2D || ( !cg_draw3dIcons.integer && cg_drawIcons.integer ) ) {
+	if (  draw2D || ( !cg_draw3dIcons.integer && cg_drawIcons.integer ) ) {
 		qhandle_t icon;
 		icon = cg_weapons[ cg.predictedPlayerState.weapon ].ammoIcon;
 		if ( icon ) {
@@ -723,6 +725,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 
 
 static void CG_DrawPlayerHead( rectDef_t *rect, qboolean draw2D ) {
+	
 	vec3_t angles;
 	float size, stretch;
 	float frac;
@@ -1074,7 +1077,6 @@ static void CG_DrawSelectedPlayerHead( rectDef_t *rect, qboolean draw2D, qboolea
 	float len;
 	vec3_t origin;
 	vec3_t mins, maxs, angles;
-
 
 //	ci = cgs.clientinfo + ((voice) ? cgs.currentVoiceClient : sortedTeamPlayers[CG_GetSelectedPlayer()]);
 	ci = cgs.clientinfo + sortedTeamPlayers[CG_GetSelectedPlayer()];

@@ -962,6 +962,12 @@ qboolean CG_AtmosphericKludge()
   	  	return( kludgeResult = qtrue );
   	}
 
+	  	if( !Q_stricmp( cgs.mapname, "maps/village1_s.bsp" ) )
+  	{
+  	  	CG_EffectParse( "T=SNOW,B=5 10,C=0.5,G=0.3 2,BV=20 30,GV=25 40,W=3 5,D=5000" ); // weak snow
+  	  	return( kludgeResult = qtrue );
+  	}
+
 	  	if( !Q_stricmp( cgs.mapname, "maps/dark.bsp" ) )
   	{
   	  	CG_EffectParse( "T=RAIN,B=5 10,C=0.5,G=0.5 2,BV=50 50,GV=200 200,W=1 2,D=5000" ); // strong rain

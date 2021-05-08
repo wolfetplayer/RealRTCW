@@ -3800,7 +3800,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			CG_DrawCrosshairNames();
 			CG_DrawWeaponSelect();
 			CG_DrawHoldableSelect();
-			CG_DrawPickupItem();
+			//CG_DrawPickupItem();
 			CG_DrawReward();
 		}
 	}

@@ -1386,6 +1386,7 @@ void ClientUserinfoChanged( int clientNum ) {
 
 	// set max health // RealRTCW max health depends on difficulty level
 	client->pers.maxHealth = atoi( Info_ValueForKey( userinfo, "handicap" ) );
+
 	if ( g_gameskill.integer == GSKILL_EASY ) {
 	if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 ) {
 		client->pers.maxHealth = 100;
@@ -1418,9 +1419,6 @@ void ClientUserinfoChanged( int clientNum ) {
 	    }
 	
 	client->ps.stats[STAT_MAX_HEALTH] = client->pers.maxHealth;
-
-
-
 
 	// set model
 	if ( g_forceModel.integer ) {
@@ -2187,6 +2185,10 @@ void ClientSpawn( gentity_t *ent ) {
 // JPW NERVE ***NOTE*** the following line is order-dependent and must *FOLLOW* SetWolfSpawnWeapons() in multiplayer
 // SetWolfSpawnWeapons() now adds medic team bonus and stores in ps.stats[STAT_MAX_HEALTH].
 	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
+
+	if (g_decaychallenge.integer){
+	ent->health = client->ps.stats[STAT_HEALTH]	= 999;
+	}
 
 	G_SetOrigin( ent, spawn_origin );
 	VectorCopy( spawn_origin, client->ps.origin );

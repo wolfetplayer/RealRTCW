@@ -460,3 +460,7 @@ void *trap_Alloc( int size ) {
 	return (void*)syscall( UI_ALLOC, size );
 }
 
+void trap_openURL( const char *s ) {
+	syscall( UI_OPENURL, s );
+}
+

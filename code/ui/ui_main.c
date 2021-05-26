@@ -5218,6 +5218,10 @@ static void UI_RunMenuScript( char **args ) {
 				itemIndex = atoi( param2 );
 				WM_PickItem( selectType, itemIndex );
 			}
+		else if (Q_stricmp(name, "validate_openURL") == 0)
+		{
+		trap_openURL( UI_Cvar_VariableString( "ui_finalURL" ) );
+		}
 		} else if ( Q_stricmp( name, "startMultiplayer" ) == 0 ) {
 			int team, playerType, weapon, pistol, item1, i;
 			const char *teamStr, *classStr, *weapStr;

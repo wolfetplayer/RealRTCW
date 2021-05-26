@@ -526,6 +526,8 @@ qboolean CL_CheckPaused(void);
 void CL_AddToLimboChat( const char *str );                  // NERVE - SMF
 qboolean CL_GetLimboString( int index, char *buf );         // NERVE - SMF
 
+void CL_OpenURL(const char *url);
+
 //
 // cl_input
 //

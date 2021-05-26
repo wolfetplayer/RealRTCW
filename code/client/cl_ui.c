@@ -1123,6 +1123,10 @@ intptr_t CL_UISystemCalls( intptr_t *args ) {
 	case UI_ALLOC:
 		return VM_Alloc( args[1] );
 
+	case UI_OPENURL:
+		CL_OpenURL((const char *)VMA(1));
+		return 0;
+
 	default:
 		Com_Error( ERR_DROP, "Bad UI system trap: %ld", (long int) args[0] );
 

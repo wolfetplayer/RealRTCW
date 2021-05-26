@@ -106,6 +106,7 @@ translateString_t translateStrings[] = {
 	{"usedadrenaline"},          //	
 	{"noitem"},                  //	"No item to use"
 	{"gamesaved"},               //	"Game Saved"
+	{"ironchallengesave"},       // no save 4 u
 
 	{"missionfail1"},            //	"Mission Failed\nYou Killed a Civilian"
 	{"missionfail2"},            //	"Mission Failed\nYou Killed a Kreisau Agent"

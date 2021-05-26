@@ -2273,8 +2273,17 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	int i;
 	char *pch, *pch2, *newstr;
 	gentity_t   *player;
+	//gentity_t *ent;
+	//int client;
+	player = AICast_FindEntityForName( "player" );
 	qboolean silent = qfalse, endgame = qfalse, savepersist = qfalse;
 	int exitTime = 8000;
+
+	//ent = &g_entities[client];
+
+	if (g_decaychallenge.integer){
+	player->health = 999;
+	}
 	/*char mapname[MAX_QPATH];
 
 	if ( Q_stricmp( mapname, "escape2"))

@@ -58,7 +58,10 @@ vmCvar_t g_gametype;
 // Rafael gameskill
 vmCvar_t g_gameskill;
 // done
-
+vmCvar_t g_ironchallenge;
+vmCvar_t g_nohudchallenge;
+vmCvar_t g_nopickupchallenge;
+vmCvar_t g_decaychallenge;
 vmCvar_t g_reloading;       //----(SA)	added
 
 vmCvar_t g_dmflags;
@@ -239,6 +242,10 @@ cvarTable_t gameCvarTable[] = {
 	// Rafael gameskill
 	{ &g_gameskill, "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse  },   // (SA) new default '2' (was '1')
 	// done
+	{ &g_ironchallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse }, 
+	{ &g_nohudchallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
+	{ &g_nopickupchallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
+	{ &g_decaychallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  }, 
 
     // RealRTCW knightmare 1.42d changes
     // Damage inflicted by Player

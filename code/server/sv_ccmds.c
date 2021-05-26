@@ -261,6 +261,10 @@ static void SV_Map_f( void ) {
 	// Rafael gameskill
 	Cvar_Get( "g_gameskill", "1", CVAR_SERVERINFO | CVAR_LATCH );
 	// done
+	Cvar_Get( "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
+	Cvar_Get( "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
+    Cvar_Get( "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
+	Cvar_Get( "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
 
 	Cvar_SetValue( "g_episode", 0 ); //----(SA) added
 

@@ -3457,6 +3457,11 @@ void CL_ClientDamageCommand( void ) {
 	// do nothing
 }
 
+void CL_donateNow_f( void ) {
+	Sys_OpenURL( "http://www.paypal.com/paypalme/wolfetplayer", qtrue );
+}
+
+
 #if defined (__i386__)
 #define BIN_STRING "x86"
 #endif
@@ -3857,6 +3862,8 @@ void CL_Init( void ) {
 	Cmd_AddCommand( "map_restart", CL_MapRestart_f );
 
 	Cmd_AddCommand( "setRecommended", CL_SetRecommended_f );
+
+	Cmd_AddCommand( "donateNow", CL_donateNow_f );                            // NERVE - SMF
 
 	CL_InitRef();
 
@@ -4925,3 +4932,16 @@ qboolean CL_GetLimboString( int index, char *buf ) {
 	return qtrue;
 }
 // -NERVE - SMF
+
+/*
+=======================
+CL_OpenURLForCvar
+=======================
+*/
+void CL_OpenURL( const char *url ) {
+	if ( !url || !strlen( url ) ) {
+		Com_Printf(  "invalid/empty URL\n" );
+		return;
+	}
+	Sys_OpenURL( url, qtrue );
+}

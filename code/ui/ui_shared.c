@@ -697,7 +697,7 @@ PC_Script_Parse
 =================
 */
 qboolean PC_Script_Parse( int handle, const char **out ) {
-	char script[1024];
+	char script[4096];
 	pc_token_t token;
 
 	memset( script, 0, sizeof( script ) );
@@ -722,11 +722,11 @@ qboolean PC_Script_Parse( int handle, const char **out ) {
 		}
 
 		if ( token.string[1] != '\0' ) {
-			Q_strcat( script, 1024, va( "\"%s\"", token.string ) );
+			Q_strcat( script, 4096, va( "\"%s\"", token.string ) );
 		} else {
-			Q_strcat( script, 1024, token.string );
+			Q_strcat( script, 4096, token.string );
 		}
-		Q_strcat( script, 1024, " " );
+		Q_strcat( script, 4096, " " );
 	}
 	return qfalse;
 }
@@ -1682,12 +1682,12 @@ int scriptCommandCount = ARRAY_LEN(commandList);
 
 
 void Item_RunScript( itemDef_t *item, const char *s ) {
-	char script[1024], *p;
+	char script[4096], *p;
 	int i;
 	qboolean bRan;
 	memset( script, 0, sizeof( script ) );
 	if ( item && s && s[0] ) {
-		Q_strcat( script, 1024, s );
+		Q_strcat( script, 4096, s );
 		p = script;
 		while ( 1 ) {
 			const char *command;

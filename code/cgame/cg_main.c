@@ -230,10 +230,6 @@ vmCvar_t cg_skybox;
 // Rafael
 vmCvar_t cg_gameSkill;
 // done
-vmCvar_t cg_ironChallenge;
-vmCvar_t cg_nohudChallenge;
-vmCvar_t cg_nopickupChallenge;
-vmCvar_t cg_decayChallenge;
 
 vmCvar_t cg_reloading;      //----(SA)	added
 
@@ -472,11 +468,6 @@ cvarTable_t cvarTable[] = {
 	{ &cg_norender, "cg_norender", "0", 0 },  // only used during single player, to suppress rendering until the server is ready
 
 	{ &cg_gameSkill, "g_gameskill", "2", 0 }, // communicated by systeminfo	// (SA) new default '2' (was '1')
-
-	{ &cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
-	{ &cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
-	{ &cg_nopickupChallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
-	{ &cg_decayChallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 
 	{ &cg_reloading, "g_reloading", "0", 0 }, //----(SA)	added
 

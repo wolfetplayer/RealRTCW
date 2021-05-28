@@ -1081,10 +1081,6 @@ extern vmCvar_t g_gametype;
 // Rafael gameskill
 extern vmCvar_t g_gameskill;
 // done
-extern vmCvar_t g_ironchallenge;
-extern vmCvar_t g_nohudchallenge;
-extern vmCvar_t g_nopickupchallenge;
-extern vmCvar_t g_decaychallenge;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 

@@ -74,10 +74,6 @@ int serverBansCount = 0;
 // Rafael gameskill
 cvar_t  *sv_gameskill;
 // done
-cvar_t  *sv_ironchallenge;
-cvar_t  *sv_nohudchallenge;
-cvar_t  *sv_nopickupchallenge;
-cvar_t  *sv_decaychallenge;
 
 cvar_t  *sv_reloading;  //----(SA)	added
 

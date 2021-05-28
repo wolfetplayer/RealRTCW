@@ -3822,12 +3822,6 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 	//	return;
 	}
 
-	if ( cg_nohudChallenge.integer ) {
-		CG_DrawFlashBlend();    // (for fades)
-		return;
-	}
-
-
 	if ( cg_draw2D.integer == 0 ) {
 		return;
 	}

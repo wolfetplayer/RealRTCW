@@ -696,31 +696,11 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 
 		// Rafael gameskill
 		static cvar_t   *g_gameskill;
-		static cvar_t   *g_ironchallenge;
-		static cvar_t   *g_nohudchallenge;
-		static cvar_t   *g_nopickupchallenge;
-		static cvar_t   *g_decaychallenge;
 
 		if ( !g_gameskill ) {
 			g_gameskill = Cvar_Get( "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE );     // (SA) new default '2' (was '1')
 		}
 		// done
-
-		if ( !g_ironchallenge ) {
-			g_ironchallenge = Cvar_Get( "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM);    
-		}
-
-		if ( !g_nohudchallenge ) {
-			g_nohudchallenge = Cvar_Get( "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM  );     
-		}
-
-		if ( !g_nopickupchallenge ) {
-			g_nopickupchallenge = Cvar_Get( "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );    
-		}
-
-		if ( !g_decaychallenge ) {
-			g_decaychallenge = Cvar_Get( "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM  );    
-		}
 
 		if ( !g_gametype ) {
 			g_gametype = Cvar_Get( "g_gametype", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE );
@@ -1016,10 +996,6 @@ void SV_Init (void)
 	// Rafael gameskill
 	sv_gameskill = Cvar_Get( "g_gameskill", "1", CVAR_SERVERINFO | CVAR_LATCH );
 	// done
-	sv_ironchallenge = Cvar_Get( "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
-	sv_nohudchallenge = Cvar_Get( "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
-	sv_nopickupchallenge = Cvar_Get( "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
-	sv_decaychallenge = Cvar_Get( "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
 
 	Cvar_Get( "sv_keywords", "", CVAR_SERVERINFO );
 	sv_mapname = Cvar_Get( "mapname", "nomap", CVAR_SERVERINFO | CVAR_ROM );

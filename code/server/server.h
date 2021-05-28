@@ -326,10 +326,6 @@ extern	cvar_t	*sv_voipProtocol;
 // Rafael gameskill
 extern cvar_t  *sv_gameskill;
 // done
-extern cvar_t  *sv_ironchallenge;
-extern cvar_t  *sv_nohudchallenge;
-extern cvar_t  *sv_nopickupchallenge;
-extern cvar_t  *sv_decaychallenge;
 
 extern cvar_t  *sv_reloading;   //----(SA)	added
 

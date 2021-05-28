@@ -3824,8 +3824,19 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 
 	if ( cg_nohudChallenge.integer ) {
 		CG_DrawFlashBlend();    // (for fades)
+		CG_DrawWeapReticle();   // (for scopes)
+	if ( cg.zoomedBinoc ) {
+		CG_DrawBinocReticle();  // (for binocs)
 		return;
 	}
+		return;
+	}
+
+	if ( cg.zoomedBinoc ) {
+		CG_DrawBinocReticle();
+		return;
+	}
+
 
 
 	if ( cg_draw2D.integer == 0 ) {

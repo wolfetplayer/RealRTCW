@@ -3117,6 +3117,73 @@ qboolean AICast_ScriptAction_Achievement_manor1_2( cast_state_t *cs, char *param
 
 /*
 ==================
+AICast_ScriptAction_Achievement_walkinthepark
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_walkinthepark( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer && g_nohudchallenge.integer && !g_nopickupchallenge.integer && !g_ironchallenge.integer)
+	{
+    steamSetAchievement("ACH_WALKINTHEPARK");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_ironman
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ironman( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer && g_ironchallenge.integer && !g_nohudchallenge.integer && !g_nopickupchallenge.integer)
+	{
+    steamSetAchievement("ACH_IRONMAN");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_hardcore
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_hardcore( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer && g_nopickupchallenge.integer && !g_nohudchallenge.integer && !g_ironchallenge.integer)
+	{
+    steamSetAchievement("ACH_HARDCORE");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_999
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_999( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer && g_decaychallenge.integer)
+	{
+    steamSetAchievement("ACH_999");
+	}
+	return qtrue;
+}
+
+
+/*
+==================
+AICast_ScriptAction_Achievement_nightmare
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_nightmare( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer && g_nohudchallenge.integer && g_nopickupchallenge.integer && g_ironchallenge.integer)
+	{
+    steamSetAchievement("ACH_NIGHTMARE");
+	}
+	return qtrue;
+}
+
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

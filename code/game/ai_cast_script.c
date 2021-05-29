@@ -147,6 +147,11 @@ qboolean AICast_ScriptAction_Achievement_lion( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_parkour( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_manor1( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_manor1_2( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_walkinthepark( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_ironman( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_hardcore( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_999( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_nightmare( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -289,6 +294,11 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_parkour",      AICast_ScriptAction_Achievement_parkour},
 	{"achievement_manor1",      AICast_ScriptAction_Achievement_manor1},
 	{"achievement_manor1_2",      AICast_ScriptAction_Achievement_manor1_2},
+	{"achievement_walkinthepark",      AICast_ScriptAction_Achievement_walkinthepark},
+	{"achievement_ironman",      AICast_ScriptAction_Achievement_ironman},
+	{"achievement_hardcore",      AICast_ScriptAction_Achievement_hardcore},
+	{"achievement_999",      AICast_ScriptAction_Achievement_999},
+	{"achievement_nightmare",      AICast_ScriptAction_Achievement_nightmare},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

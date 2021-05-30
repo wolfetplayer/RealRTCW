@@ -1267,6 +1267,26 @@ qboolean G_SaveGame( char *username ) {
 		G_SaveWriteError();
 	}
 
+	// save the bonus gamemodes
+	if ( !G_SaveWrite( &g_nohudchallenge.integer, sizeof( g_nohudchallenge.integer ), f ) ) {
+		G_SaveWriteError();
+	}
+
+	// save the bonus gamemodes
+	if ( !G_SaveWrite( &g_decaychallenge.integer, sizeof( g_decaychallenge.integer ), f ) ) {
+		G_SaveWriteError();
+	}
+
+	// save the bonus gamemodes
+	if ( !G_SaveWrite( &g_ironchallenge.integer, sizeof( g_ironchallenge.integer ), f ) ) {
+		G_SaveWriteError();
+	}
+
+	// save the bonus gamemodes
+	if ( !G_SaveWrite( &g_nopickupchallenge.integer, sizeof( g_nopickupchallenge.integer ), f ) ) {
+		G_SaveWriteError();
+	}
+
 	// write out the entity structures
 	i = sizeof( gentity_t );
 	if ( !G_SaveWrite( &i, sizeof( i ), f ) ) {
@@ -1509,6 +1529,34 @@ void G_LoadGame( char *filename ) {
 			// update this
 			aicast_skillscale = (float)i / (float)GSKILL_REALISM;
 		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_nohudchallenge", va( "%i",i ) );
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_decaychallenge", va( "%i",i ) );
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_ironchallenge", va( "%i",i ) );
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_nopickupchallenge", va( "%i",i ) );
+		}
 	}
 
 	// reset all AAS blocking entities
@@ -1629,6 +1677,34 @@ void G_LoadGame( char *filename ) {
 			trap_Cvar_Set( "g_gameskill", va( "%i",i ) );
 			// update this
 			aicast_skillscale = (float)i / (float)GSKILL_REALISM;
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_nohudchallenge", va( "%i",i ) );
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_decaychallenge", va( "%i",i ) );
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_ironchallenge", va( "%i",i ) );
+		}
+
+		if ( ver > 13 ) {
+			// read the game modes
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game mode
+			trap_Cvar_Set( "g_nopickupchallenge", va( "%i",i ) );
 		}
 	}
 //----(SA)	end moved

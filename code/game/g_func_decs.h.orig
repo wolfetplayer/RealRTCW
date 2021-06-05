@@ -370,6 +370,8 @@ extern qboolean G_ScriptAction_PlaySound ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_Trigger ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_Wait ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_GotoMarker ( gentity_t * ent , char * params ) ;
+extern qboolean G_ScriptAction_ShaderRemapFlush ( gentity_t * ent , char * params ) ;
+extern qboolean G_ScriptAction_ShaderRemap ( gentity_t * ent , char * params ) ;
 extern void Info_SetValueForKey_Big ( char * s , const char * key , const char * value ) ;
 extern void Info_SetValueForKey ( char * s , const char * key , const char * value ) ;
 extern qboolean Info_Validate ( const char * s ) ;

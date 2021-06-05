@@ -207,6 +207,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_CrouchToMarker", (byte *)AICast_ScriptAction_CrouchToMarker},
 {"AICast_ScriptAction_WalkToMarker", (byte *)AICast_ScriptAction_WalkToMarker},
 {"AICast_ScriptAction_GotoMarker", (byte *)AICast_ScriptAction_GotoMarker},
+{"G_ScriptAction_ShaderRemapFlush", (byte *)G_ScriptAction_ShaderRemapFlush},
+{"G_ScriptAction_ShaderRemap", (byte *)G_ScriptAction_ShaderRemap},
 {"AICast_NoAttackIfNotHurtSinceLastScriptAction", (byte *)AICast_NoAttackIfNotHurtSinceLastScriptAction},
 {"SP_team_WOLF_checkpoint", (byte *)SP_team_WOLF_checkpoint},
 {"checkpoint_spawntouch", (byte *)checkpoint_spawntouch},

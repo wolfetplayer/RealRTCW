@@ -1328,6 +1328,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_CrouchToMarker", (byte *)AICast_ScriptAction_CrouchToMarker},
 {"AICast_ScriptAction_WalkToMarker", (byte *)AICast_ScriptAction_WalkToMarker},
 {"AICast_ScriptAction_GotoMarker", (byte *)AICast_ScriptAction_GotoMarker},
+{"G_ScriptAction_ShaderRemapFlush", (byte *)G_ScriptAction_ShaderRemapFlush},
+{"G_ScriptAction_ShaderRemap", (byte *)G_ScriptAction_ShaderRemap},
 {"AICast_NoAttackIfNotHurtSinceLastScriptAction", (byte *)AICast_NoAttackIfNotHurtSinceLastScriptAction},
 {"AIFunc_DefaultStart", (byte *)AIFunc_DefaultStart},
 {"AIFunc_BattleStart", (byte *)AIFunc_BattleStart},

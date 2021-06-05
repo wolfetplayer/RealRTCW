@@ -90,6 +90,11 @@ qboolean G_ScriptAction_MusicPlay( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MusicStop( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MusicFade( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MusicQueue( gentity_t *ent, char *params );
+
+qboolean G_ScriptAction_ShaderRemap( gentity_t* ent, char *params );
+qboolean G_ScriptAction_ShaderRemapFlush( gentity_t* ent, char *params );
+
+
 //----(SA)	end
 
 // these are the actions that each event can call
@@ -126,6 +131,9 @@ g_script_stack_action_t gScriptActions[] =
 	{"wm_announce",              G_ScriptAction_Announce},
 	{"wm_endround",              G_ScriptAction_EndRound},
 	{"wm_set_round_timelimit",   G_ScriptAction_SetRoundTimelimit},
+
+	{"remapshader",                      G_ScriptAction_ShaderRemap},
+	{"remapshaderflush",             G_ScriptAction_ShaderRemapFlush},
 	// dhm
 	{"backupscript",         G_ScriptAction_BackupScript},
 	{"restorescript",            G_ScriptAction_RestoreScript},

@@ -1515,3 +1515,34 @@ qboolean G_ScriptAction_SetHealth( gentity_t *ent, char *params ) {
 	ent->health = atoi( params );
 	return qtrue;
 }
+
+qboolean G_ScriptAction_ShaderRemap( gentity_t* ent, char *params ) {
+	char    *pString, *token;
+	float f = level.time * 0.001;
+	char oldShader[256];
+	char newShader[256];
+
+	pString = params;
+
+	token = COM_ParseExt( &pString, qfalse );
+	if ( !token[0] ) {
+		G_Error( "G_Scripting: remapshader must have a target shader name\n" );
+	}
+	Q_strncpyz( oldShader, token, 256 );
+
+	token = COM_ParseExt( &pString, qfalse );
+	if ( !token[0] ) {
+		G_Error( "G_Scripting: remapshader must have a new shader name\n" );
+	}
+	Q_strncpyz( newShader, token, 256 );
+
+	AddRemap( oldShader, newShader, f );
+//	trap_SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
+
+	return qtrue;
+}
+
+qboolean G_ScriptAction_ShaderRemapFlush( gentity_t* ent, char *params ) {
+	trap_SetConfigstring( CS_SHADERSTATE, BuildShaderStateConfig() );
+	return qtrue;
+}

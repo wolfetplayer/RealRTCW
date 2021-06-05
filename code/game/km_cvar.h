@@ -2,6 +2,7 @@
 /* Knightmare's game balancing cvar header file */
 
 extern vmCvar_t		sk_plr_dmg_knife;
+extern vmCvar_t		sk_plr_dmg_dagger;
 extern vmCvar_t		sk_plr_dmg_kick;
 extern vmCvar_t		sk_plr_dmg_luger;
 extern vmCvar_t		sk_plr_dmg_colt;
@@ -39,6 +40,7 @@ extern vmCvar_t		sk_plr_dmg_mg42m;
 
 
 extern vmCvar_t		sk_ai_dmg_knife;
+extern vmCvar_t		sk_ai_dmg_dagger;
 extern vmCvar_t		sk_ai_dmg_luger;
 extern vmCvar_t		sk_ai_dmg_colt;
 extern vmCvar_t		sk_ai_dmg_mp40;

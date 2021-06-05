@@ -246,6 +246,8 @@ static void CG_Obituary( entityState_t *ent ) {
 
 		case MOD_KNIFE_STEALTH:
 		case MOD_KNIFE:
+		case MOD_DAGGER:
+		case MOD_DAGGER_STEALTH:
 		case MOD_KNIFE2:
 			message = "was stabbed by";
 			message2 = "'s knife";
@@ -2502,6 +2504,17 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		ByteToDir( es->eventParm, dir );
 		CG_GibPlayer( cent, cent->lerpOrigin, dir );
+		break;
+
+	case EV_GIB_VAMPIRISM:
+		DEBUGNAME( "EV_GIB_VAMPIRISM" );
+		if ( es->aiChar == AICHAR_ZOMBIE ) {
+			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.zombieDeathSound );
+		} else {
+			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.gibSound );
+		}
+		ByteToDir( es->eventParm, dir );
+		CG_GibVampirism( cent, cent->lerpOrigin, dir );
 		break;
 
 //----(SA)	added

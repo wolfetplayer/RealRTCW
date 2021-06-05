@@ -541,6 +541,7 @@ typedef enum {
 	WP_NONE,                // 0
 
 	WP_KNIFE,               // 1
+	WP_DAGGER,
 	// German weapons
 	WP_LUGER,               // 2
 	WP_MP40,                // 3
@@ -629,7 +630,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_P38 ) | ( 1 << WP_WELROD ) )
+#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_DAGGER ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_P38 ) | ( 1 << WP_WELROD ) )
 //----(SA)	end
 
 
@@ -803,6 +804,7 @@ typedef enum {
 	EV_POWERUP_BATTLESUIT,
 	EV_POWERUP_REGEN,
 	EV_GIB_PLAYER,          // gib a previously living player
+	EV_GIB_VAMPIRISM,
 	EV_DEBUG_LINE,
 	EV_STOPLOOPINGSOUND,
 	EV_STOPSTREAMINGSOUND,
@@ -1171,6 +1173,8 @@ typedef enum {
 	MOD_BFG,
 	MOD_BFG_SPLASH,
 	MOD_KNIFE,
+	MOD_DAGGER,
+	MOD_DAGGER_STEALTH,
 	MOD_KNIFE2,
 	MOD_KNIFE_STEALTH,
 	MOD_LUGER,

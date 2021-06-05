@@ -1392,8 +1392,8 @@ void ClientUserinfoChanged( int clientNum ) {
 	SetupWeaponsForSkill_EASY();
     }
 	else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 ) {
-			client->pers.maxHealth = 100;
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 75 ) {
+			client->pers.maxHealth = 75;
 		}
 		SetupWeaponsForSkill_MEDIUM(); 
 	    }
@@ -1404,8 +1404,8 @@ void ClientUserinfoChanged( int clientNum ) {
 		SetupWeaponsForSkill_HARD();
 		}
 	else if ( g_gameskill.integer == GSKILL_MAX ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 ) {
-			client->pers.maxHealth = 50;
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 ) {
+			client->pers.maxHealth = 25;
 		}
 		SetupWeaponsForSkill_MAX();
 	    }
@@ -1571,47 +1571,47 @@ void SetupWeaponsForSkill_EASY() // Easy
 void SetupWeaponsForSkill_MEDIUM() // Medium
 {
 		// 9mm
-	ammoTable[WP_LUGER].maxammo = 300;
-	ammoTable[WP_MP40].maxammo = 300;
-	ammoTable[WP_STEN].maxammo = 300;
-	ammoTable[WP_SILENCER].maxammo = 300;
-	ammoTable[WP_P38].maxammo = 300;
+	ammoTable[WP_LUGER].maxammo = 150;
+	ammoTable[WP_MP40].maxammo = 150;
+	ammoTable[WP_STEN].maxammo = 150;
+	ammoTable[WP_SILENCER].maxammo = 150;
+	ammoTable[WP_P38].maxammo = 150;
 	// 45cal
-	ammoTable[WP_COLT].maxammo = 300;
-	ammoTable[WP_AKIMBO].maxammo = 300;
-	ammoTable[WP_THOMPSON].maxammo = 300;
+	ammoTable[WP_COLT].maxammo = 150;
+	ammoTable[WP_AKIMBO].maxammo = 150;
+	ammoTable[WP_THOMPSON].maxammo = 150;
 	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 200;
-	ammoTable[WP_FG42].maxammo = 200;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 200;
-	ammoTable[WP_FG42SCOPE].maxammo = 200;
-	ammoTable[WP_G43].maxammo = 200;
+	ammoTable[WP_MAUSER].maxammo = 100;
+	ammoTable[WP_FG42].maxammo = 100;
+	ammoTable[WP_SNIPERRIFLE].maxammo = 100;
+	ammoTable[WP_FG42SCOPE].maxammo = 100;
+	ammoTable[WP_G43].maxammo = 100;
 	// barammo
-	ammoTable[WP_BAR].maxammo = 200;
-	ammoTable[WP_M1GARAND].maxammo = 200;
+	ammoTable[WP_BAR].maxammo = 100;
+	ammoTable[WP_M1GARAND].maxammo = 100;
 	// 30cal
-	ammoTable[WP_GARAND].maxammo = 300;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 300;
+	ammoTable[WP_GARAND].maxammo = 150;
+	ammoTable[WP_SNOOPERSCOPE].maxammo = 150;
 	// mp44
-	ammoTable[WP_MP44].maxammo = 300;
-	ammoTable[WP_MG42M].maxammo = 300;
+	ammoTable[WP_MP44].maxammo = 150;
+	ammoTable[WP_MG42M].maxammo = 150;
 	// m97
-	ammoTable[WP_M97].maxammo = 30;
-	ammoTable[WP_M30].maxammo = 30;
+	ammoTable[WP_M97].maxammo = 15;
+	ammoTable[WP_M30].maxammo = 15;
 	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 10;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 10;
-	ammoTable[WP_DYNAMITE].maxammo = 5;
-	ammoTable[WP_DYNAMITE].maxclip = 5;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 10;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 10;
+	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 5;
+	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 5;
+	ammoTable[WP_DYNAMITE].maxammo = 3;
+	ammoTable[WP_DYNAMITE].maxclip = 3;
+	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 5;
+	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 5;
 	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 5;
-	ammoTable[WP_FLAMETHROWER].maxammo = 150;
-	ammoTable[WP_FLAMETHROWER].maxclip = 150;
-	ammoTable[WP_TESLA].maxammo = 150;
-	ammoTable[WP_TESLA].maxclip = 150;
-	ammoTable[WP_VENOM].maxammo = 500;
+	ammoTable[WP_PANZERFAUST].maxammo = 3;
+	ammoTable[WP_FLAMETHROWER].maxammo = 75;
+	ammoTable[WP_FLAMETHROWER].maxclip = 75;
+	ammoTable[WP_TESLA].maxammo = 75;
+	ammoTable[WP_TESLA].maxclip = 75;
+	ammoTable[WP_VENOM].maxammo = 250;
 	// welrod
 	ammoTable[WP_WELROD].maxammo = 6;
 	ammoTable[WP_WELROD].maxclip = 6;
@@ -2113,6 +2113,10 @@ void ClientSpawn( gentity_t *ent ) {
 // JPW NERVE ***NOTE*** the following line is order-dependent and must *FOLLOW* SetWolfSpawnWeapons() in multiplayer
 // SetWolfSpawnWeapons() now adds medic team bonus and stores in ps.stats[STAT_MAX_HEALTH].
 	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
+
+   /* if ( g_gameskill.integer == GSKILL_HARD ) {
+	ent->health = client->ps.stats[STAT_HEALTH]	= 100;
+	}*/
 
 	G_SetOrigin( ent, spawn_origin );
 	VectorCopy( spawn_origin, client->ps.origin );

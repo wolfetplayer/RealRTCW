@@ -2068,6 +2068,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 
 		// no reloading
 	case WP_KNIFE:
+	case WP_DAGGER:
 	case WP_TESLA:
 	case WP_WELROD:
 		return;
@@ -3201,7 +3202,8 @@ static void PM_Weapon( void ) {
 	if ( pm->waterlevel == 3 ) {
 		if ( pm->ps->weapon != WP_KNIFE &&
 			 pm->ps->weapon != WP_GRENADE_LAUNCHER &&
-			 pm->ps->weapon != WP_GRENADE_PINEAPPLE ) {
+			 pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
+			 pm->ps->weapon != WP_DAGGER ) {
 			PM_AddEvent( EV_NOFIRE_UNDERWATER );        // event for underwater 'click' for nofire
 			pm->ps->weaponTime  = 500;
 			return;
@@ -3267,6 +3269,11 @@ static void PM_Weapon( void ) {
 		break;
 	// melee
 	case WP_KNIFE:
+		if ( !delayedFire ) {
+			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
+		}
+		break;
+	case WP_DAGGER:
 		if ( !delayedFire ) {
 			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
 		}
@@ -3464,6 +3471,7 @@ static void PM_Weapon( void ) {
 
 	switch ( pm->ps->weapon ) {
 	case WP_KNIFE:
+	case WP_DAGGER:
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:

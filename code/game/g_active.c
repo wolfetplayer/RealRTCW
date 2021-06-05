@@ -482,6 +482,14 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 	while ( client->timeResidual >= 1000 ) {
 		client->timeResidual -= 1000;
 
+    if (g_gameskill.integer == GSKILL_HARD)  // vampirism (health decay)
+    {
+	if (ent->health > 25)
+	{
+	ent->health--;
+	}
+	}
+
 		// regenerate
 // JPW NERVE, split these completely
 		if ( g_gametype.integer != GT_WOLF ) {

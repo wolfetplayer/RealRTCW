@@ -147,6 +147,7 @@ vmCvar_t g_localTeamPref;
 // RealRTCW knightmare code from 1.42d
 
 vmCvar_t		sk_plr_dmg_knife;
+vmCvar_t		sk_plr_dmg_dagger;
 vmCvar_t		sk_plr_dmg_kick;
 vmCvar_t		sk_plr_dmg_luger;
 vmCvar_t		sk_plr_dmg_colt;
@@ -184,6 +185,7 @@ vmCvar_t		sk_plr_dmg_welrod;
 vmCvar_t		sk_plr_dmg_mg42m;
 
 vmCvar_t		sk_ai_dmg_knife;
+vmCvar_t		sk_ai_dmg_dagger;
 vmCvar_t		sk_ai_dmg_luger;
 vmCvar_t		sk_ai_dmg_colt;
 vmCvar_t		sk_ai_dmg_mp40;
@@ -239,6 +241,7 @@ cvarTable_t gameCvarTable[] = {
      // RealRTCW knightmare 1.42d changes
 
 	{ &sk_plr_dmg_knife, "sk_plr_dmg_knife", "10", CVAR_CHEAT, 0, qfalse  },
+	{ &sk_plr_dmg_dagger, "sk_plr_dmg_dagger", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_kick, "sk_plr_dmg_kick", "8", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_luger, "sk_plr_dmg_luger", "7", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_colt, "sk_plr_dmg_colt", "11", CVAR_CHEAT, 0, qfalse  },  //was 8
@@ -288,6 +291,7 @@ cvarTable_t gameCvarTable[] = {
 
 
 	{ &sk_ai_dmg_knife, "sk_ai_dmg_knife", "10", CVAR_CHEAT, 0, qfalse  },
+	{ &sk_ai_dmg_dagger, "sk_ai_dmg_dagger", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_luger, "sk_ai_dmg_luger", "7", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_colt, "sk_ai_dmg_colt", "11", CVAR_CHEAT, 0, qfalse  }, 
 	{ &sk_ai_dmg_mp40, "sk_ai_dmg_mp40", "6", CVAR_CHEAT, 0, qfalse  },
@@ -671,7 +675,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 	//
 	else if ( tr->entityNum < MAX_CLIENTS ) {
 
-		if ( ent->s.weapon == WP_KNIFE ) {
+		if ( ent->s.weapon == WP_KNIFE || ent->s.weapon == WP_DAGGER ) {
 			vec3_t pforward, eforward;
 			qboolean canKnife = qfalse;
 
@@ -942,7 +946,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 			// set up any forced max distances for specified hints
 			switch ( hintType ) {
 			case HINT_KNIFE:
-				if ( ent->s.weapon == WP_KNIFE ) {
+				if ( ent->s.weapon == WP_KNIFE || ent->s.weapon == WP_DAGGER ) {
 					hintDist = CH_KNIFE_DIST;
 				} else {
 					hintType = 0;       // no knife, clear it

@@ -1338,7 +1338,7 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 
 		// monsters have full ammo for their attacks
 		// knife gets infinite ammo too
-		if ( !Q_strncasecmp( params, "monsterattack", 13 ) || weapon == WP_KNIFE ) {
+		if ( !Q_strncasecmp( params, "monsterattack", 13 ) || weapon == WP_KNIFE  || weapon == WP_DAGGER ) {
 			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
 			Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );      //----(SA)	added
 		}
@@ -2273,6 +2273,7 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	gentity_t   *player;
 	qboolean silent = qfalse, endgame = qfalse, savepersist = qfalse;
 	int exitTime = 8000;
+
 
 	player = AICast_FindEntityForName( "player" );
 	// double check that they are still alive

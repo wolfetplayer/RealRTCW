@@ -161,10 +161,39 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	cast_state_t    *cs;
 	qboolean nogib = qtrue;
 	char mapname[MAX_QPATH];
+	qboolean killerPlayer = attacker && attacker->client && !( attacker->aiCharacter );
+	qboolean modKnife = (meansOfDeath == MOD_DAGGER );
+	qboolean modStealthKnife = (meansOfDeath == MOD_DAGGER_STEALTH );
 
 	// print debugging message
 	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {
 		G_Printf( "killed %s\n", self->aiName );
+	}
+
+	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modKnife ) // vampirism
+	{
+	
+			trap_SendServerCommand( -1, "mu_play sound/player/vampirism.wav 0\n" );
+			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
+		    attacker->health += 15;
+
+			
+			if ( attacker->health > attacker->client->ps.stats[STAT_MAX_HEALTH] ) 
+			{
+			attacker->health = attacker->client->ps.stats[STAT_MAX_HEALTH];
+		    }
+	}
+
+    if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modStealthKnife ) // vampirism
+	{
+			trap_SendServerCommand( -1, "mu_play sound/player/vampirism.wav 0\n" );
+			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
+		    attacker->health += 30;
+		
+			if ( attacker->health > attacker->client->ps.stats[STAT_MAX_HEALTH] ) 
+			{
+			attacker->health = attacker->client->ps.stats[STAT_MAX_HEALTH];
+		    }
 	}
 
 	cs = AICast_GetCastState( self->s.number );

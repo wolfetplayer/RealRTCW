@@ -723,7 +723,7 @@ static void CG_DrawStatusBar( void ) {
 		inclip = ps->ammoclip[BG_FindClipForWeapon( cent->currentState.weapon )];
 
 		if ( value > -1 ) {
-			if ( cg.predictedPlayerState.weapon == WP_KNIFE ) {
+			if ( cg.predictedPlayerState.weapon == WP_KNIFE || cg.predictedPlayerState.weapon == WP_DAGGER ) {
 				color = 3; 
 			} else if ( ( cg.predictedPlayerState.weaponstate == WEAPON_FIRING || cg.predictedPlayerState.weaponstate == WEAPON_FIRINGALT )
 					&& cg.predictedPlayerState.weaponTime > 100 ) {
@@ -788,7 +788,7 @@ static void CG_DrawStatusBar( void ) {
 			}
 
 			// don't draw ammo value for knife
-			if ( cg.predictedPlayerState.weapon != WP_KNIFE ) {
+			if ( cg.predictedPlayerState.weapon != WP_KNIFE || cg.predictedPlayerState.weapon != WP_DAGGER  ) {
 				if ( cgs.dmflags & DF_NO_WEAPRELOAD ) {
 					CG_DrawBigString2( ( 580 - 23 + 35 ) + wideOffset, STATUSBARHEIGHT, va( "%d.", value ), cg_hudAlpha.value );
 				} else if ( value ) {
@@ -2452,6 +2452,7 @@ static void CG_DrawCrosshair( void ) {
 
 		// special reticle for weapon
 	case WP_KNIFE:
+	case WP_DAGGER:
 		if ( cg.zoomedBinoc ) {
 			CG_DrawBinocReticle();
 			return;
@@ -2644,6 +2645,7 @@ static void CG_DrawCrosshair3D( void ) {
 		break;
 		// special reticle for weapon
 	case WP_KNIFE:
+	case WP_DAGGER:
 		if ( cg.zoomedBinoc ) {
 			CG_DrawBinocReticle();
 			return;

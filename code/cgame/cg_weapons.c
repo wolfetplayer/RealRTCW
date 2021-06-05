@@ -55,8 +55,8 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	// bank
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
-	{WP_KNIFE,              0,                      0,            0,               0            },  //	1
-	{WP_LUGER,              WP_COLT,                WP_P38,      WP_WELROD,     0            },  //	2
+	{WP_KNIFE,              WP_DAGGER,              0,            0,               0            },  //	1
+	{WP_LUGER,              WP_COLT,                WP_P38,       WP_WELROD,       0            },  //	2
 	{WP_MP40,               WP_STEN,                WP_THOMPSON,  0,               0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              0,            0,               0            },  //	4
     {WP_G43,                WP_M1GARAND,            0,            0,               0            },  //	5
@@ -1159,6 +1159,11 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash1.wav" );
 		weaponInfo->flashSound[1] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash2.wav" );
 		break;
+	
+	case WP_DAGGER:
+		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash1.wav" );
+		weaponInfo->flashSound[1] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash2.wav" );
+		break;
 
 	case WP_LUGER:
 		MAKERGB( weaponInfo->flashDlightColor, 1.0, 0.0, 0.0 );
@@ -1746,6 +1751,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 
 			// never adjust
 		case WP_KNIFE:
+		case WP_DAGGER:
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 			break;
@@ -2812,7 +2818,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	if ( weaponNum == WP_GRENADE_LAUNCHER ||
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
-		 weaponNum == WP_DYNAMITE ) {
+		 weaponNum == WP_DYNAMITE ||
+		 weaponNum == WP_DAGGER ) {
 		return;
 	}
 
@@ -3168,6 +3175,7 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[2] = -2;
 		break;
 		case WP_KNIFE:
+		case WP_DAGGER:
 			 gunoff[0] = 1;
 		     gunoff[1] = 1;
 		     gunoff[2] = -3;
@@ -5248,6 +5256,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 
 	switch ( weapon ) {
 	case WP_KNIFE:
+	case WP_DAGGER:
 		sfx     = cgs.media.sfx_knifehit[4];    // different values for different types (stone/metal/wood/etc.)
 		mark    = cgs.media.bulletMarkShader;
 		radius  = 1 + rand() % 2;
@@ -5857,6 +5866,16 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 	// others will just make the blood
 	switch ( weapon ) {
 		// knives just make the flesh hit sound.  no other effects
+    case WP_DAGGER:
+		i = rand() % 4;
+		if ( cgs.media.sfx_knifehit[i] ) {
+			trap_S_StartSound( origin, cent->currentState.number, CHAN_WEAPON, cgs.media.sfx_knifehit[i] );
+		}
+
+		if ( cent->currentState.number == cg.snap->ps.clientNum ) {
+			CG_StartShakeCamera( 0.03, 500, origin, 100 );
+		}
+		break;
 	case WP_KNIFE:
 		i = rand() % 4;
 		if ( cgs.media.sfx_knifehit[i] ) {

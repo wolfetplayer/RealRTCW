@@ -382,7 +382,7 @@ void AICast_Heinrich_Taunt( cast_state_t *cs ) {
 }
 
 #define HEINRICH_LUNGE_DELAY    ANIMLENGTH( 15,20 )
-#define HEINRICH_LUNGE_RANGE    250 // RealRTCW was 170
+#define HEINRICH_LUNGE_RANGE    170 // RealRTCW was 170
 #define HEINRICH_LUNGE_DAMAGE   ( 50 + rand() % 20 )
 
 char *AIFunc_Heinrich_SwordLunge( cast_state_t *cs ) {
@@ -480,7 +480,7 @@ char *AIFunc_Heinrich_SwordLungeStart( cast_state_t *cs ) {
 }
 
 #define HEINRICH_KNOCKBACK_DELAY    ANIMLENGTH( 26,20 )
-#define HEINRICH_KNOCKBACK_RANGE    200  // RealRTCW was 150
+#define HEINRICH_KNOCKBACK_RANGE    150  // RealRTCW was 150
 #define HEINRICH_KNOCKBACK_DAMAGE   ( 60 + rand() % 20 )
 
 char *AIFunc_Heinrich_SwordKnockback( cast_state_t *cs ) {
@@ -573,7 +573,7 @@ char *AIFunc_Heinrich_SwordKnockbackStart( cast_state_t *cs ) {
 }
 
 #define HEINRICH_SLASH_DELAY    ANIMLENGTH( 17,25 )
-#define HEINRICH_SLASH_RANGE    200   // RealRTCW was 140
+#define HEINRICH_SLASH_RANGE    140   // RealRTCW was 140
 #define HEINRICH_SLASH_DAMAGE   ( 30 + rand() % 15 )
 
 char *AIFunc_Heinrich_SwordSideSlash( cast_state_t *cs ) {
@@ -672,7 +672,7 @@ char *AIFunc_Heinrich_SwordSideSlashStart( cast_state_t *cs ) {
 #define HEINRICH_STOMP_DELAY        900
 #define HEINRICH_STOMP_RANGE        1024.0
 #define HEINRICH_STOMP_VELOCITY_Z   420
-#define HEINRICH_STOMP_DAMAGE       40   // RealRTCW was 35
+#define HEINRICH_STOMP_DAMAGE       35   
 
 char *AIFunc_Heinrich_Earthquake( cast_state_t *cs ) {
 	gentity_t   *ent = &g_entities[cs->entityNum];

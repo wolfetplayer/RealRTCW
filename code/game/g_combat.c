@@ -275,6 +275,8 @@ char    *modNames[] = {
 	"MOD_BFG",
 	"MOD_BFG_SPLASH",
 	"MOD_KNIFE",
+	"MOD_DAGGER",
+	"MOD_DAGGER_STEALTH",
 	"MOD_KNIFE2",
 	"MOD_KNIFE_STEALTH",
 	"MOD_LUGER",

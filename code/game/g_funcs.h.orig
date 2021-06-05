@@ -597,6 +597,7 @@ If you have questions concerning this license or the applicable additional terms
 {"Weapon_Engineer", (byte *)Weapon_Engineer},
 {"Weapon_Medic", (byte *)Weapon_Medic},
 {"Weapon_Knife", (byte *)Weapon_Knife},
+{"Weapon_Dagger", (byte *)Weapon_Dagger},
 {"AICast_ScriptRun", (byte *)AICast_ScriptRun},
 {"AICast_ForceScriptEvent", (byte *)AICast_ForceScriptEvent},
 {"AICast_ScriptEvent", (byte *)AICast_ScriptEvent},

@@ -1327,6 +1327,8 @@ extern qboolean AICast_ScriptAction_GotoCast ( cast_state_t * cs , char * params
 extern qboolean AICast_ScriptAction_CrouchToMarker ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_WalkToMarker ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GotoMarker ( cast_state_t * cs , char * params ) ;
+extern qboolean G_ScriptAction_ShaderRemapFlush ( gentity_t * ent , char * params ) ;
+extern qboolean G_ScriptAction_ShaderRemap ( gentity_t * ent , char * params ) ;
 extern void AICast_NoAttackIfNotHurtSinceLastScriptAction ( cast_state_t * cs ) ;
 extern char * AIFunc_DefaultStart ( cast_state_t * cs ) ;
 extern char * AIFunc_BattleStart ( cast_state_t * cs ) ;

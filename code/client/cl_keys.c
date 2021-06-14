@@ -2323,10 +2323,11 @@ void CL_KeyDownEvent( int key, unsigned time )
 	} else if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
 		kb = keys[key].binding;
 
-		if ( activeMenu == UIMENU_CLIPBOARD ) {
-			// any key gets out of clipboard
-			key = K_ESCAPE;
-		} else if ( activeMenu == UIMENU_PREGAME ) {
+		/*if ( activeMenu == UIMENU_CLIPBOARD ) {
+			if ( key != K_MOUSE1 ) {
+				return; // eat all keys except mouse click
+			}
+		} else*/ if ( activeMenu == UIMENU_PREGAME ) {
 			if ( key != K_MOUSE1 ) {
 				return; // eat all keys except mouse click
 			}
@@ -2341,7 +2342,15 @@ void CL_KeyDownEvent( int key, unsigned time )
 					}
 				}
 			}
-		}
+		} 
+
+					if ( kb ) {
+				if ( !Q_stricmp( "+activate", kb ) ) {
+					if ( VM_Call( uivm, UI_GET_ACTIVE_MENU ) == UIMENU_CLIPBOARD ) {
+						key = K_ESCAPE;
+					}
+				}
+			}
 
 		if ( uivm ) {
 			VM_Call( uivm, UI_KEY_EVENT, key, qtrue );

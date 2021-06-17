@@ -79,6 +79,8 @@ cvar_t  *sv_nohudchallenge;
 cvar_t  *sv_nopickupchallenge;
 cvar_t  *sv_decaychallenge;
 
+cvar_t  *sv_checkpoints;
+
 cvar_t  *sv_reloading;  //----(SA)	added
 
 /*

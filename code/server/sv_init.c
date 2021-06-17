@@ -697,10 +697,18 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 		// Rafael gameskill
 		static cvar_t   *g_gameskill;
 
+		static cvar_t   *g_checkpoints;
+
 		if ( !g_gameskill ) {
 			g_gameskill = Cvar_Get( "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE );     // (SA) new default '2' (was '1')
 		}
 		// done
+
+
+
+		if ( !g_checkpoints ) {
+			g_checkpoints = Cvar_Get( "g_checkpoints", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE  );    
+		}
 
 		if ( !g_gametype ) {
 			g_gametype = Cvar_Get( "g_gametype", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE );
@@ -781,18 +789,40 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 	// Ridah, check for loading a saved game
 	if ( Cvar_VariableIntegerValue( "savegame_loading" ) ) {
 		// open the current savegame, and find out what the time is, everything else we can ignore
-		char *savemap = "save/current.svg";
+
+    char *savemap = "save/current.svg";
+	char *savemap_checkpoints = "save/lastcheckpoint.svg";
+	// init client structures and svs.numSnapshotEntities
+	
 		byte *buffer;
-		int size, savegameTime;
+		int size, size_checkpoints, savegameTime;
 
 		size = FS_ReadFile( savemap, NULL );
-		if ( size < 0 ) {
+
+		size_checkpoints = FS_ReadFile( savemap_checkpoints, NULL );
+
+		if ( sv_checkpoints->integer )
+		{
+		    if ( size_checkpoints < 0 ) {
+			Com_Printf( "Can't find savegame %s\n", savemap_checkpoints );
+			return;
+		} 
+		    FS_ReadFile( savemap_checkpoints, (void **)&buffer );
+		}
+		else 
+		{
+			if ( size < 0 ) {
 			Com_Printf( "Can't find savegame %s\n", savemap );
 			return;
+			}
+			FS_ReadFile( savemap, (void **)&buffer );
 		}
 
+
+
+
 		//buffer = Hunk_AllocateTempMemory(size);
-		FS_ReadFile( savemap, (void **)&buffer );
+		//FS_ReadFile( savemap, (void **)&buffer );
 
 		// the mapname is at the very start of the savegame file
 		savegameTime = *( int * )( buffer + sizeof( int ) + MAX_QPATH );
@@ -996,6 +1026,8 @@ void SV_Init (void)
 	// Rafael gameskill
 	sv_gameskill = Cvar_Get( "g_gameskill", "1", CVAR_SERVERINFO | CVAR_LATCH );
 	// done
+
+	sv_checkpoints = Cvar_Get( "g_checkpoints", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE );
 
 	Cvar_Get( "sv_keywords", "", CVAR_SERVERINFO );
 	sv_mapname = Cvar_Get( "mapname", "nomap", CVAR_SERVERINFO | CVAR_ROM );

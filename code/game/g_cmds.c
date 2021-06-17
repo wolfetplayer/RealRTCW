@@ -1363,7 +1363,14 @@ void Cmd_StopCamera_f( gentity_t *ent ) {
 		// gcc: suggests () around assignment used as truth value
 		while ( ( sp = G_Find( sp, FOFS( classname ), "info_player_deathmatch" ) ) ) { // info_player_start becomes info_player_deathmatch in it's spawn functon
 			if ( Distance( ent->s.pos.trBase, sp->s.origin ) < 256 && trap_InPVS( ent->s.pos.trBase, sp->s.origin ) ) {
-				G_SaveGame( NULL );
+							if (g_checkpoints.integer) 
+							{
+						    G_SaveGame( "lastcheckpoint" );
+						    } 
+							else 
+							{
+							G_SaveGame( NULL );
+							}
 				break;
 			}
 		}

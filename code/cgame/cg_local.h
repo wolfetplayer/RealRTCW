@@ -1781,6 +1781,8 @@ extern vmCvar_t cg_skybox;
 extern vmCvar_t cg_gameSkill;
 // done
 
+extern vmCvar_t cg_checkpoints;
+
 extern vmCvar_t cg_reloading;           //----(SA)	added
 
 // JPW NERVE

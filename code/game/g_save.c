@@ -1392,7 +1392,17 @@ void G_LoadGame( char *filename ) {
 	G_DPrintf( "G_LoadGame '%s'\n", filename );
 
 	// enforce the "current" savegame, since that is used for all loads
-	filename = "save\\current.svg";
+
+	if ( g_checkpoints.integer ) 
+		{
+		filename = "save\\lastcheckpoint.svg";
+		} 
+		else 
+		{
+	    filename = "save\\current.svg";
+		}
+
+
 
 	// open the file
 	if ( trap_FS_FOpenFile( filename, &f, FS_READ ) < 0 ) {

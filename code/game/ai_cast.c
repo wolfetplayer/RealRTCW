@@ -763,7 +763,20 @@ void AICast_CheckLoadGame( void ) {
 		if ( ready ) {
 			trap_Cvar_Set( "savegame_loading", "0" ); // in-case it aborts
 			saveGamePending = qfalse;
-			G_LoadGame( NULL );		// always load the "current" savegame
+		
+
+		//G_LoadGame( NULL );		// always load the "current" savegame
+
+
+							if (g_checkpoints.integer) 
+							{
+						    G_LoadGame( "lastcheckpoint" );
+						    } 
+							else 
+							{
+							G_LoadGame( NULL );
+							}
+
 //			trap_Cvar_Set( "cg_norender", "0" );
 
 			// RF, spawn a thinker that will enable rendering after the client has had time to process the entities and setup the display

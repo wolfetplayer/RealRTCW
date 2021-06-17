@@ -1083,6 +1083,8 @@ extern vmCvar_t g_gametype;
 extern vmCvar_t g_gameskill;
 // done
 
+extern vmCvar_t g_checkpoints;
+
 extern vmCvar_t g_reloading;        //----(SA)	added
 
 extern vmCvar_t g_dedicated;

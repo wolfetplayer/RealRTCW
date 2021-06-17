@@ -3817,6 +3817,13 @@ static void UI_LoadSavegames( char *dir ) {
 				continue;
 			}
 
+				/*if ( !Q_stricmp( sgname, "lastcheckpoint.svg" ) ) {    // ignore some savegames that have special uses and shouldn't be loaded by the user directly
+				i--;
+				uiInfo.savegameCount -= 1;
+				sgname += len + 1;
+				continue;
+			}*/
+
 			if ( !Q_stricmp( sgname +  len - 4,".svg" ) ) {
 				sgname[len - 4] = '\0';
 			}

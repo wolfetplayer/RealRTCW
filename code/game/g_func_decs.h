@@ -1302,6 +1302,7 @@ extern qboolean AICast_ScriptAction_Accum ( cast_state_t * cs , char * params ) 
 extern qboolean AICast_ScriptAction_GodMode ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_FireAtTarget ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SaveGame ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_LastCheckpoint ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_AlertEntity ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Movetype ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GiveInventory ( cast_state_t * cs , char * params ) ;

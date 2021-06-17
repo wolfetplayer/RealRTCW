@@ -1588,6 +1588,37 @@ qboolean AICast_ScriptAction_SaveGame( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+
+/*
+=================
+AICast_ScriptAction_LastCheckpoint
+
+  NOTE: only use this command in "player" scripts, not for AI
+
+  syntax: savegame
+=================
+*/
+qboolean AICast_ScriptAction_LastCheckpoint( cast_state_t *cs, char *params ) {
+	char *pString, *saveName;
+	pString = params;
+
+	if ( cs->bs ) {
+		G_Error( "AI Scripting: savegame attempted on a non-player" );
+	}
+	saveName = COM_ParseExt( &pString, qfalse );
+	if ( g_checkpoints.integer ) {
+	if ( !saveName[0] ) {
+		G_SaveGame( "lastcheckpoint" );	// save the default "current" savegame
+	} else {
+		G_SaveGame( saveName );
+	}
+	trap_SendServerCommand( -1, "cp checkpointsaved" );  // yes save for u
+	}
+
+
+	return qtrue;
+}
+
 /*
 =================
 AICast_ScriptAction_FireAtTarget

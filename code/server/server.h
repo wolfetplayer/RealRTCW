@@ -331,6 +331,8 @@ extern cvar_t  *sv_nohudchallenge;
 extern cvar_t  *sv_nopickupchallenge;
 extern cvar_t  *sv_decaychallenge;
 
+extern cvar_t  *sv_checkpoints;
+
 extern cvar_t  *sv_reloading;   //----(SA)	added
 
 //===========================================================

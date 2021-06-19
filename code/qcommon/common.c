@@ -1938,7 +1938,7 @@ For controlling environment variables
 
 void Com_ExecuteCfg(void)
 {
-	Cbuf_ExecuteText(EXEC_NOW, "exec default.cfg\n");
+	Cbuf_ExecuteText(EXEC_NOW, "exec realrtcwdefault.cfg\n");
 	if ( FS_ReadFile( "language.cfg", NULL ) > 0 ) {
 		Cbuf_ExecuteText(EXEC_APPEND, "exec language.cfg\n");
 	} else if ( FS_ReadFile( "Language.cfg", NULL ) > 0 ) {

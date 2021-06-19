@@ -4815,7 +4815,7 @@ static void UI_RunMenuScript( char **args ) {
 
 // from MP 11/12/01
 			trap_Cmd_ExecuteText( EXEC_NOW, "cvar_restart\n" );            // NERVE - SMF - changed order
-			trap_Cmd_ExecuteText( EXEC_NOW, "exec default.cfg\n" );
+			trap_Cmd_ExecuteText( EXEC_NOW, "exec realrtcwdefault.cfg\n" );
 			trap_Cmd_ExecuteText( EXEC_NOW, "exec language.cfg\n" );       // NERVE - SMF
 			trap_Cmd_ExecuteText( EXEC_NOW, "setRecommended\n" );     // NERVE - SMF
 			Controls_SetDefaults();

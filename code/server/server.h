@@ -327,8 +327,6 @@ extern	cvar_t	*sv_voipProtocol;
 extern cvar_t  *sv_gameskill;
 // done
 
-extern cvar_t  *sv_checkpoints;
-
 extern cvar_t  *sv_reloading;   //----(SA)	added
 
 //===========================================================

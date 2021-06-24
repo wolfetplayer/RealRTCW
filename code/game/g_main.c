@@ -61,8 +61,6 @@ vmCvar_t g_gameskill;
 
 vmCvar_t g_reloading;       //----(SA)	added
 
-vmCvar_t g_checkpoints;
-
 vmCvar_t g_dmflags;
 vmCvar_t g_fraglimit;
 vmCvar_t g_timelimit;
@@ -240,10 +238,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_gameskill, "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse  },   // (SA) new default '2' (was '1')
 	// done
 
-	{ &g_checkpoints, "g_checkpoints", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE , 0, qfalse  }, 
+     // RealRTCW knightmare 1.42d changes
 
-    // RealRTCW knightmare 1.42d changes
-    // Damage inflicted by Player
 	{ &sk_plr_dmg_knife, "sk_plr_dmg_knife", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_dagger, "sk_plr_dmg_dagger", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_kick, "sk_plr_dmg_kick", "8", CVAR_CHEAT, 0, qfalse  },
@@ -1218,14 +1214,7 @@ void G_UpdateCvars( void ) {
 
 						// if we are not watching a cutscene, save the game
 						if ( !g_entities[0].client->cameraPortal ) {
-							if (g_checkpoints.integer) 
-							{
-						    G_SaveGame( "lastcheckpoint" );
-						    } 
-							else 
-							{
 							G_SaveGame( NULL );
-							}
 						}
 
 						trap_Cvar_Set( "cg_norender", "0" );  // camera has started, render 'on'

@@ -75,8 +75,6 @@ int serverBansCount = 0;
 cvar_t  *sv_gameskill;
 // done
 
-cvar_t  *sv_checkpoints;
-
 cvar_t  *sv_reloading;  //----(SA)	added
 
 /*

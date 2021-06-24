@@ -1602,12 +1602,6 @@ qboolean AICast_ScriptAction_LastCheckpoint( cast_state_t *cs, char *params ) {
 	char *pString, *saveName;
 	pString = params;
 
-		// Ironman mode
-        if ( g_ironchallenge.integer ) 
-		{
-		return qtrue;
-		}
-
 	if ( cs->bs ) {
 		G_Error( "AI Scripting: savegame attempted on a non-player" );
 	}

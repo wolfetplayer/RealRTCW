@@ -235,8 +235,6 @@ vmCvar_t cg_nohudChallenge;
 vmCvar_t cg_nopickupChallenge;
 vmCvar_t cg_decayChallenge;
 
-vmCvar_t cg_checkpoints;
-
 vmCvar_t cg_reloading;      //----(SA)	added
 
 // JPW NERVE
@@ -479,8 +477,6 @@ cvarTable_t cvarTable[] = {
 	{ &cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_nopickupChallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_decayChallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
-
-	{ &cg_checkpoints, "g_checkpoints", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE },
 
 	{ &cg_reloading, "g_reloading", "0", 0 }, //----(SA)	added
 

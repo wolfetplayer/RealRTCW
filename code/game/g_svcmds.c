@@ -485,12 +485,6 @@ qboolean    ConsoleCommand( void ) {
 		return qtrue;
 		}
 
-		if ( g_checkpoints.integer ) 
-		{
-		trap_SendServerCommand( -1, "cp checkpointswarning" );  // no save 4 u
-		return qtrue;
-		}
-
 		
 
 		trap_Argv( 1, cmd, sizeof( cmd ) );

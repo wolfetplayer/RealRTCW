@@ -1785,8 +1785,6 @@ extern vmCvar_t cg_nohudChallenge;
 extern vmCvar_t cg_nopickupChallenge;
 extern vmCvar_t cg_decayChallenge;
 
-extern vmCvar_t cg_checkpoints;
-
 extern vmCvar_t cg_reloading;           //----(SA)	added
 
 // JPW NERVE

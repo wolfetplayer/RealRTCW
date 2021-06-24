@@ -79,7 +79,6 @@ qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Movetype( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_AlertEntity( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SaveGame( cast_state_t *cs, char *params );
-qboolean AICast_ScriptAction_LastCheckpoint( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_FireAtTarget( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GodMode( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Accum( cast_state_t *cs, char *params );
@@ -224,7 +223,6 @@ cast_script_stack_action_t scriptActions[] =
 	{"movetype",     AICast_ScriptAction_Movetype},
 	{"alertentity",      AICast_ScriptAction_AlertEntity},
 	{"savegame",     AICast_ScriptAction_SaveGame},
-	{"checkpoint",     AICast_ScriptAction_LastCheckpoint},
 	{"fireattarget", AICast_ScriptAction_FireAtTarget},
 	{"godmode",          AICast_ScriptAction_GodMode},
 	{"accum",            AICast_ScriptAction_Accum},

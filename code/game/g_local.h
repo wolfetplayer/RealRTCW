@@ -1086,8 +1086,6 @@ extern vmCvar_t g_nohudchallenge;
 extern vmCvar_t g_nopickupchallenge;
 extern vmCvar_t g_decaychallenge;
 
-extern vmCvar_t g_checkpoints;
-
 extern vmCvar_t g_reloading;        //----(SA)	added
 
 extern vmCvar_t g_dedicated;

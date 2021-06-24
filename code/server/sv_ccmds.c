@@ -199,19 +199,14 @@ static void SV_Map_f( void ) {
 		//buffer = Hunk_AllocateTempMemory(size);
 		FS_ReadFile( savemap, (void **)&buffer );
 
-
-
-	    	if ( Q_stricmp( savemap, "save/current.svg" ) != 0 ) {
+		if ( Q_stricmp( savemap, "save/current.svg" ) != 0 ) {
 			// copy it to the current savegame file
 			FS_WriteFile( "save/current.svg", buffer, size );
 			// make sure it is the correct size
 			csize = FS_ReadFile( "save/current.svg", NULL );
 			if ( csize != size ) {
-			Hunk_FreeTempMemory( buffer );
-			FS_Delete( "save/current.svg" );
-
-
-
+				Hunk_FreeTempMemory( buffer );
+				FS_Delete( "save/current.svg" );
 // TTimo
 #ifdef __linux__
 				Com_Error( ERR_DROP, "Unable to save game.\n\nPlease check that you have at least 5mb free of disk space in your home directory." );
@@ -270,8 +265,6 @@ static void SV_Map_f( void ) {
 	Cvar_Get( "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
     Cvar_Get( "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
 	Cvar_Get( "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM );
-
-	Cvar_Get( "g_checkpoints", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE );
 
 	Cvar_SetValue( "g_episode", 0 ); //----(SA) added
 
@@ -336,7 +329,6 @@ static void SV_MapRestart_f( void ) {
 	qboolean isBot;
 	int delay = 0;
 
-
 	// make sure we aren't restarting twice in the same frame
 	if ( com_frameTime == sv.serverId ) {
 		return;
@@ -383,37 +375,18 @@ static void SV_MapRestart_f( void ) {
 	// Ridah, check for loading a saved game
 	if ( Cvar_VariableIntegerValue( "savegame_loading" ) ) {
 		// open the current savegame, and find out what the time is, everything else we can ignore
-
-
-	    char *savemap = "save/current.svg";
-		char *savemap_checkpoints = "save/lastcheckpoint.svg";
-
-
+		char *savemap = "save/current.svg";
 		byte *buffer;
-		int size, size_checkpoints, savegameTime;
+		int size, savegameTime;
 
 		size = FS_ReadFile( savemap, NULL );
-		size_checkpoints = FS_ReadFile( savemap_checkpoints, NULL );
-
-        if ( sv_checkpoints->integer )
-		{
-		    if ( size_checkpoints < 0 ) {
-			Com_Printf( "Can't find savegame %s\n", savemap_checkpoints );
-			return;
-		}
-		FS_ReadFile( savemap_checkpoints, (void **)&buffer );
-		} 
-		else 
-		{
-		    if ( size < 0 ) {
+		if ( size < 0 ) {
 			Com_Printf( "Can't find savegame %s\n", savemap );
 			return;
 		}
-			FS_ReadFile( savemap, (void **)&buffer );
-		}
 
 		//buffer = Hunk_AllocateTempMemory(size);
-		//FS_ReadFile( savemap, (void **)&buffer );
+		FS_ReadFile( savemap, (void **)&buffer );
 
 		// the mapname is at the very start of the savegame file
 		savegameTime = *( int * )( buffer + sizeof( int ) + MAX_QPATH );
@@ -561,28 +534,11 @@ void    SV_LoadGame_f( void ) {
 		// check mapname
 		if ( !Q_stricmp( mapname, sv_mapname->string ) ) {    // same
 
-	/*	if ( sv_checkpoints->integer ) {
-
-	    		if ( Q_stricmp( filename, "save/lastcheckpoint.svg" ) != 0 ) 
-				{
+			if ( Q_stricmp( filename, "save/current.svg" ) != 0 ) {
 				// copy it to the current savegame file
-				FS_WriteFile( "save/lastcheckpoint.svg", buffer, size );
-			    }
-		} else {
-				if ( Q_stricmp( filename, "save/current.svg" ) != 0 ) 
-				{
-				// copy it to the current saveg\ame file
 				FS_WriteFile( "save/current.svg", buffer, size );
-			    }
-		}*/
+			}
 
-				if ( Q_stricmp( filename, "save/current.svg" ) != 0 ) 
-				{
-				// copy it to the current saveg\ame file
-				FS_WriteFile( "save/current.svg", buffer, size );
-			    }
-	            
-		
 			Hunk_FreeTempMemory( buffer );
 
 			Cvar_Set( "savegame_loading", "2" );  // 2 means it's a restart, so stop rendering until we are loaded

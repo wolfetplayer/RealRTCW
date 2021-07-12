@@ -477,6 +477,13 @@ qboolean    ConsoleCommand( void ) {
 			return qtrue;
 		}
 
+		if (( g_gameskill.integer == GSKILL_MEDIUM) || ( g_gameskill.integer == GSKILL_MAX))
+		{
+		trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
+		trap_SendServerCommand( -1, "cp ironchallengesave" );  // no save 4 u
+        return qtrue;
+        }
+
 		trap_Argv( 1, cmd, sizeof( cmd ) );
 		if ( strlen( cmd ) > 0 ) {
 			// strip the extension if provided

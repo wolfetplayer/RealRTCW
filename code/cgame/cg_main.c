@@ -238,6 +238,8 @@ vmCvar_t cg_medicChargeTime;
 vmCvar_t cg_engineerChargeTime;
 vmCvar_t cg_jumptime;
 
+vmCvar_t cg_fireonthemove;
+
 vmCvar_t cg_LTChargeTime;
 vmCvar_t cg_soldierChargeTime;
 vmCvar_t cg_redlimbotime;
@@ -472,6 +474,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_reloading, "g_reloading", "0", 0 }, //----(SA)	added
 
 	{ &cg_jumptime, "g_jumptime", "0", 0 }, //----(SA)	added
+
+	{ &cg_fireonthemove, "g_fireonthemove", "1", 0 }, //----(SA)	added
 	
 
 	// JPW NERVE

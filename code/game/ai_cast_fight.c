@@ -47,6 +47,9 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+extern vmCvar_t cg_fireonthemove;
+extern vmCvar_t g_fireonthemove;
+
 /*
 Support routines for the Decision Making layer.
 */
@@ -1571,16 +1574,20 @@ AICast_CanMoveWhileFiringWeapon
 */
 qboolean AICast_CanMoveWhileFiringWeapon( int weaponnum ) {
 	switch ( weaponnum ) {
-	//case WP_MAUSER:
+	case WP_MAUSER:
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:    //----(SA)	added
 	case WP_SNOOPERSCOPE:   //----(SA)	added
 //	case WP_FG42SCOPE:		//----(SA)	added
 	case WP_PANZERFAUST:
+	if (!g_fireonthemove.integer) 
+	{
 		return qfalse;
+	}
 	default:
 		return qtrue;
 	}
+
 }
 
 /*

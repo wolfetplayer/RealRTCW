@@ -3150,7 +3150,7 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[2] = 0;
 		break;
 		case WP_MP44:
-			 gunoff[0] = 2;
+			 gunoff[0] = 1;
 		     gunoff[1] = 3;
 		     gunoff[2] = 0;
 		break;

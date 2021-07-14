@@ -663,6 +663,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	switch ( weap ) {      // some weapons don't draw ammo count text
 	case WP_KNIFE:
 	case WP_DAGGER:
+	case WP_BINOCULARS:
 	case WP_CLASS_SPECIAL:              // DHM - Nerve
 		return;
 

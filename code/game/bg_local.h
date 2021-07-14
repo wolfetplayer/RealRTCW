@@ -88,6 +88,8 @@ extern float pm_waterfriction;
 extern float pm_slagfriction;
 extern float pm_flightfriction;
 
+//void        trap_SendConsoleCommand( const char *text );
+
 //----(SA)	end
 
 extern int c_pmove;

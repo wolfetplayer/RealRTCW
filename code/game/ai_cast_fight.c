@@ -1833,6 +1833,7 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 
 	switch ( weapon ) {
 	case    WP_NONE:
+	case    WP_BINOCULARS:
 		return 0;
 	case    WP_KNIFE:
 	case    WP_DAGGER:

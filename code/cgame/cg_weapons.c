@@ -42,6 +42,8 @@ int notebookModel;
 int propellerModel;
 int wolfkickSkin; // eugeny
 
+pmove_t     *pm;
+
 vec3_t ejectBrassCasingOrigin;
 
 //----(SA)
@@ -52,10 +54,46 @@ int CG_WeaponIndex( int weapnum, int *bank, int *cycle );
 static qboolean CG_WeaponHasAmmo( int i );
 static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; // JPW NERVE
 
+/*
+==============
+PM_StartWeaponAnim
+==============
+*/
+static void PM_StartWeaponAnim( int anim ) {
+	if ( pm->ps->pm_type >= PM_DEAD ) {
+		return;
+	}
+
+	if ( pm->ps->weapAnimTimer > 0 ) {
+		return;
+	}
+
+	if ( pm->cmd.weapon == WP_NONE ) {
+		return;
+	}
+
+	pm->ps->weapAnim = ( ( pm->ps->weapAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT ) | anim;
+}
+
+static void PM_ContinueWeaponAnim( int anim ) {
+	if ( pm->cmd.weapon == WP_NONE ) {
+		return;
+	}
+
+	if ( ( pm->ps->weapAnim & ~ANIM_TOGGLEBIT ) == anim ) {
+		return;
+	}
+	if ( pm->ps->weapAnimTimer > 0 ) {
+		return;     // a high priority animation is running
+	}
+	PM_StartWeaponAnim( anim );
+}
+
+
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	// bank
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
-	{WP_KNIFE,              WP_DAGGER,              0,            0,               0            },  //	1
+	{WP_KNIFE,              WP_DAGGER,              WP_BINOCULARS, 0,              0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_P38,       WP_WELROD,       0            },  //	2
 	{WP_MP40,               WP_STEN,                WP_THOMPSON,  0,               0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              0,            0,               0            },  //	4
@@ -1163,6 +1201,9 @@ void CG_RegisterWeapon( int weaponNum ) {
 	case WP_DAGGER:
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash1.wav" );
 		weaponInfo->flashSound[1] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash2.wav" );
+		break;
+
+	case WP_BINOCULARS:
 		break;
 
 	case WP_LUGER:
@@ -2979,16 +3020,21 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 
 	// allow the gun to be completely removed
 	if ( !cg_drawGun.integer ) {
-/*
-		vec3_t origin;
 
-		if ( cg.predictedPlayerState.eFlags & EF_FIRING ) {
-			// special hack for lightning gun...
-			VectorCopy( cg.refdef.vieworg, origin );
-			VectorMA( origin, -8, cg.refdef.viewaxis[2], origin );
-			CG_LightningBolt( &cg_entities[ps->clientNum], origin );
+		if ( cg.binocTime ) {
+			if ( cg.binocTime < 0 ) {
+				if ( -cg.binocTime + 500 + 200 < cg.time ) {
+					cg.binocTime = 0;
+				}
+			} else {
+				if ( cg.binocTime + 500 < cg.time ) {
+					trap_SendConsoleCommand( "+zoom\n" );
+					cg.binocTime = 0;
+				} else {
+				}
+			}
 		}
-*/
+
 		return;
 	}
 
@@ -3204,8 +3250,30 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 			hand.frame = hand.oldframe = cg_gun_frame.integer;
 			hand.backlerp = 0;
 		} else {  // get the animation state
+			if ( cg.binocTime ) {
+				if ( cg.binocTime < 0 ) {
+					if ( -cg.binocTime + 500 + 200 < cg.time ) {
+						cg.binocTime = 0;
+					} else {
+						if ( -cg.binocTime + 200 < cg.time ) {
+							PM_ContinueWeaponAnim( WEAP_ALTSWITCHFROM );
+						} else {
+							PM_ContinueWeaponAnim( WEAP_IDLE2 );
+						}
+					}
+				} else {
+					if ( cg.binocTime + 500 < cg.time ) {
+						trap_SendConsoleCommand( "+zoom\n" );
+						cg.binocTime = 0;
+						PM_ContinueWeaponAnim( WEAP_IDLE2 );
+					} else {
+						PM_ContinueWeaponAnim( WEAP_ALTSWITCHTO );
+					}
+				}
+			}
 			CG_WeaponAnimation( ps, weapon, &hand.oldframe, &hand.frame, &hand.backlerp );   //----(SA)	changed
 		}
+
 
 		VectorCopy( hand.origin, hand.lightingOrigin );
 
@@ -3956,6 +4024,10 @@ CG_FinishWeaponChange
 void CG_FinishWeaponChange( int lastweap, int newweap ) {
 	int newbank;
 
+		if ( cg.binocTime ) {
+		return;
+	}
+
 	cg.weaponSelectTime = cg.time;  // flash the weapon icon
 
 	// remember which weapon in this bank was last selected so when cycling back
@@ -3993,6 +4065,11 @@ void CG_FinishWeaponChange( int lastweap, int newweap ) {
 		}
 	}
 
+		if ( lastweap == WP_BINOCULARS && cg.snap->ps.eFlags & EF_ZOOMING ) {
+		trap_SendConsoleCommand( "-zoom\n" );
+	}
+
+
 	cg.weaponSelect     = newweap;
 }
 
@@ -4028,6 +4105,17 @@ void CG_AltWeapon_f( void ) {
 	original = cg.weaponSelect;
 
 	num = getAltWeapon( original );
+
+	if ( original == WP_BINOCULARS ) {
+		if ( cg.snap->ps.eFlags & EF_ZOOMING ) {
+			trap_SendConsoleCommand( "-zoom\n" );
+			cg.binocTime = -cg.time;
+		} else {
+			if ( !cg.binocTime ) {
+				cg.binocTime = cg.time;
+			}
+		}
+	}
 
 	if ( CG_WeaponSelectable( num ) ) {   // new weapon is valid
 

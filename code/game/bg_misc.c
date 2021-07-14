@@ -96,6 +96,8 @@ ammotable_t ammoTable[] = {
 	{   999,            0,      999,    0,      50,             200,    0,      0,      MOD_KNIFE               },  //	WP_KNIFE				// 1
 	{   999,            0,      999,    0,      50,             200,    0,      0,      MOD_DAGGER              },  //	WP_DAGGER				// 1
 
+	{   999,            0,      999,     0,      50,            0,      0,      0,     0                         },  // WP_BINOCULARS			// 1
+
 	{   MAX_AMMO_9MM,   1,      8,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_LUGER               },  //	WP_LUGER				// 2	
 	{   MAX_AMMO_9MM,   1,      32,     2600,   DELAY_LOW,      110,    0,      0,      MOD_MP40                },  //	WP_MP40					// 3
 	{   MAX_AMMO_MAUSER,1,      5,      2500,   DELAY_HIGH,     1400,   0,      0,      MOD_MAUSER              },  //	WP_MAUSER				// 4	
@@ -146,7 +148,8 @@ int weapAlts[] = {
 	WP_NONE,            // 0 WP_NONE
 	WP_NONE,            // 1 WP_KNIFE
 	WP_NONE,            // 1.1 WP_DAGGER
-	WP_NONE,            // 2 WP_LUGER
+	WP_NONE,            // 1.2 WP_BINOCULARS
+	WP_NONE,         // 2 WP_LUGER
 	WP_NONE,            // 3 WP_MP40
 	WP_SNIPERRIFLE,     // 4 WP_MAUSER
 	WP_FG42SCOPE,       // 5 WP_FG42	
@@ -963,6 +966,33 @@ model="models/weapons2/knife/knife.md3"
 		WP_DAGGER,
 		WP_DAGGER,
 		WP_DAGGER,
+		"",                      // precache
+		"",                      // sounds
+		{0,0,0,0}
+	},
+
+
+/*
+weapon_binoculars (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+	{
+		"key_binocs",
+		"sound/misc/w_pkup.wav",
+		{
+			"models/multiplayer/binocs/binocs.md3",
+			"models/multiplayer/binocs/v_binocs.md3",
+			"models/multiplayer/binocs/pu_binocs.md3",
+			0, 0 },
+		
+
+		"icons/iconw_binoculars_1",  // icon
+		"",          // ammo icon
+		"Binoculars",                // pickup
+		50, // this should never be picked up
+		IT_WEAPON,
+		WP_BINOCULARS,
+		WP_BINOCULARS,
+		WP_BINOCULARS,
 		"",                      // precache
 		"",                      // sounds
 		{0,0,0,0}
@@ -2732,7 +2762,7 @@ pickup sound : "sound/pickup/keys/binocs.wav"
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
 model="models/powerups/keys/binoculars.md3"
 */
-	{
+/*	{
 		"key_binocs",
 		"sound/pickup/keys/binocs.wav",
 		{
@@ -2751,7 +2781,7 @@ model="models/powerups/keys/binoculars.md3"
 		"",                      // precache
 		"models/keys/key.wav",   // sounds
 		{0,0,0,0}
-	},
+	},*/
 
 	// end of list marker
 	{NULL}

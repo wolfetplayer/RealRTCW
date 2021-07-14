@@ -542,6 +542,7 @@ typedef enum {
 
 	WP_KNIFE,               // 1
 	WP_DAGGER,
+	WP_BINOCULARS,
 	// German weapons
 	WP_LUGER,               // 2
 	WP_MP40,                // 3

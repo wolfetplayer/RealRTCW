@@ -4364,20 +4364,32 @@ void PmoveSingle( pmove_t *pmove ) {
 
 	pm->ps->eFlags &= ~( EF_FIRING | EF_ZOOMING );
 
-	if ( pm->cmd.wbuttons & WBUTTON_ZOOM ) {
-		if ( pm->ps->stats[STAT_KEYS] & ( 1 << INV_BINOCS ) ) {        // (SA) binoculars are an inventory item (inventory==keys)
-			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE ) {   // don't allow binocs if using scope
-				if ( !( pm->ps->eFlags & EF_MG42_ACTIVE ) ) {    // or if mounted on a weapon
+    //if ((pm->ps->weapon == WP_BINOCULARS) & (pm->cmd.wbuttons & WBUTTON_ZOOM) ) {
+
+
+	//	if (pm->ps->weapon == WP_BINOCULARS)
+	//if ( pm->cmd.wbuttons & WBUTTON_ATTACK2 ) {
+			//if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE ) {   // don't allow binocs if using scope
+				//if ( !( pm->ps->eFlags & EF_MG42_ACTIVE ) ) {    // or if mounted on a weapon
+		            if (pm->ps->weapon == WP_BINOCULARS) {
+                    if (pm->cmd.wbuttons & WBUTTON_ZOOM) {
+					if ( !( pm->ps->eFlags & EF_MG42_ACTIVE ) ) {
 					pm->ps->eFlags |= EF_ZOOMING;
-				}
-			}
+					//trap_SendConsoleCommand( "+zoom\n" );
+					}
+					}
+					}
+	
+				//}
+			//}
 
 			// don't allow binocs if in the middle of throwing grenade
-			if ( ( pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_DYNAMITE ) && pm->ps->grenadeTimeLeft > 0 ) {
+		/*	if ( ( pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_DYNAMITE ) && pm->ps->grenadeTimeLeft > 0 ) {
 				pm->ps->eFlags &= ~EF_ZOOMING;
-			}
-		}
-	}
+			}*/
+		
+//	}
+	//}
 
 
 	if ( !(pm->ps->pm_flags & PMF_RESPAWNED) && pm->ps->pm_type != PM_INTERMISSION && pm->ps->pm_type != PM_NOCLIP ) {

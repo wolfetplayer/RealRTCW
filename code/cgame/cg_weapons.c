@@ -2872,7 +2872,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		flash.hModel = 0;
 	}
 
-	if ( weaponNum == WP_LUGER ) {  
+	if ( weaponNum == WP_SILENCER ) {  
 		flash.hModel = 0;
 	}
 

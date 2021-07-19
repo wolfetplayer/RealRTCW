@@ -269,7 +269,7 @@ cvarTable_t gameCvarTable[] = {
 
 	// New weapons
 	// Player
-	{ &sk_plr_dmg_p38, "sk_plr_dmg_p38", "7", CVAR_CHEAT, 0, qfalse  },
+	{ &sk_plr_dmg_p38, "sk_plr_dmg_p38", "6", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_g43, "sk_plr_dmg_g43", "16", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_m1garand, "sk_plr_dmg_m1garand", "18", CVAR_CHEAT, 0, qfalse  },	
 	{ &sk_plr_dmg_bar, "sk_plr_dmg_bar", "15", CVAR_CHEAT, 0, qfalse  }, // was 13
@@ -279,7 +279,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_m30, "sk_plr_dmg_m30", "11", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_welrod, "sk_plr_dmg_welrod", "50", CVAR_CHEAT, 0, qfalse  },
 	//AI	
-	{ &sk_ai_dmg_p38, "sk_ai_dmg_p38", "7", CVAR_CHEAT, 0, qfalse  },
+	{ &sk_ai_dmg_p38, "sk_ai_dmg_p38", "6", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_g43, "sk_ai_dmg_g43", "16", CVAR_CHEAT, 0, qfalse  },  // was 16
 	{ &sk_ai_dmg_m1garand, "sk_ai_dmg_m1garand", "18", CVAR_CHEAT, 0, qfalse  }, // was 18
 	{ &sk_ai_dmg_bar, "sk_ai_dmg_bar", "15", CVAR_CHEAT, 0, qfalse  }, // was 13

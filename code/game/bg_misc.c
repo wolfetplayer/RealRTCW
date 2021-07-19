@@ -107,7 +107,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_VENOM, 1,      250,    3000,   750,            35,     5000,   200,    MOD_VENOM               },  //	WP_VENOM				// 8	
 	{   150,            1,      100,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
 	{   150,             1,      50,     1000,    DELAY_LOW,      0,     0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
-	{   MAX_AMMO_9MM,   1,      8,      1600, DELAY_PISTOL,     350,    0,      0,      MOD_P38                 },  //	WP_P38					// 12
+	{   MAX_AMMO_9MM,   1,      8,      1600, DELAY_PISTOL,     250,    0,      0,      MOD_P38                 },  //	WP_P38					// 12
 	{   MAX_AMMO_MAUSER,  1,    10,     1800,   DELAY_LOW,      300,    0,      0,      MOD_G43                 },  //	WP_G43				    // 15
 	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      250,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
 	{   MAX_AMMO_BARAMMO, 1,    20,     2250,   DELAY_LOW,      190,    0,      0,      MOD_BAR                 },  //	WP_BAR					// 17

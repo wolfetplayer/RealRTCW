@@ -491,6 +491,8 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_FG42SCOPE );
 	} else if ( weapon == WP_SNIPERRIFLE ) {
 		COM_BitSet( other->client->ps.weapons, WP_MAUSER );
+	} else if (weapon == WP_SILENCER) {
+		COM_BitSet( other->client->ps.weapons, WP_LUGER );
 	}
 
 //----(SA)	end

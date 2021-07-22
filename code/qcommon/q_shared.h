@@ -285,7 +285,7 @@ typedef int clipHandle_t;
 #define ROLL                2       // fall over
 
 // RF, this is just here so different elements of the engine can be aware of this setting as it changes
-#define MAX_SP_CLIENTS      64      // increasing this will increase memory usage significantly
+#define MAX_SP_CLIENTS      128      // increasing this will increase memory usage significantly
 
 // the game guarantees that no string from the network will ever
 // exceed MAX_STRING_CHARS

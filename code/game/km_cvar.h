@@ -28,14 +28,11 @@ extern vmCvar_t		sk_plr_dmg_dynamite_radius;
 
 //RealRTCW weapons
 extern vmCvar_t		sk_plr_dmg_mp34;
-extern vmCvar_t		sk_plr_dmg_tt33;
 extern vmCvar_t		sk_plr_dmg_ppsh;
 extern vmCvar_t		sk_plr_dmg_mosin;
 extern vmCvar_t		sk_plr_dmg_g43;
 extern vmCvar_t		sk_plr_dmg_m1garand;
-extern vmCvar_t		sk_plr_dmg_bar;
-extern vmCvar_t		sk_plr_dmg_mp44;
-extern vmCvar_t		sk_plr_dmg_m97;
+extern vmCvar_t		sk_plr_dmg_m1garandscope;
 extern vmCvar_t		sk_plr_dmg_revolver;
 extern vmCvar_t		sk_plr_dmg_mg42m;
 
@@ -65,13 +62,10 @@ extern vmCvar_t		sk_ai_dmg_dynamite;
 extern vmCvar_t		sk_ai_dmg_dynamite_radius;
 
 extern vmCvar_t		sk_ai_dmg_mp34;
-extern vmCvar_t		sk_ai_dmg_tt33;
 extern vmCvar_t		sk_ai_dmg_ppsh;
 extern vmCvar_t		sk_ai_dmg_mosin;
 extern vmCvar_t		sk_ai_dmg_g43;
 extern vmCvar_t		sk_ai_dmg_m1garand;
-extern vmCvar_t		sk_ai_dmg_bar;
-extern vmCvar_t		sk_ai_dmg_mp44;
-extern vmCvar_t		sk_ai_dmg_m97;
+extern vmCvar_t		sk_ai_dmg_m1garandscope;
 extern vmCvar_t		sk_ai_dmg_revolver;
 extern vmCvar_t		sk_ai_dmg_mg42m;

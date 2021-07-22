@@ -1333,6 +1333,8 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		}
 		if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
+		} 	if ( weapon == WP_M1GARAND ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M1GARANDSCOPE );
 		}
 //----(SA)	end
 

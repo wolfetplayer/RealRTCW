@@ -588,15 +588,12 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_GRENADE_PINEAPPLE: return sk_plr_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_plr_dmg_dynamite.integer;
 			case WP_MP34: return sk_plr_dmg_mp34.integer;
-			case WP_MP44: return sk_plr_dmg_mp44.integer;
-			case WP_TT33: return sk_plr_dmg_tt33.integer;
 			case WP_PPSH: return sk_plr_dmg_ppsh.integer;
 			case WP_MOSIN: return sk_plr_dmg_mosin.integer;
 			case WP_G43: return sk_plr_dmg_g43.integer;
 			case WP_M1GARAND: return sk_plr_dmg_m1garand.integer;
-			case WP_BAR: return sk_plr_dmg_bar.integer;
+			case WP_M1GARANDSCOPE: return sk_plr_dmg_m1garandscope.integer;
 			case WP_MG42M: return sk_plr_dmg_mg42m.integer;
-			case WP_M97: return sk_plr_dmg_m97.integer;
 			case WP_REVOLVER: return sk_plr_dmg_revolver.integer;	
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
@@ -629,15 +626,12 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_GRENADE_PINEAPPLE: return sk_ai_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_ai_dmg_dynamite.integer;
 			case WP_MP34: return sk_ai_dmg_mp34.integer;
-			case WP_MP44: return sk_ai_dmg_mp44.integer;
-			case WP_TT33: return sk_ai_dmg_tt33.integer;
 			case WP_PPSH: return sk_ai_dmg_ppsh.integer;
 			case WP_MOSIN: return sk_ai_dmg_mosin.integer;
 			case WP_G43: return sk_ai_dmg_g43.integer;
 			case WP_M1GARAND: return sk_ai_dmg_m1garand.integer;
-			case WP_BAR: return sk_ai_dmg_bar.integer;
+			case WP_M1GARANDSCOPE: return sk_ai_dmg_m1garandscope.integer;
 			case WP_MG42M: return sk_ai_dmg_mg42m.integer;
-			case WP_M97: return sk_ai_dmg_m97.integer;
 			case WP_REVOLVER: return sk_ai_dmg_revolver.integer;		
 			case WP_MORTAR: return 100;
 			case WP_GAUNTLET: return 1;
@@ -689,15 +683,12 @@ float G_GetWeaponSpread( int weapon ) {
 			case WP_VENOM:      return 1000;
 			case WP_MP40:       return 850; 
 			case WP_MP34:       return 900; 
-			case WP_TT33:       return 450; 
 			case WP_PPSH:       return 1000; 
 			case WP_MOSIN:      return 300;
 			case WP_G43:        return 350; 
 			case WP_M1GARAND:   return 350; 
-			case WP_BAR:        return 700;
-		    case WP_MP44:       return 800;  
+			case WP_M1GARANDSCOPE:  return 250;
 			case WP_MG42M:      return 1500;
-			case WP_M97:        return 4500;
 			case WP_REVOLVER:   return 400; 
 			case WP_FG42SCOPE:  return 250;
 			case WP_FG42:       return 600; 
@@ -765,9 +756,6 @@ float G_GetWeaponSpread( int weapon ) {
 #define MP34_SPREAD     G_GetWeaponSpread( WP_MP34 )
 #define MP34_DAMAGE(e)     G_GetWeaponDamage( WP_MP34, e ) 
 
-#define TT33_SPREAD		G_GetWeaponSpread( WP_TT33 )
-#define TT33_DAMAGE(e)		G_GetWeaponDamage( WP_TT33, e )
-
 #define REVOLVER_SPREAD		G_GetWeaponSpread( WP_REVOLVER )
 #define REVOLVER_DAMAGE(e)		G_GetWeaponDamage( WP_REVOLVER, e )
 
@@ -783,17 +771,13 @@ float G_GetWeaponSpread( int weapon ) {
 #define M1GARAND_SPREAD     G_GetWeaponSpread( WP_M1GARAND )
 #define M1GARAND_DAMAGE(e)     G_GetWeaponDamage( WP_M1GARAND, e ) 
 
-#define BAR_SPREAD     G_GetWeaponSpread( WP_BAR )
-#define BAR_DAMAGE(e)     G_GetWeaponDamage( WP_BAR, e ) 
+#define M1GARANDSCOPE_SPREAD     G_GetWeaponSpread( WP_M1GARANDSCOPE)
+#define M1GARANDSCOPE_DAMAGE(e)     G_GetWeaponDamage( WP_M1GARANDSCOPE, e ) 
 
-#define MP44_SPREAD     G_GetWeaponSpread( WP_MP44 )
-#define MP44_DAMAGE(e)     G_GetWeaponDamage( WP_MP44, e ) 
 
 #define MG42M_SPREAD     G_GetWeaponSpread( WP_MG42M )
 #define MG42M_DAMAGE(e)     G_GetWeaponDamage( WP_MG42M, e ) 
 
-#define M97_SPREAD     G_GetWeaponSpread( WP_M97 )
-#define M97_DAMAGE(e)     G_GetWeaponDamage( WP_M97, e ) 
 
 #define THOMPSON_SPREAD G_GetWeaponSpread( WP_THOMPSON )
 #define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) 
@@ -955,7 +939,7 @@ void Bullet_Endpos( gentity_t *ent, float spread, vec3_t *end ) {
 		r += crandom() * accuracy;
 		u += crandom() * ( accuracy * 1.25 );
 	} else {
-		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE ) {
+		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE || ent->s.weapon == WP_M1GARANDSCOPE ) {
 //		if(ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE) {
 			// aim dir already accounted for sway of scoped weapons in CalcMuzzlePoints()
 			dist *= 2;
@@ -1720,7 +1704,7 @@ void CalcMuzzlePoints( gentity_t *ent, int weapon ) {
 	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {   // non ai's take into account scoped weapon 'sway' (just another way aimspread is visualized/utilized)
 		float spreadfrac, phase;
 
-		if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE ) {
+		if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE || weapon == WP_M1GARANDSCOPE ) {
 			spreadfrac = ent->client->currentAimSpreadScale;
 
 			// rotate 'forward' vector by the sway
@@ -1893,9 +1877,6 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_MP34: 
 		Bullet_Fire( ent, MP34_SPREAD * aimSpreadScale, MP34_DAMAGE(isPlayer) );
 		break;
-	case WP_TT33:
-		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer) );
-		break;
 	case WP_REVOLVER:
 		Bullet_Fire( ent, REVOLVER_SPREAD * aimSpreadScale, REVOLVER_DAMAGE(isPlayer) );
 		break;
@@ -1911,12 +1892,18 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_M1GARAND: 
 		Bullet_Fire( ent, M1GARAND_SPREAD * aimSpreadScale, M1GARAND_DAMAGE(isPlayer) );
 		break;
-	case WP_BAR: 
-		Bullet_Fire( ent, BAR_SPREAD * aimSpreadScale, BAR_DAMAGE(isPlayer) );
-		break;
-	case WP_MP44: 
-		Bullet_Fire( ent, MP44_SPREAD * aimSpreadScale, MP44_DAMAGE(isPlayer) );
-		break;
+	case WP_M1GARANDSCOPE:
+		Bullet_Fire( ent, M1GARANDSCOPE_SPREAD*aimSpreadScale, M1GARANDSCOPE_DAMAGE(isPlayer) ); // Knightmare added
+		if ( !ent->aiCharacter ) {
+//		if (g_gametype.integer != GT_SINGLE_PLAYER) {
+			VectorCopy( ent->client->ps.viewangles,viewang );
+//			ent->client->sniperRifleMuzzleYaw = crandom()*0.04; // used in clientthink
+			ent->client->sniperRifleMuzzleYaw = 0;
+			ent->client->sniperRifleMuzzlePitch = 0.01f;
+			ent->client->sniperRifleFiredTime = level.time;
+			SetClientViewAngle( ent,viewang );
+		}
+	    break; // Knightmare added
 	case WP_MG42M: 
 		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer) );
 		// RealRTCW added pushback for mg42
@@ -1932,34 +1919,6 @@ void FireWeapon( gentity_t *ent ) {
 		}
 		break;
 	
-		case WP_M97:
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-
-		 // push the player back a bit
-		if (!ent->aiCharacter) {
-			vec3_t vec_forward, vec_vangle;
-			VectorCopy(ent->client->ps.viewangles, vec_vangle);
-			vec_vangle[PITCH] = 0;	// nullify pitch so you can't lightning jump
-			AngleVectors(vec_vangle, vec_forward, NULL, NULL);
-			 // make it less if in the air
-			if (ent->s.groundEntityNum == ENTITYNUM_NONE)
-				VectorMA(ent->client->ps.velocity, -64, vec_forward, ent->client->ps.velocity);
-			else
-				VectorMA(ent->client->ps.velocity, -200, vec_forward, ent->client->ps.velocity);
-		}
-
-		break;
 	
 
 	case WP_THOMPSON:

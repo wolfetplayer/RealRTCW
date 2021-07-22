@@ -451,13 +451,13 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
 			scale *= 0.90; 
         }
-		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN ) || (pm->ps->weapon == WP_M97) )  {
+		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_MP34 ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 )  || ( pm->ps->weapon == WP_M1GARAND )  || ( pm->ps->weapon == WP_PPSH ) || ( pm->ps->weapon == WP_MOSIN )  )  {
 			scale *= 0.90; 
 		}
-		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_TT33 ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
+		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE ) || ( pm->ps->weapon == WP_REVOLVER ) ) {
 			scale *= 0.95; 
 		}
-		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE )  ) {
+		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE ) || ( pm->ps->weapon == WP_M1GARANDSCOPE )  ) {
 			scale *= 0.40; 
         }
 	}
@@ -2046,17 +2046,9 @@ static void PM_BeginWeaponReload( int weapon ) {
 		return;
 	}
 
-	    if((weapon == WP_M1GARAND) && pm->ps->ammoclip[WP_M1GARAND] != 0) {
-			return;	
-		}
 
 	// no reload when you've got a chair in your hands
 	if ( pm->ps->eFlags & EF_MELEE_ACTIVE ) {
-		return;
-	}
-       // Jaymod
-	if (weapon == WP_M97) {
-		PM_BeginM97Reload();
 		return;
 	}
 
@@ -2202,6 +2194,13 @@ static void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload 
 			switchtime = 50;        // fast
 		}
 		break;
+	case WP_M1GARAND:
+	case WP_M1GARANDSCOPE:
+		if ( altswitch ) {
+			switchtime = 50;        // fast
+		}
+		break;
+
 
 //		case WP_MAUSER:
 //		case WP_SNIPERRIFLE:
@@ -2250,6 +2249,7 @@ static void PM_FinishWeaponChange( void ) {
 	case WP_SNOOPERSCOPE:
 	case WP_SNIPERRIFLE:
 	case WP_FG42SCOPE:
+	case WP_M1GARANDSCOPE:
 		pm->ps->aimSpreadScale = 255;               // initially at lowest accuracy
 		pm->ps->aimSpreadScaleFloat = 255.0f;       // initially at lowest accuracy
 
@@ -2279,6 +2279,12 @@ static void PM_FinishWeaponChange( void ) {
 		break;
 	case WP_FG42:
 	case WP_FG42SCOPE:
+		if ( newweapon == weapAlts[oldweapon] ) {
+			switchtime = 50;        // fast
+		}
+		break;
+	case WP_M1GARAND:
+	case WP_M1GARANDSCOPE:
 		if ( newweapon == weapAlts[oldweapon] ) {
 			switchtime = 50;        // fast
 		}
@@ -2315,10 +2321,7 @@ static void PM_ReloadClip( int weapon ) {
 	ammoclip    = pm->ps->ammoclip[BG_FindClipForWeapon( weapon )];
 
 	ammomove = ammoTable[weapon].maxclip - ammoclip;
-      // Jaymod
-	if( weapon == WP_M97 ) {
-		ammomove = 1;
-	}
+
 
 	if ( ammoreserve < ammomove ) {
 		ammomove = ammoreserve;
@@ -2342,11 +2345,6 @@ PM_FinishWeaponReload
 
 static void PM_FinishWeaponReload( void ) {
 
-	// Jaymod Overrides for Shotgun
-	if( pm->ps->weapon == WP_M97 ) {
-		PM_M97Reload();
-		return;
-	}
 
 	PM_ReloadClip( pm->ps->weapon );          // move ammo into clip
 	pm->ps->weaponstate = WEAPON_READY;     // ready to fire
@@ -2380,12 +2378,6 @@ void PM_CheckForReload( int weapon ) {
 	case WEAPON_RELAXING:
 	return;
 	case WEAPON_RELOADING:
-		// Jaymod
-		if( pm->ps->weapon == WP_M97 ) {
-			if( pm->cmd.buttons & BUTTON_ATTACK ) {
-				pm->pmext->m97reloadInterrupt = qtrue;
-			}
-		}
 		return;
 	default:
 		break;
@@ -2402,6 +2394,7 @@ void PM_CheckForReload( int weapon ) {
 		case WP_SNOOPERSCOPE:
 		case WP_SNIPERRIFLE:
 		case WP_FG42SCOPE:
+		case WP_M1GARANDSCOPE:
             if ( reloadRequested && pm->ps->ammo[ammoWeap] ) {
 			PM_BeginWeaponChange( weapon, weapAlts[weapon], !( pm->ps->ammo[ammoWeap] ) ? qfalse : qtrue );
 			}
@@ -2690,9 +2683,6 @@ void PM_AdjustAimSpreadScale( void ) {
 	case WP_MP34:
 		wpnScale = 0.5f;
 		break;
-	case WP_TT33:
-	    wpnScale = 0.3f;
-		break;
 	case WP_REVOLVER:
 	    wpnScale = 0.4f;
 		break;
@@ -2708,17 +2698,11 @@ void PM_AdjustAimSpreadScale( void ) {
 	case WP_M1GARAND:
 		wpnScale = 0.4f;  
 		break;
-	case WP_BAR:
-		wpnScale = 0.6f;
-		break;
-	case WP_MP44:
-		wpnScale = 0.6f;
+	case WP_M1GARANDSCOPE:
+		wpnScale = 0.2f;  
 		break;
 	case WP_MG42M:
 		wpnScale = 0.6f;        
-		break;
-	case WP_M97:  
-		wpnScale = 0.6f; // was 0.4f now jaymod values
 		break;
 	}
 
@@ -2743,7 +2727,7 @@ void PM_AdjustAimSpreadScale( void ) {
 		case WP_SNIPERRIFLE:
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
-		//case WP_M1GARAND: //haha no plz
+		case WP_M1GARANDSCOPE: //haha no plz
 			for ( i = 0; i < 2; i++ )
 				viewchange += fabs( pm->ps->velocity[i] );
 			break;
@@ -3228,15 +3212,12 @@ static void PM_Weapon( void ) {
 	// RealRTCW weapons
 	case WP_MP34:
     case WP_PPSH:
-	case WP_BAR:
 	case WP_THOMPSON:
 	case WP_STEN:
 	case WP_VENOM:
 	case WP_FG42:
-	case WP_MP44:
 	case WP_MG42M:
 	case WP_FG42SCOPE:
-	case WP_M97:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
 				// AI get fast spin-up
@@ -3252,7 +3233,6 @@ static void PM_Weapon( void ) {
 	case WP_PANZERFAUST:
 	case WP_SILENCER:
 	case WP_LUGER:
-	case WP_TT33:
 	case WP_REVOLVER:
 	case WP_COLT:
 	case WP_AKIMBO:         
@@ -3262,6 +3242,7 @@ static void PM_Weapon( void ) {
 	case WP_MOSIN:
 	case WP_G43:
 	case WP_M1GARAND:
+	case WP_M1GARANDSCOPE:
 	case WP_GARAND:
 		if ( !weaponstateFiring ) {
 			// NERVE's panzerfaust spinup
@@ -3353,6 +3334,7 @@ static void PM_Weapon( void ) {
 			case WP_SNOOPERSCOPE:
 			case WP_SNIPERRIFLE:
 			case WP_FG42SCOPE:
+			case WP_M1GARAND:
 				reloadingW = qfalse;
 				break;
 			}
@@ -3426,16 +3408,13 @@ static void PM_Weapon( void ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
-	case WP_M97:
 		PM_StartWeaponAnim( weapattackanim );
 		break;
 	case WP_VENOM:
 	case WP_MP40:
 	// RealRTCW weapons
 	case WP_MP34:
-	case WP_BAR:
 	case WP_PPSH:
-    case WP_MP44:
 	case WP_MG42M:
 	case WP_THOMPSON:
 	case WP_STEN:
@@ -3553,13 +3532,15 @@ static void PM_Weapon( void ) {
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 10;
 		break;
+	case WP_M1GARANDSCOPE:
+		addTime = ammoTable[pm->ps->weapon].nextShotTime;
+		aimSpreadScaleAdd = 10;
+		break;
 	case WP_FG42:
 	case WP_MP40:
 	// RealRTCW weapons
 	case WP_MP34:
 	case WP_PPSH:
-	case WP_BAR:
-	case WP_MP44:
 	case WP_THOMPSON:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 15 + rand() % 10;       
@@ -3570,15 +3551,7 @@ static void PM_Weapon( void ) {
 	aimSpreadScaleAdd = 20;       
 	break;
 
-	case WP_M97: 
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;
-		break;
     
-	case WP_TT33:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 20;
-		break;
 	case WP_REVOLVER:
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 20 + rand() % 5;
@@ -3632,6 +3605,7 @@ case WP_MG42M:
 		break;
 	// Semi-automatic rifles - Medium recoil
 	case WP_M1GARAND: 
+	case WP_M1GARANDSCOPE: 
 	case WP_G43:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
@@ -3642,19 +3616,6 @@ case WP_MG42M:
 			pm->pmext->weapRecoilDuration = 45;
 			pm->pmext->weapRecoilYaw = crandom() * .2f;
 			pm->pmext->weapRecoilPitch = .2f * random();
-		}
-		break;
-	// Shotgun - High recoil
-	case WP_M97: 
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 80;
-			pm->pmext->weapRecoilYaw = crandom() * .5f;
-			pm->pmext->weapRecoilPitch = .5f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 120;
-			pm->pmext->weapRecoilYaw = crandom() * .9f;
-			pm->pmext->weapRecoilPitch = .95f * random();
 		}
 		break;
 	// bolt-action rifles - High recoil to compensate for superb stopping power
@@ -3677,7 +3638,6 @@ case WP_MG42M:
 	case WP_SILENCER:
 	case WP_COLT:
 	case WP_AKIMBO:
-	case WP_TT33:
 	case WP_REVOLVER:
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
@@ -3720,8 +3680,6 @@ case WP_MG42M:
 		break;
 		// Assault Rifles - Low recoil
 	case WP_FG42:
-	case WP_BAR:
-	case WP_MP44: 
 		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
 		if ( pm->ps->pm_flags & PMF_DUCKED ) {
 			pm->pmext->weapRecoilDuration = 10;
@@ -4365,7 +4323,7 @@ void PmoveSingle( pmove_t *pmove ) {
 
 	if ( pm->cmd.wbuttons & WBUTTON_ZOOM ) {
 		if ( pm->ps->stats[STAT_KEYS] & ( 1 << INV_BINOCS ) ) {        // (SA) binoculars are an inventory item (inventory==keys)
-			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE ) {   // don't allow binocs if using scope
+			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE && pm->ps->weapon != WP_M1GARANDSCOPE ) {   // don't allow binocs if using scope
 				if ( !( pm->ps->eFlags & EF_MG42_ACTIVE ) ) {    // or if mounted on a weapon
 					pm->ps->eFlags |= EF_ZOOMING;
 				}
@@ -4664,6 +4622,7 @@ int Pmove( pmove_t *pmove ) {
 PM_BeginM97Reload
 =================
 */
+/*
 void PM_BeginM97Reload( void )
 {
 	int anim;
@@ -4743,3 +4702,4 @@ void PM_M97Reload() {
 		pm->ps->weaponstate = WEAPON_READY;
 	}
 }
+*/

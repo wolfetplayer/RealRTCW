@@ -126,6 +126,8 @@ void TossClientItems( gentity_t *self ) {
 	}
 	if ( weapon == WP_AKIMBO ) { //----(SA)	added
 		weapon = WP_COLT;
+	} 	if ( weapon == WP_M1GARANDSCOPE ) {
+		weapon = WP_M1GARAND;
 	}
 //----(SA)	end
 
@@ -324,7 +326,6 @@ char    *modNames[] = {
 	"MOD_LT_AIRSTRIKE",
 	"MOD_ENGINEER",  // not sure if we'll use
 	"MOD_MEDIC",     // these like this or not
-	"MOD_M97", // jaymod
 // jpw
 	"MOD_BAT"
 };
@@ -672,13 +673,10 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_AKIMBO:
 	case MOD_MP40:
 	case MOD_MP34:
-	case MOD_TT33:
 	case MOD_PPSH:
 	case MOD_MOSIN:
 	case MOD_G43:
 	case MOD_M1GARAND:
-	case MOD_BAR:
-	case MOD_MP44:
 	case MOD_REVOLVER:
 	case MOD_THOMPSON:
 	case MOD_STEN:
@@ -687,6 +685,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_GARAND:
 	case MOD_SILENCER:
 	case MOD_FG42SCOPE:
+	case MOD_M1GARANDSCOPE:
 	case MOD_SNOOPERSCOPE:
 	case MOD_SNIPERRIFLE:
 	return qtrue;

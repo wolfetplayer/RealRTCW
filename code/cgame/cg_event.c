@@ -267,10 +267,6 @@ static void CG_Obituary( entityState_t *ent ) {
 			message = "was killed by";
 			message2 = "'s MP34";
 			break;
-		case MOD_TT33:
-			message = "was killed by";
-			message2 = "'s TT33";
-			break;
 		case MOD_REVOLVER:
 			message = "was killed by";
 			message2 = "'s REVOLVER";
@@ -290,14 +286,6 @@ static void CG_Obituary( entityState_t *ent ) {
 		case MOD_M1GARAND:
 			message = "was killed by";
 			message2 = "'s M1GARAND";
-			break;
-		case MOD_BAR:
-			message = "was killed by";
-			message2 = "'s BAR";
-			break;
-		case MOD_MP44:
-			message = "was killed by";
-			message2 = "'s MP44";
 			break;
 		case MOD_MG42M:
 			message = "was killed by";
@@ -515,7 +503,7 @@ static void CG_ItemPickup( int itemNum ) {
 			//	5 - "New and Better"
 
 			// don't ever autoswitch to secondary fire weapons
-			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE ) {  //----(SA)	modified
+			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE && weapon != WP_M1GARANDSCOPE ) {  //----(SA)	modified
 
 				// no weap currently selected, always just select the new one
 				if ( !cg.weaponSelect ) {
@@ -2055,6 +2043,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			break;
 		case WP_FG42SCOPE:
 			newweap = WP_FG42;
+			break;
+		case WP_M1GARANDSCOPE:
+			newweap = WP_M1GARAND;
 			break;
 		default:
 			break;

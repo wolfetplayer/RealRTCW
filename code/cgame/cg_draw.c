@@ -2312,6 +2312,71 @@ static void CG_DrawWeapReticle( void ) {
 
 		CG_FillRect( 320, 241, 1, 87, color );   // bot center top
 		CG_FillRect( 319, 327, 3, 151, color );  // bot center bot
+	} else if ( weap == WP_M1GARANDSCOPE ) {
+		// sides
+		if ( cg_fixedAspect.integer ) {
+			if ( cgs.glconfig.vidWidth * 480.0 > cgs.glconfig.vidHeight * 640.0 ) {
+				mask = 0.5 * ( ( cgs.glconfig.vidWidth - ( cgs.screenXScale * 480.0 ) ) / cgs.screenXScale );
+
+				CG_SetScreenPlacement(PLACE_LEFT, PLACE_CENTER);
+				CG_FillRect( 0, 0, mask, 480, color );
+				CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
+				CG_FillRect( 640 - mask, 0, mask, 480, color );
+			} else if ( cgs.glconfig.vidWidth * 480.0 < cgs.glconfig.vidHeight * 640.0 ) {
+				// sides with letterbox
+				lb = 0.5 * ( ( cgs.glconfig.vidHeight - ( cgs.screenYScale * 480.0 ) ) / cgs.screenYScale );
+
+				CG_SetScreenPlacement(PLACE_LEFT, PLACE_CENTER);
+				CG_FillRect( 0, 0, 80, 480, color );
+				CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
+				CG_FillRect( 560, 0, 80, 480, color );
+
+				CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
+				CG_FillRect( 0, 480 - lb, 640, lb, color );
+				CG_SetScreenPlacement(PLACE_LEFT, PLACE_TOP);
+				CG_FillRect( 0, 0, 640, lb, color );
+			} else {
+				// resolution is 4:3
+				CG_SetScreenPlacement(PLACE_LEFT, PLACE_CENTER);
+				CG_FillRect( 0, 0, 80, 480, color );
+				CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
+				CG_FillRect( 560, 0, 80, 480, color );
+			}
+		} else {
+			CG_FillRect( 0, 0, 80, 480, color );
+			CG_FillRect( 560, 0, 80, 480, color );
+		}
+
+		// center
+		if ( cg_fixedAspect.integer ) {
+			CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
+		}
+
+		if ( cgs.media.reticleShaderSimpleQ ) {
+			if ( cg_fixedAspect.integer ) {
+				trap_R_DrawStretchPic( x, lb * cgs.screenYScale, w, h, 0, 0, 1, 1, cgs.media.reticleShaderSimpleQ );         // tl
+				trap_R_DrawStretchPic( x + w, lb * cgs.screenYScale, w, h, 1, 0, 0, 1, cgs.media.reticleShaderSimpleQ );     // tr
+				trap_R_DrawStretchPic( x, h + lb * cgs.screenYScale, w, h, 0, 1, 1, 0, cgs.media.reticleShaderSimpleQ );     // bl
+				trap_R_DrawStretchPic( x + w, h + lb * cgs.screenYScale, w, h, 1, 1, 0, 0, cgs.media.reticleShaderSimpleQ ); // br
+			} else {
+				trap_R_DrawStretchPic( x, 0, w, h, 0, 0, 1, 1, cgs.media.reticleShaderSimpleQ );     // tl
+				trap_R_DrawStretchPic( x + w, 0, w, h, 1, 0, 0, 1, cgs.media.reticleShaderSimpleQ ); // tr
+				trap_R_DrawStretchPic( x, h, w, h, 0, 1, 1, 0, cgs.media.reticleShaderSimpleQ );     // bl
+				trap_R_DrawStretchPic( x + w, h, w, h, 1, 1, 0, 0, cgs.media.reticleShaderSimpleQ ); // br
+			}
+		}
+
+		// hairs
+		CG_FillRect( 84, 239, 150, 3, color );   // left
+		CG_FillRect( 234, 240, 173, 1, color );  // horiz center
+		CG_FillRect( 407, 239, 150, 3, color );  // right
+
+
+		CG_FillRect( 319, 2,   3, 151, color );  // top center top
+		CG_FillRect( 320, 153, 1, 114, color );  // top center bot
+
+		CG_FillRect( 320, 241, 1, 87, color );   // bot center top
+		CG_FillRect( 319, 327, 3, 151, color );  // bot center bot
 	}
 }
 
@@ -2473,6 +2538,7 @@ static void CG_DrawCrosshair( void ) {
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
+	case WP_M1GARANDSCOPE:
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
 
 			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
@@ -2665,6 +2731,7 @@ static void CG_DrawCrosshair3D( void ) {
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
+	case WP_M1GARANDSCOPE:
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
 
 			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run

@@ -480,15 +480,11 @@ typedef enum {
 	WP_FLAMETHROWER,        // 9
 	WP_TESLA,               // 10
 	WP_MP34,                // 11
-	WP_TT33,                // 12
 	WP_PPSH,                // 13
 	WP_MOSIN,               // 14
 	WP_G43,                 // 15
 	WP_M1GARAND,            // 16
-	WP_BAR,                 // 17
-	WP_MP44,                // 18
 	WP_MG42M,               // 19
-	WP_M97,                 // 20
 	WP_REVOLVER,            // 21
 	WP_COLT,                // 22	
 	WP_THOMPSON,            // 23	
@@ -497,6 +493,7 @@ typedef enum {
 	WP_SNIPERRIFLE,         // 26
 	WP_SNOOPERSCOPE,        // 27
 	WP_FG42SCOPE,           // 28
+	WP_M1GARANDSCOPE,
 	WP_STEN,                // 29	
 	WP_SILENCER,            // 30	
 	WP_AKIMBO,              // 31	
@@ -538,7 +535,7 @@ extern int weapAlts[];
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_REVOLVER ) )
+#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_REVOLVER ) )
 
 
 
@@ -549,9 +546,8 @@ extern int weapAlts[];
 		weapon == WP_MAUSER    || weapon == WP_SNIPERRIFLE       || weapon == WP_M1GARAND  || \
 		weapon == WP_FG42     || weapon == WP_G43           || weapon == WP_MG42M   || \
 		weapon == WP_SILENCER    || weapon == WP_VENOM      || \
-		weapon == WP_GARAND   || weapon == WP_TT33     || weapon == WP_FG42SCOPE     || \
-		weapon == WP_BAR    || weapon == WP_MP44      || \
-		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
+		weapon == WP_GARAND      || weapon == WP_FG42SCOPE     || weapon == WP_M1GARANDSCOPE || \
+		weapon == WP_MP34     || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO       \
 	)
@@ -1036,15 +1032,12 @@ typedef enum {
 	MOD_FLAMETHROWER,
 	MOD_TESLA,
 	MOD_MP34,
-	MOD_TT33,
 	MOD_PPSH,
 	MOD_MOSIN,
 	MOD_G43,
 	MOD_M1GARAND,
-	MOD_BAR,
-	MOD_MP44,
+	MOD_M1GARANDSCOPE,
 	MOD_MG42M,
-	MOD_M97,
 	MOD_REVOLVER,
 	MOD_GRENADE_PINEAPPLE,
 	MOD_CROSS,

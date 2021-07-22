@@ -49,19 +49,9 @@ extern vmCvar_t g_gametype;
 
 // NOTE: weapons that share ammo (ex. colt/thompson) need to share max ammo, but not necessarily uses or max clip
 // RealRTCW ammo depends on difficulty level now. So look for the ammo references in g_client.c. Values in bg misc should be the LOWEST to avoid auto pickup bug.
-#define MAX_AMMO_45     150
-#define MAX_AMMO_9MM    150
-#define MAX_AMMO_VENOM  500
-#define MAX_AMMO_MAUSER 150
-#define MAX_AMMO_GARAND 5
-#define MAX_AMMO_FG42   MAX_AMMO_MAUSER
-#define MAX_AMMO_BAR    150
-#define MAX_AMMO_TTAMMO 200
-#define MAX_AMMO_MOSINA 50
-#define MAX_AMMO_BARAMMO    120  
-#define MAX_AMMO_44AMMO     120
-#define MAX_AMMO_M97        24
-#define MAX_AMMO_REVOLVER   24
+
+//#define MAX_AMMO_MAUSER 150
+
 
 
 // these defines are matched with the character torso animations
@@ -99,41 +89,38 @@ ammotable_t ammoTable[] = {
 
 	{   999,            0,      999,    0,      50,             200,    0,      0,      MOD_KNIFE               },  //	WP_KNIFE				// 1
 
-	{   MAX_AMMO_9MM,   1,      8,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_LUGER               },  //	WP_LUGER				// 2	
-	{   MAX_AMMO_9MM,   1,      32,     2600,   DELAY_LOW,      110,    0,      0,      MOD_MP40                },  //	WP_MP40					// 3
-	{   MAX_AMMO_MAUSER,1,      5,      2500,   DELAY_HIGH,     1400,   0,      0,      MOD_MAUSER              },  //	WP_MAUSER				// 4	
-	{   MAX_AMMO_FG42,  1,      20,     2000,   DELAY_LOW,      180,    0,      0,      MOD_FG42                },  //	WP_FG42					// 5
-	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
-	{   3,              1,      1,      1000,   DELAY_SHOULDER, 2000,   0,      0,      MOD_PANZERFAUST         },  //	WP_PANZERFAUST			// 7
-	{   MAX_AMMO_VENOM, 1,      500,    3000,   750,            45,     5000,   200,    MOD_VENOM               },  //	WP_VENOM				// 8	
-	{   100,            1,      100,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
-	{   50,             1,      50,     1000,    DELAY_LOW,      0,     0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
-	{   MAX_AMMO_9MM,   1,      32,     3100,   DELAY_LOW,      105,    0,      0,      MOD_MP34                },  //	WP_MP34					// 11
-	{   MAX_AMMO_TTAMMO,  1,    8,      1600,   DELAY_PISTOL,   350,    0,      0,      MOD_TT33                },  //	WP_TT33					// 12
-	{   MAX_AMMO_TTAMMO,  1,    71,     2900,   DELAY_LOW,      65,     0,      0,      MOD_PPSH                },  //	WP_PPSH					// 13
-	{   MAX_AMMO_MOSINA,  1,    5,      2400,   DELAY_HIGH,     1400,   0,      0,      MOD_MOSIN               },  //	WP_MOSIN				// 14
-	{   MAX_AMMO_MAUSER,  1,    10,     1800,   DELAY_LOW,      300,    0,      0,      MOD_G43                 },  //	WP_G43				    // 15
-	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
-	{   MAX_AMMO_BARAMMO, 1,    20,     2250,   DELAY_LOW,      140,    0,      0,      MOD_BAR                 },  //	WP_BAR					// 17
-	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
-	{   MAX_AMMO_MAUSER,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,    MOD_MG42M               },  //	WP_MG42M                // 19
-	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
-	{   MAX_AMMO_REVOLVER,1,    6,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER            },  //	WP_REVOLVER             // 21
-	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
-	{   MAX_AMMO_45,    1,      30,     2400,   DELAY_LOW,      90,     0,      0,      MOD_THOMPSON            },  //	WP_THOMPSON				// 23
-	{   MAX_AMMO_GARAND,1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
-	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 25
+	{   16,             1,      8,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_LUGER               },  //	WP_LUGER				// 2	
+	{   224,            1,      32,     2600,   DELAY_LOW,      110,    0,      0,      MOD_MP40                },  //	WP_MP40					// 3
+	{   65,             1,      5,      2500,   DELAY_HIGH,     1400,   0,      0,      MOD_MAUSER              },  //	WP_MAUSER				// 4	
+	{   96,             1,      20,     2000,   DELAY_LOW,      180,    0,      0,      MOD_FG42                },  //	WP_FG42					// 5
+	{   15,             1,      15,     1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
+	{   5,              1,      1,      1000,   DELAY_SHOULDER, 2000,   0,      0,      MOD_PANZERFAUST         },  //	WP_PANZERFAUST			// 7
+	{   1000,           1,      500,    3000,   750,            45,     5000,   200,    MOD_VENOM               },  //	WP_VENOM				// 8	
+	{   150,            1,      150,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
+	{   50,             1,      50,     1000,   DELAY_LOW,      0,      0,      0,      MOD_TESLA               },  //	WP_TESLA				// 10
+	{   224,            1,      32,     3100,   DELAY_LOW,      105,    2500,   150,    MOD_MP34                },  //	WP_MP34					// 11
+	{   142,            1,      71,     2900,   DELAY_LOW,      65,     2500,   150,    MOD_PPSH                },  //	WP_PPSH					// 13
+	{   65,             1,      5,      2400,   DELAY_HIGH,     1400,   0,      0,      MOD_MOSIN               },  //	WP_MOSIN				// 14
+	{   90,             1,      10,     1800,   DELAY_LOW,      300,    0,      0,      MOD_G43                 },  //	WP_G43				    // 15
+	{   90,             1,      10,     1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
+	{   250,            1,      50,     2600,   DELAY_LOW,      65,     2500,   350,    MOD_MG42M               },  //	WP_MG42M                // 19
+	{   16,             1,      8,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER            },  //	WP_REVOLVER             // 21
+	{   16,             1,      8,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
+	{   105,            1,      35,     2400,   DELAY_LOW,      90,     0,      0,      MOD_THOMPSON            },  //	WP_THOMPSON				// 23
+	{   70,             1,      5,      2500,   DELAY_HIGH,     1200,   0,      0,      MOD_GARAND              },  //	WP_GARAND				// 24	
+	{   15,             1,      15,     1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_PINEAPPLE   },  //	WP_GRENADE_PINEAPPLE	// 25
 
-	{   MAX_AMMO_MAUSER,1,      5,      3000,   0,              1400,   0,      0,      MOD_SNIPERRIFLE         },  //	WP_SNIPER_GER			// 26
-	{   MAX_AMMO_GARAND,1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
+	{   65,             1,      5,      3000,   0,              1400,   0,      0,      MOD_SNIPERRIFLE         },  //	WP_SNIPER_GER			// 26
+	{   70,             1,      5,      3000,   0,              1200,   0,      0,      MOD_SNOOPERSCOPE        },  //	WP_SNIPER_AM			// 27
 
-	{   MAX_AMMO_FG42,  1,      20,     2000,   DELAY_LOW,      180,    0,      0,      MOD_FG42SCOPE           },  //	WP_FG42SCOPE			// 28
-	{   MAX_AMMO_9MM,   1,      32,     3100,   DELAY_LOW,      115,    900,    500,    MOD_STEN                },  //	WP_STEN					// 29
-	{   MAX_AMMO_9MM,   1,      8,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_SILENCER            },  //	WP_SILENCER				// 30
-	{   MAX_AMMO_45,    1,      7,      2700,   DELAY_PISTOL,   200,    0,      0,      MOD_AKIMBO              },  //	WP_AKIMBO				// 31
+	{   96,             1,      20,     2000,   DELAY_LOW,      180,    0,      0,      MOD_FG42SCOPE           },  //	WP_FG42SCOPE			// 28
+	{   90,             1,      10,     1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARANDSCOPE       },  //	WP_M1GARAND				// 16
+	{   180,            1,      30,     3100,   DELAY_LOW,      115,    900,    500,    MOD_STEN                },  //	WP_STEN					// 29
+	{   16,             1,      8,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_SILENCER            },  //	WP_SILENCER				// 30
+	{   16,             1,      8,      2700,   DELAY_PISTOL,   200,    0,      0,      MOD_AKIMBO              },  //	WP_AKIMBO				// 31
 
 	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_CLASS_SPECIAL		// 32	
-	{   3,              1,      3,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_DYNAMITE            },  //	WP_DYNAMITE				// 33
+	{   10,             1,      10,     1000,   DELAY_THROW,    1600,   0,      0,      MOD_DYNAMITE            },  //	WP_DYNAMITE				// 33
 
 // stubs for some "not-real" weapons (so they always return "yes, you have enough ammo for that gauntlet", etc.)
 	{   999,            0,      999,    0,      50,             0,      0,      0,      0                       },  //	WP_MONSTER_ATTACK1		// 35
@@ -157,15 +144,11 @@ int weapAlts[] = {
 	WP_NONE,            // 9 WP_FLAMETHROWER
 	WP_NONE,            // 10 WP_TESLA
 	WP_NONE,            // 11 WP_MP34
-	WP_NONE,            // 12 WP_TT33
 	WP_NONE,            // 13 WP_PPSH
 	WP_NONE,            // 14 WP_MOSIN
 	WP_NONE,            // 15 WP_G43
-	WP_NONE,            // 16 WP_M1GARAND
-	WP_NONE,            // 17 WP_BAR
-	WP_NONE,            // 18 WP_MP44
+	WP_M1GARANDSCOPE,   // 16 WP_M1GARAND
 	WP_NONE,            // 19 WP_MG42M
-	WP_NONE,            // 20 WP_M97
 	WP_NONE,            // 21 WP_REVOLVER
 	WP_AKIMBO,          // 22 WP_COLT		
 	WP_NONE,            // 23 WP_THOMPSON
@@ -174,6 +157,7 @@ int weapAlts[] = {
 	WP_MAUSER,          // 26 WP_SNIPERRIFLE
 	WP_GARAND,          // 27 WP_SNOOPERSCOPE
 	WP_FG42,            // 28 WP_FG42SCOPE
+	WP_M1GARAND,
 	WP_NONE,            // 29 WP_STEN
 	WP_LUGER,           // 30 WP_SILENCER	
 	WP_COLT,            // 31 WP_AKIMBO		
@@ -990,7 +974,7 @@ model="models/weapons2/mauser/mauser.md3"
 		50,
 		IT_WEAPON,
 		WP_MAUSER,
-		WP_MAUSER,
+		WP_MOSIN,
 		WP_MAUSER,
 		"",                      // precache
 		"",                      // sounds
@@ -1002,20 +986,20 @@ model="models/weapons2/mauser/mauser.md3"
 model="models/weapons2/thompson/thompson.md3"
 */
 	{
-		"weapon_thompson",
+		"weapon_pps43",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/thompson/thompson.md3",
-			"models/weapons2/thompson/v_thompson.md3",
-			"models/weapons2/thompson/pu_thompson.md3",
+		{   "models/weapons2/pps43/pps43.md3",
+			"models/weapons2/pps43/v_pps43.md3",
+			"models/weapons2/pps43/pu_pps43.md3",
 			0, 0 },
 
-		"icons/iconw_thompson_1",    // icon
+		"icons/iconw_pps43_1",    // icon
 		"icons/ammo2",           // ammo icon
-		"Thompson",              // pickup
+		"pps43",              // pickup
 		30,
 		IT_WEAPON,
 		WP_THOMPSON,
-		WP_COLT,
+		WP_THOMPSON,
 		WP_THOMPSON,
 		"",                  // precache
 		"",                  // sounds
@@ -1027,19 +1011,19 @@ model="models/weapons2/thompson/thompson.md3"
 model="models/weapons2/sten/sten.md3"
 */
 	{
-		"weapon_sten",
+		"weapon_stg44",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/sten/sten.md3",
-			"models/weapons2/sten/v_sten.md3",
-			"models/weapons2/sten/pu_sten.md3",
+		{   "models/weapons2/stg44/stg44.md3",
+			"models/weapons2/stg44/v_stg44.md3",
+			"models/weapons2/stg44/pu_stg44.md3",
 			0,0 },
-		"icons/iconw_sten_1",    // icon
+		"icons/iconw_MP44_1",    // icon
 		"icons/ammo2",           // ammo icon
-		"Sten",                  // pickup
+		"stg44",                  // pickup
 		30,
 		IT_WEAPON,
 		WP_STEN,
-		WP_LUGER,
+		WP_STEN,
 		WP_STEN,
 		"",                  // precache
 		"",                  // sounds
@@ -1052,12 +1036,12 @@ dual colts
 	{
 		"weapon_akimbo",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/colt2/colt2.md3",
-			"models/weapons2/colt2/v_colt2.md3",
-			"models/weapons2/colt2/pu_colt2.md3",
+		{   "models/weapons2/tt332/tt332.md3",
+			"models/weapons2/tt332/v_tt332.md3",
+			"models/weapons2/tt332/pu_tt332.md3",
 			0, 0 },
 
-		"icons/iconw_colt_1",    // icon
+		"icons/iconw_tt33_1",    // icon
 		"icons/ammo2",           // ammo icon
 		"Dual Colts",            // pickup
 		50,
@@ -1076,16 +1060,16 @@ dual colts
 model="models/weapons2/colt/colt.md3"
 */
 	{
-		"weapon_colt",
+		"weapon_tt33",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/colt/colt.md3",
-			"models/weapons2/colt/v_colt.md3",
-			"models/weapons2/colt/pu_colt.md3",
+		{   "models/weapons2/tt33/tt33.md3",
+			"models/weapons2/tt33/v_tt33.md3",
+			"models/weapons2/tt33/pu_tt33.md3",
 			0, 0 },
 
-		"icons/iconw_colt_1",    // icon
+		"icons/iconw_tt33_1",    // icon
 		"icons/ammo2",           // ammo icon
-		"Colt",                  // pickup
+		"TT33",                  // pickup
 		50,
 		IT_WEAPON,
 		WP_COLT,
@@ -1104,16 +1088,16 @@ weapon_garandRifle (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 model="models/weapons2/garand/garand.md3"
 */
 	{
-		"NOT_weapon_garandRifle",    //----(SA)	modified so it can no longer be given individually
+		"NOT_weapon_mosin",    //----(SA)	modified so it can no longer be given individually
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/garand/garand.md3",
-			"models/weapons2/garand/v_garand.md3",
-			"models/weapons2/garand/pu_garand.md3",
+		{   "models/weapons2/mosin/mosin.md3",
+			"models/weapons2/mosin/v_mosin.md3",
+			"models/weapons2/mosin/pu_mosin.md3",
 			0, 0 },
 
-		"icons/iconw_garand_1",  // icon
+		"icons/iconw_mosin_1",  // icon
 		"icons/ammo3",           // ammo icon
-		"garand",                      // pickup			//----(SA)	modified so it can no longer be given individually
+		"notmosin",                      // pickup			//----(SA)	modified so it can no longer be given individually
 		50,
 		IT_WEAPON,
 		WP_GARAND,
@@ -1145,7 +1129,7 @@ model="models\weapons2\mp40\mp40.md3"
 		30,
 		IT_WEAPON,
 		WP_MP40,
-		WP_LUGER,
+		WP_MP40,
 		WP_MP40,
 		"",                  // precache
 		"",                  // sounds
@@ -1172,7 +1156,7 @@ model="models/weapons2/fg42/fg42.md3"
 		10,
 		IT_WEAPON,
 		WP_FG42,
-		WP_MAUSER,
+		WP_FG42,
 		WP_FG42,
 		"",                  // precache
 		"",                  // sounds
@@ -1411,7 +1395,7 @@ model="models/weapons2/mauser/pu_mauser_scope.md3"
 		200,
 		IT_WEAPON,
 		WP_SNIPERRIFLE,
-		WP_MAUSER,
+		WP_MOSIN,
 		WP_MAUSER,
 		"",                          // precache
 		"",                          // sounds
@@ -1423,16 +1407,16 @@ model="models/weapons2/mauser/pu_mauser_scope.md3"
 model="models/weapons2/garand/garand.md3"
 */
 	{
-		"weapon_snooperrifle",   //----(SA)	modified
+		"weapon_mosin",   //----(SA)	modified
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/garand/garand.md3",
-			"models/weapons2/garand/v_garand.md3",
-			"models/weapons2/garand/pu_garand.md3",
+		{   "models/weapons2/mosin/mosin.md3",
+			"models/weapons2/mosin/v_mosin.md3",
+			"models/weapons2/mosin/pu_mosin.md3",
 			0, 0 },
 
-		"icons/iconw_garand_1",  // icon
+		"icons/iconw_mosin_1",  // icon
 		"icons/ammo10",              // ammo icon
-		"Snooper Rifle",             // pickup		//----(SA)	modified
+		"mosin",             // pickup		//----(SA)	modified
 		20,
 		IT_WEAPON,
 		WP_SNOOPERSCOPE,
@@ -1459,8 +1443,32 @@ model="models/weapons2/garand/garand.md3"
 		0,
 		IT_WEAPON,
 		WP_FG42SCOPE,   // this weap
-		WP_MAUSER,      // shares ammo w/
+		WP_FG42,      // shares ammo w/
 		WP_FG42,        // shares clip w/
+		"",                          // precache
+		"",                          // sounds
+		{0,0,0,0,0}
+	},
+
+
+	/* weapon_fg42scope
+*/
+	{
+		"weapon_g43scope",  //----(SA)	modified
+		"sound/misc/w_pkup.wav",
+		{   "models/weapons2/g43/g43.md3",
+			"models/weapons2/g43/v_g43.md3",
+			"models/weapons2/g43/pu_g43.md3",
+			0, 0},
+
+		"icons/iconw_g43_1",    // icon
+		"icons/ammo5",               // ammo icon
+		"g43scope",                // pickup		//----(SA)	modified
+		0,
+		IT_WEAPON,
+		WP_M1GARANDSCOPE,   // this weap
+		WP_M1GARAND,      // shares ammo w/
+		WP_M1GARAND,        // shares clip w/
 		"",                          // precache
 		"",                          // sounds
 		{0,0,0,0,0}
@@ -1573,46 +1581,19 @@ model="models/weapons2/mp34/mp34_3rd.md3"
 			"models/weapons2/mp34/pu_mp34.md3",
 			0, 0 },
 
-		"icons/iconw_mp34",    // icon
+		"icons/iconw_mp34_1",    // icon
 		"icons/ammo9",       // ammo icon
-		"MP34",              // pickup
+		"mp34",              // pickup
 		30,
 		IT_WEAPON,
 		WP_MP34,
-		WP_LUGER,
+		WP_MP34,
 		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
 		{0,0,0,0,0}
 	},
 
-	/*QUAKED weapon_tt33 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/tt33/tt33.md3"
-*/
-	{
-		"weapon_tt33",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/tt33/tt33.md3",
-			"models/weapons2/tt33/v_tt33.md3",
-			"models/weapons2/tt33/pu_tt33.md3",
-			0, 0 },
-
-		"icons/iconw_tt33",    // icon
-		"icons/ammoppsh",      // ammo icon
-		"tt33",              // pickup
-		30,
-		IT_WEAPON,
-		WP_TT33,
-		WP_TT33,
-		WP_TT33,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0,0}
-	},
 
 /*QUAKED weapon_ppsh (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
@@ -1635,7 +1616,7 @@ model="models/weapons2/ppsh/ppsh.md3"
 		30,
 		IT_WEAPON,
 		WP_PPSH,
-		WP_TT33,
+		WP_PPSH,
 		WP_PPSH,
 		"",                  // precache
 		"",                  // sounds
@@ -1650,16 +1631,16 @@ model="models/weapons2/ppsh/ppsh.md3"
 model="models/weapons2/mosin/mosin.md3"
 */
 	{
-		"weapon_mosin",
+		"weapon_kar98k",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/mosin/mosin.md3",
-			"models/weapons2/mosin/v_mosin.md3",
-			"models/weapons2/mosin/pu_mosin.md3",
+		{   "models/weapons2/mauser/mauser.md3",
+			"models/weapons2/mauser/v_mauser.md3",
+			"models/weapons2/mauser/pu_mauser.md3",
 			0, 0 },
 
-		"icons/iconw_mosin",    // icon
+		"icons/iconw_mauser_1",    // icon
 		"icons/ammomosin",      // ammo icon
-		"mosin",               // pickup
+		"kar98k",               // pickup
 		30,
 		IT_WEAPON,
 		WP_MOSIN,
@@ -1678,20 +1659,20 @@ model="models/weapons2/mosin/mosin.md3"
 model="models/multiplayer/g43/g43_3rd.md3"
 */
 	{
-		"weapon_g43",
+		"weapon_svt40",
 		"sound/misc/w_pkup.wav",
-		{   "models/multiplayer/g43/g43_3rd.md3",
-			"models/multiplayer/g43/g43.md3",
-			"models/multiplayer/g43/pu_g43.md3",
+		{   "models/weapons2/svt40/svt40.md3",
+			"models/weapons2/svt40/v_svt40.md3",
+			"models/weapons2/svt40/pu_svt40.md3",
 			0, 0 },
 
-		"icons/iconw_g43",    // icon
+		"icons/iconw_svt40_1",    // icon
 		"icons/ammo2",       // ammo icon
-		"g43",              // pickup
+		"svt40",              // pickup
 		30,
 		IT_WEAPON,
 		WP_G43,
-		WP_MAUSER,
+		WP_G43,
 		WP_G43,
 		"",                  // precache
 		"",                  // sounds
@@ -1707,132 +1688,52 @@ model="models/multiplayer/g43/g43_3rd.md3"
 model="models/multiplayer/m1_garand/m1_garand_3rd.md3"
 */
 	{
-		"weapon_m1garand",
+		"weapon_g43",
 		"sound/misc/w_pkup.wav",
-		{   "models/multiplayer/m1_garand/m1_garand_3rd.md3",
-			"models/multiplayer/m1_garand/v_m1_garand.md3",
-			"models/multiplayer/mauser/mauser_pickup.md3",
+		{   "models/weapons2/g43/g43.md3",
+			"models/weapons2/g43/v_g43.md3",
+			"models/weapons2/g43/pu_g43.md3",
 			0, 0 },
 
-		"icons/iconw_m1garand",    // icon
+		"icons/iconw_g43_1",    // icon
 		"icons/ammobar",      // ammo icon
-		"m1garand",              // pickup
+		"g43",              // pickup
 		30,
 		IT_WEAPON,
 		WP_M1GARAND,
-		WP_BAR,
+		WP_M1GARAND,
 		WP_M1GARAND,
 		"",                  // precache
 		"",                  // sounds
 		{0,0,0,0,0}
 	},
 
-/*QUAKED weapon_bar (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/bar/bar3rd.md3"
-*/
-	{
-		"weapon_bar",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/bar/bar3rd.md3",
-			"models/weapons2/bar/v_bar.md3",
-			"models/weapons2/bar/pu_bar.md3",
-			0, 0 },
-
-		"icons/iconw_bar",    // icon
-		"icons/ammobar",      // ammo icon
-		"BAR",              // pickup
-		30,
-		IT_WEAPON,
-		WP_BAR,
-		WP_BAR,
-		WP_BAR,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0,0}
-	},
-
-/*QUAKED weapon_mp44 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-"stand" values:
-	no value:	laying in a default position on it's side (default)
-	2:			upright, barrel pointing up, slightly angled (rack mount)
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/mp44/mp44.md3"
-*/
-	{
-		"weapon_mp44",
-		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/mp44/mp44.md3",
-			"models/weapons2/mp44/v_mp44.md3",
-			"models/weapons2/mp44/pu_mp44.md3",
-			0, 0 },
-
-		"icons/iconw_mp44",    // icon
-		"icons/ammomp44",       // ammo icon
-		"MP44",              // pickup
-		30,
-		IT_WEAPON,
-		WP_MP44,
-		WP_MP44,
-		WP_MP44,
-		"",                  // precache
-		"",                  // sounds
-		{0,0,0,0,0}
-	},
 
 /*QUAKED weapon_mg42m (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
 model="models/multiplayer/mg42/mg42_3rd.md3"
 */
 	{
-		"weapon_mg42m",
+		"weapon_mg34",
 		"sound/misc/w_pkup.wav",
-		{   "models/multiplayer/mg42/mg42_3rd.md3",
-			"models/multiplayer/mg42/v_mg42.md3",
-			"models/mulitplayer/mg42/mg42_pickup.md3",
+		{   "models/weapons2/mg34/mg34.md3",
+			"models/weapons2/mg34/v_mg34.md3",
+			"models/weapons2/mg34/pu_mg34.md3",
 			0, 0 },
 
-		"icons/iconw_mg42m",   // icon
+		"icons/iconw_mg34_1",   // icon
 		"icons/ammo8",           // ammo icon
-		"mg42m",             // pickup
+		"mg34",             // pickup
 		700,
 		IT_WEAPON,
 		WP_MG42M,
-		WP_MAUSER,
+		WP_MG42M,
 		WP_MG42M,
 		"",                      // precache
 		"",                      // sounds
 		{0,0,0,0,0}
 	},
 
-/*QUAKED weapon_m97 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-			-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-			model="models/weapons2/m97/m97_3rd.md3"
-			*/
-	{
-		"weapon_m97",
-		"sound/misc/w_pkup.wav",
-		{ "models/weapons2/m97/m97_3rd.md3",
-			"models/weapons2/m97/v_m97.md3",
-			"models/weapons2/m97/m97_pickup.md3",
-			0 
-		    },
-
-			"icons/iconw_m97",   // icon
-			"icons/ammo8",           // ammo icon
-			"m97",             // pickup
-			700,
-			IT_WEAPON,
-			WP_M97,
-			WP_M97,
-			WP_M97,
-			"",                      // precache
-			"",                      // sounds
-			{ 0,0,0,0,0 }
-	},
 
 
 	/*QUAKED weapon_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -1843,16 +1744,16 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 model="models/weapons2/p38/luger.md3"
 */
 	{
-		"weapon_revolver",
+		"weapon_walther",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/44magnum/44m_3rd.md3",
-			"models/weapons2/44magnum/v_44m.md3",
-			"models/weapons2/44magnum/44m_pickup.md3",
+		{   "models/weapons2/walther/walther.md3",
+			"models/weapons2/walther/v_walther.md3",
+			"models/weapons2/walther/pu_walther.md3",
 			0, 0 },
 
-		"icons/iconw_revolver",    // icon
+		"icons/iconw_walther_1",    // icon
 		"icons/ammo9mm",      // ammo icon
-		"revolver",              // pickup
+		"walther",              // pickup
 		30,
 		IT_WEAPON,
 		WP_REVOLVER,
@@ -1868,482 +1769,415 @@ model="models/weapons2/p38/luger.md3"
 	// AMMO ITEMS
 	//
 
-// RealRTCW ammo
-
-/*QUAKED ammo_ttammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: TT33, PPSH
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/ttammo.md3"
-*/
 	{
-		"ammo_ttammo",
+		"ammo_luger",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/ttammo.md3",
+		{ "models/powerups/ammo/ammo_luger.md3",
 		  0, 0, 0,    0 },
 		"icons/iconw_luger_1", // icon
 		NULL,               // ammo icon
-		"ttammo",           // pickup			
+		"lugerammo",           // pickup			
 		60,
 		IT_AMMO,
-		WP_PPSH,
-		WP_TT33,
-		WP_PPSH,
+		WP_LUGER,
+		WP_LUGER,
+		WP_LUGER,
 		"",                  // precache
 		"",                  // sounds
-		{71,71,50,50,50}	
+		{8,8,8,8,8}	
 	},
 
-/*QUAKED ammo_ttammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: TT33, PPSH
 
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/ttammo.md3"
-*/
 	{
-		"ammo_ttammo_l",
+		"ammo_tt33",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/ttammo_l.md3",
+		{ "models/powerups/ammo/ammo_tt33.md3",
 		  0, 0, 0,    0 },
 		"icons/iconw_luger_1", // icon
 		NULL,               // ammo icon
-		"ttammol",           // pickup			
+		"tt33ammo",           // pickup			
 		60,
 		IT_AMMO,
-		WP_PPSH,
-		WP_TT33,
-		WP_PPSH,
+		WP_COLT,
+		WP_COLT,
+		WP_COLT,
 		"",                  // precache
 		"",                  // sounds
-		{142,142,100,100,100}	
+		{8,8,8,8,8}	
 	},
 
-/*QUAKED ammo_mosina (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: mosin nagant
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/mosina.md3"
-*/
-	{
-		"ammo_mosina",
+		{
+		"ammo_walther",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/mosina.md3",
-		  0, 0, 0,    0 },
-		"icons/icona_machinegun",    // icon
-		NULL,                       // ammo icon
-		"mosina",			       // pickup
-		50,
-		IT_AMMO,
-		WP_MOSIN,
-		WP_MOSIN,
-		WP_MOSIN,
-		"",                          // precache
-		"",                          // sounds
-		{20,20,15,15,15}		
-	},
-
-/*QUAKED ammo_barammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Bar, M1 Garand
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/barammo.md3"
-*/
-{
-		"ammo_barammo",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/barammo.md3",
+		{ "models/powerups/ammo/ammo_walther.md3",
 		  0, 0, 0,    0 },
 		"icons/iconw_luger_1", // icon
 		NULL,               // ammo icon
-		"barammo",           // pickup			//----(SA)	changed
+		"waltherammo",           // pickup			
 		60,
-		IT_AMMO,
-		WP_BAR,
-		WP_M1GARAND,
-		WP_BAR,
-		"",                  // precache
-		"",                  // sounds
-		{40,40,30,30,30}	
-	},
-
-/*QUAKED ammo_barammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Bar, M1 Garand
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/barammo_l.md3"
-*/
-{
-		"ammo_barammo_l",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/barammo_l.md3",
-		  0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"barammol",           // pickup			//----(SA)	changed
-		60,
-		IT_AMMO,
-		WP_BAR,
-		WP_M1GARAND,
-		WP_BAR,
-		"",                  // precache
-		"",                  // sounds
-		{60,60,45,45,45}	
-	},
-
-/*QUAKED ammo_44ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: MP44
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/44ammo.md3"
-*/
-{
-		"ammo_44ammo",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/44ammo.md3",
-		  0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"44ammo",           // pickup			
-		60,
-		IT_AMMO,
-		WP_MP44,
-		WP_MP44,
-		WP_MP44,
-		"",                  // precache
-		"",                  // sounds
-		{60,60,45,45,45}	
-	},
-
-/*QUAKED ammo_44ammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: MP44
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/44ammo_l.md3"
-*/
-{
-		"ammo_44ammo_l",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/44ammo_l.md3",
-		  0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"44ammol",           // pickup			
-		60,
-		IT_AMMO,
-		WP_MP44,
-		WP_MP44,
-		WP_MP44,
-		"",                  // precache
-		"",                  // sounds
-		{90,90,75,75,75}	
-	},
-
-		/*QUAKED ammo_m97ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-		used by: M97
-
-		-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-		model="models/powerups/ammo/m97ammo.md3"
-		*/
-	{
-		"ammo_m97ammo",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/m97ammo.md3",
-		0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"m97ammo",           // pickup			
-		10,
-		IT_AMMO,
-		WP_M97,
-		WP_M97,
-		WP_M97,
-		"",                  // precache
-		"",                  // sounds
-		{ 6,6,6,6,6 }
-	},
-
-			/*QUAKED ammo_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-		used by: revolver
-
-		-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-		model="models/powerups/ammo/revolverammo.md3"
-		*/
-	{
-		"ammo_revolver",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/revolverammo.md3",
-		0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"revolverammo",           // pickup			
-		12,
 		IT_AMMO,
 		WP_REVOLVER,
 		WP_REVOLVER,
 		WP_REVOLVER,
 		"",                  // precache
 		"",                  // sounds
-		{ 6,6,6,6,6 }
+		{8,8,8,8,8}	
 	},
 
 
-
-
-
-/*QUAKED ammo_9mm_small (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Luger pistol, MP40 machinegun
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am9mm_s.md3"
-*/
-	{
-		"ammo_9mm_small",
+		{
+		"ammo_mp34_small",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am9mm_s.md3",
-		  0, 0, 0, 0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"9mm Rounds",        // pickup
-		30,
-		IT_AMMO,
-		WP_LUGER,
-		WP_LUGER,
-		WP_LUGER,
-		"",                  // precache
-		"",                  // sounds
-		{32,24,16,16,16}
-	},
-/*QUAKED ammo_9mm (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Luger pistol, MP40 machinegun
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am9mm_m.md3"
-*/
-	{
-		"ammo_9mm",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am9mm_m.md3",
+		{ "models/powerups/ammo/ammo_mp34_small.md3",
 		  0, 0, 0,    0 },
 		"icons/iconw_luger_1", // icon
 		NULL,               // ammo icon
-		"9mm",           // pickup			//----(SA)	changed
+		"mp34ammo_small",           // pickup			
 		60,
 		IT_AMMO,
-		WP_LUGER,
-		WP_LUGER,
-		WP_LUGER,
+		WP_MP34,
+		WP_MP34,
+		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
-		{64,48,32,16,16}
-	},
-/*QUAKED ammo_9mm_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Luger pistol, MP40 machinegun
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am9mm_l.md3"
-*/
-	{
-		"ammo_9mm_large",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am9mm_l.md3",
-		  0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"9mm Box",           // pickup
-		100,
-		IT_AMMO,
-		WP_LUGER,
-		WP_LUGER,
-		WP_LUGER,
-		"",                  // precache
-		"",                  // sounds
-		{96,64,48,48,48}
+		{32,32,32,32,32}	
 	},
 
 
-/*QUAKED ammo_45cal_small (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Thompson, Colt
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am45cal_s.md3"
-*/
-	{
-		"ammo_45cal_small",
+		{
+		"ammo_mp34",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am45cal_s.md3",
+		{ "models/powerups/ammo/ammo_mp34.md3",
 		  0, 0, 0,    0 },
 		"icons/iconw_luger_1", // icon
 		NULL,               // ammo icon
-		".45cal Rounds", // pickup
-		20,
-		IT_AMMO,
-		WP_COLT,
-		WP_COLT,
-		WP_COLT,
-		"",                  // precache
-		"",                  // sounds
-		{40,30,20,20,20}
-	},
-/*QUAKED ammo_45cal (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Thompson, Colt
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am45cal_m.md3"
-*/
-	{
-		"ammo_45cal",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am45cal_m.md3",
-		  0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		".45cal",        // pickup			//----(SA)	changed
+		"mp34ammo",           // pickup			
 		60,
 		IT_AMMO,
-		WP_COLT,
-		WP_COLT,
-		WP_COLT,
+		WP_MP34,
+		WP_MP34,
+		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
-		{60,45,30,30,30}
+		{64,64,64,64,64}	
 	},
-/*QUAKED ammo_45cal_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Thompson, Colt
 
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am45cal_l.md3"
-*/
-	{
-		"ammo_45cal_large",
+	
+		{
+		"ammo_mp34_large",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am45cal_l.md3",
+		{ "models/powerups/ammo/ammo_mp34_large.md3",
 		  0, 0, 0,    0 },
 		"icons/iconw_luger_1", // icon
 		NULL,               // ammo icon
-		".45cal Box",        // pickup
-		100,
+		"mp34ammo_large",           // pickup			
+		60,
 		IT_AMMO,
-		WP_COLT,
-		WP_COLT,
-		WP_COLT,
+		WP_MP34,
+		WP_MP34,
+		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
-		{90,60,45,45,45}
+		{96,96,96,96,96}	
 	},
 
 
-
-
-/*QUAKED ammo_792mm_small (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Mauser rifle, FG42
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am792mm_s.md3"
-*/
-	{
-		"ammo_792mm_small",
+		{
+		"ammo_mp40_small",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am792mm_s.md3",
+		{ "models/powerups/ammo/ammo_mp40_small.md3",
 		  0, 0, 0,    0 },
-		"icons/icona_machinegun",    // icon
-		NULL,                       // ammo icon
-		"7.92mm Rounds",         // pickup
-		50,
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"mp40ammo_small",           // pickup			
+		60,
 		IT_AMMO,
-		WP_MAUSER,
-		WP_MAUSER,
-		WP_MAUSER,
-		"",                          // precache
-		"",                          // sounds
-		{20,15,10,5,5}
+		WP_MP40,
+		WP_MP40,
+		WP_MP40,
+		"",                  // precache
+		"",                  // sounds
+		{32,32,32,32,32}	
 	},
-/*QUAKED ammo_792mm (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Mauser rifle, FG42
 
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am792mm_m.md3"
-*/
-	{
-		"ammo_792mm",
+
+		{
+		"ammo_mp40",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am792mm_m.md3",
+		{ "models/powerups/ammo/ammo_mp40.md3",
 		  0, 0, 0,    0 },
-		"icons/icona_machinegun",    // icon
-		NULL,                       // ammo icon
-		"7.92mm",                // pickup			//----(SA)	changed
-		10,
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"mp40ammo",           // pickup			
+		60,
 		IT_AMMO,
-		WP_MAUSER,
-		WP_MAUSER,
-		WP_MAUSER,
-		"",                          // precache
-		"",                          // sounds
-		{40,20,15,10,10}
+		WP_MP40,
+		WP_MP40,
+		WP_MP40,
+		"",                  // precache
+		"",                  // sounds
+		{64,64,64,64,64}	
 	},
-/*QUAKED ammo_792mm_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Mauser rifle, FG42
 
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am792mm_l.md3"
-*/
-	{
-		"ammo_792mm_large",
+	
+		{
+		"ammo_mp40_large",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am792mm_l.md3",
+		{ "models/powerups/ammo/ammo_mp40_large.md3",
 		  0, 0, 0,    0 },
-		"icons/icona_machinegun",    // icon
-		NULL,                       // ammo icon
-		"7.92mm Box",                // pickup
-		50,
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"mp40ammo_large",           // pickup			
+		60,
 		IT_AMMO,
-		WP_MAUSER,
-		WP_MAUSER,
-		WP_MAUSER,
-		"",                          // precache
-		"",                          // sounds
-		{60,40,30,20,20}
+		WP_MP40,
+		WP_MP40,
+		WP_MP40,
+		"",                  // precache
+		"",                  // sounds
+		{96,96,96,96,96}	
 	},
 
 
-
-
-/*QUAKED ammo_30cal_small (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Garand rifle
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am30cal_s.md3"
-*/
-	{
-		"ammo_30cal_small",
+		{
+		"ammo_stg44_small",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am30cal_s.md3",
+		{ "models/powerups/ammo/ammo_stg44_small.md3",
 		  0, 0, 0,    0 },
-		"icons/icona_machinegun",    // icon
-		NULL,                       // ammo icon
-		".30cal Rounds",         // pickup
-		50,
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"stg44ammo_small",           // pickup			
+		60,
 		IT_AMMO,
-		WP_GARAND,
-		WP_GARAND,
-		WP_GARAND,
-		"",                          // precache
-		"",                          // sounds
-		{5,2,2,2,2}
+		WP_STEN,
+		WP_STEN,
+		WP_STEN,
+		"",                  // precache
+		"",                  // sounds
+		{30,30,30,30,30}	
 	},
-/*QUAKED ammo_30cal (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Garand rifle
 
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am30cal_m.md3"
-*/
-	{
-		"ammo_30cal",
+
+		{
+		"ammo_stg44",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am30cal_m.md3",
+		{ "models/powerups/ammo/ammo_stg44.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"stg44ammo",           // pickup			
+		60,
+		IT_AMMO,
+		WP_STEN,
+		WP_STEN,
+		WP_STEN,
+		"",                  // precache
+		"",                  // sounds
+		{60,60,60,60,60}	
+	},
+
+	
+		{
+		"ammo_stg44_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_stg44_large.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"stg44ammo_large",           // pickup			
+		60,
+		IT_AMMO,
+		WP_STEN,
+		WP_STEN,
+		WP_STEN,
+		"",                  // precache
+		"",                  // sounds
+		{90,90,90,90,90}	
+	},
+
+
+		{
+		"ammo_ppsh_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_ppsh_small.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"ppshammo_small",           // pickup			
+		60,
+		IT_AMMO,
+		WP_PPSH,
+		WP_PPSH,
+		WP_PPSH,
+		"",                  // precache
+		"",                  // sounds
+		{30,30,30,30,30}	
+	},
+
+
+		{
+		"ammo_ppsh",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_ppsh.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"ppshammo",           // pickup			
+		60,
+		IT_AMMO,
+		WP_PPSH,
+		WP_PPSH,
+		WP_PPSH,
+		"",                  // precache
+		"",                  // sounds
+		{60,60,60,60,60}	
+	},
+
+	
+		{
+		"ammo_ppsh_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_ppsh_large.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"ppshammo_large",           // pickup			
+		60,
+		IT_AMMO,
+		WP_PPSH,
+		WP_PPSH,
+		WP_PPSH,
+		"",                  // precache
+		"",                  // sounds
+		{90,90,90,90,90}	
+	},
+
+
+			{
+		"ammo_pps43_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_pps43_small.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"pps43ammo_small",           // pickup			
+		60,
+		IT_AMMO,
+		WP_THOMPSON,
+		WP_THOMPSON,
+		WP_THOMPSON,
+		"",                  // precache
+		"",                  // sounds
+		{35,35,35,35,35}	
+	},
+
+
+	
+		{
+		"ammo_pps43",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_pps43.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"pps43ammo",           // pickup			
+		60,
+		IT_AMMO,
+		WP_THOMPSON,
+		WP_THOMPSON,
+		WP_THOMPSON,
+		"",                  // precache
+		"",                  // sounds
+		{70,70,70,70,70}	
+	},
+
+	
+		{
+		"ammo_pps43_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_pps43_large.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"pps43ammo_large",           // pickup			
+		60,
+		IT_AMMO,
+		WP_THOMPSON,
+		WP_THOMPSON,
+		WP_THOMPSON,
+		"",                  // precache
+		"",                  // sounds
+		{90,90,90,90,90}	
+	},
+
+
+
+			{
+		"ammo_kar98k_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_kar98k_small.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"kar98kammo_small",           // pickup			
+		60,
+		IT_AMMO,
+		WP_MOSIN,
+		WP_MOSIN,
+		WP_MOSIN,
+		"",                  // precache
+		"",                  // sounds
+		{15,15,15,15,15}	
+	},
+
+
+	
+		{
+		"ammo_kar98k",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_kar98k.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"kar98kammo",           // pickup			
+		60,
+		IT_AMMO,
+		WP_MOSIN,
+		WP_MOSIN,
+		WP_MOSIN,
+		"",                  // precache
+		"",                  // sounds
+		{30,30,30,30,30}	
+	},
+
+	
+		{
+		"ammo_kar98k_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_kar98k_large.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"kar98kammo_large",           // pickup			
+		60,
+		IT_AMMO,
+		WP_MOSIN,
+		WP_MOSIN,
+		WP_MOSIN,
+		"",                  // precache
+		"",                  // sounds
+		{40,40,40,40,40}	
+	},
+
+
+	{
+		"ammo_mosin_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_mosin_small.md3",
 		  0, 0, 0,    0 },
 		"icons/icona_machinegun",    // icon
 		NULL,                       // ammo icon
-		".30cal",                // pickup			//----(SA)	changed
+		"mosinammo_small",                // pickup			//----(SA)	changed
 		50,
 		IT_AMMO,
 		WP_GARAND,
@@ -2353,20 +2187,15 @@ model="models/powerups/ammo/am30cal_m.md3"
 		"",                          // sounds
 		{5,5,5,5,5}
 	},
-/*QUAKED ammo_30cal_large (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: Garand rifle
 
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/am30cal_l.md3"
-*/
-	{
-		"ammo_30cal_large",
+		{
+		"ammo_mosin",
 		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/am30cal_l.md3",
+		{ "models/powerups/ammo/ammo_mosin.md3",
 		  0, 0, 0,    0 },
 		"icons/icona_machinegun",    // icon
 		NULL,                       // ammo icon
-		".30cal Box",                // pickup
+		"mosinammo",                // pickup			//----(SA)	changed
 		50,
 		IT_AMMO,
 		WP_GARAND,
@@ -2374,8 +2203,254 @@ model="models/powerups/ammo/am30cal_l.md3"
 		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{10,10,10,10,10}
+		{15,15,15,15,15}
 	},
+
+
+	{
+		"ammo_mosin_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_mosin_large.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"mosinammo_large",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_GARAND,
+		WP_GARAND,
+		WP_GARAND,
+		"",                          // precache
+		"",                          // sounds
+		{30,30,30,30,30}
+	},
+
+
+	{
+		"ammo_fg42_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_fg42_small.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"fg42ammo_small",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_FG42,
+		WP_FG42,
+		WP_FG42,
+		"",                          // precache
+		"",                          // sounds
+		{20,20,20,20,20}
+	},
+
+		{
+		"ammo_fg42",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_fg42.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"fg42ammo",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_FG42,
+		WP_FG42,
+		WP_FG42,
+		"",                          // precache
+		"",                          // sounds
+		{40,40,40,40,40}
+	},
+
+
+	{
+		"ammo_fg42_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_fg42_large.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"fg42ammo_large",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_FG42,
+		WP_FG42,
+		WP_FG42,
+		"",                          // precache
+		"",                          // sounds
+		{80,80,80,80,80}
+	},
+
+
+		{
+		"ammo_g43_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_g43_small.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"g43ammo_small",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_M1GARAND,
+		WP_M1GARAND,
+		WP_M1GARAND,
+		"",                          // precache
+		"",                          // sounds
+		{20,20,20,20,20}
+	},
+
+		{
+		"ammo_g43",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_g43.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"g43ammo",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_M1GARAND,
+		WP_M1GARAND,
+		WP_M1GARAND,
+		"",                          // precache
+		"",                          // sounds
+		{40,40,40,40,40}
+	},
+
+
+	{
+		"ammo_g43_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_g43_large.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"g43ammo_large",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_M1GARAND,
+		WP_M1GARAND,
+		WP_M1GARAND,
+		"",                          // precache
+		"",                          // sounds
+		{80,80,80,80,80}
+	},
+
+
+	
+		{
+		"ammo_svt40_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_svt40_small.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"svt40ammo_small",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_G43,
+		WP_G43,
+		WP_G43,
+		"",                          // precache
+		"",                          // sounds
+		{20,20,20,20,20}
+	},
+
+		{
+		"ammo_svt40",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_svt40.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"svt40ammo",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_G43,
+		WP_G43,
+		WP_G43,
+		"",                          // precache
+		"",                          // sounds
+		{40,40,40,40,40}
+	},
+
+
+	{
+		"ammo_svt40_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_svt40_large.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"svt40ammo_large",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_G43,
+		WP_G43,
+		WP_G43,
+		"",                          // precache
+		"",                          // sounds
+		{80,80,80,80,80}
+	},
+
+		
+		{
+		"ammo_mg34_small",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_mg34_small.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"mg34ammo_small",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_MG42M,
+		WP_MG42M,
+		WP_MG42M,
+		"",                          // precache
+		"",                          // sounds
+		{20,20,20,20,20}
+	},
+
+		{
+		"ammo_mg34",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_mg34.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"mg34ammo",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_MG42M,
+		WP_MG42M,
+		WP_MG42M,
+		"",                          // precache
+		"",                          // sounds
+		{40,40,40,40,40}
+	},
+
+
+	{
+		"ammo_mg34_large",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/ammo_mg34_large.md3",
+		  0, 0, 0,    0 },
+		"icons/icona_machinegun",    // icon
+		NULL,                       // ammo icon
+		"mg34ammo_large",                // pickup			//----(SA)	changed
+		50,
+		IT_AMMO,
+		WP_MG42M,
+		WP_MG42M,
+		WP_MG42M,
+		"",                          // precache
+		"",                          // sounds
+		{80,80,80,80,80}
+	},
+
+
 
 
 

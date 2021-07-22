@@ -177,14 +177,11 @@ vmCvar_t		sk_plr_dmg_dynamite_radius;
 // RealRTCW weapons
 
 vmCvar_t		sk_plr_dmg_mp34;
-vmCvar_t		sk_plr_dmg_tt33;
 vmCvar_t		sk_plr_dmg_ppsh;
 vmCvar_t		sk_plr_dmg_mosin;
 vmCvar_t		sk_plr_dmg_g43;
 vmCvar_t		sk_plr_dmg_m1garand;
-vmCvar_t		sk_plr_dmg_bar;
-vmCvar_t		sk_plr_dmg_mp44;
-vmCvar_t		sk_plr_dmg_m97;
+vmCvar_t		sk_plr_dmg_m1garandscope;
 vmCvar_t		sk_plr_dmg_revolver;
 vmCvar_t		sk_plr_dmg_mg42m;
 
@@ -215,14 +212,11 @@ vmCvar_t		sk_ai_dmg_dynamite_radius;
 //RealRTCW weapons
 
 vmCvar_t		sk_ai_dmg_mp34;
-vmCvar_t		sk_ai_dmg_tt33;
 vmCvar_t		sk_ai_dmg_ppsh;
 vmCvar_t		sk_ai_dmg_mosin;
 vmCvar_t		sk_ai_dmg_g43;
 vmCvar_t		sk_ai_dmg_m1garand;
-vmCvar_t		sk_ai_dmg_bar;
-vmCvar_t		sk_ai_dmg_mp44;
-vmCvar_t		sk_ai_dmg_m97;
+vmCvar_t		sk_ai_dmg_m1garandscope;
 vmCvar_t		sk_ai_dmg_revolver;
 vmCvar_t		sk_ai_dmg_mg42m;
 
@@ -275,15 +269,12 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_dynamite_radius, "sk_plr_dmg_dynamite_radius", "450", CVAR_CHEAT, 0, qfalse  },
 	// New weapons
 	{ &sk_plr_dmg_mp34, "sk_plr_dmg_mp34", "6", CVAR_CHEAT, 0, qfalse  },
-	{ &sk_plr_dmg_tt33, "sk_plr_dmg_tt33", "8", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_ppsh, "sk_plr_dmg_ppsh", "6", CVAR_CHEAT, 0, qfalse  },	
 	{ &sk_plr_dmg_mosin, "sk_plr_dmg_mosin", "35", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_g43, "sk_plr_dmg_g43", "16", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_m1garand, "sk_plr_dmg_m1garand", "18", CVAR_CHEAT, 0, qfalse  },	
-	{ &sk_plr_dmg_bar, "sk_plr_dmg_bar", "15", CVAR_CHEAT, 0, qfalse  }, 
-	{ &sk_plr_dmg_mp44, "sk_plr_dmg_mp44", "9", CVAR_CHEAT, 0, qfalse  },
+	{ &sk_plr_dmg_m1garandscope, "sk_plr_dmg_m1garandscope", "18", CVAR_CHEAT, 0, qfalse  },	
 	{ &sk_plr_dmg_mg42m, "sk_plr_dmg_mg42m", "15", CVAR_CHEAT, 0, qfalse  }, 
-	{ &sk_plr_dmg_m97, "sk_plr_dmg_m97", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_revolver, "sk_plr_dmg_revolver", "20", CVAR_CHEAT, 0, qfalse  },
 
 	//Damage inflicted by AI	
@@ -312,15 +303,12 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_ai_dmg_dynamite_radius, "sk_ai_dmg_dynamite_radius", "450", CVAR_CHEAT, 0, qfalse  },
     // New Weapons
 	{ &sk_ai_dmg_mp34, "sk_ai_dmg_mp34", "4", CVAR_CHEAT, 0, qfalse  },
-	{ &sk_ai_dmg_tt33, "sk_ai_dmg_tt33", "7", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_ppsh, "sk_ai_dmg_ppsh", "5", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_mosin, "sk_ai_dmg_mosin", "15", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_g43, "sk_ai_dmg_g43", "7", CVAR_CHEAT, 0, qfalse  },  
 	{ &sk_ai_dmg_m1garand, "sk_ai_dmg_m1garand", "7", CVAR_CHEAT, 0, qfalse  }, 
-	{ &sk_ai_dmg_bar, "sk_ai_dmg_bar", "6", CVAR_CHEAT, 0, qfalse  }, 
-	{ &sk_ai_dmg_mp44, "sk_ai_dmg_mp44", "6", CVAR_CHEAT, 0, qfalse  }, 
+	{ &sk_ai_dmg_m1garandscope, "sk_ai_dmg_m1garandscope", "7", CVAR_CHEAT, 0, qfalse  }, 
 	{ &sk_ai_dmg_mg42m, "sk_ai_dmg_mg42m", "6", CVAR_CHEAT, 0, qfalse  }, 
-	{ &sk_ai_dmg_m97, "sk_ai_dmg_m97", "9", CVAR_CHEAT, 0, qfalse  }, 
 	{ &sk_ai_dmg_revolver, "sk_ai_dmg_revolver", "7", CVAR_CHEAT, 0, qfalse  },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
@@ -820,7 +808,8 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 				else {
 					if ( ent->s.weapon != WP_SNIPERRIFLE &&
 						 ent->s.weapon != WP_SNOOPERSCOPE &&
-						 ent->s.weapon != WP_FG42SCOPE ) 
+						 ent->s.weapon != WP_FG42SCOPE &&
+						 ent->s.weapon != WP_M1GARANDSCOPE ) 
 						{
 						if ( traceEnt->takedamage ) {
 							hintDist = CH_ACTIVATE_DIST;

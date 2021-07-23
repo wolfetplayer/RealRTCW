@@ -94,6 +94,7 @@ ammotable_t ammoTable[] = {
 	{   65,             1,      5,      2500,   DELAY_HIGH,     1400,   0,      0,      MOD_MAUSER              },  //	WP_MAUSER				// 4	
 	{   96,             1,      20,     2000,   DELAY_LOW,      180,    0,      0,      MOD_FG42                },  //	WP_FG42					// 5
 	{   15,             1,      15,     1000,   DELAY_THROW,    1600,   0,      0,      MOD_GRENADE_LAUNCHER    },  //	WP_GRENADE_LAUNCHER		// 6
+	{   5,              1,      5,      1000,   DELAY_THROW,    1600,   0,      0,      MOD_SMOKEBOMB           },  //	WP_GRENADE_LAUNCHER		// 6
 	{   5,              1,      1,      1000,   DELAY_SHOULDER, 2000,   0,      0,      MOD_PANZERFAUST         },  //	WP_PANZERFAUST			// 7
 	{   1000,           1,      500,    3000,   750,            45,     5000,   200,    MOD_VENOM               },  //	WP_VENOM				// 8	
 	{   150,            1,      150,    1000,   DELAY_LOW,      50,     0,      0,      MOD_FLAMETHROWER        },  //	WP_FLAMETHROWER			// 9
@@ -139,6 +140,7 @@ int weapAlts[] = {
 	WP_SNIPERRIFLE,     // 4 WP_MAUSER
 	WP_FG42SCOPE,       // 5 WP_FG42	
 	WP_NONE,            // 6 WP_GRENADE_LAUNCHER
+	WP_NONE,
 	WP_NONE,            // 7 WP_PANZERFAUST
 	WP_NONE,            // 8 WP_VENOM
 	WP_NONE,            // 9 WP_FLAMETHROWER
@@ -1291,6 +1293,28 @@ weapon_grenadePineapple
 		{0,0,0,0,0}
 	},
 
+
+	{
+		"weapon_smokebomb",
+		"",
+		{
+			"models/multiplayer/smokebomb/smokebomb.md3",
+			"models/multiplayer/smokebomb/v_smokebomb.md3",
+			0
+		},
+
+		"icons/iconw_dynamite_1",    // icon
+		"icons/ammo9",               // ammo icon
+		"Smoke Bomb",    // pickup
+		0,
+		IT_WEAPON,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		"",                      // precache
+		"",                      // sounds
+//		{0,0,0,0,0}
+	},
 
 
 
@@ -2548,6 +2572,29 @@ model="models/powerups/ammo/dynamite.md3"
 		{1,1,1,1,1}
 	},
 
+	/*QUAKED ammo_smoke_grenade (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: engineer
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/ammo/smoke_grenade/smoke_grenade.md3"
+*/
+	{
+		"ammo_smoke_grenade",
+		"sound/misc/am_pkup.wav",
+		{ "models/ammo/smoke_grenade/smoke_grenade.md3",
+		  0, 0 },
+		"", // icon
+		NULL,               // ammo icon
+		"smoke grenade", // pickup			//----(SA)	changed
+		1,
+		IT_AMMO,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		"",                  // precache
+		"",                  // sounds
+	},
+
 
 /*QUAKED ammo_cell (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: Tesla
@@ -3315,6 +3362,7 @@ qboolean isClipOnly( int weap ) {
 	switch ( weap ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
+	case WP_SMOKE_BOMB:
 	case WP_DYNAMITE:
 	case WP_TESLA:
 	case WP_FLAMETHROWER:

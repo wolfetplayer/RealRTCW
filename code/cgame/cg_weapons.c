@@ -60,7 +60,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_MP34,               WP_MP40,                WP_STEN,      WP_PPSH,         WP_THOMPSON  },  //	3
 	{WP_MOSIN,              WP_MAUSER,              WP_GARAND,    0,               0            },  //	4
     {WP_FG42,               WP_M1GARAND,            WP_G43,       0,               0            },  //	5
-	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  0,               0            },  //	6
+	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  WP_SMOKE_BOMB,   0            },  //	6
 	{WP_PANZERFAUST,        0,                      0,            0,               0            },  //	7
 	{WP_MG42M,              0,                      0,            0,               0            },  //	8
 	{WP_FLAMETHROWER,       0,                      0,            0,               0            },  //	9
@@ -1352,6 +1352,12 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/grenade/grenlf1a.wav" );
 		weaponInfo->reloadSound = trap_S_RegisterSound( "sound/weapons/grenade/grenlf_reload.wav" );
 		cgs.media.grenadeExplosionShader = trap_R_RegisterShader( "grenadeExplosion" );
+		break;
+
+	case WP_SMOKE_BOMB:
+		weaponInfo->missileModel = trap_R_RegisterModel( "models/multiplayer/smokebomb/smokebomb.md3" );
+		weaponInfo->missileTrailFunc = CG_GrenadeTrail;
+		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );
 		break;
 
 	case WP_DYNAMITE:
@@ -2791,7 +2797,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	if ( weaponNum == WP_GRENADE_LAUNCHER ||
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
-		 weaponNum == WP_DYNAMITE ) {
+		 weaponNum == WP_DYNAMITE ||
+		 weaponNum == WP_SMOKE_BOMB ) {
 		return;
 	}
 
@@ -4848,7 +4855,8 @@ void CG_FireWeapon( centity_t *cent ) {
 	} else if (   ent->weapon == WP_GRENADE_LAUNCHER ||
 				  ent->weapon == WP_GRENADE_PINEAPPLE ||
 				  ent->weapon == WP_DYNAMITE ||
-				  ent->weapon == WP_GRENADE_SMOKE ) { // JPW NERVE
+				  ent->weapon == WP_GRENADE_SMOKE ||
+				  ent->weapon == WP_SMOKE_BOMB ) { // JPW NERVE
 		if ( ent->weapon == WP_GRENADE_SMOKE ) {
 			CG_Printf( "smoke grenade!\n" );
 		}

@@ -592,6 +592,7 @@ extern void Cross_Fire ( gentity_t * ent ) ;
 extern float G_GetWeaponSpread ( int weapon ) ;
 extern int G_GetWeaponDamage ( int weapon ) ;
 extern void SnapVectorTowards ( vec3_t v , vec3_t to ) ;
+extern void weapon_smokeBombExplode ( gentity_t * ent ) ;
 extern trace_t * CheckMeleeAttack ( gentity_t * ent , float dist , qboolean isTest ) ;
 extern void Weapon_Gauntlet ( gentity_t * ent ) ;
 extern void Weapon_Class_Special ( gentity_t * ent ) ;

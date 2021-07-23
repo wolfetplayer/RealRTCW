@@ -592,6 +592,7 @@ If you have questions concerning this license or the applicable additional terms
 {"G_GetWeaponSpread", (byte *)G_GetWeaponSpread},
 {"G_GetWeaponDamage", (byte *)G_GetWeaponDamage},
 {"SnapVectorTowards", (byte *)SnapVectorTowards},
+{"weapon_smokeBombExplode", (byte *)weapon_smokeBombExplode},
 {"CheckMeleeAttack", (byte *)CheckMeleeAttack},
 {"Weapon_Gauntlet", (byte *)Weapon_Gauntlet},
 {"Weapon_Class_Special", (byte *)Weapon_Class_Special},

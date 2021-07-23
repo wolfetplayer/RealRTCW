@@ -517,6 +517,41 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 	return &tr;
 }
 
+#define SMOKEBOMB_GROWTIME 1000
+#define SMOKEBOMB_SMOKETIME 15000
+#define SMOKEBOMB_POSTSMOKETIME 2000
+// xkan, 11/25/2002 - increases postsmoke time from 2000->32000, this way, the entity
+// is still around while the smoke is around, so we can check if it blocks bot's vision
+// Arnout: eeeeeh this is wrong. 32 seconds is way too long. Also - we shouldn't be
+// rendering the grenade anymore after the smoke stops and definately not send it to the client
+// xkan, 12/06/2002 - back to the old value 2000, now that it looks like smoke disappears more
+// quickly
+
+void weapon_smokeBombExplode( gentity_t *ent ) {
+	int lived = 0;
+
+	if ( !ent->grenadeExplodeTime ) {
+		ent->grenadeExplodeTime = level.time;
+	}
+
+	lived = level.time - ent->grenadeExplodeTime;
+	ent->nextthink = level.time + FRAMETIME;
+
+	if ( lived < SMOKEBOMB_GROWTIME ) {
+		// Just been thrown, increase radius
+		ent->s.effect1Time = 16 + lived * ( ( 640.f - 16.f ) / (float)SMOKEBOMB_GROWTIME );
+	} else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME ) {
+		// Smoking
+		ent->s.effect1Time = 640;
+	} else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME + SMOKEBOMB_POSTSMOKETIME ) {
+		// Dying out
+		ent->s.effect1Time = -1;
+	} else {
+		// Poof and it's gone
+		G_FreeEntity( ent );
+	}
+}
+
 
 /*
 ======================================================================
@@ -1216,6 +1251,8 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 // JPW NERVE
 	else if ( grenType == WP_GRENADE_SMOKE ) { // smoke grenades *really* get chucked
 		upangle *= 800;
+	} 	else if ( grenType == WP_SMOKE_BOMB ) { // smoke grenades *really* get chucked
+		upangle *= 800;
 	}
 // jpw
 	else {      // WP_DYNAMITE
@@ -1270,6 +1307,12 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	if ( ent->aiCharacter == AICHAR_VENOM ) { // poison gas grenade
 		m->think = G_ExplodeMissilePoisonGas;
 		m->s.density = 1;
+	}
+
+		// Arnout: override for smoke gren
+	if ( grenType == WP_SMOKE_BOMB ) {
+		m->s.effect1Time = 16;
+		m->think = weapon_smokeBombExplode;
 	}
 
 // JPW NERVE
@@ -1658,6 +1701,7 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 	case WP_DYNAMITE:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_GRENADE_LAUNCHER:
+	case WP_SMOKE_BOMB:
 		VectorMA( muzzlePoint, 20, right, muzzlePoint );
 		break;
 	case WP_AKIMBO:     // left side rather than right
@@ -1931,6 +1975,7 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
+	case WP_SMOKE_BOMB:
 		// weapon_grenadelauncher_fire( ent, ent->s.weapon );
 		//RF- disabled this since it's broken (do we still want it?)
 		//if (ent->aiName && !Q_strncmp(ent->aiName, "mechanic", 8) && !AICast_HasFiredWeapon(ent->s.number, ent->s.weapon))

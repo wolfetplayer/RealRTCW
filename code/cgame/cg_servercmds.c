@@ -653,6 +653,8 @@ static void CG_MapRestart( void ) {
 	CG_ClearParticles();
 	// done.
 
+	InitSmokeSprites();
+
 	for ( i = 1; i < MAX_PARTICLES_AREAS; i++ )
 	{
 		{

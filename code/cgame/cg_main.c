@@ -1697,6 +1697,8 @@ static void CG_RegisterGraphics( void ) {
 	CG_LoadingString( " - particles" );
 	CG_ClearParticles();
 
+	InitSmokeSprites();
+
 	for ( i = 1; i < MAX_PARTICLES_AREAS; i++ )
 	{
 		{
@@ -2557,6 +2559,8 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 	trap_CM_LoadMap( cgs.mapname );
 
 	String_Init();
+
+	InitSmokeSprites();
 
 	cg.loading = qtrue;     // force players to load instead of defer
 

@@ -1184,6 +1184,12 @@ static void CG_Missile( centity_t *cent ) {
 	// calculate the axis
 	VectorCopy( s1->angles, cent->lerpAngles );
 
+	if (s1->weapon == WP_SMOKE_BOMB)
+	{
+		// the smoke effect
+		CG_RenderSmokeGrenadeSmoke(cent, weapon);
+	}
+
 	// add trails
 	if ( cent->currentState.eType == ET_FP_PARTS
 		 || cent->currentState.eType == ET_FIRE_COLUMN

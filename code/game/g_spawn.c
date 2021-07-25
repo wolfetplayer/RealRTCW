@@ -410,7 +410,7 @@ void SP_skyportal( gentity_t *ent );
 void SP_script_model_med( gentity_t *ent );
 void SP_script_mover( gentity_t *ent );
 void SP_script_multiplayer( gentity_t *ent );         // DHM - Nerve
-
+void SP_props_grammofon(gentity_t* ent);
 void SP_props_footlocker( gentity_t *self );
 void SP_misc_firetrails( gentity_t *ent );
 void SP_misc_tagemitter( gentity_t *ent );   //----(SA)	added
@@ -589,6 +589,8 @@ spawn_t spawns[] = {
 	{"ai_effect", SP_ai_effect},
 	{"ai_trigger", SP_ai_trigger},
 	// done.
+
+	{ "props_grammofon", SP_props_grammofon },
 
 	// Rafael particles
 	{"misc_snow256", SP_Snow},

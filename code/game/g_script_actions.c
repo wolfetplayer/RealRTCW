@@ -1503,6 +1503,49 @@ qboolean G_ScriptAction_RestoreScript( gentity_t *ent, char *params ) {
 
 }
 
+
+/*
+========================
+G_ScriptAction_ChangeGrammofonSound
+
+  syntax: changegrammofonsound <grammofonname> <filename>
+
+========================
+*/
+
+qboolean G_ScriptAction_ChangeGrammofonSound(gentity_t* ent, char* params) {
+	char* pString, * token;
+	char buffer[MAX_QPATH];
+	gentity_t* Grammofon;
+
+	// get the speakername
+	pString = params;
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Printf("^1G_Scripting: ChangeGrammofonSound must have a targetname\n");
+		return qtrue;
+	}
+	Grammofon = G_Find(NULL, FOFS(targetname), token);
+	if (!Grammofon) {
+		G_Printf("^1G_Scripting: ChangeGrammofonSound cannot find targetname \"%s\"\n", token);
+		return qtrue;
+	}
+	if (Q_strcasecmp(Grammofon->classname, "props_grammofon")) {
+		G_Printf("^1G_Scripting: \"%s\" should be props_grammofon\n", token);
+		return qtrue;
+	}
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Printf("^1G_Scripting: ChangeGrammofonSound must have a soundfile\n");
+		return qtrue;
+	}
+	Q_strncpyz(buffer, token, sizeof(buffer));
+	Grammofon->s.loopSound = G_SoundIndex(buffer);
+	Grammofon->s.oldloopSound = Grammofon->s.loopSound;
+	return qtrue;
+}
+
+
 /*
 ==================
 G_ScriptAction_SetHealth

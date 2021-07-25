@@ -771,7 +771,15 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 				// ainame = 'player'
 				// target = 'endmap'
 				//
-				if ( !Q_stricmp( traceEnt->classname, "ai_trigger" ) ) {
+				if (!Q_stricmp(checkEnt->classname, "props_grammofon") && (!checkEnt->is_dead)) {
+					hintDist = CH_ACTIVATE_DIST;
+					hintType = HINT_BUTTON;
+				}
+				else if (!Q_stricmp(checkEnt->classname, "item_key_unlock")) {
+					hintDist = CH_ACTIVATE_DIST;
+					hintType = HINT_DOOR;
+				}
+				else if ( !Q_stricmp( traceEnt->classname, "ai_trigger" ) ) {
 					if ( ( !Q_stricmp( traceEnt->aiName, "player" ) ) &&
 						 ( !Q_stricmp( traceEnt->target, "endmap" ) ) ) {
 

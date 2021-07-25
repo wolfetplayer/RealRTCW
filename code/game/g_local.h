@@ -194,7 +194,7 @@ struct gentity_s {
 									// bodyque uses this
 
 	int flags;                      // FL_* variables
-
+	char		*Name;
 	char        *model;
 	char        *model2;
 	int freetime;                   // level.time when the object was freed

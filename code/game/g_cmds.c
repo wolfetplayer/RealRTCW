@@ -1609,6 +1609,10 @@ void Cmd_Activate_f( gentity_t *ent ) {
 				}
 			}
 		}
+		else if (Q_stricmp(traceEnt->classname, "props_grammofon") == 0) {
+		if (!traceEnt->is_dead) Use_props_grammofon(traceEnt, ent, ent);
+		//traceEnt->use = Use_props_grammofon;
+		}
 		// chairs
 		else if ( traceEnt->isProp && traceEnt->takedamage && traceEnt->s.pos.trType == TR_STATIONARY && !traceEnt->nopickup ) {
 			if ( !ent->active ) {

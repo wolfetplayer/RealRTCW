@@ -38,7 +38,8 @@ int snd_chaircreak;
 int snd_chairthrow;
 int snd_chairhitground;
 int chair_metalbreak;
-
+int grammofon_switch;
+int grammofon_death;
 // JOSEPH 1-28-00
 void DropToFloorG( gentity_t *ent ) {
 	vec3_t dest;
@@ -3215,6 +3216,144 @@ void props_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 	if ( self->spawnflags & 16 ) {
 		props_decoration_death( self, other, other, 9999, MOD_CRUSH );
 	}
+}
+
+
+void props_grammofon_animate(gentity_t* ent) {
+	if (ent->active) {
+		ent->s.frame++;
+		ent->s.eType = ET_GENERAL;
+
+		if (ent->s.frame > ent->count2) {
+			ent->s.frame = ent->props_frame_state;
+		}
+		ent->nextthink = level.time + 1;
+	}
+	else {
+		//ent->s.eType = ET_MOVER;
+		//ent->nextthink = 0;
+	}
+}
+
+void props_grammofon_death(gentity_t* ent, gentity_t* inflictor, gentity_t* attacker, int damage, int mod) {
+
+	ent->takedamage = qfalse;
+	ent->s.modelindex = G_ModelIndex("models/mapobjects/electronics/gramophone_death.md3");
+	G_UseTargets(ent, NULL);
+
+	ent->s.loopSound = 0;
+	ent->s.eType = ET_MOVER;
+	ent->is_dead = qtrue;
+	trap_LinkEntity(ent);
+	G_AddEvent(ent, EV_GENERAL_SOUND, grammofon_death);
+}
+
+void Use_props_grammofon(gentity_t* ent, gentity_t* self, gentity_t* activator) {
+	G_AddEvent(ent, EV_GENERAL_SOUND, grammofon_switch);
+	if (ent->Name == "active") {
+		ent->Name = "noactive";
+		ent->s.oldloopSound = ent->s.loopSound;
+		ent->s.loopSound = 0;
+	}
+	else {
+		ent->Name = "active";
+		ent->s.loopSound = ent->s.oldloopSound;
+		ent->s.eventParm = ent->s.oldloopSound;
+	}
+}
+
+
+/*QUAKED props_grammofon (.4 .7 .7) (-16 -16 0) (16 16 32)
+
+"noise"  the looping sound entity is to make
+
+"type" type of debris ("glass", "wood", "metal", "ceramic", "rubble") default is "wood"
+
+*/
+
+void SP_props_grammofon(gentity_t* ent) {
+	char* sound;
+	char* frames;
+	char* type;
+	float	num_frames;
+
+	ent->s.modelindex = G_ModelIndex("models/mapobjects/electronics/gramophone_anim.md3");
+
+	if (ent->health <= 0) {
+		ent->health = 10;
+	}
+	ent->delay = 0; // inherits damage value
+
+	ent->props_frame_state = 1;
+	ent->count = 8;
+	ent->isProp = qtrue;
+	ent->takedamage = qtrue;
+	ent->die = props_grammofon_death;
+
+	G_SpawnString("type", "wood", &type);
+	if (!Q_stricmp(type, "wood")) {
+		ent->key = 1;
+	}
+	else if (!Q_stricmp(type, "glass")) {
+		ent->key = 0;
+	}
+	else if (!Q_stricmp(type, "metal")) {
+		ent->key = 2;
+	}
+	else if (!Q_stricmp(type, "ceramic")) {
+		ent->key = 3;
+	}
+	else if (!Q_stricmp(type, "rubble")) {
+		ent->key = 4;
+	}
+
+	frames = "77";
+	num_frames = atof(frames);
+
+	ent->count2 = num_frames;
+
+	if (ent->targetname) {
+		ent->use = Use_props_grammofon;
+	}
+
+	ent->touch = props_touch;
+
+	ent->nextthink = level.time + 1;
+	ent->think = props_grammofon_animate;
+	ent->active = qtrue;
+	ent->Name = "active";
+
+	ent->clipmask = CONTENTS_SOLID;
+	ent->r.contents = CONTENTS_SOLID;
+	ent->s.eType = ET_MOVER;
+
+	VectorSet(ent->r.mins, -16, -16, 0);
+	VectorSet(ent->r.maxs, 16, 16, 32);
+	G_SetOrigin(ent, ent->s.origin);
+	G_SetAngle(ent, ent->s.angles);
+
+	// GLOBAL
+	if (ent->spawnflags & (1 | 2)) {
+		ent->r.svFlags |= SVF_BROADCAST;
+	}
+
+	// NO_PVS
+	if (ent->spawnflags & 2) {
+		ent->s.density = 1;
+	}
+	else {
+		ent->s.density = 0;
+	}
+
+	grammofon_switch = G_SoundIndex("sound/world/alarmswitch.wav");
+	grammofon_death = G_SoundIndex("sound/world/boardbreak.wav");
+
+	if (G_SpawnString("noise", "100", &sound)) {
+		ent->s.loopSound = G_SoundIndex(sound);
+		ent->s.oldloopSound = G_SoundIndex(sound);
+	}
+
+	trap_LinkEntity(ent);
 }
 
 void SP_props_decoration( gentity_t *ent ) {

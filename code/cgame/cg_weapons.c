@@ -1355,7 +1355,8 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_SMOKE_BOMB:
-		weaponInfo->missileModel = trap_R_RegisterModel( "models/multiplayer/smokebomb/smokebomb.md3" );
+		weaponInfo->missileModel = trap_R_RegisterModel( "models/weapons2/smoke_grenade/smoke_grenade.md3" );
+		weaponInfo->overheatSound = trap_S_RegisterSound( "sound/weapons/gren_smoke.wav" );
 		weaponInfo->missileTrailFunc = CG_GrenadeTrail;
 		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );
 		break;
@@ -1733,6 +1734,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		case WP_KNIFE:
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
+		case WP_SMOKE_BOMB:
 			break;
 
 			// adjust when leaning right (in case of reload)

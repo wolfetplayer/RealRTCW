@@ -2994,7 +2994,7 @@ static void PM_Weapon( void ) {
 
 	delayedFire = qfalse;
 
-	if ( pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_DYNAMITE ) {
+	if ( pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_DYNAMITE || pm->ps->weapon == WP_SMOKE_BOMB ) {
 		// (SA) AI's don't set grenadeTimeLeft on +attack, so I don't check for (pm->ps->aiChar) here
 		if ( pm->ps->grenadeTimeLeft > 0 ) {
 			if ( pm->ps->weapon == WP_DYNAMITE ) {
@@ -3029,8 +3029,10 @@ static void PM_Weapon( void ) {
 //					PM_AddEvent( EV_FIRE_WEAPON );
 					PM_WeaponUseAmmo( pm->ps->weapon, 1 );      //----(SA)	take ammo
 //					pm->ps->weaponTime = 1600;
-
+                    if (!( pm->ps->weapon == WP_SMOKE_BOMB))
+					{
 					PM_AddEvent( EV_GRENADE_SUICIDE );      //----(SA)	die, dumbass
+					}
 
 					return;
 				}

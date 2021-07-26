@@ -1298,12 +1298,12 @@ weapon_grenadePineapple
 		"weapon_smokebomb",
 		"",
 		{
-			"models/multiplayer/smokebomb/smokebomb.md3",
-			"models/multiplayer/smokebomb/v_smokebomb.md3",
+			"models/weapons2/smoke_grenade/smoke_grenade.md3",
+			"models/weapons2/smoke_grenade/v_smoke_grenade.md3",
 			0
 		},
 
-		"icons/iconw_dynamite_1",    // icon
+		"icons/iconw_grenade_1",    // icon
 		"icons/ammo9",               // ammo icon
 		"Smoke Bomb",    // pickup
 		0,
@@ -2581,7 +2581,7 @@ model="models/ammo/smoke_grenade/smoke_grenade.md3"
 	{
 		"ammo_smoke_grenade",
 		"sound/misc/am_pkup.wav",
-		{ "models/ammo/smoke_grenade/smoke_grenade.md3",
+		{ "models/powerups/ammo/amgren_bag.md3",
 		  0, 0 },
 		"", // icon
 		NULL,               // ammo icon

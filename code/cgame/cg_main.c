@@ -2488,6 +2488,8 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 	memset( cg_weapons, 0, sizeof( cg_weapons ) );
 	memset( cg_items, 0, sizeof( cg_items ) );
 
+	cg.refdef_current = &cg.refdef;
+
 	// RF, init the anim scripting
 	cgs.animScriptData.soundIndex = CG_SoundScriptPrecache;
 	cgs.animScriptData.playSound = CG_SoundPlayIndexedScript;

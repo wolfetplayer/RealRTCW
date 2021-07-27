@@ -4755,3 +4755,242 @@ void G_Activate( gentity_t *ent, gentity_t *activator ) {
 		}
 	}
 }
+
+
+/*
+==============
+InitExplosive
+==============
+*/
+void InitPendulumExplosive(gentity_t* ent) {
+	char* damage;
+	vec3_t move;
+	float distance;
+
+	// pick it up if the level designer uses "damage" instead of "dmg"
+	if (G_SpawnString("damage", "0", &damage)) {
+		ent->damage = atoi(damage);
+	}
+
+	ent->use = Use_BinaryMover;
+	ent->reached = Reached_BinaryMover;
+	// END JOSEPH
+
+	ent->moverState = MOVER_POS1;
+	ent->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	ent->s.eType = ET_EXPLOSIVE_MOVER;
+	//ET_MOVER;
+
+	VectorCopy(ent->pos1, ent->r.currentOrigin);
+	trap_LinkEntity(ent);
+
+	ent->s.pos.trType = TR_STATIONARY;
+	VectorCopy(ent->pos1, ent->s.pos.trBase);
+
+	// calculate time to reach second position from speed
+	VectorSubtract(ent->pos2, ent->pos1, move);
+	distance = VectorLength(move);
+	if (!ent->speed) {
+		ent->speed = 100;
+	}
+
+	//----(SA)	changes
+		// open time based on speed
+	//	VectorScale(move, ent->speed, ent->s.pos.trDelta);
+	VectorScale(move, ent->speed, ent->gDelta);
+	ent->s.pos.trDuration = distance * 1000 / ent->speed;
+	if (ent->s.pos.trDuration <= 0) {
+		ent->s.pos.trDuration = 1;
+	}
+	ent->gDurationBack = ent->gDuration = ent->s.pos.trDuration;
+
+	// close time based on speed
+	if (ent->closespeed) {
+		VectorScale(move, ent->closespeed, ent->gDelta);
+		ent->gDurationBack = distance * 1000 / ent->closespeed;
+		if (ent->gDurationBack <= 0) {
+			ent->gDurationBack = 1;
+			//----(SA) end
+		}
+	}
+
+	ent->think = G_BlockThink;
+	ent->nextthink = level.time + FRAMETIME;
+}
+
+
+
+/*QUAKED func_pendulum_explosive (0 .5 .8) ? X_AXIS Y_AXIS USESHADER
+You need to have an origin brush as part of this entity.
+The center of that brush will be the point around which it is rotated. It will rotate around the Z axis by default.
+You can check either the X_AXIS or Y_AXIS box to change that (only one axis allowed. If both X and Y are checked, the default of Z will be used).
+Pendulum frequency is a physical constant based on the length of the beam and gravity.
+"model2"	.md3 model to also draw
+"speed"		the number of degrees each way the pendulum swings, (30 default)
+"phase"		the 0.0 to 1.0 offset in the cycle to start at
+"health" - defaults to 100.  If health is set to '0' the brush will not be shootable.
+"targetname" - if set, no touch field will be spawned and a remote button or trigger field triggers the explosion.
+"type" - type of debris ("glass", "wood", "metal", "gibs", "brick", "rock", "fabric") default is "wood"
+"mass" - defaults to 75.  This determines how much debris is emitted when it explodes.  You get one large chunk per 100 of mass (up to 8) and one small chunk per 25 of mass (up to 16).  So 800 gives the most.
+"dmg"		damage to inflict when blocked (2 default)
+"color"		constantLight color
+"light"		constantLight radius
+*/
+void SP_func_pendulum_explosive(gentity_t* ent) {
+	float freq;
+	float length;
+	float phase;
+	float speed;
+	char* sound;
+	int health, mass, dam, i;
+	char buffer[MAX_QPATH];
+	char* s;
+	char* type;
+	char* cursorhint;
+
+	G_SpawnFloat("speed", "30", &speed);
+	G_SpawnInt("dmg", "2", &ent->damage);
+	G_SpawnFloat("phase", "0", &phase);
+
+	trap_SetBrushModel(ent, ent->model);
+	InitPendulumExplosive(ent);
+
+	// find pendulum length
+	length = fabs(ent->r.mins[2]);
+	if (length < 8) {
+		length = 8;
+	}
+
+	freq = 1 / (M_PI * 2) * sqrt(g_gravity.value / (3 * length));
+
+	ent->s.pos.trDuration = (1000 / freq);
+
+	G_SpawnInt("health", "100", &health);
+	ent->health = health;
+
+	G_SpawnInt("dmg", "0", &dam);
+	ent->damage = dam;
+
+	if (ent->health) {
+		ent->takedamage = qtrue;
+	}
+
+	if (G_SpawnInt("mass", "75", &mass)) {
+		ent->count = mass;
+	}
+	else {
+		ent->count = 75;
+	}
+
+	if (G_SpawnString("type", "wood", &type)) {
+		if (!Q_stricmp(type, "wood")) {
+			ent->key = 0;
+		}
+		else if (!Q_stricmp(type, "glass")) {
+			ent->key = 1;
+		}
+		else if (!Q_stricmp(type, "metal")) {
+			ent->key = 2;
+		}
+		else if (!Q_stricmp(type, "gibs")) {
+			ent->key = 3;
+		}
+		else if (!Q_stricmp(type, "brick")) {
+			ent->key = 4;
+		}
+		else if (!Q_stricmp(type, "rock")) {
+			ent->key = 5;
+		}
+		else if (!Q_stricmp(type, "fabric")) {
+			ent->key = 6;
+		}
+	}
+	else {
+		ent->key = 0;
+	}
+
+	if (G_SpawnString("noise", "NOSOUND", &s)) {
+		if (Q_stricmp(s, "nosound")) {
+			Q_strncpyz(buffer, s, sizeof(buffer));
+			ent->s.dl_intensity = G_SoundIndex(buffer);
+		}
+	}
+	else {
+		switch (ent->key) {
+		case 0:     // "wood"
+			ent->s.dl_intensity = G_SoundIndex("sound/world/boardbreak.wav");
+			break;
+		case 1:     // "glass"
+			ent->s.dl_intensity = G_SoundIndex("sound/world/glassbreak.wav");
+			break;
+		case 2:     // "metal"
+			ent->s.dl_intensity = G_SoundIndex("sound/world/metalbreak.wav");
+			break;
+		case 3:     // "gibs"
+			ent->s.dl_intensity = G_SoundIndex("sound/player/gibsplit1.wav");
+			break;
+		case 4:     // "brick"
+			ent->s.dl_intensity = G_SoundIndex("sound/world/brickfall.wav");
+			break;
+		case 5:     // "stone"
+			ent->s.dl_intensity = G_SoundIndex("sound/world/stonefall.wav");
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	//----(SA)	added
+	if (G_SpawnString("sound", "100", &sound)) {
+		ent->s.loopSound = G_SoundIndex(sound);
+	}
+
+	ent->s.dmgFlags = 0;
+
+	if (G_SpawnString("cursorhint", "0", &cursorhint)) {
+
+		for (i = 1; i < HINT_NUM_HINTS; i++) {  // skip "HINT_NONE"
+			if (!Q_strcasecmp(cursorhint, hintStrings[i])) {
+				ent->s.dmgFlags = i;
+				break;
+			}
+		}
+	}
+
+	if ((ent->spawnflags & 4) && ent->model && strlen(ent->model)) {   // use shader
+		ent->s.eFlags |= EF_INHERITSHADER;
+	}
+	//----(SA)	end
+		//ent->s.eType = ET_EXPLOSIVE;
+	trap_LinkEntity(ent);
+	ent->die = func_explosive_explode;
+
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->r.currentOrigin);
+	VectorCopy(ent->s.angles, ent->s.apos.trBase);
+
+	ent->s.apos.trDuration = 1000 / freq;
+	ent->s.apos.trTime = ent->s.apos.trDuration * phase;
+	ent->s.apos.trType = TR_SINE;
+	// set the rotation axis
+	VectorClear(ent->rotate);
+	if (ent->spawnflags & 1) {
+		ent->rotate[2] = 1;
+		ent->s.apos.trDelta[2] = speed;
+	}
+	else if (ent->spawnflags & 2) {
+		ent->rotate[0] = 1;
+		ent->s.apos.trDelta[0] = speed;
+	}
+	else {
+		ent->rotate[1] = 1;
+		ent->s.apos.trDelta[1] = speed;
+	}
+
+	if (VectorLength(ent->rotate) > 1) { // check that rotation is only set for one axis
+		G_Printf("Too many axis marked in func_pendulum_explosive entity.  Only choose one axis of rotation. (defaulting to standard door rotation)");
+		VectorClear(ent->rotate);
+		ent->s.apos.trDelta[2] = speed;
+	}
+}

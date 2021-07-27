@@ -830,7 +830,7 @@ void ReadEntity( fileHandle_t f, gentity_t *ent, int size ) {
 	}
 
 	// if this is a mover, check areaportals
-	if ( ent->s.eType == ET_MOVER && ent->moverState != backup.moverState ) {
+	if ( ent->s.eType == ET_MOVER && ent->moverState != backup.moverState || ent->s.eType == ET_EXPLOSIVE_MOVER && ent->moverState != backup.moverState) {
 		if ( ent->teammaster == ent || !ent->teammaster ) {
 			if ( ent->moverState == MOVER_POS1ROTATE || ent->moverState == MOVER_POS1 ) {
 				// closed areaportal

@@ -825,7 +825,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 						}
 					}
 				}
-			} else if ( checkEnt->s.eType == ET_EXPLOSIVE )      {
+			} else if (checkEnt->s.eType == ET_EXPLOSIVE || checkEnt->s.eType == ET_EXPLOSIVE_MOVER) {
 				if ( checkEnt->takedamage && checkEnt->health > 0 ) {              // 0 health explosives are not breakable
 					hintDist    = CH_BREAKABLE_DIST;
 					hintType    = HINT_BREAKABLE;
@@ -2736,7 +2736,7 @@ void G_RunFrame( int levelTime ) {
 			continue;
 		}
 
-		if ( ent->s.eType == ET_MOVER || ent->s.eType == ET_PROP ) {
+		if ( ent->s.eType == ET_MOVER || ent->s.eType == ET_EXPLOSIVE_MOVER || ent->s.eType == ET_PROP ) {
 			G_RunMover( ent );
 			continue;
 		}

@@ -795,6 +795,7 @@ If you have questions concerning this license or the applicable additional terms
 {"use_target_effect", (byte *)use_target_effect},
 {"SP_func_door_rotating", (byte *)SP_func_door_rotating},
 {"SP_func_pendulum", (byte *)SP_func_pendulum},
+{ "SP_func_pendulum_explosive", (byte*)SP_func_pendulum_explosive },
 {"SP_func_bobbing", (byte *)SP_func_bobbing},
 {"SP_func_rotating", (byte *)SP_func_rotating},
 {"Use_Func_Rotate", (byte *)Use_Func_Rotate},

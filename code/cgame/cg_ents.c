@@ -1872,7 +1872,50 @@ static void CG_Explosive( centity_t *cent ) {
 }
 
 //----(SA) done
+/*
+===============
+CG_Explosive
+	This is currently almost exactly the same as CG_Mover
+	It's split out so that any changes or experiments are
+	unattached to anything else.
+===============
+*/
+static void CG_ExplosiveMover(centity_t* cent) {
+	refEntity_t ent;
+	entityState_t* s1;
 
+	s1 = &cent->currentState;
+
+	//	traplf = &cent->lerpFrame;
+
+		// create the render entity
+	memset(&ent, 0, sizeof(ent));
+
+	VectorCopy(cent->lerpOrigin, ent.origin);
+	VectorCopy(cent->lerpOrigin, ent.oldorigin);
+
+	AnglesToAxis(cent->lerpAngles, ent.axis);
+
+	ent.renderfx = RF_NOSHADOW;
+
+	// get the model, either as a bmodel or a modelindex
+	if (s1->solid == SOLID_BMODEL) {
+		ent.hModel = cgs.inlineDrawModel[s1->modelindex];
+	}
+	else {
+		ent.hModel = cgs.gameModels[s1->modelindex];
+	}
+
+	if (cent->currentState.density == ET_MOVERSCALED) {
+		VectorScale(ent.axis[0], cent->currentState.angles2[0], ent.axis[0]);
+		VectorScale(ent.axis[1], cent->currentState.angles2[1], ent.axis[1]);
+		VectorScale(ent.axis[2], cent->currentState.angles2[2], ent.axis[2]);
+		ent.nonNormalizedAxes = qtrue;
+	}
+
+	trap_R_AddRefEntityToScene(&ent);
+
+}
 /*
 ===============
 CG_Mover
@@ -2277,7 +2320,7 @@ void CG_AdjustPositionForMover(const vec3_t in, int moverNum, int fromTime, int 
 
 	cent = &cg_entities[ moverNum ];
 
-	if ( cent->currentState.eType != ET_MOVER ) {
+	if (cent->currentState.eType != ET_MOVER || cent->currentState.eType != ET_EXPLOSIVE_MOVER) {
 		VectorCopy( in, out );
 		VectorCopy(angles_in, angles_out);
 		return;
@@ -2434,6 +2477,9 @@ static void CG_ProcessEntity( centity_t *cent ) {
 		break;
 	case ET_EXPLOSIVE:
 		CG_Explosive( cent );
+		break;
+	case ET_EXPLOSIVE_MOVER:
+		CG_ExplosiveMover(cent);
 		break;
 	case ET_TRAP:
 		CG_Trap( cent );

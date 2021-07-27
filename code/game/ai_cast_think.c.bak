@@ -307,11 +307,6 @@ void AICast_InputToUserCommand( cast_state_t *cs, bot_input_t *bi, usercmd_t *uc
 			ucmd->rightmove = movechar;
 		}
 	}
-	if (cs->aiFlags & AIFL_NOLADDER) {
-		if (ucmd->upmove < 0 || ucmd->upmove > 0) {
-			ucmd->upmove = 0;
-		}
-	}
 	// prevent WALKFORWARD AI from moving backwards
 	if ( cs->aiFlags & AIFL_WALKFORWARD ) {
 		if ( ucmd->forwardmove < 0 ) {

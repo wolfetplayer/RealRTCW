@@ -44,6 +44,13 @@ according to each different scenario.
 
 vmCvar_t g_scriptDebug;
 
+
+/// new
+qboolean G_ScriptAction_AccumPrint(gentity_t* ent, char* params);
+qboolean G_ScriptAction_ChangeSpeakerSound(gentity_t* ent, char* params);
+qboolean G_ScriptAction_ChangeGrammofonSound(gentity_t* ent, char* params);
+qboolean G_ScriptAction_ChangeMoverModel(gentity_t* ent, char* params);
+
 //
 //====================================================================
 //
@@ -100,6 +107,12 @@ qboolean G_ScriptAction_ShaderRemapFlush( gentity_t* ent, char *params );
 // these are the actions that each event can call
 g_script_stack_action_t gScriptActions[] =
 {
+	// new
+	{ "changespeakersound", G_ScriptAction_ChangeSpeakerSound },
+	{ "changegrammofonsound", G_ScriptAction_ChangeGrammofonSound },
+	{ "changemovermodel", G_ScriptAction_ChangeMoverModel },
+	{ "accumPrint", G_ScriptAction_AccumPrint },
+
 	{"gotomarker",               G_ScriptAction_GotoMarker},
 	{"playsound",                G_ScriptAction_PlaySound},
 	{"playanim",             G_ScriptAction_PlayAnim},

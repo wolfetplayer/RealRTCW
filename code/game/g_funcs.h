@@ -1541,4 +1541,8 @@ If you have questions concerning this license or the applicable additional terms
 { "AICast_ScriptAction_DropWeapon", (byte*)AICast_ScriptAction_DropWeapon },
 { "AICast_ScriptAction_ChangeAiName", (byte*)AICast_ScriptAction_ChangeAiName },
 { "AICast_ScriptAction_ChangeAiTeam", (byte*)AICast_ScriptAction_ChangeAiTeam },
+{ "G_ScriptAction_AccumPrint", (byte*)G_ScriptAction_AccumPrint },
+{ "G_ScriptAction_ChangeMoverModel", (byte*)G_ScriptAction_ChangeMoverModel },
+{ "G_ScriptAction_ChangeGrammofonSound", (byte*)G_ScriptAction_ChangeGrammofonSound },
+{ "G_ScriptAction_ChangeSpeakerSound", (byte*)G_ScriptAction_ChangeSpeakerSound },
 {0, 0}

@@ -1506,9 +1506,52 @@ qboolean G_ScriptAction_RestoreScript( gentity_t *ent, char *params ) {
 
 /*
 ========================
+G_ScriptAction_ChangeSpeakerSound
+
+syntax: changespeakersound <speakername> <filename>
+
+========================
+*/
+extern void Use_Target_Speaker(gentity_t* ent, gentity_t* other, gentity_t* activator);
+
+qboolean G_ScriptAction_ChangeSpeakerSound(gentity_t* ent, char* params) {
+	char* pString, * token;
+	char buffer[MAX_QPATH];
+	gentity_t* speaker;
+
+	// get the speakername
+	pString = params;
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: ChangeSpeakerSound must have a speakername\n");
+	}
+	speaker = G_Find(NULL, FOFS(targetname), token);
+	if (!speaker) {
+		G_Error("G_Scripting: ChangeSpeakerSound cannot find targetname \"%s\"\n", token);
+	}
+	if (Q_strcasecmp(speaker->classname, "target_speaker")) {
+		G_Error("G_Scripting: \"%s\" should be target_speaker\n", token);
+	}
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: ChangeSpeakerSound must have a soundfile\n");
+	}
+	Q_strncpyz(buffer, token, sizeof(buffer));
+	speaker->noise_index = G_SoundIndex(buffer);
+	speaker->s.eventParm = speaker->noise_index;
+	if (speaker->spawnflags & 1) {
+		speaker->s.loopSound = speaker->noise_index;
+	}
+	speaker->use;
+
+	return qtrue;
+}
+
+/*
+========================
 G_ScriptAction_ChangeGrammofonSound
 
-  syntax: changegrammofonsound <grammofonname> <filename>
+syntax: changegrammofonsound <grammofonname> <filename>
 
 ========================
 */
@@ -1522,22 +1565,18 @@ qboolean G_ScriptAction_ChangeGrammofonSound(gentity_t* ent, char* params) {
 	pString = params;
 	token = COM_ParseExt(&pString, qfalse);
 	if (!token[0]) {
-		G_Printf("^1G_Scripting: ChangeGrammofonSound must have a targetname\n");
-		return qtrue;
+			G_Error("G_Scripting: ChangeGrammofonSound must have a targetname\n");
 	}
 	Grammofon = G_Find(NULL, FOFS(targetname), token);
 	if (!Grammofon) {
-		G_Printf("^1G_Scripting: ChangeGrammofonSound cannot find targetname \"%s\"\n", token);
-		return qtrue;
+		G_Error("G_Scripting: ChangeGrammofonSound cannot find targetname \"%s\"\n", token);
 	}
 	if (Q_strcasecmp(Grammofon->classname, "props_grammofon")) {
-		G_Printf("^1G_Scripting: \"%s\" should be props_grammofon\n", token);
-		return qtrue;
+		G_Error("G_Scripting: \"%s\" should be props_grammofon\n", token);
 	}
 	token = COM_ParseExt(&pString, qfalse);
 	if (!token[0]) {
-		G_Printf("^1G_Scripting: ChangeGrammofonSound must have a soundfile\n");
-		return qtrue;
+		G_Error("G_Scripting: ChangeGrammofonSound must have a soundfile\n");
 	}
 	Q_strncpyz(buffer, token, sizeof(buffer));
 	Grammofon->s.loopSound = G_SoundIndex(buffer);
@@ -1545,6 +1584,47 @@ qboolean G_ScriptAction_ChangeGrammofonSound(gentity_t* ent, char* params) {
 	return qtrue;
 }
 
+/*
+========================
+G_ScriptAction_ChangeMoverModel
+
+syntax: changemovermodel <modelfile>
+
+========================
+*/
+
+qboolean G_ScriptAction_ChangeMoverModel(gentity_t* ent, char* params) {
+	char* pString, * token;
+	char buffer[MAX_QPATH];
+
+	pString = params;
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: ChangeMoverModel must have a modelfile\n");
+	}
+	Q_strncpyz(buffer, token, sizeof(buffer));
+	ent->s.modelindex2 = G_ModelIndex(buffer);
+	return qtrue;
+}
+
+
+qboolean G_ScriptAction_AccumPrint(gentity_t* ent, char* params) {
+	int bufferIndex;
+	char* pString, * token;
+
+	if (!params || !params[0]) {
+		G_Error("G_Scripting: accum print requires some text\n");
+	}
+	pString = params;
+	token = COM_ParseExt(&pString, qfalse);
+	bufferIndex = atoi(token);
+	if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error("G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+	}
+	token = COM_ParseExt(&pString, qfalse);
+	trap_SendServerCommand(-1, va("%s %s%d", "cpn", token, ent->scriptAccumBuffer[bufferIndex]));
+	return qtrue;
+}
 
 /*
 ==================

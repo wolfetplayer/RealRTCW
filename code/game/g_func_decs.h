@@ -1541,3 +1541,7 @@ extern qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params);
+extern qboolean G_ScriptAction_AccumPrint(gentity_t* ent, char* params);
+extern qboolean G_ScriptAction_ChangeMoverModel(gentity_t* ent, char* params);
+extern qboolean G_ScriptAction_ChangeGrammofonSound(gentity_t* ent, char* params);
+extern qboolean G_ScriptAction_ChangeSpeakerSound(gentity_t* ent, char* params);

@@ -493,6 +493,7 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_SMOKE_BOMB:
+	case WP_POISON_GAS:
 		return 800;
 	case WP_MONSTER_ATTACK1:
 		switch ( cs->aiCharacter ) {
@@ -1838,6 +1839,7 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_GAUNTLET:
 	case    WP_SILENCER:
 	case    WP_SMOKE_BOMB:
+	case    WP_POISON_GAS:
 		return 64;
 	case    WP_GRENADE_LAUNCHER:
 	case    WP_GRENADE_PINEAPPLE:

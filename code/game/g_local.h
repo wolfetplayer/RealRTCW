@@ -277,6 +277,7 @@ struct gentity_s {
 
 	qboolean takedamage;
 
+
 	int damage;
 	int splashDamage;           // quad will increase this without increasing radius
 	int splashRadius;
@@ -381,6 +382,12 @@ struct gentity_s {
 
 	int grenadeExplodeTime;         // we've caught a grenade, which was due to explode at this time
 	int grenadeFired;               // the grenade entity we last fired
+
+	int poisonGasAlarm;
+    int poisonGasDamage;
+    int poisonGasRadius;
+
+	
 
 	int mg42ClampTime;              // time to wait before an AI decides to ditch the mg42
 
@@ -1386,6 +1393,7 @@ void    trap_SnapVector( float *v );
 // New in IORTCW
 void	*trap_Alloc( int size );
 gentity_t* G_FindSmokeBomb( gentity_t* start );
+void G_PoisonGasExplode  ( gentity_t* );
 
 typedef enum
 {

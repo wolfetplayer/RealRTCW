@@ -476,6 +476,7 @@ typedef enum {
 	WP_FG42,                // 5
 	WP_GRENADE_LAUNCHER,    // 6
 	WP_SMOKE_BOMB, 
+	WP_POISON_GAS,
 	WP_PANZERFAUST,         // 7
 	WP_VENOM,               // 8
 	WP_FLAMETHROWER,        // 9
@@ -536,7 +537,7 @@ extern int weapAlts[];
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_SMOKE_BOMB ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_REVOLVER ) )
+#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_SMOKE_BOMB ) | ( 1 << WP_POISON_GAS ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_REVOLVER ) )
 
 
 
@@ -1004,6 +1005,7 @@ typedef enum {
 	MOD_GRENADE,
 	MOD_GRENADE_SPLASH,
 	MOD_SMOKEBOMB,
+	MOD_POISON_GAS,
 	MOD_ROCKET,
 	MOD_ROCKET_SPLASH,
 	MOD_RAILGUN,

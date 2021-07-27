@@ -2224,7 +2224,7 @@ void CG_Spotlight( centity_t *cent, float *color, vec3_t start, vec3_t dir, int 
 void CG_RumbleEfx( float pitch, float yaw );
 
 void InitSmokeSprites( void );
-void CG_RenderSmokeGrenadeSmoke( centity_t *cent, const weaponInfo_t *weapon );
+void CG_RenderSmokeGrenadeSmoke( centity_t *cent, const weaponInfo_t *weapon, weapon_t );
 void CG_AddSmokeSprites( void );
 
 //

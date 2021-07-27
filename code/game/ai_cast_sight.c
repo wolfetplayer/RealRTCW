@@ -100,6 +100,56 @@ qboolean AICast_InFieldOfVision( vec3_t viewangles, float fov, vec3_t angles ) {
 }
 
 /*
+==================
+AICast_BotEntInvisibleBySmokeBomb
+
+returns whether smoke from smoke bombs blocks vision from start to end
+==================
+
+  Mad Doc xkan, 11/25/2002
+*/
+#define MAX_SMOKE_RADIUS 320.0
+#define MAX_SMOKE_RADIUS_TIME 10000.0
+#define UNAFFECTED_BY_SMOKE_DIST SQR( 100 )
+
+qboolean AICast_BotEntInvisibleBySmokeBomb( vec3_t start, vec3_t end ) {
+	gentity_t *ent = NULL;
+	vec3_t smokeCenter;
+	float smokeRadius;
+
+	// if the target is close enough, vision is not affected by smoke bomb
+	if ( DistanceSquared( start,end ) < UNAFFECTED_BY_SMOKE_DIST ) {
+		return qfalse;
+	}
+
+	while ( ( ent = G_FindSmokeBomb( ent ) ) ) {
+		if ( ent->s.effect1Time == 16 ) {
+			// xkan, the smoke has not really started yet, see weapon_smokeBombExplode
+			// and CG_RenderSmokeGrenadeSmoke
+			continue;
+		}
+		// check the distance
+		VectorCopy( ent->s.pos.trBase, smokeCenter );
+		// raise the center to better match the position of the smoke, see
+		// CG_SpawnSmokeSprite().
+		smokeCenter[2] += 32;
+		// smoke sprite has a maximum radius of 640/2. and it takes a while for it to
+		// reach that size, so adjust the radius accordingly.
+		smokeRadius = MAX_SMOKE_RADIUS *
+					  ( ( level.time - ent->grenadeExplodeTime ) / MAX_SMOKE_RADIUS_TIME );
+		if ( smokeRadius > MAX_SMOKE_RADIUS ) {
+			smokeRadius = MAX_SMOKE_RADIUS;
+		}
+		// if distance from line is short enough, vision is blocked by smoke
+		if ( DistanceFromLineSquared( smokeCenter, start, end ) < smokeRadius * smokeRadius ) {
+			return qtrue;
+		}
+	}
+
+	return qfalse;
+}
+
+/*
 ==============
 AICast_VisibleFromPos
 ==============
@@ -118,6 +168,7 @@ qboolean AICast_VisibleFromPos( vec3_t srcpos, int srcnum,
 	if ( g_entities[destnum].flags & FL_NOTARGET ) {
 		return qfalse;
 	}
+
 
 	if ( srcnum < aicast_maxclients ) {
 		cs = AICast_GetCastState( srcnum );
@@ -229,6 +280,7 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	int viewer, ent;
 	cast_visibility_t   *vis;
 	orientation_t       or;
+	vec3_t start, end;
 
 	if ( destent->flags & FL_NOTARGET ) {
 		return qfalse;
@@ -241,6 +293,12 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	AICast_GetCastState( ent );
 	//
 	vis = &cs->vislist[ent];
+
+	if ( vis > 0 && AICast_BotEntInvisibleBySmokeBomb( start, end ) ) 
+	{
+	vis = 0;
+	}
+
 	//
 	// if the destent is the client, and they have just loaded a savegame, ignore them temporarily
 	if ( !destent->aiCharacter && level.lastLoadTime && ( level.lastLoadTime > level.time - 2000 ) && !vis->visible_timestamp ) {
@@ -330,6 +388,7 @@ void AICast_UpdateVisibility( gentity_t *srcent, gentity_t *destent, qboolean sh
 	cast_state_t        *cs, *ocs;
 	qboolean shareRange;
 	int cnt, i;
+	vec3_t start, end;
 
 	if ( destent->flags & FL_NOTARGET ) {
 		return;
@@ -347,6 +406,11 @@ void AICast_UpdateVisibility( gentity_t *srcent, gentity_t *destent, qboolean sh
 	vis = &cs->vislist[destent->s.number];
 
 	vis->chase_marker_count = 0;
+
+	if ( vis > 0 && AICast_BotEntInvisibleBySmokeBomb( start, end ) ) 
+	{
+	vis = 0;
+	}
 
 	if ( aicast_debug.integer == 1 ) {
 		if ( !vis->visible_timestamp || vis->visible_timestamp < level.time - 5000 ) {

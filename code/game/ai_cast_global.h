@@ -66,6 +66,7 @@ void AICast_SetFlameDamage( int entNum, qboolean status );
 qboolean AICast_HasFiredWeapon( int entNum, int weapon );
 void G_SetAASBlockingEntity( gentity_t *ent, qboolean blocking );
 qboolean AICast_InFieldOfVision( vec3_t viewangles, float fov, vec3_t angles );
+qboolean AICast_BotEntInvisibleBySmokeBomb( vec3_t start, vec3_t end );
 qboolean AICast_VisibleFromPos( vec3_t srcpos, int srcnum,
 								vec3_t destpos, int destnum, qboolean updateVisPos );
 qboolean AICast_AllowFlameDamage( int entNum );

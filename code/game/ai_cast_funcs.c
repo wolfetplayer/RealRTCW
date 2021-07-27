@@ -5029,3 +5029,5 @@ char *AIFunc_DefaultStart( cast_state_t *cs ) {
 	//
 	return rval;
 }
+
+

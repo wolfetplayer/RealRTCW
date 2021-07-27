@@ -359,12 +359,12 @@ void QDECL Com_Error( int code, const char *fmt, ... ) {
 		com_errorEntered = qfalse;
 		longjmp( abortframe, -1 );
 	} else if (code == ERR_DROP) {
-		Com_Printf("********************\nERROR: %s\n********************\n", com_errorMessage);
-		SV_Shutdown(va("Server crashed: %s\n", com_errorMessage));
-		CL_Disconnect(qtrue);
+	Com_Printf( "********************\nERROR: %s\n********************\n", com_errorMessage );
+		SV_Shutdown( va( "Server crashed: %s\n",  com_errorMessage ) );
+		CL_Disconnect( qtrue );
 		CL_FlushMemory();
 		com_errorEntered = qfalse;
-		longjmp(abortframe, -1);
+		longjmp( abortframe, -1 );
 	} else if ( code == ERR_NEED_CD ) {
 		VM_Forced_Unload_Start();
 		SV_Shutdown( "Server didn't have CD" );

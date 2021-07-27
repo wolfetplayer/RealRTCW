@@ -4020,7 +4020,12 @@ void PM_CheckLadderMove( void ) {
 
 	//if (pm->ps->pm_flags & PM_DEAD)
 	//	return;
-
+	if (pm->ps->aiChar == AICHAR_DOG) {
+		pml.ladder = qfalse;
+		pm->ps->pm_flags &= ~PMF_LADDER;    // clear ladder bit
+		ladderforward = qfalse;
+		return;
+	}
 	if ( pml.walking ) {
 		tracedist = 1.0;
 	} else {
@@ -4134,6 +4139,11 @@ void PM_LadderMove( void ) {
 	float wishspeed, scale;
 	vec3_t wishdir, wishvel;
 	float upscale;
+
+	if (pm->ps->aiChar == AICHAR_DOG) {
+		return;
+	}
+
 
 	if ( ladderforward ) {
 		// move towards the ladder

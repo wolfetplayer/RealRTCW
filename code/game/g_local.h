@@ -69,6 +69,7 @@ If you have questions concerning this license or the applicable additional terms
 #define FL_TOGGLE               0x00020000  //----(SA)	ent is toggling (doors use this for ex.)
 #define FL_KICKACTIVATE         0x00040000  //----(SA)	ent has been activated by a kick (doors use this too for ex.)
 #define FL_SOFTACTIVATE         0x00000040  //----(SA)	ent has been activated while 'walking' (doors use this too for ex.)
+#define FL_DOG_BARK		        0x00000080  // dog bark
 #define FL_DEFENSE_GUARD        0x00080000  // warzombie defense pose
 
 #define FL_PARACHUTE            0x00100000

@@ -647,6 +647,201 @@ char *AIFunc_LoperAttack3Start( cast_state_t *cs ) {
 	return "AIFunc_LoperAttack3";
 }
 
+
+#define DOG_KICK_DELAY 100
+#define DOG_KICK_RANGE   48
+#define DOG_KICK_DAMAGE  25
+
+char* AIFunc_DogAttack(cast_state_t* cs) {
+	gentity_t* ent = &g_entities[cs->entityNum];
+	trace_t* tr;
+	vec3_t fwd;
+
+	if (!ent->client->ps.legsTimer) {
+		return AIFunc_DefaultStart(cs);
+	}
+	//
+	if (cs->enemyNum < 0) {
+		return NULL;
+	}
+	// time for the melee?
+	if (!(cs->aiFlags & AIFL_MISCFLAG1)) {
+		// face them
+		AICast_AimAtEnemy(cs);
+		AIChar_AttackSound(cs);
+		// ready for damage?
+		if (cs->thinkFuncChangeTime < level.time - DOG_KICK_DELAY) {
+			cs->aiFlags |= AIFL_MISCFLAG1;
+			// keep checking for impact status
+			tr = CheckMeleeAttack(ent, DOG_KICK_RANGE, qfalse);
+			// do melee damage?
+			if (tr && (tr->entityNum == cs->enemyNum)) {
+				AngleVectors(cs->viewangles, fwd, NULL, NULL);
+				G_Damage(&g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, DOG_KICK_DAMAGE, 0, MOD_GAUNTLET);
+				// throw them in direction of impact
+				fwd[2] = 0.5;
+				VectorMA(g_entities[cs->enemyNum].client->ps.velocity, 5, fwd, g_entities[cs->enemyNum].client->ps.velocity);
+			}
+		}
+	}
+
+	return NULL;
+}
+
+
+/*
+================
+AIFunc_DogBark
+================
+*/
+char* AIFunc_DogBark(cast_state_t* cs) {
+	gentity_t* ent, * enemy;
+	vec3_t enemyDir, vec;
+	float dist;
+
+	ent = &g_entities[cs->entityNum];
+
+	if (!(ent->flags & FL_DOG_BARK)) {
+		if (cs->weaponFireTimes[cs->weaponNum] < level.time - 100) {
+			return AIFunc_DefaultStart(cs);
+		}
+		return NULL;
+	}
+
+	if ((cs->enemyNum < 0) || (cs->dangerEntityValidTime >= level.time)) {
+		ent->flags &= ~FL_DOG_BARK;
+		ent->client->ps.torsoTimer = 0;
+		ent->client->ps.legsTimer = 0;
+		return NULL;
+	}
+
+	enemy = &g_entities[cs->enemyNum];
+
+	if (cs->thinkFuncChangeTime < level.time - 1500) {
+		// if we cant see them
+		if (!AICast_EntityVisible(cs, cs->enemyNum, qtrue)) {
+			ent->flags &= ~FL_DOG_BARK;
+			ent->client->ps.torsoTimer = 0;
+			ent->client->ps.legsTimer = 0;
+			return NULL;
+		}
+
+		// if our enemy isn't using a dangerous weapon
+		if (enemy->client->ps.weapon < WP_LUGER || enemy->client->ps.weapon > WP_CLASS_SPECIAL) {
+			ent->flags &= ~FL_DOG_BARK;
+			ent->client->ps.torsoTimer = 0;
+			ent->client->ps.legsTimer = 0;
+			return NULL;
+		}
+
+		// if our enemy isn't looking right at us, abort
+		VectorSubtract(ent->client->ps.origin, enemy->client->ps.origin, vec);
+		dist = VectorNormalize(vec);
+		if (dist > 512) {
+			dist = 512;
+		}
+		AngleVectors(enemy->client->ps.viewangles, enemyDir, NULL, NULL);
+		if (DotProduct(vec, enemyDir) < (0.98 - 0.2 * (dist / 512))) {
+			ent->flags &= ~FL_DOG_BARK;
+			ent->client->ps.torsoTimer = 0;
+			ent->client->ps.legsTimer = 0;
+			return NULL;
+		}
+	}
+
+	cs->weaponFireTimes[cs->weaponNum] = level.time;
+
+	if (!ent->client->ps.torsoTimer) {
+		ent->flags &= ~FL_DOG_BARK;
+		ent->client->ps.torsoTimer = 0;
+		ent->client->ps.legsTimer = 0;
+		return NULL;
+	}
+
+	// face them
+	AICast_AimAtEnemy(cs);
+	// crouching position, use smaller bounding box
+	trap_EA_Crouch(cs->bs->client);
+
+	return NULL;
+}
+
+
+/*
+================
+AIFunc_DogBarkStart
+================
+*/
+char* AIFunc_DogBarkStart(cast_state_t* cs) {
+	gentity_t* ent, * enemy;
+	vec3_t enemyDir, vec;
+	float dist;
+	static int lastWarriorDefense;
+
+	if (lastWarriorDefense <= level.time && lastWarriorDefense > level.time - 3000) {
+		return NULL;    // dont all go into defense at once
+	}
+	lastWarriorDefense = level.time;
+
+	ent = &g_entities[cs->entityNum];
+	enemy = &g_entities[cs->enemyNum];
+
+	// if our enemy isn't using a dangerous weapon
+	if (enemy->client->ps.weapon < WP_LUGER || enemy->client->ps.weapon > WP_CLASS_SPECIAL) {
+		return NULL;
+	}
+
+	// if we are doing a goto
+	if (cs->followEntity >= 0) {
+		return NULL;
+	}
+
+	// if our enemy isn't looking right at us, abort
+	VectorSubtract(ent->client->ps.origin, enemy->client->ps.origin, vec);
+	dist = VectorNormalize(vec);
+	if (dist > 512) {
+		dist = 512;
+	}
+	if (dist < 128) {
+		//		return NULL;
+	}
+	AngleVectors(enemy->client->ps.viewangles, enemyDir, NULL, NULL);
+	if (DotProduct(vec, enemyDir) < (0.98 - 0.2 * (dist / 512))) {
+		return NULL;
+	}
+
+	cs->weaponFireTimes[cs->weaponNum] = level.time;
+
+	// face them
+	AICast_AimAtEnemy(cs);
+
+	// anim
+	BG_UpdateConditionValue(cs->entityNum, ANIM_COND_WEAPON, cs->weaponNum, qtrue);
+	BG_AnimScriptEvent(&ent->client->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue);
+	ent->client->ps.torsoTimer = 3000;
+	ent->client->ps.legsTimer = 3000;
+
+	ent->flags |= FL_DOG_BARK;
+
+	cs->aifunc = AIFunc_DogBark;
+	return "AIFunc_DogBark";
+}
+
+
+
+char* AIFunc_DogAttackStart(cast_state_t* cs) {
+	gentity_t* ent;
+	ent = &g_entities[cs->entityNum];
+
+	AICast_AimAtEnemy(cs);
+
+	BG_PlayAnimName(&ent->client->ps, "attack_face", ANIM_BP_BOTH, qtrue, qfalse, qtrue);
+	cs->aiFlags &= ~(AIFL_MISCFLAG1 | AIFL_MISCFLAG2);
+	cs->aifunc = AIFunc_DogAttack;
+	return "AIFunc_DogAttack";
+}
+
+
 //=================================================================================
 //
 // STIM SOLDIER FLYING ATTACK

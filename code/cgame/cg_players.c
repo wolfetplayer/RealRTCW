@@ -4940,6 +4940,7 @@ void CG_Player( centity_t *cent ) {
 
 				switch ( cent->currentState.aiChar ) {
 				case AICHAR_ZOMBIE:
+				case AICHAR_DOG:
 				case AICHAR_LOPER:
 					talk_frame = (int)( (float)talk_frame * 1.2 );
 					closed = qfalse;

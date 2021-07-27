@@ -91,6 +91,7 @@ void TossClientItems( gentity_t *self ) {
 	switch ( self->aiCharacter ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:
+	case AICHAR_DOG:
 	case AICHAR_LOPER:
 		return;         //----(SA)	removed DK's special case
 	default:
@@ -1238,6 +1239,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 					case AICHAR_ELITEGUARD:
 					case AICHAR_PARTISAN:
 					case AICHAR_RUSSIAN:
+					case AICHAR_DOG:
 					case AICHAR_CIVILIAN:
 						take = 200;
 						break;

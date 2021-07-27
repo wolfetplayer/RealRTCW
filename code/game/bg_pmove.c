@@ -3034,7 +3034,7 @@ static void PM_Weapon( void ) {
 //					PM_AddEvent( EV_FIRE_WEAPON );
 					PM_WeaponUseAmmo( pm->ps->weapon, 1 );      //----(SA)	take ammo
 //					pm->ps->weaponTime = 1600;
-                    if (!( pm->ps->weapon == WP_SMOKE_BOMB) && ( pm->ps->weapon == WP_POISON_GAS))
+                    if (!( pm->ps->weapon == WP_SMOKE_BOMB) && !( pm->ps->weapon == WP_POISON_GAS))
 					{
 					PM_AddEvent( EV_GRENADE_SUICIDE );      //----(SA)	die, dumbass
 					}

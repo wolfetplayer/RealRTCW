@@ -571,7 +571,15 @@ void G_PoisonGasExplode(gentity_t* ent) {
 
         if (level.time >= ent->poisonGasAlarm) {
             ent->poisonGasAlarm = level.time + 1500;
-            G_RadiusDamage(ent->r.currentOrigin, ent->parent, ent->poisonGasDamage, ent->poisonGasRadius, ent, MOD_POISON_GAS) ;
+                        etpro_RadiusDamage(
+                ent->r.currentOrigin,
+                ent,
+                ent->parent,
+                ent->poisonGasDamage,
+                ent->poisonGasRadius,
+                ent,
+                MOD_POISON_GAS,
+                RADIUS_SCOPE_CLIENTS );
 
 
 						//G_RadiusDamage( self->s.pos.trBase, self, self->damage, self->damage, self, MOD_EXPLOSIVE );

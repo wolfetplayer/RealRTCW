@@ -1355,14 +1355,14 @@ void CG_RegisterWeapon( int weaponNum ) {
 		break;
 
 	case WP_SMOKE_BOMB:
-		weaponInfo->missileModel = trap_R_RegisterModel( "models/weapons2/smoke_grenade/smoke_grenade.md3" );
+		weaponInfo->missileModel = trap_R_RegisterModel( "models/ammo/smoke_grenade.md3" );
 		weaponInfo->overheatSound = trap_S_RegisterSound( "sound/weapons/gren_smoke.wav" );
 		weaponInfo->missileTrailFunc = CG_GrenadeTrail;
 		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );
 		break;
 
 	case WP_POISON_GAS:
-		weaponInfo->missileModel = trap_R_RegisterModel( "models/weapons2/nebeleihandgranate/gas_grenade.md3" );
+		weaponInfo->missileModel = trap_R_RegisterModel( "models/ammo/gas_grenade.md3" );
 		weaponInfo->overheatSound = trap_S_RegisterSound( "sound/weapons/gren_smoke.wav" );
 		weaponInfo->missileTrailFunc = CG_GrenadeTrail;
 		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );

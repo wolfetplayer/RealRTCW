@@ -98,6 +98,13 @@ typedef enum {
 	MOVER_2TO1ROTATE
 } moverState_t;
 
+typedef enum {
+    RADIUS_SCOPE_ANY,
+    RADIUS_SCOPE_CLIENTS,
+    RADIUS_SCOPE_NOCLIENTS,
+} RadiusScope;
+
+
 
 // door AI sound ranges
 #define HEAR_RANGE_DOOR_LOCKED      128 // really close since this is a cruel check
@@ -386,6 +393,8 @@ struct gentity_s {
 	int poisonGasAlarm;
     int poisonGasDamage;
     int poisonGasRadius;
+
+	gentity_t	*dmgparent;
 
 	
 
@@ -838,12 +847,16 @@ qboolean infront( gentity_t *self, gentity_t *other );
 
 void G_ProcessTagConnect( gentity_t *ent, qboolean clearAngles );
 
+
 //
 // g_combat.c
 //
+
+void G_AdjustedDamageVec( gentity_t *ent, vec3_t origin, vec3_t vec );
 qboolean CanDamage( gentity_t *targ, vec3_t origin );
 void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_t dir, vec3_t point, int damage, int dflags, int mod );
 qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod );
+qboolean etpro_RadiusDamage( vec3_t origin, gentity_t *inflictor, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod, RadiusScope scope );
 void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
 void TossClientItems( gentity_t *self );
 

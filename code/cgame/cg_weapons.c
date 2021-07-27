@@ -1072,7 +1072,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 
 
 	// sniper scope model
-	if ( weaponNum == WP_MAUSER || weaponNum == WP_GARAND ) {
+	if ( weaponNum == WP_GARAND ) {
 
 		if ( !item->world_model[W_FP_MODEL] ) {
 			Q_strncpyz( path, comppath, sizeof(path) );

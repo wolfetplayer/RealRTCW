@@ -1871,8 +1871,8 @@ CG_S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, w
         // Set smoke color according to weapon type.
         switch (wtype) {
             case WP_POISON_GAS:
-                smokeColor[0] = 0.05f;
-                smokeColor[1] = 0.10f;
+                smokeColor[0] = 0.20f;
+                smokeColor[1] = 0.15f;
                 smokeColor[2] = 0.05f;
                 smokeColor[3] = 0.40f;
                 break;

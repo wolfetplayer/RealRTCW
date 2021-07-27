@@ -1682,7 +1682,7 @@ model="models/weapons2/mosin/mosin.md3"
 		"weapon_kar98k",
 		"sound/misc/w_pkup.wav",
 		{   "models/weapons2/mauser/mauser.md3",
-			"models/weapons2/mauser/v_mauser.md3",
+			"models/weapons2/mauser/v_mauserp.md3",
 			"models/weapons2/mauser/pu_mauser.md3",
 			0, 0 },
 

@@ -2215,38 +2215,31 @@ static void CG_DrawWeapReticle( void ) {
 			CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
 		}
 
-//----(SA)	added
-		// DM didn't like how bright it gets
-		snooperBrightness = Com_Clamp( 0.0f, 1.0f, cg_reticleBrightness.value );
-		snoopercolor[0] *= snooperBrightness;
-		snoopercolor[1] *= snooperBrightness;
-		snoopercolor[2] *= snooperBrightness;
-		trap_R_SetColor( snoopercolor );
-//----(SA)	end
+		if ( cgs.media.reticleShaderSimpleQ ) {
+			if ( cg_fixedAspect.integer ) {
+				trap_R_DrawStretchPic( x, lb * cgs.screenYScale, w, h, 0, 0, 1, 1, cgs.media.reticleShaderSimpleQ );         // tl
+				trap_R_DrawStretchPic( x + w, lb * cgs.screenYScale, w, h, 1, 0, 0, 1, cgs.media.reticleShaderSimpleQ );     // tr
+				trap_R_DrawStretchPic( x, h + lb * cgs.screenYScale, w, h, 0, 1, 1, 0, cgs.media.reticleShaderSimpleQ );     // bl
+				trap_R_DrawStretchPic( x + w, h + lb * cgs.screenYScale, w, h, 1, 1, 0, 0, cgs.media.reticleShaderSimpleQ ); // br
+			} else {
+				trap_R_DrawStretchPic( x, 0, w, h, 0, 0, 1, 1, cgs.media.reticleShaderSimpleQ );      // tl
+				trap_R_DrawStretchPic( x + w, 0, w, h, 1, 0, 0, 1, cgs.media.reticleShaderSimpleQ );  // tr
+				trap_R_DrawStretchPic( x, h, w, h, 0, 1, 1, 0, cgs.media.reticleShaderSimpleQ );      // bl
+				trap_R_DrawStretchPic( x + w, h, w, h, 1, 1, 0, 0, cgs.media.reticleShaderSimpleQ );  // br
+			}
+		}
 
-		if ( cgs.media.snooperShaderSimple ) {
-			CG_DrawPic( 80, 0, 480, 480, cgs.media.snooperShaderSimple );
+		if ( cg_drawCrosshairReticle.integer ) {
+			CG_FillRect( 80, 239, 480, 1, color );	// horiz
+			CG_FillRect( 319, 0, 1, 480, color );   // vert
 		}
 
 		// hairs
+		CG_FillRect( 84, 239, 177, 2, color );   // left
+		CG_FillRect( 320, 242, 1, 58, color );   // center top
+		CG_FillRect( 319, 300, 2, 178, color );  // center bot
+		CG_FillRect( 380, 239, 177, 2, color );  // right
 
-		CG_FillRect( 310, 120, 20, 1, color );   //					-----
-		CG_FillRect( 300, 160, 40, 1, color );   //				-------------
-		CG_FillRect( 310, 200, 20, 1, color );   //					-----
-
-		CG_FillRect( 140, 239, 360, 1, color );  // horiz ---------------------------
-
-		CG_FillRect( 310, 280, 20, 1, color );   //					-----
-		CG_FillRect( 300, 320, 40, 1, color );   //				-------------
-		CG_FillRect( 310, 360, 20, 1, color );   //					-----
-
-
-
-		CG_FillRect( 400, 220, 1, 40, color );   // l
-
-		CG_FillRect( 319, 60, 1, 360, color );   // vert
-
-		CG_FillRect( 240, 220, 1, 40, color );   // r
 	} else if ( weap == WP_FG42SCOPE ) {
 		// sides
 		if ( cg_fixedAspect.integer ) {
@@ -3422,14 +3415,9 @@ static void CG_DrawFlashZoomTransition( void ) {
 	if ( frac < fadeTime ) {
 		frac = frac / (float)fadeTime;
 
-		if ( cg.weaponSelect == WP_SNOOPERSCOPE ) {
-//			Vector4Set( color, 0.7f, 0.3f, 0.7f, 1.0f - frac );
-//			Vector4Set( color, 1, 0.5, 1, 1.0f - frac );
-//			Vector4Set( color, 0.5f, 0.3f, 0.5f, 1.0f - frac );
-			Vector4Set( color, 0.7f, 0.6f, 0.7f, 1.0f - frac );
-		} else {
+
 			Vector4Set( color, 0, 0, 0, 1.0f - frac );
-		}
+		
 
 		if ( cg_fixedAspect.integer ) {
 			CG_SetScreenPlacement(PLACE_STRETCH, PLACE_STRETCH);

@@ -977,10 +977,15 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 	case WP_SMOKE_BOMB:
 		// xkan 11/25/2002, fixed typo, classname used to be "somke_bomb"
 		bolt->classname             = "smoke_bomb";
-		bolt->s.eFlags              = EF_BOUNCE_HALF | EF_BOUNCE;
+		bolt->s.eFlags              = EF_BOUNCE_HALF;
 		// rain - this is supposed to be MOD_SMOKEBOMB, not SMOKEGRENADE
 		bolt->methodOfDeath         = MOD_SMOKEBOMB;
 		break;
+	case WP_POISON_GAS:
+			bolt->classname				= "poison_gas";
+			bolt->s.eFlags				= EF_BOUNCE_HALF;
+			bolt->methodOfDeath			= MOD_POISON_GAS;
+			break;
 // JPW NERVE
 	case WP_GRENADE_SMOKE:
 		bolt->classname             = "grenade";

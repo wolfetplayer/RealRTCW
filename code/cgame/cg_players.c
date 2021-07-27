@@ -4639,9 +4639,9 @@ void CG_AnimPlayerConditions( centity_t *cent ) {
 }
 
 void CG_DeadSink( centity_t *cent ) {
-	if ( cent->currentState.aiChar != AICHAR_WARZOMBIE ) {
+	/*if ( cent->currentState.aiChar != AICHAR_WARZOMBIE ) {
 		return;
-	}
+	}*/
 	if ( !( cent->currentState.eFlags & EF_DEAD ) ) {
 		return;
 	}

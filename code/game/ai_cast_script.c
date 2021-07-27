@@ -133,9 +133,20 @@ qboolean AICast_ScriptAction_AnimCondition( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_PushAway( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_CatchFire( cast_state_t *cs, char *params );
 
+// ChangeAiTeam
+qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params);
+qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params);
+qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params);
+qboolean AICast_ScriptAction_AccumPrint(cast_state_t* cs, char* params);
+qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params);
 // these are the actions that each event can call
 cast_script_stack_action_t scriptActions[] =
 {
+	{ "drop_weapon", AICast_ScriptAction_DropWeapon },
+	{ "changeaiteam", AICast_ScriptAction_ChangeAiTeam },
+	{ "changeainame", AICast_ScriptAction_ChangeAiName },
+	{ "burn", AICast_ScriptAction_Burned },
+	{ "accumprint", AICast_ScriptAction_AccumPrint },
 	{"gotomarker",       AICast_ScriptAction_GotoMarker},
 	{"runtomarker",      AICast_ScriptAction_GotoMarker},
 	{"walktomarker", AICast_ScriptAction_WalkToMarker},

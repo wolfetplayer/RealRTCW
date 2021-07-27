@@ -1536,4 +1536,9 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_SetupClient", (byte *)AICast_SetupClient},
 {"AICast_GetCastState", (byte *)AICast_GetCastState},
 {"AICast_Printf", (byte *)AICast_Printf},
+{ "AICast_ScriptAction_AccumPrint", (byte*)AICast_ScriptAction_AccumPrint },
+{ "AICast_ScriptAction_Burned", (byte*)AICast_ScriptAction_Burned },
+{ "AICast_ScriptAction_DropWeapon", (byte*)AICast_ScriptAction_DropWeapon },
+{ "AICast_ScriptAction_ChangeAiName", (byte*)AICast_ScriptAction_ChangeAiName },
+{ "AICast_ScriptAction_ChangeAiTeam", (byte*)AICast_ScriptAction_ChangeAiTeam },
 {0, 0}

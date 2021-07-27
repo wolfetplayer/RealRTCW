@@ -1701,6 +1701,116 @@ qboolean AICast_ScriptAction_GodMode( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+
+qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params) {
+	gentity_t* ent;
+	int weapon;
+	weapon = WP_NONE;
+
+	// find the cast/player with the given "name"
+	ent = AICast_FindEntityForName(params);
+	if (!ent) {
+		G_Error("AI Scripting: can't find AI cast with \"ainame\" = \"%s\"\n", params);
+		return qtrue;
+	}
+	weapon = cs->weaponNum;
+	if (weapon != WP_NONE) {
+		TossClientItems(ent);
+		COM_BitClear(g_entities[cs->entityNum].client->ps.weapons, cs->weaponNum);
+		g_entities[cs->entityNum].client->ps.weapon = WP_NONE;
+	}
+	//	G_Printf( "AI Scripting: takeweapon %d, unknown weapon", weapon );
+	return qtrue;
+};
+
+
+/*
+=================
+AICast_ScriptAction_Burned
+
+burn a client
+=================
+*/
+
+qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params) {
+
+	gentity_t* ent;
+	int damage;
+
+
+	damage = 1;
+	ent = g_entities + cs->entityNum;
+	if (ent->flameQuotaTime && ent->flameQuota > 0) {
+		ent->flameQuota -= (int)(((float)(level.time - ent->flameQuotaTime) / 1000) * (float)damage / 2.0);
+		if (ent->flameQuota < 0) {
+			ent->flameQuota = 0;
+		}
+	}
+
+	// add the new damage
+	ent->flameQuota += damage;
+	ent->flameQuotaTime = level.time;
+
+	// Ridah, make em burn
+	if (ent->s.onFireEnd < level.time) {
+		ent->s.onFireStart = level.time;
+	}
+	ent->s.onFireEnd = level.time + 99999;  // make sure it goes for longer than they need to die
+	ent->flameBurnEnt = g_entities->s.number;
+	// add to playerState for client-side effect
+	ent->client->ps.onFireStart = level.time;
+	return qtrue;
+}
+
+qboolean AICast_ScriptAction_AccumPrint(cast_state_t* cs, char* params) {
+	int bufferIndex;
+	char* pString, * token;
+
+	if (!params || !params[0]) {
+		G_Error("AI Scripting: accum print requires some text\n");
+	}
+	pString = params;
+	token = COM_ParseExt(&pString, qfalse);
+	bufferIndex = atoi(token);
+	if (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error(va("^1AI Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS));
+		//return true;
+	}
+	token = COM_ParseExt(&pString, qfalse);
+	trap_SendServerCommand(-1, va("%s %s%d", "cpn", token, cs->scriptAccumBuffer[bufferIndex]));
+	return qtrue;
+}
+
+
+/*
+AICast_ScriptAction_ChangeAiTeam
+syntax: changeaiteam <id aiteam>
+*/
+qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params) {
+
+	if (!params || !params[0]) {
+		G_Error(va("AI Scripting: changeaiteam requires an aiteam value %s\n", g_entities[cs->entityNum].aiName));
+		return qtrue;
+	}
+
+	g_entities[cs->entityNum].aiTeam = atoi(params);
+	return qtrue;
+}
+
+/*
+AICast_ScriptAction_ChangeAiName
+syntax: changeaiteam <id ainame>
+*/
+qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params) {
+	if (!params || !params[0]) {
+		G_Error(va("AI Scripting: changeainame requires an aiteam value %s", g_entities[cs->entityNum].aiName));
+		return qtrue;
+	}
+	g_entities[cs->entityNum].aiName = params;
+	AICast_ScriptParse(cs);
+	AICast_ScriptEvent(cs, "spawn", "");
+	return qtrue;
+}
 /*
 =================
 AICast_ScriptAction_Accum

@@ -203,6 +203,7 @@ void SP_func_leaky( gentity_t *ent ); //----(SA)	added
 void SP_func_rotating( gentity_t *ent );
 void SP_func_bobbing( gentity_t *ent );
 void SP_func_pendulum( gentity_t *ent );
+void SP_func_pendulum_explosive(gentity_t* ent);
 void SP_func_button( gentity_t *ent );
 void SP_func_explosive( gentity_t *ent );
 void SP_func_door( gentity_t *ent );
@@ -440,6 +441,7 @@ spawn_t spawns[] = {
 	{"func_rotating", SP_func_rotating},
 	{"func_bobbing", SP_func_bobbing},
 	{"func_pendulum", SP_func_pendulum},
+	{"func_pendulum_explosive", SP_func_pendulum_explosive},
 	{"func_train", SP_func_train},
 	{"func_group", SP_info_null},
 	// JOSEPH 1-26-00

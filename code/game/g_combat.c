@@ -989,7 +989,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		default:
 			return; // no damage from other weapons
 		}
-	} else if ( targ->s.eType == ET_EXPLOSIVE )   {
+	} else if (targ->s.eType == ET_EXPLOSIVE || targ->s.eType == ET_EXPLOSIVE_MOVER) {
 		// 32 Explosive
 		// 64 Dynamite only
 		if ( ( targ->spawnflags & 32 ) || ( targ->spawnflags & 64 ) ) {

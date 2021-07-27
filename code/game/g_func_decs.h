@@ -795,6 +795,7 @@ extern void SP_target_effect ( gentity_t * ent ) ;
 extern void use_target_effect ( gentity_t * self , gentity_t * other , gentity_t * activator ) ;
 extern void SP_func_door_rotating ( gentity_t * ent ) ;
 extern void SP_func_pendulum ( gentity_t * ent ) ;
+extern void SP_func_pendulum_explosive(gentity_t* ent);
 extern void SP_func_bobbing ( gentity_t * ent ) ;
 extern void SP_func_rotating ( gentity_t * ent ) ;
 extern void Use_Func_Rotate ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;

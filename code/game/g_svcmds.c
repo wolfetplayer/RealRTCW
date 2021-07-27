@@ -364,6 +364,9 @@ void    Svcmd_EntityList_f( void ) {
 		case ET_EXPLOSIVE:
 			G_Printf( "ET_EXPLOSIVE        " );
 			break;
+		case ET_EXPLOSIVE_MOVER:
+			G_Printf("ET_EXPLOSIVE_MOVER  ");
+			break;
 		case ET_TESLA_EF:
 			G_Printf( "ET_TESLA_EF         " );
 			break;

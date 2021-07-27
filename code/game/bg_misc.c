@@ -1624,7 +1624,7 @@ model="models/weapons2/mp34/mp34_3rd.md3"
 	{
 		"weapon_mp34",
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/mp34/mp34_3rd.md3",
+		{   "models/weapons2/mp34/mp34.md3",
 			"models/weapons2/mp34/v_mp34.md3",
 			"models/weapons2/mp34/pu_mp34.md3",
 			0, 0 },

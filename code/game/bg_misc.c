@@ -1832,7 +1832,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_LUGER,
 		"",                  // precache
 		"",                  // sounds
-		{8,8,8,8,8}	
+		{16,12,8,4,4}	
 	},
 
 
@@ -1851,7 +1851,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_COLT,
 		"",                  // precache
 		"",                  // sounds
-		{8,8,8,8,8}	
+		{16,12,8,4,4}	
 	},
 
 		{
@@ -1869,7 +1869,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_REVOLVER,
 		"",                  // precache
 		"",                  // sounds
-		{8,8,8,8,8}	
+		{16,12,8,4,4}	
 	},
 
 
@@ -1888,7 +1888,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
-		{32,32,32,32,32}	
+		{48,32,24,16,16}	
 	},
 
 
@@ -1907,7 +1907,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
-		{64,64,64,64,64}	
+		{64,56,48,40,40}	
 	},
 
 	
@@ -1926,7 +1926,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MP34,
 		"",                  // precache
 		"",                  // sounds
-		{96,96,96,96,96}	
+		{64,48,32,16,16}	
 	},
 
 
@@ -1945,7 +1945,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MP40,
 		"",                  // precache
 		"",                  // sounds
-		{32,32,32,32,32}	
+		{48,32,24,16,16}	
 	},
 
 
@@ -1964,7 +1964,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MP40,
 		"",                  // precache
 		"",                  // sounds
-		{64,64,64,64,64}	
+		{64,56,48,40,40}	
 	},
 
 	
@@ -1983,7 +1983,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MP40,
 		"",                  // precache
 		"",                  // sounds
-		{96,96,96,96,96}	
+		{64,48,32,16,16}	
 	},
 
 
@@ -2002,7 +2002,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_STEN,
 		"",                  // precache
 		"",                  // sounds
-		{30,30,30,30,30}	
+		{48,32,24,16,16}	
 	},
 
 
@@ -2021,7 +2021,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_STEN,
 		"",                  // precache
 		"",                  // sounds
-		{60,60,60,60,60}	
+		{64,56,48,40,40}	
 	},
 
 	
@@ -2040,7 +2040,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_STEN,
 		"",                  // precache
 		"",                  // sounds
-		{90,90,90,90,90}	
+		{64,48,32,16,16}	
 	},
 
 
@@ -2059,7 +2059,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_PPSH,
 		"",                  // precache
 		"",                  // sounds
-		{30,30,30,30,30}	
+		{48,32,24,16,16}	
 	},
 
 
@@ -2078,7 +2078,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_PPSH,
 		"",                  // precache
 		"",                  // sounds
-		{60,60,60,60,60}	
+		{64,56,48,40,40}	
 	},
 
 	
@@ -2097,7 +2097,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_PPSH,
 		"",                  // precache
 		"",                  // sounds
-		{90,90,90,90,90}	
+		{64,48,32,16,16}	
 	},
 
 
@@ -2116,7 +2116,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_THOMPSON,
 		"",                  // precache
 		"",                  // sounds
-		{35,35,35,35,35}	
+		{48,32,24,16,16}	
 	},
 
 
@@ -2136,7 +2136,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_THOMPSON,
 		"",                  // precache
 		"",                  // sounds
-		{70,70,70,70,70}	
+		{64,56,48,40,40}	
 	},
 
 	
@@ -2155,7 +2155,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_THOMPSON,
 		"",                  // precache
 		"",                  // sounds
-		{90,90,90,90,90}	
+		{64,48,32,16,16}	
 	},
 
 
@@ -2175,7 +2175,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MOSIN,
 		"",                  // precache
 		"",                  // sounds
-		{15,15,15,15,15}	
+		{5,4,3,2,2}	
 	},
 
 
@@ -2195,7 +2195,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MOSIN,
 		"",                  // precache
 		"",                  // sounds
-		{30,30,30,30,30}	
+		{10,8,6,4,4}	
 	},
 
 	
@@ -2214,7 +2214,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MOSIN,
 		"",                  // precache
 		"",                  // sounds
-		{40,40,40,40,40}	
+		{15,12,9,5,5}	
 	},
 
 
@@ -2233,7 +2233,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{5,5,5,5,5}
+		{48,32,24,16,16}
 	},
 
 		{
@@ -2251,7 +2251,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{15,15,15,15,15}
+		{64,56,48,40,40}
 	},
 
 
@@ -2270,7 +2270,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{30,30,30,30,30}
+		{64,48,32,16,16}
 	},
 
 
@@ -2289,7 +2289,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_FG42,
 		"",                          // precache
 		"",                          // sounds
-		{20,20,20,20,20}
+		{20,16,12,12,12}
 	},
 
 		{
@@ -2307,7 +2307,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_FG42,
 		"",                          // precache
 		"",                          // sounds
-		{40,40,40,40,40}
+		{40,30,20,10,10}
 	},
 
 
@@ -2326,7 +2326,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_FG42,
 		"",                          // precache
 		"",                          // sounds
-		{80,80,80,80,80}
+		{60,50,40,30,30}
 	},
 
 
@@ -2345,7 +2345,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_M1GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{20,20,20,20,20}
+		{5,4,3,2,2}
 	},
 
 		{
@@ -2363,7 +2363,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_M1GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{40,40,40,40,40}
+		{10,8,6,4,4}
 	},
 
 
@@ -2382,7 +2382,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_M1GARAND,
 		"",                          // precache
 		"",                          // sounds
-		{80,80,80,80,80}
+		{15,12,9,5,5}
 	},
 
 
@@ -2402,7 +2402,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_G43,
 		"",                          // precache
 		"",                          // sounds
-		{20,20,20,20,20}
+		{5,4,3,2,2}
 	},
 
 		{
@@ -2420,7 +2420,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_G43,
 		"",                          // precache
 		"",                          // sounds
-		{40,40,40,40,40}
+		{10,8,6,4,4}
 	},
 
 
@@ -2439,7 +2439,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_G43,
 		"",                          // precache
 		"",                          // sounds
-		{80,80,80,80,80}
+		{15,12,9,5,5}
 	},
 
 		
@@ -2458,7 +2458,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MG42M,
 		"",                          // precache
 		"",                          // sounds
-		{20,20,20,20,20}
+		{20,16,12,12,12}
 	},
 
 		{
@@ -2476,7 +2476,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MG42M,
 		"",                          // precache
 		"",                          // sounds
-		{40,40,40,40,40}
+		{40,30,20,10,10}
 	},
 
 
@@ -2495,7 +2495,7 @@ model="models/weapons2/p38/luger.md3"
 		WP_MG42M,
 		"",                          // precache
 		"",                          // sounds
-		{80,80,80,80,80}
+		{60,50,40,30,30}
 	},
 
 

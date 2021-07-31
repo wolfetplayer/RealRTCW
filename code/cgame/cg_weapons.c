@@ -42,7 +42,7 @@ int notebookModel;
 int propellerModel;
 int wolfkickSkin; // eugeny
 
-pmove_t     *pm;
+extern pmove_t     *pm;
 
 vec3_t ejectBrassCasingOrigin;
 

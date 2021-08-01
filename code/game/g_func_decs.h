@@ -1234,9 +1234,6 @@ extern void AICast_UpdateVisibility ( gentity_t * srcent , gentity_t * destent ,
 extern qboolean AICast_CheckVisibility ( gentity_t * srcent , gentity_t * destent ) ;
 extern qboolean AICast_VisibleFromPos ( vec3_t srcpos , int srcnum , vec3_t destpos , int destnum , qboolean updateVisPos ) ;
 extern qboolean AICast_InFieldOfVision ( vec3_t viewangles , float fov , vec3_t angles ) ;
-extern qboolean AICast_BotEntInvisibleBySmokeBomb( vec3_t start, vec3_t end );
-extern gentity_t * G_FindSmokeBomb ( gentity_t * start ) ;
-extern gentity_t * G_FindMissile ( gentity_t * start , weapon_t weap ) ;
 extern void SP_ai_trigger ( gentity_t * ent ) ;
 extern void ai_trigger_use ( gentity_t * self , gentity_t * other , gentity_t * activator ) ;
 extern void ai_trigger_activate ( gentity_t * self ) ;

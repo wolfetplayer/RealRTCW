@@ -1406,7 +1406,6 @@ void    trap_SnapVector( float *v );
 
 // New in IORTCW
 void	*trap_Alloc( int size );
-gentity_t* G_FindSmokeBomb( gentity_t* start );
 void G_PoisonGasExplode  ( gentity_t* );
 
 typedef enum

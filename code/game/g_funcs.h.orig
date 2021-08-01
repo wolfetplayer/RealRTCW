@@ -642,7 +642,6 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_CheckVisibility", (byte *)AICast_CheckVisibility},
 {"AICast_VisibleFromPos", (byte *)AICast_VisibleFromPos},
 {"AICast_InFieldOfVision", (byte *)AICast_InFieldOfVision},
-{"AICast_BotEntInvisibleBySmokeBomb", (byte *)AICast_BotEntInvisibleBySmokeBomb},
 {"SP_script_multiplayer", (byte *)SP_script_multiplayer},
 {"SP_script_camera", (byte *)SP_script_camera},
 {"SP_script_model_med", (byte *)SP_script_model_med},

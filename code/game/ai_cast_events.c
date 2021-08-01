@@ -576,26 +576,3 @@ void AICast_RecordScriptSound( int client ) {
 	cs = AICast_GetCastState( client );
 	cs->lastScriptSound = level.time;
 }
-
-gentity_t* G_FindMissile( gentity_t* start, weapon_t weap ) {
-	int i = start ? ( start - g_entities ) + 1 : 0;
-	gentity_t* ent = &g_entities[i];
-
-	for ( ; i < level.num_entities; i++, ent++ ) {
-		if ( ent->s.eType != ET_MISSILE ) {
-			continue;
-		}
-
-		if ( ent->s.weapon != weap ) {
-			continue;
-		}
-
-		return ent;
-	}
-
-	return NULL;
-}
-
-gentity_t* G_FindSmokeBomb( gentity_t* start ) {
-	return G_FindMissile( start, WP_SMOKE_BOMB );
-}

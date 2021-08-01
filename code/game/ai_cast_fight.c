@@ -338,18 +338,12 @@ qboolean AICast_EntityVisible( cast_state_t *cs, int enemynum, qboolean directvi
 	int last_visible;
 	int reactionTime;
 	float dist;
-	vec3_t start, end;
 
 	if ( enemynum >= MAX_CLIENTS ) {
 		return qtrue;           // FIXME: do a visibility calculation on non-client entities?
 
 	}
 	vis = &cs->vislist[enemynum];
-
-	if ( vis > 0 && AICast_BotEntInvisibleBySmokeBomb( start, end ) ) 
-	{
-	vis = 0;
-	}
 
 	if ( !vis->visible_timestamp && !vis->real_visible_timestamp ) {
 		return qfalse;  // they are not visible at all
@@ -393,6 +387,7 @@ qboolean AICast_EntityVisible( cast_state_t *cs, int enemynum, qboolean directvi
 			}
 		}
 	}
+
 
 	return qfalse;
 }

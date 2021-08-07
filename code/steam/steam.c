@@ -3,7 +3,7 @@
 #include "steam.h"
 #include <stdint.h>
 #ifdef WIN32
-	#include "Windows.h"
+	#include "windows.h"
 #endif
 
 

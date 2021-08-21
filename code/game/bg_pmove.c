@@ -403,6 +403,10 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 		scale *= 1.1;
 	}
 
+		if ( pm->ps->aiChar == AICHAR_GHOST ) {
+		scale *= 4.0;
+	}
+
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
 		scale *= 1.3;
 	}

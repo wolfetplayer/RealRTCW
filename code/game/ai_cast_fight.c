@@ -519,6 +519,8 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			return 8000;
 		case AICHAR_ZOMBIE: // zombie spirit attack
 			return 1000;
+		case AICHAR_GHOST: // zombie spirit attack
+			return 2000;
 		case AICHAR_HELGA:  // zombie spirit attack // RealRTCW was 1900
 			return 2000;
 		case AICHAR_LOPER:  // loper leap attack
@@ -1021,6 +1023,22 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 				return qfalse;
 			}
 			if ( dist > 1200 ) {
+				return qfalse;
+			}
+			if ( cs->enemyNum < 0 ) {
+				return qfalse;
+			}
+			if ( cs->vislist[cs->enemyNum].notvisible_timestamp > level.time - 1500 ) {
+				return qfalse;
+			}
+			break;
+			case AICHAR_GHOST:
+			delay = 4000;
+			// zombie "flying spirit" attack
+			if ( dist < 64 ) {
+				return qfalse;
+			}
+			if ( dist > 2000 ) {
 				return qfalse;
 			}
 			if ( cs->enemyNum < 0 ) {

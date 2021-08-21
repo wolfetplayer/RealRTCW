@@ -298,6 +298,7 @@ void SP_props_box_64( gentity_t *self );
 void SP_ai_soldier( gentity_t *ent );
 void SP_ai_american( gentity_t *ent );
 void SP_ai_zombie( gentity_t *ent );
+void SP_ai_ghost( gentity_t *ent );
 void SP_ai_warzombie( gentity_t *ent );
 void SP_ai_marker( gentity_t *ent );
 void SP_ai_effect( gentity_t *ent );
@@ -313,7 +314,6 @@ void SP_ai_stimsoldier_tesla( gentity_t *ent );
 void SP_ai_supersoldier( gentity_t *ent );
 void SP_ai_blackguard( gentity_t *ent );
 void SP_ai_protosoldier( gentity_t *ent );
-void SP_ai_frogman( gentity_t *ent );
 void SP_ai_partisan( gentity_t *ent );
 void SP_ai_russian( gentity_t *ent );
 void SP_ai_civilian( gentity_t *ent );
@@ -567,6 +567,7 @@ spawn_t spawns[] = {
 	{"ai_soldier", SP_ai_soldier},
 	{"ai_american", SP_ai_american},
 	{"ai_zombie", SP_ai_zombie},
+	{"ai_ghost", SP_ai_ghost},
 	{"ai_warzombie", SP_ai_warzombie},
 	{"ai_venom", SP_ai_venom},
 	{"ai_loper", SP_ai_loper},
@@ -578,7 +579,6 @@ spawn_t spawns[] = {
 	{"ai_stimsoldier_tesla", SP_ai_stimsoldier_tesla},
 	{"ai_supersoldier", SP_ai_supersoldier},
 	{"ai_protosoldier", SP_ai_protosoldier},
-	{"ai_frogman", SP_ai_frogman},
 	{"ai_blackguard", SP_ai_blackguard},
 	{"ai_partisan", SP_ai_partisan},
 	{"ai_russian", SP_ai_russian},

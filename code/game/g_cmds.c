@@ -1917,9 +1917,13 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 	case CLDMG_SPIRIT:
 		if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 			if ( enemy->aiCharacter == AICHAR_ZOMBIE ) {
-				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 6, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT );
-			} else {
-				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 1, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT ); // 8 + rand() % 4
+				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 10, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT );
+			} else if ( enemy->aiCharacter == AICHAR_GHOST ) {
+				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 15, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT );
+			} else if ( enemy->aiCharacter == AICHAR_HELGA ) {
+				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 15, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT ); 
+			} else  {
+				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 15, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT ); 
 			}
 		}
 		break;

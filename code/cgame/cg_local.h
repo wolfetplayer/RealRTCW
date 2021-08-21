@@ -210,6 +210,7 @@ typedef struct {
 	int zombieSpiritRadiusCycleTimes[MAX_ZOMBIE_SPIRITS];
 	int lastZombieSpirit;
 	int nextZombieSpiritSound;
+	int nextGhostSpiritSound;
 	int zombieSpiritEndTime;                // time the effect was disabled
 	vec3_t zombieSpiritPos[MAX_ZOMBIE_SPIRITS];
 	vec3_t zombieSpiritDir[MAX_ZOMBIE_SPIRITS];
@@ -405,6 +406,7 @@ typedef enum {
 	LE_BLOOD,
 	LE_FUSE_SPARK,
 	LE_ZOMBIE_SPIRIT,
+	LE_GHOST_SPIRIT,
 	LE_HELGA_SPIRIT,
 	LE_ZOMBIE_BAT,
 	LE_MOVING_TRACER,
@@ -1427,6 +1429,9 @@ typedef struct {
 	sfxHandle_t zombieSpiritSound;
 	sfxHandle_t zombieSpiritLoopSound;
 	sfxHandle_t zombieDeathSound;
+
+	sfxHandle_t ghostSpiritSound;
+	sfxHandle_t ghostSpiritLoopSound;
 
 	sfxHandle_t helgaSpiritLoopSound;
 	sfxHandle_t helgaSpiritSound;

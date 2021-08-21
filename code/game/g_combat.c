@@ -92,6 +92,7 @@ void TossClientItems( gentity_t *self ) {
 
 	switch ( self->aiCharacter ) {
 	case AICHAR_ZOMBIE:
+	case AICHAR_GHOST:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_LOPER:
 	case AICHAR_STIMSOLDIER1:
@@ -249,7 +250,7 @@ void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 		self->health = GIB_HEALTH + 1;
 		return;
 	}
-	if ( self->aiCharacter == AICHAR_HEINRICH || self->aiCharacter == AICHAR_HELGA || self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_PROTOSOLDIER ) {
+	if ( self->aiCharacter == AICHAR_HEINRICH || self->aiCharacter == AICHAR_HELGA || self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_PROTOSOLDIER || self->aiCharacter == AICHAR_GHOST  ) {
 		if ( self->health <= GIB_HEALTH ) {
 			self->health = -1;
 			return;
@@ -668,6 +669,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	switch ( targ->aiCharacter ) {
 		// get out quick for ai's that don't take headshots
 	case AICHAR_ZOMBIE:
+	case AICHAR_GHOST:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_HELGA:      // boss1 (beast)
 	case AICHAR_LOPER:
@@ -1374,7 +1376,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		// Ridah, can't gib with bullet weapons (except VENOM)
 		if ( targ->client ) {
 			if ( mod != MOD_VENOM && attacker == inflictor && targ->health <= GIB_HEALTH ) {
-				if ( targ->aiCharacter != AICHAR_ZOMBIE ) { // zombie needs to be able to gib so we can kill him (although he doesn't actually GIB, he just dies)
+				if ( (targ->aiCharacter != AICHAR_ZOMBIE) || (targ->aiCharacter != AICHAR_GHOST) ) { // zombie needs to be able to gib so we can kill him (although he doesn't actually GIB, he just dies)
 					targ->health = GIB_HEALTH + 1;
 				}
 			}

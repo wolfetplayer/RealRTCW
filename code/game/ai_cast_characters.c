@@ -196,6 +196,55 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AISTATE_ALERT
 	},
 
+
+		//AICHAR_GHOST
+	{
+		"Ghost",
+		{
+			200,        // running speed		//----(SA)	DK requested change
+			200,         // walking speed		//----(SA)	DK requested change
+			200,         // crouching speed
+			180,         // Field of View  RealRTCW upped from 90
+			350,        // Yaw Speed
+			0.0,        // leader
+			0.70,       // aim skill
+			0.70,       // aim accuracy
+			0.75,       // attack skill
+			0.1,        // reaction time
+			0.0,        // attack crouch
+			0.0,        // idle crouch
+			1.0,        // aggression
+			0.0,        // tactical
+			1.0,        // camper
+			16000,      // alertness
+			150,        // starting health
+			1.0,        // hearing scale
+			0.9,        // not in pvs hearing scale
+			512,        // relaxed detection radius
+			1.0,        // pain threshold multiplier
+		},
+		{
+			"ghostSightPlayer",
+			"ghostAttackPlayer",
+			"ghostOrders",
+			"ghostDeath",
+			"ghostSilentDeath",				//----(SA)	added
+			"ghostFlameDeath",					//----(SA)	added
+			"ghostPain",
+			"sound/weapons/melee/fstatck.wav",	// stay - you're told to stay put
+			"sound/weapons/melee/fstmiss.wav",	// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"ghostOrdersDeny",					// deny - refuse orders (doing something else)
+		},
+		AITEAM_MONSTER,
+		"ghost/default",
+		{ WP_MONSTER_ATTACK2},
+		BBOX_SMALL, {32,48},
+		AIFL_NOPAIN | AIFL_NO_FLAME_DAMAGE | AIFL_NO_RELOAD,
+		0, AIFunc_ZombieAttack2Start, 0,
+		NULL,
+		AISTATE_ALERT
+	},
+
 //----(SA)	added
 	//AICHAR_WARZOMBIE
 	{
@@ -683,53 +732,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AISTATE_ALERT
 	},
 
-	// AICHAR_FROGMAN
-	{
-		"Frogman",
-		{
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			200,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
-		},
-		{
-			"frogmanSightPlayer",
-			"frogmanAttackPlayer",
-			"frogmanOrders",
-			"frogmanDeath",
-			"frogmanSilentDeath",	//----(SA)	added
-			"frogmanFlameDeath",	//----(SA)	added
-			"frogmanPain",
-			"frogmanStay",			// stay - you're told to stay put
-			"frogmanFollow",		// follow - go with ordering player ("i'm with you" rather than "yes sir!")
-			"frogmanOrdersDeny",	// deny - refuse orders (doing something else)
-		},
-		AITEAM_NAZI,
-		"frogman/default",
-		{0},
-		BBOX_SMALL, {32,48},    // bbox, crouch/stand height
-		0,
-		0, 0, 0,
-		NULL,
-		AISTATE_RELAXED
-	},
 
 	//AICHAR_HELGA
 	{
@@ -1604,6 +1606,25 @@ void SP_ai_zombie( gentity_t *ent ) {
 }
 
 
+//----------------------------------------------------------------------------------------------------------------------------
+/*QUAKED ai_ghost (1 0.25 0) (-16 -16 -24) (16 16 64) TriggerSpawn NoRevive PortalZombie
+zombie entity
+"skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'zombie/default' is used)
+"head" the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)
+"ainame" name of AI
+*/
+
+/*
+============
+SP_ai_ghost
+============
+*/
+void SP_ai_ghost( gentity_t *ent ) {
+	ent->r.svFlags |= SVF_NOFOOTSTEPS;
+	AICast_DelayedSpawnCast( ent, AICHAR_GHOST );
+}
+
+
 //----(SA)	added
 //----------------------------------------------------------------------------------------------------------------------------
 /*QUAKED ai_warzombie (1 0.25 0) (-16 -16 -24) (16 16 64) TriggerSpawn NoRevive PortalZombie
@@ -1762,23 +1783,7 @@ void SP_ai_eliteguard( gentity_t *ent ) {
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------------
-/*QUAKED ai_frogman (1 0.25 0) (-16 -16 -24) (16 16 64) TriggerSpawn NoRevive
-elite guard entity
-"skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'frogman/default' is used)
-"head" the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)
-"ainame" name of AI
-*/
 
-/*
-============
-SP_ai_frogman
-============
-*/
-void SP_ai_frogman( gentity_t *ent ) {
-	ent->r.svFlags |= SVF_NOFOOTSTEPS;
-	AICast_DelayedSpawnCast( ent, AICHAR_FROGMAN );
-}
 
 
 //----------------------------------------------------------------------------------------------------------------------------

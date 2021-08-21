@@ -2270,6 +2270,12 @@ void CG_ParticleBloodCloud( centity_t *cent, vec3_t origin, vec3_t dir ) {
 			p->color = BLOODRED;
 		}
 
+		if ( cent->currentState.aiChar == AICHAR_GHOST ) {
+			p->color = MUSTARD;
+		} else {
+			p->color = BLOODRED;
+		}
+
 		p->alpha = 0.75;
 
 	}

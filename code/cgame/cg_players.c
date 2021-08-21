@@ -770,6 +770,10 @@ static qboolean CG_RegisterClientModelname( clientInfo_t *ci, const char *modelN
 			cgs.media.skeletonHeadSkin = trap_R_RegisterSkin( "models/players/skel/head_default.skin" );
 
 			cgs.media.zombieSpiritSound = trap_S_RegisterSound( "sound/zombie/attack/spirit_start.wav" );
+
+			cgs.media.ghostSpiritSound = trap_S_RegisterSound( "sound/player/ghost/spirit_start.wav" );
+			cgs.media.ghostSpiritLoopSound = trap_S_RegisterSound( "sound/player/ghost/spirit_loop.wav" );
+
 			cgs.media.zombieDeathSound = trap_S_RegisterSound( "sound/world/ceramicbreak.wav" ); // Zombie Gib
 
 			cgs.media.spiritSkullModel = trap_R_RegisterModel( "models/mapobjects/skull/skul2t.md3" );
@@ -3218,6 +3222,42 @@ void CG_SpawnZombieSpirit( vec3_t origin, vec3_t vel, int trailHead, int ownerNu
 
 /*
 ==============
+CG_SpawnGhostSpirit
+==============
+*/
+void CG_SpawnGhostSpirit( vec3_t origin, vec3_t vel, int trailHead, int ownerNum, refEntity_t *oldrefent, int trailLife, int idealWidth ) {
+	localEntity_t   *le;
+	refEntity_t     *re;
+
+	le = CG_AllocLocalEntity();
+	re = &le->refEntity;
+
+	*re = *oldrefent;
+
+	le->leType = LE_GHOST_SPIRIT;
+	le->startTime = cg.time - 5000; // set it back so we dont fade it in like the "end" spirits
+	le->endTime = cg.time + 5000;
+
+	le->pos.trType = TR_LINEAR;
+	le->pos.trTime = cg.time;
+	VectorCopy( origin, le->pos.trBase );
+	VectorCopy( vel, le->pos.trDelta );
+
+	le->effectWidth = trailLife;
+	le->radius = idealWidth;
+	le->lastTrailTime = cg.time;
+	le->headJuncIndex = trailHead;
+	le->loopingSound = cgs.media.ghostSpiritLoopSound;
+
+	le->ownerNum = ownerNum;
+
+	re->fadeStartTime = le->endTime - 2000;
+	re->fadeEndTime = le->endTime;
+}
+
+
+/*
+==============
 CG_AddZombieSpiritEffect
 ==============
 */
@@ -3473,6 +3513,286 @@ void CG_AddZombieSpiritEffect( centity_t *cent ) {
 		// spawn a new sound
 		trap_S_StartSound( cent->lerpOrigin, -1, CHAN_AUTO, cgs.media.zombieSpiritSound );
 		cent->pe.nextZombieSpiritSound = cg.time + sndIntervalMin + (int)( (float)( sndIntervalMax - sndIntervalMin ) * random() );
+	}
+
+	// add a negative light around us
+	fadeRatio = (float)( cg.time - cent->pe.zombieSpiritStartTime ) / (float)fadeInTime;
+	if ( fadeRatio < 0.0 ) {
+		fadeRatio = 0.0;
+	}
+	if ( fadeRatio > 1.0 ) {
+		fadeRatio = 1.0;
+	}
+
+	if ( !cent->pe.cueZombieSpirit ) {
+		alpha = 1.0 - ( (float)( cg.time - cent->pe.zombieSpiritEndTime ) / (float)fadeOutTime );
+		fadeRatio = alpha;
+		if ( alpha < 0.0 ) {
+			cent->pe.zombieSpiritEndTime = 0;   // stop the effect
+			return;
+		}
+	}
+	fadeRatio *= 0.7;
+	trap_R_AddLightToScene( cent->lerpOrigin, 300.0, 1.0 * fadeRatio, 1.0 * fadeRatio, 1.0 * fadeRatio, 10 );
+}
+
+
+/*
+==============
+CG_AddGhostSpiritEffect
+==============
+*/
+void CG_AddGhostSpiritEffect( centity_t *cent ) {
+	const int trailLife         = 600;
+	const float idealWidth      = 14.0;
+	const int fadeInTime        = 1200;
+	const int fadeOutTime       = 2000;
+	const int minRotationTime   = 3000;
+	const int maxRotationTime   = 4000;
+	const int minRadiusCycleTime    = 2400;
+	const int maxRadiusCycleTime    = 2900;
+	const int zCycleTime        = 3000;
+
+	const float minDist         = 16;
+	const float maxDist         = 40;
+	const float fadeDist        = 4;
+
+	const int sndIntervalMin    = 300;
+	const int sndIntervalMax    = 1400;
+	const int sndDelay          = 0;
+
+	const int step              = 50;
+
+	int i, t;
+	vec3_t v,p[MAX_ZOMBIE_SPIRITS], ang;
+	float fadeRatio, alpha, radius;
+	int rotationTime, radiusCycleTime;
+	trace_t trace;
+	refEntity_t refent;
+
+	qboolean active = qfalse;
+
+	static int lastSpiritRelease;
+
+	if ( cent->currentState.aiChar != AICHAR_GHOST ) {
+		return;
+	}
+
+	// sanity check the server time to make sure we don't start the effect
+	// to early, whilst reloading a savegame or something
+	if ( cg.time < cent->currentState.effect1Time ) {
+		return;
+	}
+
+	if ( cent->currentState.eFlags & EF_MONSTER_EFFECT ) {
+
+		if ( !cent->pe.cueZombieSpirit ) {
+			// starting a new effect
+			cent->pe.cueZombieSpirit = qtrue;
+			cent->pe.zombieSpiritStartTime = cent->currentState.effect1Time;
+			cent->pe.lastZombieSpirit = cg.time;
+			cent->pe.nextGhostSpiritSound = cg.time + sndDelay;
+			for ( i = 0; i < MAX_ZOMBIE_SPIRITS; i++ ) {
+				cent->pe.zombieSpiritTrailHead[i] = -1;
+				cent->pe.zombieSpiritRotationTimes[i] = minRotationTime + ( random() * ( maxRotationTime - minRotationTime ) );
+				cent->pe.zombieSpiritRadiusCycleTimes[i] = minRadiusCycleTime + ( random() * ( maxRadiusCycleTime - minRadiusCycleTime ) );
+				cent->pe.zombieSpiritStartTimes[i] = cent->currentState.effect1Time;
+			}
+		}
+		cent->pe.zombieSpiritEndTime = cg.time;
+
+	} else {
+
+		// if running another effect, dont mess with its variables
+		if ( cent->currentState.eFlags & EF_MONSTER_EFFECT3 || cent->currentState.effect1Time < cent->currentState.effect3Time ) {
+			return;
+		}
+
+		if ( !cent->pe.zombieSpiritEndTime ) {
+			return;
+		}
+		// clear the flag, and let the effect fade itself out
+		cent->pe.cueZombieSpirit = qfalse;
+	}
+
+	for ( t = cent->pe.lastZombieSpirit + step; t <= cg.time; t += step ) {
+
+		// add the spirits
+		for ( i = 0; i < MAX_ZOMBIE_SPIRITS; i++ ) {
+
+			if ( cent->pe.zombieSpiritTrailHead[i] < -1 ) {
+				// spirit has gone, create a new one
+				cent->pe.zombieSpiritTrailHead[i] = -1;
+				cent->pe.zombieSpiritRotationTimes[i] = minRotationTime + ( random() * ( maxRotationTime - minRotationTime ) );
+				cent->pe.zombieSpiritRadiusCycleTimes[i] = minRadiusCycleTime + ( random() * ( maxRadiusCycleTime - minRadiusCycleTime ) );
+				cent->pe.zombieSpiritStartTimes[i] = cg.time - step;
+			}
+
+			fadeRatio = (float)( cg.time - cent->pe.zombieSpiritStartTimes[i] ) / (float)fadeInTime;
+			if ( fadeRatio < 0.0 ) {
+				fadeRatio = 0.0;
+			}
+			if ( fadeRatio > 1.0 ) {
+				fadeRatio = 1.0;
+			}
+
+			if ( cent->pe.cueZombieSpirit ) {
+				alpha = fadeRatio;
+			} else {
+				alpha = 1.0 - ( (float)( cg.time - cent->pe.zombieSpiritEndTime ) / (float)fadeOutTime );
+				fadeRatio = alpha;
+				if ( alpha < 0.0 ) {
+					cent->pe.zombieSpiritTrailHead[i] = -2; // kill it
+					continue;
+				}
+			}
+
+			active = qtrue; // we have an active spirit, so continue effect
+
+			alpha *= 0.3;
+
+			if ( cent->pe.cueZombieSpirit ) {
+				rotationTime = cent->pe.zombieSpiritRotationTimes[i];
+				radiusCycleTime = cent->pe.zombieSpiritRadiusCycleTimes[i];
+
+				radius = ( minDist + sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( radiusCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % radiusCycleTime ) / (float)radiusCycleTime ) ) * ( maxDist - minDist ) );
+
+				// get the position
+				v[0] = ( 0.5 + 0.5 * fadeRatio ) * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[1] = ( 0.5 + 0.5 * fadeRatio ) * cos( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[2] = 12 + 36 * ( 0.5 + 0.5 * fadeRatio ) * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( zCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % zCycleTime ) / (float)zCycleTime ) );
+				v[2] -= ( 1.0 - fadeRatio ) * 32;
+
+				VectorAdd( cent->lerpOrigin, v, p[i] );
+			} else {
+				// expand the radius, if it enters world geometry, kill it
+				rotationTime = cent->pe.zombieSpiritRotationTimes[i];
+				radiusCycleTime = cent->pe.zombieSpiritRadiusCycleTimes[i];
+
+				radius = pow( 1.0 - fadeRatio, 2 ) * fadeDist + ( 1.0 - pow( 1.0 - fadeRatio, 2 ) ) * ( minDist + sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( radiusCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % radiusCycleTime ) / (float)radiusCycleTime ) ) * ( maxDist - minDist ) );
+
+				// get the position
+				v[0] = sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[1] = cos( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[2] = 12 + 36 * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( zCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % zCycleTime ) / (float)zCycleTime ) );
+				v[2] -= ( 1.0 - fadeRatio ) * 32;
+
+				VectorAdd( cent->lerpOrigin, v, p[i] );
+
+				// check for sinking into geometry
+				trap_CM_BoxTrace( &trace, p[i], p[i], NULL, NULL, 0, MASK_SOLID );
+				// if we hit something, clip the velocity, but maintain speed
+				if ( trace.startsolid ) {
+					cent->pe.zombieSpiritTrailHead[i] = -2; // kill it
+					continue;
+				}
+			}
+
+			VectorSubtract( p[i], cent->pe.zombieSpiritPos[i], cent->pe.zombieSpiritDir[i] );
+			cent->pe.zombieSpiritSpeed[i] = 1000.0 / step * VectorNormalize( cent->pe.zombieSpiritDir[i] );
+			VectorCopy( p[i], cent->pe.zombieSpiritPos[i] );
+
+			cent->pe.zombieSpiritTrailHead[i] = CG_AddTrailJunc( cent->pe.zombieSpiritTrailHead[i],
+																 cgs.media.zombieSpiritTrailShader,
+																 t,
+																 STYPE_STRETCH,
+																 p[i],
+																 trailLife * 2,
+																 alpha,
+																 0.0,
+																 ( 0.5 + 0.5 * fadeRatio ) * idealWidth,
+																 0,
+																 TJFL_NOCULL,
+																 colorWhite,
+																 colorWhite,
+																 1.0, 1 );
+
+		}
+
+		cent->pe.lastZombieSpirit = t;
+
+		if ( !active ) {  // effect has gone
+			cent->pe.zombieSpiritEndTime = 0;
+		}
+	}
+
+	// add the skull at the head of the spirits
+	memset( &refent, 0, sizeof( refent ) );
+	refent.hModel = cgs.media.spiritSkullModel;
+	refent.backlerp = 0;
+	refent.renderfx = RF_NOSHADOW | RF_MINLIGHT;    //----(SA)
+	refent.customShader = cgs.media.zombieSpiritSkullShader;
+	refent.reType = RT_MODEL;
+	for ( i = 0; i < MAX_ZOMBIE_SPIRITS; i++ ) {
+		if ( cent->pe.zombieSpiritTrailHead[i] < -1 ) {
+			continue;   // spirit has gone
+		}
+		fadeRatio = (float)( cg.time - cent->pe.zombieSpiritStartTimes[i] ) / (float)fadeInTime;
+		if ( fadeRatio < 0.0 ) {
+			fadeRatio = 0.0;
+		}
+		if ( fadeRatio > 1.0 ) {
+			fadeRatio = 1.0;
+		}
+
+		if ( cent->pe.cueZombieSpirit ) {
+			alpha = fadeRatio;
+		} else {
+			alpha = 1.0 - ( (float)( cg.time - cent->pe.zombieSpiritEndTime ) / (float)fadeOutTime );
+			fadeRatio = alpha;
+			if ( alpha < 0.0 ) {
+				cent->pe.zombieSpiritTrailHead[i] = -2; // kill it
+				continue;
+			}
+		}
+
+		refent.shaderRGBA[3] = (byte)( 0.5 * alpha * 255.0 );
+		VectorCopy( cent->pe.zombieSpiritPos[i], refent.origin );
+
+		// HACK!!! skull model is back-to-front, need to fix
+		VectorInverse( cent->pe.zombieSpiritDir[i] );
+		vectoangles( cent->pe.zombieSpiritDir[i], ang );
+		VectorInverse( cent->pe.zombieSpiritDir[i] );
+		AnglesToAxis( ang, refent.axis );
+		// create the non-normalized axis so we can size it
+		refent.nonNormalizedAxes = qtrue;
+		for ( t = 0; t < 3; t++ ) {
+			VectorNormalize( refent.axis[t] );
+			VectorScale( refent.axis[t], 0.35, refent.axis[t] );
+		}
+		//
+		// add the sound
+		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.zombieSpiritLoopSound, fadeRatio );
+		//
+		// if this spirit is in a good position to be released and head to the enemy, then release it
+		if ( fadeRatio == 1.0 && ( lastSpiritRelease > cg.time || ( lastSpiritRelease < cg.time - 2000 ) ) ) {
+			VectorSubtract( cent->currentState.origin2, refent.origin, v );
+			VectorNormalize( v );
+			if ( DotProduct( cent->pe.zombieSpiritDir[i], v ) > 0.6 || ( cent->currentState.eFlags & EF_DEAD ) ) {
+				// check for sinking into geometry
+				trap_CM_BoxTrace( &trace, refent.origin, refent.origin, NULL, NULL, 0, MASK_SOLID );
+				// if we hit something, don't release it yet
+				if ( !trace.startsolid ) {
+					if ( cent->pe.zombieSpiritSpeed[i] < 300 ) {
+						cent->pe.zombieSpiritSpeed[i] = 300;
+					}
+					VectorScale( cent->pe.zombieSpiritDir[i], cent->pe.zombieSpiritSpeed[i], v );
+					CG_SpawnGhostSpirit( refent.origin, v, cent->pe.zombieSpiritTrailHead[i], cent->currentState.number, &refent, trailLife, idealWidth );
+					lastSpiritRelease = cg.time;
+					cent->pe.zombieSpiritTrailHead[i] = -2; // kill this version of it
+					continue;
+				}
+			}
+		}
+		//
+		// if we didn't kill it, draw it
+		trap_R_AddRefEntityToScene( &refent );
+	}
+
+	if ( cg.time > cent->pe.nextGhostSpiritSound && cent->pe.cueZombieSpirit ) { //&& (cg.time < cent->pe.zombieSpiritStartTime + sndDuration)) {
+		// spawn a new sound
+		trap_S_StartSound( cent->lerpOrigin, -1, CHAN_AUTO, cgs.media.ghostSpiritSound );
+		cent->pe.nextGhostSpiritSound = cg.time + sndIntervalMin + (int)( (float)( sndIntervalMax - sndIntervalMin ) * random() );
 	}
 
 	// add a negative light around us
@@ -4786,6 +5106,7 @@ void CG_Player( centity_t *cent ) {
 	// add special monster effects here
 	//
 	CG_AddZombieSpiritEffect( cent );
+	CG_AddGhostSpiritEffect( cent );
 	CG_AddZombieFlameEffect( cent );
 	CG_AddZombieFlameShort( cent );
 	CG_AddLoperLightningEffect( cent );

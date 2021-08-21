@@ -172,7 +172,7 @@ void CG_BloodTrail( localEntity_t *le ) {
 	step = ( 1000 * 3 ) / VectorLength( le->pos.trDelta );
 #endif
 
-	if ( cent && cent->currentState.aiChar == AICHAR_ZOMBIE ) {
+	if ( cent && ((cent->currentState.aiChar == AICHAR_ZOMBIE) || (cent->currentState.aiChar == AICHAR_GHOST) ) ) {
 		step = 30;
 	}
 
@@ -187,7 +187,7 @@ void CG_BloodTrail( localEntity_t *le ) {
 #else
 
 
-		if ( cent && cent->currentState.aiChar == AICHAR_ZOMBIE ) {
+		if ( cent && ((cent->currentState.aiChar == AICHAR_ZOMBIE) || (cent->currentState.aiChar == AICHAR_GHOST)) ) {
 			CG_Particle_Bleed( cgs.media.smokePuffShader, newOrigin, vec3_origin, 1, 500 + rand() % 200 );
 		} else {
 			// Ridah, blood trail using trail code (should be faster since we don't have to spawn as many)
@@ -1055,6 +1055,23 @@ void CG_AddClientCritter( localEntity_t *le ) {
 												 1.0, 1 );
 		}
 
+			if ( le->leType == LE_GHOST_SPIRIT ) {
+			le->headJuncIndex = CG_AddTrailJunc( le->headJuncIndex,
+												 cgs.media.zombieSpiritTrailShader,
+												 time,
+												 STYPE_STRETCH,
+												 le->refEntity.origin,
+												 (int)le->effectWidth,  // trail life
+												 0.3 * alpha,
+												 0.0,
+												 le->radius,
+												 0,
+												 0, //TJFL_FIXDISTORT,
+												 colorWhite,
+												 colorWhite,
+												 1.0, 1 );
+		}
+
 		if ( le->leType == LE_HELGA_SPIRIT && le->refEntity.hModel != cgs.media.ssSpiritSkullModel ) {
 			le->headJuncIndex = CG_AddTrailJunc( le->headJuncIndex,
 												 cgs.media.helgaSpiritTrailShader,
@@ -1102,6 +1119,17 @@ void CG_AddClientCritter( localEntity_t *le ) {
 					// gasp!
 					CG_SoundPlayIndexedScript( cgs.media.helgaGaspSound, NULL, cg_entities[le->ownerNum].currentState.otherEntityNum2 );
 				}
+				
+				if ( le->leType == LE_GHOST_SPIRIT ) {
+					// spawn a "flashbang" thinker
+					fb = CG_AllocLocalEntity();
+					fb->leType = LE_SPIRIT_VIEWFLASH;
+					fb->startTime = cg.time + 50;
+					fb->endTime = fb->startTime + SPIRIT_FLASH_FADEIN + SPIRIT_FLASH_DURATION + SPIRIT_FLASH_FADEOUT;
+					// gasp!
+					CG_SoundPlayIndexedScript( cgs.media.helgaGaspSound, NULL, cg_entities[le->ownerNum].currentState.otherEntityNum2 );
+				}
+
 			}
 		}
 
@@ -1707,6 +1735,7 @@ void CG_AddLocalEntities( void ) {
 			break;
 		case LE_HELGA_SPIRIT:
 		case LE_ZOMBIE_SPIRIT:
+		case LE_GHOST_SPIRIT:
 		case LE_ZOMBIE_BAT:
 			CG_AddClientCritter( le );
 			break;

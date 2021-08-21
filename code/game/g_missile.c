@@ -1239,7 +1239,13 @@ gentity_t *fire_zombiespirit( gentity_t *self, gentity_t *bolt, vec3_t start, ve
 
 	bolt->clipmask = MASK_MISSILESHOT;
 
+	if ( self->aiCharacter == AICHAR_GHOST) 
+	{
+    bolt->s.loopSound = G_SoundIndex( "sound/player/ghost/spirit_loop.wav" );
+	} else 
+	{
 	bolt->s.loopSound = G_SoundIndex( "sound/Zombie/attack/spirit_loop.wav" );
+	}
 
 	bolt->s.pos.trType = TR_INTERPOLATE;        // we'll move it manually, since it needs to track it's enemy
 	bolt->s.pos.trTime = level.time;            // move a bit on the very first frame

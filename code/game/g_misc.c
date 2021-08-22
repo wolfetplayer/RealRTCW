@@ -920,6 +920,26 @@ void use_shooter_tesla( gentity_t *ent, gentity_t *other, gentity_t *activator )
 	}
 }
 
+/*
+==============
+use_shooter_cross
+==============
+*/
+void use_shooter_cross( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
+	gentity_t   *tent;
+
+	if ( ent->r.linked ) {
+		trap_UnlinkEntity( ent );
+	} else
+	{
+		tent = G_PickTarget( ent->target );
+		VectorCopy( tent->s.origin, ent->s.origin2 );
+
+		ent->active = 0;
+		trap_LinkEntity( ent );
+	}
+}
+
 //----(SA)	added
 /*QUAKED shooter_tesla (1 0 0) (-16 -16 -16) (16 16 16) START_ON DLIGHT
 START_ON means it starts out active, the default is to start off and fire when triggered
@@ -951,6 +971,108 @@ void shooter_tesla_finish_spawning( gentity_t *ent ) {
 		ent->active = 0;
 		trap_LinkEntity( ent );
 	}
+}
+
+
+void shooter_cross_finish_spawning( gentity_t *ent ) {
+	gentity_t   *tent;  // target ent
+
+	ent->think = 0;
+	ent->nextthink = 0;
+
+	// locate the target and set the location
+	tent = G_PickTarget( ent->target );
+	if ( !tent ) { // if there's a problem with tent
+		G_Printf( "shooter_cross (%s) at %s has no target.\n", ent->target, vtos( ent->s.origin ) );
+		return;
+	}
+
+	VectorCopy( tent->s.origin, ent->s.origin2 );
+
+	if ( ent->spawnflags & 1 ) {   // START_ON
+		ent->active = 0;
+		trap_LinkEntity( ent );
+	}
+}
+
+void SP_shooter_cross( gentity_t *ent ) {
+
+	float tempf;
+
+	//	it's a shooter_ since it will act like any other shooter, except
+	//	the tesla is a client-side effect that reports damage back to the
+	//	game, so this will create an linked-entity on the client that acts as dictated
+	//	and, if necessary, passes back damage info like the weapon.  this will
+	//	keep the server->client messages to a minimum (start firing/stop firing)
+	//	rather than sending an event for each bolt.
+	ent->s.eType        = ET_TESLA_EF;
+	ent->use            = use_shooter_cross;
+
+	// set number of bolts
+	if ( ent->count ) {
+		ent->s.density = ent->count;
+	} else {
+		ent->s.density = 2;
+	}
+
+
+	// width
+	if ( G_SpawnFloat( "width", "", &tempf ) ) {
+		ent->s.frame = (int)tempf;
+	} else {
+		ent->s.frame = 20;
+	}
+
+
+	// 'sticky' time (stored in .weapon)
+	if ( G_SpawnFloat( "sticktime", "", &tempf ) ) {
+		ent->s.time2 = (int)( tempf * 1000.0f );
+	} else {
+		ent->s.time2 = 500; // default to 1/2 sec
+
+	}
+	// randomness
+	ent->s.angles2[0] = ent->random;
+
+
+	// DLIGHT
+	if ( ent->spawnflags & 2 ) {
+		int dlightsize;
+		if ( G_SpawnInt( "dlightsize", "", &dlightsize ) ) {
+			ent->s.time = dlightsize;
+		} else {
+			ent->s.time = 500;
+		}
+
+		if ( ent->random ) {
+			ent->s.time2 = ent->random;
+		} else {
+			ent->s.time2 = 4; // dlight randomness
+
+		}
+		if ( ent->dl_color[0] <= 0 &&    // if it's black or has no color assigned
+			 ent->dl_color[1] <= 0 &&
+			 ent->dl_color[2] <= 0 ) {
+			// default is the same color as the tesla weapon
+			ent->dl_color[0] = 0.2f;
+			ent->dl_color[1] = 0.6f;
+			ent->dl_color[2] = 1.0f;
+		}
+
+		ent->dl_color[0] = ent->dl_color[0] * 255;
+		ent->dl_color[1] = ent->dl_color[1] * 255;
+		ent->dl_color[2] = ent->dl_color[2] * 255;
+
+		ent->s.dl_intensity = (int)ent->dl_color[0] | ( (int)ent->dl_color[1] << 8 ) | ( (int)ent->dl_color[2] << 16 );
+
+	} else {
+		ent->s.dl_intensity = 0;
+	}
+
+
+	// finish up after everything has spawned in so we know all potential targets are ready
+	ent->think = shooter_cross_finish_spawning;
+	ent->nextthink = level.time + 100;
 }
 
 void SP_shooter_tesla( gentity_t *ent ) {

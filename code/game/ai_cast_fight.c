@@ -483,6 +483,8 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			}
 		}
 		return ( TESLA_RANGE * 0.9 ) - 50;  // allow for bounding box
+	case WP_HOLYCROSS:
+		return ( HOLYCROSS_RANGE * 0.9 ) - 50;  // allow for bounding box
 	case WP_FLAMETHROWER:
 		return ( FLAMETHROWER_RANGE * 0.5 ) - 50;   // allow for bounding box
 	case WP_PANZERFAUST:
@@ -958,6 +960,14 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 		switch ( cs->aiCharacter ) {
 		case AICHAR_STIMSOLDIER3:
 			if ( dist < 0 || dist >= TESLA_RANGE ) {
+				return qfalse;
+			}
+		}
+		break;
+	case WP_HOLYCROSS:
+		switch ( cs->aiCharacter ) {
+		case AICHAR_STIMSOLDIER3:
+			if ( dist < 0 || dist >= HOLYCROSS_RANGE ) {
 				return qfalse;
 			}
 		}
@@ -1904,6 +1914,7 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	case    WP_VENOM:
 	case    WP_FLAMETHROWER:
 	case    WP_TESLA:
+	case    WP_HOLYCROSS:
 		return 1000;
 	}
 
@@ -1944,6 +1955,18 @@ qboolean AICast_StopAndAttack( cast_state_t *cs ) {
 		break;
 		// if they are using tesla (SUPERSOLDIER / BOSS2) try and get close
 	case WP_TESLA:
+		if ( dist > 128 /*&& (level.time%10000 < 8000)*/ ) {
+			return qfalse;
+		}
+		// if we haven't injured them in a while, advance
+		if ( cs->enemyNum >= 0 ) {
+			ecs = AICast_GetCastState( cs->enemyNum );
+			if ( ecs->lastPain < level.time - 3000 ) {
+				return qfalse;
+			}
+		}
+		break;
+	case WP_HOLYCROSS:
 		if ( dist > 128 /*&& (level.time%10000 < 8000)*/ ) {
 			return qfalse;
 		}

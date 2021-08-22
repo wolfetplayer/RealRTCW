@@ -1188,6 +1188,7 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.bulletHitFleshMetalScript = CG_SoundScriptPrecache( "bulletHitFleshMetal" );
 
 	cgs.media.teslaZapScript = CG_SoundScriptPrecache( "teslaZap" );
+	cgs.media.crossZapScript = CG_SoundScriptPrecache( "crossZap" );
 	cgs.media.teslaLoopSound = trap_S_RegisterSound( "sound/weapons/tesla/loop.wav" );
 
 	cgs.media.batsFlyingLoopSound = trap_S_RegisterSound( "sound/world/bats_flying.wav" );

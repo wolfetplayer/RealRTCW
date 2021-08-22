@@ -166,6 +166,7 @@ vmCvar_t		sk_plr_dmg_panzerfaust_splash;
 vmCvar_t		sk_plr_dmg_venom;
 vmCvar_t		sk_plr_dmg_flamethrower;
 vmCvar_t		sk_plr_dmg_tesla;
+vmCvar_t		sk_plr_dmg_holycross;
 vmCvar_t		sk_plr_dmg_grenade;
 vmCvar_t		sk_plr_dmg_grenade_radius;
 vmCvar_t		sk_plr_dmg_pineapple;
@@ -203,6 +204,7 @@ vmCvar_t		sk_ai_dmg_panzerfaust_splash;
 vmCvar_t		sk_ai_dmg_venom;
 vmCvar_t		sk_ai_dmg_flamethrower;
 vmCvar_t		sk_ai_dmg_tesla;
+vmCvar_t		sk_ai_dmg_holycross;
 vmCvar_t		sk_ai_dmg_grenade;
 vmCvar_t		sk_ai_dmg_grenade_radius;
 vmCvar_t		sk_ai_dmg_pineapple;
@@ -260,6 +262,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_plr_dmg_venom, "sk_plr_dmg_venom", "9", CVAR_CHEAT, 0, qfalse  },  // was 13
 	{ &sk_plr_dmg_flamethrower, "sk_plr_dmg_flamethrower", "10", CVAR_CHEAT, 0, qfalse  }, // was 6
 	{ &sk_plr_dmg_tesla, "sk_plr_dmg_tesla", "20", CVAR_CHEAT, 0, qfalse  },  // was 10
+	{ &sk_plr_dmg_holycross, "sk_plr_dmg_holycross", "100", CVAR_CHEAT, 0, qfalse  },  // was 10
 	{ &sk_plr_dmg_grenade, "sk_plr_dmg_grenade", "170", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_grenade_radius, "sk_plr_dmg_grenade_radius", "250", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_plr_dmg_pineapple, "sk_plr_dmg_pineapple", "220", CVAR_CHEAT, 0, qfalse  },
@@ -309,6 +312,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &sk_ai_dmg_venom, "sk_ai_dmg_venom", "9", CVAR_CHEAT, 0, qfalse  },  // was 13
 	{ &sk_ai_dmg_flamethrower, "sk_ai_dmg_flamethrower", "10", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_tesla, "sk_ai_dmg_tesla", "10", CVAR_CHEAT, 0, qfalse  },
+	{ &sk_ai_dmg_holycross, "sk_ai_dmg_holycross", "100", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_grenade, "sk_ai_dmg_grenade", "170", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_grenade_radius, "sk_ai_dmg_grenade_radius", "250", CVAR_CHEAT, 0, qfalse  },
 	{ &sk_ai_dmg_pineapple, "sk_ai_dmg_pineapple", "220", CVAR_CHEAT, 0, qfalse  },

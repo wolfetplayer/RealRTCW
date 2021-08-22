@@ -342,8 +342,6 @@ static void CG_Obituary( entityState_t *ent ) {
 			message = "was exploded by";
 			message2 = "'s grenade";
 			break;
-		case MOD_CROSS:
-			break;
 // JPW NERVE
 		case MOD_AIRSTRIKE:
 			message = "was blasted by";

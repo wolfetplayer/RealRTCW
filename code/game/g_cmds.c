@@ -1969,6 +1969,57 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 			}
 		}
 		break;
+	case CLDMG_HOLYCROSS:
+		#define FLAME_THRESHOLD2 50
+		// do some cheat protection
+		if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
+			if ( enemy->s.weapon != WP_HOLYCROSS ) {
+				break;
+			}
+			if ( !( enemy->client->buttons & BUTTON_ATTACK ) ) {
+				break;
+			}
+		}
+
+		if (    ( ent->aiCharacter != AICHAR_GHOST ) &&
+				( ent->aiCharacter != AICHAR_ZOMBIE ) &&
+				( ent->aiCharacter != AICHAR_WARZOMBIE ) &&
+				( ent->aiCharacter != AICHAR_HELGA ) &&
+				( ent->aiCharacter != AICHAR_HEINRICH )) {
+			break;
+		}
+
+		if ( ent->takedamage /*&& !AICast_NoFlameDamage(ent->s.number)*/ ) {
+			VectorSubtract( ent->r.currentOrigin, enemy->r.currentOrigin, vec );
+			VectorNormalize( vec );
+			if ( !( enemy->r.svFlags & SVF_CASTAI ) ) {
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 150, 0, MOD_LIGHTNING );
+			} else {
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 150, 0, MOD_LIGHTNING );
+			}
+
+					// Ridah, make em burn
+			if ( ent->client && ( /*g_gametype.integer != GT_SINGLE_PLAYER ||*/ !( ent->r.svFlags & SVF_CASTAI ) || ent->health <= 0 || ent->flameQuota > FLAME_THRESHOLD2 ) ) {
+				if ( ent->s.onFireEnd < level.time ) {
+					ent->s.onFireStart = level.time;
+				}
+				if ( ent->health <= 0 || !( ent->r.svFlags & SVF_CASTAI ) || ( g_gametype.integer != GT_SINGLE_PLAYER ) ) {
+					if ( ent->r.svFlags & SVF_CASTAI ) {
+						ent->s.onFireEnd = level.time + 6000;
+					} else {
+						ent->s.onFireEnd = level.time + FIRE_FLASH_TIME;
+					}
+				} else {
+					ent->s.onFireEnd = level.time + 99999;  // make sure it goes for longer than they need to die
+				}
+				ent->flameBurnEnt = enemy->s.number;
+				// add to playerState for client-side effect
+				ent->client->ps.onFireStart = level.time;
+			}
+		}
+
+
+		break;
 	case CLDMG_FLAMETHROWER:
 		// do some cheat protection
 		if ( g_gametype.integer != GT_SINGLE_PLAYER ) {

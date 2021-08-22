@@ -59,6 +59,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #define LIGHTNING_RANGE     600
 #define TESLA_RANGE         1200
+#define HOLYCROSS_RANGE     800
 #define TESLA_SUPERSOLDIER_RANGE    2000
 
 #define FLAMETHROWER_RANGE 2500 // WAS 2200
@@ -108,6 +109,7 @@ typedef enum {
 	CLDMG_SPIRIT,
 	CLDMG_FLAMETHROWER,
 	CLDMG_TESLA,
+	CLDMG_HOLYCROSS,
 	CLDMG_BOSS1LIGHTNING,
 	CLDMG_DEBRIS,
 	CLDMG_MAX
@@ -539,67 +541,47 @@ typedef enum
 // SA NOTE: should be 31 now (I added 1 bit in msg.c)
 typedef enum {
 	WP_NONE,                // 0
-
 	WP_KNIFE,               // 1
-	WP_DAGGER,
-	WP_BINOCULARS,
-	// German weapons
-	WP_LUGER,               // 2
-	WP_MP40,                // 3
-	WP_MAUSER,              // 4
-	WP_FG42,                // 5
-	WP_GRENADE_LAUNCHER,    // 6
-	WP_PANZERFAUST,         // 7
-	WP_VENOM,               // 8
-	WP_FLAMETHROWER,        // 9
-	WP_TESLA,               // 10
-	// RealRTCW weapons
-	WP_P38,                // 12
-	WP_G43,                 // 15
-	WP_M1GARAND,            // 16
-	WP_BAR,                 // 17
-	WP_MP44,                // 18
-	WP_MG42M,               // 19
-	WP_M97,                 // 20
-	WP_M30,
-	WP_WELROD,            // 21
-	// end RealRTCW weapons
+	WP_DAGGER,              // 2
+	WP_BINOCULARS,          // 3
+	WP_LUGER,               // 4
+	WP_MP40,                // 5
+	WP_MAUSER,              // 6
+	WP_FG42,                // 7
+	WP_GRENADE_LAUNCHER,    // 8
+	WP_PANZERFAUST,         // 9
+	WP_VENOM,               // 10
+	WP_FLAMETHROWER,        // 11
+	WP_TESLA,               // 12
+	WP_HOLYCROSS,
+	WP_P38,                // 13
+	WP_G43,                 // 14
+	WP_M1GARAND,            // 15
+	WP_BAR,                 // 16
+	WP_MP44,                // 17
+	WP_MG42M,               // 18
+	WP_M97,                 // 19
+	WP_M30,                 // 20
+	WP_WELROD,              // 21
 	WP_COLT,                // 22	
 	WP_THOMPSON,            // 23	
 	WP_GARAND,              // 24	
 	WP_GRENADE_PINEAPPLE,   // 25
-
-	// secondary fire weapons
 	WP_SNIPERRIFLE,         // 26
 	WP_SNOOPERSCOPE,        // 27
-	WP_FG42SCOPE,           // 28	fg42 alt fire
+	WP_FG42SCOPE,           // 28	
 	WP_STEN,                // 29	
 	WP_SILENCER,            // 30	
-	WP_AKIMBO,              // 31	
-
-	// specialized/one-time weapons
-// JPW NERVE -- swapped mortar & antitank (unused?) and added class_special
-	WP_CLASS_SPECIAL,       // 32	// class-specific multiplayer weapon (airstrike, engineer, or medpack)
-	// (SA) go ahead and take the 'freezeray' spot.  it ain't happenin
-	//      (I checked for instances of WP_CLASS_SPECIAL and I don't think this'll cause you a problem.  however, if it does, move it where you need to. ) (SA)
-// jpw
-	WP_DYNAMITE,            // 33
-
-	WP_MONSTER_ATTACK1,     // 34	// generic monster attack, slot 1
-	WP_MONSTER_ATTACK2,     // 35	// generic monster attack, slot 2
-	WP_MONSTER_ATTACK3,     // 36	// generic monster attack, slot 2
-
-	WP_GAUNTLET,            // 37
-
-	WP_SNIPER,              // 38
-	WP_GRENADE_SMOKE,       // 39	// smoke grenade for LT multiplayer
-	WP_MEDIC_HEAL,          // 40	// DHM - Nerve :: Medic special weapon
-	WP_MORTAR,              // 41
-
-	VERYBIGEXPLOSION,       // 42	// explosion effect for airplanes
-
-	WP_NUM_WEAPONS          // 43   NOTE: this cannot be larger than 64 for AI/player weapons!
-
+	WP_AKIMBO,              // 31		
+	WP_DYNAMITE,            // 32
+	WP_MONSTER_ATTACK1,     // 33	
+	WP_MONSTER_ATTACK2,     // 34	
+	WP_MONSTER_ATTACK3,     // 35	
+	WP_GAUNTLET,            // 36
+	WP_SNIPER,              // 37	
+	WP_MORTAR,              // 38
+	VERYBIGEXPLOSION,       // 39	
+	WP_NUM_WEAPONS          // 40   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -631,7 +613,7 @@ extern int weapAlts[];  // defined in bg_misc.c
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
 
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_DAGGER ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_P38 ) | ( 1 << WP_WELROD ) )
+#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_DAGGER ) | ( 1 << WP_HOLYCROSS ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_P38 ) | ( 1 << WP_WELROD ) )
 //----(SA)	end
 
 
@@ -1198,6 +1180,7 @@ typedef enum {
 	MOD_VENOM_FULL,
 	MOD_FLAMETHROWER,
 	MOD_TESLA,
+	MOD_HOLYCROSS,
 	// RealRTCW weapons
 	MOD_P38,
 	MOD_G43,
@@ -1212,7 +1195,6 @@ typedef enum {
 	MOD_SPEARGUN,
 	MOD_SPEARGUN_CO2,
 	MOD_GRENADE_PINEAPPLE,
-	MOD_CROSS,
 	MOD_MORTAR,
 	MOD_MORTAR_SPLASH,
 	MOD_KICKED,

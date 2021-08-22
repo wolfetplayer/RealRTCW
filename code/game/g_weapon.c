@@ -522,12 +522,6 @@ void Weapon_Class_Special( gentity_t *ent ) {
 		//ent->client->ps.classWeaponTime = level.time;
 		Weapon_Engineer( ent );
 		break;
-	case PC_LT:
-		if ( level.time - ent->client->ps.classWeaponTime > g_LTChargeTime.integer ) {
-			weapon_grenadelauncher_fire( ent,WP_GRENADE_SMOKE );
-			ent->client->ps.classWeaponTime = level.time;
-		}
-		break;
 	}
 }
 // jpw
@@ -676,7 +670,8 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_PANZERFAUST: return sk_plr_dmg_panzerfaust.integer;	
 			case WP_VENOM: return sk_plr_dmg_venom.integer;				
 			case WP_FLAMETHROWER: return sk_plr_dmg_flamethrower.integer;    
-			case WP_TESLA: return sk_plr_dmg_tesla.integer;					
+			case WP_TESLA: return sk_plr_dmg_tesla.integer;				
+			case WP_HOLYCROSS: return sk_plr_dmg_holycross.integer;		
 			case WP_GRENADE_LAUNCHER: return sk_plr_dmg_grenade.integer;	
 			case WP_GRENADE_PINEAPPLE: return sk_plr_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_plr_dmg_dynamite.integer;
@@ -718,7 +713,8 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 			case WP_PANZERFAUST: return sk_ai_dmg_panzerfaust.integer;	
 			case WP_VENOM: return sk_ai_dmg_venom.integer;				
 			case WP_FLAMETHROWER: return sk_ai_dmg_flamethrower.integer;	
-			case WP_TESLA:	return sk_ai_dmg_tesla.integer;				
+			case WP_TESLA:	return sk_ai_dmg_tesla.integer;		
+			case WP_HOLYCROSS:	return sk_ai_dmg_holycross.integer;				
 			case WP_GRENADE_LAUNCHER: return sk_ai_dmg_grenade.integer;	
 			case WP_GRENADE_PINEAPPLE: return sk_ai_dmg_pineapple.integer;	
 			case WP_DYNAMITE: return sk_ai_dmg_dynamite.integer;
@@ -757,7 +753,6 @@ int G_GetWeaponDamage( int weapon, qboolean player ) {
 		case WP_SNOOPERSCOPE: return 75;
 		case WP_NONE: return 0;
 		case WP_KNIFE: return 10;
-		case WP_GRENADE_SMOKE: return 100;
 		case WP_GRENADE_LAUNCHER: return 200;
 		case WP_GRENADE_PINEAPPLE: return 200;
 		case WP_DYNAMITE: return 600;
@@ -928,6 +923,19 @@ void Tesla_Fire( gentity_t *ent ) {
 
 	//G_Printf("TODO: Tesla damage/effects\n" );
 }
+
+/*
+==============
+Tesla_Fire
+==============
+*/
+void holycross_Fire( gentity_t *ent ) {
+	// TODO: Find all targets in the client's view frame, and lock onto them all, applying damage
+	// and telling all clients to draw the appropriate effects.
+
+	//G_Printf("TODO: Tesla damage/effects\n" );
+}
+
 
 
 
@@ -1328,7 +1336,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	vec3_t tosspos;
 	qboolean underhand = 0;
 
-	if ( ( ent->s.apos.trBase[0] > 0 ) && ( grenType != WP_GRENADE_SMOKE ) ) { // JPW NERVE -- smoke grenades always overhand
+	if ( ( ent->s.apos.trBase[0] > 0 ) ) { // JPW NERVE -- smoke grenades always overhand
 		underhand = qtrue;
 	}
 
@@ -1362,11 +1370,6 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 			upangle *= 800;     //									    0.0 / 600.0
 		}
 	}
-// JPW NERVE
-	else if ( grenType == WP_GRENADE_SMOKE ) { // smoke grenades *really* get chucked
-		upangle *= 800;
-	}
-// jpw
 	else {      // WP_DYNAMITE
 		upangle *= 400;     //										0.0 / 100.0
 
@@ -1420,22 +1423,6 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		m->think = G_ExplodeMissilePoisonGas;
 		m->s.density = 1;
 	}
-
-// JPW NERVE
-	if ( grenType == WP_GRENADE_SMOKE ) {
-		if ( ent->client->sess.sessionTeam == TEAM_RED ) { // store team so we can generate red or blue smoke
-			m->s.otherEntityNum2 = 1;
-		} else {
-			m->s.otherEntityNum2 = 0;
-		}
-		m->nextthink = level.time + 4000;
-		m->think = weapon_callAirStrike;
-
-		te = G_TempEntity( m->s.pos.trBase, EV_GLOBAL_SOUND );
-		te->s.eventParm = G_SoundIndex( "sound/scenaric/forest/me109_flight.wav" );
-//		te->r.svFlags |= SVF_BROADCAST | SVF_USE_CURRENT_ORIGIN;
-	}
-// jpw
 
 	//----(SA)	adjust for movement of character.  TODO: Probably comment in later, but only for forward/back not strafing
 //	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics
@@ -1948,12 +1935,6 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_DAGGER:
 		Weapon_Dagger( ent );
 		break;
-// JPW NERVE
-	case WP_CLASS_SPECIAL:
-		Weapon_Class_Special( ent );
-		break;
-// jpw
-		break;
 	case WP_LUGER:
 		Bullet_Fire( ent, LUGER_SPREAD * aimSpreadScale, LUGER_DAMAGE(isPlayer), qtrue );
 		break;
@@ -2159,6 +2140,11 @@ void FireWeapon( gentity_t *ent ) {
 			} else {
 				VectorMA( ent->client->ps.velocity, -100, forward, ent->client->ps.velocity );
 			}
+		}
+		break;
+	case WP_HOLYCROSS:
+		if ( g_gametype.integer == GT_SINGLE_PLAYER ) { // JPW NERVE
+			holycross_Fire( ent );
 		}
 		break;
 	case WP_GAUNTLET:

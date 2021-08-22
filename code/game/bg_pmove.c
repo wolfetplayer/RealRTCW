@@ -458,7 +458,7 @@ if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
 		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND ) || (pm->ps->weapon == WP_M97) || (pm->ps->weapon == WP_M30) )  {
 			scale *= 0.90; 
 		}
-		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_WELROD ) ) {
+		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_HOLYCROSS ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_WELROD ) ) {
 			scale *= 0.95; 
 		}
 		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE )  ) {
@@ -2074,6 +2074,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	case WP_KNIFE:
 	case WP_DAGGER:
 	case WP_TESLA:
+	case WP_HOLYCROSS:
 	case WP_WELROD:
 		return;
 
@@ -3599,12 +3600,7 @@ static void PM_Weapon( void ) {
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		aimSpreadScaleAdd = 10;
 		break;
-// JPW NERVE
-	case WP_CLASS_SPECIAL:
-		// can't reliably get cvars for restart time in here, so set it small and check it in fireweapon routine
-		addTime = 50;
-		break;
-// jpw
+
 	case WP_MONSTER_ATTACK1:
 		addTime = 1000;
 		break;

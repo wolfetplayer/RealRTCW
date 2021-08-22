@@ -343,6 +343,7 @@ void SP_sniper_brush( gentity_t *ent );
 void SP_shooter_zombiespit( gentity_t *ent );
 void SP_shooter_mortar( gentity_t *ent );
 void SP_shooter_tesla( gentity_t *ent );
+void SP_shooter_cross( gentity_t *ent );
 
 // alarm
 void SP_alarm_box( gentity_t *ent );
@@ -541,6 +542,7 @@ spawn_t spawns[] = {
 	{"shooter_zombiespit", SP_shooter_zombiespit},
 	{"shooter_mortar", SP_shooter_mortar},
 	{"shooter_tesla", SP_shooter_tesla},
+	{"shooter_cross", SP_shooter_cross},
 
 	// alarm
 	{"alarm_box", SP_alarm_box},

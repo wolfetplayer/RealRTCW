@@ -974,12 +974,7 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		bolt->splashMethodOfDeath   = MOD_GRENADE_SPLASH;
 		bolt->s.eFlags              = EF_BOUNCE_HALF;
 		break;
-// JPW NERVE
-	case WP_GRENADE_SMOKE:
-		bolt->classname             = "grenade";
-		bolt->s.eFlags              = EF_BOUNCE_HALF;
-		break;
-// jpw
+
 	case WP_DYNAMITE:
 		// oh, this is /so/ cheap...
 		// you need to pick up new code ;)

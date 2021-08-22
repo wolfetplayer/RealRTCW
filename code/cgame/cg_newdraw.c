@@ -301,6 +301,7 @@ static int weapIconDrawSize( int weap ) {
 	case WP_GARAND:
 	case WP_VENOM:
 	case WP_TESLA:
+	case WP_HOLYCROSS:
 	case WP_PANZERFAUST:
 	case WP_FLAMETHROWER:
 	case WP_FG42:
@@ -341,22 +342,9 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 		CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 	}
 
-	// DHM - Nerve :: special case for WP_CLASS_SPECIAL
 
 	realweap = cg.predictedPlayerState.weapon;
 
-	if ( cgs.gametype == GT_WOLF && realweap == WP_CLASS_SPECIAL ) {
-		switch ( cg.predictedPlayerState.stats[ STAT_PLAYER_CLASS ] ) {
-		case PC_MEDIC:
-			realweap = WP_MEDIC_HEAL;
-			break;
-		case PC_LT:
-			realweap = WP_GRENADE_SMOKE;
-			break;
-		default:
-			break;
-		}
-	}
 	// dhm
 
 	size = weapIconDrawSize( realweap );
@@ -664,7 +652,6 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	case WP_KNIFE:
 	case WP_DAGGER:
 	case WP_BINOCULARS:
-	case WP_CLASS_SPECIAL:              // DHM - Nerve
 		return;
 
 	case WP_AKIMBO:
@@ -675,6 +662,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_TESLA:
+	case WP_HOLYCROSS:
 	case WP_FLAMETHROWER:
 	case WP_WELROD:
 		if ( type == 0 ) {  // don't draw reserve value, just clip (since these weapons have all their ammo in the clip)

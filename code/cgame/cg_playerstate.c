@@ -81,6 +81,7 @@ void CG_CheckAmmo( void ) {
 		case WP_STEN:
 		case WP_VENOM:
 		case WP_TESLA:
+		case WP_HOLYCROSS:
 		case WP_MAUSER:
 		case WP_GARAND:
 		// RealRTCW weapons

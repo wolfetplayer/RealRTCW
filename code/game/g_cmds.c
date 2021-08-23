@@ -1963,7 +1963,7 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 			VectorSubtract( ent->r.currentOrigin, enemy->r.currentOrigin, vec );
 			VectorNormalize( vec );
 			if ( !( enemy->r.svFlags & SVF_CASTAI ) ) {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 8, 0, MOD_LIGHTNING );
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 15, 0, MOD_LIGHTNING );
 			} else {
 				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 4, 0, MOD_LIGHTNING );
 			}

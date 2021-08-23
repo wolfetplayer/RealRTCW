@@ -34,6 +34,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../ui/ui_shared.h" // for Menus_CloseAll()
 
 extern int hWeaponSnd;
+extern int hWeaponEchoSnd; 
 
 extern void CG_Tracer( vec3_t source, vec3_t dest, int sparks );
 //==========================================================================
@@ -1547,6 +1548,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	clientInfo_t    *ci;
 	//char	tempStr[MAX_QPATH];
 
+	// JPW NERVE copied here for mg42 SFX event
+	vec3_t porg, gorg, norm;    // player/gun origin
+	float gdist;
+// jpw
+
 	static int footstepcnt = 0;
 	static int splashfootstepcnt = 0;
 
@@ -2070,9 +2076,17 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 //----(SA)	end
 
 	case EV_FIRE_WEAPON_MG42:
-		// shake the camera a bit
-		CG_StartShakeCamera( 0.05, 100, cent->lerpOrigin, 100 );
 		trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, hWeaponSnd );
+// JPW NERVE -- nasty kludge because there's no WP_MG42 struct to hold echosound, so we pull it from GM's predefined globals hweaponSnd & hEchoweaponsnd
+		VectorCopy( cent->currentState.pos.trBase, gorg );
+		VectorCopy( cg.refdef.vieworg, porg );
+		VectorSubtract( gorg, porg, norm );
+		gdist = VectorNormalize( norm );
+		if ( gdist > 512 && gdist < 4096 ) {
+			VectorMA( cg.refdef.vieworg, 64, norm, gorg );
+			trap_S_StartSoundEx( gorg, cent->currentState.number, CHAN_WEAPON, hWeaponEchoSnd, SND_NOCUT );
+		}
+// jpw
 		DEBUGNAME( "EV_FIRE_WEAPON" );
 		CG_FireWeapon( cent );
 		break;

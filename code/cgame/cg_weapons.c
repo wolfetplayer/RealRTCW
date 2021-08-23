@@ -1461,7 +1461,7 @@ void CG_RegisterItemVisuals( int itemNum ) {
 	wolfkickModel = trap_R_RegisterModel( "models/weapons2/foot/v_wolfoot_10f.md3" );
 	
 	hWeaponSnd = trap_S_RegisterSound( "sound/weapons/mg42/37mm.wav" );
-	hWeaponEchoSnd = trap_S_RegisterSound( "sound/weapons/mg42/e37mm.wav" );
+	hWeaponEchoSnd = trap_S_RegisterSound( "sound/weapons/mg42/37mm_far.wav" );
 
 	hflakWeaponSnd = trap_S_RegisterSound( "sound/weapons/flak/flak.wav" );
 	notebookModel = trap_R_RegisterModel( "models/mapobjects/book/book.md3" );
@@ -4804,8 +4804,10 @@ void CG_FireWeapon( centity_t *cent ) {
 	ent = &cent->currentState;
 
 	// Rafael - mg42
+//	if ( (cent->currentState.clientNum == cg.snap->ps.clientNum && cg.snap->ps.persistant[PERS_HWEAPON_USE] ) ||
+//		 (cent->currentState.clientNum != cg.snap->ps.clientNum && (cent->currentState.eFlags & EF_MG42_ACTIVE) ) )
 	if ( ( cent->currentState.clientNum == cg.snap->ps.clientNum && cg.snap->ps.persistant[PERS_HWEAPON_USE] ) ||
-		 ( cent->currentState.clientNum != cg.snap->ps.clientNum && ( cent->currentState.eFlags & EF_MG42_ACTIVE ) ) ) {
+		 ( cent->currentState.eFlags & EF_MG42_ACTIVE ) ) {
 		if ( cg.snap->ps.gunfx ) {
 			return;
 		}
@@ -4834,7 +4836,7 @@ void CG_FireWeapon( centity_t *cent ) {
 			CG_MachineGunEjectBrass( cent );
 		}
 
-		//	CG_MG42EFX (cent);
+		cent->muzzleFlashTime = cg.time;
 
 		return;
 	}

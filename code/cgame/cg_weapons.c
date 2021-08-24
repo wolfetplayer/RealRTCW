@@ -3052,6 +3052,12 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[1] = 2;
 		     gunoff[2] = 0;
 		break;
+		case WP_MAUSER:
+		case WP_SNIPERRIFLE:
+			 gunoff[0] = 0;
+		     gunoff[1] = 0;
+		     gunoff[2] = -1;
+		break;
 		case WP_LUGER:
 		case WP_SILENCER:
 			 gunoff[0] = 0;

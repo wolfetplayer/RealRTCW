@@ -60,6 +60,7 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_44AMMO     120
 #define MAX_AMMO_M97        24
 #define MAX_AMMO_REVOLVER   24
+#define MAX_AMMO_MG42M      200
 
 // [0] = maxammo		      -	max player ammo carrying capacity.
 // [1] = uses			      -	how many 'rounds' it takes/costs to fire one cycle.
@@ -1791,7 +1792,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		700,
 		IT_WEAPON,
 		WP_MG42M,
-		WP_MAUSER,
+		WP_MG42M,
 		WP_MG42M,
 		"",                      // precache
 		"",                      // sounds
@@ -1882,6 +1883,30 @@ model="models/powerups/ammo/ttammo.md3"
 		"",                  // precache
 		"",                  // sounds
 		{71,71,50,50,50}	
+	},
+
+	/*QUAKED ammo_mg42m (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: mg42m
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/mg42mammo.md3"
+*/
+	{
+		"ammo_mg42m",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/mg42mammo.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"mg42ammo",           // pickup			
+		60,
+		IT_AMMO,
+		WP_MG42M,
+		WP_MG42M,
+		WP_MG42M,
+		"",                  // precache
+		"",                  // sounds
+		{150,150,100,100,100}	
 	},
 
 /*QUAKED ammo_ttammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN

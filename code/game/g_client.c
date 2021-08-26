@@ -1533,7 +1533,7 @@ void SetupWeaponsForSkill_EASY() // Easy
 	ammoTable[WP_SNIPERRIFLE].maxammo = 400;
 	ammoTable[WP_FG42SCOPE].maxammo = 400;
 	ammoTable[WP_G43].maxammo = 400;
-	ammoTable[WP_MG42M].maxammo = 400;
+	ammoTable[WP_MG42M].maxammo = 300;
 	// barammo
 	ammoTable[WP_BAR].maxammo = 300;
 	ammoTable[WP_M1GARAND].maxammo = 300;
@@ -1691,7 +1691,7 @@ void SetupWeaponsForSkill_MAX() // Max
 	ammoTable[WP_SNIPERRIFLE].maxammo = 150;
 	ammoTable[WP_FG42SCOPE].maxammo = 150;
 	ammoTable[WP_G43].maxammo = 150;
-	ammoTable[WP_MG42M].maxammo = 150;
+	ammoTable[WP_MG42M].maxammo = 200;
 	// barammo
 	ammoTable[WP_BAR].maxammo = 150;
 	ammoTable[WP_M1GARAND].maxammo = 150;
@@ -1745,7 +1745,7 @@ void SetupWeaponsForSkill_REALISM() // Realism
 	ammoTable[WP_SNIPERRIFLE].maxammo = 150;
 	ammoTable[WP_FG42SCOPE].maxammo = 150;
 	ammoTable[WP_G43].maxammo = 150;
-	ammoTable[WP_MG42M].maxammo = 150;
+	ammoTable[WP_MG42M].maxammo = 200;
 	// barammo
 	ammoTable[WP_BAR].maxammo = 150;
 	ammoTable[WP_M1GARAND].maxammo = 150;

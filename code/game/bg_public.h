@@ -59,10 +59,10 @@ If you have questions concerning this license or the applicable additional terms
 #define TESLA_RANGE         1200
 #define TESLA_SUPERSOLDIER_RANGE    2000
 
-#define FLAMETHROWER_RANGE 2500
+#define FLAMETHROWER_RANGE 2000
 
 #define ZOMBIE_FLAME_SCALE  0.3
-#define ZOMBIE_FLAME_RADIUS ( FLAMETHROWER_RANGE * ZOMBIE_FLAME_SCALE )
+#define ZOMBIE_FLAME_RADIUS (1250 * (  ZOMBIE_FLAME_SCALE ))
 
 #define PORTAL_ZOMBIE_SPAWNTIME     3000
 #define PORTAL_FEMZOMBIE_SPAWNTIME  3000

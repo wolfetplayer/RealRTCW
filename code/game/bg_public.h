@@ -62,11 +62,10 @@ If you have questions concerning this license or the applicable additional terms
 #define HOLYCROSS_RANGE     800
 #define TESLA_SUPERSOLDIER_RANGE    2000
 
-#define FLAMETHROWER_RANGE 2500 // WAS 2200
-//#define	FLAMETHROWER_RANGE	850
-// jpw
+#define FLAMETHROWER_RANGE 2000
+
 #define ZOMBIE_FLAME_SCALE  0.3
-#define ZOMBIE_FLAME_RADIUS ( FLAMETHROWER_RANGE * ZOMBIE_FLAME_SCALE )
+#define ZOMBIE_FLAME_RADIUS (1250 * (  ZOMBIE_FLAME_SCALE ))
 
 // RF, AI effects
 #define PORTAL_ZOMBIE_SPAWNTIME     3000

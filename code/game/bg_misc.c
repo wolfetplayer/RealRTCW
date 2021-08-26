@@ -62,6 +62,7 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_44AMMO     120
 #define MAX_AMMO_M97        24
 #define MAX_AMMO_REVOLVER   24
+#define MAX_AMMO_MG42M      200
 
 
 // these defines are matched with the character torso animations
@@ -116,7 +117,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_BARAMMO, 1,    8,      1650,   DELAY_LOW,      300,    0,      0,      MOD_M1GARAND            },  //	WP_M1GARAND				// 16
 	{   MAX_AMMO_BARAMMO, 1,    20,     2250,   DELAY_LOW,      160,    0,      0,      MOD_BAR                 },  //	WP_BAR					// 17
 	{   MAX_AMMO_44AMMO,  1,    30,     2600,   DELAY_LOW,      105,    0,      0,      MOD_MP44                },  //	WP_MP44					// 18
-	{   MAX_AMMO_MAUSER,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,    MOD_MG42M               },  //	WP_MG42M                // 19
+	{   MAX_AMMO_MG42M,  1,    100,    2600,   DELAY_LOW,      65,     2500,   350,     MOD_MG42M               },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,     1,    6,      2000,   DELAY_LOW,      1250,   0,      0,      MOD_M97                 },  //	WP_M97                  // 20
 	{   MAX_AMMO_REVOLVER,1,    6,      1500,   DELAY_PISTOL,   500,    0,      0,      MOD_REVOLVER            },  //	WP_REVOLVER             // 21
 	{   MAX_AMMO_45,    1,      7,      1500,   DELAY_PISTOL,   300,    0,      0,      MOD_COLT                },  //	WP_COLT					// 22
@@ -1801,7 +1802,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		700,
 		IT_WEAPON,
 		WP_MG42M,
-		WP_MAUSER,
+		WP_MG42M,
 		WP_MG42M,
 		"",                      // precache
 		"",                      // sounds
@@ -1892,6 +1893,30 @@ model="models/powerups/ammo/ttammo.md3"
 		"",                  // precache
 		"",                  // sounds
 		{71,71,50,50,50}	
+	},
+
+	/*QUAKED ammo_mg42m (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: mg42m
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/mg42mammo.md3"
+*/
+	{
+		"ammo_mg42m",
+		"sound/misc/am_pkup.wav",
+		{ "models/powerups/ammo/mg42mammo.md3",
+		  0, 0, 0,    0 },
+		"icons/iconw_luger_1", // icon
+		NULL,               // ammo icon
+		"mg42ammo",           // pickup			
+		60,
+		IT_AMMO,
+		WP_MG42M,
+		WP_MG42M,
+		WP_MG42M,
+		"",                  // precache
+		"",                  // sounds
+		{150,150,100,100,100}	
 	},
 
 /*QUAKED ammo_ttammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN

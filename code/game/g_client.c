@@ -883,14 +883,6 @@ void SetWolfSpawnWeapons( gclient_t *client ) {
 */
 	}
 
-	// Everyone except the Soldier has a special weapon
-	if ( pc != PC_SOLDIER ) {
-		COM_BitSet( client->ps.weapons, WP_CLASS_SPECIAL );
-		client->ps.ammo[WP_CLASS_SPECIAL] = 1;
-		// ammo for other special weapons so that icons draw ok
-		client->ps.ammo[WP_MEDIC_HEAL] = 1;
-		client->ps.ammo[WP_GRENADE_SMOKE] = 1;
-	}
 
 	// Everyone gets a pistol
 	switch ( client->sess.sessionTeam ) { // JPW NERVE was playerPistol

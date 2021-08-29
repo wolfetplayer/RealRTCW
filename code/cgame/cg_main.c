@@ -36,7 +36,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "cg_local.h"
 #include "../ui/ui_shared.h"
-#include "../game/km_cvar.h"	// Knightmare added
 
 displayContextDef_t cgDC;
 

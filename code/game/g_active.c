@@ -28,7 +28,6 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 #include "ai_cast_fight.h"   // need these for avoidance
 
@@ -134,10 +133,6 @@ void P_WorldEffects( gentity_t *ent ) {
 			ent->client->airOutTime = level.time + 10000;
 		}
 
-		//----(SA)	both these will end up being by virtue of having the 'breather' powerup
-		if ( ent->client->ps.aiChar == AICHAR_FROGMAN ) {  // let frogmen breathe forever
-			ent->client->airOutTime = level.time + 10000;
-		}
 
 		// if out of air, start drowning
 		if ( ent->client->airOutTime < level.time ) {

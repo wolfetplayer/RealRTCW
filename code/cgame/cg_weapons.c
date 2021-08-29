@@ -2780,7 +2780,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 		CG_RegisterWeapon( weaponNum );
 		weapon = &cg_weapons[weaponNum];
-	
 
 
 	if ( isPlayer ) {
@@ -3307,7 +3306,6 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 
 			CG_RegisterWeapon( ps->weapon );
 			weapon = &cg_weapons[ ps->weapon ];
-		
 
 		// set up gun position
 		CG_CalculateWeaponPosition( hand.origin, angles );
@@ -3644,7 +3642,6 @@ void CG_DrawWeaponSelect( void ) {
 
 		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
 			// you've got it, draw it
-
 
 			CG_RegisterWeapon( drawweap );
 
@@ -5059,22 +5056,21 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_COLT:
 	case WP_P38:
 	case WP_AKIMBO: 
-	   yawRandom = 1;
+	   yawRandom = 0.5;
 	   pitchRecoilAdd = 2;
 	   pitchAdd = 1;
 	break;
 	case WP_WELROD:
 	    pitchAdd = 1;
-	    yawRandom = 1;
+	    yawRandom = 0.5;
     break;
 	case WP_MAUSER:
 	case WP_GARAND:
 	case WP_G43:
 	case WP_M1GARAND:
-		pitchAdd = 2.5;
+		pitchAdd = 1;
 		yawRandom = 1; 
-	    pitchRecoilAdd = 2;   
-		yawRandom = 1;
+	    pitchRecoilAdd = 1.5;   
 	break;
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
@@ -5083,21 +5079,23 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_MP40:
 	case WP_THOMPSON:
 	case WP_STEN:
-		pitchAdd = 2;
-		pitchRecoilAdd = 2;  
-		yawRandom = 2;
+		pitchAdd = 1;
+		pitchRecoilAdd = 1;  
+		yawRandom = 1;
 	break;
 	case WP_FG42SCOPE:
+		pitchAdd = 0.8;
+	break;
 	case WP_FG42:
 	case WP_BAR:
 	case WP_MP44:
-		pitchAdd = 1.5;
-		pitchRecoilAdd = 2;   
+		pitchAdd = 1;
+		pitchRecoilAdd = 1;   
 		yawRandom = 1;  
 	break;
 	case WP_M97:
 		pitchRecoilAdd = 1;
-		pitchAdd = 12 + rand() % 3;
+		pitchAdd = 8 + rand() % 3;
 		yawRandom = 2;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
@@ -5111,8 +5109,8 @@ void CG_WeaponFireRecoil( int weapon ) {
 	break;
 	case WP_MG42M:
 		pitchRecoilAdd = pow(random(), 8) * (10 + VectorLength(cg.snap->ps.velocity) / 5);
-		pitchAdd = 5 + rand() % 3;
-		yawRandom = 2;
+		pitchAdd = 1 + rand() % 3;
+		yawRandom = 1;
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
@@ -5121,9 +5119,9 @@ void CG_WeaponFireRecoil( int weapon ) {
 		CG_StartShakeCamera( 0.05, 700, cg.snap->ps.origin, 100 );
 		break;
 	case WP_VENOM:
-		pitchRecoilAdd = pow( random(),8 ) * ( 10 + VectorLength( cg.snap->ps.velocity ) / 5 );
+		pitchRecoilAdd = pow( random(),8 ) * ( 5 + VectorLength( cg.snap->ps.velocity ) / 5 );
 		pitchAdd = ( rand() % 5 ) - 2;
-		yawRandom = 2;
+		yawRandom = 1;
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;

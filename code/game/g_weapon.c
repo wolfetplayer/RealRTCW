@@ -35,7 +35,6 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 static float s_quadFactor;
 static vec3_t forward, right, up;
@@ -522,6 +521,11 @@ void Weapon_Class_Special( gentity_t *ent ) {
 		//ent->client->ps.classWeaponTime = level.time;
 		Weapon_Engineer( ent );
 		break;
+	case PC_LT:
+		if ( level.time - ent->client->ps.classWeaponTime > g_LTChargeTime.integer ) {
+			ent->client->ps.classWeaponTime = level.time;
+		}
+		break;
 	}
 }
 // jpw
@@ -640,200 +644,21 @@ void SnapVectorTowards( vec3_t v, vec3_t to ) {
 	}
 }
 
-// JPW
-// mechanism allows different weapon damage for single/multiplayer; we want "balanced" weapons
-// in multiplayer but don't want to alter the existing single-player damage items that have already
-// been changed
-//
-// KLUDGE/FIXME: also modded #defines below to become macros that call this fn for minimal impact elsewhere
-//
 int G_GetWeaponDamage( int weapon, qboolean player ) {
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		if (player) {
-			switch ( weapon ) {
-			case WP_NONE: return 0;
-			case WP_KNIFE: return sk_plr_dmg_knife.integer;
-			case WP_DAGGER: return sk_plr_dmg_dagger.integer;						
-			case WP_LUGER: return sk_plr_dmg_luger.integer;				
-			case WP_SILENCER: return sk_plr_dmg_luger.integer;			
-			case WP_COLT: return sk_plr_dmg_colt.integer;				
-			case WP_AKIMBO: return sk_plr_dmg_colt.integer;					
-			case WP_MP40: return sk_plr_dmg_mp40.integer;				
-			case WP_THOMPSON: return sk_plr_dmg_thompson.integer;		
-			case WP_STEN: return sk_plr_dmg_sten.integer;				
-			case WP_MAUSER: return sk_plr_dmg_mauser.integer;			
-			case WP_SNIPERRIFLE: return sk_plr_dmg_sniperrifle.integer;	
-			case WP_GARAND: return sk_plr_dmg_garand.integer;			
-			case WP_SNOOPERSCOPE: return sk_plr_dmg_snooperscope.integer;	
-			case WP_FG42: return sk_plr_dmg_fg42.integer;					
-			case WP_FG42SCOPE: return sk_plr_dmg_fg42scope.integer;		
-			case WP_PANZERFAUST: return sk_plr_dmg_panzerfaust.integer;	
-			case WP_VENOM: return sk_plr_dmg_venom.integer;				
-			case WP_FLAMETHROWER: return sk_plr_dmg_flamethrower.integer;    
-			case WP_TESLA: return sk_plr_dmg_tesla.integer;				
-			case WP_HOLYCROSS: return sk_plr_dmg_holycross.integer;		
-			case WP_GRENADE_LAUNCHER: return sk_plr_dmg_grenade.integer;	
-			case WP_GRENADE_PINEAPPLE: return sk_plr_dmg_pineapple.integer;	
-			case WP_DYNAMITE: return sk_plr_dmg_dynamite.integer;
-			// RealRTCW weapons
-			case WP_MP44: return sk_plr_dmg_mp44.integer;
-			case WP_P38: return sk_plr_dmg_p38.integer;
-			case WP_G43: return sk_plr_dmg_g43.integer;
-			case WP_M1GARAND: return sk_plr_dmg_m1garand.integer;
-			case WP_BAR: return sk_plr_dmg_bar.integer;
-			case WP_MG42M: return sk_plr_dmg_mg42m.integer;
-			case WP_M97: return sk_plr_dmg_m97.integer;
-			case WP_M30: return sk_plr_dmg_m30.integer;
-			case WP_WELROD: return sk_plr_dmg_welrod.integer;	
-            // end RealRTCW
-			case WP_MORTAR: return 100;
-			case WP_GAUNTLET: return 1;
-			case WP_SNIPER: return 1;
-			default:    return 1;
-			}
+        return GetWeaponTableData(weapon)->playerDamage;
 		}
 		else {	// AI weapon damage
-			switch ( weapon ) {
-			case WP_NONE: return 0;
-			case WP_KNIFE: return sk_ai_dmg_knife.integer;
-			case WP_DAGGER: return sk_ai_dmg_dagger.integer;						
-			case WP_LUGER: return sk_ai_dmg_luger.integer;				
-			case WP_SILENCER: return sk_ai_dmg_luger.integer;			
-			case WP_COLT: return sk_ai_dmg_colt.integer;				
-			case WP_AKIMBO: return sk_ai_dmg_colt.integer;				
-			case WP_MP40: return sk_ai_dmg_mp40.integer;				
-			case WP_THOMPSON: return sk_ai_dmg_thompson.integer;		
-			case WP_STEN: return sk_ai_dmg_sten.integer;				
-			case WP_MAUSER: return sk_ai_dmg_mauser.integer;			
-			case WP_SNIPERRIFLE: return sk_ai_dmg_sniperrifle.integer;	
-			case WP_GARAND: return sk_ai_dmg_garand.integer;			
-			case WP_SNOOPERSCOPE: return sk_ai_dmg_snooperscope.integer;	
-			case WP_FG42: return sk_ai_dmg_fg42.integer;				
-			case WP_FG42SCOPE: return sk_ai_dmg_fg42scope.integer;		
-			case WP_PANZERFAUST: return sk_ai_dmg_panzerfaust.integer;	
-			case WP_VENOM: return sk_ai_dmg_venom.integer;				
-			case WP_FLAMETHROWER: return sk_ai_dmg_flamethrower.integer;	
-			case WP_TESLA:	return sk_ai_dmg_tesla.integer;		
-			case WP_HOLYCROSS:	return sk_ai_dmg_holycross.integer;				
-			case WP_GRENADE_LAUNCHER: return sk_ai_dmg_grenade.integer;	
-			case WP_GRENADE_PINEAPPLE: return sk_ai_dmg_pineapple.integer;	
-			case WP_DYNAMITE: return sk_ai_dmg_dynamite.integer;
-			// RealRTCW weapons
-			case WP_MP44: return sk_ai_dmg_mp44.integer;
-			case WP_P38: return sk_ai_dmg_p38.integer;
-			case WP_G43: return sk_ai_dmg_g43.integer;
-			case WP_M1GARAND: return sk_ai_dmg_m1garand.integer;
-			case WP_BAR: return sk_ai_dmg_bar.integer;
-			case WP_MG42M: return sk_ai_dmg_mg42m.integer;
-			case WP_M97: return sk_ai_dmg_m97.integer;
-			case WP_M30: return sk_ai_dmg_m30.integer;
-			case WP_WELROD: return sk_ai_dmg_welrod.integer;
-			// end RealRTCW			
-			case WP_MORTAR: return 100;
-			case WP_GAUNTLET: return 1;
-			case WP_SNIPER: return 1;
-			default:    return 1;
-			}
-		}
-	} else { // multiplayer damage
-		switch ( weapon ) {
-		case WP_LUGER:
-		case WP_SILENCER: return 14;
-		case WP_COLT: return 18;
-		case WP_AKIMBO: return 18;      //----(SA)	added
-		case WP_VENOM: return 20;
-		case WP_MP40: return 14;
-		case WP_THOMPSON: return 18;
-		case WP_STEN: return 14;
-		case WP_FG42SCOPE:
-		case WP_FG42: return 15;
-		case WP_MAUSER: return 25;
-		case WP_GARAND: return 25;
-		case WP_SNIPERRIFLE: return 80;
-		case WP_SNOOPERSCOPE: return 75;
-		case WP_NONE: return 0;
-		case WP_KNIFE: return 10;
-		case WP_GRENADE_LAUNCHER: return 200;
-		case WP_GRENADE_PINEAPPLE: return 200;
-		case WP_DYNAMITE: return 600;
-		case WP_PANZERFAUST: return 400;
-		case WP_MORTAR: return 100;
-		case WP_FLAMETHROWER: return 1;
-		case WP_TESLA:
-		case WP_GAUNTLET:
-		case WP_SNIPER:
-		default:    return 1;
+        return GetWeaponTableData(weapon)->aiDamage;
 		}
 	}
-}
 
 // RF, wrote this so we can dynamically switch between old and new values while testing g_userAim
 float G_GetWeaponSpread( int weapon ) {
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {   // JPW NERVE -- don't affect SP game
-		if ( g_userAim.integer ) {
-			// these should be higher since they become erratic if aiming is out
-			switch ( weapon ) {
-			case WP_LUGER:      return 400; // RealRTCW was 600
-			case WP_SILENCER:   return 400; // RealRTCW was 600
-			case WP_COLT:       return 450; // RealRTCW was 700
-			case WP_AKIMBO:     return 500; // RealRTCW was 700
-			case WP_VENOM:      return 1000;
-			case WP_MP40:       return 950; // RealRTCW was 1000
-			// RealRTCW weapons
-			case WP_P38:        return 420; // RealRTCW was 750
-			case WP_G43:        return 320; // was 550
-			case WP_M1GARAND:   return 370; // was 450
-			case WP_BAR:        return 700;
-		    case WP_MP44:       return 700;  
-			case WP_MG42M:      return 1500;
-			case WP_M97:        return 4500;
-			case WP_M30:        return 6000;
-			case WP_WELROD:   return 400; // RealRTCW was 650 
-			case WP_FG42SCOPE:  return 250;
-			case WP_FG42:       return 600; 
-			case WP_THOMPSON:   return 950; // RealRTCW was 1100
-			case WP_STEN:       return 950; // RealRTCW was 1200
-			case WP_MAUSER:     return 300;
-			case WP_GARAND:     return 420;
-			case WP_SNIPERRIFLE:    return 300;
-			case WP_SNOOPERSCOPE:   return 300;
-			}
-		} else {    // old values
-			switch ( weapon ) {
-			case WP_LUGER:      return 25;
-			case WP_SILENCER:   return 150;
-			case WP_COLT:       return 30;
-			case WP_AKIMBO:     return 30;      //----(SA)	added
-			case WP_VENOM:      return 200;
-			case WP_MP40:       return 200;
-			case WP_FG42SCOPE:  return 10;
-			case WP_FG42:       return 150;
-			case WP_THOMPSON:   return 250;
-			case WP_STEN:       return 300;
-			case WP_MAUSER:     return 15;
-			case WP_GARAND:     return 25;
-			case WP_SNIPERRIFLE:    return 10;
-			case WP_SNOOPERSCOPE:   return 10;
-			}
-		}
-	} else { // JPW NERVE but in multiplayer...  new spreads and don't look at g_userAim
-		switch ( weapon ) {
-		case WP_LUGER: return 600;
-		case WP_SILENCER: return 900;
-		case WP_COLT: return 800;
-		case WP_AKIMBO: return 800;         //----(SA)added
-		case WP_VENOM: return 600;
-		case WP_MP40: return 400;
-		case WP_FG42SCOPE:
-		case WP_FG42:   return 500;
-		case WP_THOMPSON: return 600;
-		case WP_STEN: return 200;
-		case WP_MAUSER: return 700;
-		case WP_GARAND: return 600;
-		case WP_SNIPERRIFLE: return 700;         // was 300
-		case WP_SNOOPERSCOPE: return 700;
-		}
-	}
+		if ( g_userAim.integer ) 
+		{
+        return GetWeaponTableData(weapon)->spread;
+	    }
 	G_Printf( "shouldn't ever get here (weapon %d)\n",weapon );
 	// jpw
 	return 0;   // shouldn't get here
@@ -1050,8 +875,6 @@ void Bullet_Endpos( gentity_t *ent, float spread, vec3_t *end ) {
 		u += crandom() * ( accuracy * 1.25 );
 	} else {
 		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE ) {
-//		if(ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE) {
-			// aim dir already accounted for sway of scoped weapons in CalcMuzzlePoints()
 			dist *= 2;
 			randSpread = qfalse;
 		}
@@ -1331,7 +1154,7 @@ gentity_t *weapon_crowbar_throw( gentity_t *ent ) {
 }
 
 gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
-	gentity_t   *m, *te; // JPW NERVE
+	gentity_t   *m; 
 	float upangle = 0;                  //	start with level throwing and adjust based on angle
 	vec3_t tosspos;
 	qboolean underhand = 0;
@@ -1369,8 +1192,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 // jpw
 			upangle *= 800;     //									    0.0 / 600.0
 		}
-	}
-	else {      // WP_DYNAMITE
+	} else {      // WP_DYNAMITE
 		upangle *= 400;     //										0.0 / 100.0
 
 	}
@@ -1949,32 +1771,25 @@ void FireWeapon( gentity_t *ent ) {
 		weapon_venom_fire( ent, qfalse, aimSpreadScale );
 		break;
 	case WP_SNIPERRIFLE:
-		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer), qfalse );
-// JPW NERVE -- added muzzle flip in multiplayer
+		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );
 		if ( !ent->aiCharacter ) {
-//		if (g_gametype.integer != GT_SINGLE_PLAYER) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-//			viewang[PITCH] -= 6; // handled in clientthink instead
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
 			ent->client->sniperRifleMuzzlePitch = 0.8f;
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
-// jpw
 		break;
 		
 	case WP_SNOOPERSCOPE:
-		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer), qtrue );
-// JPW NERVE -- added muzzle flip in multiplayer
+		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer) );
 		if ( !ent->aiCharacter ) {
-//		if (g_gametype.integer != GT_SINGLE_PLAYER) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
 			ent->client->sniperRifleMuzzlePitch = 0.9f;
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
-// jpw
 		break;
 	case WP_MAUSER:
 		Bullet_Fire( ent, MAUSER_SPREAD * aimSpreadScale, MAUSER_DAMAGE(isPlayer), qfalse );
@@ -1982,23 +1797,19 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_GARAND:
 		Bullet_Fire( ent, GARAND_SPREAD * aimSpreadScale, GARAND_DAMAGE(isPlayer), qtrue );
 		break;
-//----(SA)	added
 	case WP_FG42SCOPE:
-		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer), qfalse ); // Knightmare added
+		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer) ); 
 		if ( !ent->aiCharacter ) {
-//		if (g_gametype.integer != GT_SINGLE_PLAYER) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-//			ent->client->sniperRifleMuzzleYaw = crandom()*0.04; // used in clientthink
-			ent->client->sniperRifleMuzzleYaw = 0;
-			ent->client->sniperRifleMuzzlePitch = 0.07f;
+			ent->client->sniperRifleMuzzleYaw = crandom() * 0.1; 
+			ent->client->sniperRifleMuzzlePitch = 0.1f;
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
-	    break; // Knightmare added
+	    break; 
 	case WP_FG42:
 		Bullet_Fire( ent, FG42_SPREAD * aimSpreadScale, FG42_DAMAGE(isPlayer), qfalse );
 		break;
-//----(SA)	end
 	case WP_STEN:
 		Bullet_Fire( ent, STEN_SPREAD * aimSpreadScale, STEN_DAMAGE(isPlayer), qtrue );
 		break;
@@ -2026,8 +1837,7 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, MP44_SPREAD * aimSpreadScale, MP44_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_MG42M: 
-		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer), qfalse );
-		// RealRTCW added pushback for mg42
+		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer) );
 		if (!ent->aiCharacter) {
 		vec3_t vec_forward, vec_vangle;
 		VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -2091,11 +1901,10 @@ void FireWeapon( gentity_t *ent ) {
 			AngleVectors(vec_vangle, vec_forward, NULL, NULL);
 			 // make it less if in the air
 			if (ent->s.groundEntityNum == ENTITYNUM_NONE)
-				VectorMA(ent->client->ps.velocity, -64, vec_forward, ent->client->ps.velocity);
+				VectorMA(ent->client->ps.velocity, -8, vec_forward, ent->client->ps.velocity);
 			else
-				VectorMA(ent->client->ps.velocity, -200, vec_forward, ent->client->ps.velocity);
+				VectorMA(ent->client->ps.velocity, -24, vec_forward, ent->client->ps.velocity);
 		}
-
 		break;
 	
 

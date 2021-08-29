@@ -28,7 +28,6 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 #include "ai_cast_fight.h"   // need these for avoidance
 
@@ -133,7 +132,6 @@ void P_WorldEffects( gentity_t *ent ) {
 		if ( envirosuit ) {
 			ent->client->airOutTime = level.time + 10000;
 		}
-
 
 
 		// if out of air, start drowning

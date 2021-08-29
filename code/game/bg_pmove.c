@@ -450,22 +450,10 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 #ifdef GAMEDLL
 	if ( g_gametype.integer != GT_WOLF ) // RealRTCW weapon weight movement in SP was 80,90,95
 #endif
-if ( ! (pm->ps->aiChar))  // RealRTCW weapon weight does not affect AI now
+if ( ! (pm->ps->aiChar)) 
 	{ 
-		if ( ( pm->ps->weapon == WP_VENOM ) || ( pm->ps->weapon == WP_PANZERFAUST ) || ( pm->ps->weapon == WP_FLAMETHROWER ) || ( pm->ps->weapon == WP_TESLA ) || ( pm->ps->weapon == WP_MG42M ) ) {
-			scale *= 0.75; 
-        }
-		if ( ( pm->ps->weapon == WP_MP40 ) || ( pm->ps->weapon == WP_THOMPSON ) || ( pm->ps->weapon == WP_STEN ) || ( pm->ps->weapon == WP_FG42 ) || ( pm->ps->weapon == WP_MAUSER ) || ( pm->ps->weapon == WP_MP44 ) || ( pm->ps->weapon == WP_GARAND ) || ( pm->ps->weapon == WP_G43 ) || ( pm->ps->weapon == WP_BAR )  || ( pm->ps->weapon == WP_M1GARAND ) || (pm->ps->weapon == WP_M97) || (pm->ps->weapon == WP_M30) )  {
-			scale *= 0.90; 
-		}
-		if ( ( pm->ps->weapon == WP_LUGER ) || ( pm->ps->weapon == WP_COLT ) || ( pm->ps->weapon == WP_HOLYCROSS ) || ( pm->ps->weapon == WP_AKIMBO ) || ( pm->ps->weapon == WP_SILENCER ) || ( pm->ps->weapon == WP_DYNAMITE ) || ( pm->ps->weapon == WP_GRENADE_LAUNCHER ) || ( pm->ps->weapon == WP_GRENADE_PINEAPPLE )  || ( pm->ps->weapon == WP_P38 ) || ( pm->ps->weapon == WP_WELROD ) ) {
-			scale *= 0.95; 
-		}
-		if ( ( pm->ps->weapon == WP_FG42SCOPE ) || ( pm->ps->weapon == WP_SNOOPERSCOPE ) || ( pm->ps->weapon == WP_SNIPERRIFLE )  ) {
-			scale *= 0.40; 
-        }
+	scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
 	}
-// jpw
 
 	return scale;
 }
@@ -2647,81 +2635,7 @@ void PM_AdjustAimSpreadScale( void ) {
 
 	cmdTime = (float)( pm->cmd.serverTime - pm->oldcmd.serverTime ) / 1000.0;
 
-	wpnScale = 0.0f;
-	switch ( pm->ps->weapon ) {
-	case WP_LUGER:
-	case WP_SILENCER:
-		wpnScale = 0.5f;
-		break;
-	case WP_AKIMBO: //----(SA)	added
-		wpnScale = 0.5;
-		break;
-	case WP_COLT:
-		wpnScale = 0.4f;        // doesn't fire as fast, but easier to handle than luger
-		break;
-	case WP_VENOM:
-		wpnScale = 0.9f;        // very heavy
-		break;
-	case WP_SNIPERRIFLE:    // (SA) looong time to recover
-		wpnScale = 10.0f;
-		break;
-	case WP_SNOOPERSCOPE:   // (SA) looong time to recover
-		wpnScale = 8.0f;
-		break;
-	case WP_MAUSER:
-		wpnScale = 0.5f;
-		break;
-	case WP_GARAND:
-		wpnScale = 0.5f;
-		break;
-	case WP_MP40:
-		wpnScale = 0.5f;        // 2 handed, but not as long as mauser, so harder to keep aim
-		break;
-	case WP_FG42:
-		wpnScale = 0.7f; // was 0.9f
-		break;
-	case WP_FG42SCOPE:
-		wpnScale = 0.7f;
-		break;
-	case WP_THOMPSON:
-		wpnScale = 0.4f;
-		break;
-	case WP_STEN:
-		wpnScale = 0.6f;
-		break;
-	case WP_PANZERFAUST:
-//		wpnScale = 1.3f;
-		wpnScale = 0.6f;
-		break;
-   // RealRTCW weapons
-	case WP_P38:
-	    wpnScale = 0.3f;
-		break;
-	case WP_WELROD:
-	    wpnScale = 0.4f;
-		break;
-	case WP_G43:
-		wpnScale = 0.4f;  
-		break;
-	case WP_M1GARAND:
-		wpnScale = 0.4f;  
-		break;
-	case WP_BAR:
-		wpnScale = 0.6f;
-		break;
-	case WP_MP44:
-		wpnScale = 0.6f;
-		break;
-	case WP_MG42M:
-		wpnScale = 0.6f;        
-		break;
-	case WP_M97:  
-		wpnScale = 0.6f; // was 0.4f now jaymod values
-		break;
-	case WP_M30:  
-		wpnScale = 0.6f; 
-		break;
-	}
+    wpnScale = GetWeaponTableData(pm->ps->weapon)->spreadScale;
 
 	if ( wpnScale ) {
 
@@ -2833,10 +2747,10 @@ PM_Weapon
 ==============
 */
 static void PM_Weapon( void ) {
-	int addTime;
 	int ammoNeeded;
 	qboolean delayedFire;       //----(SA)  true if the delay time has just expired and this is the frame to send the fire event
-	int aimSpreadScaleAdd;
+	int addTime  = GetWeaponTableData(pm->ps->weapon)->nextShotTime;
+	int aimSpreadScaleAdd = GetWeaponTableData(pm->ps->weapon)->aimSpreadScaleAdd;
 	int weapattackanim;
 	qboolean akimboFire;
 	qboolean gameReloading;
@@ -3470,301 +3384,65 @@ static void PM_Weapon( void ) {
 // RF
 	pm->ps->releasedFire = qfalse;
 	pm->ps->lastFireTime = pm->cmd.serverTime;
-
-
-	aimSpreadScaleAdd = 0;
-
+	
 	switch ( pm->ps->weapon ) {
-	case WP_KNIFE:
-	case WP_DAGGER:
-	case WP_DYNAMITE:
-	case WP_GRENADE_LAUNCHER:
-	case WP_GRENADE_PINEAPPLE:
-	case WP_FLAMETHROWER:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		break;
-	case WP_PANZERFAUST:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 30;
-		break;
-	case WP_LUGER:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 35;
-		break;
-	case WP_COLT:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 20;
-		break;
-//----(SA)	added
+	case WP_G43:
+	case WP_M1GARAND:
+	if ( pm->ps->aiChar )
+	{
+	addTime *= 2;
+	}
+	break;
+	case WP_MP40:
+	if ( pm->ps->aiChar )
+	{
+	addTime *= 0.8;
+	}
+	break;
+	case WP_FG42SCOPE:
+	if (!( pm->ps->aiChar ))
+	{
+	addTime *= 2.5;
+	}
+	break;
 	case WP_AKIMBO:
-		// if you're firing an akimbo colt, and your other gun is dry,
-		// nextshot needs to take 2x time
 		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-
-		// (SA) (added check for last shot in both guns so there's no delay for the last shot)
 		if ( !pm->ps->ammoclip[WP_AKIMBO] || !pm->ps->ammoclip[WP_COLT] ) {
 			if ( ( !pm->ps->ammoclip[WP_AKIMBO] && !akimboFire ) || ( !pm->ps->ammoclip[WP_COLT] && akimboFire ) ) {
 				addTime = 2 * ammoTable[pm->ps->weapon].nextShotTime;
 			}
 		}
-
-		aimSpreadScaleAdd = 20;
 		break;
-//----(SA)	end
-	case WP_MAUSER:
-	case WP_G43:
-	case WP_M1GARAND:
-	case WP_GARAND:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 50;
-		break;
-	case WP_SNIPERRIFLE:
-		// (SA) not so much added per shot.  these weapons mostly uses player movement to get out of whack
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-// JPW NERVE crippling the rifle a bit in multiplayer; it's way too strong so make it go completely out every time you fire
-#ifdef CGAMEDLL
-		if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-#endif
-#ifdef GAMEDLL
-		if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-#endif
-//			addTime *= 2; // pulled this and reduced rifle damage
-			aimSpreadScaleAdd = 100;
-		} else {
-// jpw
-			aimSpreadScaleAdd = 20;
-		}
-		break;
-	case WP_SNOOPERSCOPE:
-// JPW NERVE crippling the rifle a bit in multiplayer; it's way too strong so make it go completely out every time you fire
-// snooper doesn't do one-shot body kills, so give it a little less bounce
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-#ifdef CGAMEDLL
-		if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-#endif
-#ifdef GAMEDLL
-		if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-#endif
-			aimSpreadScaleAdd = 50;
-//			addTime *= 2;
-		} else {
-// jpw
-			aimSpreadScaleAdd = 10;
-		}
-		break;
-	case WP_FG42SCOPE:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 10;
-		break;
-	case WP_FG42:
-	case WP_MP40:
-	// RealRTCW weapons
-	case WP_BAR:
-	case WP_MP44:
-	case WP_THOMPSON:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;       // (SA) new values for DM
-		break;
-
-	case WP_MG42M:
-	addTime = ammoTable[pm->ps->weapon].nextShotTime;
-	aimSpreadScaleAdd = 20;       
-	break;
-
-	case WP_M97: 
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;
-		break;
-	case WP_M30: 
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;
-		break;
-    
-	case WP_P38:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 20;
-		break;
-	case WP_WELROD:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 20 + rand() % 5;
-		break;
-	case WP_STEN:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 15 + rand() % 10;       // (SA) new values for DM
-		break;
-	case WP_SILENCER:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 35;
-		break;
-	case WP_VENOM:
-		addTime = ammoTable[pm->ps->weapon].nextShotTime;
-		aimSpreadScaleAdd = 10;
-		break;
-
-	case WP_MONSTER_ATTACK1:
-		addTime = 1000;
-		break;
-	default:
 		case WP_GAUNTLET:
 		switch ( pm->ps->aiChar ) {
-		case AICHAR_LOPER:              // delay 'til next attack
+		case AICHAR_LOPER:            
 			addTime = 1000;
 			break;
-		default:
-			addTime = 250;
-			break;
 		}
 		break;
 	}
 
-// real recoil
+	
+
+	// set weapon recoil (kickback)
 	pm->pmext->lastRecoilDeltaTime = 0;
+	pm->pmext->weapRecoilTime      = GetWeaponTableData(pm->ps->weapon)->weapRecoilDuration ? pm->cmd.serverTime : 0;
+	pm->pmext->weapRecoilDuration  = GetWeaponTableData(pm->ps->weapon)->weapRecoilDuration;
+	pm->pmext->weapRecoilYaw       = GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[0] * crandom() * GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[1];
+	pm->pmext->weapRecoilPitch     = GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[0] * random() * GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[1];
 
- 	switch ( pm->ps->weapon ) {
-case WP_MG42M:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 150;
-			pm->pmext->weapRecoilYaw = crandom() * .5f;
-			pm->pmext->weapRecoilPitch = .45f * random() * .15f;
-		} else {
-			pm->pmext->weapRecoilDuration = 200;
-			pm->pmext->weapRecoilYaw = crandom() * .25f;
-			pm->pmext->weapRecoilPitch = .75f * random() * .2f;
-		}
-		break;
-	// Semi-automatic rifles - Medium recoil
-	case WP_M1GARAND: 
-	case WP_G43:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 30;
-			pm->pmext->weapRecoilYaw = crandom() * .1f;
-			pm->pmext->weapRecoilPitch = .1f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 50;
-			pm->pmext->weapRecoilYaw = crandom() * .2f;
-			pm->pmext->weapRecoilPitch = .2f * random();
-		}
-		break;
-	// Shotgun - High recoil
-	case WP_M97: 
-	case WP_M30:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 90;
-			pm->pmext->weapRecoilYaw = crandom() * .5f;
-			pm->pmext->weapRecoilPitch = .5f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 130;
-			pm->pmext->weapRecoilYaw = crandom() * .9f;
-			pm->pmext->weapRecoilPitch = .95f * random();
-		}
-		break;
-	// bolt-action rifles - High recoil to compensate for superb stopping power
-	case WP_MAUSER:
-	case WP_GARAND:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 50;
-		    pm->pmext->weapRecoilYaw = crandom() * 1.0f; 
-		    pm->pmext->weapRecoilPitch = .9f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 100;
-			pm->pmext->weapRecoilYaw = crandom() * 1.5f;
-			pm->pmext->weapRecoilPitch = 1.0f * random();
-		}
-		break;
-	// Pistols - medium recoil
-	case WP_LUGER:
-	case WP_SILENCER:
-	case WP_COLT:
-	case WP_AKIMBO:
-	case WP_P38:
-	case WP_WELROD:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-		pm->pmext->weapRecoilDuration = 40;
-		pm->pmext->weapRecoilYaw = 0.f;
-		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
-		} else {
-		pm->pmext->weapRecoilDuration = 70;
-		pm->pmext->weapRecoilYaw = 0.f;
-		pm->pmext->weapRecoilPitch = .35f * random() * .15f;
-		}
-		break;
-		// SMGs - Low recoil
-	case WP_MP40:
-	case WP_STEN:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 15;
-			pm->pmext->weapRecoilYaw = crandom() * .01f;
-			pm->pmext->weapRecoilPitch = .01f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 30;
-			pm->pmext->weapRecoilYaw = crandom() * .1f;
-			pm->pmext->weapRecoilPitch = .1f * random();
-		}
-		break;
-	case WP_THOMPSON:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 30;
-			pm->pmext->weapRecoilYaw = crandom() * .1f;
-			pm->pmext->weapRecoilPitch = .1f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 50;
-			pm->pmext->weapRecoilYaw = crandom() * .2f;
-			pm->pmext->weapRecoilPitch = .2f * random();
-		}
-		break;
-		// Assault Rifles - Low recoil
-	case WP_FG42:
-	case WP_BAR:
-	case WP_MP44: 
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 25;
-			pm->pmext->weapRecoilYaw = crandom() * .01f;
-			pm->pmext->weapRecoilPitch = .01f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 50;
-			pm->pmext->weapRecoilYaw = crandom() * .1f;
-			pm->pmext->weapRecoilPitch = .1f * random();
-		}
-		break;
-		// Venom Gun - Low recoil
-	case WP_VENOM:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilDuration = 40;
-			pm->pmext->weapRecoilYaw = crandom() * .1f;
-			pm->pmext->weapRecoilPitch = .1f * random();
-		} else {
-			pm->pmext->weapRecoilDuration = 60;
-			pm->pmext->weapRecoilYaw = crandom() * .2f;
-			pm->pmext->weapRecoilPitch = .2f * random();
-		}
-		break;
-         // Panzerfaust - Medium recoil
-	case WP_PANZERFAUST:
-		pm->pmext->weapRecoilTime = pm->cmd.serverTime;
-		pm->pmext->weapRecoilDuration = 60;
-		if ( pm->ps->pm_flags & PMF_DUCKED ) {
-			pm->pmext->weapRecoilYaw = crandom() * .5f;
-			pm->pmext->weapRecoilPitch = .5f * random();
-		} else {
-			pm->pmext->weapRecoilYaw = crandom() * 1.0f;
-			pm->pmext->weapRecoilPitch = 1.0f * random();
-		}
-		break;	
-	default:
-		pm->pmext->weapRecoilTime = 0;
-		pm->pmext->weapRecoilYaw = 0.f;
-		break;
+	
+	// Aim Spread Scale handle
+	// add randomness
+	if (GetWeaponTableData(pm->ps->weapon)->class & WEAPON_TYPE_SMG)
+	{
+		aimSpreadScaleAdd += rand() % 10;
 	}
 
+
+    if ( ( pm->ps->eFlags & EF_CROUCHING ) && ( pm->ps->groundEntityNum != ENTITYNUM_NONE ) ) { 
+		pm->pmext->weapRecoilDuration *= 0.5;
+	}
 
 	// check for overheat
 
@@ -3798,6 +3476,7 @@ case WP_MG42M:
 	pm->ps->weaponTime += addTime;
 
 	PM_SwitchIfEmpty();
+
 }
 
 

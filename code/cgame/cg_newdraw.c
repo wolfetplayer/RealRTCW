@@ -342,10 +342,7 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 		CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 	}
 
-
 	realweap = cg.predictedPlayerState.weapon;
-
-	// dhm
 
 	size = weapIconDrawSize( realweap );
 

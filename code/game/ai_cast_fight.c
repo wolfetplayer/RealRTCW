@@ -509,8 +509,6 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			return 60;
 		case AICHAR_BLACKGUARD:
 			return BLACKGUARD_MELEE_RANGE;
-		case AICHAR_STIMSOLDIER3:
-			return TESLA_RANGE;
 		case AICHAR_ZOMBIE: // zombie flaming attack
 			return ZOMBIE_FLAME_RADIUS - 50;      // get well within range before starting
 		}
@@ -957,12 +955,6 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 		}
 		break;
 	case WP_TESLA:
-		switch ( cs->aiCharacter ) {
-		case AICHAR_STIMSOLDIER3:
-			if ( dist < 0 || dist >= TESLA_RANGE ) {
-				return qfalse;
-			}
-		}
 		break;
 	case WP_HOLYCROSS:
 		switch ( cs->aiCharacter ) {
@@ -994,19 +986,6 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 		case AICHAR_LOPER:
 		case AICHAR_WARZOMBIE:
 			return qtrue;   // always usable
-
-		case AICHAR_STIMSOLDIER2:
-			delay = 7000;
-			if ( dist < 0 || dist < 300 ) {
-				return qfalse;
-			}
-			break;
-		case AICHAR_STIMSOLDIER3:   // stim flying tesla attack
-			delay = 7000;
-			if ( dist < 0 || dist < 300 ) {
-				return qfalse;
-			}
-			break;
 		case AICHAR_BLACKGUARD:
 			delay = 5000;
 			if ( dist < 0 || dist > BLACKGUARD_MELEE_RANGE ) {
@@ -1524,12 +1503,6 @@ qboolean AICast_AimAtEnemy( cast_state_t *cs ) {
 		aim_accuracy = 0.0001;
 	}
 
-	// StimSoldier is very good at firing Rocket Launcher
-	if ( cs->aiCharacter == AICHAR_STIMSOLDIER2 && cs->weaponNum == WP_PANZERFAUST ) {
-		aim_skill = 1;
-		aim_accuracy = 1;
-	}
-
 	//get the weapon information
 
 	//get the enemy entity information
@@ -1627,9 +1600,6 @@ qboolean AICast_RandomTriggerRelease( cast_state_t *cs ) {
 	// some characters override all weapon settings for trigger release
 	switch ( cs->aiCharacter ) {
 	case AICHAR_BLACKGUARD:     // this is here since his "ready" frame is different to his firing frame, so it looks wierd to keep swapping between them
-	case AICHAR_STIMSOLDIER1:
-	case AICHAR_STIMSOLDIER2:
-	case AICHAR_STIMSOLDIER3:
 		return qfalse;
 	}
 
@@ -1859,64 +1829,7 @@ float AICast_GetWeaponSoundRange( int weapon ) {
 	// NOTE: made this a case, that way changing the ordering of weapons won't cause problems, as it would
 	// with an array lookup
 
-	switch ( weapon ) {
-	case    WP_NONE:
-	case    WP_BINOCULARS:
-		return 0;
-	case    WP_KNIFE:
-	case    WP_DAGGER:
-	case    WP_GAUNTLET:
-	case    WP_STEN:
-	case    WP_SILENCER:
-	case    WP_WELROD:
-		return 64;
-	case    WP_GRENADE_LAUNCHER:
-	case    WP_GRENADE_PINEAPPLE:
-		return 1500;
-	case    WP_GARAND:
-	case    WP_SNOOPERSCOPE:
-		return 128;
-	case    WP_COLT:
-	case    WP_AKIMBO:
-	case    WP_P38:
-	case    WP_LUGER:
-		return 700;
-
-	case    WP_MONSTER_ATTACK1:
-	case    WP_MONSTER_ATTACK2:
-	case    WP_MONSTER_ATTACK3:
-		// TODO: case for each monster
-		return 1000;
-
-	case    WP_MP40:
-	case    WP_THOMPSON:
-		return 1000;
-
-	case    WP_FG42:
-	case    WP_FG42SCOPE:
-	case    WP_MG42M:
-	case    WP_MP44:
-	case    WP_BAR:
-	case    WP_M97:
-	case    WP_M30:
-		return 1500;
-
-	case    WP_SNIPERRIFLE:
-	case    WP_MAUSER:
-	case    WP_G43:
-	case    WP_M1GARAND:
-		return 2000;
-
-	case    WP_DYNAMITE:
-		return 3000;
-
-	case    WP_PANZERFAUST:
-	case    WP_VENOM:
-	case    WP_FLAMETHROWER:
-	case    WP_TESLA:
-	case    WP_HOLYCROSS:
-		return 1000;
-	}
+	return GetWeaponTableData(weapon)->soundRange;
 
 	G_Error( "AICast_GetWeaponSoundRange: unknown weapon index: %i\n", weapon );
 	return 0;   // shutup the compiler

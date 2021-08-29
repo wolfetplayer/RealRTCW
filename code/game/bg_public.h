@@ -291,8 +291,8 @@ typedef struct
 	qboolean m97reloadInterrupt;
 	int lastRecoilDeltaTime;
 	int weapRecoilDuration;
+	float weapRecoilPitch;       
 	float weapRecoilYaw;
-	float weapRecoilPitch;
 	int weapRecoilTime;
 } pmoveExt_t;
 
@@ -516,13 +516,9 @@ typedef enum
 	AICHAR_VENOM,
 	AICHAR_LOPER,
 	AICHAR_ELITEGUARD,
-	AICHAR_STIMSOLDIER1,    // dual machineguns
-	AICHAR_STIMSOLDIER2,    // rocket in left hand
-	AICHAR_STIMSOLDIER3,    // tesla in left hand
 	AICHAR_SUPERSOLDIER,
 	AICHAR_BLACKGUARD,
 	AICHAR_PROTOSOLDIER,
-
 	AICHAR_HELGA,
 	AICHAR_HEINRICH,    //----(SA)	added
 
@@ -584,26 +580,55 @@ typedef enum {
 } weapon_t;
 
 
+typedef enum weaponClass_s
+{
+	WEAPON_TYPE_NONE,      
+	WEAPON_TYPE_MELEE,
+	WEAPON_TYPE_PISTOL,
+	WEAPON_TYPE_SMG,
+	WEAPON_TYPE_BOLTACTION,
+	WEAPON_TYPE_RIFLE,
+	WEAPON_TYPE_AR,
+	WEAPON_TYPE_SHOTGUN,
+	WEAPON_TYPE_GRENADE,
+	WEAPON_TYPE_MG,
+	WEAPON_TYPE_PANZER,
+	WEAPON_TYPE_SCOPABLE,
+	WEAPON_TYPE_SCOPED,
+	WEAPON_TYPE_BEAM      
+} weaponClass_t;
+
+
 typedef struct ammotable_s {
-	int maxammo;            //
-	int uses;               //
-	int maxclip;            //
-	int reloadTime;         //
-	int fireDelayTime;      //
-	int nextShotTime;       //
-//----(SA)	added
-	int maxHeat;            // max active firing time before weapon 'overheats' (at which point the weapon will fail)
-	int coolRate;           // how fast the weapon cools down. (per second)
-//----(SA)	end
-	int mod;                // means of death
+	int maxammo;            
+	int uses;               
+	int maxclip;            
+	int reloadTime;         
+	int fireDelayTime;      
+	int nextShotTime;       
+	int maxHeat;            
+	int coolRate;    
+	int playerDamage;
+	int aiDamage;
+	int playerSplashRadius;
+	int aiSplashRadius;
+	int spread;
+	int aimSpreadScaleAdd;
+    float spreadScale;  
+	int weapRecoilDuration;
+	float weapRecoilPitch[2];       
+	float weapRecoilYaw[2];
+	int soundRange;   
+	float moveSpeed; 
+	int mod;   
+	int class;       
 } ammotable_t;
+    
+extern int weapAlts[]; 
 
-extern ammotable_t ammoTable[];     // defined in bg_misc.c
-extern int weapAlts[];  // defined in bg_misc.c
+extern ammotable_t ammoTable[WP_NUM_WEAPONS];
+#define GetWeaponTableData(weaponIndex) ((ammotable_t *)(&ammoTable[weaponIndex]))
 
-
-//----(SA)
-// for routines that need to check if a WP_ is </=/> a given set of weapons
 #define WP_FIRST            WP_KNIFE
 #define WP_BEGINGERMAN      WP_KNIFE
 #define WP_LASTGERMAN       WP_TESLA

@@ -308,9 +308,6 @@ void SP_ai_loper( gentity_t *ent );
 void SP_ai_boss_helga( gentity_t *ent );
 void SP_ai_boss_heinrich( gentity_t *ent ); //----(SA)	added
 void SP_ai_eliteguard( gentity_t *ent );
-void SP_ai_stimsoldier_dual( gentity_t *ent );
-void SP_ai_stimsoldier_rocket( gentity_t *ent );
-void SP_ai_stimsoldier_tesla( gentity_t *ent );
 void SP_ai_supersoldier( gentity_t *ent );
 void SP_ai_blackguard( gentity_t *ent );
 void SP_ai_protosoldier( gentity_t *ent );
@@ -576,9 +573,6 @@ spawn_t spawns[] = {
 	{"ai_boss_helga", SP_ai_boss_helga},
 	{"ai_boss_heinrich", SP_ai_boss_heinrich},   //----(SA)
 	{"ai_eliteguard", SP_ai_eliteguard},
-	{"ai_stimsoldier_dual", SP_ai_stimsoldier_dual},
-	{"ai_stimsoldier_rocket", SP_ai_stimsoldier_rocket},
-	{"ai_stimsoldier_tesla", SP_ai_stimsoldier_tesla},
 	{"ai_supersoldier", SP_ai_supersoldier},
 	{"ai_protosoldier", SP_ai_protosoldier},
 	{"ai_blackguard", SP_ai_blackguard},

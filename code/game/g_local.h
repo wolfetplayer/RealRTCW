@@ -698,7 +698,6 @@ typedef struct {
 	int lastGrenadeKick;
 
 	int loperZapSound;
-	int stimSoldierFlySound;
 	int bulletRicochetSound;
 	// done.
 

@@ -74,7 +74,7 @@ int weapBanksMultiPlayer[MAX_WEAP_BANKS_MP][MAX_WEAPS_IN_BANK_MP] = {
 	{WP_LUGER,              WP_COLT,                0,          0,          0,          0,              0,          0           },
 	{WP_MP40,               WP_THOMPSON,            WP_STEN,    WP_MAUSER,  WP_GARAND,  WP_PANZERFAUST, WP_VENOM,   WP_FLAMETHROWER     },
 	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   0,          0,          0,          0,              0,          0,          },
-	{WP_CLASS_SPECIAL,      0,                      0,          0,          0,          0,              0,          0,          },
+	{0,                     0,                      0,          0,          0,          0,              0,          0,          },
 	{WP_DYNAMITE,           0,                      0,          0,          0,          0,              0,          0           }
 };
 
@@ -927,17 +927,12 @@ void CG_RegisterWeapon( int weaponNum ) {
 	// don't bother trying
 	switch ( weaponNum ) {
 	case WP_NONE:
-	case WP_CLASS_SPECIAL:
 	case WP_MONSTER_ATTACK1:
 	case WP_MONSTER_ATTACK2:
 	case WP_MONSTER_ATTACK3:
 	case WP_GAUNTLET:
 	case WP_SNIPER:
 	case WP_MORTAR:
-
-// (SA) i don't know about these, but we don't have models for 'em
-	case WP_GRENADE_SMOKE:
-	case WP_MEDIC_HEAL:
 		return;
 	default:
 		break;
@@ -1354,22 +1349,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->trailRadius = 32;
 		MAKERGB( weaponInfo->flashDlightColor, 1, 0.7, 0.5 );
 		break;
-// JPW NERVE
-	case WP_GRENADE_SMOKE:
-		weaponInfo->missileModel = trap_R_RegisterModel( "models/weapons2/grenade/pineapple.md3" );
-		weaponInfo->missileTrailFunc    = CG_PyroSmokeTrail;
-		weaponInfo->missileDlight       = 200;
-		weaponInfo->wiTrailTime         = 4000;
-		weaponInfo->trailRadius         = 256;
-		break;
-// jpw
-// DHM - Nerve - temp effects
-	case WP_CLASS_SPECIAL:
-	case WP_MEDIC_HEAL:
-		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash1.wav" );
-		weaponInfo->flashSound[1] = trap_S_RegisterSound( "sound/weapons/knife/knife_slash2.wav" );
-		break;
-// dhm
+
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 		if ( weaponNum == WP_GRENADE_LAUNCHER ) {
@@ -1493,8 +1473,6 @@ void CG_RegisterItemVisuals( int itemNum ) {
 		maxWeapsInBank = MAX_WEAPS_IN_BANK;
 	} else {
 		trap_R_RegisterModel( "models/mapobjects/vehicles/m109.md3" );
-		CG_RegisterWeapon( WP_GRENADE_SMOKE ); // register WP_CLASS_SPECIAL visuals here
-		CG_RegisterWeapon( WP_MEDIC_HEAL );
 		maxWeapBanks = MAX_WEAP_BANKS_MP;
 		maxWeapsInBank = MAX_WEAPS_IN_BANK_MP;
 	}
@@ -2491,31 +2469,9 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		return;
 	}
 
-	// DHM - Nerve :: Special case for WP_CLASS_SPECIAL
-	if ( cgs.gametype == GT_WOLF && weaponNum == WP_CLASS_SPECIAL ) {
-		switch ( cent->currentState.teamNum ) {
-		case PC_ENGINEER:
-			CG_RegisterWeapon( WP_CLASS_SPECIAL );
-			weapon = &cg_weapons[WP_CLASS_SPECIAL];
-			break;
-		case PC_MEDIC:
-			CG_RegisterWeapon( WP_MEDIC_HEAL );
-			weapon = &cg_weapons[WP_MEDIC_HEAL];
-			break;
-		case PC_LT:
-			CG_RegisterWeapon( WP_GRENADE_SMOKE );
-			weapon = &cg_weapons[WP_GRENADE_SMOKE];
-			break;
-		default:
-			CG_RegisterWeapon( weaponNum );
-			weapon = &cg_weapons[weaponNum];
-			break;
-		}
-	} else {
+
 		CG_RegisterWeapon( weaponNum );
 		weapon = &cg_weapons[weaponNum];
-	}
-	// dhm - end
 
 
 	if ( isPlayer ) {
@@ -3017,31 +2973,9 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	memset( &hand, 0, sizeof( hand ) );
 
 	if ( ps->weapon > WP_NONE ) {
-		// DHM - Nerve :: handle WP_CLASS_SPECIAL for different classes
-		if ( cgs.gametype == GT_WOLF && ps->weapon == WP_CLASS_SPECIAL ) {
-			switch ( ps->stats[ STAT_PLAYER_CLASS ] ) {
-			case PC_ENGINEER:
-				CG_RegisterWeapon( WP_CLASS_SPECIAL );
-				weapon = &cg_weapons[ WP_CLASS_SPECIAL ];
-				break;
-			case PC_MEDIC:
-				CG_RegisterWeapon( WP_MEDIC_HEAL );
-				weapon = &cg_weapons[ WP_MEDIC_HEAL ];
-				break;
-			case PC_LT:
-				CG_RegisterWeapon( WP_GRENADE_SMOKE );
-				weapon = &cg_weapons[ WP_GRENADE_SMOKE ];
-				break;
-			default:
-				CG_RegisterWeapon( ps->weapon );
-				weapon = &cg_weapons[ ps->weapon ];
-				break;
-			}
-		} else {
+
 			CG_RegisterWeapon( ps->weapon );
 			weapon = &cg_weapons[ ps->weapon ];
-		}
-		// dhm - end
 
 		// set up gun position
 		CG_CalculateWeaponPosition( hand.origin, angles );
@@ -3300,24 +3234,6 @@ void CG_DrawWeaponSelect( void ) {
 		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
 			// you've got it, draw it
 
-			// DHM - Nerve :: Special case for WP_CLASS_SPECIAL
-			if ( cgs.gametype == GT_WOLF && drawweap == WP_CLASS_SPECIAL ) {
-				switch ( cg.predictedPlayerState.stats[ STAT_PLAYER_CLASS ] ) {
-				case PC_ENGINEER:
-					drawweap = WP_CLASS_SPECIAL;
-					break;
-				case PC_MEDIC:
-					drawweap = WP_MEDIC_HEAL;
-					break;
-				case PC_LT:
-					drawweap = WP_GRENADE_SMOKE;
-					break;
-				default:
-					break;
-				}
-			}
-			// dhm - end
-
 			CG_RegisterWeapon( drawweap );
 
 			if ( wideweap ) {
@@ -3381,24 +3297,6 @@ void CG_DrawWeaponSelect( void ) {
 		realweap = drawweap;        // DHM - Nerve
 
 		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
-			// you've got it, draw it
-			// DHM - Nerve :: Special case for WP_CLASS_SPECIAL
-			if ( cgs.gametype == GT_WOLF && drawweap == WP_CLASS_SPECIAL ) {
-				switch ( cg.predictedPlayerState.stats[ STAT_PLAYER_CLASS ] ) {
-				case PC_ENGINEER:
-					drawweap = WP_CLASS_SPECIAL;
-					break;
-				case PC_MEDIC:
-					drawweap = WP_MEDIC_HEAL;
-					break;
-				case PC_LT:
-					drawweap = WP_GRENADE_SMOKE;
-					break;
-				default:
-					break;
-				}
-			}
-			// dhm - end
 
 			CG_RegisterWeapon( drawweap );
 
@@ -4735,23 +4633,22 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_COLT:
 	case WP_TT33:
 	case WP_AKIMBO: 
-	   yawRandom = 1;
+	   yawRandom = 0.5;
 	   pitchRecoilAdd = 2;
 	   pitchAdd = 1;
 	break;
 	case WP_REVOLVER:
 	    pitchAdd = 1;
-	    yawRandom = 1;
+	    yawRandom = 0.5;
     break;
 	case WP_MAUSER:
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_G43:
 	case WP_M1GARAND:
-		pitchAdd = 2.5;
+		pitchAdd = 1;
 		yawRandom = 1; 
-	    pitchRecoilAdd = 2;   
-		yawRandom = 1;
+	    pitchRecoilAdd = 1.5;   
 	break;
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
@@ -4762,29 +4659,31 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_PPSH:
 	case WP_THOMPSON:
 	case WP_STEN:
-		pitchAdd = 2;
-		pitchRecoilAdd = 2;  
-		yawRandom = 2;
+		pitchAdd = 1;
+		pitchRecoilAdd = 1;  
+		yawRandom = 1;
 	break;
 	case WP_FG42SCOPE:
+		pitchAdd = 0.8;
+	break;
 	case WP_FG42:
 	case WP_BAR:
 	case WP_MP44:
-		pitchAdd = 1.5;
-		pitchRecoilAdd = 2;   
+		pitchAdd = 1;
+		pitchRecoilAdd = 1;   
 		yawRandom = 1;  
 	break;
 	case WP_M97:
 		pitchRecoilAdd = 1;
-		pitchAdd = 12 + rand() % 3;
+		pitchAdd = 8 + rand() % 3;
 		yawRandom = 2;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
 	break;
 	case WP_MG42M:
 		pitchRecoilAdd = pow(random(), 8) * (10 + VectorLength(cg.snap->ps.velocity) / 5);
-		pitchAdd = 5 + rand() % 3;
-		yawRandom = 2;
+		pitchAdd = 1 + rand() % 3;
+		yawRandom = 1;
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
@@ -4793,9 +4692,9 @@ void CG_WeaponFireRecoil( int weapon ) {
 		CG_StartShakeCamera( 0.05, 700, cg.snap->ps.origin, 100 );
 		break;
 	case WP_VENOM:
-		pitchRecoilAdd = pow( random(),8 ) * ( 10 + VectorLength( cg.snap->ps.velocity ) / 5 );
+		pitchRecoilAdd = pow( random(),8 ) * ( 5 + VectorLength( cg.snap->ps.velocity ) / 5 );
 		pitchAdd = ( rand() % 5 ) - 2;
-		yawRandom = 2;
+		yawRandom = 1;
 		pitchRecoilAdd *= 0.5;
 		pitchAdd *= 0.5;
 		yawRandom *= 0.5;
@@ -4880,11 +4779,7 @@ void CG_FireWeapon( centity_t *cent ) {
 		}
 	} else if (   ent->weapon == WP_GRENADE_LAUNCHER ||
 				  ent->weapon == WP_GRENADE_PINEAPPLE ||
-				  ent->weapon == WP_DYNAMITE ||
-				  ent->weapon == WP_GRENADE_SMOKE ) { // JPW NERVE
-		if ( ent->weapon == WP_GRENADE_SMOKE ) {
-			CG_Printf( "smoke grenade!\n" );
-		}
+				  ent->weapon == WP_DYNAMITE ) { 
 		if ( ent->apos.trBase[0] > 0 ) { // underhand
 			return;
 		}
@@ -5549,7 +5444,6 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 // jpw
 		break;
 
-	case WP_GRENADE_SMOKE: // JPW NERVE
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 //		mod = cgs.media.dishFlashModel;
@@ -5565,11 +5459,11 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 		lightColor[1] = 0.5;
 		lightColor[2] = 0.1;
 
-		if ( weapon != WP_GRENADE_SMOKE ) {
+
 			shakeAmt = 0.15f;
 			shakeDur = 1000;
 			shakeRad = 600;
-		}
+		
 
 		// Ridah, explosion sprite animation
 		VectorMA( origin, 16, dir, sprOrg );

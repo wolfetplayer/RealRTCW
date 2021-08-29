@@ -265,8 +265,8 @@ typedef struct
 	qboolean m97reloadInterrupt;
 	int lastRecoilDeltaTime;
 	int weapRecoilDuration;
+	float weapRecoilPitch;       
 	float weapRecoilYaw;
-	float weapRecoilPitch;
 	int weapRecoilTime;
 } pmoveExt_t;
 
@@ -450,13 +450,9 @@ typedef enum
 	AICHAR_VENOM,
 	AICHAR_LOPER,
 	AICHAR_ELITEGUARD,
-	AICHAR_STIMSOLDIER1,    // dual machineguns
-	AICHAR_STIMSOLDIER2,    // rocket in left hand
-	AICHAR_STIMSOLDIER3,    // tesla in left hand
 	AICHAR_SUPERSOLDIER,
 	AICHAR_BLACKGUARD,
 	AICHAR_PROTOSOLDIER,
-	AICHAR_FROGMAN,
 	AICHAR_HELGA,
 	AICHAR_HEINRICH, 
 	AICHAR_PARTISAN,
@@ -500,19 +496,35 @@ typedef enum {
 	WP_STEN,                // 29	
 	WP_SILENCER,            // 30	
 	WP_AKIMBO,              // 31	
-	WP_CLASS_SPECIAL,       // 32
-	WP_DYNAMITE,            // 33
-	WP_MONSTER_ATTACK1,     // 34	
-	WP_MONSTER_ATTACK2,     // 35	
-	WP_MONSTER_ATTACK3,     // 36	
-	WP_GAUNTLET,            // 37
-	WP_SNIPER,              // 38
-	WP_GRENADE_SMOKE,       // 39	
-	WP_MEDIC_HEAL,          // 40	
-	WP_MORTAR,              // 41
-	VERYBIGEXPLOSION,       // 42	
-	WP_NUM_WEAPONS          // 43   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_DYNAMITE,            // 32
+	WP_MONSTER_ATTACK1,     // 33	
+	WP_MONSTER_ATTACK2,     // 34	
+	WP_MONSTER_ATTACK3,     // 35	
+	WP_GAUNTLET,            // 36
+	WP_SNIPER,              // 37
+	WP_MORTAR,              // 38
+	VERYBIGEXPLOSION,       // 39	
+	WP_NUM_WEAPONS          // 40   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
+
+
+typedef enum weaponClass_s
+{
+	WEAPON_TYPE_NONE,      
+	WEAPON_TYPE_MELEE,
+	WEAPON_TYPE_PISTOL,
+	WEAPON_TYPE_SMG,
+	WEAPON_TYPE_BOLTACTION,
+	WEAPON_TYPE_RIFLE,
+	WEAPON_TYPE_AR,
+	WEAPON_TYPE_SHOTGUN,
+	WEAPON_TYPE_GRENADE,
+	WEAPON_TYPE_MG,
+	WEAPON_TYPE_PANZER,
+	WEAPON_TYPE_SCOPABLE,
+	WEAPON_TYPE_SCOPED,
+	WEAPON_TYPE_BEAM      
+} weaponClass_t;
 
 
 typedef struct ammotable_s {
@@ -523,12 +535,27 @@ typedef struct ammotable_s {
 	int fireDelayTime;      
 	int nextShotTime;       
 	int maxHeat;            
-	int coolRate;           
-	int mod;               
+	int coolRate;    
+	int playerDamage;
+	int aiDamage;
+	int playerSplashRadius;
+	int aiSplashRadius;
+	int spread;
+	int aimSpreadScaleAdd;
+    float spreadScale;  
+	int weapRecoilDuration;
+	float weapRecoilPitch[2];       
+	float weapRecoilYaw[2];
+	int soundRange;   
+	float moveSpeed; 
+	int mod;   
+	int class;       
 } ammotable_t;
-
-extern ammotable_t ammoTable[];     
+    
 extern int weapAlts[]; 
+
+extern ammotable_t ammoTable[WP_NUM_WEAPONS];
+#define GetWeaponTableData(weaponIndex) ((ammotable_t *)(&ammoTable[weaponIndex]))
 
 #define WP_FIRST            WP_KNIFE
 #define WP_BEGINGERMAN      WP_KNIFE

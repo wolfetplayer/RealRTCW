@@ -309,13 +309,9 @@ void SP_ai_boss_helga( gentity_t *ent );
 void SP_ai_boss_heinrich( gentity_t *ent ); //----(SA)	added
 void SP_ai_eliteguard( gentity_t *ent );
 void SP_ai_dog( gentity_t* ent );
-void SP_ai_stimsoldier_dual( gentity_t *ent );
-void SP_ai_stimsoldier_rocket( gentity_t *ent );
-void SP_ai_stimsoldier_tesla( gentity_t *ent );
 void SP_ai_supersoldier( gentity_t *ent );
 void SP_ai_blackguard( gentity_t *ent );
 void SP_ai_protosoldier( gentity_t *ent );
-void SP_ai_frogman( gentity_t *ent );
 void SP_ai_partisan( gentity_t *ent );
 void SP_ai_russian( gentity_t *ent );
 void SP_ai_civilian( gentity_t *ent );
@@ -577,12 +573,8 @@ spawn_t spawns[] = {
 	{"ai_boss_heinrich", SP_ai_boss_heinrich},   //----(SA)
 	{"ai_eliteguard", SP_ai_eliteguard},
 	{"ai_dog", SP_ai_dog},
-	{"ai_stimsoldier_dual", SP_ai_stimsoldier_dual},
-	{"ai_stimsoldier_rocket", SP_ai_stimsoldier_rocket},
-	{"ai_stimsoldier_tesla", SP_ai_stimsoldier_tesla},
 	{"ai_supersoldier", SP_ai_supersoldier},
 	{"ai_protosoldier", SP_ai_protosoldier},
-	{"ai_frogman", SP_ai_frogman},
 	{"ai_blackguard", SP_ai_blackguard},
 	{"ai_partisan", SP_ai_partisan},
 	{"ai_russian", SP_ai_russian},

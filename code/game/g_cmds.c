@@ -27,7 +27,6 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
-#include "km_cvar.h"	// Knightmare added
 
 /*
 ==================
@@ -1678,7 +1677,7 @@ int Cmd_WolfKick_f( gentity_t *ent ) {
 	int kicktime = level.time;
 	qboolean solidKick = qfalse;    // don't play "hit" sound on a trigger unless it's an func_invisible_user
 
-	int damage = sk_plr_dmg_kick.integer;
+	int damage = 15;
 
 	if ( ent->client->ps.leanf ) {
 		return 0;   // no kick when leaning
@@ -1951,8 +1950,7 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 
 		if (    ( ent->aiCharacter == AICHAR_PROTOSOLDIER ) ||
 				( ent->aiCharacter == AICHAR_SUPERSOLDIER ) ||
-				( ent->aiCharacter == AICHAR_LOPER ) ||
-				( ent->aiCharacter >= AICHAR_STIMSOLDIER1 && ent->aiCharacter <= AICHAR_STIMSOLDIER3 ) ) {
+				( ent->aiCharacter == AICHAR_LOPER ) ) {
 			break;
 		}
 
@@ -1960,9 +1958,9 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 			VectorSubtract( ent->r.currentOrigin, enemy->r.currentOrigin, vec );
 			VectorNormalize( vec );
 			if ( !( enemy->r.svFlags & SVF_CASTAI ) ) {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 15, 0, MOD_LIGHTNING );
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_TESLA].playerDamage, 0, MOD_LIGHTNING );
 			} else {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, 4, 0, MOD_LIGHTNING );
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_TESLA].aiDamage, 0, MOD_LIGHTNING );
 			}
 		}
 		break;
@@ -1982,7 +1980,9 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 
 		if ( ent->takedamage && !AICast_NoFlameDamage( ent->s.number ) ) {
 			#define FLAME_THRESHOLD 10
-			int damage = 6;
+
+			int damage = ammoTable[WP_FLAMETHROWER].playerDamage;	
+
 
 			// RF, only do damage once they start burning
 			//if (ent->health > 0)	// don't explode from flamethrower

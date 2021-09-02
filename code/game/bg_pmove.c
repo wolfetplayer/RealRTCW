@@ -2960,7 +2960,7 @@ static void PM_Weapon( void ) {
 				}
 			}
 
-			if ( !( pm->cmd.buttons & BUTTON_ATTACK ) ) { //----(SA)	modified
+			if ( !( (pm->cmd.buttons & BUTTON_ATTACK) || (pm->cmd.wbuttons & WBUTTON_ATTACK2) ) ) { //----(SA)	modified
 				if ( pm->ps->weaponDelay == ammoTable[pm->ps->weapon].fireDelayTime ) {
 					// released fire button.  Fire!!!
 					BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue );
@@ -3089,7 +3089,7 @@ static void PM_Weapon( void ) {
 // jpw
 
 	// check for fire
-	if ( !( pm->cmd.buttons & ( BUTTON_ATTACK | WBUTTON_ATTACK2 ) ) && !delayedFire ) {     // if not on fire button and there's not a delayed shot this frame...
+	if ( !( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_MP44) )) ) && !delayedFire ) {     // if not on fire button and there's not a delayed shot this frame...
 		pm->ps->weaponTime  = 0;
 		pm->ps->weaponDelay = 0;
 
@@ -3100,6 +3100,7 @@ static void PM_Weapon( void ) {
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
 	}
+
 
 	if ( gameReloading ) {
 		return;
@@ -3382,6 +3383,14 @@ static void PM_Weapon( void ) {
 // RF
 	pm->ps->releasedFire = qfalse;
 	pm->ps->lastFireTime = pm->cmd.serverTime;
+
+
+    //Alt firing mode
+	if ( pm->cmd.wbuttons & WBUTTON_ATTACK2) 
+	{
+	addTime  = GetWeaponTableData(pm->ps->weapon)->nextShotTime2;
+	}
+	
 	
 	switch ( pm->ps->weapon ) {
 	case WP_G43:
@@ -3430,12 +3439,14 @@ static void PM_Weapon( void ) {
 	pm->pmext->weapRecoilPitch     = GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[0] * random() * GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[1];
 
 	
-	// Aim Spread Scale handle
-	// add randomness
-	if (GetWeaponTableData(pm->ps->weapon)->class & WEAPON_TYPE_SMG)
+	// add randomness spread for SMGs
+
+	if ((pm->ps->weapon == WP_PPSH ) || (pm->ps->weapon == WP_MP40 ) || (pm->ps->weapon == WP_MP34 ) || (pm->ps->weapon == WP_THOMPSON ) || (pm->ps->weapon == WP_STEN ))
 	{
-		aimSpreadScaleAdd += rand() % 10;
+	aimSpreadScaleAdd += rand() % 5;
 	}
+
+
 
 
     if ( ( pm->ps->eFlags & EF_CROUCHING ) && ( pm->ps->groundEntityNum != ENTITYNUM_NONE ) ) { 
@@ -4067,10 +4078,11 @@ void PmoveSingle( pmove_t *pmove ) {
 	}
 
 
+
 	if ( !(pm->ps->pm_flags & PMF_RESPAWNED) && pm->ps->pm_type != PM_INTERMISSION && pm->ps->pm_type != PM_NOCLIP ) {
 		// check if zooming
 		if ( !( pm->cmd.wbuttons & WBUTTON_ZOOM ) ) {
-			if ( pm->cmd.buttons & BUTTON_ATTACK ) {
+			if ( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_MP44))  )) {
 				// check for ammo
 				if ( PM_WeaponAmmoAvailable( pm->ps->weapon ) ) {
 					// all clear, fire!

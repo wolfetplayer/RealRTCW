@@ -633,18 +633,6 @@ typedef enum {
 	W_NUM_TYPES
 } modelViewType_t;
 
-
-typedef struct partModel_s {
-	char tagName[MAX_QPATH];
-	qhandle_t model;
-	qhandle_t skin[3];              // 0: neutral, 1: axis, 2: allied
-} partModel_t;
-
-typedef struct weaponModel_s {
-	qhandle_t model;
-	qhandle_t skin[3];              // 0: neutral, 1: axis, 2: allied
-} weaponModel_t;
-
 // each WP_* weapon enum has an associated weaponInfo_t
 // that contains media references necessary to present the
 // weapon and its effects
@@ -659,20 +647,15 @@ typedef struct weaponInfo_s {
     qhandle_t legskin;
 //----(SA)	end
 
-	qboolean droppedAnglesHack;
-
 	qhandle_t handsModel;               // the hands don't actually draw, they just position the weapon
 
 	qhandle_t standModel;               // not drawn.  tags used for positioning weapons for pickup
 
 //----(SA) mod for 1st/3rd person weap views
-	qhandle_t weaponModel_old[W_NUM_TYPES];
-	qhandle_t wpPartModels_old[W_NUM_TYPES][W_MAX_PARTS];
-	weaponModel_t weaponModel[W_NUM_TYPES];
-	partModel_t partModels[W_NUM_TYPES][W_MAX_PARTS];
+	qhandle_t weaponModel[W_NUM_TYPES];
+	qhandle_t wpPartModels[W_NUM_TYPES][W_MAX_PARTS];
 	qhandle_t flashModel[W_NUM_TYPES];
-	//qhandle_t modModel[W_NUM_TYPES];        // like the scope for the rifles
-	qhandle_t modModels[6];  
+	qhandle_t modModel[W_NUM_TYPES];        // like the scope for the rifles
 //----(SA) end
 
 	pose_t position;                    // wolf locations (high, low, knife, pistol, shoulder, throw)  defines are WPOS_HIGH, WPOS_LOW, WPOS_KNIFE, WPOS_PISTOL, WPOS_SHOULDER, WPOS_THROW
@@ -2056,7 +2039,7 @@ void CG_WeaponSuggest( int weap );
 
 void CG_FinishWeaponChange( int lastweap, int newweap );
 
-void CG_RegisterWeapon( int weaponNum, qboolean force );
+void CG_RegisterWeapon( int weaponNum );
 void CG_RegisterItemVisuals( int itemNum );
 
 void CG_FireWeapon( centity_t *cent );   //----(SA)	modified.

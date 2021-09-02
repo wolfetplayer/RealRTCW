@@ -814,11 +814,3 @@ void *trap_Alloc( int size ) {
 	return (void*)syscall( G_ALLOC, size );
 }
 
-int trap_PC_ReadToken( int handle, pc_token_t *pc_token ) {
-	return syscall( BOTLIB_PC_READ_TOKEN, handle, pc_token );
-}
-
-
-int trap_PC_SourceFileAndLine( int handle, char *filename, int *line ) {
-	return syscall( BOTLIB_PC_SOURCE_FILE_AND_LINE, handle, filename, line );
-}

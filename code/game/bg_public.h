@@ -1616,15 +1616,3 @@ float BG_AnimGetFootstepGap( playerState_t *ps, float xyspeed );
 
 extern animStringItem_t animStateStr[];
 extern animStringItem_t animBodyPartsStr[];
-
-int trap_PC_LoadSource( const char *filename );
-int trap_PC_ReadToken( int handle, pc_token_t *pc_token );
-int trap_PC_FreeSource( int handle );
-int trap_PC_SourceFileAndLine( int handle, char *filename, int *line );
-
-qboolean PC_Int_Parse( int handle, int *i );
-qboolean PC_String_ParseNoAlloc( int handle, char *out, size_t size );
-void PC_SourceError( int handle, char *format, ... );
-qboolean PC_Vec_Parse( int handle, vec3_t *c );
-qboolean PC_Float_Parse( int handle, float *f );
-qboolean PC_Color_Parse( int handle, vec4_t *c );

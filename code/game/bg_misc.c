@@ -110,7 +110,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_BARAMMO,    1,       8,        1650,        100,       300,       300,       0,      0,      18,       7,          0,          0,          350,        40,                 0.4f,            40,              {.2f,.2f},       {.1f, .1f},         2000,               0.90,               MOD_M1GARAND,                              },  //	WP_M1GARAND				// 16
 	{   MAX_AMMO_BARAMMO,    1,       20,       2250,        100,       200,       100,       0,      0,      16,       6,          0,          0,          700,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               MOD_BAR,                                   },  //	WP_BAR					// 17
 	{   MAX_AMMO_44AMMO,     1,       30,       2600,        100,       105,       170,       0,      0,      9,        6,          0,          0,          800,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               MOD_MP44,                                  },  //	WP_MP44					// 18
-	{   MAX_AMMO_MG42M,      1,       100,      2600,        100,       65,        65,        2500,   350,    15,       6,          0,          0,          1200,       15,                 0.6f,            50,              {.1f, .1f},      {.1f, .1f},         1500,               0.85,               MOD_MG42M,                                 },  //	WP_MG42M                // 19
+	{   MAX_AMMO_VENOM,      1,       100,      2600,        100,       65,        65,        2500,   350,    15,       6,          0,          0,          1200,       15,                 0.6f,            50,              {.1f, .1f},      {.1f, .1f},         1500,               0.85,               MOD_MG42M,                                 },  //	WP_MG42M                // 19
 	{   MAX_AMMO_M97,        1,       6,        2000,        100,       1250,      1250,      0,      0,      10,       9,          0,          0,          4500,       15,                 0.6f,            100,             {.10f, .2f},     {.5f, .5f},         1500,               0.90,               MOD_M97,                                   },  //	WP_M97                  // 20
 	{   MAX_AMMO_REVOLVER,   1,       6,        1500,        100,       500,       500,       0,      0,      20,       7,          0,          0,          350,        35,                 0.4f,            50,              {.3f, .1f},      {0,0},              1000,               0.95,               MOD_REVOLVER,                              },  //	WP_REVOLVER             // 21
 	{   MAX_AMMO_45,         1,       7,        1500,        100,       300,       300,       0,      0,      10,       6,          0,          0,          400,        35,                 0.4f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               MOD_COLT,                                  },  //	WP_COLT					// 22
@@ -1791,7 +1791,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		700,
 		IT_WEAPON,
 		WP_MG42M,
-		WP_MG42M,
+		WP_VENOM,
 		WP_MG42M,
 		"",                      // precache
 		"",                      // sounds
@@ -1882,30 +1882,6 @@ model="models/powerups/ammo/ttammo.md3"
 		"",                  // precache
 		"",                  // sounds
 		{71,71,50,50,50}	
-	},
-
-	/*QUAKED ammo_mg42m (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: mg42m
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/mg42mammo.md3"
-*/
-	{
-		"ammo_mg42m",
-		"sound/misc/am_pkup.wav",
-		{ "models/powerups/ammo/mg42mammo.md3",
-		  0, 0, 0,    0 },
-		"icons/iconw_luger_1", // icon
-		NULL,               // ammo icon
-		"mg42ammo",           // pickup			
-		60,
-		IT_AMMO,
-		WP_MG42M,
-		WP_MG42M,
-		WP_MG42M,
-		"",                  // precache
-		"",                  // sounds
-		{150,150,100,100,100}	
 	},
 
 /*QUAKED ammo_ttammo_l (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -2415,7 +2391,7 @@ model="models/powerups/ammo/am127mm.md3"
 		WP_VENOM,
 		"",                          // precache
 		"",                          // sounds
-		{100,75,50,50,50}
+		{100,100,100,100,100}
 	},
 
 /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN

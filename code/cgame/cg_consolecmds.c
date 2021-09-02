@@ -260,6 +260,15 @@ void CG_FreeCamera( int camNum ) {
 	cameraInuse[camNum] = qfalse;
 }
 
+
+static void CG_LoadWeapons_f( void ) {
+	int i;
+
+	for ( i = WP_KNIFE; i < WP_NUM_WEAPONS; i++ ) {
+			CG_RegisterWeapon( i, qtrue );
+	}
+}
+
 /*
 ==============
 CG_StartCamera
@@ -415,6 +424,7 @@ static consoleCommand_t commands[] = {
 	{ "loaddeferred", CG_LoadDeferredPlayers },  // spelling fixed (SA)
 	{ "camera", CG_Camera_f },   // duffy
 	{ "fade", CG_Fade_f },   // duffy
+	{ "loadweapons", CG_LoadWeapons_f },
 
 	// NERVE - SMF
 	{ "mp_QuickMessage", CG_QuickMessage_f },

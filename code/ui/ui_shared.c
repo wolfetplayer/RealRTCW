@@ -435,27 +435,6 @@ static __attribute__ ((format (printf, 2, 3))) void PC_SourceWarning(int handle,
 }
 #endif
 
-/*
-=================
-PC_SourceError
-=================
-*/
-static __attribute__ ((format (printf, 2, 3))) void PC_SourceError(int handle, char *format, ...) {
-	int line;
-	char filename[128];
-	va_list argptr;
-	static char string[4096];
-
-	va_start( argptr, format );
-	Q_vsnprintf (string, sizeof(string), format, argptr);
-	va_end( argptr );
-
-	filename[0] = '\0';
-	line = 0;
-	trap_PC_SourceFileAndLine( handle, filename, &line );
-
-	Com_Printf( S_COLOR_RED "ERROR: %s, line %d: %s\n", filename, line, string );
-}
 
 /*
 =================
@@ -494,36 +473,6 @@ qboolean Float_Parse( char **p, float *f ) {
 
 /*
 =================
-PC_Float_Parse
-=================
-*/
-qboolean PC_Float_Parse( int handle, float *f ) {
-	pc_token_t token;
-	int negative = qfalse;
-
-	if ( !trap_PC_ReadToken( handle, &token ) ) {
-		return qfalse;
-	}
-	if ( token.string[0] == '-' ) {
-		if ( !trap_PC_ReadToken( handle, &token ) ) {
-			return qfalse;
-		}
-		negative = qtrue;
-	}
-	if ( token.type != TT_NUMBER ) {
-		PC_SourceError( handle, "expected float but found %s", token.string );
-		return qfalse;
-	}
-	if ( negative ) {
-		*f = -token.floatvalue;
-	} else {
-		*f = token.floatvalue;
-	}
-	return qtrue;
-}
-
-/*
-=================
 Color_Parse
 =================
 */
@@ -533,24 +482,6 @@ qboolean Color_Parse( char **p, vec4_t *c ) {
 
 	for ( i = 0; i < 4; i++ ) {
 		if ( !Float_Parse( p, &f ) ) {
-			return qfalse;
-		}
-		( *c )[i] = f;
-	}
-	return qtrue;
-}
-
-/*
-=================
-PC_Color_Parse
-=================
-*/
-qboolean PC_Color_Parse( int handle, vec4_t *c ) {
-	int i;
-	float f;
-
-	for ( i = 0; i < 4; i++ ) {
-		if ( !PC_Float_Parse( handle, &f ) ) {
 			return qfalse;
 		}
 		( *c )[i] = f;
@@ -575,36 +506,6 @@ qboolean Int_Parse( char **p, int *i ) {
 	}
 }
 
-/*
-=================
-PC_Int_Parse
-=================
-*/
-qboolean PC_Int_Parse( int handle, int *i ) {
-	pc_token_t token;
-	int negative = qfalse;
-
-	if (!i)
-		return qfalse;
-	if ( !trap_PC_ReadToken( handle, &token ) ) {
-		return qfalse;
-	}
-	if ( token.string[0] == '-' ) {
-		if ( !trap_PC_ReadToken( handle, &token ) ) {
-			return qfalse;
-		}
-		negative = qtrue;
-	}
-	if ( token.type != TT_NUMBER ) {
-		PC_SourceError( handle, "expected integer but found %s", token.string );
-		return qfalse;
-	}
-	*i = token.intvalue;
-	if ( negative ) {
-		*i = -*i;
-	}
-	return qtrue;
-}
 
 /*
 =================

@@ -580,24 +580,6 @@ typedef enum {
 } weapon_t;
 
 
-typedef enum weaponClass_s
-{
-	WEAPON_TYPE_NONE,      
-	WEAPON_TYPE_MELEE,
-	WEAPON_TYPE_PISTOL,
-	WEAPON_TYPE_SMG,
-	WEAPON_TYPE_BOLTACTION,
-	WEAPON_TYPE_RIFLE,
-	WEAPON_TYPE_AR,
-	WEAPON_TYPE_SHOTGUN,
-	WEAPON_TYPE_GRENADE,
-	WEAPON_TYPE_MG,
-	WEAPON_TYPE_PANZER,
-	WEAPON_TYPE_SCOPABLE,
-	WEAPON_TYPE_SCOPED,
-	WEAPON_TYPE_BEAM      
-} weaponClass_t;
-
 
 typedef struct ammotable_s {
 	int maxammo;            
@@ -605,7 +587,8 @@ typedef struct ammotable_s {
 	int maxclip;            
 	int reloadTime;         
 	int fireDelayTime;      
-	int nextShotTime;       
+	int nextShotTime;
+	int nextShotTime2;        
 	int maxHeat;            
 	int coolRate;    
 	int playerDamage;
@@ -620,8 +603,7 @@ typedef struct ammotable_s {
 	float weapRecoilYaw[2];
 	int soundRange;   
 	float moveSpeed; 
-	int mod;   
-	int class;       
+	int mod;       
 } ammotable_t;
     
 extern int weapAlts[]; 

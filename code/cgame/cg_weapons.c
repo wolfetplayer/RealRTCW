@@ -5499,24 +5499,22 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	sfxHandle_t sfx, sfx2;
 	float radius;
 	float light;
+	float sfx2range = 0; 
 	vec3_t lightColor;
 	localEntity_t   *le;
 	int r;
 	qboolean alphaFade = qfalse;
 	qboolean isSprite;
 	int duration;
-	// Ridah
 	int lightOverdraw;
 	vec3_t sprOrg;
 	vec3_t sprVel = { 0 };
 	int i,j;
 
-//----(SA)	added
 	float shakeAmt;
 	int shakeDur, shakeRad;
 	shakeAmt = 0;
 	shakeDur = shakeRad = 0;
-//----(SA)	end
 
 	mark = 0;
 	radius = 32;
@@ -5528,7 +5526,6 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	lightColor[0] = 1;
 	lightColor[1] = 0;
 	lightColor[2] = 0;
-	// Ridah
 	lightOverdraw = 0;
 
 	// set defaults
@@ -5554,7 +5551,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		break;
 
 	case WP_LUGER:
-	case WP_AKIMBO: //----(SA)	added
+	case WP_AKIMBO: 
 	case WP_COLT:
 	case WP_MAUSER:
 	case WP_GARAND:
@@ -5703,42 +5700,6 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 					alphaFade = qtrue;
 					radius += 1;    // experimenting with different mark sizes per surface
 
-/*
-					if (rand()%100 > 75)
-					{
-						gentity_t	*sfx;
-						vec3_t		start;
-						vec3_t		dir;
-
-						sfx = G_Spawn ();
-
-						sfx->s.density = type;
-
-						VectorCopy (tr.endpos, start);
-
-						VectorCopy (muzzleTrace, dir);
-						VectorNegate (dir, dir);
-
-						G_SetOrigin (sfx, start);
-						G_SetAngle (sfx, dir);
-
-						G_AddEvent( sfx, EV_SHARD, DirToByte( dir ));
-
-						sfx->think = G_FreeEntity;
-						sfx->nextthink = level.time + 1000;
-
-						sfx->s.frame = 3 + (rand()%3) ;
-
-						trap_LinkEntity (sfx);
-
-
-void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
-						CG_Shard
-
-					}
-
-*/
-
 
 				} else if ( surfFlags & SURF_CERAMIC ) {
 					sfx = cgs.media.sfx_bullet_ceramichit[rand() % 3];
@@ -5770,6 +5731,8 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 	case WP_MORTAR:
 		sfx = cgs.media.sfx_rockexp;
 		mark = cgs.media.burnMarkShader;
+		sfx2 = cgs.media.sfx_rockexpDist;
+		sfx2range = 1200;
 		radius = 64;
 		light = 300;
 		isSprite = qtrue;
@@ -5787,21 +5750,19 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 			for ( j = 0; j < 3; j++ )
 				sprOrg[j] = origin[j] + 64 * dir[j] + 24 * crandom();
 			sprVel[2] += rand() % 50;
-//			CG_ParticleExplosion( 2, sprOrg, sprVel, 1000+rand()%250, 20, 40+rand()%60 );
 			CG_ParticleExplosion( "blacksmokeanimb", sprOrg, sprVel, 3500 + rand() % 250, 10, 250 + rand() % 60 );
 		}
 
 		VectorMA( origin, 24, dir, sprOrg );
 		VectorScale( dir, 64, sprVel );
-		// RF, I like this new animation, feel free to revert
 		CG_ParticleExplosion( "expblue", sprOrg, sprVel, 1000, 20, 300 );
-//		CG_ParticleExplosion( "explode1", sprOrg, sprVel, 1200, 9, 300 );
 		break;
 
 	case WP_DYNAMITE:
 		shader = cgs.media.rocketExplosionShader;
 		sfx = cgs.media.sfx_dynamiteexp;
 		sfx2 = cgs.media.sfx_dynamiteexpDist;
+		sfx2range = 400;
 		mark = cgs.media.burnMarkShader;
 		radius = 64;
 		light = 300;
@@ -5872,10 +5833,10 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
-//		mod = cgs.media.dishFlashModel;
-//		shader = cgs.media.grenadeExplosionShader;
 		shader = cgs.media.rocketExplosionShader;       // copied from RL
-		sfx = cgs.media.sfx_rockexp;
+		sfx = cgs.media.sfx_grenexp;
+		sfx2 = cgs.media.sfx_grenexpDist;
+		sfx2range = 400;
 		mark = cgs.media.burnMarkShader;
 		radius = 64;
 		light = 300;
@@ -5889,44 +5850,26 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 			shakeDur = 1000;
 			shakeRad = 600;
 		
-
-		// Ridah, explosion sprite animation
 		VectorMA( origin, 16, dir, sprOrg );
 		VectorScale( dir, 100, sprVel );
 
-		// RF, testing new explosion animation
 		CG_ParticleExplosion( "expblue", sprOrg, sprVel, 700, 20, 160 );
-		//CG_ParticleExplosion( "twiltb", sprOrg, sprVel, 600, 9, 100 );
-		//CG_ParticleExplosion( 3, sprOrg, sprVel, 900, 9, 250 );
-/*
-		r = 2 + rand()%3;
-		for (i=0; i<3; i++) {
-			for (j=0;j<3;j++) sprOrg[j] = origin[j] + 14*dir[j] + 14*crandom();
-			CG_ParticleExplosion( 3, sprOrg, sprVel, 800+rand()%250, 9, 60+rand()%200 );
-		}
-*/
-		// Ridah, throw some debris
-		CG_AddDebris( origin, dir,
-					  280,      // speed
-					  1400,     // duration
-					  // 15 + rand()%5 );	// count
-					  7 + rand() % 2 ); // count
 
+		CG_AddDebris( origin, dir,
+					280,      // speed
+					1400,     // duration
+					7 + rand() % 2 ); // count
 		break;
 	case VERYBIGEXPLOSION:
 	case WP_PANZERFAUST:
-//		mod = cgs.media.dishFlashModel;
-//		shader = cgs.media.rocketExplosionShader;
 		sfx = cgs.media.sfx_rockexp;
+		sfx2 = cgs.media.sfx_rockexpDist;
+		sfx2range = 800;
 		mark = cgs.media.burnMarkShader;
 		radius = 64;
 		light = 600;
 		isSprite = qtrue;
 		duration = 1000;
-		// Ridah, changed to flamethrower colors
-//		lightColor[0] = 1;
-//		lightColor[1] = 1;//0.75;
-//		lightColor[2] = 0.6;//0.0;
 		lightColor[0] = 0.75;
 		lightColor[1] = 0.0;
 		lightColor[2] = 0.0;
@@ -5934,7 +5877,6 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 		// explosion sprite animation
 		VectorMA( origin, 24, dir, sprOrg );
 		VectorScale( dir, 64, sprVel );
-
 		// cam shake
 		if ( weapon == VERYBIGEXPLOSION ) {
 			shakeAmt = 0.2f;
@@ -5989,39 +5931,33 @@ void CG_Shard(centity_t *cent, vec3_t origin, vec3_t dir)
 						  5 + rand() % 5 ); // count
 
 		}
-// jpw
-/*
-		// some sparks
-		CG_AddSparks( origin, dir,
-						200,	// speed
-						800,	// duration
-						5 + rand()%10,	// count
-						0.8 );	// rand scale
-*/
-		// done.
 
 		break;
 
 	default:
 	case WP_FLAMETHROWER:
-		// no explosion at LG impact, it is added with the beam
 		return;
-
 		break;
-
 	}
-	// done.
 
 	if ( sfx ) {
 		trap_S_StartSound( origin, ENTITYNUM_WORLD, CHAN_AUTO, sfx );
 	}
 
-//----(SA)	added
-	if ( sfx2 ) {  // distant sounds for weapons with a broadcast fire sound (so you /always/ hear dynamite explosions)
-		trap_S_StartLocalSound( sfx2, CHAN_AUTO );
-	}
-//----(SA)	end
+		if ( sfx2 ) {  // distant sounds for weapons with a broadcast fire sound (so you /always/ hear dynamite explosions)
+		vec3_t porg, gorg, norm;    // player/gun origin
+		float gdist;
 
+		VectorCopy( origin, gorg );
+		VectorCopy( cg.refdef_current->vieworg, porg );
+		VectorSubtract( gorg, porg, norm );
+		gdist = VectorNormalize( norm );
+		if ( gdist > 1200 && gdist < 8000 ) {  // 1200 is max cam shakey dist (2*600) use gorg as the new sound origin
+			VectorMA( cg.refdef_current->vieworg, sfx2range, norm, gorg ); // JPW NERVE non-distance falloff makes more sense; sfx2range was gdist*0.2
+			// sfx2range is variable to give us minimum volume control different explosion sizes (see mortar, panzerfaust, and grenade)
+			trap_S_StartSoundEx( gorg, ENTITYNUM_WORLD, CHAN_WEAPON, sfx2, SND_NOCUT );
+		}
+	}
 
 	//
 	// camera shake

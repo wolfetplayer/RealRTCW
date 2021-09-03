@@ -1162,19 +1162,15 @@ static void CG_RegisterSounds( void ) {
 		}
 	}
 
-	//----(SA)	added
 	cgs.media.grenadePulseSound4 = trap_S_RegisterSound( "sound/weapons/grenade/grenpulse4.wav" );
 	cgs.media.grenadePulseSound3 = trap_S_RegisterSound( "sound/weapons/grenade/grenpulse3.wav" );
 	cgs.media.grenadePulseSound2 = trap_S_RegisterSound( "sound/weapons/grenade/grenpulse2.wav" );
 	cgs.media.grenadePulseSound1 = trap_S_RegisterSound( "sound/weapons/grenade/grenpulse1.wav" );
-	//----(SA)	end
 
-	//----(SA) added
 	cgs.media.debBounce1Sound = trap_S_RegisterSound( "sound/world/block.wav" );
 	cgs.media.debBounce2Sound = trap_S_RegisterSound( "sound/world/brick.wav" );
 	cgs.media.debBounce3Sound = trap_S_RegisterSound( "sound/world/brick2.wav" );
 
-	// Ridah
 	cgs.media.flameSound = trap_S_RegisterSound( "sound/weapons/flamethrower/fl_fire.wav" );
 	cgs.media.flameBlowSound = trap_S_RegisterSound( "sound/weapons/flamethrower/fl_blow.wav" );
 	cgs.media.flameStartSound = trap_S_RegisterSound( "sound/weapons/flamethrower/fl_start.wav" );
@@ -1207,7 +1203,15 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.sfx_ric1 = trap_S_RegisterSound( "sound/weapons/machinegun/ric1.wav" );
 	cgs.media.sfx_ric2 = trap_S_RegisterSound( "sound/weapons/machinegun/ric2.wav" );
 	cgs.media.sfx_ric3 = trap_S_RegisterSound( "sound/weapons/machinegun/ric3.wav" );
+
+	// Explosion sounds
+	// Rocket
 	cgs.media.sfx_rockexp = trap_S_RegisterSound( "sound/weapons/rocket/rocklx1a.wav" );
+	cgs.media.sfx_rockexpDist = trap_S_RegisterSound( "sound/weapons/rocket/rocket_explode_far.wav" );
+    // Grenades
+	cgs.media.sfx_grenexp = trap_S_RegisterSound( "sound/weapons/grenade/grenade_explode.wav" );
+    cgs.media.sfx_grenexpDist = trap_S_RegisterSound( "sound/weapons/grenade/grenade_explode_far.wav" );
+	// Dynamite
 	cgs.media.sfx_dynamiteexp = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp.wav" );
 	cgs.media.sfx_dynamiteexpDist = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp_dist.wav" );   
 
@@ -2547,6 +2551,8 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 
 	s = CG_ConfigString( CS_LEVEL_START_TIME );
 	cgs.levelStartTime = atoi( s );
+
+	cg.refdef_current = &cg.refdef;
 
 	CG_ParseServerinfo();
 

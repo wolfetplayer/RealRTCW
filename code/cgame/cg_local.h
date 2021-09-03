@@ -1321,11 +1321,12 @@ typedef struct {
 	sfxHandle_t sfx_ric1;
 	sfxHandle_t sfx_ric2;
 	sfxHandle_t sfx_ric3;
-	//sfxHandle_t sfx_railg;
 	sfxHandle_t sfx_rockexp;
+	sfxHandle_t sfx_rockexpDist;
+	sfxHandle_t sfx_grenexp;
+	sfxHandle_t sfx_grenexpDist;
 	sfxHandle_t sfx_dynamiteexp;
-	sfxHandle_t sfx_dynamiteexpDist;    //----(SA)	added
-	sfxHandle_t sfx_spearhit;
+	sfxHandle_t sfx_dynamiteexpDist;   
 	sfxHandle_t sfx_knifehit[5];
 	sfxHandle_t sfx_bullet_metalhit[3];
 	sfxHandle_t sfx_bullet_woodhit[3];

@@ -94,7 +94,7 @@ static void PM_ContinueWeaponAnim( int anim ) {
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	// bank
 	{0,                     0,                      0,            0,               0            },  //	0 (empty)
-	{WP_KNIFE,              WP_DAGGER,              WP_BINOCULARS, 0,              0            },  //	1
+	{WP_KNIFE,              WP_DAGGER,              WP_BINOCULARS, WP_HOLYCROSS,   0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_P38,       WP_WELROD,       0            },  //	2
 	{WP_MP40,               WP_STEN,                WP_THOMPSON,  0,               0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              0,            0,               0            },  //	4
@@ -103,7 +103,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_M97,                WP_M30,                 0,            0,               0            },  //	7
 	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  0,               0            },  //	8
 	{WP_PANZERFAUST,        WP_FLAMETHROWER,        WP_MG42M,     0,               0            },  //	9
-	{WP_VENOM,              WP_TESLA,               WP_HOLYCROSS, 0,               0            }  //	10
+	{WP_VENOM,              WP_TESLA,               0,            0,               0            }  //	10
 };
 
 // JPW NERVE -- in mutiplayer, characters get knife/special on button 1, pistols on 2, 2-handed on 3
@@ -3623,7 +3623,6 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_GARAND:
 		case WP_VENOM:
 		case WP_TESLA:
-		case WP_HOLYCROSS:
 		case WP_PANZERFAUST:
 		case WP_FLAMETHROWER:
 		case WP_FG42:

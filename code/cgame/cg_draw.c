@@ -778,7 +778,6 @@ static void CG_DrawStatusBar( void ) {
 			case WP_GARAND:
 			case WP_VENOM:
 			case WP_TESLA:
-			case WP_HOLYCROSS:
 			case WP_PANZERFAUST:
 			case WP_FLAMETHROWER:
 				wideOffset = -38;

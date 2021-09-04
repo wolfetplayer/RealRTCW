@@ -5592,7 +5592,7 @@ void CG_MissileHitWallSmall( int weapon, int clientNum, vec3_t origin, vec3_t di
 
 	// set defaults
 	shader = cgs.media.rocketExplosionShader;       // copied from RL
-	sfx = cgs.media.sfx_rockexp;
+	sfx = cgs.media.sfx_barrelexp;
 	mark = cgs.media.burnMarkShader;
 	radius = 64;
 	light = 300;

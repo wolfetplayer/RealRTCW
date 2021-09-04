@@ -1771,7 +1771,7 @@ void FireWeapon( gentity_t *ent ) {
 		weapon_venom_fire( ent, qfalse, aimSpreadScale );
 		break;
 	case WP_SNIPERRIFLE:
-		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer), qfalse );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
@@ -1782,7 +1782,7 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 		
 	case WP_SNOOPERSCOPE:
-		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer), qtrue );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
@@ -1798,7 +1798,7 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, GARAND_SPREAD * aimSpreadScale, GARAND_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_FG42SCOPE:
-		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer) ); 
+		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer), qfalse ); 
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.1; 
@@ -1837,7 +1837,7 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, MP44_SPREAD * aimSpreadScale, MP44_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_MG42M: 
-		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer), qfalse );
 		if (!ent->aiCharacter) {
 		vec3_t vec_forward, vec_vangle;
 		VectorCopy(ent->client->ps.viewangles, vec_vangle);

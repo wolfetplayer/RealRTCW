@@ -95,10 +95,7 @@ void TossClientItems( gentity_t *self ) {
 	case AICHAR_GHOST:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_LOPER:
-	case AICHAR_STIMSOLDIER1:
 	case AICHAR_SUPERSOLDIER:
-	case AICHAR_STIMSOLDIER2:
-	case AICHAR_STIMSOLDIER3:
 	case AICHAR_PROTOSOLDIER:
 	return;         //----(SA)	removed DK's special case
 	default:

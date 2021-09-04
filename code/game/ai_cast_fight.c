@@ -957,12 +957,6 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 	case WP_TESLA:
 		break;
 	case WP_HOLYCROSS:
-		switch ( cs->aiCharacter ) {
-		case AICHAR_STIMSOLDIER3:
-			if ( dist < 0 || dist >= HOLYCROSS_RANGE ) {
-				return qfalse;
-			}
-		}
 		break;
 	case WP_MONSTER_ATTACK1:
 		switch ( g_entities[cs->entityNum].aiCharacter ) {

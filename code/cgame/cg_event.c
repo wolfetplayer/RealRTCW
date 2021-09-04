@@ -1220,7 +1220,7 @@ void CG_Effect( centity_t *cent, vec3_t origin, vec3_t dir ) {
 
 	if ( cent->currentState.eventParm & 2 ) {  // explode
 		vec3_t sprVel, sprOrg;
-		trap_S_StartSound( origin, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.sfx_rockexp );
+		trap_S_StartSound( origin, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.sfx_barrelexp );
 
 		// new explode	(from rl)
 		VectorMA( origin, 16, dir, sprOrg );

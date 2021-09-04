@@ -1210,6 +1210,8 @@ static void CG_RegisterSounds( void ) {
 	// Dynamite
 	cgs.media.sfx_dynamiteexp = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp.wav" );
 	cgs.media.sfx_dynamiteexpDist = trap_S_RegisterSound( "sound/weapons/dynamite/dynamite_exp_dist.wav" );   
+	// Barrel
+	cgs.media.sfx_barrelexp = trap_S_RegisterSound( "sound/weapons/world/barrel_exp.wav" );
 
 
 	cgs.media.sfx_knifehit[0] = trap_S_RegisterSound( "sound/weapons/knife/knife_hit1.wav" ); 

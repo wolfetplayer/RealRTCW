@@ -1329,7 +1329,8 @@ typedef struct {
 	sfxHandle_t sfx_grenexp;
 	sfxHandle_t sfx_grenexpDist;
 	sfxHandle_t sfx_dynamiteexp;
-	sfxHandle_t sfx_dynamiteexpDist;   
+	sfxHandle_t sfx_dynamiteexpDist;  
+	sfxHandle_t sfx_barrelexp; 
 	sfxHandle_t sfx_knifehit[5];
 	sfxHandle_t sfx_bullet_metalhit[3];
 	sfxHandle_t sfx_bullet_woodhit[3];

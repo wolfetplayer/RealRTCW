@@ -727,7 +727,7 @@ char* AIFunc_DogBark(cast_state_t* cs) {
 		}
 
 		// if our enemy isn't using a dangerous weapon
-		if (enemy->client->ps.weapon < WP_LUGER || enemy->client->ps.weapon > WP_CLASS_SPECIAL) {
+		if (enemy->client->ps.weapon < WP_LUGER ) {
 			ent->flags &= ~FL_DOG_BARK;
 			ent->client->ps.torsoTimer = 0;
 			ent->client->ps.legsTimer = 0;
@@ -787,7 +787,7 @@ char* AIFunc_DogBarkStart(cast_state_t* cs) {
 	enemy = &g_entities[cs->enemyNum];
 
 	// if our enemy isn't using a dangerous weapon
-	if (enemy->client->ps.weapon < WP_LUGER || enemy->client->ps.weapon > WP_CLASS_SPECIAL) {
+	if (enemy->client->ps.weapon < WP_LUGER ) {
 		return NULL;
 	}
 

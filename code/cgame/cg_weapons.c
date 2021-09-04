@@ -4768,12 +4768,8 @@ void CG_FireWeapon( centity_t *cent ) {
 	} else if (   ent->weapon == WP_GRENADE_LAUNCHER ||
 				  ent->weapon == WP_GRENADE_PINEAPPLE ||
 				  ent->weapon == WP_DYNAMITE ||
-				  ent->weapon == WP_GRENADE_SMOKE ||
 				  ent->weapon == WP_SMOKE_BOMB ||
 				  ent->weapon == WP_POISON_GAS ) { // JPW NERVE
-		if ( ent->weapon == WP_GRENADE_SMOKE ) {
-			CG_Printf( "smoke grenade!\n" );
-		}
 		if ( ent->apos.trBase[0] > 0 ) { // underhand
 			return;
 		}

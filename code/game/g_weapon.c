@@ -1127,9 +1127,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		}
 	}
 // JPW NERVE
-	else if ( grenType == WP_GRENADE_SMOKE ) { // smoke grenades *really* get chucked
-		upangle *= 800;
-	} 	else if ( grenType == WP_SMOKE_BOMB ) { // smoke grenades *really* get chucked
+ 	else if ( grenType == WP_SMOKE_BOMB ) { // smoke grenades *really* get chucked
 		upangle *= 800;
 	} else if ( grenType == WP_POISON_GAS ) { // smoke grenades *really* get chucked
 		upangle *= 800;
@@ -1203,21 +1201,6 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
             m->poisonGasRadius = 300;
 	}
 
-// JPW NERVE
-	if ( grenType == WP_GRENADE_SMOKE ) {
-		if ( ent->client->sess.sessionTeam == TEAM_RED ) { // store team so we can generate red or blue smoke
-			m->s.otherEntityNum2 = 1;
-		} else {
-			m->s.otherEntityNum2 = 0;
-		}
-		m->nextthink = level.time + 4000;
-		m->think = weapon_callAirStrike;
-
-		te = G_TempEntity( m->s.pos.trBase, EV_GLOBAL_SOUND );
-		te->s.eventParm = G_SoundIndex( "sound/scenaric/forest/me109_flight.wav" );
-//		te->r.svFlags |= SVF_BROADCAST | SVF_USE_CURRENT_ORIGIN;
-	}
-// jpw
 
 	//----(SA)	adjust for movement of character.  TODO: Probably comment in later, but only for forward/back not strafing
 //	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics

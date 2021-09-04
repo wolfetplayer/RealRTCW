@@ -88,10 +88,10 @@ extern vmCvar_t g_gametype;
 
 ammotable_t ammoTable[] = {
 	
-	//	maxammo		     uses amt.	  maxclip	reloadtime   firedelay	nextshot   nextshot2  heat    cool	   plrdmg    aidmg       plrsplsh    aisplsh     spread      SpreadScaleAdd     spreadScale      recoilDuration   recoilPitch      recoilYaw           soundrange         movespeed           mod                  
+	//	maxammo		     uses amt.	  maxclip	reloadtime   firedelay	nextshot   nextshot2  heat    cool	  plrdmg    aidmg       plrsplsh    aisplsh     spread      SpreadScaleAdd      spreadScale      recoilDuration   recoilPitch      recoilYaw           soundrange          movespeed           mod                  
 	{   0,                   0,       0,        0,           50,        0,         0,         0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1.00,               1.00,               0,                                         },  //	WP_NONE					// 0
 
-	{   999,                 0,       999,      0,           50,        200,       0,         0,      0,      10,       6,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              64,                 1.00,               MOD_KNIFE,                                 },  //	WP_KNIFE				// 1
+	{   999,                 0,       999,      0,           50,        200,       200,       0,      0,      10,       6,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              64,                 1.00,               MOD_KNIFE,                                 },  //	WP_KNIFE				// 1
 
 	{   MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          400,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               MOD_LUGER,                                 },  //	WP_LUGER				// 2	
 	{   MAX_AMMO_9MM,        1,       32,       2600,        100,       110,       110,       0,      0,      6,        4,          0,          0,          850,        15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               MOD_MP40,                                  },  //	WP_MP40					// 3

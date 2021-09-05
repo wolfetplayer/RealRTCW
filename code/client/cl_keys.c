@@ -2245,7 +2245,9 @@ void CL_KeyDownEvent( int key, unsigned time )
 			// in cutscenes we need to handle keys specially (pausing not allowed in camera mode)
 			if ( (  key == K_ESCAPE ||
 					key == K_SPACE ||
-					key == K_ENTER ) && qtrue ) {
+					key == K_ENTER ||
+					key == K_PAD0_A ||
+					key == K_PAD0_START ) && qtrue ) {
 				if ( qtrue ) {
 					CL_AddReliableCommand( "cameraInterrupt", qfalse );
 				}
@@ -2327,11 +2329,11 @@ void CL_KeyDownEvent( int key, unsigned time )
 			if ( key != K_MOUSE1 ) {
 				return; // eat all keys except mouse click
 			}
-		} else*/ if ( activeMenu == UIMENU_PREGAME ) {
-			if ( key != K_MOUSE1 ) {
+		} else if ( activeMenu == UIMENU_PREGAME ) {
+			if ( key != K_ENTER ) {
 				return; // eat all keys except mouse click
 			}
-		} else {
+		} else*/ {
 
 			// when in the notebook, check for the key bound to "notebook" and allow that as an escape key
 

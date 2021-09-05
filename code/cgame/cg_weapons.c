@@ -3060,9 +3060,9 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		     gunoff[2] = -1;
 		break;
 		case WP_BAR:
-			 gunoff[0] = -3;
-		     gunoff[1] = 3;
-		     gunoff[2] = -1;
+			 gunoff[0] = -1;
+		     gunoff[1] = 1;
+		     gunoff[2] = -2;
 		break;
 		default:
 		    gunoff[0] = cg_gun_x.value;

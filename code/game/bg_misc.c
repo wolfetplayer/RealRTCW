@@ -2049,7 +2049,7 @@ model="models/powerups/ammo/44ammo_l.md3"
 		WP_M97,
 		"",                  // precache
 		"",                  // sounds
-		{ 6,6,6,6,6 }
+		{ 10,10,10,10,10 }
 	},
 
 			/*QUAKED ammo_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN

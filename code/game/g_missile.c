@@ -1449,8 +1449,8 @@ gentity_t *fire_mortar( gentity_t *self, vec3_t start, vec3_t dir ) {
 	bolt->s.weapon = WP_MORTAR;
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
-	bolt->damage = G_GetWeaponDamage( WP_MORTAR, isPlayer ); // JPW NERVE
-	bolt->splashDamage = G_GetWeaponDamage( WP_MORTAR, isPlayer ); // JPW NERVE
+	bolt->damage = 100;
+	bolt->splashDamage = 100;
 	bolt->splashRadius = 120;
 	bolt->methodOfDeath = MOD_MORTAR;
 	bolt->splashMethodOfDeath = MOD_MORTAR_SPLASH;

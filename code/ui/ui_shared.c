@@ -2136,7 +2136,7 @@ qboolean Item_ListBox_HandleKey( itemDef_t *item, int key, qboolean down, qboole
 		max = Item_ListBox_MaxScroll( item );
 		if ( item->window.flags & WINDOW_HORIZONTAL ) {
 			viewmax = ( item->window.rect.w / listPtr->elementWidth );
-			if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || K_PAD0_DPAD_LEFT ) {
+			if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || key == K_PAD0_DPAD_LEFT ) {
 				if ( !listPtr->notselectable ) {
 					listPtr->cursorPos--;
 					if ( listPtr->cursorPos < 0 ) {
@@ -2158,7 +2158,7 @@ qboolean Item_ListBox_HandleKey( itemDef_t *item, int key, qboolean down, qboole
 				}
 				return qtrue;
 			}
-			if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || K_PAD0_DPAD_RIGHT ) {
+			if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || key == K_PAD0_DPAD_RIGHT ) {
 				if ( !listPtr->notselectable ) {
 					listPtr->cursorPos++;
 					if ( listPtr->cursorPos < listPtr->startPos ) {
@@ -2182,7 +2182,7 @@ qboolean Item_ListBox_HandleKey( itemDef_t *item, int key, qboolean down, qboole
 			}
 		} else {
 			viewmax = ( item->window.rect.h / listPtr->elementHeight );
-			if ( key == K_UPARROW || key == K_KP_UPARROW || K_PAD0_DPAD_UP ) {
+			if ( key == K_UPARROW || key == K_KP_UPARROW || key == K_PAD0_DPAD_UP ) {
 				if ( !listPtr->notselectable ) {
 					listPtr->cursorPos--;
 					if ( listPtr->cursorPos < 0 ) {
@@ -2204,7 +2204,7 @@ qboolean Item_ListBox_HandleKey( itemDef_t *item, int key, qboolean down, qboole
 				}
 				return qtrue;
 			}
-			if ( key == K_DOWNARROW || key == K_KP_DOWNARROW || K_PAD0_DPAD_DOWN ) {
+			if ( key == K_DOWNARROW || key == K_KP_DOWNARROW || key == K_PAD0_DPAD_DOWN ) {
 				if ( !listPtr->notselectable ) {
 					listPtr->cursorPos++;
 					if ( listPtr->cursorPos < listPtr->startPos ) {
@@ -2551,7 +2551,7 @@ qboolean Item_TextField_HandleKey( itemDef_t *item, int key ) {
 				return qtrue;
 			}
 
-			if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || K_PAD0_DPAD_RIGHT ) {
+			if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || key == K_PAD0_DPAD_RIGHT ) {
 				if ( editPtr->maxPaintChars && item->cursorPos >= editPtr->maxPaintChars && item->cursorPos < len ) {
 					item->cursorPos++;
 					editPtr->paintOffset++;
@@ -2563,7 +2563,7 @@ qboolean Item_TextField_HandleKey( itemDef_t *item, int key ) {
 				return qtrue;
 			}
 
-			if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || K_PAD0_DPAD_LEFT ) {
+			if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || key == K_PAD0_DPAD_LEFT ) {
 				if ( item->cursorPos > 0 ) {
 					item->cursorPos--;
 				}
@@ -2600,7 +2600,7 @@ qboolean Item_TextField_HandleKey( itemDef_t *item, int key ) {
 			}
 		}
 
-		if ( key == K_UPARROW || key == K_KP_UPARROW || K_PAD0_DPAD_UP  ) {
+		if ( key == K_UPARROW || key == K_KP_UPARROW || key == K_PAD0_DPAD_UP  ) {
 			newItem = Menu_SetPrevCursorItem( item->parent );
 			if ( newItem && ( newItem->type == ITEM_TYPE_EDITFIELD || newItem->type == ITEM_TYPE_NUMERICFIELD || newItem->type == ITEM_TYPE_VALIDFILEFIELD ) ) {
 				g_editItem = newItem;
@@ -2608,14 +2608,14 @@ qboolean Item_TextField_HandleKey( itemDef_t *item, int key ) {
 		}
 
 		// NERVE - SMF
-		if ( key == K_ENTER || key == K_KP_ENTER || K_PAD0_A  ) {
+		if ( key == K_ENTER || key == K_KP_ENTER || key == K_PAD0_A  ) {
 			if ( item->onAccept ) {
 				Item_RunScript( item, item->onAccept );
 			}
 		}
 		// -NERVE - SMF
 
-		if ( key == K_ENTER || key == K_KP_ENTER || key == K_ESCAPE || K_PAD0_A  ) {
+		if ( key == K_ENTER || key == K_KP_ENTER || key == K_ESCAPE || key == K_PAD0_A  ) {
 			return qfalse;
 		}
 
@@ -4679,12 +4679,17 @@ menuDef_t *Menu_GetFocused( void ) {
 	return NULL;
 }
 
-void Menu_ScrollFeeder( menuDef_t *menu, int feeder, qboolean down ) {
-	if ( menu ) {
+void Menu_ScrollFeeder(menuDef_t *menu, int feeder, qboolean down)
+{
+	if (menu)
+	{
 		int i;
-		for ( i = 0; i < menu->itemCount; i++ ) {
-			if ( menu->items[i]->special == feeder ) {
-				Item_ListBox_HandleKey( menu->items[i], ( down ) ? K_DOWNARROW : K_UPARROW, qtrue, qtrue );
+
+		for (i = 0; i < menu->itemCount; i++)
+		{
+			if (menu->items[i]->special == feeder)
+			{
+				Item_ListBox_HandleKey(menu->items[i], (down) ? K_DOWNARROW : K_UPARROW, qtrue, qtrue);
 				return;
 			}
 		}

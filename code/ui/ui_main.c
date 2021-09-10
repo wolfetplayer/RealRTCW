@@ -4464,8 +4464,8 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_Set( "cl_renderer", "opengl1" ); 
 
 			trap_Cvar_SetValue( "cg_coronafardist", 4096 );
-			trap_Cvar_SetValue("cg_markTime", 999999 );
-			trap_Cvar_SetValue("cg_bloodTime", 999999 );
+			trap_Cvar_SetValue("cg_markTime", 30000 );
+			trap_Cvar_SetValue("cg_bloodTime", 360 );
 			trap_Cvar_SetValue("cg_particleDist", 2048 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
 
@@ -4525,8 +4525,8 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_Set( "cl_renderer", "opengl1" ); // renderer
 
 			trap_Cvar_SetValue( "cg_coronafardist", 4096 );
-			trap_Cvar_SetValue("cg_markTime", 999999 );
-			trap_Cvar_SetValue("cg_bloodTime", 999999 );
+			trap_Cvar_SetValue("cg_markTime", 20000 );
+			trap_Cvar_SetValue("cg_bloodTime", 240 );
 			trap_Cvar_SetValue("cg_particleDist", 2048 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
 
@@ -4584,7 +4584,7 @@ static void UI_Update( const char *name ) {
 
 			trap_Cvar_SetValue( "cg_coronafardist", 2048 );
 			trap_Cvar_SetValue("cg_markTime", 10000 );
-			trap_Cvar_SetValue("cg_bloodTime", 10000 );
+			trap_Cvar_SetValue("cg_bloodTime", 120 );
 			trap_Cvar_SetValue("cg_particleDist", 1024 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
 
@@ -4643,7 +4643,7 @@ static void UI_Update( const char *name ) {
 
 			trap_Cvar_SetValue( "cg_coronafardist", 1024 );
 			trap_Cvar_SetValue("cg_markTime", 5000 );
-			trap_Cvar_SetValue("cg_bloodTime", 5000 );
+			trap_Cvar_SetValue("cg_bloodTime", 120 );
 			trap_Cvar_SetValue("cg_particleDist", 1024 );
 			trap_Cvar_SetValue( "cg_brassTime", 1000 );
 

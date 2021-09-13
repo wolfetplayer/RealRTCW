@@ -484,8 +484,6 @@ static void GLSL_LinkProgram(GLuint program)
 	}
 }
 
-
-
 static void GLSL_ShowProgramUniforms(GLuint program)
 {
 	int             i, count, size;
@@ -1145,6 +1143,8 @@ void GLSL_InitGPUShaders(void)
 
 					if (r_parallaxMapShadows->integer)
 						Q_strcat(extradefines, 1024, "#define USE_PARALLAXMAP_SHADOWS\n");
+
+					Q_strcat(extradefines, 1024, va("#define r_parallaxMapOffset %f\n", r_parallaxMapOffset->value));
 				}
 			}
 

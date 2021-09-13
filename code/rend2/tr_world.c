@@ -661,8 +661,8 @@ static void R_RecursiveWorldNode( mnode_t *node, uint32_t planeBits, uint32_t dl
 			tr.viewParms.visBounds[1][2] = node->maxs[2];
 		}
 
-// add surfaces
-view = tr.world->marksurfaces + node->firstmarksurface;
+		// add surfaces
+		view = tr.world->marksurfaces + node->firstmarksurface;
 
 		c = node->nummarksurfaces;
 		while (c--) {
@@ -670,9 +670,9 @@ view = tr.world->marksurfaces + node->firstmarksurface;
 			surf = *view;
 			if (tr.world->surfacesViewCount[surf] != tr.viewCount)
 			{
-            tr.world->surfacesViewCount[surf] = tr.viewCount;
-            tr.world->surfacesDlightBits[surf] = dlightBits;
-            tr.world->surfacesPshadowBits[surf] = pshadowBits;
+				tr.world->surfacesViewCount[surf] = tr.viewCount;
+				tr.world->surfacesDlightBits[surf] = dlightBits;
+				tr.world->surfacesPshadowBits[surf] = pshadowBits;
 			}
 			else
 			{

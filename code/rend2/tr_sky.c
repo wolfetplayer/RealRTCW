@@ -426,7 +426,6 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 		}
 	}
 
-
 	// FIXME: A lot of this can probably be removed for speed, and refactored into a more convenient function
 	RB_UpdateTessVao(ATTR_POSITION | ATTR_TEXCOORD);
 /*
@@ -538,7 +537,6 @@ static void DrawSkySideInner( struct image_s *image, const int mins[2], const in
 			tess.indexes[tess.numIndexes++] = (s + 1) + (t + 1) * (maxs[0] - mins[0] + 1) + firstVertex;
 		}
 	}
-
 
 	// FIXME: A lot of this can probably be removed for speed, and refactored into a more convenient function
 	RB_UpdateTessVao(ATTR_POSITION | ATTR_TEXCOORD);

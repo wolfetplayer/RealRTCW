@@ -433,50 +433,46 @@ static void RB_SurfaceVertsAndIndexes( int numVerts, srfVert_t *verts, int numIn
 
 static qboolean RB_SurfaceVaoCached(int numVerts, srfVert_t *verts, int numIndexes, glIndex_t *indexes, int dlightBits, int pshadowBits)
 {
+	qboolean recycleVertexBuffer = qfalse;
+	qboolean recycleIndexBuffer = qfalse;
+	qboolean endSurface = qfalse;
 
-qboolean recycleVertexBuffer = qfalse;
-qboolean recycleIndexBuffer = qfalse;
-qboolean endSurface = qfalse;
-
-if (!(!ShaderRequiresCPUDeforms(tess.shader) && !tess.shader->isSky && !tess.shader->isPortal))
+	if (!(!ShaderRequiresCPUDeforms(tess.shader) && !tess.shader->isSky && !tess.shader->isPortal))
 		return qfalse;
-	
 
-if (!numIndexes || !numVerts)
+	if (!numIndexes || !numVerts)
 		return qfalse;
-	
 
-VaoCache_BindVao();
+	VaoCache_BindVao();
 
 	tess.dlightBits |= dlightBits;
 	tess.pshadowBits |= pshadowBits;
 
-     VaoCache_CheckAdd(&endSurface, &recycleVertexBuffer, &recycleIndexBuffer, numVerts, numIndexes);
+	VaoCache_CheckAdd(&endSurface, &recycleVertexBuffer, &recycleIndexBuffer, numVerts, numIndexes);
 
 	if (endSurface)
 	{
 		RB_EndSurface();
 		RB_BeginSurface(tess.shader, tess.fogNum, tess.cubemapIndex);
-		}
-if (recycleVertexBuffer)
-VaoCache_RecycleVertexBuffer();
+	}
 
-		
-if (recycleIndexBuffer)
-VaoCache_RecycleIndexBuffer();
+	if (recycleVertexBuffer)
+		VaoCache_RecycleVertexBuffer();
 
-if (!tess.numVertexes)
-VaoCache_InitQueue();
+	if (recycleIndexBuffer)
+		VaoCache_RecycleIndexBuffer();
 
-VaoCache_AddSurface(verts, numVerts, indexes, numIndexes);
+	if (!tess.numVertexes)
+		VaoCache_InitQueue();
 
-tess.numIndexes += numIndexes;
-tess.numVertexes += numVerts;
-tess.useInternalVao = qfalse;
-tess.useCacheVao = qtrue;
+	VaoCache_AddSurface(verts, numVerts, indexes, numIndexes);
 
+	tess.numIndexes += numIndexes;
+	tess.numVertexes += numVerts;
+	tess.useInternalVao = qfalse;
+	tess.useCacheVao = qtrue;
 
-return qtrue;
+	return qtrue;
 }
 
 
@@ -487,7 +483,7 @@ RB_SurfaceTriangles
 */
 static void RB_SurfaceTriangles( srfBspSurface_t *srf ) {
 	if (RB_SurfaceVaoCached(srf->numVerts, srf->verts, srf->numIndexes,
-				srf->indexes, srf->dlightBits, srf->pshadowBits))
+		srf->indexes, srf->dlightBits, srf->pshadowBits))
 	{
 		return;
 	}
@@ -563,7 +559,6 @@ static void RB_SurfaceBeam( void ) {
 		tess.indexes[tess.numIndexes++] =      (i + 1) * 2;
 		tess.indexes[tess.numIndexes++] = 1  + (i + 1) * 2;
 	}
-
 
 	// FIXME: A lot of this can probably be removed for speed, and refactored into a more convenient function
 	RB_UpdateTessVao(ATTR_POSITION);
@@ -926,7 +921,7 @@ RB_SurfaceFace
 */
 static void RB_SurfaceFace( srfBspSurface_t *srf ) {
 	if (RB_SurfaceVaoCached(srf->numVerts, srf->verts, srf->numIndexes,
-					srf->indexes, srf->dlightBits, srf->pshadowBits))
+		srf->indexes, srf->dlightBits, srf->pshadowBits))
 	{
 		return;
 	}
@@ -994,7 +989,7 @@ static void RB_SurfaceGrid( srfBspSurface_t *srf ) {
 	//int		*vDlightBits;
 
 	if (RB_SurfaceVaoCached(srf->numVerts, srf->verts, srf->numIndexes,
-					srf->indexes, srf->dlightBits, srf->pshadowBits))
+		srf->indexes, srf->dlightBits, srf->pshadowBits))
 	{
 		return;
 	}
@@ -1242,7 +1237,6 @@ static void RB_SurfaceFlare( srfFlare_t *surf ) {
 	if (r_flares->integer)
 		RB_AddFlare(surf, tess.fogNum, surf->origin, surf->color, 1.0f, surf->normal, 0, qtrue);
 }
-
 
 void RB_SurfaceVaoMdvMesh(srfVaoMdvMesh_t * surface)
 {

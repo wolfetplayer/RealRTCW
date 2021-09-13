@@ -37,4 +37,5 @@ profile
 # Microsoft Visual Studio
 ####################
 *.sdf
-.vs/
+*.opensdf
+*.suo

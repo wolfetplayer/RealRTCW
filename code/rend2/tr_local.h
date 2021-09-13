@@ -1055,7 +1055,6 @@ typedef struct srfBspSurface_s
 	int             numVerts;
 	srfVert_t      *verts;
 
-
 	// SF_GRID specific variables after here
 
 	// lod information, which may be different
@@ -1280,7 +1279,6 @@ typedef struct {
 	int         *surfacesViewCount;
 	int         *surfacesDlightBits;
 	int			*surfacesPshadowBits;
-
 
 	int nummarksurfaces;
 	int         *marksurfaces;
@@ -1577,7 +1575,6 @@ typedef struct {
 
 	int     c_staticVaoDraws;
 	int     c_dynamicVaoDraws;
-
 
 	int c_dlightVertexes;
 	int c_dlightIndexes;
@@ -1994,6 +1991,7 @@ extern  cvar_t  *r_normalMapping;
 extern  cvar_t  *r_specularMapping;
 extern  cvar_t  *r_deluxeMapping;
 extern  cvar_t  *r_parallaxMapping;
+extern  cvar_t  *r_parallaxMapOffset;
 extern  cvar_t  *r_parallaxMapShadows;
 extern  cvar_t  *r_cubeMapping;
 extern  cvar_t  *r_cubemapSize;
@@ -2284,7 +2282,6 @@ typedef struct stageVars
 	vec2_t texcoords[NUM_TEXTURE_BUNDLES][SHADER_MAX_VERTEXES];
 } stageVars_t;
 
-
 typedef struct shaderCommands_s
 {
 	glIndex_t	indexes[SHADER_MAX_INDEXES] QALIGN(16);
@@ -2479,7 +2476,6 @@ void VaoCache_RecycleVertexBuffer(void);
 void VaoCache_RecycleIndexBuffer(void);
 void VaoCache_InitQueue(void);
 void VaoCache_AddSurface(srfVert_t *verts, int numVerts, glIndex_t *indexes, int numIndexes);
-
 
 /*
 ============================================================

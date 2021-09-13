@@ -156,6 +156,7 @@ cvar_t  *r_normalMapping;
 cvar_t  *r_specularMapping;
 cvar_t  *r_deluxeMapping;
 cvar_t  *r_parallaxMapping;
+cvar_t  *r_parallaxMapOffset;
 cvar_t  *r_parallaxMapShadows;
 cvar_t  *r_cubeMapping;
 cvar_t  *r_cubemapSize;
@@ -1099,9 +1100,11 @@ void GL_SetDefaultState( void ) {
 	// ATI pn_triangles
 	if ( qglPNTrianglesiATI ) {
 		int maxtess;
+
 		// get max supported tesselation
 		qglGetIntegerv( GL_MAX_PN_TRIANGLES_TESSELATION_LEVEL_ATI, (GLint*)&maxtess );
 		glConfig.ATIMaxTruformTess = maxtess;
+
 		// cap if necessary
 		if ( r_ati_truform_tess->value > maxtess ) {
 			ri.Cvar_Set( "r_ati_truform_tess", va( "%d", maxtess ) );
@@ -1110,6 +1113,7 @@ void GL_SetDefaultState( void ) {
 		// set Wolf defaults
 		qglPNTrianglesiATI( GL_PN_TRIANGLES_TESSELATION_LEVEL_ATI, r_ati_truform_tess->value );
 	}
+
 #if 0
 	if ( glConfig.anisotropicAvailable ) {
 		float maxAnisotropy;
@@ -1118,7 +1122,7 @@ void GL_SetDefaultState( void ) {
 		glConfig.maxAnisotropy = maxAnisotropy;
 
 		// set when rendering
-//	   qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, glConfig.maxAnisotropy);
+		//qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, glConfig.maxAnisotropy);
 	}
 #endif
 //----(SA)	end
@@ -1410,6 +1414,7 @@ void R_Register( void ) {
 	r_specularMapping = ri.Cvar_Get( "r_specularMapping", "1", CVAR_ARCHIVE | CVAR_LATCH );
 	r_deluxeMapping = ri.Cvar_Get( "r_deluxeMapping", "1", CVAR_ARCHIVE | CVAR_LATCH );
 	r_parallaxMapping = ri.Cvar_Get( "r_parallaxMapping", "0", CVAR_ARCHIVE | CVAR_LATCH );
+	r_parallaxMapOffset = ri.Cvar_Get( "r_parallaxMapOffset", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_parallaxMapShadows = ri.Cvar_Get( "r_parallaxMapShadows", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_cubeMapping = ri.Cvar_Get( "r_cubeMapping", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_cubemapSize = ri.Cvar_Get( "r_cubemapSize", "128", CVAR_ARCHIVE | CVAR_LATCH );

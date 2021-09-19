@@ -3091,7 +3091,7 @@ static void PM_Weapon( void ) {
 // jpw
 
 	// check for fire
-	if ( !( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_MP44) )) ) && !delayedFire ) {     // if not on fire button and there's not a delayed shot this frame...
+	if ( !( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_THOMPSON) || (pm->ps->weapon == WP_M97) || (pm->ps->weapon == WP_MP44) )) ) && !delayedFire ) {     // if not on fire button and there's not a delayed shot this frame...
 		pm->ps->weaponTime  = 0;
 		pm->ps->weaponDelay = 0;
 
@@ -4102,7 +4102,7 @@ void PmoveSingle( pmove_t *pmove ) {
 	if ( !(pm->ps->pm_flags & PMF_RESPAWNED) && pm->ps->pm_type != PM_INTERMISSION && pm->ps->pm_type != PM_NOCLIP ) {
 		// check if zooming
 		if ( !( pm->cmd.wbuttons & WBUTTON_ZOOM ) ) {
-			if ( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_MP44))  )) {
+			if ( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_THOMPSON) || (pm->ps->weapon == WP_M97) || (pm->ps->weapon == WP_MP44))  )) {
 				// check for ammo
 				if ( PM_WeaponAmmoAvailable( pm->ps->weapon ) ) {
 					// all clear, fire!

@@ -1991,9 +1991,9 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 			VectorSubtract( ent->r.currentOrigin, enemy->r.currentOrigin, vec );
 			VectorNormalize( vec );
 			if ( !( enemy->r.svFlags & SVF_CASTAI ) ) {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_HOLYCROSS].playerDamage, 0, MOD_LIGHTNING );
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_HOLYCROSS].playerDamage, 0, MOD_HOLYCROSS );
 			} else {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_HOLYCROSS].aiDamage, 0, MOD_LIGHTNING );
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_HOLYCROSS].aiDamage, 0, MOD_HOLYCROSS );
 			}
 
 					// Ridah, make em burn

@@ -1172,6 +1172,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 		qboolean venomgun = (qboolean)( mod == MOD_VENOM );
 
+		qboolean noncross = (qboolean)(mod != MOD_HOLYCROSS);
+
 		if ( targ == attacker ) {
 			if ( !dynamite ) {
 				damage *= 0.5;
@@ -1191,6 +1193,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		if ( venomgun && targ->aiCharacter == AICHAR_SUPERSOLDIER ) {
 			//supersoldier gets special venom damage
 			damage *= 0.6;
+		}
+
+		if ( noncross && targ->aiCharacter == AICHAR_GHOST) {
+			damage *= 0.0;
 		}
 
 	}

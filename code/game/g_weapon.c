@@ -116,6 +116,7 @@ void Weapon_Knife( gentity_t *ent ) {
 	switch ( traceEnt->aiCharacter ) {
 	case AICHAR_SUPERSOLDIER:
 	case AICHAR_HEINRICH:
+	case AICHAR_GHOST:
 		return;
 	}
 
@@ -208,6 +209,7 @@ void Weapon_Dagger( gentity_t *ent ) {
 	// RF, no knife damage for big guys
 	switch ( traceEnt->aiCharacter ) {
 	case AICHAR_HEINRICH:
+	case AICHAR_GHOST:
 		return;
 	}
 

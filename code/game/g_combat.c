@@ -1200,10 +1200,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 
 	}
+    
 
+	if (targ->aiCharacter != AICHAR_GHOST)
+	{
 	if ( damage < 1 ) {
 		damage = 1;
 	}
+	}
+	
 	take = damage;
 
 	// save some from armor

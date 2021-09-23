@@ -6470,13 +6470,14 @@ void CG_Bullet( vec3_t end, int sourceEntityNum, vec3_t normal, qboolean flesh, 
 		}
 
 		// if we haven't dropped a blood spat in a while, check if this is a good scenario
+		if ( aiType != AICHAR_GHOST){
 		if ( lastBloodSpat > cg.time || lastBloodSpat < cg.time - 500 ) {
 			if ( CG_CalcMuzzlePoint( sourceEntityNum, start ) ) {
 				VectorSubtract( end, start, dir );
 				VectorNormalize( dir );
 				VectorMA( end, 128, dir, trend );
 				trap_CM_BoxTrace( &trace, end, trend, NULL, NULL, 0, MASK_SHOT & ~CONTENTS_BODY );
-
+             
 				if ( trace.fraction < 1 ) {
 					CG_ImpactMark( cgs.media.bloodDotShaders[rand() % 5], trace.endpos, trace.plane.normal, random() * 360,
 								   1,1,1,1, qtrue, 15 + random() * 20, qfalse, cg_bloodTime.integer * 1000 );
@@ -6486,15 +6487,16 @@ void CG_Bullet( vec3_t end, int sourceEntityNum, vec3_t normal, qboolean flesh, 
 					VectorCopy( end, trend );
 					trend[2] -= 64;
 					trap_CM_BoxTrace( &trace, end, trend, NULL, NULL, 0, MASK_SHOT & ~CONTENTS_BODY );
-
 					if ( trace.fraction < 1 ) {
 						CG_ImpactMark( cgs.media.bloodDotShaders[rand() % 5], trace.endpos, trace.plane.normal, random() * 360,
 									   1,1,1,1, qtrue, 15 + random() * 10, qfalse, cg_bloodTime.integer * 1000 );
 						lastBloodSpat = cg.time;
 					}
+					
 				}
 			}
 		}
+			   }
 
 	} else {    // (not flesh)
 		int fromweap;

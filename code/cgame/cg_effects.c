@@ -794,7 +794,7 @@ void CG_GibPlayer( centity_t *cent, vec3_t playerOrigin, vec3_t gdir ) {
 						VectorSubtract( junctionOrigin[i], junctionOrigin[j], dir );
 
 						// ok now lets spawn a little blood
-						if ((( cent->currentState.aiChar == AICHAR_ZOMBIE) || ( cent->currentState.aiChar == AICHAR_GHOST)) ) {
+						if (( cent->currentState.aiChar == AICHAR_ZOMBIE)  ) {
 							CG_ParticleBloodCloudZombie( cent, junctionOrigin[i], dir );
 						} else {
 							CG_ParticleBloodCloud( cent, junctionOrigin[i], dir );
@@ -802,7 +802,7 @@ void CG_GibPlayer( centity_t *cent, vec3_t playerOrigin, vec3_t gdir ) {
 
 						// RF, also spawn some blood in this direction
 						VectorMA( junctionOrigin[i], 2.0, dir, origin );
-						if ((( cent->currentState.aiChar == AICHAR_ZOMBIE) || ( cent->currentState.aiChar == AICHAR_GHOST)) ) {
+						if (( cent->currentState.aiChar == AICHAR_ZOMBIE)  ) {
 							CG_ParticleBloodCloudZombie( cent, origin, dir );
 						} else {
 							CG_ParticleBloodCloud( cent, origin, dir );
@@ -1107,7 +1107,7 @@ void CG_GibVampirism( centity_t *cent, vec3_t playerOrigin, vec3_t gdir ) {
 						VectorSubtract( junctionOrigin[i], junctionOrigin[j], dir );
 
 						// ok now lets spawn a little blood
-						if ((( cent->currentState.aiChar == AICHAR_ZOMBIE) || ( cent->currentState.aiChar == AICHAR_GHOST)) ) {
+						if (( cent->currentState.aiChar == AICHAR_ZOMBIE) ) {
 							CG_ParticleBloodCloudZombie( cent, junctionOrigin[i], dir );
 						} else {
 							CG_ParticleBloodCloud( cent, junctionOrigin[i], dir );
@@ -1115,7 +1115,7 @@ void CG_GibVampirism( centity_t *cent, vec3_t playerOrigin, vec3_t gdir ) {
 
 						// RF, also spawn some blood in this direction
 						VectorMA( junctionOrigin[i], 2.0, dir, origin );
-						if ((( cent->currentState.aiChar == AICHAR_ZOMBIE) || ( cent->currentState.aiChar == AICHAR_GHOST)) ) {
+						if (( cent->currentState.aiChar == AICHAR_ZOMBIE) ) {
 							CG_ParticleBloodCloudZombie( cent, origin, dir );
 						} else {
 							CG_ParticleBloodCloud( cent, origin, dir );

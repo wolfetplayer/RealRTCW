@@ -1435,13 +1435,13 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.noammoShader = trap_R_RegisterShader( "icons/noammo" );
 
 	// powerup shaders
-//	cgs.media.quadShader = trap_R_RegisterShader("powerups/quad" );
-//	cgs.media.quadWeaponShader = trap_R_RegisterShader("powerups/quadWeapon" );
-//	cgs.media.battleSuitShader = trap_R_RegisterShader("powerups/battleSuit" );
-//	cgs.media.battleWeaponShader = trap_R_RegisterShader("powerups/battleWeapon" );
-//	cgs.media.invisShader = trap_R_RegisterShader("powerups/invisibility" );
+	cgs.media.quadShader = trap_R_RegisterShader("powerups/quad" );
+	cgs.media.quadWeaponShader = trap_R_RegisterShader("powerups/quadWeapon" );
+	cgs.media.battleSuitShader = trap_R_RegisterShader("powerups/battleSuit" );
+	cgs.media.battleWeaponShader = trap_R_RegisterShader("powerups/battleWeapon" );
+	cgs.media.invisShader = trap_R_RegisterShader("powerups/invisibility" );
 //	cgs.media.regenShader = trap_R_RegisterShader("powerups/regen" );
-//	cgs.media.hastePuffShader = trap_R_RegisterShader("hasteSmokePuff" );
+	cgs.media.hastePuffShader = trap_R_RegisterShader("hasteSmokePuff" );
 
 	// DHM - Nerve :: Allow flags again, will change later to more appropriate models
 	if ( cgs.gametype == GT_CTF || cgs.gametype == GT_WOLF || cg_buildScript.integer ) {

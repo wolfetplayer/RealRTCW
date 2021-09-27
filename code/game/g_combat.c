@@ -1148,7 +1148,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		if ( dflags & DAMAGE_RADIUS ) {
 			return;
 		}
-		damage *= 0.5;
+		damage *= 0.1;
 	}
 
 	// Ridah, don't play these in single player

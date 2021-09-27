@@ -601,7 +601,7 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 
 	if ( ent->client->ps.powerups[PW_QUAD] ) {
 		G_AddEvent( ent, EV_POWERUP_QUAD, 0 );
-		s_quadFactor = g_quadfactor.value;
+		s_quadFactor = 4;
 	} else {
 		s_quadFactor = 1;
 	}
@@ -1706,7 +1706,7 @@ void FireWeapon( gentity_t *ent ) {
 	}
 
 	if ( ent->client->ps.powerups[PW_QUAD] ) {
-		s_quadFactor = g_quadfactor.value;
+		s_quadFactor = 4;
 	} else {
 		s_quadFactor = 1;
 	}

@@ -28,3 +28,6 @@ https://store.steampowered.com/app/1379630/RealRTCW/
 
 Arch Linux Repo by M0Rf30:
 https://aur.archlinux.org/packages/realrtcw/
+
+Opensuse package:
+https://build.opensuse.org/package/show/games/realrtcw

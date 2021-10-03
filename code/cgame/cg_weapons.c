@@ -3006,6 +3006,19 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		}
 	}
 
+		// add the scope model to the rifle if you've got it
+	if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
+		if ( weaponNum == WP_GARAND ) {
+			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_SNOOPERSCOPE) ) {
+				barrel.hModel = weapon->modModel[0];
+				if ( barrel.hModel ) {
+					CG_PositionEntityOnTag( &barrel, &gun, "tag_scope0", 0, NULL );
+					CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
+				}
+			}
+		}
+	}
+
 
 	// make sure we aren't looking at cg.predictedPlayerEntity for LG
 	nonPredictedCent = &cg_entities[cent->currentState.clientNum];

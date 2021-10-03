@@ -1144,7 +1144,7 @@ weapon_garandRifle (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 model="models/weapons2/garand/garand.md3"
 */
 	{
-		"NOT_weapon_garandRifle",    //----(SA)	modified so it can no longer be given individually
+		"weapon_garandRifle",    //----(SA)	modified so it can no longer be given individually
 		"sound/misc/w_pkup.wav",
 		{   "models/weapons2/garand/garand.md3",
 			"models/weapons2/garand/v_garand.md3",
@@ -1153,7 +1153,7 @@ model="models/weapons2/garand/garand.md3"
 
 		"icons/iconw_garand_1",  // icon
 		"icons/ammo3",           // ammo icon
-		"",                      // pickup			//----(SA)	modified so it can no longer be given individually
+		"De Lisle",              // pickup			//----(SA)	modified so it can no longer be given individually
 		50,
 		IT_WEAPON,
 		WP_GARAND,
@@ -1491,14 +1491,14 @@ model="models/weapons2/garand/garand.md3"
 	{
 		"weapon_snooperrifle",   //----(SA)	modified
 		"sound/misc/w_pkup.wav",
-		{   "models/weapons2/garand/garand.md3",
+		{   "models/weapons2/garand/snooper.md3",
 			"models/weapons2/garand/v_garand.md3",
-			"models/weapons2/garand/pu_garand.md3",
+			"models/weapons2/mauser/pu_snooper_scope.md3",
 			0, 0 },
 
 		"icons/iconw_garand_1",  // icon
 		"icons/ammo10",              // ammo icon
-		"Snooper Rifle",             // pickup		//----(SA)	modified
+		"Snooper Rifle",        // pickup		//----(SA)	modified
 		20,
 		IT_WEAPON,
 		WP_SNOOPERSCOPE,

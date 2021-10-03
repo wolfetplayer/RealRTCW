@@ -473,9 +473,9 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	// snooper/garand
 	if ( weapon == WP_SNOOPERSCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_GARAND );
-	} else if ( weapon == WP_GARAND ) {
-		COM_BitSet( other->client->ps.weapons, WP_SNOOPERSCOPE );
-	}
+	} //else if ( weapon == WP_GARAND ) {
+		//COM_BitSet( other->client->ps.weapons, WP_SNOOPERSCOPE );
+	//}
 	// fg42/scope
 	else if ( weapon == WP_FG42SCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_FG42 );

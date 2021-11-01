@@ -1779,7 +1779,7 @@ static GLenum RawImage_GetFormat(const byte *data, int numPixels, GLenum picForm
 		if(r_greyscale->integer)
 			internalFormat = GL_LUMINANCE;
 		else
-			internalFormat = GL_RGBA;
+			internalFormat = GL_RED;
 	}
 	else
 	{

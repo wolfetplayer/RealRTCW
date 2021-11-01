@@ -888,7 +888,7 @@ static void Upload32(   unsigned *data,
 		if(r_greyscale->integer)
 			internalFormat = GL_LUMINANCE;
 		else
-			internalFormat = GL_RGB;
+			internalFormat = GL_LUMINANCE;
 	}
 	else
 	{

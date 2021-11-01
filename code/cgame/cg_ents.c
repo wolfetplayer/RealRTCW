@@ -1597,7 +1597,7 @@ static void CG_Corona( centity_t *cent ) {
 			flags = 1;
 		}
 
-		trap_R_AddCoronaToScene( cent->lerpOrigin, (float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)cent->currentState.density / 255.0f, cent->currentState.number, flags );
+		trap_R_AddCoronaToScene( cent->lerpOrigin, (float)r / 255.0f, (float)g / 0.0f, (float)b / 0.0f, (float)cent->currentState.density / 255.0f, cent->currentState.number, flags );
 	}
 }
 

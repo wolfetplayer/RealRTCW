@@ -534,9 +534,9 @@ static void ProjectDlightTexture_scalar( void ) {
 		}
 		else
 		{
-			floatColor[0] = dl->color[0] * 255.0f;
-			floatColor[1] = dl->color[1] * 255.0f;
-			floatColor[2] = dl->color[2] * 255.0f;
+			floatColor[0] = dl->color[0] * 175.0f;
+			floatColor[1] = dl->color[1] * 0.0f;
+			floatColor[2] = dl->color[2] * 0.0f;
 		}
 
 		for ( i = 0 ; i < tess.numVertexes ; i++, texCoords += 2, colors += 4 ) {

@@ -705,9 +705,9 @@ float zoomTable[ZOOM_MAX_ZOOMS][2] = {
 	{0, 0},
 
 	{36, 8},    //	binoc
-	{20, 4},    //	sniper
-	{60, 20},   //	snooper
-	{35, 35},   //	fg42 //RealRTCW was 55 55
+	{50, 50},    //	sniper
+	{20, 20},   //	snooper
+	{15, 15},   //	fg42 //RealRTCW was 55 55
 	{55, 55}    //	mg42
 };
 

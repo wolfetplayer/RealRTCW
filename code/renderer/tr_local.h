@@ -1282,6 +1282,7 @@ extern	cvar_t	*r_stereoEnabled;
 extern	cvar_t	*r_anaglyphMode;
 
 extern	cvar_t	*r_greyscale;
+extern	cvar_t	*r_gothic;
 
 extern cvar_t  *r_ignoreGLErrors;
 

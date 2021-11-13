@@ -72,6 +72,7 @@ cvar_t	*r_stereoEnabled;
 cvar_t	*r_anaglyphMode;
 
 cvar_t	*r_greyscale;
+cvar_t	*r_gothic;
 
 cvar_t  *r_ignorehwgamma;
 cvar_t  *r_measureOverdraw;
@@ -1264,6 +1265,8 @@ void R_Register( void ) {
 	r_ignoreFastPath = ri.Cvar_Get( "r_ignoreFastPath", "1", CVAR_ARCHIVE | CVAR_LATCH );
 
 	r_greyscale = ri.Cvar_Get("r_greyscale", "0", CVAR_ARCHIVE | CVAR_LATCH);
+	r_gothic = ri.Cvar_Get("r_gothic", "0", CVAR_ARCHIVE | CVAR_LATCH);
+	ri.Cvar_CheckRange(r_gothic, 0, 1, qfalse);
 	ri.Cvar_CheckRange(r_greyscale, 0, 1, qfalse);
 
 	//

@@ -532,11 +532,17 @@ static void ProjectDlightTexture_scalar( void ) {
 			floatColor[1] = LERP(dl->color[1] * 255.0f, luminance, r_greyscale->value);
 			floatColor[2] = LERP(dl->color[2] * 255.0f, luminance, r_greyscale->value);
 		}
-		else
+		else if(r_gothic->integer)
 		{
 			floatColor[0] = dl->color[0] * 175.0f;
 			floatColor[1] = dl->color[1] * 0.0f;
 			floatColor[2] = dl->color[2] * 0.0f;
+		} 
+		else 
+		{
+			floatColor[0] = dl->color[0] * 255.0f;
+			floatColor[1] = dl->color[1] * 255.0f;
+			floatColor[2] = dl->color[2] * 255.0f;
 		}
 
 		for ( i = 0 ; i < tess.numVertexes ; i++, texCoords += 2, colors += 4 ) {

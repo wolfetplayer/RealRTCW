@@ -886,9 +886,12 @@ static void Upload32(   unsigned *data,
 	if(lightMap)
 	{
 		if(r_greyscale->integer)
-			internalFormat = GL_LUMINANCE;
-		else
-			internalFormat = GL_LUMINANCE;
+		internalFormat = GL_LUMINANCE;
+		else if(r_gothic->integer)
+		{
+		internalFormat = GL_LUMINANCE;
+		} 
+		else internalFormat = GL_RGB;
 	}
 	else
 	{

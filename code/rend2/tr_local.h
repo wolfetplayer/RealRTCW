@@ -2025,6 +2025,7 @@ extern  cvar_t  *r_shadowCascadeZBias;
 extern  cvar_t  *r_ignoreDstAlpha;
 
 extern	cvar_t	*r_greyscale;
+extern	cvar_t	*r_gothic;
 
 extern cvar_t  *r_ignoreGLErrors;
 

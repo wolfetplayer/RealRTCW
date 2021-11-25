@@ -178,6 +178,8 @@ qboolean AICast_ScriptAction_AIScriptName( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SetHealth( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_NoTarget( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Cvar( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_decoy( cast_state_t *cs, char *params );
+
 
 qboolean AICast_ScriptAction_MusicStart( cast_state_t *cs, char *params );		//----(SA)
 qboolean AICast_ScriptAction_MusicPlay( cast_state_t *cs, char *params );		//----(SA)

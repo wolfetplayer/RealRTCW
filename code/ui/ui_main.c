@@ -4796,7 +4796,18 @@ static void UI_RunMenuScript( char **args ) {
 			Menu_SetFeederSelection( NULL, FEEDER_MAPS, ui_mapIndex.integer, "skirmish" );
 			UI_GameType_HandleKey( 0, NULL, K_MOUSE1, qfalse );
 			UI_GameType_HandleKey( 0, NULL, K_MOUSE2, qfalse );
-		} else if ( Q_stricmp( name, "resetDefaults" ) == 0 ) {
+		} else if (Q_stricmp( name, "validate_openURL" ) == 0 ) 
+		{
+			if (String_Parse(args, &name2))
+			{
+				trap_openURL(name2);
+			}
+			else
+			{
+				trap_openURL("https://www.moddb.com/mods/realrtcw-realism-mod");
+			}
+		}
+		else if ( Q_stricmp( name, "resetDefaults" ) == 0 ) {
 // SP was like...
 //			trap_Cmd_ExecuteText( EXEC_APPEND, "exec default.cfg\n");
 //			trap_Cmd_ExecuteText( EXEC_APPEND, "cvar_restart\n");
@@ -5218,10 +5229,6 @@ static void UI_RunMenuScript( char **args ) {
 				itemIndex = atoi( param2 );
 				WM_PickItem( selectType, itemIndex );
 			}
-		else if (Q_stricmp(name, "validate_openURL") == 0)
-		{
-		trap_openURL( UI_Cvar_VariableString( "ui_finalURL" ) );
-		}
 		} else if ( Q_stricmp( name, "startMultiplayer" ) == 0 ) {
 			int team, playerType, weapon, pistol, item1, i;
 			const char *teamStr, *classStr, *weapStr;

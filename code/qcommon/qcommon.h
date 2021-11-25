@@ -1165,7 +1165,7 @@ char    *Sys_DefaultBasePath( void );
 char    *Sys_DefaultInstallPath( void );
 
 #ifndef STANDALONE
-char    *Sys_SteamPath(void);
+//char    *Sys_SteamPath(void);
 char	*Sys_GogPath(void);
 #endif
 

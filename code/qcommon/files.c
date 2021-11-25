@@ -282,7 +282,7 @@ static  cvar_t          *fs_apppath;
 #endif
 
 #ifndef STANDALONE
-static	cvar_t		*fs_steampath;
+//static	cvar_t		*fs_steampath;
 static	cvar_t		*fs_gogpath;
 #endif
 
@@ -892,7 +892,7 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 
 #ifndef STANDALONE
 		// Check fs_steampath
-		if (!fsh[f].handleFiles.file.o && fs_steampath->string[0])
+	/*	if (!fsh[f].handleFiles.file.o && fs_steampath->string[0])
 		{
 			ospath = FS_BuildOSPath( fs_steampath->string, filename, "" );
 			ospath[strlen(ospath)-1] = '\0';
@@ -904,7 +904,7 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 
 			fsh[f].handleFiles.file.o = Sys_FOpen( ospath, "rb" );
 			fsh[f].handleSync = qfalse;
-		}
+		}*/
 		
 		// Check fs_gogpath
 		if (!fsh[f].handleFiles.file.o && fs_gogpath->string[0])
@@ -2809,7 +2809,7 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 	pFiles0 = Sys_ListFiles( fs_homepath->string, NULL, NULL, &dummy, qtrue );
 	pFiles1 = Sys_ListFiles( fs_basepath->string, NULL, NULL, &dummy, qtrue );
 #ifndef STANDALONE
-	pFiles2 = Sys_ListFiles( fs_steampath->string, NULL, NULL, &dummy, qtrue );
+	//pFiles2 = Sys_ListFiles( fs_steampath->string, NULL, NULL, &dummy, qtrue );
 	pFiles3 = Sys_ListFiles( fs_gogpath->string, NULL, NULL, &dummy, qtrue );
 #endif
 	// we searched for mods in up to four paths
@@ -2865,13 +2865,13 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 
 #ifndef STANDALONE
 			/* try on steam path */
-			if ( nPaks <= 0 )
+			/*if ( nPaks <= 0 )
 			{
 				path = FS_BuildOSPath( fs_steampath->string, name, "" );
 				nPaks = 0;
 				pPaks = Sys_ListFiles( path, ".pk3", NULL, &nPaks, qfalse );
 				Sys_FreeFileList( pPaks );
-			}
+			}*/
 
 			/* try on gog path */
 			if ( nPaks <= 0 )
@@ -3611,10 +3611,10 @@ static void FS_Startup( const char *gameName )
 	if (fs_gogpath->string[0]) {
 		FS_AddGameDirectory( fs_gogpath->string, gameName );
 		}
-	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
+	/*fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_steampath->string[0]) {
 		FS_AddGameDirectory( fs_steampath->string, gameName );
-	}
+	}*/
 #endif
 
 	if ( fs_basepath->string[0] ) {
@@ -3641,9 +3641,9 @@ static void FS_Startup( const char *gameName )
 			FS_AddGameDirectory( fs_gogpath->string, fs_basegame->string );
 			}
 
-		if ( fs_steampath->string[0] ) {
+		/*if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_basegame->string );
-		}
+		}*/
 #endif
 
 		if ( fs_basepath->string[0] ) {
@@ -3661,9 +3661,9 @@ static void FS_Startup( const char *gameName )
         if (fs_gogpath->string[0]) {
 			FS_AddGameDirectory( fs_gogpath->string, fs_gamedirvar->string );
 			}
-		if ( fs_steampath->string[0] ) {
+		/*if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_gamedirvar->string );
-		}
+		}*/
 #endif
 		if ( fs_basepath->string[0] ) {
 			FS_AddGameDirectory( fs_basepath->string, fs_gamedirvar->string );

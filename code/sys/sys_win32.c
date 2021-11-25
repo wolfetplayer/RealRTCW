@@ -48,7 +48,7 @@ static char homePath[ MAX_OSPATH ] = { 0 };
 
 #ifndef STANDALONE
 // Used to store the Steam RTCW installation path
-static char steamPath[ MAX_OSPATH ] = { 0 };
+//static char steamPath[ MAX_OSPATH ] = { 0 };
 
 // Used to store the GOG RTCW installation path
 static char gogPath[ MAX_OSPATH ] = { 0 };
@@ -145,7 +145,7 @@ char *Sys_DefaultHomePath( void )
 Sys_SteamPath
 ================
 */
-char *Sys_SteamPath( void )
+/*char *Sys_SteamPath( void )
 {
 #if defined(STEAMPATH_NAME) || defined(STEAMPATH_APPID)
 	HKEY steamRegKey;
@@ -192,7 +192,7 @@ char *Sys_SteamPath( void )
 #endif
 
 	return steamPath;
-}
+}*/
 
 /*
 ================

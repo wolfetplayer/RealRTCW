@@ -1264,6 +1264,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_MusicPlay", (byte *)AICast_ScriptAction_MusicPlay},
 {"AICast_ScriptAction_MusicStart", (byte *)AICast_ScriptAction_MusicStart},
 {"AICast_ScriptAction_Cvar", (byte *)AICast_ScriptAction_Cvar},
+{"AICast_ScriptAction_decoy", (byte *)AICast_ScriptAction_decoy},
 {"AICast_ScriptAction_NoTarget", (byte *)AICast_ScriptAction_NoTarget},
 {"AICast_ScriptAction_SetHealth", (byte *)AICast_ScriptAction_SetHealth},
 {"AICast_ScriptAction_AIScriptName", (byte *)AICast_ScriptAction_AIScriptName},

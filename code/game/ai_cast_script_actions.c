@@ -2845,6 +2845,18 @@ qboolean AICast_ScriptAction_Cvar( cast_state_t *cs, char *params ) {
 
 /*
 ==================
+AICast_ScriptAction_decoy
+==================
+*/
+
+qboolean AICast_ScriptAction_decoy( cast_state_t *cs, char *params ) {
+    trap_SendServerCommand( -1, "mu_play sound/scenaric/general/decoy.wav 0\n" );
+	return qtrue;
+}
+
+
+/*
+==================
 AICast_ScriptAction_MusicStart
 
 ==================

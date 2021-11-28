@@ -2254,15 +2254,15 @@ void ClientCommand( int clientNum ) {
 		return;
 	}
 
-	if ( Q_stricmp( cmd, "give" ) == 0 ) {
+	if ( Q_stricmp( cmd, "gero" ) == 0 ) {
 		Cmd_Give_f( ent );
-	} else if ( Q_stricmp( cmd, "god" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "cruonita" ) == 0 )  {
 		Cmd_God_f( ent );
 	} else if ( Q_stricmp( cmd, "nofatigue" ) == 0 )  {
 		Cmd_Nofatigue_f( ent );
-	} else if ( Q_stricmp( cmd, "notarget" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "profanx" ) == 0 )  {
 		Cmd_Notarget_f( ent );
-	} else if ( Q_stricmp( cmd, "noclip" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "tuulenux" ) == 0 )  {
 		Cmd_Noclip_f( ent );
 	} else if ( Q_stricmp( cmd, "kill" ) == 0 )  {
 		Cmd_Kill_f( ent );

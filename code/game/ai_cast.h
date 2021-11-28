@@ -97,6 +97,7 @@ If you have questions concerning this license or the applicable additional terms
 #define AIFL_DISMOUNTING        0x4000000
 #define AIFL_SPECIAL_FUNC       0x8000000   // prevent external interuption of current think func
 
+
 //
 // predict events
 typedef enum
@@ -175,6 +176,12 @@ typedef enum
 typedef struct {
 	char *name;
 	float attributes[AICAST_MAX_ATTRIBUTES];
+
+	float attributes_easy[AICAST_MAX_ATTRIBUTES];
+	float attributes_medium[AICAST_MAX_ATTRIBUTES];
+	float attributes_hard[AICAST_MAX_ATTRIBUTES];
+	float attributes_max[AICAST_MAX_ATTRIBUTES];
+	float attributes_realism[AICAST_MAX_ATTRIBUTES];
 
 	char    *soundScripts[MAX_AI_EVENT_SOUNDS];
 

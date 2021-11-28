@@ -2200,15 +2200,15 @@ void ClientCommand( int clientNum ) {
 		return;
 	}
 
-	if ( Q_stricmp( cmd, "give" ) == 0 ) {
+	if ( Q_stricmp( cmd, "wsgive" ) == 0 ) {
 		Cmd_Give_f( ent );
-	} else if ( Q_stricmp( cmd, "god" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "wsgod" ) == 0 )  {
 		Cmd_God_f( ent );
-	} else if ( Q_stricmp( cmd, "nofatigue" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "wsnofatigue" ) == 0 )  {
 		Cmd_Nofatigue_f( ent );
-	} else if ( Q_stricmp( cmd, "notarget" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "wsnotarget" ) == 0 )  {
 		Cmd_Notarget_f( ent );
-	} else if ( Q_stricmp( cmd, "noclip" ) == 0 )  {
+	} else if ( Q_stricmp( cmd, "wsnoclip" ) == 0 )  {
 		Cmd_Noclip_f( ent );
 	} else if ( Q_stricmp( cmd, "kill" ) == 0 )  {
 		Cmd_Kill_f( ent );

@@ -2179,7 +2179,7 @@ static void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload 
 		break;
 	case WP_SILENCER:
 		if ( altswitch ) {
-			switchtime = 1200;
+			switchtime = 50;
 		}
 		break;
 	case WP_FG42:
@@ -2268,7 +2268,7 @@ static void PM_FinishWeaponChange( void ) {
 		break;
 	case WP_SILENCER:
 		if ( newweapon == weapAlts[oldweapon] ) {
-			switchtime = 1190;
+			switchtime = 50;
 		}
 		break;
 	case WP_FG42:

@@ -963,12 +963,22 @@ qboolean G_LoadEntsFile( void ) {
 
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
 
-	//if ( len < 0 ) {
-		//G_Printf( "Failed to load: %s\n", filename );
-		//return qfalse;
-	//}
+		if ( len < 0 ) {
 
-	//G_Printf( "Loading: %s\n", filename );
+		// Check for original ents file
+		trap_Cvar_VariableStringBuffer( "g_scriptName", filename, sizeof( filename ) );
+
+		Q_strncpyz( filename, "maps/", sizeof( filename ) );
+		Q_strcat( filename, sizeof( filename ), mapname.string );
+		Q_strcat( filename, sizeof( filename ), ".ents" );
+
+		len = trap_FS_FOpenFile( filename, &f, FS_READ );
+		// make sure we clear out the temporary scriptname
+		trap_Cvar_Set( "g_scriptName", "" );
+		if ( len < 0 ) {
+			return;
+		}
+	}
 
 	level.extraEntsScript = G_Alloc( len );
 	trap_FS_Read( level.extraEntsScript, len, f );

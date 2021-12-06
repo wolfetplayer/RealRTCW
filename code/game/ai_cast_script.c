@@ -221,7 +221,21 @@ cast_script_stack_action_t scriptActions[] =
 	{"sethealth",        AICast_ScriptAction_SetHealth},
 	{"notarget",     AICast_ScriptAction_NoTarget},
 	{"cvar",         AICast_ScriptAction_Cvar},
-
+	// Achievements
+	{"achievement_lightsoff",      AICast_ScriptAction_decoy},
+	{"achievement_blitzkrieg",       AICast_ScriptAction_decoy},
+	{"achievement_worthit",       AICast_ScriptAction_decoy},
+	{"achievement_femme",       AICast_ScriptAction_decoy},
+	{"achievement_fatale",      AICast_ScriptAction_decoy},
+	{"achievement_belomorcanal",      AICast_ScriptAction_decoy},
+	{"achievement_grenadestash",       AICast_ScriptAction_decoy},
+	{"achievement_dogsgold",       AICast_ScriptAction_decoy},
+	{"achievement_rabinovich",      AICast_ScriptAction_decoy},
+	{"achievement_kolodec",       AICast_ScriptAction_decoy},
+	{"achievement_g43",       AICast_ScriptAction_decoy},
+	{"achievement_ambush",       AICast_ScriptAction_decoy},
+	{"achievement_noambush",       AICast_ScriptAction_decoy},
+	{"achievement_finish",       AICast_ScriptAction_decoy},
 //----(SA)	added some music interface
 	{"mu_start",     AICast_ScriptAction_MusicStart},			// (char *new_music, int time)	// time to fade in
 	{"mu_play",          AICast_ScriptAction_MusicPlay},		// (char *new_music)

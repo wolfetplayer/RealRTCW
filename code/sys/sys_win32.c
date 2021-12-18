@@ -47,12 +47,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 static char homePath[ MAX_OSPATH ] = { 0 };
 
 #ifndef STANDALONE
-// Used to store the Steam RTCW installation path
-static char steamPath[ MAX_OSPATH ] = { 0 };
-
-static char realsteamPath[ MAX_OSPATH ] = { 0 };
-
-
+// Steam installation paths
+static char steamInstallPath[ MAX_OSPATH ];
+static char steamGamePath[ MAX_OSPATH ];
+static char steamWorkshopPath[ MAX_OSPATH ];
 #endif
 
 #ifndef DEDICATED
@@ -141,6 +139,109 @@ char *Sys_DefaultHomePath( void )
 }
 
 #ifndef STANDALONE
+
+static qboolean DirExists(const char *path)
+{
+	DWORD file_attrib = GetFileAttributes(path);
+
+	return (file_attrib != INVALID_FILE_ATTRIBUTES && (file_attrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+// Find Steam game and workshop paths
+// Uses libraryfolders.vdf file to search all Steam library locations
+// Sets static steamInstallPath, steamGamePath and steamWorkshopPath
+static void FindSteamPaths()
+{
+	static qboolean done = qfalse;
+	static char *steamapp_game_subpath     = "\\steamapps\\common\\" STEAMPATH_NAME;
+	static char *steamapp_workshop_subpath = "\\steamapps\\workshop\\content\\" STEAMPATH_REALAPPID;
+
+	if (done)
+		return;
+
+	// Find install path
+	HKEY regkey;
+	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &regkey)) {
+
+		DWORD path_len = MAX_OSPATH - 1;
+		if (RegQueryValueEx(regkey, "SteamPath", NULL, NULL, (LPBYTE)steamInstallPath, &path_len))
+			// Failure
+			steamInstallPath[0] = '\0';
+		else
+			steamInstallPath[path_len] = '\0';
+
+		RegCloseKey(regkey);
+	}
+
+	if (!*steamInstallPath) {
+		Com_Printf("WARNING: Failed to retrieve Steam registry entry\n");
+		done = qtrue;
+		return;
+	}
+
+	// Find library paths in libraryfolders.vdf file
+	char libfile_path[MAX_OSPATH];
+	Q_strncpyz(libfile_path, steamInstallPath, MAX_OSPATH);
+	Q_strcat(libfile_path, MAX_OSPATH, "\\steamapps\\libraryfolders.vdf");
+
+	FILE *fp = fopen(libfile_path, "r");
+	if (!fp) {
+		Com_Printf("Failed to find Steam libraryfolders.vdf - using Steam install location\n");
+
+		// No libraryfolders.vdf - use install path
+		Q_strncpyz(steamGamePath, steamInstallPath, MAX_OSPATH);
+		Q_strcat(steamGamePath, MAX_OSPATH, steamapp_game_subpath);
+
+		Q_strncpyz(steamWorkshopPath, steamInstallPath, MAX_OSPATH);
+		Q_strcat(steamWorkshopPath, MAX_OSPATH, steamapp_workshop_subpath);
+
+		done = qtrue;
+		return;
+	}
+
+	// Search file for library paths
+	char key[100];
+	char path[MAX_OSPATH];
+	while (fscanf(fp, "%s", key) != EOF) {
+
+		if (strcmp(key, "\"path\"") == 0) {
+
+			// Path key found - get adjacent value
+			fscanf(fp, " \"%255[^\"]\"", path);
+			if (!*path)
+				continue;
+
+			// Check for game directory if not already found
+			if (!*steamGamePath) {
+				Q_strncpyz(steamGamePath, path, MAX_OSPATH);
+				Q_strcat(steamGamePath, MAX_OSPATH, steamapp_game_subpath);
+
+				if (!DirExists(steamGamePath))
+					steamGamePath[0] = '\0';
+			}
+
+			// Check for workshop directory if not already found
+			if (!*steamWorkshopPath) {
+				Q_strncpyz(steamWorkshopPath, path, MAX_OSPATH);
+				Q_strcat(steamWorkshopPath, MAX_OSPATH, steamapp_workshop_subpath);
+
+				if (!DirExists(steamWorkshopPath))
+					steamWorkshopPath[0] = '\0';
+			}
+
+			// Found - stop
+			if (*steamGamePath && *steamWorkshopPath)
+				break;
+		}
+	}
+
+	fclose(fp);
+
+	done = qtrue;
+}
+
+#endif // !STANDALONE
+
 /*
 ================
 Sys_SteamPath
@@ -148,96 +249,24 @@ Sys_SteamPath
 */
 char *Sys_SteamPath( void )
 {
-#if defined(STEAMPATH_NAME) || defined(STEAMPATH_APPID)
-	HKEY steamRegKey;
-	DWORD pathLen = MAX_OSPATH;
-	qboolean finishPath = qfalse;
-
-#ifdef STEAMPATH_APPID
-	// Assuming Steam is a 32-bit app
-	if (!steamPath[0] && !RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App " STEAMPATH_APPID, 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY, &steamRegKey))
-	{
-		pathLen = MAX_OSPATH;
-		if (RegQueryValueEx(steamRegKey, "InstallLocation", NULL, NULL, (LPBYTE)steamPath, &pathLen))
-			steamPath[0] = '\0';
-
-			RegCloseKey(steamRegKey);
-	}
+#ifndef STANDALONE
+	FindSteamPaths();
 #endif
-
-#ifdef STEAMPATH_NAME
-	if (!steamPath[0] && !RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &steamRegKey))
-	{
-		pathLen = MAX_OSPATH;
-		if (RegQueryValueEx(steamRegKey, "SteamPath", NULL, NULL, (LPBYTE)steamPath, &pathLen))
-			if (RegQueryValueEx(steamRegKey, "InstallPath", NULL, NULL, (LPBYTE)steamPath, &pathLen))
-				steamPath[0] = '\0';
-
-		if (steamPath[0])
-			finishPath = qtrue;
-
-			RegCloseKey(steamRegKey);
-	}
-#endif
-
-	if (steamPath[0])
-	{
-		if (pathLen == MAX_OSPATH)
-			pathLen--;
-
-		steamPath[pathLen] = '\0';
-
-		if (finishPath)
-			Q_strcat(steamPath, MAX_OSPATH, "\\SteamApps\\common\\" STEAMPATH_NAME );
-	}
-#endif
-
-	return steamPath;
+	return steamGamePath;
 }
 
 /*
-================
-Sys_SteamPath
-================
+=====================
+Sys_SteamWorkshopPath
+=====================
 */
 char *Sys_SteamWorkshopPath( void )
 {
-#if defined(STEAMPATH_REALAPPID)
-	HKEY steamRegKey;
-	DWORD pathLen = MAX_OSPATH;
-	qboolean finishPath = qfalse;
-
-
-	if (!realsteamPath[0] && !RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &steamRegKey))
-	{
-		pathLen = MAX_OSPATH;
-		if (RegQueryValueEx(steamRegKey, "SteamPath", NULL, NULL, (LPBYTE)realsteamPath, &pathLen))
-			realsteamPath[0] = '\0';
-
-		if (realsteamPath[0])
-			finishPath = qtrue;
-
-			RegCloseKey(steamRegKey);
-	}
-
-	if (realsteamPath[0])
-	{
-		if (pathLen == MAX_OSPATH)
-			pathLen--;
-
-		realsteamPath[pathLen] = '\0';
-
-		if (finishPath)
-			Q_strcat(realsteamPath, MAX_OSPATH, "\\SteamApps\\workshop\\content\\" STEAMPATH_REALAPPID );
-	}
+#ifndef STANDALONE
+	FindSteamPaths();
 #endif
-
-	return realsteamPath;
+	return steamWorkshopPath;
 }
-
-
-
-#endif
 
 /*
 ================

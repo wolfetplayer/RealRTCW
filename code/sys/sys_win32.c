@@ -143,8 +143,13 @@ char *Sys_DefaultHomePath( void )
 static qboolean DirExists(const char *path)
 {
 	DWORD file_attrib = GetFileAttributes(path);
-
 	return (file_attrib != INVALID_FILE_ATTRIBUTES && (file_attrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+static qboolean FileExists(const char *path)
+{
+	DWORD file_attrib = GetFileAttributes(path);
+	return (file_attrib != INVALID_FILE_ATTRIBUTES);
 }
 
 // Find Steam game and workshop paths
@@ -153,8 +158,9 @@ static qboolean DirExists(const char *path)
 static void FindSteamPaths()
 {
 	static qboolean done = qfalse;
-	static char *steamapp_game_subpath     = "\\steamapps\\common\\" STEAMPATH_NAME;
-	static char *steamapp_workshop_subpath = "\\steamapps\\workshop\\content\\" STEAMPATH_REALAPPID;
+	static char *steamapp_game_subdir     = "\\steamapps\\common\\" STEAMPATH_NAME;
+	static char *steamapp_workshop_subdir = "\\steamapps\\workshop\\content\\" STEAMPATH_REALAPPID;
+	static char *game_keyfile_path        = "\\Main\\pak0.pk3";
 
 	if (done)
 		return;
@@ -190,10 +196,10 @@ static void FindSteamPaths()
 
 		// No libraryfolders.vdf - use install path
 		Q_strncpyz(steamGamePath, steamInstallPath, MAX_OSPATH);
-		Q_strcat(steamGamePath, MAX_OSPATH, steamapp_game_subpath);
+		Q_strcat(steamGamePath, MAX_OSPATH, steamapp_game_subdir);
 
 		Q_strncpyz(steamWorkshopPath, steamInstallPath, MAX_OSPATH);
-		Q_strcat(steamWorkshopPath, MAX_OSPATH, steamapp_workshop_subpath);
+		Q_strcat(steamWorkshopPath, MAX_OSPATH, steamapp_workshop_subdir);
 
 		done = qtrue;
 		return;
@@ -202,6 +208,7 @@ static void FindSteamPaths()
 	// Search file for library paths
 	char key[100];
 	char path[MAX_OSPATH];
+	char keyfile_path[MAX_OSPATH];
 	while (fscanf(fp, "%s", key) != EOF) {
 
 		if (strcmp(key, "\"path\"") == 0) {
@@ -214,16 +221,20 @@ static void FindSteamPaths()
 			// Check for game directory if not already found
 			if (!*steamGamePath) {
 				Q_strncpyz(steamGamePath, path, MAX_OSPATH);
-				Q_strcat(steamGamePath, MAX_OSPATH, steamapp_game_subpath);
+				Q_strcat(steamGamePath, MAX_OSPATH, steamapp_game_subdir);
 
-				if (!DirExists(steamGamePath))
+				// Check for actual file so old or empty installations are ignored
+				Q_strncpyz(keyfile_path, steamGamePath, MAX_OSPATH);
+				Q_strcat(keyfile_path, MAX_OSPATH, game_keyfile_path);
+
+				if (!FileExists(keyfile_path))
 					steamGamePath[0] = '\0';
 			}
 
 			// Check for workshop directory if not already found
 			if (!*steamWorkshopPath) {
 				Q_strncpyz(steamWorkshopPath, path, MAX_OSPATH);
-				Q_strcat(steamWorkshopPath, MAX_OSPATH, steamapp_workshop_subpath);
+				Q_strcat(steamWorkshopPath, MAX_OSPATH, steamapp_workshop_subdir);
 
 				if (!DirExists(steamWorkshopPath))
 					steamWorkshopPath[0] = '\0';

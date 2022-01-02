@@ -179,7 +179,6 @@ LookAtKiller
 */
 void LookAtKiller( gentity_t *self, gentity_t *inflictor, gentity_t *attacker ) {
 	vec3_t dir;
-	vec3_t angles;
 
 	if ( attacker && attacker != self ) {
 		VectorSubtract( attacker->s.pos.trBase, self->s.pos.trBase, dir );
@@ -191,10 +190,6 @@ void LookAtKiller( gentity_t *self, gentity_t *inflictor, gentity_t *attacker ) 
 	}
 
 	self->client->ps.stats[STAT_DEAD_YAW] = vectoyaw( dir );
-
-	angles[YAW] = vectoyaw( dir );
-	angles[PITCH] = 0;
-	angles[ROLL] = 0;
 }
 
 
@@ -385,7 +380,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		killerName = "<world>";
 	}
 
-	if ( meansOfDeath < 0 || meansOfDeath >= sizeof( modNames ) / sizeof( modNames[0] ) ) {
+	if ( meansOfDeath < 0 || meansOfDeath >= ARRAY_LEN( modNames ) ) {
 		obit = "<bad obituary>";
 	} else {
 		obit = modNames[ meansOfDeath ];
@@ -535,6 +530,8 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 
 	// never gib in a nodrop
+	contents = trap_PointContents( self->r.currentOrigin, -1 );
+
 	if ( self->health <= GIB_HEALTH && !( contents & CONTENTS_NODROP ) && g_blood.integer ) {
 //		if(self->client->ps.eFlags & EF_HEADSHOT)
 //		{
@@ -594,6 +591,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		AICast_ScriptEvent( AICast_GetCastState( self->s.number ), "death", "" );
 	}
 }
+
 
 /*
 ================

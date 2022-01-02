@@ -359,10 +359,16 @@ void QDECL Com_Error( int code, const char *fmt, ... ) {
 		com_errorEntered = qfalse;
 		longjmp( abortframe, -1 );
 	} else if (code == ERR_DROP) {
-	Com_Printf( "********************\nERROR: %s\n********************\n", com_errorMessage );
-		SV_Shutdown( va( "Server crashed: %s\n",  com_errorMessage ) );
+		Com_Printf( "********************\nERROR: %s\n********************\n", com_errorMessage );
+		VM_Forced_Unload_Start();
+		SV_Shutdown (va("Server crashed: %s",  com_errorMessage));
+		if ( restartClient ) {
+			CL_Init();
+		}
 		CL_Disconnect( qtrue );
 		CL_FlushMemory();
+		VM_Forced_Unload_Done();
+		FS_PureServerSetLoadedPaks("", "");
 		com_errorEntered = qfalse;
 		longjmp( abortframe, -1 );
 	} else if ( code == ERR_NEED_CD ) {
@@ -2044,7 +2050,7 @@ void Com_ReadCDKey( const char *filename ) {
 
 	FS_SV_FOpenFileRead( fbuffer, &f );
 	if ( !f ) {
-		Q_strncpyz( cl_cdkey, "                ", 17 );
+		Com_Memset( cl_cdkey, '\0', 17 );
 		return;
 	}
 
@@ -2056,7 +2062,7 @@ void Com_ReadCDKey( const char *filename ) {
 	if ( CL_CDKeyValidate( buffer, NULL ) ) {
 		Q_strncpyz( cl_cdkey, buffer, 17 );
 	} else {
-		Q_strncpyz( cl_cdkey, "                ", 17 );
+		Com_Memset( cl_cdkey, '\0', 17 );
 	}
 }
 
@@ -2074,7 +2080,7 @@ void Com_AppendCDKey( const char *filename ) {
 
 	FS_SV_FOpenFileRead( fbuffer, &f );
 	if ( !f ) {
-		Q_strncpyz( &cl_cdkey[16], "                ", 17 );
+		Com_Memset( &cl_cdkey[16], '\0', 17 );
 		return;
 	}
 
@@ -2086,7 +2092,7 @@ void Com_AppendCDKey( const char *filename ) {
 	if ( CL_CDKeyValidate( buffer, NULL ) ) {
 		strcat( &cl_cdkey[16], buffer );
 	} else {
-		Q_strncpyz( &cl_cdkey[16], "                ", 17 );
+		Com_Memset( &cl_cdkey[16], '\0', 17 );
 	}
 }
 

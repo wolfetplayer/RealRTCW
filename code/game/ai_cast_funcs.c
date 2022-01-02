@@ -3994,7 +3994,7 @@ AIFunc_BattleMG42()
 char *AIFunc_BattleMG42( cast_state_t *cs ) {
 	bot_state_t *bs;
 	gentity_t *mg42, *ent;
-	vec3_t angles, vec, bestangles;
+	vec3_t angles, vec;
 	qboolean unmount = qfalse;
 
 	mg42 = &g_entities[cs->mountedEntity];
@@ -4036,7 +4036,6 @@ char *AIFunc_BattleMG42( cast_state_t *cs ) {
 		VectorNormalize( vec );
 		vectoangles( vec, angles );
 		angles[PITCH] = AngleNormalize180( angles[PITCH] );
-		VectorCopy( angles, bestangles );
 	}
 
 	// check for enemy outside harc
@@ -4081,7 +4080,6 @@ char *AIFunc_BattleMG42( cast_state_t *cs ) {
 						break;
 					} else if ( AICast_CheckAttack( cs, enemies[i], qtrue ) ) {
 						// keep firing at anything behind solids, in case they find a position where they can shoot us, but our checkattack() doesn't find a clear shot
-						VectorCopy( angles, bestangles );
 						cs->enemyNum = enemies[i];
 						shouldAttack = qtrue;
 					}

@@ -3372,7 +3372,6 @@ void RE_LoadWorldMap( const char *name ) {
 		}
 	}
 
-
 	s_worldData.dataSize = (byte *)ri.Hunk_Alloc( 0, h_low ) - startMarker;
 
 	// only set tr.world now that we know the entire level has loaded properly

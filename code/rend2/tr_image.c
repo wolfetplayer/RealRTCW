@@ -1782,7 +1782,7 @@ static GLenum RawImage_GetFormat(const byte *data, int numPixels, GLenum picForm
 		{
 		internalFormat = GL_LUMINANCE;
 		} 
-		else internalFormat = GL_RGB;
+		else internalFormat = GL_RGBA;
 	}
 	else
 	{
@@ -1794,7 +1794,7 @@ static GLenum RawImage_GetFormat(const byte *data, int numPixels, GLenum picForm
 		// select proper internal format
 		if ( samples == 3 )
 		{
-			if(r_greyscale->integer)
+			if(0 && r_greyscale->integer)
 			{
 				if(r_texturebits->integer == 16 || r_texturebits->integer == 32)
 					internalFormat = GL_LUMINANCE8;
@@ -1831,7 +1831,7 @@ static GLenum RawImage_GetFormat(const byte *data, int numPixels, GLenum picForm
 		}
 		else if ( samples == 4 )
 		{
-			if(r_greyscale->integer)
+			if(0 && r_greyscale->integer)
 			{
 				if(r_texturebits->integer == 16 || r_texturebits->integer == 32)
 					internalFormat = GL_LUMINANCE8_ALPHA8;
@@ -2288,7 +2288,9 @@ image_t *R_CreateImageExt2( const char *name, byte *pic, int width, int height, 
 		case GL_DEPTH_COMPONENT32_ARB:
 			// Fix for sampling depth buffer on old nVidia cards.
 			// from http://www.idevgames.com/forums/thread-4141-post-34844.html#pid34844
-			qglTextureParameterfEXT(image->texnum, textureTarget, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE);
+			if ( !QGL_VERSION_ATLEAST( 3, 0 ) ) {
+				qglTextureParameterfEXT(image->texnum, textureTarget, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE);
+			}
 			qglTextureParameterfEXT(image->texnum, textureTarget, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			qglTextureParameterfEXT(image->texnum, textureTarget, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			break;

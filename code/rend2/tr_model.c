@@ -1040,7 +1040,6 @@ static qboolean R_LoadMDC( model_t *mod, int lod, void *buffer, const char *modN
 			vaoSurf->numIndexes = surf->numIndexes;
 			vaoSurf->numVerts = surf->numVerts;
 			
-
 			vaoSurf->vao = R_CreateVao(va("staticMD3Mesh_VAO '%s'", surf->name), data, dataSize, (byte *)surf->indexes, surf->numIndexes * sizeof(*surf->indexes), VAO_USAGE_STATIC);
 
 			vaoSurf->vao->attribs[ATTR_INDEX_POSITION].enabled = 1;
@@ -1521,7 +1520,6 @@ static qboolean R_LoadMD3(model_t * mod, int lod, void *buffer, const char *modN
 			vaoSurf->numIndexes = surf->numIndexes;
 			vaoSurf->numVerts = surf->numVerts;
 			
-
 			vaoSurf->vao = R_CreateVao(va("staticMD3Mesh_VAO '%s'", surf->name), data, dataSize, (byte *)surf->indexes, surf->numIndexes * sizeof(*surf->indexes), VAO_USAGE_STATIC);
 
 			vaoSurf->vao->attribs[ATTR_INDEX_POSITION].enabled = 1;

@@ -498,7 +498,7 @@ void R_InitVaos(void)
 	Vao_SetVertexPointers(tess.vao);
 
 	R_BindNullVao();
-	
+
 	VaoCache_Init();
 
 	GL_CheckErrors();
@@ -966,4 +966,3 @@ void VaoCache_AddSurface(srfVert_t *verts, int numVerts, glIndex_t *indexes, int
 	vcq.vertexCommitSize += sizeof(srfVert_t) * numVerts;
 	vcq.indexCommitSize += sizeof(glIndex_t) * numIndexes;
 }
-

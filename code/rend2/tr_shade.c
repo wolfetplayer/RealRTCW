@@ -39,9 +39,7 @@ If you have questions concerning this license or the applicable additional terms
 
 void R_DrawElements( int numIndexes, int firstIndex )
 {
-	
 	qglDrawElements(GL_TRIANGLES, numIndexes, GL_INDEX_TYPE, BUFFER_OFFSET(firstIndex * sizeof(glIndex_t)));
-
 }
 
 
@@ -128,7 +126,7 @@ static void DrawTris (shaderCommands_t *input) {
 		GLSL_SetUniformVec4(sp, UNIFORM_COLOR, color);
 		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
-        R_DrawElements(input->numIndexes, input->firstIndex);
+		R_DrawElements(input->numIndexes, input->firstIndex);
 	}
 
 	qglDepthRange( 0, 1 );
@@ -145,6 +143,7 @@ Draws vertex normals for debugging
 static void DrawNormals (shaderCommands_t *input) {
 	//FIXME: implement this
 }
+
 
 /*
 ==============
@@ -184,7 +183,6 @@ void RB_BeginSurface( shader_t *shader, int fogNum, int cubemapIndex ) {
 		tess.currentStageIteratorFunc = RB_StageIteratorGeneric;
 	}
 }
-
 
 
 extern float EvalWaveForm( const waveForm_t *wf );
@@ -416,7 +414,7 @@ static void ProjectDlightTexture( void ) {
 		else {
 			GL_State( GLS_ATEST_GT_0 | GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ONE | GLS_DEPTHFUNC_EQUAL );
 		}
-        
+
 		GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 1);
 
 		R_DrawElements(tess.numIndexes, tess.firstIndex);
@@ -896,7 +894,7 @@ static void ForwardDlight( void ) {
 		// draw
 		//
 
-        R_DrawElements(input->numIndexes, input->firstIndex);
+		R_DrawElements(input->numIndexes, input->firstIndex);
 
 		backEnd.pc.c_totalIndexes += tess.numIndexes;
 		backEnd.pc.c_dlightIndexes += tess.numIndexes;
@@ -965,7 +963,8 @@ static void ProjectPshadowVBOGLSL( void ) {
 		//
 		// draw
 		//
-        R_DrawElements(input->numIndexes, input->firstIndex);
+
+		R_DrawElements(input->numIndexes, input->firstIndex);
 
 		backEnd.pc.c_totalIndexes += tess.numIndexes;
 		//backEnd.pc.c_dlightIndexes += tess.numIndexes;
@@ -1115,7 +1114,6 @@ static void RB_FogPass( int wolfFog ) {
 	GLSL_SetUniformInt(sp, UNIFORM_ALPHATEST, 0);
 
 	R_DrawElements(tess.numIndexes, tess.firstIndex);
-
 }
 
 
@@ -1135,6 +1133,7 @@ static unsigned int RB_CalcShaderVertexAttribs( shaderCommands_t *input )
 
 	return vertexAttribs;
 }
+
 
 static void RB_IterateStagesGeneric( shaderCommands_t *input )
 {
@@ -1651,7 +1650,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input )
 		//
 		// draw
 		//
-        R_DrawElements(input->numIndexes, input->firstIndex);
+		R_DrawElements(input->numIndexes, input->firstIndex);
 
 		// allow skipping out to show just lightmaps during development
 		if ( r_lightmap->integer && ( pStage->bundle[0].isLightmap || pStage->bundle[1].isLightmap ) )
@@ -1740,11 +1739,9 @@ static void RB_RenderShadowmap( shaderCommands_t *input )
 			//
 
 			R_DrawElements(input->numIndexes, input->firstIndex);
-
 		}
 	}
 }
-
 
 
 /*

@@ -801,12 +801,12 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi, in
 	while ( 1 ) {
 		prev = text_p;  // so we can unget
 		token = COM_Parse( &text_p );
-		if ( !token ) {                     // get the variable
+		if ( !token[0] ) {                     // get the variable
 			break;
 		}
 		if ( !Q_stricmp( token, "whatever_variable" ) ) {
 			token = COM_Parse( &text_p );   // get the value
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			continue;
@@ -829,7 +829,7 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi, in
 	for ( i = 0 ; i < MAX_WP_ANIMATIONS  ; i++ ) {
 
 		token = COM_Parse( &text_p );   // first frame
-		if ( !token ) {
+		if ( !token[0] ) {
 			// don't show warning for weapon cfg without altswitch that does not require it.
 			if ( i == WEAP_ALTSWITCHFROM && weapAlts[weaponNum] == WP_NONE ) {
 				for ( ; i < MAX_WP_ANIMATIONS  ; i++ ) {
@@ -841,13 +841,13 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi, in
 		wi->weapAnimations[i].firstFrame = atoi( token );
 
 		token = COM_Parse( &text_p );   // length
-		if ( !token ) {
+		if ( !token[0] ) {
 			break;
 		}
 		wi->weapAnimations[i].numFrames = atoi( token );
 
 		token = COM_Parse( &text_p );   // fps
-		if ( !token ) {
+		if ( !token[0] ) {
 			break;
 		}
 		fps = atof( token );
@@ -859,7 +859,7 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi, in
 		wi->weapAnimations[i].initialLerp = 1000 / fps;
 
 		token = COM_Parse( &text_p );   // looping frames
-		if ( !token ) {
+		if ( !token[0] ) {
 			break;
 		}
 		wi->weapAnimations[i].loopFrames = atoi( token );
@@ -876,13 +876,13 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi, in
 
 		if ( newfmt ) {
 			token = COM_Parse( &text_p );   // barrel anim bits
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			wi->weapAnimations[i].moveSpeed = atoi( token );
 
 			token = COM_Parse( &text_p );   // animated weapon
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			if ( atoi( token ) ) {
@@ -890,7 +890,7 @@ static qboolean CG_ParseWeaponConfig( const char *filename, weaponInfo_t *wi, in
 
 			}
 			token = COM_Parse( &text_p );   // barrel hide bits (so objects can be flagged to not be drawn during all sequences (a reloading hand that comes in from off screen for that one animation for example)
-			if ( !token ) {
+			if ( !token[0] ) {
 				break;
 			}
 			wi->weapAnimations[i].moveSpeed |= ( ( atoi( token ) ) << 8 ); // use 2nd byte for draw bits
@@ -2694,7 +2694,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 
 	// make sure we aren't looking at cg.predictedPlayerEntity for LG
-	nonPredictedCent = &cg_entities[cent->currentState.clientNum];
+	nonPredictedCent = &cg_entities[cent->currentState.number];
 
 	// if the index of the nonPredictedCent is not the same as the clientNum
 	// then this is a fake player (like on the single player podiums), so

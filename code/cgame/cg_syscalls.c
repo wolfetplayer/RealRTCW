@@ -204,7 +204,6 @@ void    trap_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t
 	syscall( CG_S_ADDLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );     // volume was previously removed from CG_S_ADDLOOPINGSOUND.  I added 'range'
 }
 
-
 // not in use
 //void    trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume ) {
 //	syscall( CG_S_ADDREALLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );	//----(SA)	modified
@@ -306,6 +305,7 @@ void    trap_R_AddRefEntityToScene( const refEntity_t *re ) {
 void    trap_R_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts ) {
 	syscall( CG_R_ADDPOLYTOSCENE, hShader, numVerts, verts );
 }
+
 // Ridah
 void    trap_R_AddPolysToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts, int numPolys ) {
 	syscall( CG_R_ADDPOLYSTOSCENE, hShader, numVerts, verts, numPolys );

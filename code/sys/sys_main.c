@@ -523,7 +523,7 @@ void *Sys_LoadDll(const char *name, qboolean useSystemLib)
 		Com_Printf("Trying to load \"%s\"...\n", name);
 		dllhandle = Sys_LoadLibrary(name);
 	}
-	
+
 	if(!dllhandle)
 	{
 		const char *topDir;
@@ -535,16 +535,16 @@ void *Sys_LoadDll(const char *name, qboolean useSystemLib)
 		if(!*topDir)
 			topDir = ".";
 
-			len = Com_sprintf(libPath, sizeof(libPath), "%s%c%s", topDir, PATH_SEP, name);
-			if(len < sizeof(libPath))
-			{
-				Com_Printf("Trying to load \"%s\" from \"%s\"...\n", name, topDir);
-				dllhandle = Sys_LoadLibrary(libPath);
-			}
-			else
-			{
-				Com_Printf("Skipping trying to load \"%s\" from \"%s\", file name is too long.\n", name, topDir);
-			}
+		len = Com_sprintf(libPath, sizeof(libPath), "%s%c%s", topDir, PATH_SEP, name);
+		if(len < sizeof(libPath))
+		{
+			Com_Printf("Trying to load \"%s\" from \"%s\"...\n", name, topDir);
+			dllhandle = Sys_LoadLibrary(libPath);
+		}
+		else
+		{
+			Com_Printf("Skipping trying to load \"%s\" from \"%s\", file name is too long.\n", name, topDir);
+		}
 
 		if(!dllhandle)
 		{
@@ -565,7 +565,6 @@ void *Sys_LoadDll(const char *name, qboolean useSystemLib)
 				{
 					Com_Printf("Skipping trying to load \"%s\" from \"%s\", file name is too long.\n", name, basePath);
 				}
-
 			}
 			
 			if(!dllhandle)
@@ -584,7 +583,7 @@ Used to load a development dll instead of a virtual machine
 =================
 */
 void *Sys_LoadGameDll(const char *name,
-	intptr_t (QDECL **entryPoint)(intptr_t, ...),
+	vmMainProc *entryPoint,
 	intptr_t (*systemcalls)(intptr_t, ...))
 {
 	void *libHandle;

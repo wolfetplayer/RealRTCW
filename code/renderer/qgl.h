@@ -264,7 +264,6 @@ extern void (APIENTRYP qglPNTrianglesfATI)(GLenum pname, GLfloat param);
 	GLE(void, CompressedTexImage2D, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data) \
 	GLE(void, CompressedTexSubImage2D, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data) \
 
-
 // GL_ARB_occlusion_query, built-in to OpenGL 1.5 but not OpenGL ES 2.0
 #define QGL_ARB_occlusion_query_PROCS \
 	GLE(void, GenQueries, GLsizei n, GLuint *ids) \

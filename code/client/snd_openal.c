@@ -2683,7 +2683,6 @@ qboolean S_AL_Init( soundInterface_t *si )
 	s_alInputDevice = Cvar_Get( "s_alInputDevice", "", CVAR_ARCHIVE | CVAR_LATCH );
 	s_alDevice = Cvar_Get("s_alDevice", "", CVAR_ARCHIVE | CVAR_LATCH);
 
-
 	// Load QAL
 	if( !QAL_Init( s_alDriver->string ) )
  	{

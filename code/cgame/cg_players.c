@@ -4638,10 +4638,11 @@ void CG_AnimPlayerConditions( centity_t *cent ) {
 	}
 }
 
+//RealRTCW modified with bodysink integer
 void CG_DeadSink( centity_t *cent ) {
-	/*if ( cent->currentState.aiChar != AICHAR_WARZOMBIE ) {
+    if ( !cg_bodysink.integer ) {
 		return;
-	}*/
+	}
 	if ( !( cent->currentState.eFlags & EF_DEAD ) ) {
 		return;
 	}

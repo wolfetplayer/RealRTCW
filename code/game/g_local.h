@@ -1164,6 +1164,9 @@ extern vmCvar_t g_playerStart;      //----(SA)	added
 
 extern vmCvar_t g_localTeamPref;
 
+// RealRTCW new CVARs
+extern vmCvar_t g_bodysink;
+
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));
 void    trap_Endgame( void );   //----(SA)	added

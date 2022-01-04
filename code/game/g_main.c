@@ -144,6 +144,9 @@ vmCvar_t g_playerStart;         // set when the player enters the game
 
 vmCvar_t g_localTeamPref;
 
+//RealRTCW new CVARs
+vmCvar_t g_bodysink;
+
 
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -256,7 +259,9 @@ cvarTable_t gameCvarTable[] = {
 	{&g_scriptName, "g_scriptName", "", CVAR_ROM, 0, qfalse},
 	{&ai_scriptName, "ai_scriptName", "", CVAR_ROM, 0, qfalse},
 
-	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse }
+	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse },
+
+	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE }
 };
 
 static int gameCvarTableSize = ARRAY_LEN( gameCvarTable );

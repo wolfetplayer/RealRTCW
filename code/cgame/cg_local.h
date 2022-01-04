@@ -1764,13 +1764,6 @@ extern vmCvar_t cg_currentSelectedPlayerName;
 
 // Rafael - particle switch
 extern vmCvar_t cg_wolfparticles;
-extern vmCvar_t cg_atmosphericEffects; // RealRTCW
-extern	vmCvar_t  	  	cg_lowAtmosphericEffects;
-extern	vmCvar_t  	  	cg_forceAtmosphericEffects;
-extern vmCvar_t cg_autoReload;
-extern vmCvar_t cg_uinfo;
-extern vmCvar_t int_cl_maxpackets;
-extern vmCvar_t int_cl_timenudge;
 // done
 
 // Ridah
@@ -1782,10 +1775,6 @@ extern vmCvar_t cg_skybox;
 // Rafael gameskill
 extern vmCvar_t cg_gameSkill;
 // done
-extern vmCvar_t cg_ironChallenge;
-extern vmCvar_t cg_nohudChallenge;
-extern vmCvar_t cg_nopickupChallenge;
-extern vmCvar_t cg_decayChallenge;
 
 extern vmCvar_t cg_reloading;           //----(SA)	added
 
@@ -1822,9 +1811,26 @@ extern vmCvar_t mp_mapDesc;
 extern vmCvar_t mp_mapTitle;
 // -NERVE - SMF
 
+// RealRTCW new CVARs
 extern vmCvar_t cg_solidCrosshair;
 extern vmCvar_t cg_bloodBlend;
 extern vmCvar_t cg_snipersCrosshair;
+
+extern vmCvar_t cg_atmosphericEffects;
+extern vmCvar_t cg_lowAtmosphericEffects;
+extern vmCvar_t cg_forceAtmosphericEffects;
+
+extern vmCvar_t cg_ironChallenge;
+extern vmCvar_t cg_nohudChallenge;
+extern vmCvar_t cg_nopickupChallenge;
+extern vmCvar_t cg_decayChallenge;
+
+extern vmCvar_t cg_autoReload;
+extern vmCvar_t cg_uinfo;
+extern vmCvar_t int_cl_maxpackets;
+extern vmCvar_t int_cl_timenudge;
+
+extern vmCvar_t cg_bodysink;
 
 //
 // cg_main.c

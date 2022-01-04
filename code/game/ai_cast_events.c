@@ -394,8 +394,16 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 		}
 
-		// if end map, sink into ground
+		//RealRTCW modified with bodysink integer
+		if ( !g_bodysink.integer ) 
+		{
 		cs->deadSinkStartTime = 0;
+		} 
+		else 
+		{
+		cs->deadSinkStartTime = level.time + 60000;
+		}
+         // if end map, sink into ground
 		if ( cs->aiCharacter == AICHAR_WARZOMBIE ) {
 			trap_Cvar_VariableStringBuffer( "mapname", mapname, sizeof( mapname ) );
 			if ( !Q_strncmp( mapname, "end", 3 ) ) {    // !! FIXME: post beta2, make this a spawnflag!

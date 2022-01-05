@@ -1632,7 +1632,7 @@ static void CG_RegisterGraphics( void ) {
 	CG_LoadingString( " - weapons" );
 	for ( i = WP_KNIFE; i < WP_GAUNTLET; i++ ) {
 //		CG_LoadingString( va("   - %d", i) );
-		CG_RegisterWeapon( i );
+			CG_RegisterWeapon( i, qfalse );
 	}
 
 // END
@@ -1643,11 +1643,7 @@ static void CG_RegisterGraphics( void ) {
 
 	CG_LoadingString( " - items" );
 	for ( i = 1 ; i < bg_numItems ; i++ ) {
-		if ( items[ i ] == '1' || cg_buildScript.integer ) {
-			// TODO: get weapons added to the list that are 'set' from a script
-			CG_LoadingItem( i );
-			CG_RegisterItemVisuals( i );
-		}
+		CG_RegisterItemVisuals( i );
 	}
 
 	// wall marks

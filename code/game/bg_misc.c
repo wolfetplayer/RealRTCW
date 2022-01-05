@@ -3960,3 +3960,302 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	s->teamNum = ps->teamNum;
 	s->aiState = ps->aiState;
 }
+
+/*
+=================
+PC_Int_Parse
+=================
+*/
+qboolean PC_Int_Parse( int handle, int *i ) {
+	pc_token_t token;
+	int negative = qfalse;
+
+	if ( !trap_PC_ReadToken( handle, &token ) ) {
+		return qfalse;
+	}
+	if ( token.string[0] == '-' ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			return qfalse;
+		}
+		negative = qtrue;
+	}
+	if ( token.type != TT_NUMBER ) {
+		PC_SourceError( handle, "expected integer but found %s\n", token.string );
+		return qfalse;
+	}
+	*i = token.intvalue;
+	if ( negative ) {
+		*i = -*i;
+	}
+	return qtrue;
+}
+
+/*
+=================
+PC_String_ParseNoAlloc
+
+Same as one above, but uses a static buff and not the string memory pool
+=================
+*/
+qboolean PC_String_ParseNoAlloc( int handle, char *out, size_t size ) {
+	pc_token_t token;
+
+	if ( !trap_PC_ReadToken( handle, &token ) ) {
+		return qfalse;
+	}
+
+	Q_strncpyz( out, token.string, size );
+	return qtrue;
+}
+
+
+// Real printable charater count
+int BG_drawStrlen( const char *str ) {
+	int cnt = 0;
+
+	while ( *str ) {
+		if ( Q_IsColorString( str ) ) {
+			str += 2;
+		} else {
+			cnt++;
+			str++;
+		}
+	}
+	return( cnt );
+}
+
+
+// Copies a color string, with limit of real chars to print
+//		in = reference buffer w/color
+//		out = target buffer
+//		str_max = max size of printable string
+//		out_max = max size of target buffer
+//
+// Returns size of printable string
+int BG_colorstrncpyz( char *in, char *out, int str_max, int out_max ) {
+	int str_len = 0;    // current printable string size
+	int out_len = 0;    // current true string size
+	const int in_len = strlen( in );
+
+	out_max--;
+	while ( *in && out_len < out_max && str_len < str_max ) {
+		if ( *in == '^' ) {
+			if ( out_len + 2 >= in_len && out_len + 2 >= out_max ) {
+				break;
+			}
+
+			*out++ = *in++;
+			*out++ = *in++;
+			out_len += 2;
+			continue;
+		}
+
+		*out++ = *in++;
+		str_len++;
+		out_len++;
+	}
+
+	*out = 0;
+
+	return( str_len );
+}
+
+int BG_strRelPos( char *in, int index ) {
+	int cPrintable = 0;
+	const char *ref = in;
+
+	while ( *ref && cPrintable < index ) {
+		if ( Q_IsColorString( ref ) ) {
+			ref += 2;
+		} else {
+			ref++;
+			cPrintable++;
+		}
+	}
+
+	return( ref - in );
+}
+
+// strip colors and control codes, copying up to dwMaxLength-1 "good" chars and nul-terminating
+// returns the length of the cleaned string
+int BG_cleanName( const char *pszIn, char *pszOut, unsigned int dwMaxLength, qboolean fCRLF ) {
+	const char *pInCopy = pszIn;
+	const char *pszOutStart = pszOut;
+
+	while ( *pInCopy && ( pszOut - pszOutStart < dwMaxLength - 1 ) ) {
+		if ( *pInCopy == '^' ) {
+			pInCopy += ( ( pInCopy[1] == 0 ) ? 1 : 2 );
+		} else if ( ( *pInCopy < 32 && ( !fCRLF || *pInCopy != '\n' ) ) || ( *pInCopy > 126 ) )    {
+			pInCopy++;
+		} else {
+			*pszOut++ = *pInCopy++;
+		}
+	}
+
+	*pszOut = 0;
+	return( pszOut - pszOutStart );
+}
+
+// Only used locally
+typedef struct {
+	char *colorname;
+	vec4_t *color;
+} colorTable_t;
+
+extern void trap_Cvar_Set( const char *var_name, const char *value );
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+typedef struct locInfo_s {
+	vec2_t gridStartCoord;
+	vec2_t gridStep;
+} locInfo_t;
+
+static locInfo_t locInfo;
+
+void BG_InitLocations( vec2_t world_mins, vec2_t world_maxs ) {
+	// keep this in sync with CG_DrawGrid
+	locInfo.gridStep[0] = 1200.f;
+	locInfo.gridStep[1] = 1200.f;
+
+	// ensure minimal grid density
+	while ( ( world_maxs[0] - world_mins[0] ) / locInfo.gridStep[0] < 7 )
+		locInfo.gridStep[0] -= 50.f;
+	while ( ( world_mins[1] - world_maxs[1] ) / locInfo.gridStep[1] < 7 )
+		locInfo.gridStep[1] -= 50.f;
+
+	locInfo.gridStartCoord[0] = world_mins[0] + .5f * ( ( ( ( world_maxs[0] - world_mins[0] ) / locInfo.gridStep[0] ) - ( (int)( ( world_maxs[0] - world_mins[0] ) / locInfo.gridStep[0] ) ) ) * locInfo.gridStep[0] );
+	locInfo.gridStartCoord[1] = world_mins[1] - .5f * ( ( ( ( world_mins[1] - world_maxs[1] ) / locInfo.gridStep[1] ) - ( (int)( ( world_mins[1] - world_maxs[1] ) / locInfo.gridStep[1] ) ) ) * locInfo.gridStep[1] );
+}
+
+char *BG_GetLocationString( vec_t* pos ) {
+	static char coord[6];
+	int x, y;
+
+	coord[0] = '\0';
+
+	x = ( pos[0] - locInfo.gridStartCoord[0] ) / locInfo.gridStep[0];
+	y = ( locInfo.gridStartCoord[1] - pos[1] ) / locInfo.gridStep[1];
+
+	if ( x < 0 ) {
+		x = 0;
+	}
+	if ( y < 0 ) {
+		y = 0;
+	}
+
+	Com_sprintf( coord, sizeof( coord ), "%c,%i", 'A' + x, y );
+
+	return coord;
+}
+
+qboolean BG_BBoxCollision( vec3_t min1, vec3_t max1, vec3_t min2, vec3_t max2 ) {
+	int i;
+
+	for ( i = 0; i < 3; i++ ) {
+		if ( min1[i] > max2[i] ) {
+			return qfalse;
+		}
+		if ( min2[i] > max1[i] ) {
+			return qfalse;
+		}
+	}
+
+	return qtrue;
+}
+
+
+/*
+=================
+PC_SourceError
+=================
+*/
+void PC_SourceError( int handle, char *format, ... ) {
+	int line;
+	char filename[128];
+	va_list argptr;
+	static char string[4096];
+
+	va_start( argptr, format );
+	Q_vsnprintf( string, sizeof( string ), format, argptr );
+	va_end( argptr );
+
+	filename[0] = '\0';
+	line = 0;
+	trap_PC_SourceFileAndLine( handle, filename, &line );
+
+#ifdef GAMEDLL
+	Com_Error( ERR_DROP, S_COLOR_RED "ERROR: %s, line %d: %s\n", filename, line, string );
+#else
+	Com_Printf( S_COLOR_RED "ERROR: %s, line %d: %s\n", filename, line, string );
+#endif
+}
+
+
+/*
+=================
+PC_Vec_Parse
+=================
+*/
+qboolean PC_Vec_Parse( int handle, vec3_t *c ) {
+	int i;
+	float f;
+
+	for ( i = 0; i < 3; i++ ) {
+		if ( !PC_Float_Parse( handle, &f ) ) {
+			return qfalse;
+		}
+		( *c )[i] = f;
+	}
+	return qtrue;
+}
+
+
+/*
+=================
+PC_Float_Parse
+=================
+*/
+qboolean PC_Float_Parse( int handle, float *f ) {
+	pc_token_t token;
+	int negative = qfalse;
+
+	if ( !trap_PC_ReadToken( handle, &token ) ) {
+		return qfalse;
+	}
+	if ( token.string[0] == '-' ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			return qfalse;
+		}
+		negative = qtrue;
+	}
+	if ( token.type != TT_NUMBER ) {
+		PC_SourceError( handle, "expected float but found %s\n", token.string );
+		return qfalse;
+	}
+	if ( negative ) {
+		*f = -token.floatvalue;
+	} else {
+		*f = token.floatvalue;
+	}
+	return qtrue;
+}
+
+/*
+=================
+PC_Color_Parse
+=================
+*/
+qboolean PC_Color_Parse( int handle, vec4_t *c ) {
+	int i;
+	float f;
+
+	for ( i = 0; i < 4; i++ ) {
+		if ( !PC_Float_Parse( handle, &f ) ) {
+			return qfalse;
+		}
+		( *c )[i] = f;
+	}
+	return qtrue;
+}

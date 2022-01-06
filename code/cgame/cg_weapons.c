@@ -1034,7 +1034,7 @@ static qboolean CG_RW_ParseViewType( int handle, weaponInfo_t *weaponInfo, model
 			} else {
 				weaponInfo->weaponModel[viewType].skin[0] = trap_R_RegisterSkin( filename );
 			}
-		} else if ( !Q_stricmp( token.string, "flashModel" ) ) {
+		}  else if ( !Q_stricmp( token.string, "flashModel" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected flashModel filename" );
 			} else {
@@ -1235,26 +1235,13 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo ) {
 			} else {
 				weaponInfo->weaponIcon[1] = trap_R_RegisterShader( filename );
 			}
-			/*} else if( !Q_stricmp( token.string, "ammoIcon" ) ) {
-				if( !PC_String_ParseNoAlloc( handle, filename, sizeof(filename) ) ) {
-					return CG_RW_ParseError( handle, "expected ammoIcon filename" );
-				} else {
-					weaponInfo->ammoIcon = trap_R_RegisterShader( filename );
-				}*/
+
 		} else if ( !Q_stricmp( token.string, "missileModel" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected missileModel filename" );
 			} else {
 				weaponInfo->missileModel = trap_R_RegisterModel( filename );
 			}
-		} else if ( !Q_stricmp( token.string, "missileAlliedSkin" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
-				return CG_RW_ParseError( handle, "expected skin filename" );
-			} 
-		} else if ( !Q_stricmp( token.string, "missileAxisSkin" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
-				return CG_RW_ParseError( handle, "expected skin filename" );
-			} 
 		} else if ( !Q_stricmp( token.string, "missileSound" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected missileSound filename" );
@@ -1281,6 +1268,10 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo ) {
 			if ( !PC_Vec_Parse( handle, &weaponInfo->missileDlightColor ) ) {
 				return CG_RW_ParseError( handle, "expected missileDlightColor as r g b" );
 			}
+		} else if ( !Q_stricmp( token.string, "weaponPosition" ) ) {
+			if ( !PC_Vec_Parse( handle, &weaponInfo->weaponPosition ) ) {
+			return CG_RW_ParseError( handle, "expected XYZ" );
+		}
 		} else if ( !Q_stricmp( token.string, "ejectBrassFunc" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected ejectBrassFunc" );
@@ -1421,189 +1412,6 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 	}
 
 }
-/*
-
-
-
-	if ( weaponInfo->registered ) {
-		return;
-	}
-
-	memset( weaponInfo, 0, sizeof( *weaponInfo ) );
-	weaponInfo->registered = qtrue;
-
-	for ( item = bg_itemlist + 1 ; item->classname ; item++ ) {
-		if ( item->giType == IT_WEAPON && item->giTag == weaponNum ) {
-			weaponInfo->item = item;
-			break;
-		}
-	}
-	if ( !item->classname ) {
-		CG_Error( "Couldn't find weapon %i", weaponNum );
-	}
-
-	CG_RegisterItemVisuals( item - bg_itemlist );
-
-	// load cmodel before model so filecache works
-
-	// alternate view weapon
-	weaponInfo->weaponModel[W_TP_MODEL] = trap_R_RegisterModel( item->world_model[W_TP_MODEL] );
-	weaponInfo->weaponModel[W_FP_MODEL] = trap_R_RegisterModel( item->world_model[W_FP_MODEL] );
-	weaponInfo->weaponModel[W_SKTP_MODEL] = trap_R_RegisterModel( item->world_model[W_SKTP_MODEL] );
-
-	if ( !weaponInfo->weaponModel[W_FP_MODEL] || !cg_drawFPGun.integer ) {
-		weaponInfo->weaponModel[W_FP_MODEL] = weaponInfo->weaponModel[W_TP_MODEL];
-	}
-
-	if ( !weaponInfo->weaponModel[W_TP_MODEL] ) {
-		// left commented out since we have level-loading optimization issues to still resolve.
-		//	ie. every weapon and it's associated effects/parts/sounds etc. are loaded for every level.
-		// This was turned off when we started (the "only load what the level calls for" thing) because when
-		// DM does a "give all" and fires, he doesn't want to wait for everything to load.  So perhaps a "cacheallweaps" or something.
-//		CG_Printf( "Couldn't register weapon model %i (unable to load view model)\n", weaponNum );
-// RF, I need to be able to run the game, I dont have the silencer weapon (19)
-#ifndef _DEBUG
-//		CG_Error( "Couldn't register weapon model %i (unable to load view model)", weaponNum );
-#endif
-		return;
-	}
-
-
-	// load weapon config
-//----(SA)	modified.  use first person model for finding weapon config name, not third
-	if ( item->world_model[W_FP_MODEL] ) {
-		COM_StripFilename( item->world_model[W_FP_MODEL], path );
-		if ( !CG_ParseWeaponConfig( va( "%sweapon.cfg", path ), weaponInfo, weaponNum ) ) {
-			CG_Error( "Couldn't register weapon %i (%s) (failed to parse weapon.cfg)", weaponNum, path );
-		}
-	}
-//----(SA)	end
-
-	// calc midpoint for rotation
-	trap_R_ModelBounds( weaponInfo->weaponModel[W_TP_MODEL], mins, maxs );
-
-	for ( i = 0 ; i < 3 ; i++ ) {
-		weaponInfo->weaponMidpoint[i] = mins[i] + 0.5 * ( maxs[i] - mins[i] );
-	}
-
-	weaponInfo->weaponIcon[0] = trap_R_RegisterShader( item->icon );
-	weaponInfo->weaponIcon[1] = trap_R_RegisterShader( va( "%s_select", item->icon ) );    // get the 'selected' icon as well
-
-	// JOSEPH 4-17-00
-	weaponInfo->ammoIcon = trap_R_RegisterShader( item->ammoicon );
-	// END JOSEPH
-
-	for ( ammo = bg_itemlist + 1 ; ammo->classname ; ammo++ ) {
-		if ( ( ammo->giType == IT_AMMO && ammo->giTag == BG_FindAmmoForWeapon( weaponNum ) ) ) {
-			break;
-		}
-	}
-	if ( ammo->classname && ammo->world_model[0] ) {
-		weaponInfo->ammoModel = trap_R_RegisterModel( ammo->world_model[0] );
-	}
-
-	if ( item->world_model[W_FP_MODEL] ) {
-		Q_strncpyz( comppath, item->world_model[W_FP_MODEL], sizeof(comppath) ); // first try the fp view weap
-	} else if ( item->world_model[W_TP_MODEL] ) {
-		Q_strncpyz( comppath, item->world_model[W_TP_MODEL], sizeof(comppath) ); // not there, use the standard view hand
-	}
-
-	if ( !cg_drawFPGun.integer && item->world_model[W_TP_MODEL] ) { // then if it didn't find the 1st person one or you are set to not use one
-		Q_strncpyz( comppath, item->world_model[W_TP_MODEL], sizeof(comppath) ); // use the standard view hand
-	}
-
-	for ( i = W_TP_MODEL; i < W_NUM_TYPES; i++ )
-	{
-		int j;
-
-		if ( !item->world_model[i] ) {
-			Q_strncpyz( path, comppath, sizeof(path) );
-		} else {
-			Q_strncpyz( path, item->world_model[i], sizeof(path) );
-		}
-
-		COM_StripExtension( path, path, sizeof(path) );
-		Q_strcat( path, sizeof(path), "_flash.md3" );
-		weaponInfo->flashModel[i] = trap_R_RegisterModel( path );
-
-
-		for ( j = 0; j < W_MAX_PARTS; j++ ) {
-			if ( !item->world_model[i] ) {
-				Q_strncpyz( path, comppath, sizeof(path) );
-			} else {
-				Q_strncpyz( path, item->world_model[i], sizeof(path) );
-			}
-			COM_StripExtension( path, path, sizeof(path) );
-			if ( j == W_PART_1 ) {
-				Q_strcat( path, sizeof(path), "_barrel.md3" );
-			} else {
-				Q_strcat( path, sizeof(path), va( "_barrel%d.md3", j + 1 ) );
-			}
-			weaponInfo->wpPartModels[i][j] = trap_R_RegisterModel( path );
-		}
-
-		// used for spinning belt on venom
-		if ( i == W_FP_MODEL ) {
-			if ( !item->world_model[2] ) {
-				Q_strncpyz( path, comppath, sizeof(path) );
-			} else {
-				Q_strncpyz( path, item->world_model[2], sizeof(path) );
-			}
-			COM_StripExtension( path, path, sizeof(path) );
-			Q_strcat( path, sizeof(path), "_barrel6b.md3" );
-			weaponInfo->wpPartModels[i][W_PART_7] = trap_R_RegisterModel( path );
-		}
-	}
-
-
-	// sniper scope model
-	if ( weaponNum == WP_MAUSER || weaponNum == WP_GARAND ) {
-
-		if ( !item->world_model[W_FP_MODEL] ) {
-			Q_strncpyz( path, comppath, sizeof(path) );
-		} else {
-			Q_strncpyz( path, item->world_model[W_FP_MODEL], sizeof(path) );
-		}
-		COM_StripExtension( path, path, sizeof(path) );
-		Q_strcat( path, sizeof(path), "_scope.md3" );
-		weaponInfo->modModel[0] = trap_R_RegisterModel( path );
-	}
-
-	if ( !item->world_model[W_FP_MODEL] ) {
-		Q_strncpyz( path, comppath, sizeof(path) );
-	} else {
-		Q_strncpyz( path, item->world_model[W_FP_MODEL], sizeof(path) );
-	}
-	COM_StripExtension( path, path, sizeof(path) );
-	Q_strcat( path, sizeof(path), "_hand.md3" );
-	weaponInfo->handsModel = trap_R_RegisterModel( path );
-
-	char handsskin[128]; //eugeny
-	char map[128];
-
-	memset( handsskin, 0, sizeof( handsskin ) );
-	memset( map, 0, sizeof( map ) );
-	trap_Cvar_VariableStringBuffer( "mapname", map, sizeof( map ) );
-	COM_StripExtension( path, path, sizeof ( path ) );
-	Com_sprintf( handsskin, sizeof( handsskin ), "%s_%s.skin", path, map );
-	weaponInfo->handsSkin = trap_R_RegisterSkin( handsskin );
-
-	if ( !weaponInfo->handsModel ) {
-		weaponInfo->handsModel = trap_R_RegisterModel( "models/weapons2/shotgun/shotgun_hand.md3" );
-	}
-
-//----(SA)	weapon pickup 'stand'
-	if ( !item->world_model[W_TP_MODEL] ) {
-		Q_strncpyz( path, comppath, sizeof(path) );
-	} else {
-		Q_strncpyz( path, item->world_model[W_TP_MODEL], sizeof(path) );
-	}
-	COM_StripExtension( path, path, sizeof(path) );
-	Q_strcat( path, sizeof(path), "_stand.md3" );
-	weaponInfo->standModel = trap_R_RegisterModel( path );
-
-}
-*/
 /*
 =================
 CG_RegisterItemVisuals
@@ -2659,7 +2467,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 
-		CG_RegisterWeapon( weaponNum, qfalse );
+		//CG_RegisterWeapon( weaponNum, qfalse );
 		weapon = &cg_weapons[weaponNum];
 
 
@@ -2684,14 +2492,14 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	if ( ps ) {
-		gun.hModel = weapon->weaponModel_old[W_FP_MODEL];
+		gun.hModel = weapon->weaponModel[W_FP_MODEL].model;
 	} else {
 		CG_AddProtoWeapons( parent, ps, cent );
 		// skeletal guys use a different third person weapon (for different tag business)
-		if ( cgs.clientinfo[ cent->currentState.clientNum ].isSkeletal && weapon->weaponModel_old[W_SKTP_MODEL] ) {
-			gun.hModel = weapon->weaponModel_old[W_SKTP_MODEL];
+		if ( cgs.clientinfo[ cent->currentState.clientNum ].isSkeletal && weapon->weaponModel[W_SKTP_MODEL].model ) {
+			gun.hModel = weapon->weaponModel[W_SKTP_MODEL].model;
 		} else {
-			gun.hModel = weapon->weaponModel_old[W_TP_MODEL];
+			gun.hModel = weapon->weaponModel[W_TP_MODEL].model;
 		}
 	}
 
@@ -2796,7 +2604,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		for ( i = W_PART_1; i < W_MAX_PARTS; i++ ) {
 
 			spunpart = qfalse;
-			barrel.hModel = weapon->wpPartModels_old[W_FP_MODEL][i];
+			barrel.hModel = weapon->partModels[W_FP_MODEL][i].model;
 
 			if ( isPlayer && weapon->handsSkin ) { // eugeny
 				barrel.customSkin = weapon->handsSkin;
@@ -2815,7 +2623,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 				// (SA) not right now.  at the moment, just spin the belt when firing, no swapout
 				else if ( i == W_PART_3 ) {
 					if ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_ATTACK1 ) {
-						barrel.hModel = weapon->wpPartModels_old[W_FP_MODEL][i];
+						//barrel.hModel = weapon->wpPartModels_old[W_FP_MODEL][i];
+						barrel.hModel = weapon->partModels[W_FP_MODEL][i].model;
 						angles[ROLL] = -CG_VenomSpinAngle( cent );
 						angles[ROLL] = -( angles[ROLL] / 8.0f );
 					} else {
@@ -2861,7 +2670,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 				angles[ROLL] = CG_VenomSpinAngle( cent );
 				AnglesToAxis( angles, barrel.axis );
 
-				barrel.hModel = weapon->wpPartModels_old[W_TP_MODEL][W_PART_1];
+				//barrel.hModel = weapon->wpPartModels_old[W_TP_MODEL][W_PART_1];
+				barrel.hModel = weapon->partModels[W_TP_MODEL][W_PART_1].model;
 				CG_PositionRotatedEntityOnTag( &barrel, &gun, "tag_barrel" );
 				CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
 			}
@@ -3163,104 +2973,25 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 
 	if ( ps->weapon > WP_NONE ) {
 
-			CG_RegisterWeapon( ps->weapon, qfalse );
+			//CG_RegisterWeapon( ps->weapon, qfalse );
 			weapon = &cg_weapons[ ps->weapon ];
 
 		// set up gun position
 		CG_CalculateWeaponPosition( hand.origin, angles );
-        // REALRTCWEXP
-	    switch ( cg.predictedPlayerState.weapon ) {
-		case WP_FLAMETHROWER:
-			 gunoff[0] = 10;
-		     gunoff[1] = 2;
-		     gunoff[2] = 0;
-		break;
-		case WP_MAUSER:
-		case WP_SNIPERRIFLE:
-			 gunoff[0] = 0;
-		     gunoff[1] = 0;
-		     gunoff[2] = -1;
-		break;
-		case WP_LUGER:
-		case WP_SILENCER:
-			 gunoff[0] = 0;
-		     gunoff[1] = 2;
-		     gunoff[2] = 3;
-		break;
-		case WP_COLT:
-		case WP_AKIMBO:
-			 gunoff[0] = 0;
-		     gunoff[1] = 2;
-		     gunoff[2] = 2;
-		break;
-		case WP_THOMPSON:
-			 gunoff[0] = -2;
-		     gunoff[1] = 1;
-		     gunoff[2] = 1;
-		break;
-		case WP_STEN:
-			 gunoff[0] = 0;
-		     gunoff[1] = 0;
-		     gunoff[2] = 2;
-		break;
-		case WP_REVOLVER:
-			 gunoff[0] = -1;
-		     gunoff[1] = 1;
-		     gunoff[2] = 2;
-		break;
-		case WP_MP34:
-			 gunoff[0] = 1;
-		     gunoff[1] = -1;
-		     gunoff[2] = 0;
-		break;
-		case WP_MP40:
-			 gunoff[0] = 0;
-		     gunoff[1] = 3;
-		     gunoff[2] = 1;
-		break;
-		case WP_M97:
-			 gunoff[0] = -3;
-		     gunoff[1] = 0;
-		     gunoff[2] = -1;
-		break;
-		case WP_VENOM:
-			 gunoff[0] = -1;
-		     gunoff[1] = 2;
-		     gunoff[2] = 0;
-		break;
-		case WP_MG42M:
-			 gunoff[0] = 0;
-		     gunoff[1] = 3;
-		     gunoff[2] = 0;
-		break;
-		case WP_G43:
-			 gunoff[0] = 0;
-		     gunoff[1] = 1;
-		     gunoff[2] = 1;
-		break;
-		case WP_MP44:
-			 gunoff[0] = 0;
-		     gunoff[1] = 1;
-		     gunoff[2] = 0;
-		break;
-		case WP_FG42:
-			 gunoff[0] = 0;
-		     gunoff[1] = 2;
-		     gunoff[2] = -1;
-		break;
-		case WP_BAR:
-			 gunoff[0] = -1;
-		     gunoff[1] = 1;
-		     gunoff[2] = -2;
-		break;
-		default:
-		    gunoff[0] = cg_gun_x.value;
-		    gunoff[1] = cg_gun_y.value;
-		    gunoff[2] = cg_gun_z.value; 
-		}
-
-
-//----(SA)	removed
+            
+			// RealRTCW gun position is defined in .weap files if CVAR is active.
+            if ( cg_gunPosLock.integer ) 
+			{
+		    gunoff[0] = weapon->weaponPosition[0];
+			gunoff[1] = weapon->weaponPosition[1];
+			gunoff[2] = weapon->weaponPosition[2];
+			} 
+			else 
+			{
+			gunoff[0] = cg_gun_x.value;
+			gunoff[1] = cg_gun_y.value;
+			gunoff[2] = cg_gun_z.value;
+			}
 
 		VectorMA( hand.origin, ( gunoff[0] + fovOffset[0] ), cg.refdef.viewaxis[0], hand.origin );
 		VectorMA( hand.origin, ( gunoff[1] + fovOffset[1] ), cg.refdef.viewaxis[1], hand.origin );

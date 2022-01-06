@@ -666,12 +666,9 @@ typedef struct weaponInfo_s {
 	qhandle_t standModel;               // not drawn.  tags used for positioning weapons for pickup
 
 //----(SA) mod for 1st/3rd person weap views
-	qhandle_t weaponModel_old[W_NUM_TYPES];
-	qhandle_t wpPartModels_old[W_NUM_TYPES][W_MAX_PARTS];
 	weaponModel_t weaponModel[W_NUM_TYPES];
 	partModel_t partModels[W_NUM_TYPES][W_MAX_PARTS];
 	qhandle_t flashModel[W_NUM_TYPES];
-	//qhandle_t modModel[W_NUM_TYPES];        // like the scope for the rifles
 	qhandle_t modModels[6];  
 //----(SA) end
 
@@ -712,6 +709,8 @@ typedef struct weaponInfo_s {
 
 	sfxHandle_t spinupSound;        //----(SA)	added // sound started when fire button goes down, and stepped on when the first fire event happens
 	sfxHandle_t spindownSound;      //----(SA)	added // sound called if the above is running but player doesn't follow through and fire
+
+	vec3_t weaponPosition;
 } weaponInfo_t;
 
 
@@ -1848,6 +1847,8 @@ extern vmCvar_t int_cl_maxpackets;
 extern vmCvar_t int_cl_timenudge;
 
 extern vmCvar_t cg_bodysink;
+
+extern vmCvar_t cg_gunPosLock;
 
 //
 // cg_main.c

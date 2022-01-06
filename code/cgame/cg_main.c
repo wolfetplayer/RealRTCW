@@ -299,6 +299,8 @@ vmCvar_t int_cl_timenudge;
 
 vmCvar_t cg_bodysink;
 
+vmCvar_t cg_gunPosLock;
+
 typedef struct {
 	vmCvar_t    *vmCvar;
 	char        *cvarName;
@@ -527,6 +529,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_snipersCrosshair, "cg_snipersCrosshair", "1", CVAR_ARCHIVE },
 
 	{ &cg_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
+	
+	{ &cg_gunPosLock, "cg_gunposlock", "1", CVAR_ARCHIVE},
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );

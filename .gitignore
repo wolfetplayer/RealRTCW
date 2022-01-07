@@ -25,6 +25,7 @@ Icon?
 *.moved-aside
 *~.nib
 .idea/
+
 DerivedData/
 project.xcworkspace/
 xcuserdata/
@@ -39,3 +40,6 @@ profile
 *.sdf
 *.opensdf
 *.suo
+
+# vscode
+.vscode/

@@ -2667,7 +2667,7 @@ int FS_GetFileList(  const char *path, const char *extension, char *listbuf, int
 	nTotal = 0;
 
 	if ( Q_stricmp( path, "$modlist" ) == 0 ) {
-		return FS_GetModList( listbuf, bufsize );
+		return FS_GetAddonList( listbuf, bufsize );
 	}
 
 	pFiles = FS_ListFiles( path, extension, &nFiles );
@@ -2781,14 +2781,62 @@ void FS_GetModDescription( const char *modDir, char *description, int descriptio
 
 /*
 ================
-FS_GetModList
+FS_AddModDirectories
+
+adds the directory to the head of the path, then loads the zip headers
+================
+*/
+void FS_AddModDirectories() {
+	char **pFiles = NULL;
+	int i, j, dummy, nPotential;
+	char *name, *path;
+	qboolean bDrop = qfalse;
+	char *steam = Sys_SteamWorkshopPath();
+	pFiles = Sys_ListFiles( steam, NULL, NULL, &dummy, qtrue );
+	nPotential = Sys_CountFileList(pFiles);
+
+	for ( i = 0 ; i < nPotential ; i++ ) {
+
+		name = pFiles[i];
+		// NOTE: cleaner would involve more changes
+		// ignore duplicate mod directories
+		if (i!=0) {
+			bDrop = qfalse;
+			for(j=0; j<i; j++)
+			{
+				if (Q_stricmp(pFiles[j],name)==0) {
+					// this one can be dropped
+					bDrop = qtrue;
+					break;
+				}
+			}
+		}
+		if (bDrop) {
+			continue;
+		}
+
+		// we drop "baseq3" "." and ".."
+		if (Q_stricmp(name, com_basegame->string) && Q_stricmpn(name, ".", 1)) {
+			// check file mod.txt in workshop item directory
+			path = FS_BuildOSPath( steam, name, "mod.txt" ); // eugeny
+			if (FS_FileInPathExists(path)) {
+				FS_AddGameDirectory( steam, name );
+			}
+		}
+	}
+
+}
+
+/*
+================
+FS_GetAddonList
 
 Returns a list of mod directory names
 A mod directory is a peer to baseq3 with a pk3 in it
 The directories are searched in base path, cd path and home path
 ================
 */
-int	FS_GetModList( char *listbuf, int bufsize ) {
+int	FS_GetAddonList( char *listbuf, int bufsize ) {
 	int		nMods, i, j, nTotal, nLen, nPaks, nPotential, nDescLen;
 	char **pFiles = NULL;
 	char **pPaks = NULL;
@@ -2885,6 +2933,12 @@ int	FS_GetModList( char *listbuf, int bufsize ) {
 				path = FS_BuildOSPath( fs_workshop->string, name, "" );
 				nPaks = 0;
 				pPaks = Sys_ListFiles( path, ".pk3", NULL, &nPaks, qfalse );
+
+				// check file mod.txt in workshop item directory
+				path = FS_BuildOSPath( fs_workshop->string, name, "mod.txt" ); // eugeny
+				if (FS_FileInPathExists(path)) {
+					nPaks = 0;
+				}
 				Sys_FreeFileList( pPaks );
 			}
 
@@ -3191,6 +3245,7 @@ static int QDECL paksort( const void *a, const void *b ) {
 
 	return FS_PathCmp( aa, bb );
 }
+
 
 /*
 ================
@@ -3620,7 +3675,9 @@ static void FS_Startup( const char *gameName )
 	if (fs_workshop->string[0]) {
 		FS_AddGameDirectory( fs_workshop->string, gameName );
 	}
+	FS_AddModDirectories();
 #endif
+
 
 	if ( fs_basepath->string[0] ) {
 		FS_AddGameDirectory( fs_basepath->string, gameName );
@@ -3666,6 +3723,7 @@ static void FS_Startup( const char *gameName )
 		if ( fs_workshop->string[0] ) {
 			FS_AddGameDirectory( fs_workshop->string, fs_gamedirvar->string );
 		}
+
 #endif
 		if ( fs_basepath->string[0] ) {
 			FS_AddGameDirectory( fs_basepath->string, fs_gamedirvar->string );
@@ -3676,6 +3734,7 @@ static void FS_Startup( const char *gameName )
 	}
 
 #ifndef STANDALONE
+
 	if (!com_standalone->integer) {
 		Com_ReadCDKey(BASEGAME);
 		if (fs_gamedirvar->string[0]) {

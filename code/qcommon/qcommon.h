@@ -675,7 +675,7 @@ qboolean FS_CompareZipChecksum(const char *zipfile);
 int		FS_LoadStack( void );
 
 int     FS_GetFileList(  const char *path, const char *extension, char *listbuf, int bufsize );
-int     FS_GetModList(  char *listbuf, int bufsize );
+int     FS_GetAddonList(  char *listbuf, int bufsize );
 
 void	FS_GetModDescription( const char *modDir, char *description, int descriptionLen );
 

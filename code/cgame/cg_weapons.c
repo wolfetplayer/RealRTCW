@@ -1386,11 +1386,15 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 	case WP_GARAND:                 filename = "garand.weap"; break;
 	case WP_SNOOPERSCOPE:           filename = "snooper.weap"; break;
 	case WP_MOSIN:                  filename = "mosin.weap"; break;
+	case WP_G43:                    filename = "g43.weap"; break;
+	case WP_M1GARAND:               filename = "m1garand.weap"; break;
 	case WP_FG42:                   filename = "fg42.weap"; break;
 	case WP_FG42SCOPE:              filename = "fg42scope.weap"; break;
 	case WP_MP44:                   filename = "mp44.weap"; break;
 	case WP_BAR:                    filename = "bar.weap"; break;
 	case WP_M97:                    filename = "m97.weap"; break;
+	case WP_FLAMETHROWER:           filename = "flamethrower.weap"; break;
+	case WP_PANZERFAUST:            filename = "panzerfaust.weap"; break;
 	case WP_MG42M:                  filename = "mg42m.weap"; break;
 	case WP_TESLA:                  filename = "tesla.weap"; break;
 	case WP_VENOM:                  filename = "venom.weap"; break;

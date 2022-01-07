@@ -1126,9 +1126,16 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo ) {
 		} else if ( !Q_stricmp( token.string, "handsModel" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected handsModel filename" );
-			} else {
-				weaponInfo->handsModel = trap_R_RegisterModel( filename );
 			}
+			weaponInfo->handsModel = trap_R_RegisterModel( filename );
+			char handsskin[128]; //eugeny
+			char map[128];
+			memset(handsskin, 0, sizeof(handsskin));
+			memset(map, 0, sizeof(map));
+			trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
+			COM_StripExtension(filename, filename, sizeof (filename) );
+			Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", filename, map);
+			weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
 		} else if ( !Q_stricmp( token.string, "flashDlightColor" ) ) {
 			if ( !PC_Vec_Parse( handle, &weaponInfo->flashDlightColor ) ) {
 				return CG_RW_ParseError( handle, "expected flashDlightColor as r g b" );
@@ -1415,15 +1422,7 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 		CG_Printf( S_COLOR_RED "WARNING: failed to register media for weapon %i from %s\n", weaponNum, filename );
 	}
 	
-	/*char path[MAX_QPATH];
-    char handsskin[128]; //eugeny
-    char map[128];
-	memset(handsskin, 0, sizeof(handsskin));
-    memset(map, 0, sizeof(map));
-	trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
-    COM_StripExtension(path, path, sizeof (path) );
-    Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", path, map);
-    weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);*/
+
 
 }
 /*

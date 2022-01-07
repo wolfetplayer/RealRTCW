@@ -1414,6 +1414,16 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 	if ( !CG_RegisterWeaponFromWeaponFile( va( "weapons/%s", filename ), weaponInfo ) ) {
 		CG_Printf( S_COLOR_RED "WARNING: failed to register media for weapon %i from %s\n", weaponNum, filename );
 	}
+	
+	/*char path[MAX_QPATH];
+    char handsskin[128]; //eugeny
+    char map[128];
+	memset(handsskin, 0, sizeof(handsskin));
+    memset(map, 0, sizeof(map));
+	trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
+    COM_StripExtension(path, path, sizeof (path) );
+    Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", path, map);
+    weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);*/
 
 }
 /*

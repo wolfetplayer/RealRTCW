@@ -730,8 +730,10 @@ void CG_EffectParse( const char *effectstr )
 		{
 			cg_atmFx.effectsplashshader = trap_R_RegisterShader("gfx/atmosphere/rainsplash");
 			if (cg_atmFx.effectsplashshader)
-				rainSFX = trap_S_RegisterSound("sound/atmosphere/rain.wav");
-				rainSFXindoor = trap_S_RegisterSound("sound/atmosphere/rain_indoor.wav");
+			{
+			rainSFX = trap_S_RegisterSound("sound/atmosphere/rain.wav");
+			rainSFXindoor = trap_S_RegisterSound("sound/atmosphere/rain_indoor.wav");
+			}
 		}
 
 		cg_atmFx.verts[0].st[0] = 1;

@@ -3250,7 +3250,7 @@ void props_grammofon_death(gentity_t* ent, gentity_t* inflictor, gentity_t* atta
 
 void Use_props_grammofon(gentity_t* ent, gentity_t* self, gentity_t* activator) {
 	G_AddEvent(ent, EV_GENERAL_SOUND, grammofon_switch);
-	if (ent->Name == "active") {
+	if (strcmp(ent->Name, "active")) {
 		ent->Name = "noactive";
 		ent->s.oldloopSound = ent->s.loopSound;
 		ent->s.loopSound = 0;

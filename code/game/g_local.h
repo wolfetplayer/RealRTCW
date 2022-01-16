@@ -1065,6 +1065,7 @@ float AngleDifference( float ang1, float ang2 );
 
 // g_props.c
 void Props_Chair_Skyboxtouch( gentity_t *ent );
+void Use_props_grammofon(gentity_t* ent, gentity_t* self, gentity_t* activator);
 
 #include "g_team.h" // teamplay specific stuff
 

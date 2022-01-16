@@ -976,7 +976,7 @@ qboolean G_LoadEntsFile( void ) {
 		// make sure we clear out the temporary scriptname
 		trap_Cvar_Set( "g_scriptName", "" );
 		if ( len < 0 ) {
-			return;
+			return qfalse;
 		}
 	}
 

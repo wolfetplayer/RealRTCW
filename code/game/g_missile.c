@@ -1061,7 +1061,6 @@ fire_rocket
 */
 gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	gentity_t   *bolt;
-//qboolean	isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 
 	VectorNormalize( dir );
 
@@ -1409,7 +1408,6 @@ fire_mortar
 */
 gentity_t *fire_mortar( gentity_t *self, vec3_t start, vec3_t dir ) {
 	gentity_t   *bolt;
-	qboolean	isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 
 //	VectorNormalize (dir);
 

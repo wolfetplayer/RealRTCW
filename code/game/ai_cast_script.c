@@ -271,6 +271,10 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_hardcore",      AICast_ScriptAction_decoy},
 	{"achievement_999",      AICast_ScriptAction_decoy},
 	{"achievement_nightmare",      AICast_ScriptAction_decoy},
+	{"achievement_booze",      AICast_ScriptAction_decoy},
+	{"achievement_party",      AICast_ScriptAction_decoy},
+	{"achievement_winterstein",      AICast_ScriptAction_decoy},
+	{"achievement_speedrun_norway",      AICast_ScriptAction_decoy},
      // achievements end
 
 //----(SA)	added some music interface

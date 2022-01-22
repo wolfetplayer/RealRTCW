@@ -3181,6 +3181,73 @@ qboolean AICast_ScriptAction_Achievement_nightmare( cast_state_t *cs, char *para
 	return qtrue;
 }
 
+/*
+==================
+AICast_ScriptAction_Achievement_booze
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_booze( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WINTERSTEIN_WINE");
+	}
+	return qtrue;
+}
+
+
+/*
+==================
+AICast_ScriptAction_Achievement_party
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_party( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WINTERSTEIN_PARTY");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_winterstein
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_winterstein( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WINTERSTEIN_COMPLETE");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_speedrun_norway
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_speedrun_norway( cast_state_t *cs, char *params ) {
+	gentity_t   *player;
+	int playtime = 0;
+	player = AICast_FindEntityForName( "player" );
+	
+	if ( player ) 
+	{
+	AICast_AgePlayTime( player->s.number );
+	playtime = AICast_PlayTime( player->s.number );
+	}
+
+    if ( playtime <= 90000)
+	{
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WINTERSTEIN_NORWAY");
+	}
+	}
+
+	return qtrue;
+}
+
 
 /*
 ==================

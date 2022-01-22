@@ -493,6 +493,14 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	}
 	}
 
+	if (( weapon == WP_TESLA ) && strstr (level.scriptAI, "Escape #2"))
+	{
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WINTERSTEIN_TESLA");
+	}
+	}
+
 
 	//----(SA)	added
 	// check for special colt->akimbo add (if you've got a colt already, add the second now)

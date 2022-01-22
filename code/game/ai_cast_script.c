@@ -152,6 +152,10 @@ qboolean AICast_ScriptAction_Achievement_ironman( cast_state_t *cs, char *params
 qboolean AICast_ScriptAction_Achievement_hardcore( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_999( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_nightmare( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_booze( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_party( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_winterstein( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_speedrun_norway( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -301,6 +305,10 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_hardcore",      AICast_ScriptAction_Achievement_hardcore},
 	{"achievement_999",      AICast_ScriptAction_Achievement_999},
 	{"achievement_nightmare",      AICast_ScriptAction_Achievement_nightmare},
+	{"achievement_booze",      AICast_ScriptAction_Achievement_booze},
+	{"achievement_party",      AICast_ScriptAction_Achievement_party},
+	{"achievement_winterstein",      AICast_ScriptAction_Achievement_winterstein},
+	{"achievement_speedrun_norway",      AICast_ScriptAction_Achievement_speedrun_norway},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

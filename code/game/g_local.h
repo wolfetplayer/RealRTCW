@@ -950,6 +950,7 @@ qboolean G_FilterPacket( char *from );
 // g_weapon.c
 //
 void FireWeapon( gentity_t *ent );
+void G_LoadAmmoTable( weapon_t weaponNum );
 
 //
 // g_cmds.c

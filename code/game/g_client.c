@@ -30,12 +30,6 @@ If you have questions concerning this license or the applicable additional terms
 
 // g_client.c -- client functions that don't happen every frame
 
-void SetupWeaponsForSkill_EASY();
-void SetupWeaponsForSkill_MEDIUM();
-void SetupWeaponsForSkill_HARD();
-void SetupWeaponsForSkill_MAX();
-void SetupWeaponsForSkill_REALISM();
-
 // Ridah, new bounding box
 //static vec3_t	playerMins = {-15, -15, -24};
 //static vec3_t	playerMaxs = {15, 15, 32};
@@ -1380,36 +1374,29 @@ void ClientUserinfoChanged( int clientNum ) {
 	client->pers.maxHealth = atoi( Info_ValueForKey( userinfo, "handicap" ) );
 
 	if ( g_gameskill.integer == GSKILL_EASY ) {
-	if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 ) {
-		client->pers.maxHealth = 100;
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
+			client->pers.maxHealth = 100;
 	}
-	SetupWeaponsForSkill_EASY();
-    }
 	else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
 			client->pers.maxHealth = 100;
-		}
-		SetupWeaponsForSkill_MEDIUM(); 
-	    }
+	}
 	else if ( g_gameskill.integer == GSKILL_HARD ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
 			client->pers.maxHealth = 100;
-		}
-		SetupWeaponsForSkill_HARD();
-		}
+	}
 	else if ( g_gameskill.integer == GSKILL_MAX ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 )
 			client->pers.maxHealth = 50;
-		}
-		SetupWeaponsForSkill_MAX();
-	    }
+	}
 	else if ( g_gameskill.integer == GSKILL_REALISM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 )
 			client->pers.maxHealth = 25;
-		}
-		SetupWeaponsForSkill_REALISM();
-	    }
+	}
 	
+	for ( weapon_t weaponNum = 0; weaponNum < WP_NUM_WEAPONS; weaponNum++ )
+		BG_SetWeaponForSkill( weaponNum, g_gameskill.integer );
+
 	client->ps.stats[STAT_MAX_HEALTH] = client->pers.maxHealth;
 
 	// set model
@@ -1513,272 +1500,6 @@ void ClientUserinfoChanged( int clientNum ) {
 	trap_SetConfigstring( CS_PLAYERS + clientNum, s );
 
 	G_LogPrintf( "ClientUserinfoChanged: %i %s\n", clientNum, s );
-}
-// RealRTCW max_ammo capacity depends on difficulty level now
-void SetupWeaponsForSkill_EASY() // Easy
-{
-	// 9mm
-	ammoTable[WP_LUGER].maxammo = 400;
-	ammoTable[WP_MP40].maxammo = 400;
-	ammoTable[WP_MP34].maxammo = 400;
-	ammoTable[WP_STEN].maxammo = 400;
-	ammoTable[WP_SILENCER].maxammo = 400;
-	// 45cal
-	ammoTable[WP_COLT].maxammo = 300;
-	ammoTable[WP_AKIMBO].maxammo = 300;
-	ammoTable[WP_THOMPSON].maxammo = 300;
-	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 400;
-	ammoTable[WP_FG42].maxammo = 400;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 400;
-	ammoTable[WP_FG42SCOPE].maxammo = 400;
-	ammoTable[WP_G43].maxammo = 400;
-	// barammo
-	ammoTable[WP_BAR].maxammo = 300;
-	ammoTable[WP_M1GARAND].maxammo = 300;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 400;
-	ammoTable[WP_PPSH].maxammo = 400;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 150;
-	// mp44
-	ammoTable[WP_MP44].maxammo = 200;
-	// m97
-	ammoTable[WP_M97].maxammo = 48;
-	// revolver
-	ammoTable[WP_REVOLVER].maxammo = 60;
-	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 10;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 10;
-	ammoTable[WP_DYNAMITE].maxammo = 5;
-	ammoTable[WP_DYNAMITE].maxclip = 5;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 10;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 10;
-	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 5;
-	ammoTable[WP_FLAMETHROWER].maxammo = 250;
-	ammoTable[WP_FLAMETHROWER].maxclip = 250;
-	ammoTable[WP_TESLA].maxammo = 150;
-	ammoTable[WP_TESLA].maxclip = 150;
-	ammoTable[WP_VENOM].maxammo = 1500;
-	ammoTable[WP_MG42M].maxammo = 1000;
-	// snooper
-	ammoTable[WP_GARAND].maxammo = 15;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 15;
-	 
-}
-
-void SetupWeaponsForSkill_MEDIUM() // Medium
-{
-	// 9mm
-	ammoTable[WP_LUGER].maxammo = 300;
-	ammoTable[WP_MP40].maxammo = 300;
-	ammoTable[WP_MP34].maxammo = 300;
-	ammoTable[WP_STEN].maxammo = 300;
-	ammoTable[WP_SILENCER].maxammo = 300;
-	// 45cal
-	ammoTable[WP_COLT].maxammo = 250;
-	ammoTable[WP_AKIMBO].maxammo = 250;
-	ammoTable[WP_THOMPSON].maxammo = 250;
-	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 300;
-	ammoTable[WP_FG42].maxammo = 300;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 300;
-	ammoTable[WP_FG42SCOPE].maxammo = 300;
-	ammoTable[WP_G43].maxammo = 300;
-	// barammo
-	ammoTable[WP_BAR].maxammo = 200;
-	ammoTable[WP_M1GARAND].maxammo = 200;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 300;
-	ammoTable[WP_PPSH].maxammo = 300;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 100;
-	// mp44
-	ammoTable[WP_MP44].maxammo = 180;
-	// m97
-	ammoTable[WP_M97].maxammo = 36;
-	// revolver
-	ammoTable[WP_REVOLVER].maxammo = 42;
-	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 8;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 8;
-	ammoTable[WP_DYNAMITE].maxammo = 4;
-	ammoTable[WP_DYNAMITE].maxclip = 4;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 8;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 8;
-	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 4;
-	ammoTable[WP_FLAMETHROWER].maxammo = 200;
-	ammoTable[WP_FLAMETHROWER].maxclip = 200;
-	ammoTable[WP_TESLA].maxammo = 100;
-	ammoTable[WP_TESLA].maxclip = 100;
-	ammoTable[WP_VENOM].maxammo = 1000;
-	ammoTable[WP_MG42M].maxammo = 1000;
-	// snooper
-	ammoTable[WP_GARAND].maxammo = 10;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 10;
-}
-
-void SetupWeaponsForSkill_HARD() // Hard
-{
-	// 9mm
-	ammoTable[WP_LUGER].maxammo = 200;
-	ammoTable[WP_MP40].maxammo = 200;
-	ammoTable[WP_MP34].maxammo = 200;
-	ammoTable[WP_STEN].maxammo = 200;
-	ammoTable[WP_SILENCER].maxammo = 200;
-	// 45cal
-	ammoTable[WP_COLT].maxammo = 200;
-	ammoTable[WP_AKIMBO].maxammo = 200;
-	ammoTable[WP_THOMPSON].maxammo = 200;
-	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 200;
-	ammoTable[WP_FG42].maxammo = 200;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 200;
-	ammoTable[WP_FG42SCOPE].maxammo = 200;
-	ammoTable[WP_G43].maxammo = 200;
-	// barammo
-	ammoTable[WP_BAR].maxammo = 180;
-	ammoTable[WP_M1GARAND].maxammo = 180;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 250;
-	ammoTable[WP_PPSH].maxammo = 250;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 50;
-	// mp44
-	ammoTable[WP_MP44].maxammo = 150;
-	// m97
-	ammoTable[WP_M97].maxammo = 30;
-    // revolver
-	ammoTable[WP_REVOLVER].maxammo = 36;
-	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 6;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 6;
-	ammoTable[WP_DYNAMITE].maxammo = 3;
-	ammoTable[WP_DYNAMITE].maxclip = 3;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 6;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 6;
-	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 3;
-	ammoTable[WP_FLAMETHROWER].maxammo = 150;
-	ammoTable[WP_FLAMETHROWER].maxclip = 150;
-	ammoTable[WP_TESLA].maxammo = 100;
-	ammoTable[WP_TESLA].maxclip = 100;
-	ammoTable[WP_VENOM].maxammo = 1000;
-	ammoTable[WP_MG42M].maxammo = 1000;
-	// snooper
-	ammoTable[WP_GARAND].maxammo = 10;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 10;
-
-}
-
-void SetupWeaponsForSkill_MAX() // Max
-{
-	// 9mm
-	ammoTable[WP_LUGER].maxammo = 150;
-	ammoTable[WP_MP40].maxammo = 150;
-	ammoTable[WP_MP34].maxammo = 150;
-	ammoTable[WP_STEN].maxammo = 150;
-	ammoTable[WP_SILENCER].maxammo = 150;
-	// 45cal
-	ammoTable[WP_COLT].maxammo = 150;
-	ammoTable[WP_AKIMBO].maxammo = 150;
-	ammoTable[WP_THOMPSON].maxammo = 150;
-	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 150;
-	ammoTable[WP_FG42].maxammo = 150;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 150;
-	ammoTable[WP_FG42SCOPE].maxammo = 150;
-	ammoTable[WP_G43].maxammo = 150;
-	// barammo
-	ammoTable[WP_BAR].maxammo = 150;
-	ammoTable[WP_M1GARAND].maxammo = 150;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 200;
-	ammoTable[WP_PPSH].maxammo = 200;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 50;
-	// mp44
-	ammoTable[WP_MP44].maxammo = 120;
-	// m97
-	ammoTable[WP_M97].maxammo = 24;
-	// revolver
-	ammoTable[WP_REVOLVER].maxammo = 24;
-	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 5;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 5;
-	ammoTable[WP_DYNAMITE].maxammo = 3;
-	ammoTable[WP_DYNAMITE].maxclip = 3;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 5;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 5;
-	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 3;
-	ammoTable[WP_FLAMETHROWER].maxammo = 100;
-	ammoTable[WP_FLAMETHROWER].maxclip = 100;
-	ammoTable[WP_TESLA].maxammo = 50;
-	ammoTable[WP_TESLA].maxclip = 50;
-	ammoTable[WP_VENOM].maxammo = 500;
-	ammoTable[WP_MG42M].maxammo = 500;
-	// snooper
-	ammoTable[WP_GARAND].maxammo = 5;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 5;
-
-
-}
-
-void SetupWeaponsForSkill_REALISM() // Realism
-{
-	// 9mm
-	ammoTable[WP_LUGER].maxammo = 150;
-	ammoTable[WP_MP40].maxammo = 150;
-	ammoTable[WP_MP34].maxammo = 150;
-	ammoTable[WP_STEN].maxammo = 150;
-	ammoTable[WP_SILENCER].maxammo = 150;
-	// 45cal
-	ammoTable[WP_COLT].maxammo = 150;
-	ammoTable[WP_AKIMBO].maxammo = 150;
-	ammoTable[WP_THOMPSON].maxammo = 150;
-	// mauserammo
-	ammoTable[WP_MAUSER].maxammo = 150;
-	ammoTable[WP_FG42].maxammo = 150;
-	ammoTable[WP_SNIPERRIFLE].maxammo = 150;
-	ammoTable[WP_FG42SCOPE].maxammo = 150;
-	ammoTable[WP_G43].maxammo = 150;
-	// barammo
-	ammoTable[WP_BAR].maxammo = 150;
-	ammoTable[WP_M1GARAND].maxammo = 150;
-	// ppsh,tt33
-	ammoTable[WP_TT33].maxammo = 200;
-	ammoTable[WP_PPSH].maxammo = 200;
-	// mosin
-	ammoTable[WP_MOSIN].maxammo = 50;
-	// mp44
-	ammoTable[WP_MP44].maxammo = 120;
-	// m97
-	ammoTable[WP_M97].maxammo = 24;
-	// revolver
-	ammoTable[WP_REVOLVER].maxammo = 24;
-	// throwables
-	ammoTable[WP_GRENADE_LAUNCHER].maxammo = 5;
-	ammoTable[WP_GRENADE_LAUNCHER].maxclip = 5;
-	ammoTable[WP_DYNAMITE].maxammo = 3;
-	ammoTable[WP_DYNAMITE].maxclip = 3;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxammo = 5;
-	ammoTable[WP_GRENADE_PINEAPPLE].maxclip = 5;
-	// heavy weapons
-	ammoTable[WP_PANZERFAUST].maxammo = 3;
-	ammoTable[WP_FLAMETHROWER].maxammo = 100;
-	ammoTable[WP_FLAMETHROWER].maxclip = 100;
-	ammoTable[WP_TESLA].maxammo = 50;
-	ammoTable[WP_TESLA].maxclip = 50;
-	ammoTable[WP_VENOM].maxammo = 500;
-	ammoTable[WP_MG42M].maxammo = 500;
-	// snooper
-	ammoTable[WP_GARAND].maxammo = 5;
-	ammoTable[WP_SNOOPERSCOPE].maxammo = 5;
-
-
 }
 
 

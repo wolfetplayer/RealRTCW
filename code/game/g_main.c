@@ -1364,6 +1364,12 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	G_RemapTeamShaders();
 
+	// Load ammo parameters for all weapons
+	for ( weapon_t weaponNum = WP_KNIFE; weaponNum < WP_NUM_WEAPONS; weaponNum++ ) {
+		G_LoadAmmoTable( weaponNum );
+		BG_SetWeaponForSkill( weaponNum, g_gameskill.integer );
+	}
+
 	trap_SetConfigstring( CS_INTERMISSION, "" );
 }
 

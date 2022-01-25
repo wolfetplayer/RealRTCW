@@ -1077,7 +1077,7 @@ static qboolean CG_RW_ParseModModel( int handle, weaponInfo_t *weaponInfo ) {
 	return qtrue;
 }
 
-static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo ) {
+static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int weaponNum ) {
 	pc_token_t token;
 	char filename[MAX_QPATH];
 	int i;
@@ -1309,7 +1309,7 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo ) {
 	return qtrue;
 }
 
-static qboolean CG_RegisterWeaponFromWeaponFile( const char *filename, weaponInfo_t *weaponInfo ) {
+static qboolean CG_RegisterWeaponFromWeaponFile( const char *filename, weaponInfo_t *weaponInfo, int weaponNum ) {
 	pc_token_t token;
 	int handle;
 
@@ -1337,9 +1337,14 @@ static qboolean CG_RegisterWeaponFromWeaponFile( const char *filename, weaponInf
 		}
 
 		if ( !Q_stricmp( token.string, "client" ) ) {
-			if ( !CG_RW_ParseClient( handle, weaponInfo ) ) {
-				return qfalse;
+			if ( !CG_RW_ParseClient( handle, weaponInfo, weaponNum ) ) {
+				return CG_RW_ParseError( handle, "parsing client block failed" );
 			}
+		} else if ( !Q_stricmp( token.string, "ammo" ) ) {
+			if ( !BG_ParseAmmoTable( handle, weaponNum ) ) {
+				return CG_RW_ParseError( handle, "parsing ammo block failed" );
+			}
+			BG_SetWeaponForSkill( weaponNum, cg_gameSkill.integer );
 		} else {
 			return CG_RW_ParseError( handle, "unknown token '%s'", token.string );
 		}
@@ -1375,54 +1380,13 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 	memset( weaponInfo, 0, sizeof( *weaponInfo ) );
 	weaponInfo->registered = qtrue;
 
-	switch ( weaponNum ) {
-	case WP_KNIFE:                  filename = "knife.weap"; break;
-	case WP_LUGER:                  filename = "luger.weap"; break;
-	case WP_SILENCER:               filename = "silencer.weap"; break;
-	case WP_COLT:                   filename = "colt.weap"; break;
-	case WP_AKIMBO:                 filename = "akimbo.weap"; break;
-	case WP_TT33:                   filename = "tt33.weap"; break;
-	case WP_REVOLVER:               filename = "revolver.weap"; break;
-	case WP_THOMPSON:               filename = "thompson.weap"; break;
-	case WP_STEN:                   filename = "sten.weap"; break;
-	case WP_MP34:                   filename = "mp34.weap"; break;
-	case WP_PPSH:                   filename = "ppsh.weap"; break;
-	case WP_MP40:                   filename = "mp40.weap"; break;
-	case WP_MAUSER:                 filename = "mauser.weap"; break;
-	case WP_SNIPERRIFLE:            filename = "sniperrifle.weap"; break;
-	case WP_GARAND:                 filename = "garand.weap"; break;
-	case WP_SNOOPERSCOPE:           filename = "snooper.weap"; break;
-	case WP_MOSIN:                  filename = "mosin.weap"; break;
-	case WP_G43:                    filename = "g43.weap"; break;
-	case WP_M1GARAND:               filename = "m1garand.weap"; break;
-	case WP_FG42:                   filename = "fg42.weap"; break;
-	case WP_FG42SCOPE:              filename = "fg42scope.weap"; break;
-	case WP_MP44:                   filename = "mp44.weap"; break;
-	case WP_BAR:                    filename = "bar.weap"; break;
-	case WP_M97:                    filename = "m97.weap"; break;
-	case WP_FLAMETHROWER:           filename = "flamethrower.weap"; break;
-	case WP_PANZERFAUST:            filename = "panzerfaust.weap"; break;
-	case WP_MG42M:                  filename = "mg42m.weap"; break;
-	case WP_TESLA:                  filename = "tesla.weap"; break;
-	case WP_VENOM:                  filename = "venom.weap"; break;
-	case WP_GRENADE_LAUNCHER:       filename = "grenade.weap"; break;
-	case WP_GRENADE_PINEAPPLE:      filename = "pineapple.weap"; break;
-	case WP_DYNAMITE:               filename = "dynamite.weap"; break;
-	case WP_NONE:
-	case WP_MONSTER_ATTACK1:
-	case WP_MONSTER_ATTACK2:
-	case WP_MONSTER_ATTACK3:
-	case WP_GAUNTLET:
-	case WP_SNIPER:
-	case WP_MORTAR:                   return;     // to shut the game up
-	default:                        CG_Printf( S_COLOR_RED "WARNING: trying to register weapon %i but there is no weapon file entry for it.\n", weaponNum ); return;
-	}
+	filename = BG_GetWeaponFilename( weaponNum );
+	if ( !*filename )
+		return;
 
-	if ( !CG_RegisterWeaponFromWeaponFile( va( "weapons/%s", filename ), weaponInfo ) ) {
+	if ( !CG_RegisterWeaponFromWeaponFile( va( "weapons/%s", filename ), weaponInfo, weaponNum ) ) {
 		CG_Printf( S_COLOR_RED "WARNING: failed to register media for weapon %i from %s\n", weaponNum, filename );
 	}
-	
-
 
 }
 /*

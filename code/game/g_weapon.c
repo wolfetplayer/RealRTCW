@@ -1816,3 +1816,35 @@ void FireWeapon( gentity_t *ent ) {
 		AICast_RecordWeaponFire( ent );
 	}
 }
+
+
+// Load ammo parameters from .weap file
+void G_LoadAmmoTable( weapon_t weaponNum )
+{
+	char *filename;
+	int handle;
+	pc_token_t token;
+
+	filename = BG_GetWeaponFilename( weaponNum );
+	if ( !*filename )
+		return;
+
+	handle = trap_PC_LoadSource( va( "weapons/%s", filename ) );
+	if ( !handle ) {
+		G_Printf( S_COLOR_RED "ERROR: Failed to load weap file %s\n", filename );
+		return;
+	}
+
+	// Find and parse ammo block in this file
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( !Q_stricmp( token.string, "ammo" ) ) {
+			BG_ParseAmmoTable( handle, weaponNum );
+			break;
+		}
+	}
+
+	trap_PC_FreeSource( handle );
+}

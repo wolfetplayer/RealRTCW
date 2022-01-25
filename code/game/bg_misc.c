@@ -62,30 +62,32 @@ extern vmCvar_t g_gametype;
 #define MAX_AMMO_REVOLVER   24
 #define MAX_AMMO_MG42M      200
 
-// [0] = maxammo		      -	max player ammo carrying capacity.
-// [1] = uses			      -	how many 'rounds' it takes/costs to fire one cycle.
-// [2] = maxclip		      -	max 'rounds' in a clip.
-// [3] = reloadTime		      -	time from start of reload until ready to fire.
-// [4] = fireDelayTime	      -	time from pressing 'fire' until first shot is fired. (used for delaying fire while weapon is 'readied' in animation)
-// [5] = nextShotTime	      -	when firing continuously, this is the time between shots
-// [6] = nextShotTime2        - alt fire rates
-// [6] = maxHeat		      -	max active firing time before weapon 'overheats' (at which point the weapon will fail for a moment)
-// [7] = coolRate		      -	how fast the weapon cools down.
-// [8] = playerDamage         - damage inflicted by player
-// [9] = aiDamage             - damage inflicted by AI
-// [10] = playerSplashRadius  - explosives only
-// [11] = aiSplashRadius      - explosives only
-// [12] = spread              - spread value
-// [13] = aimSpreadScaleadd   - how much spread increasing per shot
-// [14] = spreadScale         - how quickly spread will reduce
-// [15] = soundRange          - ai hearing range for weapon shots
-// [16] = moveSpeed           - player movement speed
-// [17] = weapRecoilDuration  - basic recoil value
-// [18] = weapRecoilPitch     - vertical recoil
-// [19] = weapRecoilYaw       - horizontal recoil
-// [20] = mod                 - means of death
+//  [0] = maxammo            - max player ammo carrying capacity.
+//  [1] = uses               - how many 'rounds' it takes/costs to fire one cycle.
+//  [2] = maxclip            - max 'rounds' in a clip.
+//  [3] = reloadTime         - time from start of reload until ready to fire.
+//  [4] = fireDelayTime      - time from pressing 'fire' until first shot is fired. (used for delaying fire while weapon is 'readied' in animation)
+//  [5] = nextShotTime       - when firing continuously, this is the time between shots
+//  [6] = nextShotTime2      - alt fire rates
+//  [6] = maxHeat            - max active firing time before weapon 'overheats' (at which point the weapon will fail for a moment)
+//  [7] = coolRate           - how fast the weapon cools down.
+//  [8] = playerDamage       - damage inflicted by player
+//  [9] = aiDamage           - damage inflicted by AI
+// [10] = playerSplashRadius - explosives only
+// [11] = aiSplashRadius     - explosives only
+// [12] = spread             - spread value
+// [13] = aimSpreadScaleadd  - how much spread increasing per shot
+// [14] = spreadScale        - how quickly spread will reduce
+// [15] = weapRecoilDuration - basic recoil value
+// [16] = weapRecoilPitch    - vertical recoil
+// [17] = weapRecoilYaw      - horizontal recoil
+// [18] = soundRange         - ai hearing range for weapon shots
+// [19] = moveSpeed          - player movement speed
+// [20] = mod                - means of death
 
 
+// NOTE: This once-static data is included in both Client and Game modules.
+//       Both now load values into here from weap files.
 ammotable_t ammoTable[] = {
 	
 	//	maxammo		     uses amt.	  maxclip	reloadtime   firedelay	nextshot   nextshot2  heat    cool	  plrdmg    aidmg       plrsplsh    aisplsh     spread      SpreadScaleAdd      spreadScale      recoilDuration   recoilPitch      recoilYaw           soundrange          movespeed           mod                  
@@ -134,6 +136,8 @@ ammotable_t ammoTable[] = {
 	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,                                         }   //	WP_GAUNTLET				// 36
 };
 
+// Skill-based ammo parameters
+ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 
 int weapAlts[] = {
 	WP_NONE,            // 0 WP_NONE
@@ -4185,11 +4189,7 @@ void PC_SourceError( int handle, char *format, ... ) {
 	line = 0;
 	trap_PC_SourceFileAndLine( handle, filename, &line );
 
-#ifdef GAMEDLL
-	Com_Error( ERR_DROP, S_COLOR_RED "ERROR: %s, line %d: %s\n", filename, line, string );
-#else
 	Com_Printf( S_COLOR_RED "ERROR: %s, line %d: %s\n", filename, line, string );
-#endif
 }
 
 
@@ -4259,3 +4259,217 @@ qboolean PC_Color_Parse( int handle, vec4_t *c ) {
 	}
 	return qtrue;
 }
+
+
+// Get weap filename for specified weapon id
+// Returns empty string when none found
+char *BG_GetWeaponFilename( weapon_t weaponNum )
+{
+	switch ( weaponNum ) {
+		case WP_KNIFE:             return "knife.weap";
+		case WP_LUGER:             return "luger.weap";
+		case WP_SILENCER:          return "silencer.weap";
+		case WP_COLT:              return "colt.weap";
+		case WP_AKIMBO:            return "akimbo.weap";
+		case WP_TT33:              return "tt33.weap";
+		case WP_REVOLVER:          return "revolver.weap";
+		case WP_THOMPSON:          return "thompson.weap";
+		case WP_STEN:              return "sten.weap";
+		case WP_MP34:              return "mp34.weap";
+		case WP_PPSH:              return "ppsh.weap";
+		case WP_MP40:              return "mp40.weap";
+		case WP_MAUSER:            return "mauser.weap";
+		case WP_SNIPERRIFLE:       return "sniperrifle.weap";
+		case WP_GARAND:            return "garand.weap";
+		case WP_SNOOPERSCOPE:      return "snooper.weap";
+		case WP_MOSIN:             return "mosin.weap";
+		case WP_G43:               return "g43.weap";
+		case WP_M1GARAND:          return "m1garand.weap";
+		case WP_FG42:              return "fg42.weap";
+		case WP_FG42SCOPE:         return "fg42scope.weap";
+		case WP_MP44:              return "mp44.weap";
+		case WP_BAR:               return "bar.weap";
+		case WP_M97:               return "m97.weap";
+		case WP_FLAMETHROWER:      return "flamethrower.weap";
+		case WP_PANZERFAUST:       return "panzerfaust.weap";
+		case WP_MG42M:             return "mg42m.weap";
+		case WP_TESLA:             return "tesla.weap";
+		case WP_VENOM:             return "venom.weap";
+		case WP_GRENADE_LAUNCHER:  return "grenade.weap";
+		case WP_GRENADE_PINEAPPLE: return "pineapple.weap";
+		case WP_DYNAMITE:          return "dynamite.weap";
+		case WP_NONE:
+		case WP_MONSTER_ATTACK1:
+		case WP_MONSTER_ATTACK2:
+		case WP_MONSTER_ATTACK3:
+		case WP_GAUNTLET:
+		case WP_SNIPER:
+		case WP_MORTAR:            return "";
+		default:                   Com_Printf( "Missing filename entry for weapon id %d\n", weaponNum );
+    }
+
+    return "";
+}
+
+
+// Read ammo parameters into ammoTable from given file handle
+// File handle position expected to be at opening brace of ammo block
+// Utilised by Client and Game to update their respective copies of ammoTable
+// handle not freed
+qboolean BG_ParseAmmoTable( int handle, weapon_t weaponNum )
+{
+	pc_token_t token;
+
+	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
+		PC_SourceError( handle, "expected '{'" );
+		return qfalse;
+	}
+
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( token.string[0] == '}' ) {
+			break;
+		}
+
+		// Ammo parameters for each difficulty level
+		if ( !Q_stricmp( token.string, "maxammoPerSkill" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Int_Parse( handle, &ammoSkill[i][weaponNum].maxammo ) ) {
+					PC_SourceError( handle, "expected maxammo value for skill level" );
+					return qfalse;
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "maxclipPerSkill" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Int_Parse( handle, &ammoSkill[i][weaponNum].maxclip ) ) {
+					PC_SourceError( handle, "expected maxclip value for skill level" );
+					return qfalse;
+				}
+			}
+		}
+		// Values common to all skill levels
+		else if ( !Q_stricmp( token.string, "uses" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].uses ) ) {
+				PC_SourceError( handle, "expected uses value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "reloadTime" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].reloadTime ) ) {
+				PC_SourceError( handle, "expected reloadTime value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "fireDelayTime" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].fireDelayTime ) ) {
+				PC_SourceError( handle, "expected fireDelayTime value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "nextShotTime" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].nextShotTime ) ) {
+				PC_SourceError( handle, "expected nextShotTime value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "nextShotTime2" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].nextShotTime2 ) ) {
+				PC_SourceError( handle, "expected nextShotTime2 value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxHeat" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].maxHeat ) ) {
+				PC_SourceError( handle, "expected maxHeat value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "coolRate" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].coolRate ) ) {
+				PC_SourceError( handle, "expected coolRate value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "playerDamage" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].playerDamage ) ) {
+				PC_SourceError( handle, "expected playerDamage value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "aiDamage" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].aiDamage ) ) {
+				PC_SourceError( handle, "expected aiDamage value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "playerSplashRadius" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].playerSplashRadius ) ) {
+				PC_SourceError( handle, "expected playerSplashRadius value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "aiSplashRadius" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].aiSplashRadius ) ) {
+				PC_SourceError( handle, "expected aiSplashRadius value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "spread" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].spread ) ) {
+				PC_SourceError( handle, "expected spread value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "aimSpreadScaleAdd" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].aimSpreadScaleAdd ) ) {
+				PC_SourceError( handle, "expected aimSpreadScaleAdd value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "spreadScale" ) ) {
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].spreadScale ) ) {
+				PC_SourceError( handle, "expected spreadScale value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "weapRecoilDuration" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].weapRecoilDuration ) ) {
+				PC_SourceError( handle, "expected weapRecoilDuration value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "weapRecoilPitch" ) ) {
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].weapRecoilPitch[0] ) ) {
+				PC_SourceError( handle, "expected weapRecoilPitch.x value" );
+				return qfalse;
+			}
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].weapRecoilPitch[1] ) ) {
+				PC_SourceError( handle, "expected weapRecoilPitch.y value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "weapRecoilYaw" ) ) {
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].weapRecoilYaw[0] ) ) {
+				PC_SourceError( handle, "expected weapRecoilYaw.x value" );
+				return qfalse;
+			}
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].weapRecoilYaw[1] ) ) {
+				PC_SourceError( handle, "expected weapRecoilYaw.y value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "soundRange" ) ) {
+			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].soundRange ) ) {
+				PC_SourceError( handle, "expected soundRange value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "moveSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].moveSpeed ) ) {
+				PC_SourceError( handle, "expected moveSpeed value" );
+				return qfalse;
+			}
+		} else {
+			PC_SourceError( handle, "unknown token '%s'", token.string );
+			return qfalse;
+		}
+	}
+
+	return qtrue;
+}
+
+
+// Set weapon parameters for specified skill
+void BG_SetWeaponForSkill( weapon_t weaponNum, gameskill_t skill )
+{
+	if ( ammoSkill[skill][weaponNum].maxammo > 0 )
+		ammoTable[weaponNum].maxammo = ammoSkill[skill][weaponNum].maxammo;
+
+	if ( ammoSkill[skill][weaponNum].maxclip > 0 )
+		ammoTable[weaponNum].maxclip = ammoSkill[skill][weaponNum].maxclip;
+}
+

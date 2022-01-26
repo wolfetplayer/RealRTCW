@@ -9,7 +9,7 @@
 
 const uint32_t steam_app_id = 1379630u;
 
-
+#ifdef WIN32
 HMODULE getLib(void){
 #ifdef ARCH_32
 	HMODULE mod = LoadLibraryA("steamcppwrappercustom32");
@@ -19,6 +19,7 @@ HMODULE getLib(void){
 #endif
 	return mod;
 }
+#endif
 
 void steamRun(void)
 {

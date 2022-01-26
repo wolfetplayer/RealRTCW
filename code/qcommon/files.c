@@ -2786,6 +2786,7 @@ FS_AddModDirectories
 adds the directory to the head of the path, then loads the zip headers
 ================
 */
+#ifndef STANDALONE
 void FS_AddModDirectories() {
 	char **pFiles = NULL;
 	int i, j, dummy, nPotential;
@@ -2826,6 +2827,7 @@ void FS_AddModDirectories() {
 	}
 
 }
+#endif
 
 /*
 ================

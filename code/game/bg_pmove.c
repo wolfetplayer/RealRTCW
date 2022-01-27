@@ -3418,6 +3418,9 @@ static void PM_Weapon( void ) {
 		case AICHAR_LOPER:            
 			addTime = 1000;
 			break;
+		default:
+	    addTime = 250;
+	    break;
 		}
 		break;
 	}

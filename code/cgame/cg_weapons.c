@@ -1109,12 +1109,6 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			} else {
 				weaponInfo->weaponModel[W_PU_MODEL].model = trap_R_RegisterModel( filename );
 			}
-		} else if ( !Q_stricmp( token.string, "pickupSound" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
-				return CG_RW_ParseError( handle, "expected pickupSound filename" );
-			} else {
-				//weaponInfo->pickupSound = trap_S_RegisterSound( filename, qfalse );
-			}
 		} else if ( !Q_stricmp( token.string, "weaponConfig" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected weaponConfig filename" );
@@ -2344,31 +2338,6 @@ void CG_PlayerTeslaCoilFire( centity_t *cent, vec3_t flashorigin ) {
 	CG_StartShakeCamera( 0.05, 200, cent->lerpOrigin, 100 );
 }
 
-//----(SA)
-/*
-==============
-CG_AddProtoWeapons
-==============
-*/
-void CG_AddProtoWeapons( refEntity_t *parent, playerState_t *ps, centity_t *cent ) {
-#if 0
-	refEntity_t gun;
-
-	if ( !( cent->currentState.aiChar == AICHAR_PROTOSOLDIER ) ) {
-		return;
-	}
-	memset( &gun, 0, sizeof( gun ) );
-	VectorCopy( parent->lightingOrigin, gun.lightingOrigin );
-//	gun.hModel		= cgs.media.protoWeapon;
-	gun.shadowPlane = parent->shadowPlane;
-	gun.renderfx    = parent->renderfx;
-	CG_PositionEntityOnTag( &gun, parent, "tag_armright", 0, NULL );
-	CG_AddWeaponWithPowerups( &gun, cent->currentState.powerups, ps, cent );
-#endif
-}
-//----(SA)	end
-
-
 
 // Ridah
 /*
@@ -2471,13 +2440,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	if ( ps ) {
 		gun.hModel = weapon->weaponModel[W_FP_MODEL].model;
 	} else {
-		CG_AddProtoWeapons( parent, ps, cent );
-		// skeletal guys use a different third person weapon (for different tag business)
-		if ( cgs.clientinfo[ cent->currentState.clientNum ].isSkeletal && weapon->weaponModel[W_SKTP_MODEL].model ) {
-			gun.hModel = weapon->weaponModel[W_SKTP_MODEL].model;
-		} else {
-			gun.hModel = weapon->weaponModel[W_TP_MODEL].model;
-		}
+		gun.hModel = weapon->weaponModel[W_TP_MODEL].model;
 	}
 
 	if ( !gun.hModel ) {

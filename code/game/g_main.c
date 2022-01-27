@@ -1341,11 +1341,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// general initialization
 	G_FindTeams();
 
-	// make sure we have flags for CTF, etc
-	if ( g_gametype.integer >= GT_TEAM ) {
-		G_CheckTeamItems();
-	}
-
 	SaveRegisteredItems();
 
 	if ( trap_Cvar_VariableIntegerValue( "g_gametype" ) != GT_SINGLE_PLAYER ) {

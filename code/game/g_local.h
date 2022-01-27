@@ -765,7 +765,6 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 //
 // g_items.c
 //
-void G_CheckTeamItems( void );
 void G_RunItem( gentity_t *ent );
 void RespawnItem( gentity_t *ent );
 

@@ -1113,26 +1113,6 @@ void FinishSpawningItem( gentity_t *ent ) {
 
 qboolean itemRegistered[MAX_ITEMS];
 
-/*
-==================
-G_CheckTeamItems
-==================
-*/
-void G_CheckTeamItems( void ) {
-	if ( g_gametype.integer == GT_CTF ) {
-		gitem_t *item;
-
-		// make sure we actually have two flags...
-		item = BG_FindItem( "Red Flag" );
-		if ( !item || !itemRegistered[ item - bg_itemlist ] ) {
-			G_Error( "No team_CTF_redflag in map\n" );
-		}
-		item = BG_FindItem( "Blue Flag" );
-		if ( !item || !itemRegistered[ item - bg_itemlist ] ) {
-			G_Error( "No team_CTF_blueflag in map\n" );
-		}
-	}
-}
 
 /*
 ==============

@@ -1122,7 +1122,7 @@ typedef enum {
 	IT_TEAM
 } itemType_t;
 
-#define MAX_ITEM_MODELS 5
+#define MAX_ITEM_MODELS 3
 #define MAX_ITEM_ICONS 4
 
 typedef struct gitem_s {
@@ -1131,11 +1131,12 @@ typedef struct gitem_s {
 	char        *world_model[MAX_ITEM_MODELS];
 
 	char        *icon;
-	char        *ammoicon;
 	char        *pickup_name;   // for printing on pickup
 
 	int quantity;               // for ammo how much, or duration of powerup (value not necessary for ammo/health.  that value set in gameskillnumber[] below)
 	itemType_t giType;          // IT_* flags
+
+	weapon_t giWeapon; 
 
 	int giTag;
 

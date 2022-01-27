@@ -1889,9 +1889,6 @@ void ClientSpawn( gentity_t *ent ) {
 //		client->ps.ammo[BG_FindAmmoForWeapon(WP_LUGER)] = 100;
 //	}
 
-//	COM_BitSet( client->ps.weapons, WP_GAUNTLET );
-//	client->ps.ammo[BG_FindAmmoForWeapon(WP_GAUNTLET)] = -1;
-
 	// health will count down towards max_health
 //	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] * 1.25;
 

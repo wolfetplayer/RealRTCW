@@ -1011,7 +1011,6 @@ If you have questions concerning this license or the applicable additional terms
 {"SaveRegisteredItems", (byte *)SaveRegisteredItems},
 {"RegisterItem", (byte *)RegisterItem},
 {"ClearRegisteredItems", (byte *)ClearRegisteredItems},
-{"G_CheckTeamItems", (byte *)G_CheckTeamItems},
 {"FinishSpawningItem", (byte *)FinishSpawningItem},
 {"Use_Item", (byte *)Use_Item},
 {"Drop_Item", (byte *)Drop_Item},

@@ -625,11 +625,9 @@ typedef enum {
 } barrelType_t;
 
 typedef enum {
-	W_TP_MODEL,         //	third person model
+	W_TP_MODEL = 0,         //	third person model
 	W_FP_MODEL,         //	first person model
 	W_PU_MODEL,         //	pickup model
-	W_FP_MODEL_SWAP,    //	swap out model
-	W_SKTP_MODEL,       //	SKELETAL version third person model
 	W_NUM_TYPES
 } modelViewType_t;
 

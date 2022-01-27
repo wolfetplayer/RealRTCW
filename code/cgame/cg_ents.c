@@ -1060,8 +1060,8 @@ static void CG_Item( centity_t *cent ) {
 							   // try to load it first, and if it fails, default to the itemlist model
 		ent.hModel = cgs.gameModels[ es->modelindex2 ];
 	} else {
-		if ( item->giType == IT_WEAPON && cg_items[es->modelindex].models[2] ) {	// check if there's a specific model for weapon pickup placement
-			ent.hModel = cg_items[es->modelindex].models[2];
+		if ( item->giType == IT_WEAPON ) {	// check if there's a specific model for weapon pickup placement
+			ent.hModel = cg_weapons[item->giWeapon].weaponModel[W_PU_MODEL].model;
 		} else if ( item->giType == IT_HEALTH || item->giType == IT_AMMO || item->giType == IT_POWERUP ) {
 			if ( es->density < ( 1 << 9 ) ) {  // (10 bits of data transmission for density)
 				ent.hModel = cg_items[es->modelindex].models[es->density];  // multi-state powerups store their state in 'density'

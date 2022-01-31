@@ -1210,6 +1210,12 @@ static void CG_Missile( centity_t *cent ) {
 		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, velocity, weapon->missileSound, 255 );
 	}
 
+		if ( cent->currentState.weapon == WP_DYNAMITE ) {
+			vec3_t velocity;
+			BG_EvaluateTrajectoryDelta( &cent->currentState.pos, cg.time, velocity );
+			CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, velocity, weapon->spindownSound, 255 );
+	}
+
 	// create the render entity
 	memset( &ent, 0, sizeof( ent ) );
 	VectorCopy( cent->lerpOrigin, ent.origin );

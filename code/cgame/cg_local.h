@@ -1339,6 +1339,7 @@ typedef struct {
 	sfxHandle_t sfx_rockexpDist;
 	sfxHandle_t sfx_grenexp;
 	sfxHandle_t sfx_grenexpDist;
+	sfxHandle_t sfx_grenexpWater;
 	sfxHandle_t sfx_dynamiteexp;
 	sfxHandle_t sfx_dynamiteexpDist;  
 	sfxHandle_t sfx_barrelexp; 

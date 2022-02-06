@@ -471,8 +471,6 @@ void CG_AddFragment( localEntity_t *le ) {
 
 //----(SA)	added
 	if ( le->leFlags & LEF_SMOKING ) {
-		float alpha;
-		refEntity_t flash;
 
 		// create a little less smoke
 
@@ -480,7 +478,8 @@ void CG_AddFragment( localEntity_t *le ) {
 		//		the slower the fps, the /more/ smoke there'll be, probably driving the fps lower.
 		if ( !cg_paused.integer ) {    // don't add while paused
 			if ( !( rand() % 5 ) ) {
-				alpha = 1.0 - ( (float)( cg.time - le->startTime ) / (float)( le->endTime - le->startTime ) );
+			    refEntity_t flash;
+			    float       alpha = 1.0f - ((float)(cg.time - le->startTime) / (float)(le->endTime - le->startTime));
 				alpha *= 0.25f;
 				memset( &flash, 0, sizeof( flash ) );
 				CG_PositionEntityOnTag( &flash, &le->refEntity, "tag_flash", 0, NULL );

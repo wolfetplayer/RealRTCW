@@ -2685,7 +2685,37 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	angles[ROLL]    = crandom() * 10;
 	AnglesToAxis( angles, flash.axis );
 
-	CG_PositionRotatedEntityOnTag( &flash, &gun, "tag_flash" );
+	if ( weaponNum == WP_AKIMBO )
+	{
+		if (!ps || cg.renderingThirdPerson)
+		{
+			if (!cent->akimboFire)
+			{
+				CG_PositionRotatedEntityOnTag(&flash, parent, "tag_weapon");
+				VectorMA(flash.origin, 10, flash.axis[0], flash.origin);
+			}
+			else
+			{
+				CG_PositionRotatedEntityOnTag(&flash, &gun, "tag_flash");
+			}
+		}
+		else
+		{
+			if (!cent->akimboFire)
+			{
+				CG_PositionRotatedEntityOnTag(&flash, parent, "tag_flash2");
+
+			}
+			else
+			{
+				CG_PositionRotatedEntityOnTag(&flash, parent, "tag_flash");
+			}
+		}
+	}
+	else
+	{
+		CG_PositionRotatedEntityOnTag(&flash, &gun, "tag_flash");
+	}
 
 	// store this position for other cgame elements to access
 	cent->pe.gunRefEnt = gun;
@@ -2761,14 +2791,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 //					CG_ParticleImpactSmokePuff (cgs.media.smokeParticleShader, flash.origin);
 					CG_ParticleImpactSmokePuffExtended( cgs.media.smokeParticleShader, flash.origin, tv( 0,0,1 ), 8, 500, 8, 20, 30, 0.25f );
 				}
-			}
-		}
-	}
-
-	if ( isPlayer ) {
-		if ( weaponNum == WP_AKIMBO ) {
-			if ( !cent->akimboFire ) {
-				CG_PositionRotatedEntityOnTag( &flash, &gun, "tag_flash2" );
 			}
 		}
 	}

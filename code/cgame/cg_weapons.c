@@ -1766,9 +1766,9 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 
 	// idle drift
     
-	if (cg.snap->ps.weaponstate == WEAPON_FIRING) 
+	if ((cg.snap->ps.weaponstate == WEAPON_FIRING) && ( cg.predictedPlayerState.weapon == WP_FLAMETHROWER ))
 	{
-	scale = 20;
+	scale = 15;
 	} 
 	else 
 	{

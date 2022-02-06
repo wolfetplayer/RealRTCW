@@ -4369,7 +4369,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 	switch ( weaponNum ) {
 		case WP_KNIFE:             return "knife.weap";
 		case WP_LUGER:             return "luger.weap";
-		case WP_SILENCER:          return "silencer.weap";
+		case WP_SILENCER:          return "luger_silenced.weap";
 		case WP_COLT:              return "colt.weap";
 		case WP_AKIMBO:            return "akimbo.weap";
 		case WP_TT33:              return "tt33.weap";
@@ -4390,7 +4390,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_FG42SCOPE:         return "fg42scope.weap";
 		case WP_MP44:              return "mp44.weap";
 		case WP_BAR:               return "bar.weap";
-		case WP_M97:               return "m97.weap";
+		case WP_M97:               return "ithaca.weap";
 		case WP_FLAMETHROWER:      return "flamethrower.weap";
 		case WP_PANZERFAUST:       return "panzerfaust.weap";
 		case WP_MG42M:             return "mg42m.weap";

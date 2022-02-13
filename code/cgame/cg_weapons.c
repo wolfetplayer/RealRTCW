@@ -1423,10 +1423,10 @@ void CG_RegisterItemVisuals( int itemNum ) {
 	memset( legskin, 0, sizeof( legskin ) );
 	memset( map, 0, sizeof( map ) );
 	trap_Cvar_VariableStringBuffer( "mapname", map, sizeof( map ) );
-	Com_sprintf( legskin, sizeof( legskin ), "%s_%s.skin", "models/weapons2/foot/legs", map );
+	Com_sprintf( legskin, sizeof( legskin ), "%s_%s.skin", "models/weapons/melee/foot/legs", map );
 	wolfkickSkin = trap_R_RegisterSkin( legskin );
 	
-	wolfkickModel = trap_R_RegisterModel( "models/weapons2/foot/v_wolfoot_10f.md3" );
+	wolfkickModel = trap_R_RegisterModel( "models/weapons/melee/foot/v_wolfoot_10f.md3" );
 	
 	hWeaponSnd = trap_S_RegisterSound( "sound/weapons/mg42/37mm.wav" );
 	hWeaponEchoSnd = trap_S_RegisterSound( "sound/weapons/mg42/37mm_far.wav" );

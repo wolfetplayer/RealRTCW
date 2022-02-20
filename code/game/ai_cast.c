@@ -377,7 +377,10 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
 	// setup the character..
 	//
 	cs = AICast_GetCastState( newent->s.number );
-	//
+	// used with g_airespawn
+	cs->died = qfalse;
+	cs->norespawn = qfalse;
+
 	cs->aiCharacter = ent->aiCharacter;
 	client->ps.aiChar = ent->aiCharacter;
 	// setup the attributes
@@ -429,6 +432,8 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
 	} else {
 		newent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH];
 	}
+
+	cs->respawnsleft = g_airespawn.integer;
 	//
 	cs->weaponInfo = weaponInfo;
 	//

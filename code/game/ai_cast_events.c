@@ -162,6 +162,8 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean nogib = qtrue;
 	char mapname[MAX_QPATH];
 
+	qboolean respawn = qfalse;
+
 	// print debugging message
 	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {
 		G_Printf( "killed %s\n", self->aiName );
@@ -368,6 +370,37 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		} else {
 			// the body can still be gibbed
 			self->die = body_die;
+		}
+	}
+
+	if ( g_airespawn.integer == -1 ) {   // unlimited lives
+		respawn = qtrue;
+	} else if ( g_airespawn.integer == 0 ) {   // no ai respawning
+		respawn = qfalse;
+	} else if ( g_airespawn.integer > 0 ) {
+		respawn = qtrue;
+	}
+
+	if ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
+		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) {
+
+		if ( cs->respawnsleft != 0 ) {
+
+			if ( cs->respawnsleft > 0 ) {
+				cs->respawnsleft--;
+			}
+
+			if ( g_gameskill.integer == GSKILL_EASY ) {
+				cs->rebirthTime = level.time + 25000 + rand() % 2000;
+			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
+				cs->rebirthTime = level.time + 20000 + rand() % 2000;
+			} else if ( g_gameskill.integer == GSKILL_HARD ) {
+				cs->rebirthTime = level.time + 15000 + rand() % 2000;
+			} else if ( g_gameskill.integer == GSKILL_MAX ) {
+				cs->rebirthTime = level.time + 10000 + rand() % 2000;
+			} else if ( g_gameskill.integer == GSKILL_REALISM ) {
+				cs->rebirthTime = level.time + 5000 + rand() % 2000;
+			}
 		}
 	}
 

@@ -329,6 +329,7 @@ typedef struct {
 	int allowAnonymous;
 	int			g_humanplayers;
 	int			g_needpass;
+	int airespawn;
 } serverInfo_t;
 
 typedef struct {

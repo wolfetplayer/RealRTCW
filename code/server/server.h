@@ -528,3 +528,5 @@ int SV_Netchan_TransmitNextFragment(client_t *client);
 qboolean SV_Netchan_Process( client_t *client, msg_t *msg );
 
 void SV_Netchan_FreeQueue(client_t *client);
+
+extern cvar_t  *sv_airespawn;

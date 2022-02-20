@@ -141,8 +141,7 @@ extern vmCvar_t ui_serverStatusTimeOut;
 #define MAX_EDIT_LINE           256
 
 #define MAX_MENUDEPTH           8
-//#define MAX_MENUITEMS			128
-#define MAX_MENUITEMS           256
+#define MAX_MENUITEMS           512
 
 #define MTYPE_NULL              0
 #define MTYPE_SLIDER            1

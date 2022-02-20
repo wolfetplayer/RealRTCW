@@ -42,7 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 #define MAX_MENUDEFFILE 4096
 #define MAX_MENUFILE 32768
 #define MAX_MENUS 64
-#define MAX_MENUITEMS 256
+#define MAX_MENUITEMS 512
 #define MAX_COLOR_RANGES 10
 #define MAX_OPEN_MENUS 16
 

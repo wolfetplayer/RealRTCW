@@ -63,6 +63,8 @@ vmCvar_t g_nopickupchallenge;
 vmCvar_t g_decaychallenge;
 vmCvar_t g_reloading;       //----(SA)	added
 
+vmCvar_t g_airespawn;
+
 vmCvar_t g_dmflags;
 vmCvar_t g_fraglimit;
 vmCvar_t g_timelimit;
@@ -169,6 +171,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_nohudchallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
 	{ &g_nopickupchallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
 	{ &g_decaychallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  }, 
+
+	{ &g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_SERVERINFO, 0, qfalse},
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 

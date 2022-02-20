@@ -565,7 +565,9 @@ typedef struct cast_state_s
 	// -------------------------------------------------------------------------------------------
 	// if working on a post release patch, new variables should ONLY be inserted after this point
 	// -------------------------------------------------------------------------------------------
-
+	qboolean died;            // for g_airespawn
+	qboolean norespawn;
+	int respawnsleft;
 } cast_state_t;
 //
 #define CSFOFS( x ) ( (size_t)&( ( (cast_state_t *)0 )->x ) )

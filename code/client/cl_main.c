@@ -2444,6 +2444,7 @@ void CL_InitServerInfo( serverInfo_t *server, netadr_t *address ) {
 	server->g_humanplayers = 0;
 	server->g_needpass = 0;
 	server->allowAnonymous = 0;
+	server->airespawn = 0;
 }
 
 #define MAX_SERVERSPERPACKET    256
@@ -3966,6 +3967,7 @@ static void CL_SetServerInfo( serverInfo_t *server, const char *info, int ping )
 			server->g_humanplayers = atoi( Info_ValueForKey( info, "g_humanplayers" ) );
 			server->g_needpass = atoi( Info_ValueForKey( info, "g_needpass" ) );
 			server->allowAnonymous = atoi( Info_ValueForKey( info, "sv_allowAnonymous" ) );
+			server->airespawn = atoi( Info_ValueForKey( info, "airespawn" ) );
 		}
 		server->ping = ping;
 	}

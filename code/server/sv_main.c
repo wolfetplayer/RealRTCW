@@ -81,6 +81,8 @@ cvar_t  *sv_decaychallenge;
 
 cvar_t  *sv_reloading;  //----(SA)	added
 
+cvar_t  *sv_airespawn;
+
 /*
 =============================================================================
 
@@ -715,6 +717,8 @@ void SVC_Info( netadr_t from ) {
 	// Rafael gameskill
 	Info_SetValueForKey( infostring, "gameskill", va( "%i", sv_gameskill->integer ) );
 	// done
+
+	Info_SetValueForKey( infostring, "airespawn", va( "%i", sv_airespawn->integer ) );
 
 	NET_OutOfBandPrint( NS_SERVER, from, "infoResponse\n%s", infostring );
 }

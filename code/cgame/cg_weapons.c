@@ -1461,6 +1461,14 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			if ( !PC_Vec_Parse( handle, &weaponInfo->weaponPosition ) ) {
 			return CG_RW_ParseError( handle, "expected XYZ" );
 		}
+		} else if ( !Q_stricmp( token.string, "weaponPositionAlt" ) ) {
+			if ( !PC_Vec_Parse( handle, &weaponInfo->weaponPositionAlt ) ) {
+			return CG_RW_ParseError( handle, "expected XYZ" );
+		}
+		} else if ( !Q_stricmp( token.string, "weaponPositionAlt2" ) ) {
+			if ( !PC_Vec_Parse( handle, &weaponInfo->weaponPositionAlt2 ) ) {
+			return CG_RW_ParseError( handle, "expected XYZ" );
+		}
 		} else if ( !Q_stricmp( token.string, "ejectBrassFunc" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected ejectBrassFunc" );
@@ -3157,13 +3165,25 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		CG_CalculateWeaponPosition( hand.origin, angles );
             
 			// RealRTCW gun position is defined in .weap files if CVAR is active.
-            if ( cg_gunPosLock.integer ) 
+            if ( cg_gunPosLock.integer == 1 ) 
 			{
 		    gunoff[0] = weapon->weaponPosition[0];
 			gunoff[1] = weapon->weaponPosition[1];
 			gunoff[2] = weapon->weaponPosition[2];
 			} 
-			else 
+			else if ( cg_gunPosLock.integer == 2 ) 
+			{
+			gunoff[0] = weapon->weaponPositionAlt[0];
+			gunoff[1] = weapon->weaponPositionAlt[1];
+			gunoff[2] = weapon->weaponPositionAlt[2];
+			} 
+			else if ( cg_gunPosLock.integer == 3 )
+			{
+			gunoff[0] = weapon->weaponPositionAlt2[0];
+			gunoff[1] = weapon->weaponPositionAlt2[1];
+			gunoff[2] = weapon->weaponPositionAlt2[2];
+			} 
+			else
 			{
 			gunoff[0] = cg_gun_x.value;
 			gunoff[1] = cg_gun_y.value;

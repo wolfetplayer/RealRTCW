@@ -709,6 +709,8 @@ typedef struct weaponInfo_s {
 	sfxHandle_t spindownSound;      //----(SA)	added // sound called if the above is running but player doesn't follow through and fire
 
 	vec3_t weaponPosition;
+	vec3_t weaponPositionAlt;
+	vec3_t weaponPositionAlt2;
 } weaponInfo_t;
 
 

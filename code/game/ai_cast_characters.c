@@ -236,7 +236,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health
+			100,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -259,7 +259,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health 
+			100,        // starting health 
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -282,7 +282,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health 
+			100,        // starting health 
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -305,7 +305,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health
+			100,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -328,7 +328,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health 
+			100,        // starting health 
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -351,7 +351,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health
+			100,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -468,7 +468,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			90,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -514,7 +514,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			70,        // starting health
+			80,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -585,7 +585,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			80,        // starting health
+			90,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -608,7 +608,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			90,        // starting health
+			100,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -631,7 +631,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			110,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -677,7 +677,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			90,        // starting health
+			100,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -771,7 +771,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.2,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			140,        // starting health
+			120,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -794,7 +794,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.2,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			160,        // starting health
+			140,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -817,7 +817,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.2,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			180,        // starting health
+			160,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -934,7 +934,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			250,        // starting health
+			300,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -957,7 +957,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			300,        // starting health
+			400,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -980,7 +980,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			300,        // starting health
+			450,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1121,7 +1121,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			1.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			50,        // starting health
+			45,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1238,7 +1238,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			1800,        // starting health
+			2000,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1261,7 +1261,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,        // starting health
+			2200,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1284,7 +1284,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,        // starting health
+			2500,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1307,7 +1307,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2200,        // starting health
+			2500,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1493,7 +1493,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			1.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			20,        // starting health
+			25,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1565,7 +1565,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			400,        // starting health
+			600,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1588,7 +1588,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			500,        // starting health
+			700,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1611,7 +1611,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			600,        // starting health
+			800,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1634,7 +1634,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.1,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			700,        // starting health
+			900,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1729,7 +1729,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			1500,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1752,7 +1752,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			1800,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1775,7 +1775,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			2000,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1798,7 +1798,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			2250,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1821,7 +1821,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			1500,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1892,7 +1892,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,       // starting health
+			2500,       // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1915,7 +1915,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,       // starting health
+			3500,       // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1938,7 +1938,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,       // starting health
+			5000,       // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1961,7 +1961,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,       // starting health
+			6500,       // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -1984,7 +1984,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.0,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			2000,       // starting health
+			5000,       // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -2101,7 +2101,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			120,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -2124,7 +2124,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			120,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius
@@ -2147,7 +2147,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0.8,        // tactical
 			0.0,        // camper
 			16000,      // alertness
-			100,        // starting health
+			120,        // starting health
 			1.0,        // hearing scale
 			0.9,        // not in pvs hearing scale
 			512,        // relaxed detection radius

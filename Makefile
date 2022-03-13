@@ -2968,6 +2968,35 @@ $(B)/$(BASEGAME)/qcommon/%.o: $(CMDIR)/%.c
 $(B)/$(BASEGAME)/qcommon/%.asm: $(CMDIR)/%.c $(Q3LCC)
 	$(DO_Q3LCC)
 
+# Added
+$(B)/$(BASEGAME)/cgame/q_math.o: $(CMDIR)/q_math.c
+	$(DO_CGAME_CC)
+$(B)/$(BASEGAME)/cgame/q_shared.o: $(CMDIR)/q_shared.c
+	$(DO_CGAME_CC)
+$(B)/$(BASEGAME)/cgame/q_math.asm: $(CMDIR)/q_math.c $(Q3LCC)
+	$(DO_CGAME_Q3LCC)
+$(B)/$(BASEGAME)/cgame/q_shared.asm: $(CMDIR)/q_shared.c $(Q3LCC)
+	$(DO_CGAME_Q3LCC)
+
+# Added
+$(B)/$(BASEGAME)/game/q_math.o: $(CMDIR)/q_math.c
+	$(DO_GAME_CC)
+$(B)/$(BASEGAME)/game/q_shared.o: $(CMDIR)/q_shared.c
+	$(DO_GAME_CC)
+$(B)/$(BASEGAME)/game/q_math.asm: $(CMDIR)/q_math.c $(Q3LCC)
+	$(DO_GAME_Q3LCC)
+$(B)/$(BASEGAME)/game/q_shared.asm: $(CMDIR)/q_shared.c $(Q3LCC)
+	$(DO_GAME_Q3LCC)
+
+# Added
+$(B)/$(BASEGAME)/ui/q_math.o: $(CMDIR)/q_math.c
+	$(DO_UI_CC)
+$(B)/$(BASEGAME)/ui/q_shared.o: $(CMDIR)/q_shared.c
+	$(DO_UI_CC)
+$(B)/$(BASEGAME)/ui/q_math.asm: $(CMDIR)/q_math.c $(Q3LCC)
+	$(DO_UI_Q3LCC)
+$(B)/$(BASEGAME)/ui/q_shared.asm: $(CMDIR)/q_shared.c $(Q3LCC)
+	$(DO_UI_Q3LCC)
 
 #############################################################################
 # MISC

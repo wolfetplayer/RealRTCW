@@ -530,3 +530,4 @@ qboolean SV_Netchan_Process( client_t *client, msg_t *msg );
 void SV_Netchan_FreeQueue(client_t *client);
 
 extern cvar_t  *sv_airespawn;
+extern cvar_t  *sv_reinforce;

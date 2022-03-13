@@ -765,7 +765,6 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 //
 // g_items.c
 //
-void G_CheckTeamItems( void );
 void G_RunItem( gentity_t *ent );
 void RespawnItem( gentity_t *ent );
 
@@ -950,6 +949,7 @@ qboolean G_FilterPacket( char *from );
 // g_weapon.c
 //
 void FireWeapon( gentity_t *ent );
+void G_LoadAmmoTable( weapon_t weaponNum );
 
 //
 // g_cmds.c
@@ -1085,6 +1085,8 @@ extern vmCvar_t g_ironchallenge;
 extern vmCvar_t g_nohudchallenge;
 extern vmCvar_t g_nopickupchallenge;
 extern vmCvar_t g_decaychallenge;
+
+extern vmCvar_t g_airespawn;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 

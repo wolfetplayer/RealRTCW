@@ -774,7 +774,7 @@ static qboolean CG_RegisterClientModelname( clientInfo_t *ci, const char *modelN
 
 			cgs.media.spiritSkullModel = trap_R_RegisterModel( "models/mapobjects/skull/skul2t.md3" );
 
-			CG_RegisterWeapon( WP_GAUNTLET );
+			CG_RegisterWeapon( WP_GAUNTLET, qfalse );
 		} else if ( !Q_strcasecmp( (char *)modelName, "beast" ) )      {
 			cgs.media.helgaSpiritSkullShader = trap_R_RegisterShader( "helgaSpiritGhost" );
 			cgs.media.helgaSpiritTrailShader = trap_R_RegisterShader( "helgaSpiritTrail" );

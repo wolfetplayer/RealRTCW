@@ -7151,14 +7151,12 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 
 			return;
 		case UIMENU_MAIN:
-			//trap_Cvar_Set( "sv_killserver", "1" );
 			trap_Key_SetCatcher( KEYCATCH_UI );
-			//trap_S_StartLocalSound( trap_S_RegisterSound("sound/misc/menu_background.wav", qfalse) , CHAN_LOCAL_SOUND );
-			//trap_S_StartBackgroundTrack("sound/misc/menu_background.wav", NULL);
 			if ( uiInfo.inGameLoad ) {
-				UI_LoadNonIngame();
+			UI_LoadNonIngame();
 			}
 			Menus_CloseAll();
+			Menus_ActivateByName("backgroundmusic"); // not nice, but best way to do it - putting the music in it's own menudef
 			Menus_ActivateByName( "main" );
 			trap_Cvar_VariableStringBuffer( "com_errorMessage", buf, sizeof( buf ) );
 			if ( strlen( buf ) ) {

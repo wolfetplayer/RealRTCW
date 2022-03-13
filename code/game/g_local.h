@@ -1087,6 +1087,7 @@ extern vmCvar_t g_nopickupchallenge;
 extern vmCvar_t g_decaychallenge;
 
 extern vmCvar_t g_airespawn;
+extern vmCvar_t g_reinforce;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 

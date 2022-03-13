@@ -1442,6 +1442,86 @@ qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+/*
+=================
+AICast_ScriptAction_RandomRespawn
+
+  syntax: randomrespawn [targetname]
+    when using this in a player script block on multiple ai's, put some waits inbetween the list
+    to make it more random (the random number is based on the time)
+=================
+*/
+qboolean AICast_ScriptAction_RandomRespawn( cast_state_t *cs, char *params ) {
+	gentity_t *ent;
+	cast_state_t *entcs;
+	qboolean respawn = qfalse;
+
+	respawn = ( rand() % 2 ); // returns 1 or 0 -> qtrue or qfalse -> this is a good comment -> or not ?
+
+	if ( !params || !params[0] ) {
+		// if no targetname is set, the calling entity will stop respawning
+		cs->norespawn = respawn;
+
+		return qtrue;
+	}
+
+	// find this targetname
+	ent = G_Find( NULL, FOFS( targetname ), params );
+	if ( !ent ) {
+		ent = G_Find( NULL, FOFS( aiName ), params ); // look for an AI
+		if ( !ent || !ent->client ) { // accept only AI for aiName check
+			// if the aiName is not found, disable the respawning of the entity that is calling it
+			cs->norespawn = respawn;
+
+			return qtrue; // need to return true here or it keeps getting called every frame.
+		}
+	}
+
+	entcs = AICast_GetCastState( ent->s.clientNum );
+
+	if ( entcs ) {
+		entcs->norespawn = respawn;
+	}
+
+	return qtrue;
+}
+
+/*
+=================
+AICast_ScriptAction_NoRespawn
+
+  syntax: norespawn [targetname]
+=================
+*/
+qboolean AICast_ScriptAction_NoRespawn( cast_state_t *cs, char *params ) {
+	gentity_t *ent;
+	cast_state_t *entcs;
+
+	if ( !params || !params[0] ) {
+		// if no targetname is set, the calling entity will stop respawning
+		cs->norespawn = qtrue;
+		return qtrue;
+	}
+
+	// find this targetname
+	ent = G_Find( NULL, FOFS( targetname ), params );
+	if ( !ent ) {
+		ent = G_Find( NULL, FOFS( aiName ), params );         // look for an AI
+		if ( !ent || !ent->client ) {         // accept only AI for aiName check
+			// if the aiName is not found, disable the respawning of the entity that is calling it
+			cs->norespawn = qtrue;
+			return qtrue;             // need to return true here or it keeps getting called every frame.
+		}
+	}
+
+	entcs = AICast_GetCastState( ent->s.clientNum );
+
+	if ( entcs ) {
+		entcs->norespawn = qtrue;
+	}
+
+	return qtrue;
+}
 
 
 //----(SA)	added

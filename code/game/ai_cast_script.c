@@ -76,6 +76,8 @@ qboolean AICast_ScriptAction_SuggestWeapon( cast_state_t *cs, char *params );	//
 qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GiveInventory( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_NoRespawn( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_RandomRespawn( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Movetype( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_AlertEntity( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SaveGame( cast_state_t *cs, char *params );
@@ -164,6 +166,8 @@ cast_script_stack_action_t scriptActions[] =
 	{"giveinventory",    AICast_ScriptAction_GiveInventory},
 	{"giveweapon",       AICast_ScriptAction_GiveWeapon},
 	{"takeweapon",       AICast_ScriptAction_TakeWeapon},
+	{"norespawn",       AICast_ScriptAction_NoRespawn},
+	{"randomrespawn",       AICast_ScriptAction_RandomRespawn},
 	{"movetype",     AICast_ScriptAction_Movetype},
 	{"alertentity",      AICast_ScriptAction_AlertEntity},
 	{"savegame",     AICast_ScriptAction_SaveGame},

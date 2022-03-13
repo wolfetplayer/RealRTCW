@@ -1313,6 +1313,8 @@ extern qboolean AICast_ScriptAction_AlertEntity ( cast_state_t * cs , char * par
 extern qboolean AICast_ScriptAction_Movetype ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GiveInventory ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_TakeWeapon ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_NoRespawn ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_RandomRespawn ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GiveWeapon ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GiveArmor ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SetArmor ( cast_state_t * cs , char * params ) ;

@@ -82,6 +82,7 @@ cvar_t  *sv_decaychallenge;
 cvar_t  *sv_reloading;  //----(SA)	added
 
 cvar_t  *sv_airespawn;
+cvar_t  *sv_reinforce;
 
 /*
 =============================================================================
@@ -719,6 +720,7 @@ void SVC_Info( netadr_t from ) {
 	// done
 
 	Info_SetValueForKey( infostring, "airespawn", va( "%i", sv_airespawn->integer ) );
+    Info_SetValueForKey( infostring, "reinforce", va( "%i", sv_reinforce->integer ) );
 
 	NET_OutOfBandPrint( NS_SERVER, from, "infoResponse\n%s", infostring );
 }

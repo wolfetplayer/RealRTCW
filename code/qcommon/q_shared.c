@@ -31,6 +31,10 @@ If you have questions concerning this license or the applicable additional terms
 // q_shared.c -- stateless support routines that are included in each code dll
 #include "q_shared.h"
 
+#ifdef GAMEDLL
+#include "../game/g_local.h"
+#endif
+
 // ^[0-9a-zA-Z]
 qboolean Q_IsColorString(const char *p) {
 	if (!p)
@@ -470,6 +474,32 @@ char *SkipWhitespace( char *data, qboolean *hasNewLines ) {
 	return data;
 }
 
+/*
+==============
+SkipWhitespace2
+
+Parse a token out of a string
+Will never return NULL, just empty strings
+==============
+*/
+char *SkipWhitespace2( char *data ) {
+	int c;
+
+	while ( ( c = *data ) <= ' ' ) {
+		if ( c == '\n' ) {
+			com_lines++;
+			return data;
+		} else if ( c == '\t' ) {
+			return data;
+		} else if ( !c ) {
+			return NULL;
+		}
+		data++;
+	}
+
+	return data;
+}
+
 int COM_Compress( char *data_p ) {
 	char *in, *out;
 	int c;
@@ -539,6 +569,66 @@ int COM_Compress( char *data_p ) {
 	return out - data_p;
 }
 
+#ifdef GAMEDLL
+/*
+================
+COM_Eval
+================
+*/
+qboolean COM_Eval( char *cvarname, char *condition, char *cvarvalue ) {
+	qboolean copy = qtrue;
+
+	int cvar = trap_Cvar_VariableIntegerValue( cvarname );
+
+	int value = atoi( cvarvalue );
+
+//        Com_Printf("%d ---- %d\n", cvar, value);
+
+	// based on the condition, set copy to false or true
+	if ( !Q_strcasecmp( condition, "==" ) ) {
+		if ( cvar == value ) {
+			copy = qtrue;
+		} else {
+			copy = qfalse;
+		}
+	} else if ( !Q_strcasecmp( condition, "!=" ) ) {
+		if ( cvar != value ) {
+			copy = qtrue;
+		} else {
+			copy = qfalse;
+		}
+	} else if ( !Q_strcasecmp( condition, "<=" ) ) {
+		if ( cvar <= value ) {
+			copy = qtrue;
+		} else {
+			copy = qfalse;
+		}
+	} else if ( !Q_strcasecmp( condition, ">=" ) ) {
+		if ( cvar >= value ) {
+			copy = qtrue;
+		} else {
+			copy = qfalse;
+		}
+	} else if ( !Q_strcasecmp( condition, "<" ) ) {
+		if ( cvar < value ) {
+			copy = qtrue;
+		} else {
+			copy = qfalse;
+		}
+	} else if ( !Q_strcasecmp( condition, ">" ) ) {
+		if ( cvar > value ) {
+			copy = qtrue;
+		} else {
+			copy = qfalse;
+		}
+	} else {
+		Com_Error( ERR_DROP, "COM_Eval() Error (line %d): Unknown condition, must be ==, !=, <=,  >=, < or >.\n", COM_GetCurrentParseLine() );
+	}
+
+	return copy;
+}
+#endif
+
 /*
 ================
 COM_ParseExt
@@ -548,6 +638,9 @@ char *COM_ParseExt( char **data_p, qboolean allowLineBreaks ) {
 	int c = 0, len;
 	qboolean hasNewLines = qfalse;
 	char *data;
+#ifdef GAMEDLL
+	qboolean ignore = qfalse;     // used for #if statements
+#endif
 
 	data = *data_p;
 	len = 0;
@@ -578,6 +671,78 @@ char *COM_ParseExt( char **data_p, qboolean allowLineBreaks ) {
 		}
 
 		c = *data;
+
+#ifdef GAMEDLL
+		// #if cvar == value #else #endif
+		if ( c == '#' && data[1] == 'i' && data[2] == 'f' ) {
+			char cvarname[256];
+			char value[256];
+			char condition[256];
+			int i = 0;
+
+			data += 3;
+			// skip the witespace
+			while ( *data && *data <= ' ' )
+				data++;
+			// get the cvar name
+			while ( *data && *data > ' ' ) {
+				cvarname[i++] = *data;
+				data++;
+			}
+			cvarname[i] = '\0';
+			//Com_Printf("->%s\n", cvarname);
+			i = 0;
+
+			// skip the witespace
+			while ( *data && *data <= ' ' )
+				data++;
+
+			// get the condition
+			while ( *data && *data > ' ' ) {
+				condition[i++] = *data;
+				data++;
+			}
+			condition[i] = '\0';
+			//Com_Printf("->%s\n", condition);
+			i = 0;
+
+			// skip the witespace
+			while ( *data && *data <= ' ' )
+				data++;
+
+			// get the value
+			while ( *data && *data > ' ' ) {
+				value[i++] = *data;
+				data++;
+			}
+			value[i] = '\0';
+			//Com_Printf("%d %d %d\n", strlen(cvarname), strlen(condition), strlen(value));
+			//Com_Printf("--> #if %s %s %s\n", cvarname, condition, value);
+			//Com_Printf("->%s\n", value);
+
+			// now evaluate these
+			ignore = !COM_Eval( cvarname, condition, value );
+			//ignore = qtrue;
+			continue;
+		} else if ( c == '#' && data[1] == 'e' && data[2] == 'n' && data[3] == 'd' && data[4] == 'i' && data[5] == 'f' )           {
+			data += 6;
+			//Com_Printf("--> #endif\n");
+			ignore = qfalse;
+			continue;
+		} else if ( c == '#' && data[1] == 'e' && data[2] == 'l' && data[3] == 's' && data[4] == 'e' )           {
+			data += 5;
+			//Com_Printf("--> #else\n");
+			ignore = !ignore;
+			continue;
+		}
+
+		// ignore #if / # else section
+		if ( ignore ) {
+			//Com_Printf("%c", c);
+			data++;
+			continue;
+		}
+#endif
 
 		// skip double slash comments
 		if ( c == '/' && data[1] == '/' ) {
@@ -643,6 +808,88 @@ char *COM_ParseExt( char **data_p, qboolean allowLineBreaks ) {
 	} while (c>32);
 
 	com_token[len] = 0;
+
+	*data_p = ( char * ) data;
+	return com_token;
+}
+
+/*
+================
+COM_Parse2
+================
+*/
+char *COM_Parse2( char **data_p ) {
+	int c = 0, len;
+	char *data;
+
+	data = *data_p;
+	len = 0;
+	com_token[0] = 0;
+
+	// make sure incoming data is valid
+	if ( !data ) {
+		*data_p = NULL;
+		return com_token;
+	}
+
+	// RF, backup the session data so we can unget easily
+	backup_lines = com_lines;
+	backup_text = *data_p;
+
+	while ( 1 )
+	{
+		// skip whitespace
+		data = SkipWhitespace2( data );
+		if ( !data ) {
+			*data_p = NULL;
+			return com_token;
+		}
+
+		c = *data;
+		if ( c == '/' && data[1] == '/' ) {
+		} else if ( c == '/' && data[1] == '*' )   {
+		} else {
+			break;
+		}
+	}
+
+	// handle quoted strings
+	if ( c == '\"' ) {
+		data++;
+		while ( 1 )
+		{
+			c = *data++;
+			if ( c == '\"' || !c ) {
+				com_token[len] = 0;
+				*data_p = ( char * ) data;
+				return com_token;
+			}
+			if ( len < MAX_TOKEN_CHARS ) {
+				com_token[len] = c;
+				len++;
+			}
+		}
+	}
+
+	// parse a regular word
+	do
+	{
+		if ( len < MAX_TOKEN_CHARS ) {
+			com_token[len] = c;
+			len++;
+		}
+		data++;
+		c = *data;
+		if ( c == '\n' ) {
+			com_lines++;
+		}
+	} while ( c > ' ' );
+
+	if ( len == MAX_TOKEN_CHARS ) {
+//              Com_Printf ("Token exceeded %i chars, discarded.\n", MAX_TOKEN_CHARS);
+		len = 0;
+	}
+	com_token[len] = '\0';
 
 	*data_p = ( char * ) data;
 	return com_token;
@@ -1024,6 +1271,43 @@ char *Q_strupr( char *s1 ) {
 	return s1;
 }
 
+int Q_strnicmp( const char *string1, const char *string2, int n ) {
+	int c1, c2;
+
+	if ( string1 == NULL ) {
+		if ( string2 == NULL ) {
+			return 0;
+		} else {
+			return -1;
+		}
+	} else if ( string2 == NULL )     {
+		return 1;
+	}
+
+	do {
+		c1 = *string1++;
+		c2 = *string2++;
+
+		if ( !n-- ) {
+			return 0; // Strings are equal until end point
+
+		}
+		if ( c1 != c2 ) {
+			if ( c1 >= 'a' && c1 <= 'z' ) {
+				c1 -= ( 'a' - 'A' );
+			}
+			if ( c2 >= 'a' && c2 <= 'z' ) {
+				c2 -= ( 'a' - 'A' );
+			}
+
+			if ( c1 != c2 ) {
+				return c1 < c2 ? -1 : 1;
+			}
+		}
+	} while ( c1 );
+
+	return 0; // Strings are equal
+}
 
 // never goes past bounds or leaves without a terminating 0
 void Q_strcat( char *dest, int size, const char *src ) {
@@ -1039,33 +1323,30 @@ void Q_strcat( char *dest, int size, const char *src ) {
 /*
 * Find the first occurrence of find in s.
 */
-const char *Q_stristr( const char *s, const char *find)
-{
-  char c, sc;
-  size_t len;
+const char *Q_stristr( const char *s, const char *find ) {
+	char c, sc;
+	size_t len;
 
-  if ((c = *find++) != 0)
-  {
-    if (c >= 'a' && c <= 'z')
-    {
-      c -= ('a' - 'A');
-    }
-    len = strlen(find);
-    do
-    {
-      do
-      {
-        if ((sc = *s++) == 0)
-          return NULL;
-        if (sc >= 'a' && sc <= 'z')
-        {
-          sc -= ('a' - 'A');
-        }
-      } while (sc != c);
-    } while (Q_stricmpn(s, find, len) != 0);
-    s--;
-  }
-  return s;
+	if ( ( c = *find++ ) != 0 ) {
+		if ( c >= 'a' && c <= 'z' ) {
+			c -= ( 'a' - 'A' );
+		}
+		len = strlen( find );
+		do
+		{
+			do
+			{
+				if ( ( sc = *s++ ) == 0 ) {
+					return NULL;
+				}
+				if ( sc >= 'a' && sc <= 'z' ) {
+					sc -= ( 'a' - 'A' );
+				}
+			} while ( sc != c );
+		} while ( Q_stricmpn( s, find, len ) != 0 );
+		s--;
+	}
+	return s;
 }
 
 int Q_PrintStrlen( const char *string ) {

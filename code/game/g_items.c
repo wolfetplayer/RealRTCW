@@ -1007,6 +1007,11 @@ void FinishSpawningItem( gentity_t *ent ) {
     return;
 	}
 
+	if ( !g_fullarsenal.integer && (ent->item->giWeapon == WP_MP34 || ent->item->giWeapon == WP_REVOLVER || ent->item->giWeapon == WP_G43 || ent->item->giWeapon == WP_M1GARAND || ent->item->giWeapon == WP_BAR || ent->item->giWeapon == WP_MG42M) )
+	{
+    return;
+	}
+
 
 
 	// if clipboard, add the menu name string to the client's configstrings

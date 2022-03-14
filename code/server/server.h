@@ -531,3 +531,4 @@ void SV_Netchan_FreeQueue(client_t *client);
 
 extern cvar_t  *sv_airespawn;
 extern cvar_t  *sv_reinforce;
+extern cvar_t  *sv_fullarsenal;

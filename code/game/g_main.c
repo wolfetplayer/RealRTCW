@@ -65,6 +65,7 @@ vmCvar_t g_reloading;       //----(SA)	added
 
 vmCvar_t g_airespawn;
 vmCvar_t g_reinforce;
+vmCvar_t g_fullarsenal;
 
 vmCvar_t g_dmflags;
 vmCvar_t g_fraglimit;
@@ -175,6 +176,7 @@ cvarTable_t gameCvarTable[] = {
 
 	{ &g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_SERVERINFO, 0, qfalse},
     { &g_reinforce, "g_reinforce", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_fullarsenal, "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 

@@ -3943,7 +3943,7 @@ void PM_Sprint( void ) {
 			) {
 
 		if ( pm->ps->powerups[PW_NOFATIGUE] ) {    // take time from powerup before taking it from sprintTime
-			pm->ps->powerups[PW_NOFATIGUE] -= 25; // RealRTCW was 50
+			pm->ps->powerups[PW_NOFATIGUE] -= 2000 * pml.frametime; 
 
 			pm->ps->sprintTime += 10;           // (SA) go ahead and continue to recharge stamina at double rate with stamina powerup even when exerting
 			if ( pm->ps->sprintTime > 20000 ) {
@@ -3956,7 +3956,7 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				pm->ps->sprintTime -= 25; 
+				pm->ps->sprintTime -= 2000 * pml.frametime; 
 			}
 		}
 

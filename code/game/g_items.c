@@ -1093,7 +1093,7 @@ void FinishSpawningItem( gentity_t *ent ) {
 		// was:
 		// for(i=0;i<4,ent->item->world_model[i];i++) {}
 		i = 0;
-		while ( i < 4 && ent->item->world_model[i] )
+		while ( i < 3 && ent->item->world_model[i] )
 			i++;
 
 		ent->s.density = i - 1;   // store number of stages in 'density' for client (most will have '1')

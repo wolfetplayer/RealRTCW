@@ -201,6 +201,16 @@ typedef struct {
 	aistateEnum_t aiState;
 } AICharacterDefaults_t;
 
+// Skill-based behavior parameters
+typedef struct behaviorskill_s {
+	int startingHealth;
+	float reactionTime;
+	float aimAccuracy;
+	float aimSkill;
+	float attackSkill;
+	float aggression;
+} behaviorskill_t;
+
 //
 // script flags
 #define SFL_NOCHANGEWEAPON          0x1

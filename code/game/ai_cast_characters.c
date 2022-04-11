@@ -45,6 +45,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+// Skill-based behavior parameters
+behaviorskill_t behaviorSkill[GSKILL_NUM_SKILLS][NUM_CHARACTERS];
 
 //---------------------------------------------------------------------------
 // Character specific attributes (defaults, these can be altered in the editor (TODO!))
@@ -57,142 +59,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Soldier",
 		{ // Default
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			30,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.5,        // aim skill
-			0.4,        // aim accuracy
-			0.75,       // attack skill
-			0.4,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			25,         // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			30,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.6,        // aim skill
-			0.6,        // aim accuracy
-			0.75,       // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.7,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			30,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.7,        // aim skill
-			0.7,        // aim accuracy
-			0.75,       // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			35,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.7,        // aim skill
-			0.7,        // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.6,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			10,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"infantrySightPlayer",
@@ -220,142 +102,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"American",
 		{ // Default
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.4,       // aim accuracy
-			0.75,       // attack skill
-			0.3,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.70,       // aim skill
-			0.6,       // aim accuracy
-			0.75,       // attack skill
-			0.3,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.3,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"americanSightPlayer",
@@ -383,142 +145,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Zombie",
 		{ // Default
-			200,        // running speed		
-			60,         // walking speed		
-			80,         // crouching speed
-			180,         // Field of View 
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			180,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			200,        // running speed
-			60,         // walking speed		
-			80,         // crouching speed
-			180,         // Field of View 
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			70,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			200,        // running speed		
-			60,         // walking speed
-			80,         // crouching speed
-			180,         // Field of View  
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			80,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			200,        // running speed		
-			60,         // walking speed		
-			80,         // crouching speed
-			180,         // Field of View 
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			90,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			200,        // running speed		
-			60,         // walking speed		
-			80,         // crouching speed
-			180,         // Field of View 
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			200,        // running speed		
-			60,         // walking speed		
-			80,         // crouching speed
-			180,         // Field of View 
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			80,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"zombieSightPlayer",
@@ -546,142 +188,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"WarriorZombie",
 		{ // Default
-			300,        // running speed
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			180,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			300,        // running speed
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			90,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			300,        // running speed	
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			300,        // running speed	
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			110,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			300,        // running speed	
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			300,        // running speed	
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"warzombieSightPlayer",
@@ -709,142 +231,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Venom",
 		{ // Default
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			240,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.6,       // aim skill
-			0.5,       // aim accuracy
-			0.75,       // attack skill
-			0.3,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.6,       // aim skill
-			0.5,       // aim accuracy
-			0.75,       // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.7,       // aim skill
-			0.6,       // aim accuracy
-			0.75,       // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			140,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.7,       // aim skill
-			0.6,       // aim accuracy
-			0.75,       // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			160,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.7,       // aim skill
-			0.6,       // aim accuracy
-			0.75,       // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			70,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"venomSightPlayer",
@@ -872,142 +274,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Loper",
 		{ // Default
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			500,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			200,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			300,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			400,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			450,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			180,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"loperSightPlayer",
@@ -1036,142 +318,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Elite Guard",
 		{ // Default
-			250,        // running speed 
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.5,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			30,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			250,        // running speed 
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.5,        // aim skill
-			0.6,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			30,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			250,        // running speed 
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.6,        // aim skill
-			0.6,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			40,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			250,        // running speed 
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.7,        // aim skill
-			0.7,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			45,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			250,        // running speed 
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.8,        // aim skill
-			0.7,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			50,        // starting health 
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			250,        // running speed 
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	
-			0.0,        // leader
-			0.8,        // aim skill
-			0.7,        // aim accuracy
-			0.9,        // attack skill
-			0.1,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			15,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"eliteGuardSightPlayer",
@@ -1199,142 +361,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Super Soldier",
 		{ // Default
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			300,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2000,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2200,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2500,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2500,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			1000,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"superSoldierSightPlayer",
@@ -1362,142 +404,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Black Guard",
 		{ // Default
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.8,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy difficulty
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.6,        // aim skill
-			0.6,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			35,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			0.7,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			35,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			0.7,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			45,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.8,        // aim skill
-			0.8,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			50,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.8,        // aim skill
-			0.8,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			25,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"blackGuardSightPlayer",
@@ -1526,142 +448,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Protosoldier",
 		{ // Default
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			300,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			600,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			700,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			800,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			900,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			300,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"protoSoldierSightPlayer",
@@ -1690,142 +492,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Helga",
 		{ // Default
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			1500,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			1800,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2000,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2250,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			1500,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"helgaAttackPlayer",
@@ -1853,142 +535,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Heinrich",
 		{ // Default
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2000,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2500,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			3500,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			5000,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			6500,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			5000,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"heinrichSightPlayer",
@@ -2016,142 +578,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Partisan",
 		{ // Default
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.7,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.7,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.6,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.5,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.5,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"partisanSightPlayer",
@@ -2179,142 +621,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Russian",
 		{ // Default
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+			0
 		},
 		{
 		"russianSightPlayer",
@@ -2342,142 +664,22 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Civilian",
 		{ // Default
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Easy Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Medium Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Hard Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Max Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{ // Realism Difficulty
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+			0
 		},
 		{
 			"civilianSightPlayer",
@@ -3362,4 +1564,296 @@ SP_ai_blackguard
 */
 void SP_ai_blackguard( gentity_t *ent ) {
 	AICast_DelayedSpawnCast( ent, AICHAR_BLACKGUARD );
+}
+
+// Load behavior parameters from .aidefaults file
+void AI_LoadBehaviorTable( AICharacters_t characterNum )
+{
+	char *filename;
+	int handle;
+	pc_token_t token;
+
+	filename = BG_GetCharacterFilename( characterNum );
+	if ( !*filename )
+		return;
+
+	handle = trap_PC_LoadSource( va( "aidefaults/%s", filename ) );
+	if ( !handle ) {
+		G_Printf( S_COLOR_RED "ERROR: Failed to load character file %s\n", filename );
+		return;
+	}
+
+	// Find and parse behavior block in this file
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( !Q_stricmp( token.string, "behavior" ) ) {
+			BG_ParseBehaviorTable( handle, characterNum );
+			break;
+		}
+	}
+
+	trap_PC_FreeSource( handle );
+}
+
+
+// Get aidefaults filename for specified character id
+// Returns empty string when none found
+char *BG_GetCharacterFilename( AICharacters_t characterNum )
+{
+	switch ( characterNum ) {
+		case AICHAR_SOLDIER:           return "soldier.aidefaults";
+		case AICHAR_AMERICAN:          return "american.aidefaults";
+		case AICHAR_ZOMBIE:            return "zombie.aidefaults";
+		case AICHAR_WARZOMBIE:         return "warzombie.aidefaults";
+		case AICHAR_VENOM:             return "venom.aidefaults";
+		case AICHAR_LOPER:             return "loper.aidefaults";
+		case AICHAR_ELITEGUARD:        return "eliteguard.aidefaults";
+		case AICHAR_SUPERSOLDIER:      return "supersoldier.aidefaults";
+		case AICHAR_BLACKGUARD:        return "blackguard.aidefaults";
+		case AICHAR_PROTOSOLDIER:      return "protosoldier.aidefaults";
+		case AICHAR_HELGA:             return "helga.aidefaults";
+		case AICHAR_HEINRICH:          return "heinrich.aidefaults";
+		case AICHAR_PARTISAN:          return "partisan.aidefaults";
+		case AICHAR_RUSSIAN:           return "russian.aidefaults";
+		case AICHAR_CIVILIAN:          return "civilian.aidefaults";
+		case AICHAR_NONE:              return "";
+		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
+    }
+
+    return "";
+}
+
+// Read behavior parameters into aiDefaults from given file handle
+// File handle position expected to be at opening brace of behavior block
+qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum )
+{
+	pc_token_t token;
+
+	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
+		PC_SourceError( handle, "expected '{'" );
+		return qfalse;
+	}
+
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( token.string[0] == '}' ) {
+			break;
+		}
+
+		float min = 0;
+		float max = 0;
+
+		// behavior parameters for each difficulty level
+		if ( !Q_stricmp( token.string, "startingHealth" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &min ) ) {
+					PC_SourceError( handle, "expected min startingHealth value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &max ) ) {
+					PC_SourceError( handle, "expected max startingHealth value for skill level" );
+					return qfalse;
+				}
+
+				behaviorSkill[i][characterNum].startingHealth = min + (rand() / (float)RAND_MAX) * ( max - min );
+			}
+		} else if ( !Q_stricmp( token.string, "reactionTime" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &min ) ) {
+					PC_SourceError( handle, "expected min reactionTime value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &max ) ) {
+					PC_SourceError( handle, "expected max reactionTime value for skill level" );
+					return qfalse;
+				}
+
+				behaviorSkill[i][characterNum].reactionTime = min + (rand() / (float)RAND_MAX) * ( max - min );
+			}
+		} else if ( !Q_stricmp( token.string, "aimAccuracy" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &min ) ) {
+					PC_SourceError( handle, "expected min aimAccuracy value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &max ) ) {
+					PC_SourceError( handle, "expected max aimAccuracy value for skill level" );
+					return qfalse;
+				}
+
+				behaviorSkill[i][characterNum].aimAccuracy = min + (rand() / (float)RAND_MAX) * ( max - min );
+			}
+		} else if ( !Q_stricmp( token.string, "aimSkill" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &min ) ) {
+					PC_SourceError( handle, "expected min aimSkill value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &max ) ) {
+					PC_SourceError( handle, "expected max aimSkill value for skill level" );
+					return qfalse;
+				}
+
+				behaviorSkill[i][characterNum].aimSkill = min + (rand() / (float)RAND_MAX) * ( max - min );
+			}
+		} else if ( !Q_stricmp( token.string, "attackSkill" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &min ) ) {
+					PC_SourceError( handle, "expected min attackSkill value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &max ) ) {
+					PC_SourceError( handle, "expected max attackSkill value for skill level" );
+					return qfalse;
+				}
+
+				behaviorSkill[i][characterNum].attackSkill = min + (rand() / (float)RAND_MAX) * ( max - min );
+			}
+		} else if ( !Q_stricmp( token.string, "aggression" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &min ) ) {
+					PC_SourceError( handle, "expected min aggression value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &max ) ) {
+					PC_SourceError( handle, "expected max aggression value for skill level" );
+					return qfalse;
+				}
+
+				behaviorSkill[i][characterNum].aggression = min + (rand() / (float)RAND_MAX) * ( max - min );
+			}
+		}
+		// Values common to all skill levels
+		else if ( !Q_stricmp( token.string, "runningSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[RUNNING_SPEED] ) ) {
+				PC_SourceError( handle, "expected runningSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "walkingSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[WALKING_SPEED] ) ) {
+				PC_SourceError( handle, "expected walkingSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "crouchingSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[CROUCHING_SPEED] ) ) {
+				PC_SourceError( handle, "expected crouchingSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "fieldOfView" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[FOV] ) ) {
+				PC_SourceError( handle, "expected fieldOfView value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "yawSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[YAW_SPEED] ) ) {
+				PC_SourceError( handle, "expected yawSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "leader" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[LEADER] ) ) {
+				PC_SourceError( handle, "expected leader value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "attackCrouch" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[ATTACK_CROUCH] ) ) {
+				PC_SourceError( handle, "expected attackCrouch value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "idleCrouch" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[IDLE_CROUCH] ) ) {
+				PC_SourceError( handle, "expected idleCrouch value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "tactical" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[TACTICAL] ) ) {
+				PC_SourceError( handle, "expected tactical value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "camper" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[CAMPER] ) ) {
+				PC_SourceError( handle, "expected camper value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "alertness" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[ALERTNESS] ) ) {
+				PC_SourceError( handle, "expected alertness value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "hearingScale" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[HEARING_SCALE] ) ) {
+				PC_SourceError( handle, "expected hearingScale value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "notInPvsHearingScale" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[HEARING_SCALE_NOT_PVS] ) ) {
+				PC_SourceError( handle, "expected notInPvsHearingScale value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "relaxedDetectionRadius" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[INNER_DETECTION_RADIUS] ) ) {
+				PC_SourceError( handle, "expected relaxedDetectionRadius value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "painThresholdMultiplier" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[PAIN_THRESHOLD_SCALE] ) ) {
+				PC_SourceError( handle, "expected painThresholdMultiplier value" );
+				return qfalse;
+			}
+		} else {
+			PC_SourceError( handle, "unknown token '%s'", token.string );
+			return qfalse;
+		}
+	}
+
+	return qtrue;
+}
+
+
+// Set character parameters for specified skill
+void BG_SetBehaviorForSkill( AICharacters_t characterNum )
+{
+	aiDefaults[characterNum].attributes_easy[AIM_SKILL] 		= behaviorSkill[GSKILL_EASY][characterNum].aimSkill;
+	aiDefaults[characterNum].attributes_easy[AIM_ACCURACY] 		= behaviorSkill[GSKILL_EASY][characterNum].aimAccuracy;
+	aiDefaults[characterNum].attributes_easy[ATTACK_SKILL] 		= behaviorSkill[GSKILL_EASY][characterNum].attackSkill;
+	aiDefaults[characterNum].attributes_easy[REACTION_TIME] 	= behaviorSkill[GSKILL_EASY][characterNum].reactionTime;
+	aiDefaults[characterNum].attributes_easy[AGGRESSION]		= behaviorSkill[GSKILL_EASY][characterNum].aggression;
+	aiDefaults[characterNum].attributes_easy[STARTING_HEALTH] 	= behaviorSkill[GSKILL_EASY][characterNum].startingHealth;
+
+	aiDefaults[characterNum].attributes_medium[AIM_SKILL] 		= behaviorSkill[GSKILL_MEDIUM][characterNum].aimSkill;
+	aiDefaults[characterNum].attributes_medium[AIM_ACCURACY] 	= behaviorSkill[GSKILL_MEDIUM][characterNum].aimAccuracy;
+	aiDefaults[characterNum].attributes_medium[ATTACK_SKILL] 	= behaviorSkill[GSKILL_MEDIUM][characterNum].attackSkill;
+	aiDefaults[characterNum].attributes_medium[REACTION_TIME] 	= behaviorSkill[GSKILL_MEDIUM][characterNum].reactionTime;
+	aiDefaults[characterNum].attributes_medium[AGGRESSION]		= behaviorSkill[GSKILL_MEDIUM][characterNum].aggression;
+	aiDefaults[characterNum].attributes_medium[STARTING_HEALTH] = behaviorSkill[GSKILL_MEDIUM][characterNum].startingHealth;
+
+	aiDefaults[characterNum].attributes_hard[AIM_SKILL] 		= behaviorSkill[GSKILL_HARD][characterNum].aimSkill;
+	aiDefaults[characterNum].attributes_hard[AIM_ACCURACY] 		= behaviorSkill[GSKILL_HARD][characterNum].aimAccuracy;
+	aiDefaults[characterNum].attributes_hard[ATTACK_SKILL] 		= behaviorSkill[GSKILL_HARD][characterNum].attackSkill;
+	aiDefaults[characterNum].attributes_hard[REACTION_TIME] 	= behaviorSkill[GSKILL_HARD][characterNum].reactionTime;
+	aiDefaults[characterNum].attributes_hard[AGGRESSION]		= behaviorSkill[GSKILL_HARD][characterNum].aggression;
+	aiDefaults[characterNum].attributes_hard[STARTING_HEALTH] 	= behaviorSkill[GSKILL_HARD][characterNum].startingHealth;
+
+	aiDefaults[characterNum].attributes_max[AIM_SKILL] 			= behaviorSkill[GSKILL_MAX][characterNum].aimSkill;
+	aiDefaults[characterNum].attributes_max[AIM_ACCURACY] 		= behaviorSkill[GSKILL_MAX][characterNum].aimAccuracy;
+	aiDefaults[characterNum].attributes_max[ATTACK_SKILL] 		= behaviorSkill[GSKILL_MAX][characterNum].attackSkill;
+	aiDefaults[characterNum].attributes_max[REACTION_TIME] 		= behaviorSkill[GSKILL_MAX][characterNum].reactionTime;
+	aiDefaults[characterNum].attributes_max[AGGRESSION]			= behaviorSkill[GSKILL_MAX][characterNum].aggression;
+	aiDefaults[characterNum].attributes_max[STARTING_HEALTH] 	= behaviorSkill[GSKILL_MAX][characterNum].startingHealth;
+
+	aiDefaults[characterNum].attributes_realism[AIM_SKILL] 			= behaviorSkill[GSKILL_REALISM][characterNum].aimSkill;
+	aiDefaults[characterNum].attributes_realism[AIM_ACCURACY] 		= behaviorSkill[GSKILL_REALISM][characterNum].aimAccuracy;
+	aiDefaults[characterNum].attributes_realism[ATTACK_SKILL] 		= behaviorSkill[GSKILL_REALISM][characterNum].attackSkill;
+	aiDefaults[characterNum].attributes_realism[REACTION_TIME] 		= behaviorSkill[GSKILL_REALISM][characterNum].reactionTime;
+	aiDefaults[characterNum].attributes_realism[AGGRESSION]			= behaviorSkill[GSKILL_REALISM][characterNum].aggression;
+	aiDefaults[characterNum].attributes_realism[STARTING_HEALTH] 	= behaviorSkill[GSKILL_REALISM][characterNum].startingHealth;
 }

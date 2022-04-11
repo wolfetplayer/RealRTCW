@@ -542,7 +542,6 @@ typedef struct ammoskill_s {
 	int maxclip;
 } ammoskill_t;
 
-
 extern int weapAlts[]; 
 
 extern ammotable_t ammoTable[WP_NUM_WEAPONS];
@@ -1643,3 +1642,7 @@ qboolean PC_Color_Parse( int handle, vec4_t *c );
 char *BG_GetWeaponFilename( weapon_t weaponNum );
 qboolean BG_ParseAmmoTable( int handle, weapon_t weaponNum );
 void BG_SetWeaponForSkill( weapon_t weaponNum, gameskill_t skill );
+
+char *BG_GetCharacterFilename( AICharacters_t characterNum );
+qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum );
+void BG_SetBehaviorForSkill( AICharacters_t characterNum );

@@ -61,21 +61,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"infantrySightPlayer",
 			"infantryAttackPlayer",
@@ -102,21 +87,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"American",
 		{ // Default
-			0
-		},
-		{ // Easy difficulty
-			0
-		},
-		{ // Medium difficulty
-			0
-		},
-		{ // Hard difficulty
-			0
-		},
-		{ // Max difficulty
-			0
-		},
-		{ // Realism difficulty
 			0
 		},
 		{
@@ -147,21 +117,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"zombieSightPlayer",
 			"zombieAttackPlayer",
@@ -188,21 +143,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"WarriorZombie",
 		{ // Default
-			0
-		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
 			0
 		},
 		{
@@ -233,21 +173,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"venomSightPlayer",
 			"venomAttackPlayer",
@@ -274,21 +199,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Loper",
 		{ // Default
-			0
-		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
 			0
 		},
 		{
@@ -320,21 +230,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"eliteGuardSightPlayer",
 			"eliteGuardAttackPlayer",
@@ -363,21 +258,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"superSoldierSightPlayer",
 			"superSoldierAttackPlayer",
@@ -404,21 +284,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Black Guard",
 		{ // Default
-			0
-		},
-		{ // Easy difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
 			0
 		},
 		{
@@ -450,21 +315,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"protoSoldierSightPlayer",
 			"protoSoldierAttackPlayer",
@@ -492,21 +342,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Helga",
 		{ // Default
-			0
-		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
 			0
 		},
 		{
@@ -537,21 +372,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 			"heinrichSightPlayer",
 			"heinrichAttackPlayer",
@@ -578,21 +398,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Partisan",
 		{ // Default
-			0
-		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
 			0
 		},
 		{
@@ -623,21 +428,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		{ // Default
 			0
 		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
-			0
-		},
 		{
 		"russianSightPlayer",
 		"russianAttackPlayer",
@@ -664,21 +454,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	{
 		"Civilian",
 		{ // Default
-			0
-		},
-		{ // Easy Difficulty
-			0
-		},
-		{ // Medium Difficulty
-			0
-		},
-		{ // Hard Difficulty
-			0
-		},
-		{ // Max Difficulty
-			0
-		},
-		{ // Realism Difficulty
 			0
 		},
 		{
@@ -1154,26 +929,7 @@ void AIChar_spawn( gentity_t *ent ) {
 	// create the character
 
 	// (there will always be an ent->aiSkin (SA)) AAAS
-	if ( g_gameskill.integer == GSKILL_EASY ) 
-	{
-	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes_easy, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
-	} 
-	else if ( g_gameskill.integer == GSKILL_MEDIUM )
-	{
-	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes_medium, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
-	} 
-	else if ( g_gameskill.integer == GSKILL_HARD )
-	{
-	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes_hard, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
-	}
-	else if ( g_gameskill.integer == GSKILL_MAX )
-	{
-	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes_max, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );	
-	}
-	else if ( g_gameskill.integer == GSKILL_REALISM ) 
-	{
-	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes_realism, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );	
-	}
+	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
 
 
 	if ( !newent ) {
@@ -1820,40 +1576,12 @@ qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum )
 
 
 // Set character parameters for specified skill
-void BG_SetBehaviorForSkill( AICharacters_t characterNum )
+void BG_SetBehaviorForSkill( AICharacters_t characterNum, gameskill_t skill )
 {
-	aiDefaults[characterNum].attributes_easy[AIM_SKILL] 		= behaviorSkill[GSKILL_EASY][characterNum].aimSkill;
-	aiDefaults[characterNum].attributes_easy[AIM_ACCURACY] 		= behaviorSkill[GSKILL_EASY][characterNum].aimAccuracy;
-	aiDefaults[characterNum].attributes_easy[ATTACK_SKILL] 		= behaviorSkill[GSKILL_EASY][characterNum].attackSkill;
-	aiDefaults[characterNum].attributes_easy[REACTION_TIME] 	= behaviorSkill[GSKILL_EASY][characterNum].reactionTime;
-	aiDefaults[characterNum].attributes_easy[AGGRESSION]		= behaviorSkill[GSKILL_EASY][characterNum].aggression;
-	aiDefaults[characterNum].attributes_easy[STARTING_HEALTH] 	= behaviorSkill[GSKILL_EASY][characterNum].startingHealth;
-
-	aiDefaults[characterNum].attributes_medium[AIM_SKILL] 		= behaviorSkill[GSKILL_MEDIUM][characterNum].aimSkill;
-	aiDefaults[characterNum].attributes_medium[AIM_ACCURACY] 	= behaviorSkill[GSKILL_MEDIUM][characterNum].aimAccuracy;
-	aiDefaults[characterNum].attributes_medium[ATTACK_SKILL] 	= behaviorSkill[GSKILL_MEDIUM][characterNum].attackSkill;
-	aiDefaults[characterNum].attributes_medium[REACTION_TIME] 	= behaviorSkill[GSKILL_MEDIUM][characterNum].reactionTime;
-	aiDefaults[characterNum].attributes_medium[AGGRESSION]		= behaviorSkill[GSKILL_MEDIUM][characterNum].aggression;
-	aiDefaults[characterNum].attributes_medium[STARTING_HEALTH] = behaviorSkill[GSKILL_MEDIUM][characterNum].startingHealth;
-
-	aiDefaults[characterNum].attributes_hard[AIM_SKILL] 		= behaviorSkill[GSKILL_HARD][characterNum].aimSkill;
-	aiDefaults[characterNum].attributes_hard[AIM_ACCURACY] 		= behaviorSkill[GSKILL_HARD][characterNum].aimAccuracy;
-	aiDefaults[characterNum].attributes_hard[ATTACK_SKILL] 		= behaviorSkill[GSKILL_HARD][characterNum].attackSkill;
-	aiDefaults[characterNum].attributes_hard[REACTION_TIME] 	= behaviorSkill[GSKILL_HARD][characterNum].reactionTime;
-	aiDefaults[characterNum].attributes_hard[AGGRESSION]		= behaviorSkill[GSKILL_HARD][characterNum].aggression;
-	aiDefaults[characterNum].attributes_hard[STARTING_HEALTH] 	= behaviorSkill[GSKILL_HARD][characterNum].startingHealth;
-
-	aiDefaults[characterNum].attributes_max[AIM_SKILL] 			= behaviorSkill[GSKILL_MAX][characterNum].aimSkill;
-	aiDefaults[characterNum].attributes_max[AIM_ACCURACY] 		= behaviorSkill[GSKILL_MAX][characterNum].aimAccuracy;
-	aiDefaults[characterNum].attributes_max[ATTACK_SKILL] 		= behaviorSkill[GSKILL_MAX][characterNum].attackSkill;
-	aiDefaults[characterNum].attributes_max[REACTION_TIME] 		= behaviorSkill[GSKILL_MAX][characterNum].reactionTime;
-	aiDefaults[characterNum].attributes_max[AGGRESSION]			= behaviorSkill[GSKILL_MAX][characterNum].aggression;
-	aiDefaults[characterNum].attributes_max[STARTING_HEALTH] 	= behaviorSkill[GSKILL_MAX][characterNum].startingHealth;
-
-	aiDefaults[characterNum].attributes_realism[AIM_SKILL] 			= behaviorSkill[GSKILL_REALISM][characterNum].aimSkill;
-	aiDefaults[characterNum].attributes_realism[AIM_ACCURACY] 		= behaviorSkill[GSKILL_REALISM][characterNum].aimAccuracy;
-	aiDefaults[characterNum].attributes_realism[ATTACK_SKILL] 		= behaviorSkill[GSKILL_REALISM][characterNum].attackSkill;
-	aiDefaults[characterNum].attributes_realism[REACTION_TIME] 		= behaviorSkill[GSKILL_REALISM][characterNum].reactionTime;
-	aiDefaults[characterNum].attributes_realism[AGGRESSION]			= behaviorSkill[GSKILL_REALISM][characterNum].aggression;
-	aiDefaults[characterNum].attributes_realism[STARTING_HEALTH] 	= behaviorSkill[GSKILL_REALISM][characterNum].startingHealth;
+	aiDefaults[characterNum].attributes[AIM_SKILL] 				= behaviorSkill[skill][characterNum].aimSkill;
+	aiDefaults[characterNum].attributes[AIM_ACCURACY] 			= behaviorSkill[skill][characterNum].aimAccuracy;
+	aiDefaults[characterNum].attributes[ATTACK_SKILL] 			= behaviorSkill[skill][characterNum].attackSkill;
+	aiDefaults[characterNum].attributes[REACTION_TIME] 			= behaviorSkill[skill][characterNum].reactionTime;
+	aiDefaults[characterNum].attributes[AGGRESSION]				= behaviorSkill[skill][characterNum].aggression;
+	aiDefaults[characterNum].attributes[STARTING_HEALTH] 		= behaviorSkill[skill][characterNum].startingHealth;
 }

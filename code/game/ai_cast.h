@@ -177,12 +177,6 @@ typedef struct {
 	char *name;
 	float attributes[AICAST_MAX_ATTRIBUTES];
 
-	float attributes_easy[AICAST_MAX_ATTRIBUTES];
-	float attributes_medium[AICAST_MAX_ATTRIBUTES];
-	float attributes_hard[AICAST_MAX_ATTRIBUTES];
-	float attributes_max[AICAST_MAX_ATTRIBUTES];
-	float attributes_realism[AICAST_MAX_ATTRIBUTES];
-
 	char    *soundScripts[MAX_AI_EVENT_SOUNDS];
 
 	int aiTeam;

@@ -1377,7 +1377,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// Load behavior parameters for all AICharacters
 	for ( AICharacters_t characterNum = AICHAR_SOLDIER; characterNum < NUM_CHARACTERS; characterNum++ ) {
 		AI_LoadBehaviorTable( characterNum );
-		BG_SetBehaviorForSkill( characterNum );
+		BG_SetBehaviorForSkill( characterNum, g_gameskill.integer );
 	}
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );

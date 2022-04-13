@@ -197,12 +197,18 @@ typedef struct {
 
 // Skill-based behavior parameters
 typedef struct behaviorskill_s {
-	int startingHealth;
-	float reactionTime;
-	float aimAccuracy;
-	float aimSkill;
-	float attackSkill;
-	float aggression;
+	float startingHealthMin;
+	float startingHealthMax;
+	float reactionTimeMin;
+	float reactionTimeMax;
+	float aimAccuracyMin;
+	float aimAccuracyMax;
+	float aimSkillMin;
+	float aimSkillMax;
+	float attackSkillMin;
+	float attackSkillMax;
+	float aggressionMin;
+	float aggressionMax;
 } behaviorskill_t;
 
 //

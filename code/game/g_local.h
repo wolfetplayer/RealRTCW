@@ -1025,6 +1025,9 @@ void G_QueueBotBegin( int clientNum );
 qboolean G_BotConnect( int clientNum, qboolean restart );
 void Svcmd_AddBot_f( void );
 
+// ai_cast_characters.c
+void AI_LoadBehaviorTable( AICharacters_t characterNum );
+
 // ai_main.c
 #define MAX_FILEPATH            144
 

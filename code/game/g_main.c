@@ -1374,6 +1374,11 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 		BG_SetWeaponForSkill( weaponNum, g_gameskill.integer );
 	}
 
+	// Load behavior parameters for all AICharacters
+	for ( AICharacters_t characterNum = AICHAR_SOLDIER; characterNum < NUM_CHARACTERS; characterNum++ ) {
+		AI_LoadBehaviorTable( characterNum );
+	}
+
 	trap_SetConfigstring( CS_INTERMISSION, "" );
 }
 

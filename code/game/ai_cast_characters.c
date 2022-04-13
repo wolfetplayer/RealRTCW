@@ -929,6 +929,7 @@ void AIChar_spawn( gentity_t *ent ) {
 	// create the character
 
 	// (there will always be an ent->aiSkin (SA)) AAAS
+	BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
 	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
 
 
@@ -1400,93 +1401,78 @@ qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum )
 			break;
 		}
 
-		float min = 0;
-		float max = 0;
-
 		// behavior parameters for each difficulty level
 		if ( !Q_stricmp( token.string, "startingHealth" ) ) {
 			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
-				if ( !PC_Float_Parse( handle, &min ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].startingHealthMin ) ) {
 					PC_SourceError( handle, "expected min startingHealth value for skill level" );
 					return qfalse;
 				}
 
-				if ( !PC_Float_Parse( handle, &max ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].startingHealthMax ) ) {
 					PC_SourceError( handle, "expected max startingHealth value for skill level" );
 					return qfalse;
 				}
-
-				behaviorSkill[i][characterNum].startingHealth = min + (rand() / (float)RAND_MAX) * ( max - min );
 			}
 		} else if ( !Q_stricmp( token.string, "reactionTime" ) ) {
 			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
-				if ( !PC_Float_Parse( handle, &min ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].reactionTimeMin ) ) {
 					PC_SourceError( handle, "expected min reactionTime value for skill level" );
 					return qfalse;
 				}
 
-				if ( !PC_Float_Parse( handle, &max ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].reactionTimeMax ) ) {
 					PC_SourceError( handle, "expected max reactionTime value for skill level" );
 					return qfalse;
 				}
-
-				behaviorSkill[i][characterNum].reactionTime = min + (rand() / (float)RAND_MAX) * ( max - min );
 			}
 		} else if ( !Q_stricmp( token.string, "aimAccuracy" ) ) {
 			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
-				if ( !PC_Float_Parse( handle, &min ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimAccuracyMin ) ) {
 					PC_SourceError( handle, "expected min aimAccuracy value for skill level" );
 					return qfalse;
 				}
 
-				if ( !PC_Float_Parse( handle, &max ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimAccuracyMax ) ) {
 					PC_SourceError( handle, "expected max aimAccuracy value for skill level" );
 					return qfalse;
 				}
-
-				behaviorSkill[i][characterNum].aimAccuracy = min + (rand() / (float)RAND_MAX) * ( max - min );
 			}
 		} else if ( !Q_stricmp( token.string, "aimSkill" ) ) {
 			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
-				if ( !PC_Float_Parse( handle, &min ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimSkillMin ) ) {
 					PC_SourceError( handle, "expected min aimSkill value for skill level" );
 					return qfalse;
 				}
 
-				if ( !PC_Float_Parse( handle, &max ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimSkillMax ) ) {
 					PC_SourceError( handle, "expected max aimSkill value for skill level" );
 					return qfalse;
 				}
-
-				behaviorSkill[i][characterNum].aimSkill = min + (rand() / (float)RAND_MAX) * ( max - min );
 			}
 		} else if ( !Q_stricmp( token.string, "attackSkill" ) ) {
 			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
-				if ( !PC_Float_Parse( handle, &min ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].attackSkillMin ) ) {
 					PC_SourceError( handle, "expected min attackSkill value for skill level" );
 					return qfalse;
 				}
 
-				if ( !PC_Float_Parse( handle, &max ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].attackSkillMax ) ) {
 					PC_SourceError( handle, "expected max attackSkill value for skill level" );
 					return qfalse;
 				}
-
-				behaviorSkill[i][characterNum].attackSkill = min + (rand() / (float)RAND_MAX) * ( max - min );
 			}
 		} else if ( !Q_stricmp( token.string, "aggression" ) ) {
 			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
-				if ( !PC_Float_Parse( handle, &min ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aggressionMin ) ) {
 					PC_SourceError( handle, "expected min aggression value for skill level" );
 					return qfalse;
 				}
 
-				if ( !PC_Float_Parse( handle, &max ) ) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aggressionMax ) ) {
 					PC_SourceError( handle, "expected max aggression value for skill level" );
 					return qfalse;
 				}
-
-				behaviorSkill[i][characterNum].aggression = min + (rand() / (float)RAND_MAX) * ( max - min );
 			}
 		}
 		// Values common to all skill levels
@@ -1578,10 +1564,27 @@ qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum )
 // Set character parameters for specified skill
 void BG_SetBehaviorForSkill( AICharacters_t characterNum, gameskill_t skill )
 {
-	aiDefaults[characterNum].attributes[AIM_SKILL] 				= behaviorSkill[skill][characterNum].aimSkill;
-	aiDefaults[characterNum].attributes[AIM_ACCURACY] 			= behaviorSkill[skill][characterNum].aimAccuracy;
-	aiDefaults[characterNum].attributes[ATTACK_SKILL] 			= behaviorSkill[skill][characterNum].attackSkill;
-	aiDefaults[characterNum].attributes[REACTION_TIME] 			= behaviorSkill[skill][characterNum].reactionTime;
-	aiDefaults[characterNum].attributes[AGGRESSION]				= behaviorSkill[skill][characterNum].aggression;
-	aiDefaults[characterNum].attributes[STARTING_HEALTH] 		= behaviorSkill[skill][characterNum].startingHealth;
+	float min = behaviorSkill[skill][characterNum].startingHealthMin;
+	float max = behaviorSkill[skill][characterNum].startingHealthMax;
+	aiDefaults[characterNum].attributes[AIM_SKILL] 					= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].aimAccuracyMin;
+	max = behaviorSkill[skill][characterNum].aimAccuracyMax;
+	aiDefaults[characterNum].attributes[AIM_ACCURACY] 			= min + (rand() / (float)RAND_MAX) * ( max - min );
+	
+	min = behaviorSkill[skill][characterNum].attackSkillMin;
+	max = behaviorSkill[skill][characterNum].attackSkillMax;
+	aiDefaults[characterNum].attributes[ATTACK_SKILL] 			= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].reactionTimeMin;
+	max = behaviorSkill[skill][characterNum].reactionTimeMax;
+	aiDefaults[characterNum].attributes[REACTION_TIME] 			= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].aggressionMin;
+	max = behaviorSkill[skill][characterNum].aggressionMax;
+	aiDefaults[characterNum].attributes[AGGRESSION]					= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].startingHealthMin;
+	max = behaviorSkill[skill][characterNum].startingHealthMax;
+	aiDefaults[characterNum].attributes[STARTING_HEALTH] 		= min + (rand() / (float)RAND_MAX) * ( max - min );
 }

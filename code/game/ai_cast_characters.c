@@ -1564,8 +1564,8 @@ qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum )
 // Set character parameters for specified skill
 void BG_SetBehaviorForSkill( AICharacters_t characterNum, gameskill_t skill )
 {
-	float min = behaviorSkill[skill][characterNum].startingHealthMin;
-	float max = behaviorSkill[skill][characterNum].startingHealthMax;
+	float min = behaviorSkill[skill][characterNum].aimSkillMin;
+	float max = behaviorSkill[skill][characterNum].aimSkillMax;
 	aiDefaults[characterNum].attributes[AIM_SKILL] 					= min + (rand() / (float)RAND_MAX) * ( max - min );
 
 	min = behaviorSkill[skill][characterNum].aimAccuracyMin;

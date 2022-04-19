@@ -4405,6 +4405,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_MONSTER_ATTACK3:
 		case WP_GAUNTLET:
 		case WP_SNIPER:
+		case VERYBIGEXPLOSION:
 		case WP_MORTAR:            return "";
 		default:                   Com_Printf( "Missing filename entry for weapon id %d\n", weaponNum );
     }

@@ -1082,7 +1082,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 									 mod != MOD_ROCKET_SPLASH &&
 									 mod != MOD_GRENADE &&
 									 mod != MOD_GRENADE_SPLASH &&
-									 mod != MOD_DYNAMITE ) ) {
+									 mod != MOD_DYNAMITE &&
+									 mod != MOD_M7 ) ) {
 			targ->client->ps.velocity[2] *= 0.25;
 		}
 

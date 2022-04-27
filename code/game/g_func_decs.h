@@ -1167,7 +1167,7 @@ extern void BG_PlayerStateToEntityStateExtraPolate ( playerState_t * ps , entity
 extern void BG_PlayerStateToEntityState ( playerState_t * ps , entityState_t * s , qboolean snap ) ;
 extern void BG_AddPredictableEventToPlayerstate ( int newEvent , int eventParm , playerState_t * ps ) ;
 extern void BG_GetMarkDir ( const vec3_t dir , const vec3_t normal , vec3_t out ) ;
-extern void BG_EvaluateTrajectoryDelta ( const trajectory_t * tr , int atTime , vec3_t result ) ;
+extern void BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result, qboolean isAngle, int splineData ); ;
 extern void BG_EvaluateTrajectory ( const trajectory_t * tr , int atTime , vec3_t result ) ;
 extern qboolean BG_CanItemBeGrabbed ( const entityState_t * ent , const playerState_t * ps ) ;
 extern qboolean isClipOnly ( int weap ) ;

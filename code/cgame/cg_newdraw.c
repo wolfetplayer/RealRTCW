@@ -454,9 +454,9 @@ static void CG_DrawCursorhint( rectDef_t *rect ) {
 		icon = cgs.media.hintShaders[HINT_BREAKABLE];
 		break;
 	case HINT_CHAIR:
-		// only show 'pickupable' if you're not armed, or are armed with a single handed weapon
-		if ( cg.predictedPlayerState.weapon && !( WEAPS_ONE_HANDED & ( 1 << ( cg.predictedPlayerState.weapon ) ) ) ) { // (SA) this was backwards
-			icon = cgs.media.hintShaders[HINT_NOACTIVATE];
+	    if ( ammoTable[cg.predictedPlayerState.weapon].twoHand == 1 ) 
+		{
+		icon = cgs.media.hintShaders[HINT_NOACTIVATE];
 		}
 		break;
 	case HINT_PLAYER:

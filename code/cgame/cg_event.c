@@ -571,7 +571,8 @@ static void CG_ItemPickup( int itemNum ) {
 
 		// only select one-handed weaps if you've got a chair
 		if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {
-			if ( !( ( 1 << weapon ) & WEAPS_ONE_HANDED ) ) {
+			if (ammoTable[weapon].twoHand == 1)
+			{
 				selectIt = qfalse;
 			}
 		}

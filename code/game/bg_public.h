@@ -534,7 +534,8 @@ typedef struct ammotable_s {
 	float weapRecoilYaw[2];
 	int soundRange;   
 	float moveSpeed; 
-	int mod;       
+	int twoHand;
+	int mod;   
 } ammotable_t;
     
 
@@ -557,10 +558,6 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 #define WP_LASTAMERICAN     WP_GRENADE_PINEAPPLE
 #define WP_BEGINSECONDARY   WP_SNIPERRIFLE
 #define WP_LASTSECONDARY    WP_FG42SCOPE
-
-#define WEAPS_ONE_HANDED    ( ( 1 << WP_KNIFE ) | ( 1 << WP_LUGER ) | ( 1 << WP_COLT ) | ( 1 << WP_SILENCER ) | ( 1 << WP_GRENADE_LAUNCHER ) | ( 1 << WP_GRENADE_PINEAPPLE ) | ( 1 << WP_TT33 ) | ( 1 << WP_REVOLVER ) )
-
-
 
 #define IS_AUTORELOAD_WEAPON( weapon ) \
 	(	\

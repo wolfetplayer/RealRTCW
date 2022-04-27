@@ -3483,9 +3483,12 @@ static qboolean CG_WeaponSelectable( int i ) {
 
 	// if holding a melee weapon (chair/shield/etc.) only allow single-handed weapons
 	if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {
-		if ( !( WEAPS_ONE_HANDED & ( 1 << i ) ) ) {
-			return qfalse;
-		}
+
+    if (ammoTable[i].twoHand == 1) 
+	{
+		return qfalse;
+	}
+
 	}
 
 	// allow switch out of scope for weapons where you fired the last shot while scoped

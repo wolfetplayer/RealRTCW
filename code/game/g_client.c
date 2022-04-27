@@ -1959,7 +1959,8 @@ void ClientSpawn( gentity_t *ent ) {
 	if ( ent->client->sess.spectatorState != SPECTATOR_FOLLOW ) {
 		ClientEndFrame( ent );
 	}
-
+	// set idle animation on weapon
+	ent->client->ps.weapAnim = ( ( ent->client->ps.weapAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT ) | PM_IdleAnimForWeapon( ent->client->ps.weapon );
 	// clear entity state values
 	BG_PlayerStateToEntityState( &client->ps, &ent->s, qtrue );
 }

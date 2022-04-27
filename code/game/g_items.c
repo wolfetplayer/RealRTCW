@@ -533,6 +533,10 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_MAUSER );
 	} else if (weapon == WP_SILENCER) {
 		COM_BitSet( other->client->ps.weapons, WP_LUGER );
+	} else if ( weapon == WP_M1GARAND ) {
+		COM_BitSet( other->client->ps.weapons, WP_M7 );
+	} else if ( weapon == WP_M7 ) {
+		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
 	}
 
 //----(SA)	end
@@ -1288,7 +1292,7 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 
 	// reflect the velocity on the trace plane
 	hitTime = level.previousTime + ( level.time - level.previousTime ) * trace->fraction;
-	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity );
+	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity, qfalse, ent->s.effect2Time );
 	dot = DotProduct( velocity, trace->plane.normal );
 	VectorMA( velocity, -2 * dot, trace->plane.normal, ent->s.pos.trDelta );
 

@@ -238,8 +238,7 @@ static int weapIconDrawSize( int weap ) {
 
 	// weapons to not draw
 	case WP_KNIFE:
-		return 0;
-
+	    return 0;
 	// weapons with 'wide' icons
 	case WP_THOMPSON:
 	case WP_MP40:
@@ -264,6 +263,8 @@ static int weapIconDrawSize( int weap ) {
     case WP_MP44:
 	case WP_MG42M:
 	case WP_M97:
+	case WP_BROWNING:
+	case WP_M7:
 		return 2;
 	}
 

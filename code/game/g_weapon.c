@@ -614,6 +614,9 @@ float G_GetWeaponSpread( int weapon ) {
 #define MG42M_SPREAD     G_GetWeaponSpread( WP_MG42M )
 #define MG42M_DAMAGE(e)     G_GetWeaponDamage( WP_MG42M, e ) 
 
+#define BROWNING_SPREAD     G_GetWeaponSpread( WP_BROWNING )
+#define BROWNING_DAMAGE(e)     G_GetWeaponDamage( WP_BROWNING, e ) 
+
 #define M97_SPREAD     G_GetWeaponSpread( WP_M97 )
 #define M97_DAMAGE(e)     G_GetWeaponDamage( WP_M97, e ) 
 
@@ -998,6 +1001,48 @@ GRENADE LAUNCHER
 ======================================================================
 */
 extern void G_ExplodeMissilePoisonGas( gentity_t *ent );
+
+gentity_t *weapon_gpg40_fire( gentity_t *ent, int grenType ) {
+	gentity_t   *m /*, *te*/; // JPW NERVE
+	trace_t tr;
+	vec3_t viewpos;
+//	float		upangle = 0, pitch;			//	start with level throwing and adjust based on angle
+	vec3_t tosspos;
+	//bani - to prevent nade-through-teamdoor sploit
+	vec3_t orig_viewpos;
+
+	AngleVectors( ent->client->ps.viewangles, forward, NULL, NULL );
+
+	VectorCopy( muzzleEffect, tosspos );
+
+	// check for valid start spot (so you don't throw through or get stuck in a wall)
+	VectorCopy( ent->s.pos.trBase, viewpos );
+	viewpos[2] += ent->client->ps.viewheight;
+	VectorCopy( viewpos, orig_viewpos );    //bani - to prevent nade-through-teamdoor sploit
+	VectorMA( viewpos, 32, forward, viewpos );
+
+	//bani - to prevent nade-through-teamdoor sploit
+	trap_Trace( &tr, orig_viewpos, tv( -4.f, -4.f, 0.f ), tv( 4.f, 4.f, 6.f ), viewpos, ent->s.number, MASK_MISSILESHOT );
+	if ( tr.fraction < 1 ) { // oops, bad launch spot ) {
+		VectorCopy( tr.endpos, tosspos );
+		SnapVectorTowards( tosspos, orig_viewpos );
+	} else {
+		trap_Trace( &tr, viewpos, tv( -4.f, -4.f, 0.f ), tv( 4.f, 4.f, 6.f ), tosspos, ent->s.number, MASK_MISSILESHOT );
+		if ( tr.fraction < 1 ) { // oops, bad launch spot
+			VectorCopy( tr.endpos, tosspos );
+			SnapVectorTowards( tosspos, viewpos );
+		}
+	}
+
+	VectorScale( forward, 2000, forward );
+
+	m = fire_grenade( ent, tosspos, forward, grenType );
+
+	m->damage = 0;
+
+	// Ridah, return the grenade so we can do some prediction before deciding if we really want to throw it or not
+	return m;
+}
 
 gentity_t *weapon_crowbar_throw( gentity_t *ent ) {
 	gentity_t   *m;
@@ -1626,6 +1671,9 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_VENOM:
 		weapon_venom_fire( ent, qfalse, aimSpreadScale );
 		break;
+	case WP_M7:
+		weapon_gpg40_fire( ent, ent->s.weapon );
+		break;
 	case WP_SNIPERRIFLE:
 		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );
 		if ( !ent->aiCharacter ) {
@@ -1700,6 +1748,7 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, MP44_SPREAD * aimSpreadScale, MP44_DAMAGE(isPlayer) );
 		break;
 	case WP_MG42M: 
+	case WP_BROWNING:
 		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer) );
 		if (!ent->aiCharacter) {
 		vec3_t vec_forward, vec_vangle;

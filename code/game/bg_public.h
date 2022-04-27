@@ -482,30 +482,32 @@ typedef enum {
 	WP_MOSIN,               // 14
 	WP_G43,                 // 15
 	WP_M1GARAND,            // 16
-	WP_BAR,                 // 17
-	WP_MP44,                // 18
-	WP_MG42M,               // 19
-	WP_M97,                 // 20
-	WP_REVOLVER,            // 21
-	WP_COLT,                // 22	
-	WP_THOMPSON,            // 23	
-	WP_GARAND,              // 24	
-	WP_GRENADE_PINEAPPLE,   // 25
-	WP_SNIPERRIFLE,         // 26
-	WP_SNOOPERSCOPE,        // 27
-	WP_FG42SCOPE,           // 28
-	WP_STEN,                // 29	
-	WP_SILENCER,            // 30	
-	WP_AKIMBO,              // 31	
-	WP_DYNAMITE,            // 32
-	WP_MONSTER_ATTACK1,     // 33	
-	WP_MONSTER_ATTACK2,     // 34	
-	WP_MONSTER_ATTACK3,     // 35	
-	WP_GAUNTLET,            // 36
-	WP_SNIPER,              // 37
-	WP_MORTAR,              // 38
-	VERYBIGEXPLOSION,       // 39	
-	WP_NUM_WEAPONS          // 40   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_M7,                  // 17
+	WP_BAR,                 // 19
+	WP_MP44,                // 19
+	WP_MG42M,               // 20
+    WP_BROWNING,            // 21
+	WP_M97,                 // 22
+	WP_REVOLVER,            // 23
+	WP_COLT,                // 24	
+	WP_THOMPSON,            // 25	
+	WP_GARAND,              // 26	
+	WP_GRENADE_PINEAPPLE,   // 27
+	WP_SNIPERRIFLE,         // 28
+	WP_SNOOPERSCOPE,        // 29
+	WP_FG42SCOPE,           // 30
+	WP_STEN,                // 31	
+	WP_SILENCER,            // 32	
+	WP_AKIMBO,              // 33	
+	WP_DYNAMITE,            // 34
+	WP_MONSTER_ATTACK1,     // 35	
+	WP_MONSTER_ATTACK2,     // 36	
+	WP_MONSTER_ATTACK3,     // 37	
+	WP_GAUNTLET,            // 38
+	WP_SNIPER,              // 39
+	WP_MORTAR,              // 40
+	VERYBIGEXPLOSION,       // 41	
+	WP_NUM_WEAPONS          // 42   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -571,7 +573,8 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_BAR    || weapon == WP_MP44      || \
 		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
-		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO       \
+		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
+		weapon == WP_BROWNING \
 	)
 
  // entityState_t->event values
@@ -1059,9 +1062,11 @@ typedef enum {
 	MOD_MOSIN,
 	MOD_G43,
 	MOD_M1GARAND,
+	MOD_M7,
 	MOD_BAR,
 	MOD_MP44,
 	MOD_MG42M,
+	MOD_BROWNING,
 	MOD_M97,
 	MOD_REVOLVER,
 	MOD_GRENADE_PINEAPPLE,
@@ -1289,7 +1294,7 @@ typedef enum {
 
 
 void    BG_EvaluateTrajectory( const trajectory_t *tr, int atTime, vec3_t result );
-void    BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result );
+void    BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result, qboolean isAngle, int splineData );
 void    BG_GetMarkDir( const vec3_t dir, const vec3_t normal, vec3_t out );
 
 void    BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps );
@@ -1430,9 +1435,11 @@ typedef enum
 	ANIM_ET_BULLETIMPACT,
 	ANIM_ET_INSPECTSOUND,
 	ANIM_ET_SECONDLIFE,
-	ANIM_ET_RELOAD_SG1, //RealRTCW
+	ANIM_ET_RELOAD_SG1,
 	ANIM_ET_RELOAD_SG2,
 	ANIM_ET_RELOAD_SG3,
+	ANIM_ET_UNDO_ALT_WEAPON_MODE,
+	ANIM_ET_DO_ALT_WEAPON_MODE,
 
 	NUM_ANIM_EVENTTYPES
 } scriptAnimEventTypes_t;
@@ -1623,6 +1630,13 @@ int BG_GetAnimScriptEvent( playerState_t *ps, scriptAnimEventTypes_t event );
 void QDECL BG_AnimParseError( const char *msg, ... ) __attribute__ ((format (printf, 1, 2)));
 void BG_UpdateConditionValueStrings( int client, char *conditionStr, char *valueStr );
 float BG_AnimGetFootstepGap( playerState_t *ps, float xyspeed );
+
+int PM_IdleAnimForWeapon( int weapon );
+int PM_RaiseAnimForWeapon( int weapon );
+
+int PM_AltSwitchFromForWeapon( int weapon );
+int PM_AltSwitchToForWeapon( int weapon );
+
 
 extern animStringItem_t animStateStr[];
 extern animStringItem_t animBodyPartsStr[];

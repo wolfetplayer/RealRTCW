@@ -2523,7 +2523,9 @@ void PM_CheckForReload( int weapon ) {
 		case WP_SNIPERRIFLE:
 		case WP_FG42SCOPE:
             if ( reloadRequested && pm->ps->ammo[ammoWeap] ) {
+			if ( pm->ps->ammoclip[clipWeap] < ammoTable[weapon].maxclip ) {
 			PM_BeginWeaponChange( weapon, weapAlts[weapon], !( pm->ps->ammo[ammoWeap] ) ? qfalse : qtrue );
+			}
 			}
 			return;
 		default:

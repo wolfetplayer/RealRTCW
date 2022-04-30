@@ -2464,7 +2464,7 @@ static void PM_FinishWeaponReload( void ) {
 
 	PM_ReloadClip( pm->ps->weapon );          // move ammo into clip
 	pm->ps->weaponstate = WEAPON_READY;     // ready to fire
-    PM_StartWeaponAnim( PM_IdleAnimForWeapon( pm->ps->weapon ) );
+    //PM_StartWeaponAnim( PM_IdleAnimForWeapon( pm->ps->weapon ) );
 }
 
 

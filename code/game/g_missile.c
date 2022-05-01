@@ -39,6 +39,7 @@ extern void SP_target_smoke( gentity_t *ent );
 
 void G_ExplodeMissilePoisonGas( gentity_t *ent );
 void M_think( gentity_t *ent );
+void G_ExplodeMissile( gentity_t *ent );
 /*
 ================
 G_BounceMissile
@@ -67,7 +68,7 @@ qboolean G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 
 		if ( ( ent->nextthink - level.time ) < 3250 ) {
 			G_ExplodeMissile( ent );
-			return;
+			return qfalse;
 		}
 	}
 

@@ -3364,7 +3364,7 @@ void CG_DrawWeaponSelect( void ) {
 			x = WP_DRAW_X;
 		}
 
-		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
+           if(drawweap && COM_BitCheck( bits, drawweap )) {
 			// you've got it, draw it
 
 			CG_RegisterWeapon( drawweap, qfalse );
@@ -3429,7 +3429,7 @@ void CG_DrawWeaponSelect( void ) {
 
 		realweap = drawweap;        // DHM - Nerve
 
-		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
+           if(drawweap && COM_BitCheck( bits, drawweap )) {
 
 			CG_RegisterWeapon( drawweap, qfalse );
 

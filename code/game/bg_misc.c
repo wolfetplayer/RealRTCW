@@ -121,21 +121,22 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_45,         1,       30,       2400,        100,       90,        90,        0,      0,      9,        5,          0,          0,          950,        15,                 0.4f,            30,              {.2f, .2f},      {0,0},              1000,               0.90,               1,               MOD_THOMPSON,                              },  //	WP_THOMPSON				// 25
 	{   MAX_AMMO_GARAND,     1,       5,        2500,        100,       1200,      1200,      0,      0,      40,       15,         0,          0,          400,        50,                 0.5f,            50,              {1.0f, 1.0f},    {.1f,.1f},          128,                0.90,               1,               MOD_GARAND,                                },  //	WP_GARAND				// 26
 	{   5,                   1,       5,        1000,        250,       1600,      1600,      0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               MOD_GRENADE_PINEAPPLE,                     },  //	WP_GRENADE_PINEAPPLE	// 27
+	{   1,                   1,       1,        1000,        50,        1000,      1000,      0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               0,                                         },  //	WP_AIRSTRIKE	        // 28
 
-	{   MAX_AMMO_MAUSER,     1,       5,        3000,        0,         1400,      1400,      0,      0,      35,       15,         0,          0,          300,        0,                  10.0f,           0,               {0,0},           {0,0},              2000,               0.40,               1,               MOD_SNIPERRIFLE,                           },  //	WP_SNIPER_GER			// 28
-	{   MAX_AMMO_GARAND,     1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       15,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               MOD_SNOOPERSCOPE,                          },  //	WP_SNIPER_AM			// 29
+	{   MAX_AMMO_MAUSER,     1,       5,        3000,        0,         1400,      1400,      0,      0,      35,       15,         0,          0,          300,        0,                  10.0f,           0,               {0,0},           {0,0},              2000,               0.40,               1,               MOD_SNIPERRIFLE,                           },  //	WP_SNIPER_GER			// 29
+	{   MAX_AMMO_GARAND,     1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       15,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               MOD_SNOOPERSCOPE,                          },  //	WP_SNIPER_AM			// 30
 
-	{   MAX_AMMO_FG42,       1,       20,       2000,        100,       180,       180,       0,      0,      12,       6,          0,          0,          250,        5,                  0.7f,            0,               {0,0},           {0,0},              1500,               0.40,               1,               MOD_FG42SCOPE,                             },  //	WP_FG42SCOPE			// 30
-	{   MAX_AMMO_9MM,        1,       32,       3100,        100,       115,       115,       900,    500,    7,        4,          0,          0,          950,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              64,                 0.90,               1,               MOD_STEN,                                  },  //	WP_STEN					// 31
-	{   MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          350,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              64,                 0.95,               0,               MOD_SILENCER,                              },  //	WP_SILENCER				// 32
-	{   MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               MOD_AKIMBO,                                },  //	WP_AKIMBO				// 33
+	{   MAX_AMMO_FG42,       1,       20,       2000,        100,       180,       180,       0,      0,      12,       6,          0,          0,          250,        5,                  0.7f,            0,               {0,0},           {0,0},              1500,               0.40,               1,               MOD_FG42SCOPE,                             },  //	WP_FG42SCOPE			// 31
+	{   MAX_AMMO_9MM,        1,       32,       3100,        100,       115,       115,       900,    500,    7,        4,          0,          0,          950,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              64,                 0.90,               1,               MOD_STEN,                                  },  //	WP_STEN					// 32
+	{   MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          350,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              64,                 0.95,               0,               MOD_SILENCER,                              },  //	WP_SILENCER				// 33
+	{   MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               MOD_AKIMBO,                                },  //	WP_AKIMBO				// 34
 
-	{   3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               MOD_DYNAMITE,                              },  //	WP_DYNAMITE				// 34
+	{   3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               MOD_DYNAMITE,                              },  //	WP_DYNAMITE				// 35
 
-	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,                                         },  //	WP_MONSTER_ATTACK1		// 35
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,                                         },  //	WP_MONSTER_ATTACK2		// 36
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,                                         },  //	WP_MONSTER_ATTACK3		// 37
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,                                         }   //	WP_GAUNTLET				// 38
+	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,                                         },  //	WP_MONSTER_ATTACK1		// 36
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,                                         },  //	WP_MONSTER_ATTACK2		// 37
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,                                         },  //	WP_MONSTER_ATTACK3		// 38
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,                                         }   //	WP_GAUNTLET				// 39
 };
 
 // Skill-based ammo parameters
@@ -170,13 +171,14 @@ int weapAlts[] = {
 	WP_NONE,            // 25 WP_THOMPSON
 	WP_SNOOPERSCOPE,    // 26 WP_GARAND		
 	WP_NONE,            // 27 WP_GRENADE_PINEAPPLE
-	WP_MAUSER,          // 28 WP_SNIPERRIFLE
-	WP_GARAND,          // 29 WP_SNOOPERSCOPE
-	WP_FG42,            // 30 WP_FG42SCOPE
-	WP_NONE,            // 31 WP_STEN
-	WP_LUGER,           // 32 WP_SILENCER	
-	WP_COLT,            // 33 WP_AKIMBO		
-	WP_NONE             // 34 WP_DYNAMITE
+	WP_NONE,            // 28 WP_AIRSTRIKE
+	WP_MAUSER,          // 29 WP_SNIPERRIFLE
+	WP_GARAND,          // 30 WP_SNOOPERSCOPE
+	WP_FG42,            // 31 WP_FG42SCOPE
+	WP_NONE,            // 32 WP_STEN
+	WP_LUGER,           // 33 WP_SILENCER	
+	WP_COLT,            // 34 WP_AKIMBO		
+	WP_NONE             // 35 WP_DYNAMITE
 };
 
 
@@ -1975,12 +1977,59 @@ model="models/weapons2/p38/luger.md3"
 		{0,0,0,0,0}
 	},
 
+	{
+		"weapon_grenadesmoke",
+		"sound/misc/w_pkup.wav",
+		{  
+		"",
+		"",
+		""
+		},
+
+		"icons/iconw_smokegrenade_1",    
+		"smokeGrenade",              
+		50,
+		IT_WEAPON,
+		WP_AIRSTRIKE,
+		WP_AIRSTRIKE,
+		WP_AIRSTRIKE,
+		WP_AIRSTRIKE,
+		"",                      
+		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",            
+		{0,0,0,0,0}
+	},
+
 
 	//
 	// AMMO ITEMS
 	//
 
 // RealRTCW ammo
+
+	/*QUAKED ammo_airstrike (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+ -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/dynamite.md3"
+*/
+	{
+		"ammo_smokegrenade",
+		"sound/misc/am_pkup.wav",
+		{ 
+		"models/powerups/ammo/dynamite.md3",
+		0,
+		0
+		},
+		"icons/icona_dynamite",  
+		"Signals",              
+		1,
+		IT_AMMO,
+		WP_NONE,
+		WP_AIRSTRIKE,
+		WP_AIRSTRIKE,
+		WP_AIRSTRIKE,
+		"",                     
+		"",                      
+		{1,1,1,1,1}
+	},
 
 
 /*QUAKED ammo_m7 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -3421,6 +3470,7 @@ qboolean isClipOnly( int weap ) {
 	case WP_DYNAMITE:
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
+	case WP_AIRSTRIKE:
 		return qtrue;
 	}
 	return qfalse;
@@ -4488,6 +4538,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_GRENADE_PINEAPPLE: return "pineapple.weap";
 		case WP_DYNAMITE:          return "dynamite.weap";
 		case WP_BROWNING:          return "browning.weap";
+		case WP_AIRSTRIKE:         return "airstrike.weap";
 		case WP_NONE:
 		case WP_MONSTER_ATTACK1:
 		case WP_MONSTER_ATTACK2:

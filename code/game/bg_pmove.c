@@ -2128,6 +2128,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
+	case WP_AIRSTRIKE:
 		break;
 
 		// no reloading
@@ -2600,6 +2601,7 @@ static void PM_SwitchIfEmpty( void ) {
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_PANZERFAUST:
+	case WP_AIRSTRIKE:
 		break;
 	default:
 		return;
@@ -2621,6 +2623,7 @@ static void PM_SwitchIfEmpty( void ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
+	case WP_AIRSTRIKE:
 		// take the 'weapon' away from the player
 		COM_BitClear( pm->ps->weapons, pm->ps->weapon );
 		break;
@@ -3281,6 +3284,7 @@ static void PM_Weapon( void ) {
 	case WP_BROWNING:
 	case WP_FG42SCOPE:
 	case WP_M97:
+	case WP_AIRSTRIKE:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
 				// AI get fast spin-up
@@ -3392,6 +3396,7 @@ static void PM_Weapon( void ) {
 			case WP_DYNAMITE:
 			case WP_GRENADE_LAUNCHER:
 			case WP_GRENADE_PINEAPPLE:
+			case WP_AIRSTRIKE:
 				playswitchsound = qfalse;
 				break;
 			// some weapons not allowed to reload.  must switch back to primary first
@@ -3486,6 +3491,7 @@ static void PM_Weapon( void ) {
 	case WP_BROWNING:
 	case WP_THOMPSON:
 	case WP_STEN:
+	case WP_AIRSTRIKE:
 		PM_ContinueWeaponAnim( weapattackanim );
 		break;
 

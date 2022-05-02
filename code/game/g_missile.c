@@ -993,11 +993,24 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		break;
 	case WP_M7:
 		bolt->classname             = "m7_grenade";
-		bolt->splashRadius          = 300;
+		if ( self->aiCharacter ) {
+			bolt->splashRadius          = ammoTable[WP_M7].aiSplashRadius;	
+		} else {
+			bolt->splashRadius          = ammoTable[WP_M7].playerSplashRadius;
+		}
 		bolt->methodOfDeath         = MOD_M7;
 		bolt->splashMethodOfDeath   = MOD_M7;
 		bolt->s.eFlags              = EF_BOUNCE_HALF | EF_BOUNCE;
 		bolt->nextthink             = level.time + 4000;
+		break;
+	case WP_AIRSTRIKE:
+		bolt->classname             = "grenade";
+		if ( self->aiCharacter ) {
+			bolt->splashRadius          = ammoTable[WP_AIRSTRIKE].aiSplashRadius;	
+		} else {
+			bolt->splashRadius          = ammoTable[WP_AIRSTRIKE].playerSplashRadius;
+		}
+		bolt->s.eFlags              = EF_BOUNCE_HALF | EF_BOUNCE;
 		break;
 	case WP_DYNAMITE:
 		// oh, this is /so/ cheap...

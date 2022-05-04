@@ -3217,7 +3217,7 @@ static void PM_Weapon( void ) {
 #endif
 // jpw
 		if ( pm->ps->weapon == WP_AIRSTRIKE ) {
-			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->ltChargeTime * 0.5f ) ) {
+			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->ltChargeTime ) ) {
 				return;
 			}
 		}

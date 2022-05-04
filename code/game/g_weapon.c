@@ -1661,7 +1661,7 @@ void FireWeapon( gentity_t *ent ) {
 		weapon_gpg40_fire( ent, ent->s.weapon );
 		break;
 	case WP_AIRSTRIKE:
-		if ( level.time - ent->client->ps.classWeaponTime >= g_LTChargeTime.integer * 0.5f ) {
+		if ( level.time - ent->client->ps.classWeaponTime >= g_LTChargeTime.integer ) {
 			if ( level.time - ent->client->ps.classWeaponTime > g_LTChargeTime.integer ) {
 				ent->client->ps.classWeaponTime = level.time - g_LTChargeTime.integer;
 			}
@@ -1788,20 +1788,11 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, THOMPSON_SPREAD * aimSpreadScale, THOMPSON_DAMAGE(isPlayer) );
 		break;
 	case WP_PANZERFAUST:
-		ent->client->ps.classWeaponTime = level.time; // JPW NERVE
 		Weapon_RocketLauncher_Fire( ent, aimSpreadScale );
 		break;
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
-		// weapon_grenadelauncher_fire( ent, ent->s.weapon );
-		//RF- disabled this since it's broken (do we still want it?)
-		//if (ent->aiName && !Q_strncmp(ent->aiName, "mechanic", 8) && !AICast_HasFiredWeapon(ent->s.number, ent->s.weapon))
-		//	weapon_crowbar_throw (ent);
-		//else
-		if ( ent->s.weapon == WP_DYNAMITE ) {
-			ent->client->ps.classWeaponTime = level.time; // JPW NERVE
-		}
 		weapon_grenadelauncher_fire( ent, ent->s.weapon );
 		break;
 	case WP_FLAMETHROWER:

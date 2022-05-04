@@ -1661,7 +1661,13 @@ void FireWeapon( gentity_t *ent ) {
 		weapon_gpg40_fire( ent, ent->s.weapon );
 		break;
 	case WP_AIRSTRIKE:
-		weapon_grenadelauncher_fire( ent,WP_AIRSTRIKE );
+		if ( level.time - ent->client->ps.classWeaponTime >= g_LTChargeTime.integer * 0.5f ) {
+			if ( level.time - ent->client->ps.classWeaponTime > g_LTChargeTime.integer ) {
+				ent->client->ps.classWeaponTime = level.time - g_LTChargeTime.integer;
+			}
+			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
+			weapon_grenadelauncher_fire( ent,WP_AIRSTRIKE );
+		}
 		break;
 	case WP_SNIPERRIFLE:
 		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );

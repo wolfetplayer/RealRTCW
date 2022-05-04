@@ -121,7 +121,7 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_45,         1,       30,       2400,        100,       90,        90,        0,      0,      9,        5,          0,          0,          950,        15,                 0.4f,            30,              {.2f, .2f},      {0,0},              1000,               0.90,               1,               MOD_THOMPSON,                              },  //	WP_THOMPSON				// 25
 	{   MAX_AMMO_GARAND,     1,       5,        2500,        100,       1200,      1200,      0,      0,      40,       15,         0,          0,          400,        50,                 0.5f,            50,              {1.0f, 1.0f},    {.1f,.1f},          128,                0.90,               1,               MOD_GARAND,                                },  //	WP_GARAND				// 26
 	{   5,                   1,       5,        1000,        250,       1600,      1600,      0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               MOD_GRENADE_PINEAPPLE,                     },  //	WP_GRENADE_PINEAPPLE	// 27
-	{   1,                   1,       1,        1000,        50,        1000,      1000,      0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               0,                                         },  //	WP_AIRSTRIKE	        // 28
+	{   999,                 0,       999,      0,           50,        0,         0,         0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               0,                                         },  //	WP_AIRSTRIKE	        // 28
 
 	{   MAX_AMMO_MAUSER,     1,       5,        3000,        0,         1400,      1400,      0,      0,      35,       15,         0,          0,          300,        0,                  10.0f,           0,               {0,0},           {0,0},              2000,               0.40,               1,               MOD_SNIPERRIFLE,                           },  //	WP_SNIPER_GER			// 29
 	{   MAX_AMMO_GARAND,     1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       15,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               MOD_SNOOPERSCOPE,                          },  //	WP_SNIPER_AM			// 30
@@ -2006,31 +2006,6 @@ model="models/weapons2/p38/luger.md3"
 
 // RealRTCW ammo
 
-	/*QUAKED ammo_airstrike (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
- -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/powerups/ammo/dynamite.md3"
-*/
-	{
-		"ammo_smokegrenade",
-		"sound/misc/am_pkup.wav",
-		{ 
-		"models/powerups/ammo/dynamite.md3",
-		0,
-		0
-		},
-		"icons/icona_dynamite",  
-		"Signals",              
-		1,
-		IT_AMMO,
-		WP_NONE,
-		WP_AIRSTRIKE,
-		WP_AIRSTRIKE,
-		WP_AIRSTRIKE,
-		"",                     
-		"",                      
-		{1,1,1,1,1}
-	},
-
 
 /*QUAKED ammo_m7 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
@@ -3470,7 +3445,6 @@ qboolean isClipOnly( int weap ) {
 	case WP_DYNAMITE:
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
-	case WP_AIRSTRIKE:
 		return qtrue;
 	}
 	return qfalse;

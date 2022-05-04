@@ -1907,7 +1907,6 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		case WP_KNIFE:
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
-		case WP_AIRSTRIKE:
 			break;
 
 			// adjust when leaning right (in case of reload)
@@ -2989,8 +2988,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
 		 weaponNum == WP_DYNAMITE ||
-		 weaponNum == WP_M7 ||
-		 weaponNum == WP_AIRSTRIKE ) {
+		 weaponNum == WP_M7 ) {
 		return;
 	}
 
@@ -4723,6 +4721,8 @@ void CG_OutOfAmmoChange( void ) {
 		}
 	}
 
+	
+
 
 	// still nothing available, just go to the next
 	// available weap using the regular selection scheme
@@ -5009,7 +5009,8 @@ void CG_FireWeapon( centity_t *cent ) {
 		}
 	} else if (   ent->weapon == WP_GRENADE_LAUNCHER ||
 				  ent->weapon == WP_GRENADE_PINEAPPLE ||
-				  ent->weapon == WP_DYNAMITE ) { 
+				  ent->weapon == WP_DYNAMITE ||
+				  ent->weapon == WP_AIRSTRIKE ) { 
 		if ( ent->apos.trBase[0] > 0 ) { // underhand
 			return;
 		}

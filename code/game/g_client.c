@@ -1767,6 +1767,7 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->pers.teamState.state = TEAM_ACTIVE;
 
+	client->ps.classWeaponTime = -999999;
 
 	// toggle the teleport bit so the client knows to not lerp
 	flags = ent->client->ps.eFlags & EF_TELEPORT_BIT;

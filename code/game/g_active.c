@@ -1042,6 +1042,8 @@ void ClientThink_real( gentity_t *ent ) {
 
 	VectorCopy( client->ps.origin, client->oldOrigin );
 
+	pm.ltChargeTime = g_LTChargeTime.integer;
+
 	// perform a pmove
 #ifdef MISSIONPACK
 	if ( level.intermissionQueued != 0 && g_singlePlayer.integer ) {

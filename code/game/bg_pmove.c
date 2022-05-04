@@ -2128,7 +2128,6 @@ static void PM_BeginWeaponReload( int weapon ) {
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
-	case WP_AIRSTRIKE:
 		break;
 
 		// no reloading
@@ -2601,7 +2600,6 @@ static void PM_SwitchIfEmpty( void ) {
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_PANZERFAUST:
-	case WP_AIRSTRIKE:
 		break;
 	default:
 		return;
@@ -2623,7 +2621,6 @@ static void PM_SwitchIfEmpty( void ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
-	case WP_AIRSTRIKE:
 		// take the 'weapon' away from the player
 		COM_BitClear( pm->ps->weapons, pm->ps->weapon );
 		break;
@@ -3219,7 +3216,11 @@ static void PM_Weapon( void ) {
 	}
 #endif
 // jpw
-
+		if ( pm->ps->weapon == WP_AIRSTRIKE ) {
+			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->ltChargeTime * 0.5f ) ) {
+				return;
+			}
+		}
 	// check for fire
 	if ( !( (pm->cmd.buttons & BUTTON_ATTACK) || ((pm->cmd.wbuttons & WBUTTON_ATTACK2) && ( (pm->ps->weapon == WP_BAR) || (pm->ps->weapon == WP_FG42) || (pm->ps->weapon == WP_MP44) )) ) && !delayedFire ) {     // if not on fire button and there's not a delayed shot this frame...
 		pm->ps->weaponTime  = 0;
@@ -3396,7 +3397,6 @@ static void PM_Weapon( void ) {
 			case WP_DYNAMITE:
 			case WP_GRENADE_LAUNCHER:
 			case WP_GRENADE_PINEAPPLE:
-			case WP_AIRSTRIKE:
 				playswitchsound = qfalse;
 				break;
 			// some weapons not allowed to reload.  must switch back to primary first
@@ -3501,6 +3501,10 @@ static void PM_Weapon( void ) {
 		PM_StartWeaponAnim( weapattackanim );
 		break;
 	}
+
+		if ( pm->ps->weapon == WP_AIRSTRIKE )  {
+			PM_AddEvent( EV_NOAMMO );
+		}
 
 
 

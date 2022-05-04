@@ -252,6 +252,7 @@ If you have questions concerning this license or the applicable additional terms
 #define CG_CURSORHINT_STATUS        80  // like 'health' bar when pointing at a func_explosive
 #define CG_PLAYER_WEAPON_STABILITY  81  // shows aimSpreadScale value
 #define CG_NEWMESSAGE               82  // 'you got mail!'	//----(SA)	added
+#define CG_PLAYER_WEAPON_RECHARGE   83  // DHM - Nerve :: For various multiplayer weapons that have recharge times
 
 #define UI_OWNERDRAW_BASE           200
 #define UI_HANDICAP                 200

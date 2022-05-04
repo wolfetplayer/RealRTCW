@@ -2232,6 +2232,56 @@ static void CG_DrawFatigue( rectDef_t *rect, vec4_t color, int align ) {
 // jpw
 }
 
+
+static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
+	float barFrac;
+	float chargeTime;
+	int weap = 0;
+	int flags = 0;
+	//qboolean fade = qfalse;
+	vec4_t bgcolor = {1.0f, 1.0f, 1.0f, 0.25f};
+
+	if ( align != HUD_HORIZONTAL) {
+		flags |= 4;   // BAR_VERT
+		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
+	}
+	flags |= 16;
+
+// JPW NERVE -- added drawWeaponPercent in multiplayer
+
+		weap = cg.snap->ps.weapon;
+
+		if ( !( cg.snap->ps.eFlags & EF_ZOOMING ) ) {
+			if ( weap != WP_AIRSTRIKE ) {
+				//fade = qtrue;
+				return;
+			}
+		}
+
+		chargeTime = cg_LTChargeTime.value;
+
+		barFrac = (float)( cg.time - cg.snap->ps.classWeaponTime ) / chargeTime;
+
+		if ( barFrac > 1.0 ) {
+			barFrac = 1.0;
+		}
+
+		color[0] = 1.0f;
+		color[1] = color[2] = barFrac;
+		color[3] = 0.25 + barFrac * 0.5;
+
+		/*if ( fade ) {
+			bgcolor[3] *= 0.4f;
+			color[3] *= 0.4;
+		}*/
+
+		CG_FilledBar( rect->x, rect->y + 6, rect->w, rect->h * 0.84f, color, NULL, bgcolor, barFrac, flags );
+
+		color[1] = color[2] = 1.0f;
+		color[3] = cg_hudAlpha.value;
+		trap_R_SetColor( color );
+
+}
 /*
 ==============
 CG_OwnerDraw
@@ -2324,6 +2374,9 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		break;
 	case CG_STAMINA:
 		CG_DrawFatigue( &rect, color, align );
+		break;
+	case CG_PLAYER_WEAPON_RECHARGE:
+		CG_DrawWeapRecharge( &rect, color, align );
 		break;
 	case CG_PLAYER_HEAD:
 		CG_DrawPlayerHead( &rect, ownerDrawFlags & CG_SHOW_2DONLY );

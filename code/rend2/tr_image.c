@@ -3245,8 +3245,8 @@ qhandle_t RE_RegisterSkin( const char *name ) {
 	}
 
 	if ( strlen( name ) >= MAX_QPATH ) {
-		ri.Printf( PRINT_DEVELOPER, "Skin name exceeds MAX_QPATH\n" );
-		return 0;
+		ri.Printf( PRINT_WARNING, "Skin name exceeds MAX_QPATH\n" );
+		//return 0;
 	}
 
 

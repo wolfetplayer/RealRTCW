@@ -347,6 +347,7 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 	case WP_GRENADE_LAUNCHER:       // make sure if he picks up a grenade that he get's the "launcher" too
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
+	case WP_POISONGAS:
 		COM_BitSet( ent->client->ps.weapons, ammoweap );
 
 	case WP_TESLA:

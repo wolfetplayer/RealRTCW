@@ -96,6 +96,8 @@ qboolean AICast_ScriptAction_Mount( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Unmount( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SavePersistant( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params );
+
+// Achievements
 qboolean AICast_ScriptAction_AchievementMap_W3D( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_AchievementMap_W3DSEC( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_goldchest( cast_state_t *cs, char *params );
@@ -124,6 +126,8 @@ qboolean AICast_ScriptAction_Achievement_chapter7_hard( cast_state_t *cs, char *
 qboolean AICast_ScriptAction_Achievement_boss1( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_boss2( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_boss3( cast_state_t *cs, char *params );
+
+// Addons achievements
 qboolean AICast_ScriptAction_Achievement_curse( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_stalingrad( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_timegate( cast_state_t *cs, char *params );
@@ -149,15 +153,42 @@ qboolean AICast_ScriptAction_Achievement_lion( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_parkour( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_manor1( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_manor1_2( cast_state_t *cs, char *params );
+
+// Bonus modes achievements
 qboolean AICast_ScriptAction_Achievement_walkinthepark( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_ironman( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_hardcore( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_999( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_nightmare( cast_state_t *cs, char *params );
+
+// Winterstein achievements
 qboolean AICast_ScriptAction_Achievement_booze( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_party( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_winterstein( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_speedrun_norway( cast_state_t *cs, char *params );
+
+//ETSP achievements
+qboolean AICast_ScriptAction_AchievementMap_SIWA( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_AchievementMap_SEAWALL( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_GOLDRUSH( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_RADAR( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_RAILGUN( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_FUEL( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_ALLGOLDSIWA( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_CHESTSIWA( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_FUEL1( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_SPEEDBATTERY( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_ROOMBATTERY( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_SAFE( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_HEIST( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_KELLYS( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MANSIONGOLD( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_PANTHER( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_DEPOT( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_DORA( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_ALLGOLDFUEL( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_ETBONUS( cast_state_t *cs, char *params );
+
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -304,15 +335,38 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_parkour",      AICast_ScriptAction_Achievement_parkour},
 	{"achievement_manor1",      AICast_ScriptAction_Achievement_manor1},
 	{"achievement_manor1_2",      AICast_ScriptAction_Achievement_manor1_2},
+	// Bonus modes achievements
 	{"achievement_walkinthepark",      AICast_ScriptAction_Achievement_walkinthepark},
 	{"achievement_ironman",      AICast_ScriptAction_Achievement_ironman},
 	{"achievement_hardcore",      AICast_ScriptAction_Achievement_hardcore},
 	{"achievement_999",      AICast_ScriptAction_Achievement_999},
 	{"achievement_nightmare",      AICast_ScriptAction_Achievement_nightmare},
+	// Winterstein achievements
 	{"achievement_booze",      AICast_ScriptAction_Achievement_booze},
 	{"achievement_party",      AICast_ScriptAction_Achievement_party},
 	{"achievement_winterstein",      AICast_ScriptAction_Achievement_winterstein},
 	{"achievement_speedrun_norway",      AICast_ScriptAction_Achievement_speedrun_norway},
+	// ETSP achievements
+	{"achievement_map_siwa",      AICast_ScriptAction_AchievementMap_SIWA},
+	{"achievement_map_seawall",      AICast_ScriptAction_AchievementMap_SEAWALL},
+	{"achievement_map_goldrush",      AICast_ScriptAction_Achievement_GOLDRUSH},
+	{"achievement_map_radar",      AICast_ScriptAction_Achievement_RADAR},
+	{"achievement_map_railgun",      AICast_ScriptAction_Achievement_RAILGUN},
+	{"achievement_map_fueldump",      AICast_ScriptAction_Achievement_FUEL},
+	{"achievement_allgoldsiwa",      AICast_ScriptAction_Achievement_ALLGOLDSIWA},
+	{"achievement_chestsiwa",      AICast_ScriptAction_Achievement_CHESTSIWA},
+	{"achievement_speedbattery",      AICast_ScriptAction_Achievement_SPEEDBATTERY},
+	{"achievement_roombattery",      AICast_ScriptAction_Achievement_ROOMBATTERY},
+	{"achievement_safe",      AICast_ScriptAction_Achievement_SAFE},
+	{"achievement_heist",      AICast_ScriptAction_Achievement_HEIST},
+	{"achievement_kellys",      AICast_ScriptAction_Achievement_KELLYS},
+	{"achievement_mansiongold",      AICast_ScriptAction_Achievement_MANSIONGOLD},
+	{"achievement_panther",      AICast_ScriptAction_Achievement_PANTHER},
+	{"achievement_depot",      AICast_ScriptAction_Achievement_DEPOT},
+	{"achievement_dora",      AICast_ScriptAction_Achievement_DORA},
+	{"achievement_fuel1",      AICast_ScriptAction_Achievement_FUEL1},
+	{"achievement_allgoldfuel",      AICast_ScriptAction_Achievement_ALLGOLDFUEL},
+	{"achievement_etbonus",      AICast_ScriptAction_Achievement_ETBONUS},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

@@ -1296,6 +1296,7 @@ extern qboolean AICast_ScriptAction_Sight ( cast_state_t * cs , char * params ) 
 extern qboolean AICast_ScriptAction_NoSight ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_FoundSecret ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_ChangeLevel ( cast_state_t * cs , char * params ) ;
+// Achievements
 extern qboolean AICast_ScriptAction_AchievementMap_W3D ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_AchievementMap_W3DSEC ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_goldchest ( cast_state_t * cs , char * params ) ;
@@ -1324,6 +1325,7 @@ extern qboolean AICast_ScriptAction_Achievement_chapter7_hard ( cast_state_t * c
 extern qboolean AICast_ScriptAction_Achievement_boss1 ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_boss2 ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_boss3 ( cast_state_t * cs , char * params ) ;
+// Addons achievements
 extern qboolean AICast_ScriptAction_Achievement_curse ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_stalingrad ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_timegate ( cast_state_t * cs , char * params ) ;
@@ -1349,15 +1351,39 @@ extern qboolean AICast_ScriptAction_Achievement_lion ( cast_state_t * cs , char 
 extern qboolean AICast_ScriptAction_Achievement_parkour ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_manor1 ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_manor1_2 ( cast_state_t * cs , char * params ) ;
+// Bonus modes achievements
 extern qboolean AICast_ScriptAction_Achievement_walkinthepark ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_ironman ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_hardcore ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_999 ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_nightmare ( cast_state_t * cs , char * params ) ;
+// Winterstein achievements
 extern qboolean AICast_ScriptAction_Achievement_booze ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_party ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_winterstein ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_speedrun_norway ( cast_state_t * cs , char * params ) ;
+// ETSP achievements
+extern qboolean AICast_ScriptAction_AchievementMap_SIWA ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_AchievementMap_SEAWALL ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_GOLDRUSH ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_RADAR ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_RAILGUN ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_FUEL ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ALLGOLDSIWA ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_CHESTSIWA ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_FUEL1 ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_SPEEDBATTERY ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ROOMBATTERY ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_SAFE ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_HEIST ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_KELLYS ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_MANSIONGOLD ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_PANTHER ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_DEPOT ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_DORA ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ALLGOLDFUEL ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ETBONUS ( cast_state_t * cs , char * params ) ;
+// end achievements
 extern qboolean AICast_ScriptAction_EndGame ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Teleport ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SavePersistant ( cast_state_t * cs , char * params ) ;

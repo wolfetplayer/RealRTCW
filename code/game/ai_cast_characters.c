@@ -1029,8 +1029,9 @@ void AIChar_spawn( gentity_t *ent ) {
 	if ( BG_GetAnimScriptEvent( &ent->client->ps, ANIM_ET_DIVE ) >= 0 ) {
 		cs->aiFlags |= AIFL_DIVE_ANIM;
 	}
-	// HACK
-	if ( ent->aiName && !Q_stricmp( ent->aiName, "deathshead" ) ) {
+	// HACK. ETSP avoid human torches!
+	if ( ent->aiName && (!Q_stricmp( ent->aiName, "deathshead" ) || !Q_stricmp( ent->aiName, "abate" ) || !Q_stricmp( ent->aiName, "graham" ) 
+	|| !Q_stricmp( ent->aiName, "waters" ) || !Q_stricmp( ent->aiName, "mcdermott" ) || !Q_stricmp( ent->aiName, "ramirez" ) || !Q_stricmp( ent->aiName, "agent2" ) || !Q_stricmp( ent->aiName, "villigut" )  ) ) {
 		cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
 	}
 	//

@@ -15,6 +15,7 @@ Features:
 * Subtitles support
 * New inventory items
 * Increased engine limits
+* Improved controller support
 * A lot of bug fixes and QOL improvements
 
 New CVARs:

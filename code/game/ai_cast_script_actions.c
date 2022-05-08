@@ -3601,6 +3601,266 @@ qboolean AICast_ScriptAction_Achievement_ETBONUS( cast_state_t *cs, char *params
 
 /*
 ==================
+AICast_ScriptAction_Achievement_VENDETTA1_1
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_1( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_1");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_2( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_2");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_3
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_3( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_3");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_4
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_4( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_4");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_5
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_5( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_5");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_6
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_6( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_6");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_7
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_7( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_7");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_8
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_8( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_8");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_9
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_9( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_9");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_10
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_10( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_10");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA1_11
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_11( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA1_11");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_1
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_1( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_1");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_2( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_2");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_3
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_3( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_3");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_4
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_4( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_4");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_5
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_5( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_5");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_6
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_6( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_6");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_7
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_7( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_7");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_8
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_8( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_8");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_VENDETTA2_9
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_9( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_VENDETTA2_9");
+	}
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

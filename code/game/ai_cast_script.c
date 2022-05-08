@@ -189,6 +189,28 @@ qboolean AICast_ScriptAction_Achievement_DORA( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_ALLGOLDFUEL( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_ETBONUS( cast_state_t *cs, char *params );
 
+// Vendetta Dilogy achievements
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_1( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_2( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_3( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_4( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_5( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_6( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_7( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_8( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_9( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_10( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA1_11( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_1( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_2( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_3( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_4( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_5( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_6( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_7( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_8( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_VENDETTA2_9( cast_state_t *cs, char *params );
+
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
@@ -367,6 +389,27 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_fuel1",      AICast_ScriptAction_Achievement_FUEL1},
 	{"achievement_allgoldfuel",      AICast_ScriptAction_Achievement_ALLGOLDFUEL},
 	{"achievement_etbonus",      AICast_ScriptAction_Achievement_ETBONUS},
+	// Vendetta Dilogy achievements
+	{"achievement_VENDETTA1_1",      AICast_ScriptAction_Achievement_VENDETTA1_1},
+	{"achievement_VENDETTA1_2",      AICast_ScriptAction_Achievement_VENDETTA1_2},
+	{"achievement_VENDETTA1_3",      AICast_ScriptAction_Achievement_VENDETTA1_3},
+	{"achievement_VENDETTA1_4",      AICast_ScriptAction_Achievement_VENDETTA1_4},
+	{"achievement_VENDETTA1_5",      AICast_ScriptAction_Achievement_VENDETTA1_5},
+	{"achievement_VENDETTA1_6",      AICast_ScriptAction_Achievement_VENDETTA1_6},
+	{"achievement_VENDETTA1_7",      AICast_ScriptAction_Achievement_VENDETTA1_7},
+	{"achievement_VENDETTA1_8",      AICast_ScriptAction_Achievement_VENDETTA1_8},
+	{"achievement_VENDETTA1_9",      AICast_ScriptAction_Achievement_VENDETTA1_9},
+	{"achievement_VENDETTA1_10",      AICast_ScriptAction_Achievement_VENDETTA1_10},
+	{"achievement_VENDETTA1_11",      AICast_ScriptAction_Achievement_VENDETTA1_11},
+	{"achievement_VENDETTA2_1",      AICast_ScriptAction_Achievement_VENDETTA2_1},
+	{"achievement_VENDETTA2_2",      AICast_ScriptAction_Achievement_VENDETTA2_2},
+	{"achievement_VENDETTA2_3",      AICast_ScriptAction_Achievement_VENDETTA2_3},
+	{"achievement_VENDETTA2_4",      AICast_ScriptAction_Achievement_VENDETTA2_4},
+	{"achievement_VENDETTA2_5",      AICast_ScriptAction_Achievement_VENDETTA2_5},
+	{"achievement_VENDETTA2_6",      AICast_ScriptAction_Achievement_VENDETTA2_6},
+	{"achievement_VENDETTA2_7",      AICast_ScriptAction_Achievement_VENDETTA2_7},
+	{"achievement_VENDETTA2_8",      AICast_ScriptAction_Achievement_VENDETTA2_8},
+	{"achievement_VENDETTA2_9",      AICast_ScriptAction_Achievement_VENDETTA2_9},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

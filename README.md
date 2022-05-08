@@ -6,7 +6,7 @@ Features:
 * All iortcw features including proper widescreen support
 * Steam integration support using Steamshim by Ryan C. Gordon (WIP)
 * Support for 99% of community made maps
-* Expanded .weap files system from Enemy Territory, which allowed to parse out weapon parameters out of the code
+* Expanded .weap files system from Enemy Territory
 * Reworked difficulty levels
 * Automatic AI attributes system
 * Greatly expanded arsenal of weapons

@@ -2033,6 +2033,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		trap_S_StartSound (NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFastSound );
 		break;
 
+	case EV_COUGH:
+	if ( !cent->currentState.aiChar ) 
+	{
+		trap_S_StartSound( 0, es->number, CHAN_AUTO, cgs.media.poisonGasCough );
+	}
+		break;
 
 	case EV_NOAMMO:
 		DEBUGNAME( "EV_NOAMMO" );

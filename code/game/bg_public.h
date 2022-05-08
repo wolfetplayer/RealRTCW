@@ -766,6 +766,7 @@ typedef enum {
 	EV_CLOSEMENU,   
 	EV_SPAWN_SPIRIT,
 	EV_M97_PUMP, // RealRTCW
+	EV_COUGH,
 	EV_MAX_EVENTS   // just added as an 'endcap'
 } entity_event_t;
 

@@ -1100,6 +1100,8 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.underWaterSound = trap_S_RegisterSound( "sound/world/underwater03.wav" );
 
+	cgs.media.poisonGasCough = trap_S_RegisterSound( "sound/weapons/gasgrenade/cough.wav");
+
 	for ( i = 0 ; i < 4 ; i++ ) {
 		Com_sprintf( name, sizeof( name ), "sound/player/footsteps/step%i.wav", i + 1 );
 		cgs.media.footsteps[FOOTSTEP_NORMAL][i] = trap_S_RegisterSound( name );

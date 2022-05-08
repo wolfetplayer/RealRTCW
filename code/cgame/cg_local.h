@@ -1491,6 +1491,8 @@ typedef struct {
 	qhandle_t selectCursor;
 	qhandle_t sizeCursor;
 
+	sfxHandle_t poisonGasCough;
+
 } cgMedia_t;
 
 

@@ -1376,6 +1376,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		if ( targ->client ) {
 			targ->client->ps.stats[STAT_HEALTH] = targ->health;
 		}
+
+		 // Cheap way to ID inflictor entity as poison smoke.
+		if (inflictor->poisonGasAlarm && mod == MOD_POISONGAS && targ->health >= 0)
+			G_AddEvent(targ, EV_COUGH, 0);
 	}
 
 }
@@ -1725,10 +1729,10 @@ qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t *attack
 			if( LogAccuracyHit( ent, attacker ) ) {
 				hitClient = qtrue;
 			}
-			VectorSubtract (ent->r.currentOrigin, origin, dir);
+			//VectorSubtract (ent->r.currentOrigin, origin, dir);
 			// push the center of mass higher than the origin so players
 			// get knocked into the air more
-			dir[2] += 24;
+			//dir[2] += 24;
 
 			G_Damage( ent, inflictor, attacker, dir, origin, (int)points, flags, mod );
 		} else {

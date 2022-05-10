@@ -1207,13 +1207,6 @@ static void UI_DrawClanName( rectDef_t *rect, int font, float scale, vec4_t colo
 static void UI_SetCapFragLimits( qboolean uiVars ) {
 	int cap = 5;
 	int frag = 10;
-#ifdef MISSIONPACK
-	if ( uiInfo.gameTypes[ui_gameType.integer].gtEnum == GT_OBELISK ) {
-		cap = 4;
-	} else if ( uiInfo.gameTypes[ui_gameType.integer].gtEnum == GT_HARVESTER ) {
-		cap = 15;
-	}
-#endif  // #ifdef MISSIONPACK
 	if ( uiVars ) {
 		trap_Cvar_Set( "ui_captureLimit", va( "%d", cap ) );
 		trap_Cvar_Set( "ui_fragLimit", va( "%d", frag ) );
@@ -1487,36 +1480,6 @@ static void UI_DrawTeamName( rectDef_t *rect, int font, float scale, vec4_t colo
 	if ( i >= 0 && i < uiInfo.teamCount ) {
 		Text_Paint( rect->x, rect->y, font, scale, color, va( "%s: %s", ( blue ) ? "Blue" : "Red", uiInfo.teamList[i].teamName ),0, 0, textStyle );
 	}
-}
-
-static void UI_DrawTeamMember( rectDef_t *rect, int font, float scale, vec4_t color, qboolean blue, int num, int textStyle ) {
-#ifdef MISSIONPACK
-	// 0 - None
-	// 1 - Human
-	// 2..NumCharacters - Bot
-	int value = trap_Cvar_VariableValue( va( blue ? "ui_blueteam%i" : "ui_redteam%i", num ) );
-	const char *text;
-	if ( value <= 0 ) {
-		text = "Closed";
-	} else if ( value == 1 ) {
-		text = "Human";
-	} else {
-		value -= 2;
-
-		if ( ui_actualNetGameType.integer >= GT_TEAM ) {
-			if ( value >= uiInfo.characterCount ) {
-				value = 0;
-			}
-			text = uiInfo.characterList[value].name;
-		} else {
-			if ( value >= UI_GetNumBots() ) {
-				value = 0;
-			}
-			text = UI_GetBotNameByNumber( value );
-		}
-	}
-	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
-#endif  // #ifdef MISSIONPACK
 }
 
 static void UI_DrawEffects( rectDef_t *rect, float scale, vec4_t color ) {
@@ -2356,20 +2319,6 @@ static int UI_OwnerDrawWidth( int ownerDraw, int font, float scale ) {
 	return 0;
 }
 
-static void UI_DrawBotName( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
-#ifdef MISSIONPACK
-	int value = uiInfo.botIndex;
-	int game = trap_Cvar_VariableValue( "g_gametype" );
-	const char *text;
-	if ( game >= GT_TEAM ) {
-		text = uiInfo.characterList[value].name;
-	} else {
-		text = UI_GetBotNameByNumber( value );
-	}
-	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
-#endif  // #ifdef MISSIONPACK
-}
-
 static void UI_DrawBotSkill( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
 	if ( uiInfo.skillIndex >= 0 && uiInfo.skillIndex < numSkillLevels ) {
 		Text_Paint( rect->x, rect->y, font, scale, color, skillLevels[uiInfo.skillIndex], 0, 0, textStyle );
@@ -2718,20 +2667,6 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 	case UI_REDTEAMNAME:
 		UI_DrawTeamName( &rect, font, scale, color, qfalse, textStyle );
 		break;
-	case UI_BLUETEAM1:
-	case UI_BLUETEAM2:
-	case UI_BLUETEAM3:
-	case UI_BLUETEAM4:
-	case UI_BLUETEAM5:
-		UI_DrawTeamMember( &rect, font, scale, color, qtrue, ownerDraw - UI_BLUETEAM1 + 1, textStyle );
-		break;
-	case UI_REDTEAM1:
-	case UI_REDTEAM2:
-	case UI_REDTEAM3:
-	case UI_REDTEAM4:
-	case UI_REDTEAM5:
-		UI_DrawTeamMember( &rect, font, scale, color, qfalse, ownerDraw - UI_REDTEAM1 + 1, textStyle );
-		break;
 	case UI_NETSOURCE:
 		UI_DrawNetSource( &rect, font, scale, color, textStyle );
 		break;
@@ -2791,9 +2726,6 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 		break;
 	case UI_OPPONENT_NAME:
 		UI_DrawOpponentName( &rect, font, scale, color, textStyle );
-		break;
-	case UI_BOTNAME:
-		UI_DrawBotName( &rect, font, scale, color, textStyle );
 		break;
 	case UI_BOTSKILL:
 		UI_DrawBotSkill( &rect, font, scale, color, textStyle );

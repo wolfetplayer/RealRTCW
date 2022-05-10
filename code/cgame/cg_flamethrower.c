@@ -770,7 +770,7 @@ void CG_FlameDamage( int owner, vec3_t org, float radius ) {
 		}
 	}
 
-	if ( cgs.localServer && cgs.gametype == GT_SINGLE_PLAYER ) {
+	if ( cgs.localServer ) {
 
 		// flaming zombie's only hurt the player
 		//if (cg_entities[owner].currentState.aiChar == AICHAR_ZOMBIE)
@@ -1517,7 +1517,7 @@ void CG_UpdateFlamethrowerSounds( void ) {
 	// send client damage updates if required
 	for ( cent = cg_entities, i = 0; i < cgs.maxclients; cent++, i++ ) {
 		if ( centFlameInfo[i].lastDmgCheck > centFlameInfo[i].lastDmgUpdate &&
-			 centFlameInfo[i].lastDmgUpdate < cg.time - 50 ) { // JPW NERVE (cgs.gametype == GT_SINGLE_PLAYER ? 50 : 50)) -- sean changed clientdamage so this isn't a saturation issue any longer
+			 centFlameInfo[i].lastDmgUpdate < cg.time - 50 ) { 
 			if ( ( cg.snap->ps.pm_flags & PMF_LIMBO ) || ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR ) ) { // JPW NERVE
 				return; // JPW NERVE don't do flame damage to guys in limbo or spectator, they drop out of the game
 

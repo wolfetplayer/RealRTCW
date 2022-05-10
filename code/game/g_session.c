@@ -139,18 +139,9 @@ void G_InitSessionData( gclient_t *client, char *userinfo ) {
 		} else {
 			switch ( g_gametype.integer ) {
 			default:
-			case GT_FFA:
 			case GT_SINGLE_PLAYER:
 				if ( g_maxGameClients.integer > 0 &&
 					 level.numNonSpectatorClients >= g_maxGameClients.integer ) {
-					sess->sessionTeam = TEAM_SPECTATOR;
-				} else {
-					sess->sessionTeam = TEAM_FREE;
-				}
-				break;
-			case GT_TOURNAMENT:
-				// if the game is full, go into a waiting mode
-				if ( level.numNonSpectatorClients >= 2 ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
 					sess->sessionTeam = TEAM_FREE;

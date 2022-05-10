@@ -914,9 +914,8 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 //	trap_Trace (&tr, start, NULL, NULL, end, ENTITYNUM_NONE, MASK_SHOT);
 
 	// DHM - Nerve :: only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		AICast_ProcessBullet( attacker, start, tr.endpos );
-	}
+	AICast_ProcessBullet( attacker, start, tr.endpos );
+	
 
 	// bullet debugging using Q3A's railtrail
 	if ( g_debugBullets.integer & 1 ) {
@@ -1039,7 +1038,7 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 
 			// Ridah, don't hurt team-mates
 			// DHM - Nerve :: Only in single player
-			if ( attacker->client && traceEnt->client && g_gametype.integer == GT_SINGLE_PLAYER && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
+			if ( attacker->client && traceEnt->client && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
 				// AI's don't hurt members of their own team
 				return;
 			}
@@ -1883,10 +1882,7 @@ void FireWeapon( gentity_t *ent ) {
 		//Weapon_LightningFire( ent );
 		break;
 	case WP_TESLA:
-		if ( g_gametype.integer == GT_SINGLE_PLAYER ) { // JPW NERVE
 			Tesla_Fire( ent );
-		}
-
 		// push the player back a bit
 		if ( !ent->aiCharacter ) {
 			vec3_t forward, vangle;
@@ -1930,9 +1926,7 @@ void FireWeapon( gentity_t *ent ) {
 
 	// Ridah
 	// DHM - Nerve :: Only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		AICast_RecordWeaponFire( ent );
-	}
 }
 
 

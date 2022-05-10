@@ -334,11 +334,6 @@ void sparks_angles_think( gentity_t *ent ) {
 }
 
 void SP_props_sparks( gentity_t *ent ) {
-	// (SA) don't use in multiplayer right now since it makes decyphering net messages almost impossible
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		ent->think = G_FreeEntity;
-		return;
-	}
 
 	G_SetOrigin( ent, ent->s.origin );
 	ent->s.eType = ET_GENERAL;

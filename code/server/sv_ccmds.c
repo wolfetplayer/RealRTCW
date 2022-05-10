@@ -290,7 +290,7 @@ static void SV_Map_f( void ) {
 			killBots = qfalse;
 		}
 		if ( sv_gametype->integer == GT_SINGLE_PLAYER ) {
-			Cvar_SetValue( "g_gametype", GT_FFA );
+			Cvar_SetValue( "g_gametype", GT_SINGLE_PLAYER );
 		}
 	}
 
@@ -343,16 +343,8 @@ static void SV_MapRestart_f( void ) {
 	if ( sv.restartTime ) {
 		return;
 	}
-
-	if ( sv_gametype->integer == GT_SINGLE_PLAYER ) { // (SA) no pause by default in sp
+        // (SA) no pause by default in sp
 		delay = 0;
-	} else {
-		if ( Cmd_Argc() > 1 ) {
-			delay = atoi( Cmd_Argv( 1 ) );
-		} else {
-			delay = 5;
-		}
-	}
 	if ( delay && !Cvar_VariableValue( "g_doWarmup" ) ) {
 		sv.restartTime = sv.time + delay * 1000;
 		SV_SetConfigstring( CS_WARMUP, va( "%i", sv.restartTime ) );

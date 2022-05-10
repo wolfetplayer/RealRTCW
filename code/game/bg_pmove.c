@@ -516,12 +516,6 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 //
 // added #ifdef for game/cgame to project so we can get correct g_gametype variable and only do this in
 // multiplayer if necessary
-#ifdef CGAMEDLL
-	if ( cg_gameType.integer != GT_WOLF )
-#endif
-#ifdef GAMEDLL
-	if ( g_gametype.integer != GT_WOLF )
-#endif
 if ( ! (pm->ps->aiChar)) 
 	{ 
 	scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
@@ -3190,38 +3184,6 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-
-// JPW NERVE -- in multiplayer, don't allow panzerfaust or dynamite to fire if charge bar isn't full
-#ifdef GAMEDLL
-	if ( g_gametype.integer == GT_WOLF ) {
-		if ( pm->ps->weapon == WP_PANZERFAUST ) {
-			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < g_soldierChargeTime.integer ) {
-				return;
-			}
-		}
-		if ( pm->ps->weapon == WP_DYNAMITE ) {
-			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < g_engineerChargeTime.integer ) {        // had to use multiplier because chargetime is used elsewhere as bomb diffuse time FIXME not really but NOTE changing bomb diffuse time will require changing this time as well (intended function: new charge ready when old one explodes, ie every 30 seconds or so)
-
-				return;
-			}
-		}
-	}
-#endif
-#ifdef CGAMEDLL
-	if ( cg_gameType.integer == GT_WOLF ) {
-		if ( pm->ps->weapon == WP_PANZERFAUST ) {
-			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < cg_soldierChargeTime.integer ) {
-				return;
-			}
-		}
-		if ( pm->ps->weapon == WP_DYNAMITE ) {
-			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < cg_engineerChargeTime.integer ) {
-				return;
-			}
-		}
-	}
-#endif
-// jpw
 		if ( pm->ps->weapon == WP_AIRSTRIKE ) {
 			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->ltChargeTime ) ) {
 				return;

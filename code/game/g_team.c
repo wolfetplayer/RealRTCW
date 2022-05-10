@@ -501,12 +501,6 @@ int Pickup_Team( gentity_t *ent, gentity_t *other ) {
 		return 0;
 	}
 
-// JPW NERVE -- set flag model in carrying entity if multiplayer and flagmodel is set
-	if ( g_gametype.integer == GT_WOLF ) {
-		other->s.otherEntityNum2 = ent->s.modelindex2;
-	}
-// jpw
-
 	return ( ( team == cl->sess.sessionTeam ) ?
 			 Team_TouchOurFlag : Team_TouchEnemyFlag )
 						( ent, other, team );
@@ -671,13 +665,6 @@ gentity_t *SelectRandomTeamSpawnPoint( int teamstate, team_t team ) {
 		if ( SpotWouldTelefrag( spot ) ) {
 			continue;
 		}
-// JPW NERVE
-		if ( g_gametype.integer == GT_WOLF ) {
-			if ( !( spot->spawnflags & 2 )  && !initialSpawn ) {
-				continue;
-			}
-		}
-// jpw
 		spots[ count ] = spot;
 		if ( ++count == MAX_TEAM_SPAWN_POINTS ) {
 			break;

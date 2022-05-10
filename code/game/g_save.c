@@ -1107,10 +1107,6 @@ qboolean G_SaveGame( char *username ) {
 		return qtrue;
 	}
 
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {    // don't allow saves in MP
-		return qtrue;
-	}
-
 	G_DPrintf( "G_SaveGame '%s'\n", username );
 
 	// update the playtime
@@ -1400,10 +1396,6 @@ void G_LoadGame( char *filename ) {
 	qtime_t tm;
 	qboolean serverEntityUpdate = qfalse;
 	vmCvar_t episode;
-
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {    // don't allow loads in MP
-		return;
-	}
 
 	if ( saveGamePending ) {
 		return;

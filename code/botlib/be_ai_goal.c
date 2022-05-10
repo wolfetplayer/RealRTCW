@@ -770,21 +770,10 @@ int BotGetLevelItemGoal( int index, char *name, bot_goal_t *goal ) {
 		if ( li->number <= index ) {
 			continue;
 		}
-		//
-		if ( g_gametype == GT_SINGLE_PLAYER ) {
 			if ( li->notsingle ) {
 				continue;
 			}
-		} else if ( g_gametype >= GT_TEAM )     {
-			if ( li->notteam ) {
-				continue;
-			}
-		} else {
-			if ( li->notfree ) {
-				continue;
-			}
-		}
-		//
+
 		if ( !Q_stricmp( name, itemconfig->iteminfo[li->iteminfo].name ) ) {
 			goal->areanum = li->goalareanum;
 			VectorCopy( li->goalorigin, goal->origin );
@@ -1155,19 +1144,10 @@ int BotChooseLTGItem( int goalstate, vec3_t origin, int *inventory, int travelfl
 	//go through the items in the level
 	for ( li = levelitems; li; li = li->next )
 	{
-		if ( g_gametype == GT_SINGLE_PLAYER ) {
 			if ( li->notsingle ) {
 				continue;
 			}
-		} else if ( g_gametype >= GT_TEAM )     {
-			if ( li->notteam ) {
-				continue;
-			}
-		} else {
-			if ( li->notfree ) {
-				continue;
-			}
-		}
+
 		//if the item is not in a possible goal area
 		if ( !li->goalareanum ) {
 			continue;
@@ -1318,19 +1298,9 @@ int BotChooseNBGItem( int goalstate, vec3_t origin, int *inventory, int travelfl
 	//go through the items in the level
 	for ( li = levelitems; li; li = li->next )
 	{
-		if ( g_gametype == GT_SINGLE_PLAYER ) {
 			if ( li->notsingle ) {
 				continue;
 			}
-		} else if ( g_gametype >= GT_TEAM )     {
-			if ( li->notteam ) {
-				continue;
-			}
-		} else {
-			if ( li->notfree ) {
-				continue;
-			}
-		}
 		//if the item is in a possible goal area
 		if ( !li->goalareanum ) {
 			continue;

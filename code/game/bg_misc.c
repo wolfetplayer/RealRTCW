@@ -3504,16 +3504,6 @@ qboolean    BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *
 		Com_Error( ERR_DROP, "BG_CanItemBeGrabbed: index out of range" );
 	}
 
-//----(SA)	check for mp
-#ifdef GAMEDLL
-	if ( g_gametype.integer == GT_WOLF )
-#endif
-#ifdef CGAMEDLL
-	if ( cg_gameType.integer == GT_WOLF )
-#endif
-	multiplayer = qtrue;
-//----(SA)	end
-
 	item = &bg_itemlist[ent->modelindex];
 
 	switch ( item->giType ) {

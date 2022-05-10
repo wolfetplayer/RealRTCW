@@ -351,14 +351,12 @@ void Cmd_Give_f( gentity_t *ent ) {
 	}
 
 	if ( give_all || Q_stricmpn( name, "armor", 5 ) == 0 ) {
-		if ( g_gametype.integer == GT_SINGLE_PLAYER ) { // JPW NERVE -- no armor in multiplayer
 			//----(SA)	modified
 			if ( amount ) {
 				ent->client->ps.stats[STAT_ARMOR] += amount;
 			} else {
 				ent->client->ps.stats[STAT_ARMOR] = 100;
 			}
-		} // jpw
 		if ( !give_all ) {
 			return;
 		}

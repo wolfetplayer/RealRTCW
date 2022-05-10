@@ -104,7 +104,6 @@ qboolean G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 				ent->r.ownerNum = ENTITYNUM_WORLD;
 
 				// make shootable
-				if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 					ent->health             = 5;
 					ent->takedamage         = qtrue;
 
@@ -113,7 +112,7 @@ qboolean G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 					VectorCopy( ent->r.mins, ent->r.absmin );
 					VectorSet( ent->r.maxs, 4, 4, 8 );
 					VectorCopy( ent->r.maxs, ent->r.absmax );
-				}
+				
 
 			}
 //----(SA)	end
@@ -152,10 +151,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace, int impactDamage, vec3_t d
 
 	other = &g_entities[trace->entityNum];
 
-	// DHM - Nerve :: Only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		AICast_ProcessBullet( &g_entities[ent->r.ownerNum], g_entities[ent->r.ownerNum].s.pos.trBase, trace->endpos );
-	}
+	AICast_ProcessBullet( &g_entities[ent->r.ownerNum], g_entities[ent->r.ownerNum].s.pos.trBase, trace->endpos );
 
 	// handle func_explosives
 	if ( other->classname && Q_stricmp( other->classname, "func_explosive" ) == 0 ) {
@@ -583,10 +579,7 @@ void G_RunMissile( gentity_t *ent ) {
 	int impactDamage;
 
 	// Ridah, make AI aware of this danger
-	// DHM - Nerve :: Only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		AICast_CheckDangerousEntity( ent, DANGER_MISSILE, ent->splashRadius, 0.1, 1.0, qtrue );
-	}
+	AICast_CheckDangerousEntity( ent, DANGER_MISSILE, ent->splashRadius, 0.1, 1.0, qtrue );
 
 	// get current position
 	BG_EvaluateTrajectory( &ent->s.pos, level.time, origin );
@@ -906,12 +899,9 @@ fire_grenade
 =================
 */
 gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeWPID ) {
-	gentity_t   *bolt, *hit; // JPW NERVE
+	gentity_t   *bolt;
 	qboolean noExplode = qfalse;
 	qboolean isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
-	vec3_t mins, maxs;      // JPW NERVE
-	static vec3_t range = { 40, 40, 52 };   // JPW NERVE
-	int i,num,touch[MAX_GENTITIES];         // JPW NERVE
 
 	bolt = G_Spawn();
 
@@ -1021,35 +1011,6 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		// oh, this is /so/ cheap...
 		// you need to pick up new code ;)
 		trap_SendServerCommand( self - g_entities, va( "dp %d", ( bolt->nextthink - level.time ) / 1000 ) );
-// JPW NERVE
-		if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-// check if player is in trigger objective field -- swiped from G_TouchTriggers()
-			VectorSubtract( self->client->ps.origin, range, mins );
-			VectorAdd( self->client->ps.origin, range, maxs );
-			num = trap_EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
-			VectorAdd( self->client->ps.origin, self->r.mins, mins );
-			VectorAdd( self->client->ps.origin, self->r.maxs, maxs );
-
-			for ( i = 0 ; i < num ; i++ ) {
-				hit = &g_entities[touch[i]];
-
-				if ( !hit->touch && !self->touch ) {
-					continue;
-				}
-				if ( !( hit->r.contents & CONTENTS_TRIGGER ) ) {
-					continue;
-				}
-				if ( !strcmp( hit->classname,"trigger_objective_info" ) ) {
-					if ( hit->track ) {
-						trap_SendServerCommand( -1, va( "cp \"%s\"", va( "Det charge planted near %s!", hit->track ) ) );
-					} else {
-						trap_SendServerCommand( -1, va( "cp \"%s\"", va( "Det charge planted near objective %d!", hit->count ) ) );
-					}
-					i = num;
-				}
-			}
-		}
-// jpw
 		bolt->classname             = "dynamite";
 		bolt->damage                = 0;
 		if ( self->aiCharacter ) {
@@ -1076,12 +1037,6 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 
 		break;
 	}
-
-// JPW NERVE -- blast radius proportional to damage
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		bolt->splashRadius = G_GetWeaponDamage( grenadeWPID, isPlayer );
-	}
-// jpw
 
 	bolt->clipmask = MASK_MISSILESHOT;
 
@@ -1117,12 +1072,7 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
 
-	//DHM - Nerve :: Use the correct weapon in multiplayer
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		bolt->s.weapon = WP_PANZERFAUST;
-	} else {
-		bolt->s.weapon = self->s.weapon;
-	}
+	bolt->s.weapon = WP_PANZERFAUST;
 
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
@@ -1147,11 +1097,6 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	VectorCopy( start, bolt->s.pos.trBase );
 //	VectorScale( dir, 900, bolt->s.pos.trDelta );	// old speed was 900
 
-// JPW NERVE
-
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		VectorScale( dir,2500,bolt->s.pos.trDelta );
-	} else {
 		// ai gets dynamics they're used to
 		if ( self->aiCharacter ) {
 			VectorScale( dir, 1000, bolt->s.pos.trDelta );
@@ -1159,8 +1104,6 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 			// (SA) trying a bit more speed in SP for player rockets
 			VectorScale( dir, 1300, bolt->s.pos.trDelta );
 		}
-	}
-// jpw
 
 	SnapVector( bolt->s.pos.trDelta );          // save net bandwidth
 	VectorCopy( start, bolt->r.currentOrigin );

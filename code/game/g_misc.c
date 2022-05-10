@@ -1656,9 +1656,7 @@ void Fire_Lead( gentity_t *ent, gentity_t *activator, float spread, int damage, 
 
 	trap_Trace( &tr, lead_muzzle, NULL, NULL, end, ent->s.number, MASK_SHOT );
 
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		AICast_ProcessBullet( activator, lead_muzzle, tr.endpos );
-	}
+	AICast_ProcessBullet( activator, lead_muzzle, tr.endpos );
 
 	if ( tr.surfaceFlags & SURF_NOIMPACT ) {
 		if ( !Q_stricmp( ent->classname, "misc_flak" ) ) {
@@ -2232,14 +2230,6 @@ void mg42_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 	if ( gun && self->health <= 0 ) {
 		gun->s.frame = 2;
 		gun->takedamage = qfalse;
-
-
-		// DHM - Nerve :: health is used in repairing later
-		if ( g_gametype.integer == GT_WOLF ) {
-			gun->health = 0;
-			self->health = 0;
-		}
-		// dhm - end
 	}
 
 	self->takedamage = qfalse;
@@ -2436,13 +2426,6 @@ void SP_mg42( gentity_t *self ) {
 	if ( !self->accuracy ) {
 		self->accuracy = 1;
 	}
-// JPW NERVE
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		if ( !self->damage ) {
-			self->damage = 25;
-		}
-	}
-// jpw
 }
 
 

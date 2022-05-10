@@ -43,27 +43,9 @@ Adds score to both the client and his team
 ============
 */
 void AddScore( gentity_t *ent, int score ) {
-	if ( !ent->client ) {
-		return;
-	}
-	// no scoring during pre-match warmup
-	if ( level.warmupTime ) {
-		return;
-	}
 
-	// Ridah, no scoring during single player
-	// DHM - Nerve :: fix typo
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		return;
-	}
-	// done.
-
-
-	ent->client->ps.persistant[PERS_SCORE] += score;
-	if ( g_gametype.integer == GT_TEAM ) {
-		level.teamScores[ ent->client->ps.persistant[PERS_TEAM] ] += score;
-	}
-	CalculateRanks();
+	return;
+	
 }
 
 
@@ -141,13 +123,11 @@ void TossClientItems( gentity_t *self ) {
 		}
 	}
 
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {  // dropped items stay forever in SP
+ // dropped items stay forever in SP
 		if ( drop ) {
 			drop->nextthink = 0;
 		}
-	}
 
-	if ( g_gametype.integer != GT_TEAM ) {  // drop all the powerups if not in teamplay
 		angle = 45;
 		for ( i = 1 ; i < PW_NUM_POWERUPS ; i++ ) {
 			if ( self->client->ps.powerups[ i ] > level.time ) {
@@ -165,7 +145,7 @@ void TossClientItems( gentity_t *self ) {
 				angle += 45;
 			}
 		}
-	}
+	
 }
 
 
@@ -343,9 +323,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	int i;
 	char        *killerName, *obit;
 	qboolean nogib = qtrue;
-	gitem_t     *item = NULL; // JPW NERVE for flag drop
-	vec3_t launchvel;      // JPW NERVE
-	gentity_t   *flag; // JPW NERVE
 
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		return;
@@ -405,39 +382,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		} else {
 			AddScore( attacker, 1 );
 
-			// Ridah, not in single player
-			if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-				// done.
-				if ( meansOfDeath == MOD_GAUNTLET ) {
-					attacker->client->ps.persistant[PERS_GAUNTLET_FRAG_COUNT]++;
-					attacker->client->ps.persistant[PERS_REWARD] = REWARD_GAUNTLET;
-					attacker->client->ps.persistant[PERS_REWARD_COUNT]++;
-
-					// add the sprite over the player's head
-//					attacker->client->ps.eFlags &= ~(EF_AWARD_IMPRESSIVE | EF_AWARD_EXCELLENT /*| EF_AWARD_GAUNTLET*/ );
-					//attacker->client->ps.eFlags |= EF_AWARD_GAUNTLET;
-					attacker->client->rewardTime = level.time + REWARD_SPRITE_TIME;
-
-					// also play humiliation on target
-					self->client->ps.persistant[PERS_REWARD] = REWARD_GAUNTLET;
-					self->client->ps.persistant[PERS_REWARD_COUNT]++;
-				}
-
-				// check for two kills in a short amount of time
-				// if this is close enough to the last kill, give a reward sound
-				if ( level.time - attacker->client->lastKillTime < CARNAGE_REWARD_TIME ) {
-					attacker->client->ps.persistant[PERS_REWARD_COUNT]++;
-					attacker->client->ps.persistant[PERS_REWARD] = REWARD_EXCELLENT;
-					attacker->client->ps.persistant[PERS_EXCELLENT_COUNT]++;
-
-					// add the sprite over the player's head
-//					attacker->client->ps.eFlags &= ~(EF_AWARD_IMPRESSIVE | EF_AWARD_EXCELLENT /*| EF_AWARD_GAUNTLET*/ );
-//					attacker->client->ps.eFlags |= EF_AWARD_EXCELLENT;
-					attacker->client->rewardTime = level.time + REWARD_SPRITE_TIME;
-				}
-				// Ridah
-			}
-			// done.
 			attacker->client->lastKillTime = level.time;
 		}
 	} else {
@@ -449,30 +393,11 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	// if client is in a nodrop area, don't drop anything
 // JPW NERVE new drop behavior
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {   // only drop here in single player; in multiplayer, drop @ limbo
+
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientItems( self );
 		}
-	}
-
-	// drop flag regardless
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		if ( self->client->ps.powerups[PW_REDFLAG] ) {
-			item = BG_FindItem( "Red Flag" );
-		}
-		if ( self->client->ps.powerups[PW_BLUEFLAG] ) {
-			item = BG_FindItem( "Blue Flag" );
-		}
-		launchvel[0] = crandom() * 20;
-		launchvel[1] = crandom() * 20;
-		launchvel[2] = 10 + random() * 10;
-		if ( item ) {
-			flag = LaunchItem( item,self->r.currentOrigin,launchvel );
-			flag->s.modelindex2 = self->s.otherEntityNum2; // JPW NERVE FIXME set player->otherentitynum2 with old modelindex2 from flag and restore here
-		}
-	}
-// jpw
 
 	Cmd_Score_f( self );        // show scores
 	// send updated scores to any clients that are following this one,
@@ -496,13 +421,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	self->s.powerups = 0;
 // JPW NERVE -- only corpse in SP; in MP, need CONTENTS_BODY so medic can operate
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		self->r.contents = CONTENTS_CORPSE;
-		self->s.weapon = WP_NONE;
-	} else {
-		self->client->limboDropWeapon = self->s.weapon; // store this so it can be dropped in limbo
-	}
-// jpw
+	self->r.contents = CONTENTS_CORPSE;
+	self->s.weapon = WP_NONE;
+
 	self->s.angles[0] = 0;
 	self->s.angles[2] = 0;
 	LookAtKiller( self, inflictor, attacker );
@@ -520,11 +441,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// remove powerups
 	memset( self->client->ps.powerups, 0, sizeof( self->client->ps.powerups ) );
 
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		trap_SendServerCommand( -1, "mu_play sound/music/l_failed_1.wav 0\n" );
-		trap_SetConfigstring( CS_MUSIC_QUEUE, "" );  // clear queue so it'll be quiet after hit
-		trap_SendServerCommand( -1, "cp missionfail0" );
-	}
+	trap_SendServerCommand( -1, "mu_play sound/music/l_failed_1.wav 0\n" );
+	trap_SetConfigstring( CS_MUSIC_QUEUE, "" );  // clear queue so it'll be quiet after hit
+	trap_SendServerCommand( -1, "cp missionfail0" );
+
 
 
 	// never gib in a nodrop
@@ -585,9 +505,8 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	trap_LinkEntity( self );
 
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		AICast_ScriptEvent( AICast_GetCastState( self->s.number ), "death", "" );
-	}
+	AICast_ScriptEvent( AICast_GetCastState( self->s.number ), "death", "" );
+
 }
 
 
@@ -913,7 +832,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	}
 
 //----(SA)	added
-	if ( g_gametype.integer == GT_SINGLE_PLAYER && !targ->aiCharacter && targ->client && targ->client->cameraPortal ) {
+	if ( !targ->aiCharacter && targ->client && targ->client->cameraPortal ) {
 		// get out of damage in sp if in cutscene.
 		return;
 	}
@@ -939,7 +858,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 	}
 
-	if ( ( g_gametype.integer == GT_SINGLE_PLAYER ) && !( targ->r.svFlags & SVF_CASTAI ) ) { // the player
+	if ( !( targ->r.svFlags & SVF_CASTAI ) ) { // the player
 		switch ( mod )
 		{
 		case MOD_GRENADE:
@@ -1016,20 +935,6 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			}
 		}
 	}
-
-	// reduce damage by the attacker's handicap value
-	// unless they are rocket jumping
-
-	// Ridah, not in single player (skill levels?)
-// JPW NERVE pulled this from multiplayer too
-/*
-	if (g_gametype.integer != GT_SINGLE_PLAYER)
-	// done.
-	if ( attacker->client && attacker != targ ) {
-		damage = damage * attacker->client->ps.stats[STAT_MAX_HEALTH] / 100;
-	}
-*/
-// jpw
 
 	// Ridah, Cast AI's don't hurt other Cast AI's as much
 	if ( ( attacker->r.svFlags & SVF_CASTAI ) && ( targ->r.svFlags & SVF_CASTAI ) ) {
@@ -1148,22 +1053,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		damage *= 0.5;
 	}
 
-	// Ridah, don't play these in single player
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		// done.
-		// add to the attacker's hit counter
-		if ( attacker->client && client && targ != attacker && targ->health > 0 ) {
-			if ( OnSameTeam( targ, attacker ) ) {
-				attacker->client->ps.persistant[PERS_HITS] -= damage;
-			} else {
-				attacker->client->ps.persistant[PERS_HITS] += damage;
-			}
-		}
-	}
-
 	// always give half damage if hurting self
 	// calculated after knockback, so rocket jumping works
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {     // JPW NERVE -- removed from multiplayer -- plays havoc with pfaust & demolition balancing
 
 		qboolean dynamite = (qboolean)( mod == MOD_DYNAMITE || mod == MOD_DYNAMITE_SPLASH );
 
@@ -1190,7 +1081,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			damage *= 0.6;
 		}
 
-	}
+	
 
 	if ( damage < 1 ) {
 		damage = 1;
@@ -1203,18 +1094,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 
 	if ( IsHeadShot( targ, attacker, dir, point, mod ) ) {
-		// JPW NERVE -- different headshot behavior in multiplayer
-		if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-			if ( take * 2 < 50 ) { // head shots, all weapons, do minimum 50 points damage
-				take = 50;
-			} else {
-				take *= 2; // sniper rifles can do full-kill (and knock into limbo)
-			}
-			if ( !( targ->client->ps.eFlags & EF_HEADSHOT ) ) {  // only toss hat on first headshot
-				G_AddEvent( targ, EV_LOSE_HAT, DirToByte( dir ) );
-			}
-		} // jpw
-		else {
+
 			// by default, a headshot means damage x2
 			take *= 2;
 
@@ -1256,7 +1136,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 					G_AddEvent( targ, EV_LOSE_HAT, DirToByte( dir ) );
 				}
 			}
-		} // JPW
+
 
 		// shared by both player and ai
 		targ->client->ps.eFlags |= EF_HEADSHOT;
@@ -1517,9 +1397,9 @@ qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float
 	qboolean hitClient = qfalse;
 // JPW NERVE
 	float boxradius;
-	vec3_t dest;
-	trace_t tr;
-	vec3_t midpoint;
+	//vec3_t dest;
+	//trace_t tr;
+	//vec3_t midpoint;
 // jpw
 
 
@@ -1594,8 +1474,8 @@ qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float
 			G_Damage( ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod );
 		}
 // JPW NERVE --  MP weapons should do 1/8 damage through walls over 1/8th distance
-		else {
-			if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
+		/*else {
+			if ( g_gametype.integer =! GT_SINGLE_PLAYER ) {
 				VectorAdd( ent->r.absmin, ent->r.absmax, midpoint );
 				VectorScale( midpoint, 0.5, midpoint );
 				VectorCopy( midpoint, dest );
@@ -1614,7 +1494,7 @@ qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float
 					}
 				}
 			}
-		}
+		}*/
 // jpw
 	}
 	return hitClient;

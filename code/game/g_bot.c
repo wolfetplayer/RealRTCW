@@ -339,72 +339,7 @@ G_CheckMinimumPlayers
 ===============
 */
 void G_CheckMinimumPlayers( void ) {
-	int minplayers;
-	int humanplayers, botplayers;
-	static int checkminimumplayers_time;
-
-	//only check once each 10 seconds
-	if ( checkminimumplayers_time > level.time - 10000 ) {
-		return;
-	}
-	checkminimumplayers_time = level.time;
-	trap_Cvar_Update( &bot_minplayers );
-	minplayers = bot_minplayers.integer;
-	if ( minplayers <= 0 ) {
-		return;
-	}
-
-	if ( g_gametype.integer >= GT_TEAM ) {
-		if ( minplayers >= g_maxclients.integer / 2 ) {
-			minplayers = ( g_maxclients.integer / 2 ) - 1;
-		}
-
-		humanplayers = G_CountHumanPlayers( TEAM_RED );
-		botplayers = G_CountBotPlayers( TEAM_RED );
-		//
-		if ( humanplayers + botplayers < minplayers ) {
-			G_AddRandomBot( TEAM_RED );
-		} else if ( humanplayers + botplayers > minplayers && botplayers ) {
-			G_RemoveRandomBot( TEAM_RED );
-		}
-		//
-		humanplayers = G_CountHumanPlayers( TEAM_BLUE );
-		botplayers = G_CountBotPlayers( TEAM_BLUE );
-		//
-		if ( humanplayers + botplayers < minplayers ) {
-			G_AddRandomBot( TEAM_BLUE );
-		} else if ( humanplayers + botplayers > minplayers && botplayers ) {
-			G_RemoveRandomBot( TEAM_BLUE );
-		}
-	} else if ( g_gametype.integer == GT_TOURNAMENT )     {
-		if ( minplayers >= g_maxclients.integer ) {
-			minplayers = g_maxclients.integer - 1;
-		}
-		humanplayers = G_CountHumanPlayers( -1 );
-		botplayers = G_CountBotPlayers( -1 );
-		//
-		if ( humanplayers + botplayers < minplayers ) {
-			G_AddRandomBot( TEAM_FREE );
-		} else if ( humanplayers + botplayers > minplayers && botplayers ) {
-			// try to remove spectators first
-			if ( !G_RemoveRandomBot( TEAM_SPECTATOR ) ) {
-				// just remove the bot that is playing
-				G_RemoveRandomBot( -1 );
-			}
-		}
-	} else if ( g_gametype.integer == GT_FFA )     {
-		if ( minplayers >= g_maxclients.integer ) {
-			minplayers = g_maxclients.integer - 1;
-		}
-		humanplayers = G_CountHumanPlayers( TEAM_FREE );
-		botplayers = G_CountBotPlayers( TEAM_FREE );
-		//
-		if ( humanplayers + botplayers < minplayers ) {
-			G_AddRandomBot( TEAM_FREE );
-		} else if ( humanplayers + botplayers > minplayers && botplayers ) {
-			G_RemoveRandomBot( TEAM_FREE );
-		}
-	}
+return;
 }
 
 /*
@@ -428,10 +363,10 @@ void G_CheckBotSpawn( void ) {
 		ClientBegin( botSpawnQueue[n].clientNum );
 		botSpawnQueue[n].spawnTime = 0;
 
-		if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-			trap_GetUserinfo( botSpawnQueue[n].clientNum, userinfo, sizeof( userinfo ) );
-			PlayerIntroSound( Info_ValueForKey( userinfo, "model" ) );
-		}
+
+		trap_GetUserinfo( botSpawnQueue[n].clientNum, userinfo, sizeof( userinfo ) );
+		PlayerIntroSound( Info_ValueForKey( userinfo, "model" ) );
+
 	}
 }
 
@@ -487,7 +422,7 @@ qboolean G_BotConnect( int clientNum, qboolean restart ) {
 		return qfalse;
 	}
 
-	if ( restart && g_gametype.integer == GT_SINGLE_PLAYER ) {
+	if ( restart ) {
 		g_entities[clientNum].botDelayBegin = qtrue;
 	} else {
 		g_entities[clientNum].botDelayBegin = qfalse;
@@ -523,17 +458,7 @@ static void G_AddBot( const char *name, int skill, const char *team, int delay )
 
 	// set default team
 	if( !team || !*team ) {
-		if( g_gametype.integer >= GT_TEAM ) {
-			if( PickTeam(clientNum) == TEAM_RED) {
-				team = "red";
-			}
-			else {
-				team = "blue";
-			}
-		}
-		else {
-			team = "free";
-		}
+		team = "free";
 	}
 
 	// get the botinfo from bots.txt
@@ -828,71 +753,3 @@ char *G_GetBotInfoByName( const char *name ) {
 
 	return NULL;
 }
-
-/*
-===============
-G_InitBots
-===============
-*/
-/*
-void G_InitBots( qboolean restart ) {
-
-	// Ridah, we don't need this anymore
-	return;
-	// done.
-	int			fragLimit;
-	int			timeLimit;
-	const char	*arenainfo;
-	char		*strValue;
-	int			basedelay;
-	char		map[MAX_QPATH];
-	char		serverinfo[MAX_INFO_STRING];
-
-	G_LoadBots();
-	G_LoadArenas();
-
-	trap_Cvar_Register( &bot_minplayers, "bot_minplayers", "0", CVAR_SERVERINFO );
-
-	if( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		trap_GetServerinfo( serverinfo, sizeof(serverinfo) );
-		Q_strncpyz( map, Info_ValueForKey( serverinfo, "mapname" ), sizeof(map) );
-		arenainfo = G_GetArenaInfoByMap( map );
-		if ( !arenainfo ) {
-			return;
-		}
-
-		strValue = Info_ValueForKey( arenainfo, "fraglimit" );
-		fragLimit = atoi( strValue );
-		if ( fragLimit ) {
-			trap_Cvar_Set( "fraglimit", strValue );
-		}
-		else {
-			trap_Cvar_Set( "fraglimit", "0" );
-		}
-
-		strValue = Info_ValueForKey( arenainfo, "timelimit" );
-		timeLimit = atoi( strValue );
-		if ( timeLimit ) {
-			trap_Cvar_Set( "timelimit", strValue );
-		}
-		else {
-			trap_Cvar_Set( "timelimit", "0" );
-		}
-
-		if ( !fragLimit && !timeLimit ) {
-			trap_Cvar_Set( "fraglimit", "10" );
-			trap_Cvar_Set( "timelimit", "0" );
-		}
-
-		basedelay = BOT_BEGIN_DELAY_BASE;
-		strValue = Info_ValueForKey( arenainfo, "special" );
-		if( Q_stricmp( strValue, "training" ) == 0 ) {
-			basedelay += 10000;
-		}
-
-		if( !restart ) {
-			G_SpawnBots( Info_ValueForKey( arenainfo, "bots" ), basedelay );
-		}
-	}
-}
-*/

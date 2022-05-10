@@ -96,19 +96,9 @@ OnSameTeam
 ==============
 */
 qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 ) {
-	if ( !ent1->client || !ent2->client ) {
-		return qfalse;
-	}
-
-	if ( g_gametype.integer < GT_TEAM ) {
-		return qfalse;
-	}
-
-	if ( ent1->client->sess.sessionTeam == ent2->client->sess.sessionTeam ) {
-		return qtrue;
-	}
-
+	
 	return qfalse;
+
 }
 
 
@@ -676,7 +666,7 @@ gentity_t *SelectRandomTeamSpawnPoint( int teamstate, team_t team ) {
 	}
 
 // JPW NERVE
-	if ( ( g_gametype.integer != GT_WOLF ) || ( !level.numspawntargets ) || initialSpawn ) { // no spawn targets or not wolf MP, do it the old way
+	if ( ( !level.numspawntargets ) || initialSpawn ) { // no spawn targets or not wolf MP, do it the old way
 		selection = rand() % count;
 		return spots[ selection ];
 	} else {

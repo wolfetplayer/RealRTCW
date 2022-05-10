@@ -61,8 +61,6 @@ If you have questions concerning this license or the applicable additional terms
 
 int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 	int quantity;
-	int i;
-	gclient_t   *client;
 
 	if ( !other->client->ps.powerups[ent->item->giTag] ) {
 
@@ -102,55 +100,6 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
-
-	// Ridah, not in single player
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		// done.
-		// give any nearby players a "denied" anti-reward
-		for ( i = 0 ; i < level.maxclients ; i++ ) {
-			vec3_t delta;
-			float len;
-			vec3_t forward;
-			trace_t tr;
-
-			client = &level.clients[i];
-			if ( client == other->client ) {
-				continue;
-			}
-			if ( client->pers.connected == CON_DISCONNECTED ) {
-				continue;
-			}
-			if ( client->ps.stats[STAT_HEALTH] <= 0 ) {
-				continue;
-			}
-
-			// if too far away, no sound
-			VectorSubtract( ent->s.pos.trBase, client->ps.origin, delta );
-			len = VectorNormalize( delta );
-			if ( len > 192 ) {
-				continue;
-			}
-
-			// if not facing, no sound
-			AngleVectors( client->ps.viewangles, forward, NULL, NULL );
-			if ( DotProduct( delta, forward ) < 0.4 ) {
-				continue;
-			}
-
-			// if not line of sight, no sound
-			trap_Trace( &tr, client->ps.origin, NULL, NULL, ent->s.pos.trBase, ENTITYNUM_NONE, CONTENTS_SOLID );
-			if ( tr.fraction != 1.0 ) {
-				continue;
-			}
-
-			// anti-reward
-			client->ps.persistant[PERS_REWARD_COUNT]++;
-			client->ps.persistant[PERS_REWARD] = REWARD_DENIED;
-		}
-		// Ridah
-	}
-	// done.
-
 	if ( ent->s.density == 2 ) {   // multi-stage health first stage
 		return RESPAWN_PARTIAL;
 	} else if ( ent->s.density == 1 ) {    // last stage, leave the plate
@@ -158,11 +107,9 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 	}
 
 	// single player has no respawns	(SA)
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		if ( !( ent->spawnflags & 8 ) ) {
 			return RESPAWN_SP;
 		}
-	}
 
 	return RESPAWN_POWERUP;
 }
@@ -171,11 +118,10 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 //======================================================================
 int Pickup_Key( gentity_t *ent, gentity_t *other ) {
 	other->client->ps.stats[STAT_KEYS] |= ( 1 << ent->item->giTag );
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
+
 		if ( !( ent->spawnflags & 8 ) ) {
 			return RESPAWN_SP;
 		}
-	}
 
 	return RESPAWN_KEY;
 }
@@ -295,11 +241,9 @@ int Pickup_Holdable( gentity_t *ent, gentity_t *other ) {
 
 	other->client->ps.stats[STAT_HOLDABLE_ITEM] |= ( 1 << ent->item->giTag );   //----(SA)	added
 
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		if ( !( ent->spawnflags & 8 ) ) {
 			return RESPAWN_SP;
 		}
-	}
 
 	return RESPAWN_HOLDABLE;
 }
@@ -433,11 +377,10 @@ int Pickup_Ammo( gentity_t *ent, gentity_t *other ) {
 	Add_Ammo( other, ent->item->giTag, quantity, qfalse );   //----(SA)	modified
 
 	// single player has no respawns	(SA)
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
+
 		if ( !( ent->spawnflags & 8 ) ) {
 			return RESPAWN_SP;
 		}
-	}
 
 	return RESPAWN_AMMO;
 }
@@ -465,17 +408,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 			quantity = 999;
 		}
 
-		// dropped items and teamplay weapons always have full ammo
-//		if ( ! (ent->flags & FL_DROPPED_ITEM) && g_gametype.integer != GT_TEAM ) {
-//			// respawning rules
-//			// drop the quantity if the already have over the minimum
-//			if ( other->client->ps.ammo[ BG_FindAmmoForWeapon(weapon)] < quantity ) {
-//				quantity = quantity - other->client->ps.ammo[ BG_FindAmmoForWeapon(weapon)];
-//			} else {
-//				quantity = 1;		// only add a single shot
-//			}
-//		}
-//----(SA) end
 	}
 
 	if (( weapon == WP_PPSH ) && strstr (level.scriptAI, "Village1"))
@@ -549,20 +481,10 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 //		other->client->ps.ammo[BG_FindAmmoForWeapon(weapon)] = -1; // unlimited ammo
 
 	// single player has no respawns	(SA)
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
+
 		if ( !( ent->spawnflags & 8 ) ) {
 			return RESPAWN_SP;
 		}
-	}
-
-//	// team deathmatch has slow weapon respawns
-//	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-//		return RESPAWN_TEAM_WEAPON;
-//	}
-
-	if ( g_gametype.integer == GT_TEAM ) {
-		return g_weaponTeamRespawn.integer;
-	}
 
 	return g_weaponRespawn.integer;
 }
@@ -609,9 +531,9 @@ int Pickup_Health( gentity_t *ent, gentity_t *other ) {
 	}
 
 	// single player has no respawns	(SA)
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		return RESPAWN_SP;
-	}
+		if ( !( ent->spawnflags & 8 ) ) {
+			return RESPAWN_SP;
+		}
 
 	if ( ent->item->giTag == 100 ) {        // mega health respawns slow
 		return RESPAWN_MEGAHEALTH;
@@ -631,9 +553,9 @@ int Pickup_Armor( gentity_t *ent, gentity_t *other ) {
 	}
 
 	// single player has no respawns	(SA)
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		return RESPAWN_SP;
-	}
+		if ( !( ent->spawnflags & 8 ) ) {
+			return RESPAWN_SP;
+		}
 
 	return RESPAWN_ARMOR;
 }
@@ -679,17 +601,6 @@ void RespawnItem( gentity_t *ent ) {
 	ent->flags &= ~FL_NODRAW;
 	ent->r.svFlags &= ~SVF_NOCLIENT;
 	trap_LinkEntity( ent );
-
-/*
-	if ( ent->item->giType == IT_POWERUP && g_gametype.integer != GT_SINGLE_PLAYER) {
-		// play powerup spawn sound to all clients
-		gentity_t	*te;
-
-		te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_SOUND );
-		te->s.eventParm = G_SoundIndex( "sound/items/poweruprespawn.wav" );
-		te->r.svFlags |= SVF_BROADCAST;
-	}
-*/
 
 	// play the normal respawn sound only to nearby clients
 	G_AddEvent( ent, EV_ITEM_RESPAWN, 0 );
@@ -1145,19 +1056,6 @@ void FinishSpawningItem( gentity_t *ent ) {
 		ent->s.density = i - 1;   // store number of stages in 'density' for client (most will have '1')
 	}
 
-	// powerups don't spawn in for a while
-	if ( ent->item->giType == IT_POWERUP && g_gametype.integer != GT_SINGLE_PLAYER ) {
-		float respawn;
-
-		respawn = 45 + crandom() * 15;
-		ent->flags |= FL_NODRAW;
-		//ent->s.eFlags |= EF_NODRAW;
-		ent->r.contents = 0;
-		ent->nextthink = level.time + respawn * 1000;
-		ent->think = RespawnItem;
-		return;
-	}
-
 	trap_LinkEntity( ent );
 }
 
@@ -1221,9 +1119,6 @@ void SaveRegisteredItems( void ) {
 	}
 	string[ bg_numItems ] = 0;
 
-	if ( trap_Cvar_VariableIntegerValue( "g_gametype" ) != GT_SINGLE_PLAYER ) {
-		G_Printf( "%i items registered\n", count );
-	}
 	trap_SetConfigstring( CS_ITEMS, string );
 }
 

@@ -562,63 +562,8 @@ the simple info query.
 ================
 */
 static void SVC_Status( netadr_t from ) {
-	char player[1024];
-	char status[MAX_MSGLEN];
-	int i;
-	client_t    *cl;
-	playerState_t   *ps;
-	int statusLength;
-	int playerLength;
-	char infostring[MAX_INFO_STRING];
-
 	// ignore if we are in single player
-	if ( Cvar_VariableValue( "g_gametype" ) == GT_SINGLE_PLAYER || Cvar_VariableValue("ui_singlePlayerActive")) {
-		return;
-	}
-
-	// Prevent using getstatus as an amplifier
-	if ( SVC_RateLimitAddress( from, 10, 1000 ) ) {
-		Com_DPrintf( "SVC_Status: rate limit from %s exceeded, dropping request\n",
-			NET_AdrToString( from ) );
-		return;
-	}
-
-	// Allow getstatus to be DoSed relatively easily, but prevent
-	// excess outbound bandwidth usage when being flooded inbound
-	if ( SVC_RateLimit( &outboundLeakyBucket, 10, 100 ) ) {
-		Com_DPrintf( "SVC_Status: rate limit exceeded, dropping request\n" );
-		return;
-	}
-
-	// A maximum challenge length of 128 should be more than plenty.
-	if(strlen(Cmd_Argv(1)) > 128)
-		return;
-
-	strcpy( infostring, Cvar_InfoString( CVAR_SERVERINFO ) );
-
-	// echo back the parameter to status. so master servers can use it as a challenge
-	// to prevent timed spoofed reply packets that add ghost servers
-	Info_SetValueForKey( infostring, "challenge", Cmd_Argv( 1 ) );
-
-	status[0] = 0;
-	statusLength = 0;
-
-	for ( i = 0 ; i < sv_maxclients->integer ; i++ ) {
-		cl = &svs.clients[i];
-		if ( cl->state >= CS_CONNECTED ) {
-			ps = SV_GameClientNum( i );
-			Com_sprintf( player, sizeof( player ), "%i %i \"%s\"\n",
-						 ps->persistant[PERS_SCORE], cl->ping, cl->name );
-			playerLength = strlen( player );
-			if ( statusLength + playerLength >= sizeof( status ) ) {
-				break;      // can't hold any more
-			}
-			strcpy( status + statusLength, player );
-			statusLength += playerLength;
-		}
-	}
-
-	NET_OutOfBandPrint( NS_SERVER, from, "statusResponse\n%s\n%s", infostring, status );
+	return;
 }
 
 /*

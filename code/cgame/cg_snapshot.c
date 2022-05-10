@@ -185,15 +185,10 @@ void CG_SetInitialSnapshot( snapshot_t *snap ) {
 
 	// NERVE - SMF
 	{
-		static char prevmap[64] = { 0 };
 		char curmap[64];
 
 		trap_Cvar_VariableStringBuffer( "mapname", curmap, 64 );
 
-		if ( cgs.gametype == GT_WOLF && Q_stricmp( curmap, prevmap ) ) {
-			strcpy( prevmap, curmap );
-			trap_SendConsoleCommand( "openLimboMenu\n" );
-		}
 	}
 	// -NERVE - SMF
 }

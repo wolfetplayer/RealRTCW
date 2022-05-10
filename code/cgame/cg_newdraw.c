@@ -1427,34 +1427,6 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 		return CG_YourTeamHasFlag();
 	}
 
-#ifdef MISSIONPACK
-	if ( flags & ( CG_SHOW_BLUE_TEAM_HAS_REDFLAG | CG_SHOW_RED_TEAM_HAS_BLUEFLAG ) ) {
-		if ( flags & CG_SHOW_BLUE_TEAM_HAS_REDFLAG && ( cgs.redflag == FLAG_TAKEN || cgs.flagStatus == FLAG_TAKEN_RED ) ) {
-			return qtrue;
-		} else if ( flags & CG_SHOW_RED_TEAM_HAS_BLUEFLAG && ( cgs.blueflag == FLAG_TAKEN || cgs.flagStatus == FLAG_TAKEN_BLUE ) ) {
-			return qtrue;
-		}
-		return qfalse;
-	}
-#endif  // #ifdef MISSIONPACK
-
-	if ( flags & CG_SHOW_ANYTEAMGAME ) {
-		if ( cgs.gametype >= GT_TEAM ) {
-			return qtrue;
-		}
-	}
-
-	if ( flags & CG_SHOW_ANYNONTEAMGAME ) {
-		if ( cgs.gametype < GT_TEAM ) {
-			return qtrue;
-		}
-	}
-	if ( flags & CG_SHOW_CTF ) {
-		if ( cgs.gametype == GT_CTF ) {
-			return qtrue;
-		}
-	}
-
 
 	if ( flags & CG_SHOW_HEALTHCRITICAL ) {
 		if ( cg.snap->ps.stats[STAT_HEALTH] < 25 ) {
@@ -1474,22 +1446,9 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 		}
 	}
 
-	if ( flags & CG_SHOW_TOURNAMENT ) {
-		if ( cgs.gametype == GT_TOURNAMENT ) {
-			return qtrue;
-		}
-	}
-
 	if ( flags & CG_SHOW_DURINGINCOMINGVOICE ) {
 	}
 
-#ifdef MISSIONPACK
-	if ( flags & CG_SHOW_IF_PLAYER_HAS_FLAG ) {
-		if ( cg.snap->ps.powerups[PW_REDFLAG] || cg.snap->ps.powerups[PW_BLUEFLAG] || cg.snap->ps.powerups[PW_NEUTRALFLAG] ) {
-			return qtrue;
-		}
-	}
-#endif  // #ifdef MISSIONPACK
 
 //----(SA)	added
 	if ( flags & CG_SHOW_NOT_V_CLEAR ) {
@@ -1558,12 +1517,6 @@ static void CG_DrawKiller( rectDef_t *rect, int font, float scale, vec4_t color,
 
 }
 
-
-static void CG_DrawCapFragLimit( rectDef_t *rect, int font, float scale, vec4_t color, qhandle_t shader, int textStyle ) {
-	int limit = ( cgs.gametype >= GT_CTF ) ? cgs.capturelimit : cgs.fraglimit;
-	CG_Text_Paint( rect->x, rect->y, font, scale, color, va( "%2i", limit ),0, 0, textStyle );
-}
-
 static void CG_Draw1stPlace( rectDef_t *rect, int font, float scale, vec4_t color, qhandle_t shader, int textStyle ) {
 	if ( cgs.scores1 != SCORE_NOT_PRESENT ) {
 		CG_Text_Paint( rect->x, rect->y, font, scale, color, va( "%2i", cgs.scores1 ),0, 0, textStyle );
@@ -1578,19 +1531,9 @@ static void CG_Draw2ndPlace( rectDef_t *rect, int font, float scale, vec4_t colo
 
 const char *CG_GetGameStatusText( void ) {
 	const char *s = "";
-	if ( cgs.gametype < GT_TEAM ) {
 		if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR ) {
 			s = va( "%s place with %i",CG_PlaceString( cg.snap->ps.persistant[PERS_RANK] + 1 ),cg.snap->ps.persistant[PERS_SCORE] );
 		}
-	} else {
-		if ( cg.teamScores[0] == cg.teamScores[1] ) {
-			s = va( "Teams are tied at %i", cg.teamScores[0] );
-		} else if ( cg.teamScores[0] >= cg.teamScores[1] ) {
-			s = va( "Red leads Blue, %i to %i", cg.teamScores[0], cg.teamScores[1] );
-		} else {
-			s = va( "Blue leads Red, %i to %i", cg.teamScores[1], cg.teamScores[0] );
-		}
-	}
 	return s;
 }
 
@@ -2272,9 +2215,6 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		if ( cg_currentSelectedPlayer.integer == numSortedTeamPlayers ) {
 			CG_DrawNewTeamInfo( &rect, text_x, text_y, font, scale, color, shader );
 		}
-		break;
-	case CG_CAPFRAGLIMIT:
-		CG_DrawCapFragLimit( &rect, font, scale, color, shader, textStyle );
 		break;
 	case CG_1STPLACE:
 		CG_Draw1stPlace( &rect, font, scale, color, shader, textStyle );

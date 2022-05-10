@@ -1088,121 +1088,8 @@ Draw the small two score display
 =================
 */
 static float CG_DrawScores( float y ) {
-	const char  *s;
-	int s1, s2, score;
-	int x, w;
-	int v;
-	vec4_t color;
-
-	s1 = cgs.scores1;
-	s2 = cgs.scores2;
 
 	y -=  BIGCHAR_HEIGHT + 8;
-
-	// draw from the right side to left
-	if ( cgs.gametype >= GT_TEAM ) {
-		x = 640;
-
-		color[0] = 0;
-		color[1] = 0;
-		color[2] = 1;
-		color[3] = 0.33;
-		s = va( "%2i", s2 );
-		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH + 8;
-		x -= w;
-		CG_FillRect( x, y - 4,  w, BIGCHAR_HEIGHT + 8, color );
-		if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_BLUE ) {
-			CG_DrawPic( x, y - 4, w, BIGCHAR_HEIGHT + 8, cgs.media.selectShader );
-		}
-		CG_DrawBigString( x + 4, y, s, 1.0F );
-
-
-		color[0] = 1;
-		color[1] = 0;
-		color[2] = 0;
-		color[3] = 0.33;
-		s = va( "%2i", s1 );
-		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH + 8;
-		x -= w;
-		CG_FillRect( x, y - 4,  w, BIGCHAR_HEIGHT + 8, color );
-		if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED ) {
-			CG_DrawPic( x, y - 4, w, BIGCHAR_HEIGHT + 8, cgs.media.selectShader );
-		}
-		CG_DrawBigString( x + 4, y, s, 1.0F );
-
-		v = cgs.fraglimit;
-
-		if ( v ) {
-			s = va( "%2i", v );
-			w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH + 8;
-			x -= w;
-			CG_DrawBigString( x + 4, y, s, 1.0F );
-		}
-
-//----(SA) don't show frag count/limit in sp
-	} else if ( cgs.gametype != GT_SINGLE_PLAYER && cg_drawFrags.integer ) {
-//----(SA) end
-		qboolean spectator;
-
-		x = 640;
-		score = cg.snap->ps.persistant[PERS_SCORE];
-		spectator = ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR );
-
-		// always show your score in the second box if not in first place
-		if ( s1 != score ) {
-			s2 = score;
-		}
-		if ( s2 != SCORE_NOT_PRESENT ) {
-			s = va( "%2i", s2 );
-			w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH + 8;
-			x -= w;
-			if ( !spectator && score == s2 && score != s1 ) {
-				color[0] = 1;
-				color[1] = 0;
-				color[2] = 0;
-				color[3] = 0.33;
-				CG_FillRect( x, y - 4,  w, BIGCHAR_HEIGHT + 8, color );
-				CG_DrawPic( x, y - 4, w, BIGCHAR_HEIGHT + 8, cgs.media.selectShader );
-			} else {
-				color[0] = 0.5;
-				color[1] = 0.5;
-				color[2] = 0.5;
-				color[3] = 0.33;
-				CG_FillRect( x, y - 4,  w, BIGCHAR_HEIGHT + 8, color );
-			}
-			CG_DrawBigString( x + 4, y, s, 1.0F );
-		}
-
-		// first place
-		if ( s1 != SCORE_NOT_PRESENT ) {
-			s = va( "%2i", s1 );
-			w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH + 8;
-			x -= w;
-			if ( !spectator && score == s1 ) {
-				color[0] = 0;
-				color[1] = 0;
-				color[2] = 1;
-				color[3] = 0.33;
-				CG_FillRect( x, y - 4,  w, BIGCHAR_HEIGHT + 8, color );
-				CG_DrawPic( x, y - 4, w, BIGCHAR_HEIGHT + 8, cgs.media.selectShader );
-			} else {
-				color[0] = 0.5;
-				color[1] = 0.5;
-				color[2] = 0.5;
-				color[3] = 0.33;
-				CG_FillRect( x, y - 4,  w, BIGCHAR_HEIGHT + 8, color );
-			}
-			CG_DrawBigString( x + 4, y, s, 1.0F );
-		}
-
-		if ( cgs.fraglimit ) {
-			s = va( "%2i", cgs.fraglimit );
-			w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH + 8;
-			x -= w;
-			CG_DrawBigString( x + 4, y, s, 1.0F );
-		}
-
-	}
 
 	return y - 8;
 }
@@ -1331,77 +1218,6 @@ static void CG_DrawLowerRight( void ) {
 }
 
 //===========================================================================================
-
-/*
-=================
-CG_DrawTeamInfo
-=================
-*/
-static void CG_DrawTeamInfo( void ) {
-	int h;
-	int i;
-	vec4_t hcolor;
-	int chatHeight;
-
-#define CHATLOC_Y 420 // bottom end
-#define CHATLOC_X 0
-
-	if ( cg_teamChatHeight.integer < TEAMCHAT_HEIGHT ) {
-		chatHeight = cg_teamChatHeight.integer;
-	} else {
-		chatHeight = TEAMCHAT_HEIGHT;
-	}
-	if ( chatHeight <= 0 ) {
-		return; // disabled
-	}
-
-	if ( cg_fixedAspect.integer == 2 ) {
-		CG_SetScreenPlacement( PLACE_LEFT, PLACE_BOTTOM );
-	}
-
-	if ( cgs.teamLastChatPos != cgs.teamChatPos ) {
-		if ( cg.time - cgs.teamChatMsgTimes[cgs.teamLastChatPos % chatHeight] > cg_teamChatTime.integer ) {
-			cgs.teamLastChatPos++;
-		}
-
-		h = ( cgs.teamChatPos - cgs.teamLastChatPos ) * TINYCHAR_HEIGHT;
-
-		if ( cgs.clientinfo[cg.clientNum].team == TEAM_RED ) {
-			hcolor[0] = 1;
-			hcolor[1] = 0;
-			hcolor[2] = 0;
-			hcolor[3] = 0.33;
-		} else if ( cgs.clientinfo[cg.clientNum].team == TEAM_BLUE ) {
-			hcolor[0] = 0;
-			hcolor[1] = 0;
-			hcolor[2] = 1;
-			hcolor[3] = 0.33;
-		} else {
-			hcolor[0] = 0;
-			hcolor[1] = 1;
-			hcolor[2] = 0;
-			hcolor[3] = 0.33;
-		}
-
-		trap_R_SetColor( hcolor );
-		if ( cg_fixedAspect.integer == 2 ) {
-			CG_DrawPic( CHATLOC_X, CHATLOC_Y - h, cgs.glconfig.vidWidth, h, cgs.media.teamStatusBar );
-		} else {
-			CG_DrawPic( CHATLOC_X, CHATLOC_Y - h, 640, h, cgs.media.teamStatusBar );
-		}
-		trap_R_SetColor( NULL );
-
-		hcolor[0] = hcolor[1] = hcolor[2] = 1.0;
-		hcolor[3] = 1.0;
-
-		for ( i = cgs.teamChatPos - 1; i >= cgs.teamLastChatPos; i-- ) {
-			CG_DrawStringExt( CHATLOC_X + TINYCHAR_WIDTH,
-							  CHATLOC_Y - ( cgs.teamChatPos - i ) * TINYCHAR_HEIGHT,
-							  cgs.teamChatMsgs[i % chatHeight], hcolor, qfalse, qfalse,
-							  TINYCHAR_WIDTH, TINYCHAR_HEIGHT, 0 );
-		}
-	}
-}
 
 //----(SA)	modified
 /*
@@ -1948,12 +1764,6 @@ static void CG_DrawWeapReticle( void ) {
 
 	weap = cg.weaponSelect;
 
-	// DHM - Nerve :: So that we will draw reticle
-	if ( cgs.gametype == GT_WOLF && cg.snap->ps.pm_flags & PMF_FOLLOW ) {
-		weap = cg.snap->ps.weapon;
-	}
-
-
 	if ( weap == WP_SNIPERRIFLE ) {
 		// sides
 		if ( cg_fixedAspect.integer ) {
@@ -2269,14 +2079,7 @@ static void CG_DrawCrosshair( void ) {
 
 	friendInSights = (qboolean)( cg.snap->ps.serverCursorHint == HINT_PLYR_FRIEND );  //----(SA)	added
 
-	// DHM - Nerve :: show reticle in limbo and spectator
-	if ( cgs.gametype >= GT_WOLF && ( ( cg.snap->ps.pm_flags & PMF_FOLLOW ) || cg.demoPlayback ) ) {
-		weapnum = cg.snap->ps.weapon;
-	} else {
-		weapnum = cg.weaponSelect;
-	}
-
-
+	weapnum = cg.weaponSelect;
 
 	switch ( weapnum ) {
 
@@ -2320,7 +2123,7 @@ static void CG_DrawCrosshair( void ) {
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
 
 			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
-			if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
+		/*	if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
 				if ( VectorLength( cg.snap->ps.velocity ) > 127.0f ) {
 					if ( cg.snap->ps.weapon == WP_SNIPERRIFLE ) {
 						CG_FinishWeaponChange( WP_SNIPERRIFLE, WP_MAUSER );
@@ -2329,7 +2132,7 @@ static void CG_DrawCrosshair( void ) {
 						CG_FinishWeaponChange( WP_SNOOPERSCOPE, WP_GARAND );
 					}
 				}
-			}
+			}*/
 			// jpw
 
 			CG_DrawWeapReticle();
@@ -2464,12 +2267,7 @@ static void CG_DrawCrosshair3D( void ) {
 
 	friendInSights = (qboolean)( cg.snap->ps.serverCursorHint == HINT_PLYR_FRIEND );  //----(SA)	added
 
-	// DHM - Nerve :: show reticle in limbo and spectator
-	if ( cgs.gametype >= GT_WOLF && ( ( cg.snap->ps.pm_flags & PMF_FOLLOW ) || cg.demoPlayback ) ) {
-		weapnum = cg.snap->ps.weapon;
-	} else {
-		weapnum = cg.weaponSelect;
-	}
+	weapnum = cg.weaponSelect;
 
 	switch ( weapnum ) {
 
@@ -2512,7 +2310,7 @@ static void CG_DrawCrosshair3D( void ) {
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
 
 			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
-			if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
+		/*	if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
 				if ( VectorLength( cg.snap->ps.velocity ) > 127.0f ) {
 					if ( cg.snap->ps.weapon == WP_SNIPERRIFLE ) {
 						CG_FinishWeaponChange( WP_SNIPERRIFLE, WP_MAUSER );
@@ -2521,7 +2319,7 @@ static void CG_DrawCrosshair3D( void ) {
 						CG_FinishWeaponChange( WP_SNOOPERSCOPE, WP_GARAND );
 					}
 				}
-			}
+			}*/
 			// jpw
 
 			CG_DrawWeapReticle();
@@ -2617,18 +2415,6 @@ static void CG_DrawCrosshair3D( void ) {
 	trap_R_AddRefEntityToScene(&ent);
 }
 
-
-/*
-=================
-CG_ScanForCrosshairEntity
-=================
-*/
-static void CG_ScanForCrosshairEntity( void ) {
-   return; //----(SA)	don't use any scanning at the moment.
-}
-
-
-
 /*
 ==============
 CG_DrawDynamiteStatus
@@ -2706,73 +2492,8 @@ CG_DrawCrosshairNames
 =====================
 */
 static void CG_DrawCrosshairNames( void ) {
-	float       *color;
-	vec4_t teamColor;           // NERVE - SMF
-	char        *name;
-	float w;
-
-	if ( !cg_drawCrosshair.integer ) {
-		return;
-	}
-	if ( !cg_drawCrosshairNames.integer ) {
-		return;
-	}
-	/*if ( cg.renderingThirdPerson ) {
-		return;
-	}*/
-
-	// Ridah
-	if ( cg_gameType.integer == GT_SINGLE_PLAYER ) {
-		return;
-	}
-	// done.
-
-	if ( cg_fixedAspect.integer ) {
-		CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
-	}
-
-	// scan the known entities to see if the crosshair is sighted on one
-	CG_ScanForCrosshairEntity();
-
-	// draw the name of the player being looked at
-	color = CG_FadeColor( cg.crosshairClientTime, 1000 );
-
-	if ( !color ) {
-		trap_R_SetColor( NULL );
-		return;
-	}
-
-	// NERVE - SMF - use fade alpha but color text according to teams
-	teamColor[3] = color[3];
-
-	// NERVE - SMF - no longer identify opposing side, so just use green now
-//	if ( cgs.clientinfo[ cg.crosshairClientNum ].team != cgs.clientinfo[ cg.clientNum ].team )
-//		VectorSet( teamColor, 0.7608, 0.1250, 0.0859 );			// LIGHT-RED
-//	else
-	VectorSet( teamColor, 0.1250, 0.7608, 0.0859 );             // LIGHT-GREEN
-
-	trap_R_SetColor( teamColor );
-	// -NERVE - SMF
-
-	name = cgs.clientinfo[ cg.crosshairClientNum ].name;
-	w = CG_DrawStrlen( va( "Axis: %s", name ) ) * BIGCHAR_WIDTH;
-//	CG_DrawBigString( 320 - w / 2, 170, name, color[3] * 0.5 );
-
-	// NERVE - SMF
-	if ( strlen( name ) ) {
-		if ( ( cgs.clientinfo[ cg.crosshairClientNum ].team == TEAM_RED ) &&
-			 ( cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_RED ) ) { // JPW NERVE -- only show same team info so people can't pan-search
-			CG_DrawBigStringColor( 320 - w / 2, 170, va( "Axis: %s", name ), teamColor );
-		} else if ( ( cgs.clientinfo[ cg.crosshairClientNum ].team == TEAM_BLUE ) &&
-					( cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_BLUE ) ) { // JPW NERVE -- so's we can't find snipers for free
-			CG_DrawBigStringColor( 320 - w / 2, 170, va( "Ally: %s", name ), teamColor );
-		}
-	}
-	// -NERVE - SMF
-
-	trap_R_SetColor( NULL );
+return;
 }
-
 
 
 //==============================================================================
@@ -2787,12 +2508,6 @@ static void CG_DrawSpectator( void ) {
 		CG_SetScreenPlacement(PLACE_CENTER, PLACE_BOTTOM);
 	}
 	CG_DrawBigString( 320 - 9 * 8, 440, "SPECTATOR", 1.0F );
-	if ( cgs.gametype == GT_TOURNAMENT ) {
-		CG_DrawBigString( 320 - 15 * 8, 460, "waiting to play", 1.0F );
-	}
-	if ( cgs.gametype == GT_TEAM || cgs.gametype == GT_CTF ) {
-		CG_DrawBigString( 320 - 25 * 8, 460, "use the TEAM menu to play", 1.0F );
-	}
 }
 
 /*
@@ -2832,55 +2547,13 @@ CG_DrawIntermission
 =================
 */
 static void CG_DrawIntermission( void ) {
-	if ( cgs.gametype == GT_SINGLE_PLAYER ) {
-		CG_DrawCenterString();
-		return;
-	}
 
-	cg.scoreFadeTime = cg.time;
-	CG_DrawScoreboard();
+	CG_DrawCenterString();
+	return;
+
+	//cg.scoreFadeTime = cg.time;
+	//CG_DrawScoreboard();
 }
-
-// NERVE - SMF
-/*
-=================
-CG_ActivateLimboMenu
-=================
-*/
-// TTimo: unused
-/*
-static void CG_ActivateLimboMenu( void ) {
-	static qboolean latch = qfalse;
-	qboolean test;
-	char buf[32];
-
-	if ( cgs.gametype != GT_WOLF )
-		return;
-
-	// should we open the limbo menu
-	test = cg.snap->ps.pm_flags & PMF_LIMBO || cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR;
-
-	if ( test && !latch ) {
-		trap_SendConsoleCommand( "startLimboMode\n" );
-		trap_SendConsoleCommand( "OpenLimboMenu\n" );
-		latch = qtrue;
-	}
-	else if ( !test && latch ) {
-		trap_SendConsoleCommand( "stopLimboMode\n" );
-		trap_SendConsoleCommand( "CloseLimboMenu\n" );
-		latch = qfalse;
-	}
-
-	// set the limbo state
-	trap_Cvar_VariableStringBuffer( "ui_limboMode", buf, sizeof( buf ) );
-
-	if ( atoi( buf ) )
-		cg.limboMenu = qtrue;
-	else
-		cg.limboMenu = qfalse;
-}
-*/
-// -NERVE - SMF
 
 /*
 =================
@@ -2978,100 +2651,7 @@ CG_DrawWarmup
 =================
 */
 static void CG_DrawWarmup( void ) {
-	int w;
-	int sec;
-	int i;
-	clientInfo_t    *ci1, *ci2;
-	int cw;
-	const char  *s;
-
-	if ( cgs.gametype == GT_SINGLE_PLAYER ) {
-		return;     // (SA) don't bother with this stuff in sp
-	}
-
-	sec = cg.warmup;
-	if ( !sec ) {
-		return;
-	}
-
-	if ( cg_fixedAspect.integer == 2 ) {
-		CG_SetScreenPlacement(PLACE_CENTER, PLACE_TOP);
-	}
-
-	if ( sec < 0 ) {
-		s = "Waiting for players";
-		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-		CG_DrawBigString( 320 - w / 2, 40, s, 1.0F );
-		cg.warmupCount = 0;
-		return;
-	}
-
-
-	// find the two active players
-	ci1 = NULL;
-	ci2 = NULL;
-	for ( i = 0 ; i < cgs.maxclients ; i++ ) {
-		if ( cgs.clientinfo[i].infoValid && cgs.clientinfo[i].team == TEAM_FREE ) {
-			if ( !ci1 ) {
-				ci1 = &cgs.clientinfo[i];
-			} else {
-				ci2 = &cgs.clientinfo[i];
-			}
-		}
-	}
-
-	if ( ci1 && ci2 ) {
-		s = va( "%s vs %s", ci1->name, ci2->name );
-		w = CG_DrawStrlen( s );
-		if ( w > 640 / GIANT_WIDTH ) {
-			cw = 640 / w;
-		} else {
-			cw = GIANT_WIDTH;
-		}
-		CG_DrawStringExt( 320 - w * cw / 2, 20,s, colorWhite,
-						  qfalse, qtrue, cw, (int)( cw * 1.5 ), 0 );
-	}
-
-
-	sec = ( sec - cg.time ) / 1000;
-	if ( sec < 0 ) {
-		sec = 0;
-	}
-	s = va( "Starts in: %i", sec + 1 );
-	if ( sec != cg.warmupCount ) {
-		cg.warmupCount = sec;
-		switch ( sec ) {
-		case 0:
-			trap_S_StartLocalSound( cgs.media.count1Sound, CHAN_ANNOUNCER );
-			break;
-		case 1:
-			trap_S_StartLocalSound( cgs.media.count2Sound, CHAN_ANNOUNCER );
-			break;
-		case 2:
-			trap_S_StartLocalSound( cgs.media.count3Sound, CHAN_ANNOUNCER );
-			break;
-		default:
-			break;
-		}
-	}
-	switch ( cg.warmupCount ) {
-	case 0:
-		cw = 28;
-		break;
-	case 1:
-		cw = 24;
-		break;
-	case 2:
-		cw = 20;
-		break;
-	default:
-		cw = 16;
-		break;
-	}
-
-	w = CG_DrawStrlen( s );
-	CG_DrawStringExt( 320 - w * cw / 2, 70, s, colorWhite,
-					  qfalse, qtrue, cw, (int)( cw * 1.5 ), 0 );
+	return;     // (SA) don't bother with this stuff in sp
 }
 
 //==================================================================================
@@ -3144,16 +2724,12 @@ static void CG_DrawFlashZoomTransition( void ) {
 		return;
 	}
 
-	if ( cgs.gametype != GT_SINGLE_PLAYER ) { // JPW NERVE
-		fadeTime = 400;
-	} else {
 		if ( cg.zoomedScope ) {
 			fadeTime = cg.zoomedScope;  //----(SA)
 		} else {
 			fadeTime = 300;
 		}
-	}
-	// jpw
+
 
 	frac = cg.time - cg.zoomTime;
 
@@ -3697,10 +3273,6 @@ if ( !cg_oldWolfUI.integer ) {
 		}
 	}
 
-	if ( cgs.gametype >= GT_TEAM ) {
-		CG_DrawTeamInfo();
-	}
-
 	CG_DrawVote();
 
 	CG_DrawLagometer();
@@ -3841,13 +3413,11 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 	}
 
 	// if they are waiting at the mission stats screen, show the stats
-	if ( cg_gameType.integer == GT_SINGLE_PLAYER ) {
 		if ( strlen( cg_missionStats.string ) > 1 ) {
 			trap_Cvar_Set( "com_expectedhunkusage", "-2" );
 			CG_DrawInformation();
 			return;
 		}
-	}
 
 	// optionally draw the tournement scoreboard instead
 	if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR &&
@@ -3856,34 +3426,11 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 		return;
 	}
 
-	// clear around the rendered view if sized down
-	//CG_TileClear();	// (SA) moved down
-
 	if(stereoView != STEREO_CENTER)
 		CG_DrawCrosshair3D();
 
 	cg.refdef.glfog.registered = 0; // make sure it doesn't use fog from another scene
-/*
-	// NERVE - SMF - activate limbo menu and draw small 3d window
-	CG_ActivateLimboMenu();
 
-	if ( cg.limboMenu ) {
-		float x, y, w, h;
-		x = LIMBO_3D_X;
-		y = LIMBO_3D_Y;
-		w = LIMBO_3D_W;
-		h = LIMBO_3D_H;
-
-		cg.refdef.width = 0;
-		CG_AdjustFrom640( &x, &y, &w, &h );
-
-		cg.refdef.x = x;
-		cg.refdef.y = y;
-		cg.refdef.width = w;
-		cg.refdef.height = h;
-	}
-	// -NERVE - SMF
-*/
 	cg.refdef.rdflags |= RDF_DRAWSKYBOX;
 	if ( !cg_skybox.integer ) {
 		cg.refdef.rdflags &= ~RDF_DRAWSKYBOX;

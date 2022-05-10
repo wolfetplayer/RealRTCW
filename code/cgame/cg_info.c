@@ -415,7 +415,7 @@ void CG_DrawInformation( void ) {
 	}
 
 	// Ridah, in single player, cheats disabled, don't show unnecessary information
-	if ( cgs.gametype == GT_SINGLE_PLAYER ) {
+
 
 		if ( 0 ) { // bar drawn in menu now
 			vec2_t xy = { 200, 468 };
@@ -437,8 +437,8 @@ void CG_DrawInformation( void ) {
 		//trap_UpdateScreen();
 		callCount--;
 		return;
-	}
+	
 	// done.
 
-	callCount--;
+	//callCount--;
 }

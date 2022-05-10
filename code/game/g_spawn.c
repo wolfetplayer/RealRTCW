@@ -690,8 +690,7 @@ qboolean G_CallSpawn( gentity_t *ent ) {
 	for ( item = bg_itemlist + 1 ; item->classname ; item++ ) {
 		if ( !strcmp( item->classname, ent->classname ) ) {
 			// found it
-			// DHM - Nerve :: allow flags in GTWOLF
-			if ( item->giType == IT_TEAM && ( g_gametype.integer != GT_CTF && g_gametype.integer != GT_WOLF ) ) {
+			if ( item->giType == IT_TEAM ) {
 				return qfalse;
 			}
 			G_SpawnItem( ent, item );
@@ -831,29 +830,19 @@ void G_SpawnGEntityFromSpawnVars( void ) {
 	}
 
 	// check for "notteam" / "notfree" flags
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		G_SpawnInt( "notsingle", "0", &i );
 		if ( i ) {
 			ADJUST_AREAPORTAL();
 			G_FreeEntity( ent );
 			return;
 		}
-	}
-	if ( g_gametype.integer >= GT_TEAM ) {
-		G_SpawnInt( "notteam", "0", &i );
-		if ( i ) {
-			ADJUST_AREAPORTAL();
-			G_FreeEntity( ent );
-			return;
-		}
-	} else {
+
 		G_SpawnInt( "notfree", "0", &i );
 		if ( i ) {
 			ADJUST_AREAPORTAL();
 			G_FreeEntity( ent );
 			return;
 		}
-	}
 
 	// move editor origin to pos
 	VectorCopy( ent->s.origin, ent->s.pos.trBase );

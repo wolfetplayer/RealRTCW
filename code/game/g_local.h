@@ -476,11 +476,6 @@ typedef struct {
 	spectatorState_t spectatorState;
 	int spectatorClient;            // for chasecam and follow mode
 	int wins, losses;               // tournament stats
-	int playerType;                 // DHM - Nerve :: for GT_WOLF
-	int playerWeapon;               // DHM - Nerve :: for GT_WOLF
-	int playerPistol;               // DHM - Nerve :: for GT_WOLF
-	int playerItem;                 // DHM - Nerve :: for GT_WOLF
-	int playerSkin;                 // DHM - Nerve :: for GT_WOLF
 } clientSession_t;
 
 //
@@ -770,7 +765,6 @@ void Cmd_Score_f( gentity_t *ent );
 void StopFollowing( gentity_t *ent );
 //void BroadcastTeamChange( gclient_t *client, int oldTeam );
 void SetTeam( gentity_t *ent, const char *s );
-void SetWolfData( gentity_t *ent, char *ptype, char *weap, char *pistol, char *grenade, char *skinnum );    // DHM - Nerve
 void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 
 //

@@ -2768,16 +2768,12 @@ static qboolean UI_OwnerDrawVisible( int flags ) {
 	while ( flags ) {
 
 		if ( flags & UI_SHOW_FFA ) {
-			if ( trap_Cvar_VariableValue( "g_gametype" ) != GT_FFA ) {
-				vis = qfalse;
-			}
+			vis = qfalse;
 			flags &= ~UI_SHOW_FFA;
 		}
 
 		if ( flags & UI_SHOW_NOTFFA ) {
-			if ( trap_Cvar_VariableValue( "g_gametype" ) == GT_FFA ) {
-				vis = qfalse;
-			}
+
 			flags &= ~UI_SHOW_NOTFFA;
 		}
 
@@ -2818,27 +2814,17 @@ static qboolean UI_OwnerDrawVisible( int flags ) {
 			flags &= ~UI_SHOW_NOTFAVORITESERVERS;
 		}
 		if ( flags & UI_SHOW_ANYTEAMGAME ) {
-			if ( uiInfo.gameTypes[ui_gameType.integer].gtEnum <= GT_TEAM ) {
 				vis = qfalse;
-			}
 			flags &= ~UI_SHOW_ANYTEAMGAME;
 		}
 		if ( flags & UI_SHOW_ANYNONTEAMGAME ) {
-			if ( uiInfo.gameTypes[ui_gameType.integer].gtEnum > GT_TEAM ) {
-				vis = qfalse;
-			}
 			flags &= ~UI_SHOW_ANYNONTEAMGAME;
 		}
 		if ( flags & UI_SHOW_NETANYTEAMGAME ) {
-			if ( uiInfo.gameTypes[ui_netGameType.integer].gtEnum <= GT_TEAM ) {
 				vis = qfalse;
-			}
 			flags &= ~UI_SHOW_NETANYTEAMGAME;
 		}
 		if ( flags & UI_SHOW_NETANYNONTEAMGAME ) {
-			if ( uiInfo.gameTypes[ui_netGameType.integer].gtEnum > GT_TEAM ) {
-				vis = qfalse;
-			}
 			flags &= ~UI_SHOW_NETANYNONTEAMGAME;
 		}
 		if ( flags & UI_SHOW_NEWHIGHSCORE ) {
@@ -2970,87 +2956,14 @@ static qboolean UI_ClanName_HandleKey(int flags, float *special, int key) {
 }
 
 static qboolean UI_GameType_HandleKey(int flags, float *special, int key, qboolean resetMap) {
-#ifdef MISSIONPACK
-	int select = UI_SelectForKey(key);
-	if (select != 0) {
-		int oldCount = UI_MapCountByGameType(qtrue);
-
-		// hard coded mess here
-		if (select < 0) {
-			ui_gameType.integer--;
-			if (ui_gameType.integer == 2) {
-				ui_gameType.integer = 1;
-			} else if (ui_gameType.integer < 2) {
-				ui_gameType.integer = uiInfo.numGameTypes - 1;
-			}
-		} else {
-			ui_gameType.integer++;
-			if (ui_gameType.integer >= uiInfo.numGameTypes) {
-				ui_gameType.integer = 1;
-			} else if (ui_gameType.integer == 2) {
-				ui_gameType.integer = 3;
-			}
-		}
-    
-		if (uiInfo.gameTypes[ui_gameType.integer].gtEnum < GT_TEAM) {
-			trap_Cvar_SetValue( "ui_Q3Model", 1 );
-		} else {
-			trap_Cvar_SetValue( "ui_Q3Model", 0 );
-		}
-
-		trap_Cvar_SetValue("ui_gameType", ui_gameType.integer);
-		UI_SetCapFragLimits(qtrue);
-		UI_LoadBestScores(uiInfo.mapList[ui_currentMap.integer].mapLoadName, uiInfo.gameTypes[ui_gameType.integer].gtEnum);
-		if (resetMap && oldCount != UI_MapCountByGameType(qtrue)) {
-			trap_Cvar_SetValue( "ui_currentMap", 0);
-			Menu_SetFeederSelection(NULL, FEEDER_MAPS, 0, NULL);
-		}
-		return qtrue;
-	}
-#endif  // #ifdef MISSIONPACK
 	return qfalse;
 }
 
 static qboolean UI_NetGameType_HandleKey(int flags, float *special, int key) {
-#ifdef MISSIONPACK
-	int select = UI_SelectForKey(key);
-	if (select != 0) {
-		ui_netGameType.integer += select;
-
-		if (ui_netGameType.integer < 0) {
-			ui_netGameType.integer = uiInfo.numGameTypes - 1;
-		} else if (ui_netGameType.integer >= uiInfo.numGameTypes) {
-			ui_netGameType.integer = 0;
-		}
-
-		trap_Cvar_SetValue( "ui_netGameType", ui_netGameType.integer);
-		trap_Cvar_SetValue( "ui_actualnetGameType", uiInfo.gameTypes[ui_netGameType.integer].gtEnum);
-		trap_Cvar_SetValue( "ui_currentNetMap", 0);
-		UI_MapCountByGameType(qfalse);
-		Menu_SetFeederSelection(NULL, FEEDER_ALLMAPS, 0, NULL);
-		return qtrue;
-	}
-#endif  // #ifdef MISSIONPACK
 	return qfalse;
 }
 
 static qboolean UI_JoinGameType_HandleKey(int flags, float *special, int key) {
-#ifdef MISSIONPACK
-	int select = UI_SelectForKey(key);
-	if (select != 0) {
-		ui_joinGameType.integer += select;
-
-		if (ui_joinGameType.integer < 0) {
-			ui_joinGameType.integer = uiInfo.numJoinGameTypes - 1;
-		} else if (ui_joinGameType.integer >= uiInfo.numJoinGameTypes) {
-			ui_joinGameType.integer = 0;
-		}
-
-		trap_Cvar_SetValue( "ui_joinGameType", ui_joinGameType.integer);
-		UI_BuildServerDisplayList(qtrue);
-		return qtrue;
-	}
-#endif  // #ifdef MISSIONPACK
 	return qfalse;
 }
 
@@ -3106,19 +3019,12 @@ static qboolean UI_TeamMember_HandleKey(int flags, float *special, int key, qboo
 
 		value += select;
 
-		if (ui_actualNetGameType.integer >= GT_TEAM) {
-			if (value >= uiInfo.characterCount + 2) {
-				value = 0;
-			} else if (value < 0) {
-				value = uiInfo.characterCount + 2 - 1;
-			}
-		} else {
 			if (value >= UI_GetNumBots() + 2) {
 				value = 0;
 			} else if (value < 0) {
 				value = UI_GetNumBots() + 2 - 1;
 			}
-		}
+		
 
 		trap_Cvar_SetValue(cvar, value);
 		return qtrue;
@@ -3127,56 +3033,10 @@ static qboolean UI_TeamMember_HandleKey(int flags, float *special, int key, qboo
 }
 
 static qboolean UI_NetSource_HandleKey(int flags, float *special, int key) {
-#ifdef MISSIONPACK
-	int select = UI_SelectForKey(key);
-	if (select != 0) {
-		ui_netSource.integer += select;
-
-		if(ui_netSource.integer >= UIAS_GLOBAL1 && ui_netSource.integer <= UIAS_GLOBAL5)
-		{
-			char masterstr[2], cvarname[sizeof("sv_master1")];
-		
-			while(ui_netSource.integer >= UIAS_GLOBAL1 && ui_netSource.integer <= UIAS_GLOBAL5)
-			{
-				Com_sprintf(cvarname, sizeof(cvarname), "sv_master%d", ui_netSource.integer - UIAS_GLOBAL0);
-				trap_Cvar_VariableStringBuffer(cvarname, masterstr, sizeof(masterstr));
-				if(*masterstr)
-					break;
-
-				ui_netSource.integer += select;
-			}
-		}
-
-		if (ui_netSource.integer >= numNetSources) {
-			ui_netSource.integer = 0;
-		} else if (ui_netSource.integer < 0) {
-			ui_netSource.integer = numNetSources - 1;
-		}
-
-		UI_BuildServerDisplayList(qtrue);
-		UI_StartServerRefresh(qtrue, qfalse);
-		trap_Cvar_SetValue( "ui_netSource", ui_netSource.integer);
-		return qtrue;
-	}
-#endif  // #ifdef MISSIONPACK
 	return qfalse;
 }
 
 static qboolean UI_NetFilter_HandleKey(int flags, float *special, int key) {
-#ifdef MISSIONPACK
-	int select = UI_SelectForKey(key);
-	if (select != 0) {
-		ui_serverFilterType.integer += select;
-
-		if (ui_serverFilterType.integer >= numServerFilters) {
-			ui_serverFilterType.integer = 0;
-		} else if (ui_serverFilterType.integer < 0) {
-			ui_serverFilterType.integer = numServerFilters - 1;
-		}
-		UI_BuildServerDisplayList(qtrue);
-		return qtrue;
-	}
-#endif  // #ifdef MISSIONPACK
 	return qfalse;
 }
 
@@ -3196,24 +3056,16 @@ static qboolean UI_OpponentName_HandleKey(int flags, float *special, int key) {
 static qboolean UI_BotName_HandleKey(int flags, float *special, int key) {
 	int select = UI_SelectForKey(key);
 	if (select != 0) {
-		int game = trap_Cvar_VariableValue("g_gametype");
 		int value = uiInfo.botIndex;
 
 		value += select;
 
-		if (game >= GT_TEAM) {
-			if (value >= uiInfo.characterCount) {
-				value = 0;
-			} else if (value < 0) {
-				value = uiInfo.characterCount - 1;
-			}
-		} else {
 			if (value >= UI_GetNumBots()) {
 				value = 0;
 			} else if (value < 0) {
 				value = UI_GetNumBots() - 1;
 			}
-		}
+
 		uiInfo.botIndex = value;
 		return qtrue;
 	}
@@ -3900,99 +3752,7 @@ UI_StartSkirmish
 ==============
 */
 static void UI_StartSkirmish( qboolean next ) {
-#ifdef MISSIONPACK
-	int i, k, g, delay, temp;
-	float skill;
-	char buff[MAX_STRING_CHARS];
-
-	if ( next ) {
-		int actual;
-		int index = trap_Cvar_VariableValue( "ui_mapIndex" );
-		UI_MapCountByGameType( qtrue );
-		UI_SelectedMap( index, &actual );
-		if ( UI_SetNextMap( actual, index ) ) {
-		} else {
-			UI_GameType_HandleKey( 0, NULL, K_MOUSE1, qfalse );
-			UI_MapCountByGameType( qtrue );
-			Menu_SetFeederSelection( NULL, FEEDER_MAPS, 0, "skirmish" );
-		}
-	}
-
-	g = uiInfo.gameTypes[ui_gameType.integer].gtEnum;
-	trap_Cvar_SetValue( "g_gametype", g );
-	trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; map %s\n", uiInfo.mapList[ui_currentMap.integer].mapLoadName ) );
-	skill = trap_Cvar_VariableValue( "g_spSkill" );
-	trap_Cvar_Set( "ui_scoreMap", uiInfo.mapList[ui_currentMap.integer].mapName );
-
-	k = UI_TeamIndexFromName( UI_Cvar_VariableString( "ui_opponentName" ) );
-
-	trap_Cvar_Set( "ui_singlePlayerActive", "1" );
-
-	// set up sp overrides, will be replaced on postgame
-	temp = trap_Cvar_VariableValue( "capturelimit" );
-	trap_Cvar_Set( "ui_saveCaptureLimit", va( "%i", temp ) );
-	temp = trap_Cvar_VariableValue( "fraglimit" );
-	trap_Cvar_Set( "ui_saveFragLimit", va( "%i", temp ) );
-
-	UI_SetCapFragLimits( qfalse );
-
-	temp = trap_Cvar_VariableValue( "cg_drawTimer" );
-	trap_Cvar_Set( "ui_drawTimer", va( "%i", temp ) );
-	temp = trap_Cvar_VariableValue( "g_doWarmup" );
-	trap_Cvar_Set( "ui_doWarmup", va( "%i", temp ) );
-	temp = trap_Cvar_VariableValue( "g_friendlyFire" );
-	trap_Cvar_Set( "ui_friendlyFire", va( "%i", temp ) );
-	temp = trap_Cvar_VariableValue( "sv_maxClients" );
-	trap_Cvar_Set( "ui_maxClients", va( "%i", temp ) );
-	temp = trap_Cvar_VariableValue( "g_warmup" );
-	trap_Cvar_Set( "ui_Warmup", va( "%i", temp ) );
-	temp = trap_Cvar_VariableValue( "sv_pure" );
-	trap_Cvar_Set( "ui_pure", va( "%i", temp ) );
-
-	trap_Cvar_Set( "cg_cameraOrbit", "0" );
-	trap_Cvar_Set( "cg_thirdPerson", "0" );
-	trap_Cvar_Set( "cg_drawTimer", "1" );
-	trap_Cvar_Set( "g_doWarmup", "1" );
-	trap_Cvar_Set( "g_warmup", "15" );
-	trap_Cvar_Set( "sv_pure", "0" );
-	trap_Cvar_Set( "g_friendlyFire", "0" );
-	trap_Cvar_Set( "g_redTeam", UI_Cvar_VariableString( "ui_teamName" ) );
-	trap_Cvar_Set( "g_blueTeam", UI_Cvar_VariableString( "ui_opponentName" ) );
-
-	if ( trap_Cvar_VariableValue( "ui_recordSPDemo" ) ) {
-		Com_sprintf( buff, MAX_STRING_CHARS, "%s_%i", uiInfo.mapList[ui_currentMap.integer].mapLoadName, g );
-		trap_Cvar_Set( "ui_recordSPDemoName", buff );
-	}
-
-	delay = 500;
-
-	if ( g == GT_TOURNAMENT ) {
-		trap_Cvar_Set( "sv_maxClients", "2" );
-		Com_sprintf( buff, sizeof( buff ), "wait ; addbot %s %f " ", %i \n", uiInfo.mapList[ui_currentMap.integer].opponentName, skill, delay );
-		trap_Cmd_ExecuteText( EXEC_APPEND, buff );
-	} else {
-		temp = uiInfo.mapList[ui_currentMap.integer].teamMembers * 2;
-		trap_Cvar_Set( "sv_maxClients", va( "%d", temp ) );
-		for ( i = 0; i < uiInfo.mapList[ui_currentMap.integer].teamMembers; i++ ) {
-			Com_sprintf( buff, sizeof( buff ), "addbot %s %f %s %i %s\n", UI_AIFromName( uiInfo.teamList[k].teamMembers[i] ), skill, ( g == GT_FFA ) ? "" : "Blue", delay, uiInfo.teamList[k].teamMembers[i] );
-			trap_Cmd_ExecuteText( EXEC_APPEND, buff );
-			delay += 500;
-		}
-		k = UI_TeamIndexFromName( UI_Cvar_VariableString( "ui_teamName" ) );
-		for ( i = 0; i < uiInfo.mapList[ui_currentMap.integer].teamMembers - 1; i++ ) {
-			Com_sprintf( buff, sizeof( buff ), "addbot %s %f %s %i %s\n", UI_AIFromName( uiInfo.teamList[k].teamMembers[i] ), skill, ( g == GT_FFA ) ? "" : "Red", delay, uiInfo.teamList[k].teamMembers[i] );
-			trap_Cmd_ExecuteText( EXEC_APPEND, buff );
-			delay += 500;
-		}
-	}
-	if ( g >= GT_TEAM ) {
-		// send team command for vanilla q3 game qvm
-		trap_Cmd_ExecuteText( EXEC_APPEND, "wait 5; team Red\n" );
-
-		// set g_localTeamPref for ioq3 game qvm
-		trap_Cvar_Set( "g_localTeamPref", "Red" );
-	}
-#endif  // #ifdef MISSIONPACK
+	return;
 }
 
 // NERVE - SMF
@@ -4670,7 +4430,6 @@ static void UI_RunMenuScript( char **args ) {
 	if ( String_Parse( args, &name ) ) {
 		//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
 		if ( Q_stricmp( name, "StartServer" ) == 0 ) {
-			float skill;
 			int i, clients;
 			trap_Cvar_Set( "cg_thirdPerson", "0" );
 			trap_Cvar_Set( "cg_cameraOrbit", "0" );
@@ -4678,8 +4437,6 @@ static void UI_RunMenuScript( char **args ) {
 			trap_Cvar_SetValue( "dedicated", Com_Clamp( 0, 2, ui_dedicated.integer ) );
 			trap_Cvar_SetValue( "g_gametype", Com_Clamp( 0, 8, uiInfo.gameTypes[ui_netGameType.integer].gtEnum ) );
 			trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; map %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
-
-			skill = trap_Cvar_VariableValue( "g_spSkill" );
 
 			// set max clients based on spots
 			clients = 0;
@@ -4701,22 +4458,10 @@ static void UI_RunMenuScript( char **args ) {
 			for ( i = 0; i < PLAYERS_PER_TEAM; i++ ) {
 				int bot = trap_Cvar_VariableValue( va( "ui_blueteam%i", i + 1 ) );
 				if ( bot > 1 ) {
-					if ( ui_actualNetGameType.integer >= GT_TEAM ) {
-						Com_sprintf( buff, sizeof( buff ), "addbot %s %f %s\n", uiInfo.characterList[bot - 2].name, skill, "Blue" );
-					} else {
-						// NERVE - SMF - no bots in wolf multiplayer
-						//						Com_sprintf( buff, sizeof(buff), "addbot %s %f \n", UI_GetBotNameByNumber(bot-2), skill);
-					}
 					trap_Cmd_ExecuteText( EXEC_APPEND, buff );
 				}
 				bot = trap_Cvar_VariableValue( va( "ui_redteam%i", i + 1 ) );
 				if ( bot > 1 ) {
-					if ( ui_actualNetGameType.integer >= GT_TEAM ) {
-						Com_sprintf( buff, sizeof( buff ), "addbot %s %f %s\n", uiInfo.characterList[bot - 2].name, skill, "Red" );
-					} else {
-						// NERVE - SMF - no bots in wolf multiplayer
-						//						Com_sprintf( buff, sizeof(buff), "addbot %s %f \n", UI_GetBotNameByNumber(bot-2), skill);
-					}
 					trap_Cmd_ExecuteText( EXEC_APPEND, buff );
 				}
 			}
@@ -4995,12 +4740,10 @@ static void UI_RunMenuScript( char **args ) {
 			trap_Key_ClearStates();
 			trap_Cvar_Set( "cl_paused", "0" );
 			Menus_CloseAll();
-			//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
 		} else if ( Q_stricmp( name, "voteMap" ) == 0 ) {
 			if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount ) {
 				trap_Cmd_ExecuteText( EXEC_APPEND, va( "callvote map %s\n",uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
 			}
-			//#endif	// #ifdef MISSIONPACK
 		} else if ( Q_stricmp( name, "voteKick" ) == 0 ) {
 			if ( uiInfo.playerIndex >= 0 && uiInfo.playerIndex < uiInfo.playerCount ) {
 				trap_Cmd_ExecuteText( EXEC_APPEND, va( "callvote kick %s\n",uiInfo.playerNames[uiInfo.playerIndex] ) );
@@ -5012,14 +4755,6 @@ static void UI_RunMenuScript( char **args ) {
 		} else if ( Q_stricmp( name, "voteLeader" ) == 0 ) {
 			if ( uiInfo.teamIndex >= 0 && uiInfo.teamIndex < uiInfo.myTeamCount ) {
 				trap_Cmd_ExecuteText( EXEC_APPEND, va( "callteamvote leader %s\n",uiInfo.teamNames[uiInfo.teamIndex] ) );
-			}
-			//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
-		} else if ( Q_stricmp( name, "addBot" ) == 0 ) {
-			if ( trap_Cvar_VariableValue( "g_gametype" ) >= GT_TEAM ) {
-				trap_Cmd_ExecuteText( EXEC_APPEND, va( "addbot %s %i %s\n", uiInfo.characterList[uiInfo.botIndex].name, uiInfo.skillIndex + 1, ( uiInfo.redBlue == 0 ) ? "Red" : "Blue" ) );
-			} else {
-				// NERVE - SMF - no bots in wolf multiplayer
-				//				trap_Cmd_ExecuteText( EXEC_APPEND, va("addbot %s %i %s\n", UI_GetBotNameByNumber(uiInfo.botIndex), uiInfo.skillIndex+1, (uiInfo.redBlue == 0) ? "Red" : "Blue") );
 			}
 		} else if ( Q_stricmp( name, "addFavorite" ) == 0 ) {
 			if ( ui_netSource.integer != UIAS_FAVORITES ) {
@@ -5237,18 +4972,14 @@ static int UI_MapCountByGameType( qboolean singlePlayer ) {
 	int i, c, game;
 	c = 0;
 	game = singlePlayer ? uiInfo.gameTypes[ui_gameType.integer].gtEnum : uiInfo.gameTypes[ui_netGameType.integer].gtEnum;
-	if ( game == GT_SINGLE_PLAYER ) {
-		game++;
-	}
-	if ( game == GT_TEAM ) {
-		game = GT_FFA;
-	}
+
+	game++;
 
 	for ( i = 0; i < uiInfo.mapCount; i++ ) {
 		uiInfo.mapList[i].active = qfalse;
 		if ( uiInfo.mapList[i].typeBits & ( 1 << game ) ) {
 			if ( singlePlayer ) {
-				if ( !( uiInfo.mapList[i].typeBits & ( 1 << GT_SINGLE_PLAYER ) ) ) {
+				if ( !( uiInfo.mapList[i].typeBits /*& ( 1 << GT_SINGLE_PLAYER )*/ ) ) {
 					continue;
 				}
 			}

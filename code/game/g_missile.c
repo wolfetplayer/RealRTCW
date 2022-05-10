@@ -1022,12 +1022,9 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		bolt->splashMethodOfDeath   = MOD_DYNAMITE_SPLASH;
 		bolt->s.eFlags              = ( EF_BOUNCE | EF_BOUNCE_HALF );   // EF_BOUNCE_HEAVY;
 
-
-		if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		} else {
-			bolt->health                = 5;
-			bolt->takedamage            = qfalse;
-		}
+		bolt->health                = 5;
+		bolt->takedamage            = qfalse;
+		
 		bolt->die                   = G_MissileDie;
 		bolt->r.contents            = CONTENTS_CORPSE;      // (player can walk through)
 

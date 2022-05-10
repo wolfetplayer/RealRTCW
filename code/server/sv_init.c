@@ -714,7 +714,6 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 		if ( !bot_enable ) {
 			bot_enable = Cvar_Get( "bot_enable", "1", CVAR_LATCH );
 		}
-		if ( g_gametype->integer == 2 ) {
 			if ( sv_maxclients->latchedString ) {
 				// it's been modified, so grab the new value
 				Cvar_Get( "sv_maxclients", "8", 0 );
@@ -725,7 +724,6 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 			if ( !bot_enable->integer ) {
 				Cvar_Set( "bot_enable", "1" );
 			}
-		}
 	}
 	// done.
 

@@ -1485,7 +1485,7 @@ void Weapon_LightningFire( gentity_t *ent ) {
 			if ( traceEnt->s.onFireEnd < level.time ) {
 				traceEnt->s.onFireStart = level.time;
 			}
-			if ( traceEnt->health <= 0 || !( traceEnt->r.svFlags & SVF_CASTAI ) || ( g_gametype.integer != GT_SINGLE_PLAYER ) ) {
+			if ( traceEnt->health <= 0 || !( traceEnt->r.svFlags & SVF_CASTAI ) ) {
 				if ( traceEnt->r.svFlags & SVF_CASTAI ) {
 					traceEnt->s.onFireEnd = level.time + 6000;
 				} else {

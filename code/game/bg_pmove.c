@@ -1022,18 +1022,7 @@ static void PM_WalkMove( void ) {
 			PM_WaterMove();
 		} else {
 			PM_AirMove();
-// JPW NERVE
-#if defined ( CGAMEDLL )
-			if ( cg_gameType.integer != GT_SINGLE_PLAYER )
-#elif defined ( GAMEDLL )
-			if ( g_gametype.integer != GT_SINGLE_PLAYER )
-#endif
-			{
-				pm->ps->sprintTime -= 10000; 
-				if ( pm->ps->sprintTime < 0 ) {
-					pm->ps->sprintTime = 0;
-				}
-			} else {
+
 				pm->ps->jumpTime = pm->cmd.serverTime;
 
 
@@ -1060,7 +1049,7 @@ static void PM_WalkMove( void ) {
 						pm->ps->sprintTime = 0;
 					}
 				}
-			}
+			
 // jpw
 		}
 		return;
@@ -3050,19 +3039,7 @@ static void PM_Weapon( void ) {
 		if ( pm->ps->grenadeTimeLeft > 0 ) {
 			if ( pm->ps->weapon == WP_DYNAMITE ) {
 				pm->ps->grenadeTimeLeft += pml.msec;
-// JPW NERVE -- in multiplayer, dynamite becomes strategic, so start timer @ 30 seconds
-#ifdef CGAMEDLL
-				if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-#endif
-#ifdef GAMEDLL
-				if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-#endif
-					if ( pm->ps->grenadeTimeLeft < 5000 ) {
-						pm->ps->grenadeTimeLeft = 5000;
-					}
-				}
-// jpw
-
+				
 				if ( pm->ps->grenadeTimeLeft > 8000 ) {
 					PM_AddEvent( EV_FIRE_WEAPON );
 					pm->ps->weaponTime = 1600;

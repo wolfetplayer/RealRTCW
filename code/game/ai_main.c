@@ -857,8 +857,6 @@ int BotAIStartFrame( int time ) {
 	int i;
 	gentity_t   *ent;
 	bot_entitystate_t state;
-	//entityState_t entitystate;
-	//vec3_t mins = {-15, -15, -24}, maxs = {15, 15, 32};
 	int elapsed_time, thinktime;
 	static int local_time;
 	static int botlib_residual;
@@ -911,7 +909,7 @@ int BotAIStartFrame( int time ) {
 		for ( i = 0; i < MAX_GENTITIES; i++ ) {
 
 			// Ridah, in single player, we only need client entity information
-			if ( g_gametype.integer == GT_SINGLE_PLAYER && i > level.maxclients ) {
+			if ( i > level.maxclients ) {
 				break;
 			}
 
@@ -945,39 +943,12 @@ int BotAIStartFrame( int time ) {
 			state.modelindex = ent->s.modelindex;
 			state.modelindex2 = ent->s.modelindex2;
 			state.frame = ent->s.frame;
-			//state.event = ent->s.event;
-			//state.eventParm = ent->s.eventParm;
 			state.powerups = ent->s.powerups;
 			state.legsAnim = ent->s.legsAnim;
 			state.torsoAnim = ent->s.torsoAnim;
-//			state.weapAnim = ent->s.weapAnim;	//----(SA)
-//----(SA)	didn't want to comment in as I wasn't sure of any implications of changing the aas_entityinfo_t and bot_entitystate_t structures.
+
 			state.weapon = ent->s.weapon;
-			/*
-			if (!BotAI_GetEntityState(i, &entitystate)) continue;
-			//
-			memset(&state, 0, sizeof(bot_entitystate_t));
-			//
-			VectorCopy(entitystate.pos.trBase, state.origin);
-			VectorCopy(entitystate.angles, state.angles);
-			VectorCopy(ent->s.origin2, state.old_origin);
-			//VectorCopy(ent->r.mins, state.mins);
-			//VectorCopy(ent->r.maxs, state.maxs);
-			state.type = entitystate.eType;
-			state.flags = entitystate.eFlags;
-			if (ent->r.bmodel) state.solid = SOLID_BSP;
-			else state.solid = SOLID_BBOX;
-			state.modelindex = entitystate.modelindex;
-			state.modelindex2 = entitystate.modelindex2;
-			state.frame = entitystate.frame;
-			state.event = entitystate.event;
-			state.eventParm = entitystate.eventParm;
-			state.powerups = entitystate.powerups;
-			state.legsAnim = entitystate.legsAnim;
-			state.torsoAnim = entitystate.torsoAnim;
-			state.weapon = entitystate.weapon;
-			*/
-			//
+
 			trap_BotLibUpdateEntity( i, &state );
 		}
 
@@ -986,56 +957,7 @@ int BotAIStartFrame( int time ) {
 	}
 
 	// Ridah, in single player, don't need bot's thinking
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		return BLERR_NOERROR;
-	}
-
-	// execute scheduled bot AI
-	for ( i = 0; i < MAX_CLIENTS; i++ ) {
-		if ( !botstates[i] || !botstates[i]->inuse ) {
-			continue;
-		}
-		// Ridah
-		if ( g_entities[i].r.svFlags & SVF_CASTAI ) {
-			continue;
-		}
-		// done.
-		//
-		botstates[i]->botthink_residual += elapsed_time;
-		//
-		if ( botstates[i]->botthink_residual >= thinktime ) {
-			botstates[i]->botthink_residual -= thinktime;
-
-			if ( !trap_AAS_Initialized() ) {
-				return BLERR_NOERROR;
-			}
-
-			if ( g_entities[i].client->pers.connected == CON_CONNECTED ) {
-				BotAI( i, (float) thinktime / 1000 );
-			}
-		}
-	}
-
-
-	// execute bot user commands every frame
-	for ( i = 0; i < MAX_CLIENTS; i++ ) {
-		if ( !botstates[i] || !botstates[i]->inuse ) {
-			continue;
-		}
-		// Ridah
-		if ( g_entities[i].r.svFlags & SVF_CASTAI ) {
-			continue;
-		}
-		// done.
-		if ( g_entities[i].client->pers.connected != CON_CONNECTED ) {
-			continue;
-		}
-
-		BotUpdateInput( botstates[i], time );
-		trap_BotUserCommand( botstates[i]->client, &botstates[i]->lastucmd );
-	}
-
-	return BLERR_NOERROR;
 }
 
 /*
@@ -1074,7 +996,7 @@ int BotInitLibrary( void ) {
 	//
 	trap_Cvar_VariableStringBuffer( "g_gametype", buf, sizeof( buf ) );
 	if ( !strlen( buf ) ) {
-		strcpy( buf, "0" );
+		strcpy( buf, "-1" );
 	}
 	trap_BotLibVarSet( "g_gametype", buf );
 	//

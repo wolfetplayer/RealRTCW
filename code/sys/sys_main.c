@@ -780,7 +780,7 @@ int main( int argc, char **argv )
 	signal( SIGTERM, Sys_SigHandler );
 	signal( SIGINT, Sys_SigHandler );
 
-	while( 1 )
+	while( steamAlive() )
 	{
 		Com_Frame( );
 		steamRun();

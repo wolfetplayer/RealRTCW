@@ -193,7 +193,6 @@ void UI_LoadArenasIntoMapList( void ) {
 		uiInfo.mapList[uiInfo.mapCount].typeBits = 0;
 
 		// if no type specified, it will be treated as "ffa"
-		//uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_SINGLE_PLAYER );
 		uiInfo.mapCount++;
 		if ( uiInfo.mapCount >= MAX_MAPS ) {
 			break;

@@ -1473,29 +1473,6 @@ qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float
 
 			G_Damage( ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod );
 		}
-// JPW NERVE --  MP weapons should do 1/8 damage through walls over 1/8th distance
-		/*else {
-			if ( g_gametype.integer =! GT_SINGLE_PLAYER ) {
-				VectorAdd( ent->r.absmin, ent->r.absmax, midpoint );
-				VectorScale( midpoint, 0.5, midpoint );
-				VectorCopy( midpoint, dest );
-
-				trap_Trace( &tr, origin, vec3_origin, vec3_origin, dest, ENTITYNUM_NONE, MASK_SOLID );
-				if ( tr.fraction < 1.0 ) {
-					VectorSubtract( dest,origin,dest );
-					dist = VectorLength( dest );
-					if ( dist < radius * 0.2f ) { // closer than 1/4 dist
-						if ( LogAccuracyHit( ent, attacker ) ) {
-							hitClient = qtrue;
-						}
-						VectorSubtract( ent->r.currentOrigin, origin, dir );
-						dir[2] += 24;
-						G_Damage( ent, NULL, attacker, dir, origin, (int)( points * 0.1f ), DAMAGE_RADIUS, mod );
-					}
-				}
-			}
-		}*/
-// jpw
 	}
 	return hitClient;
 }

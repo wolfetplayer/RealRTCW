@@ -2111,12 +2111,19 @@ void CheckReloadStatus( void ) {
 
 				if ( g_reloading.integer == RELOAD_NEXTMAP_WAITING ) {
 					trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_NEXTMAP ) ); // set so sv_map_f will know it's okay to start a map
+				  if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 					if ( g_cheats.integer ) {
 						trap_SendConsoleCommand( EXEC_APPEND, va( "spdevmap %s\n", level.nextMap ) );
 					} else {
 						trap_SendConsoleCommand( EXEC_APPEND, va( "spmap %s\n", level.nextMap ) );
-					}
-
+					} 
+				  } else if ( g_gametype.integer == GT_GOTHIC ) {
+			        if ( g_cheats.integer ) {
+						trap_SendConsoleCommand( EXEC_APPEND, va( "gtdevmap %s\n", level.nextMap ) );
+					} else {
+						trap_SendConsoleCommand( EXEC_APPEND, va( "gtmap %s\n", level.nextMap ) );
+					} 
+				  }
 				} else if ( g_reloading.integer == RELOAD_ENDGAME ) {
 					G_EndGame();    // kick out to the menu and start the "endgame" menu (credits, etc)
 

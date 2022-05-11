@@ -4979,7 +4979,7 @@ static int UI_MapCountByGameType( qboolean singlePlayer ) {
 		uiInfo.mapList[i].active = qfalse;
 		if ( uiInfo.mapList[i].typeBits & ( 1 << game ) ) {
 			if ( singlePlayer ) {
-				if ( !( uiInfo.mapList[i].typeBits /*& ( 1 << GT_SINGLE_PLAYER )*/ ) ) {
+				if ( !( uiInfo.mapList[i].typeBits ) ) {
 					continue;
 				}
 			}

@@ -1258,6 +1258,11 @@ qboolean G_SaveGame( char *username ) {
 	}
 //----(SA)	end
 
+	// save the gametype
+	if ( !G_SaveWrite( &g_gametype.integer, sizeof( g_gametype.integer ), f ) ) {
+		G_SaveWriteError();
+	}
+
 	// save the skill level
 	if ( !G_SaveWrite( &g_gameskill.integer, sizeof( g_gameskill.integer ), f ) ) {
 		G_SaveWriteError();
@@ -1512,6 +1517,13 @@ void G_LoadGame( char *filename ) {
 			trap_SetConfigstring( CS_FOGVARS, infoString );
 		}
 //----(SA)	end
+
+		if ( ver > 13 ) {
+			// read the game types
+			trap_FS_Read( &i, sizeof( i ), f );
+			// set the needed game type
+			trap_Cvar_Set( "g_gametype", va( "%i",i ) );
+		}
 
 		if ( ver > 13 ) {
 			// read the game skill

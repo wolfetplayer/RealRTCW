@@ -2121,20 +2121,6 @@ static void CG_DrawCrosshair( void ) {
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
-
-			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
-		/*	if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-				if ( VectorLength( cg.snap->ps.velocity ) > 127.0f ) {
-					if ( cg.snap->ps.weapon == WP_SNIPERRIFLE ) {
-						CG_FinishWeaponChange( WP_SNIPERRIFLE, WP_MAUSER );
-					}
-					if ( cg.snap->ps.weapon == WP_SNOOPERSCOPE ) {
-						CG_FinishWeaponChange( WP_SNOOPERSCOPE, WP_GARAND );
-					}
-				}
-			}*/
-			// jpw
-
 			CG_DrawWeapReticle();
 			return;
 		}
@@ -2308,20 +2294,6 @@ static void CG_DrawCrosshair3D( void ) {
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 		if ( !( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) ) {
-
-			// JPW NERVE -- don't let players run with rifles -- speed 80 == crouch, 128 == walk, 256 == run
-		/*	if ( cg_gameType.integer != GT_SINGLE_PLAYER ) {
-				if ( VectorLength( cg.snap->ps.velocity ) > 127.0f ) {
-					if ( cg.snap->ps.weapon == WP_SNIPERRIFLE ) {
-						CG_FinishWeaponChange( WP_SNIPERRIFLE, WP_MAUSER );
-					}
-					if ( cg.snap->ps.weapon == WP_SNOOPERSCOPE ) {
-						CG_FinishWeaponChange( WP_SNOOPERSCOPE, WP_GARAND );
-					}
-				}
-			}*/
-			// jpw
-
 			CG_DrawWeapReticle();
 			return;
 		}

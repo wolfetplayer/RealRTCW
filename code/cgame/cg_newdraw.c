@@ -1441,9 +1441,7 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 	}
 
 	if ( flags & CG_SHOW_SINGLEPLAYER ) {
-		if ( cgs.gametype == GT_SINGLE_PLAYER ) {
 			return qtrue;
-		}
 	}
 
 	if ( flags & CG_SHOW_DURINGINCOMINGVOICE ) {

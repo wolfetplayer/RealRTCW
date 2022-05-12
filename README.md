@@ -1,6 +1,6 @@
 # RealRTCW
 
-RealRTCW is a community single-player remaster of Return to Castle Wolfenstein based on the iortcw source port.
+RealRTCW is a community single-player overhaul project for Return to Castle Wolfenstein based on the iortcw and rtcw-sp source code.
 
 Features:
 * All iortcw features including proper widescreen support

@@ -70,16 +70,7 @@ void TossClientItems( gentity_t *self ) {
 	// drop the weapon if not a gauntlet or machinegun
 	weapon = self->s.weapon;
     
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) { // RealRTCW Standard
-	switch ( self->aiCharacter ) {
-	case AICHAR_ZOMBIE:
-	case AICHAR_WARZOMBIE:
-	case AICHAR_LOPER:
-		return;       
-	default:
-		break;
-	} 
-	} else if ( g_gametype.integer == GT_GOTHIC ) { // Gothicstein added robots
+    if ( g_gametype.integer == GT_GOTHIC ) { // Gothicstein. Robots never drop weapons.
 	switch ( self->aiCharacter ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:
@@ -90,7 +81,7 @@ void TossClientItems( gentity_t *self ) {
 	default:
 		break;
 	}
-	} else {  // Default case
+	} else {  // Default case. Robots do drop weapons.
 	switch ( self->aiCharacter ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:

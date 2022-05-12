@@ -69,14 +69,36 @@ void TossClientItems( gentity_t *self ) {
 
 	// drop the weapon if not a gauntlet or machinegun
 	weapon = self->s.weapon;
-
+    
+	if ( g_gametype.integer == GT_SINGLE_PLAYER ) { // RealRTCW Standard
 	switch ( self->aiCharacter ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_LOPER:
-		return;         //----(SA)	removed DK's special case
+		return;       
 	default:
 		break;
+	} 
+	} else if ( g_gametype.integer == GT_GOTHIC ) { // Gothicstein added robots
+	switch ( self->aiCharacter ) {
+	case AICHAR_ZOMBIE:
+	case AICHAR_WARZOMBIE:
+	case AICHAR_LOPER:
+	case AICHAR_PROTOSOLDIER:
+	case AICHAR_SUPERSOLDIER:
+		return;       
+	default:
+		break;
+	}
+	} else {  // Default case
+	switch ( self->aiCharacter ) {
+	case AICHAR_ZOMBIE:
+	case AICHAR_WARZOMBIE:
+	case AICHAR_LOPER:
+		return;       
+	default:
+		break;
+	} 
 	}
 
 	AngleVectors( self->r.currentAngles, forward, NULL, NULL );

@@ -1089,7 +1089,17 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 //	bolt->clipmask = MASK_SHOT;
 	bolt->clipmask = MASK_MISSILESHOT;
 
-	bolt->s.pos.trType = TR_LINEAR;
+    if ( g_gametype.integer == GT_GOTHIC ) 
+	        {
+	           if ( self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_PROTOSOLDIER ) { 
+		       bolt->s.pos.trType = TR_LINEAR; // no special behaviour for robots - it looks cringe
+		       } else {
+		       bolt->s.pos.trType = TR_GRAVITY_LOW; //special rocket behaviour for gothicstein
+		       } 
+            } else {
+	           bolt->s.pos.trType = TR_LINEAR; // Default rocket behaviour
+	}
+
 	bolt->s.pos.trTime = level.time - MISSILE_PRESTEP_TIME;     // move a bit on the very first frame
 	VectorCopy( start, bolt->s.pos.trBase );
 //	VectorScale( dir, 900, bolt->s.pos.trDelta );	// old speed was 900

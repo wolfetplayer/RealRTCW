@@ -48,6 +48,8 @@ endif
 
 ifeq ($(COMPILE_PLATFORM),cygwin)
   PLATFORM=mingw32
+  CFLAGS += -DWIN32
+  CLIENT_CFLAGS += -DWIN32
 endif
 
 ifndef PLATFORM
@@ -274,6 +276,7 @@ endif
 BD=$(BUILD_DIR)/debug-$(PLATFORM)-$(ARCH)
 BR=$(BUILD_DIR)/release-$(PLATFORM)-$(ARCH)
 STEAMDIR=$(MOUNT_DIR)/steam
+STEAMSHIMDIR=$(MOUNT_DIR)/steamshim
 CDIR=$(MOUNT_DIR)/client
 SDIR=$(MOUNT_DIR)/server
 RDIR=$(MOUNT_DIR)/renderer
@@ -683,6 +686,8 @@ ifdef MINGW
 
   BASE_CFLAGS = -Wall -fno-strict-aliasing \
     -DUSE_ICON
+
+
 
   # In the absence of wspiapi.h, require Windows XP or later
   ifeq ($(shell test -e $(CMDIR)/wspiapi.h; echo $$?),1)
@@ -1226,6 +1231,10 @@ ifeq ($(USE_MUMBLE),1)
   CLIENT_CFLAGS += -DUSE_MUMBLE
 endif
 
+ifdef STEAM
+  CLIENT_CFLAGS += -DSTEAM
+endif
+
 ifeq ($(USE_INTERNAL_ZLIB),1)
   ZLIB_CFLAGS = -DNO_GZIP -I$(ZDIR)
 else
@@ -1767,9 +1776,9 @@ $(Q3ASM): $(Q3ASMOBJ)
 #############################################################################
 # CLIENT/SERVER
 #############################################################################
-
 Q3OBJ = \
   $(B)/client/steam.o \
+  $(B)/client/steamshim_child.o \
   \
   $(B)/client/cl_cgame.o \
   $(B)/client/cl_cin.o \
@@ -2409,6 +2418,7 @@ endif
 
 Q3DOBJ = \
   $(B)/ded/steam.o \
+  $(B)/ded/steamshim_child.o \
   \
   $(B)/ded/sv_bot.o \
   $(B)/ded/sv_client.o \
@@ -2602,7 +2612,8 @@ $(B)/$(BASEGAME)/vm/cgame.sp.qvm: $(Q3CGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 #############################################################################
 
 Q3GOBJ_ = \
-  $(B)/client/steam.o \
+  $(B)/$(BASEGAME)/game/steam.o \
+  $(B)/$(BASEGAME)/game/steamshim_child.o \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_cast.o \
   $(B)/$(BASEGAME)/game/ai_cast_characters.o \
@@ -2713,17 +2724,32 @@ $(B)/$(BASEGAME)/vm/ui.sp.qvm: $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm $(Q3ASM)
 ## STEAM INTEGRATION
 #############################################################################
 
+$(B)/client/%.o: $(STEAMSHIMDIR)/%.c
+	$(DO_CC)
+
+$(B)/client/%.o: $(STEAMSHIMDIR)/%.m
+	$(DO_CC)
+
 $(B)/client/%.o: $(STEAMDIR)/%.c
 	$(DO_CC)
-	
+
 $(B)/client/%.o: $(STEAMDIR)/%.m
 	$(DO_CC)
-	
+
+$(B)/ded/%.o: $(STEAMSHIMDIR)/%.c
+	$(DO_DED_CC)
+
+$(B)/ded/%.o: $(STEAMSHIMDIR)/%.m
+	$(DO_DED_CC)
+
 $(B)/ded/%.o: $(STEAMDIR)/%.c
 	$(DO_DED_CC)
-	
+
 $(B)/ded/%.o: $(STEAMDIR)/%.m
 	$(DO_DED_CC)
+
+$(B)/$(BASEGAME)/game/%.o: $(STEAMSHIMDIR)/%.c
+	$(DO_GAME_CC)
 
 $(B)/$(BASEGAME)/game/%.o: $(STEAMDIR)/%.c
 	$(DO_GAME_CC)

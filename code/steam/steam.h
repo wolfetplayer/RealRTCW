@@ -1,12 +1,7 @@
-
-
-#include <stdbool.h>
-
-
-bool steamInit(void);
+int steamInit(void);
 
 void steamRun(void);
 
-bool steamRestartIfNecessary(void);
+void steamSetAchievement(const char*);
 
-bool steamSetAchievement(const char*);
+int steamAlive(void);

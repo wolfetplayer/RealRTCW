@@ -48,6 +48,8 @@ endif
 
 ifeq ($(COMPILE_PLATFORM),cygwin)
   PLATFORM=mingw32
+  CFLAGS += -DWIN32
+  CLIENT_CFLAGS += -DWIN32
 endif
 
 ifndef PLATFORM
@@ -685,6 +687,8 @@ ifdef MINGW
   BASE_CFLAGS = -Wall -fno-strict-aliasing \
     -DUSE_ICON
 
+
+
   # In the absence of wspiapi.h, require Windows XP or later
   ifeq ($(shell test -e $(CMDIR)/wspiapi.h; echo $$?),1)
     BASE_CFLAGS += -DWINVER=0x501
@@ -1225,6 +1229,10 @@ endif
 
 ifeq ($(USE_MUMBLE),1)
   CLIENT_CFLAGS += -DUSE_MUMBLE
+endif
+
+ifdef STEAM
+  CLIENT_CFLAGS += -DSTEAM
 endif
 
 ifeq ($(USE_INTERNAL_ZLIB),1)

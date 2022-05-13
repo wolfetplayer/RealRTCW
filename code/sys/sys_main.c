@@ -695,22 +695,10 @@ int main( int argc, char **argv )
 	int   i;
 	char  commandLine[ MAX_STRING_CHARS ] = { 0 };
 
-
-    //**************************************************************
-    // steamworks integration
-    
-    if (steamRestartIfNecessary()){
-		//OutputDebugStringA("restart true");
-        Sys_Exit( 0 ); // or maybe just 'return 0' ?
-		//return 0;
-	}
-    //**************************************************************
-	//OutputDebugStringA("restart false");
-
 	steamInit();
-	
-	//steamSetAchievement("reached_100_kills"); // set achievement example
-	
+
+	// steamSetAchievement("ACH_W3D_2"); // set achievement example
+
 
 #ifndef DEDICATED
 	// SDL version check

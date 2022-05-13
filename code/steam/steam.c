@@ -1,78 +1,64 @@
-
-
 #include "steam.h"
 
 #include "../steamshim/steamshim_child.h"
 
 #include <stdint.h>
 
-#ifdef WIN32
-	#include "windows.h"
-#endif
-
-
-const uint32_t steam_app_id = 1379630u;
+#ifdef STEAM
 
 void steamRun(void)
 {
-#ifdef WIN32
-
 	STEAMSHIM_pump();
 	
-#endif
-
 	return;
 }
 
 int steamInit(void)
-{ 
-#ifdef WIN32
-
-	return STEAMSHIM_init();
-
-#endif
-	return false;
-}
-
-bool steamRestartIfNecessary(void)
 {
-#ifdef WIN32
-
-	STEAMSHIM_restartIfNecessary(steam_app_id);
-
-	while (STEAMSHIM_alive())
+	if (!STEAMSHIM_init())
 	{
-		const STEAMSHIM_Event *e = STEAMSHIM_pump();
-
-	    if (e && e->type == SHIMEVENT_APPRESTARTED)
-	        return e->okay;
-
-	    usleep(100 * 1000); // 1/10sec
+		return 0;
 	}
 
-#endif
+	STEAMSHIM_requestStats();
 
-	return false;
+	return 1;
 }
 
 void steamSetAchievement(const char* id)
 {
-#ifdef WIN32
-
 	STEAMSHIM_setAchievement(id, 1);
 
-#endif
+	STEAMSHIM_storeStats();
 
 	return;
 }
 
-bool steamAlive()
+int steamAlive()
 {
-#ifdef WIN32
-
 	return STEAMSHIM_alive();
+}
+
+#else
+
+void steamRun(void)
+{
+	return;
+}
+
+int steamInit(void)
+{
+	return 0;
+}
+
+void steamSetAchievement(const char* id)
+{
+	return;
+}
+
+int steamAlive()
+{
+	return 1;
+}
 
 #endif
-
-	return false;
-}

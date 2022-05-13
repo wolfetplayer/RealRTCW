@@ -1,11 +1,16 @@
-#define GAME_LAUNCH_NAME "RealRTCW.x64"
+#define GAME_LAUNCH_NAME "./RealRTCW.x64.exe"
 #ifndef GAME_LAUNCH_NAME
 #error Please define your game exe name.
 #endif
 
-#ifdef _WIN32
+#ifdef WIN32
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
+#include <tchar.h>
+#include <fcntl.h>
+#include <io.h>
+#include <iostream>
+#include <fstream>
 typedef PROCESS_INFORMATION ProcessType;
 typedef HANDLE PipeType;
 #define NULLPIPE NULL
@@ -24,12 +29,17 @@ typedef int PipeType;
 
 #include "steam/steam_api.h"
 
+static const uint32_t steam_app_id = 1379630u;
+
 #define DEBUGPIPE 1
 #if DEBUGPIPE
 #define dbgpipe printf
 #else
 static inline void dbgpipe(const char *fmt, ...) {}
 #endif
+
+// maximum mumber of lines the output console should have
+static const WORD MAX_CONSOLE_LINES = 500;
 
 /* platform-specific mainline calls this. */
 static int mainline(void);
@@ -45,7 +55,106 @@ static bool setEnvVar(const char *key, const char *val);
 static bool launchChild(ProcessType *pid);
 static int closeProcess(ProcessType *pid);
 
-#ifdef _WIN32
+#ifdef WIN32
+bool ReleaseConsole()
+{
+    bool result = true;
+    FILE* fp;
+
+    // Just to be safe, redirect standard IO to NUL before releasing.
+
+    // Redirect STDIN to NUL
+    if (freopen_s(&fp, "NUL:", "r", stdin) != 0)
+        result = false;
+    else
+        setvbuf(stdin, NULL, _IONBF, 0);
+
+    // Redirect STDOUT to NUL
+    if (freopen_s(&fp, "NUL:", "w", stdout) != 0)
+        result = false;
+    else
+        setvbuf(stdout, NULL, _IONBF, 0);
+
+    // Redirect STDERR to NUL
+    if (freopen_s(&fp, "NUL:", "w", stderr) != 0)
+        result = false;
+    else
+        setvbuf(stderr, NULL, _IONBF, 0);
+
+    // Detach from console
+    if (!FreeConsole())
+        result = false;
+
+    return result;
+}
+
+bool RedirectConsoleIO()
+{
+    bool result = true;
+    FILE* fp;
+
+    // Redirect STDIN if the console has an input handle
+    if (GetStdHandle(STD_INPUT_HANDLE) != INVALID_HANDLE_VALUE)
+        if (freopen_s(&fp, "CONIN$", "r", stdin) != 0)
+            result = false;
+        else
+            setvbuf(stdin, NULL, _IONBF, 0);
+
+    // Redirect STDOUT if the console has an output handle
+    if (GetStdHandle(STD_OUTPUT_HANDLE) != INVALID_HANDLE_VALUE)
+        if (freopen_s(&fp, "CONOUT$", "w", stdout) != 0)
+            result = false;
+        else
+            setvbuf(stdout, NULL, _IONBF, 0);
+
+    // Redirect STDERR if the console has an error handle
+    if (GetStdHandle(STD_ERROR_HANDLE) != INVALID_HANDLE_VALUE)
+        if (freopen_s(&fp, "CONOUT$", "w", stderr) != 0)
+            result = false;
+        else
+            setvbuf(stderr, NULL, _IONBF, 0);
+
+    // Make C++ standard streams point to console as well.
+    std::ios::sync_with_stdio(true);
+
+    // Clear the error state for each of the C++ standard streams.
+    std::wcout.clear();
+    std::cout.clear();
+    std::wcerr.clear();
+    std::cerr.clear();
+    std::wcin.clear();
+    std::cin.clear();
+
+    return result;
+}
+
+void AdjustConsoleBuffer(int16_t minLength)
+{
+    // Set the screen buffer to be big enough to scroll some text
+    CONSOLE_SCREEN_BUFFER_INFO conInfo;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &conInfo);
+    if (conInfo.dwSize.Y < minLength)
+        conInfo.dwSize.Y = minLength;
+    SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), conInfo.dwSize);
+}
+
+bool CreateNewConsole(int16_t minLength)
+{
+    bool result = false;
+
+    // Release any current console and redirect IO to NUL
+    ReleaseConsole();
+
+    // Attempt to create new console
+    if (AllocConsole())
+    {
+        AdjustConsoleBuffer(minLength);
+        result = RedirectConsoleIO();
+    }
+
+    return result;
+}
+
 static void fail(const char *err)
 {
     MessageBoxA(NULL, err, "ERROR", MB_ICONERROR | MB_OK);
@@ -102,9 +211,14 @@ static bool setEnvVar(const char *key, const char *val)
 
 static bool launchChild(ProcessType *pid)
 {
-    return (CreateProcessW(TEXT(L".\\") TEXT(GAME_LAUNCH_NAME) TEXT(L".exe"),
-                           GetCommandLineW(), NULL, NULL, TRUE, 0, NULL,
-                           NULL, NULL, pid) != 0);
+    TCHAR name[MAX_PATH] = _T(GAME_LAUNCH_NAME);
+    _tprintf(_T("%ls\n"), name);
+
+    STARTUPINFOW cif = {0};
+    cif.cb = sizeof(STARTUPINFO);
+
+    return (CreateProcessW(name, NULL, NULL, NULL, true, 
+        0, NULL, NULL, &cif, pid) != 0);
 } // launchChild
 
 static int closeProcess(ProcessType *pid)
@@ -117,6 +231,7 @@ static int closeProcess(ProcessType *pid)
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                      LPSTR lpCmdLine, int nCmdShow)
 {
+    // CreateNewConsole(1024); // uncomment for debug console
     mainline();
     ExitProcess(0);
     return 0;  // just in case.
@@ -473,13 +588,25 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd)
                 const bool enable = (*(buf++) != 0);
                 const char *name = (const char *) buf;   // !!! FIXME: buffer overflow possible.
                 if (!GSteamStats)
+                {
                     writeAchievementSet(fd, name, enable, false);
+                    printf("set ach 1");
+                }
                 else if (enable && !GSteamStats->SetAchievement(name))
+                {
                     writeAchievementSet(fd, name, enable, false);
+                    printf("set ach 2");
+                }
                 else if (!enable && !GSteamStats->ClearAchievement(name))
+                {
                     writeAchievementSet(fd, name, enable, false);
+                    printf("set ach 3");
+                }
                 else
+                {
                     writeAchievementSet(fd, name, enable, true);
+                    printf("set ach 4");
+                }
             } // if
             break;
 
@@ -615,6 +742,11 @@ static bool setEnvironmentVars(PipeType pipeChildRead, PipeType pipeChildWrite)
 
 static bool initSteamworks(PipeType fd)
 {
+    if (SteamAPI_RestartAppIfNecessary(steam_app_id))
+    {
+        exit(0);
+    }
+
     // this can fail for many reasons:
     //  - you forgot a steam_appid.txt in the current working directory.
     //  - you don't have Steam running

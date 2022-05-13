@@ -1,5 +1,6 @@
 
 #ifdef WIN32
+
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
 typedef HANDLE PipeType;
@@ -8,7 +9,9 @@ typedef unsigned __int8 uint8;
 typedef __int32 int32;
 typedef __int32 uint32;
 typedef unsigned __int64 uint64;
+
 #else
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
@@ -18,19 +21,68 @@ typedef unsigned __int64 uint64;
 #include <signal.h>
 typedef uint8_t uint8;
 typedef int32_t int32;
+typedef uint32_t uint32;
 typedef uint64_t uint64;
 typedef int PipeType;
 #define NULLPIPE -1
+
 #endif
 
 #include "steamshim_child.h"
 #include <stdio.h>
 
-#define DEBUGPIPE 1
-#if DEBUGPIPE
-#define dbgpipe printf
+#ifdef DEBUGPIPE
+
+static void dbgpipe(const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+
+    FILE *f = fopen("steamshim.log", "a");
+ 
+    // fprintf(f, "%s", fmt);
+
+    while (*fmt != '\0')
+    {
+        if (*(fmt++) != '%')
+        {
+            fprintf(f, "%c", *(fmt - 1));
+
+            continue;
+        }
+
+        switch (*(fmt++))
+        {
+            case 'd':
+            case 'i':
+                fprintf(f, "%i", va_arg(args, int));
+                break;
+            case 'u':
+                fprintf(f, "%i", va_arg(args, unsigned int));
+                break;
+            case 'c':
+                fprintf(f, "%c", va_arg(args, char));
+                break;
+            case 'f':
+                fprintf(f, "%f", va_arg(args, float));
+                break;
+            case 's':
+                fprintf(f, "%s", va_arg(args, const char *));
+                break;
+            default:
+                break;
+        }
+    }
+
+    fclose(f);
+ 
+    va_end(args);
+}
+
 #else
+
 static inline void dbgpipe(const char *fmt, ...) {}
+
 #endif
 
 static int writePipe(PipeType fd, const void *buf, const unsigned int _len);
@@ -71,8 +123,10 @@ static char *getEnvVar(const char *key, char *buf, const size_t _buflen)
 {
     const DWORD buflen = (DWORD) _buflen;
     const DWORD rc = GetEnvironmentVariableA(key, buf, buflen);
+    dbgpipe("buflen = %d rc = %d\n", buflen, rc);
+    dbgpipe("buffer = %s\n", buf);
     /* rc doesn't count null char, hence "<". */
-    return ((rc > 0) && (rc < buflen)) ? NULL : buf;
+    return ((rc > 0) && (rc < buflen)) ? buf : NULL;
 } /* getEnvVar */
 
 #else

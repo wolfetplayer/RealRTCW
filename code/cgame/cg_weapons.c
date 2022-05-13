@@ -62,8 +62,8 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
     {WP_G43,                WP_M1GARAND,            0,            0,               0            },  //	5
 	{WP_FG42,               WP_MP44,                WP_BAR,       0,               0            },  //	6
 	{WP_M97,                0,                      0,            0,               0            },  //	7
-	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  0,               0            },  //	8
-	{WP_PANZERFAUST,        WP_FLAMETHROWER,        WP_MG42M,     0,               0            },  //	9
+	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  WP_AIRSTRIKE,    WP_POISONGAS },  //	8
+	{WP_PANZERFAUST,        WP_FLAMETHROWER,        WP_MG42M,     WP_BROWNING,     0            },  //	9
 	{WP_VENOM,              WP_TESLA,               0,            0,               0            }  //	10
 };
 
@@ -1898,6 +1898,8 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		case WP_FLAMETHROWER:
 		case WP_TESLA:
 		case WP_MAUSER:
+		case WP_M1GARAND:
+		case WP_M7:
 			leanscale = 2.0f;
 			break;
 
@@ -2854,6 +2856,18 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		}
 	}
 
+		if ( isPlayer && !cg.renderingThirdPerson ) {        // (SA) for now just do it on the first person weapons
+		if ( weaponNum == WP_M1GARAND || weaponNum == WP_M7 ) {
+			if ( (  cg.snap->ps.ammo[BG_FindAmmoForWeapon( WP_M7 )] || cg.snap->ps.ammoclip[BG_FindAmmoForWeapon( WP_M7 )]  ) ) {
+					barrel.hModel = weapon->modModels[0];
+					if ( barrel.hModel ) {
+						CG_PositionEntityOnTag( &barrel, parent, "tag_scope", 0, NULL );
+						CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
+					}
+			}
+		}
+	}
+
 
 	// make sure we aren't looking at cg.predictedPlayerEntity for LG
 	nonPredictedCent = &cg_entities[cent->currentState.number];
@@ -2928,7 +2942,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 #define BARREL_SMOKE_TIME 1000
 
 		if ( ps || cg.renderingThirdPerson || !isPlayer ) {
-			if ( weaponNum == WP_VENOM || weaponNum == WP_STEN || weaponNum == WP_MG42M ) {
+			if ( weaponNum == WP_VENOM || weaponNum == WP_STEN || weaponNum == WP_MG42M || weaponNum == WP_BROWNING ) {
 				if ( !cg_paused.integer ) {    // don't add while paused
 					// hot smoking gun
 					if ( cg.time - cent->overheatTime < 3000 ) {
@@ -2973,7 +2987,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	if ( weaponNum == WP_GRENADE_LAUNCHER ||
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
-		 weaponNum == WP_DYNAMITE ) {
+		 weaponNum == WP_DYNAMITE ||
+		 weaponNum == WP_M7 ) {
 		return;
 	}
 
@@ -3325,6 +3340,7 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_MP44:
 		case WP_MG42M:
 		case WP_M97:
+		case WP_BROWNING:
 
 		case WP_STEN:
 		case WP_MAUSER:
@@ -3348,7 +3364,7 @@ void CG_DrawWeaponSelect( void ) {
 			x = WP_DRAW_X;
 		}
 
-		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
+           if(drawweap && COM_BitCheck( bits, drawweap )) {
 			// you've got it, draw it
 
 			CG_RegisterWeapon( drawweap, qfalse );
@@ -3413,7 +3429,7 @@ void CG_DrawWeaponSelect( void ) {
 
 		realweap = drawweap;        // DHM - Nerve
 
-		if ( drawweap && ( bits[0] & ( 1 << drawweap ) ) ) {
+           if(drawweap && COM_BitCheck( bits, drawweap )) {
 
 			CG_RegisterWeapon( drawweap, qfalse );
 
@@ -3467,9 +3483,12 @@ static qboolean CG_WeaponSelectable( int i ) {
 
 	// if holding a melee weapon (chair/shield/etc.) only allow single-handed weapons
 	if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {
-		if ( !( WEAPS_ONE_HANDED & ( 1 << i ) ) ) {
-			return qfalse;
-		}
+
+    if (ammoTable[i].twoHand == 1) 
+	{
+		return qfalse;
+	}
+
 	}
 
 	// allow switch out of scope for weapons where you fired the last shot while scoped
@@ -3901,6 +3920,14 @@ void CG_PlaySwitchSound( int lastweap, int newweap ) {
 		case WP_LUGER:
 			switchsound = cg_weapons[newweap].switchSound[0];
 			break;
+		case WP_M7:
+			switchsound = cg_weapons[newweap].switchSound[0];
+			break;
+		case WP_M1GARAND:
+			if ( cg.predictedPlayerState.ammoclip[lastweap] ) {
+				switchsound = cg_weapons[newweap].switchSound[0];
+			}
+			break;
 		default:
 			break;
 		}
@@ -4025,13 +4052,21 @@ void CG_AltWeapon_f( void ) {
 //----(SA)	end
 		CG_FinishWeaponChange( original, num );
 	}
+
+
+
+		// Arnout: don't allow another weapon switch when we're still swapping the gpg40, to prevent animation breaking
+	if ( ( cg.snap->ps.weaponstate == WEAPON_RAISING || cg.snap->ps.weaponstate == WEAPON_DROPPING ) &&
+		 ( ( original == WP_M7 || num == WP_M7 ) ||
+		   ( original == WP_SILENCER || num == WP_SILENCER  ) ) ) {
+		return;
+	}
 }
 
 
 /*
 ==============
 CG_NextWeap
-
   switchBanks - curweap is the last in a bank, 'qtrue' means go to the next available bank, 'qfalse' means loop to the head of the bank
 ==============
 */
@@ -4040,10 +4075,18 @@ void CG_NextWeap( qboolean switchBanks ) {
 	int num, curweap;
 	qboolean nextbank = qfalse;     // need to switch to the next bank of weapons?
 	int i, j;
-
 	num = curweap = cg.weaponSelect;
 
 	CG_WeaponIndex( curweap, &bank, &cycle );     // get bank/cycle of current weapon
+
+	switch ( num ) {
+	case WP_SILENCER:
+		curweap = num = WP_LUGER;
+		break;
+	case WP_M7:
+		curweap = num = WP_M1GARAND;
+		break;
+	}
 
 	// if you're using an alt mode weapon, try switching back to the parent first
 	if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
@@ -4055,20 +4098,19 @@ void CG_NextWeap( qboolean switchBanks ) {
 	}
 
 
+
+
 //	if ( cg_cycleAllWeaps.integer || !switchBanks ) {
 	if ( 1 ) {
 		for ( i = 0; i < maxWeapsInBank; i++ ) {
 			num = getNextWeapInBankBynum( num );
-
 			CG_WeaponIndex( num, NULL, &newcycle );       // get cycle of new weapon.  if it's lower than the original, then it cycled around
-
 			if ( switchBanks ) {
 				if ( newcycle <= cycle ) {
 					nextbank = qtrue;
 					break;
 				}
 			} else {    // don't switch banks if you get to the end
-
 				if ( num == curweap ) {    // back to start, just leave it where it is
 					return;
 				}
@@ -4076,12 +4118,24 @@ void CG_NextWeap( qboolean switchBanks ) {
 
 			if ( CG_WeaponSelectable( num ) ) {
 				break;
+			} else {
+				qboolean found = qfalse;
+				switch ( num ) {
+				case WP_M1GARAND:
+					if ( ( found = CG_WeaponSelectable( WP_M7 ) ) ) {
+						num = WP_M7;
+					}
+					break;
+				}
+
+				if ( found ) {
+					break;
+				}
 			}
 		}
 	} else {
 		nextbank = qtrue;
 	}
-
 	if ( nextbank ) {
 		for ( i = 0; i < maxWeapBanks; i++ ) {
 //			if ( cg_cycleAllWeaps.integer ) {
@@ -4094,40 +4148,64 @@ void CG_NextWeap( qboolean switchBanks ) {
 					num = getNextBankWeap( bank + i, cycle, qtrue );
 				}
 			}
-
 			if ( num == 0 ) {
 				continue;
 			}
 
-			if ( CG_WeaponSelectable( num ) ) {  // first entry in bank was selectable, no need to scan the bank
+
+			if ( CG_WeaponSelectable( num ) ) { // first entry in bank was selectable, no need to scan the bank
 				break;
+			} else {
+				qboolean found = qfalse;
+				switch ( num ) {
+				case WP_M1GARAND:
+					if ( ( found = CG_WeaponSelectable( WP_M7 ) ) ) {
+						num = WP_M7;
+					}
+					break;
+				}
+
+				if ( found ) {
+					break;
+				}
 			}
 
 			CG_WeaponIndex( num, &newbank, &newcycle );   // get the bank of the new weap
 
-			for ( j = newcycle; j < maxWeapsInBank; j++ ) {
+			for ( j = newcycle; j < MAX_WEAPS_IN_BANK; j++ ) {
 				num = getNextWeapInBank( newbank, j );
 
-				if ( CG_WeaponSelectable( num ) ) {  // found selectable weapon
+
+				if ( CG_WeaponSelectable( num ) ) { // found selectable weapon
 					break;
+				} else {
+					qboolean found = qfalse;
+					switch ( num ) {
+					case WP_M1GARAND:
+						if ( ( found = CG_WeaponSelectable( WP_M7 ) ) ) {
+							num = WP_M7;
+						}
+						break;
+					}
+
+					if ( found ) {
+						break;
+					}
 				}
 
 				num = 0;
 			}
-
 			if ( num ) {   // a selectable weapon was found in the current bank
 				break;
 			}
 		}
 	}
-
 	CG_FinishWeaponChange( curweap, num ); //----(SA)
 }
 
 /*
 ==============
 CG_PrevWeap
-
   switchBanks - curweap is the last in a bank
 		'qtrue'  - go to the next available bank
 		'qfalse' - loop to the head of the bank
@@ -4141,6 +4219,15 @@ void CG_PrevWeap( qboolean switchBanks ) {
 
 	num = curweap = cg.weaponSelect;
 
+	switch ( num ) {
+	case WP_SILENCER:
+		curweap = num = WP_LUGER;
+		break;
+	case WP_M7:
+		curweap = num = WP_M1GARAND;
+		break;
+	}
+
 	CG_WeaponIndex( curweap, &bank, &cycle );     // get bank/cycle of current weapon
 
 	// if you're using an alt mode weapon, try switching back to the parent first
@@ -4151,20 +4238,16 @@ void CG_PrevWeap( qboolean switchBanks ) {
 			return;
 		}
 	}
-
 	// initially, just try to find a lower weapon in the current bank
 //	if ( cg_cycleAllWeaps.integer || !switchBanks ) {
 	if ( 1 ) {
-
 //		if(cycle == 0) {		// already at bottom of list
 //			prevbank = qtrue;
 //		} else {
 		for ( i = cycle; i >= 0; i-- ) {
 //				num = getPrevWeapInBank(bank, i);
 			num = getPrevWeapInBankBynum( num );
-
 			CG_WeaponIndex( num, NULL, &newcycle );         // get cycle of new weapon.  if it's greater than the original, then it cycled around
-
 			if ( switchBanks ) {
 				if ( newcycle > ( cycle - 1 ) ) {
 					prevbank = qtrue;
@@ -4178,56 +4261,89 @@ void CG_PrevWeap( qboolean switchBanks ) {
 
 			if ( CG_WeaponSelectable( num ) ) {
 				break;
+			} else {
+				qboolean found = qfalse;
+				switch ( num ) {
+				case WP_M1GARAND:
+					if ( ( found = CG_WeaponSelectable( WP_M7 ) ) ) {
+						num = WP_M7;
+					}
+					break;
+				}
+
+				if ( found ) {
+					break;
+				}
 			}
 		}
-//		}
 	} else {
 		prevbank = qtrue;
 	}
-
 	// cycle to previous bank.
 	//	if cycleAllWeaps: find highest weapon in bank
 	//		else: try to find weap in bank that matches cycle position
 	//			else: use base weap in bank
 
 	if ( prevbank ) {
-		for ( i = 0; i < maxWeapBanks; i++ ) {
-//			if ( cg_cycleAllWeaps.integer ) {
-			if ( 1 ) {
+		for ( i = 0; i < MAX_WEAP_BANKS; i++ ) {
+			if ( cg_cycleAllWeaps.integer ) {
 				num = getPrevBankWeap( bank - i, cycle, qfalse );   // cycling all weaps always starts the next bank at the bottom
 			} else {
 				num = getPrevBankWeap( bank - i, cycle, qtrue );
 			}
-
 			if ( num == 0 ) {
 				continue;
 			}
 
-			if ( CG_WeaponSelectable( num ) ) {  // first entry in bank was selectable, no need to scan the bank
+			if ( CG_WeaponSelectable( num ) ) { // first entry in bank was selectable, no need to scan the bank
 				break;
+			} else {
+				qboolean found = qfalse;
+				switch ( num ) {
+				case WP_M1GARAND:
+					if ( ( found = CG_WeaponSelectable( WP_M7 ) ) ) {
+						num = WP_M7;
+					}
+					break;
+				}
+
+				if ( found ) {
+					break;
+				}
 			}
 
 			CG_WeaponIndex( num, &newbank, &newcycle );   // get the bank of the new weap
 
-			for ( j = maxWeapsInBank; j > 0; j-- ) {
+			for ( j = MAX_WEAPS_IN_BANK; j > 0; j-- ) {
 				num = getPrevWeapInBank( newbank, j );
 
-				if ( CG_WeaponSelectable( num ) ) {  // found selectable weapon
+				if ( CG_WeaponSelectable( num ) ) { // found selectable weapon
 					break;
+				} else {
+					qboolean found = qfalse;
+					switch ( num ) {
+					case WP_M1GARAND:
+						if ( ( found = CG_WeaponSelectable( WP_M7 ) ) ) {
+							num = WP_M7;
+						}
+						break;
+					}
+
+					if ( found ) {
+						break;
+					}
 				}
 
 				num = 0;
 			}
 
-			if ( num ) {   // a selectable weapon was found in the current bank
+			if ( num ) { // a selectable weapon was found in the current bank
 				break;
 			}
 		}
 	}
-
 	CG_FinishWeaponChange( curweap, num ); //----(SA)
 }
-
 
 /*
 ==============
@@ -4235,29 +4351,23 @@ CG_LastWeaponUsed_f
 ==============
 */
 void CG_LastWeaponUsed_f( void ) {
-
 	if ( cg.time - cg.weaponSelectTime < cg_weaponCycleDelay.integer ) {
 		return; // force pause so holding it down won't go too fast
-
 	}
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
-
 	// don't switchback if reloading (it nullifies the reload)
 	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
 		return;
 	}
-
 	if ( !cg.switchbackWeapon ) {
 		cg.switchbackWeapon = cg.weaponSelect;
 		return;
 	}
-
 	if ( CG_WeaponSelectable( cg.switchbackWeapon ) ) {
 		CG_FinishWeaponChange( cg.weaponSelect, cg.switchbackWeapon );
 	} else {    // switchback no longer selectable, reset cycle
 		cg.switchbackWeapon = 0;
 	}
-
 }
 
 /*
@@ -4611,6 +4721,8 @@ void CG_OutOfAmmoChange( void ) {
 		}
 	}
 
+	
+
 
 	// still nothing available, just go to the next
 	// available weap using the regular selection scheme
@@ -4798,6 +4910,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 		yawRandom *= 0.5;
 	break;
 	case WP_MG42M:
+	case WP_BROWNING:
 		pitchRecoilAdd = pow(random(), 8) * (10 + VectorLength(cg.snap->ps.velocity) / 5);
 		pitchAdd = 1 + rand() % 3;
 		yawRandom = 1;
@@ -4896,9 +5009,17 @@ void CG_FireWeapon( centity_t *cent ) {
 		}
 	} else if (   ent->weapon == WP_GRENADE_LAUNCHER ||
 				  ent->weapon == WP_GRENADE_PINEAPPLE ||
-				  ent->weapon == WP_DYNAMITE ) { 
+				  ent->weapon == WP_DYNAMITE ||
+				  ent->weapon == WP_AIRSTRIKE ||
+				  ent->weapon == WP_POISONGAS ) { 
 		if ( ent->apos.trBase[0] > 0 ) { // underhand
 			return;
+		}
+	}
+
+	 if ( ent->weapon == WP_M7 ) {
+		if ( ent->clientNum == cg.snap->ps.clientNum ) {
+			cg.weaponSelect = WP_M1GARAND;
 		}
 	}
 
@@ -5257,6 +5378,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_BAR:
 	case WP_MP44:
 	case WP_MG42M:
+	case WP_BROWNING:
 	case WP_M97:
 	case WP_REVOLVER:
 	case WP_FG42:
@@ -5526,6 +5648,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
+	case WP_M7:
 		shader = cgs.media.rocketExplosionShader;       // copied from RL
 		sfx = cgs.media.sfx_grenexp;
 		sfx2 = cgs.media.sfx_grenexpDist;
@@ -5571,6 +5694,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		break;
 	case VERYBIGEXPLOSION:
 	case WP_PANZERFAUST:
+    case WP_AIRSTRIKE:
 		sfx = cgs.media.sfx_rockexp;
 		sfx2 = cgs.media.sfx_rockexpDist;
 		sfx2range = 800;

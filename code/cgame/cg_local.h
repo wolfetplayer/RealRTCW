@@ -330,6 +330,9 @@ typedef struct centity_s {
 	int dl_sound;
 	int dl_atten;
 
+	vec3_t origin2;
+	vec3_t lastLerpOrigin;          // Gordon: Added for linked trains player adjust prediction
+
 	lerpFrame_t lerpFrame;      //----(SA)	added
 	vec3_t highlightOrigin;             // center of the geometry.  for things like corona placement on treasure
 	qboolean usehighlightOrigin;
@@ -2246,6 +2249,10 @@ void CG_Spotlight( centity_t *cent, float *color, vec3_t start, vec3_t dir, int 
 //----(SA)	done
 
 void CG_RumbleEfx( float pitch, float yaw );
+
+void InitSmokeSprites( void );
+void CG_RenderSmokeGrenadeSmoke( centity_t *cent, const weaponInfo_t *weapon, weapon_t );
+void CG_AddSmokeSprites( void );
 
 //
 // cg_snapshot.c

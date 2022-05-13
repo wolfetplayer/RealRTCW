@@ -393,6 +393,8 @@ static void CG_TouchItem( centity_t *cent ) {
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_FG42SCOPE );
 		} else if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_MAUSER );
+		} else if ( weapon == WP_M1GARAND ) {
+			COM_BitSet( cg.predictedPlayerState.weapons, WP_M7 );
 		}
 
 		if ( !cg.predictedPlayerState.ammo[ BG_FindAmmoForWeapon( weapon )] ) {
@@ -733,6 +735,7 @@ void CG_PredictPlayerState( void ) {
 			}
 		}
 
+        cg_pmove.ltChargeTime = cg_LTChargeTime.integer;
 		Pmove( &cg_pmove );
 
 		moved = qtrue;

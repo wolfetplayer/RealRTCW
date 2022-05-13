@@ -1277,8 +1277,8 @@ qboolean G_canPickupMelee( gentity_t *ent ) {
 		return qfalse;
 	}
 
-//	if( WEAPS_ONE_HANDED & (1<<(ent->s.weapon)) )
-	if ( WEAPS_ONE_HANDED & ( 1 << ( ent->client->pers.cmd.weapon ) ) ) {
+	if (ammoTable[ent->client->pers.cmd.weapon].twoHand == 0)
+	{
 		return qtrue;
 	}
 

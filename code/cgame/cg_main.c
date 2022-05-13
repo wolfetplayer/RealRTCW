@@ -489,7 +489,7 @@ cvarTable_t cvarTable[] = {
 
 	// JPW NERVE
 	{ &cg_medicChargeTime,  "g_medicChargeTime", "10000", 0 }, // communicated by systeminfo
-	{ &cg_LTChargeTime, "g_LTChargeTime", "30000", 0 }, // communicated by systeminfo
+	{ &cg_LTChargeTime, "g_LTChargeTime", "35000", 0 }, // communicated by systeminfo
 	{ &cg_engineerChargeTime,   "g_engineerChargeTime", "30000", 0 }, // communicated by systeminfo
 	{ &cg_soldierChargeTime,    "g_soldierChargeTime", "20000", 0 }, // communicated by systeminfo
 	{ &cg_bluelimbotime,        "g_bluelimbotime", "30000", 0 }, // communicated by systeminfo
@@ -1708,6 +1708,8 @@ static void CG_RegisterGraphics( void ) {
 	CG_LoadingString( " - particles" );
 	CG_ClearParticles();
 
+    InitSmokeSprites();
+
 	for ( i = 1; i < MAX_PARTICLES_AREAS; i++ )
 	{
 		{
@@ -2496,6 +2498,8 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 	memset( cg_entities, 0, sizeof( cg_entities ) );
 	memset( cg_weapons, 0, sizeof( cg_weapons ) );
 	memset( cg_items, 0, sizeof( cg_items ) );
+
+	cg.refdef_current = &cg.refdef;
 
 	// RF, init the anim scripting
 	cgs.animScriptData.soundIndex = CG_SoundScriptPrecache;

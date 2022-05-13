@@ -45,6 +45,9 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+// Skill-based behavior parameters
+behaviorskill_t behaviorSkill[GSKILL_NUM_SKILLS][NUM_CHARACTERS];
+
 //---------------------------------------------------------------------------
 // Character specific attributes (defaults, these can be altered in the editor (TODO!))
 AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
@@ -55,28 +58,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_SOLDIER
 	{
 		"Soldier",
-		{
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	// RF change
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			30,        // starting health RealRTCW lowered
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"infantrySightPlayer",
@@ -103,28 +86,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_AMERICAN
 	{
 		"American",
-		{
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	// RF change
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			50,        // starting health RealRTCW lowered
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"americanSightPlayer",
@@ -151,28 +114,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_ZOMBIE
 	{
 		"Zombie",
-		{
-			200,        // running speed		//----(SA)	DK requested change
-			60,         // walking speed		//----(SA)	DK requested change
-			80,         // crouching speed
-			180,         // Field of View  RealRTCW upped from 90
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			180,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"zombieSightPlayer",
@@ -196,45 +139,21 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AISTATE_ALERT
 	},
 
-//----(SA)	added
 	//AICHAR_WARZOMBIE
 	{
 		"WarriorZombie",
-		{
-			300,        // running speed	RealRTCW upped
-			110,         // walking speed
-			130,         // crouching speed
-			180,         // Field of View
-			350,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.1,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			180,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"warzombieSightPlayer",
 			"warzombieAttackPlayer",
 			"warzombieOrders",
 			"warzombieDeath",
-			"warzombieSilentDeath",				//----(SA)	added
-			"warzombieFlameDeath",				//----(SA)	added
+			"warzombieSilentDeath",				
+			"warzombieFlameDeath",				
 			"warzombiePain",
-//----(SA)	changed per DK
-//			"sound/weapons/melee/fstatck.wav",	// stay - you're told to stay put
 			"sound/weapons/melee/warz_hit.wav",
-//			"sound/weapons/melee/fstmiss.wav",	// follow - go with ordering player ("i'm with you" rather than "yes sir!")
 			"sound/weapons/melee/warz_miss.wav",
 			"warzombieOrdersDeny",				// deny - refuse orders (doing something else)
 		},
@@ -247,33 +166,12 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		NULL,
 		AISTATE_ALERT
 	},
-//----(SA)	end
 
 	//AICHAR_VENOM
 	{
 		"Venom",
-		{
-			110,        // running speed
-			100,        // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.2,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			240,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"venomSightPlayer",
@@ -300,28 +198,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_LOPER
 	{
 		"Loper",
-		{
-			220,        // running speed
-			70,         // walking speed
-			220,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.8,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			500,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"loperSightPlayer",
@@ -349,28 +227,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_ELITEGUARD
 	{
 		"Elite Guard",
-		{
-			250,        // running speed RealRTCW was 230
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed	// RF change
-			0.0,        // leader
-			0.5,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			50,        // starting health RealRTCW was 120
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"eliteGuardSightPlayer",
@@ -397,28 +255,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_SUPERSOLDIER
 	{
 		"Super Soldier",
-		{
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			150,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.6,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			300,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"superSoldierSightPlayer",
@@ -445,28 +283,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_BLACKGUARD
 	{
 		"Black Guard",
-		{
-			220,        // running speed
-			90,         // walking speed
-			100,        // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.8,        // aim accuracy
-			0.9,        // attack skill
-			0.3,        // reaction time
-			0.4,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			1.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			120,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"blackGuardSightPlayer",
@@ -494,28 +312,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_PROTOSOLDIER
 	{
 		"Protosoldier",
-		{
-			170,        // running speed
-			100,        // walking speed
-			90,         // crouching speed
-			90,         // Field of View
-			230,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			0.9,        // aggression
-			0.1,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			300,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			2.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"protoSoldierSightPlayer",
@@ -543,28 +341,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_HELGA
 	{
 		"Helga",
-		{
-			140,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			200,        // Yaw Speed
-			0.0,        // leader
-			0.5,        // aim skill
-			0.5,        // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.0,        // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			3.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"helgaAttackPlayer",
@@ -591,28 +369,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_HEINRICH
 	{
 		"Heinrich",
-		{
-			250,        // running speed // RealRTCW was 170-100-90 speed
-			180,        // walking speed
-			170,        // crouching speed
-			180,        // Field of View // RealRTCW was 90
-			130,        // Yaw Speed
-			0.0,        // leader
-			0.7,        // aim skill
-			1.0,        // aim accuracy
-			0.9,        // attack skill
-			0.2,        // reaction time
-			0.05,       // attack crouch
-			0.0,        // idle crouch
-			1.0,        // aggression
-			0.0,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			2000,       // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			5.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"heinrichSightPlayer",
@@ -639,28 +397,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_PARTISAN
 	{
 		"Partisan",
-		{
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"partisanSightPlayer",
@@ -687,28 +425,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_RUSSIAN
 	{
 		"Russian",
-		{
-			220,		// running speed
-			90,			// walking speed
-			80,			// crouching speed
-			90,			// Field of View
-			300,		// Yaw Speed
-			0.0,		// leader
-			0.70,		// aim skill
-			0.70,		// aim accuracy
-			0.75,		// attack skill
-			0.5,		// reaction time
-			0.3,		// attack crouch
-			0.0,		// idle crouch
-			0.5,		// aggression
-			0.8,		// tactical
-			0.0,		// camper
-			16000,		// alertness
-			100,		// starting health
-			1.0,		// hearing scale
-			0.9,		// not in pvs hearing scale
-			512,		// relaxed detection radius
-			1.0,		// pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 		"russianSightPlayer",
@@ -735,28 +453,8 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	//AICHAR_CIVILIAN
 	{
 		"Civilian",
-		{
-			220,        // running speed
-			90,         // walking speed
-			80,         // crouching speed
-			90,         // Field of View
-			300,        // Yaw Speed
-			0.0,        // leader
-			0.70,       // aim skill
-			0.70,       // aim accuracy
-			0.75,       // attack skill
-			0.5,        // reaction time
-			0.3,        // attack crouch
-			0.0,        // idle crouch
-			0.5,        // aggression
-			0.8,        // tactical
-			0.0,        // camper
-			16000,      // alertness
-			100,        // starting health
-			1.0,        // hearing scale
-			0.9,        // not in pvs hearing scale
-			512,        // relaxed detection radius
-			1.0,        // pain threshold multiplier
+		{ // Default
+			0
 		},
 		{
 			"civilianSightPlayer",
@@ -779,7 +477,6 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		NULL,
 		AISTATE_RELAXED
 	},
-
 };
 //---------------------------------------------------------------------------
 
@@ -1231,8 +928,10 @@ void AIChar_spawn( gentity_t *ent ) {
 	//
 	// create the character
 
-	// (there will always be an ent->aiSkin (SA))
+	// (there will always be an ent->aiSkin (SA)) AAAS
+	BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
 	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
+
 
 	if ( !newent ) {
 		G_FreeEntity( ent );
@@ -1330,8 +1029,9 @@ void AIChar_spawn( gentity_t *ent ) {
 	if ( BG_GetAnimScriptEvent( &ent->client->ps, ANIM_ET_DIVE ) >= 0 ) {
 		cs->aiFlags |= AIFL_DIVE_ANIM;
 	}
-	// HACK
-	if ( ent->aiName && !Q_stricmp( ent->aiName, "deathshead" ) ) {
+	// HACK. ETSP avoid human torches!
+	if ( ent->aiName && (!Q_stricmp( ent->aiName, "deathshead" ) || !Q_stricmp( ent->aiName, "abate" ) || !Q_stricmp( ent->aiName, "graham" ) 
+	|| !Q_stricmp( ent->aiName, "waters" ) || !Q_stricmp( ent->aiName, "mcdermott" ) || !Q_stricmp( ent->aiName, "ramirez" ) || !Q_stricmp( ent->aiName, "agent2" ) || !Q_stricmp( ent->aiName, "villigut" )  ) ) {
 		cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
 	}
 	//
@@ -1622,4 +1322,270 @@ SP_ai_blackguard
 */
 void SP_ai_blackguard( gentity_t *ent ) {
 	AICast_DelayedSpawnCast( ent, AICHAR_BLACKGUARD );
+}
+
+// Load behavior parameters from .aidefaults file
+void AI_LoadBehaviorTable( AICharacters_t characterNum )
+{
+	char *filename;
+	int handle;
+	pc_token_t token;
+
+	filename = BG_GetCharacterFilename( characterNum );
+	if ( !*filename )
+		return;
+
+	handle = trap_PC_LoadSource( va( "aidefaults/%s", filename ) );
+	if ( !handle ) {
+		G_Printf( S_COLOR_RED "ERROR: Failed to load character file %s\n", filename );
+		return;
+	}
+
+	// Find and parse behavior block in this file
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( !Q_stricmp( token.string, "behavior" ) ) {
+			BG_ParseBehaviorTable( handle, characterNum );
+			break;
+		}
+	}
+
+	trap_PC_FreeSource( handle );
+}
+
+
+// Get aidefaults filename for specified character id
+// Returns empty string when none found
+char *BG_GetCharacterFilename( AICharacters_t characterNum )
+{
+	switch ( characterNum ) {
+		case AICHAR_SOLDIER:           return "soldier.aidefaults";
+		case AICHAR_AMERICAN:          return "american.aidefaults";
+		case AICHAR_ZOMBIE:            return "zombie.aidefaults";
+		case AICHAR_WARZOMBIE:         return "warzombie.aidefaults";
+		case AICHAR_VENOM:             return "venom.aidefaults";
+		case AICHAR_LOPER:             return "loper.aidefaults";
+		case AICHAR_ELITEGUARD:        return "eliteguard.aidefaults";
+		case AICHAR_SUPERSOLDIER:      return "supersoldier.aidefaults";
+		case AICHAR_BLACKGUARD:        return "blackguard.aidefaults";
+		case AICHAR_PROTOSOLDIER:      return "protosoldier.aidefaults";
+		case AICHAR_HELGA:             return "helga.aidefaults";
+		case AICHAR_HEINRICH:          return "heinrich.aidefaults";
+		case AICHAR_PARTISAN:          return "partisan.aidefaults";
+		case AICHAR_RUSSIAN:           return "russian.aidefaults";
+		case AICHAR_CIVILIAN:          return "civilian.aidefaults";
+		case AICHAR_NONE:              return "";
+		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
+    }
+
+    return "";
+}
+
+// Read behavior parameters into aiDefaults from given file handle
+// File handle position expected to be at opening brace of behavior block
+qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum )
+{
+	pc_token_t token;
+
+	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
+		PC_SourceError( handle, "expected '{'" );
+		return qfalse;
+	}
+
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( token.string[0] == '}' ) {
+			break;
+		}
+
+		// behavior parameters for each difficulty level
+		if ( !Q_stricmp( token.string, "startingHealth" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].startingHealthMin ) ) {
+					PC_SourceError( handle, "expected min startingHealth value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].startingHealthMax ) ) {
+					PC_SourceError( handle, "expected max startingHealth value for skill level" );
+					return qfalse;
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "reactionTime" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].reactionTimeMin ) ) {
+					PC_SourceError( handle, "expected min reactionTime value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].reactionTimeMax ) ) {
+					PC_SourceError( handle, "expected max reactionTime value for skill level" );
+					return qfalse;
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "aimAccuracy" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimAccuracyMin ) ) {
+					PC_SourceError( handle, "expected min aimAccuracy value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimAccuracyMax ) ) {
+					PC_SourceError( handle, "expected max aimAccuracy value for skill level" );
+					return qfalse;
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "aimSkill" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimSkillMin ) ) {
+					PC_SourceError( handle, "expected min aimSkill value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aimSkillMax ) ) {
+					PC_SourceError( handle, "expected max aimSkill value for skill level" );
+					return qfalse;
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "attackSkill" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].attackSkillMin ) ) {
+					PC_SourceError( handle, "expected min attackSkill value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].attackSkillMax ) ) {
+					PC_SourceError( handle, "expected max attackSkill value for skill level" );
+					return qfalse;
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "aggression" ) ) {
+			for (int i = 0; i < GSKILL_NUM_SKILLS; ++i) {
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aggressionMin ) ) {
+					PC_SourceError( handle, "expected min aggression value for skill level" );
+					return qfalse;
+				}
+
+				if ( !PC_Float_Parse( handle, &behaviorSkill[i][characterNum].aggressionMax ) ) {
+					PC_SourceError( handle, "expected max aggression value for skill level" );
+					return qfalse;
+				}
+			}
+		}
+		// Values common to all skill levels
+		else if ( !Q_stricmp( token.string, "runningSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[RUNNING_SPEED] ) ) {
+				PC_SourceError( handle, "expected runningSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "walkingSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[WALKING_SPEED] ) ) {
+				PC_SourceError( handle, "expected walkingSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "crouchingSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[CROUCHING_SPEED] ) ) {
+				PC_SourceError( handle, "expected crouchingSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "fieldOfView" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[FOV] ) ) {
+				PC_SourceError( handle, "expected fieldOfView value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "yawSpeed" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[YAW_SPEED] ) ) {
+				PC_SourceError( handle, "expected yawSpeed value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "leader" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[LEADER] ) ) {
+				PC_SourceError( handle, "expected leader value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "attackCrouch" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[ATTACK_CROUCH] ) ) {
+				PC_SourceError( handle, "expected attackCrouch value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "idleCrouch" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[IDLE_CROUCH] ) ) {
+				PC_SourceError( handle, "expected idleCrouch value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "tactical" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[TACTICAL] ) ) {
+				PC_SourceError( handle, "expected tactical value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "camper" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[CAMPER] ) ) {
+				PC_SourceError( handle, "expected camper value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "alertness" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[ALERTNESS] ) ) {
+				PC_SourceError( handle, "expected alertness value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "hearingScale" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[HEARING_SCALE] ) ) {
+				PC_SourceError( handle, "expected hearingScale value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "notInPvsHearingScale" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[HEARING_SCALE_NOT_PVS] ) ) {
+				PC_SourceError( handle, "expected notInPvsHearingScale value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "relaxedDetectionRadius" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[INNER_DETECTION_RADIUS] ) ) {
+				PC_SourceError( handle, "expected relaxedDetectionRadius value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "painThresholdMultiplier" ) ) {
+			if ( !PC_Float_Parse( handle, &aiDefaults[characterNum].attributes[PAIN_THRESHOLD_SCALE] ) ) {
+				PC_SourceError( handle, "expected painThresholdMultiplier value" );
+				return qfalse;
+			}
+		} else {
+			PC_SourceError( handle, "unknown token '%s'", token.string );
+			return qfalse;
+		}
+	}
+
+	return qtrue;
+}
+
+
+// Set character parameters for specified skill
+void BG_SetBehaviorForSkill( AICharacters_t characterNum, gameskill_t skill )
+{
+	float min = behaviorSkill[skill][characterNum].aimSkillMin;
+	float max = behaviorSkill[skill][characterNum].aimSkillMax;
+	aiDefaults[characterNum].attributes[AIM_SKILL] 					= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].aimAccuracyMin;
+	max = behaviorSkill[skill][characterNum].aimAccuracyMax;
+	aiDefaults[characterNum].attributes[AIM_ACCURACY] 			= min + (rand() / (float)RAND_MAX) * ( max - min );
+	
+	min = behaviorSkill[skill][characterNum].attackSkillMin;
+	max = behaviorSkill[skill][characterNum].attackSkillMax;
+	aiDefaults[characterNum].attributes[ATTACK_SKILL] 			= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].reactionTimeMin;
+	max = behaviorSkill[skill][characterNum].reactionTimeMax;
+	aiDefaults[characterNum].attributes[REACTION_TIME] 			= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].aggressionMin;
+	max = behaviorSkill[skill][characterNum].aggressionMax;
+	aiDefaults[characterNum].attributes[AGGRESSION]					= min + (rand() / (float)RAND_MAX) * ( max - min );
+
+	min = behaviorSkill[skill][characterNum].startingHealthMin;
+	max = behaviorSkill[skill][characterNum].startingHealthMax;
+	aiDefaults[characterNum].attributes[STARTING_HEALTH] 		= min + (rand() / (float)RAND_MAX) * ( max - min );
 }

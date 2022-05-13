@@ -97,6 +97,7 @@ If you have questions concerning this license or the applicable additional terms
 #define AIFL_DISMOUNTING        0x4000000
 #define AIFL_SPECIAL_FUNC       0x8000000   // prevent external interuption of current think func
 
+
 //
 // predict events
 typedef enum
@@ -193,6 +194,22 @@ typedef struct {
 
 	aistateEnum_t aiState;
 } AICharacterDefaults_t;
+
+// Skill-based behavior parameters
+typedef struct behaviorskill_s {
+	float startingHealthMin;
+	float startingHealthMax;
+	float reactionTimeMin;
+	float reactionTimeMax;
+	float aimAccuracyMin;
+	float aimAccuracyMax;
+	float aimSkillMin;
+	float aimSkillMax;
+	float attackSkillMin;
+	float attackSkillMax;
+	float aggressionMin;
+	float aggressionMax;
+} behaviorskill_t;
 
 //
 // script flags

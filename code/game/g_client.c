@@ -1767,6 +1767,7 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->pers.teamState.state = TEAM_ACTIVE;
 
+	client->ps.classWeaponTime = -999999;
 
 	// toggle the teleport bit so the client knows to not lerp
 	flags = ent->client->ps.eFlags & EF_TELEPORT_BIT;
@@ -1959,7 +1960,8 @@ void ClientSpawn( gentity_t *ent ) {
 	if ( ent->client->sess.spectatorState != SPECTATOR_FOLLOW ) {
 		ClientEndFrame( ent );
 	}
-
+	// set idle animation on weapon
+	ent->client->ps.weapAnim = ( ( ent->client->ps.weapAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT ) | PM_IdleAnimForWeapon( ent->client->ps.weapon );
 	// clear entity state values
 	BG_PlayerStateToEntityState( &client->ps, &ent->s, qtrue );
 }

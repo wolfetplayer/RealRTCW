@@ -95,6 +95,7 @@ void CG_CheckAmmo( void ) {
 		case WP_MG42M:
 		case WP_M97:
 		case WP_REVOLVER:
+		case WP_BROWNING:
 		default:
 			total += cg.snap->ps.ammo[BG_FindAmmoForWeapon( i )] * 1000;
 		}
@@ -249,7 +250,7 @@ void CG_Respawn( void ) {
 	cg.thisFrameTeleport = qtrue;
 
 	// need to reset client-side weapon animations
-	cg.predictedPlayerState.weapAnim = WEAP_IDLE1;  // reset weapon animations
+	cg.predictedPlayerState.weapAnim = ( ( cg.predictedPlayerState.weapAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT ) | PM_IdleAnimForWeapon( cg.snap->ps.weapon );  // reset weapon animations
 	cg.predictedPlayerState.weapAnimTimer = 0;      // allow other animations to happen right away
 	cg.predictedPlayerState.weaponstate = WEAPON_RAISING;   // hmm, set this?  what to?
 

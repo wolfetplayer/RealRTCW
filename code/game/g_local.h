@@ -98,6 +98,11 @@ typedef enum {
 	MOVER_2TO1ROTATE
 } moverState_t;
 
+typedef enum {
+    RADIUS_SCOPE_ANY,
+    RADIUS_SCOPE_CLIENTS,
+    RADIUS_SCOPE_NOCLIENTS,
+} RadiusScope;
 
 // door AI sound ranges
 #define HEAR_RANGE_DOOR_LOCKED      128 // really close since this is a cruel check
@@ -381,6 +386,12 @@ struct gentity_s {
 
 	int grenadeExplodeTime;         // we've caught a grenade, which was due to explode at this time
 	int grenadeFired;               // the grenade entity we last fired
+
+	int poisonGasAlarm;
+    int poisonGasDamage;
+    int poisonGasRadius;
+
+	gentity_t *dmgparent;
 
 	int mg42ClampTime;              // time to wait before an AI decides to ditch the mg42
 
@@ -832,9 +843,11 @@ void G_ProcessTagConnect( gentity_t *ent, qboolean clearAngles );
 //
 // g_combat.c
 //
+void G_AdjustedDamageVec( gentity_t *ent, vec3_t origin, vec3_t vec );
 qboolean CanDamage( gentity_t *targ, vec3_t origin );
 void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_t dir, vec3_t point, int damage, int dflags, int mod );
 qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod );
+qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod, RadiusScope scope );
 void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
 void TossClientItems( gentity_t *self );
 
@@ -1025,6 +1038,9 @@ void G_QueueBotBegin( int clientNum );
 qboolean G_BotConnect( int clientNum, qboolean restart );
 void Svcmd_AddBot_f( void );
 
+// ai_cast_characters.c
+void AI_LoadBehaviorTable( AICharacters_t characterNum );
+
 // ai_main.c
 #define MAX_FILEPATH            144
 
@@ -1087,6 +1103,8 @@ extern vmCvar_t g_nopickupchallenge;
 extern vmCvar_t g_decaychallenge;
 
 extern vmCvar_t g_airespawn;
+extern vmCvar_t g_reinforce;
+extern vmCvar_t g_fullarsenal;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 
@@ -1390,6 +1408,9 @@ void    trap_SnapVector( float *v );
 
 // New in IORTCW
 void	*trap_Alloc( int size );
+
+gentity_t* G_FindSmokeBomb( gentity_t* start );
+void G_PoisonGasExplode  ( gentity_t* );
 
 typedef enum
 {

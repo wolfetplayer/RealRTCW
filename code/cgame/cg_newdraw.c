@@ -218,6 +218,37 @@ static void CG_DrawPlayerArmorValue( rectDef_t *rect, int font, float scale, vec
 	}
 }
 
+static void CG_DrawPlayerArmorValueBar( rectDef_t *rect, vec4_t color, int align ) {
+	float frac; 
+	int flags = 0;
+
+	playerState_t   *ps;
+
+	ps = &cg.snap->ps;
+
+	//color[3] = 0.5f;
+
+	if ( cg_fixedAspect.integer == 2 ) {
+		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
+	}
+
+	if ( align != HUD_HORIZONTAL ) {
+		flags |= 4;   // BAR_VERT
+		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
+	}
+	frac = ps->stats[STAT_ARMOR] / (float) 100;
+
+	if ( frac > 1.0 ) 
+	{
+	frac = 1.0;
+	}
+
+	CG_FilledBar( rect->x, rect->y, rect->w, rect->h, color, NULL, NULL, frac, flags );
+
+	trap_R_SetColor( NULL );
+// jpw
+}
+
 // TTimo: unused
 /*
 static float healthColors[4][4] = {
@@ -238,8 +269,7 @@ static int weapIconDrawSize( int weap ) {
 
 	// weapons to not draw
 	case WP_KNIFE:
-		return 0;
-
+	    return 0;
 	// weapons with 'wide' icons
 	case WP_THOMPSON:
 	case WP_MP40:
@@ -264,6 +294,8 @@ static int weapIconDrawSize( int weap ) {
     case WP_MP44:
 	case WP_MG42M:
 	case WP_M97:
+	case WP_BROWNING:
+	case WP_M7:
 		return 2;
 	}
 
@@ -453,9 +485,9 @@ static void CG_DrawCursorhint( rectDef_t *rect ) {
 		icon = cgs.media.hintShaders[HINT_BREAKABLE];
 		break;
 	case HINT_CHAIR:
-		// only show 'pickupable' if you're not armed, or are armed with a single handed weapon
-		if ( cg.predictedPlayerState.weapon && !( WEAPS_ONE_HANDED & ( 1 << ( cg.predictedPlayerState.weapon ) ) ) ) { // (SA) this was backwards
-			icon = cgs.media.hintShaders[HINT_NOACTIVATE];
+	    if ( ammoTable[cg.predictedPlayerState.weapon].twoHand == 1 ) 
+		{
+		icon = cgs.media.hintShaders[HINT_NOACTIVATE];
 		}
 		break;
 	case HINT_PLAYER:
@@ -595,6 +627,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 
 	switch ( weap ) {      // some weapons don't draw ammo count text
 	case WP_KNIFE:
+	case WP_AIRSTRIKE:
 		return;
 
 	case WP_AKIMBO:
@@ -606,6 +639,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	case WP_DYNAMITE:
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
+	case WP_POISONGAS:
 		if ( type == 0 ) {  // don't draw reserve value, just clip (since these weapons have all their ammo in the clip)
 			return;
 		}
@@ -1073,6 +1107,36 @@ static void CG_DrawPlayerHealth( rectDef_t *rect, int font, float scale, vec4_t 
 		value = CG_Text_Width( num, font, scale, 0 );
 		CG_Text_Paint( rect->x + ( rect->w - value ) / 2, rect->y + rect->h, font, scale, color, num, 0, 0, textStyle );
 	}
+}
+
+static void CG_DrawPlayerHealthBar( rectDef_t *rect, vec4_t color, int align ) {
+	float frac; 
+	int flags = 0;
+
+    frac = cg.snap->ps.stats[STAT_HEALTH] / (float) cg.snap->ps.stats[STAT_MAX_HEALTH];
+
+	if ( frac > 1.0 ) 
+	{
+	frac = 1.0;
+	}
+
+	CG_ColorForHealth( color );
+	color[3] = 0.5f;
+
+	if ( cg_fixedAspect.integer == 2 ) {
+		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
+	}
+
+	if ( align != HUD_HORIZONTAL ) {
+		flags |= 4;   // BAR_VERT
+		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
+	}
+	CG_FilledBar( rect->x,  rect->y, rect->w, rect->h, color, NULL, NULL, frac, flags );
+
+	
+
+	trap_R_SetColor( NULL );
+// jpw
 }
 
 static void CG_DrawRedScore( rectDef_t *rect, int font, float scale, vec4_t color, qhandle_t shader, int textStyle ) {
@@ -2230,6 +2294,56 @@ static void CG_DrawFatigue( rectDef_t *rect, vec4_t color, int align ) {
 // jpw
 }
 
+
+static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
+	float barFrac;
+	float chargeTime;
+	int weap = 0;
+	int flags = 0;
+	//qboolean fade = qfalse;
+	vec4_t bgcolor = {1.0f, 1.0f, 1.0f, 0.25f};
+
+	if ( align != HUD_HORIZONTAL) {
+		flags |= 4;   // BAR_VERT
+		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
+	}
+	flags |= 16;
+
+// JPW NERVE -- added drawWeaponPercent in multiplayer
+
+		weap = cg.snap->ps.weapon;
+
+		if ( !( cg.snap->ps.eFlags & EF_ZOOMING ) ) {
+			if ( weap != WP_AIRSTRIKE ) {
+				//fade = qtrue;
+				return;
+			}
+		}
+
+		chargeTime = cg_LTChargeTime.value;
+
+		barFrac = (float)( cg.time - cg.snap->ps.classWeaponTime ) / chargeTime;
+
+		if ( barFrac > 1.0 ) {
+			barFrac = 1.0;
+		}
+
+		color[0] = 1.0f;
+		color[1] = color[2] = barFrac;
+		color[3] = 0.25 + barFrac * 0.5;
+
+		/*if ( fade ) {
+			bgcolor[3] *= 0.4f;
+			color[3] *= 0.4;
+		}*/
+
+		CG_FilledBar( rect->x, rect->y + 6, rect->w, rect->h * 0.84f, color, NULL, bgcolor, barFrac, flags );
+
+		color[1] = color[2] = 1.0f;
+		color[3] = cg_hudAlpha.value;
+		trap_R_SetColor( color );
+
+}
 /*
 ==============
 CG_OwnerDraw
@@ -2263,6 +2377,9 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		break;
 	case CG_PLAYER_ARMOR_VALUE:
 		CG_DrawPlayerArmorValue( &rect, font, scale, color, shader, textStyle );
+		break;
+	case CG_PLAYER_ARMOR_VALUE_BAR:
+		CG_DrawPlayerArmorValueBar( &rect, color, align );
 		break;
 	case CG_PLAYER_AMMO_ICON:
 		CG_DrawPlayerAmmoIcon( &rect, ownerDrawFlags & CG_SHOW_2DONLY );
@@ -2323,6 +2440,9 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 	case CG_STAMINA:
 		CG_DrawFatigue( &rect, color, align );
 		break;
+	case CG_PLAYER_WEAPON_RECHARGE:
+		CG_DrawWeapRecharge( &rect, color, align );
+		break;
 	case CG_PLAYER_HEAD:
 		CG_DrawPlayerHead( &rect, ownerDrawFlags & CG_SHOW_2DONLY );
 		break;
@@ -2337,6 +2457,9 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		break;
 	case CG_PLAYER_HEALTH:
 		CG_DrawPlayerHealth( &rect, font, scale, color, shader, textStyle );
+		break;
+	case CG_PLAYER_HEALTH_BAR:
+		CG_DrawPlayerHealthBar( &rect, color, align );
 		break;
 	case CG_RED_SCORE:
 		CG_DrawRedScore( &rect, font, scale, color, shader, textStyle );

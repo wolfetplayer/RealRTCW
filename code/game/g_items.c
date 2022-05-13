@@ -347,6 +347,7 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 	case WP_GRENADE_LAUNCHER:       // make sure if he picks up a grenade that he get's the "launcher" too
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
+	case WP_POISONGAS:
 		COM_BitSet( ent->client->ps.weapons, ammoweap );
 
 	case WP_TESLA:
@@ -492,6 +493,10 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_MAUSER );
 	} else if (weapon == WP_SILENCER) {
 		COM_BitSet( other->client->ps.weapons, WP_LUGER );
+	} else if ( weapon == WP_M1GARAND ) {
+		COM_BitSet( other->client->ps.weapons, WP_M7 );
+	} else if ( weapon == WP_M7 ) {
+		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
 	}
 
 //----(SA)	end
@@ -1007,6 +1012,11 @@ void FinishSpawningItem( gentity_t *ent ) {
     return;
 	}
 
+	if ( !g_fullarsenal.integer && (ent->item->giWeapon == WP_MP34 || ent->item->giWeapon == WP_REVOLVER || ent->item->giWeapon == WP_G43 || ent->item->giWeapon == WP_M1GARAND || ent->item->giWeapon == WP_BAR || ent->item->giWeapon == WP_MG42M) )
+	{
+    return;
+	}
+
 
 
 	// if clipboard, add the menu name string to the client's configstrings
@@ -1088,7 +1098,7 @@ void FinishSpawningItem( gentity_t *ent ) {
 		// was:
 		// for(i=0;i<4,ent->item->world_model[i];i++) {}
 		i = 0;
-		while ( i < 4 && ent->item->world_model[i] )
+		while ( i < 3 && ent->item->world_model[i] )
 			i++;
 
 		ent->s.density = i - 1;   // store number of stages in 'density' for client (most will have '1')
@@ -1242,7 +1252,7 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 
 	// reflect the velocity on the trace plane
 	hitTime = level.previousTime + ( level.time - level.previousTime ) * trace->fraction;
-	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity );
+	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity, qfalse, ent->s.effect2Time );
 	dot = DotProduct( velocity, trace->plane.normal );
 	VectorMA( velocity, -2 * dot, trace->plane.normal, ent->s.pos.trDelta );
 

@@ -64,6 +64,8 @@ vmCvar_t g_decaychallenge;
 vmCvar_t g_reloading;       //----(SA)	added
 
 vmCvar_t g_airespawn;
+vmCvar_t g_reinforce;
+vmCvar_t g_fullarsenal;
 
 vmCvar_t g_dmflags;
 vmCvar_t g_fraglimit;
@@ -173,6 +175,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_decaychallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  }, 
 
 	{ &g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_SERVERINFO, 0, qfalse},
+    { &g_reinforce, "g_reinforce", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_fullarsenal, "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 
@@ -182,7 +186,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_medicChargeTime, "g_medicChargeTime", "45000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_LTChargeTime, "g_LTChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 // jpw
 
@@ -1368,6 +1372,11 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	for ( weapon_t weaponNum = WP_KNIFE; weaponNum < WP_NUM_WEAPONS; weaponNum++ ) {
 		G_LoadAmmoTable( weaponNum );
 		BG_SetWeaponForSkill( weaponNum, g_gameskill.integer );
+	}
+
+	// Load behavior parameters for all AICharacters
+	for ( AICharacters_t characterNum = AICHAR_SOLDIER; characterNum < NUM_CHARACTERS; characterNum++ ) {
+		AI_LoadBehaviorTable( characterNum );
 	}
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );

@@ -39,6 +39,7 @@ extern void SP_target_smoke( gentity_t *ent );
 
 void G_ExplodeMissilePoisonGas( gentity_t *ent );
 void M_think( gentity_t *ent );
+void G_ExplodeMissile( gentity_t *ent );
 /*
 ================
 G_BounceMissile
@@ -61,11 +62,21 @@ qboolean G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 		return qfalse;
 	}
 */
+
+	if ( ent->s.weapon == WP_M7 ) {
+		ent->s.effect1Time = qtrue; // has bounced
+
+		if ( ( ent->nextthink - level.time ) < 3250 ) {
+			G_ExplodeMissile( ent );
+			return qfalse;
+		}
+	}
+
 	contents = trap_PointContents( ent->s.origin, -1 );
 
 	// reflect the velocity on the trace plane
 	hitTime = level.previousTime + ( level.time - level.previousTime ) * trace->fraction;
-	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity );
+	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity, qfalse, ent->s.effect2Time );
 	dot = DotProduct( velocity, trace->plane.normal );
 	VectorMA( velocity, -2 * dot, trace->plane.normal, ent->s.pos.trDelta );
 
@@ -108,6 +119,10 @@ qboolean G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 //----(SA)	end
 			G_SetOrigin( ent, trace->endpos );
 			ent->s.time = level.time / 4;
+					if ( ent->s.weapon == WP_M7  ) {
+				// explode one 750msecs after launchtime
+				ent->nextthink = level.time + ( 750 - ( level.time + 4000 - ent->nextthink ) );
+			}
 			return qfalse;
 		}
 	}
@@ -151,7 +166,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace, int impactDamage, vec3_t d
 			// update takedamage would be set to '0' and the func_explosive would not be
 			// removed yet, causing a bounce.
 			if ( other->takedamage ) {
-				BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
+				BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity, qfalse, ent->s.effect2Time );
 				G_Damage( other, ent, &g_entities[ent->r.ownerNum], velocity, ent->s.origin, impactDamage, 0, ent->methodOfDeath );
 			}
 
@@ -198,7 +213,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace, int impactDamage, vec3_t d
 				}
 				hitClient = qtrue;
 			}
-			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
+			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity, qfalse, ent->s.effect2Time );
 			if ( VectorLength( velocity ) == 0 ) {
 				velocity[2] = 1;    // stepped on a grenade
 			}
@@ -639,7 +654,7 @@ void G_PredictBounceMissile( gentity_t *ent, trajectory_t *pos, trace_t *trace, 
 
 	// reflect the velocity on the trace plane
 	hitTime = time;
-	BG_EvaluateTrajectoryDelta( pos, hitTime, velocity );
+	BG_EvaluateTrajectoryDelta( pos, hitTime, velocity, qfalse, ent->s.effect2Time );
 	dot = DotProduct( velocity, trace->plane.normal );
 	VectorMA( velocity, -2 * dot, trace->plane.normal, pos->trDelta );
 
@@ -976,6 +991,32 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		bolt->splashMethodOfDeath   = MOD_GRENADE_SPLASH;
 		bolt->s.eFlags              = EF_BOUNCE_HALF;
 		break;
+	case WP_M7:
+		bolt->classname             = "m7_grenade";
+		if ( self->aiCharacter ) {
+			bolt->splashRadius          = ammoTable[WP_M7].aiSplashRadius;	
+		} else {
+			bolt->splashRadius          = ammoTable[WP_M7].playerSplashRadius;
+		}
+		bolt->methodOfDeath         = MOD_M7;
+		bolt->splashMethodOfDeath   = MOD_M7;
+		bolt->s.eFlags              = EF_BOUNCE_HALF | EF_BOUNCE;
+		bolt->nextthink             = level.time + 4000;
+		break;
+	case WP_AIRSTRIKE:
+		bolt->classname             = "grenade";
+		if ( self->aiCharacter ) {
+			bolt->splashRadius          = ammoTable[WP_AIRSTRIKE].aiSplashRadius;	
+		} else {
+			bolt->splashRadius          = ammoTable[WP_AIRSTRIKE].playerSplashRadius;
+		}
+		bolt->s.eFlags              = EF_BOUNCE_HALF | EF_BOUNCE;
+		break;
+	case WP_POISONGAS:
+			bolt->classname				= "poison_gas";
+			bolt->s.eFlags				= EF_BOUNCE_HALF;
+			bolt->methodOfDeath			= MOD_POISONGAS;
+			break;
 	case WP_DYNAMITE:
 		// oh, this is /so/ cheap...
 		// you need to pick up new code ;)

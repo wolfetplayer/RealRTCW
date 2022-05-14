@@ -1,0 +1,9 @@
+﻿  steamshim_parent.cpp
+E:\Users\johnt\Documents\GitHub\RealRTCW\code\steamshim\launcher\steamshim_parent.cpp(511,13): warning C4476: "printf": неизвестный символ поля типа "r" в описателе формата
+E:\Users\johnt\Documents\GitHub\RealRTCW\code\steamshim\launcher\steamshim_parent.cpp(511,66): warning C4474: "printf" : для строки формата передано слишком много аргументов
+E:\Users\johnt\Documents\GitHub\RealRTCW\code\steamshim\launcher\steamshim_parent.cpp(511,66): message : заполнители и их параметры ожидают переменное число аргументов в количестве 0, но было предоставлено 1
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+  All 76 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+  LaunchRTCW.vcxproj -> E:\Users\johnt\Documents\GitHub\RealRTCW\code\steamshim\launcher\Release\launcher.exe

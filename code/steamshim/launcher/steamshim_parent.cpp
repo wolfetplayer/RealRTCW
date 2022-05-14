@@ -1,4 +1,4 @@
-#define GAME_LAUNCH_NAME "./RealRTCW.x64.exe"
+#define GAME_LAUNCH_NAME "./RealRTCW.exe"
 #ifndef GAME_LAUNCH_NAME
 #error Please define your game exe name.
 #endif

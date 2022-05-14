@@ -74,9 +74,18 @@ https://github.com/wolfetplayer/RealRTCW
 
 cd RealRTCW
 
+FOR NON-STEAM VERSION:
 ARCH=x86 make (to build 32bit binaries)
 or
 ARCH=x86_64 make (for 64bit binaries)
+
+FOR STEAM VERSION:
+ARCH=x86 make STEAM=1 (to build 32bit binaries)
+or
+ARCH=x86_64 make STEAM=1 (for 64bit binaries)
+
+For the Steam version you also need to compile Steamshim launcher. To compile it you need to download steamworks sdk as well.
+MSVC project and solution for launcher are included in code/steamshim/launcher
 
 Wait for build to complete.
 

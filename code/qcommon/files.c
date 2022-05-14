@@ -280,8 +280,7 @@ static cvar_t      *fs_homepath;
 // Also search the .app bundle for .pk3 files
 static  cvar_t          *fs_apppath;
 #endif
-
-#ifndef STANDALONE
+#ifdef STEAM
 static	cvar_t		*fs_steampath;
 static	cvar_t		*fs_workshop;
 #endif
@@ -890,7 +889,7 @@ long FS_SV_FOpenFileRead(const char *filename, fileHandle_t *fp)
 			fsh[f].handleSync = qfalse;
 		}
 
-#ifndef STANDALONE
+#ifdef STEAM
 		// Check fs_steampath
 		if (!fsh[f].handleFiles.file.o && fs_steampath->string[0])
 		{
@@ -2786,7 +2785,7 @@ FS_AddModDirectories
 adds the directory to the head of the path, then loads the zip headers
 ================
 */
-#ifndef STANDALONE
+	#ifdef STEAM
 void FS_AddModDirectories() {
 	char **pFiles = NULL;
 	int i, j, dummy, nPotential;
@@ -2862,7 +2861,7 @@ int	FS_GetAddonList( char *listbuf, int bufsize ) {
 
 	pFiles0 = Sys_ListFiles( fs_homepath->string, NULL, NULL, &dummy, qtrue );
 	pFiles1 = Sys_ListFiles( fs_basepath->string, NULL, NULL, &dummy, qtrue );
-#ifndef STANDALONE
+#ifdef STEAM
 	pFiles2 = Sys_ListFiles( fs_steampath->string, NULL, NULL, &dummy, qtrue );
 	pFiles6 = Sys_ListFiles( fs_workshop->string, NULL, NULL, &dummy, qtrue );
 #endif
@@ -2918,7 +2917,7 @@ int	FS_GetAddonList( char *listbuf, int bufsize ) {
 				Sys_FreeFileList( pPaks );
 			}
 
-#ifndef STANDALONE
+#ifdef STEAM
 			/* try on steam path */
 			if ( nPaks <= 0 )
 			{
@@ -3668,7 +3667,7 @@ static void FS_Startup( const char *gameName )
 	}
 
 	// add search path elements in reverse priority order
-#ifndef STANDALONE
+#ifdef STEAM
 	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_steampath->string[0]) {
 		FS_AddGameDirectory( fs_steampath->string, gameName );
@@ -3700,7 +3699,7 @@ static void FS_Startup( const char *gameName )
 
 	// check for additional base game so mods can be based upon other mods
 	if ( fs_basegame->string[0] && Q_stricmp( fs_basegame->string, gameName ) ) {
-#ifndef STANDALONE
+#ifdef STEAM
 
 		if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_basegame->string );
@@ -3718,7 +3717,7 @@ static void FS_Startup( const char *gameName )
 
 	// check for additional game folder for mods
 	if ( fs_gamedirvar->string[0] && Q_stricmp( fs_gamedirvar->string, gameName ) ) {
-#ifndef STANDALONE
+#ifdef STEAM
 		if ( fs_steampath->string[0] ) {
 			FS_AddGameDirectory( fs_steampath->string, fs_gamedirvar->string );
 		}

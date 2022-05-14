@@ -47,7 +47,7 @@ static char homePath[ MAX_OSPATH ] = { 0 };
 static const char DEFAULT_XDG_DATA_HOME[] = {'.', 'l', 'o', 'c', 'a', 'l', PATH_SEP, 's', 'h', 'a', 'r', 'e', '\0'};
 #endif
 
-#ifndef STANDALONE
+#ifdef STEAM
 // Used to store the Steam RTCW installation path
 static char steamPath[ MAX_OSPATH ] = { 0 };
 
@@ -119,7 +119,7 @@ char *Sys_DefaultHomePath(void)
 	return homePath;
 }
 
-#ifndef STANDALONE
+#ifdef STEAM
 /*
 ================
 Sys_SteamPath

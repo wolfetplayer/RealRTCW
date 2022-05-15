@@ -30,7 +30,7 @@ typedef int PipeType;
 
 #include "steamshim_child.h"
 #include <stdio.h>
-
+#define DEBUGPIPE
 #ifdef DEBUGPIPE
 
 static void dbgpipe(const char *fmt, ...)
@@ -298,7 +298,7 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
     event.type = type;
     event.okay = 1;
 
-    #if DEBUGPIPE
+    #ifdef DEBUGPIPE
     if (0) {}
     #define PRINTGOTEVENT(x) else if (type == x) printf("Child got " #x ".\n")
     PRINTGOTEVENT(SHIMEVENT_BYE);
@@ -412,7 +412,7 @@ const STEAMSHIM_Event *STEAMSHIM_pump(void)
     /* Run Steam event loop. */
     if (br == 0)
     {
-        dbgpipe("Child sending SHIMCMD_PUMP().\n");
+        // dbgpipe("Child sending SHIMCMD_PUMP().\n");
         write1ByteCmd(SHIMCMD_PUMP);
     } /* if */
 

@@ -1232,6 +1232,7 @@ ifeq ($(USE_MUMBLE),1)
 endif
 
 ifdef STEAM
+  CFLAGS += -DSTEAM
   CLIENT_CFLAGS += -DSTEAM
 endif
 

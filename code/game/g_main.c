@@ -30,6 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
+#include "../../steam/steam.h"
 
 level_locals_t level;
 
@@ -1223,6 +1224,8 @@ extern void trap_Cvar_Reset( const char *var_name );
 
 void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	int i;
+
+	steamInit();
 
 	if ( trap_Cvar_VariableIntegerValue( "g_gametype" ) != GT_SINGLE_PLAYER ) {
 		G_Printf( "------- Game Initialization -------\n" );
@@ -2497,6 +2500,11 @@ Advances the non-player objects in the world
 void G_RunFrame( int levelTime ) {
 	int i;
 	gentity_t   *ent;
+
+	if (steamAlive())
+	{
+		steamRun();
+	}
 
 	// if we are waiting for the level to restart, do nothing
 	if ( level.restarted ) {

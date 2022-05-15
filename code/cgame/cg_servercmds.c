@@ -319,16 +319,6 @@ void CG_SetConfigValues( void ) {
 	cgs.scores1 = atoi( CG_ConfigString( CS_SCORES1 ) );
 	cgs.scores2 = atoi( CG_ConfigString( CS_SCORES2 ) );
 	cgs.levelStartTime = atoi( CG_ConfigString( CS_LEVEL_START_TIME ) );
-#ifdef MISSIONPACK
-	if ( cgs.gametype == GT_CTF ) {
-		s = CG_ConfigString( CS_FLAGSTATUS );
-		cgs.redflag = s[0] - '0';
-		cgs.blueflag = s[1] - '0';
-	} else if ( cgs.gametype == GT_1FCTF )    {
-		s = CG_ConfigString( CS_FLAGSTATUS );
-		cgs.flagStatus = s[0] - '0';
-	}
-#endif
 	cg.warmup = atoi( CG_ConfigString( CS_WARMUP ) );
 
 	if (cg_atmosphericEffects.integer)
@@ -653,6 +643,8 @@ static void CG_MapRestart( void ) {
 	CG_ClearParticles();
 	// done.
 
+	InitSmokeSprites();
+
 	for ( i = 1; i < MAX_PARTICLES_AREAS; i++ )
 	{
 		{
@@ -731,11 +723,6 @@ static void CG_MapRestart( void ) {
 	memset( cg.cameraShakeAngles, 0, sizeof( cg.cameraShakeAngles ) );
 	cg.rumbleScale = 0;
 
-	// play the "fight" sound if this is a restart without warmup
-//	if ( cg.warmup == 0 /* && cgs.gametype == GT_TOURNAMENT */) {
-//		trap_S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
-//		CG_CenterPrint( "FIGHT!", 120, GIANTCHAR_WIDTH*2 );
-//	}
 #ifdef MISSIONPACK
 	if ( cg_singlePlayerActive.integer ) {
 		trap_Cvar_Set( "ui_matchStartTime", va( "%i", cg.time ) );
@@ -861,9 +848,6 @@ static void CG_ServerCommand( void ) {
 	}
 
 	if ( !strcmp( cmd, "chat" ) ) {
-		if ( cgs.gametype >= GT_TEAM && cg_teamChatsOnly.integer ) {
-			return;
- 		}
 
 		trap_S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
 		Q_strncpyz( text, CG_Argv( 1 ), MAX_SAY_TEXT );

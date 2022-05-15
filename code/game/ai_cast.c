@@ -348,9 +348,6 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
 	char            **ppStr;
 	int j;
 
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) { // no cast AI in multiplayer
-		return NULL;
-	}
 	// are bots enabled?
 	if ( !trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
 		G_Printf( S_COLOR_RED "ERROR: Unable to spawn %s, 'bot_enable' is not set\n", ent->classname );
@@ -872,11 +869,6 @@ qboolean AICast_NoFlameDamage( int entNum ) {
 		return qfalse;
 	}
 
-	// DHM - Nerve :: Not in multiplayer
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		return qfalse;
-	}
-
 	cs = AICast_GetCastState( entNum );
 	return ( ( cs->aiFlags & AIFL_NO_FLAME_DAMAGE ) != 0 );
 }
@@ -890,11 +882,6 @@ void AICast_SetFlameDamage( int entNum, qboolean status ) {
 	cast_state_t *cs;
 
 	if ( entNum >= MAX_CLIENTS ) {
-		return;
-	}
-
-	// DHM - Nerve :: Not in multiplayer
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
 		return;
 	}
 

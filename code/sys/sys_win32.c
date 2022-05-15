@@ -46,7 +46,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // Used to determine where to store user-specific files
 static char homePath[ MAX_OSPATH ] = { 0 };
 
-#ifndef STANDALONE
+#ifdef STEAM
 // Steam installation paths
 static char steamInstallPath[ MAX_OSPATH ];
 static char steamGamePath[ MAX_OSPATH ];
@@ -138,7 +138,7 @@ char *Sys_DefaultHomePath( void )
 	return homePath;
 }
 
-#ifndef STANDALONE
+#ifdef STEAM
 
 static qboolean DirExists(const char *path)
 {
@@ -253,6 +253,7 @@ static void FindSteamPaths()
 
 #endif // !STANDALONE
 
+#ifdef STEAM
 /*
 ================
 Sys_SteamPath
@@ -260,9 +261,7 @@ Sys_SteamPath
 */
 char *Sys_SteamPath( void )
 {
-#ifndef STANDALONE
 	FindSteamPaths();
-#endif
 	return steamGamePath;
 }
 
@@ -273,12 +272,11 @@ Sys_SteamWorkshopPath
 */
 char *Sys_SteamWorkshopPath( void )
 {
-#ifndef STANDALONE
 	FindSteamPaths();
-#endif
 	return steamWorkshopPath;
 }
 
+#endif
 /*
 ================
 Sys_Milliseconds

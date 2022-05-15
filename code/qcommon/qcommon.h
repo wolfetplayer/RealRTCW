@@ -1166,7 +1166,7 @@ char    *Sys_Cwd( void );
 char    *Sys_DefaultBasePath( void );
 char    *Sys_DefaultInstallPath( void );
 
-#ifndef STANDALONE
+#ifdef STEAM
 char    *Sys_SteamPath(void);
 char	*Sys_SteamWorkshopPath(void);
 #endif

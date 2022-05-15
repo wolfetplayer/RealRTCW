@@ -1345,12 +1345,6 @@ int AINode_Seek_LTG( bot_state_t *bs ) {
 			return qfalse;
 		}
 	}
-#ifdef CTF
-	if ( gametype == GT_CTF ) {
-		//decide what to do in CTF mode
-		BotCTFSeekGoals( bs );
-	}
-#endif //CTF
 	   //get the current long term goal
 	if ( !BotLongTermGoal( bs, bs->tfl, qfalse, &goal ) ) {
 		return qtrue;
@@ -1825,11 +1819,6 @@ int AINode_Battle_Retreat( bot_state_t *bs ) {
 		}
 	}
 	//
-#ifdef CTF
-	if ( gametype == GT_CTF ) {
-		BotCTFRetreatGoals( bs );
-	}
-#endif //CTF
 	   //use holdable items
 	BotBattleUseItems( bs );
 	//get the current long term goal while retreating

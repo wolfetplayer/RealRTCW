@@ -515,6 +515,80 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 	return &tr;
 }
 
+#define SMOKEBOMB_GROWTIME 1000
+#define SMOKEBOMB_SMOKETIME 15000
+#define SMOKEBOMB_POSTSMOKETIME 2000
+// xkan, 11/25/2002 - increases postsmoke time from 2000->32000, this way, the entity
+// is still around while the smoke is around, so we can check if it blocks bot's vision
+// Arnout: eeeeeh this is wrong. 32 seconds is way too long. Also - we shouldn't be
+// rendering the grenade anymore after the smoke stops and definately not send it to the client
+// xkan, 12/06/2002 - back to the old value 2000, now that it looks like smoke disappears more
+// quickly
+
+void weapon_smokeBombExplode( gentity_t *ent ) {
+	int lived = 0;
+
+	if ( !ent->grenadeExplodeTime ) {
+		ent->grenadeExplodeTime = level.time;
+	}
+
+	lived = level.time - ent->grenadeExplodeTime;
+	ent->nextthink = level.time + FRAMETIME;
+
+	if ( lived < SMOKEBOMB_GROWTIME ) {
+		// Just been thrown, increase radius
+		ent->s.effect1Time = 16 + lived * ( ( 640.f - 16.f ) / (float)SMOKEBOMB_GROWTIME );
+	} else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME ) {
+		// Smoking
+		ent->s.effect1Time = 640;
+	} else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME + SMOKEBOMB_POSTSMOKETIME ) {
+		// Dying out
+		ent->s.effect1Time = -1;
+	} else {
+		// Poof and it's gone
+		G_FreeEntity( ent );
+	}
+}
+
+void G_PoisonGasExplode(gentity_t* ent) {
+    int lived = 0;
+
+    if (!ent->grenadeExplodeTime)
+        ent->grenadeExplodeTime = level.time;
+
+    lived = level.time - ent->grenadeExplodeTime;
+    ent->nextthink = level.time + FRAMETIME;
+
+    if (lived < SMOKEBOMB_GROWTIME) {
+        // Just been thrown, increase radius
+		ent->s.effect1Time = 16 + lived * ( ( 640.f - 16.f ) / (float)SMOKEBOMB_GROWTIME );
+    }
+    else if (lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME) {
+        // Smoking
+        ent->s.effect1Time = 640;
+
+        if (level.time >= ent->poisonGasAlarm) {
+            ent->poisonGasAlarm = level.time + 1500;
+                G_RadiusDamage2(
+                ent->r.currentOrigin,
+                ent,
+                ent->parent,
+                ent->poisonGasDamage,
+                ent->poisonGasRadius,
+                ent,
+                MOD_POISONGAS,
+                RADIUS_SCOPE_CLIENTS );
+        }
+    }
+    else if (lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME + SMOKEBOMB_POSTSMOKETIME) {
+        // Dying out
+        ent->s.effect1Time = -1;
+    }
+    else {
+        // Poof and it's gone
+        G_FreeEntity( ent );
+    }
+}
 
 /*
 ======================================================================
@@ -840,9 +914,8 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 //	trap_Trace (&tr, start, NULL, NULL, end, ENTITYNUM_NONE, MASK_SHOT);
 
 	// DHM - Nerve :: only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		AICast_ProcessBullet( attacker, start, tr.endpos );
-	}
+	AICast_ProcessBullet( attacker, start, tr.endpos );
+	
 
 	// bullet debugging using Q3A's railtrail
 	if ( g_debugBullets.integer & 1 ) {
@@ -965,7 +1038,7 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 
 			// Ridah, don't hurt team-mates
 			// DHM - Nerve :: Only in single player
-			if ( attacker->client && traceEnt->client && g_gametype.integer == GT_SINGLE_PLAYER && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
+			if ( attacker->client && traceEnt->client && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
 				// AI's don't hurt members of their own team
 				return;
 			}
@@ -1079,13 +1152,10 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		switch ( grenType ) {
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
-			upangle *= 800;
-			break;
+		case WP_POISONGAS:
 		case WP_DYNAMITE:
-			upangle *= 400;
-			break;
 		case WP_AIRSTRIKE:
-			upangle *= 700;
+			upangle *= ammoTable[grenType].upAngle;
 			break;
 		default:
 		break;
@@ -1117,6 +1187,16 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	//m->damage *= s_quadFactor;
 	m->damage = 0;  // Ridah, grenade's don't explode on contact
 	m->splashDamage *= s_quadFactor;
+
+	if ( grenType == WP_POISONGAS ) 
+	{
+            m->s.effect1Time = 16;
+            m->think = G_PoisonGasExplode;
+            m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
+			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
+			m->poisonGasDamage        =  ammoTable[WP_POISONGAS].playerDamage;	
+		    
+	}
 
 	if ( grenType == WP_AIRSTRIKE ) {
 
@@ -1405,7 +1485,7 @@ void Weapon_LightningFire( gentity_t *ent ) {
 			if ( traceEnt->s.onFireEnd < level.time ) {
 				traceEnt->s.onFireStart = level.time;
 			}
-			if ( traceEnt->health <= 0 || !( traceEnt->r.svFlags & SVF_CASTAI ) || ( g_gametype.integer != GT_SINGLE_PLAYER ) ) {
+			if ( traceEnt->health <= 0 || !( traceEnt->r.svFlags & SVF_CASTAI ) ) {
 				if ( traceEnt->r.svFlags & SVF_CASTAI ) {
 					traceEnt->s.onFireEnd = level.time + 6000;
 				} else {
@@ -1503,6 +1583,7 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 	case WP_DYNAMITE:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_GRENADE_LAUNCHER:
+	case WP_POISONGAS:
 		VectorMA( muzzlePoint, 20, right, muzzlePoint );
 		break;
 	case WP_AKIMBO:     // left side rather than right
@@ -1793,6 +1874,7 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
+	case WP_POISONGAS:
 		weapon_grenadelauncher_fire( ent, ent->s.weapon );
 		break;
 	case WP_FLAMETHROWER:
@@ -1800,10 +1882,7 @@ void FireWeapon( gentity_t *ent ) {
 		//Weapon_LightningFire( ent );
 		break;
 	case WP_TESLA:
-		if ( g_gametype.integer == GT_SINGLE_PLAYER ) { // JPW NERVE
 			Tesla_Fire( ent );
-		}
-
 		// push the player back a bit
 		if ( !ent->aiCharacter ) {
 			vec3_t forward, vangle;
@@ -1847,9 +1926,7 @@ void FireWeapon( gentity_t *ent ) {
 
 	// Ridah
 	// DHM - Nerve :: Only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		AICast_RecordWeaponFire( ent );
-	}
 }
 
 

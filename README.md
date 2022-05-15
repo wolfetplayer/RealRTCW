@@ -1,24 +1,40 @@
 # RealRTCW
-RealRTCW is an overhaul mod for critically acclaimed Wolfenstein classic. It features new renderer, expanded arsenal, rebalanced gunplay, new high quality models,textures and sounds.
 
+RealRTCW is a community single-player overhaul project for Return to Castle Wolfenstein based on the iortcw and rtcw-sp source code.
 
 Features:
-* Mod is based on ioRTCW source port, which provides proper widescreen support, high quality sound engine and 64-bit systems support
-* Expanded arsenal which includes 12 new weapons
-* New HQ models for the vanilla weapons
-* HQ textures for the environment and characters, which are still faithful to the original style and atmosphere
-* Atmospheric effects support - rain and snow
-* New inventory items - adrenaline and bandages
-* Real recoil system
-* Rebalanced weapons characteristics
-* Rebalanced AI
-* Overhauled sounds
-* New HUD and UI
-* New difficulty system
+* All iortcw features including proper widescreen support
+* Steam integration support using Steamshim by Ryan C. Gordon (WIP)
+* Support for 99% of community made maps
+* Expanded .weap files system from Enemy Territory
+* Reworked difficulty levels
+* Automatic AI attributes system
+* Greatly expanded arsenal of weapons
+* Adapted recoil system from Enemy Territory
+* Atmospheric effects support from Enemy Territory
 * Subtitles support
-* Steam Workshop integration for custom maps\mods
-* Restored cut content including training level and unused soundtrack
-* And more!
+* New inventory items
+* Increased engine limits
+* Improved controller support
+* A lot of bug fixes and QOL improvements
+
+New CVARs:
+* g_jumptime - enable/disable strafejumping
+* cg_solidcrosshair - enable/disable solid crosshair (ported from RTCWCoop)
+* cg_bloodblend - enable/disable blood on HUD (ported from RTCWCoop)
+* cg_bobbing - enable/disable bobbing while crouching (ported from ETLegacy)
+* cg_sniperscrosshair - enable/disable crosshairs for unscoped sniper rifles
+* cg_atmosphericEffects - enable/disable atmospheric effects
+* cg_lowAtmosphericEffects - enable/disable low quality atmospheric effects
+* cg_forceAtmosphericEffects - force specific type of atmospheric effects
+* cg_autoReload - enable/disable autoreload (ported from ET)
+* g_bodysink - enable/disable bodysink
+* g_gunposlock - varied view weapon positions
+* g_airespawn - enable/disable AI respawn (ported from RTCWCoop)
+* g_reinforce - enable/disable AI reinforce (ported from RTCWCoop)
+* g_fullarsenal - affects set of weapons player will recieve during campaign
+
+The original id software readme that accompanied the RTCW source release is named README.txt and is contained within the source tree of both MP and SP games.
 
 Available on ModDB:
 https://www.moddb.com/mods/realrtcw-realism-mod

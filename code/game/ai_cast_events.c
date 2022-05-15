@@ -165,6 +165,9 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	char mapname[MAX_QPATH];
 	qboolean respawn = qfalse;
 	
+
+
+	// Achievements related stuff! 
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
 	qboolean modKicked = (meansOfDeath == MOD_KICKED);
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
@@ -172,14 +175,12 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
-	
-	/*{
-		char x[1000];
-		sprintf(x, "### died, char type: %d, attacker is client: %d, attacker ! ai char: %d, mod: %d, mod is panzerfaust: %d",
-				self->aiCharacter, (attacker && attacker->client), !( attacker->aiCharacter ), 
-				meansOfDeath, meansOfDeath == MOD_PANZERFAUST);
-		OutputDebugStringA(x);
-	}*/
+
+    // ETSP Achievements stuff!
+	qboolean modGL = (meansOfDeath == MOD_M7 );
+	qboolean modBr = (meansOfDeath == MOD_BROWNING );
+	qboolean modAir = (meansOfDeath == MOD_AIRSTRIKE );
+	qboolean modGas = (meansOfDeath == MOD_POISONGAS );
 	
 	
 	if(self->aiCharacter == AICHAR_LOPER && killerPlayer && modPanzerfaust)
@@ -223,6 +224,38 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		}
 	}
 
+		if(self->aiCharacter && killerPlayer && modGL)
+	{
+		if ( !g_cheats.integer )
+		{
+		steamSetAchievement("ACH_GL");
+		}
+	}
+
+		if(self->aiCharacter == AICHAR_VENOM && killerPlayer && modBr)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_BROWNING");
+		}
+	}
+
+		if(self->aiCharacter && killerPlayer && modAir)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_AIR");
+		}
+	}
+
+
+		if(self->aiCharacter && killerPlayer && modGas)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_GAS");
+		}
+	}
 
 
 	// print debugging message

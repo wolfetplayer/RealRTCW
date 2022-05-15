@@ -83,7 +83,7 @@ void CG_LoadingClient( int clientNum ) {
 	char model[MAX_QPATH];
 	char iconName[MAX_QPATH];
 
-	if ( cgs.gametype == GT_SINGLE_PLAYER  && clientNum > 0 ) { // for now only show the player's icon in SP games
+	if ( clientNum > 0 ) { // for now only show the player's icon in SP games
 		return;
 	}
 
@@ -109,9 +109,7 @@ void CG_LoadingClient( int clientNum ) {
 	Q_strncpyz( personality, Info_ValueForKey( info, "n" ), sizeof( personality ) );
 	Q_CleanStr( personality );
 
-	if ( cgs.gametype == GT_SINGLE_PLAYER ) {
-		trap_S_RegisterSound( va( "sound/player/announce/%s.wav", personality ) );
-	}
+	trap_S_RegisterSound( va( "sound/player/announce/%s.wav", personality ) );
 
 	CG_LoadingString( personality );
 }
@@ -417,7 +415,7 @@ void CG_DrawInformation( void ) {
 	}
 
 	// Ridah, in single player, cheats disabled, don't show unnecessary information
-	if ( cgs.gametype == GT_SINGLE_PLAYER ) {
+
 
 		if ( 0 ) { // bar drawn in menu now
 			vec2_t xy = { 200, 468 };
@@ -439,8 +437,8 @@ void CG_DrawInformation( void ) {
 		//trap_UpdateScreen();
 		callCount--;
 		return;
-	}
+	
 	// done.
 
-	callCount--;
+	//callCount--;
 }

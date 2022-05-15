@@ -367,28 +367,6 @@ void CopyToBodyQue( gentity_t *ent ) {
 		body->s.events[i] = 0;
 	body->s.eventSequence = 0;
 
-	// DHM - Nerve
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		// change the animation to the last-frame only, so the sequence
-		// doesn't repeat anew for the body
-		switch ( body->s.legsAnim & ~ANIM_TOGGLEBIT ) {
-		case BOTH_DEATH1:
-		case BOTH_DEAD1:
-			body->s.torsoAnim = body->s.legsAnim = BOTH_DEAD1;
-			break;
-		case BOTH_DEATH2:
-		case BOTH_DEAD2:
-			body->s.torsoAnim = body->s.legsAnim = BOTH_DEAD2;
-			break;
-		case BOTH_DEATH3:
-		case BOTH_DEAD3:
-		default:
-			body->s.torsoAnim = body->s.legsAnim = BOTH_DEAD3;
-			break;
-		}
-	}
-	// dhm
-
 	body->r.svFlags = ent->r.svFlags;
 	VectorCopy( ent->r.mins, body->r.mins );
 	VectorCopy( ent->r.maxs, body->r.maxs );
@@ -445,58 +423,7 @@ limbo
 ================
 */
 void limbo( gentity_t *ent ) {
-	int i,contents;
-	//int startclient = ent->client->sess.spectatorClient;
-	int startclient = ent->client->ps.clientNum;
-
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		G_Printf( "FIXME: limbo called from single player game.  Shouldn't see this\n" );
-		return;
-	}
-	if ( !( ent->client->ps.pm_flags & PMF_LIMBO ) ) {
-
-		// DHM - Nerve :: First save off persistant info we'll need for respawn
-		for ( i = 0; i < MAX_PERSISTANT; i++ )
-			ent->client->saved_persistant[i] = ent->client->ps.persistant[i];
-		// dhm
-
-		ent->client->ps.pm_flags |= PMF_LIMBO;
-		ent->client->ps.pm_flags |= PMF_FOLLOW;
-
-		CopyToBodyQue( ent ); // make a nice looking corpse
-
-		ent->r.maxs[2] = 0;
-		ent->r.currentOrigin[2] += 8;
-		contents = trap_PointContents( ent->r.currentOrigin, -1 ); // drop stuff
-		ent->s.weapon = ent->client->limboDropWeapon; // stored in player_die()
-		if ( !( contents & CONTENTS_NODROP ) ) {
-			TossClientItems( ent );
-		}
-
-
-		ent->client->sess.spectatorClient = startclient;
-		Cmd_FollowCycle_f( ent,1 ); // get fresh spectatorClient
-
-		if ( ent->client->sess.spectatorClient == startclient ) {
-			// No one to follow, so just stay put
-			ent->client->sess.spectatorState = SPECTATOR_FREE;
-		} else {
-			ent->client->sess.spectatorState = SPECTATOR_FOLLOW;
-		}
-
-		ClientUserinfoChanged( ent->client - level.clients );
-		if ( ent->client->sess.sessionTeam == TEAM_RED ) {
-			ent->client->deployQueueNumber = level.redNumWaiting;
-			level.redNumWaiting++;
-		} else if ( ent->client->sess.sessionTeam == TEAM_BLUE )     {
-			ent->client->deployQueueNumber = level.blueNumWaiting;
-			level.blueNumWaiting++;
-		}
-
-
-//	ClientBegin( ent->client - level.clients );
-
-	}
+	return;
 }
 
 /* JPW NERVE
@@ -506,137 +433,7 @@ reinforce
 // -- called when time expires for a team deployment cycle and there is at least one guy ready to go
 */
 void reinforce( gentity_t *ent ) {
-	int i, j, p, team, deployable[256], numDeployable = 0, finished = 0;
-	char *classname = NULL;
-	gentity_t *spot;
-	gclient_t *rclient;
-
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		G_Printf( "FIXME: reinforce called from single player game.  Shouldn't see this\n" );
-		return;
-	}
-	if ( !( ent->client->ps.pm_flags & PMF_LIMBO ) ) {
-		G_Printf( "player already deployed, skipping\n" );
-		return;
-	}
-	// get team to deploy from passed entity
-
-	for ( i = 0; i < level.maxclients; i++ )
-		deployable[i] = -1;
-
-	team = ent->client->sess.sessionTeam;
-
-
-	// build initial list
-	for ( i = 0; i < level.maxclients; i++ ) {
-		// skip if not connected
-		if ( level.clients[i].pers.connected != CON_CONNECTED ) {
-			continue;
-		}
-		// skip if not in limbo
-		if ( !( level.clients[i].ps.pm_flags & PMF_LIMBO ) ) {
-			continue;
-		}
-		// skip if not on same team
-		if ( level.clients[i].sess.sessionTeam != team ) {
-			continue;
-		}
-		// still here? add to list
-		deployable[numDeployable] = i;
-		numDeployable++;
-	}
-	G_Printf( "numDeployable=%d\n",numDeployable );
-
-	// bubble sort list on time-based death order
-	while ( !finished ) {
-		finished = 1; // if nothing bad happens, bail out after this pass
-		for ( i = 1; i < numDeployable; i++ )
-			if ( level.clients[deployable[i]].deployQueueNumber < level.clients[deployable[i - 1]].deployQueueNumber ) {
-				G_Printf( "swapping %d and %d (priority %d and %d)\n", deployable[i], deployable[i - 1],
-						  level.clients[deployable[i]].deployQueueNumber, level.clients[deployable[i - 1]].deployQueueNumber );
-				j = deployable[i - 1];
-				deployable[i - 1] = deployable[i];
-				deployable[i] = j;
-				finished = 0; // continue bubble sorting
-			}
-	}
-
-// sanity check
-	G_Printf( "sorted " );
-	for ( i = 0; i < numDeployable; i++ )
-		G_Printf( "%d ",level.clients[deployable[i]].deployQueueNumber );
-	G_Printf( "\n" );
-
-	// find number active team spawnpoints
-	if ( team == TEAM_RED ) {
-		classname = "team_CTF_redspawn";
-	} else if ( team == TEAM_BLUE ) {
-		classname = "team_CTF_bluespawn";
-	} else {
-		G_Error( "In game's reinforce function, team is not red or blue" );
-	}
-
-	finished = 0;
-
-
-	spot = NULL;
-
-	while ( ( spot = G_Find( spot, FOFS( classname ), classname ) ) != NULL ) {
-
-		if ( SpotWouldTelefrag( spot ) ) {
-			continue;
-		}
-		if ( spot->spawnflags & 2 ) { // spawnpoint is active
-			finished++;
-		}
-	}
-	G_Printf( "found %d active spawnpoints\n",finished );
-
-	if ( finished < numDeployable ) {
-		j = finished;
-	} else {
-		j = numDeployable;
-	}
-
-	// respawn deployable people
-	for ( i = 0; i < j; i++ ) {
-
-		// DHM - Nerve :: restore persistant data now that we're out of Limbo
-		rclient = g_entities[deployable[i]].client;
-		for ( p = 0; p < MAX_PERSISTANT; p++ )
-			rclient->ps.persistant[p] = rclient->saved_persistant[p];
-		// dhm```
-
-		ClientRespawn( &g_entities[deployable[i]] );
-	}
-
-	// re-spool non-deployable people (update time-based death order)
-	// reset next sort value
-	if ( team == TEAM_RED ) {
-		level.redNumWaiting = 0;
-	} else if ( team == TEAM_BLUE ) {
-		level.blueNumWaiting = 0;
-	}
-
-	if ( finished < numDeployable ) {
-		G_Printf( "more deployable are waiting in queue\n" );
-		for ( i = finished,j = 0; i < numDeployable; i++,j++ )
-			level.clients[deployable[i]].deployQueueNumber = j;
-		// reset next sort value
-		if ( team == TEAM_RED ) {
-			level.redNumWaiting = j;
-		} else if ( team == TEAM_BLUE ) {
-			level.blueNumWaiting = j;
-		}
-
-		// sanity check
-		G_Printf( "second sanity check sorted " );
-		for ( i = finished; i < numDeployable; i++ )
-			G_Printf( "%d ",level.clients[deployable[i]].deployQueueNumber );
-		G_Printf( "\n" );
-
-	}
-
+	return;
 }
 // jpw
 
@@ -649,9 +446,7 @@ ClientRespawn
 void ClientRespawn( gentity_t *ent ) {
 
 	// Ridah, if single player, reload the last saved game for this player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 
-//		if (reloading || saveGamePending) {
 		if ( g_reloading.integer || saveGamePending ) {
 			return;
 		}
@@ -660,26 +455,19 @@ void ClientRespawn( gentity_t *ent ) {
 			// Fast method, just do a map_restart, and then load in the savegame
 			// once everything is settled.
 			trap_SetConfigstring( CS_SCREENFADE, va( "1 %i 4000", level.time + 2000 ) );
-//			reloading = qtrue;
 			trap_Cvar_Set( "g_reloading", "1" );
 
-//			level.reloadDelayTime = level.time + 1500;
 			level.reloadDelayTime = level.time + 6000;
 
 			trap_SendServerCommand( -1, va( "snd_fade 0 %d", 6000 ) );  // fade sound out
 
 			return;
 		}
-	}
-
 	// done.
 
 	ent->client->ps.pm_flags &= ~PMF_LIMBO; // JPW NERVE turns off limbo
 
-	// DHM - Nerve :: Already handled in 'limbo()'
-	if ( g_gametype.integer != GT_WOLF ) {
-		CopyToBodyQue( ent );
-	}
+	CopyToBodyQue( ent );
 
 	ClientSpawn( ent );
 }
@@ -769,322 +557,7 @@ void ForceClientSkin( gclient_t *client, char *model, const char *skin ) {
 	Q_strcat( model, MAX_QPATH, skin );
 }
 
-
-// DHM - Nerve
-/*
-===========
-SetWolfSkin
-
-Forces a client's skin (for Wolfenstein teamplay)
-===========
-*/
-
 #define MULTIPLAYER_MODEL   "multi"
-
-
-void SetWolfSkin( gclient_t *client, char *model ) {
-
-	switch ( client->sess.sessionTeam ) {
-	case TEAM_RED:
-		Q_strcat( model, MAX_QPATH, "red" );
-		break;
-	case TEAM_BLUE:
-		Q_strcat( model, MAX_QPATH, "blue" );
-		break;
-	default:
-		Q_strcat( model, MAX_QPATH, "red" );
-		break;
-	}
-
-	switch ( client->sess.playerType ) {
-	case PC_SOLDIER:
-		Q_strcat( model, MAX_QPATH, "soldier" );
-		break;
-	case PC_MEDIC:
-		Q_strcat( model, MAX_QPATH, "medic" );
-		break;
-	case PC_ENGINEER:
-		Q_strcat( model, MAX_QPATH, "engineer" );
-		break;
-	case PC_LT:
-		Q_strcat( model, MAX_QPATH, "lieutenant" );
-		break;
-	default:
-		Q_strcat( model, MAX_QPATH, "soldier" );
-		break;
-	}
-
-	// DHM - A skinnum will be in the session data soon...
-	switch ( client->sess.playerSkin ) {
-	case 1:
-		Q_strcat( model, MAX_QPATH, "1" );
-		break;
-	case 2:
-		Q_strcat( model, MAX_QPATH, "2" );
-		break;
-	case 3:
-		Q_strcat( model, MAX_QPATH, "3" );
-		break;
-	default:
-		Q_strcat( model, MAX_QPATH, "1" );
-		break;
-	}
-}
-
-void SetWolfSpawnWeapons( gclient_t *client ) {
-
-	int pc = client->sess.playerType;
-	int starthealth = 100,i,numMedics = 0;   // JPW NERVE
-
-	if ( client->sess.sessionTeam == TEAM_SPECTATOR ) {
-		return;
-	}
-
-	client->ps.powerups[PW_INVULNERABLE] = level.time + 5000; // JPW NERVE some time to find cover
-
-	// Communicate it to cgame
-	client->ps.stats[STAT_PLAYER_CLASS] = pc;
-
-	// Abuse teamNum to store player class as well (can't see stats for all clients in cgame)
-	client->ps.teamNum = pc;
-
-	// JPW NERVE -- zero out all ammo counts
-	memset( client->ps.ammo, 0, MAX_WEAPONS * sizeof( int ) );
-
-	// All players start with a knife (not OR-ing so that it clears previous weapons)
-	client->ps.weapons[0] = 0;
-	client->ps.weapons[1] = 0;
-	COM_BitSet( client->ps.weapons, WP_KNIFE );
-
-	client->ps.ammo[BG_FindAmmoForWeapon( WP_KNIFE )] = 1;
-	client->ps.weapon = WP_KNIFE;
-	client->ps.weaponstate = WEAPON_READY;
-
-	// Engineer gets dynamite
-	if ( pc == PC_ENGINEER ) {
-		COM_BitSet( client->ps.weapons, WP_DYNAMITE );
-		client->ps.ammo[BG_FindAmmoForWeapon( WP_DYNAMITE )] = 0;
-		client->ps.ammoclip[BG_FindClipForWeapon( WP_DYNAMITE )] = 1;
-	}
-
-	// Lieutenant gets binoculars
-	if ( pc == PC_LT ) {
-		client->ps.stats[STAT_KEYS] |= ( 1 << INV_BINOCS );
-/* no grenades for balance JPW NERVE
-		COM_BitSet( client->ps.weapons, WP_GRENADE_LAUNCHER );
-		client->ps.ammo[BG_FindAmmoForWeapon(WP_GRENADE_LAUNCHER)] = 2;
-		client->ps.ammoclip[BG_FindClipForWeapon(WP_GRENADE_LAUNCHER)] = 1;
-*/
-	}
-
-
-	// Everyone gets a pistol
-	switch ( client->sess.sessionTeam ) { // JPW NERVE was playerPistol
-
-	case TEAM_RED: // JPW NERVE
-		COM_BitSet( client->ps.weapons, WP_LUGER );
-		client->ps.ammoclip[BG_FindClipForWeapon( WP_LUGER )] += 8;
-		client->ps.ammo[BG_FindAmmoForWeapon( WP_LUGER )] += 24;
-		client->ps.weapon = WP_LUGER;
-		break;
-	default: // '0' // TEAM_BLUE
-		COM_BitSet( client->ps.weapons, WP_COLT );
-		client->ps.ammoclip[BG_FindClipForWeapon( WP_COLT )] += 8;
-		client->ps.ammo[BG_FindAmmoForWeapon( WP_COLT )] += 24;
-		client->ps.weapon = WP_COLT;
-		break;
-	}
-
-	// Everyone except Medic and LT get some grenades
-	if ( ( pc != PC_LT ) && ( pc != PC_MEDIC ) ) { // JPW NERVE
-
-		switch ( client->sess.sessionTeam ) { // was playerItem
-
-		case TEAM_BLUE:
-			COM_BitSet( client->ps.weapons, WP_GRENADE_PINEAPPLE );
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_GRENADE_PINEAPPLE )] = 4;
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_GRENADE_PINEAPPLE )] = 1;
-			break;
-		case TEAM_RED:
-			COM_BitSet( client->ps.weapons, WP_GRENADE_LAUNCHER );
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_GRENADE_LAUNCHER )] = 4;
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_GRENADE_LAUNCHER )] = 1;
-			break;
-		default:
-			COM_BitSet( client->ps.weapons, WP_GRENADE_PINEAPPLE );
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_GRENADE_PINEAPPLE )] = 4;
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_GRENADE_PINEAPPLE )] = 1;
-			break;
-		}
-	}
-
-	// Soldiers and Lieutenants get a 2-handed weapon
-	if ( pc == PC_SOLDIER || pc == PC_LT ) {
-
-// JPW NERVE -- if LT is selected but illegal weapon, set to team-specific SMG
-		if ( ( pc == PC_LT ) && ( client->sess.playerWeapon > 5 ) ) {
-			if ( client->sess.sessionTeam == TEAM_RED ) {
-				client->sess.playerWeapon = 3;
-			} else {
-				client->sess.playerWeapon = 4;
-			}
-		}
-// jpw
-		switch ( client->sess.playerWeapon ) {
-
-		case 3:     // WP_MP40
-			COM_BitSet( client->ps.weapons, WP_MP40 );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_MP40 )] += 32;
-			if ( pc == PC_SOLDIER ) {
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_MP40 )] += 64;
-			} else {
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_MP40 )] += 32;
-			}
-			client->ps.weapon = WP_MP40;
-			break;
-
-		case 4:     // WP_THOMPSON
-			COM_BitSet( client->ps.weapons, WP_THOMPSON );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_THOMPSON )] += 30;
-			if ( pc == PC_SOLDIER ) {
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_THOMPSON )] += 60;
-			} else {
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_THOMPSON )] += 30;
-			}
-			client->ps.weapon = WP_THOMPSON;
-			break;
-
-		case 5:     // WP_STEN
-			COM_BitSet( client->ps.weapons, WP_STEN );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_STEN )] += 32;
-			if ( pc == PC_SOLDIER ) {
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_STEN )] += 64;
-			} else {
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_STEN )] += 32;
-			}
-			client->ps.weapon = WP_STEN;
-			break;
-
-		case 6:     // WP_MAUSER, WP_SNIPERRIFLE
-			if ( pc != PC_SOLDIER ) {
-				return;
-			}
-
-			COM_BitSet( client->ps.weapons, WP_SNIPERRIFLE );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_SNIPERRIFLE )] = 10;
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_SNIPERRIFLE )] = 10;
-			client->ps.weapon = WP_SNIPERRIFLE;
-
-			COM_BitSet( client->ps.weapons, WP_MAUSER );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_MAUSER )] = 10;
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_MAUSER )] = 10;
-			client->ps.weapon = WP_MAUSER;
-			break;
-
-		case 7:     // WP_GARAND, WP_SNOOPERSCOPE
-			if ( pc != PC_SOLDIER ) {
-				return;
-			}
-
-			COM_BitSet( client->ps.weapons, WP_SNOOPERSCOPE );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_SNOOPERSCOPE )] = 5;
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_SNOOPERSCOPE )] = 15;
-			client->ps.weapon = WP_SNOOPERSCOPE;
-
-			COM_BitSet( client->ps.weapons, WP_GARAND );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_GARAND )] = 5;
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_GARAND )] = 15;
-			client->ps.weapon = WP_GARAND;
-
-			break;
-
-		case 8:     // WP_PANZERFAUST
-			if ( pc != PC_SOLDIER ) {
-				return;
-			}
-
-			COM_BitSet( client->ps.weapons, WP_PANZERFAUST );
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_PANZERFAUST )] = 4;
-			client->ps.weapon = WP_PANZERFAUST;
-			break;
-
-		case 9:     // WP_VENOM
-			if ( pc != PC_SOLDIER ) {
-				return;
-			}
-// JPW NERVE may not keep this, but put it in to test
-			COM_BitSet( client->ps.weapons, WP_VENOM );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_VENOM )] = 200;
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_VENOM )] = 500;
-			client->ps.weapon = WP_VENOM;
-			break;
-
-		case 10:    // WP_FLAMETHROWER
-			if ( pc != PC_SOLDIER ) {
-				return;
-			}
-
-			COM_BitSet( client->ps.weapons, WP_FLAMETHROWER );
-			client->ps.ammo[BG_FindAmmoForWeapon( WP_FLAMETHROWER )] = 300;
-			client->ps.weapon = WP_FLAMETHROWER;
-			break;
-
-		default:    // give MP40 if given invalid weapon number
-			if ( client->sess.sessionTeam == TEAM_RED ) { // JPW NERVE
-				COM_BitSet( client->ps.weapons, WP_MP40 );
-				client->ps.ammoclip[BG_FindClipForWeapon( WP_MP40 )] += 32;
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_MP40 )] += 64;
-				client->ps.weapon = WP_MP40;
-			} else { // TEAM_BLUE
-				COM_BitSet( client->ps.weapons, WP_THOMPSON );
-				client->ps.ammoclip[BG_FindClipForWeapon( WP_THOMPSON )] += 30;
-				client->ps.ammo[BG_FindAmmoForWeapon( WP_THOMPSON )] += 60;
-				client->ps.weapon = WP_THOMPSON;
-			}
-			break;
-		}
-	} else { // medic or engineer gets assigned MP40 or Thompson with one magazine ammo
-		if ( client->sess.sessionTeam == TEAM_RED ) { // axis
-			COM_BitSet( client->ps.weapons, WP_MP40 );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_MP40 )] += 32;
-			client->ps.weapon = WP_MP40;
-		} else { // allied
-			COM_BitSet( client->ps.weapons, WP_THOMPSON );
-			client->ps.ammoclip[BG_FindClipForWeapon( WP_THOMPSON )] += 30;
-			client->ps.weapon = WP_THOMPSON;
-		}
-	}
-// JPW NERVE -- medics on each team make cumulative health bonus -- this gets overridden for "revived" players
-// count up # of medics on team
-	for ( i = 0; i < level.maxclients; i++ ) {
-		if ( level.clients[i].pers.connected != CON_CONNECTED ) {
-			continue;
-		}
-		if ( level.clients[i].sess.sessionTeam != client->sess.sessionTeam ) {
-			continue;
-		}
-		if ( level.clients[i].ps.stats[STAT_PLAYER_CLASS] != PC_MEDIC ) {
-			continue;
-		}
-		numMedics++;
-	}
-// compute health mod
-	starthealth = 100 + 10 * numMedics;
-	if ( starthealth > 125 ) {
-		starthealth = 125;
-	}
-// give everybody health mod in stat_max_health
-	for ( i = 0; i < level.maxclients; i++ ) {
-		if ( level.clients[i].pers.connected != CON_CONNECTED ) {
-			continue;
-		}
-		if ( level.clients[i].sess.sessionTeam == client->sess.sessionTeam ) {
-			client->ps.stats[STAT_MAX_HEALTH] = starthealth;
-		}
-	}
-// jpw
-}
-// dhm - end
 
 /*
 ===========
@@ -1261,7 +734,7 @@ qboolean G_ParseAnimationFiles( char *modelname, gclient_t *cl ) {
 	BG_AnimParseAnimScript( cl->modelInfo, &level.animScriptData, cl->ps.clientNum, filename, text );
 
 	// ask the client to send us the movespeeds if available
-	if ( g_gametype.integer == GT_SINGLE_PLAYER && g_entities[0].client && g_entities[0].client->pers.connected == CON_CONNECTED ) {
+	if ( g_entities[0].client && g_entities[0].client->pers.connected == CON_CONNECTED ) {
 		trap_SendServerCommand( 0, va( "mvspd %s", modelname ) );
 	}
 
@@ -1411,21 +884,6 @@ void ClientUserinfoChanged( int clientNum ) {
 	client->ps.legsAnim = 0;
 	client->ps.torsoAnim = 0;
 
-	// DHM - Nerve :: Forcibly set both model and skin for multiplayer.
-	if ( g_gametype.integer == GT_WOLF ) {
-
-		// To communicate it to cgame
-		client->ps.stats[ STAT_PLAYER_CLASS ] = client->sess.playerType;
-
-		Q_strncpyz( model, MULTIPLAYER_MODEL, MAX_QPATH );
-		Q_strcat( model, MAX_QPATH, "/" );
-
-		SetWolfSkin( client, model );
-
-		Q_strncpyz( head, "", MAX_QPATH );
-		SetWolfSkin( client, head );
-	}
-
 	// strip the skin name
 	Q_strncpyz( modelname, model, sizeof( modelname ) );
 	if ( strstr( modelname, "/" ) ) {
@@ -1442,7 +900,7 @@ void ClientUserinfoChanged( int clientNum ) {
 
 	// team`
 	// DHM - Nerve :: Already took care of models and skins above
-	if ( g_gametype.integer != GT_WOLF ) {
+
 
 //----(SA) added this for head separation
 		// set head
@@ -1464,13 +922,6 @@ void ClientUserinfoChanged( int clientNum ) {
 		default:
 			break;
 		}
-		if ( g_gametype.integer >= GT_TEAM && client->sess.sessionTeam == TEAM_SPECTATOR ) {
-			// don't ever use a default skin in teamplay, it would just waste memory
-			ForceClientSkin( client, model, "red" );
-		}
-
-	}
-
 
 	//dhm - end
 
@@ -1656,21 +1107,9 @@ void ClientBegin( int clientNum ) {
 
 	// Ridah, trigger a spawn event
 	// DHM - Nerve :: Only in single player
-	if ( g_gametype.integer == GT_SINGLE_PLAYER && !( ent->r.svFlags & SVF_CASTAI ) ) {
+	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {
 		AICast_ScriptEvent( AICast_GetCastState( clientNum ), "spawn", "" );
 	}
-
-/*
-	if ( client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		if ( g_gametype.integer != GT_TOURNAMENT ) {
-			// Ridah
-			if ( !(ent->r.svFlags & SVF_CASTAI) ) {
-				// done.
-				trap_SendServerCommand( -1, va( "print \"%s" S_COLOR_WHITE " entered the game\n\"", client->pers.netname ) );
-			}
-		}
-	}
-*/
 
 	G_LogPrintf( "ClientBegin: %i\n", clientNum );
 
@@ -1728,11 +1167,6 @@ void ClientSpawn( gentity_t *ent ) {
 		if ( client->sess.sessionTeam == TEAM_SPECTATOR ) {
 			spawnPoint = SelectSpectatorSpawnPoint(
 				spawn_origin, spawn_angles );
-		} else if ( g_gametype.integer >= GT_TEAM ) {
-			spawnPoint = SelectCTFSpawnPoint(
-				client->sess.sessionTeam,
-				client->pers.teamState.state,
-				spawn_origin, spawn_angles, !!(ent->r.svFlags & SVF_BOT) );
 		} else {
 			do {
 				// the first spawn should be at a good looking spot
@@ -1857,44 +1291,6 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->ps.clientNum = index;
 
-	// DHM - Nerve :: Add appropriate weapons
-	if ( g_gametype.integer == GT_WOLF ) {
-		SetWolfSpawnWeapons( client ); // JPW NERVE -- increases stats[STAT_MAX_HEALTH] based on # of medics in game
-	}
-	// dhm - end
-
-	// Note to Ryan:
-	// had to add this because key word giveweapon to player is causing a fatal crash
-	// This is only a quick fix for the beach map
-/*
-	if (!(ent->r.svFlags & SVF_CASTAI) && level.scriptAI && strstr (level.scriptAI, "beach assault"))
-	{
-		COM_BitSet( client->ps.weapons, WP_THOMPSON );
-		client->ps.ammo[BG_FindAmmoForWeapon(WP_THOMPSON)] = 100;
-
-		COM_BitSet( client->ps.weapons, WP_GRENADE_PINEAPPLE );
-		client->ps.ammo[BG_FindAmmoForWeapon(WP_GRENADE_PINEAPPLE)] = 5;
-
-		client->ps.weapon = WP_THOMPSON;
-		client->ps.weaponstate = WEAPON_READY;
-	}
-*/
-	//----(SA) no longer giving the player any default stuff
-
-//	COM_BitSet( client->ps.weapons, WP_MP40 );
-//	client->ps.ammo[BG_FindAmmoForWeapon(WP_MP40)] = 100;
-
-//	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-//		client->ps.ammo[BG_FindAmmoForWeapon(WP_LUGER)] = 50;
-//	} else {
-//		client->ps.ammo[BG_FindAmmoForWeapon(WP_LUGER)] = 100;
-//	}
-
-	// health will count down towards max_health
-//	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] * 1.25;
-
-// JPW NERVE ***NOTE*** the following line is order-dependent and must *FOLLOW* SetWolfSpawnWeapons() in multiplayer
-// SetWolfSpawnWeapons() now adds medic team bonus and stores in ps.stats[STAT_MAX_HEALTH].
 	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
 
 	if (g_decaychallenge.integer){
@@ -2018,23 +1414,6 @@ void ClientDisconnect( int clientNum ) {
 		// Ridah
 	}
 	// done.
-
-	// if we are playing in tourney mode and losing, give a win to the other player
-	if ( g_gametype.integer == GT_TOURNAMENT && !level.intermissiontime
-		 && !level.warmupTime && level.sortedClients[1] == clientNum ) {
-		level.clients[ level.sortedClients[0] ].sess.wins++;
-		ClientUserinfoChanged( level.sortedClients[0] );
-	}
-
-	if( g_gametype.integer == GT_TOURNAMENT &&
-		ent->client->sess.sessionTeam == TEAM_FREE &&
-		level.intermissiontime ) {
-
-		trap_SendConsoleCommand( EXEC_APPEND, "map_restart 0\n" );
-		level.restarted = qtrue;
-		level.changemap = NULL;
-		level.intermissiontime = 0;
-	}
 
 	trap_UnlinkEntity( ent );
 	ent->s.modelindex = 0;

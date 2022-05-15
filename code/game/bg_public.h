@@ -180,12 +180,9 @@ typedef enum {
 #endif
 
 typedef enum {
-	GT_FFA,             // free for all
-	GT_TOURNAMENT,      // one on one tournament
-	GT_SINGLE_PLAYER,   // single player tournament
-	GT_TEAM,            // team deathmatch
-	GT_CTF,             // capture the flag
-	GT_WOLF,            // DHM - Nerve :: Wolfenstein Multiplayer
+	GT_NONE,            // no game mode
+	GT_SINGLE_PLAYER,   // single player
+	GT_GOTHIC,          // castle gothicstein
 	GT_MAX_GAME_TYPE
 } gametype_t;
 
@@ -496,21 +493,22 @@ typedef enum {
 	WP_GARAND,              // 27	
 	WP_GRENADE_PINEAPPLE,   // 28
 	WP_AIRSTRIKE,           // 29
-	WP_SNIPERRIFLE,         // 30
-	WP_SNOOPERSCOPE,        // 31
-	WP_FG42SCOPE,           // 32
-	WP_STEN,                // 33	
-	WP_SILENCER,            // 34	
-	WP_AKIMBO,              // 35	
-	WP_DYNAMITE,            // 36
-	WP_MONSTER_ATTACK1,     // 37	
-	WP_MONSTER_ATTACK2,     // 38	
-	WP_MONSTER_ATTACK3,     // 39	
-	WP_GAUNTLET,            // 40
-	WP_SNIPER,              // 41
-	WP_MORTAR,              // 42
-	VERYBIGEXPLOSION,       // 43	
-	WP_NUM_WEAPONS          // 44   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_POISONGAS,           // 30
+	WP_SNIPERRIFLE,         // 31
+	WP_SNOOPERSCOPE,        // 32
+	WP_FG42SCOPE,           // 33
+	WP_STEN,                // 34	
+	WP_SILENCER,            // 35	
+	WP_AKIMBO,              // 36	
+	WP_DYNAMITE,            // 37
+	WP_MONSTER_ATTACK1,     // 38	
+	WP_MONSTER_ATTACK2,     // 39	
+	WP_MONSTER_ATTACK3,     // 40	
+	WP_GAUNTLET,            // 41
+	WP_SNIPER,              // 42
+	WP_MORTAR,              // 43
+	VERYBIGEXPLOSION,       // 44	
+	WP_NUM_WEAPONS          // 45   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -538,6 +536,7 @@ typedef struct ammotable_s {
 	int soundRange;   
 	float moveSpeed; 
 	int twoHand;
+	int upAngle;
 	int mod;   
 } ammotable_t;
     
@@ -764,6 +763,7 @@ typedef enum {
 	EV_CLOSEMENU,   
 	EV_SPAWN_SPIRIT,
 	EV_M97_PUMP, // RealRTCW
+	EV_COUGH,
 	EV_MAX_EVENTS   // just added as an 'endcap'
 } entity_event_t;
 

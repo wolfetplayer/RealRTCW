@@ -65,11 +65,6 @@ void SP_ai_marker( gentity_t *ent ) {
 	trace_t tr;
 	vec3_t checkMins, checkMaxs;
 
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		G_FreeEntity( ent );
-		return;
-	}
-
 //----(SA)	move the bounding box for the check in 1 unit on each side so they can butt up against a wall and not startsolid
 	VectorCopy( playerMins, checkMins );
 	checkMins[0] += 1;
@@ -128,11 +123,6 @@ void ai_effect_think( gentity_t *ent ) {
 }
 
 void SP_ai_effect( gentity_t *ent ) {
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		G_FreeEntity( ent );
-		return;
-	}
-
 	ent->think = ai_effect_think;
 	ent->nextthink = level.time + 500;
 }
@@ -205,11 +195,6 @@ void ai_trigger_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
 }
 
 void SP_ai_trigger( gentity_t *ent ) {
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		G_FreeEntity( ent );
-		return;
-	}
-
 	G_SpawnFloat( "wait", "-1", &ent->wait );
 
 	if ( !ent->aiName ) {

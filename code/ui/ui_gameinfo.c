@@ -179,7 +179,6 @@ UI_LoadArenasIntoMapList
 */
 void UI_LoadArenasIntoMapList( void ) {
 	int			n;
-	char		*type;
 
 	uiInfo.mapCount = 0;
 
@@ -193,33 +192,7 @@ void UI_LoadArenasIntoMapList( void ) {
 		uiInfo.mapList[uiInfo.mapCount].imageName = String_Alloc( va( "levelshots/%s", uiInfo.mapList[uiInfo.mapCount].mapLoadName ) );
 		uiInfo.mapList[uiInfo.mapCount].typeBits = 0;
 
-		type = Info_ValueForKey( ui_arenaInfos[n], "type" );
 		// if no type specified, it will be treated as "ffa"
-		if ( *type ) {
-			if ( strstr( type, "ffa" ) ) {
-				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_FFA );
-			}
-			if ( strstr( type, "tourney" ) ) {
-				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_TOURNAMENT );
-			}
-			if ( strstr( type, "ctf" ) ) {
-				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_CTF );
-			}
-#ifdef MISSIONPACK
-			if ( strstr( type, "oneflag" ) ) {
-				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_1FCTF );
-			}
-			if ( strstr( type, "overload" ) ) {
-				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_OBELISK );
-			}
-			if ( strstr( type, "harvester" ) ) {
-				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_HARVESTER );
-			}
-#endif  // #ifdef MISSIONPACK
-		} else {
-			uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_FFA );
-		}
-
 		uiInfo.mapCount++;
 		if ( uiInfo.mapCount >= MAX_MAPS ) {
 			break;

@@ -299,21 +299,13 @@ SV_InitReliableCommands
 void SV_InitReliableCommands( client_t *clients ) {
 	int i;
 	client_t *cl;
-
-	if ( sv_gametype->integer == GT_SINGLE_PLAYER ) {
 		// single player
 		// init the actual player
 		SV_InitReliableCommandsForClient( clients, MAX_RELIABLE_COMMANDS );
 		// all others can only be bots, so are not required
 		for ( i = 1, cl = &clients[1]; i < sv_maxclients->integer; i++, cl++ ) {
-			SV_InitReliableCommandsForClient( cl, MAX_RELIABLE_COMMANDS );  // TODO, make 0's
+		SV_InitReliableCommandsForClient( cl, MAX_RELIABLE_COMMANDS );  // TODO, make 0's
 		}
-	} else {
-		// multiplayer
-		for ( i = 0, cl = clients; i < sv_maxclients->integer; i++, cl++ ) {
-			SV_InitReliableCommandsForClient( clients, MAX_RELIABLE_COMMANDS );
-		}
-	}
 }
 
 /*
@@ -585,16 +577,10 @@ void SV_ChangeMaxClients( void ) {
 
 	// RF, allocate reliable commands for newly created client slots
 	if ( oldMaxClients < sv_maxclients->integer ) {
-		if ( sv_gametype->integer == GT_SINGLE_PLAYER ) {
 			for ( i = oldMaxClients ; i < sv_maxclients->integer ; i++ ) {
 				// must be an AI slot
 				SV_InitReliableCommandsForClient( &svs.clients[i], 0 );
 			}
-		} else {
-			for ( i = oldMaxClients ; i < sv_maxclients->integer ; i++ ) {
-				SV_InitReliableCommandsForClient( &svs.clients[i], MAX_RELIABLE_COMMANDS );
-			}
-		}
 	}
 }
 
@@ -728,7 +714,6 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 		if ( !bot_enable ) {
 			bot_enable = Cvar_Get( "bot_enable", "1", CVAR_LATCH );
 		}
-		if ( g_gametype->integer == 2 ) {
 			if ( sv_maxclients->latchedString ) {
 				// it's been modified, so grab the new value
 				Cvar_Get( "sv_maxclients", "8", 0 );
@@ -739,7 +724,6 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 			if ( !bot_enable->integer ) {
 				Cvar_Set( "bot_enable", "1" );
 			}
-		}
 	}
 	// done.
 
@@ -831,13 +815,7 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 	}
 
 	// Ridah
-	if ( sv_gametype->integer == GT_SINGLE_PLAYER ) {
-		SV_SetExpectedHunkUsage( va( "maps/%s.bsp", server ) );
-	} else {
-		// just set it to a negative number,so the cgame knows not to draw the percent bar
-		Cvar_Set( "com_expectedhunkusage", "-1" );
-	}
-
+	SV_SetExpectedHunkUsage( va( "maps/%s.bsp", server ) );
 	// make sure we are not paused
 	Cvar_Set( "cl_paused", "0" );
 
@@ -890,7 +868,7 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 			char    *denied;
 
 			if ( svs.clients[i].netchan.remoteAddress.type == NA_BOT ) {
-				if ( killBots || Cvar_VariableValue( "g_gametype" ) == GT_SINGLE_PLAYER ) {
+				if ( killBots ) {
 					SV_DropClient( &svs.clients[i], " gametype is Single Player" );      //DAJ added message
 					continue;
 				}

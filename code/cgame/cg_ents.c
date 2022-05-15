@@ -1184,6 +1184,12 @@ static void CG_Missile( centity_t *cent ) {
 	// calculate the axis
 	VectorCopy( s1->angles, cent->lerpAngles );
 
+	if (s1->weapon == WP_POISONGAS)
+	{
+		// the smoke effect
+		CG_RenderSmokeGrenadeSmoke( cent, weapon, (weapon_t)s1->weapon );
+	}
+
 	// add trails
 	if ( cent->currentState.eType == ET_FP_PARTS
 		 || cent->currentState.eType == ET_FIRE_COLUMN
@@ -1430,20 +1436,6 @@ static animation_t footlockerAnims[] = {
 */
 //----(SA)	end
 
-// DHM - Nerve :: capture and hold flag
-
-static animation_t multi_flagpoleAnims[] = {
-	{"", 0,      1,      0,      1000 / 15,    1000 / 15 },  // (no flags, idle)
-	{"", 0,      15,     0,      1000 / 15,    1000 / 15 },  // (nazi flag rising)
-	{"", 490,    15,     0,      1000 / 15,    1000 / 15 },  // (american flag rising)
-	{"", 20,     211,    211,    1000 / 15,    1000 / 15 },  // (nazi flag raised)
-	{"", 255,    211,    211,    1000 / 15,    1000 / 15 },  // (american flag raised)
-	{"", 235,    15,     0,      1000 / 15,    1000 / 15 },  // (nazi switching to american)
-	{"", 470,    15,     0,      1000 / 15,    1000 / 15 }   // (american switching to nazi)
-};
-
-// dhm - end
-
 extern void CG_RunLerpFrame( clientInfo_t *ci, lerpFrame_t *lf, int newAnimation, float speedScale );
 
 /////
@@ -1528,21 +1520,6 @@ static void CG_Trap( centity_t *cent ) {
 
 	// initial setup.  set pointer to animation table and setup anim
 	if ( !cent->lerpFrame.oldFrameTime ) {
-
-		// DHM - Nerve :: teamNum specifies which set of animations to use (only 1 exists right now)
-		if ( cgs.gametype == GT_WOLF ) {
-			switch ( cent->currentState.teamNum ) {
-
-			case 1:
-				trapAnim = &multi_flagpoleAnims[0];
-//				lf->animation = &multi_flagpoleAnims[ cent->currentState.frame ];
-				break;
-			default:
-				// Keep what was set above
-				break;
-			}
-		}
-		// dhm - end
 
 		CG_NewAnim( cent, &cent->lerpFrame, trapAnim, cs->frame );
 	}

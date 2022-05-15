@@ -88,15 +88,9 @@ typedef struct campspot_s
 
 //FIXME: these are game specific
 typedef enum {
-	GT_FFA,             // free for all
-	GT_TOURNAMENT,      // one on one tournament
-	GT_SINGLE_PLAYER,   // single player tournament
-
-	//-- team games go after this --
-
-	GT_TEAM,            // team deathmatch
-	GT_CTF,             // capture the flag
-
+	GT_NONE,            // no game mode
+	GT_SINGLE_PLAYER,   // single player
+	GT_GOTHIC,          // castle gothicstein
 	GT_MAX_GAME_TYPE
 } gametype_t;
 
@@ -770,21 +764,10 @@ int BotGetLevelItemGoal( int index, char *name, bot_goal_t *goal ) {
 		if ( li->number <= index ) {
 			continue;
 		}
-		//
-		if ( g_gametype == GT_SINGLE_PLAYER ) {
 			if ( li->notsingle ) {
 				continue;
 			}
-		} else if ( g_gametype >= GT_TEAM )     {
-			if ( li->notteam ) {
-				continue;
-			}
-		} else {
-			if ( li->notfree ) {
-				continue;
-			}
-		}
-		//
+
 		if ( !Q_stricmp( name, itemconfig->iteminfo[li->iteminfo].name ) ) {
 			goal->areanum = li->goalareanum;
 			VectorCopy( li->goalorigin, goal->origin );
@@ -1155,19 +1138,10 @@ int BotChooseLTGItem( int goalstate, vec3_t origin, int *inventory, int travelfl
 	//go through the items in the level
 	for ( li = levelitems; li; li = li->next )
 	{
-		if ( g_gametype == GT_SINGLE_PLAYER ) {
 			if ( li->notsingle ) {
 				continue;
 			}
-		} else if ( g_gametype >= GT_TEAM )     {
-			if ( li->notteam ) {
-				continue;
-			}
-		} else {
-			if ( li->notfree ) {
-				continue;
-			}
-		}
+
 		//if the item is not in a possible goal area
 		if ( !li->goalareanum ) {
 			continue;
@@ -1318,19 +1292,9 @@ int BotChooseNBGItem( int goalstate, vec3_t origin, int *inventory, int travelfl
 	//go through the items in the level
 	for ( li = levelitems; li; li = li->next )
 	{
-		if ( g_gametype == GT_SINGLE_PLAYER ) {
 			if ( li->notsingle ) {
 				continue;
 			}
-		} else if ( g_gametype >= GT_TEAM )     {
-			if ( li->notteam ) {
-				continue;
-			}
-		} else {
-			if ( li->notfree ) {
-				continue;
-			}
-		}
 		//if the item is in a possible goal area
 		if ( !li->goalareanum ) {
 			continue;

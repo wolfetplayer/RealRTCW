@@ -98,6 +98,11 @@ typedef enum {
 	MOVER_2TO1ROTATE
 } moverState_t;
 
+typedef enum {
+    RADIUS_SCOPE_ANY,
+    RADIUS_SCOPE_CLIENTS,
+    RADIUS_SCOPE_NOCLIENTS,
+} RadiusScope;
 
 // door AI sound ranges
 #define HEAR_RANGE_DOOR_LOCKED      128 // really close since this is a cruel check
@@ -382,6 +387,12 @@ struct gentity_s {
 	int grenadeExplodeTime;         // we've caught a grenade, which was due to explode at this time
 	int grenadeFired;               // the grenade entity we last fired
 
+	int poisonGasAlarm;
+    int poisonGasDamage;
+    int poisonGasRadius;
+
+	gentity_t *dmgparent;
+
 	int mg42ClampTime;              // time to wait before an AI decides to ditch the mg42
 
 	char        *track;
@@ -465,11 +476,6 @@ typedef struct {
 	spectatorState_t spectatorState;
 	int spectatorClient;            // for chasecam and follow mode
 	int wins, losses;               // tournament stats
-	int playerType;                 // DHM - Nerve :: for GT_WOLF
-	int playerWeapon;               // DHM - Nerve :: for GT_WOLF
-	int playerPistol;               // DHM - Nerve :: for GT_WOLF
-	int playerItem;                 // DHM - Nerve :: for GT_WOLF
-	int playerSkin;                 // DHM - Nerve :: for GT_WOLF
 } clientSession_t;
 
 //
@@ -759,7 +765,6 @@ void Cmd_Score_f( gentity_t *ent );
 void StopFollowing( gentity_t *ent );
 //void BroadcastTeamChange( gclient_t *client, int oldTeam );
 void SetTeam( gentity_t *ent, const char *s );
-void SetWolfData( gentity_t *ent, char *ptype, char *weap, char *pistol, char *grenade, char *skinnum );    // DHM - Nerve
 void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 
 //
@@ -832,9 +837,11 @@ void G_ProcessTagConnect( gentity_t *ent, qboolean clearAngles );
 //
 // g_combat.c
 //
+void G_AdjustedDamageVec( gentity_t *ent, vec3_t origin, vec3_t vec );
 qboolean CanDamage( gentity_t *targ, vec3_t origin );
 void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_t dir, vec3_t point, int damage, int dflags, int mod );
 qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod );
+qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod, RadiusScope scope );
 void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
 void TossClientItems( gentity_t *self );
 
@@ -1395,6 +1402,9 @@ void    trap_SnapVector( float *v );
 
 // New in IORTCW
 void	*trap_Alloc( int size );
+
+gentity_t* G_FindSmokeBomb( gentity_t* start );
+void G_PoisonGasExplode  ( gentity_t* );
 
 typedef enum
 {

@@ -50,18 +50,13 @@ void G_WriteClientSessionData( gclient_t *client ) {
 	const char  *s;
 	const char  *var;
 
-	s = va( "%i %i %i %i %i %i %i %i %i %i %i",       // DHM - Nerve
+	s = va( "%i %i %i %i %i %i",     
 			client->sess.sessionTeam,
 			client->sess.spectatorNum,
 			client->sess.spectatorState,
 			client->sess.spectatorClient,
 			client->sess.wins,
-			client->sess.losses,
-			client->sess.playerType,    // DHM - Nerve
-			client->sess.playerWeapon,  // DHM - Nerve
-			client->sess.playerPistol,  // DHM - Nerve
-			client->sess.playerItem,    // DHM - Nerve
-			client->sess.playerSkin     // DHM - Nerve
+			client->sess.losses
 			);
 
 	var = va( "session%i", (int)(client - level.clients) );
@@ -83,18 +78,13 @@ void G_ReadSessionData( gclient_t *client ) {
 	var = va( "session%i", (int)(client - level.clients) );
 	trap_Cvar_VariableStringBuffer( var, s, sizeof( s ) );
 
-	sscanf( s, "%i %i %i %i %i %i %i %i %i %i %i",       // DHM - Nerve
+	sscanf( s, "%i %i %i %i %i %i",       
 			(int *)&client->sess.sessionTeam,
 			&client->sess.spectatorNum,
 			(int *)&client->sess.spectatorState,
 			&client->sess.spectatorClient,
 			&client->sess.wins,
-			&client->sess.losses,
-			&client->sess.playerType,       // DHM - Nerve
-			&client->sess.playerWeapon,     // DHM - Nerve
-			&client->sess.playerPistol,     // DHM - Nerve
-			&client->sess.playerItem,       // DHM - Nerve
-			&client->sess.playerSkin        // DHM - Nerve
+			&client->sess.losses
 			);
 }
 
@@ -124,33 +114,14 @@ void G_InitSessionData( gclient_t *client, char *userinfo ) {
 	}
 
 	// initial team determination
-	if ( g_gametype.integer >= GT_TEAM ) {
-		// always spawn as spectator in team games
-		sess->sessionTeam = TEAM_SPECTATOR;
-		sess->spectatorState = SPECTATOR_FREE;
-
-		if ( value[0] || g_teamAutoJoin.integer ) {
-			SetTeam( &g_entities[client - level.clients], value );
- 		}
-	} else {
 		if ( value[0] == 's' ) {
 			// a willing spectator, not a waiting-in-line
 			sess->sessionTeam = TEAM_SPECTATOR;
 		} else {
 			switch ( g_gametype.integer ) {
 			default:
-			case GT_FFA:
-			case GT_SINGLE_PLAYER:
 				if ( g_maxGameClients.integer > 0 &&
 					 level.numNonSpectatorClients >= g_maxGameClients.integer ) {
-					sess->sessionTeam = TEAM_SPECTATOR;
-				} else {
-					sess->sessionTeam = TEAM_FREE;
-				}
-				break;
-			case GT_TOURNAMENT:
-				// if the game is full, go into a waiting mode
-				if ( level.numNonSpectatorClients >= 2 ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
 					sess->sessionTeam = TEAM_FREE;
@@ -160,17 +131,9 @@ void G_InitSessionData( gclient_t *client, char *userinfo ) {
 		}
 
 		sess->spectatorState = SPECTATOR_FREE;
-	}
+	
 
 	AddTournamentQueue(client);
-
-	// DHM - Nerve
-	sess->playerType = 0;
-	sess->playerWeapon = 0;
-	sess->playerPistol = 0;
-	sess->playerItem = 0;
-	sess->playerSkin = 0;
-	// dhm - end
 
 	G_WriteClientSessionData( client );
 }

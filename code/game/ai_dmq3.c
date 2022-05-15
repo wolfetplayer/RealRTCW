@@ -104,15 +104,6 @@ BotCTFCarryingFlag
 ==================
 */
 int BotCTFCarryingFlag( bot_state_t *bs ) {
-	if ( gametype != GT_CTF ) {
-		return CTF_FLAG_NONE;
-	}
-
-	if ( bs->inventory[INVENTORY_REDFLAG] > 0 ) {
-		return CTF_FLAG_RED;
-	} else if ( bs->inventory[INVENTORY_BLUEFLAG] > 0 ) {
-		return CTF_FLAG_BLUE;
-	}
 	return CTF_FLAG_NONE;
 }
 
@@ -122,22 +113,6 @@ BotCTFTeam
 ==================
 */
 int BotCTFTeam( bot_state_t *bs ) {
-	char skin[128], *p;
-
-	if ( gametype != GT_CTF ) {
-		return CTF_TEAM_NONE;
-	}
-	ClientSkin( bs->client, skin, sizeof( skin ) );
-	p = strchr( skin, '/' );
-	if ( !p ) {
-		p = skin;
-	} else { p++;}
-	if ( Q_stricmp( p, CTF_SKIN_REDTEAM ) == 0 ) {
-		return CTF_TEAM_RED;
-	}
-	if ( Q_stricmp( p, CTF_SKIN_BLUETEAM ) == 0 ) {
-		return CTF_TEAM_BLUE;
-	}
 	return CTF_TEAM_NONE;
 }
 
@@ -749,7 +724,7 @@ TeamPlayIsOn
 ==================
 */
 int TeamPlayIsOn( void ) {
-	return ( gametype == GT_TEAM || gametype == GT_CTF );
+	return 0;
 }
 
 /*
@@ -1257,10 +1232,6 @@ int BotSameTeam( bot_state_t *bs, int entnum ) {
 	}
 	if ( entnum < 0 || entnum >= MAX_CLIENTS ) {
 		return qfalse;
-	}
-	if (gametype >= GT_TEAM) {
-		if (level.clients[bs->client].sess.sessionTeam == level.clients[entnum].sess.sessionTeam)
-			 return qtrue;
 	}
 
 	return qfalse;
@@ -1983,7 +1954,7 @@ void BotMapScripts( bot_state_t *bs ) {
 						if ( BotSameTeam( bs, i ) ) {
 							shootbutton = qfalse;
 							break;
-						} else if (gametype < GT_CTF || bs->enemy == i) {
+						} else if (bs->enemy == i) {
 							shootbutton = qtrue;
 						}
 					}
@@ -2867,14 +2838,6 @@ void BotSetupDeathmatchAI( void ) {
 	trap_Cvar_Register( &bot_nochat, "bot_nochat", "0", 0 );
 	trap_Cvar_Register( &bot_testrchat, "bot_testrchat", "0", 0 );
 	//
-	if ( gametype == GT_CTF ) {
-		if ( trap_BotGetLevelItemGoal( -1, "Red Flag", &ctf_redflag ) < 0 ) {
-			BotAI_Print( PRT_WARNING, "One Flag CTF without Red Flag\n" );
-		}
-		if ( trap_BotGetLevelItemGoal( -1, "Blue Flag", &ctf_blueflag ) < 0 ) {
-			BotAI_Print( PRT_WARNING, "One Flag CTF without Blue Flag\n" );
-		}
-	}
 
 	max_bspmodelindex = 0;
 	for ( ent = trap_AAS_NextBSPEntity( 0 ); ent; ent = trap_AAS_NextBSPEntity( ent ) ) {

@@ -872,12 +872,6 @@ void smoke_init( gentity_t *ent ) {
 
 void SP_target_smoke( gentity_t *ent ) {
 
-	// (SA) don't use in multiplayer right now since it makes decyphering net messages almost impossible
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		ent->think = G_FreeEntity;
-		return;
-	}
-
 	if ( !ent->delay ) {
 		ent->delay = 100;
 	}
@@ -948,11 +942,6 @@ void target_script_trigger_use( gentity_t *ent, gentity_t *other, gentity_t *act
 		if ( player ) {
 			AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "trigger", ent->target );
 		}
-	}
-
-	// DHM - Nerve :: In multiplayer, we use the brush scripting only
-	if ( g_gametype.integer == GT_WOLF && ent->scriptName ) {
-		G_Script_ScriptEvent( ent, "trigger", ent->target );
 	}
 
 	G_UseTargets( ent, other );

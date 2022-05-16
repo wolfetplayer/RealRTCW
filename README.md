@@ -4,7 +4,7 @@ RealRTCW is a community single-player overhaul project for Return to Castle Wolf
 
 Features:
 * All iortcw features including proper widescreen support
-* Steam integration support using Steamshim by Ryan C. Gordon (WIP)
+* Steam integration support using Steamshim by Ryan C. Gordon
 * Support for 99% of community made maps
 * Expanded .weap files system from Enemy Territory
 * Reworked difficulty levels

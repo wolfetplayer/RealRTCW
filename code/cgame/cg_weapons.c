@@ -2500,13 +2500,21 @@ void CG_PlayerTeslaCoilFire( centity_t *cent, vec3_t flashorigin ) {
 
 	if ( ( cg.time / 50 ) % ( 4 + ( cg.time % 4 ) ) == 0 ) {
 		// alt light
+		if ( cgs.gametype == GT_GOTHIC ) {
+		trap_R_AddLightToScene( tr.endpos, 256 + 600 * tr.fraction, 0.2, 0, 0, 1 );
+		} else {
 		trap_R_AddLightToScene( tr.endpos, 256 + 600 * tr.fraction, 0.2, 0.6, 1, 1 );
+		}
 	} else if ( ( cg.time / 50 ) % ( 4 + ( cg.time % 4 ) ) == 1 ) {
 		// no light
 		//trap_R_AddLightToScene( tr.endpos, 128 + 500*tr.fraction, 1, 1, 1, 10 );
 	} else {
 		// blue light
+		if ( cgs.gametype == GT_GOTHIC ) {
+		trap_R_AddLightToScene( tr.endpos, 256 + 600 * tr.fraction, 0.2, 0, 0, 1 );
+		} else {
 		trap_R_AddLightToScene( tr.endpos, 256 + 600 * tr.fraction, 0.2, 0.6, 1, 0 );
+		}
 	}
 
 	// shake the camera a bit

@@ -3232,6 +3232,7 @@ static void PM_Weapon( void ) {
 	case WP_FG42SCOPE:
 	case WP_M97:
 	case WP_AIRSTRIKE:
+	case WP_M30:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
 				// AI get fast spin-up
@@ -3426,6 +3427,7 @@ static void PM_Weapon( void ) {
 	case WP_DYNAMITE:
 	case WP_M97:
     case WP_M7:
+	case WP_M30:
 		PM_StartWeaponAnim( weapattackanim );
 		break;
 	case WP_VENOM:

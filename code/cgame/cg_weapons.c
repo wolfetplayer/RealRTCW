@@ -61,7 +61,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     0,               0            },  //	4
     {WP_G43,                WP_M1GARAND,            0,            0,               0            },  //	5
 	{WP_FG42,               WP_MP44,                WP_BAR,       0,               0            },  //	6
-	{WP_M97,                0,                      0,            0,               0            },  //	7
+	{WP_M97,                WP_M30,                 0,            0,               0            },  //	7
 	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  WP_AIRSTRIKE,    WP_POISONGAS },  //	8
 	{WP_PANZERFAUST,        WP_FLAMETHROWER,        WP_MG42M,     WP_BROWNING,     0            },  //	9
 	{WP_VENOM,              WP_TESLA,               0,            0,               0            }  //	10
@@ -96,10 +96,9 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 		return;
 	}
 
-	if (cent->currentState.weapon == WP_M97) //jaymod
-		return;
-
-	if (cent->currentState.weapon == WP_REVOLVER) // no brass for revolver
+	if (cent->currentState.weapon == WP_M97 
+	|| cent->currentState.weapon == WP_M30 
+	|| cent->currentState.weapon == WP_REVOLVER )
 		return;
 
 	le = CG_AllocLocalEntity();
@@ -4769,6 +4768,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 		yawRandom = 1;  
 	break;
 	case WP_M97:
+	case WP_M30:
 		pitchRecoilAdd = 1;
 		pitchAdd = 8 + rand() % 3;
 		yawRandom = 2;
@@ -5246,6 +5246,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_MG42M:
 	case WP_BROWNING:
 	case WP_M97:
+	case WP_M30:
 	case WP_REVOLVER:
 	case WP_FG42:
 	case WP_FG42SCOPE:

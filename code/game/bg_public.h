@@ -487,28 +487,29 @@ typedef enum {
 	WP_MG42M,               // 21
     WP_BROWNING,            // 22
 	WP_M97,                 // 23
-	WP_REVOLVER,            // 24
-	WP_COLT,                // 25	
-	WP_THOMPSON,            // 26	
-	WP_GARAND,              // 27	
-	WP_GRENADE_PINEAPPLE,   // 28
-	WP_AIRSTRIKE,           // 29
-	WP_POISONGAS,           // 30
-	WP_SNIPERRIFLE,         // 31
-	WP_SNOOPERSCOPE,        // 32
-	WP_FG42SCOPE,           // 33
-	WP_STEN,                // 34	
-	WP_SILENCER,            // 35	
-	WP_AKIMBO,              // 36	
-	WP_DYNAMITE,            // 37
-	WP_MONSTER_ATTACK1,     // 38	
-	WP_MONSTER_ATTACK2,     // 39	
-	WP_MONSTER_ATTACK3,     // 40	
-	WP_GAUNTLET,            // 41
-	WP_SNIPER,              // 42
-	WP_MORTAR,              // 43
-	VERYBIGEXPLOSION,       // 44	
-	WP_NUM_WEAPONS          // 45   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_M30,                 // 24
+	WP_REVOLVER,            // 25
+	WP_COLT,                // 26	
+	WP_THOMPSON,            // 27	
+	WP_GARAND,              // 28	
+	WP_GRENADE_PINEAPPLE,   // 29
+	WP_AIRSTRIKE,           // 30
+	WP_POISONGAS,           // 31
+	WP_SNIPERRIFLE,         // 32
+	WP_SNOOPERSCOPE,        // 33
+	WP_FG42SCOPE,           // 34
+	WP_STEN,                // 35	
+	WP_SILENCER,            // 36	
+	WP_AKIMBO,              // 37	
+	WP_DYNAMITE,            // 38
+	WP_MONSTER_ATTACK1,     // 39	
+	WP_MONSTER_ATTACK2,     // 40	
+	WP_MONSTER_ATTACK3,     // 41	
+	WP_GAUNTLET,            // 42
+	WP_SNIPER,              // 43
+	WP_MORTAR,              // 44
+	VERYBIGEXPLOSION,       // 45	
+	WP_NUM_WEAPONS          // 46   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -1068,6 +1069,7 @@ typedef enum {
 	MOD_MG42M,
 	MOD_BROWNING,
 	MOD_M97,
+	MOD_M30,
 	MOD_REVOLVER,
 	MOD_GRENADE_PINEAPPLE,
 	MOD_CROSS,

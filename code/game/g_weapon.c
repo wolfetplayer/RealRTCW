@@ -694,6 +694,9 @@ float G_GetWeaponSpread( int weapon ) {
 #define M97_SPREAD     G_GetWeaponSpread( WP_M97 )
 #define M97_DAMAGE(e)     G_GetWeaponDamage( WP_M97, e ) 
 
+#define M30_SPREAD     G_GetWeaponSpread( WP_M30 )
+#define M30_DAMAGE(e)     G_GetWeaponDamage( WP_M30, e ) 
+
 #define THOMPSON_SPREAD G_GetWeaponSpread( WP_THOMPSON )
 #define THOMPSON_DAMAGE(e) G_GetWeaponDamage( WP_THOMPSON, e ) 
 
@@ -1851,6 +1854,32 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
 		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
 		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
+		if (!ent->aiCharacter) {
+			vec3_t vec_forward, vec_vangle;
+			VectorCopy(ent->client->ps.viewangles, vec_vangle);
+			vec_vangle[PITCH] = 0;	// nullify pitch so you can't lightning jump
+			AngleVectors(vec_vangle, vec_forward, NULL, NULL);
+			 // make it less if in the air
+			if (ent->s.groundEntityNum == ENTITYNUM_NONE)
+				VectorMA(ent->client->ps.velocity, -8, vec_forward, ent->client->ps.velocity);
+			else
+				VectorMA(ent->client->ps.velocity, -24, vec_forward, ent->client->ps.velocity);
+		}
+		break;
+
+		case WP_M30:
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
 		if (!ent->aiCharacter) {
 			vec3_t vec_forward, vec_vangle;
 			VectorCopy(ent->client->ps.viewangles, vec_vangle);

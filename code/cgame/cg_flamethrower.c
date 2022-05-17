@@ -1242,7 +1242,11 @@ void CG_AddFlameToScene( flameChunk_t *fHead ) {
 				if ( lightSize < 200 ) {
 					lightSize = 200;
 				}
-				trap_R_AddLightToScene( f->org, lightSize, 1.0 * lightAlpha, 0.7 * lightAlpha, 0.3 * lightAlpha, 0 );
+				if ( cgs.gametype == GT_GOTHIC ) {
+				   trap_R_AddLightToScene( f->org, lightSize, 0.5 * lightAlpha, 0.0 * lightAlpha, 0.0 * lightAlpha, 0 );
+				} else {
+				   trap_R_AddLightToScene( f->org, lightSize, 1.0 * lightAlpha, 0.7 * lightAlpha, 0.3 * lightAlpha, 0 );
+				}
 				VectorCopy( f->org, lastLightPos );
 				lastLightFlameChunk = f;
 				lastLightSize = lightSize;
@@ -1273,7 +1277,11 @@ void CG_AddFlameToScene( flameChunk_t *fHead ) {
 		if ( lightSize > 80 ) {
 			lightSize = 80;
 		}
-		trap_R_AddLightToScene( lightOrg, 90 + lightSize, 0, 0, alpha * 0.5, 0 );
+		if ( cgs.gametype == GT_GOTHIC ) {
+		   trap_R_AddLightToScene( lightOrg, 90 + lightSize, alpha * 0.5, 0, alpha * 0.0, 0 );
+		} else {
+		   trap_R_AddLightToScene( lightOrg, 90 + lightSize, 0, 0, alpha * 0.5, 0 );
+		}
 	} else if ( isClientFlame || ( fHead->ownerCent == cg.snap->ps.clientNum ) ) {
 		//trap_R_AddLightToScene( lightOrg, 90 + lightSize, 1.000000 * alpha, 0.603922 * alpha, 0.207843 * alpha, 2 );
 	}

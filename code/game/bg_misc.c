@@ -132,13 +132,14 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_FG42,       1,       20,       2000,        100,       180,       180,       0,      0,      12,       6,          0,          0,          250,        5,                  0.7f,            0,               {0,0},           {0,0},              1500,               0.40,               1,               0,              MOD_FG42SCOPE,                             },  //	WP_FG42SCOPE			// 33
 	{   MAX_AMMO_9MM,        1,       32,       3100,        100,       115,       115,       900,    500,    7,        4,          0,          0,          950,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              64,                 0.90,               1,               0,              MOD_STEN,                                  },  //	WP_STEN					// 34
 	{   MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          350,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              64,                 0.95,               0,               0,              MOD_SILENCER,                              },  //	WP_SILENCER				// 35
-	{   MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               0,              MOD_AKIMBO,                                },  //	WP_AKIMBO				// 36
-	{   3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               400,            MOD_DYNAMITE,                              },  //	WP_DYNAMITE				// 37
+	{   MAX_AMMO_GARAND,     1,       6,        2000,        100,       2000,      2000,      0,      0,      50,       50,         0,          0,          400,        35,                 0.3f,            70,              {.35f, .15f},    {0,0},              64,                 0.95,               0,               0,              MOD_WELROD,                                },  //	WP_WELROD				// 36
+	{   MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               0,              MOD_AKIMBO,                                },  //	WP_AKIMBO				// 37
+	{   3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               400,            MOD_DYNAMITE,                              },  //	WP_DYNAMITE				// 38
 
-	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK1		// 38
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK2		// 39
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK3		// 40
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,              0,                                         }   //	WP_GAUNTLET				// 41
+	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK1		// 39
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK2		// 40
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK3		// 41
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,              0,                                         }   //	WP_GAUNTLET				// 42
 };
 
 // Skill-based ammo parameters
@@ -181,6 +182,7 @@ int weapAlts[] = {
 	WP_FG42,            // 33 WP_FG42SCOPE
 	WP_NONE,            // 34 WP_STEN
 	WP_LUGER,           // 35 WP_SILENCER	
+	WP_NONE,            // 36 WP_WELROD
 	WP_COLT,            // 36 WP_AKIMBO		
 	WP_NONE             // 37 WP_DYNAMITE
 };
@@ -1976,6 +1978,35 @@ model="models/weapons2/m30/m30_3rd.md3"
 			"",                    
 			"",                     
 			{ 0,0,0,0,0 }
+	},
+
+/*QUAKED weapon_welrod (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+"stand" values:
+	no value:	laying in a default position on it's side (default)
+	2:			upright, barrel pointing up, slightly angled (rack mount)
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/weapons2/p38/luger.md3"
+*/
+	{
+		"weapon_welrod",
+		"sound/misc/w_pkup.wav",
+		{   
+		"",
+		"",
+		"",
+		},
+
+		"icons/iconw_welrod",    
+		"welrod",              
+		30,
+		IT_WEAPON,
+		WP_WELROD,
+		WP_WELROD,
+		WP_GARAND,
+		WP_WELROD,
+		"",                  
+		"",                 
+		{0,0,0,0}
 	},
 
 	/*QUAKED weapon_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -4576,6 +4607,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_AIRSTRIKE:         return "airstrike.weap";
 		case WP_POISONGAS:         return "poisongas.weap";
 		case WP_M30:               return "m30.weap";
+		case WP_WELROD:            return "welrod.weap";
 		case WP_NONE:
 		case WP_MONSTER_ATTACK1:
 		case WP_MONSTER_ATTACK2:

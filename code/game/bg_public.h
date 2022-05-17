@@ -499,17 +499,18 @@ typedef enum {
 	WP_SNOOPERSCOPE,        // 33
 	WP_FG42SCOPE,           // 34
 	WP_STEN,                // 35	
-	WP_SILENCER,            // 36	
-	WP_AKIMBO,              // 37	
-	WP_DYNAMITE,            // 38
-	WP_MONSTER_ATTACK1,     // 39	
-	WP_MONSTER_ATTACK2,     // 40	
-	WP_MONSTER_ATTACK3,     // 41	
-	WP_GAUNTLET,            // 42
-	WP_SNIPER,              // 43
-	WP_MORTAR,              // 44
-	VERYBIGEXPLOSION,       // 45	
-	WP_NUM_WEAPONS          // 46   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_SILENCER,            // 36
+	WP_WELROD,              // 37	
+	WP_AKIMBO,              // 38	
+	WP_DYNAMITE,            // 39
+	WP_MONSTER_ATTACK1,     // 40	
+	WP_MONSTER_ATTACK2,     // 41	
+	WP_MONSTER_ATTACK3,     // 42	
+	WP_GAUNTLET,            // 43
+	WP_SNIPER,              // 44
+	WP_MORTAR,              // 45
+	VERYBIGEXPLOSION,       // 46	
+	WP_NUM_WEAPONS          // 47   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -1070,6 +1071,7 @@ typedef enum {
 	MOD_BROWNING,
 	MOD_M97,
 	MOD_M30,
+	MOD_WELROD,
 	MOD_REVOLVER,
 	MOD_GRENADE_PINEAPPLE,
 	MOD_CROSS,

@@ -664,6 +664,9 @@ float G_GetWeaponSpread( int weapon ) {
 #define TT33_SPREAD		G_GetWeaponSpread( WP_TT33 )
 #define TT33_DAMAGE(e)		G_GetWeaponDamage( WP_TT33, e )
 
+#define WELROD_SPREAD		G_GetWeaponSpread( WP_WELROD )
+#define WELROD_DAMAGE(e)	G_GetWeaponDamage( WP_WELROD, e )
+
 #define REVOLVER_SPREAD		G_GetWeaponSpread( WP_REVOLVER )
 #define REVOLVER_DAMAGE(e)		G_GetWeaponDamage( WP_REVOLVER, e )
 
@@ -1804,6 +1807,9 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_TT33:
 		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer) );
+		break;
+	case WP_WELROD:
+		Bullet_Fire( ent, WELROD_SPREAD * aimSpreadScale, WELROD_DAMAGE(isPlayer) );
 		break;
 	case WP_REVOLVER:
 		Bullet_Fire( ent, REVOLVER_SPREAD * aimSpreadScale, REVOLVER_DAMAGE(isPlayer) );

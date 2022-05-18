@@ -852,6 +852,7 @@ void TossClientItems( gentity_t *self );
 #define DAMAGE_NO_TEAM_PROTECTION   0x00000010  // armor, shields, invulnerability, and godmode have no effect
 #define DAMAGE_NO_PROTECTION        0x00000020  // armor, shields, invulnerability, and godmode have no effect
 #define DAMAGE_PASSTHRU             0x00000040  // damage came through an explosive, or other player, or has in some way already given damage to something
+#define DAMAGE_DISTANCEFALLOFF      0x00000080  // bullet distance falloff
 
 //
 // g_missile.c
@@ -1183,6 +1184,7 @@ extern vmCvar_t g_localTeamPref;
 
 // RealRTCW new CVARs
 extern vmCvar_t g_bodysink;
+extern vmCvar_t g_weaponfalloff;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));

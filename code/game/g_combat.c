@@ -35,6 +35,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
+extern vec3_t muzzleTrace; // used by falloff mechanic
+
 /*
 ============
 AddScore
@@ -1115,6 +1117,38 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			// yes, headshotDamageScale of 0 gives no damage, thats because
 			// the bullet hit the head which is fully protected.
 			take *= targ->headshotDamageScale;
+             
+			// damage falloff for headshots
+			if ( g_gametype.integer == GT_GOTHIC || g_weaponfalloff.integer == 1 ) {
+			if ( dflags & DAMAGE_DISTANCEFALLOFF ) {
+			vec_t dist;
+			vec3_t shotvec;
+			float scale;
+
+			VectorSubtract( point, muzzleTrace, shotvec );
+			dist = VectorLength( shotvec );
+
+			// ~~~---______
+			// zinx - start at 100% at 1500 units (and before),
+			// and go to 20% at 2500 units (and after)
+
+			// 1500 to 2500 -> 0.0 to 1.0
+			scale = ( dist - 1500.f ) / ( 2500.f - 1500.f );
+			// 0.0 to 1.0 -> 0.0 to 0.8
+			scale *= 0.8f;
+			// 0.0 to 0.8 -> 1.0 to 0.2
+			scale = 1.0f - scale;
+
+			// And, finally, cap it.
+			if ( scale > 1.0f ) {
+				scale = 1.0f;
+			} else if ( scale < 0.2f ) {
+				scale = 0.2f;
+			}
+
+			take *= scale;
+		}
+		}
 
 			// player only code
 			if ( !attacker->aiCharacter ) {

@@ -153,6 +153,7 @@ vmCvar_t g_localTeamPref;
 
 //RealRTCW new CVARs
 vmCvar_t g_bodysink;
+vmCvar_t g_weaponfalloff;
 
 
 cvarTable_t gameCvarTable[] = {
@@ -275,7 +276,8 @@ cvarTable_t gameCvarTable[] = {
 
 	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse },
 
-	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE }
+	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
+	{ &g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE }
 };
 
 static int gameCvarTableSize = ARRAY_LEN( gameCvarTable );

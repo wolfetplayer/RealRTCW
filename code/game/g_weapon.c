@@ -39,14 +39,14 @@ If you have questions concerning this license or the applicable additional terms
 static float s_quadFactor;
 static vec3_t forward, right, up;
 static vec3_t muzzleEffect;
-static vec3_t muzzleTrace;
+vec3_t muzzleTrace;
 
 
 // forward dec
 void weapon_zombiespit( gentity_t *ent );
 
-void Bullet_Fire( gentity_t *ent, float spread, int damage );
-void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion );
+void Bullet_Fire( gentity_t *ent, float spread, int damage , qboolean distance_falloff );
+qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion , qboolean distance_falloff );
 
 int G_GetWeaponDamage( int weapon, qboolean player ); // JPW
 
@@ -891,11 +891,11 @@ void Bullet_Endpos( gentity_t *ent, float spread, vec3_t *end ) {
 Bullet_Fire
 ==============
 */
-void Bullet_Fire( gentity_t *ent, float spread, int damage ) {
+void Bullet_Fire( gentity_t *ent, float spread, int damage , qboolean distance_falloff ) {
 	vec3_t end;
 
 	Bullet_Endpos( ent, spread, &end );
-	Bullet_Fire_Extended( ent, ent, muzzleTrace, end, spread, damage, 0 );
+	Bullet_Fire_Extended( ent, ent, muzzleTrace, end, spread, damage, 0 , distance_falloff );
 }
 
 /*
@@ -907,17 +907,18 @@ Bullet_Fire_Extended
 	uses for this include shooting through entities (windows, doors, other players, etc.) and reflecting bullets
 ==============
 */
-void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion ) {
+qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion , qboolean distance_falloff ) {
 	trace_t tr;
 	gentity_t   *tent;
 	gentity_t   *traceEnt;
 	int dflags = 0;         // flag if source==attacker, meaning it wasn't shot directly, but was reflected went through an entity that allows bullets to pass through
 	qboolean reflectBullet = qfalse;
+	qboolean hitClient = qfalse;
 
 	// RF, abort if too many recursions.. there must be a real solution for this, but for now this is the safest
 	// fix I can find
 	if ( recursion > 12 ) {
-		return;
+		return qfalse;
 	}
 
 	damage *= s_quadFactor;
@@ -951,6 +952,37 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 
 	// snap the endpos to integers, but nudged towards the line
 	SnapVectorTowards( tr.endpos, start );
+    if ( g_gametype.integer == GT_GOTHIC || g_weaponfalloff.integer == 1 ) {
+		if ( distance_falloff ) {
+		vec_t dist;
+		vec3_t shotvec;
+		float scale;
+
+		//VectorSubtract( tr.endpos, start, shotvec );
+		VectorSubtract( tr.endpos, muzzleTrace, shotvec );
+		dist = VectorLengthSquared( shotvec );
+
+		// ~~~---______
+		// zinx - start at 100% at 1500 units (and before),
+		// and go to 50% at 2500 units (and after)
+
+		// Square(1500) to Square(2500) -> 0.0 to 1.0
+        scale = ( dist - Square( 1000.f ) ) / ( Square( 2000.f ) - Square( 1000.f ) );
+		// 0.0 to 1.0 -> 0.0 to 0.5
+		scale *= 0.5f;
+		// 0.0 to 0.5 -> 1.0 to 0.5
+		scale = 1.0f - scale;
+
+		// And, finally, cap it.
+		if ( scale >= 1.0f ) {
+			scale = 1.0f;
+		} else if ( scale < 0.5f ) {
+			scale = 0.5f;
+		}
+
+		damage *= scale;
+	}
+	}
 
 	// should we reflect this bullet?
 	if ( traceEnt->flags & FL_DEFENSE_GUARD ) {
@@ -966,6 +998,7 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 		tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_FLESH );
 		tent->s.eventParm = traceEnt->s.number;
 		if ( LogAccuracyHit( traceEnt, attacker ) ) {
+			hitClient = qtrue;
 			attacker->client->ps.persistant[PERS_ACCURACY_HITS]++;
 		}
 
@@ -1049,7 +1082,7 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 //----(SA)	modified to use extended version so attacker would pass through
 //			Bullet_Fire( traceEnt, 1000, damage );
 			Bullet_Endpos( traceEnt, 2800, &reflect_end );    // make it inaccurate
-			Bullet_Fire_Extended( traceEnt, attacker, muzzleTrace, reflect_end, spread, damage, recursion + 1 );
+			Bullet_Fire_Extended( traceEnt, attacker, muzzleTrace, reflect_end, spread, damage, recursion + 1, distance_falloff );
 //----(SA)	end
 
 		} else {
@@ -1058,26 +1091,27 @@ void Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start,
 			// DHM - Nerve :: Only in single player
 			if ( attacker->client && traceEnt->client && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
 				// AI's don't hurt members of their own team
-				return;
+				return qfalse;
 			}
 			// done.
 
-			G_Damage( traceEnt, attacker, attacker, forward, tr.endpos, damage, dflags, ammoTable[attacker->s.weapon].mod );
+			G_Damage( traceEnt, attacker, attacker, forward, tr.endpos, damage, ( distance_falloff ? DAMAGE_DISTANCEFALLOFF : 0 ), ammoTable[attacker->s.weapon].mod );
 
 			// allow bullets to "pass through" func_explosives if they break by taking another simultanious shot
 			// start new bullet at position this hit and continue to the end position (ignoring shot-through ent in next trace)
 			// spread = 0 as this is an extension of an already spread shot (so just go straight through)
 			if ( Q_stricmp( traceEnt->classname, "func_explosive" ) == 0 ) {
 				if ( traceEnt->health <= 0 ) {
-					Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, damage, recursion + 1 );
+					Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, damage, recursion + 1, distance_falloff );
 				}
 			} else if ( traceEnt->client ) {
 				if ( traceEnt->health <= 0 ) {
-					Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, damage / 2, recursion + 1 ); // halve the damage each player it goes through
+					Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, damage / 2, recursion + 1, distance_falloff ); // halve the damage each player it goes through
 				}
 			}
 		}
 	}
+	return hitClient;
 }
 
 
@@ -1374,7 +1408,7 @@ void weapon_venom_fire( gentity_t *ent, qboolean fullmode, float aimSpreadScale 
 		if ( ent->aiCharacter ) {  // venom guys are /vicious/
 			dam *= 0.5f;
 		}
-		Bullet_Fire( ent, VENOM_SPREAD * aimSpreadScale, dam );
+		Bullet_Fire( ent, VENOM_SPREAD * aimSpreadScale, dam, qfalse );
 	}
 }
 
@@ -1744,14 +1778,14 @@ void FireWeapon( gentity_t *ent ) {
 // jpw
 		break;
 	case WP_LUGER:
-		Bullet_Fire( ent, LUGER_SPREAD * aimSpreadScale, LUGER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, LUGER_SPREAD * aimSpreadScale, LUGER_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_SILENCER:
-		Bullet_Fire( ent, SILENCER_SPREAD * aimSpreadScale, LUGER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, SILENCER_SPREAD * aimSpreadScale, LUGER_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_AKIMBO: //----(SA)	added
 	case WP_COLT:
-		Bullet_Fire( ent, COLT_SPREAD * aimSpreadScale, COLT_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, COLT_SPREAD * aimSpreadScale, COLT_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_VENOM:
 		weapon_venom_fire( ent, qfalse, aimSpreadScale );
@@ -1769,7 +1803,7 @@ void FireWeapon( gentity_t *ent ) {
 		}
 		break;
 	case WP_SNIPERRIFLE:
-		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer), qfalse );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
@@ -1780,7 +1814,7 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 		
 	case WP_SNOOPERSCOPE:
-		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer), qfalse );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
@@ -1790,13 +1824,13 @@ void FireWeapon( gentity_t *ent ) {
 		}
 		break;
 	case WP_MAUSER:
-		Bullet_Fire( ent, MAUSER_SPREAD * aimSpreadScale, MAUSER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MAUSER_SPREAD * aimSpreadScale, MAUSER_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_GARAND:
-		Bullet_Fire( ent, GARAND_SPREAD * aimSpreadScale, GARAND_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, GARAND_SPREAD * aimSpreadScale, GARAND_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_FG42SCOPE:
-		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer) ); 
+		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer), qfalse ); 
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * 0.1; 
@@ -1806,47 +1840,47 @@ void FireWeapon( gentity_t *ent ) {
 		}
 	    break; 
 	case WP_FG42:
-		Bullet_Fire( ent, FG42_SPREAD * aimSpreadScale, FG42_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, FG42_SPREAD * aimSpreadScale, FG42_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_STEN:
-		Bullet_Fire( ent, STEN_SPREAD * aimSpreadScale, STEN_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, STEN_SPREAD * aimSpreadScale, STEN_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_MP40:
-		Bullet_Fire( ent, MP40_SPREAD * aimSpreadScale, MP40_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MP40_SPREAD * aimSpreadScale, MP40_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_MP34: 
-		Bullet_Fire( ent, MP34_SPREAD * aimSpreadScale, MP34_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MP34_SPREAD * aimSpreadScale, MP34_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_TT33:
-		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_WELROD:
-		Bullet_Fire( ent, WELROD_SPREAD * aimSpreadScale, WELROD_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, WELROD_SPREAD * aimSpreadScale, WELROD_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_REVOLVER:
-		Bullet_Fire( ent, REVOLVER_SPREAD * aimSpreadScale, REVOLVER_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, REVOLVER_SPREAD * aimSpreadScale, REVOLVER_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_PPSH: 
-		Bullet_Fire( ent, PPSH_SPREAD * aimSpreadScale, PPSH_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, PPSH_SPREAD * aimSpreadScale, PPSH_DAMAGE(isPlayer), qtrue );
 		break;
 	case WP_MOSIN: 
-		Bullet_Fire( ent, MOSIN_SPREAD * aimSpreadScale, MOSIN_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MOSIN_SPREAD * aimSpreadScale, MOSIN_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_G43: 
-		Bullet_Fire( ent, G43_SPREAD * aimSpreadScale, G43_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, G43_SPREAD * aimSpreadScale, G43_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_M1GARAND: 
-		Bullet_Fire( ent, M1GARAND_SPREAD * aimSpreadScale, M1GARAND_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, M1GARAND_SPREAD * aimSpreadScale, M1GARAND_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_BAR: 
-		Bullet_Fire( ent, BAR_SPREAD * aimSpreadScale, BAR_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, BAR_SPREAD * aimSpreadScale, BAR_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_MP44: 
-		Bullet_Fire( ent, MP44_SPREAD * aimSpreadScale, MP44_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MP44_SPREAD * aimSpreadScale, MP44_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_MG42M: 
 	case WP_BROWNING:
-		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, MG42M_SPREAD * 0.6f * aimSpreadScale, MG42M_DAMAGE(isPlayer), qfalse );
 		if (!ent->aiCharacter) {
 		vec3_t vec_forward, vec_vangle;
 		VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -1860,18 +1894,18 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	
 		case WP_M97:
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M97_SPREAD* aimSpreadScale, M97_DAMAGE(isPlayer), qfalse );
 		if (!ent->aiCharacter) {
 			vec3_t vec_forward, vec_vangle;
 			VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -1886,18 +1920,18 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 
 		case WP_M30:
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
-		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer) );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
+		Bullet_Fire(ent, M30_SPREAD* aimSpreadScale, M30_DAMAGE(isPlayer), qfalse );
 		if (!ent->aiCharacter) {
 			vec3_t vec_forward, vec_vangle;
 			VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -1913,7 +1947,7 @@ void FireWeapon( gentity_t *ent ) {
 	
 
 	case WP_THOMPSON:
-		Bullet_Fire( ent, THOMPSON_SPREAD * aimSpreadScale, THOMPSON_DAMAGE(isPlayer) );
+		Bullet_Fire( ent, THOMPSON_SPREAD * aimSpreadScale, THOMPSON_DAMAGE(isPlayer), qfalse );
 		break;
 	case WP_PANZERFAUST:
 		Weapon_RocketLauncher_Fire( ent, aimSpreadScale );

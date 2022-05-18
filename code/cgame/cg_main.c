@@ -298,6 +298,7 @@ vmCvar_t int_cl_maxpackets;
 vmCvar_t int_cl_timenudge;
 
 vmCvar_t cg_bodysink;
+vmCvar_t cg_weaponfalloff;
 
 vmCvar_t cg_gunPosLock;
 
@@ -529,6 +530,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_snipersCrosshair, "cg_snipersCrosshair", "1", CVAR_ARCHIVE },
 
 	{ &cg_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
+	{ &cg_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE },
 	
 	{ &cg_gunPosLock, "cg_gunposlock", "1", CVAR_ARCHIVE},
 };

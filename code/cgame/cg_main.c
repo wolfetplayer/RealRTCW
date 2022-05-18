@@ -302,6 +302,8 @@ vmCvar_t cg_weaponfalloff;
 
 vmCvar_t cg_gunPosLock;
 
+vmCvar_t cg_fireonthemove;
+
 typedef struct {
 	vmCvar_t    *vmCvar;
 	char        *cvarName;
@@ -486,6 +488,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_reloading, "g_reloading", "0", 0 }, //----(SA)	added
 
 	{ &cg_jumptime, "g_jumptime", "0", 0 }, //----(SA)	added
+
+	{ &cg_fireonthemove, "g_fireonthemove", "0", 0 }, //----(SA) added
 	
 
 	// JPW NERVE

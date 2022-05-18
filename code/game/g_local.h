@@ -1174,6 +1174,7 @@ extern vmCvar_t g_bluelimbotime;
 extern vmCvar_t g_medicChargeTime;
 extern vmCvar_t g_engineerChargeTime;
 extern vmCvar_t g_jumptime;
+extern vmCvar_t g_fireonthemove;
 extern vmCvar_t g_LTChargeTime;
 extern vmCvar_t g_soldierChargeTime;
 // jpw

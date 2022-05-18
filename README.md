@@ -20,6 +20,7 @@ Features:
 
 New CVARs:
 * g_jumptime - enable/disable strafejumping
+* cg_drawsubtitles - enable/disable subtitles
 * cg_solidcrosshair - enable/disable solid crosshair (ported from RTCWCoop)
 * cg_bloodblend - enable/disable blood on HUD (ported from RTCWCoop)
 * cg_bobbing - enable/disable bobbing while crouching (ported from ETLegacy)
@@ -33,6 +34,8 @@ New CVARs:
 * g_airespawn - enable/disable AI respawn (ported from RTCWCoop)
 * g_reinforce - enable/disable AI reinforce (ported from RTCWCoop)
 * g_fullarsenal - affects set of weapons player will recieve during campaign
+* g_fireonthemove - allows AI to shoot rifles on the move
+* g_weaponfalloff - enables damage falloff for SMGs and pistols
 
 The original id software readme that accompanied the RTCW source release is named README.txt and is contained within the source tree of both MP and SP games.
 

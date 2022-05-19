@@ -313,6 +313,7 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
+	case WP_WELROD:
 		noPack = qtrue;
 		break;
 	default:

@@ -478,11 +478,12 @@ typedef enum {
 	WP_TESLA,               // 10
 	WP_MP34,                // 11
 	WP_TT33,                // 12
-	WP_PPSH,                // 13
-	WP_MOSIN,               // 14
-	WP_G43,                 // 15
-	WP_M1GARAND,            // 16
-	WP_M7,                  // 17
+	WP_P38,                 // 13
+	WP_PPSH,                // 14
+	WP_MOSIN,               // 15
+	WP_G43,                 // 16
+	WP_M1GARAND,            // 17
+	WP_M7,                  // 18
 	WP_BAR,                 // 19
 	WP_MP44,                // 20
 	WP_MG42M,               // 21
@@ -576,7 +577,7 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
-		weapon == WP_BROWNING \
+		weapon == WP_BROWNING || weapon == WP_P38 \
 	)
 
  // entityState_t->event values
@@ -1061,6 +1062,7 @@ typedef enum {
 	MOD_TESLA,
 	MOD_MP34,
 	MOD_TT33,
+	MOD_P38,
 	MOD_PPSH,
 	MOD_MOSIN,
 	MOD_G43,

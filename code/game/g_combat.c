@@ -613,6 +613,8 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_MP40:
 	case MOD_MP34:
 	case MOD_TT33:
+	case MOD_P38:
+	case MOD_WELROD:
 	case MOD_PPSH:
 	case MOD_MOSIN:
 	case MOD_G43:

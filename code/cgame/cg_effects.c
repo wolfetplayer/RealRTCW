@@ -943,6 +943,314 @@ void CG_GibPlayer( centity_t *cent, vec3_t playerOrigin, vec3_t gdir ) {
 
 }
 
+/*
+===================
+CG_GibVampirism
+
+Generated a bunch of gibs launching out from the bodies location
+===================
+*/
+
+void CG_GibVampirism( centity_t *cent, vec3_t playerOrigin, vec3_t gdir ) {
+	vec3_t origin, velocity, dir;
+	int i, count, tagIndex, gibIndex;
+	trace_t trace;
+	qboolean foundtag;
+
+	clientInfo_t    *ci;
+	int clientNum;
+
+	// Rafael
+	// BloodCloud
+	qboolean newjunction[MAXJUNCTIONS];
+	vec3_t junctionOrigin[MAXJUNCTIONS];
+	int junction;
+	int j;
+	float size = 0.0;
+	vec3_t axis[3], angles;
+
+	char *JunctiongibTags[] = {
+		// leg tag
+		"tag_footright",
+		"tag_footleft",
+		"tag_legright",
+		"tag_legleft",
+
+		// torsotags
+		"tag_armright",
+		"tag_armleft",
+
+		"tag_torso",
+		"tag_chest"
+	};
+
+	char *ConnectTags[] = {
+		// legs tags
+		"tag_legright",
+		"tag_legleft",
+		"tag_torso",
+		"tag_torso",
+
+		// torso tags
+		"tag_chest",
+		"tag_chest",
+
+		"tag_chest",
+		"tag_torso",
+	};
+
+	char *gibTags[] = {
+		// tags in the legs
+		"tag_footright",
+		"tag_footleft",
+		"tag_legright",
+		"tag_legleft",
+		"tag_torso",
+
+		// tags in the torso
+		"tag_chest",
+		"tag_armright",
+		"tag_armleft",
+		"tag_head",
+		NULL
+	};
+
+	// Rafael
+	for ( i = 0; i < MAXJUNCTIONS; i++ )
+		newjunction[i] = qfalse;
+
+	clientNum = cent->currentState.clientNum;
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS ) {
+		CG_Error( "Bad clientNum on player entity" );
+	}
+	ci = &cgs.clientinfo[ clientNum ];
+
+	// Ridah, fetch the various positions of the tag_gib*'s
+	// and spawn the gibs from the correct places (especially the head)
+	for ( gibIndex = 0, count = 0, foundtag = qtrue; foundtag && gibIndex < MAX_GIB_MODELS && gibTags[gibIndex]; gibIndex++ ) {
+
+		refEntity_t *re = 0;
+
+		foundtag = qfalse;
+
+		if ( !ci->gibModels[gibIndex] ) {
+			continue;
+		}
+
+		re = &cent->pe.torsoRefEnt;
+
+		for ( tagIndex = 0; ( tagIndex = CG_GetOriginForTag( cent, re, gibTags[gibIndex], tagIndex, origin, axis ) ) >= 0; count++, tagIndex++ ) {
+
+			foundtag = qtrue;
+
+			VectorSubtract( origin, re->origin, dir );
+			VectorNormalize( dir );
+
+			// spawn a gib
+			velocity[0] = dir[0] * ( 0.5 + random() ) * GIB_VELOCITY * 0.3;
+			velocity[1] = dir[1] * ( 0.5 + random() ) * GIB_VELOCITY * 0.3;
+			velocity[2] = GIB_JUMP + dir[2] * ( 0.5 + random() ) * GIB_VELOCITY * 0.5;
+
+			VectorMA( velocity, GIB_VELOCITY, gdir, velocity );
+
+			AxisToAngles( axis, angles );
+
+			// RF, Zombies dying by particle effect dont spawn gibs
+			if ( ( cent->currentState.aiChar == AICHAR_ZOMBIE ) ||
+				 ( cent->currentState.aiChar == AICHAR_HELGA ) ||
+				 ( cent->currentState.aiChar == AICHAR_HEINRICH )
+				) {
+				//VectorScale( velocity, 4, velocity );
+				size = 0.6 + 0.4 * random();
+				if ( ( cent->currentState.aiChar == AICHAR_HELGA ) || ( cent->currentState.aiChar == AICHAR_HEINRICH ) ) {
+					//size *= 3.0;
+					velocity[0] = crandom() * GIB_VELOCITY * 1.0;
+					velocity[1] = crandom() * GIB_VELOCITY * 1.0;
+					velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+					// additional gibs
+					//CG_LaunchGib( cent, origin, angles, velocity, ci->gibModels[gibIndex], size, 1 );
+					//CG_LaunchGib( cent, origin, angles, velocity, ci->gibModels[gibIndex], size, 1 );
+				} else {
+					//CG_LaunchGib( cent, origin, angles, velocity, ci->gibModels[gibIndex], size, 1 + (int)( 2.0 * ( size - 0.4 ) ) );
+				}
+			} else {
+				//CG_LaunchGib( cent, origin, angles, velocity, ci->gibModels[gibIndex], 1.0, 0 );
+			}
+
+			for ( junction = 0; junction < MAXJUNCTIONS; junction++ )
+			{
+				if ( !Q_stricmp( gibTags[gibIndex], JunctiongibTags[junction] ) ) {
+					VectorCopy( origin, junctionOrigin[junction] );
+					newjunction[junction] = qtrue;
+				}
+			}
+		}
+	}
+
+
+	for ( i = 0; i < MAXJUNCTIONS; i++ )
+	{
+		if ( newjunction[i] == qtrue ) {
+			for ( j = 0; j < MAXJUNCTIONS; j++ )
+			{
+				if ( !Q_stricmp( JunctiongibTags[j], ConnectTags[i] ) ) {
+					if ( newjunction[j] == qtrue ) {
+						// spawn a blood cloud somewhere on the vec from
+						VectorSubtract( junctionOrigin[i], junctionOrigin[j], dir );
+
+						// ok now lets spawn a little blood
+						if (( cent->currentState.aiChar == AICHAR_ZOMBIE) ) {
+							CG_ParticleBloodCloudZombie( cent, junctionOrigin[i], dir );
+						} else {
+							CG_ParticleBloodCloud( cent, junctionOrigin[i], dir );
+						}
+
+						// RF, also spawn some blood in this direction
+						VectorMA( junctionOrigin[i], 2.0, dir, origin );
+						if (( cent->currentState.aiChar == AICHAR_ZOMBIE) ) {
+							CG_ParticleBloodCloudZombie( cent, origin, dir );
+						} else {
+							CG_ParticleBloodCloud( cent, origin, dir );
+						}
+
+						// Zombies spawn more bones
+						if ( ( cent->currentState.aiChar == AICHAR_ZOMBIE ) ||
+							 ( cent->currentState.aiChar == AICHAR_HEINRICH ) ||
+							 ( cent->currentState.aiChar == AICHAR_HELGA ) 
+							) {
+							// spawn a gib
+							VectorCopy( junctionOrigin[i], origin );
+
+							if ( ( cent->currentState.aiChar == AICHAR_HELGA ) || ( cent->currentState.aiChar == AICHAR_HEINRICH ) ) {
+								//size *= 3.0;
+								velocity[0] = crandom() * GIB_VELOCITY * 2.0;
+								velocity[1] = crandom() * GIB_VELOCITY * 2.0;
+								velocity[2] = GIB_JUMP + random() * GIB_VELOCITY;
+							} else {
+								velocity[0] = dir[0] * ( 0.5 + random() ) * GIB_VELOCITY * 0.3;
+								velocity[1] = dir[1] * ( 0.5 + random() ) * GIB_VELOCITY * 0.3;
+								velocity[2] = GIB_JUMP + dir[2] * ( 0.5 + random() ) * GIB_VELOCITY * 0.5;
+								VectorMA( velocity, GIB_VELOCITY, gdir, velocity );
+							}
+
+							vectoangles( dir, angles );
+
+							VectorScale( velocity, 3, velocity );
+							size = 0.6 + 0.4 * random();
+							if ( ( cent->currentState.aiChar == AICHAR_HELGA ) || ( cent->currentState.aiChar == AICHAR_HEINRICH ) ) {
+								CG_LaunchGib( cent, origin, angles, velocity, ci->gibModels[rand() % 4], size, 1 );
+							} else {
+								CG_LaunchGib( cent, origin, angles, velocity, ci->gibModels[rand() % 4], size, 1 + (int)( 2.0 * ( size - 0.4 ) ) );
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if ( !count ) {
+
+		//	CG_Printf("falling back to old-style gibs\n");
+
+		// old style gibs
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		if ( rand() & 1 ) {
+			CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibSkull, 1.0, 0 );
+		} else {
+			CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibBrain, 1.0, 0 );
+		}
+
+		// allow gibs to be turned off for speed
+		if ( !cg_gibs.integer ) {
+			return;
+		}
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibAbdomen, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibArm, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibChest, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibFist, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibFoot, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibForearm, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibIntestine, 1.0, 0 );
+
+		VectorCopy( playerOrigin, origin );
+		velocity[0] = crandom() * GIB_VELOCITY;
+		velocity[1] = crandom() * GIB_VELOCITY;
+		velocity[2] = GIB_JUMP + crandom() * GIB_VELOCITY;
+		CG_LaunchGib( cent, origin, vec3_origin, velocity, cgs.media.gibLeg, 1.0, 0 );
+	}
+
+//----(SA)	end
+
+	// Ridah, spawn a bunch of blood dots around the place
+	#define GIB_BLOOD_DOTS_VAMP  1
+	for ( i = 0, count = 0; i < GIB_BLOOD_DOTS_VAMP * 2; i++ ) {
+		//static vec3_t mins = {-10,-10,-10}; // TTimo: unused
+		//static vec3_t maxs = { 10, 10, 10}; // TTimo: unused
+
+		if ( i > 0 ) {
+			velocity[0] = ( ( i % 2 ) * 2 - 1 ) * ( 40 + 40 * random() );
+			velocity[1] = ( ( ( i / 2 ) % 2 ) * 2 - 1 ) * ( 40 + 40 * random() );
+			velocity[2] = ( ( ( i < GIB_BLOOD_DOTS_VAMP ) * 2 ) - 1 ) * 40;
+		} else {
+			VectorClear( velocity );
+			velocity[2] = -64;
+		}
+
+		VectorAdd( playerOrigin, velocity, origin );
+
+		CG_Trace( &trace, playerOrigin, NULL, NULL, origin, -1, CONTENTS_SOLID );
+		if ( trace.fraction < 1.0 ) {
+			BG_GetMarkDir( velocity, trace.plane.normal, velocity );
+			CG_ImpactMark( cgs.media.bloodDotShaders[rand() % 5], trace.endpos, velocity, random() * 360,
+						   1,1,1,1, qtrue, 30, qfalse, cg_bloodTime.integer * 1000 );
+			if ( count++ > GIB_BLOOD_DOTS_VAMP ) {
+				break;
+			}
+		}
+	}
+
+}
+
 
 /*
 ==============

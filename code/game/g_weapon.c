@@ -159,6 +159,91 @@ void Weapon_Knife( gentity_t *ent ) {
 	G_Damage( traceEnt, ent, ent, vec3_origin, tr.endpos, ( damage + rand() % 5 ) * s_quadFactor, 0, mod );
 }
 
+
+/*
+==============
+Weapon_Dagger
+==============
+*/
+void Weapon_Dagger( gentity_t *ent ) {
+	trace_t tr;
+	gentity_t   *traceEnt, *tent;
+	int damage, mod;
+//	vec3_t		pforward, eforward;
+
+	vec3_t end;
+	qboolean	isPlayer = (ent->client && !ent->aiCharacter);	// Knightmare added
+
+	mod =  MOD_DAGGER;
+
+	AngleVectors( ent->client->ps.viewangles, forward, right, up );
+	CalcMuzzlePoint( ent, ent->s.weapon, forward, right, up, muzzleTrace );
+	VectorMA( muzzleTrace, KNIFE_DIST, forward, end );
+	trap_Trace( &tr, muzzleTrace, NULL, NULL, end, ent->s.number, MASK_SHOT );
+
+	if ( tr.surfaceFlags & SURF_NOIMPACT ) {
+		return;
+	}
+
+	// no contact
+	if ( tr.fraction == 1.0f ) {
+		return;
+	}
+
+	if ( tr.entityNum >= MAX_CLIENTS ) {   // world brush or non-player entity (no blood)
+		tent = G_TempEntity( tr.endpos, EV_MISSILE_MISS );
+	} else {                            // other player
+		tent = G_TempEntity( tr.endpos, EV_MISSILE_HIT );
+	}
+
+	tent->s.otherEntityNum = tr.entityNum;
+	tent->s.eventParm = DirToByte( tr.plane.normal );
+	tent->s.weapon = ent->s.weapon;
+
+	if ( tr.entityNum == ENTITYNUM_WORLD ) { // don't worry about doing any damage
+		return;
+	}
+
+	traceEnt = &g_entities[ tr.entityNum ];
+
+	if ( !( traceEnt->takedamage ) ) {
+		return;
+	}
+
+	// RF, no knife damage for big guys
+	switch ( traceEnt->aiCharacter ) {
+	case AICHAR_HEINRICH:
+		return;
+	}
+
+	damage = G_GetWeaponDamage( ent->s.weapon, isPlayer ); // JPW		// default knife damage for frontal attacks
+
+	if ( traceEnt->client ) {
+		if ( ent->client->ps.serverCursorHint == HINT_KNIFE ) {
+//		AngleVectors (ent->client->ps.viewangles,		pforward, NULL, NULL);
+//		AngleVectors (traceEnt->client->ps.viewangles,	eforward, NULL, NULL);
+
+			// (SA) TODO: neutralize pitch (so only yaw is considered)
+//		if(DotProduct( eforward, pforward ) > 0.9f)	{	// from behind
+
+			// if relaxed, the strike is almost assured a kill
+			// if not relaxed, but still from behind, it does 10x damage (50)
+
+// (SA) commented out right now as the ai's state always checks here as 'combat'
+
+//			if(ent->s.aiState == AISTATE_RELAXED) {
+			damage = 100;       // enough to drop a 'normal' (100 health) human with one jab
+			mod = MOD_DAGGER_STEALTH;
+//			} else {
+//				damage *= 10;
+//			}
+//----(SA)	end
+		}
+	}
+
+	G_Damage( traceEnt, ent, ent, vec3_origin, tr.endpos, ( damage + rand() % 5 ) * s_quadFactor, 0, mod );
+}
+
 // JPW NERVE
 /*
 ======================
@@ -1777,8 +1862,8 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_KNIFE:
 		Weapon_Knife( ent );
 		break;
-// JPW NERVE
-// jpw
+	case WP_DAGGER:
+		Weapon_Dagger( ent );
 		break;
 	case WP_LUGER:
 		Bullet_Fire( ent, LUGER_SPREAD * aimSpreadScale, LUGER_DAMAGE(isPlayer), qtrue );

@@ -467,52 +467,53 @@ typedef enum
 typedef enum {
 	WP_NONE,                // 0
 	WP_KNIFE,               // 1
-	WP_LUGER,               // 2
-	WP_MP40,                // 3
-	WP_MAUSER,              // 4
-	WP_FG42,                // 5
-	WP_GRENADE_LAUNCHER,    // 6
-	WP_PANZERFAUST,         // 7
-	WP_VENOM,               // 8
-	WP_FLAMETHROWER,        // 9
-	WP_TESLA,               // 10
-	WP_MP34,                // 11
-	WP_TT33,                // 12
-	WP_P38,                 // 13
-	WP_PPSH,                // 14
-	WP_MOSIN,               // 15
-	WP_G43,                 // 16
-	WP_M1GARAND,            // 17
-	WP_M7,                  // 18
-	WP_BAR,                 // 19
-	WP_MP44,                // 20
-	WP_MG42M,               // 21
-    WP_BROWNING,            // 22
-	WP_M97,                 // 23
-	WP_M30,                 // 24
-	WP_REVOLVER,            // 25
-	WP_COLT,                // 26	
-	WP_THOMPSON,            // 27	
-	WP_GARAND,              // 28	
-	WP_GRENADE_PINEAPPLE,   // 29
-	WP_AIRSTRIKE,           // 30
-	WP_POISONGAS,           // 31
-	WP_SNIPERRIFLE,         // 32
-	WP_SNOOPERSCOPE,        // 33
-	WP_FG42SCOPE,           // 34
-	WP_STEN,                // 35	
-	WP_SILENCER,            // 36
-	WP_WELROD,              // 37	
-	WP_AKIMBO,              // 38	
-	WP_DYNAMITE,            // 39
-	WP_MONSTER_ATTACK1,     // 40	
-	WP_MONSTER_ATTACK2,     // 41	
-	WP_MONSTER_ATTACK3,     // 42	
-	WP_GAUNTLET,            // 43
-	WP_SNIPER,              // 44
-	WP_MORTAR,              // 45
-	VERYBIGEXPLOSION,       // 46	
-	WP_NUM_WEAPONS          // 47   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_DAGGER,              // 2
+	WP_LUGER,               // 3
+	WP_MP40,                // 4
+	WP_MAUSER,              // 5
+	WP_FG42,                // 6
+	WP_GRENADE_LAUNCHER,    // 7
+	WP_PANZERFAUST,         // 8
+	WP_VENOM,               // 9
+	WP_FLAMETHROWER,        // 10
+	WP_TESLA,               // 11
+	WP_MP34,                // 12
+	WP_TT33,                // 13
+	WP_P38,                 // 14
+	WP_PPSH,                // 15
+	WP_MOSIN,               // 16
+	WP_G43,                 // 17
+	WP_M1GARAND,            // 18
+	WP_M7,                  // 19
+	WP_BAR,                 // 20
+	WP_MP44,                // 21
+	WP_MG42M,               // 22
+    WP_BROWNING,            // 23
+	WP_M97,                 // 24
+	WP_M30,                 // 25
+	WP_REVOLVER,            // 26
+	WP_COLT,                // 27	
+	WP_THOMPSON,            // 28	
+	WP_GARAND,              // 29	
+	WP_GRENADE_PINEAPPLE,   // 30
+	WP_AIRSTRIKE,           // 31
+	WP_POISONGAS,           // 32
+	WP_SNIPERRIFLE,         // 33
+	WP_SNOOPERSCOPE,        // 34
+	WP_FG42SCOPE,           // 35
+	WP_STEN,                // 36	
+	WP_SILENCER,            // 37
+	WP_WELROD,              // 38	
+	WP_AKIMBO,              // 39	
+	WP_DYNAMITE,            // 40
+	WP_MONSTER_ATTACK1,     // 41	
+	WP_MONSTER_ATTACK2,     // 42	
+	WP_MONSTER_ATTACK3,     // 43	
+	WP_GAUNTLET,            // 44
+	WP_SNIPER,              // 45
+	WP_MORTAR,              // 46
+	VERYBIGEXPLOSION,       // 47	
+	WP_NUM_WEAPONS          // 48   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -716,6 +717,7 @@ typedef enum {
 	EV_POWERUP_BATTLESUIT,
 	EV_POWERUP_REGEN,
 	EV_GIB_PLAYER,          // gib a previously living player
+	EV_GIB_VAMPIRISM,
 	EV_DEBUG_LINE,
 	EV_STOPLOOPINGSOUND,
 	EV_STOPSTREAMINGSOUND,
@@ -1038,6 +1040,8 @@ typedef enum {
 	MOD_BFG,
 	MOD_BFG_SPLASH,
 	MOD_KNIFE,
+	MOD_DAGGER,
+	MOD_DAGGER_STEALTH,	
 	MOD_KNIFE2,
 	MOD_KNIFE_STEALTH,
 	MOD_LUGER,

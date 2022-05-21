@@ -199,6 +199,7 @@ extern void G_PoisonGasExplode(gentity_t* ent) ;
 extern void Weapon_Engineer ( gentity_t * ent ) ;
 extern void Weapon_Medic ( gentity_t * ent ) ;
 extern void Weapon_Knife ( gentity_t * ent ) ;
+extern void Weapon_Dagger ( gentity_t * ent ) ;
 extern int DebugLine ( vec3_t start , vec3_t end , int color ) ;
 extern void G_ProcessTagConnect ( gentity_t * ent , qboolean clearAngles ) ;
 extern qboolean infront ( gentity_t * self , gentity_t * other ) ;

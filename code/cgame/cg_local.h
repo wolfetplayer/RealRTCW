@@ -2223,6 +2223,7 @@ localEntity_t *CG_SmokePuff( const vec3_t p,
 void CG_BubbleTrail( vec3_t start, vec3_t end, float size, float spacing );
 void CG_SpawnEffect( vec3_t org );
 void CG_GibPlayer( centity_t *cent, vec3_t playerOrigin, vec3_t gdir );
+void CG_GibVampirism( centity_t *cent, vec3_t playerOrigin, vec3_t gdir );
 void CG_LoseHat( centity_t *cent, vec3_t dir );         //----(SA)	added
 void CG_GibHead( vec3_t headOrigin );
 

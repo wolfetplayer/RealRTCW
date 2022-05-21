@@ -2234,6 +2234,16 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		ByteToDir( es->eventParm, dir );
 		CG_GibPlayer( cent, cent->lerpOrigin, dir );
 		break;
+	case EV_GIB_VAMPIRISM:
+		DEBUGNAME( "EV_GIB_VAMPIRISM" );
+		if ( es->aiChar == AICHAR_ZOMBIE ) {
+			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.zombieDeathSound );
+		} else {
+			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.gibSound );
+		}
+		ByteToDir( es->eventParm, dir );
+		CG_GibVampirism( cent, cent->lerpOrigin, dir );
+		break;
 
 //----(SA)	added
 	case EV_STOPSTREAMINGSOUND:

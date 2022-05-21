@@ -198,6 +198,7 @@ If you have questions concerning this license or the applicable additional terms
 {"Weapon_Engineer", (byte *)Weapon_Engineer},
 {"Weapon_Medic", (byte *)Weapon_Medic},
 {"Weapon_Knife", (byte *)Weapon_Knife},
+{"Weapon_Dagger", (byte *)Weapon_Dagger},
 {"DebugLine", (byte *)DebugLine},
 {"G_ProcessTagConnect", (byte *)G_ProcessTagConnect},
 {"infront", (byte *)infront},

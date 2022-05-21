@@ -56,7 +56,7 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0,            0            },  //	0 (empty)
-	{WP_KNIFE,              0,                      0,            0,               0,            0            },  //	1
+	{WP_KNIFE,              WP_DAGGER,              0,            0,               0,            0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_WELROD,    WP_P38       },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     0,               0,            0            },  //	4
@@ -1888,6 +1888,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 
 			// never adjust
 		case WP_KNIFE:
+		case WP_DAGGER:
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 			break;
@@ -2968,7 +2969,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
 		 weaponNum == WP_DYNAMITE ||
-		 weaponNum == WP_M7 ) {
+		 weaponNum == WP_M7 ||
+		 weaponNum == WP_DAGGER ) {
 		return;
 	}
 
@@ -5228,6 +5230,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 
 	switch ( weapon ) {
 	case WP_KNIFE:
+	case WP_DAGGER:
 		sfx     = cgs.media.sfx_knifehit[4];    // different values for different types (stone/metal/wood/etc.)
 		mark    = cgs.media.bulletMarkShader;
 		radius  = 1 + rand() % 2;
@@ -5737,6 +5740,7 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 	switch ( weapon ) {
 		// knives just make the flesh hit sound.  no other effects
 	case WP_KNIFE:
+	case WP_DAGGER:
 		i = rand() % 4;
 		if ( cgs.media.sfx_knifehit[i] ) {
 			trap_S_StartSound( origin, cent->currentState.number, CHAN_WEAPON, cgs.media.sfx_knifehit[i] );

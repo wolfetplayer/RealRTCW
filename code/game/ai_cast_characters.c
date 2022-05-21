@@ -477,6 +477,33 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		NULL,
 		AISTATE_RELAXED
 	},
+    //AICHAR_DOG
+	{
+		"Dog",
+		{
+          0
+		},
+		{
+			"dogSightPlayer",
+			"dogAttackPlayer",
+			"dogOrders",
+			"dogDeath",
+			"dogSilentDeath",  //----(SA)	added
+			"dogFlameDeath", //----(SA)	added
+			"dogPain",
+			"dogStay",
+			"dogFollow",
+			"dogOrdersDeny",
+		},
+		AITEAM_NAZI, //----(SA)	changed affiliation for DK
+		"dog/default",
+		{WP_MONSTER_ATTACK1, WP_MONSTER_ATTACK3},
+		BBOX_SMALL, {32,32},
+		AIFL_NO_RELOAD | AIFL_WALKFORWARD | AIFL_NOLADDER,
+		AIFunc_DogAttackStart, NULL, AIFunc_DogBarkStart,
+		"sound/player/dog/pant.wav",
+		AISTATE_RELAXED
+	},
 };
 //---------------------------------------------------------------------------
 
@@ -841,7 +868,12 @@ void AIChar_AttackSound( cast_state_t *cs ) {
 		return;
 	}
 
-	cs->attackSNDtime = level.time + 5000 + ( 1000 * rand() % 10 );
+	if (cs->aiCharacter == AICHAR_DOG) {
+		cs->attackSNDtime = level.time + 100 + (1000 * rand() % 10);
+	}
+	else {
+		cs->attackSNDtime = level.time + 5000 + (1000 * rand() % 10);
+	}
 
 	AICast_ScriptEvent( cs, "attacksound", ent->aiName );
 	if ( cs->aiFlags & AIFL_DENYACTION ) {
@@ -1253,6 +1285,23 @@ void SP_ai_civilian( gentity_t *ent ) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
+/*QUAKED ai_dog (1 0.25 0) (-32 -16 -24) (32 16 32) TriggerSpawn NoRevive
+elite guard entity
+"skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'dog/default' is used)
+"head" the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)
+"ainame" name of AI
+*/
+
+/*
+============
+SP_ai_dog
+============
+*/
+void SP_ai_dog(gentity_t* ent) {
+	AICast_DelayedSpawnCast(ent, AICHAR_DOG);
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
 /*QUAKED ai_eliteguard (1 0.25 0) (-16 -16 -24) (16 16 64) TriggerSpawn NoRevive
 elite guard entity
 "skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'eliteguard/default' is used)
@@ -1376,6 +1425,7 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_PARTISAN:          return "partisan.aidefaults";
 		case AICHAR_RUSSIAN:           return "russian.aidefaults";
 		case AICHAR_CIVILIAN:          return "civilian.aidefaults";
+		case AICHAR_DOG:               return "dog.aidefaults";
 		case AICHAR_NONE:              return "";
 		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
     }

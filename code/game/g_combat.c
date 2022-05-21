@@ -79,6 +79,7 @@ void TossClientItems( gentity_t *self ) {
 	case AICHAR_LOPER:
 	case AICHAR_PROTOSOLDIER:
 	case AICHAR_SUPERSOLDIER:
+	case AICHAR_DOG:
 		return;       
 	default:
 		break;
@@ -88,6 +89,7 @@ void TossClientItems( gentity_t *self ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_LOPER:
+	case AICHAR_DOG:
 		return;       
 	default:
 		break;

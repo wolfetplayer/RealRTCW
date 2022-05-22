@@ -472,6 +472,8 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_M7 );
 	} else if ( weapon == WP_M7 ) {
 		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
+	} else if ( weapon == WP_DELISLESCOPE ) {
+		COM_BitSet( other->client->ps.weapons, WP_DELISLE );
 	}
 
 //----(SA)	end

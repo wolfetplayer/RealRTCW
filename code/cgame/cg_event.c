@@ -217,7 +217,7 @@ static void CG_ItemPickup( int itemNum ) {
 			//	5 - "New and Better"
 
 			// don't ever autoswitch to secondary fire weapons
-			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE ) {  //----(SA)	modified
+			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE && weapon != WP_DELISLESCOPE ) {  //----(SA)	modified
 
 				// no weap currently selected, always just select the new one
 				if ( !cg.weaponSelect ) {
@@ -1762,6 +1762,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			break;
 		case WP_SNIPERRIFLE:
 			newweap = WP_MAUSER;
+			break;
+		case WP_DELISLESCOPE:
+			newweap = WP_DELISLE;
 			break;
 		case WP_FG42SCOPE:
 			newweap = WP_FG42;

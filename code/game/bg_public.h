@@ -495,28 +495,30 @@ typedef enum {
 	WP_M30,                 // 25
 	WP_REVOLVER,            // 26
 	WP_COLT,                // 27	
-	WP_THOMPSON,            // 28	
-	WP_GARAND,              // 29	
-	WP_GRENADE_PINEAPPLE,   // 30
-	WP_AIRSTRIKE,           // 31
-	WP_POISONGAS,           // 32
-	WP_SNIPERRIFLE,         // 33
-	WP_SNOOPERSCOPE,        // 34
-	WP_FG42SCOPE,           // 35
-	WP_STEN,                // 36	
-	WP_SILENCER,            // 37
-	WP_WELROD,              // 38	
-	WP_AKIMBO,              // 39	
-	WP_DYNAMITE,            // 40
-	WP_HOLYCROSS,           // 41
-	WP_MONSTER_ATTACK1,     // 42	
-	WP_MONSTER_ATTACK2,     // 43	
-	WP_MONSTER_ATTACK3,     // 44	
-	WP_GAUNTLET,            // 45
-	WP_SNIPER,              // 46
-	WP_MORTAR,              // 47
-	VERYBIGEXPLOSION,       // 48	
-	WP_NUM_WEAPONS          // 49   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_THOMPSON,            // 28
+	WP_DELISLE,             // 29
+	WP_DELISLESCOPE, 	    // 30
+	WP_GARAND,              // 31	
+	WP_GRENADE_PINEAPPLE,   // 32
+	WP_AIRSTRIKE,           // 33
+	WP_POISONGAS,           // 34
+	WP_SNIPERRIFLE,         // 35
+	WP_SNOOPERSCOPE,        // 36
+	WP_FG42SCOPE,           // 37
+	WP_STEN,                // 38	
+	WP_SILENCER,            // 39
+	WP_WELROD,              // 40	
+	WP_AKIMBO,              // 41	
+	WP_DYNAMITE,            // 42
+	WP_HOLYCROSS,           // 43
+	WP_MONSTER_ATTACK1,     // 44	
+	WP_MONSTER_ATTACK2,     // 45	
+	WP_MONSTER_ATTACK3,     // 46	
+	WP_GAUNTLET,            // 47
+	WP_SNIPER,              // 48
+	WP_MORTAR,              // 49
+	VERYBIGEXPLOSION,       // 50	
+	WP_NUM_WEAPONS          // 51   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -581,7 +583,8 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
-		weapon == WP_BROWNING || weapon == WP_P38 \
+		weapon == WP_BROWNING || weapon == WP_P38 || weapon == WP_DELISLE ||  \
+        weapon == WP_DELISLESCOPE \
 	)
 
  // entityState_t->event values
@@ -1054,6 +1057,8 @@ typedef enum {
 	MOD_STEN,
 	MOD_MAUSER,
 	MOD_SNIPERRIFLE,
+	MOD_DELISLE,
+	MOD_DELISLESCOPE,
 	MOD_GARAND,
 	MOD_SNOOPERSCOPE,
 	MOD_SILENCER,   

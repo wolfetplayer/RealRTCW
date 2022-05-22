@@ -1336,6 +1336,9 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
 		}
+		if ( weapon == WP_DELISLESCOPE ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLE );
+		}
 //----(SA)	end
 
 		// monsters have full ammo for their attacks

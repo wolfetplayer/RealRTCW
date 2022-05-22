@@ -547,6 +547,11 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 		return 8000;
 		break;
 
+	case WP_DELISLE:
+	case WP_DELISLESCOPE:
+		return 5000;
+		break;
+
 
 	}
 	// default range
@@ -1559,6 +1564,8 @@ AICast_CanMoveWhileFiringWeapon
 qboolean AICast_CanMoveWhileFiringWeapon( int weaponnum ) {
 	switch ( weaponnum ) {
 	case WP_MAUSER:
+	case WP_DELISLE:
+	case WP_DELISLESCOPE:
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:    //----(SA)	added

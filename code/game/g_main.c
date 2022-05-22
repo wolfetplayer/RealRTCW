@@ -663,7 +663,8 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 			} else if ( checkEnt->s.eType == ET_MG42 )      {
 					if ( ent->s.weapon != WP_SNIPERRIFLE &&
 						 ent->s.weapon != WP_SNOOPERSCOPE &&
-						 ent->s.weapon != WP_FG42SCOPE ) 
+						 ent->s.weapon != WP_FG42SCOPE &&
+						 ent->s.weapon != WP_DELISLESCOPE ) 
 						{
 						if ( traceEnt->takedamage ) {
 							hintDist = CH_ACTIVATE_DIST;

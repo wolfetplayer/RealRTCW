@@ -100,6 +100,7 @@ void CG_CheckAmmo( void ) {
 		case WP_BROWNING:
 		case WP_M30:
 		case WP_HOLYCROSS:
+		case WP_DELISLE:
 		default:
 			total += cg.snap->ps.ammo[BG_FindAmmoForWeapon( i )] * 1000;
 		}

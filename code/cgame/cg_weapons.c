@@ -59,7 +59,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_KNIFE,              WP_DAGGER,              WP_HOLYCROSS, 0,               0,            0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_WELROD,    WP_P38       },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
-	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     0,               0,            0            },  //	4
+	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     WP_DELISLE,      0,            0            },  //	4
     {WP_G43,                WP_M1GARAND,            0,            0,               0,            0            },  //	5
 	{WP_FG42,               WP_MP44,                WP_BAR,       0,               0,            0            },  //	6
 	{WP_M97,                WP_M30,                 0,            0,               0,            0            },  //	7
@@ -1881,6 +1881,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		case WP_FLAMETHROWER:
 		case WP_TESLA:
 		case WP_MAUSER:
+		case WP_DELISLE:
 		case WP_M1GARAND:
 		case WP_M7:
 		case WP_HOLYCROSS:
@@ -2845,8 +2846,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	// don't draw weapon stuff when looking through a scope
-	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE ||
-		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE ) {
+	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE || weaponNum == WP_DELISLESCOPE ||
+		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE || weapSelect == WP_DELISLESCOPE ) {
 		if ( isPlayer && !cg.renderingThirdPerson ) {
 			return;
 		}
@@ -3087,6 +3088,18 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
 		if ( weaponNum == WP_MAUSER ) {
 			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_SNIPERRIFLE ) ) {
+				barrel.hModel = weapon->modModels[0];
+				if ( barrel.hModel ) {
+					CG_PositionEntityOnTag( &barrel, &gun, "tag_scope", 0, NULL );
+					CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
+				}
+			}
+		}
+	}
+
+		if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
+		if ( weaponNum == WP_DELISLE ) {
+			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_DELISLESCOPE ) ) {
 				barrel.hModel = weapon->modModels[0];
 				if ( barrel.hModel ) {
 					CG_PositionEntityOnTag( &barrel, &gun, "tag_scope", 0, NULL );
@@ -3580,6 +3593,7 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_M30:
 		case WP_STEN:
 		case WP_MAUSER:
+		case WP_DELISLE:
 		case WP_GARAND:
 		case WP_VENOM:
 		case WP_TESLA:
@@ -3726,6 +3740,11 @@ static qboolean CG_WeaponSelectable( int i ) {
 		break;
 	case WP_SNIPERRIFLE:
 		if ( i == WP_MAUSER ) {
+			return qtrue;
+		}
+		break;
+	case WP_DELISLESCOPE:
+		if ( i == WP_DELISLE ) {
 			return qtrue;
 		}
 		break;
@@ -4021,6 +4040,10 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 //			cg.zoomedScope	= 1;	// TODO: add to zoomTable
 //			cg.zoomTime		= cg.time;
 		break;
+	case WP_DELISLESCOPE:
+//			cg.zoomedScope	= 1;	// TODO: add to zoomTable
+//			cg.zoomTime		= cg.time;
+		break;
 	}
 
 	switch ( newweap ) {
@@ -4031,6 +4054,11 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 	case WP_SNIPERRIFLE:
 		cg.zoomval = cg_zoomDefaultSniper.value;
 		cg.zoomedScope  = 900;      // TODO: add to zoomTable
+		zoomindex = ZOOM_SNIPER;
+		break;
+	case WP_DELISLESCOPE:
+		cg.zoomval = cg_zoomDefaultSniper.value;
+		cg.zoomedScope  = 700;      // TODO: add to zoomTable
 		zoomindex = ZOOM_SNIPER;
 		break;
 	case WP_SNOOPERSCOPE:
@@ -4123,6 +4151,7 @@ void CG_FinishWeaponChange( int lastweap, int newweap ) {
 		case WP_SNIPERRIFLE:
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
+		case WP_DELISLESCOPE:
 			break;
 		default:
 			cg.switchbackWeapon = lastweap;
@@ -5011,6 +5040,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	    yawRandom = 0.5;
     break;
 	case WP_MAUSER:
+	case WP_DELISLE:
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_G43:
@@ -5021,6 +5051,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	break;
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
+	case WP_DELISLESCOPE:
 		pitchAdd = 0.8;
 	break;
 	case WP_MP40:
@@ -5507,6 +5538,8 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_AKIMBO: 
 	case WP_COLT:
 	case WP_MAUSER:
+	case WP_DELISLE:
+	case WP_DELISLESCOPE:
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
@@ -5633,7 +5666,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		// enough to see it, this way we can leave other marks around a lot
 		// longer, since most of the time we can't actually see the bullet holes
 // (SA) small modification.  only do this for non-rifles (so you can see your shots hitting when you're zooming with a rifle scope)
-		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
+		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_DELISLESCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
 
 			if ( clientNum ) {
 

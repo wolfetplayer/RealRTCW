@@ -846,7 +846,29 @@ void ClientUserinfoChanged( int clientNum ) {
 	// set max health // RealRTCW max health depends on difficulty level
 	client->pers.maxHealth = atoi( Info_ValueForKey( userinfo, "handicap" ) );
 
+	if ( g_gametype.integer == GT_GOTHIC ) { // Gothicstein case
 	if ( g_gameskill.integer == GSKILL_EASY ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
+			client->pers.maxHealth = 100;
+	}
+	else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
+			client->pers.maxHealth = 75;
+	}
+	else if ( g_gameskill.integer == GSKILL_HARD ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
+			client->pers.maxHealth = 100;
+	}
+	else if ( g_gameskill.integer == GSKILL_MAX ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 )
+			client->pers.maxHealth = 25;
+	}
+	else if ( g_gameskill.integer == GSKILL_REALISM ) {
+		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 )
+			client->pers.maxHealth = 25;
+	} // Gothicstein end
+	} else { // default case
+		if ( g_gameskill.integer == GSKILL_EASY ) {
 		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
 			client->pers.maxHealth = 100;
 	}
@@ -866,6 +888,7 @@ void ClientUserinfoChanged( int clientNum ) {
 		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 )
 			client->pers.maxHealth = 25;
 	}
+	} // default case end
 	
 	for ( weapon_t weaponNum = 0; weaponNum < WP_NUM_WEAPONS; weaponNum++ )
 		BG_SetWeaponForSkill( weaponNum, g_gameskill.integer );

@@ -468,6 +468,16 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 	while ( client->timeResidual >= 1000 ) {
 		client->timeResidual -= 1000;
 
+    if ( g_gametype.integer == GT_GOTHIC ) {
+	    if (g_gameskill.integer == GSKILL_HARD)  // vampirism (health decay)
+        {
+	        if (ent->health > 25)
+	        {
+	        ent->health--;
+	        }
+	    }
+	}
+
 		// regenerate
 
 			if ( client->ps.powerups[PW_REGEN] ) {

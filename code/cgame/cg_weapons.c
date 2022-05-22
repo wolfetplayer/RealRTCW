@@ -56,7 +56,7 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0,            0            },  //	0 (empty)
-	{WP_KNIFE,              WP_DAGGER,              0,            0,               0,            0            },  //	1
+	{WP_KNIFE,              WP_DAGGER,              WP_HOLYCROSS, 0,               0,            0            },  //	1
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_WELROD,    WP_P38       },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     0,               0,            0            },  //	4
@@ -1883,6 +1883,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		case WP_MAUSER:
 		case WP_M1GARAND:
 		case WP_M7:
+		case WP_HOLYCROSS:
 			leanscale = 2.0f;
 			break;
 
@@ -2254,6 +2255,264 @@ gun->customShader = cgs.media.dripWetShader;
 		}
 	}
 */
+}
+
+/*
+==============
+CG_PlayerCrossCoilFire
+
+  TODO: this needs to be fixed for multiplay. entities being hurt need to be sent
+  by server to all clients, so they draw the correct effects.
+==============
+*/
+void CG_PlayerCrossCoilFire( centity_t *cent, vec3_t flashorigin ) {
+
+#define	CROSS_LIGHTNING_POINT_TIMEOUT	3000
+#define	CROSS_LIGHTNING_MAX_DIST	( cent->currentState.aiChar == AICHAR_SUPERSOLDIER ? TESLA_SUPERSOLDIER_RANGE : HOLYCROSS_RANGE )     // use these to perhaps vary the distance according to aiming
+#define	CROSS_LIGHTNING_NORMAL_DIST	( HOLYCROSS_RANGE / 2.0 )
+#define	CROSS_MAX_POINT_TESTS			10
+#define	CROSS_MAX_POINT_TESTS_PERFRAME	20
+
+	int i, j, pointTests = 0;
+	vec3_t testPos, tagPos, vec;
+	trace_t tr;
+	float maxDist;
+	int numPoints;
+	vec3_t viewAngles, viewDir;
+	int visEnemies[16];
+	float visDists[16];
+	int visEnemiesSorted[MAX_TESLA_BOLTS];
+	int numEnemies, numSorted = 0, best;
+	float bestDist;
+	centity_t *ctrav;
+	vec3_t traceOrg;
+	int playerTeam;
+
+	if ( cent->currentState.weapon != WP_HOLYCROSS ) {
+		return;
+	}
+		VectorCopy( cent->lerpAngles, viewAngles );
+
+	AngleVectors( viewAngles, viewDir, NULL, NULL );
+
+	if ( cent->currentState.number == cg.snap->ps.clientNum ) {
+		VectorCopy( cg.snap->ps.origin, traceOrg );
+		playerTeam = cg.snap->ps.teamNum;
+	} else {
+		VectorCopy( cent->lerpOrigin, traceOrg );
+		playerTeam = cent->currentState.teamNum;
+	}
+
+	maxDist = CROSS_LIGHTNING_MAX_DIST;
+	numPoints = MAX_TESLA_BOLTS;
+
+	VectorCopy( flashorigin, tagPos );
+
+	// first, build a list of visible enemies that can be hurt by this tesla, then filter by distance
+	if ( !cent->pe.teslaDamageApplyTime || cent->pe.teslaDamageApplyTime < cg.time - 200 ) {
+		numEnemies = 0;
+		// check the local playing client
+		VectorSubtract( cg.snap->ps.origin, traceOrg, vec );
+		VectorNormalize( vec );
+		if ( ( cent != &cg_entities[cg.snap->ps.clientNum] ) &&
+			 ( cg.snap->ps.teamNum != playerTeam ) &&
+			 ( Distance( tagPos, cg.snap->ps.origin ) < CROSS_LIGHTNING_MAX_DIST ) &&
+			 ( DotProduct( viewDir, vec ) > 0.8 ) ) {
+			CG_Trace( &tr, traceOrg, NULL, NULL, cg.snap->ps.origin, cg.snap->ps.clientNum, MASK_SHOT & ~( CONTENTS_BODY ) );
+			if ( tr.fraction == 1 || tr.entityNum == cg.snap->ps.clientNum ) {
+				visDists[numEnemies] = Distance( tagPos, cg.snap->ps.origin );
+				visEnemies[numEnemies++] = cg.snap->ps.clientNum;
+			} else {    // try head
+				VectorCopy( cg.snap->ps.origin, vec );
+				vec[2] += cg.snap->ps.viewheight;
+				CG_Trace( &tr, tagPos, NULL, NULL, vec, cg.snap->ps.clientNum, MASK_SHOT & ~( CONTENTS_BODY ) );
+				if ( tr.fraction == 1 || tr.entityNum == cg.snap->ps.clientNum ) {
+					visDists[numEnemies] = Distance( tagPos, cg.snap->ps.origin );
+					visEnemies[numEnemies++] = cg.snap->ps.clientNum;
+				} else {    // try body, from tag
+					VectorCopy( cg.snap->ps.origin, vec );
+					CG_Trace( &tr, tagPos, NULL, NULL, vec, cg.snap->ps.clientNum, MASK_SHOT & ~( CONTENTS_BODY ) );
+					if ( tr.fraction == 1 || tr.entityNum == cg.snap->ps.clientNum ) {
+						visDists[numEnemies] = Distance( tagPos, cg.snap->ps.origin );
+						visEnemies[numEnemies++] = cg.snap->ps.clientNum;
+					}
+				}
+			}
+		}
+
+		if ( cgs.localServer ) {
+			// check for AI's getting hurt (TODO: bot support?)
+			for ( ctrav = cg_entities, i = 0; i < cgs.maxclients && numEnemies < 16; ctrav++, i++ ) {
+                                                                                                                     //
+				if ( ctrav->currentState.aiChar &&
+					 ( ctrav != cent ) &&
+					 ( ctrav->currentState.teamNum != playerTeam ) &&
+					 !( ctrav->currentState.eFlags & EF_DEAD ) &&
+					 ctrav->currentValid && // is in the visible frame
+					 ( Distance( tagPos, ctrav->lerpOrigin ) < CROSS_LIGHTNING_MAX_DIST ) ) {
+					VectorSubtract( ctrav->lerpOrigin, traceOrg, vec );
+					VectorNormalize( vec );
+
+					if ( DotProduct( viewDir, vec ) > 0.8 ) {
+						CG_Trace( &tr, traceOrg, NULL, NULL, ctrav->lerpOrigin, ctrav->currentState.number, MASK_SHOT & ~CONTENTS_BODY );
+						if ( tr.fraction == 1 || tr.entityNum == ctrav->currentState.number ) {
+							visDists[numEnemies] = Distance( tagPos, ctrav->lerpOrigin );
+							visEnemies[numEnemies++] = ctrav->currentState.number;
+						}
+					}
+				}
+			}
+		}
+
+		// now sort by distance
+		for ( j = 0; j < MAX_TESLA_BOLTS; j++ ) {
+			visEnemiesSorted[j] = -1;
+
+			bestDist = 99999;
+			best = -1;
+			for ( i = 0; i < numEnemies; i++ ) {
+				if ( visEnemies[i] < 0 ) {
+					continue;
+				}
+				if ( visDists[i] < bestDist ) {
+					bestDist = visDists[i];
+					visEnemiesSorted[j] = visEnemies[i];
+					best = i;
+				}
+			}
+
+			if ( best >= 0 ) {
+				visEnemies[best] = -1;
+				numSorted = j + 1;
+			}
+		}
+
+		// now fill in the teslaEnemy[]'s
+		for ( i = 0; i < MAX_TESLA_BOLTS; i++ ) {
+			if ( numSorted && i / numSorted < 1 /*( MAX_TESLA_BOLTS / 3 )*/ ) {  // bolts per enemy
+				j = i % numSorted;
+				cent->pe.teslaEnemy[i] = visEnemiesSorted[j];
+				// apply damage
+				CG_ClientDamage( visEnemiesSorted[j], cent->currentState.number, CLDMG_HOLYCROSS );
+				// show the effect
+				cg_entities[ visEnemiesSorted[j] ].pe.teslaDamagedTime = cg.time;
+			} else {
+				if ( cent->pe.teslaEnemy[i] >= 0 ) {
+					cent->pe.teslaEndPointTimes[i] = 0; // make sure we find a new spot
+				}
+				cent->pe.teslaEnemy[i] = -1;
+			}
+		}
+		cent->pe.teslaDamageApplyTime = cg.time;
+	}
+
+	for ( i = 0; i < numPoints; i++ ) {
+
+		//if (!(rand()%3))
+		//	continue;
+
+		VectorSubtract( cent->pe.teslaEndPoints[i], tagPos, vec );
+		VectorNormalize( vec );
+
+		// if this point has timed out, find a new spot
+		if ( cent->pe.teslaEnemy[i] >= 0 ) {
+			// attacking the player
+			VectorSet( testPos, 6 * crandom(),
+					   6 * crandom(),
+					   20 * crandom() - 8 );
+			//VectorClear( testPos );
+			if ( cent->pe.teslaEnemy[i] != cg.snap->ps.clientNum ) {
+				VectorAdd( testPos, cg_entities[cent->pe.teslaEnemy[i]].lerpOrigin, testPos );
+			} else {
+				VectorAdd( testPos, cg.snap->ps.origin, testPos );
+			}
+			cent->pe.teslaEndPointTimes[i] = cg.time; // - rand()%(TESLA_LIGHTNING_POINT_TIMEOUT/2);
+			VectorCopy( testPos, cent->pe.teslaEndPoints[i] );
+		} else if ( ( !cent->pe.teslaEndPointTimes[i] ) ||
+					( cent->pe.teslaEndPointTimes[i] > cg.time ) ||
+					( cent->pe.teslaEndPointTimes[i] < cg.time - CROSS_LIGHTNING_POINT_TIMEOUT ) ||
+					( VectorDistance( tagPos, cent->pe.teslaEndPoints[i] ) > maxDist ) ||
+					( DotProduct( viewDir, vec ) < 0.7 ) ) {
+
+			//if (cent->currentState.groundEntityNum == ENTITYNUM_NONE)
+			//	continue;	// must be on the ground
+
+			// find a new spot
+			for ( j = 0; j < CROSS_MAX_POINT_TESTS; j++ ) {
+				VectorSet( testPos, cg.refdef.fov_y * crandom() * 0.5,
+						   cg.refdef.fov_x * crandom() * 0.5,
+						   0 );
+				VectorAdd( viewAngles, testPos, testPos );
+				AngleVectors( testPos, vec, NULL, NULL );
+				VectorMA( tagPos, CROSS_LIGHTNING_NORMAL_DIST, vec, testPos );
+				// try a trace to find a world collision
+				CG_Trace( &tr, tagPos, NULL, NULL, testPos, cent->currentState.number, MASK_SHOT & ~CONTENTS_BODY );
+				if ( tr.fraction < 1 && tr.entityNum == ENTITYNUM_WORLD && !( tr.surfaceFlags & ( SURF_NOIMPACT | SURF_SKY ) ) ) {
+					// found a valid spot!
+					cent->pe.teslaEndPointTimes[i] = cg.time - rand() % ( CROSS_LIGHTNING_POINT_TIMEOUT / 2 );
+					VectorCopy( tr.endpos, cent->pe.teslaEndPoints[i] );
+					break;
+				}
+				if ( pointTests++ > CROSS_MAX_POINT_TESTS_PERFRAME ) {
+					j = CROSS_MAX_POINT_TESTS;
+					continue;
+				}
+			}
+			if ( j == CROSS_MAX_POINT_TESTS ) {
+				continue;   // just don't draw this point
+			}
+
+			// add an impact mark on the wall
+			VectorSubtract( cent->pe.teslaEndPoints[i], tagPos, vec );
+			VectorNormalize( vec );
+			VectorInverse( vec );
+			//CG_ImpactMark( cgs.media.lightningHitWallShader, cent->pe.teslaEndPoints[i], vec, random() * 360, 0.2, 0.2, 0.2, 1.0, qtrue, 4, qfalse, 300 );
+		}
+		//
+		// we have a valid lightning point, so draw it
+		// sanity check though to make sure it's valid
+		if ( VectorDistance( tagPos, cent->pe.teslaEndPoints[i] ) <= maxDist ) {
+
+			CG_DynamicLightningBolt( cgs.media.lightningWaveShader, tagPos, cent->pe.teslaEndPoints[i], 1 + ( ( cg.time % ( ( i + 2 ) * ( i + 3 ) ) ) + i ) % 2, 20 + (float)( i % 3 ) * 5 + 6.0 * random(), ( cent->pe.teslaEnemy[i] < 0 ), 1.0, 0, i * i * 3 );
+
+			// play a zap sound
+			if ( cent->pe.lightningSoundTime < cg.time - 200 ) {
+				CG_SoundPlayIndexedScript( cgs.media.crossZapScript, cent->pe.teslaEndPoints[i], ENTITYNUM_WORLD );
+				CG_SoundPlayIndexedScript( cgs.media.crossZapScript, cent->lerpOrigin, ENTITYNUM_WORLD );
+				//trap_S_StartSound( cent->pe.teslaEndPoints[i], ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.lightningSounds[rand()%3] );
+				cent->pe.lightningSoundTime = cg.time + rand() % 200;
+			}
+		}
+	}
+
+	//if ( cg.time % 3 ) {  // break it up a bit
+		// add the looping sound
+		//CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 255 );
+	//}
+
+	//if (cent->currentState.weapon == WP_TESLA && ( (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE1) || (cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT) == WEAP_IDLE2) {
+	//CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 255 );
+//}
+
+	// drop a dynamic light out infront of us
+	AngleVectors( viewAngles, vec, NULL, NULL );
+	VectorMA( tagPos, 300, vec, testPos );
+	// try a trace to find a world collision
+	CG_Trace( &tr, tagPos, NULL, NULL, testPos, cent->currentState.number, MASK_SOLID );
+
+	if ( ( cg.time / 50 ) % ( 4 + ( cg.time % 4 ) ) == 0 ) {
+		// alt light
+		trap_R_AddLightToScene( tr.endpos, 256 + 600 * tr.fraction, 0.2, 0, 0, 1 );
+	} else if ( ( cg.time / 50 ) % ( 4 + ( cg.time % 4 ) ) == 1 ) {
+		// no light
+		//trap_R_AddLightToScene( tr.endpos, 128 + 500*tr.fraction, 1, 1, 1, 10 );
+	} else {
+		// blue light
+		trap_R_AddLightToScene( tr.endpos, 256 + 600 * tr.fraction, 0.2, 0, 0, 1 );
+	}
+
+	// shake the camera a bit
+	CG_StartShakeCamera( 0.05, 200, cent->lerpOrigin, 100 );
 }
 
 /*
@@ -2778,7 +3037,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 					}
 					spunpart = qtrue;
 				}
-			} else if ( weaponNum == WP_TESLA ) {
+			} else if ( (weaponNum == WP_TESLA) || (weaponNum == WP_HOLYCROSS) )  {
 				if ( i == W_PART_1 || i == W_PART_2 ) {
 					angles[ROLL] = CG_TeslaSpinAngle( cent );
 					spunpart = qtrue;
@@ -2914,7 +3173,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	cent->pe.gunRefEnt = gun;
 	cent->pe.gunRefEntFrame = cg.clientFrame;
 
-	if ( ( weaponNum == WP_FLAMETHROWER || weaponNum == WP_TESLA ) && ( nonPredictedCent->currentState.eFlags & EF_FIRING ) ) {
+	if ( ( weaponNum == WP_FLAMETHROWER || weaponNum == WP_TESLA || weaponNum == WP_HOLYCROSS ) && ( nonPredictedCent->currentState.eFlags & EF_FIRING ) ) {
 		// continuous flash
 
 	} else {
@@ -2957,7 +3216,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		// impulse flash
 		if ( cg.time - cent->muzzleFlashTime > MUZZLE_FLASH_TIME ) {
 			// Ridah, blue ignition flame if not firing flamer
-			if ( weaponNum != WP_FLAMETHROWER && weaponNum != WP_TESLA ) {
+			if ( weaponNum != WP_FLAMETHROWER && weaponNum != WP_TESLA && weaponNum != WP_HOLYCROSS ) {
 				return;
 			}
 		}
@@ -2992,7 +3251,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 
 	if ( flash.hModel ) {
-		if ( weaponNum != WP_FLAMETHROWER && weaponNum != WP_TESLA ) {    //Ridah, hide the flash also for now
+		if ( weaponNum != WP_FLAMETHROWER && weaponNum != WP_TESLA && weaponNum != WP_HOLYCROSS ) {    //Ridah, hide the flash also for now
 			// RF, changed this so the muzzle flash stays onscreen for long enough to be seen
 			if ( cg.time - cent->muzzleFlashTime < MUZZLE_FLASH_TIME ) {
 //				if ( firing )	// Ridah
@@ -3014,6 +3273,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 			// RF, Tesla coil
 			CG_PlayerTeslaCoilFire( cent, flash.origin );
+
+			CG_PlayerCrossCoilFire( cent, flash.origin );
 
 			// make a dlight for the flash
 			if ( weapon->flashDlightColor[0] || weapon->flashDlightColor[1] || weapon->flashDlightColor[2] ) {

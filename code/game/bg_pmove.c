@@ -2118,6 +2118,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	case WP_TESLA:
 	case WP_WELROD:
 	case WP_DAGGER:
+	case WP_HOLYCROSS:
 		return;
 
 	default:

@@ -582,6 +582,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	case WP_FLAMETHROWER:
 	case WP_POISONGAS:
 	case WP_WELROD:
+	case WP_HOLYCROSS:
 		if ( type == 0 ) {  // don't draw reserve value, just clip (since these weapons have all their ammo in the clip)
 			return;
 		}

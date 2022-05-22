@@ -57,6 +57,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #define LIGHTNING_RANGE     600
 #define TESLA_RANGE         1200
+#define HOLYCROSS_RANGE     800
 #define TESLA_SUPERSOLDIER_RANGE    2000
 
 #define FLAMETHROWER_RANGE 2000
@@ -94,6 +95,7 @@ typedef enum {
 	CLDMG_TESLA,
 	CLDMG_BOSS1LIGHTNING,
 	CLDMG_DEBRIS,
+    CLDMG_HOLYCROSS,
 	CLDMG_MAX
 } clientDamage_t;
 
@@ -506,14 +508,15 @@ typedef enum {
 	WP_WELROD,              // 38	
 	WP_AKIMBO,              // 39	
 	WP_DYNAMITE,            // 40
-	WP_MONSTER_ATTACK1,     // 41	
-	WP_MONSTER_ATTACK2,     // 42	
-	WP_MONSTER_ATTACK3,     // 43	
-	WP_GAUNTLET,            // 44
-	WP_SNIPER,              // 45
-	WP_MORTAR,              // 46
-	VERYBIGEXPLOSION,       // 47	
-	WP_NUM_WEAPONS          // 48   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_HOLYCROSS,           // 41
+	WP_MONSTER_ATTACK1,     // 42	
+	WP_MONSTER_ATTACK2,     // 43	
+	WP_MONSTER_ATTACK3,     // 44	
+	WP_GAUNTLET,            // 45
+	WP_SNIPER,              // 46
+	WP_MORTAR,              // 47
+	VERYBIGEXPLOSION,       // 48	
+	WP_NUM_WEAPONS          // 49   NOTE: this cannot be larger than 64 for AI/player weapons!
 } weapon_t;
 
 
@@ -1064,6 +1067,7 @@ typedef enum {
 	MOD_VENOM_FULL,
 	MOD_FLAMETHROWER,
 	MOD_TESLA,
+	MOD_HOLYCROSS,
 	MOD_MP34,
 	MOD_TT33,
 	MOD_P38,

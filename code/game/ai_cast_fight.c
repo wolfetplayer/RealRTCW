@@ -482,6 +482,8 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 		return ( TESLA_RANGE * 0.9 ) - 50;  // allow for bounding box
 	case WP_FLAMETHROWER:
 		return ( FLAMETHROWER_RANGE * 0.5 ) - 50;   // allow for bounding box
+	case WP_HOLYCROSS:
+		return ( HOLYCROSS_RANGE * 0.9 ) - 50;  // allow for bounding box
 	case WP_PANZERFAUST:
 		return 8000;
 
@@ -952,6 +954,7 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 		}
 		break;
 	case WP_TESLA:
+	case WP_HOLYCROSS:
 		break;
 	case WP_MONSTER_ATTACK1:
 		switch ( g_entities[cs->entityNum].aiCharacter ) {
@@ -1847,6 +1850,7 @@ qboolean AICast_StopAndAttack( cast_state_t *cs ) {
 		break;
 		// if they are using tesla (SUPERSOLDIER / BOSS2) try and get close
 	case WP_TESLA:
+	case WP_HOLYCROSS:
 		if ( dist > 128 /*&& (level.time%10000 < 8000)*/ ) {
 			return qfalse;
 		}

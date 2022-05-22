@@ -1484,6 +1484,7 @@ typedef struct {
 	int bulletHitFleshMetalScript;
 
 	int teslaZapScript;
+	int crossZapScript;
 	sfxHandle_t teslaLoopSound;
 	// done.
 

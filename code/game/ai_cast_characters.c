@@ -360,7 +360,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		"beast/default",													// default model/skin
 		{WP_MONSTER_ATTACK1,WP_MONSTER_ATTACK2 /*,WP_MONSTER_ATTACK3*/},	// starting weapons
 		BBOX_LARGE, {90,90},												// bbox, crouch/stand height
-		AIFL_WALKFORWARD | AIFL_NO_RELOAD,
+		AIFL_WALKFORWARD | AIFL_NO_RELOAD | AIFL_NO_FLAME_DAMAGE,
 		AIFunc_Helga_MeleeStart, AIFunc_Helga_SpiritAttack_Start, 0,		// special attack routine
 		NULL,
 		AISTATE_ALERT
@@ -708,12 +708,13 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 		forceStun = qtrue;
 	}
 
-	if ( attacker->s.weapon == WP_TESLA ) {
+	if ( attacker->s.weapon == WP_TESLA || attacker->s.weapon == WP_HOLYCROSS ) {
 		damage *= 2;
 		if ( cs->attributes[PAIN_THRESHOLD_SCALE] <= 1.0 ) {
 			damage = 99999;
 		}
 	}
+
 
 	// now check the damageQuota to see if we should play a pain animation
 	// first reduce the current damageQuota with time
@@ -736,8 +737,8 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 
 	// adjust the new damage with distance, if they are really close, scale it down, to make it
 	// harder to get through the game by continually rushing the enemies
-	if ( ( attacker->s.weapon != WP_TESLA ) && ( ( dist = VectorDistance( ent->r.currentOrigin, attacker->r.currentAngles ) ) < 384 ) ) {
-		damage -= (int)( (float)damage * ( 1.0 - ( dist / 384.0 ) ) * ( 0.5 + 0.5 * g_gameskill.value / GSKILL_REALISM ) );
+	if ( ( attacker->s.weapon != WP_TESLA  && attacker->s.weapon != WP_HOLYCROSS ) && ( ( dist = VectorDistance( ent->r.currentOrigin, attacker->r.currentAngles ) ) < 384 ) ) {
+		damage -= (int)( (float)damage * ( 1.0 - ( dist / 384.0 ) ) * ( 0.5 + 0.5 * g_gameskill.value / GSKILL_MAX ) );
 	}
 
 	// add the new damage

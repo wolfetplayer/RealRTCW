@@ -137,11 +137,12 @@ ammotable_t ammoTable[] = {
 	{   MAX_AMMO_GARAND,     1,       6,        2000,        100,       2000,      2000,      0,      0,      50,       50,         0,          0,          400,        35,                 0.3f,            70,              {.35f, .15f},    {0,0},              64,                 0.95,               0,               0,              MOD_WELROD,                                },  //	WP_WELROD				// 38
 	{   MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               0,              MOD_AKIMBO,                                },  //	WP_AKIMBO				// 39
 	{   3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               400,            MOD_DYNAMITE,                              },  //	WP_DYNAMITE				// 40
+	{   15,                  1,       15,       1000,        100,       250,       250,       0,      0,      150,      150,        0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0, 0},             64,                 1.00,               0,               0,              MOD_HOLYCROSS,                             },  //    WP_HOLYCROSS            // 41
 
-	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK1		// 41
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK2		// 42
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK3		// 43
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,              0,                                         }   //	WP_GAUNTLET				// 44
+	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK1		// 42
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK2		// 43
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK3		// 44
+	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,              0,                                         }   //	WP_GAUNTLET				// 45
 };
 
 // Skill-based ammo parameters
@@ -188,7 +189,8 @@ int weapAlts[] = {
 	WP_LUGER,           // 37 WP_SILENCER	
 	WP_NONE,            // 38 WP_WELROD
 	WP_COLT,            // 39 WP_AKIMBO		
-	WP_NONE             // 40 WP_DYNAMITE
+	WP_NONE,            // 40 WP_DYNAMITE
+	WP_NONE             // 41 WP_HOLYCROSS
 };
 
 
@@ -2068,6 +2070,31 @@ model="models/weapons2/p38/luger.md3"
 		{0,0,0,0}
 	},
 
+	/*QUAKED weapon_holycross (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/weapons2/tesla/pu_tesla.md3"
+*/
+	{
+		"weapon_holycross",
+		"sound/weapons/holycross/holycross_pickup.wav",
+		{   
+		"",
+		"",
+		""
+		},
+		"icons/iconw_holycross_1",   
+		"Holy Cross",             
+		30,
+		IT_WEAPON,
+		WP_HOLYCROSS,
+		WP_HOLYCROSS,
+		WP_HOLYCROSS,
+		WP_HOLYCROSS,
+		"",                         
+		"",                          
+		{0,0,0,0,0}
+	},
+
 	/*QUAKED weapon_revolver (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
@@ -2192,6 +2219,33 @@ model="models/powerups/ammo/m7ammo_bag.md3"
 		"",                        
 		"",                         
 		{5,4,3,2,2}
+	},
+
+/*QUAKED ammo_holycross (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+
+Boosts recharge on Tesla
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/amcell.md3"
+*/
+	{
+		"ammo_holyspirit",
+		"sound/weapons/holycross/holycrossammo_pickup.wav",
+		{ 
+		"models/powerups/ammo/amholycross.md3",
+		0,
+		0  
+		},
+		"icons/icona_spirit",  
+		"spirit",              
+		5,
+		IT_AMMO,
+		WP_NONE,
+		WP_HOLYCROSS,
+		WP_HOLYCROSS,
+		WP_HOLYCROSS,
+		"",                  
+		"",                  
+		{10,10,10,10,10}
 	},
 
 /*QUAKED ammo_ttammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -3606,6 +3660,7 @@ qboolean isClipOnly( int weap ) {
 	case WP_DYNAMITE:
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
+    case WP_HOLYCROSS:
 		return qtrue;
 	}
 	return qfalse;
@@ -4670,6 +4725,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_POISONGAS:         return "poisongas.weap";
 		case WP_M30:               return "m30.weap";
 		case WP_WELROD:            return "welrod.weap";
+		case WP_HOLYCROSS:         return "cross.weap";
 		case WP_NONE:
 		case WP_MONSTER_ATTACK1:
 		case WP_MONSTER_ATTACK2:

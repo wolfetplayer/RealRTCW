@@ -293,8 +293,8 @@ void Cmd_Give_f( gentity_t *ent ) {
 	if ( give_all || Q_stricmp( name, "weapons" ) == 0 ) {
 		//ent->client->ps.weapons[0] = (1 << (WP_MONSTER_ATTACK1)) - 1 - (1<<WP_NONE);	//----(SA)	gives the cross now as well
 
-		//(SA) we really don't want to give anything beyond WP_DYNAMITE
-		for ( i = 0; i <= WP_DYNAMITE; i++ )
+		//(SA) we really don't want to give anything beyond WP_HOLYCROSS
+		for ( i = 0; i <= WP_HOLYCROSS; i++ )
 			COM_BitSet( ent->client->ps.weapons, i );
 
 //		for (i=0; i<WP_NUM_WEAPONS; i++) {
@@ -1775,6 +1775,55 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_TESLA].aiDamage, 0, MOD_LIGHTNING );
 			}
 		}
+		break;
+	case CLDMG_HOLYCROSS:
+		#define FLAME_THRESHOLD2 50
+		// do some cheat protection
+
+			if ( enemy->s.weapon != WP_HOLYCROSS ) {
+				break;
+			}
+			if ( !( enemy->client->buttons & BUTTON_ATTACK ) ) {
+				break;
+			}
+
+		if (   
+				( ent->aiCharacter != AICHAR_ZOMBIE ) &&
+				( ent->aiCharacter != AICHAR_WARZOMBIE ) &&
+				( ent->aiCharacter != AICHAR_HELGA ) &&
+				( ent->aiCharacter != AICHAR_HEINRICH )) {
+			break;
+		}
+
+		if ( ent->takedamage /*&& !AICast_NoFlameDamage(ent->s.number)*/ ) {
+			VectorSubtract( ent->r.currentOrigin, enemy->r.currentOrigin, vec );
+			VectorNormalize( vec );
+			if ( !( enemy->r.svFlags & SVF_CASTAI ) ) {
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_HOLYCROSS].playerDamage, 0, MOD_HOLYCROSS );
+			} else {
+				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_HOLYCROSS].aiDamage, 0, MOD_HOLYCROSS );
+			}
+
+					// Ridah, make em burn
+			if ( ent->client && ( /*g_gametype.integer != GT_SINGLE_PLAYER ||*/ !( ent->r.svFlags & SVF_CASTAI ) || ent->health <= 0 || ent->flameQuota > FLAME_THRESHOLD2 ) ) {
+				if ( ent->s.onFireEnd < level.time ) {
+					ent->s.onFireStart = level.time;
+				}
+				if ( ent->health <= 0 || !( ent->r.svFlags & SVF_CASTAI ) ) {
+					if ( ent->r.svFlags & SVF_CASTAI ) {
+						ent->s.onFireEnd = level.time + 6000;
+					} else {
+						ent->s.onFireEnd = level.time + FIRE_FLASH_TIME;
+					}
+				} else {
+					ent->s.onFireEnd = level.time + 99999;  // make sure it goes for longer than they need to die
+				}
+				ent->flameBurnEnt = enemy->s.number;
+				// add to playerState for client-side effect
+				ent->client->ps.onFireStart = level.time;
+			}
+		}
+
 		break;
 	case CLDMG_FLAMETHROWER:
 

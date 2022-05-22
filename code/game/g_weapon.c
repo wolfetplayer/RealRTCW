@@ -849,7 +849,6 @@ void Tesla_Fire( gentity_t *ent ) {
 }
 
 
-
 void RubbleFlagCheck( gentity_t *ent, trace_t tr ) {
 #if 0 // (SA) moving client-side
 	qboolean is_valid = qfalse;
@@ -2073,6 +2072,8 @@ void FireWeapon( gentity_t *ent ) {
 		Weapon_Gauntlet( ent );
 		break;
 
+	case WP_HOLYCROSS:
+		break;
 	case WP_MONSTER_ATTACK1:
 		switch ( ent->aiCharacter ) {
 		case AICHAR_WARZOMBIE:

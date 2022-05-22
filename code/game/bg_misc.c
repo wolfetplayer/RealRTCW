@@ -3301,7 +3301,100 @@ model="models/powerups/holdable/zemphr_book.md3"
 	//
 	// POWERUP ITEMS
 	//
+/*QUAKED item_quad (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_quad",
+		"sound/items/quaddamage.wav",
+		{
+		"models/powerups/instant/quad.md3",
+		0, 
+		0
+		},
+		"",              
+		"Quad Damage",       
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_QUAD,
+		0,
+		0,
+		"",                            
+		"sound/items/damage2.wav sound/items/damage3.wav",   
+		{0,0,0,0,0}
+	},
 
+	/*QUAKED item_haste (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_haste",
+		"sound/items/haste.wav",
+		{
+		"models/powerups/instant/haste.md3",
+		0, 
+		0
+		},
+		"",                    
+		"Haste",     
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_HASTE,
+		0,
+		0,
+		"",                          
+		"",   
+		{0,0,0,0,0}
+	},
+
+
+		/*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_enviro",
+		"sound/items/protect.wav",
+		{
+		"models/powerups/instant/enviro.md3",
+		0, 
+		0
+		},
+		"",                             
+		"Battle Suit",     
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_BATTLESUIT,
+		0,
+		0,
+		"",                          
+		"sound/items/airout.wav sound/items/protect3.wav",   
+		{0,0,0,0,0}
+	},
+
+
+
+/*QUAKED item_invis (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_invis",
+		"sound/items/invisibility.wav",
+		{
+		"models/powerups/instant/invis.md3",
+		0, 
+		0
+		},
+		"",                               
+		"Invisibility",     
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_INVIS,
+		0,
+		0,
+		"",                          
+		"",   
+		{0,0,0,0,0}
+	},
 
 /*QUAKED key_binocs (1 1 0) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 Binoculars.

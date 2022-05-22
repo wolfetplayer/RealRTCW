@@ -1069,7 +1069,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		if ( dflags & DAMAGE_RADIUS ) {
 			return;
 		}
-		damage *= 0.5;
+		damage *= 0.1;
 	}
 
 	// always give half damage if hurting self

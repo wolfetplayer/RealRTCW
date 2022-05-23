@@ -74,6 +74,7 @@ qboolean AICast_ScriptAction_GiveArmor( cast_state_t *cs, char *params );		//---
 qboolean AICast_ScriptAction_SetArmor( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_SuggestWeapon( cast_state_t *cs, char *params );	//----(SA)	added
 qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GiveInventory( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_NoRespawn( cast_state_t *cs, char *params );
@@ -291,6 +292,7 @@ cast_script_stack_action_t scriptActions[] =
 	{"setarmor",     AICast_ScriptAction_SetArmor},					//----(SA)	added
 	{"giveinventory",    AICast_ScriptAction_GiveInventory},
 	{"giveweapon",       AICast_ScriptAction_GiveWeapon},
+	{"giveweaponfull",   AICast_ScriptAction_GiveWeaponFull},
 	{"takeweapon",       AICast_ScriptAction_TakeWeapon},
 	{"norespawn",       AICast_ScriptAction_NoRespawn},
 	{"randomrespawn",       AICast_ScriptAction_RandomRespawn},

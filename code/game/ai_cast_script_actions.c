@@ -1345,8 +1345,93 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		// knife gets infinite ammo too
 		if ( !Q_strncasecmp( params, "monsterattack", 13 ) || weapon == WP_KNIFE || weapon == WP_DAGGER ) {
 			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
-			Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );      //----(SA)	added
+			Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );    
 		}
+		// conditional flags
+		if ( ent->aiCharacter == AICHAR_ZOMBIE ) {
+			if ( COM_BitCheck( ent->client->ps.weapons, WP_MONSTER_ATTACK1 ) ) {
+				cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
+				SET_FLAMING_ZOMBIE( ent->s, 1 );
+			}
+		}
+	} else {
+		G_Error( "AI Scripting: giveweapon %s, unknown weapon", params );
+	}
+
+	return qtrue;
+}
+
+/*
+=================
+AICast_ScriptAction_GiveWeaponFull
+
+  syntax: giveweaponfull <pickupname>
+=================
+*/
+qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
+	int weapon;
+	int i;
+	gentity_t   *ent = &g_entities[cs->entityNum];
+
+	weapon = WP_NONE;
+
+	for ( i = 1; bg_itemlist[i].classname; i++ )
+	{
+		//----(SA)	first try the name they see in the editor, then the pickup name
+		if ( !Q_strcasecmp( params, bg_itemlist[i].classname ) ) {
+			weapon = bg_itemlist[i].giTag;
+			break;
+		}
+
+		if ( !Q_strcasecmp( params, bg_itemlist[i].pickup_name ) ) {
+			weapon = bg_itemlist[i].giTag;
+		}
+	}
+
+	if ( weapon == WP_COLT ) {
+		// if you had the colt already, now you've got two!
+		if ( COM_BitCheck( g_entities[cs->entityNum].client->ps.weapons, WP_COLT ) ) {
+			weapon = WP_AKIMBO;
+		}
+	}
+
+	if ( weapon != WP_NONE ) {
+		COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, weapon );
+
+//----(SA)	some weapons always go together (and they share a clip, so this is okay)
+		if ( weapon == WP_GARAND ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_SNOOPERSCOPE );
+		}
+		if ( weapon == WP_SNOOPERSCOPE ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_GARAND );
+		}
+		if ( weapon == WP_FG42 ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_FG42SCOPE );
+		}
+		if ( weapon == WP_SNIPERRIFLE ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
+		}
+		if ( weapon == WP_DELISLESCOPE ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLE );
+		}
+//----(SA)	end
+
+        // giveweaponfull gives you max ammo and fills your clip for all weapons
+		g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
+		Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );
+		// and also selects this weapon
+		if ( cs->bs ) {
+			cs->weaponNum = weapon;
+		}
+		cs->castScriptStatus.scriptFlags |= SFL_NOCHANGEWEAPON;
+
+		g_entities[cs->entityNum].client->ps.weapon = weapon;
+		g_entities[cs->entityNum].client->ps.weaponstate = WEAPON_READY;
+
+		if ( !cs->aiCharacter ) {  // only do this for player
+			g_entities[cs->entityNum].client->ps.weaponTime = 750;  // (SA) HACK: FIXME: TODO: delay to catch initial weapon reload
+		}    
+		
 		// conditional flags
 		if ( ent->aiCharacter == AICHAR_ZOMBIE ) {
 			if ( COM_BitCheck( ent->client->ps.weapons, WP_MONSTER_ATTACK1 ) ) {

@@ -240,6 +240,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_RandomRespawn", (byte *)AICast_ScriptAction_RandomRespawn},
 {"AICast_ScriptAction_NoRespawn", (byte *)AICast_ScriptAction_NoRespawn},
 {"AICast_ScriptAction_GiveWeapon", (byte *)AICast_ScriptAction_GiveWeapon},
+{"AICast_ScriptAction_GiveWeaponFull", (byte *)AICast_ScriptAction_GiveWeaponFull},
 {"AICast_ScriptAction_GiveArmor", (byte *)AICast_ScriptAction_GiveArmor},
 {"AICast_ScriptAction_SetArmor", (byte *)AICast_ScriptAction_SetArmor},
 {"AICast_ScriptAction_SelectWeapon", (byte *)AICast_ScriptAction_SelectWeapon},

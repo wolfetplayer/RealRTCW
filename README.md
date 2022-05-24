@@ -36,6 +36,7 @@ New CVARs:
 * g_fullarsenal - affects set of weapons player will recieve during campaign
 * g_fireonthemove - allows AI to shoot rifles on the move
 * g_weaponfalloff - enables damage falloff for SMGs and pistols
+* g_aicanheadshot - allows AI to do headshots
 
 The original id software readme that accompanied the RTCW source release is named README.txt and is contained within the source tree of both MP and SP games.
 

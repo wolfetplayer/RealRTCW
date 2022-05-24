@@ -579,18 +579,22 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 		return qfalse;
 	}
 
-	if ( attacker->aiCharacter ) {
-		/* ai's are always allowed headshots from these weapons
-		if ( mod == MOD_SNIPERRIFLE ||
-			 mod == MOD_SNOOPERSCOPE ) {
-			return qtrue;
-		}
-          RealRTCW removed this,cause its overpowered
-		if ( g_gameskill.integer != GSKILL_MAX ) { 
-			 ai's allowed headshots in skill==GSKILL_MAX
-			return qfalse;
-		}*/
+    if (g_aicanheadshot.integer == 1) {
+	    if ( attacker->aiCharacter ) {
+		// ai's are always allowed headshots from these weapons
+		   if ( mod == MOD_SNIPERRIFLE ||
+			    mod == MOD_SNOOPERSCOPE ||
+			    mod == MOD_DELISLESCOPE ||
+			    mod == MOD_MAUSER ) {
+			    return qtrue;
+		        }
 		return qfalse;
+	    }
+	} else {
+		if ( attacker->aiCharacter ) 
+		{
+		return qfalse; // no ai headshots at all if cvar is off
+	    }
 	}
 
 	switch ( targ->aiCharacter ) {

@@ -1375,6 +1375,12 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
 
 	weapon = WP_NONE;
 
+	// clear out all weapons
+	memset( g_entities[cs->entityNum].client->ps.weapons, 0, sizeof( g_entities[cs->entityNum].client->ps.weapons ) );
+	memset( g_entities[cs->entityNum].client->ps.ammo, 0, sizeof( g_entities[cs->entityNum].client->ps.ammo ) );
+	memset( g_entities[cs->entityNum].client->ps.ammoclip, 0, sizeof( g_entities[cs->entityNum].client->ps.ammoclip ) );
+	cs->weaponNum = WP_NONE;
+
 	for ( i = 1; bg_itemlist[i].classname; i++ )
 	{
 		//----(SA)	first try the name they see in the editor, then the pickup name

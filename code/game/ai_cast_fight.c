@@ -1910,7 +1910,14 @@ float AICast_GetAccuracy( int entnum ) {
 
 	cs = AICast_GetCastState( entnum );
 	// the more they stay in our sights, the more accurate we get
-	acc = cs->attributes[AIM_ACCURACY];
+    
+	// RealRTCW - extra accuracy for guys with bolt action rifles
+	if (cs->weaponNum == WP_MAUSER || cs->weaponNum == WP_SNIPERRIFLE || cs->weaponNum == WP_DELISLE || cs->weaponNum == WP_DELISLESCOPE || cs->weaponNum == WP_GARAND || cs->weaponNum == WP_SNOOPERSCOPE || cs->weaponNum == WP_MOSIN ) {
+		acc = cs->attributes[AIM_ACCURACY] + 0.2;
+	    } else {
+	    acc = cs->attributes[AIM_ACCURACY];
+	    }
+	
 
 	if ( AICAST_VARIABLE_ACC_ENABLED ) {
 		if ( cs->enemyNum >= 0 ) {

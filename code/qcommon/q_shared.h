@@ -87,7 +87,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "3.2" // iortcw 1.51
+  #define PRODUCT_VERSION "4.0" // iortcw 1.51
 #endif
 
 #ifndef PRODUCT_DATE

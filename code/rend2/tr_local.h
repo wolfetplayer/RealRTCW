@@ -113,6 +113,7 @@ typedef enum
 	IMGFLAG_NOLIGHTSCALE   = 0x0020,
 	IMGFLAG_CLAMPTOEDGE    = 0x0040,
 	IMGFLAG_GENNORMALMAP   = 0x0080,
+	IMGFLAG_NOSCALE        = 0x0100,
 } imgFlags_t;
 
 typedef struct image_s {

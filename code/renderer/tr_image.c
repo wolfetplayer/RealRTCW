@@ -731,7 +731,7 @@ static void Upload32(   unsigned *data,
 						qboolean lightMap,
 						int *format,
 						int *pUploadWidth, int *pUploadHeight,
-						qboolean noCompress ) {
+						qboolean noCompress, image_t *image ) {
 	int samples;
 	int scaled_width, scaled_height;
 	unsigned    *scaledBuffer = NULL;
@@ -772,6 +772,14 @@ static void Upload32(   unsigned *data,
 		}
 	}
 #endif
+
+	if ( image->flags & IMGFLAG_NOSCALE ) {
+		//
+		// keep original dimensions
+		//
+		scaled_width = width;
+		scaled_height = height;
+	} else {
 	//
 	// convert to exact power of 2 sizes
 	//
@@ -783,6 +791,7 @@ static void Upload32(   unsigned *data,
 		scaled_width >>= 1;
 	if ( r_roundImagesDown->integer && scaled_height > height )
 		scaled_height >>= 1;
+	}
 
 	if ( scaled_width != width || scaled_height != height ) {
 		resampledBuffer = ri.Hunk_AllocateTempMemory( scaled_width * scaled_height * 4 );
@@ -1227,7 +1236,7 @@ image_t *R_CreateImageExt( const char *name, byte *pic, int width, int height, i
 			  &image->internalFormat,
 			  &image->uploadWidth,
 			  &image->uploadHeight,
-			  noCompress );
+			  noCompress, image );
 
 	qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glWrapClampMode );
 	qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glWrapClampMode );

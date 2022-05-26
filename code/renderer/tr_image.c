@@ -1205,6 +1205,14 @@ image_t *R_CreateImageExt( const char *name, byte *pic, int width, int height, i
 	image->type = type;
 	image->flags = flags;
 
+	if ( !noCompress && strstr( name, "levelshots" ) ) {    // don't rescale levelshots
+		image->flags |= IMGFLAG_NOSCALE;
+	}
+
+	if ( !noCompress && strstr( name, "ui" ) ) {    // don't rescale ui
+		image->flags |= IMGFLAG_NOSCALE;
+	}
+
 	strcpy( image->imgName, name );
 
 	image->width = width;

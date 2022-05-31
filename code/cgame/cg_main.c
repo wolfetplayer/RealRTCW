@@ -305,6 +305,10 @@ vmCvar_t cg_gunPosLock;
 vmCvar_t cg_fireonthemove;
 vmCvar_t cg_aicanheadshot;
 
+vmCvar_t cg_spawndogs;
+vmCvar_t cg_spawnpriests;
+vmCvar_t cg_spawnxshepherds;
+
 typedef struct {
 	vmCvar_t    *vmCvar;
 	char        *cvarName;
@@ -492,6 +496,10 @@ cvarTable_t cvarTable[] = {
 
 	{ &cg_fireonthemove, "g_fireonthemove", "0", 0 }, //----(SA) added
 	{ &cg_aicanheadshot, "g_aicanheadshot", "0", 0 }, //----(SA) added
+
+	{ &cg_spawndogs, "g_spawndogs", "0", 0 }, 
+	{ &cg_spawnpriests, "g_spawnpriests", "0", 0 }, 
+	{ &cg_spawnxshepherds, "g_spawnxshepherds", "0", 0 }, 
 	
 
 	// JPW NERVE

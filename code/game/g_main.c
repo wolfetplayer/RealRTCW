@@ -144,6 +144,9 @@ vmCvar_t g_medicChargeTime;
 vmCvar_t g_engineerChargeTime;
 vmCvar_t g_jumptime;
 vmCvar_t g_fireonthemove;
+vmCvar_t g_spawndogs;
+vmCvar_t g_spawnpriests;
+vmCvar_t g_spawnxshepherds;
 vmCvar_t g_aicanheadshot;
 vmCvar_t g_LTChargeTime;
 vmCvar_t g_soldierChargeTime;
@@ -191,6 +194,9 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_fireonthemove, "g_fireonthemove", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
+	{ &g_spawndogs, "g_spawndogs", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
+	{ &g_spawnpriests, "g_spawnpriests", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
+	{ &g_spawnxshepherds, "g_xshepherds", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
 	{ &g_aicanheadshot, "g_aicanheadshot", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
 	{ &g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },

@@ -887,6 +887,51 @@ char *AIFunc_BlackGuardAttack1( cast_state_t *cs ) {
 	return NULL;
 }
 
+//=================================================================================
+//
+// XSHEPHERD BITE ATTACK
+//
+//=================================================================================
+
+#define XSHEPHERD_BITE_DELAY   300
+#define XSHEPHERD_BITE_RANGE   XSHEPHERD_MELEE_RANGE + 16
+#define XSHEPHERD_BITE_DAMAGE  25
+
+char *AIFunc_xshepherdbite( cast_state_t *cs ) {
+	gentity_t *ent = &g_entities[cs->entityNum];
+	trace_t *tr;
+	vec3_t fwd;
+
+	if ( !ent->client->ps.legsTimer ) {
+		return AIFunc_DefaultStart( cs );
+	}
+	//
+	if ( cs->enemyNum < 0 ) {
+		return NULL;
+	}
+	// time for the melee?
+	if ( !( cs->aiFlags & AIFL_MISCFLAG1 ) ) {
+		// face them
+		AICast_AimAtEnemy( cs );
+		// ready for damage?
+		if ( cs->thinkFuncChangeTime < level.time - XSHEPHERD_BITE_DELAY ) {
+			cs->aiFlags |= AIFL_MISCFLAG1;
+			// keep checking for impact status
+			tr = CheckMeleeAttack( ent, XSHEPHERD_BITE_RANGE, qfalse );
+			// do melee damage?
+			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
+				AngleVectors( cs->viewangles, fwd, NULL, NULL );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, XSHEPHERD_BITE_DAMAGE, 0, MOD_GAUNTLET );
+				// throw them in direction of impact
+				fwd[2] = 0.5;
+				VectorMA( g_entities[cs->enemyNum].client->ps.velocity, 300, fwd, g_entities[cs->enemyNum].client->ps.velocity );
+			}
+		}
+	}
+
+	return NULL;
+}
+
 char *AIFunc_BlackGuardAttack1Start( cast_state_t *cs ) {
 	gentity_t   *ent = &g_entities[cs->entityNum];
 	//
@@ -903,6 +948,24 @@ char *AIFunc_BlackGuardAttack1Start( cast_state_t *cs ) {
 	cs->aifunc = AIFunc_BlackGuardAttack1;
 	return "AIFunc_BlackGuardAttack1";
 }
+
+char *AIFunc_xshepherdbiteStart( cast_state_t *cs ) {
+	gentity_t   *ent = &g_entities[cs->entityNum];
+	//
+	cs->weaponFireTimes[cs->weaponNum] = level.time;
+	// face them
+	AICast_AimAtEnemy( cs );
+	// audible sound
+	AIChar_AttackSound( cs );
+	// start the animation
+	BG_PlayAnimName( &ent->client->ps, "attack_jump", ANIM_BP_BOTH, qtrue, qfalse, qtrue );
+	// clear flags
+	cs->aiFlags &= ~( AIFL_MISCFLAG1 | AIFL_MISCFLAG2 );
+	//
+	cs->aifunc = AIFunc_xshepherdbite;
+	return "AIFunc_xshepherdbite";
+}
+
 
 
 //=================================================================================

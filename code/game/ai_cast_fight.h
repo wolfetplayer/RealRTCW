@@ -39,4 +39,5 @@ If you have questions concerning this license or the applicable additional terms
 
 #define LOPER_GROUND_RANGE              200
 #define BLACKGUARD_MELEE_RANGE          48
+#define XSHEPHERD_MELEE_RANGE          48
 #define REJECT_MELEE_RANGE              90  //----(SA)	added

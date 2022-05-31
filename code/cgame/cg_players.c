@@ -4872,6 +4872,7 @@ void CG_Player( centity_t *cent ) {
 				case AICHAR_ZOMBIE:
 				case AICHAR_LOPER:
 				case AICHAR_DOG:
+				case AICHAR_XSHEPHERD:
 					talk_frame = (int)( (float)talk_frame * 1.2 );
 					closed = qfalse;
 					break;

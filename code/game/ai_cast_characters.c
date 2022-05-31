@@ -504,6 +504,61 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		"sound/player/dog/pant.wav",
 		AISTATE_RELAXED
 	},
+    //AICHAR_PRIEST
+	{
+		"Priestr",
+		{ // Default
+			0
+		},
+		{
+			"priestSightPlayer",
+			"priestAttackPlayer",
+			"priestOrders",
+			"priestDeath",
+			"priestSilentDeath",	//----(SA)	added
+			"priestFlameDeath",	//----(SA)	added
+			"priestPain",
+			"priestStay",			// stay - you're told to stay put
+			"priestFollow",		// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"priestOrdersDeny",	// deny - refuse orders (doing something else)
+		},
+		AITEAM_NAZI,
+		"priest/default",
+		{WP_TESLA},
+		BBOX_SMALL, {32,48},
+		AIFL_NO_RELOAD | AIFL_NO_FLAME_DAMAGE | AIFL_NO_TESLA_DAMAGE,
+		0, 0, 0,
+		NULL,
+		AISTATE_ALERT
+	},
+
+		//AICHAR_XSHEPHERD
+	{
+		"xshepherd",
+		{ // Default
+			0
+		},
+		{
+			"xshepherdSightPlayer",
+			"xshepherdAttackPlayer",
+			"xshepherdOrders",
+			"xshepherdDeath",
+			"xshepherdSilentDeath",	//----(SA)	added
+			"xshepherdFlameDeath",		//----(SA)	added
+			"xshepherdPain",
+			"xshepherdStay",			// stay - you're told to stay put
+			"xshepherdFollow",			// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"xshepherdOrdersDeny",		// deny - refuse orders (doing something else)
+		},
+		AITEAM_NAZI,
+		"xshepherd/default",
+		{WP_VENOM, WP_MONSTER_ATTACK1},	// attack1 is melee kick
+		BBOX_SMALL, {32,32},
+		AIFL_FLIP_ANIM | AIFL_STAND_IDLE2 | AIFL_NOLADDER | AIFL_NO_RELOAD,
+		AIFunc_xshepherdbiteStart, 0, 0,
+		NULL,
+		AISTATE_RELAXED
+	},
 };
 //---------------------------------------------------------------------------
 
@@ -971,6 +1026,7 @@ void AIChar_spawn( gentity_t *ent ) {
 		G_FreeEntity( ent );
 		return;
 	}
+
 	// copy any character-specific information to the new entity (like editor fields, etc)
 	//
 	// copy this across so killing ai can trigger a target
@@ -1341,6 +1397,41 @@ void SP_ai_supersoldier( gentity_t *ent ) {
 	AICast_DelayedSpawnCast( ent, AICHAR_SUPERSOLDIER );
 }
 
+
+//----------------------------------------------------------------------------------------------------------------------------
+/*QUAKED ai_priest (1 0.25 0) (-32 -32 -24) (32 32 64) TriggerSpawn NoRevive
+priest entity
+"skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'priest/default' is used)
+"head" the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)
+"ainame" name of AI
+*/
+
+/*
+============
+SP_ai_priest
+============
+*/
+void SP_ai_priest( gentity_t *ent ) {
+	AICast_DelayedSpawnCast( ent, AICHAR_PRIEST );
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+/*QUAKED ai_xshepherd (1 0.25 0) (-32 -32 -24) (32 32 64) TriggerSpawn NoRevive
+priest entity
+"skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'xshepherd/default' is used)
+"head" the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)
+"ainame" name of AI
+*/
+
+/*
+============
+SP_ai_xshepherd
+============
+*/
+void SP_ai_xshepherd( gentity_t *ent ) {
+	AICast_DelayedSpawnCast( ent, AICHAR_XSHEPHERD );
+}
+
 //----------------------------------------------------------------------------------------------------------------------------
 /*QUAKED ai_protosoldier (1 0.25 0) (-32 -32 -24) (32 32 64) TriggerSpawn NoRevive
 protosoldier entity
@@ -1428,6 +1519,8 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_RUSSIAN:           return "russian.aidefaults";
 		case AICHAR_CIVILIAN:          return "civilian.aidefaults";
 		case AICHAR_DOG:               return "dog.aidefaults";
+		case AICHAR_PRIEST:            return "priest.aidefaults";
+		case AICHAR_XSHEPHERD:         return "xshepherd.aidefaults";
 		case AICHAR_NONE:              return "";
 		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
     }

@@ -689,6 +689,7 @@ char    *AIFunc_WarriorZombieSightStart( cast_state_t *cs );
 char    *AIFunc_WarriorZombieDefenseStart( cast_state_t *cs );
 char    * AIFunc_DogAttackStart(cast_state_t* cs);
 char    * AIFunc_DogBarkStart(cast_state_t* cs);
+char    *AIFunc_xshepherdbiteStart( cast_state_t *cs );
 //
 // ai_cast_func_boss1.c
 char    *AIFunc_Helga_SpiritAttack_Start( cast_state_t *cs );

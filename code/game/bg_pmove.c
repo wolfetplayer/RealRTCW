@@ -479,6 +479,10 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 		scale *= 1.1;
 	}
 
+	if ( pm->ps->aiChar == AICHAR_XSHEPHERD ) {
+		scale *= 1.5;
+	}
+
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
 		scale *= 1.3;
 	}
@@ -3851,7 +3855,7 @@ void PM_CheckLadderMove( void ) {
 	//if (pm->ps->pm_flags & PM_DEAD)
 	//	return;
 
-		if (pm->ps->aiChar == AICHAR_DOG) {
+		if (pm->ps->aiChar == AICHAR_DOG || pm->ps->aiChar == AICHAR_XSHEPHERD ) {
 		pml.ladder = qfalse;
 		pm->ps->pm_flags &= ~PMF_LADDER;    // clear ladder bit
 		ladderforward = qfalse;
@@ -3972,7 +3976,7 @@ void PM_LadderMove( void ) {
 	vec3_t wishdir, wishvel;
 	float upscale;
 
-	if (pm->ps->aiChar == AICHAR_DOG) {
+	if (pm->ps->aiChar == AICHAR_DOG || pm->ps->aiChar == AICHAR_XSHEPHERD) {
 		return;
 	}
 

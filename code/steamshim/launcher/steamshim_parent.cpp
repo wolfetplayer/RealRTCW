@@ -1,4 +1,4 @@
-#define GAME_LAUNCH_NAME "./RealRTCW.exe"
+#define GAME_LAUNCH_NAME "./RealRTCW.x64.exe"
 #ifndef GAME_LAUNCH_NAME
 #error Please define your game exe name.
 #endif
@@ -369,6 +369,7 @@ typedef enum ShimCmd
     SHIMCMD_SETSTATF,
     SHIMCMD_GETSTATF,
     SHIMCMD_RESTARTAPP,
+    SHIMCMD_SETRICHPRESENCE,
 } ShimCmd;
 
 typedef enum ShimEvent
@@ -384,6 +385,7 @@ typedef enum ShimEvent
     SHIMEVENT_SETSTATF,
     SHIMEVENT_GETSTATF,
     SHIMEVENT_APPRESTARTED,
+    SHIMEVENT_SETRICHPRESENCE,
 } ShimEvent;
 
 static bool write1ByteCmd(PipeType fd, const uint8 b1)
@@ -482,6 +484,16 @@ static bool writeRestartResult(PipeType fd, const ShimEvent ev, const bool resul
     return writePipe(fd, buf, buf[0]);
 } // writeRestartResult
 
+static bool writeSetRichPresenceResult(PipeType fd, const ShimEvent ev, const bool result)
+{
+    uint8 buf[3];
+    uint8* ptr = buf + 1;
+    *(ptr++) = (uint8)ev;
+    *(ptr++) = result ? 1 : 0;
+    buf[0] = (uint8)(ptr - buf);
+    return writePipe(fd, buf, buf[0]);
+} // writeSetRichPresenceResult
+
 static inline bool writeSetStatI(PipeType fd, const char *name, const int32 val, const bool okay)
 {
     dbgpipe("Parent sending SHIMEVENT_SETSTATI('%s', val %d, %sokay).\n", name, (int) val, okay ? "" : "!");
@@ -508,9 +520,15 @@ static inline bool writeGetStatF(PipeType fd, const char *name, const float val,
 
 static inline bool writeRestartApp(PipeType fd, const bool result)
 {
-    dbgpipe("Parent sending SHIMEVENT_APPRESTARTED(%result).\n", result);
+    dbgpipe("Parent sending SHIMEVENT_APPRESTARTED(%sokay).\n", result ? "" : "!");
     return writeRestartResult(fd, SHIMEVENT_APPRESTARTED, result);
 } // writeRestartApp
+
+static inline bool writeSetRichPresence(PipeType fd, const bool result)
+{
+    dbgpipe("Parent sending SHIMEVENT_SETSTATUS(%sokay).\n", result ? "" : "!");
+    return writeSetRichPresenceResult(fd, SHIMEVENT_SETRICHPRESENCE, result);
+} // writeSetRichPresence
 
 
 SteamBridge::SteamBridge(PipeType _fd)
@@ -556,6 +574,8 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd)
     PRINTGOTCMD(SHIMCMD_GETSTATI);
     PRINTGOTCMD(SHIMCMD_SETSTATF);
     PRINTGOTCMD(SHIMCMD_GETSTATF);
+    PRINTGOTCMD(SHIMCMD_RESTARTAPP);
+    PRINTGOTCMD(SHIMCMD_SETRICHPRESENCE);
     #undef PRINTGOTCMD
     else printf("Parent got unknown shimcmd %d.\n", (int) cmd);
     #endif
@@ -683,6 +703,25 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd)
                 writeRestartApp(fd, result);
             }
             break;
+
+        case SHIMCMD_SETRICHPRESENCE:
+            if (buflen > 4)
+            {
+                char key[64], value[64];
+                
+                strcpy(key, (char*)buf);
+                buf += strlen(key) + 1;
+
+                strcpy(value, (char*)buf);
+                buf += strlen(value) + 1;
+
+                bool result = SteamFriends()->SetRichPresence(key, value);
+
+                dbgpipe("SetRichPresence(%s, %s)\n", key, value);
+
+                writeSetRichPresence(fd, result);
+            }
+            break;
     } // switch
 
     return true;  // keep going.
@@ -761,6 +800,8 @@ static bool initSteamworks(PipeType fd)
     GAppID = GSteamUtils ? GSteamUtils->GetAppID() : 0;
 	GUserID = GSteamUser ? GSteamUser->GetSteamID().ConvertToUint64() : 0;
     GSteamBridge = new SteamBridge(fd);
+
+    SteamFriends()->SetRichPresence("steam_display", "#status_mainmenu");
 
     return 1;
 } // initSteamworks

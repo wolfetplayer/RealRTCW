@@ -160,6 +160,7 @@ vmCvar_t g_localTeamPref;
 vmCvar_t g_bodysink;
 vmCvar_t g_weaponfalloff;
 
+vmCvar_t g_mapname;
 
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -287,7 +288,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse },
 
 	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
-	{ &g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE }
+	{ &g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE },
+	{ &g_mapname, "mapname", "", CVAR_ARCHIVE }
 };
 
 static int gameCvarTableSize = ARRAY_LEN( gameCvarTable );
@@ -1165,6 +1167,17 @@ int G_SendMissionStats( void ) {
 	return canExit;
 }
 
+inline const char* G_GameSkillIntToStr( int skill ) {
+	switch ( skill ) {
+		case GSKILL_EASY:		return "easy";
+		case GSKILL_MEDIUM:		return "medium";
+		case GSKILL_HARD:		return "hard";
+		case GSKILL_MAX:		return "max";
+		case GSKILL_REALISM:	return "realism";
+		default:				return "";
+	}
+}
+
 /*
 ============
 G_InitGame
@@ -1299,6 +1312,14 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	}
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );
+
+	if ( !strcmp( g_mapname.string, "cutscene1" ) || !strcmp( g_mapname.string, "cutscene2" ) ) {
+		return;
+	}
+
+	steamSetRichPresence( "Mapname", g_mapname.string );
+	steamSetRichPresence( "Skill", G_GameSkillIntToStr( g_gameskill.integer ) ) ;
+	steamSetRichPresence( "steam_display", "#status_map" );
 }
 
 
@@ -1341,6 +1362,10 @@ void G_ShutdownGame( int restart ) {
 
 	if ( trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
 		BotAIShutdown( restart );
+	}
+
+	if ( !restart ) {
+		steamSetRichPresence( "steam_display", "#status_mainmenu" );
 	}
 }
 

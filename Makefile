@@ -1778,9 +1778,6 @@ $(Q3ASM): $(Q3ASMOBJ)
 # CLIENT/SERVER
 #############################################################################
 Q3OBJ = \
-  $(B)/client/steam.o \
-  $(B)/client/steamshim_child.o \
-  \
   $(B)/client/cl_cgame.o \
   $(B)/client/cl_cin.o \
   $(B)/client/cl_console.o \
@@ -2418,9 +2415,6 @@ endif
 #############################################################################
 
 Q3DOBJ = \
-  $(B)/ded/steam.o \
-  $(B)/ded/steamshim_child.o \
-  \
   $(B)/ded/sv_bot.o \
   $(B)/ded/sv_client.o \
   $(B)/ded/sv_ccmds.o \
@@ -2724,30 +2718,6 @@ $(B)/$(BASEGAME)/vm/ui.sp.qvm: $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm $(Q3ASM)
 #############################################################################
 ## STEAM INTEGRATION
 #############################################################################
-
-$(B)/client/%.o: $(STEAMSHIMDIR)/%.c
-	$(DO_CC)
-
-$(B)/client/%.o: $(STEAMSHIMDIR)/%.m
-	$(DO_CC)
-
-$(B)/client/%.o: $(STEAMDIR)/%.c
-	$(DO_CC)
-
-$(B)/client/%.o: $(STEAMDIR)/%.m
-	$(DO_CC)
-
-$(B)/ded/%.o: $(STEAMSHIMDIR)/%.c
-	$(DO_DED_CC)
-
-$(B)/ded/%.o: $(STEAMSHIMDIR)/%.m
-	$(DO_DED_CC)
-
-$(B)/ded/%.o: $(STEAMDIR)/%.c
-	$(DO_DED_CC)
-
-$(B)/ded/%.o: $(STEAMDIR)/%.m
-	$(DO_DED_CC)
 
 $(B)/$(BASEGAME)/game/%.o: $(STEAMSHIMDIR)/%.c
 	$(DO_GAME_CC)

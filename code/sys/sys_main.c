@@ -695,8 +695,6 @@ int main( int argc, char **argv )
 	int   i;
 	char  commandLine[ MAX_STRING_CHARS ] = { 0 };
 
-	steamInit();
-
 	// steamSetAchievement("ACH_W3D_2"); // set achievement example
 
 
@@ -768,10 +766,9 @@ int main( int argc, char **argv )
 	signal( SIGTERM, Sys_SigHandler );
 	signal( SIGINT, Sys_SigHandler );
 
-	while( steamAlive() )
+	while( 1 )
 	{
 		Com_Frame( );
-		steamRun();
 	}
 
 	return 0;

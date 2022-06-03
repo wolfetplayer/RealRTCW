@@ -39,6 +39,11 @@ int steamAlive()
 	return STEAMSHIM_alive();
 }
 
+void steamSetRichPresence(const char* key, const char* value)
+{
+	STEAMSHIM_setRichPresence(key, value);
+}
+
 #else
 
 void steamRun(void)
@@ -59,6 +64,11 @@ void steamSetAchievement(const char* id)
 int steamAlive()
 {
 	return 1;
+}
+
+void steamSetRichPresence(const char* key, const char* value)
+{
+	return;
 }
 
 #endif

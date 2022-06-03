@@ -189,6 +189,7 @@ typedef enum ShimCmd
     SHIMCMD_SETSTATF,
     SHIMCMD_GETSTATF,
     SHIMCMD_RESTARTAPP,
+    SHIMCMD_SETRICHPRESENCE,
 } ShimCmd;
 
 static int write1ByteCmd(const uint8 b1)
@@ -311,6 +312,8 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
     PRINTGOTEVENT(SHIMEVENT_GETSTATI);
     PRINTGOTEVENT(SHIMEVENT_SETSTATF);
     PRINTGOTEVENT(SHIMEVENT_GETSTATF);
+    PRINTGOTEVENT(SHIMEVENT_APPRESTARTED);
+    PRINTGOTEVENT(SHIMEVENT_SETRICHPRESENCE);
     #undef PRINTGOTEVENT
     else printf("Child got unknown shimevent %d.\n", (int) type);
     #endif
@@ -367,6 +370,12 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
 
         case SHIMEVENT_APPRESTARTED:
             event.okay = *(buf++) ? 1 : 0;
+            break;
+
+        case SHIMEVENT_SETRICHPRESENCE:
+            if (buflen < 2) return NULL;
+            event.okay = *(buf++) ? 1 : 0;
+            strcpy(event.name, (const char *) buf);
             break;
 
         default:  /* uh oh */
@@ -521,6 +530,21 @@ void STEAMSHIM_getStatF(const char *name)
     dbgpipe("Child sending SHIMCMD_GETSTATF('%s').\n", name);
     writeStatThing(SHIMCMD_GETSTATF, name, NULL, 0);
 } /* STEAMSHIM_getStatF */
+
+void STEAMSHIM_setRichPresence(const char* key, const char* value)
+{
+    uint8 buf[128 + 2];
+    uint8 *ptr = buf+1;
+    if (isDead()) return;
+    dbgpipe("Child sending SHIMCMD_SETRICHPRESENCE('%s', '%s').\n", key, value);
+    *(ptr++) = (uint8) SHIMCMD_SETRICHPRESENCE;
+    strcpy((char *) ptr, key);
+    ptr += strlen(key) + 1;
+    strcpy((char *) ptr, value);
+    ptr += strlen(value) + 1;
+    buf[0] = (uint8) ((ptr-1) - buf);
+    writePipe(GPipeWrite, buf, buf[0] + 1);
+} /* STEAMSHIM_setRichPresence */
 
 /* end of steamshim_child.c ... */
 

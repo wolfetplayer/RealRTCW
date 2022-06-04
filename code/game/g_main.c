@@ -1313,10 +1313,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );
 
-	if ( !strcmp( g_mapname.string, "cutscene1" ) || !strcmp( g_mapname.string, "cutscene2" ) ) {
-		return;
-	}
-
 	steamSetRichPresence( "Mapname", g_mapname.string );
 	steamSetRichPresence( "Skill", G_GameSkillIntToStr( g_gameskill.integer ) ) ;
 	steamSetRichPresence( "steam_display", "#status_map" );

@@ -1646,8 +1646,13 @@ qboolean AICast_ScriptAction_GiveInventory( cast_state_t *cs, char *params ) {
 
 	if ( item->giType == IT_KEY ) {
 		g_entities[cs->entityNum].client->ps.stats[STAT_KEYS] |= ( 1 << item->giTag );
-	} else if ( item->giType == IT_HOLDABLE )      {
-		// (SA) TODO
+	} else if ( item->giType == IT_HOLDABLE )  {
+	    if ( item->gameskillnumber[0] ) { 
+		g_entities[cs->entityNum].client->ps.holdable[item->giTag] += item->gameskillnumber[0];
+	    } else {
+		g_entities[cs->entityNum].client->ps.holdable[item->giTag] += 1;   // add default of 1
+	    }
+		g_entities[cs->entityNum].client->ps.stats[STAT_HOLDABLE_ITEM] |= ( 1 << item->giTag );
 	}
 
 	return qtrue;
@@ -2219,6 +2224,56 @@ qboolean AICast_ScriptAction_MissionFailed( cast_state_t *cs, char *params ) {
 
 /*
 =================
+AICast_ScriptAction_PrintBonus
+
+  syntax: printbonus
+=================
+*/
+qboolean AICast_ScriptAction_PrintBonus( cast_state_t *cs, char *params ) {
+	char *newstr;
+
+	newstr = va( "%s", params );
+
+	if ( !Q_stricmp( newstr, "weapon" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonusweapon" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "armor" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonusarmor" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "ammo" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonusammo" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "item" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonusitem" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "health" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonushealth" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "common" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonuscommon" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "multiple" ) ) { 
+		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+	    trap_SendServerCommand( -1, "cp bonusmultiple" ); 
+	}
+
+	return qtrue;
+}
+
+/*
+=================
 AICast_ScriptAction_ObjectivesNeeded
 
   syntax: objectivesneeded <num_objectives>
@@ -2646,6 +2701,7 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	if ( !silent && !endgame ) {
 		trap_SendServerCommand( -1, "mu_play sound/music/l_complete_1.wav 0\n" );   // play mission success music
 	}
+
 	trap_SetConfigstring( CS_MUSIC_QUEUE, "" );  // don't try to start anything.  no level load music
 
 	trap_SetConfigstring( CS_SCREENFADE, va( "1 %i %i", level.time + 250, 750 + exitTime ) ); // fade out screen

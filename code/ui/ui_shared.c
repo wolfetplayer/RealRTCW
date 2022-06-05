@@ -107,7 +107,13 @@ translateString_t translateStrings[] = {
 	{"noitem"},                  //	"No item to use"
 	{"gamesaved"},               //	"Game Saved"
 	{"ironchallengesave"},       // no save 4 u
-
+	{"bonusweapon"},             // hey you got bonus weapon
+	{"bonusarmor"},             // hey you got bonus armor
+	{"bonusitem"},             // hey you got bonus holdable
+	{"bonusammo"},             // hey you got bonus ammo
+	{"bonushealth"},             // hey you got bonus health
+	{"bonuscommon"},             // hey you got bonus stuff
+	{"bonusmultiple"},             // hey you got bonuses
 	{"missionfail1"},            //	"Mission Failed\nYou Killed a Civilian"
 	{"missionfail2"},            //	"Mission Failed\nYou Killed a Kreisau Agent"
 	{"missionfail3"},            //	"Mission Failed\nYou Killed Kessler"

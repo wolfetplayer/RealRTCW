@@ -88,6 +88,7 @@ qboolean AICast_ScriptAction_Accum( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SpawnCast( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_MissionFailed( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_ObjectiveMet( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_PrintBonus( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_ObjectivesNeeded( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_NoAIDamage( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Print( cast_state_t *cs, char *params );
@@ -307,6 +308,7 @@ cast_script_stack_action_t scriptActions[] =
 	{"missionsuccess",   AICast_ScriptAction_ObjectiveMet},
 	{"objectivemet", AICast_ScriptAction_ObjectiveMet},				// dupe of missionsuccess so scripts can changeover to a more logical name
 	{"objectivesneeded",AICast_ScriptAction_ObjectivesNeeded},
+	{"printbonus",     AICast_ScriptAction_PrintBonus},
 	{"noaidamage",       AICast_ScriptAction_NoAIDamage},
 	{"print",            AICast_ScriptAction_Print},
 	{"facetargetangles",AICast_ScriptAction_FaceTargetAngles},

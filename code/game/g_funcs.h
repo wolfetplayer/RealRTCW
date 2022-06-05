@@ -1414,6 +1414,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_NoAIDamage", (byte *)AICast_ScriptAction_NoAIDamage},
 {"AICast_ScriptAction_ObjectiveMet", (byte *)AICast_ScriptAction_ObjectiveMet},
 {"AICast_ScriptAction_ObjectivesNeeded", (byte *)AICast_ScriptAction_ObjectivesNeeded},
+{"AICast_ScriptAction_PrintBonus", (byte *)AICast_ScriptAction_PrintBonus},
 {"AICast_ScriptAction_MissionFailed", (byte *)AICast_ScriptAction_MissionFailed},
 {"AICast_ScriptAction_SpawnCast", (byte *)AICast_ScriptAction_SpawnCast},
 {"AICast_ScriptAction_Accum", (byte *)AICast_ScriptAction_Accum},

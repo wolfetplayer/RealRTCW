@@ -2234,39 +2234,214 @@ qboolean AICast_ScriptAction_PrintBonus( cast_state_t *cs, char *params ) {
 
 	newstr = va( "%s", params );
 
-	if ( !Q_stricmp( newstr, "weapon" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonusweapon" ); 
+	trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+
+	if ( !Q_stricmp( newstr, "escape1" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_escape1" ); 
 	}
 
-	if ( !Q_stricmp( newstr, "armor" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonusarmor" ); 
+	if ( !Q_stricmp( newstr, "escape1_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_escape1_alt" ); 
 	}
 
-	if ( !Q_stricmp( newstr, "ammo" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonusammo" ); 
+	if ( !Q_stricmp( newstr, "escape2" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_escape2" ); 
 	}
 
-	if ( !Q_stricmp( newstr, "item" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonusitem" ); 
+	if ( !Q_stricmp( newstr, "escape2_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_escape2_alt" ); 
 	}
 
-	if ( !Q_stricmp( newstr, "health" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonushealth" ); 
+	if ( !Q_stricmp( newstr, "tram" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_tram" ); 
 	}
 
-	if ( !Q_stricmp( newstr, "common" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonuscommon" ); 
+	if ( !Q_stricmp( newstr, "tram_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_tram_alt" ); 
 	}
 
-	if ( !Q_stricmp( newstr, "multiple" ) ) { 
-		trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-	    trap_SendServerCommand( -1, "cp bonusmultiple" ); 
+	if ( !Q_stricmp( newstr, "village1" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_village1" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "village1_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_village1_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "crypt1" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_crypt1" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "crypt1_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_crypt1_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "crypt2" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_crypt2" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "crypt2_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_crypt2_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "church" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_church" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "church_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_church_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "boss1" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_boss1" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "boss1_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_boss1_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "forest" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_forest" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "forest_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_forest_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "rocket" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_rocket" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "rocket_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_rocket_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "baseout" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_baseout" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "baseout_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_baseout_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "assault" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_assault" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "assault_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_assault_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "sfm" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_sfm" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "sfm_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_sfm_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "factory" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_factory" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "factory_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_factory_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "trainyard" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_trainyard" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "trainyard_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_trainyard_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "swf" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_swf" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "swf_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_swf_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "norway" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_norway" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "norway_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_norway_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "xlabs" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_xlabs" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "xlabs_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_xlabs_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "boss2" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_boss2" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "boss2_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_boss2_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "dam" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_dam" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "dam_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_dam_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "village2" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_village2" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "village2_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_village2_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "chateau" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_chateau" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "chateau_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_chateau_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "dark" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_dark" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "dark_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_dark_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "dig" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_dig" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "dig_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_dig_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "castle" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_castle" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "castle_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_castle_alt" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "end" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_end" ); 
+	}
+
+	if ( !Q_stricmp( newstr, "end_alt" ) ) { 
+	    trap_SendServerCommand( -1, "bcp bonus_end_alt" ); 
 	}
 
 	return qtrue;

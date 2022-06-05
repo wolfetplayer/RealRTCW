@@ -1966,6 +1966,7 @@ extern char teamChat2[256];
 void CG_AddLagometerFrameInfo( void );
 void CG_AddLagometerSnapshotInfo( snapshot_t *snap );
 void CG_CenterPrint( const char *str, int y, int charWidth );
+void CG_BonusCenterPrint( const char *str, int y, int charWidth );
 void CG_SubtitlePrint( const char *str, int y, int charWidth );
 
 void CG_ObjectivePrint( const char *str, int charWidth, int team );     // NERVE - SMF
@@ -2272,6 +2273,7 @@ void CG_LoadingItem( int itemNum );
 void CG_LoadingClient( int clientNum );
 void CG_DrawInformation( void );
 const char *CG_translateString( const char *str );
+const char *CG_bonusString( const char *str );
 const char *CG_translateTextString( const char *str );
 
 

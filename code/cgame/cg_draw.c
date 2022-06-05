@@ -1627,10 +1627,47 @@ void CG_CenterPrint( const char *str, int y, int charWidth ) {
 	}
 }
 
+/*
+==============
+CG_BonusCenterPrint
+
+Called for important messages that should stay in the center of the screen
+for a few moments
+==============
+*/
+void CG_BonusCenterPrint( const char *str, int y, int charWidth ) {
+	char   *s;
+    int len;
+//----(SA)	added translation lookup
+	Q_strncpyz( cg.centerPrint, CG_bonusString( (char*)str ), sizeof( cg.centerPrint ) );
+//----(SA)	end
+
+
+	cg.centerPrintTime = cg.time;
+	cg.centerPrintY = y;
+	cg.centerPrintCharWidth = charWidth;
+
+	// count the number of lines for centering
+	cg.centerPrintLines = 1;
+	s = cg.centerPrint;
+	while ( *s ) {
+		if ( *s == '\n' ) {
+			cg.centerPrintLines++;
+		}
+		if ( !Q_strncmp( s, "\\n", 1 ) ) {
+			cg.centerPrintLines++;
+			s++;
+		}
+		s++;
+	}
+
+	len = CG_DrawStrlen(cg.centerPrint);
+	cg.centerPrintTime = cg.time + len * 200;
+}
 
 /*
 ==============
-CG_CenterPrint
+CG_SubtitlePrint
 
 Called for important messages that should stay in the center of the screen
 for a few moments

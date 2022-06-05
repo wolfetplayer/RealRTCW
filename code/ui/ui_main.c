@@ -1121,6 +1121,52 @@ static void UI_LoadTranslationStrings( void ) {
 	}
 }
 
+/*
+==============
+UI_LoadbonusStrings
+==============
+*/
+#define MAX_BUFFER_BONUS          20000
+static void UI_LoadbonusStrings( void ) {
+	char buffer[MAX_BUFFER_BONUS];
+	char *text;
+	char filename[MAX_QPATH];
+	fileHandle_t f;
+	int len, i, numStrings;
+	char *token;
+
+	Com_sprintf( filename, MAX_QPATH, "text/bonus_strings.txt" );
+	len = trap_FS_FOpenFile( filename, &f, FS_READ );
+	if ( len <= 0 ) {
+		return;
+	}
+	if ( len > MAX_BUFFER_BONUS ) {
+//		CG_Error( "%s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER );
+	}
+
+	// load the file into memory
+	trap_FS_Read( buffer, len, f );
+	buffer[len] = 0;
+	trap_FS_FCloseFile( f );
+	// parse the list
+	text = buffer;
+
+	numStrings = sizeof( bonusStrings ) / sizeof( bonusStrings[0] ) - 1;
+
+	for ( i = 0; i < numStrings; i++ ) {
+		token = COM_ParseExt( &text, qtrue );
+		if ( !token[0] ) {
+			break;
+		}
+#ifdef Q3_VM // new IORTCW syscall (works for qvms and dlls), but have dlls use vanilla rtcw compatible code
+		bonusStrings[i].localname = (char *)trap_Alloc( strlen( token ) + 1 );
+#else
+		bonusStrings[i].localname = (char *)malloc( strlen( token ) + 1 );
+#endif
+		strcpy( bonusStrings[i].localname, token );
+	}
+}
+
 
 void UI_Load( void ) {
 	char lastName[1024];
@@ -1141,6 +1187,7 @@ void UI_Load( void ) {
 
 	// load translation text
 	UI_LoadTranslationStrings();
+	UI_LoadbonusStrings();
 
 //	UI_ParseGameInfo("gameinfo.txt");
 //	UI_LoadArenas();
@@ -5718,7 +5765,31 @@ static const char *UI_translateString( const char *inString ) {
 	return inString;
 }
 //----(SA)	end
+/*
+==============
+UI_bonusString
+==============
+*/
+static const char *UI_bonusString( const char *inString ) {
+	int i, numStrings;
 
+	numStrings = sizeof( bonusStrings ) / sizeof( bonusStrings[0] ) - 1;
+
+	for ( i = 0; i < numStrings; i++ ) {
+		if ( !bonusStrings[i].name || !strlen( bonusStrings[i].name ) ) {
+			return inString;
+		}
+
+		if ( !strcmp( inString, bonusStrings[i].name ) ) {
+			if ( bonusStrings[i].localname && strlen( bonusStrings[i].localname ) ) {
+				return bonusStrings[i].localname;
+			}
+			break;
+		}
+	}
+
+	return inString;
+}
 
 /*
 ==============
@@ -6617,7 +6688,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	uiInfo.uiDC.fileText = &UI_FileText;    //----(SA)
 
 	uiInfo.uiDC.getTranslatedString = &UI_translateString;  //----(SA) added
-
+	uiInfo.uiDC.getbonusString = &UI_bonusString;
 	uiInfo.uiDC.feederSelection = &UI_FeederSelection;
 	uiInfo.uiDC.feederAddItem = &UI_FeederAddItem;                  // NERVE - SMF
 	uiInfo.uiDC.setBinding = &trap_Key_SetBinding;
@@ -6643,6 +6714,7 @@ void _UI_Init( qboolean inGameLoad ) {
 
 	// load translation text
 	UI_LoadTranslationStrings();
+	UI_LoadbonusStrings();
 
 //	uiInfo.uiDC.cursor	= trap_R_RegisterShaderNoMip( "menu/art/3_cursor3" );
 	uiInfo.uiDC.whiteShader = trap_R_RegisterShaderNoMip( "white" );

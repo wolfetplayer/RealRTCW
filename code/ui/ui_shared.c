@@ -107,13 +107,6 @@ translateString_t translateStrings[] = {
 	{"noitem"},                  //	"No item to use"
 	{"gamesaved"},               //	"Game Saved"
 	{"ironchallengesave"},       // no save 4 u
-	{"bonusweapon"},             // hey you got bonus weapon
-	{"bonusarmor"},             // hey you got bonus armor
-	{"bonusitem"},             // hey you got bonus holdable
-	{"bonusammo"},             // hey you got bonus ammo
-	{"bonushealth"},             // hey you got bonus health
-	{"bonuscommon"},             // hey you got bonus stuff
-	{"bonusmultiple"},             // hey you got bonuses
 	{"missionfail1"},            //	"Mission Failed\nYou Killed a Civilian"
 	{"missionfail2"},            //	"Mission Failed\nYou Killed a Kreisau Agent"
 	{"missionfail3"},            //	"Mission Failed\nYou Killed Kessler"
@@ -152,7 +145,62 @@ translateString_t translateStrings[] = {
 	{"months"},                  //
 	{"year"},                    //
 	{"years"},                   //
-	{"or"}                       //
+	{"or"}           
+};
+
+bonusString_t bonusStrings[] = {
+	{"bonus_escape1"},   
+	{"bonus_escape1_alt"},                   
+	{"bonus_escape2"},   
+	{"bonus_escape2_alt"},
+	{"bonus_tram"},   
+	{"bonus_tram_alt"},  
+	{"bonus_village1"},   
+	{"bonus_village1_alt"}, 
+	{"bonus_crypt1"},   
+	{"bonus_crypt1_alt"}, 
+	{"bonus_crypt2"},   
+	{"bonus_crypt2_alt"}, 
+	{"bonus_church"},   
+	{"bonus_church_alt"}, 
+	{"bonus_boss1"},   
+	{"bonus_boss1_alt"}, 
+	{"bonus_forest"},   
+	{"bonus_forest_alt"}, 
+	{"bonus_rocket"},   
+	{"bonus_rocket_alt"}, 
+	{"bonus_baseout"},   
+	{"bonus_baseout_alt"},
+	{"bonus_assault"},   
+	{"bonus_assault_alt"},
+	{"bonus_sfm"},   
+	{"bonus_sfm_alt"},   
+	{"bonus_factory"},   
+	{"bonus_factory_alt"},
+	{"bonus_trainyard"},   
+	{"bonus_trainyard_alt"},
+	{"bonus_swf"},   
+	{"bonus_swf_alt"},
+	{"bonus_norway"},   
+	{"bonus_norway_alt"},
+	{"bonus_xlabs"},   
+	{"bonus_xlabs_alt"},
+	{"bonus_boss2"},   
+	{"bonus_boss2_alt"},
+	{"bonus_dam"},   
+	{"bonus_dam_alt"},
+	{"bonus_village2"},   
+	{"bonus_village2_alt"},
+	{"bonus_chateau"},   
+	{"bonus_chateau_alt"},
+	{"bonus_dark"},   
+	{"bonus_dark_alt"},
+	{"bonus_dig"},   
+	{"bonus_dig_alt"},
+	{"bonus_castle"},   
+	{"bonus_castle_alt"},
+	{"bonus_end"},   
+	{"bonus_end_alt"}             
 };
 
 translateTextString_t translateTextStrings[MAX_TRANSLATETEXTSTRINGS] = {

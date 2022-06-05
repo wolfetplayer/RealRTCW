@@ -382,6 +382,7 @@ typedef struct {
 
 	const char *( *fileText )( char *flieName );    //----(SA)	added
 	const char *( *getTranslatedString )( const char *inString );   //----(SA)	added
+	const char *( *getbonusString )( const char *inString );   //----(SA)	added
 
 	qhandle_t ( *feederItemImage )( float feederID, int index );
 	void ( *feederSelection )( float feederID, int index );
@@ -436,12 +437,18 @@ typedef struct {
 	char *localname;
 } translateString_t;
 
-#define MAX_TRANSLATESTRINGS 512
+#define MAX_TRANSLATESTRINGS 64
 extern translateString_t translateStrings[MAX_TRANSLATESTRINGS];
 
 //----(SA)	end
 
+typedef struct {
+	char *name;
+	char *localname;
+} bonusString_t;
 
+#define MAX_BONUSSTRINGS 96
+extern bonusString_t bonusStrings[MAX_BONUSSTRINGS];
 
 
 const char *String_Alloc( const char *p );

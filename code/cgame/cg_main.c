@@ -927,6 +927,48 @@ static void CG_LoadTranslationStrings( void ) {
 	}
 }
 
+// a straight dupe right now so I don't mess anything up while adding this
+static void CG_LoadbonusStrings( void ) {
+	char buffer[MAX_BUFFER];
+	char *text;
+	char filename[MAX_QPATH];
+	fileHandle_t f;
+	int len, i, numStrings;
+	char *token;
+
+	Com_sprintf( filename, MAX_QPATH, "text/bonus_strings.txt" );
+	len = trap_FS_FOpenFile( filename, &f, FS_READ );
+	if ( len <= 0 ) {
+		CG_Printf( S_COLOR_RED "WARNING: string translation file (bonus_strings.txt not found in main/text)\n" );
+		return;
+	}
+	if ( len > MAX_BUFFER ) {
+		CG_Error( "%s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER );
+	}
+
+	// load the file into memory
+	trap_FS_Read( buffer, len, f );
+	buffer[len] = 0;
+	trap_FS_FCloseFile( f );
+	// parse the list
+	text = buffer;
+
+	numStrings = sizeof( bonusStrings ) / sizeof( bonusStrings[0] ) - 1;
+
+	for ( i = 0; i < numStrings; i++ ) {
+		token = COM_ParseExt( &text, qtrue );
+		if ( !token[0] ) {
+			break;
+		}
+#ifdef Q3_VM // new IORTCW syscall (works for qvms and dlls), but have dlls use vanilla rtcw compatible code
+		bonusStrings[i].localname = (char *)trap_Alloc( strlen( token ) + 1 );
+#else
+		bonusStrings[i].localname = (char *)malloc( strlen( token ) + 1 );
+#endif
+		strcpy( bonusStrings[i].localname, token );
+	}
+}
+
 static void CG_LoadTranslationTextStrings(const char *file) {
 	char buffer[MAX_BUFFER];
 	char *text;
@@ -1022,6 +1064,7 @@ static void CG_LoadTranslateStrings( void ) {
 
 	CG_LoadPickupNames();
 	CG_LoadTranslationStrings();    // right now just centerprint
+	CG_LoadbonusStrings();
 	CG_LoadTranslationTextStrings(va("text/EnglishUSA/maps/%s.txt", mapname));
 	CG_LoadIgnoredTranslationTextStrings();
 }
@@ -2317,6 +2360,32 @@ const char *CG_translateString( const char *str ) {
 	return str;
 }
 
+/*
+==============
+CG_bonusString
+	presumably if this gets used more extensively, it'll be modified to a hash table
+==============
+*/
+const char *CG_bonusString( const char *str ) {
+	int i, numStrings;
+
+	numStrings = sizeof( bonusStrings ) / sizeof( bonusStrings[0] ) - 1;
+
+	for ( i = 0; i < numStrings; i++ ) {
+		if ( !bonusStrings[i].name || !strlen( bonusStrings[i].name ) ) {
+			return str;
+		}
+
+		if ( !strcmp( str, bonusStrings[i].name ) ) {
+			if ( bonusStrings[i].localname && strlen( bonusStrings[i].localname ) ) {
+				return bonusStrings[i].localname;
+			}
+			break;
+		}
+	}
+
+	return str;
+}
 
 /*
 =================
@@ -2366,6 +2435,7 @@ void CG_LoadHudMenu( void ) {
 	//cgDC.getBindingBuf = &trap_Key_GetBindingBuf;
 	//cgDC.keynumToStringBuf = &trap_Key_KeynumToStringBuf;
 	cgDC.getTranslatedString = &CG_translateString;     //----(SA)	added
+	cgDC.getbonusString = &CG_bonusString;     //----(SA)	added
 	//cgDC.executeText = &trap_Cmd_ExecuteText;
 	cgDC.Error = &Com_Error;
 	cgDC.Print = &Com_Printf;

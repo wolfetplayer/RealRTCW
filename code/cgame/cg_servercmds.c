@@ -828,6 +828,11 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	if ( !strcmp( cmd, "bcp" ) ) {
+		CG_BonusCenterPrint( CG_Argv( 1 ), SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+		return;
+	}
+
 	if ( !strcmp( cmd, "cs" ) ) {
 		CG_ConfigStringModified();
 		return;

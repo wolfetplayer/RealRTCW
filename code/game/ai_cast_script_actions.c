@@ -1284,7 +1284,38 @@ qboolean AICast_ScriptAction_GiveArmor( cast_state_t *cs, char *params ) {
 }
 //----(SA)	end
 
+/*
+==============
+AICast_ScriptAction_GiveAmmo
 
+	syntax: giveammo <pickupname>
+==============
+*/
+qboolean AICast_ScriptAction_GiveAmmo( cast_state_t *cs, char *params ) {
+	int i;
+	gitem_t     *item = 0;
+
+	for ( i = 1; bg_itemlist[i].classname; i++ ) {
+		//----(SA)	first try the name they see in the editor, then the pickup name
+		if ( !Q_strcasecmp( params, bg_itemlist[i].classname ) ) {
+			item = &bg_itemlist[i];
+		}
+
+		if ( !Q_strcasecmp( params, bg_itemlist[i].pickup_name ) ) {
+			item = &bg_itemlist[i];
+		}
+	}
+
+	if ( !item ) { // item not found
+		G_Error( "AI Scripting: giveammo %s, unknown item", params );
+	}
+
+	if ( item->giType == IT_AMMO ) {
+		g_entities[cs->entityNum].client->ps.ammo[item->giTag] += item->gameskillnumber[0];
+	}
+
+	return qtrue;
+}
 
 /*
 =================

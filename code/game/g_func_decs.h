@@ -1432,6 +1432,7 @@ extern qboolean AICast_ScriptAction_GiveWeapon ( cast_state_t * cs , char * para
 extern qboolean AICast_ScriptAction_GiveWeaponFull ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GiveArmor ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SetArmor ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_GiveAmmo ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SelectWeapon ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SuggestWeapon ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SetClip ( cast_state_t * cs , char * params ) ;

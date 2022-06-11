@@ -1318,6 +1318,43 @@ qboolean AICast_ScriptAction_GiveAmmo( cast_state_t *cs, char *params ) {
 }
 
 /*
+==============
+AICast_ScriptAction_GiveHealth
+
+	syntax: givehealth <pickupname>
+
+==============
+*/
+qboolean AICast_ScriptAction_GiveHealth( cast_state_t *cs, char *params ) {
+	int i;
+	gitem_t     *item = 0;
+
+	for ( i = 1; bg_itemlist[i].classname; i++ ) {
+		//----(SA)	first try the name they see in the editor, then the pickup name
+		if ( !Q_strcasecmp( params, bg_itemlist[i].classname ) ) {
+			item = &bg_itemlist[i];
+		}
+
+		if ( !Q_strcasecmp( params, bg_itemlist[i].pickup_name ) ) {
+			item = &bg_itemlist[i];
+		}
+	}
+
+	if ( !item ) { // item not found
+		G_Error( "AI Scripting: givehealth %s, unknown item", params );
+	}
+
+	if ( item->giType == IT_HEALTH ) 
+	{
+	g_entities[cs->entityNum].health += item->gameskillnumber[g_gameskill.integer];
+	g_entities[cs->entityNum].client->ps.stats[STAT_HEALTH] += item->gameskillnumber[g_gameskill.integer];
+	}
+
+	return qtrue;
+
+}
+
+/*
 =================
 AICast_ScriptAction_GiveWeapon
 

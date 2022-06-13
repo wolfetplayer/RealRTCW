@@ -2923,10 +2923,11 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 			CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, weapon->readySound, 255 );
 		}
 	}
-    
 	// RealRTCW
+	if (isPlayer) {
 	if ( cent->currentState.weapon == WP_TESLA && ( ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_IDLE1 ) || ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_IDLE2 ) ) ) {
 		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 100 );
+	}
 	}
 
 	// Ridah

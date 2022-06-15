@@ -478,6 +478,8 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			if ( !COM_BitCheck( cs->bs->cur_ps.weapons, WP_PANZERFAUST ) ) {
 				return TESLA_SUPERSOLDIER_RANGE;
 			}
+		case AICHAR_PRIEST:
+		return 550;
 		}
 		return ( TESLA_RANGE * 0.9 ) - 50;  // allow for bounding box
 	case WP_FLAMETHROWER:
@@ -553,7 +555,21 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 	case WP_DELISLESCOPE:
 		return 5000;
 		break;
-
+	case WP_VENOM:
+		switch ( cs->aiCharacter ) {
+		case AICHAR_SOLDIER:  
+		case AICHAR_VENOM: 
+			return 1000;
+		case AICHAR_SUPERSOLDIER: 
+			return 1500;
+		case AICHAR_PROTOSOLDIER:  
+			return 1500;
+		case AICHAR_XSHEPHERD:
+			return 500;	
+		}
+		default:
+		return 1000;
+		break;
 
 	}
 	// default range
@@ -1569,7 +1585,8 @@ qboolean AICast_AimAtEnemy( cast_state_t *cs ) {
 AICast_CanMoveWhileFiringWeapon
 ==================
 */
-qboolean AICast_CanMoveWhileFiringWeapon( int weaponnum ) {
+qboolean AICast_CanMoveWhileFiringWeapon(int weaponnum ) {
+
 	switch ( weaponnum ) {
 	case WP_MAUSER:
 	case WP_DELISLE:
@@ -1583,6 +1600,7 @@ qboolean AICast_CanMoveWhileFiringWeapon( int weaponnum ) {
 	{
 		return qfalse;
 	}
+
 	default:
 		return qtrue;
 	}
@@ -1647,7 +1665,7 @@ void AICast_ProcessAttack( cast_state_t *cs ) {
 	//
 	bs = cs->bs;
 	// check for not firing while moving flag, if present, abort attack if any movement has been issued
-	if ( !AICast_CanMoveWhileFiringWeapon( cs->weaponNum ) ) {
+	if ( !AICast_CanMoveWhileFiringWeapon(cs->weaponNum ) ) {
 		// if we are moving, don't fire
 		bot_input_t bi;
 		if ( cs->bs->cur_ps.weaponTime > 200 ) {

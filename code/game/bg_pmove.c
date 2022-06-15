@@ -480,7 +480,7 @@ if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { /
 	}
 
 	if ( pm->ps->aiChar == AICHAR_XSHEPHERD ) {
-		scale *= 1.5;
+		scale *= 1.4;
 	}
 
 		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
@@ -3573,6 +3573,7 @@ static void PM_Weapon( void ) {
 	// the weapon can overheat, and it's hot
 	if ( ( pm->ps->aiChar != AICHAR_PROTOSOLDIER ) &&
 		 ( pm->ps->aiChar != AICHAR_SUPERSOLDIER ) &&
+		 ( pm->ps->aiChar != AICHAR_XSHEPHERD ) &&
 		 ( ammoTable[pm->ps->weapon].maxHeat && pm->ps->weapHeat[pm->ps->weapon] ) ) {
 		// it is overheating
 		if ( pm->ps->weapHeat[pm->ps->weapon] >= ammoTable[pm->ps->weapon].maxHeat ) {

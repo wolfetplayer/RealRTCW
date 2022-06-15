@@ -506,7 +506,7 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 	},
     //AICHAR_PRIEST
 	{
-		"Priestr",
+		"Priest",
 		{ // Default
 			0
 		},
@@ -526,10 +526,10 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		"priest/default",
 		{WP_TESLA},
 		BBOX_SMALL, {32,48},
-		AIFL_NO_RELOAD | AIFL_NO_FLAME_DAMAGE | AIFL_NO_TESLA_DAMAGE,
+		AIFL_NO_RELOAD | AIFL_NO_TESLA_DAMAGE,
 		0, 0, 0,
-		NULL,
-		AISTATE_ALERT
+		"sound/player/occult/idle01.wav",
+		AISTATE_RELAXED
 	},
 
 		//AICHAR_XSHEPHERD
@@ -590,6 +590,20 @@ void AIChar_SetBBox( gentity_t *ent, cast_state_t *cs, qboolean useHeadTag ) {
 	if ( !useHeadTag ) {
 		VectorCopy( bbmins[cs->aasWorldIndex], ent->client->ps.mins );
 		VectorCopy( bbmaxs[cs->aasWorldIndex], ent->client->ps.maxs );
+
+		// dirty hack
+        if (cs->aiCharacter == AICHAR_PRIEST )
+		{
+        ent->client->ps.mins [0] += 20;
+		ent->client->ps.maxs [0] += 20;
+		}	
+        if (cs->aiCharacter == AICHAR_XSHEPHERD )
+		{
+        ent->client->ps.mins [0] -= 40;
+		ent->client->ps.maxs [0] -= 20;
+		}
+		// dirty hack end
+
 		ent->client->ps.maxs[2] = aiDefaults[cs->aiCharacter].crouchstandZ[1];
 		VectorCopy( ent->client->ps.mins, ent->r.mins );
 		VectorCopy( ent->client->ps.maxs, ent->r.maxs );
@@ -611,6 +625,20 @@ void AIChar_SetBBox( gentity_t *ent, cast_state_t *cs, qboolean useHeadTag ) {
 		VectorCopy( bbmins[cs->aasWorldIndex], bbox[0] );
 		VectorCopy( bbmaxs[cs->aasWorldIndex], bbox[1] );
 		// set the head tag height
+
+		// dirty hack
+        if (cs->aiCharacter == AICHAR_PRIEST )
+		{
+        bbox [0][0] += 20;
+		bbox [1][0] += 20;
+		}
+        if (cs->aiCharacter == AICHAR_XSHEPHERD )
+		{
+        bbox [0][0] -= 40;
+		bbox [1][0] -= 20;
+		}	
+		// dirty hack end
+
 		bbox[1][2] = or.origin[2];
 
 		if ( bbox[1][2] > ent->client->ps.maxs[2] ) {
@@ -620,14 +648,14 @@ void AIChar_SetBBox( gentity_t *ent, cast_state_t *cs, qboolean useHeadTag ) {
 
 		if ( !tr.startsolid && !tr.allsolid ) {
 			VectorCopy( bbox[0], ent->client->ps.mins );
-			VectorCopy( bbox[1], ent->client->ps.maxs );
+			VectorCopy( bbox[1], ent->client->ps.maxs );	
 			VectorCopy( ent->client->ps.mins, ent->r.mins );
 			VectorCopy( ent->client->ps.maxs, ent->r.maxs );
 			ent->client->ps.crouchMaxZ = aiDefaults[cs->aiCharacter].crouchstandZ[0];
 			ent->s.density = cs->aasWorldIndex;
 		}
 	}
-
+	
 	// if they are linked, then relink to update bbox
 	if ( ent->r.linked ) {
 		trap_LinkEntity( ent );
@@ -1121,7 +1149,7 @@ void AIChar_spawn( gentity_t *ent ) {
 	}
 	// HACK. ETSP avoid human torches!
 	if ( ent->aiName && (!Q_stricmp( ent->aiName, "deathshead" ) || !Q_stricmp( ent->aiName, "abate" ) || !Q_stricmp( ent->aiName, "graham" ) 
-	|| !Q_stricmp( ent->aiName, "waters" ) || !Q_stricmp( ent->aiName, "mcdermott" ) || !Q_stricmp( ent->aiName, "ramirez" ) || !Q_stricmp( ent->aiName, "agent2" ) || !Q_stricmp( ent->aiName, "villigut" )  ) ) {
+	|| !Q_stricmp( ent->aiName, "waters" ) || !Q_stricmp( ent->aiName, "mcdermott" ) || !Q_stricmp( ent->aiName, "ramirez" ) || !Q_stricmp( ent->aiName, "agent2" ) || !Q_stricmp( ent->aiName, "villigut" ) || !Q_stricmp( ent->aiName, "priest1_nf" ) || !Q_stricmp( ent->aiName, "priest2_nf" )  ) ) {
 		cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
 	}
 	//

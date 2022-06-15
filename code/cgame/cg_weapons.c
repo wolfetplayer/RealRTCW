@@ -3277,9 +3277,13 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	// Ridah, zombie fires from his head
-	//if (CG_MonsterUsingWeapon( cent, AICHAR_ZOMBIE, WP_MONSTER_ATTACK1 )) {
-	//	CG_PositionEntityOnTag( &flash, parent, parent->hModel, "tag_head", NULL);
-	//}
+	if (CG_MonsterUsingWeapon( cent, AICHAR_PRIEST, WP_TESLA )) {
+		CG_PositionEntityOnTag( &flash, parent,"tag_weapon", 0, NULL);
+	}
+
+	if (CG_MonsterUsingWeapon( cent, AICHAR_XSHEPHERD, WP_VENOM )) {
+		CG_PositionEntityOnTag( &flash, parent,"tag_weapon", 0, NULL);
+	}
 
 	if ( ps || cg.renderingThirdPerson || !isPlayer ) {
 

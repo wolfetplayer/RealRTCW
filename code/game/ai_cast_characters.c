@@ -1149,7 +1149,7 @@ void AIChar_spawn( gentity_t *ent ) {
 	}
 	// HACK. ETSP avoid human torches!
 	if ( ent->aiName && (!Q_stricmp( ent->aiName, "deathshead" ) || !Q_stricmp( ent->aiName, "abate" ) || !Q_stricmp( ent->aiName, "graham" ) 
-	|| !Q_stricmp( ent->aiName, "waters" ) || !Q_stricmp( ent->aiName, "mcdermott" ) || !Q_stricmp( ent->aiName, "ramirez" ) || !Q_stricmp( ent->aiName, "agent2" ) || !Q_stricmp( ent->aiName, "villigut" ) || !Q_stricmp( ent->aiName, "priest1_nf" ) || !Q_stricmp( ent->aiName, "priest2_nf" )  ) ) {
+	|| !Q_stricmp( ent->aiName, "waters" ) || !Q_stricmp( ent->aiName, "mcdermott" ) || !Q_stricmp( ent->aiName, "ramirez" ) || !Q_stricmp( ent->aiName, "agent2" ) || !Q_stricmp( ent->aiName, "villigut" ) ) ) {
 		cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
 	}
 	//

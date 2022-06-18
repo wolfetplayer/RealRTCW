@@ -1016,6 +1016,10 @@ void SV_Init (void)
 	sv_airespawn = Cvar_Get( "g_airespawn", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
 	sv_reinforce = Cvar_Get( "g_reinforce", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
 	sv_fullarsenal = Cvar_Get( "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
+	sv_spawnpriests = Cvar_Get( "g_spawnpriests", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
+	sv_endmapbonus = Cvar_Get( "g_endmapbonus", "1", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
+	sv_spawnxshepherds = Cvar_Get( "g_spawnxshepherds", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
+	sv_spawndogs = Cvar_Get( "g_spawndogs", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH );
 	// systeminfo
 	Cvar_Get( "sv_cheats", "1", CVAR_SYSTEMINFO | CVAR_ROM );
 	sv_serverid = Cvar_Get( "sv_serverid", "0", CVAR_SYSTEMINFO | CVAR_ROM );

@@ -58,16 +58,7 @@ vmCvar_t g_gametype;
 // Rafael gameskill
 vmCvar_t g_gameskill;
 // done
-vmCvar_t g_ironchallenge;
-vmCvar_t g_nohudchallenge;
-vmCvar_t g_nopickupchallenge;
-vmCvar_t g_decaychallenge;
 vmCvar_t g_reloading;       //----(SA)	added
-
-vmCvar_t g_airespawn;
-vmCvar_t g_reinforce;
-vmCvar_t g_fullarsenal;
-vmCvar_t g_endmapbonus;
 
 vmCvar_t g_dmflags;
 vmCvar_t g_fraglimit;
@@ -143,12 +134,6 @@ vmCvar_t g_bluelimbotime;
 // charge times for character class special weapons
 vmCvar_t g_medicChargeTime;
 vmCvar_t g_engineerChargeTime;
-vmCvar_t g_jumptime;
-vmCvar_t g_fireonthemove;
-vmCvar_t g_spawndogs;
-vmCvar_t g_spawnpriests;
-vmCvar_t g_spawnxshepherds;
-vmCvar_t g_aicanheadshot;
 vmCvar_t g_LTChargeTime;
 vmCvar_t g_soldierChargeTime;
 // jpw
@@ -160,6 +145,20 @@ vmCvar_t g_localTeamPref;
 //RealRTCW new CVARs
 vmCvar_t g_bodysink;
 vmCvar_t g_weaponfalloff;
+vmCvar_t g_jumptime;
+vmCvar_t g_fireonthemove;
+vmCvar_t g_spawndogs;
+vmCvar_t g_spawnpriests;
+vmCvar_t g_spawnxshepherds;
+vmCvar_t g_aicanheadshot;
+vmCvar_t g_ironchallenge;
+vmCvar_t g_nohudchallenge;
+vmCvar_t g_nopickupchallenge;
+vmCvar_t g_decaychallenge;
+vmCvar_t g_airespawn;
+vmCvar_t g_reinforce;
+vmCvar_t g_fullarsenal;
+vmCvar_t g_endmapbonus;
 
 vmCvar_t g_mapname;
 

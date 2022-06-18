@@ -1175,12 +1175,6 @@ extern vmCvar_t g_redlimbotime;
 extern vmCvar_t g_bluelimbotime;
 extern vmCvar_t g_medicChargeTime;
 extern vmCvar_t g_engineerChargeTime;
-extern vmCvar_t g_jumptime;
-extern vmCvar_t g_fireonthemove;
-extern vmCvar_t g_spawndogs;
-extern vmCvar_t g_spawnpriests;
-extern vmCvar_t g_spawnxshepherds;
-extern vmCvar_t g_aicanheadshot;
 extern vmCvar_t g_LTChargeTime;
 extern vmCvar_t g_soldierChargeTime;
 // jpw
@@ -1192,6 +1186,12 @@ extern vmCvar_t g_localTeamPref;
 // RealRTCW new CVARs
 extern vmCvar_t g_bodysink;
 extern vmCvar_t g_weaponfalloff;
+extern vmCvar_t g_jumptime;
+extern vmCvar_t g_fireonthemove;
+extern vmCvar_t g_spawndogs;
+extern vmCvar_t g_spawnpriests;
+extern vmCvar_t g_spawnxshepherds;
+extern vmCvar_t g_aicanheadshot;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));

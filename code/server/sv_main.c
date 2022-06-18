@@ -84,6 +84,10 @@ cvar_t  *sv_reloading;  //----(SA)	added
 cvar_t  *sv_airespawn;
 cvar_t  *sv_reinforce;
 cvar_t  *sv_fullarsenal;
+cvar_t  *sv_spawnpriests;
+cvar_t  *sv_spawnxshepherds;
+cvar_t  *sv_spawndogs;
+cvar_t  *sv_endmapbonus;
 
 /*
 =============================================================================

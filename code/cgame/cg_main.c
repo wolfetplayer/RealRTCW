@@ -282,32 +282,27 @@ vmCvar_t mp_itemDesc;
 vmCvar_t cg_solidCrosshair;
 vmCvar_t cg_bloodBlend;
 vmCvar_t cg_snipersCrosshair;
-
 vmCvar_t cg_atmosphericEffects;
 vmCvar_t cg_lowAtmosphericEffects;
 vmCvar_t cg_forceAtmosphericEffects;
-
 vmCvar_t cg_ironChallenge;
 vmCvar_t cg_nohudChallenge;
 vmCvar_t cg_nopickupChallenge;
 vmCvar_t cg_decayChallenge;
-
 vmCvar_t cg_autoReload;
 vmCvar_t cg_uinfo;
 vmCvar_t int_cl_maxpackets;
 vmCvar_t int_cl_timenudge;
-
 vmCvar_t cg_bodysink;
 vmCvar_t cg_weaponfalloff;
-
 vmCvar_t cg_gunPosLock;
-
 vmCvar_t cg_fireonthemove;
 vmCvar_t cg_aicanheadshot;
-
 vmCvar_t cg_spawndogs;
 vmCvar_t cg_spawnpriests;
 vmCvar_t cg_spawnxshepherds;
+vmCvar_t cg_endmapbonus;
+vmCvar_t cg_fullarsenal;
 
 typedef struct {
 	vmCvar_t    *vmCvar;
@@ -497,9 +492,11 @@ cvarTable_t cvarTable[] = {
 	{ &cg_fireonthemove, "g_fireonthemove", "0", 0 }, //----(SA) added
 	{ &cg_aicanheadshot, "g_aicanheadshot", "0", 0 }, //----(SA) added
 
-	{ &cg_spawndogs, "g_spawndogs", "0", 0 }, 
-	{ &cg_spawnpriests, "g_spawnpriests", "0", 0 }, 
-	{ &cg_spawnxshepherds, "g_spawnxshepherds", "0", 0 }, 
+	{ &cg_spawndogs, "g_spawndogs", "0", CVAR_SERVERINFO | CVAR_ARCHIVE }, 
+	{ &cg_spawnpriests, "g_spawnpriests", "0", CVAR_SERVERINFO | CVAR_ARCHIVE }, 
+	{ &cg_spawnxshepherds, "g_spawnxshepherds", "0", CVAR_SERVERINFO | CVAR_ARCHIVE }, 
+	{ &cg_endmapbonus, "g_endmapbonus", "0", CVAR_SERVERINFO | CVAR_ARCHIVE }, 
+	{ &cg_fullarsenal, "g_fullarsenal", "0", CVAR_SERVERINFO | CVAR_ARCHIVE }, 
 	
 
 	// JPW NERVE

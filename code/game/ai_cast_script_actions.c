@@ -1294,6 +1294,7 @@ AICast_ScriptAction_GiveAmmo
 qboolean AICast_ScriptAction_GiveAmmo( cast_state_t *cs, char *params ) {
 	int i;
 	gitem_t     *item = 0;
+	int quantity;
 
 	for ( i = 1; bg_itemlist[i].classname; i++ ) {
 		//----(SA)	first try the name they see in the editor, then the pickup name
@@ -1311,7 +1312,9 @@ qboolean AICast_ScriptAction_GiveAmmo( cast_state_t *cs, char *params ) {
 	}
 
 	if ( item->giType == IT_AMMO ) {
-		g_entities[cs->entityNum].client->ps.ammo[item->giTag] += item->gameskillnumber[0];
+		quantity = item->gameskillnumber[g_gameskill.integer];
+		//g_entities[cs->entityNum].client->ps.ammo[item->giTag] += item->gameskillnumber[g_gameskill.integer];
+		Add_Ammo( &g_entities[cs->entityNum],item->giTag, quantity, qfalse );
 	}
 
 	return qtrue;

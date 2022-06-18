@@ -479,7 +479,7 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 				return TESLA_SUPERSOLDIER_RANGE;
 			}
 		case AICHAR_PRIEST:
-		return 550;
+		return 450;
 		}
 		return ( TESLA_RANGE * 0.9 ) - 50;  // allow for bounding box
 	case WP_FLAMETHROWER:

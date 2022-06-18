@@ -650,7 +650,7 @@ void AICast_ScriptLoad( void ) {
 		}
 	}
 
-	level.scriptAI = G_Alloc( len );
+	level.scriptAI = trap_Alloc( len );
 	trap_FS_Read( level.scriptAI, len, f );
 
 	trap_FS_FCloseFile( f );
@@ -777,7 +777,7 @@ void AICast_ScriptParse( cast_state_t *cs ) {
 			}
 
 			if ( strlen( params ) ) { // copy the params into the event
-				curEvent->params = G_Alloc( strlen( params ) + 1 );
+				curEvent->params = trap_Alloc( strlen( params ) + 1 );
 				Q_strncpyz( curEvent->params, params, strlen( params ) + 1 );
 			}
 
@@ -844,7 +844,7 @@ void AICast_ScriptParse( cast_state_t *cs ) {
 				}
 
 				if ( strlen( params ) ) { // copy the params into the event
-					curEvent->stack.items[curEvent->stack.numItems].params = G_Alloc( strlen( params ) + 1 );
+					curEvent->stack.items[curEvent->stack.numItems].params = trap_Alloc( strlen( params ) + 1 );
 					Q_strncpyz( curEvent->stack.items[curEvent->stack.numItems].params, params, strlen( params ) + 1 );
 				}
 
@@ -876,7 +876,7 @@ void AICast_ScriptParse( cast_state_t *cs ) {
 
 	// alloc and copy the events into the cast_state_t for this cast
 	if ( numEventItems > 0 ) {
-		cs->castScriptEvents = G_Alloc( sizeof( cast_script_event_t ) * numEventItems );
+		cs->castScriptEvents = trap_Alloc( sizeof( cast_script_event_t ) * numEventItems );
 		memcpy( cs->castScriptEvents, cast_temp_events, sizeof( cast_script_event_t ) * numEventItems );
 		cs->numCastScriptEvents = numEventItems;
 

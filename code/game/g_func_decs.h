@@ -583,6 +583,9 @@ extern qboolean G_FilterPacket ( char * from ) ;
 extern void G_SpawnEntitiesFromString ( void ) ;
 extern void SP_worldspawn ( void ) ;
 extern qboolean G_ParseSpawnVars ( void ) ;
+extern qboolean G_ParseExtraSpawnVars ( void ) ;
+extern qboolean G_LoadEntsFile ( void ) ;
+extern qboolean GetEntityToken ( char * buffer , int size ) ;
 extern char * G_AddSpawnVarToken ( const char * string ) ;
 extern void G_SpawnGEntityFromSpawnVars ( void ) ;
 extern void G_ParseField ( const char * key , const char * value , gentity_t * ent ) ;
@@ -1655,4 +1658,3 @@ extern qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params);
-

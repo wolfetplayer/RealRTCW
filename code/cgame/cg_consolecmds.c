@@ -303,6 +303,183 @@ void CG_StartCamera( const char *name, qboolean startBlack ) {
 }
 
 /*
+===================
+CG_DumpCastAi_f
+
+Dump a ai_zombie definition to the ents file
+===================
+*/
+static void CG_DumpCastAi_f( void ) {
+	char aicastfilename[MAX_QPATH];
+	char ainame[MAX_STRING_CHARS];
+	char aitype[MAX_STRING_CHARS];
+	char *aiautoname;
+	char *extptr, *buffptr;
+	char buff[1024];
+	fileHandle_t f;
+	int autonumber = 0;
+
+
+	trap_Cvar_VariableStringBuffer( "cg_entityEditCounter", buff, sizeof( buff ) );
+	autonumber = atoi( buff );
+
+	// Check for argument
+	if ( trap_Argc() < 2 ) {
+		CG_Printf( "Usage: dumpcastai <type> [name]\n" );
+		return;
+	}
+	trap_Argv( 1, aitype, sizeof( aitype ) );
+
+	if ( strcmp( "ai_soldier", aitype ) &&
+		 strcmp( "ai_american", aitype ) &&
+		 strcmp( "ai_zombie", aitype ) &&
+		 strcmp( "ai_warzombie", aitype ) &&
+		 strcmp( "ai_venom", aitype ) &&
+		 strcmp( "ai_loper", aitype ) &&
+		 strcmp( "ai_boss_helga", aitype ) &&
+		 strcmp( "ai_boss_heinrich", aitype ) &&
+		 strcmp( "ai_eliteguard", aitype ) &&
+		 strcmp( "ai_stimsoldier_dual", aitype ) &&
+		 strcmp( "ai_stimsoldier_rocket", aitype ) &&
+		 strcmp( "ai_stimsoldier_tesla", aitype ) &&
+		 strcmp( "ai_supersoldier", aitype ) &&
+		 strcmp( "ai_protosoldier", aitype ) &&
+		 strcmp( "ai_frogman", aitype ) &&
+		 strcmp( "ai_blackguard", aitype ) &&
+		 strcmp( "ai_partisan", aitype ) &&
+		 strcmp( "ai_civilian", aitype ) &&
+		 strcmp( "ai_priest", aitype ) &&
+		 strcmp( "ai_xshepherd", aitype ) &&
+		 strcmp( "ai_dog", aitype ) &&
+		 strcmp( "ai_russian", aitype ) ) {
+
+		CG_Printf( "Wrong type\n" );
+		CG_Printf( "Usage: dumpcastai <type> [name]\n" );
+		return;
+	}
+
+	if ( trap_Argc() == 3 ) {
+		trap_Argv( 2, ainame, sizeof( ainame ) );
+	} else
+	{
+		aiautoname = va( "reinforce_%s_%d", aitype, autonumber++ );
+		Q_strncpyz( ainame, aiautoname, strlen( aiautoname ) + 1 );
+	}
+
+	trap_Cvar_Set( "cg_entityEditCounter", va( "%i",autonumber ) );
+
+	// Open aicast file
+	Q_strncpyz( aicastfilename, cgs.mapname, sizeof( aicastfilename ) );
+	extptr = aicastfilename + strlen( aicastfilename ) - 4;
+	if ( extptr < aicastfilename || Q_stricmp( extptr, ".bsp" ) ) {
+		CG_Printf( "Unable to dump, unknown map name?\n" );
+		return;
+	}
+	Q_strncpyz( extptr, ".ents", 6 );
+	trap_FS_FOpenFile( aicastfilename, &f, FS_APPEND_SYNC );
+	if ( !f ) {
+		CG_Printf( "Failed to open '%s' for writing.\n", aicastfilename );
+		return;
+	}
+
+	// Strip bad characters out
+	for ( buffptr = ainame; *buffptr; buffptr++ )
+	{
+		if ( *buffptr == '\n' ) {
+			*buffptr = ' ';
+		} else if ( *buffptr == '"' ) {
+			*buffptr = '\'';
+		}
+	}
+	// Kill any trailing space as well
+	if ( *( buffptr - 1 ) == ' ' ) {
+		*( buffptr - 1 ) = 0;
+	}
+
+	// Strip bad characters out
+	for ( buffptr = aitype; *buffptr; buffptr++ )
+	{
+		if ( *buffptr == '\n' ) {
+			*buffptr = ' ';
+		} else if ( *buffptr == '"' ) {
+			*buffptr = '\'';
+		}
+	}
+	// Kill any trailing space as well
+	if ( *( buffptr - 1 ) == ' ' ) {
+		*( buffptr - 1 ) = 0;
+	}
+
+	// Build the entity definition
+	buffptr = va(   "{\n\"classname\" \"%s\"\n\"origin\" \"%i %i %i\"\n\"ainame\" \"%s\"\n\"angle\" \"%i\"\n\"spawnflags\" \"1\"\n}\n", aitype, (int) cg.snap->ps.origin[0], (int) cg.snap->ps.origin[1], (int) cg.snap->ps.origin[2], ainame, (int)cg.refdefViewAngles[YAW] );
+
+	// And write out/acknowledge
+	trap_FS_Write( buffptr, strlen( buffptr ), f );
+	trap_FS_FCloseFile( f );
+	CG_Printf( "%s (%s) entity dumped to '%s' (%i %i %i).\n", aitype, ainame, aicastfilename,
+			   (int) cg.snap->ps.origin[0], (int) cg.snap->ps.origin[1], (int) cg.snap->ps.origin[2] );
+}
+
+/*
+===================
+CG_DumpLocation_f
+
+Dump a target_location definition to a file
+===================
+*/
+static void CG_DumpLocation_f( void ) {
+	char locfilename[MAX_QPATH];
+	char locname[MAX_STRING_CHARS];
+	char *extptr, *buffptr;
+	fileHandle_t f;
+
+	// Check for argument
+	if ( trap_Argc() < 2 ) {
+		CG_Printf( "Usage: dumploc <locationname>\n" );
+		return;
+	}
+	trap_Args( locname, sizeof( locname ) );
+
+	// Open locations file
+	Q_strncpyz( locfilename, cgs.mapname, sizeof( locfilename ) );
+	extptr = locfilename + strlen( locfilename ) - 4;
+	if ( extptr < locfilename || Q_stricmp( extptr, ".bsp" ) ) {
+		CG_Printf( "Unable to dump, unknown map name?\n" );
+		return;
+	}
+	Q_strncpyz( extptr, ".ents", 6 );
+	trap_FS_FOpenFile( locfilename, &f, FS_APPEND_SYNC );
+	if ( !f ) {
+		CG_Printf( "Failed to open '%s' for writing.\n", locfilename );
+		return;
+	}
+
+	// Strip bad characters out
+	for ( buffptr = locname; *buffptr; buffptr++ )
+	{
+		if ( *buffptr == '\n' ) {
+			*buffptr = ' ';
+		} else if ( *buffptr == '"' ) {
+			*buffptr = '\'';
+		}
+	}
+	// Kill any trailing space as well
+	if ( *( buffptr - 1 ) == ' ' ) {
+		*( buffptr - 1 ) = 0;
+	}
+
+	// Build the entity definition
+	buffptr = va(   "{\n\"classname\" \"target_location\"\n\"origin\" \"%i %i %i\"\n\"message\" \"%s\"\n}\n\n",
+					(int) cg.snap->ps.origin[0], (int) cg.snap->ps.origin[1], (int) cg.snap->ps.origin[2], locname );
+
+	// And write out/acknowledge
+	trap_FS_Write( buffptr, strlen( buffptr ), f );
+	trap_FS_FCloseFile( f );
+	CG_Printf( "Entity dumped to '%s' (%i %i %i).\n", locfilename,
+			   (int) cg.snap->ps.origin[0], (int) cg.snap->ps.origin[1], (int) cg.snap->ps.origin[2] );
+}
+
+/*
 ==============
 CG_StopCamera
 ==============
@@ -410,8 +587,10 @@ static consoleCommand_t commands[] = {
 	{ "mp_QuickMessage", CG_QuickMessage_f },
 	{ "OpenLimboMenu", CG_OpenLimbo_f },
 	{ "CloseLimboMenu", CG_CloseLimbo_f },
-	{ "LimboMessage", CG_LimboMessage_f }
+	{ "LimboMessage", CG_LimboMessage_f },
 	// -NERVE - SMF
+	{ "dumploc", CG_DumpLocation_f },
+	{ "dumpcastai", CG_DumpCastAi_f }
 };
 
 

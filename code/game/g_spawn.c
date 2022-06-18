@@ -1178,8 +1178,6 @@ Parses textual entity definitions out of an entstring and spawns gentities.
 void G_SpawnEntitiesFromString( void ) {
 	// allow calls to G_Spawn*()
 	level.spawning = qtrue;
-	G_LoadEntsFile();
-	G_ParseExtraSpawnVars();
 	level.numSpawnVars = 0;
 
 	// the worldspawn is not an actual entity, but it still
@@ -1193,6 +1191,11 @@ void G_SpawnEntitiesFromString( void ) {
 	// parse ents
 	while ( G_ParseSpawnVars() ) {
 		G_SpawnGEntityFromSpawnVars();
+	}
+
+	if ( g_gametype.integer >= GT_SINGLE_PLAYER ) {
+		G_LoadEntsFile();
+		G_ParseExtraSpawnVars();
 	}
 
 	level.spawning = qfalse;            // any future calls to G_Spawn*() will be errors

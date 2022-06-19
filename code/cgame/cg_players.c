@@ -1183,6 +1183,17 @@ nodam_rtshin            attached to tag_calfright
 		} else if ( !Q_strcasecmp( (char *)modelName, "beast" ) )        {
 			// Helga Boss
 			cgs.media.footsteps[FOOTSTEP_BEAST][0] = CG_SoundScriptPrecache( "beastStep" );   // just precache the sound script
+		} else if ( !Q_strcasecmp( (char *)modelName, "dog" ) )        {
+			for ( i = 0; i < 4; i++ ) {
+				Com_sprintf( name, sizeof( name ), "sound/player/footsteps/dog/step%i.wav", i + 1 );
+				cgs.media.footsteps[FOOTSTEP_DOG_STEP][i] = trap_S_RegisterSound( name );
+
+				Com_sprintf( name, sizeof( name ), "sound/player/footsteps/dog/gravel%i.wav", i + 1 );
+				cgs.media.footsteps[FOOTSTEP_DOG_GRAVEL][i] = trap_S_RegisterSound( name );
+
+				Com_sprintf( name, sizeof( name ), "sound/player/footsteps/dog/wood%i.wav", i + 1 );
+				cgs.media.footsteps[FOOTSTEP_DOG_WOOD][i] = trap_S_RegisterSound( name );
+			}
 		}
 	}
 

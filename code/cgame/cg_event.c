@@ -1316,6 +1316,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				CG_StartShakeCamera( 0.08, 500, es->pos.trBase, 800 );
 			} else if ( cent->currentState.aiChar == AICHAR_HELGA ) {
 				CG_SoundPlayIndexedScript( cgs.media.footsteps[FOOTSTEP_BEAST][0], NULL, es->number );
+			} else if ( cent->currentState.aiChar == AICHAR_DOG ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_DOG_STEP ][footstepcnt] );
 			} else {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ ci->modelInfo->footsteps ][footstepcnt] );
 			}
@@ -1336,6 +1338,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				CG_StartShakeCamera( 0.08, 500, es->pos.trBase, 800 );
 			} else if ( cent->currentState.aiChar == AICHAR_HELGA ) {
 				CG_SoundPlayIndexedScript( cgs.media.footsteps[FOOTSTEP_BEAST][0], NULL, es->number );
+			} else if ( cent->currentState.aiChar == AICHAR_DOG ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_DOG_STEP ][footstepcnt] );
 			} else {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_METAL ][footstepcnt] );
 			}
@@ -1358,7 +1362,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				CG_StartShakeCamera( 0.08, 500, es->pos.trBase, 800 );
 			} else if ( cent->currentState.aiChar == AICHAR_HELGA ) {
 				CG_SoundPlayIndexedScript( cgs.media.footsteps[FOOTSTEP_BEAST][0], NULL, es->number );
-			} else {
+			} else if ( cent->currentState.aiChar == AICHAR_DOG ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_DOG_WOOD ][footstepcnt] );
+			}  else {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_WOOD ][footstepcnt] );
 			}
 
@@ -1377,6 +1383,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_SUPERSOLDIER_GRASS ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_HELGA ) {
 				CG_SoundPlayIndexedScript( cgs.media.footsteps[FOOTSTEP_BEAST][0], NULL, es->number );
+			} else if ( cent->currentState.aiChar == AICHAR_DOG ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_DOG_STEP ][footstepcnt] );
 			} else {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_GRASS ][footstepcnt] );
 			}
@@ -1395,6 +1403,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_SUPERSOLDIER_GRAVEL][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_HELGA ) {
 				CG_SoundPlayIndexedScript( cgs.media.footsteps[FOOTSTEP_BEAST][0], NULL, es->number );
+			} else if ( cent->currentState.aiChar == AICHAR_DOG ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_DOG_GRAVEL ][footstepcnt] );
 			} else {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_GRAVEL ][footstepcnt] );
 			}
@@ -1415,12 +1425,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FOOTSTEP_SNOW:
 		DEBUGNAME( "EV_FOOTSTEP_SNOW" );
 		if ( cg_footsteps.integer ) {
-			//if (cent->currentState.aiChar == AICHAR_ELITEGUARD)
-			//	trap_S_StartSound (NULL, es->number, CHAN_BODY,
-			//		cgs.media.footsteps[ FOOTSTEP_ELITE_STEP ][footstepcnt] );
-			//else
-			trap_S_StartSound( NULL, es->number, CHAN_BODY,
-							   cgs.media.footsteps[ FOOTSTEP_SNOW ][footstepcnt] );
+            if ( cent->currentState.aiChar == AICHAR_DOG ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_DOG_STEP ][footstepcnt] );
+			} else {
+			trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_SNOW ][footstepcnt] );
+			}
 		}
 		break;
 

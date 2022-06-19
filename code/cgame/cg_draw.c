@@ -797,11 +797,12 @@ static void CG_DrawStatusBar( void ) {
 					CG_DrawBigString2( ( 580 - 23 + 35 ) + wideOffset, STATUSBARHEIGHT, va( "%d", inclip ), cg_hudAlpha.value );
 				}
 			}
-
+            
 			icon = cg_weapons[ cg.predictedPlayerState.weapon ].weaponIcon[0];
 			if ( icon ) {
 				CG_DrawPic( ( ( 530 + 68 ) - halfScale ) + wideOffset,  ( 446 - 10 ) - halfScale, ( 38 + scale ) - wideOffset, 38 + scale, icon );
 			}
+			
 
 			trap_R_SetColor( NULL );
 
@@ -814,6 +815,7 @@ static void CG_DrawStatusBar( void ) {
 					CG_DrawPic( CHAR_WIDTH * 3 + TEXT_ICON_SPACE, STATUSBARHEIGHT, ICON_SIZE, ICON_SIZE, icon );
 				}
 			}
+			
 		}
 	}
 

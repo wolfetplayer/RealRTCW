@@ -260,6 +260,11 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 		return;
 	}
 
+	if (cg_hudWeapIcon.integer == 0) 
+	{
+		return;
+	}
+
 	if ( cg_fixedAspect.integer == 2 ) {
 		CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 	}

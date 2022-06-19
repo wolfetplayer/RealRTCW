@@ -1732,6 +1732,7 @@ extern vmCvar_t cg_fixedAspect;
 extern vmCvar_t cg_fixedAspectFOV;
 extern vmCvar_t cg_oldWolfUI;
 extern vmCvar_t cg_drawStatusHead;
+extern vmCvar_t cg_hudWeapIcon;
 extern vmCvar_t cg_zoomFov;
 extern vmCvar_t cg_zoomDefaultBinoc;
 extern vmCvar_t cg_zoomDefaultSniper;

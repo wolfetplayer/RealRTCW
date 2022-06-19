@@ -250,7 +250,7 @@ static void SV_Map_f( void ) {
 		Com_Printf( "Can't find map %s\n", expanded );
 		return;
 	}
- 
+
 	Cvar_Set( "r_mapFogColor", "0" );       //----(SA)	added
 	Cvar_Set( "r_waterFogColor", "0" );     //----(SA)	added
 	Cvar_Set( "r_savegameFogColor", "0" );      //----(SA)	added
@@ -273,8 +273,8 @@ static void SV_Map_f( void ) {
 		Cvar_SetValue( "g_gametype", GT_SINGLE_PLAYER );
 		Cvar_SetValue( "g_doWarmup", 0 );
 		// may not set sv_maxclients directly, always set latched
-		Cvar_SetLatched( "sv_maxclients", va( "%d", MAX_CLIENTS ) ); // Ridah, modified this
-		cmd += 4;
+		Cvar_SetLatched( "sv_maxclients", "32" ); // Ridah, modified this
+		cmd += 2;
 		killBots = qtrue;
 		if ( !Q_stricmp( cmd, "devmap" ) ) {
 			cheat = qtrue;
@@ -285,8 +285,8 @@ static void SV_Map_f( void ) {
 		Cvar_SetValue( "g_gametype", GT_GOTHIC );
 		Cvar_SetValue( "g_doWarmup", 0 );
 		// may not set sv_maxclients directly, always set latched
-		Cvar_SetLatched( "sv_maxclients", va( "%d", MAX_CLIENTS ) ); // Ridah, modified this
-		cmd += 4;
+		Cvar_SetLatched( "sv_maxclients", "32" ); // Ridah, modified this
+		cmd += 2;
 		killBots = qtrue;
 		if ( !Q_stricmp( cmd, "devmap" ) ) {
 			cheat = qtrue;

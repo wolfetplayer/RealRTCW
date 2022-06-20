@@ -1950,6 +1950,11 @@ static void CG_DrawFatigue( rectDef_t *rect, vec4_t color, int align ) {
 		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 	}
 
+	if (cg_hudStamina.integer == 0) 
+	{
+		return;
+	}
+
 	if ( align != HUD_HORIZONTAL ) {
 		flags |= 4;   // BAR_VERT
 		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')

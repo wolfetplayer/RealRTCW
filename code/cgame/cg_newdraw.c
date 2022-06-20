@@ -560,6 +560,12 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 
 	weap = cent->currentState.weapon;
 
+	if ( cg_hudAmmoClip.integer == 0 ) 
+	{
+		return;
+	}
+
+
 	if ( !weap ) {
 		return;
 	}

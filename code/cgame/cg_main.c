@@ -174,6 +174,7 @@ vmCvar_t cg_drawStatusHead;
 vmCvar_t cg_hudWeapIcon;
 vmCvar_t cg_hudStamina;
 vmCvar_t cg_hudAmmoClip;
+vmCvar_t cg_hudStatus;
 vmCvar_t cg_zoomFov;
 vmCvar_t cg_zoomStepBinoc;
 vmCvar_t cg_zoomStepSniper;
@@ -340,6 +341,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_hudWeapIcon, "cg_hudWeapIcon", "1", CVAR_ARCHIVE },
 	{ &cg_hudStamina, "cg_hudStamina", "1", CVAR_ARCHIVE },
 	{ &cg_hudAmmoClip, "cg_hudAmmoClip", "1", CVAR_ARCHIVE },
+	{ &cg_hudStatus, "cg_hudStatus", "1", CVAR_ARCHIVE },
 	{ &cg_viewsize, "cg_viewsize", "100", CVAR_ARCHIVE },
 	{ &cg_letterbox, "cg_letterbox", "0", CVAR_TEMP },    //----(SA)	added
 	{ &cg_shadows, "cg_shadows", "1", CVAR_ARCHIVE  },

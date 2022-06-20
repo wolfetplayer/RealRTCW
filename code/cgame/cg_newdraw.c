@@ -135,6 +135,10 @@ static void CG_DrawPlayerArmorValue( rectDef_t *rect, int font, float scale, vec
 	int value;
 	playerState_t   *ps;
 
+	if ( cg_hudStatus.integer == 0 || cg_hudStatus.integer == 2 ) {
+		return;
+	}
+
 	ps = &cg.snap->ps;
 
 
@@ -159,6 +163,10 @@ static void CG_DrawPlayerArmorValue( rectDef_t *rect, int font, float scale, vec
 static void CG_DrawPlayerArmorValueBar( rectDef_t *rect, vec4_t color, int align ) {
 	float frac; 
 	int flags = 0;
+
+	if ( cg_hudStatus.integer == 0 || cg_hudStatus.integer == 1 ) {
+		return;
+	}
 
 	playerState_t   *ps;
 
@@ -1046,6 +1054,10 @@ static void CG_DrawPlayerHealth( rectDef_t *rect, int font, float scale, vec4_t 
 	int value;
 	char num[16];
 
+	if ( cg_hudStatus.integer == 0 || cg_hudStatus.integer == 2 ) {
+		return;
+	}
+
 	ps = &cg.snap->ps;
 
 	value = ps->stats[STAT_HEALTH];
@@ -1068,6 +1080,10 @@ static void CG_DrawPlayerHealth( rectDef_t *rect, int font, float scale, vec4_t 
 static void CG_DrawPlayerHealthBar( rectDef_t *rect, vec4_t color, int align ) {
 	float frac; 
 	int flags = 0;
+
+	if ( cg_hudStatus.integer == 0 || cg_hudStatus.integer == 1 ) {
+		return;
+	}
 
     frac = cg.snap->ps.stats[STAT_HEALTH] / (float) cg.snap->ps.stats[STAT_MAX_HEALTH];
 

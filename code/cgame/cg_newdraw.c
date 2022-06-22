@@ -1029,7 +1029,7 @@ static void CG_DrawPlayerHealthBar( rectDef_t *rect, vec4_t color, int align ) {
 	}
 
 	CG_ColorForHealth( color );
-	color[3] = 0.5f;
+	//color[3] = 0.5f;
 
 	if ( cg_fixedAspect.integer == 2 ) {
 		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);

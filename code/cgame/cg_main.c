@@ -322,7 +322,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_drawGamemodels, "cg_drawGamemodels", "1", CVAR_CHEAT },
 	{ &cg_drawFPGun, "cg_drawFPGun", "1", CVAR_ARCHIVE },
 	{ &cg_gun_frame, "cg_gun_frame", "0", CVAR_TEMP },
-	{ &cg_cursorHints, "cg_cursorHints", "1", CVAR_ARCHIVE },
+	{ &cg_cursorHints, "cg_cursorHints", "4", CVAR_ARCHIVE },
 	{ &cg_hintFadeTime, "cg_hintFadeTime", "500", CVAR_ARCHIVE }, //----(SA)	added
 	{ &cg_zoomFov, "cg_zoomfov", "22.5", CVAR_ARCHIVE },
 	{ &cg_zoomDefaultBinoc, "cg_zoomDefaultBinoc", "22.5", CVAR_ARCHIVE },
@@ -370,7 +370,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_cycleAllWeaps,    "cg_cycleAllWeaps", "1", CVAR_ARCHIVE },
 	{ &cg_drawAllWeaps,     "cg_drawAllWeaps",   "1", CVAR_ARCHIVE },
 	{ &cg_crosshairSize, "cg_crosshairSize", "24", CVAR_ARCHIVE },
-	{ &cg_crosshairAlpha, "cg_crosshairAlpha", "0.5", CVAR_ARCHIVE }, //----(SA)	added
+	{ &cg_crosshairAlpha, "cg_crosshairAlpha", "1.0", CVAR_ARCHIVE }, //----(SA)	added
 	{ &cg_crosshairHealth, "cg_crosshairHealth", "1", CVAR_ARCHIVE },
 	{ &cg_crosshairX, "cg_crosshairX", "0", CVAR_ARCHIVE },
 	{ &cg_crosshairY, "cg_crosshairY", "0", CVAR_ARCHIVE },

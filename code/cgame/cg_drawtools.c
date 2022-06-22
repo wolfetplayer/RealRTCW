@@ -888,8 +888,6 @@ CG_ColorForHealth
 */
 void CG_ColorForHealth( vec4_t hcolor ) {
 	int health;
-	int count;
-	int max;
 
 	// calculate the total points of damage that can
 	// be sustained at the current health / armor level
@@ -899,13 +897,6 @@ void CG_ColorForHealth( vec4_t hcolor ) {
 		hcolor[3] = 1;
 		return;
 	}
-	count = cg.snap->ps.stats[STAT_ARMOR];
-	max = health * ARMOR_PROTECTION / ( 1.0 - ARMOR_PROTECTION );
-	if ( max < count ) {
-		count = max;
-	}
-	health += count;
-
 
 	// set the color based on health
 	hcolor[0] = 1.0;

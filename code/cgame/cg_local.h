@@ -87,7 +87,7 @@ If you have questions concerning this license or the applicable additional terms
 #define GIANT_WIDTH         32
 #define GIANT_HEIGHT        48
 
-#define NUM_CROSSHAIRS      10
+#define NUM_CROSSHAIRS      11
 
 // Ridah, trails
 #define STYPE_STRETCH   0

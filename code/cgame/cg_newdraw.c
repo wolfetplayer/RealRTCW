@@ -2098,6 +2098,9 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 	case CG_PLAYER_AMMOCLIP_VALUE:
 		CG_DrawPlayerAmmoValue( &rect, font, scale, color, shader, textStyle, 1 );
 		break;
+	case CG_PLAYER_AKIMBOCLIP_VALUE:
+		CG_DrawPlayerAmmoValue( &rect, font, scale, color, shader, textStyle, 1 );
+		break;
 	case CG_SELECTEDPLAYER_HEAD:
 		CG_DrawSelectedPlayerHead( &rect, ownerDrawFlags & CG_SHOW_2DONLY, qfalse );
 		break;

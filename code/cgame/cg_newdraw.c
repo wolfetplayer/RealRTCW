@@ -2128,8 +2128,6 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		CG_DrawPlayerHealth( &rect, font, scale, color, shader, textStyle );
 		break;
 	case CG_PLAYER_HEALTH_BAR:
-    case CG_PLAYER_HEALTH_BAR_MAX:
-    case CG_PLAYER_HEALTH_BAR_REALISM:	
 		CG_DrawPlayerHealthBar( &rect, color, align );
 		break;
 	case CG_RED_SCORE:

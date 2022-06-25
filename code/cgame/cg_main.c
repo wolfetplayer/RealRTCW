@@ -341,7 +341,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_hudWeapIcon, "cg_hudWeapIcon", "1", CVAR_ARCHIVE },
 	{ &cg_hudStamina, "cg_hudStamina", "1", CVAR_ARCHIVE },
 	{ &cg_hudAmmoClip, "cg_hudAmmoClip", "1", CVAR_ARCHIVE },
-	{ &cg_hudStatus, "cg_hudStatus", "1", CVAR_ARCHIVE },
+	{ &cg_hudStatus, "cg_hudStatus", "4", CVAR_ARCHIVE },
 	{ &cg_viewsize, "cg_viewsize", "100", CVAR_ARCHIVE },
 	{ &cg_letterbox, "cg_letterbox", "0", CVAR_TEMP },    //----(SA)	added
 	{ &cg_shadows, "cg_shadows", "1", CVAR_ARCHIVE  },

@@ -204,11 +204,6 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 		return;
 	}
 
-	if (cg_hudWeapIcon.integer == 0) 
-	{
-		return;
-	}
-
 	if ( cg_fixedAspect.integer == 2 ) {
 		CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 	}
@@ -503,11 +498,6 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	ps = &cg.snap->ps;
 
 	weap = cent->currentState.weapon;
-
-	if ( cg_hudAmmoClip.integer == 0 ) 
-	{
-		return;
-	}
 
 
 	if ( !weap ) {
@@ -990,10 +980,6 @@ static void CG_DrawPlayerHealth( rectDef_t *rect, int font, float scale, vec4_t 
 	int value;
 	char num[16];
 
-	if ( cg_hudStatus.integer < 3 || cg_hudStatus.integer == 4 ) {
-		return;
-	}
-
 	ps = &cg.snap->ps;
 
 	value = ps->stats[STAT_HEALTH];
@@ -1016,10 +1002,6 @@ static void CG_DrawPlayerHealth( rectDef_t *rect, int font, float scale, vec4_t 
 static void CG_DrawPlayerHealthBar( rectDef_t *rect, vec4_t color, int align ) {
 	float frac; 
 	int flags = 0;
-
-	if ( cg_hudStatus.integer <= 3 ) {
-		return;
-	}
 
     frac = cg.snap->ps.stats[STAT_HEALTH] / (float) cg.snap->ps.stats[STAT_MAX_HEALTH];
 
@@ -1052,10 +1034,6 @@ static void CG_DrawPlayerArmorValue( rectDef_t *rect, int font, float scale, vec
 	int value;
 	playerState_t   *ps;
 
-	if ( cg_hudStatus.integer == 1 || cg_hudStatus.integer == 4 || cg_hudStatus.integer == -1  ) {
-		return;
-	}
-
 	ps = &cg.snap->ps;
 
 
@@ -1080,10 +1058,6 @@ static void CG_DrawPlayerArmorValue( rectDef_t *rect, int font, float scale, vec
 static void CG_DrawPlayerArmorValueBar( rectDef_t *rect, vec4_t color, int align ) {
 	float frac; 
 	int flags = 0;
-
-	if ( cg_hudStatus.integer == 0 || cg_hudStatus.integer == 3 || cg_hudStatus.integer == -1 ) {
-		return;
-	}
 
 	playerState_t   *ps;
 
@@ -1973,11 +1947,6 @@ static void CG_DrawFatigue( rectDef_t *rect, vec4_t color, int align ) {
 		CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 	}
 
-	if (cg_hudStamina.integer == 0) 
-	{
-		return;
-	}
-
 	if ( align != HUD_HORIZONTAL ) {
 		flags |= 4;   // BAR_VERT
 		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
@@ -2159,6 +2128,8 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		CG_DrawPlayerHealth( &rect, font, scale, color, shader, textStyle );
 		break;
 	case CG_PLAYER_HEALTH_BAR:
+    case CG_PLAYER_HEALTH_BAR_MAX:
+    case CG_PLAYER_HEALTH_BAR_REALISM:	
 		CG_DrawPlayerHealthBar( &rect, color, align );
 		break;
 	case CG_RED_SCORE:

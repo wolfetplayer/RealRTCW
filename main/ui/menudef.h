@@ -256,6 +256,8 @@ If you have questions concerning this license or the applicable additional terms
 #define CG_PLAYER_HEALTH_BAR        84
 #define CG_PLAYER_ARMOR_VALUE_BAR   85
 #define CG_PLAYER_AKIMBOCLIP_VALUE  86
+#define CG_PLAYER_HEALTH_BAR_MAX    87
+#define CG_PLAYER_HEALTH_BAR_REALISM   88
 
 #define UI_OWNERDRAW_BASE           200
 #define UI_HANDICAP                 200

@@ -1266,9 +1266,9 @@ static void CG_DrawPickupItem( void ) {
 			color[3] = fadeColor[0];
 			w = CG_DrawStrlen( pickupText ) * 10;
 #ifdef LOCALISATION
-			CG_DrawStringExt2( 320 - ( w / 2 ), 398, CG_TranslateString( pickupText ), color, qfalse, qtrue, 10, 10, 0 );
+			CG_DrawStringExt2( 320 - ( w / 2 ), 420, CG_TranslateString( pickupText ), color, qfalse, qtrue, 10, 10, 0 );
 #else
-			CG_DrawStringExt2( 320 - ( w / 2 ), 398, pickupText, color, qfalse, qtrue, 10, 10, 0 );
+			CG_DrawStringExt2( 320 - ( w / 2 ), 420, pickupText, color, qfalse, qtrue, 10, 10, 0 );
 #endif
 
 			trap_R_SetColor( NULL );

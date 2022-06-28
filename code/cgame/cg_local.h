@@ -1736,6 +1736,7 @@ extern vmCvar_t cg_hudWeapIcon;
 extern vmCvar_t cg_hudStamina;
 extern vmCvar_t cg_hudAmmoClip;
 extern vmCvar_t cg_hudStatus;
+extern vmCvar_t cg_journalStyle;
 extern vmCvar_t cg_zoomFov;
 extern vmCvar_t cg_zoomDefaultBinoc;
 extern vmCvar_t cg_zoomDefaultSniper;

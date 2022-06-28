@@ -464,7 +464,7 @@ CG_DrawMessageIcon
 static void CG_DrawMessageIcon( rectDef_t *rect ) {
 	int icon;
 
-	if ( !cg_youGotMail.integer ) {
+	if ( !cg_youGotMail.integer || !cg_journalStyle.integer ) {
 		return;
 	}
 

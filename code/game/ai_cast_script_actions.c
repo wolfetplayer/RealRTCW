@@ -2303,6 +2303,10 @@ AICast_ScriptAction_PrintBonus
 qboolean AICast_ScriptAction_PrintBonus( cast_state_t *cs, char *params ) {
 	char *newstr;
 
+	if ( !g_reloading.integer ) {
+		return qfalse;
+	}
+
 	newstr = va( "%s", params );
 
 	trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );

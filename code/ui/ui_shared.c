@@ -36,6 +36,11 @@ If you have questions concerning this license or the applicable additional terms
 #define SCROLL_TIME_ADJUSTOFFSET    40
 #define SCROLL_TIME_FLOOR                   20
 
+
+char* translateTable[MAX_COUNT_TRANSLATE_TABLE_ELEMENTS][2];
+int countTranslate = 0;
+
+
 typedef struct scrollInfo_s {
 	int nextScrollTime;
 	int nextAdjustTime;
@@ -4922,6 +4927,18 @@ keywordHash_t *KeywordHash_Find( keywordHash_t *table[], char *keyword ) {
 	return NULL;
 }
 
+const char* TranslateTable_Find( const char* original ) {
+	int i;
+
+	for ( i = 0; i < countTranslate; ++i ) {
+		if ( Q_stricmp( translateTable[i][0], original ) == 0 ) {
+			return translateTable[i][1];
+		}
+	}
+
+	return NULL;
+}
+
 /*
 ===============
 Item Keyword Parse functions
@@ -4949,9 +4966,24 @@ qboolean ItemParse_focusSound( itemDef_t *item, int handle ) {
 
 // text <string>
 qboolean ItemParse_text( itemDef_t *item, int handle ) {
-	if ( !PC_String_Parse( handle, &item->text ) ) {
+	const char* original;
+	const char* translate;
+
+	if ( !PC_String_Parse( handle, &original ) ) {
 		return qfalse;
 	}
+
+	if ( original[0] == '@' ) {
+		translate = TranslateTable_Find( original + 1 /* without @ */ );
+
+		if ( translate ) {
+			item->text = String_Alloc( translate );
+			return qtrue;
+		}
+	}
+
+	item->text = String_Alloc( original );
+
 	return qtrue;
 }
 
@@ -5615,6 +5647,8 @@ qboolean ItemParse_cvarStrList( itemDef_t *item, int handle ) {
 }
 
 qboolean ItemParse_cvarFloatList( itemDef_t *item, int handle ) {
+	const char* translate;
+
 	pc_token_t token;
 	multiDef_t *multiPtr;
 
@@ -5647,7 +5681,18 @@ qboolean ItemParse_cvarFloatList( itemDef_t *item, int handle ) {
 			continue;
 		}
 
-		multiPtr->cvarList[multiPtr->count] = String_Alloc( token.string );
+		if ( token.string[0] == '@' ) {
+			translate = TranslateTable_Find( token.string + 1 /* without @ */ );
+
+			if ( translate ) {
+				multiPtr->cvarList[multiPtr->count] = String_Alloc( translate );
+			} else {
+				multiPtr->cvarList[multiPtr->count] = String_Alloc( token.string );
+			}
+		} else {
+			multiPtr->cvarList[multiPtr->count] = String_Alloc( token.string );
+		}
+
 		if ( !PC_Float_Parse( handle, &multiPtr->cvarValue[multiPtr->count] ) ) {
 			return qfalse;
 		}

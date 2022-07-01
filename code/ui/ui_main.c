@@ -60,6 +60,9 @@ static const char *skillLevels[] = {
 
 static const int numSkillLevels = ARRAY_LEN( skillLevels );
  
+
+extern char* translateTable[MAX_COUNT_TRANSLATE_TABLE_ELEMENTS][2];
+extern int countTranslate;
  
 #define UIAS_LOCAL			0
 #define UIAS_GLOBAL0			1
@@ -1119,6 +1122,73 @@ static void UI_LoadTranslationStrings( void ) {
 #endif
 		strcpy( translateStrings[i].localname, token );
 	}
+}
+
+void UI_FreeTranslateTable() {
+	while ( countTranslate ) {
+		free( translateTable[countTranslate - 1][0] );
+		free( translateTable[countTranslate - 1][1] );
+		countTranslate--;
+	}
+}
+
+qboolean ParsePairs( int handle ) {
+	pc_token_t token;
+
+	while ( 1 ) {
+		if ( countTranslate == MAX_COUNT_TRANSLATE_TABLE_ELEMENTS ) {
+			break;
+		}
+
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			return qfalse;
+		}
+
+		if ( token.string[0] == 0 ) {
+			return qfalse;
+		}
+
+		if ( token.string[0] == '}' ) {
+			break;
+		}
+
+		translateTable[countTranslate][0] = malloc( strlen( token.string ) + 1 );
+		Q_strncpyz(translateTable[countTranslate][0], token.string, strlen( token.string ) + 1 );
+
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			return qfalse;
+		}
+
+		translateTable[countTranslate][1] = malloc( strlen( token.string ) + 1 );
+		Q_strncpyz(translateTable[countTranslate][1], token.string, strlen( token.string ) + 1 );
+
+		countTranslate++;
+	}
+
+	return qtrue;
+}
+
+static void UI_LoadTranslateTable( void ) {
+	pc_token_t token;
+	int handle;
+
+	handle = trap_PC_LoadSource( "text/text.txt" );
+
+	if ( !handle ) {
+		return;
+	}
+
+	if ( !trap_PC_ReadToken( handle, &token ) ) {
+		return;
+	}
+
+	if ( token.string[0] != '{' ) {
+		Com_Printf( S_COLOR_YELLOW "expected {: text/text.txt\n" );
+	} else if ( !ParsePairs( handle ) ) {
+		Com_Printf( S_COLOR_YELLOW "translate parse error: text/text.txt\n" );
+	}
+
+	trap_PC_FreeSource( handle );
 }
 
 /*
@@ -6716,6 +6786,8 @@ void _UI_Init( qboolean inGameLoad ) {
 	UI_LoadTranslationStrings();
 	UI_LoadbonusStrings();
 
+	UI_LoadTranslateTable();
+
 //	uiInfo.uiDC.cursor	= trap_R_RegisterShaderNoMip( "menu/art/3_cursor3" );
 	uiInfo.uiDC.whiteShader = trap_R_RegisterShaderNoMip( "white" );
 
@@ -6748,6 +6820,8 @@ void _UI_Init( qboolean inGameLoad ) {
 	UI_LoadMenus( menuSet, qtrue );
 	UI_LoadMenus( "ui/ingame.txt", qfalse );
 #endif
+
+	UI_FreeTranslateTable();
 
 	Menus_CloseAll();
 

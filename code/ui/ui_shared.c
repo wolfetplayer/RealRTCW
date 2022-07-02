@@ -5599,6 +5599,7 @@ qboolean ItemParse_cvarStrList( itemDef_t *item, int handle ) {
 	pc_token_t token;
 	multiDef_t *multiPtr;
 	int pass;
+    const char* translate;
 
 	Item_ValidateTypeData( item );
 	if ( !item->typeData ) {
@@ -5631,10 +5632,30 @@ qboolean ItemParse_cvarStrList( itemDef_t *item, int handle ) {
 		}
 
 		if ( pass == 0 ) {
+		if ( token.string[0] == '@' ) {
+			translate = TranslateTable_Find( token.string + 1 /* without @ */ );
+
+			if ( translate ) {
+				multiPtr->cvarList[multiPtr->count] = String_Alloc( translate );
+			} else {
+				multiPtr->cvarList[multiPtr->count] = String_Alloc( token.string );
+			}
+		} else {
 			multiPtr->cvarList[multiPtr->count] = String_Alloc( token.string );
+		}
 			pass = 1;
 		} else {
+		if ( token.string[0] == '@' ) {
+			translate = TranslateTable_Find( token.string + 1 /* without @ */ );
+
+			if ( translate ) {
+				multiPtr->cvarStr[multiPtr->count] = String_Alloc( translate );
+			} else {
+				multiPtr->cvarStr[multiPtr->count] = String_Alloc( token.string );
+			}
+		} else {
 			multiPtr->cvarStr[multiPtr->count] = String_Alloc( token.string );
+		}
 			pass = 0;
 			multiPtr->count++;
 			if ( multiPtr->count >= MAX_MULTI_CVARS ) {

@@ -904,10 +904,14 @@ void CG_ColorForHealth( vec4_t hcolor ) {
 
 	if  (cg_gameSkill.integer == 3) // Death Incarnate coloring. Keeping in mind 50 health cap.
 	{
-	   if ( health >= 50 ) {
+	   if ( health == 50 ) {
 		   hcolor[2] = 1.0;
 	   } else if ( health < 33 ) {
 		   hcolor[2] = 0;
+	   } else if (health > 50){
+		   hcolor[1] = 0.6;
+		   hcolor[2] = 0.4; 
+		   hcolor[0] = 0.4;  
 	   } else {
 		   hcolor[2] = ( health - 33 ) / 16.5;
 	   }
@@ -920,10 +924,14 @@ void CG_ColorForHealth( vec4_t hcolor ) {
 		   hcolor[1] = ( health - 15 ) / 15.0;
 	   }
 	} else if (cg_gameSkill.integer == 4) { // Realism coloring. Keeping in mind 25 health cap.
-	   if ( health >= 25 ) {
+	   if ( health == 25 ) {
 		   hcolor[2] = 1.0;
 	   } else if ( health < 16 ) {
 		   hcolor[2] = 0;
+	   } else if ( health > 25){
+		   hcolor[1] = 0.6;
+		   hcolor[2] = 0.4; 
+		   hcolor[0] = 0.4; 
 	   } else {
 		   hcolor[2] = ( health - 16 ) / 8.0;
 	   }
@@ -936,10 +944,14 @@ void CG_ColorForHealth( vec4_t hcolor ) {
 		   hcolor[1] = ( health - 7.5 ) / 7.5;
 	   }
 	} else { // default coloring. 100 health cap
-	   if ( health >= 100 ) {
+	   if ( health == 100 ) {
 		   hcolor[2] = 1.0;
 	   } else if ( health < 66 ) {
 		   hcolor[2] = 0;
+	   } else if ( health > 100){
+		   hcolor[1] = 0.6;
+		   hcolor[2] = 0.4; 
+		   hcolor[0] = 0.4; 
 	   } else {
 		   hcolor[2] = ( health - 66 ) / 33.0;
 	   }

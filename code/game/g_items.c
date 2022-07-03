@@ -188,7 +188,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		if (!g_decaychallenge.integer){
 		if ( g_gameskill.integer == GSKILL_REALISM || g_gameskill.integer == GSKILL_MAX ) {
 			if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 3.0;
+			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 2.0;
 		}
 		} else if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
 			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] * 1.25;

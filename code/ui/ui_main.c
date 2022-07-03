@@ -7552,7 +7552,7 @@ cvarTable_t cvarTable[] = {
 	{ &ui_limboMode, "ui_limboMode", "0", 0 },
 	// -NERVE - SMF
 
-	{ &ui_hudAlpha, "cg_hudAlpha", "0.8", CVAR_ARCHIVE },
+	{ &ui_hudAlpha, "cg_hudAlpha", "1.0", CVAR_ARCHIVE },
 	{ &ui_hunkUsed, "com_hunkused", "0", 0 },     //----(SA)	added
 	{ &ui_cameraMode, "com_cameraMode", "0", 0},  //----(SA)	added
 

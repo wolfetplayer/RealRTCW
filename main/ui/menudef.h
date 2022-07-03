@@ -255,7 +255,6 @@ If you have questions concerning this license or the applicable additional terms
 #define CG_PLAYER_WEAPON_RECHARGE   83  // DHM - Nerve :: For various multiplayer weapons that have recharge times
 #define CG_PLAYER_HEALTH_BAR        84
 #define CG_PLAYER_ARMOR_VALUE_BAR   85
-#define CG_PLAYER_AKIMBOCLIP_VALUE  86
 
 #define UI_OWNERDRAW_BASE           200
 #define UI_HANDICAP                 200

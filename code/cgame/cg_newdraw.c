@@ -565,14 +565,18 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 				// Moved this up a little so it's not on top of the weapon heat bar
 				CG_Text_Paint( -12 + rect->x + ( rect->w - value ) / 2, -15 + rect->y + rect->h, font, scale, color, num, 0, 0, textStyle );
 			} else {
+				if (special) {
+				CG_Text_Paint( 0 + rect->x + ( rect->w - value ) / 2, rect->y + rect->h, font, scale, color, num, 0, 0, textStyle );
+				} else {
 				CG_Text_Paint( -12 + rect->x + ( rect->w - value ) / 2, rect->y + rect->h, font, scale, color, num, 0, 0, textStyle );
+				}
 			}
 
 //			if(special) {	// draw '0' for akimbo guns
 			if ( value2 || ( special && type == 1 ) ) {
 				Com_sprintf( num, sizeof( num ), "%i /", value2 );
 				value = CG_Text_Width( num, font, scale, 0 );
-				CG_Text_Paint( -42 + rect->x + ( rect->w - value ) / 2, rect->y + rect->h, font, scale, color, num, 0, 0, textStyle );
+				CG_Text_Paint( -15 + rect->x + ( rect->w - value ) / 2, rect->y + rect->h, font, scale, color, num, 0, 0, textStyle );
 			}
 		}
 	}
@@ -2065,9 +2069,6 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		break;
 //----(SA)	end
 	case CG_PLAYER_AMMOCLIP_VALUE:
-		CG_DrawPlayerAmmoValue( &rect, font, scale, color, shader, textStyle, 1 );
-		break;
-	case CG_PLAYER_AKIMBOCLIP_VALUE:
 		CG_DrawPlayerAmmoValue( &rect, font, scale, color, shader, textStyle, 1 );
 		break;
 	case CG_SELECTEDPLAYER_HEAD:

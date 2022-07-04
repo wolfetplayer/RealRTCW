@@ -640,7 +640,7 @@ issues.
 #define MAX_FILE_HANDLES    64
 
 #if defined(__x86_64__)
-#define Q3CONFIG_CFG "realrtcwconfig_x86_64.cfg"
+#define Q3CONFIG_CFG "realrtcwconfig_x64.cfg"
 #else
 #define Q3CONFIG_CFG "realrtcwconfig_x86.cfg"
 #endif

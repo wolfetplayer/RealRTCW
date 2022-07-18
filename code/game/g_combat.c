@@ -568,6 +568,8 @@ int CheckArmor( gentity_t *ent, int damage, int dflags ) {
 
 	client->ps.stats[STAT_ARMOR] -= save;
 
+	if (client->ps.stats[STAT_ARMOR] < 0) client->ps.stats[STAT_ARMOR] = 0;
+
 	return save;
 }
 

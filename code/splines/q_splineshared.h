@@ -60,7 +60,7 @@ If you have questions concerning this license or the applicable additional terms
 #else
   #define HOMEPATH_NAME_UNIX		".wolf"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW"
+  #define HOMEPATH_NAME_WIN		"Victors"
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
   #define GAMENAME_FOR_MASTER		"wolfsp"
   #define LEGACY_PROTOCOL

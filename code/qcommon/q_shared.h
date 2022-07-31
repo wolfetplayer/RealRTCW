@@ -64,7 +64,7 @@ If you have questions concerning this license or the applicable additional terms
 #else
   #define HOMEPATH_NAME_UNIX		".realrtcw"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW"
+  #define HOMEPATH_NAME_WIN		"Victors"
   //#define STEAMPATH_NAME		"Return To Castle Wolfenstein"
   //#define STEAMPATH_APPID		"9010"
   #define GOGPATH_ID			"1441704976"

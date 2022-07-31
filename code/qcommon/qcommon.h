@@ -639,10 +639,10 @@ issues.
 
 #define MAX_FILE_HANDLES    64
 
-#ifdef DEDICATED
-#	define Q3CONFIG_CFG "wolfconfig_server.cfg"
+#if defined(__x86_64__)
+#define Q3CONFIG_CFG "victorsconfig_x64.cfg"
 #else
-#	define Q3CONFIG_CFG "realrtcwconfig.cfg"
+#define Q3CONFIG_CFG "victorsconfig_x86.cfg"
 #endif
 
 qboolean FS_Initialized( void );

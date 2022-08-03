@@ -4106,6 +4106,19 @@ qboolean AICast_ScriptAction_Achievement_ETBONUS( cast_state_t *cs, char *params
 
 /*
 ==================
+AICast_ScriptAction_Achievement_BINOCS
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_BINOCS( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_BINOCS");
+	}
+	return qtrue;
+}
+
+/*
+==================
 AICast_ScriptAction_Achievement_VENDETTA1_1
 ==================
 */
@@ -4363,6 +4376,7 @@ qboolean AICast_ScriptAction_Achievement_VENDETTA2_9( cast_state_t *cs, char *pa
 	}
 	return qtrue;
 }
+
 
 /*
 ==================

@@ -192,6 +192,7 @@ qboolean AICast_ScriptAction_Achievement_DEPOT( cast_state_t *cs, char *params )
 qboolean AICast_ScriptAction_Achievement_DORA( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_ALLGOLDFUEL( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_ETBONUS( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_BINOCS( cast_state_t *cs, char *params );
 
 // Vendetta Dilogy achievements
 qboolean AICast_ScriptAction_Achievement_VENDETTA1_1( cast_state_t *cs, char *params );
@@ -214,6 +215,8 @@ qboolean AICast_ScriptAction_Achievement_VENDETTA2_6( cast_state_t *cs, char *pa
 qboolean AICast_ScriptAction_Achievement_VENDETTA2_7( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_VENDETTA2_8( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_VENDETTA2_9( cast_state_t *cs, char *params );
+
+
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
@@ -408,6 +411,7 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_fuel1",      AICast_ScriptAction_Achievement_FUEL1},
 	{"achievement_allgoldfuel",      AICast_ScriptAction_Achievement_ALLGOLDFUEL},
 	{"achievement_etbonus",      AICast_ScriptAction_Achievement_ETBONUS},
+	{"achievement_binocs",      AICast_ScriptAction_Achievement_BINOCS},
 	// Vendetta Dilogy achievements
 	{"achievement_VENDETTA1_1",      AICast_ScriptAction_Achievement_VENDETTA1_1},
 	{"achievement_VENDETTA1_2",      AICast_ScriptAction_Achievement_VENDETTA1_2},

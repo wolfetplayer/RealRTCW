@@ -1385,6 +1385,7 @@ extern qboolean AICast_ScriptAction_Achievement_DEPOT ( cast_state_t * cs , char
 extern qboolean AICast_ScriptAction_Achievement_DORA ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_ALLGOLDFUEL ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Achievement_ETBONUS ( cast_state_t * cs , char * params ) ;
+extern qboolean  AICast_ScriptAction_Achievement_BINOCS ( cast_state_t * cs , char * params ) ;
 // Vendetta Dilogy achievements
 extern qboolean  AICast_ScriptAction_Achievement_VENDETTA1_1 ( cast_state_t * cs , char * params ) ;
 extern qboolean  AICast_ScriptAction_Achievement_VENDETTA1_2 ( cast_state_t * cs , char * params ) ;

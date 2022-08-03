@@ -194,6 +194,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_DORA", (byte *)AICast_ScriptAction_Achievement_DORA},
 {"AICast_ScriptAction_Achievement_ALLGOLDFUEL", (byte *)AICast_ScriptAction_Achievement_ALLGOLDFUEL},
 {"AICast_ScriptAction_Achievement_ETBONUS", (byte *)AICast_ScriptAction_Achievement_ETBONUS},
+{"AICast_ScriptAction_Achievement_BINOCS", (byte *)AICast_ScriptAction_Achievement_BINOCS},
 // Vendetta Dilogy achievements
 {"AICast_ScriptAction_Achievement_VENDETTA1_1", (byte *)AICast_ScriptAction_Achievement_VENDETTA1_1},
 {"AICast_ScriptAction_Achievement_VENDETTA1_2", (byte *)AICast_ScriptAction_Achievement_VENDETTA1_2},

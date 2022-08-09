@@ -1193,10 +1193,8 @@ void G_SpawnEntitiesFromString( void ) {
 		G_SpawnGEntityFromSpawnVars();
 	}
 
-	if ( g_gametype.integer >= GT_SINGLE_PLAYER ) {
 		G_LoadEntsFile();
 		G_ParseExtraSpawnVars();
-	}
 
 	level.spawning = qfalse;            // any future calls to G_Spawn*() will be errors
 }

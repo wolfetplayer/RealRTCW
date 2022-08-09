@@ -1859,7 +1859,6 @@ extern vmCvar_t int_cl_maxpackets;
 extern vmCvar_t int_cl_timenudge;
 
 extern vmCvar_t cg_bodysink;
-extern vmCvar_t cg_weaponfalloff;
 
 extern vmCvar_t cg_gunPosLock;
 

@@ -182,10 +182,10 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_nopickupchallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
 	{ &g_decaychallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  }, 
 
-	{ &g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_SERVERINFO, 0, qfalse},
-    { &g_reinforce, "g_reinforce", "0", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_fullarsenal, "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_endmapbonus, "g_endmapbonus", "1", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+    { &g_reinforce, "g_reinforce", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_fullarsenal, "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_endmapbonus, "g_endmapbonus", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 
@@ -195,11 +195,11 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_medicChargeTime, "g_medicChargeTime", "45000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_fireonthemove, "g_fireonthemove", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
-	{ &g_spawndogs, "g_spawndogs", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
-	{ &g_spawnpriests, "g_spawnpriests", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
-	{ &g_spawnxshepherds, "g_xshepherds", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
-	{ &g_aicanheadshot, "g_aicanheadshot", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
+	{ &g_fireonthemove, "g_fireonthemove", "0", CVAR_ARCHIVE, 0, qfalse },
+	{ &g_spawndogs, "g_spawndogs", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_spawnpriests, "g_spawnpriests", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_spawnxshepherds, "g_spawnxshepherds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_aicanheadshot, "g_aicanheadshot", "0", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 // jpw

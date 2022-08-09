@@ -528,11 +528,3 @@ int SV_Netchan_TransmitNextFragment(client_t *client);
 qboolean SV_Netchan_Process( client_t *client, msg_t *msg );
 
 void SV_Netchan_FreeQueue(client_t *client);
-
-extern cvar_t  *sv_airespawn;
-extern cvar_t  *sv_reinforce;
-extern cvar_t  *sv_fullarsenal;
-extern cvar_t  *sv_spawnpriests;
-extern cvar_t  *sv_spawnxshepherds;
-extern cvar_t  *sv_spawndogs;
-extern cvar_t  *sv_endmapbonus;

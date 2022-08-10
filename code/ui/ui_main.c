@@ -4321,7 +4321,7 @@ static void UI_Update( const char *name ) {
 			 trap_Cvar_SetValue( "r_detailtextures", 1 );
             trap_Cvar_SetValue( "r_lodbias", -2 );
 			trap_Cvar_SetValue( "r_stencilbits", 16 );
-			trap_Cvar_SetValue( "r_picmip", 0 );
+			//trap_Cvar_SetValue( "r_picmip", 0 );
 			trap_Cvar_SetValue( "r_picmip2", 0 );
 			trap_Cvar_SetValue( "r_overBrightBits", 0 );
 
@@ -4381,7 +4381,7 @@ static void UI_Update( const char *name ) {
 			 trap_Cvar_SetValue( "r_detailtextures", 1 );
             trap_Cvar_SetValue( "r_lodbias", -2 );
 			trap_Cvar_SetValue( "r_stencilbits", 16 );
-			trap_Cvar_SetValue( "r_picmip", 0 );
+			//trap_Cvar_SetValue( "r_picmip", 0 );
 			trap_Cvar_SetValue( "r_picmip2", 0 );
 			trap_Cvar_SetValue( "r_overBrightBits", 0 );
 #ifdef USE_BLOOM
@@ -4439,7 +4439,7 @@ static void UI_Update( const char *name ) {
 			 trap_Cvar_SetValue( "r_detailtextures", 1 );
             trap_Cvar_SetValue( "r_lodbias", 1 );
 			trap_Cvar_SetValue( "r_stencilbits", 8 );
-			trap_Cvar_SetValue( "r_picmip", 0 );
+			//trap_Cvar_SetValue( "r_picmip", 0 );
 			trap_Cvar_SetValue( "r_picmip2", 0 );
 			trap_Cvar_SetValue( "r_overBrightBits", 0 );
 #ifdef USE_BLOOM
@@ -4498,7 +4498,7 @@ static void UI_Update( const char *name ) {
 			 trap_Cvar_SetValue( "r_detailtextures", 0 );
             trap_Cvar_SetValue( "r_lodbias", 2 );
 			trap_Cvar_SetValue( "r_stencilbits", 0 );
-			trap_Cvar_SetValue( "r_picmip", 0 );
+			//trap_Cvar_SetValue( "r_picmip", 0 );
 			trap_Cvar_SetValue( "r_picmip2", 0 );
 			trap_Cvar_SetValue( "r_overBrightBits", 0 );
 

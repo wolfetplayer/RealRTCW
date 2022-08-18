@@ -17,6 +17,7 @@ typedef unsigned __int64 uint64;
 #include <stdint.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdarg.h>
 #include <poll.h>
 #include <signal.h>
 typedef uint8_t uint8;

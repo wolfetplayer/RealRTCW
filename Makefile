@@ -2607,8 +2607,6 @@ $(B)/$(BASEGAME)/vm/cgame.sp.qvm: $(Q3CGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 #############################################################################
 
 Q3GOBJ_ = \
-  $(B)/$(BASEGAME)/game/steam.o \
-  $(B)/$(BASEGAME)/game/steamshim_child.o \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_cast.o \
   $(B)/$(BASEGAME)/game/ai_cast_characters.o \
@@ -2712,18 +2710,6 @@ $(B)/$(BASEGAME)/vm/ui.sp.qvm: $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
 	$(Q)$(Q3ASM) -o $@ $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm
 
-
-
-
-#############################################################################
-## STEAM INTEGRATION
-#############################################################################
-
-$(B)/$(BASEGAME)/game/%.o: $(STEAMSHIMDIR)/%.c
-	$(DO_GAME_CC)
-
-$(B)/$(BASEGAME)/game/%.o: $(STEAMDIR)/%.c
-	$(DO_GAME_CC)
 
 #############################################################################
 ## CLIENT/SERVER RULES

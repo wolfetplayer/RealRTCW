@@ -1,6 +1,8 @@
 #ifndef _INCL_STEAMSHIM_CHILD_H_
 #define _INCL_STEAMSHIM_CHILD_H_
 
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

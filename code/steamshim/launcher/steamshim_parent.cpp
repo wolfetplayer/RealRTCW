@@ -1,4 +1,8 @@
+#ifdef WIN32
 #define GAME_LAUNCH_NAME "./RealRTCW.x64.exe"
+#else
+#define GAME_LAUNCH_NAME "./RealRTCW.x86_64"
+#endif
 #ifndef GAME_LAUNCH_NAME
 #error Please define your game exe name.
 #endif
@@ -38,8 +42,10 @@ static const uint32_t steam_app_id = 1379630u;
 static inline void dbgpipe(const char *fmt, ...) {}
 #endif
 
+#ifdef WIN32
 // maximum mumber of lines the output console should have
 static const WORD MAX_CONSOLE_LINES = 500;
+#endif
 
 /* platform-specific mainline calls this. */
 static int mainline(void);
@@ -694,6 +700,8 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd)
                     writeGetStatF(fd, name, 0.0f, false);
             } // if
             break;
+            
+#ifdef RELEASE
         case SHIMCMD_RESTARTAPP:
             if (buflen == 5)
             {
@@ -703,6 +711,7 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd)
                 writeRestartApp(fd, result);
             }
             break;
+#endif
 
         case SHIMCMD_SETRICHPRESENCE:
             if (buflen > 4)
@@ -781,10 +790,12 @@ static bool setEnvironmentVars(PipeType pipeChildRead, PipeType pipeChildWrite)
 
 static bool initSteamworks(PipeType fd)
 {
+#ifdef RELEASE
     if (SteamAPI_RestartAppIfNecessary(steam_app_id))
     {
         exit(0);
     }
+#endif
 
     // this can fail for many reasons:
     //  - you forgot a steam_appid.txt in the current working directory.

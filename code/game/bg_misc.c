@@ -840,7 +840,7 @@ model="models/powerups/instant/stamina_brandy1.md3"
 		0
 		},
 		"icons/icons_brandy",
-		"Brandy",
+		"Stamina",
 		25,
 		IT_POWERUP,
 		WP_NONE,
@@ -1110,7 +1110,7 @@ model="models/weapons2/mauser/mauser.md3"
 		},
 
 		"icons/iconw_delisle_1", 
-		"De Lisle",          
+		"delisle",          
 		50,
 		IT_WEAPON,
 		WP_DELISLE,
@@ -1137,7 +1137,7 @@ model="models/weapons2/mauser/mauser.md3"
 		},
 
 		"icons/iconw_delislescope_1", 
-		"De Lisle Scoped",          
+		"delislescope",          
 		50,
 		IT_WEAPON,
 		WP_DELISLESCOPE,
@@ -1242,7 +1242,7 @@ model="models/weapons2/garand/garand.md3"
 		},
 
 		"icons/iconw_garand_1",  
-		"Snooper Scope",                      
+		"garand",                      
 		50,
 		IT_WEAPON,
 		WP_GARAND,
@@ -1780,7 +1780,7 @@ model="models/weapons2/p38/p38.md3"
 		},
 
 		"icons/iconw_p38",    
-		"P38",             
+		"p38",             
 		30,
 		IT_WEAPON,
 		WP_P38,
@@ -1809,7 +1809,7 @@ model="models/weapons2/ppsh/ppsh.md3"
 		},
 
 		"icons/iconw_ppsh_1",   
-		"PPSH",              
+		"ppsh",              
 		30,
 		IT_WEAPON,
 		WP_PPSH,
@@ -1838,7 +1838,7 @@ model="models/weapons2/mosin/mosin.md3"
 		},
 
 		"icons/iconw_mosin",    
-		"Mosin Nagant",               
+		"mosin",               
 		30,
 		IT_WEAPON,
 		WP_MOSIN,
@@ -1867,7 +1867,7 @@ model="models/multiplayer/g43/g43_3rd.md3"
 		},
 
 		"icons/iconw_g43",    
-		"Gewehr 43",             
+		"g43",             
 		30,
 		IT_WEAPON,
 		WP_G43,
@@ -1897,7 +1897,7 @@ model="models/multiplayer/m1_garand/m1_garand_3rd.md3"
 		},
 
 		"icons/iconw_m1garand",    
-		"M1 Garand",              
+		"m1garand",              
 		30,
 		IT_WEAPON,
 		WP_M1GARAND,
@@ -1923,7 +1923,7 @@ model="models/weapons2/mauser/mauser.md3"
 		},
 
 		"icons/iconw_m1_garand_1", 
-		"M7 Launcher", 
+		"m7", 
 		200,
 		IT_WEAPON,
 		WP_M7,
@@ -1952,7 +1952,7 @@ model="models/weapons2/bar/bar3rd.md3"
 		},
 
 		"icons/iconw_bar",    
-		"BAR M1918A2",              
+		"BAR",              
 		30,
 		IT_WEAPON,
 		WP_BAR,
@@ -2007,7 +2007,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		},
 
 		"icons/iconw_mg42m",   
-		"MG42",             
+		"mg42m",             
 		700,
 		IT_WEAPON,
 		WP_MG42M,
@@ -2033,7 +2033,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		},
 
 		"icons/iconw_browning",   
-		"Browning",             
+		"browning",             
 		700,
 		IT_WEAPON,
 		WP_BROWNING,
@@ -2059,7 +2059,7 @@ model="models/weapons2/m97/m97_3rd.md3"
 		},
 
 			"icons/iconw_m97",  
-			"Ithaca 37",            
+			"m97",            
 			700,
 			IT_WEAPON,
 			WP_M97,
@@ -2086,7 +2086,7 @@ model="models/weapons2/m30/m30_3rd.md3"
 		},
 
 			"icons/iconw_m30",   
-			"M30",           
+			"m30",           
 			700,
 			IT_WEAPON,
 			WP_M30,
@@ -2115,7 +2115,7 @@ model="models/weapons2/p38/luger.md3"
 		},
 
 		"icons/iconw_welrod",    
-		"Welrod",              
+		"welrod",              
 		30,
 		IT_WEAPON,
 		WP_WELROD,
@@ -2169,7 +2169,7 @@ model="models/weapons2/p38/luger.md3"
 		},
 
 		"icons/iconw_revolver",    
-		"Revolver",              
+		"revolver",              
 		30,
 		IT_WEAPON,
 		WP_REVOLVER,
@@ -2191,7 +2191,7 @@ model="models/weapons2/p38/luger.md3"
 		},
 
 		"icons/iconw_smokegrenade_1",    
-		"Airstrike",              
+		"smokeGrenade",              
 		50,
 		IT_WEAPON,
 		WP_AIRSTRIKE,

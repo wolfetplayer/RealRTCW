@@ -818,7 +818,7 @@ static void CG_ServerCommand( void ) {
 
 	if ( !strcmp( cmd, "cpst" )) {    // dynamite print (what a hack :(
 		if (cg_drawSubtitles.value != 0) {
-			CG_SubtitlePrint( CG_Argv( 1 ), SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.33 ), 6 );
+			CG_SubtitlePrint( CG_Argv( 1 ), SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.27 ), 6 );
 		}
 		return;
 	}

@@ -537,15 +537,28 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	if ( !cs->rebirthTime ) {
 		G_UseTargets( self, self );
 		// really dead now, so call the script
-		if ( attacker )
+		if ( attacker ) {
 			AICast_ScriptEvent( cs, "death", attacker->aiName ? attacker->aiName : "" );
+		} else {
+			AICast_ScriptEvent( cs, "death", "" );
+		}
 		// call the deathfunc for this cast, so we can play associated sounds, or do any character-specific things
 		if ( !( cs->aiFlags & AIFL_DENYACTION ) && cs->deathfunc ) {
 			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod
 		}
 	} else {
 		// really dead now, so call the script
-		AICast_ScriptEvent( cs, "fakedeath", "" );
+		if ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
+			 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) {
+
+			if ( !cs->died ) {
+				G_UseTargets( self, self );                 // testing
+				AICast_ScriptEvent( cs, "death", "" );
+				cs->died = qtrue;
+			}
+		} else {
+			AICast_ScriptEvent( cs, "fakedeath", "" );
+		}
 		// call the deathfunc for this cast, so we can play associated sounds, or do any character-specific things
 		if ( !( cs->aiFlags & AIFL_DENYACTION ) && cs->deathfunc ) {
 			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod

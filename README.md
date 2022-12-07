@@ -31,3 +31,6 @@ https://aur.archlinux.org/packages/realrtcw/
 
 Opensuse package:
 https://build.opensuse.org/package/show/games/realrtcw
+
+Buy me a coffee:
+https://ko-fi.com/realrtcwdev

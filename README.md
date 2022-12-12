@@ -16,6 +16,7 @@ Features:
 * New inventory items
 * Increased engine limits
 * Improved controller support
+* Custom BSPC and BSPCUI included in sdk folder
 * A lot of bug fixes and QOL improvements
 
 The original id software readme that accompanied the RTCW source release is named README.txt and is contained within the source tree of both MP and SP games.

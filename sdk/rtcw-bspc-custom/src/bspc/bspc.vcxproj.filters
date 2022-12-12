@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков\deps">
+      <UniqueIdentifier>{547f95b9-c4fc-4c38-979d-66cdb5209867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\deps">
+      <UniqueIdentifier>{51ad19c2-e9e0-48e6-8e47-67a9e33e22d0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="aas_areamerging.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_cfg.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_create.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_edgemelting.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_facemerging.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_file.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_gsubdiv.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_map.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_prunenodes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="aas_store.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="be_aas_bspc.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_bsp_ent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_bsp_hl.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_bsp_q1.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_bsp_q2.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_bsp_q3.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_bsp_sin.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_cmd.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_log.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_math.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_mem.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_poly.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_qfiles.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_threads.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="l_utils.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="q2files.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="q3files.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="qbsp.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="qfiles.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="sinfiles.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\aasfile.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_bsp.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_cluster.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_debug.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_def.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_entity.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_file.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_funcs.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_main.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_move.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_optimize.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_reach.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_route.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_routealt.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_routetable.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_aas_sample.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_ai_weight.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\be_interface.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\botlib.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_crc.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_libvar.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_log.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_memory.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_precomp.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_script.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_struct.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\botlib\l_utils.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\cm_local.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\cm_patch.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\cm_polylib.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\cm_public.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\qcommon.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\qfiles.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\unzip.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\vm_local.h">
+      <Filter>Файлы заголовков\deps</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="_files.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_areamerging.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_cfg.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_create.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_edgemelting.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_facemerging.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_file.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_gsubdiv.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_map.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_prunenodes.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="aas_store.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="be_aas_bspc.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="brushbsp.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="bspc.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="csg.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="faces.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="glfile.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_bsp_ent.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_bsp_hl.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_bsp_q1.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_bsp_q2.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_bsp_q3.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_bsp_sin.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_cmd.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_log.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_math.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_mem.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_poly.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_qfiles.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_threads.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="l_utils.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="leakfile.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="map.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="map_hl.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="map_q1.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="map_q2.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="map_q3.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="map_sin.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="nodraw.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="portals.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="prtfile.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="textures.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="tree.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="writebsp.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\l_precomp.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\l_struct.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\l_libvar.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\l_script.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_cluster.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qcommon\cm_load.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qcommon\cm_patch.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qcommon\cm_test.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qcommon\cm_trace.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_optimize.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qcommon\md4.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_reach.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_sample.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_bspq3.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_move.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_aas_routealt.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_ai_char.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_ai_gen.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_ai_weap.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\botlib\be_ai_weight.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qcommon\unzip.c">
+      <Filter>Исходные файлы\deps</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

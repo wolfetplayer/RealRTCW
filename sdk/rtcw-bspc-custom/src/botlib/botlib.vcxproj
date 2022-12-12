@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{86691FDD-E0C6-4D71-9FFD-E0F30F19AA3E}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>16.0.32002.118</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;BOTLIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/botlib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\Release\botlib.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/botlib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BOTLIB;DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/botlib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\Debug\botlib.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/botlib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="be_aas_bspq3.c" />
+    <ClCompile Include="be_aas_cluster.c" />
+    <ClCompile Include="be_aas_debug.c" />
+    <ClCompile Include="be_aas_entity.c" />
+    <ClCompile Include="be_aas_file.c" />
+    <ClCompile Include="be_aas_main.c" />
+    <ClCompile Include="be_aas_move.c" />
+    <ClCompile Include="be_aas_optimize.c" />
+    <ClCompile Include="be_aas_reach.c" />
+    <ClCompile Include="be_aas_route.c" />
+    <ClCompile Include="be_aas_routealt.c" />
+    <ClCompile Include="be_aas_routetable.c" />
+    <ClCompile Include="be_aas_sample.c" />
+    <ClCompile Include="be_ai_char.c" />
+    <ClCompile Include="be_ai_chat.c" />
+    <ClCompile Include="be_ai_gen.c" />
+    <ClCompile Include="be_ai_goal.c" />
+    <ClCompile Include="be_ai_move.c" />
+    <ClCompile Include="be_ai_weap.c" />
+    <ClCompile Include="be_ai_weight.c" />
+    <ClCompile Include="be_ea.c" />
+    <ClCompile Include="be_interface.c" />
+    <ClCompile Include="l_crc.c" />
+    <ClCompile Include="l_libvar.c" />
+    <ClCompile Include="l_log.c" />
+    <ClCompile Include="l_memory.c" />
+    <ClCompile Include="l_precomp.c" />
+    <ClCompile Include="l_script.c" />
+    <ClCompile Include="l_struct.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\game\be_aas.h" />
+    <ClInclude Include="..\game\be_ai_char.h" />
+    <ClInclude Include="..\game\be_ai_chat.h" />
+    <ClInclude Include="..\game\be_ai_gen.h" />
+    <ClInclude Include="..\game\be_ai_goal.h" />
+    <ClInclude Include="..\game\be_ai_move.h" />
+    <ClInclude Include="..\game\be_ai_weap.h" />
+    <ClInclude Include="..\game\be_ea.h" />
+    <ClInclude Include="..\game\botlib.h" />
+    <ClInclude Include="..\game\q_shared.h" />
+    <ClInclude Include="..\game\surfaceflags.h" />
+    <ClInclude Include="aasfile.h" />
+    <ClInclude Include="be_aas_bsp.h" />
+    <ClInclude Include="be_aas_cluster.h" />
+    <ClInclude Include="be_aas_debug.h" />
+    <ClInclude Include="be_aas_def.h" />
+    <ClInclude Include="be_aas_entity.h" />
+    <ClInclude Include="be_aas_file.h" />
+    <ClInclude Include="be_aas_funcs.h" />
+    <ClInclude Include="be_aas_main.h" />
+    <ClInclude Include="be_aas_move.h" />
+    <ClInclude Include="be_aas_optimize.h" />
+    <ClInclude Include="be_aas_reach.h" />
+    <ClInclude Include="be_aas_route.h" />
+    <ClInclude Include="be_aas_routealt.h" />
+    <ClInclude Include="be_aas_routetable.h" />
+    <ClInclude Include="be_aas_sample.h" />
+    <ClInclude Include="be_ai_weight.h" />
+    <ClInclude Include="be_interface.h" />
+    <ClInclude Include="l_crc.h" />
+    <ClInclude Include="l_libvar.h" />
+    <ClInclude Include="l_log.h" />
+    <ClInclude Include="l_memory.h" />
+    <ClInclude Include="l_precomp.h" />
+    <ClInclude Include="l_script.h" />
+    <ClInclude Include="l_struct.h" />
+    <ClInclude Include="l_utils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

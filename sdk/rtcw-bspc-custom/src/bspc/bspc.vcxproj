@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{e8de5519-b91d-46af-9e03-d30149562e96}</ProjectGuid>
+    <RootNamespace>bspc</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>WIN32;__WIN32__;BSPC;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>Default</ConformanceMode>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/bspc.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>.\Debug\bspc.exe</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>WIN32;__WIN32__;BSPC;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>Default</ConformanceMode>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Release/bspc.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>.\Release\bspc.exe</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\botlib\aasfile.h" />
+    <ClInclude Include="..\botlib\be_aas.h" />
+    <ClInclude Include="..\botlib\be_aas_bsp.h" />
+    <ClInclude Include="..\botlib\be_aas_cluster.h" />
+    <ClInclude Include="..\botlib\be_aas_debug.h" />
+    <ClInclude Include="..\botlib\be_aas_def.h" />
+    <ClInclude Include="..\botlib\be_aas_entity.h" />
+    <ClInclude Include="..\botlib\be_aas_file.h" />
+    <ClInclude Include="..\botlib\be_aas_funcs.h" />
+    <ClInclude Include="..\botlib\be_aas_main.h" />
+    <ClInclude Include="..\botlib\be_aas_move.h" />
+    <ClInclude Include="..\botlib\be_aas_optimize.h" />
+    <ClInclude Include="..\botlib\be_aas_reach.h" />
+    <ClInclude Include="..\botlib\be_aas_route.h" />
+    <ClInclude Include="..\botlib\be_aas_routealt.h" />
+    <ClInclude Include="..\botlib\be_aas_routetable.h" />
+    <ClInclude Include="..\botlib\be_aas_sample.h" />
+    <ClInclude Include="..\botlib\be_ai_weight.h" />
+    <ClInclude Include="..\botlib\be_interface.h" />
+    <ClInclude Include="..\botlib\botlib.h" />
+    <ClInclude Include="..\botlib\l_crc.h" />
+    <ClInclude Include="..\botlib\l_libvar.h" />
+    <ClInclude Include="..\botlib\l_log.h" />
+    <ClInclude Include="..\botlib\l_memory.h" />
+    <ClInclude Include="..\botlib\l_precomp.h" />
+    <ClInclude Include="..\botlib\l_script.h" />
+    <ClInclude Include="..\botlib\l_struct.h" />
+    <ClInclude Include="..\botlib\l_utils.h" />
+    <ClInclude Include="..\qcommon\cm_local.h" />
+    <ClInclude Include="..\qcommon\cm_patch.h" />
+    <ClInclude Include="..\qcommon\cm_polylib.h" />
+    <ClInclude Include="..\qcommon\cm_public.h" />
+    <ClInclude Include="..\qcommon\qcommon.h" />
+    <ClInclude Include="..\qcommon\qfiles.h" />
+    <ClInclude Include="..\qcommon\unzip.h" />
+    <ClInclude Include="..\qcommon\vm_local.h" />
+    <ClInclude Include="aas_areamerging.h" />
+    <ClInclude Include="aas_cfg.h" />
+    <ClInclude Include="aas_create.h" />
+    <ClInclude Include="aas_edgemelting.h" />
+    <ClInclude Include="aas_facemerging.h" />
+    <ClInclude Include="aas_file.h" />
+    <ClInclude Include="aas_gsubdiv.h" />
+    <ClInclude Include="aas_map.h" />
+    <ClInclude Include="aas_prunenodes.h" />
+    <ClInclude Include="aas_store.h" />
+    <ClInclude Include="be_aas_bspc.h" />
+    <ClInclude Include="l_bsp_ent.h" />
+    <ClInclude Include="l_bsp_hl.h" />
+    <ClInclude Include="l_bsp_q1.h" />
+    <ClInclude Include="l_bsp_q2.h" />
+    <ClInclude Include="l_bsp_q3.h" />
+    <ClInclude Include="l_bsp_sin.h" />
+    <ClInclude Include="l_cmd.h" />
+    <ClInclude Include="l_log.h" />
+    <ClInclude Include="l_math.h" />
+    <ClInclude Include="l_mem.h" />
+    <ClInclude Include="l_poly.h" />
+    <ClInclude Include="l_qfiles.h" />
+    <ClInclude Include="l_threads.h" />
+    <ClInclude Include="l_utils.h" />
+    <ClInclude Include="q2files.h" />
+    <ClInclude Include="q3files.h" />
+    <ClInclude Include="qbsp.h" />
+    <ClInclude Include="qfiles.h" />
+    <ClInclude Include="sinfiles.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\botlib\be_aas_bspq3.c" />
+    <ClCompile Include="..\botlib\be_aas_cluster.c" />
+    <ClCompile Include="..\botlib\be_aas_move.c" />
+    <ClCompile Include="..\botlib\be_aas_optimize.c" />
+    <ClCompile Include="..\botlib\be_aas_reach.c" />
+    <ClCompile Include="..\botlib\be_aas_routealt.c" />
+    <ClCompile Include="..\botlib\be_aas_sample.c" />
+    <ClCompile Include="..\botlib\be_ai_char.c" />
+    <ClCompile Include="..\botlib\be_ai_gen.c" />
+    <ClCompile Include="..\botlib\be_ai_weap.c" />
+    <ClCompile Include="..\botlib\be_ai_weight.c" />
+    <ClCompile Include="..\botlib\l_libvar.c" />
+    <ClCompile Include="..\botlib\l_precomp.c" />
+    <ClCompile Include="..\botlib\l_script.c" />
+    <ClCompile Include="..\botlib\l_struct.c" />
+    <ClCompile Include="..\qcommon\cm_load.c" />
+    <ClCompile Include="..\qcommon\cm_patch.c" />
+    <ClCompile Include="..\qcommon\cm_test.c" />
+    <ClCompile Include="..\qcommon\cm_trace.c" />
+    <ClCompile Include="..\qcommon\md4.c" />
+    <ClCompile Include="..\qcommon\unzip.c" />
+    <ClCompile Include="aas_areamerging.c" />
+    <ClCompile Include="aas_cfg.c" />
+    <ClCompile Include="aas_create.c" />
+    <ClCompile Include="aas_edgemelting.c" />
+    <ClCompile Include="aas_facemerging.c" />
+    <ClCompile Include="aas_file.c" />
+    <ClCompile Include="aas_gsubdiv.c" />
+    <ClCompile Include="aas_map.c" />
+    <ClCompile Include="aas_prunenodes.c" />
+    <ClCompile Include="aas_store.c" />
+    <ClCompile Include="be_aas_bspc.c" />
+    <ClCompile Include="brushbsp.c" />
+    <ClCompile Include="bspc.c" />
+    <ClCompile Include="csg.c" />
+    <ClCompile Include="faces.c" />
+    <ClCompile Include="glfile.c" />
+    <ClCompile Include="leakfile.c" />
+    <ClCompile Include="l_bsp_ent.c" />
+    <ClCompile Include="l_bsp_hl.c" />
+    <ClCompile Include="l_bsp_q1.c" />
+    <ClCompile Include="l_bsp_q2.c" />
+    <ClCompile Include="l_bsp_q3.c" />
+    <ClCompile Include="l_bsp_sin.c" />
+    <ClCompile Include="l_cmd.c" />
+    <ClCompile Include="l_log.c" />
+    <ClCompile Include="l_math.c" />
+    <ClCompile Include="l_mem.c" />
+    <ClCompile Include="l_poly.c" />
+    <ClCompile Include="l_qfiles.c" />
+    <ClCompile Include="l_threads.c" />
+    <ClCompile Include="l_utils.c" />
+    <ClCompile Include="map.c" />
+    <ClCompile Include="map_hl.c" />
+    <ClCompile Include="map_q1.c" />
+    <ClCompile Include="map_q2.c" />
+    <ClCompile Include="map_q3.c" />
+    <ClCompile Include="map_sin.c" />
+    <ClCompile Include="nodraw.c" />
+    <ClCompile Include="portals.c" />
+    <ClCompile Include="prtfile.c" />
+    <ClCompile Include="textures.c" />
+    <ClCompile Include="tree.c" />
+    <ClCompile Include="writebsp.c" />
+    <ClCompile Include="_files.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

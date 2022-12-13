@@ -36,19 +36,19 @@ If you have questions concerning this license or the applicable additional terms
 //===========================================================================
 
 #define AAS_MAX_BBOXES                      5
-#define AAS_MAX_VERTEXES                    512000
-#define AAS_MAX_PLANES                      65536
-#define AAS_MAX_EDGES                       512000
-#define AAS_MAX_EDGEINDEXSIZE               512000
-#define AAS_MAX_FACES                       512000
-#define AAS_MAX_FACEINDEXSIZE               512000
-#define AAS_MAX_AREAS                       65536
-#define AAS_MAX_AREASETTINGS                65536
-#define AAS_MAX_REACHABILITYSIZE            65536
-#define AAS_MAX_NODES                       256000
-#define AAS_MAX_PORTALS                     65536
-#define AAS_MAX_PORTALINDEXSIZE             65536
-#define AAS_MAX_CLUSTERS                    65536
+#define AAS_MAX_VERTEXES                    1024000 //512000
+#define AAS_MAX_PLANES                      262144 //65536
+#define AAS_MAX_EDGES                       1024000 //512000
+#define AAS_MAX_EDGEINDEXSIZE               1024000 //512000
+#define AAS_MAX_FACES                       1024000 //512000
+#define AAS_MAX_FACEINDEXSIZE               1024000 //512000
+#define AAS_MAX_AREAS                       262144 //65536
+#define AAS_MAX_AREASETTINGS                262144 //65536
+#define AAS_MAX_REACHABILITYSIZE            262144 //65536
+#define AAS_MAX_NODES                       512000 //256000
+#define AAS_MAX_PORTALS                     262144 //65536
+#define AAS_MAX_PORTALINDEXSIZE             262144 //65536
+#define AAS_MAX_CLUSTERS                    262144 //65536
 
 #define BSPCINCLUDE
 #include "../botlib/be_aas.h"

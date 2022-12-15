@@ -539,6 +539,7 @@ void CG_LoseHat( centity_t *cent, vec3_t dir ) {
 		VectorCopy( origin, re->origin );
 		AxisCopy( axisDefault, re->axis );
 		re->hModel = ci->accModels[ACC_HAT];
+		re->customSkin = ci->accSkins[ACC_HAT];
 
 		re->fadeStartTime       = le->endTime - 1000;
 		re->fadeEndTime         = le->endTime;

@@ -94,6 +94,8 @@ qboolean G_ScriptAction_MusicQueue( gentity_t *ent, char *params );
 qboolean G_ScriptAction_ShaderRemap( gentity_t* ent, char *params );
 qboolean G_ScriptAction_ShaderRemapFlush( gentity_t* ent, char *params );
 
+qboolean G_ScriptAction_FollowSpline( gentity_t *ent, char *params );
+
 
 //----(SA)	end
 
@@ -134,6 +136,7 @@ g_script_stack_action_t gScriptActions[] =
 
 	{"remapshader",                      G_ScriptAction_ShaderRemap},
 	{"remapshaderflush",             G_ScriptAction_ShaderRemapFlush},
+	{"followspline",                 G_ScriptAction_FollowSpline},
 	// dhm
 	{"backupscript",         G_ScriptAction_BackupScript},
 	{"restorescript",            G_ScriptAction_RestoreScript},

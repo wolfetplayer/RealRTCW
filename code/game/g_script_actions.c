@@ -244,6 +244,205 @@ qboolean G_ScriptAction_GotoMarker( gentity_t *ent, char *params ) {
 }
 
 /*
+===============
+G_ScriptAction_FollowSpline
+
+  syntax: followspline <targetname> <speed> [wait]
+
+  NOTE: speed may be modified to round the duration to the next 50ms for smooth
+  transitions
+===============
+*/
+
+qboolean G_ScriptAction_FollowSpline( gentity_t* ent, char *params ) {
+	char    *pString, *token;
+	vec3_t vec;
+	float speed;
+	qboolean wait = qfalse;
+	int backward;
+	float length = 0;
+	float roll[2] = { 0, 0 };
+
+	if ( params && ( ent->scriptStatus.scriptFlags & SCFL_GOING_TO_MARKER ) ) {
+		// we can't process a new movement until the last one has finished
+		return qfalse;
+	}
+
+	if ( !params || ent->scriptStatus.scriptStackChangeTime < level.time ) {          // we are waiting for it to reach destination
+		if ( ent->s.pos.trTime + ent->s.pos.trDuration <= level.time ) {  // we made it
+			ent->scriptStatus.scriptFlags &= ~SCFL_GOING_TO_MARKER;
+
+			// set the angles at the destination
+			BG_EvaluateTrajectoryET( &ent->s.apos, ent->s.apos.trTime + ent->s.apos.trDuration, ent->s.angles, qtrue, ent->s.effect2Time );
+			VectorCopy( ent->s.angles, ent->s.apos.trBase );
+			VectorCopy( ent->s.angles, ent->r.currentAngles );
+			ent->s.apos.trTime = level.time;
+			ent->s.apos.trDuration = 0;
+			ent->s.apos.trType = TR_STATIONARY;
+			VectorClear( ent->s.apos.trDelta );
+
+			// stop moving
+			BG_EvaluateTrajectoryET( &ent->s.pos, level.time, ent->s.origin, qfalse, ent->s.effect2Time );
+			VectorCopy( ent->s.origin, ent->s.pos.trBase );
+			VectorCopy( ent->s.origin, ent->r.currentOrigin );
+			ent->s.pos.trTime = level.time;
+			ent->s.pos.trDuration = 0;
+			ent->s.pos.trType = TR_STATIONARY;
+			VectorClear( ent->s.pos.trDelta );
+
+			script_linkentity( ent );
+
+			return qtrue;
+		}
+	} else {    // we have just started this command
+		splinePath_t* pSpline;
+
+		pString = params;
+
+		token = COM_ParseExt( &pString, qfalse );
+		if ( !token[0] ) {
+			G_Error( "G_Scripting: followspline must have a direction\n" );
+		}
+
+		if ( !Q_stricmp( token, "accum" ) ) {
+			int bufferIndex;
+
+			token = COM_ParseExt( &pString, qfalse );
+			if ( !token[0] ) {
+				G_Error( "G_Scripting: accum without a buffer index\n" );
+			}
+
+			bufferIndex = atoi( token );
+			if ( bufferIndex < 0 || bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS ) {
+				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+			}
+
+			backward = ent->scriptAccumBuffer[bufferIndex] != 0 ? qtrue : qfalse;
+		} /*else if ( !Q_stricmp( token, "globalaccum" ) ) {
+			int bufferIndex;
+
+			token = COM_ParseExt( &pString, qfalse );
+			if ( !token[0] ) {
+				G_Error( "G_Scripting: accum without a buffer index\n" );
+			}
+
+			bufferIndex = atoi( token );
+			if ( bufferIndex < 0 || bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS ) {
+				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+			}
+
+			backward = level.globalAccumBuffer[bufferIndex] != 0 ? qtrue : qfalse;
+		}*/ else {
+			backward = atoi( token );
+		}
+
+		token = COM_ParseExt( &pString, qfalse );
+		if ( !token[0] ) {
+			G_Error( "G_Scripting: followspline must have an targetname\n" );
+		}
+
+		if ( !( pSpline = BG_Find_Spline( token ) ) ) {
+			G_Error( "G_Scripting: can't find spline with \"targetname\" = \"%s\"\n", token );
+		}
+		VectorSubtract( pSpline->point.origin, ent->r.currentOrigin, vec );
+
+		token = COM_ParseExt( &pString, qfalse );
+		if ( !token[0] ) {
+			G_Error( "G_Scripting: followspline must have a speed\n" );
+		}
+
+		speed = atof( token );
+
+		while ( token[0] ) {
+			token = COM_ParseExt( &pString, qfalse );
+			if ( token[0] ) {
+				if ( !Q_stricmp( token, "wait" ) ) {
+					wait = qtrue;
+				}
+
+				if ( !Q_stricmp( token, "length" ) ) {
+					token = COM_ParseExt( &pString, qfalse );
+					if ( !token[0] ) {
+						G_Error( "G_Scripting: length must have a value\n" );
+					}
+
+					length = atoi( token );
+				}
+
+				if ( !Q_stricmp( token, "roll" ) ) {
+					token = COM_ParseExt( &pString, qfalse );
+					if ( !token[0] ) {
+						G_Error( "G_Scripting: roll must have a start angle\n" );
+					}
+
+					roll[0] = atoi( token );
+
+					token = COM_ParseExt( &pString, qfalse );
+					if ( !token[0] ) {
+						G_Error( "G_Scripting: roll must have an end angle\n" );
+					}
+
+					roll[1] = atoi( token );
+				}
+
+				if ( !Q_stricmp( token, "dampin" ) ) {
+					if ( roll[0] >= 0 ) {
+						roll[0] += 1000;
+					} else {
+						roll[0] -= 1000;
+					}
+				}
+
+				if ( !Q_stricmp( token, "dampout" ) ) {
+					if ( roll[0] >= 0 ) {
+						roll[0] += 10000;
+					} else {
+						roll[0] -= 10000;
+					}
+				}
+			}
+		}
+
+		// calculate the trajectory
+		ent->s.apos.trType = ent->s.pos.trType = TR_SPLINE;
+		ent->s.apos.trTime = ent->s.pos.trTime = level.time;
+
+		ent->s.apos.trBase[0] = length;
+		ent->s.apos.trBase[1] = roll[0];
+		ent->s.apos.trBase[2] = roll[1];
+
+		ent->s.effect2Time = backward ? -( pSpline - splinePaths + 1 ) : pSpline - splinePaths + 1;
+
+		VectorClear( ent->s.pos.trDelta );
+		ent->s.apos.trDuration = ent->s.pos.trDuration = 1000 * ( pSpline->length / speed );
+
+		if ( !wait ) {
+			// round the duration to the next 50ms
+			if ( ent->s.pos.trDuration % 50 ) {
+				float frac;
+
+				frac = (float)( ( ( ent->s.pos.trDuration / 50 ) * 50 + 50 ) - ent->s.pos.trDuration ) / (float)( ent->s.pos.trDuration );
+				if ( frac < 1 ) {
+					ent->s.apos.trDuration = ent->s.pos.trDuration = ( ent->s.pos.trDuration / 50 ) * 50 + 50;
+				}
+			}
+
+			// set the goto flag, so we can keep processing the move until we reach the destination
+			ent->scriptStatus.scriptFlags |= SCFL_GOING_TO_MARKER;
+			return qtrue;   // continue to next command
+		}
+
+	}
+
+	BG_EvaluateTrajectoryET( &ent->s.pos, level.time, ent->r.currentOrigin, qfalse, ent->s.effect2Time  );
+	BG_EvaluateTrajectoryET( &ent->s.apos, level.time, ent->r.currentAngles, qtrue, ent->s.effect2Time  );
+	script_linkentity( ent );
+
+	return qfalse;
+}
+
+
+/*
 =================
 G_ScriptAction_Wait
 

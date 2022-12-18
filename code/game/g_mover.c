@@ -2966,6 +2966,68 @@ void SP_path_corner( gentity_t *self ) {
 	}
 }
 
+/*QUAKED path_corner_2 (.5 .3 0) (-8 -8 -8) (8 8 8) STOP END REVERSE
+Train path corners. THIS VERSION WILL NOT CONTRIBUTE TOWARDS INGAME ENTITY COUNT
+"targetname" The script uses this name to identify the corner
+*/
+void SP_path_corner_2( gentity_t *self ) {
+	if ( !self->targetname ) {
+		G_Printf( "path_corner_2 with no targetname at %s\n", vtos( self->s.origin ) );
+		G_FreeEntity( self );
+		return;
+	}
+
+	if ( numPathCorners >= MAX_PATH_CORNERS ) {
+		G_Printf( "Maximum path_corners hit\n" );
+		G_FreeEntity( self );
+		return;
+	}
+
+	BG_AddPathCorner( self->targetname, self->s.origin );
+
+	G_FreeEntity( self );
+}
+
+
+/*QUAKED info_train_spline_main (0 1 0) (-8 -8 -8) (8 8 8)
+Train spline.
+*/
+void SP_info_train_spline_main( gentity_t *self ) {
+	int i;
+	char* end;
+	splinePath_t* spline;
+
+	if ( !self->targetname ) {
+		G_Printf( "info_train_spline_main with no targetname at %s\n", vtos( self->s.origin ) );
+		G_FreeEntity( self );
+		return;
+	}
+
+//	if( self->target ) {
+	spline = BG_AddSplinePath( self->targetname, self->target, self->s.origin );
+
+	if ( G_SpawnString( "end", "", &end ) ) {
+		spline->isEnd = qtrue;
+	} else if ( G_SpawnString( "start", "", &end ) ) {
+		spline->isStart = qtrue;
+	}
+
+	for ( i = 1;; i++ ) {
+		char* control;
+
+		if ( !G_SpawnString( i == 1 ? va( "control" ) : va( "control%i", i ), "", &control ) ) {
+			break;
+		}
+
+		BG_AddSplineControl( spline, control );
+	}
+/*	} else {
+		BG_AddPathCorner( self->targetname, self->s.origin );
+	}*/
+
+	G_FreeEntity( self );
+}
+
 
 
 /*QUAKED func_train (0 .5 .8) ? START_ON TOGGLE BLOCK_STOPS

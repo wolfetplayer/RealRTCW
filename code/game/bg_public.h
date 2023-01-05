@@ -469,63 +469,77 @@ typedef enum
 // NOTE: we can only use up to 15 in the client-server stream
 // SA NOTE: should be 31 now (I added 1 bit in msg.c)
 typedef enum {
-	WP_NONE,                // 0
-	WP_KNIFE,               // 1
-	WP_DAGGER,              // 2
-	WP_LUGER,               // 3
-	WP_MP40,                // 4
-	WP_MAUSER,              // 5
-	WP_FG42,                // 6
-	WP_GRENADE_LAUNCHER,    // 7
-	WP_PANZERFAUST,         // 8
-	WP_VENOM,               // 9
-	WP_FLAMETHROWER,        // 10
-	WP_TESLA,               // 11
-	WP_MP34,                // 12
-	WP_TT33,                // 13
-	WP_P38,                 // 14
-	WP_PPSH,                // 15
-	WP_MOSIN,               // 16
-	WP_G43,                 // 17
-	WP_M1GARAND,            // 18
-	WP_M7,                  // 19
-	WP_BAR,                 // 20
-	WP_MP44,                // 21
-	WP_MG42M,               // 22
-    WP_BROWNING,            // 23
-	WP_M97,                 // 24
-	WP_M30,                 // 25
-	WP_REVOLVER,            // 26
-	WP_COLT,                // 27	
-	WP_THOMPSON,            // 28
-	WP_DELISLE,             // 29
-	WP_DELISLESCOPE, 	    // 30
-	WP_GARAND,              // 31	
-	WP_GRENADE_PINEAPPLE,   // 32
-	WP_AIRSTRIKE,           // 33
-	WP_POISONGAS,           // 34
-	WP_SNIPERRIFLE,         // 35
-	WP_SNOOPERSCOPE,        // 36
-	WP_FG42SCOPE,           // 37
-	WP_STEN,                // 38	
-	WP_SILENCER,            // 39
-	WP_WELROD,              // 40	
-	WP_AKIMBO,              // 41	
-	WP_DYNAMITE,            // 42
-	WP_HOLYCROSS,           // 43
-	WP_MONSTER_ATTACK1,     // 44	
-	WP_MONSTER_ATTACK2,     // 45	
-	WP_MONSTER_ATTACK3,     // 46	
-	WP_GAUNTLET,            // 47
-	WP_SNIPER,              // 48
-	WP_MORTAR,              // 49
-	VERYBIGEXPLOSION,       // 50	
-	WP_NUM_WEAPONS          // 51   NOTE: this cannot be larger than 64 for AI/player weapons!
+	WP_NONE,                
+	// Melee Weapons
+	WP_KNIFE,               
+	WP_DAGGER,              
+	// One handed pistols
+	WP_LUGER,              
+	WP_SILENCER,           
+    WP_COLT,               
+	WP_TT33,               
+	WP_REVOLVER,           
+	// SMGs
+	WP_MP40,             
+	WP_THOMPSON,         
+	WP_STEN,             
+	WP_PPSH,             
+	WP_MP34,             
+	// Rifles
+	WP_MAUSER,              
+	WP_SNIPERRIFLE,        
+	WP_GARAND,            
+	WP_SNOOPERSCOPE,
+	WP_MOSIN,
+	// Semi auto rifles
+	WP_M1GARAND,
+	WP_G43,
+	// Assault Rifles
+	WP_MP44,
+	WP_FG42,
+	WP_BAR,
+	// Shotguns
+	WP_M97, 
+	// Heavy Weapons
+	WP_BROWNING,
+	WP_MG42M,
+	WP_PANZERFAUST,
+	WP_FLAMETHROWER,
+	// Secret Weapons
+	WP_VENOM,
+	WP_TESLA,   
+	// Explosives
+	WP_GRENADE_LAUNCHER,
+    WP_GRENADE_PINEAPPLE,
+	WP_DYNAMITE,
+	WP_AIRSTRIKE,          
+	WP_POISONGAS,
+	// Misc Alt modes
+	WP_FG42SCOPE,   
+	WP_AKIMBO,     
+	WP_M7,      
+	// Currently inactive Gothicstein weapons                                 
+	WP_P38,                 
+	WP_M30,                
+	WP_DELISLE,            
+	WP_DELISLESCOPE, 	   
+	WP_WELROD,             	
+	WP_HOLYCROSS,           
+    // Misc stuff, not actual weapons
+	WP_MONSTER_ATTACK1,     	
+	WP_MONSTER_ATTACK2,     	
+	WP_MONSTER_ATTACK3,    	
+	WP_GAUNTLET,            
+	WP_SNIPER,              
+	WP_MORTAR,             
+	VERYBIGEXPLOSION,       	
+	WP_NUM_WEAPONS 
 } weapon_t;
 
 
 
 typedef struct ammotable_s {
+	int weaponindex;
 	int maxammo;            
 	int uses;               
 	int maxclip;            

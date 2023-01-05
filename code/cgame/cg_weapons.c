@@ -4277,16 +4277,28 @@ void CG_NextWeap( qboolean switchBanks ) {
 	case WP_M7:
 		curweap = num = WP_M1GARAND;
 		break;
+	case WP_SNIPERRIFLE:
+		curweap = num = WP_MAUSER;
+		break;
+	case WP_FG42SCOPE:
+		curweap = num = WP_FG42;
+		break;
+	case WP_SNOOPERSCOPE:
+		curweap = num = WP_GARAND;
+		break;
+	case WP_AKIMBO:
+		curweap = num = WP_COLT;
+		break;
 	}
 
 	// if you're using an alt mode weapon, try switching back to the parent first
-	if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
+	/*if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
 		num = getAltWeapon( curweap );    // base any further changes on the parent
 		if ( CG_WeaponSelectable( num ) ) {  // the parent was selectable, drop back to that
 			CG_FinishWeaponChange( curweap, num );
 			return;
 		}
-	}
+	}*/
 
 
 
@@ -4417,18 +4429,30 @@ void CG_PrevWeap( qboolean switchBanks ) {
 	case WP_M7:
 		curweap = num = WP_M1GARAND;
 		break;
+	case WP_SNIPERRIFLE:
+		curweap = num = WP_MAUSER;
+		break;
+	case WP_FG42SCOPE:
+		curweap = num = WP_FG42;
+		break;
+	case WP_SNOOPERSCOPE:
+		curweap = num = WP_GARAND;
+		break;
+	case WP_AKIMBO:
+		curweap = num = WP_COLT;
+		break;
 	}
 
 	CG_WeaponIndex( curweap, &bank, &cycle );     // get bank/cycle of current weapon
 
 	// if you're using an alt mode weapon, try switching back to the parent first
-	if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
+	/*if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
 		num = getAltWeapon( curweap );    // base any further changes on the parent
 		if ( CG_WeaponSelectable( num ) ) {  // the parent was selectable, drop back to that
 			CG_FinishWeaponChange( curweap, num );
 			return;
 		}
-	}
+	}*/
 	// initially, just try to find a lower weapon in the current bank
 //	if ( cg_cycleAllWeaps.integer || !switchBanks ) {
 	if ( 1 ) {

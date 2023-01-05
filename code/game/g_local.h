@@ -1102,6 +1102,7 @@ extern vmCvar_t g_airespawn;
 extern vmCvar_t g_reinforce;
 extern vmCvar_t g_fullarsenal;
 extern vmCvar_t g_endmapbonus;
+extern vmCvar_t g_randomweapons;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 

@@ -1443,7 +1443,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
 	int weapon;
 	int i;
 	gentity_t   *ent = &g_entities[cs->entityNum];
-
+	
 	weapon = WP_NONE;
 
 	// clear out all weapons
@@ -1463,6 +1463,36 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
 		if ( !Q_strcasecmp( params, bg_itemlist[i].pickup_name ) ) {
 			weapon = bg_itemlist[i].giTag;
 		}
+	}
+
+	if ( !Q_strcasecmp (params, "weapon_random") ) 
+	{
+	weapon = ammoTable[3 + rand() % 29].weaponindex;
+	}
+
+	if ( !Q_strcasecmp (params, "pistol_random") ) 
+	{
+	weapon = ammoTable[3 + rand() % 7].weaponindex;
+	}
+
+	if ( !Q_strcasecmp (params, "smg_random") ) 
+	{
+	weapon = ammoTable[8 + rand() % 12].weaponindex;
+	}
+
+	if ( !Q_strcasecmp (params, "rifle_random") ) 
+	{
+	weapon = ammoTable[13 + rand() % 19].weaponindex;
+	}
+
+	if ( !Q_strcasecmp (params, "ar_random") ) 
+	{
+	weapon = ammoTable[20 + rand() % 22].weaponindex;
+	}
+
+	if ( !Q_strcasecmp (params, "heavy_random") ) 
+	{
+	weapon = ammoTable[23 + rand() % 29].weaponindex;
 	}
 
 	if ( weapon == WP_COLT ) {

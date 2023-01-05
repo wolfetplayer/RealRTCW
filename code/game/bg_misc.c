@@ -68,139 +68,163 @@ pathCorner_t pathCorners[MAX_PATH_CORNERS];
 #define MAX_AMMO_REVOLVER   24
 #define MAX_AMMO_MG42M      200
 
-//  [0] = maxammo            - max player ammo carrying capacity.
-//  [1] = uses               - how many 'rounds' it takes/costs to fire one cycle.
-//  [2] = maxclip            - max 'rounds' in a clip.
-//  [3] = reloadTime         - time from start of reload until ready to fire.
-//  [4] = fireDelayTime      - time from pressing 'fire' until first shot is fired. (used for delaying fire while weapon is 'readied' in animation)
-//  [5] = nextShotTime       - when firing continuously, this is the time between shots
-//  [6] = nextShotTime2      - alt fire rates
-//  [6] = maxHeat            - max active firing time before weapon 'overheats' (at which point the weapon will fail for a moment)
-//  [7] = coolRate           - how fast the weapon cools down.
-//  [8] = playerDamage       - damage inflicted by player
-//  [9] = aiDamage           - damage inflicted by AI
-// [10] = playerSplashRadius - explosives only
-// [11] = aiSplashRadius     - explosives only
-// [12] = spread             - spread value
-// [13] = aimSpreadScaleadd  - how much spread increasing per shot
-// [14] = spreadScale        - how quickly spread will reduce
-// [15] = weapRecoilDuration - basic recoil value
-// [16] = weapRecoilPitch    - vertical recoil
-// [17] = weapRecoilYaw      - horizontal recoil
-// [18] = soundRange         - ai hearing range for weapon shots
-// [19] = moveSpeed          - player movement speed
-// [20] = twoHand            - is weapon twohanded?
-// [21] = upAngle            - throw range for grenades
-// [22] = mod                - means of death
+//  [0] = weaponindex        - actual weapon name
+//  [1] = maxammo            - max player ammo carrying capacity.
+//  [2] = uses               - how many 'rounds' it takes/costs to fire one cycle.
+//  [3] = maxclip            - max 'rounds' in a clip.
+//  [4] = reloadTime         - time from start of reload until ready to fire.
+//  [5] = fireDelayTime      - time from pressing 'fire' until first shot is fired. (used for delaying fire while weapon is 'readied' in animation)
+//  [6] = nextShotTime       - when firing continuously, this is the time between shots
+//  [7] = nextShotTime2      - alt fire rates
+//  [8] = maxHeat            - max active firing time before weapon 'overheats' (at which point the weapon will fail for a moment)
+//  [9] = coolRate           - how fast the weapon cools down.
+//  [10] = playerDamage       - damage inflicted by player
+//  [11] = aiDamage           - damage inflicted by AI
+// [12] = playerSplashRadius - explosives only
+// [13] = aiSplashRadius     - explosives only
+// [14] = spread             - spread value
+// [15] = aimSpreadScaleadd  - how much spread increasing per shot
+// [16] = spreadScale        - how quickly spread will reduce
+// [17] = weapRecoilDuration - basic recoil value
+// [18] = weapRecoilPitch    - vertical recoil
+// [19] = weapRecoilYaw      - horizontal recoil
+// [20] = soundRange         - ai hearing range for weapon shots
+// [21] = moveSpeed          - player movement speed
+// [22] = twoHand            - is weapon twohanded?
+// [23] = upAngle            - throw range for grenades
+// [24] = mod                - means of death
 
 
 // NOTE: This once-static data is included in both Client and Game modules.
 //       Both now load values into here from weap files.
 ammotable_t ammoTable[] = {
 	
-	//	maxammo		     uses amt.	  maxclip	reloadtime   firedelay	nextshot   nextshot2  heat    cool	  plrdmg    aidmg       plrsplsh    aisplsh     spread      SpreadScaleAdd      spreadScale      recoilDuration   recoilPitch      recoilYaw           soundrange          movespeed           twohand          upAngle         mod                  
-	{   0,                   0,       0,        0,           50,        0,         0,         0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1.00,               1.00,               0,               0,              0,                                         },  //	WP_NONE					// 0
-
-	{   999,                 0,       999,      0,           50,        200,       200,       0,      0,      10,       6,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              64,                 1.00,               0,               0,              MOD_KNIFE,                                 },  //	WP_KNIFE				// 1
-	{   999,                 0,       999,      0,           50,        200,       200,       0,      0,      10,       10,         0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              64,                 1.00,               0,               0,              MOD_DAGGER,                                },  //	WP_DAGGER				// 2
-
-	{   MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          400,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_LUGER,                                 },  //	WP_LUGER				// 3	
-	{   MAX_AMMO_9MM,        1,       32,       2600,        100,       110,       110,       0,      0,      6,        4,          0,          0,          850,        15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               1,               0,              MOD_MP40,                                  },  //	WP_MP40					// 4
-	{   MAX_AMMO_MAUSER,     1,       5,        2500,        100,       1400,      1400,      0,      0,      35,       15,         0,          0,          300,        50,                 0.5f,            60,              {1.0f, 1.0f},    {.1f, .1f},         2000,               0.90,               1,               0,              MOD_MAUSER,                                },  //	WP_MAUSER				// 5	
-	{   MAX_AMMO_FG42,       1,       20,       2000,        100,       190,       120,       0,      0,      12,       6,          0,          0,          600,        15,                 0.7f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               1,               0,              MOD_FG42,                                  },  //	WP_FG42					// 6
-	{   5,                   1,       5,        1000,        250,       1600,      1600,      0,      0,      170,      170,        310,        310,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               800,            MOD_GRENADE_LAUNCHER,                      },  //	WP_GRENADE_LAUNCHER		// 7
-	{   3,                   1,       1,        1000,        50,        2000,      2000,      0,      0,      250,      100,        300,        200,        0,          30,                 0.6f,            0,               {.0, 0},         {0,0},              1000,               0.85,               1,               0,              MOD_PANZERFAUST,                           },  //	WP_PANZERFAUST			// 8
-	{   MAX_AMMO_VENOM,      1,       500,      3000,        750,       45,        45,        5000,   200,    20,       7,          0,          0,          1000,       10,                 0.9f,            50,              {.1f, .1f},      {.1f, .1f},         1000,               0.85,               1,               0,              MOD_VENOM,                                 },  //	WP_VENOM				// 9	
-	{   100,                 1,       100,      1000,        100,       50,        50,        0,      0,      6,        6,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1000,               0.85,               1,               0,              MOD_FLAMETHROWER,                          },  //	WP_FLAMETHROWER			// 10
-	{   50,                  1,       50,       1000,        100,       250,       250,       0,      0,      15,       4,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1000,               0.85,               1,               0,              MOD_TESLA,                                 },  //	WP_TESLA				// 11
-	{   MAX_AMMO_9MM,        1,       32,       3100,        100,       105,       105,       0,      0,      6,        4,          0,          0,          900,        15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               1,               0,              MOD_MP34,                                  },  //	WP_MP34					// 12
-	{   MAX_AMMO_TTAMMO,     1,       8,        1600,        100,       350,       350,       0,      0,      8,        7,          0,          0,          450,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_TT33,                                  },  //	WP_TT33					// 13
-	{   MAX_AMMO_9MM,        1,       8,        1600,        100,       350,       350,       0,      0,      8,        7,          0,          0,          450,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_P38,                                   },  //	WP_P38					// 14
-	{   MAX_AMMO_TTAMMO,     1,       71,       2900,        100,       65,        65,        0,      0,      6,        5,          0,          0,          1000,       15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               1,               0,              MOD_PPSH,                                  },  //	WP_PPSH					// 15
-	{   MAX_AMMO_MOSINA,     1,       5,        2400,        100,       1400,      1400,      0,      0,      35,       15,         0,          0,          300,        50,                 0.5f,            60,              {1.0f, 1.0f},    {.1f, .1f},         2000,               0.90,               1,               0,              MOD_MOSIN,                                 },  //	WP_MOSIN				// 16
-	{   MAX_AMMO_MAUSER,     1,       10,       1800,        100,       300,       300,       0,      0,      16,       7,          0,          0,          350,        40,                 0.4f,            40,              {.2f,.2f},       {.1f, .1f},         2000,               0.90,               1,               0,              MOD_G43,                                   },  //	WP_G43				    // 17
-	{   MAX_AMMO_BARAMMO,    1,       8,        1650,        100,       300,       300,       0,      0,      18,       7,          0,          0,          350,        40,                 0.4f,            40,              {.2f,.2f},       {.1f, .1f},         2000,               0.90,               1,               0,              MOD_M1GARAND,                              },  //	WP_M1GARAND				// 18
-	{   5,                   1,       1,        3000,        100,       400,       400,       0,      0,      20,       40,         0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0, 0},             1500,               0.90,               1,               0,              MOD_M7,                                    },  //	WP_M7			        // 19
-	{   MAX_AMMO_BARAMMO,    1,       20,       2250,        100,       200,       100,       0,      0,      16,       6,          0,          0,          700,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               1,               0,              MOD_BAR,                                   },  //	WP_BAR					// 20
-	{   MAX_AMMO_44AMMO,     1,       30,       2600,        100,       105,       170,       0,      0,      9,        6,          0,          0,          800,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               1,               0,              MOD_MP44,                                  },  //	WP_MP44					// 21
-	{   MAX_AMMO_VENOM,      1,       100,      2600,        100,       65,        65,        2500,   350,    15,       6,          0,          0,          1200,       15,                 0.6f,            50,              {.1f, .1f},      {.1f, .1f},         1500,               0.85,               1,               0,              MOD_MG42M,                                 },  //	WP_MG42M                // 22
-	{   MAX_AMMO_BARAMMO,    1,       150,      2600,        100,       65,        65,        2500,   350,    15,       6,          0,          0,          1000,       15,                 0.6f,            75,              {.1f, .1f},      {.1f, .1f},         1500,               0.85,               1,               0,              MOD_BROWNING,                              },  //	WP_BROWNING             // 23
-	{   MAX_AMMO_M97,        1,       6,        2000,        100,       1250,      1250,      0,      0,      10,       9,          0,          0,          4500,       15,                 0.6f,            100,             {.10f, .2f},     {.5f, .5f},         1500,               0.90,               1,               0,              MOD_M97,                                   },  //	WP_M97                  // 24
-	{   MAX_AMMO_M97,        2,       2,        2000,        100,       1000,      1000,      0,      0,      20,       15,         0,          0,          4500,       15,                 0.6f,            100,             {.10f, .2f},     {.5f, .5f},         1500,               0.90,               1,               0,              MOD_M30,                                   },  //	WP_M30                  // 25	
-	{   MAX_AMMO_REVOLVER,   1,       6,        1500,        100,       500,       500,       0,      0,      20,       7,          0,          0,          350,        35,                 0.4f,            50,              {.3f, .1f},      {0,0},              1000,               0.95,               0,               0,              MOD_REVOLVER,                              },  //	WP_REVOLVER             // 26
-	{   MAX_AMMO_45,         1,       7,        1500,        100,       300,       300,       0,      0,      10,       6,          0,          0,          400,        35,                 0.4f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_COLT,                                  },  //	WP_COLT					// 27
-	{   MAX_AMMO_45,         1,       30,       2400,        100,       90,        90,        0,      0,      9,        5,          0,          0,          950,        15,                 0.4f,            30,              {.2f, .2f},      {0,0},              1000,               0.90,               1,               0,              MOD_THOMPSON,                              },  //	WP_THOMPSON				// 28
-	{   MAX_AMMO_45,         1,       7,        2500,        100,       1200,      1200,      0,      0,      40,       30,         0,          0,          420,        50,                 0.5f,            100,             {1.0f, 1.0f},    {.1f, .1f},         128,                0.90,               1,               0,              MOD_DELISLE,                               },  //	WP_DELISLE				// 29
-	{   MAX_AMMO_45,         1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       30,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               0,              MOD_DELISLESCOPE,                          },  //	WP_DELISLESCOPE         // 30
-	{   MAX_AMMO_GARAND,     1,       5,        2500,        100,       1200,      1200,      0,      0,      40,       15,         0,          0,          400,        50,                 0.5f,            50,              {1.0f, 1.0f},    {.1f,.1f},          128,                0.90,               1,               0,              MOD_GARAND,                                },  //	WP_GARAND				// 31
-	{   5,                   1,       5,        1000,        250,       1600,      1600,      0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               800,            MOD_GRENADE_PINEAPPLE,                     },  //	WP_GRENADE_PINEAPPLE	// 32
-	{   999,                 0,       999,      0,           50,        0,         0,         0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               700,            0,                                         },  //	WP_AIRSTRIKE	        // 33
-	{   5,                   0,       5,        0,           50,        0,         0,         0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               700,            MOD_POISONGAS,                             },  //	WP_POISONGAS	        // 34
-	{   MAX_AMMO_MAUSER,     1,       5,        3000,        0,         1400,      1400,      0,      0,      35,       15,         0,          0,          300,        0,                  10.0f,           0,               {0,0},           {0,0},              2000,               0.40,               1,               0,              MOD_SNIPERRIFLE,                           },  //	WP_SNIPER_GER			// 35
-	{   MAX_AMMO_GARAND,     1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       15,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               0,              MOD_SNOOPERSCOPE,                          },  //	WP_SNIPER_AM			// 36
-
-	{   MAX_AMMO_FG42,       1,       20,       2000,        100,       180,       180,       0,      0,      12,       6,          0,          0,          250,        5,                  0.7f,            0,               {0,0},           {0,0},              1500,               0.40,               1,               0,              MOD_FG42SCOPE,                             },  //	WP_FG42SCOPE			// 37
-	{   MAX_AMMO_9MM,        1,       32,       3100,        100,       115,       115,       900,    500,    7,        4,          0,          0,          950,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              64,                 0.90,               1,               0,              MOD_STEN,                                  },  //	WP_STEN					// 38
-	{   MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          350,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              64,                 0.95,               0,               0,              MOD_SILENCER,                              },  //	WP_SILENCER				// 39
-	{   MAX_AMMO_GARAND,     1,       6,        2000,        100,       2000,      2000,      0,      0,      50,       50,         0,          0,          400,        35,                 0.3f,            70,              {.35f, .15f},    {0,0},              64,                 0.95,               0,               0,              MOD_WELROD,                                },  //	WP_WELROD				// 40
-	{   MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               0,              MOD_AKIMBO,                                },  //	WP_AKIMBO				// 41
-	{   3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               400,            MOD_DYNAMITE,                              },  //	WP_DYNAMITE				// 42
-	{   15,                  1,       15,       1000,        100,       250,       250,       0,      0,      150,      150,        0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0, 0},             64,                 1.00,               0,               0,              MOD_HOLYCROSS,                             },  //    WP_HOLYCROSS            // 43
-
-	{   999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK1		// 44
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK2		// 45
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  //	WP_MONSTER_ATTACK3		// 46
-	{   999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,              0,                                         }   //	WP_GAUNTLET				// 47
+	//	index                maxammo		      uses	   maxclip	 reloadtime   firedelay	 nextshot   nextshot2  heat    cool	   plrdmg    aidmg       plrsplsh    aisplsh     spread      SpreadScaleAdd      spreadScale      recoilDuration   recoilPitch      recoilYaw           soundrange          movespeed           twohand          upAngle         mod                  
+	{   WP_NONE,             0,                   0,       0,        0,           50,        0,         0,         0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1.00,               1.00,               0,               0,              0,                                         }, 
+    
+	// Melee weapons
+	{   WP_KNIFE,            999,                 0,       999,      0,           50,        200,       200,       0,      0,      10,       6,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              64,                 1.00,               0,               0,              MOD_KNIFE,                                 }, 
+	{   WP_DAGGER,           999,                 0,       999,      0,           50,        200,       200,       0,      0,      10,       10,         0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              64,                 1.00,               0,               0,              MOD_DAGGER,                                },  
+    
+    // One handed pistols
+	{   WP_LUGER,            MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          400,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_LUGER,                                 },  
+	{   WP_SILENCER,         MAX_AMMO_9MM,        1,       8,        1500,        100,       300,       300,       0,      0,      7,        5,          0,          0,          350,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              64,                 0.95,               0,               0,              MOD_SILENCER,                              },  
+	{   WP_COLT,             MAX_AMMO_45,         1,       7,        1500,        100,       300,       300,       0,      0,      10,       6,          0,          0,          400,        35,                 0.4f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_COLT,                                  }, 
+	{   WP_TT33,             MAX_AMMO_TTAMMO,     1,       8,        1600,        100,       350,       350,       0,      0,      8,        7,          0,          0,          450,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_TT33,                                  }, 
+	{   WP_REVOLVER,         MAX_AMMO_REVOLVER,   1,       6,        1500,        100,       500,       500,       0,      0,      20,       7,          0,          0,          350,        35,                 0.4f,            50,              {.3f, .1f},      {0,0},              1000,               0.95,               0,               0,              MOD_REVOLVER,                              },
+    // SMGs
+	{   WP_MP40,             MAX_AMMO_9MM,        1,       32,       2600,        100,       110,       110,       0,      0,      6,        4,          0,          0,          850,        15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               1,               0,              MOD_MP40,                                  },
+	{   WP_THOMPSON,         MAX_AMMO_45,         1,       30,       2400,        100,       90,        90,        0,      0,      9,        5,          0,          0,          950,        15,                 0.4f,            30,              {.2f, .2f},      {0,0},              1000,               0.90,               1,               0,              MOD_THOMPSON,                              }, 
+	{   WP_STEN,             MAX_AMMO_9MM,        1,       32,       3100,        100,       115,       115,       900,    500,    7,        4,          0,          0,          950,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              64,                 0.90,               1,               0,              MOD_STEN,                                  }, 
+	{   WP_PPSH,             MAX_AMMO_TTAMMO,     1,       71,       2900,        100,       65,        65,        0,      0,      6,        5,          0,          0,          1000,       15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               1,               0,              MOD_PPSH,                                  }, 
+	{   WP_MP34,             MAX_AMMO_9MM,        1,       32,       3100,        100,       105,       105,       0,      0,      6,        4,          0,          0,          900,        15,                 0.5f,            30,              {.1f, .1f},      {0,0},              1000,               0.90,               1,               0,              MOD_MP34,                                  },
+	// Rifles
+	{   WP_MAUSER,           MAX_AMMO_MAUSER,     1,       5,        2500,        100,       1400,      1400,      0,      0,      35,       15,         0,          0,          300,        50,                 0.5f,            60,              {1.0f, 1.0f},    {.1f, .1f},         2000,               0.90,               1,               0,              MOD_MAUSER,                                },  
+	{   WP_SNIPERRIFLE,      MAX_AMMO_MAUSER,     1,       5,        3000,        0,         1400,      1400,      0,      0,      35,       15,         0,          0,          300,        0,                  10.0f,           0,               {0,0},           {0,0},              2000,               0.40,               1,               0,              MOD_SNIPERRIFLE,                           }, 
+	{   WP_GARAND,           MAX_AMMO_GARAND,     1,       5,        2500,        100,       1200,      1200,      0,      0,      40,       15,         0,          0,          400,        50,                 0.5f,            50,              {1.0f, 1.0f},    {.1f,.1f},          128,                0.90,               1,               0,              MOD_GARAND,                                },  
+	{   WP_SNOOPERSCOPE,     MAX_AMMO_GARAND,     1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       15,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               0,              MOD_SNOOPERSCOPE,                          }, 
+	{   WP_MOSIN,            MAX_AMMO_MOSINA,     1,       5,        2400,        100,       1400,      1400,      0,      0,      35,       15,         0,          0,          300,        50,                 0.5f,            60,              {1.0f, 1.0f},    {.1f, .1f},         2000,               0.90,               1,               0,              MOD_MOSIN,                                 }, 
+	// Semi auto rifles
+	{   WP_M1GARAND,         MAX_AMMO_BARAMMO,    1,       8,        1650,        100,       300,       300,       0,      0,      18,       7,          0,          0,          350,        40,                 0.4f,            40,              {.2f,.2f},       {.1f, .1f},         2000,               0.90,               1,               0,              MOD_M1GARAND,                              }, 
+	{   WP_G43,              MAX_AMMO_MAUSER,     1,       10,       1800,        100,       300,       300,       0,      0,      16,       7,          0,          0,          350,        40,                 0.4f,            40,              {.2f,.2f},       {.1f, .1f},         2000,               0.90,               1,               0,              MOD_G43,                                   },
+	// Assault Rifles
+	{   WP_MP44,             MAX_AMMO_44AMMO,     1,       30,       2600,        100,       105,       170,       0,      0,      9,        6,          0,          0,          800,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               1,               0,              MOD_MP44,                                  },
+	{   WP_FG42,             MAX_AMMO_FG42,       1,       20,       2000,        100,       190,       120,       0,      0,      12,       6,          0,          0,          600,        15,                 0.7f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               1,               0,              MOD_FG42,                                  },
+	{   WP_BAR,              MAX_AMMO_BARAMMO,    1,       20,       2250,        100,       200,       100,       0,      0,      16,       6,          0,          0,          700,        15,                 0.6f,            40,              {.1f, .1f},      {0,0},              1500,               0.90,               1,               0,              MOD_BAR,                                   },
+   // Shotguns
+	{   WP_M97,              MAX_AMMO_M97,        1,       6,        2000,        100,       1250,      1250,      0,      0,      10,       9,          0,          0,          4500,       15,                 0.6f,            100,             {.10f, .2f},     {.5f, .5f},         1500,               0.90,               1,               0,              MOD_M97,                                   },
+   // Heavy Weapons
+	{   WP_BROWNING,         MAX_AMMO_BARAMMO,    1,       150,      2600,        100,       65,        65,        2500,   350,    15,       6,          0,          0,          1000,       15,                 0.6f,            75,              {.1f, .1f},      {.1f, .1f},         1500,               0.85,               1,               0,              MOD_BROWNING,                              }, 
+	{   WP_MG42M,            MAX_AMMO_VENOM,      1,       100,      2600,        100,       65,        65,        2500,   350,    15,       6,          0,          0,          1200,       15,                 0.6f,            50,              {.1f, .1f},      {.1f, .1f},         1500,               0.85,               1,               0,              MOD_MG42M,                                 },
+	{   WP_PANZERFAUST,      3,                   1,       1,        1000,        50,        2000,      2000,      0,      0,      250,      100,        300,        200,        0,          30,                 0.6f,            0,               {.0, 0},         {0,0},              1000,               0.85,               1,               0,              MOD_PANZERFAUST,                           },
+	{   WP_FLAMETHROWER,     100,                 1,       100,      1000,        100,       50,        50,        0,      0,      6,        6,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1000,               0.85,               1,               0,              MOD_FLAMETHROWER,                          },
+	// Secret Weapons
+	{   WP_VENOM,            MAX_AMMO_VENOM,      1,       500,      3000,        750,       45,        45,        5000,   200,    20,       7,          0,          0,          1000,       10,                 0.9f,            50,              {.1f, .1f},      {.1f, .1f},         1000,               0.85,               1,               0,              MOD_VENOM,                                 },  
+	{   WP_TESLA,            50,                  1,       50,       1000,        100,       250,       250,       0,      0,      15,       4,          0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1000,               0.85,               1,               0,              MOD_TESLA,                                 }, 
+   // Explosives
+	{  WP_GRENADE_LAUNCHER,  5,                   1,       5,        1000,        250,       1600,      1600,      0,      0,      170,      170,        310,        310,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               800,            MOD_GRENADE_LAUNCHER,                      },
+	{  WP_GRENADE_PINEAPPLE, 5,                   1,       5,        1000,        250,       1600,      1600,      0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               800,            MOD_GRENADE_PINEAPPLE,                     }, 
+	{   WP_DYNAMITE,         3,                   1,       3,        1000,        250,       1600,      1600,      0,      0,      800,      800,        450,        450,        0,          0,                  0.0f,            0,               {0,0},           {0,0},              3000,               0.95,               0,               400,            MOD_DYNAMITE,                              }, 
+	{   WP_AIRSTRIKE,        999,                 0,       999,      0,           50,        0,         0,         0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               700,            0,                                         }, 
+	{   WP_POISONGAS,        5,                   0,       5,        0,           50,        0,         0,         0,      0,      220,      220,        270,        270,        0,          0,                  0.0f,            0,               {0, 0},          {0,0},              1500,               0.95,               0,               700,            MOD_POISONGAS,                             }, 
+	// Misc alt modes
+	{   WP_FG42SCOPE,        MAX_AMMO_FG42,       1,       20,       2000,        100,       180,       180,       0,      0,      12,       6,          0,          0,          250,        5,                  0.7f,            0,               {0,0},           {0,0},              1500,               0.40,               1,               0,              MOD_FG42SCOPE,                             }, 
+	{   WP_AKIMBO,           MAX_AMMO_45,         1,       7,        2700,        100,       200,       200,       0,      0,      10,       6,          0,          0,          500,        35,                 0.5f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               1,               0,              MOD_AKIMBO,                                }, 
+	{   WP_M7,               5,                   1,       1,        3000,        100,       400,       400,       0,      0,      20,       40,         0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0, 0},             1500,               0.90,               1,               0,              MOD_M7,                                    }, 
+    // Currently unused Gothicstein weapons
+	{   WP_P38,              MAX_AMMO_9MM,        1,       8,        1600,        100,       350,       350,       0,      0,      8,        7,          0,          0,          450,        35,                 0.3f,            50,              {.2f, .1f},      {0,0},              700,                0.95,               0,               0,              MOD_P38,                                   }, 
+	{   WP_M30,              MAX_AMMO_M97,        2,       2,        2000,        100,       1000,      1000,      0,      0,      20,       15,         0,          0,          4500,       15,                 0.6f,            100,             {.10f, .2f},     {.5f, .5f},         1500,               0.90,               1,               0,              MOD_M30,                                   }, 
+	{   WP_DELISLE,          MAX_AMMO_45,         1,       7,        2500,        100,       1200,      1200,      0,      0,      40,       30,         0,          0,          420,        50,                 0.5f,            100,             {1.0f, 1.0f},    {.1f, .1f},         128,                0.90,               1,               0,              MOD_DELISLE,                               },  
+	{   WP_DELISLESCOPE,     MAX_AMMO_45,         1,       5,        3000,        0,         1200,      1200,      0,      0,      40,       30,         0,          0,          300,        0,                  8.0f,            0,               {0,0},           {0,0},              128,                0.40,               1,               0,              MOD_DELISLESCOPE,                          }, 
+	{   WP_WELROD,           MAX_AMMO_GARAND,     1,       6,        2000,        100,       2000,      2000,      0,      0,      50,       50,         0,          0,          400,        35,                 0.3f,            70,              {.35f, .15f},    {0,0},              64,                 0.95,               0,               0,              MOD_WELROD,                                },  
+	{   WP_HOLYCROSS,        15,                  1,       15,       1000,        100,       250,       250,       0,      0,      150,      150,        0,          0,          0,          0,                  0.0f,            0,               {0, 0},          {0, 0},             64,                 1.00,               0,               0,              MOD_HOLYCROSS,                             }, 
+    // Misc stuff, not actual weapons
+	{   WP_MONSTER_ATTACK1,  999,                 0,       999,      0,           50,        1000,      1000,      0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  
+	{   WP_MONSTER_ATTACK2,  999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  
+	{   WP_MONSTER_ATTACK3,  999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              1000,               0,                  0,               0,              0,                                         },  
+	{   WP_GAUNTLET,         999,                 0,       999,      0,           50,        250,       250,       0,      0,      0,        0,          0,          0,          0,          0,                  0.0f,            0,               {0,0},           {0,0},              64,                 0,                  0,               0,              0,                                         } 
 };
 
 // Skill-based ammo parameters
 ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 
 int weapAlts[] = {
-	WP_NONE,            // 0 WP_NONE
-	WP_NONE,            // 1 WP_KNIFE
-	WP_NONE,            // 2 WP_DAGGER
-	WP_SILENCER,        // 3 WP_LUGER
-	WP_NONE,            // 4 WP_MP40
-	WP_SNIPERRIFLE,     // 5 WP_MAUSER
-	WP_FG42SCOPE,       // 6 WP_FG42	
-	WP_NONE,            // 7 WP_GRENADE_LAUNCHER
-	WP_NONE,            // 8 WP_PANZERFAUST
-	WP_NONE,            // 9 WP_VENOM
-	WP_NONE,            // 10 WP_FLAMETHROWER
-	WP_NONE,            // 11 WP_TESLA
-	WP_NONE,            // 12 WP_MP34
-	WP_NONE,            // 13 WP_TT33
-	WP_NONE,            // 14 WP_P38
-	WP_NONE,            // 15 WP_PPSH
-	WP_NONE,            // 16 WP_MOSIN
-	WP_NONE,            // 17 WP_G43
-	WP_M7,              // 18 WP_M1GARAND
-	WP_M1GARAND,        // 19 WP_M7
-	WP_NONE,            // 20 WP_BAR
-	WP_NONE,            // 21 WP_MP44
-	WP_NONE,            // 22 WP_MG42M
-	WP_NONE,            // 23 WP_BROWNING
-	WP_NONE,            // 24 WP_M97
-	WP_NONE,            // 25 WP_M30
-	WP_NONE,            // 26 WP_REVOLVER
-	WP_AKIMBO,          // 27 WP_COLT		
-	WP_NONE,            // 28 WP_THOMPSON
-	WP_DELISLESCOPE,    // 29 WP_DELISLE   
-	WP_DELISLE,         // 30 WP_DELISLESCOPE
-	WP_SNOOPERSCOPE,    // 31 WP_GARAND		
-	WP_NONE,            // 32 WP_GRENADE_PINEAPPLE
-	WP_NONE,            // 33 WP_AIRSTRIKE
-	WP_NONE,            // 34 WP_POISONGAS
-	WP_MAUSER,          // 35 WP_SNIPERRIFLE
-	WP_GARAND,          // 36 WP_SNOOPERSCOPE
-	WP_FG42,            // 37 WP_FG42SCOPE
-	WP_NONE,            // 38 WP_STEN
-	WP_LUGER,           // 39 WP_SILENCER	
-	WP_NONE,            // 40 WP_WELROD
-	WP_COLT,            // 41 WP_AKIMBO		
-	WP_NONE,            // 42 WP_DYNAMITE
-	WP_NONE             // 43 WP_HOLYCROSS
+	WP_NONE,                
+	// Melee Weapons
+	WP_NONE,             
+	WP_NONE,            
+	// One handed pistols
+	WP_SILENCER,                
+	WP_LUGER,           
+    WP_AKIMBO,               
+	WP_NONE,              
+	WP_NONE,            
+	// SMGs
+	WP_NONE,              
+	WP_NONE,         
+	WP_NONE,              
+	WP_NONE,              
+	WP_NONE,             
+	// Rifles
+	WP_SNIPERRIFLE,              
+	WP_MAUSER,        
+	WP_SNOOPERSCOPE,            
+	WP_GARAND,
+	WP_NONE, 
+	// Semi auto rifles
+	WP_M7,
+	WP_NONE,
+	// Assault Rifles
+	WP_NONE, 
+	WP_FG42SCOPE,
+	WP_NONE, 
+	// Shotguns
+	WP_NONE,  
+	// Heavy Weapons
+	WP_NONE, 
+	WP_NONE, 
+	WP_NONE, 
+	WP_NONE, 
+	// Secret Weapons
+	WP_NONE, 
+	WP_NONE,   
+	// Explosives
+	WP_NONE, 
+	WP_NONE, 
+	WP_NONE, 
+	WP_NONE,          
+	WP_NONE, 
+	// Misc Alt modes
+	WP_FG42,   
+	WP_COLT,     
+	WP_M1GARAND,      
+	// Currently inactive Gothicstein weapons                                 
+	WP_NONE,                  
+	WP_NONE,                 
+	WP_DELISLESCOPE,            
+	WP_DELISLE, 	   
+	WP_NONE,            	
+	WP_NONE 
 };
 
 

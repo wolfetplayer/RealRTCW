@@ -2864,7 +2864,6 @@ extern vmCvar_t cg_reloading;
 extern vmCvar_t g_reloading;
 #endif
 
-
 /*
 ==============
 PM_Weapon
@@ -2960,46 +2959,6 @@ static void PM_Weapon( void ) {
 		pm->ps->venomTime -= pml.msec;
 	}
 
-	if ( pm->ps->quickGrenTime > 0 ) {
-		pm->ps->quickGrenTime -= pml.msec;
-	}
-
-	if ( pm->ps->quickGrenTime < 0 ) {
-		pm->ps->quickGrenTime = 0;
-	}
-
-//----(SA)	removed 'quickgrenade'
-
-    if ( pm->cmd.wbuttons & WBUTTON_QUICKGREN ) 
-    {
-        if ( pm->ps->weapon != WP_GRENADE_LAUNCHER 
-		&& pm->ps->weapon != WP_GRENADE_PINEAPPLE
-		&& pm->ps->weapon != WP_SNIPERRIFLE
-		&& pm->ps->weapon != WP_FG42SCOPE
-		&& pm->ps->weapon != WP_SNOOPERSCOPE
-		&& pm->ps->leanf == 0 ) {
-		if ( pm->ps->quickGrenTime <= 0 ) {
-           
-	     if ( PM_WeaponAmmoAvailable( WP_GRENADE_LAUNCHER ) )  // ammo check
-	     { 
-		 pm->ps->quickGrenTime = 2500;
-		 PM_AddEvent( EV_FIRE_QUICKGREN );
-	     PM_WeaponUseAmmo( WP_GRENADE_LAUNCHER, 1 );
-	     } else if ( PM_WeaponAmmoAvailable( WP_GRENADE_PINEAPPLE ) ) // ammo check 2
-		 {
-		 pm->ps->quickGrenTime = 2500;
-		 PM_AddEvent( EV_FIRE_QUICKGREN2 );
-		 PM_WeaponUseAmmo( WP_GRENADE_PINEAPPLE, 1 );
-		 } else {
-		 pm->ps->quickGrenTime = 2500;
-		 PM_AddEvent( EV_NOQUICKGRENAMMO ); // no ammo
-		 }
-		} else {
-			return;
-		}
-		
-    }
-	}
 
 	// weapon cool down
 	PM_CoolWeapons();
@@ -3640,6 +3599,72 @@ static void PM_Weapon( void ) {
 
 	PM_SwitchIfEmpty();
 
+}
+
+/*
+==============
+PM_QuickGrenade
+==============
+*/
+static void PM_QuickGrenade( void ) {
+
+	if ( pm->ps->quickGrenTime > 0 ) 
+	{
+		pm->ps->quickGrenTime -= pml.msec;
+	}
+
+	if ( pm->ps->quickGrenTime < 0 ) 
+	{
+		pm->ps->quickGrenTime = 0;
+	}
+
+	if (pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_SNIPERRIFLE || pm->ps->weapon == WP_FG42SCOPE || pm->ps->weapon == WP_SNOOPERSCOPE )
+	{
+		return;
+	}
+	
+	if ( pm->ps->pm_flags & PMF_RESPAWNED )
+	{
+		return;
+	}
+
+	if ( pm->ps->stats[STAT_HEALTH] <= 0 )
+	{
+		return;
+	}
+
+	if (pm->ps->eFlags & EF_ZOOMING)
+	{
+		return;
+	}
+
+	if (pm->ps->leanf != 0)
+	{
+	    return;
+	}
+
+	if ( pm->ps->quickGrenTime > 0 )
+	{
+	    return;
+	}
+
+    if ( pm->cmd.wbuttons & WBUTTON_QUICKGREN ) 
+    {
+		 pm->ps->quickGrenTime = 2500;
+           
+	     if ( PM_WeaponAmmoAvailable( WP_GRENADE_LAUNCHER ) )  // ammo check
+	     { 
+		 PM_AddEvent( EV_FIRE_QUICKGREN );
+	     PM_WeaponUseAmmo( WP_GRENADE_LAUNCHER, 1 );
+	     } else if ( PM_WeaponAmmoAvailable( WP_GRENADE_PINEAPPLE ) ) // ammo check 2
+		 {
+		 PM_AddEvent( EV_FIRE_QUICKGREN2 );
+		 PM_WeaponUseAmmo( WP_GRENADE_PINEAPPLE, 1 );
+		 } else {
+		 PM_AddEvent( EV_NOQUICKGRENAMMO ); // no ammo
+		 }
+        return;
+	}
 }
 
 
@@ -4407,6 +4432,8 @@ void PmoveSingle( pmove_t *pmove ) {
 
 		// weapons
 		PM_Weapon();
+
+		PM_QuickGrenade();
 
 		// footstep events / legs animations
 		PM_Footsteps();

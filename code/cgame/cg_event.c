@@ -1757,7 +1757,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_NOQUICKGRENAMMO:
-	    trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
+	    //trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		CG_CenterPrint( "noquickgrenammo", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 	    break;
 	case EV_CHANGE_WEAPON:
@@ -1839,7 +1839,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 //----(SA)	added
 	case EV_FIRE_QUICKGREN:
 	case EV_FIRE_QUICKGREN2:
-        trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cgs.media.quickgrenSound );
+        //trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cgs.media.quickgrenSound );
 		break;
 //----(SA)	end
 //----(SA)	added

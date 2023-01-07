@@ -1278,7 +1278,6 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	vec3_t tosspos;
 	qboolean underhand = 0;
 
-	s_quadFactor = 1;
 
 
 	if ( underhand ) {
@@ -1361,6 +1360,79 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		m->think = G_ExplodeMissilePoisonGas;
 		m->s.density = 1;
 	}
+
+	//----(SA)	adjust for movement of character.  TODO: Probably comment in later, but only for forward/back not strafing
+//	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics
+	// let the AI know which grenade it has fired
+	ent->grenadeFired = m->s.number;
+	// Ridah, return the grenade so we can do some prediction before deciding if we really want to throw it or not
+	return m;
+}
+
+gentity_t *quickgren_fire( gentity_t *ent, int grenType ) {
+	gentity_t   *m ;
+	float upangle = 0;                  //	start with level throwing and adjust based on angle
+	vec3_t tosspos;
+	qboolean underhand = 0;
+	gentity_t	*tent;
+	trace_t		tr;
+
+
+	s_quadFactor = 1;
+
+
+	if ( underhand ) {
+		forward[2] = 0;                 //	start the toss level for underhand
+	} else {
+		forward[2] += 0.2;              //	extra vertical velocity for overhand
+	}
+	VectorNormalize( forward );         //	make sure forward is normalized
+	upangle = -( ent->s.apos.trBase[0] ); //	this will give between	-90 / 90
+	upangle = min( upangle, 50 );
+	upangle = max( upangle, -50 );        //	now clamped to			-50 / 50	(don't allow firing straight up/down)
+	upangle = upangle / 100.0f;           //						   -0.5 / 0.5
+	upangle += 0.5f;                    //						    0.0 / 1.0
+	if ( upangle < .1 ) {
+		upangle = .1;
+	}
+
+		switch ( grenType ) {
+		case WP_GRENADE_LAUNCHER:
+		case WP_GRENADE_PINEAPPLE:
+			upangle *= ammoTable[grenType].upAngle;
+			break;
+		default:
+		break;
+		}
+
+
+		tent = G_TempEntity( ent->r.currentOrigin, EV_QUICKGRENS );
+		tent->s.eventParm = ent->s.number;
+	
+	{
+		VectorCopy( muzzleEffect, tosspos );
+		if ( underhand ) {
+			VectorMA( muzzleEffect, 15, forward, tosspos );   // move a little bit more away from the player (so underhand tosses don't get caught on nearby lips)
+			tosspos[2] -= 24;   // lower origin for the underhand throw
+			upangle *= 1.3;     // a little more force to counter the lower position / lack of additional lift
+		}
+		VectorScale( forward, upangle, forward );
+		{
+			// check for valid start spot (so you don't throw through or get stuck in a wall)
+			trace_t tr;
+			vec3_t viewpos;
+			VectorCopy( ent->s.pos.trBase, viewpos );
+			viewpos[2] += ent->client->ps.viewheight;
+			trap_Trace( &tr, viewpos, NULL, NULL, tosspos, ent->s.number, MASK_SHOT );
+			if ( tr.fraction < 1 ) {   // oops, bad launch spot
+				VectorCopy( tr.endpos, tosspos );
+			}
+		}
+		m = fire_grenade( ent, tosspos, forward, grenType );
+	}
+	//m->damage *= s_quadFactor;
+	m->damage = 0;  // Ridah, grenade's don't explode on contact
+	m->splashDamage *= s_quadFactor;
 
 	//----(SA)	adjust for movement of character.  TODO: Probably comment in later, but only for forward/back not strafing
 //	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics

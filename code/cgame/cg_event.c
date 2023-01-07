@@ -1757,7 +1757,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_NOQUICKGRENAMMO:
-	    //trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		CG_CenterPrint( "noquickgrenammo", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 	    break;
 	case EV_CHANGE_WEAPON:
@@ -1833,13 +1832,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_GRENADE_SUICIDE:
 		DEBUGNAME( "EV_GRENADE_SUICIDE" );
 		CG_MissileHitWall( WP_GRENADE_LAUNCHER, 0, position, dir, 0 );  // (SA) modified to send missilehitwall surface parameters
-		break;
-//----(SA)	end
-
-//----(SA)	added
-	case EV_FIRE_QUICKGREN:
-	case EV_FIRE_QUICKGREN2:
-        //trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cgs.media.quickgrenSound );
 		break;
 //----(SA)	end
 //----(SA)	added
@@ -2046,6 +2038,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_WOLFKICK_MISS:
 		DEBUGNAME( "EV_WOLFKICK_MISS" );
 		trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.fkickmiss );
+		break;
+
+	case EV_QUICKGRENS:
+		trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.quickgrenSound );
 		break;
 
 	case EV_POPUPBOOK:
@@ -2327,6 +2323,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_DUST:
 		CG_ParticleDust( cent, cent->currentState.origin, cent->currentState.angles );
 		break;
+	case EV_FIRE_QUICKGREN:
+	case EV_FIRE_QUICKGREN2:
+	    break;
 
 	case EV_RUMBLE_EFX:
 	{

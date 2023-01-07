@@ -655,7 +655,7 @@ void ClientEvents( gentity_t *ent, int oldEventSequence ) {
 			}
 
 				CalcMuzzlePoints( ent, WP_GRENADE_LAUNCHER );
-				weapon_grenadelauncher_fire( ent, WP_GRENADE_LAUNCHER );
+				quickgren_fire( ent, WP_GRENADE_LAUNCHER );
 		
 
 			break;
@@ -666,7 +666,7 @@ void ClientEvents( gentity_t *ent, int oldEventSequence ) {
 			}
 
 				CalcMuzzlePoints( ent, WP_GRENADE_PINEAPPLE );
-				weapon_grenadelauncher_fire( ent, WP_GRENADE_PINEAPPLE );
+				quickgren_fire( ent, WP_GRENADE_PINEAPPLE );
 			
 			break;
 

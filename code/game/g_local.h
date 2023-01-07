@@ -918,6 +918,7 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 void SnapVectorTowards( vec3_t v, vec3_t to );
 trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest );
 gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenadeWPID );
+gentity_t *quickgren_fire( gentity_t *ent, int grenadeWPID );
 // Rafael
 gentity_t *weapon_crowbar_throw( gentity_t *ent );
 

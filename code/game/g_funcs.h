@@ -177,6 +177,7 @@ If you have questions concerning this license or the applicable additional terms
 {"weapon_zombiespirit", (byte *)weapon_zombiespirit},
 {"weapon_zombiespit", (byte *)weapon_zombiespit},
 {"weapon_grenadelauncher_fire", (byte *)weapon_grenadelauncher_fire},
+{"quickgren_fire", (byte *)quickgren_fire},
 {"weapon_crowbar_throw", (byte *)weapon_crowbar_throw},
 {"Bullet_Fire_Extended", (byte *)Bullet_Fire_Extended},
 {"Bullet_Fire", (byte *)Bullet_Fire},

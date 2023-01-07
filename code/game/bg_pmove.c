@@ -2960,8 +2960,37 @@ static void PM_Weapon( void ) {
 		pm->ps->venomTime -= pml.msec;
 	}
 
+	if ( pm->ps->quickGrenTime > 0 ) {
+		pm->ps->quickGrenTime -= pml.msec;
+	}
+
+	if ( pm->ps->quickGrenTime < 0 ) {
+		pm->ps->quickGrenTime = 0;
+	}
+
 
 //----(SA)	removed 'quickgrenade'
+
+    if ( pm->cmd.wbuttons & WBUTTON_QUICKGREN ) 
+    {
+        if ( pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE) {
+		if ( pm->ps->quickGrenTime <= 0 ) {
+           
+	     if ( PM_WeaponAmmoAvailable( WP_GRENADE_LAUNCHER ) )  // ammo check
+	     { 
+		 pm->ps->quickGrenTime = 1800;
+		 PM_AddEvent( EV_FIRE_QUICKGREN );
+	     PM_WeaponUseAmmo( WP_GRENADE_LAUNCHER, 1 );
+	     } else if ( PM_WeaponAmmoAvailable( WP_GRENADE_PINEAPPLE ) ) // ammo check 2
+		 {
+		 pm->ps->quickGrenTime = 1800;
+		 PM_AddEvent( EV_FIRE_QUICKGREN2 );
+		 PM_WeaponUseAmmo( WP_GRENADE_PINEAPPLE, 1 );
+		 }
+		}
+		
+    }
+	}
 
 	// weapon cool down
 	PM_CoolWeapons();

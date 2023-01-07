@@ -1834,7 +1834,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 //----(SA)	added
 	case EV_FIRE_QUICKGREN:
-		// testing.  no client side effect yet
+	case EV_FIRE_QUICKGREN2:
+        trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cgs.media.quickgrenSound );
 		break;
 //----(SA)	end
 //----(SA)	added

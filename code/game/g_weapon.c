@@ -1278,6 +1278,8 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	vec3_t tosspos;
 	qboolean underhand = 0;
 
+	s_quadFactor = 1;
+
 
 	if ( underhand ) {
 		forward[2] = 0;                 //	start the toss level for underhand

@@ -1226,6 +1226,8 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.grenadePulseSound2 = trap_S_RegisterSound( "sound/weapons/grenade/grenpulse2.wav" );
 	cgs.media.grenadePulseSound1 = trap_S_RegisterSound( "sound/weapons/grenade/grenpulse1.wav" );
 
+	cgs.media.quickgrenSound = trap_S_RegisterSound( "sound/weapons/grenade/grenlf1a.wav" );
+
 	cgs.media.debBounce1Sound = trap_S_RegisterSound( "sound/world/block.wav" );
 	cgs.media.debBounce2Sound = trap_S_RegisterSound( "sound/world/brick.wav" );
 	cgs.media.debBounce3Sound = trap_S_RegisterSound( "sound/world/brick2.wav" );

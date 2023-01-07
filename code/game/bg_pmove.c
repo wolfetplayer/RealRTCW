@@ -2968,25 +2968,34 @@ static void PM_Weapon( void ) {
 		pm->ps->quickGrenTime = 0;
 	}
 
-
 //----(SA)	removed 'quickgrenade'
 
     if ( pm->cmd.wbuttons & WBUTTON_QUICKGREN ) 
     {
-        if ( pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE) {
+        if ( pm->ps->weapon != WP_GRENADE_LAUNCHER 
+		&& pm->ps->weapon != WP_GRENADE_PINEAPPLE
+		&& pm->ps->weapon != WP_SNIPERRIFLE
+		&& pm->ps->weapon != WP_FG42SCOPE
+		&& pm->ps->weapon != WP_SNOOPERSCOPE
+		&& pm->ps->leanf == 0 ) {
 		if ( pm->ps->quickGrenTime <= 0 ) {
            
 	     if ( PM_WeaponAmmoAvailable( WP_GRENADE_LAUNCHER ) )  // ammo check
 	     { 
-		 pm->ps->quickGrenTime = 1800;
+		 pm->ps->quickGrenTime = 2500;
 		 PM_AddEvent( EV_FIRE_QUICKGREN );
 	     PM_WeaponUseAmmo( WP_GRENADE_LAUNCHER, 1 );
 	     } else if ( PM_WeaponAmmoAvailable( WP_GRENADE_PINEAPPLE ) ) // ammo check 2
 		 {
-		 pm->ps->quickGrenTime = 1800;
+		 pm->ps->quickGrenTime = 2500;
 		 PM_AddEvent( EV_FIRE_QUICKGREN2 );
 		 PM_WeaponUseAmmo( WP_GRENADE_PINEAPPLE, 1 );
+		 } else {
+		 pm->ps->quickGrenTime = 2500;
+		 PM_AddEvent( EV_NOQUICKGRENAMMO ); // no ammo
 		 }
+		} else {
+			return;
 		}
 		
     }

@@ -109,6 +109,7 @@ translateString_t translateStrings[] = {
 	{"drankwine"},               //	"You drank the wine"
 	{"usedbandages"},            //	
 	{"usedadrenaline"},          //	
+	{"noquickgrenammo"},         //	
 	{"noitem"},                  //	"No item to use"
 	{"gamesaved"},               //	"Game Saved"
 	{"ironchallengesave"},       // no save 4 u

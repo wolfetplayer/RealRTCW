@@ -682,6 +682,7 @@ typedef enum {
 	EV_GLOBAL_ITEM_PICKUP,  // powerup / team sounds are broadcast to everyone
 	EV_NOITEM,
 	EV_NOAMMO,
+	EV_NOQUICKGRENAMMO,
 	EV_WEAPONSWITCHED, // autoreload
 	EV_EMPTYCLIP,
 	EV_FILL_CLIP,

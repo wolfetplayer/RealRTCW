@@ -263,7 +263,7 @@ vmCvar_t cg_timescaleFadeSpeed;
 vmCvar_t cg_timescale;
 vmCvar_t cg_smallFont;
 vmCvar_t cg_bigFont;
-vmCvar_t cg_hudFiles;
+vmCvar_t cg_hudType;
 
 vmCvar_t cg_animState;
 vmCvar_t cg_missionStats;
@@ -449,7 +449,7 @@ cvarTable_t cvarTable[] = {
 	{ &pmove_msec, "pmove_msec", "8", CVAR_SYSTEMINFO},
 	{ &cg_smallFont, "ui_smallFont", "0.25", CVAR_ARCHIVE},
 	{ &cg_bigFont, "ui_bigFont", "0.4", CVAR_ARCHIVE},
-	{ &cg_hudFiles, "cg_hudFiles", "ui/hud.txt", CVAR_ARCHIVE},
+	{ &cg_hudType, "cg_hudType", "1", CVAR_ARCHIVE},
 
 	{ &cg_teamChatsOnly, "cg_teamChatsOnly", "0", CVAR_ARCHIVE },
 	// the following variables are created in other parts of the system,
@@ -1446,57 +1446,13 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.tracerShader = trap_R_RegisterShader( "gfx/misc/tracer" );
 	cgs.media.selectShader = trap_R_RegisterShader( "gfx/2d/select" );
 
-
-	cgs.media.hintShaders[HINT_ACTIVATE]            = trap_R_RegisterShader( "gfx/2d/usableHint" );
-	cgs.media.hintShaders[HINT_NOACTIVATE]          = trap_R_RegisterShader( "gfx/2d/notUsableHint" );
-	cgs.media.hintShaders[HINT_DOOR]                = trap_R_RegisterShader( "gfx/2d/doorHint" );
-	cgs.media.hintShaders[HINT_DOOR_ROTATING]       = trap_R_RegisterShader( "gfx/2d/doorRotateHint" );
-	cgs.media.hintShaders[HINT_DOOR_LOCKED]         = trap_R_RegisterShader( "gfx/2d/doorLockHint" );
-	cgs.media.hintShaders[HINT_DOOR_ROTATING_LOCKED] = trap_R_RegisterShader( "gfx/2d/doorRotateLockHint" );
-	cgs.media.hintShaders[HINT_MG42]                = trap_R_RegisterShader( "gfx/2d/mg42Hint" );
-	cgs.media.hintShaders[HINT_BREAKABLE]           = trap_R_RegisterShader( "gfx/2d/breakableHint" );
-	cgs.media.hintShaders[HINT_CHAIR]               = trap_R_RegisterShader( "gfx/2d/chairHint" );
-	cgs.media.hintShaders[HINT_ALARM]               = trap_R_RegisterShader( "gfx/2d/alarmHint" );
-	cgs.media.hintShaders[HINT_HEALTH]              = trap_R_RegisterShader( "gfx/2d/healthHint" );
-	cgs.media.hintShaders[HINT_TREASURE]            = trap_R_RegisterShader( "gfx/2d/treasureHint" );
-	cgs.media.hintShaders[HINT_KNIFE]               = trap_R_RegisterShader( "gfx/2d/knifeHint" );
-	cgs.media.hintShaders[HINT_LADDER]              = trap_R_RegisterShader( "gfx/2d/ladderHint" );
-	cgs.media.hintShaders[HINT_BUTTON]              = trap_R_RegisterShader( "gfx/2d/buttonHint" );
-	cgs.media.hintShaders[HINT_WATER]               = trap_R_RegisterShader( "gfx/2d/waterHint" );
-	cgs.media.hintShaders[HINT_CAUTION]             = trap_R_RegisterShader( "gfx/2d/cautionHint" );
-	cgs.media.hintShaders[HINT_DANGER]              = trap_R_RegisterShader( "gfx/2d/dangerHint" );
-	cgs.media.hintShaders[HINT_SECRET]              = trap_R_RegisterShader( "gfx/2d/secretHint" );
-	cgs.media.hintShaders[HINT_QUESTION]            = trap_R_RegisterShader( "gfx/2d/questionHint" );
-	cgs.media.hintShaders[HINT_EXCLAMATION]         = trap_R_RegisterShader( "gfx/2d/exclamationHint" );
-	cgs.media.hintShaders[HINT_CLIPBOARD]           = trap_R_RegisterShader( "gfx/2d/clipboardHint" );
-	cgs.media.hintShaders[HINT_WEAPON]              = trap_R_RegisterShader( "gfx/2d/weaponHint" );
-	cgs.media.hintShaders[HINT_AMMO]                = trap_R_RegisterShader( "gfx/2d/ammoHint" );
-	cgs.media.hintShaders[HINT_ARMOR]               = trap_R_RegisterShader( "gfx/2d/armorHint" );
-	cgs.media.hintShaders[HINT_POWERUP]             = trap_R_RegisterShader( "gfx/2d/powerupHint" );
-	cgs.media.hintShaders[HINT_HOLDABLE]            = trap_R_RegisterShader( "gfx/2d/holdableHint" );
-	cgs.media.hintShaders[HINT_INVENTORY]           = trap_R_RegisterShader( "gfx/2d/inventoryHint" );
-	cgs.media.hintShaders[HINT_EXIT]                = trap_R_RegisterShader( "gfx/2d/exitHint" );
 	cgs.media.hintShaders[HINT_NOEXIT]              = cgs.media.hintShaders[HINT_EXIT];
 	cgs.media.hintShaders[HINT_EXIT_FAR]            = cgs.media.hintShaders[HINT_EXIT];
-	cgs.media.hintShaders[HINT_NOEXIT_FAR]          = cgs.media.hintShaders[HINT_EXIT];
-
-//	cgs.media.hintShaders[HINT_PLYR_FRIEND]			= trap_R_RegisterShader( "gfx/2d/hintPlrFriend" );
-//	cgs.media.hintShaders[HINT_PLYR_NEUTRAL]		= trap_R_RegisterShader( "gfx/2d/hintPlrNeutral" );
-//	cgs.media.hintShaders[HINT_PLYR_ENEMY]			= trap_R_RegisterShader( "gfx/2d/hintPlrEnemy" );
-//	cgs.media.hintShaders[HINT_PLYR_UNKNOWN]		= trap_R_RegisterShader( "gfx/2d/hintPlrUnknown" );
-
-//	cgs.media.hintShaders[HINT_BUILD]				= trap_R_RegisterShader( "gfx/2d/buildHint" );		// DHM - Nerve
-
-	cgs.media.youGotMailShader      = trap_R_RegisterShader( "gfx/2d/yougotmail" );    //----(SA)	added
-	cgs.media.youGotObjectiveShader = trap_R_RegisterShader( "gfx/2d/yougotobjective" );   //----(SA)	added
-
-//----(SA)	end
+	cgs.media.hintShaders[HINT_NOEXIT_FAR]          = cgs.media.hintShaders[HINT_EXIT];  
 
 	for ( i = 0 ; i < NUM_CROSSHAIRS ; i++ ) {
 		cgs.media.crosshairShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/crosshair%c", 'a' + i ) );
 	}
-
-	cgs.media.crosshairFriendly =  trap_R_RegisterShader( "gfx/2d/friendlycross" );  //----(SA)	added
 
 	cgs.media.backTileShader = trap_R_RegisterShader( "gfx/2d/backtile" );
 	cgs.media.noammoShader = trap_R_RegisterShader( "icons/noammo" );
@@ -1535,17 +1491,11 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.debWood[3] = trap_R_RegisterModel( "models/gibs/wood/wood4.md3" );
 	cgs.media.debWood[4] = trap_R_RegisterModel( "models/gibs/wood/wood5.md3" );
 	cgs.media.debWood[5] = trap_R_RegisterModel( "models/gibs/wood/wood6.md3" );
-//	cgs.media.debWoodl = trap_R_RegisterModel( "models/mapobjects/debris/woodxl.md3" );
-//	cgs.media.debWoodm = trap_R_RegisterModel( "models/mapobjects/debris/woodm.md3" );
-//	cgs.media.debWoods = trap_R_RegisterModel( "models/mapobjects/debris/woodsm.md3" );
 
 	cgs.media.debFabric[0] = trap_R_RegisterModel( "models/shards/fabric1.md3" );
 	cgs.media.debFabric[1] = trap_R_RegisterModel( "models/shards/fabric2.md3" );
 	cgs.media.debFabric[2] = trap_R_RegisterModel( "models/shards/fabric3.md3" );
 
-	//----(SA) end
-
-//	cgs.media.medicReviveShader = trap_R_RegisterShader( "sprites/medic_revive" );	//----(SA)	commented out from MP
 	cgs.media.balloonShader = trap_R_RegisterShader( "sprites/balloon3" );
 
 	for ( i = 0; i < MAX_AISTATES; i++ ) {
@@ -1554,41 +1504,13 @@ static void CG_RegisterGraphics( void ) {
 
 	cgs.media.bloodExplosionShader = trap_R_RegisterShader( "bloodExplosion" );
 
-	//cgs.media.bleedExplosionShader = trap_R_RegisterShader( "bleedExplosion" );
-
-	//----(SA)	water splash
-//	cgs.media.waterSplashModel = trap_R_RegisterModel( "models/weaphits/bullet.md3" );
-//	cgs.media.waterSplashShader = trap_R_RegisterShader( "waterSplash" );
-	//----(SA)	end
-
-//	cgs.media.spearModel = trap_R_RegisterModel( "models/weaphits/spear.md3" );	//----(SA)
-
-//	cgs.media.bulletFlashModel = trap_R_RegisterModel( "models/weaphits/bullet.md3" );
-//	cgs.media.ringFlashModel = trap_R_RegisterModel( "models/weaphits/ring02.md3" );
-//	cgs.media.dishFlashModel = trap_R_RegisterModel( "models/weaphits/boom01.md3" );
-//	cgs.media.teleportEffectModel = trap_R_RegisterModel( "models/misc/telep.md3" );
-//	cgs.media.teleportEffectShader = trap_R_RegisterShader( "teleportEffect" );
-
-//	cgs.media.batModel = trap_R_RegisterModel( "models/mapobjects/bat/bat.md3" );
-
-//	cgs.media.medalImpressive = trap_R_RegisterShaderNoMip( "medal_impressive" );
-//	cgs.media.medalExcellent = trap_R_RegisterShaderNoMip( "medal_excellent" );
-//	cgs.media.medalGauntlet = trap_R_RegisterShaderNoMip( "medal_gauntlet" );
-
-	// Ridah, spark particles
 	cgs.media.sparkParticleShader = trap_R_RegisterShader( "sparkParticle" );
 	cgs.media.smokeTrailShader = trap_R_RegisterShader( "smokeTrail" );
-//	cgs.media.fireTrailShader = trap_R_RegisterShader( "fireTrail" );
 	cgs.media.lightningBoltShader = trap_R_RegisterShader( "lightningBolt" );
-//	cgs.media.lightningBoltShaderGreen = trap_R_RegisterShader( "lightningBoltGreen" );	//----(SA)	alternate lightning color
 	cgs.media.flamethrowerFireStream = trap_R_RegisterShader( "flamethrowerFireStream" );
 	cgs.media.flamethrowerBlueStream = trap_R_RegisterShader( "flamethrowerBlueStream" );
-	//cgs.media.flamethrowerFuelStream = trap_R_RegisterShader( "flamethrowerFuelStream" );
-	//cgs.media.flamethrowerFuelShader = trap_R_RegisterShader( "flamethrowerFuel" );
 	cgs.media.onFireShader2 = trap_R_RegisterShader( "entityOnFire1" );
 	cgs.media.onFireShader = trap_R_RegisterShader( "entityOnFire2" );
-	//cgs.media.dripWetShader2 = trap_R_RegisterShader( "dripWet2" );
-	//cgs.media.dripWetShader = trap_R_RegisterShader( "dripWet1" );
 	cgs.media.viewFadeBlack = trap_R_RegisterShader( "viewFadeBlack" );
 	cgs.media.sparkFlareShader = trap_R_RegisterShader( "sparkFlareParticle" );
 
@@ -1945,6 +1867,263 @@ qboolean CG_Asset_Parse( int handle ) {
 			cgDC.Assets.gradientBar = trap_R_RegisterShaderNoMip( tempStr );
 			continue;
 		}
+
+		if ( Q_stricmp( token.string, "ladderHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_LADDER] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "usableHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_ACTIVATE] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "notUsableHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_NOACTIVATE] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "doorHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_DOOR] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "doorRotateHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_DOOR_ROTATING] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "doorLockHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_DOOR_LOCKED] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "doorRotateLockHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_DOOR_ROTATING_LOCKED] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "mg42Hint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_MG42] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "breakableHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_BREAKABLE] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "chairHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_CHAIR] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "alarmHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_ALARM] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "healthHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_HEALTH] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "treasureHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_TREASURE] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "knifeHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_KNIFE] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "buttonHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_BUTTON] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "waterHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_WATER] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "cautionHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_CAUTION] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "dangerHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_DANGER] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "secretHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_SECRET] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "questionHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_QUESTION] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "exclamationHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_EXCLAMATION] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "clipboardHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_CLIPBOARD] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "weaponHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_WEAPON] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "ammoHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_AMMO] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "armorHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_ARMOR] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "powerupHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_POWERUP] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "holdableHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_HOLDABLE] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "inventoryHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_INVENTORY] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "exitHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_EXIT] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "yougotmail" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.youGotMailShader = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "yougotobjective" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.youGotObjectiveShader = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
+		if ( Q_stricmp( token.string, "friendlycross" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.crosshairFriendly = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
 
 		// enterMenuSound
 		if ( Q_stricmp( token.string, "menuEnterSound" ) == 0 ) {
@@ -2385,8 +2564,6 @@ CG_LoadHudMenu
 =================
 */
 void CG_LoadHudMenu( void ) {
-	char buff[1024];
-	const char *hudSet;
 
 	cgDC.registerShaderNoMip = &trap_R_RegisterShaderNoMip;
 	cgDC.setColor = &trap_R_SetColor;
@@ -2444,13 +2621,12 @@ void CG_LoadHudMenu( void ) {
 
 	Menu_Reset();
 
-	trap_Cvar_VariableStringBuffer( "cg_hudFiles", buff, sizeof( buff ) );
-	hudSet = buff;
-	if ( hudSet[0] == '\0' ) {
-		hudSet = "ui/hud.txt";
+    if (cg_hudType.integer == 1) 
+	{
+	CG_LoadMenus( "ui/hud/wolf09.txt");
+	} else if (cg_hudType.integer == 2) {
+	CG_LoadMenus( "ui/hud/ps2.txt");
 	}
-
-	CG_LoadMenus( hudSet );
 }
 
 void CG_AssetCache( void ) {

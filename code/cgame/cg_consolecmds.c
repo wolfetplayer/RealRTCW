@@ -124,20 +124,17 @@ extern menuDef_t *menuScoreboard;
 void Menu_Reset( void );          // FIXME: add to right include file
 
 static void CG_LoadHud_f( void ) {
-	char buff[1024];
-	const char *hudSet;
-	memset( buff, 0, sizeof( buff ) );
 
 	String_Init();
 	Menu_Reset();
 
-	trap_Cvar_VariableStringBuffer( "cg_hudFiles", buff, sizeof( buff ) );
-	hudSet = buff;
-	if ( hudSet[0] == '\0' ) {
-		hudSet = "ui/hud.txt";
+    if (cg_hudType.integer == 1) 
+	{
+	CG_LoadMenus( "ui/hud/wolf09.txt");
+	} else if (cg_hudType.integer == 2) {
+	CG_LoadMenus( "ui/hud/ps2.txt");
 	}
 
-	CG_LoadMenus( hudSet );
 	menuScoreboard = NULL;
 }
 

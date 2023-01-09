@@ -579,13 +579,6 @@ extern ammotable_t ammoTable[WP_NUM_WEAPONS];
 extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 #define GetWeaponTableData(weaponIndex) ((ammotable_t *)(&ammoTable[weaponIndex]))
 
-#define WP_FIRST            WP_KNIFE
-#define WP_BEGINGERMAN      WP_KNIFE
-#define WP_LASTGERMAN       WP_TESLA
-#define WP_BEGINAMERICAN    WP_COLT
-#define WP_LASTAMERICAN     WP_GRENADE_PINEAPPLE
-#define WP_BEGINSECONDARY   WP_SNIPERRIFLE
-#define WP_LASTSECONDARY    WP_FG42SCOPE
 
 #define IS_AUTORELOAD_WEAPON( weapon ) \
 	(	\

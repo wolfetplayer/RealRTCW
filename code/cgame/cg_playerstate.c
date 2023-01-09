@@ -57,7 +57,7 @@ void CG_CheckAmmo( void ) {
 	total = 0;
 
 	// first weap now WP_LUGER
-	for ( i = WP_FIRST ; i < WP_NUM_WEAPONS ; i++ )
+	for ( i = WP_KNIFE ; i < WP_NUM_WEAPONS ; i++ )
 	{
 		if ( !( weapons[0] & ( 1 << i ) ) ) {
 			continue;

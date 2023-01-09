@@ -4291,15 +4291,6 @@ void CG_NextWeap( qboolean switchBanks ) {
 		break;
 	}
 
-	// if you're using an alt mode weapon, try switching back to the parent first
-	/*if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
-		num = getAltWeapon( curweap );    // base any further changes on the parent
-		if ( CG_WeaponSelectable( num ) ) {  // the parent was selectable, drop back to that
-			CG_FinishWeaponChange( curweap, num );
-			return;
-		}
-	}*/
-
 
 
 
@@ -4445,14 +4436,6 @@ void CG_PrevWeap( qboolean switchBanks ) {
 
 	CG_WeaponIndex( curweap, &bank, &cycle );     // get bank/cycle of current weapon
 
-	// if you're using an alt mode weapon, try switching back to the parent first
-	/*if ( curweap >= WP_BEGINSECONDARY && curweap <= WP_LASTSECONDARY ) {
-		num = getAltWeapon( curweap );    // base any further changes on the parent
-		if ( CG_WeaponSelectable( num ) ) {  // the parent was selectable, drop back to that
-			CG_FinishWeaponChange( curweap, num );
-			return;
-		}
-	}*/
 	// initially, just try to find a lower weapon in the current bank
 //	if ( cg_cycleAllWeaps.integer || !switchBanks ) {
 	if ( 1 ) {
@@ -4885,7 +4868,7 @@ void CG_OutOfAmmoChange( void ) {
 
 	// if you're using an alt mode weapon, try switching back to the parent
 	// otherwise, switch to the equivalent if you've got it
-	if ( cg.weaponSelect >= WP_BEGINSECONDARY && cg.weaponSelect <= WP_LASTSECONDARY ) {
+	if ( cg.weaponSelect >= WP_SILENCER && cg.weaponSelect <= WP_DELISLESCOPE ) {
 		cg.weaponSelect = equiv = getAltWeapon( cg.weaponSelect );    // base any further changes on the parent
 		if ( CG_WeaponSelectable( equiv ) ) {    // the parent was selectable, drop back to that
 			CG_FinishWeaponChange( cg.predictedPlayerState.weapon, cg.weaponSelect ); //----(SA)

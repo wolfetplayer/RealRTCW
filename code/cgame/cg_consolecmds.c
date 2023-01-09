@@ -128,11 +128,26 @@ static void CG_LoadHud_f( void ) {
 	String_Init();
 	Menu_Reset();
 
-    if (cg_hudType.integer == 1) 
-	{
+    if (cg_hudType.integer == 1) {
 	CG_LoadMenus( "ui/hud/wolf09.txt");
 	} else if (cg_hudType.integer == 2) {
 	CG_LoadMenus( "ui/hud/ps2.txt");
+	} else if (cg_hudType.integer == 3) {
+	CG_LoadMenus( "ui/hud/xbox.txt");
+	} else if (cg_hudType.integer == 4) {
+	CG_LoadMenus( "ui/hud/et.txt");
+	} else if (cg_hudType.integer == 5) {
+	CG_LoadMenus( "ui/hud/vanilla.txt");
+	} else if (cg_hudType.integer == 6) {
+	CG_LoadMenus( "ui/hud/custom_hud1.txt");
+	} else if (cg_hudType.integer == 7) {
+	CG_LoadMenus( "ui/hud/custom_hud2.txt");
+	} else if (cg_hudType.integer == 8) {
+	CG_LoadMenus( "ui/hud/custom_hud3.txt");
+	} else if (cg_hudType.integer == 9) {
+	CG_LoadMenus( "ui/hud/custom_hud4.txt");
+	} else if (cg_hudType.integer == 10) {
+	CG_LoadMenus( "ui/hud/custom_hud5.txt");
 	}
 
 	menuScoreboard = NULL;

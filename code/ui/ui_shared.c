@@ -3720,6 +3720,7 @@ static bind_t g_bindings[] =
 	{"zoomin",           -1,             -1, -1, -1},
 	{"zoomout",          -1,             -1, -1, -1},
 	{"+kick",            -1,             -1, -1, -1},
+	{"+quickgren",       -1,             -1, -1, -1},
 	{"+reload",      -1,             -1, -1, -1},
 	{"+sprint",      -1,             -1, -1, -1},
 	{"notebook",     K_TAB,          -1, -1, -1},

@@ -263,7 +263,7 @@ vmCvar_t cg_timescaleFadeSpeed;
 vmCvar_t cg_timescale;
 vmCvar_t cg_smallFont;
 vmCvar_t cg_bigFont;
-vmCvar_t cg_hudType;
+vmCvar_t cg_hudStyle;
 
 vmCvar_t cg_animState;
 vmCvar_t cg_missionStats;
@@ -449,7 +449,7 @@ cvarTable_t cvarTable[] = {
 	{ &pmove_msec, "pmove_msec", "8", CVAR_SYSTEMINFO},
 	{ &cg_smallFont, "ui_smallFont", "0.25", CVAR_ARCHIVE},
 	{ &cg_bigFont, "ui_bigFont", "0.4", CVAR_ARCHIVE},
-	{ &cg_hudType, "cg_hudType", "1", CVAR_ARCHIVE},
+	{ &cg_hudStyle, "cg_hudStyle", "1", CVAR_ARCHIVE},
 
 	{ &cg_teamChatsOnly, "cg_teamChatsOnly", "0", CVAR_ARCHIVE },
 	// the following variables are created in other parts of the system,
@@ -2621,25 +2621,25 @@ void CG_LoadHudMenu( void ) {
 
 	Menu_Reset();
 
-    if (cg_hudType.integer == 1) {
+    if (cg_hudStyle.integer == 1) {
 	CG_LoadMenus( "ui/hud/wolf09.txt");
-	} else if (cg_hudType.integer == 2) {
+	} else if (cg_hudStyle.integer == 2) {
 	CG_LoadMenus( "ui/hud/ps2.txt");
-	} else if (cg_hudType.integer == 3) {
+	} else if (cg_hudStyle.integer == 3) {
 	CG_LoadMenus( "ui/hud/xbox.txt");
-	} else if (cg_hudType.integer == 4) {
+	} else if (cg_hudStyle.integer == 4) {
 	CG_LoadMenus( "ui/hud/et.txt");
-	} else if (cg_hudType.integer == 5) {
+	} else if (cg_hudStyle.integer == 5) {
 	CG_LoadMenus( "ui/hud/vanilla.txt");
-	} else if (cg_hudType.integer == 6) {
+	} else if (cg_hudStyle.integer == 6) {
 	CG_LoadMenus( "ui/hud/custom_hud1.txt");
-	} else if (cg_hudType.integer == 7) {
+	} else if (cg_hudStyle.integer == 7) {
 	CG_LoadMenus( "ui/hud/custom_hud2.txt");
-	} else if (cg_hudType.integer == 8) {
+	} else if (cg_hudStyle.integer == 8) {
 	CG_LoadMenus( "ui/hud/custom_hud3.txt");
-	} else if (cg_hudType.integer == 9) {
+	} else if (cg_hudStyle.integer == 9) {
 	CG_LoadMenus( "ui/hud/custom_hud4.txt");
-	} else if (cg_hudType.integer == 10) {
+	} else if (cg_hudStyle.integer == 10) {
 	CG_LoadMenus( "ui/hud/custom_hud5.txt");
 	}
 }

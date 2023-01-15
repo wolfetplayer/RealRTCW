@@ -1863,7 +1863,7 @@ extern vmCvar_t cg_bodysink;
 
 extern vmCvar_t cg_gunPosLock;
 
-extern vmCvar_t cg_hudType;
+extern vmCvar_t cg_hudStyle;
 
 //
 // cg_main.c

@@ -56,7 +56,6 @@ pml_t pml;
 
 // movement parameters
 float pm_stopspeed = 100;
-//float	pm_duckScale = 0.25;
 
 //----(SA)	modified
 float pm_waterSwimScale   = 0.50;
@@ -1094,11 +1093,6 @@ static void PM_WalkMove( void ) {
 
 	// clamp the speed lower if ducking
 	if ( pm->ps->pm_flags & PMF_DUCKED ) {
-		/*
-		if ( wishspeed > pm->ps->speed * pm_duckScale ) {
-			wishspeed = pm->ps->speed * pm_duckScale;
-		}
-		*/
 		if ( wishspeed > pm->ps->speed * pm->ps->crouchSpeedScale ) {
 			wishspeed = pm->ps->speed * pm->ps->crouchSpeedScale;
 		}

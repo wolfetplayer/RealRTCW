@@ -3544,16 +3544,11 @@ static void PM_Weapon( void ) {
 	pm->pmext->weapRecoilYaw       = GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[0] * crandom() * GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[1];
 	pm->pmext->weapRecoilPitch     = GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[0] * random() * GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[1];
 
-	
-	// add randomness spread for SMGs
 
-	if ((pm->ps->weapon == WP_PPSH ) || (pm->ps->weapon == WP_MP40 ) || (pm->ps->weapon == WP_MP34 ) || (pm->ps->weapon == WP_THOMPSON ) || (pm->ps->weapon == WP_STEN ))
+	if ( ammoTable[pm->ps->weapon].weaponClass == WEAPON_CLASS_SMG)
 	{
-	aimSpreadScaleAdd += rand() % 5;
+		aimSpreadScaleAdd += rand() % 5;
 	}
-
-
-
 
     if ( ( pm->ps->eFlags & EF_CROUCHING ) && ( pm->ps->groundEntityNum != ENTITYNUM_NONE ) ) { 
 		pm->pmext->weapRecoilDuration *= 0.5;

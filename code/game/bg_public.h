@@ -538,8 +538,9 @@ typedef enum {
 
 
 
-typedef struct ammotable_s {
+typedef struct ammoTable_s {
 	int weaponindex;
+	int weaponClass;
 	int maxammo;            
 	int uses;               
 	int maxclip;            
@@ -564,8 +565,7 @@ typedef struct ammotable_s {
 	int twoHand;
 	int upAngle;
 	int mod;   
-} ammotable_t;
-    
+} ammoTable_t;
 
 // Skill-based ammo parameters
 typedef struct ammoskill_s {
@@ -575,9 +575,9 @@ typedef struct ammoskill_s {
 
 extern int weapAlts[]; 
 
-extern ammotable_t ammoTable[WP_NUM_WEAPONS];
+extern ammoTable_t ammoTable[WP_NUM_WEAPONS];
 extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
-#define GetWeaponTableData(weaponIndex) ((ammotable_t *)(&ammoTable[weaponIndex]))
+#define GetWeaponTableData(weaponIndex) ((ammoTable_t *)(&ammoTable[weaponIndex]))
 
 
 #define IS_AUTORELOAD_WEAPON( weapon ) \
@@ -1136,6 +1136,26 @@ typedef enum {
 	MOD_BAT
 
 } meansOfDeath_t;
+
+typedef enum
+{
+	WEAPON_CLASS_NONE,
+	WEAPON_CLASS_MELEE,
+	WEAPON_CLASS_PISTOL,
+	WEAPON_CLASS_SMG,
+	WEAPON_CLASS_RIFLE,
+	WEAPON_CLASS_AUTO_RIFLE,
+	WEAPON_CLASS_ASSAULT_RIFLE,
+	WEAPON_CLASS_SHOTGUN,
+	WEAPON_CLASS_GRENADE,
+	WEAPON_CLASS_RIFLENADE,
+	WEAPON_CLASS_MG,
+	WEAPON_CLASS_LAUNCHER,
+	WEAPON_CLASS_BEAM,
+	WEAPON_CLASS_SCOPED,
+	WEAPON_CLASS_SCOPABLE
+
+} weaponClass_t;
 
 
 //---------------------------------------------------------

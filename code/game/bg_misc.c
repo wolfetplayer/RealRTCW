@@ -1600,66 +1600,6 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 // Skill-based ammo parameters
 ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 
-/*int weapAlts[] = {
-	WP_NONE,                
-	// Melee Weapons
-	WP_NONE,             
-	WP_NONE,            
-	// One handed pistols
-	WP_SILENCER,                
-	WP_LUGER,           
-    WP_AKIMBO,               
-	WP_NONE,              
-	WP_NONE,            
-	// SMGs
-	WP_NONE,              
-	WP_NONE,         
-	WP_NONE,              
-	WP_NONE,              
-	WP_NONE,             
-	// Rifles
-	WP_SNIPERRIFLE,              
-	WP_MAUSER,        
-	WP_SNOOPERSCOPE,            
-	WP_GARAND,
-	WP_NONE, 
-	// Semi auto rifles
-	WP_M7,
-	WP_NONE,
-	// Assault Rifles
-	WP_NONE, 
-	WP_FG42SCOPE,
-	WP_NONE, 
-	// Shotguns
-	WP_NONE,  
-	// Heavy Weapons
-	WP_NONE, 
-	WP_NONE, 
-	WP_NONE, 
-	WP_NONE, 
-	// Secret Weapons
-	WP_NONE, 
-	WP_NONE,   
-	// Explosives
-	WP_NONE, 
-	WP_NONE, 
-	WP_NONE, 
-	WP_NONE,          
-	WP_NONE, 
-	// Misc Alt modes
-	WP_FG42,   
-	WP_COLT,     
-	WP_M1GARAND,      
-	// Currently inactive Gothicstein weapons                                 
-	WP_NONE,                  
-	WP_NONE,                 
-	WP_DELISLESCOPE,            
-	WP_DELISLE, 	   
-	WP_NONE,            	
-	WP_NONE 
-};
-*/
-
 // new (10/18/00)
 char *animStrings[] = {
 	"BOTH_DEATH1",

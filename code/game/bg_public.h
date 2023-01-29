@@ -566,6 +566,7 @@ typedef struct ammoTable_s {
 	float moveSpeed; 
 	int twoHand;
 	int upAngle;
+	float falloffDistance[2];
 	int mod;   
 } ammoTable_t;
 

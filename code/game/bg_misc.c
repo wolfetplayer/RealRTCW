@@ -84,6 +84,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		1.00,                // moveSpeed
 		0,                   // twoHand
 		0,                   // upAngle
+		{0.0, 0.0},          // falloffdistance
 		0,                   // mod            
 	}, 
     
@@ -115,7 +116,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                   
 		0.00,                 
 		0,                  
-		0,                 
+		0,
+		{0.0, 0.0},                            
 		MOD_KNIFE,                  
 	}, 
 	
@@ -146,7 +148,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                   
 		0.00,                  
 		0,                     
-		0,                     
+		0,
+		{0.0, 0.0},                      
 		MOD_DAGGER,                             
 	},  
     
@@ -178,7 +181,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                  
 		0.0,                 
 		0,                    
-		0,                    
+		0,
+		{0.0, 0.0},                    
 		MOD_LUGER,                                
 	},  
 
@@ -209,7 +213,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                  
 		0.0,                
 		0,                   
-		0,                  
+		0,
+		{0.0, 0.0},                   
 		MOD_SILENCER,                               
 	},  
 
@@ -240,7 +245,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.00,               
 		0,               
-		0,             
+		0,
+		{0.0, 0.0},             
 		MOD_COLT,                                  
 	}, 
 
@@ -271,7 +277,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_TT33,                                  
 	}, 
 
@@ -302,7 +309,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_REVOLVER,                              
 	},
     // SMGs
@@ -333,7 +341,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,              
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_MP40,                                  
 	},
 
@@ -364,7 +373,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_THOMPSON,                              
 	}, 
 
@@ -395,7 +405,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                 
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_STEN,                                  
 	}, 
 
@@ -426,7 +437,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.00,               
 		0,               
-		0,             
+		0,
+		{0.0, 0.0},             
 		MOD_PPSH,                                  
 	}, 
 	
@@ -457,7 +469,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_MP34,                                  
 	},
 	// Rifles
@@ -488,7 +501,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_MAUSER,                                
 	},  
 
@@ -519,7 +533,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_SNIPERRIFLE,                           
 	}, 
 
@@ -550,7 +565,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_GARAND,                                
 	},  
 
@@ -581,7 +597,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_SNOOPERSCOPE,                         
 	}, 
 
@@ -612,7 +629,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_MOSIN,                                
 	}, 
 	// Semi auto rifles
@@ -643,7 +661,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_M1GARAND,                             
 	}, 
 
@@ -674,7 +693,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},             
 		MOD_G43,                                  
 	},
 	// Assault Rifles
@@ -705,7 +725,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_MP44,                                  
 	},
 
@@ -736,7 +757,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_FG42,                                  
 	},
 
@@ -767,7 +789,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.00,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_BAR,                                   
 	},
    // Shotguns
@@ -798,7 +821,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_M97,                                   
 	},
    // Heavy Weapons
@@ -829,7 +853,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_BROWNING,                              
 	}, 
 
@@ -860,7 +885,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,              
 		0,               
-		0,             
+		0,
+		{0.0, 0.0},             
 		MOD_MG42M,                                 
 	},
 
@@ -891,7 +917,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_PANZERFAUST,                           
 	},
 
@@ -922,7 +949,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_FLAMETHROWER,                          
 	},
 	// Secret Weapons
@@ -953,7 +981,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		1,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_VENOM,                                 
 	},  
 
@@ -984,7 +1013,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0, 
+		{0.0, 0.0},             
 		MOD_TESLA,                                 
 	}, 
    // Explosives
@@ -1015,7 +1045,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,            
+		0,
+		{0.0, 0.0},             
 		MOD_GRENADE_LAUNCHER,                      
 	},
 
@@ -1046,7 +1077,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,            
+		0, 
+		{0.0, 0.0},            
 		MOD_GRENADE_PINEAPPLE,                     
 	}, 
 
@@ -1077,7 +1109,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,            
+		0,
+		{0.0, 0.0},             
 		MOD_DYNAMITE,                              
 	}, 
 
@@ -1108,7 +1141,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,            
+		0,
+		{0.0, 0.0},             
 		0,                                         
 	}, 
 
@@ -1139,7 +1173,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,            
+		0,
+		{0.0, 0.0},             
 		MOD_POISONGAS,                             
 	}, 
 	// Misc alt modes
@@ -1170,7 +1205,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0, 
+		{0.0, 0.0},             
 		MOD_FG42SCOPE,                             
 	}, 
 
@@ -1201,7 +1237,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                
 		0.0,               
 		0,               
-		0,              
+		0,  
+		{0.0, 0.0},             
 		MOD_AKIMBO,                               
     }, 
 
@@ -1232,7 +1269,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_M7,                                    
 	},
 
@@ -1264,7 +1302,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},              
 		MOD_P38,                                   
 	}, 
 
@@ -1295,7 +1334,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_M30,                                   
 	}, 
 
@@ -1326,7 +1366,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_DELISLE,                               
 	},  
 
@@ -1357,7 +1398,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                
 		0.00,               
 		0,               
-		0,              
+		0, 
+		{0.0, 0.0},              
 		MOD_DELISLESCOPE,                          
 	}, 
 
@@ -1388,7 +1430,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                 
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_WELROD,                                
 	}, 
 
@@ -1419,7 +1462,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                 
 		0.0,               
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		MOD_HOLYCROSS,                             
 	}, 
 
@@ -1451,7 +1495,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		1000,               
 		0,                  
 		0,               
-		0,              
+		0,
+		{0.0, 0.0},               
 		0,                                         
 	},
 
@@ -1482,7 +1527,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		1000,               
 		0,                  
 		0,               
-		0,              
+		0, 
+		{0.0, 0.0},            
 		0,                                         
 	}, 
 
@@ -1513,7 +1559,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		1000,               
 		0,                  
 		0,               
-		0,              
+		0,  
+		{0.0, 0.0},             
 		0,                                        
 	},  
 
@@ -1544,7 +1591,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		64,                 
 		0,                  
 		0,               
-		0,              
+		0, 
+		{0.0, 0.0},              
 		0,                                         
 	} 
 };
@@ -7097,6 +7145,15 @@ qboolean BG_ParseAmmoTable( int handle, weapon_t weaponNum )
 		} else if ( !Q_stricmp( token.string, "upAngle" ) ) {
 			if ( !PC_Int_Parse( handle, &ammoTable[weaponNum].upAngle ) ) {
 				PC_SourceError( handle, "expected upAngle value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "falloffDistance" ) ) {
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].falloffDistance[0] ) ) {
+				PC_SourceError( handle, "expected falloffdistance.min value" );
+				return qfalse;
+			}
+			if ( !PC_Float_Parse( handle, &ammoTable[weaponNum].falloffDistance[1] ) ) {
+				PC_SourceError( handle, "expected falloffdistance.max value" );
 				return qfalse;
 			}
 		} else {

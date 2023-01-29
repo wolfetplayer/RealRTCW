@@ -2217,6 +2217,10 @@ static void CG_DrawCrosshair( void ) {
 			return;
 		}
 
+	    if ( !cg_drawCrosshair.integer ) {	
+		    return;
+	    }
+
 		// no crosshair when looking at exits
 		if ( cg.snap->ps.serverCursorHint >= HINT_EXIT && cg.snap->ps.serverCursorHint <= HINT_NOEXIT_FAR ) {
 			return;

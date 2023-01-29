@@ -109,7 +109,7 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 
 	// print debugging message
 	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {
-		G_Printf( "hit %s %i\n", targ->aiName, targ->health );
+		G_Printf( "hit %s %i\n", targ->aiName, damage );
 	}
 
 	// if we are below alert mode, then go there immediately

@@ -2182,7 +2182,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		return;
 	}
 
-	altswitch = (qboolean)( newweapon == weapAlts[oldweapon] );
+	altswitch = (qboolean)( newweapon == ammoTable[oldweapon].weapAlts );
 
 	showdrop = qtrue;
 
@@ -2235,7 +2235,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	}
 
 	// it's an alt mode, play different anim
-	if ( newweapon == weapAlts[oldweapon] ) {
+	if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 		PM_StartWeaponAnim( PM_AltSwitchFromForWeapon( oldweapon ) );
 	} else {
 		PM_StartWeaponAnim( PM_DropAnimForWeapon( oldweapon ) );
@@ -2245,7 +2245,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	// sometimes different switch times for alt weapons
 	switch ( oldweapon ) {
 	case WP_M1GARAND:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			switchtime = 0;
 			if ( !pm->ps->ammoclip[newweapon] && pm->ps->ammo[newweapon] ) {
 				PM_ReloadClip( newweapon );
@@ -2253,7 +2253,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		}
 		break;
 	case WP_M7:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			switchtime = 0;
 		}
 		break;
@@ -2344,25 +2344,25 @@ static void PM_FinishWeaponChange( void ) {
 	// sometimes different switch times for alt weapons
 	switch ( newweapon ) {
 	case WP_LUGER:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			switchtime = 50;
 	        altSwitchAnim = qtrue;
 		}
 		break;
 	case WP_SILENCER:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			switchtime = 1190;
 			altSwitchAnim = qtrue;
 		}
 		break;
 	case WP_FG42:
 	case WP_FG42SCOPE:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			switchtime = 50;        // fast
 		}
 		break;
 	case WP_M1GARAND:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			if ( pm->ps->ammoclip[ BG_FindAmmoForWeapon( oldweapon ) ] ) {
 				switchtime = 1347;
 			} else {
@@ -2373,7 +2373,7 @@ static void PM_FinishWeaponChange( void ) {
 		}
 		break;
 	case WP_M7:
-		if ( newweapon == weapAlts[oldweapon] ) {
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
 			switchtime = 2350;
 			altSwitchAnim = qtrue ;
 		}
@@ -2394,7 +2394,7 @@ static void PM_FinishWeaponChange( void ) {
 		}
 
 		// alt weapon switch was played when switching away, just go into idle
-		if ( weapAlts[oldweapon] == newweapon ) {
+		if ( ammoTable[oldweapon].weapAlts == newweapon ) {
 			PM_StartWeaponAnim( PM_AltSwitchToForWeapon( newweapon ) );
 		} else {
 			PM_StartWeaponAnim( PM_RaiseAnimForWeapon( newweapon ) );
@@ -2512,7 +2512,7 @@ void PM_CheckForReload( int weapon ) {
 		case WP_DELISLESCOPE:
             if ( reloadRequested && pm->ps->ammo[ammoWeap] ) {
 			if ( pm->ps->ammoclip[clipWeap] < ammoTable[weapon].maxclip ) {
-			PM_BeginWeaponChange( weapon, weapAlts[weapon], !( pm->ps->ammo[ammoWeap] ) ? qfalse : qtrue );
+			PM_BeginWeaponChange( weapon, ammoTable[weapon].weapAlts, !( pm->ps->ammo[ammoWeap] ) ? qfalse : qtrue );
 			}
 			}
 			return;

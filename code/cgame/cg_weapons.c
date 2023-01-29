@@ -3958,8 +3958,8 @@ getAltWeapon
 */
 static int getAltWeapon( int weapnum ) {
 	
-	if ( weapAlts[weapnum] ) {
-		return weapAlts[weapnum];
+	if ( ammoTable[weapnum].weapAlts ) {
+		return ammoTable[weapnum].weapAlts;
 	}
 
 	return weapnum;

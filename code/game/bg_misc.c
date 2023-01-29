@@ -59,6 +59,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{   
 		WP_NONE,             // weaponindex
 	    WEAPON_CLASS_NONE,   // weaponClass
+		WP_NONE,             // weap alt
+		WEAPON_TEAM_NONE,   // weapon team
 	    0,                   // maxammo
 		0,                   // uses
 		0,                   // maxclip
@@ -88,7 +90,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Melee weapons
 	{   
 		WP_KNIFE,             
-	    WEAPON_CLASS_MELEE,              
+	    WEAPON_CLASS_MELEE,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,              
 	    0,                  
 		0,                         
 		0,                  
@@ -117,7 +121,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	
 	{   
 		WP_DAGGER,             
-	    WEAPON_CLASS_MELEE,          
+	    WEAPON_CLASS_MELEE,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,          
 	    0,                   
 		0,                     
 		0,                   
@@ -147,7 +153,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     // One handed pistols
 	{   
 		WP_LUGER,              
-		WEAPON_CLASS_PISTOL,          
+		WEAPON_CLASS_PISTOL,
+		WP_SILENCER,
+		WEAPON_TEAM_AXIS,          
 		0,          
 		0,                     
 		0,                     
@@ -176,7 +184,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{  
 		WP_SILENCER,           
-		WEAPON_CLASS_PISTOL,       
+		WEAPON_CLASS_PISTOL,
+		WP_LUGER,
+		WEAPON_TEAM_AXIS,       
 		0,        
 		0,                     
 		0,                     
@@ -205,7 +215,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_COLT,             
-		WEAPON_CLASS_PISTOL,  
+		WEAPON_CLASS_PISTOL,
+		WP_AKIMBO,
+		WEAPON_TEAM_ALLIES,  
 	    0,         
 		0,                   
 		0,                   
@@ -234,7 +246,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_TT33,
-		WEAPON_CLASS_PISTOL,             
+		WEAPON_CLASS_PISTOL,
+		WP_NONE,
+		WEAPON_TEAM_SOVIET,             
 		0,     
 		0,       
 		0,        
@@ -263,7 +277,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 	    WP_REVOLVER,
-		WEAPON_CLASS_PISTOL,         
+		WEAPON_CLASS_PISTOL,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,         
 		0,   
 		0,       
 		0,        
@@ -292,7 +308,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     // SMGs
 	{   
 		WP_MP40,
-		WEAPON_CLASS_SMG,             
+		WEAPON_CLASS_SMG,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,             
 	    0,        
 		0,       
 		0,       
@@ -321,7 +339,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_THOMPSON,  
-		WEAPON_CLASS_SMG,       
+		WEAPON_CLASS_SMG,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,       
 		0,         
 		0,       
 		0,       
@@ -350,7 +370,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_STEN,
-		WEAPON_CLASS_SMG,             
+		WEAPON_CLASS_SMG,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,             
 		0,        
 		0,       
 		0,       
@@ -379,7 +401,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_PPSH,
-		WEAPON_CLASS_SMG,             
+		WEAPON_CLASS_SMG,
+		WP_NONE,
+		WEAPON_TEAM_SOVIET,             
 		0,     
 		0,       
 		0,       
@@ -408,7 +432,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	
 	{   
 		WP_MP34,
-		WEAPON_CLASS_SMG,             
+		WEAPON_CLASS_SMG,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,             
 		0,        
 		0,       
 		0,       
@@ -437,7 +463,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Rifles
 	{   
 		WP_MAUSER,
-		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,           
+		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,
+		WP_SNIPERRIFLE,
+		WEAPON_TEAM_AXIS,           
 		0,     
 		0,       
 		0,        
@@ -466,7 +494,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_SNIPERRIFLE,
-		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPED,      
+		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPED,
+		WP_MAUSER,
+		WEAPON_TEAM_AXIS,      
 		0,     
 		0,       
 		0,        
@@ -495,7 +525,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_GARAND,
-		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,           
+		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,
+		WP_SNOOPERSCOPE,
+		WEAPON_TEAM_ALLIES,           
 		0,     
 		0,       
 		0,        
@@ -524,7 +556,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_SNOOPERSCOPE,
-		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPED,     
+		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPED,
+		WP_GARAND,
+		WEAPON_TEAM_ALLIES,     
 		0,     
 		0,       
 		0,        
@@ -553,7 +587,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_MOSIN,
-		WEAPON_CLASS_RIFLE,            
+		WEAPON_CLASS_RIFLE,
+		WP_NONE,
+		WEAPON_TEAM_SOVIET,            
 		0,     
 		0,       
 		0,        
@@ -582,7 +618,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Semi auto rifles
 	{   
 		WP_M1GARAND,
-		WEAPON_CLASS_AUTO_RIFLE,         
+		WEAPON_CLASS_AUTO_RIFLE,
+		WP_M7,
+		WEAPON_TEAM_ALLIES,         
 		0,    
 		0,       
 		0,        
@@ -611,7 +649,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_G43,
-		WEAPON_CLASS_AUTO_RIFLE,              
+		WEAPON_CLASS_AUTO_RIFLE,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,              
 		0,     
 		0,       
 		0,       
@@ -640,7 +680,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Assault Rifles
 	{   
 		WP_MP44,
-		WEAPON_CLASS_ASSAULT_RIFLE,             
+		WEAPON_CLASS_ASSAULT_RIFLE,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,             
 		0,     
 		0,       
 		0,       
@@ -669,7 +711,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_FG42,
-		WEAPON_CLASS_ASSAULT_RIFLE | WEAPON_CLASS_SCOPABLE,             
+		WEAPON_CLASS_ASSAULT_RIFLE | WEAPON_CLASS_SCOPABLE,
+		WP_FG42SCOPE,
+		WEAPON_TEAM_AXIS,            
 		0,       
 		0,       
 		0,       
@@ -698,7 +742,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_BAR,
-		WEAPON_CLASS_ASSAULT_RIFLE,              
+		WEAPON_CLASS_ASSAULT_RIFLE,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,              
 		0,    
 		0,       
 		0,       
@@ -727,7 +773,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
    // Shotguns
 	{   
 		WP_M97,
-		WEAPON_CLASS_SHOTGUN,              
+		WEAPON_CLASS_SHOTGUN,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,              
 		0,        
 		0,       
 		0,        
@@ -756,7 +804,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
    // Heavy Weapons
 	{   
 		WP_BROWNING,
-		WEAPON_CLASS_MG,         
+		WEAPON_CLASS_MG,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,         
 		0,    
 		0,       
 		0,      
@@ -785,7 +835,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_MG42M,
-		WEAPON_CLASS_MG,           
+		WEAPON_CLASS_MG,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,           
 		0,      
 		0,       
 		0,      
@@ -814,7 +866,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_PANZERFAUST,
-		WEAPON_CLASS_LAUNCHER,      
+		WEAPON_CLASS_LAUNCHER,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,      
 		0,                   
 		0,       
 		0,        
@@ -843,7 +897,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_FLAMETHROWER,
-		WEAPON_CLASS_BEAM,     
+		WEAPON_CLASS_BEAM,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,     
 		0,                 
 		0,       
 		0,      
@@ -872,7 +928,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Secret Weapons
 	{   
 		WP_VENOM,
-		WEAPON_CLASS_MG,            
+		WEAPON_CLASS_MG,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,            
 		0,      
 		0,       
 		0,      
@@ -901,7 +959,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_TESLA,
-		WEAPON_CLASS_BEAM,            
+		WEAPON_CLASS_BEAM,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,            
 		0,                  
 		0,       
 		0,       
@@ -931,6 +991,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{  
 		WP_GRENADE_LAUNCHER,
 		WEAPON_CLASS_GRENADE,
+		WP_NONE,
+		WEAPON_TEAM_AXIS,
 		0,                   
 		0,       
 		0,        
@@ -959,7 +1021,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{  
 		WP_GRENADE_PINEAPPLE,
-		WEAPON_CLASS_GRENADE, 
+		WEAPON_CLASS_GRENADE,
+		WP_NONE,
+		WEAPON_TEAM_AXIS | WEAPON_TEAM_SOVIET, 
 		0,                   
 		0,       
 		0,        
@@ -988,7 +1052,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_DYNAMITE,
-		WEAPON_CLASS_GRENADE,         
+		WEAPON_CLASS_GRENADE,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,         
 		0,                   
 		0,       
 		0,        
@@ -1017,7 +1083,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_AIRSTRIKE,
-		WEAPON_CLASS_GRENADE,        
+		WEAPON_CLASS_GRENADE,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,        
 		0,                 
 		0,      
 		0,      
@@ -1046,7 +1114,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_POISONGAS,
-		WEAPON_CLASS_GRENADE,        
+		WEAPON_CLASS_GRENADE,
+		WP_NONE, 
+		WEAPON_TEAM_COMMON,       
 		0,                   
 		0,       
 		0,        
@@ -1075,7 +1145,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Misc alt modes
 	{   
 		WP_FG42SCOPE,
-		WEAPON_CLASS_ASSAULT_RIFLE | WEAPON_CLASS_SCOPED,        
+		WEAPON_CLASS_ASSAULT_RIFLE | WEAPON_CLASS_SCOPED,
+		WP_FG42,
+		WEAPON_TEAM_AXIS,        
 		0,       
 		0,       
 		0,       
@@ -1104,7 +1176,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_AKIMBO,
-		WEAPON_CLASS_PISTOL,           
+		WEAPON_CLASS_PISTOL,
+		WP_COLT,
+		WEAPON_TEAM_ALLIES,           
 		0,         
 		0,       
 		0,        
@@ -1133,7 +1207,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_M7,
-		WEAPON_CLASS_RIFLENADE,               
+		WEAPON_CLASS_RIFLENADE,
+		WP_M1GARAND,
+		WEAPON_TEAM_ALLIES,               
 		0,                   
 		0,       
 		0,        
@@ -1163,7 +1239,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     // Currently unused Gothicstein weapons
 	{   
 		WP_P38,
-		WEAPON_CLASS_PISTOL,              
+		WEAPON_CLASS_PISTOL,
+		WP_NONE, 
+		WEAPON_TEAM_AXIS,             
 		0,        
 		0,       
 		0,        
@@ -1192,7 +1270,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_M30,
-		WEAPON_CLASS_SHOTGUN,              
+		WEAPON_CLASS_SHOTGUN,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,              
 		0,        
 		0,       
 		0,        
@@ -1221,7 +1301,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_DELISLE,
-		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,          
+		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,
+		WP_DELISLESCOPE,
+		WEAPON_TEAM_ALLIES,          
 		0,         
 		0,       
 		0,        
@@ -1250,7 +1332,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_DELISLESCOPE,
-		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPED,     
+		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPED, 
+		WP_DELISLE,  
+		WEAPON_TEAM_ALLIES,  
 		0,         
 		0,       
 		0,        
@@ -1279,7 +1363,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_WELROD,
-		WEAPON_CLASS_PISTOL,           
+		WEAPON_CLASS_PISTOL,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,           
 		0,     
 		0,       
 		0,        
@@ -1308,7 +1394,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_HOLYCROSS,
-		WEAPON_CLASS_BEAM,        
+		WEAPON_CLASS_BEAM,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,        
 		0,                  
 		0,       
 		0,       
@@ -1338,7 +1426,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     // Misc stuff, not actual weapons
 	{   
 		WP_MONSTER_ATTACK1,
-		WEAPON_CLASS_NONE,  
+		WEAPON_CLASS_NONE,
+		WP_NONE,
+		WEAPON_TEAM_NONE,  
 		999,                 
 		0,       
 		999,      
@@ -1367,7 +1457,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_MONSTER_ATTACK2,
-		WEAPON_CLASS_NONE,  
+		WEAPON_CLASS_NONE,
+		WP_NONE, 
+		WEAPON_TEAM_NONE, 
 		999,                 
 		0,       
 		999,      
@@ -1396,7 +1488,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_MONSTER_ATTACK3,
-		WEAPON_CLASS_NONE,  
+		WEAPON_CLASS_NONE,
+		WP_NONE,
+		WEAPON_TEAM_NONE,  
 		999,                 
 		0,       
 		999,      
@@ -1425,7 +1519,9 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_GAUNTLET,
-		WEAPON_CLASS_MELEE,         
+		WEAPON_CLASS_MELEE,
+		WP_NONE,
+		WEAPON_TEAM_NONE,         
 		999,                 
 		0,       
 		999,      
@@ -1456,7 +1552,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 // Skill-based ammo parameters
 ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 
-int weapAlts[] = {
+/*int weapAlts[] = {
 	WP_NONE,                
 	// Melee Weapons
 	WP_NONE,             
@@ -1514,7 +1610,7 @@ int weapAlts[] = {
 	WP_NONE,            	
 	WP_NONE 
 };
-
+*/
 
 // new (10/18/00)
 char *animStrings[] = {

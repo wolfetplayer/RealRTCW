@@ -541,6 +541,8 @@ typedef enum {
 typedef struct ammoTable_s {
 	int weaponindex;
 	int weaponClass;
+	weapon_t weapAlts;
+	int weaponTeam;
 	int maxammo;            
 	int uses;               
 	int maxclip;            
@@ -573,7 +575,7 @@ typedef struct ammoskill_s {
 	int maxclip;
 } ammoskill_t;
 
-extern int weapAlts[]; 
+//extern int weapAlts[]; 
 
 extern ammoTable_t ammoTable[WP_NUM_WEAPONS];
 extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
@@ -1156,6 +1158,16 @@ typedef enum
 	WEAPON_CLASS_SCOPABLE
 
 } weaponClass_t;
+
+typedef enum
+{
+	WEAPON_TEAM_NONE,
+	WEAPON_TEAM_ALLIES,
+	WEAPON_TEAM_AXIS,
+	WEAPON_TEAM_SOVIET,
+	WEAPON_TEAM_COMMON
+
+} weaponTeam_t;
 
 
 //---------------------------------------------------------

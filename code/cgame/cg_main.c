@@ -1039,7 +1039,7 @@ static void CG_LoadIgnoredTranslationTextStrings() {
 		if ( !token[0] ) {
 			break;
 		}
-		CG_Printf("ignored text: %s\n", token);
+		//CG_Printf("ignored text: %s\n", token);
 		Com_sprintf( cgs.ignoredSubtitles[i], MAX_QPATH, "%s", token );
 	}
 }

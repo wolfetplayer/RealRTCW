@@ -1101,10 +1101,19 @@ static void CG_RegisterSounds( void ) {
 	char items[MAX_ITEMS + 1];
 	char name[MAX_QPATH];
 	const char  *soundName;
+	bg_speaker_t *speaker;
 
-	// Ridah, init sound scripts
 	CG_SoundInit();
-	// done.
+
+	BG_ClearScriptSpeakerPool();
+
+	BG_LoadSpeakerScript(va("sound/maps/%s.sps", cgs.mapname));
+
+	for (i = 0; i < BG_NumScriptSpeakers(); i++)
+	{
+		speaker        = BG_GetScriptSpeaker(i);
+		speaker->noise = trap_S_RegisterSound(speaker->filename);
+	}
 
 	cgs.media.n_health = trap_S_RegisterSound( "sound/items/n_health.wav" );
 	cgs.media.noFireUnderwater = trap_S_RegisterSound( "sound/weapons/underwaterfire.wav" ); 

@@ -1662,4 +1662,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_DropWeapon", (byte*)AICast_ScriptAction_DropWeapon},
 {"AICast_ScriptAction_ChangeAiName", (byte*)AICast_ScriptAction_ChangeAiName},
 {"AICast_ScriptAction_ChangeAiTeam", (byte*)AICast_ScriptAction_ChangeAiTeam},
+{"BG_LoadSpeakerScript", (byte *)BG_LoadSpeakerScript},
+{"BG_GetScriptSpeaker", (byte *)BG_GetScriptSpeaker},
+{"BG_NumScriptSpeakers", (byte *)BG_NumScriptSpeakers},
+{"BG_ClearScriptSpeakerPool", (byte *)BG_ClearScriptSpeakerPool},
 {0, 0}

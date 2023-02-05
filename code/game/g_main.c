@@ -1191,6 +1191,7 @@ extern void trap_Cvar_Reset( const char *var_name );
 
 void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	int i;
+	char   cs[MAX_INFO_STRING];
 
 	steamInit();
 
@@ -1225,6 +1226,10 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	level.animScriptData.playSound = G_AnimScriptSound;
 
 	G_InitWorldSession();
+
+	trap_GetServerinfo(cs, sizeof(cs));
+	Q_strncpyz(level.rawmapname, Info_ValueForKey(cs, "mapname"), sizeof(level.rawmapname));
+	G_LogPrintf("map: %s\n", level.rawmapname);
 
 	// initialize all entities for this game
 	memset( g_entities, 0, MAX_GENTITIES * sizeof( g_entities[0] ) );
@@ -1291,6 +1296,10 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_FindTeams();
 
 	SaveRegisteredItems();
+
+	BG_ClearScriptSpeakerPool();
+
+	BG_LoadSpeakerScript(va("sound/maps/%s.sps", level.rawmapname));
 
 
 	G_ModelIndex( SP_PODIUM_MODEL );

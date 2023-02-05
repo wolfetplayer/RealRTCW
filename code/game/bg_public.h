@@ -1711,6 +1711,9 @@ int PM_AltSwitchToForWeapon( int weapon );
 extern animStringItem_t animStateStr[];
 extern animStringItem_t animBodyPartsStr[];
 
+long BG_StringHashValue(const char *fname);
+long BG_StringHashValue_Lwr(const char *fname);
+
 int trap_PC_LoadSource( const char *filename );
 int trap_PC_ReadToken( int handle, pc_token_t *pc_token );
 int trap_PC_FreeSource( int handle );
@@ -1774,6 +1777,45 @@ struct splinePath_s {
 
 extern int numSplinePaths;
 extern splinePath_t splinePaths[MAX_SPLINE_PATHS];
+
+typedef enum
+{
+	S_LT_NOT_LOOPED = 0,
+	S_LT_LOOPED_ON,
+	S_LT_LOOPED_OFF
+} speakerLoopType_t;
+
+typedef enum
+{
+	S_BT_LOCAL = 0,
+	S_BT_GLOBAL,
+	S_BT_NOPVS
+} speakerBroadcastType_t;
+
+typedef struct bg_speaker_s
+{
+	char filename[MAX_QPATH];
+	qhandle_t noise;
+	vec3_t origin;
+	char targetname[32];
+	long targetnamehash;
+
+	speakerLoopType_t loop;
+	speakerBroadcastType_t broadcast;
+	int wait;
+	int random;
+	int volume;
+	int range;
+
+	qboolean activated;
+	int nextActivateTime;
+	int soundTime;
+} bg_speaker_t;
+
+void BG_ClearScriptSpeakerPool(void);
+qboolean BG_LoadSpeakerScript(const char *filename);
+int BG_NumScriptSpeakers(void);
+bg_speaker_t *BG_GetScriptSpeaker(int index);
 
 pathCorner_t *BG_Find_PathCorner( const char *match );
 splinePath_t* BG_GetSplineData( int number, qboolean* backwards );

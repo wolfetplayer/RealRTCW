@@ -628,6 +628,8 @@ typedef struct {
 
 	fileHandle_t logFile;
 
+	char rawmapname[MAX_QPATH];
+
 	// store latched cvars here that we want to get at often
 	int maxclients;
 

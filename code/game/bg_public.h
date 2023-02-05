@@ -791,6 +791,7 @@ typedef enum {
 	EV_M97_PUMP, // RealRTCW
 	EV_COUGH,
 	EV_QUICKGRENS,
+	EV_ALERT_SPEAKER,
 	EV_MAX_EVENTS   // just added as an 'endcap'
 } entity_event_t;
 

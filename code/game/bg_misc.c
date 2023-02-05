@@ -6165,6 +6165,7 @@ char *eventnames[] = {
 	"EV_M97_PUMP", //jaymod
 	"EV_COUGH",
 	"EV_QUICKGRENS",
+	"EV_ALERT_SPEAKER",
 	"EV_MAX_EVENTS"
 };
 

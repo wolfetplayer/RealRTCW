@@ -40,38 +40,25 @@
 static bg_speaker_t scriptSpeakers[MAX_SCRIPTSPEAKERS];
 static int          numScriptSpeakers;
 
-/**
- * @brief BG_ClearScriptSpeakerPool
- */
+
 void BG_ClearScriptSpeakerPool(void)
 {
 	numScriptSpeakers = 0;
 }
 
-/**
- * @brief BG_NumScriptSpeakers
- * @return
- */
+
 int BG_NumScriptSpeakers(void)
 {
 	return numScriptSpeakers;
 }
 
-/**
- * @brief BG_GetIndexForSpeaker
- * @param[in] speaker
- * @return
- */
+
 int BG_GetIndexForSpeaker(bg_speaker_t *speaker)
 {
 	return speaker - scriptSpeakers;
 }
 
-/**
- * @brief BG_GetScriptSpeaker
- * @param[in] index
- * @return
- */
+
 bg_speaker_t *BG_GetScriptSpeaker(int index)
 {
 	if (index < 0 || index >= numScriptSpeakers)
@@ -82,11 +69,7 @@ bg_speaker_t *BG_GetScriptSpeaker(int index)
 	return &scriptSpeakers[index];
 }
 
-/**
- * @brief BG_SS_DeleteSpeaker
- * @param[in] index
- * @return
- */
+
 qboolean BG_SS_DeleteSpeaker(int index)
 {
 	if (index < 0 || index >= numScriptSpeakers)
@@ -101,11 +84,7 @@ qboolean BG_SS_DeleteSpeaker(int index)
 	return qtrue;
 }
 
-/**
- * @brief BG_SS_StoreSpeaker
- * @param[in] speaker
- * @return
- */
+
 qboolean BG_SS_StoreSpeaker(bg_speaker_t *speaker)
 {
 	if (numScriptSpeakers >= MAX_SCRIPTSPEAKERS)
@@ -119,12 +98,7 @@ qboolean BG_SS_StoreSpeaker(bg_speaker_t *speaker)
 	return qtrue;
 }
 
-/**
- * @brief BG_SS_ParseError
- * @param[in] handle
- * @param[in] format
- * @return
- */
+
 static qboolean BG_SS_ParseError(int handle, char *format, ...)
 {
 	int         line = 0;
@@ -147,11 +121,7 @@ static qboolean BG_SS_ParseError(int handle, char *format, ...)
 	return qfalse;
 }
 
-/**
- * @brief BG_SS_ParseSpeaker
- * @param[in] handle
- * @return
- */
+
 static qboolean BG_SS_ParseSpeaker(int handle)
 {
 	pc_token_t   token;
@@ -315,11 +285,7 @@ static qboolean BG_SS_ParseSpeaker(int handle)
 	return qtrue;
 }
 
-/**
- * @brief BG_LoadSpeakerScript
- * @param[in] filename
- * @return
- */
+
 qboolean BG_LoadSpeakerScript(const char *filename)
 {
 	pc_token_t token;

@@ -129,4 +129,5 @@ equ trap_GetModelInfo			-126
 
 ; New in iortcw
 equ trap_Alloc					-901
+equ trap_R_inPVS                -902
 

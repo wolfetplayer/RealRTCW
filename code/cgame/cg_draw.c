@@ -2291,7 +2291,7 @@ static void CG_DrawCrosshair( void ) {
 		return;
 	}
 
-	// set color based on health //RealRTCW disable for now
+	// set color based on health
 	if ( cg_crosshairHealth.integer ) {
 		CG_ColorForHealth( hcolor );
 		trap_R_SetColor( hcolor );

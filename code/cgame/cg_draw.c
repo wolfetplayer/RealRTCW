@@ -2292,12 +2292,12 @@ static void CG_DrawCrosshair( void ) {
 	}
 
 	// set color based on health //RealRTCW disable for now
-	//if ( cg_crosshairHealth.integer ) {
-		//CG_ColorForHealth( hcolor );
-		//trap_R_SetColor( hcolor );
-	//} else {
-		//trap_R_SetColor( NULL );
-	//}
+	if ( cg_crosshairHealth.integer ) {
+		CG_ColorForHealth( hcolor );
+		trap_R_SetColor( hcolor );
+	} else {
+		trap_R_SetColor( NULL );
+	}
 
 	w = h = cg_crosshairSize.value;
 

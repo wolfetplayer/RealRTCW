@@ -4707,7 +4707,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_quad",
-		"sound/items/quaddamage.wav",
+		"sound/pickup/q3powerups/quaddamage.wav",
 		{
 		"models/powerups/instant/quad.md3",
 		0, 
@@ -4730,7 +4730,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_haste",
-		"sound/items/haste.wav",
+		"sound/pickup/q3powerups/haste.wav",
 		{
 		"models/powerups/instant/haste.md3",
 		0, 
@@ -4754,7 +4754,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_enviro",
-		"sound/items/protect.wav",
+		"sound/pickup/q3powerups/protect.wav",
 		{
 		"models/powerups/instant/enviro.md3",
 		0, 
@@ -4779,7 +4779,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_invis",
-		"sound/items/invisibility.wav",
+		"sound/pickup/q3powerups/invisibility.wav",
 		{
 		"models/powerups/instant/invis.md3",
 		0, 

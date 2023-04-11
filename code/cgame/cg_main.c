@@ -237,6 +237,7 @@ vmCvar_t cg_reloading;      //----(SA)	added
 vmCvar_t cg_medicChargeTime;
 vmCvar_t cg_engineerChargeTime;
 vmCvar_t cg_jumptime;
+vmCvar_t cg_realism;
 
 vmCvar_t cg_LTChargeTime;
 vmCvar_t cg_soldierChargeTime;
@@ -536,6 +537,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
 	
 	{ &cg_gunPosLock, "cg_gunposlock", "1", CVAR_ARCHIVE},
+
+	{ &cg_realism, "g_realism", "0", CVAR_ARCHIVE},
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );

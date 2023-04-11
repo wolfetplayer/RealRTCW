@@ -1196,6 +1196,7 @@ extern vmCvar_t g_spawndogs;
 extern vmCvar_t g_spawnpriests;
 extern vmCvar_t g_spawnxshepherds;
 extern vmCvar_t g_aicanheadshot;
+extern vmCvar_t g_realism;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));

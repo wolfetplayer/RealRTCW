@@ -231,7 +231,9 @@ typedef enum {
 	WEAPON_FIRING,
 	WEAPON_FIRINGALT,
 	WEAPON_WAITING,     // player allowed to switch/reload, but not fire
-	WEAPON_RELOADING    
+	WEAPON_RELOADING,
+	WEAPON_HOLSTER_IN,
+	WEAPON_HOLSTER_OUT   
 } weaponstate_t;
 
 // pmove->pm_flags	(sent as max 16 bits in msg.c)

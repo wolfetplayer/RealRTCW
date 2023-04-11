@@ -43,10 +43,12 @@ int bg_pmove_gameskill_integer;
 #ifdef CGAMEDLL
 extern vmCvar_t cg_gameType;
 extern vmCvar_t cg_jumptime;
+extern vmCvar_t cg_realism;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_gametype;
 extern vmCvar_t g_jumptime;
+extern vmCvar_t g_realism;
 #endif
 
 // jpw
@@ -2166,7 +2168,8 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		return;
 	}
 
-	if ( pm->ps->weaponstate == WEAPON_DROPPING || pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD ) {   //----(SA)	added
+	if ( pm->ps->weaponstate == WEAPON_DROPPING || pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD 
+	     || pm->ps->weaponstate == WEAPON_HOLSTER_IN ) {   //----(SA)	added
 		return;
 	}
 
@@ -3156,6 +3159,37 @@ static void PM_Weapon( void ) {
 		pm->ps->weaponstate = WEAPON_READY;     // need to switch to READY so the reload will work
 		PM_BeginWeaponReload( pm->ps->weapon );
 		return;
+	}
+
+		// unable to use weapon	
+	#ifdef GAMEDLL
+	if ( !delayedFire && g_realism.value ) {
+	#endif
+	#ifdef CGAMEDLL
+	if ( !delayedFire && cg_realism.value ) {
+	#endif
+		if ( ( pm->ps->pm_flags & PMF_LADDER ) ){
+			if ( pm->ps->weaponstate != WEAPON_HOLSTER_IN ) {
+				pm->ps->weaponstate = WEAPON_HOLSTER_IN;
+				PM_StartWeaponAnim(PM_DropAnimForWeapon(pm->ps->weapon));
+				pm->ps->weaponTime += 300;
+			}
+			else {
+				pm->ps->weaponTime += 50;
+			}
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_HOLSTER_IN ){
+			pm->ps->weaponstate = WEAPON_HOLSTER_OUT;
+			PM_StartWeaponAnim(PM_RaiseAnimForWeapon(pm->ps->weapon));
+            pm->ps->weaponTime += 300;
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_HOLSTER_OUT ) {
+			pm->ps->weaponstate = WEAPON_READY;
+			PM_StartWeaponAnim(PM_IdleAnimForWeapon(pm->ps->weapon));
+			return;
+		}
 	}
 
 	if ( pm->ps->weapon == WP_NONE ) {  // this is possible since the player starts with nothing

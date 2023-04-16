@@ -612,10 +612,16 @@ static void CG_OffsetFirstPersonView( void ) {
 	if ( cg.predictedPlayerState.pm_flags & PMF_DUCKED ) {
 		delta *= 3;     // crouching
 	}
+	if ( cg.predictedPlayerState.pm_flags & PMF_SPRINTING ) {
+		delta *= 2;     // crouching
+	}
 	angles[PITCH] += delta;
 	delta = cg.bobfracsin * cg_bobroll.value * speed;
 	if ( cg.predictedPlayerState.pm_flags & PMF_DUCKED ) {
 		delta *= 3;     // crouching accentuates roll
+	}
+	if ( cg.predictedPlayerState.pm_flags & PMF_SPRINTING ) {
+		delta *= 2;     // crouching accentuates roll
 	}
 	if ( cg.bobcycle & 1 ) {
 		delta = -delta;

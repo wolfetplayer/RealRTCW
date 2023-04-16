@@ -233,7 +233,9 @@ typedef enum {
 	WEAPON_WAITING,     // player allowed to switch/reload, but not fire
 	WEAPON_RELOADING,
 	WEAPON_HOLSTER_IN,
-	WEAPON_HOLSTER_OUT   
+	WEAPON_HOLSTER_OUT,
+	WEAPON_SPRINT_IN,
+	WEAPON_SPRINT_OUT   
 } weaponstate_t;
 
 // pmove->pm_flags	(sent as max 16 bits in msg.c)
@@ -252,6 +254,7 @@ typedef enum {
 #define PMF_SCOREBOARD      8192    // spectate as a scoreboard
 #define PMF_LIMBO           16384   // JPW NERVE limbo state, pm_time is time until reinforce
 #define PMF_TIME_LOAD       32768   // hold for this time after a load game, and prevent large thinks
+#define PMF_SPRINTING       65536 
 
 #define PMF_ALL_TIMES   ( PMF_TIME_WATERJUMP | PMF_TIME_LAND | PMF_TIME_KNOCKBACK | PMF_TIME_LOAD )
 
@@ -976,6 +979,8 @@ typedef enum {
 	WEAP_ALTSWITCHFROM, // switch from alt fire mode weap (scoped/silencer/etc)
 	WEAP_ALTSWITCHTO,   // switch to alt fire mode weap
 	WEAP_DROP2,
+	WEAP_SPRINTIN,
+	WEAP_SPRINTOUT,
 	MAX_WP_ANIMATIONS
 } weapAnimNumber_t;
 
@@ -1706,6 +1711,9 @@ float BG_AnimGetFootstepGap( playerState_t *ps, float xyspeed );
 
 int PM_IdleAnimForWeapon( int weapon );
 int PM_RaiseAnimForWeapon( int weapon );
+
+int PM_SprintInAnimForWeapon( int weapon );
+int PM_SprintOutAnimForWeapon( int weapon );
 
 int PM_AltSwitchFromForWeapon( int weapon );
 int PM_AltSwitchToForWeapon( int weapon );

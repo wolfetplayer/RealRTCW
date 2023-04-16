@@ -170,6 +170,20 @@ int PM_DropAnimForWeapon( int weapon ) {
 	}
 }
 
+int PM_SprintInAnimForWeapon( int weapon ) {
+	switch ( weapon ) {
+	default:
+		return WEAP_SPRINTIN;
+	}
+}
+
+int PM_SprintOutAnimForWeapon( int weapon ) {
+	switch ( weapon ) {
+	default:
+		return WEAP_SPRINTOUT;
+	}
+}
+
 /*
 ===============
 PM_AddTouchEnt
@@ -2169,7 +2183,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	}
 
 	if ( pm->ps->weaponstate == WEAPON_DROPPING || pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD 
-	     || pm->ps->weaponstate == WEAPON_HOLSTER_IN ) {   //----(SA)	added
+	     || pm->ps->weaponstate == WEAPON_HOLSTER_IN || pm->ps->weaponstate == WEAPON_SPRINT_IN ) {   //----(SA)	added
 		return;
 	}
 
@@ -3161,13 +3175,36 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-		// unable to use weapon	
+	// unable to use weapon	on the ladder
 	#ifdef GAMEDLL
 	if ( !delayedFire && g_realism.value ) {
+			if ( ( pm->ps->pm_flags & PMF_LADDER )  ){
+			if ( pm->ps->weaponstate != WEAPON_HOLSTER_IN ) {
+				pm->ps->weaponstate = WEAPON_HOLSTER_IN;
+				PM_StartWeaponAnim(PM_DropAnimForWeapon(pm->ps->weapon));
+				pm->ps->weaponTime += 300;
+			}
+			else {
+				pm->ps->weaponTime += 50;
+			}
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_HOLSTER_IN ){
+			pm->ps->weaponstate = WEAPON_HOLSTER_OUT;
+			PM_StartWeaponAnim(PM_RaiseAnimForWeapon(pm->ps->weapon));
+            pm->ps->weaponTime += 300;
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_HOLSTER_OUT ) {
+			pm->ps->weaponstate = WEAPON_READY;
+			PM_StartWeaponAnim(PM_IdleAnimForWeapon(pm->ps->weapon));
+			return;
+		}
+	}
 	#endif
 	#ifdef CGAMEDLL
 	if ( !delayedFire && cg_realism.value ) {
-	#endif
+
 		if ( ( pm->ps->pm_flags & PMF_LADDER ) ){
 			if ( pm->ps->weaponstate != WEAPON_HOLSTER_IN ) {
 				pm->ps->weaponstate = WEAPON_HOLSTER_IN;
@@ -3191,6 +3228,62 @@ static void PM_Weapon( void ) {
 			return;
 		}
 	}
+	#endif
+
+	// unable to use weapon while sprinting
+	#ifdef GAMEDLL
+	if (!delayedFire && g_realism.value ) {
+			if ( ( pm->ps->pm_flags & PMF_SPRINTING ) ){
+			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
+				pm->ps->weaponstate = WEAPON_SPRINT_IN;
+				PM_StartWeaponAnim(PM_SprintInAnimForWeapon(pm->ps->weapon));
+				pm->ps->weaponTime += 300;
+			}
+			else {
+				pm->ps->weaponTime += 50;
+			}
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_SPRINT_IN ){
+			pm->ps->weaponstate = WEAPON_SPRINT_OUT;
+			PM_StartWeaponAnim(PM_SprintOutAnimForWeapon(pm->ps->weapon));
+            pm->ps->weaponTime += 300;
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_SPRINT_OUT ) {
+			pm->ps->weaponstate = WEAPON_READY;
+			PM_StartWeaponAnim(PM_IdleAnimForWeapon(pm->ps->weapon));
+			return;
+		}
+	}
+	#endif
+	#ifdef CGAMEDLL
+	if ( !delayedFire && cg_realism.value ) {
+
+		if ( ( pm->ps->pm_flags & PMF_SPRINTING ) ){
+			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
+				pm->ps->weaponstate = WEAPON_SPRINT_IN;
+				PM_StartWeaponAnim(PM_SprintInAnimForWeapon(pm->ps->weapon));
+				pm->ps->weaponTime += 300;
+			}
+			else {
+				pm->ps->weaponTime += 50;
+			}
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_SPRINT_IN ){
+			pm->ps->weaponstate = WEAPON_SPRINT_OUT;
+			PM_StartWeaponAnim(PM_SprintOutAnimForWeapon(pm->ps->weapon));
+            pm->ps->weaponTime += 300;
+			return;
+		}
+		else if (pm->ps->weaponstate == WEAPON_SPRINT_OUT ) {
+			pm->ps->weaponstate = WEAPON_READY;
+			PM_StartWeaponAnim(PM_IdleAnimForWeapon(pm->ps->weapon));
+			return;
+		}
+	}
+	#endif
 
 	if ( pm->ps->weapon == WP_NONE ) {  // this is possible since the player starts with nothing
 		return;
@@ -4184,6 +4277,9 @@ void PM_Sprint( void ) {
 		if ( !pm->ps->sprintExertTime ) {
 			pm->ps->sprintExertTime = 1;
 		}
+
+		pm->ps->pm_flags |= PMF_SPRINTING; // LET US KNOW THAT WE ARE SPRINTING
+
 	} else
 	{
 		// JPW NERVE adjusted for framerate independence
@@ -4206,6 +4302,8 @@ void PM_Sprint( void ) {
 		}
 
 		pm->ps->sprintExertTime = 0;
+
+		pm->ps->pm_flags &= ~PMF_SPRINTING; // LET US KNOW THAT WE ARE NO LONGER SPRINTING
 	}
 }
 

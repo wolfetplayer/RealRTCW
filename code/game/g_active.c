@@ -469,7 +469,7 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 		client->timeResidual -= 1000;
 
     if ( g_gametype.integer == GT_GOTHIC ) {
-	    if (g_gameskill.integer == GSKILL_HARD)  // vampirism (health decay)
+	    if ((g_gameskill.integer == GSKILL_HARD) && (!ent->aiCharacter))  // vampirism (health decay)
         {
 	        if (ent->health > 25)
 	        {
@@ -501,11 +501,35 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 				}
 			}
 
+		// regenerate health only if cvar is turned on
+		if (g_regen.integer == 1) {
+		    if (ent->health < client->ps.stats[STAT_MAX_HEALTH])
+		    {
+				if (!ent->aiCharacter){
+				if (ent->health > client->ps.stats[STAT_MAX_HEALTH] / 2)
+				{
+					ent->health += 2;
+
+					if (ent->health > client->ps.stats[STAT_MAX_HEALTH])
+					{
+						ent->health = client->ps.stats[STAT_MAX_HEALTH];
+					}
+				}
+				else
+				{
+					ent->health += 3;
+				}
+				}
+		    }
+		}
+
+
 		// count down armor when over max // RealRTCW if more than 100
 		if ( client->ps.stats[STAT_ARMOR] > 100 ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 	}
+
 }
 
 /*

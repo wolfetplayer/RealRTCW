@@ -79,6 +79,8 @@ float pm_flightfriction   = 3;
 float pm_ladderfriction   = 14;
 float pm_spectatorfriction = 5.0f;
 
+float pm_realismSlowScale = 0.85;
+
 //----(SA)	end
 
 int c_pmove = 0;
@@ -532,7 +534,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 	#ifdef GAMEDLL
 	if ( ! (pm->ps->aiChar)) {
 		if (g_realism.value) {
-			scale *= (0.85 * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
+			scale *= (pm_realismSlowScale * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
 		} else {
 			scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
 		}
@@ -541,7 +543,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 	#ifdef CGAMEDLL
 	if ( ! (pm->ps->aiChar)) {
 		if (cg_realism.value) {
-			scale *= (0.85 * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
+			scale *= (pm_realismSlowScale * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
 		} else {
 		    scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
 		}
@@ -1957,7 +1959,23 @@ static void PM_Footsteps( void ) {
 		pm->ps->bobCycle = (int)( pm->ps->bobCycle + bobmove * pml.msec ) & 255;
 
 		// now footsteps
-		pm->ps->footstepCount += pm->xyspeed * pml.frametime;
+	#ifdef GAMEDLL
+		if (g_realism.value) {
+			pm->ps->footstepCount += pm_realismSlowScale * (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
+		} else {
+			pm->ps->footstepCount += (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
+		}
+	
+	#endif
+	#ifdef CGAMEDLL
+		if (cg_realism.value) {
+			pm->ps->footstepCount += pm_realismSlowScale * (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
+		} else {
+		    pm->ps->footstepCount += (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
+		}
+	#endif
+
+
 
 		if ( pm->ps->footstepCount > animGap ) {
 

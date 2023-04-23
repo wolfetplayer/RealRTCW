@@ -486,36 +486,29 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 				  + cmd->rightmove * cmd->rightmove + cmd->upmove * cmd->upmove );
 	scale = (float)pm->ps->speed * max / ( 127.0 * total );
 
-if ( pm->ps->aiChar == AICHAR_ZOMBIE || pm->ps->aiChar == AICHAR_WARZOMBIE ) { // RealRTCW
-		scale *= 1.1;
-	}
-
-	if ( pm->ps->aiChar == AICHAR_ELITEGUARD ) {
-		scale *= 1.1;
-	}
-
-	if ( pm->ps->aiChar == AICHAR_XSHEPHERD ) {
-		scale *= 1.4;
-	}
-
-		if ( pm->ps->aiChar == AICHAR_HEINRICH ) {
-		scale *= 1.3;
-	}
-
-			if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER ) {
-		scale *= 1.3;
-	}
-
-		if ( pm->ps->aiChar == AICHAR_HELGA ) {
-		scale *= 1.3;
-	}
-
-
-
-
-
-	
-	
+	switch ( pm->ps->aiChar ) {
+		case AICHAR_ZOMBIE:
+		case AICHAR_WARZOMBIE:
+			 scale *= 1.1;
+			 break;
+		case AICHAR_ELITEGUARD:
+		     scale *= 1.1;
+			 break;
+		case AICHAR_XSHEPHERD:
+		     scale *= 1.4;
+			 break;
+		case AICHAR_HEINRICH:
+		     scale *= 1.3;
+			 break;
+		case AICHAR_SUPERSOLDIER:
+		     scale *= 1.3;
+			 break;
+		case AICHAR_HELGA:
+		     scale *= 1.3;
+			 break;
+		default:
+		    scale *= 1.0;
+		}
 
 	if ( pm->cmd.buttons & BUTTON_SPRINT && pm->ps->sprintTime > 50 ) {
 		scale *= pm->ps->sprintSpeedScale;

@@ -528,12 +528,28 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 //
 // added #ifdef for game/cgame to project so we can get correct g_gametype variable and only do this in
 // multiplayer if necessary
-if ( ! (pm->ps->aiChar)) 
-	{ 
-	scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
+
+	#ifdef GAMEDLL
+	if ( ! (pm->ps->aiChar)) {
+		if (g_realism.value) {
+			scale *= (0.85 * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
+		} else {
+			scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
+		}
 	}
+	#endif
+	#ifdef CGAMEDLL
+	if ( ! (pm->ps->aiChar)) {
+		if (cg_realism.value) {
+			scale *= (0.85 * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
+		} else {
+		    scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
+		}
+	}
+	#endif
 
 	return scale;
+
 }
 
 

@@ -79,7 +79,7 @@ float pm_flightfriction   = 3;
 float pm_ladderfriction   = 14;
 float pm_spectatorfriction = 5.0f;
 
-float pm_realismSlowScale = 0.85;
+float pm_realismSlowScale = 0.80;
 
 //----(SA)	end
 

@@ -667,6 +667,10 @@ static qboolean PM_CheckJump( void ) {
 		}
 	#endif
 
+		// don't allow if player tired
+		//if (pm->ps->sprintTime < 2500) // JPW pulled this per id request; made airborne jumpers wildly inaccurate with gunfire to compensate
+		//	return qfalse;
+
 
 	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
 		return qfalse;      // don't allow jump until all buttons are up
@@ -689,7 +693,40 @@ static qboolean PM_CheckJump( void ) {
 	pm->ps->pm_flags |= PMF_JUMP_HELD;
 
 	pm->ps->groundEntityNum = ENTITYNUM_NONE;
-	pm->ps->velocity[2] = JUMP_VELOCITY;
+
+	#ifdef GAMEDLL
+	// Total stamina count is 20000
+		if (g_realism.value) {
+		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
+		                pm->ps->velocity[2] = 220;
+		   } else if ((pm->ps->sprintTime < 10000) && (pm->ps->sprintTime > 5000)) {
+		                pm->ps->velocity[2] = 200;
+		   } else if ((pm->ps->sprintTime < 5000) && (pm->ps->sprintTime >= 0)) {
+					    pm->ps->velocity[2] = 180;
+		   } else { 
+		   pm->ps->velocity[2] = 240;
+		   }
+		} else {
+			pm->ps->velocity[2] = 270;
+		}
+	#endif
+	#ifdef CGAMEDLL
+	// Total stamina count is 20000
+		if (cg_realism.value) {
+		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
+		                pm->ps->velocity[2] = 220;
+		   } else if ((pm->ps->sprintTime < 10000) && (pm->ps->sprintTime > 5000)) {
+		                pm->ps->velocity[2] = 200;
+		   } else if ((pm->ps->sprintTime < 5000) && (pm->ps->sprintTime >= 0)) {
+					    pm->ps->velocity[2] = 180;
+		   } else { 
+		   pm->ps->velocity[2] = 240;
+		   }
+		} else {
+			pm->ps->velocity[2] = 270;
+		}
+	#endif
+
 	PM_AddEvent( EV_JUMP );
 
 	if ( pm->cmd.forwardmove >= 0 ) {
@@ -1054,11 +1091,22 @@ static void PM_WalkMove( void ) {
 			PM_AirMove();
 
 				pm->ps->jumpTime = pm->cmd.serverTime;
-
-
-					stamtake = 1000;
+	
+	#ifdef GAMEDLL
+		if (g_realism.value) {
+			stamtake = 2000;
+		} else {
+			stamtake = 1000;
+		}
+	#endif
+	#ifdef CGAMEDLL
+		if (cg_realism.value) {
+			stamtake = 2000;
+		} else {
+			stamtake = 1000;
+		}
+	#endif
 				
-
 				// take time from powerup before taking it from sprintTime
 				if ( pm->ps->powerups[PW_NOFATIGUE] ) {
 					if ( pm->ps->powerups[PW_NOFATIGUE] > stamtake ) {

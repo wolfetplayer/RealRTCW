@@ -694,6 +694,7 @@ static qboolean PM_CheckJump( void ) {
 
 	pm->ps->groundEntityNum = ENTITYNUM_NONE;
 
+    // Below is a JUMP_VELOCITY definition cases. Define was removed completely.
 	#ifdef GAMEDLL
 	// Total stamina count is 20000
 		if (g_realism.value) {
@@ -704,14 +705,13 @@ static qboolean PM_CheckJump( void ) {
 		   } else if ((pm->ps->sprintTime < 5000) && (pm->ps->sprintTime >= 0)) {
 					    pm->ps->velocity[2] = 180;
 		   } else { 
-		   pm->ps->velocity[2] = 240;
+		                pm->ps->velocity[2] = 240; // basically first jump
 		   }
 		} else {
-			pm->ps->velocity[2] = 270;
+			            pm->ps->velocity[2] = 270; // no realism
 		}
 	#endif
 	#ifdef CGAMEDLL
-	// Total stamina count is 20000
 		if (cg_realism.value) {
 		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
 		                pm->ps->velocity[2] = 220;
@@ -720,10 +720,10 @@ static qboolean PM_CheckJump( void ) {
 		   } else if ((pm->ps->sprintTime < 5000) && (pm->ps->sprintTime >= 0)) {
 					    pm->ps->velocity[2] = 180;
 		   } else { 
-		   pm->ps->velocity[2] = 240;
+		                pm->ps->velocity[2] = 240; // basically first jump
 		   }
 		} else {
-			pm->ps->velocity[2] = 270;
+			            pm->ps->velocity[2] = 270; // no realism
 		}
 	#endif
 

@@ -4123,6 +4123,12 @@ void CG_PlaySwitchSound( int lastweap, int newweap ) {
 		}
 	}
 
+	switch ( newweap ) {
+		case WP_KNIFE:
+		     switchsound = cg_weapons[newweap].switchSound[0];
+			 break;
+	}
+
 	trap_S_StartSound( NULL, cg.snap->ps.clientNum, CHAN_WEAPON, switchsound );
 }
 

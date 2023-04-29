@@ -1094,14 +1094,14 @@ static void PM_WalkMove( void ) {
 	
 	#ifdef GAMEDLL
 		if (g_realism.value) {
-			stamtake = 2000;
+			stamtake = 3000;
 		} else {
 			stamtake = 1000;
 		}
 	#endif
 	#ifdef CGAMEDLL
 		if (cg_realism.value) {
-			stamtake = 2000;
+			stamtake = 3000;
 		} else {
 			stamtake = 1000;
 		}

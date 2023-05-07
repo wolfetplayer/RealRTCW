@@ -2216,20 +2216,35 @@ static void PM_BeginWeaponReload( int weapon ) {
 		break;
 	}
 
-
-	PM_ContinueWeaponAnim( WEAP_RELOAD1 );
-
-
-	// okay to reload while overheating without tacking the reload time onto the end of the
-	// current weaponTime (the reload time is partially absorbed into the overheat time)
-	if ( pm->ps->weaponstate == WEAPON_READY ) {                  // set wait to the reload duration
-		pm->ps->weaponTime += ammoTable[weapon].reloadTime;
-	} else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTime ) {
-		pm->ps->weaponTime += ( ammoTable[weapon].reloadTime - pm->ps->weaponTime );
+    if ( !pm->ps->aiChar) { 
+	if ( pm->ps->ammoclip[BG_FindClipForWeapon(weapon)] == 0 ) {
+		  PM_ContinueWeaponAnim( WEAP_RELOAD2 );
+	      if ( pm->ps->weaponstate == WEAPON_READY ) {
+		      pm->ps->weaponTime += ammoTable[weapon].reloadTimeFull;
+	      } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTimeFull ) {
+		      pm->ps->weaponTime += ( ammoTable[weapon].reloadTimeFull - pm->ps->weaponTime );
+	      }
+		  PM_AddEvent( EV_FILL_CLIP_FULL );
+	} else {
+	      PM_ContinueWeaponAnim( WEAP_RELOAD1 );
+	      if ( pm->ps->weaponstate == WEAPON_READY ) {
+		      pm->ps->weaponTime += ammoTable[weapon].reloadTime;
+	      } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTime ) {
+		      pm->ps->weaponTime += ( ammoTable[weapon].reloadTime - pm->ps->weaponTime );
+	      }
+		  PM_AddEvent( EV_FILL_CLIP );
+	}
+	} else {
+	  PM_ContinueWeaponAnim( WEAP_RELOAD1 );
+	  	if ( pm->ps->weaponstate == WEAPON_READY ) {
+		    pm->ps->weaponTime += ammoTable[weapon].reloadTime;
+	    } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTime ) {
+		    pm->ps->weaponTime += ( ammoTable[weapon].reloadTime - pm->ps->weaponTime );
+	      }
+		 PM_AddEvent( EV_FILL_CLIP );
 	}
 
 	pm->ps->weaponstate = WEAPON_RELOADING;
-	PM_AddEvent( EV_FILL_CLIP );    // play reload sound
 }
 
 static void PM_ReloadClip( int weapon );

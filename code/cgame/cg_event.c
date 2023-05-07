@@ -1734,6 +1734,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 
+	case EV_FILL_CLIP_FULL:
+		DEBUGNAME( "EV_FILL_CLIP_FULL" );
+		if ( cg_weapons[es->weapon].reloadFullSound ) {
+			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound ); // JPW NERVE following sherman's SP fix, should allow killing reload sound when player dies
+		}
+		break;
+
 	case EV_M97_PUMP:
 		DEBUGNAME("EV_M97_PUMP");
 		// Jaymod

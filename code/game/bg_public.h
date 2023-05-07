@@ -551,7 +551,8 @@ typedef struct ammoTable_s {
 	int maxammo;            
 	int uses;               
 	int maxclip;            
-	int reloadTime;         
+	int reloadTime;
+	int reloadTimeFull;         
 	int fireDelayTime;      
 	int nextShotTime;
 	int nextShotTime2;        
@@ -687,6 +688,7 @@ typedef enum {
 	EV_WEAPONSWITCHED, // autoreload
 	EV_EMPTYCLIP,
 	EV_FILL_CLIP,
+	EV_FILL_CLIP_FULL,
 	EV_WEAP_OVERHEAT,
 	EV_CHANGE_WEAPON,
 	EV_FIRE_WEAPON,

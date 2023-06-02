@@ -194,9 +194,7 @@ givehealth – gives player an actual health item
 givearmor  – gives player an actual armor item
 giveinventory – gives holdable item
 
-
-
-
+setmovespeed - changes player movespeed through the triggers. Values - veryslow, slow, default, fast, veryfast.
 
 
 /////////////////////////////Difficulty specified .ai and .ents files/////////////////////////////

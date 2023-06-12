@@ -216,6 +216,12 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_VENDETTA2_7", (byte *)AICast_ScriptAction_Achievement_VENDETTA2_7},
 {"AICast_ScriptAction_Achievement_VENDETTA2_8", (byte *)AICast_ScriptAction_Achievement_VENDETTA2_8},
 {"AICast_ScriptAction_Achievement_VENDETTA2_9", (byte *)AICast_ScriptAction_Achievement_VENDETTA2_9},
+// Warbell achievements
+{"AICast_ScriptAction_Achievement_WARBELL1", (byte *)AICast_ScriptAction_Achievement_WARBELL1},
+{"AICast_ScriptAction_Achievement_WARBELL2", (byte *)AICast_ScriptAction_Achievement_WARBELL2},
+{"AICast_ScriptAction_Achievement_WARBELL3", (byte *)AICast_ScriptAction_Achievement_WARBELL3},
+{"AICast_ScriptAction_Achievement_WARBELL4", (byte *)AICast_ScriptAction_Achievement_WARBELL4},
+{"AICast_ScriptAction_Achievement_WARBELL5", (byte *)AICast_ScriptAction_Achievement_WARBELL5},
 // end achievements
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
 {"AICast_ScriptAction_Teleport", (byte *)AICast_ScriptAction_Teleport},

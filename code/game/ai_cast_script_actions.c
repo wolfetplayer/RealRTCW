@@ -4447,6 +4447,71 @@ qboolean AICast_ScriptAction_Achievement_VENDETTA2_9( cast_state_t *cs, char *pa
 	return qtrue;
 }
 
+/*
+==================
+AICast_ScriptAction_Achievement_WARBELL1
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_WARBELL1( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WARBELL_MAP");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_WARBELL2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_WARBELL2( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WARBELL_WATERS");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_WARBELL3
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_WARBELL3( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WARBELL_BLAV");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_WARBELL4
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_WARBELL4( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WARBELL_OLARIC");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_WARBELL5
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_WARBELL_HEIN");
+	}
+	return qtrue;
+}
+
 
 /*
 ==================

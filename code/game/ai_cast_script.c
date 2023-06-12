@@ -217,6 +217,13 @@ qboolean AICast_ScriptAction_Achievement_VENDETTA2_7( cast_state_t *cs, char *pa
 qboolean AICast_ScriptAction_Achievement_VENDETTA2_8( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_VENDETTA2_9( cast_state_t *cs, char *params );
 
+// Warbell achievements
+qboolean AICast_ScriptAction_Achievement_WARBELL1( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_WARBELL2( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_WARBELL3( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_WARBELL4( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char *params );
+
 
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
@@ -435,6 +442,12 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_VENDETTA2_7",      AICast_ScriptAction_Achievement_VENDETTA2_7},
 	{"achievement_VENDETTA2_8",      AICast_ScriptAction_Achievement_VENDETTA2_8},
 	{"achievement_VENDETTA2_9",      AICast_ScriptAction_Achievement_VENDETTA2_9},
+    // Warbell achievements
+	{"achievement_map_warbell",      AICast_ScriptAction_Achievement_WARBELL1},
+	{"achievement_watersWarbell",    AICast_ScriptAction_Achievement_WARBELL2},
+	{"achievement_blavWarbell",      AICast_ScriptAction_Achievement_WARBELL3},
+	{"achievement_olaricWarbell",    AICast_ScriptAction_Achievement_WARBELL4},
+	{"achievement_heinrichWarbell",  AICast_ScriptAction_Achievement_WARBELL5},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

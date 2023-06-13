@@ -1248,8 +1248,8 @@ typedef enum {
 #define ENTITYNUM_MAX_NORMAL    ( MAX_GENTITIES - 2 )
 
 
-#define MAX_MODELS          256     // these are sent over the net as 8 bits
-#define MAX_SOUNDS          256     // so they cannot be blindly increased
+#define MAX_MODELS          1024     // these are sent over the net as 8 bits
+#define MAX_SOUNDS          1024     // so they cannot be blindly increased
 
 
 #define MAX_PARTICLES_AREAS     512 // RealRTCW was 128
@@ -1257,7 +1257,7 @@ typedef enum {
 #define MAX_MULTI_SPAWNTARGETS  16 // JPW NERVE
 
 //#define	MAX_CONFIGSTRINGS	1024
-#define MAX_CONFIGSTRINGS   2048
+#define MAX_CONFIGSTRINGS   4096
 
 #define MAX_DLIGHT_CONFIGSTRINGS    128
 #define MAX_CLIPBOARD_CONFIGSTRINGS 64

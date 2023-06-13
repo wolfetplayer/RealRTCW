@@ -938,13 +938,13 @@ netField_t entityStateFields[] =
 	{ NETF( loopSound ), 8 },
 	{ NETF( constantLight ), 32 },
 	{ NETF( dl_intensity ), 32 }, //----(SA)	longer now to carry the corona colors
-	{ NETF( modelindex ), 9 },
-	{ NETF( modelindex2 ), 9 },
+	{ NETF( modelindex ), 10 },
+	{ NETF( modelindex2 ), 10 },
 	{ NETF( frame ), 16 },
 	{ NETF( clientNum ), 8 },
 	{ NETF( solid ), 24 },
 	{ NETF( event ), 10 },
-	{ NETF( eventParm ), 8 },
+	{ NETF( eventParm ), 10 },
 	{ NETF( eventSequence ), 8 }, // warning: need to modify cg_event.c at "// check the sequencial list" if you change this
 	{ NETF( events[0] ), 8 },
 	{ NETF( events[1] ), 8 },

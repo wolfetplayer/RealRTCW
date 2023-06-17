@@ -152,7 +152,7 @@ typedef struct alSfx_s
 static qboolean alBuffersInitialised = qfalse;
 
 // Sound effect storage, data structures
-#define MAX_SFX 4096
+#define MAX_SFX 8192
 static alSfx_t knownSfx[MAX_SFX];
 static sfxHandle_t numSfx = 0;
 

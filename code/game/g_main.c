@@ -1290,6 +1290,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	ClearRegisteredItems();
 
+	G_ResetRemappedShaders();
+
 	// parse the key/value pairs and spawn gentities
 	G_SpawnEntitiesFromString();
 

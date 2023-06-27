@@ -50,8 +50,6 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 
 int G_GetWeaponDamage( int weapon, qboolean player ); // JPW
 
-#define NUM_NAILSHOTS 10
-
 /*
 ======================================================================
 
@@ -71,7 +69,6 @@ void Weapon_Knife( gentity_t *ent ) {
 	trace_t tr;
 	gentity_t   *traceEnt, *tent;
 	int damage, mod;
-//	vec3_t		pforward, eforward;
 
 	vec3_t end;
 	qboolean	isPlayer = (ent->client && !ent->aiCharacter);	// Knightmare added
@@ -134,25 +131,10 @@ void Weapon_Knife( gentity_t *ent ) {
 
 
 	if ( traceEnt->client ) {
-		if ( ent->client->ps.serverCursorHint == HINT_KNIFE ) {
-//		AngleVectors (ent->client->ps.viewangles,		pforward, NULL, NULL);
-//		AngleVectors (traceEnt->client->ps.viewangles,	eforward, NULL, NULL);
-
-			// (SA) TODO: neutralize pitch (so only yaw is considered)
-//		if(DotProduct( eforward, pforward ) > 0.9f)	{	// from behind
-
-			// if relaxed, the strike is almost assured a kill
-			// if not relaxed, but still from behind, it does 10x damage (50)
-
-// (SA) commented out right now as the ai's state always checks here as 'combat'
-
-//			if(ent->s.aiState == AISTATE_RELAXED) {
+		if (G_GetEnemyPosition(ent, traceEnt) == POSITION_BEHIND) 
+		{
 			damage = 100;       // enough to drop a 'normal' (100 health) human with one jab
 			mod = MOD_KNIFE_STEALTH;
-//			} else {
-//				damage *= 10;
-//			}
-//----(SA)	end
 		}
 	}
 
@@ -169,7 +151,6 @@ void Weapon_Dagger( gentity_t *ent ) {
 	trace_t tr;
 	gentity_t   *traceEnt, *tent;
 	int damage, mod;
-//	vec3_t		pforward, eforward;
 
 	vec3_t end;
 	qboolean	isPlayer = (ent->client && !ent->aiCharacter);	// Knightmare added
@@ -219,25 +200,10 @@ void Weapon_Dagger( gentity_t *ent ) {
 	damage = G_GetWeaponDamage( ent->s.weapon, isPlayer ); // JPW		// default knife damage for frontal attacks
 
 	if ( traceEnt->client ) {
-		if ( ent->client->ps.serverCursorHint == HINT_KNIFE ) {
-//		AngleVectors (ent->client->ps.viewangles,		pforward, NULL, NULL);
-//		AngleVectors (traceEnt->client->ps.viewangles,	eforward, NULL, NULL);
-
-			// (SA) TODO: neutralize pitch (so only yaw is considered)
-//		if(DotProduct( eforward, pforward ) > 0.9f)	{	// from behind
-
-			// if relaxed, the strike is almost assured a kill
-			// if not relaxed, but still from behind, it does 10x damage (50)
-
-// (SA) commented out right now as the ai's state always checks here as 'combat'
-
-//			if(ent->s.aiState == AISTATE_RELAXED) {
+		if (G_GetEnemyPosition(ent, traceEnt) == POSITION_BEHIND)  
+		{
 			damage = 100;       // enough to drop a 'normal' (100 health) human with one jab
 			mod = MOD_DAGGER_STEALTH;
-//			} else {
-//				damage *= 10;
-//			}
-//----(SA)	end
 		}
 	}
 

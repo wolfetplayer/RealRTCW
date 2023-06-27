@@ -2676,3 +2676,30 @@ void SP_misc_firetrails( gentity_t *ent ) {
 	ent->nextthink = level.time + 100;
 
 }
+
+int G_GetEnemyPosition(gentity_t *ent, gentity_t *targ)
+{
+	float  angle = 0;
+	vec3_t pforward, eforward, attacker, target;
+
+	VectorCopy(ent->client->ps.viewangles, attacker);
+	VectorCopy(targ->client->ps.viewangles, target);
+
+	attacker[PITCH] = target[PITCH] = 0;
+
+	AngleVectors(attacker, pforward, NULL, NULL);
+	AngleVectors(target, eforward, NULL, NULL);
+
+	angle = DotProduct(eforward, pforward);
+
+	if (angle > 0.6f)
+	{
+		return POSITION_BEHIND;
+	}
+	if (angle < -0.6f)
+	{
+		return POSITION_INFRONT;
+	}
+
+	return POSITION_UNUSED;
+}

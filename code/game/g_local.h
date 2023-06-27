@@ -912,6 +912,8 @@ void Reached_Tramcar( gentity_t *ent );
 void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles );
 
 
+int G_GetEnemyPosition(gentity_t *ent, gentity_t *targ);
+
 //
 // g_weapon.c
 //

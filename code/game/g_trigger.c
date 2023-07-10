@@ -572,6 +572,348 @@ void SP_trigger_hurt( gentity_t *self ) {
 
 }
 
+// START	xkan, 9/17/2002
+/*
+==============================================================================
+
+trigger_heal
+
+==============================================================================
+*/
+
+/*QUAKED trigger_heal (.5 .5 .5) ?
+Any entity that touches this will be healed at a specified rate up to a specified
+maximum.
+
+"healrate"		rate of healing per second, default 5 (whole numbers only)
+"healtotal"		the maximum of healing this trigger can do. if <= 0, it's unlimited.
+				default 0 (whole numbers only)
+"target"		cabinet that this entity is linked to
+*/
+
+qboolean G_IsAllowedHeal( gentity_t* ent ) {
+
+	if ( !ent || !ent->client ) {
+		return qfalse;
+	}
+
+	if ( ent->health <= 0 || ent->health >= ent->client->ps.stats[STAT_MAX_HEALTH] ) {
+		return qfalse;
+	}
+
+	return qtrue;
+}
+
+void heal_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
+	int i, clientcount = 0;
+	gentity_t* touchClients[MAX_CLIENTS];
+	int healvalue;
+
+	memset( touchClients, 0, sizeof( touchClients ) );
+
+	if ( !other->client ) {
+		return;
+	}
+
+	if ( self->timestamp > level.time ) {
+		return;
+	}
+	self->timestamp = level.time + 1000;
+
+	for ( i = 0; i < level.numConnectedClients; i++ ) {
+		int j = level.sortedClients[i];
+
+		if ( level.clients[j].ps.stats[STAT_MAX_HEALTH] > g_entities[j].health && trap_EntityContactCapsule( g_entities[j].r.absmin, g_entities[j].r.absmax, self ) && G_IsAllowedHeal( &g_entities[j] ) ) {
+			touchClients[clientcount] = &g_entities[j];
+			clientcount++;
+		}
+	}
+
+	if ( clientcount == 0 ) {
+		return;
+	}
+
+	for ( i = 0; i < clientcount; i++ ) {
+		healvalue = min( touchClients[i]->client->ps.stats[STAT_MAX_HEALTH] - touchClients[i]->health, self->damage );
+		if ( self->health != -9999 ) {
+			healvalue = min( healvalue, self->health );
+		}
+		if ( healvalue <= 0 ) {
+			continue;
+		}
+
+		touchClients[i]->health += healvalue;
+		// add the medicheal event (to get sound, etc.)
+		G_AddPredictableEvent( other, EV_ITEM_PICKUP, BG_FindItemForClassName( "item_health_wall" ) - bg_itemlist );
+
+		if ( self->health != -9999 ) {
+			self->health -= healvalue;
+		}
+	}
+}
+
+#define HEALTH_REGENTIME 10000
+void trigger_heal_think( gentity_t* self ) {
+	self->nextthink = level.time + HEALTH_REGENTIME;
+
+	self->health += self->damage;
+	if ( self->health > self->count ) {
+		self->health = self->count;
+	}
+}
+
+#define TRIGGER_HEAL_CANTHINK( self ) self->count != -9999
+void trigger_heal_setup( gentity_t* self ) {
+	self->target_ent = G_FindByTargetname( NULL, self->target );
+	if ( !self->target_ent ) {
+		G_Error( "trigger_heal failed to find target: %s\n", self->target );
+	}
+
+	if ( TRIGGER_HEAL_CANTHINK( self ) ) {
+		self->think = trigger_heal_think;
+		self->nextthink = level.time + FRAMETIME;
+	}
+}
+
+/*
+==============
+SP_misc_cabinet_health
+==============
+*/
+
+/*QUAKED misc_cabinet_health (.5 .5 .5) (-20 -20 0) (20 20 60)
+*/
+void SP_misc_cabinet_health( gentity_t* self ) {
+	VectorSet( self->r.mins, -20, -20, 0 );
+	VectorSet( self->r.maxs, 20, 20, 60 );
+
+	G_SetOrigin( self, self->s.origin );
+	G_SetAngle( self, self->s.angles );
+
+	self->s.eType = ET_CABINET_H;
+
+	self->clipmask   = CONTENTS_SOLID;
+	self->r.contents = CONTENTS_SOLID;
+
+	trap_LinkEntity( self );
+}
+
+/*
+==============
+SP_trigger_heal
+==============
+*/
+void SP_trigger_heal( gentity_t *self ) {
+
+	char    *spawnstr;
+	int healvalue;
+
+	InitTrigger( self );
+
+	self->touch = heal_touch;
+
+	// healtotal specifies the maximum amount of health this trigger area restores
+	G_SpawnString( "healtotal", "0", &spawnstr );
+	healvalue = atoi( spawnstr );
+	// Gordon: -9999 means infinite now
+	self->health = healvalue;
+	if ( self->health <= 0 ) {
+		self->health = -9999;
+	}
+	self->count = self->health;
+	self->s.eType = ET_HEALER;
+
+	self->target_ent = NULL;
+	if ( self->target && *self->target ) {
+		self->think = trigger_heal_setup;
+		self->nextthink = level.time + FRAMETIME;
+	} else if ( TRIGGER_HEAL_CANTHINK( self ) ) {
+		self->think = trigger_heal_think;
+		self->nextthink = level.time + HEALTH_REGENTIME;
+	}
+
+	// healrate specifies the amount of healing per second
+	G_SpawnString( "healrate", "20", &spawnstr );
+	healvalue = atoi( spawnstr );
+	self->damage = healvalue;   // store the rate of heal in damage
+}
+
+
+/*
+==============================================================================
+
+trigger_ammo
+
+==============================================================================
+*/
+
+/*QUAKED trigger_ammo (.5 .5 .5) ?
+Any entity that touches this will get additional ammo a specified rate up to a
+specified maximum.
+
+"ammorate"		rate of ammo clips per second. default 1. (whole number only)
+"ammototal"		the maximum clips of ammo this trigger can add. if <= 0, it's unlimited.
+				default 0 (whole numbers only)
+"target"		cabinet that this entity is linked to
+*/
+
+qboolean G_IsAllowedAmmo( gentity_t* ent ) {
+
+	if ( !ent || !ent->client ) {
+		return qfalse;
+	}
+
+	if ( ent->health < 0 ) {
+		return qfalse;
+	}
+
+	if ( !AddMagicAmmo( ent, 0 ) ) {
+		return qfalse;
+	}
+
+	return qtrue;
+}
+
+void ammo_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
+	int i, clientcount = 0, count;
+	gentity_t* touchClients[MAX_CLIENTS];
+
+	memset( touchClients, 0, sizeof( touchClients ) );
+
+	if ( other->client == NULL ) {
+		return;
+	}
+
+	// flags is for the last entity number that got ammo
+	if ( self->timestamp > level.time ) {
+		return;
+	}
+	self->timestamp = level.time + 1000;
+
+	for ( i = 0; i < level.numConnectedClients; i++ ) {
+		int j = level.sortedClients[i];
+
+		if ( trap_EntityContactCapsule( g_entities[j].r.absmin, g_entities[j].r.absmax, self ) && G_IsAllowedAmmo( &g_entities[j] ) ) {
+			touchClients[clientcount] = &g_entities[j];
+			clientcount++;
+		}
+	}
+
+	if ( clientcount == 0 ) {
+		return;
+	}
+
+	// Gordon: if low, just give out what's left
+	if ( self->health == -9999 ) {
+		count = clientcount;
+	} else {
+		count = min( clientcount, self->health / (float)self->damage );
+	}
+
+	for ( i = 0; i < count; i++ ) {
+		int ammoAdded = qfalse;
+
+		// self->damage contains the amount of ammo to add
+		ammoAdded = AddMagicAmmo( touchClients[i], self->damage );
+
+		if ( ammoAdded ) {
+			// add the cell event (to get sound, etc.)
+			G_AddPredictableEvent( touchClients[i], EV_ITEM_PICKUP, BG_FindItem( "Ammo Pack" ) - bg_itemlist );
+			if ( self->health != -9999 ) {
+				// reduce the ammount of available ammo by the added clip number
+				self->health -= self->damage;
+			}
+		}
+	}
+}
+
+#define AMMO_REGENTIME 60000
+void trigger_ammo_think( gentity_t* self ) {
+	self->nextthink = level.time + AMMO_REGENTIME;
+
+	self->health += self->damage;
+	if ( self->health > self->count ) {
+		self->health = self->count;
+	}
+}
+
+#define TRIGGER_AMMO_CANTHINK( self ) self->count != -9999
+void trigger_ammo_setup( gentity_t* self ) {
+	self->target_ent = G_FindByTargetname( NULL, self->target );
+	if ( !self->target_ent ) {
+		G_Error( "trigger_ammo failed to find target: %s\n", self->target );
+	}
+
+	if ( TRIGGER_AMMO_CANTHINK( self ) ) {
+		self->think = trigger_ammo_think;
+		self->nextthink = level.time + FRAMETIME;
+	}
+}
+
+/*
+==============
+SP_misc_cabinet_supply
+==============
+*/
+/*QUAKED misc_cabinet_supply (.5 .5 .5) (-20 -20 0) (20 20 60)
+*/
+void SP_misc_cabinet_supply( gentity_t* self ) {
+	VectorSet( self->r.mins, -20, -20, 0 );
+	VectorSet( self->r.maxs, 20, 20, 60 );
+
+	G_SetOrigin( self, self->s.origin );
+	G_SetAngle( self, self->s.angles );
+
+	self->s.eType = ET_CABINET_A;
+
+	self->clipmask   = CONTENTS_SOLID;
+	self->r.contents = CONTENTS_SOLID;
+
+	trap_LinkEntity( self );
+}
+
+/*
+==============
+SP_trigger_ammo
+==============
+*/
+void SP_trigger_ammo( gentity_t *self ) {
+
+	char    *spawnstr;
+	int ammovalue;
+
+	InitTrigger( self );
+
+	self->touch = ammo_touch;
+
+	// ammototal specifies the maximum amount of ammo this trigger contains
+	G_SpawnString( "ammototal", "0", &spawnstr );
+	ammovalue = atoi( spawnstr );
+	// Gordon: -9999 means infinite now
+	self->health = ammovalue;
+	if ( self->health <= 0 ) {
+		self->health = -9999;
+	}
+	self->count = self->health;
+	self->s.eType = ET_SUPPLIER;
+
+	self->target_ent = NULL;
+	if ( self->target && *self->target ) {
+		self->think = trigger_ammo_setup;
+		self->nextthink = level.time + FRAMETIME;
+	} else if ( TRIGGER_AMMO_CANTHINK( self ) ) {
+		self->think = trigger_ammo_think;
+		self->nextthink = level.time + AMMO_REGENTIME;
+	}
+
+	// ammorate specifies the amount of ammo added per second
+	G_SpawnString( "ammorate", "1", &spawnstr );
+	ammovalue = atoi( spawnstr );
+	// store the rate of ammo addition in damage
+	self->damage = ammovalue;
+
+}
+
 
 /*
 ==============================================================================

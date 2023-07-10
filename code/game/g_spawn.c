@@ -223,6 +223,12 @@ void SP_trigger_push( gentity_t *ent );
 void SP_trigger_teleport( gentity_t *ent );
 void SP_trigger_hurt( gentity_t *ent );
 
+void SP_misc_cabinet_supply( gentity_t* self );
+void SP_trigger_ammo( gentity_t *ent );
+
+void SP_misc_cabinet_health( gentity_t* self );
+void SP_trigger_heal( gentity_t *ent );   
+
 //---- (SA) Wolf triggers
 void SP_trigger_once( gentity_t *ent );
 //---- done
@@ -669,6 +675,7 @@ spawn_t spawns[] = {
 	//----(SA)	light coronas
 	{"corona",       SP_corona},
 
+	{"misc_cabinet_supply", SP_misc_cabinet_supply},
 	{"test_gas", SP_gas},
 	{"trigger_flagonly", SP_trigger_flagonly},               // DHM - Nerve
 	{"trigger_objective_info", SP_trigger_objective_info},   // DHM - Nerve
@@ -855,6 +862,12 @@ void G_SpawnGEntityFromSpawnVars( void ) {
 			G_FreeEntity( ent );
 			return;
 		}
+
+	if ( ent->targetname && *ent->targetname ) {
+		ent->targetnamehash = BG_StringHashValue( ent->targetname );
+	} else {
+		ent->targetnamehash = -1;
+	}
 
 	// move editor origin to pos
 	VectorCopy( ent->s.origin, ent->s.pos.trBase );

@@ -230,6 +230,57 @@ gentity_t *G_Find( gentity_t *from, int fieldofs, const char *match ) {
 
 /*
 =============
+G_FindByTargetname
+=============
+*/
+gentity_t* G_FindByTargetname( gentity_t *from, const char* match ) {
+	gentity_t* max = &g_entities[level.num_entities];
+	int hash = BG_StringHashValue( match );
+
+	if ( !from ) {
+		from = g_entities;
+	} else {
+		from++;
+	}
+
+	for ( ; from < max ; from++ ) {
+		if ( !from->inuse ) {
+			continue;
+		}
+
+		if ( from->targetnamehash == hash && !Q_stricmp( from->targetname, match ) ) {
+			return from;
+		}
+	}
+
+	return NULL;
+}
+
+// digibob: this version should be used for loops, saves the constant hash building
+gentity_t* G_FindByTargetnameFast( gentity_t *from, const char* match, int hash ) {
+	gentity_t* max = &g_entities[level.num_entities];
+
+	if ( !from ) {
+		from = g_entities;
+	} else {
+		from++;
+	}
+
+	for ( ; from < max ; from++ ) {
+		if ( !from->inuse ) {
+			continue;
+		}
+
+		if ( from->targetnamehash == hash && !Q_stricmp( from->targetname, match ) ) {
+			return from;
+		}
+	}
+
+	return NULL;
+}
+
+/*
+=============
 G_PickTarget
 
 Selects a random entity from among the targets

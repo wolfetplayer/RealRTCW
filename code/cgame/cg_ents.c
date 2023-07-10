@@ -56,14 +56,11 @@ void CG_PositionEntityOnTag( refEntity_t *entity, const refEntity_t *parent,
 	// lerp the tag
 	trap_R_LerpTag( &lerped, parent, tagName, startIndex );
 
-	// FIXME: allow origin offsets along tag?	//----(SA) Yes! Adding.
-
 	VectorCopy( parent->origin, entity->origin );
 
 	if ( offset ) {
 		VectorAdd( lerped.origin, *offset, lerped.origin );
 	}
-//----(SA) end
 
 	for ( i = 0 ; i < 3 ; i++ ) {
 		VectorMA( entity->origin, lerped.origin[i], parent->axis[i], entity->origin );
@@ -71,9 +68,36 @@ void CG_PositionEntityOnTag( refEntity_t *entity, const refEntity_t *parent,
 
 	// had to cast away the const to avoid compiler problems...
 	MatrixMultiply( lerped.axis, ( (refEntity_t *)parent )->axis, entity->axis );
-	// Ridah, not sure why this was here.. causes jittery torso animation, since the torso might have
-	// different frame/oldFrame
-	//entity->backlerp = parent->backlerp;
+}
+
+/*
+======================
+CG_PositionEntityOnTagAlt
+
+Modifies the entities position and axis by the given
+tag location
+======================
+*/
+void CG_PositionEntityOnTagAlt( refEntity_t *entity, const refEntity_t *parent, const char *tagName, int startIndex, vec3_t *offset ) {
+	int i;
+	orientation_t lerped;
+
+	// lerp the tag
+	trap_R_LerpTag( &lerped, parent, tagName, startIndex );
+
+	// allow origin offsets along tag
+	VectorCopy( parent->origin, entity->origin );
+
+	if ( offset ) {
+		VectorAdd( lerped.origin, *offset, lerped.origin );
+	}
+
+	for ( i = 0 ; i < 3 ; i++ ) {
+		VectorMA( entity->origin, lerped.origin[i], parent->axis[i], entity->origin );
+	}
+
+	// had to cast away the const to avoid compiler problems...
+	MatrixMultiply( lerped.axis, ( (refEntity_t *)parent )->axis, entity->axis );
 }
 
 
@@ -2156,6 +2180,135 @@ static void CG_Prop( centity_t *cent ) {
 
 }
 
+typedef enum cabinetType_e {
+	CT_AMMO,
+	CT_HEALTH,
+	CT_MAX,
+} cabinetType_t;
+
+#define MAX_CABINET_TAGS 6
+typedef struct cabinetTag_s {
+	const char* tagsnames[MAX_CABINET_TAGS];
+
+	const char* itemnames[MAX_CABINET_TAGS];
+	qhandle_t itemmodels[MAX_CABINET_TAGS];
+
+	const char* modelName;
+	qhandle_t model;
+} cabinetTag_t;
+
+cabinetTag_t cabinetInfo[CT_MAX] = {
+	{
+		{
+			"tag_ammo01",
+			"tag_ammo02",
+			"tag_ammo03",
+			"tag_ammo04",
+			"tag_ammo05",
+			"tag_ammo06",
+		},
+		{
+			"models/multiplayer/supplies/ammobox_wm.md3",
+			"models/multiplayer/supplies/ammobox_wm.md3",
+			"models/multiplayer/supplies/ammobox_wm.md3",
+			"models/multiplayer/supplies/ammobox_wm.md3",
+			"models/multiplayer/supplies/ammobox_wm.md3",
+			"models/multiplayer/supplies/ammobox_wm.md3",
+		},
+		{
+			0, 0, 0, 0, 0, 0
+		},
+		"models/mapobjects/supplystands/stand_ammo.md3",
+		0,
+	},
+	{
+		{
+			"tag_Medikit_01",
+			"tag_Medikit_02",
+			"tag_Medikit_03",
+			"tag_Medikit_04",
+			"tag_Medikit_05",
+			"tag_Medikit_06",
+		},
+		{
+			"models/multiplayer/supplies/healthbox_wm.md3",
+			"models/multiplayer/supplies/healthbox_wm.md3",
+			"models/multiplayer/supplies/healthbox_wm.md3",
+			"models/multiplayer/supplies/healthbox_wm.md3",
+			"models/multiplayer/supplies/healthbox_wm.md3",
+			"models/multiplayer/supplies/healthbox_wm.md3",
+		},
+		{
+			0, 0, 0, 0, 0, 0
+		},
+		"models/mapobjects/supplystands/stand_health.md3",
+		0,
+	},
+};
+
+/*
+=========================
+CG_Cabinet
+=========================
+*/
+void CG_Cabinet( centity_t* cent, cabinetType_t type ) {
+	refEntity_t cabinet;
+	refEntity_t mini_me;
+	int i, cnt;
+
+	if ( type < 0 || type >= CT_MAX ) {
+		return;
+	}
+
+	memset( &cabinet, 0, sizeof( cabinet ) );
+	memset( &mini_me, 0, sizeof( mini_me ) );
+
+	cabinet.hModel =    cabinetInfo[type].model;
+	cabinet.frame =     0;
+	cabinet.oldframe =  0;
+	cabinet.backlerp =  0.f;
+
+	VectorCopy( cent->lerpOrigin, cabinet.origin );
+	VectorCopy( cabinet.origin, cabinet.oldorigin );
+	VectorCopy( cabinet.origin, cabinet.lightingOrigin );
+	cabinet.lightingOrigin[2] += 16;
+	cabinet.renderfx |= RF_MINLIGHT;
+	AnglesToAxis( cent->lerpAngles, cabinet.axis );
+
+	if ( cent->currentState.onFireStart == -9999 ) {
+		cnt = MAX_CABINET_TAGS;
+	} else {
+		cnt = MAX_CABINET_TAGS * ( cent->currentState.onFireStart / (float)cent->currentState.onFireEnd );
+		if ( cnt == 0 && cent->currentState.onFireStart ) {
+			cnt = 1;
+		}
+	}
+
+	for ( i = 0; i < cnt; i++ ) {
+		mini_me.hModel = cabinetInfo[type].itemmodels[i];
+
+		CG_PositionEntityOnTagAlt( &mini_me, &cabinet, cabinetInfo[type].tagsnames[i], 0, NULL );
+
+		VectorCopy( mini_me.origin, mini_me.oldorigin );
+		VectorCopy( mini_me.origin, mini_me.lightingOrigin );
+		mini_me.renderfx |= RF_MINLIGHT;
+
+		trap_R_AddRefEntityToScene( &mini_me );
+	}
+
+	trap_R_AddRefEntityToScene( &cabinet );
+}
+
+void CG_SetupCabinets( void ) {
+	int i, j;
+	for ( i = 0; i < CT_MAX; i++ ) {
+		cabinetInfo[i].model = trap_R_RegisterModel( cabinetInfo[i].modelName );
+		for ( j = 0; j < MAX_CABINET_TAGS; j++ ) {
+			cabinetInfo[i].itemmodels[j] = trap_R_RegisterModel( cabinetInfo[i].itemnames[j] );
+		}
+	}
+}
+
 /*
 ==============
 CG_FlamethrowerProp
@@ -2447,6 +2600,12 @@ static void CG_ProcessEntity( centity_t *cent ) {
 		break;
 	case ET_SPEAKER:
 		CG_Speaker( cent );
+		break;
+	case ET_CABINET_H:
+		CG_Cabinet( cent, CT_HEALTH );
+		break;
+	case ET_CABINET_A:
+		CG_Cabinet( cent, CT_AMMO );
 		break;
 	case ET_CORONA:
 		CG_Corona( cent );

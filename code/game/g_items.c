@@ -387,6 +387,20 @@ int Pickup_Ammo( gentity_t *ent, gentity_t *other ) {
 	return RESPAWN_AMMO;
 }
 
+
+// xkan, 9/18/2002 - Extracted AddMagicAmmo from Pickup_Weapon()
+/*
+=================================================================
+AddMagicAmmo - added the specified number of clips of magic ammo
+for any two-handed weapon
+
+- returns whether any ammo was actually added
+=================================================================
+*/
+qboolean AddMagicAmmo( gentity_t *receiver, int numOfClips ) {
+	return BG_AddMagicAmmo( &receiver->client->ps, numOfClips );
+}
+
 //======================================================================
 
 

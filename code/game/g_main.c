@@ -854,6 +854,16 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 }
 
 
+void G_SetTargetName( gentity_t* ent, char* targetname ) {
+	if ( targetname && *targetname ) {
+		ent->targetname = targetname;
+		ent->targetnamehash = BG_StringHashValue( targetname );
+	} else {
+		ent->targetnamehash = -1;
+	}
+}
+
+
 /*
 ================
 G_FindTeams

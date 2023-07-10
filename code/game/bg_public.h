@@ -542,6 +542,8 @@ typedef enum {
 } weapon_t;
 
 
+extern int reloadableWeapons[];
+
 
 typedef struct ammoTable_s {
 	int weaponindex;
@@ -1233,6 +1235,7 @@ extern gitem_t bg_itemlist[];
 extern int bg_numItems;
 
 gitem_t *BG_FindItem( const char *pickupName );
+gitem_t *BG_FindItemForClassName( const char *className );
 gitem_t *BG_FindItem2( const char *name );  
 gitem_t *BG_FindItemForWeapon( weapon_t weapon );
 gitem_t *BG_FindItemForPowerup( powerup_t pw );
@@ -1299,6 +1302,10 @@ typedef enum {
 	ET_FP_PARTS,
 	ET_FIRE_COLUMN,
 	ET_FIRE_COLUMN_SMOKE,
+	ET_CABINET_H,
+	ET_CABINET_A,
+	ET_HEALER,
+	ET_SUPPLIER,
 	ET_RAMJET,
 	ET_EXPLO_PART,
 	ET_CROWBAR,
@@ -1380,6 +1387,7 @@ void    BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t
 
 qboolean    BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime );
 qboolean    BG_PlayerSeesItem( playerState_t *ps, entityState_t *item, int atTime );
+qboolean    BG_AddMagicAmmo( playerState_t *ps, int numOfClips );
 
 void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce );
 

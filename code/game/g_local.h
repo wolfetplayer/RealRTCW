@@ -252,6 +252,7 @@ struct gentity_s {
 	char        *target;
 	char        *targetdeath;   // fire this on death exclusively //----(SA)	added
 	char        *targetname;
+	int         targetnamehash;         // Gordon: adding a hash for this for faster lookups
 	char        *team;
 	char        *targetShaderName;
 	char        *targetShaderNewName;
@@ -788,6 +789,7 @@ int ArmorIndex( gentity_t *ent );
 void Fill_Clip( playerState_t *ps, int weapon );
 void    Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip );
 void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace );
+qboolean AddMagicAmmo( gentity_t *receiver, int numOfClips );
 
 // Touch_Item_Auto is bound by the rules of autoactivation (if cg_autoactivate is 0, only touch on "activate")
 void Touch_Item_Auto( gentity_t *ent, gentity_t *other, trace_t *trace );
@@ -809,6 +811,8 @@ int     G_SoundIndex( const char *name );
 void    G_TeamCommand( team_t team, char *cmd );
 void    G_KillBox( gentity_t *ent );
 gentity_t *G_Find( gentity_t *from, int fieldofs, const char *match );
+gentity_t* G_FindByTargetname( gentity_t *from, const char* match );
+gentity_t* G_FindByTargetnameFast( gentity_t *from, const char* match, int hash );
 gentity_t *G_PickTarget( char *targetname );
 void    G_UseTargets( gentity_t *ent, gentity_t *activator );
 void    G_SetMovedir( vec3_t angles, vec3_t movedir );
@@ -1418,6 +1422,8 @@ void	*trap_Alloc( int size );
 
 gentity_t* G_FindSmokeBomb( gentity_t* start );
 void G_PoisonGasExplode  ( gentity_t* );
+
+void G_SetTargetName( gentity_t* ent, char* targetname );
 
 typedef enum
 {

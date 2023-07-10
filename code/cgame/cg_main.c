@@ -2814,6 +2814,8 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 
 	CG_StartMusic();
 
+	CG_SetupCabinets();
+
 	cg.lightstylesInited = qfalse;
 
 	CG_LoadingString( "" );

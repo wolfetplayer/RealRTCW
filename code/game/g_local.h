@@ -193,6 +193,8 @@ struct gentity_s {
 
 	qboolean inuse;
 
+	vec3_t instantVelocity;         // ydnar: per entity instantaneous velocity, set per frame
+
 	char        *classname;         // set in QuakeEd
 	int spawnflags;                 // set in QuakeEd
 
@@ -366,6 +368,10 @@ struct gentity_s {
 	// Rafael
 	qboolean is_dead;
 	// done
+
+	vec3_t oldOrigin;
+
+	qboolean runthisframe;
 
 	int start_size;
 	int end_size;
@@ -587,6 +593,7 @@ struct gclient_s {
 
 	// RF, may be shared by multiple clients/characters
 	animModelInfo_t *modelInfo;
+
 
 	// -------------------------------------------------------------------------------------------
 	// if working on a post release patch, new variables should ONLY be inserted after this point

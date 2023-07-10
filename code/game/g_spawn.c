@@ -676,6 +676,11 @@ spawn_t spawns[] = {
 	{"corona",       SP_corona},
 
 	{"misc_cabinet_supply", SP_misc_cabinet_supply},
+	{"trigger_ammo", SP_trigger_ammo},
+
+	{"misc_cabinet_health", SP_misc_cabinet_health},
+	{"trigger_heal", SP_trigger_heal},
+
 	{"test_gas", SP_gas},
 	{"trigger_flagonly", SP_trigger_flagonly},               // DHM - Nerve
 	{"trigger_objective_info", SP_trigger_objective_info},   // DHM - Nerve

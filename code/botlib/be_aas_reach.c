@@ -184,7 +184,7 @@ int AAS_BestReachableArea( vec3_t origin, vec3_t mins, vec3_t maxs, vec3_t goalo
 	aas_trace_t trace;
 
 	if ( !( *aasworld ).loaded ) {
-		botimport.Print( PRT_ERROR, "AAS_BestReachableArea: aas not loaded\n" );
+		//botimport.Print( PRT_ERROR, "AAS_BestReachableArea: aas not loaded\n" );
 		return 0;
 	} //end if
 	  //find a point in an area

@@ -5382,20 +5382,6 @@ qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
 					ammoAdded = qtrue;
 					ps->ammoclip[clip] = maxammo;
 				}
-			} else if ( weapon == WP_PANZERFAUST ) {
-				clip = BG_FindAmmoForWeapon( weapon );
-				if ( ps->ammoclip[clip] < maxammo ) {
-					// early out
-					if ( !numOfClips ) {
-						return qtrue;
-					}
-
-					ammoAdded = qtrue;
-					ps->ammoclip[clip] += numOfClips;
-					if ( ps->ammoclip[clip] >= maxammo ) {
-						ps->ammoclip[clip] = maxammo;
-					}
-				}
 			} else {
 				clip = BG_FindAmmoForWeapon( weapon );
 				if ( ps->ammo[clip] < maxammo ) {

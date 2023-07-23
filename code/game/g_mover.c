@@ -2665,14 +2665,22 @@ When a button is touched, it moves some distance in the direction of its angle, 
 "health"	if set, the button must be killed instead of touched
 "color"		constantLight color
 "light"		constantLight radius
+"type"      0-default, 1-firing range target
 */
 void SP_func_button( gentity_t *ent ) {
 	vec3_t abs_movedir;
 	float distance;
 	vec3_t size;
 	float lip;
+	int buttontype;
 
-	ent->sound1to2 = G_SoundIndex( "sound/movers/switches/butn2.wav" );
+	G_SpawnInt( "type", "0", &buttontype );
+
+	if ( buttontype == 0 ) { 
+	   ent->sound1to2 = G_SoundIndex( "sound/movers/switches/butn2.wav" );
+	} else if ( buttontype == 1 ) { 
+	   ent->sound1to2 = G_SoundIndex( "sound/movers/switches/target_hit.wav" );
+	}
 
 	if ( !ent->speed ) {
 		ent->speed = 40;

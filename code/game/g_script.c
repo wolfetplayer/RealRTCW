@@ -61,6 +61,12 @@ qboolean G_ScriptAction_EnableSpeaker( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MissionFailed( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MissionSuccess( gentity_t *ent, char *params );
 qboolean G_ScriptAction_Print( gentity_t *ent, char *params );
+
+//1NTERRUPTOR
+qboolean G_ScriptAction_AccumGameTime(gentity_t *ent, char *params);
+qboolean G_ScriptAction_AccumAction(gentity_t *ent, char *params);
+qboolean G_ScriptAction_PrintLabel(gentity_t *ent, char *params);
+
 qboolean G_ScriptAction_FaceAngles( gentity_t *ent, char *params );
 qboolean G_ScriptAction_ResetScript( gentity_t *ent, char *params );
 qboolean G_ScriptAction_TagConnect( gentity_t *ent, char *params );
@@ -118,6 +124,12 @@ g_script_stack_action_t gScriptActions[] =
 	{"missionfailed",            G_ScriptAction_MissionFailed},
 	{"missionsuccess",           G_ScriptAction_MissionSuccess},
 	{"print",                    G_ScriptAction_Print},
+
+	//1NTERRUPTOR
+	{"accumgametime",		G_ScriptAction_AccumGameTime},
+	{"accumaction",			G_ScriptAction_AccumAction},
+	{"printlabel",			G_ScriptAction_PrintLabel},
+
 	{"faceangles",               G_ScriptAction_FaceAngles},
 	{"resetscript",              G_ScriptAction_ResetScript},
 	{"attachtotag",              G_ScriptAction_TagConnect},

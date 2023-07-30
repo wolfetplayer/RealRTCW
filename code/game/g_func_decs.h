@@ -661,6 +661,12 @@ extern qboolean G_ScriptAction_TagConnect ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_ResetScript ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_FaceAngles ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_Print ( gentity_t * ent , char * params ) ;
+
+//1NTERRUPTOR
+extern qboolean G_ScriptAction_AccumGameTime(gentity_t * ent, char * params);
+extern qboolean G_ScriptAction_AccumAction(gentity_t * ent, char * params);
+extern qboolean G_ScriptAction_PrintLabel(gentity_t * ent, char * params);
+
 extern qboolean G_ScriptAction_MissionSuccess ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_MissionFailed ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_Accum ( gentity_t * ent , char * params ) ;

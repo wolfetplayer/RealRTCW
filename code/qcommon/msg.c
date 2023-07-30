@@ -1513,12 +1513,11 @@ void MSG_WriteDeltaPlayerstate( msg_t *msg, struct playerState_s *from, struct p
 		}
 	}
 	powerupbits = 0;
-	for ( i = 0 ; i < MAX_POWERUPS ; i++ ) {
-		if ( to->powerups[i] != from->powerups[i] ) {
+	for (i = 0; i < MAX_POWERUPS; i++) {
+		if (to->powerups[i] != from->powerups[i]) {
 			powerupbits |= 1 << i;
 		}
 	}
-
 
 	if ( statsbits || persistantbits || holdablebits || powerupbits ) {
 
@@ -1714,6 +1713,13 @@ void MSG_WriteDeltaPlayerstate( msg_t *msg, struct playerState_s *from, struct p
 	}
 #endif
 
+	//1NTERRUPTOR
+	MSG_WriteLong(msg, to->scriptAccumLabel.value);
+	MSG_WriteBits(msg, to->scriptAccumLabel.state, 1);
+	MSG_WriteLong(msg, to->scriptAccumLabel.flags);
+	MSG_WriteLong(msg, to->scriptAccumLabel.pos[0]);
+	MSG_WriteLong(msg, to->scriptAccumLabel.pos[1]);
+	MSG_WriteString(msg, to->scriptAccumLabel.label);
 
 	if ( print ) {
 		if ( msg->bit == 0 ) {
@@ -1908,6 +1914,13 @@ void MSG_ReadDeltaPlayerstate( msg_t *msg, playerState_t *from, playerState_t *t
 
 #endif
 
+	//1NTERRUPTOR
+	to->scriptAccumLabel.value = MSG_ReadLong(msg);
+	to->scriptAccumLabel.state = MSG_ReadBits(msg, 1);
+	to->scriptAccumLabel.flags = MSG_ReadLong(msg);
+	to->scriptAccumLabel.pos[0] = MSG_ReadLong(msg);
+	to->scriptAccumLabel.pos[1] = MSG_ReadLong(msg);
+	Q_strncpyz(to->scriptAccumLabel.label, MSG_ReadString(msg), MAX_QPATH);
 
 	if ( print ) {
 		if ( msg->bit == 0 ) {

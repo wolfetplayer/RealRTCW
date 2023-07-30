@@ -666,6 +666,10 @@ If you have questions concerning this license or the applicable additional terms
 {"G_ScriptAction_EnableSpeaker", (byte *)G_ScriptAction_EnableSpeaker},
 {"G_ScriptAction_DisableSpeaker", (byte *)G_ScriptAction_DisableSpeaker},
 {"G_ScriptAction_ToggleSpeaker", (byte *)G_ScriptAction_ToggleSpeaker},
+//1NTERRUPTOR
+{ "G_ScriptAction_AccumGameTime", (byte *)G_ScriptAction_AccumGameTime },
+{ "G_ScriptAction_AccumAction", (byte *)G_ScriptAction_AccumAction },
+{ "G_ScriptAction_PrintLabel", (byte *)G_ScriptAction_PrintLabel },
 {"G_ScriptAction_AlertEntity", (byte *)G_ScriptAction_AlertEntity},
 {"G_ScriptAction_PlayAnim", (byte *)G_ScriptAction_PlayAnim},
 {"G_ScriptAction_MusicQueue", (byte *)G_ScriptAction_MusicQueue},

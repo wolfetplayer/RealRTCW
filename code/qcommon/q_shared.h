@@ -1305,6 +1305,28 @@ typedef enum
 
 //=========================================================
 
+//=========================================================
+// 1NTERRUPTOR
+typedef enum
+{
+	SCRIPT_ACCUMPRINT_PULSE = 1 << 0,
+	SCRIPT_ACCUMPRINT_TIMER = 1 << 1,
+	SCRIPT_ACCUMPRINT_STRING = 1 << 2,
+	SCRIPT_ACCUMPRINT_ACCUM = 1 << 3,
+	SCRIPT_ACCUMPRINT_INLINE = 1 << 4
+
+} scriptAccumPrintFlags_t;
+
+typedef struct accumPrintLabel_s {
+	int value;
+	qboolean state;
+	scriptAccumPrintFlags_t flags;
+	int pos[2];
+	char label[MAX_QPATH];
+
+}printLabel_t;
+//=========================================================
+
 
 // weapon grouping
 #define MAX_WEAP_BANKS      11
@@ -1502,6 +1524,9 @@ typedef struct playerState_s {
 	// Jaybird - Shotgun
 	qboolean	m97reloadInterrupt;
 
+	// 1NTERRUPTOR
+	printLabel_t scriptAccumLabel;
+
 } playerState_t;
 
 
@@ -1685,7 +1710,6 @@ typedef struct entityState_s {
 	aistateEnum_t aiState;
 
 	int animMovetype;       // clients can't derive movetype of other clients for anim scripting system
-
 
 } entityState_t;
 

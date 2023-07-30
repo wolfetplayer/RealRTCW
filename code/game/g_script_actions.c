@@ -1162,6 +1162,260 @@ qboolean G_ScriptAction_Print( gentity_t *ent, char *params ) {
 
 /*
 =================
+1NTERRUPTOR
+
+G_ScriptAction_AccumGameTime
+
+	syntax : accumgametime <buffer_index>
+
+	Save level time into specified buffer
+=================
+*/
+
+qboolean G_ScriptAction_AccumGameTime(gentity_t *ent, char *params) {
+	char *pString, *token;
+	int bufferIndex;
+	int t;
+
+	pString = params;
+
+	if (!params || !params[0]) {
+		G_Error("G_Scripting: accumgametime requires some text\n");
+	}
+
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: accumgametime without a buffer index\n");
+	}
+
+	bufferIndex = atoi(token);
+	if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error("G_Scripting: accumgametime buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+	}
+
+	t = level.time - level.startTime;
+	ent->scriptAccumBuffer[bufferIndex] = t;
+
+	//G_Printf("G_ScriptAction_AccumGameTime (%d)\n", t);
+	return qtrue;
+}
+
+/*
+=================
+1NTERRUPTOR
+
+G_ScriptAction_AccumAction
+
+  syntax:
+		accumaction <buffer_index> <buffer_index> minus <buffer_index>
+		accumaction <buffer_index> <buffer_index> plus <buffer_index>
+		accumaction <buffer_index> <buffer_index> div <buffer_index>
+		accumaction <buffer_index> <buffer_index> mul <buffer_index>
+
+=================
+*/
+qboolean G_ScriptAction_AccumAction(gentity_t *ent, char *params) {
+	char *pString, *token, lastToken[MAX_QPATH];
+	int targetBufferIndex, operandBufferIndex[2];
+
+	pString = params;
+
+	if (!params || !params[0]) {
+		G_Error("G_Scripting: accumaction without parameters\n");
+	}
+
+	//Target
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: accumaction without target buffer index\n");
+	}
+
+	targetBufferIndex = atoi(token);
+	if (targetBufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error("G_Scripting: accumaction target buffer index is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+	}
+
+	//First operand
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: accumaction without first operand buffer index\n");
+	}
+
+	operandBufferIndex[0] = atoi(token);
+	if (operandBufferIndex[0] >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error("G_Scripting: accumaction first operand buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+	}
+
+	//Action
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: accumaction without action\n");
+	}
+
+	Q_strncpyz(lastToken, token, sizeof(lastToken));
+
+	//Second operand
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: accumaction without second operand buffer index\n");
+	}
+	operandBufferIndex[1] = atoi(token);
+	if (operandBufferIndex[1] >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error("G_Scripting: accumaction second operand buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+	}
+
+	if (!Q_stricmp(lastToken, "plus")) {
+		ent->scriptAccumBuffer[targetBufferIndex] = ent->scriptAccumBuffer[operandBufferIndex[0]] + ent->scriptAccumBuffer[operandBufferIndex[1]];
+	}
+	else if (!Q_stricmp(lastToken, "minus")) {
+		ent->scriptAccumBuffer[targetBufferIndex] = ent->scriptAccumBuffer[operandBufferIndex[0]] - ent->scriptAccumBuffer[operandBufferIndex[1]];
+	}
+	else if (!Q_stricmp(lastToken, "div")) {
+		ent->scriptAccumBuffer[targetBufferIndex] = (int)roundf((float)ent->scriptAccumBuffer[operandBufferIndex[0]] / (float)ent->scriptAccumBuffer[operandBufferIndex[1]]);
+	}
+	else if (!Q_stricmp(lastToken, "mul")) {
+		ent->scriptAccumBuffer[targetBufferIndex] = ent->scriptAccumBuffer[operandBufferIndex[0]] * ent->scriptAccumBuffer[operandBufferIndex[1]];
+	}
+	else {
+		G_Error("G_Scripting: accumaction wrong action (%s)\n", lastToken);
+	}
+
+	//G_Printf("G_ScriptAction_AccumAction <%d>(%d) %s <%d>(%d) = <%d>(%d)\n", 
+	//	operandBufferIndex[0], ent->scriptAccumBuffer[operandBufferIndex[0]],
+	//	lastToken,
+	//	operandBufferIndex[1], ent->scriptAccumBuffer[operandBufferIndex[1]],
+	//	targetBufferIndex, ent->scriptAccumBuffer[targetBufferIndex]);
+
+	return qtrue;
+}
+
+/*
+=================
+1NTERRUPTOR
+
+G_ScriptAction_PrintLabel
+
+  syntax:
+		printlabel txt <string>
+		printlabel param <value_buffer_index> <x> <y>
+		printlabel state <state_buffer_index>
+		printlabel on
+		printlabel off
+		printlabel format <formatstring>
+
+		formatstring:
+			timer
+			pulse
+			string
+			accum
+			inline
+
+=================
+*/
+
+qboolean G_ScriptAction_PrintLabel(gentity_t *ent, char *params) {
+	char *pString, *token;
+	int stateBufferIndex, valueBufferIndex;
+	gentity_t *pEnt;
+
+	pEnt = G_Find(NULL, FOFS(classname), "player");
+	if (!pEnt) {
+		//should never happened
+		G_Error("G_Scripting: printlabel can't find player entity\n");
+	}
+
+	pString = params;
+	if (!params || !params[0]) {
+		G_Error("G_Scripting: printlabel without parameters\n");
+	}
+
+	//keyword
+	token = COM_ParseExt(&pString, qfalse);
+	if (!token[0]) {
+		G_Error("G_Scripting: printlabel without keyword\n");
+	}
+	//txt <string>
+	if (!Q_stricmp(token, "txt")) {
+		Q_strncpyz(pEnt->client->ps.scriptAccumLabel.label, pString, MAX_QPATH);
+	}
+	//param <value_buffer_index> <x> <y>
+	else if (!Q_stricmp(token, "param")) {
+		//value_buffer_index
+		token = COM_ParseExt(&pString, qfalse);
+		if (!token[0]) {
+			G_Error("G_Scripting: printlabel param without value buffer index\n");
+		}
+		valueBufferIndex = atoi(token);
+		if (valueBufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+			G_Error("G_Scripting: printlabel value buffer index is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+		}
+		pEnt->client->ps.scriptAccumLabel.value = ent->scriptAccumBuffer[valueBufferIndex];
+		//x
+		token = COM_ParseExt(&pString, qfalse);
+		if (!token[0]) {
+			G_Error("G_Scripting: printlabel missing x position\n");
+		}
+		pEnt->client->ps.scriptAccumLabel.pos[0] = atoi(token);
+		//y
+		token = COM_ParseExt(&pString, qfalse);
+		if (!token[0]) {
+			G_Error("G_Scripting: printlabel missing y position\n");
+		}
+		pEnt->client->ps.scriptAccumLabel.pos[1] = atoi(token);
+	}
+	//state <state_buffer_index>
+	else if (!Q_stricmp(token, "state")) {
+		token = COM_ParseExt(&pString, qfalse);
+		if (!token[0]) {
+			G_Error("G_Scripting: printlabel state without state buffer index\n");
+		}
+		stateBufferIndex = atoi(token);
+		if (stateBufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+			G_Error("G_Scripting: printlabel value buffer index is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS);
+		}
+		pEnt->client->ps.scriptAccumLabel.state = ent->scriptAccumBuffer[stateBufferIndex] > 0;
+	}
+	//on
+	else if (!Q_stricmp(token, "on")) {
+		pEnt->client->ps.scriptAccumLabel.state = qtrue;
+	}
+	//off
+	else if (!Q_stricmp(token, "off")) {
+		pEnt->client->ps.scriptAccumLabel.state = qfalse;
+	}
+	//format <formatstring>
+	else if (!Q_stricmp(token, "format")) {
+		pEnt->client->ps.scriptAccumLabel.flags = 0;
+		while (token[0]) {
+			token = COM_ParseExt(&pString, qfalse);
+			if (!strlen(token)) {
+				break;
+			}
+			if (!Q_stricmp(token, "timer")) {
+				pEnt->client->ps.scriptAccumLabel.flags |= SCRIPT_ACCUMPRINT_TIMER;
+			}
+			else if (!Q_stricmp(token, "pulse")) {
+				pEnt->client->ps.scriptAccumLabel.flags |= SCRIPT_ACCUMPRINT_PULSE;
+			}
+			else if (!Q_stricmp(token, "string")) {
+				pEnt->client->ps.scriptAccumLabel.flags |= SCRIPT_ACCUMPRINT_STRING;
+			}
+			else if (!Q_stricmp(token, "accum")) {
+				pEnt->client->ps.scriptAccumLabel.flags |= SCRIPT_ACCUMPRINT_ACCUM;
+			}
+			else if (!Q_stricmp(token, "inline")) {
+				pEnt->client->ps.scriptAccumLabel.flags |= SCRIPT_ACCUMPRINT_INLINE;
+			}
+			else {
+				G_Error("G_Scripting: printlabel wrong format string (%s)\n", token);
+			}
+		}
+	}
+	return qtrue;
+}
+
+/*
+=================
 G_ScriptAction_FaceAngles
 
   syntax: faceangles <pitch> <yaw> <roll> <duration/GOTOTIME> [ACCEL/DECCEL]

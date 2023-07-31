@@ -1075,6 +1075,87 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
 }
 
 /*
+=====================
+1NTERRUPTOR
+
+CG_DrawScriptLabel
+
+fasty but hacky: we use player's playerstate fields because it can be directly passed by game to cgame
+=====================
+*/
+#define SCRIPTLABEL_PULSEAMP		0.7f		//1 - mean 0...1; 0.7 mean 0.15...0.85
+
+static void CG_DrawScriptLabel() {
+	char *s1, *s2, *s3;
+	int w1, w2, w3;
+	int mins, seconds, tens;
+	int msec;
+	float a;
+	int offset = 0;
+	printLabel_t *lbl = &cg.predictedPlayerState.scriptAccumLabel;
+
+	if (!lbl->state) {
+		return;
+	}
+
+	msec = lbl->value;
+
+	if (lbl->flags & SCRIPT_ACCUMPRINT_ACCUM) {
+		if (lbl->flags & SCRIPT_ACCUMPRINT_TIMER) {
+			seconds = msec / 1000;
+			mins = seconds / 60;
+			seconds -= mins * 60;
+			tens = seconds / 10;
+			seconds -= tens * 10;
+
+			s1 = va("%i:%i%i", mins, tens, seconds);
+		}
+		else {
+			s1 = va("%d", msec);
+		}
+	}
+	else {
+		s1 = va("");
+	}
+	w1 = CG_DrawStrlen(s1) * BIGCHAR_WIDTH;
+
+	if (lbl->flags & SCRIPT_ACCUMPRINT_STRING) {
+		s2 = va("%s", lbl->label);
+	}
+	else {
+		s2 = va("");
+	}
+	w2 = CG_DrawStrlen(s2) * BIGCHAR_WIDTH;
+
+	//nothing to draw
+	if (!w1 && !w2) {
+		return;
+	}
+
+	if (lbl->flags & SCRIPT_ACCUMPRINT_PULSE) {
+		a = 0.5f + 0.5f * sinf((float)cg.time * 0.005f) / (1.f / SCRIPTLABEL_PULSEAMP);
+	}
+	else {
+		a = 1.f;
+	}
+
+	if (lbl->flags & SCRIPT_ACCUMPRINT_INLINE) {
+		s3 = va("%s %s", s2, s1);
+		w3 = CG_DrawStrlen(s3) * BIGCHAR_WIDTH;
+		CG_DrawBigString(lbl->pos[0] - (int)roundf((float)w3 * 0.5f), lbl->pos[1], s3, a);
+	}
+	else {
+		if (w2) {
+			offset = BIGCHAR_HEIGHT;
+			CG_DrawBigString(lbl->pos[0] - (int)roundf((float)w2 * 0.5f), lbl->pos[1], s2, a);
+		}
+		if (w1) {
+			CG_DrawBigString(lbl->pos[0] - (int)roundf((float)w1 * 0.5f), lbl->pos[1] + offset, s1, a);
+		}
+	}
+}
+
+/*
 ===========================================================================================
 
   LOWER RIGHT CORNER
@@ -3385,6 +3466,8 @@ if ( !cg_oldWolfUI.integer ) {
 
 	if ( !cg_paused.integer ) {
 		CG_DrawUpperRight(stereoFrame);
+		//1NTERRUPTOR
+		CG_DrawScriptLabel();
 	}
 
 	if ( cg_oldWolfUI.integer ) {

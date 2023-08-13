@@ -73,6 +73,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_PushAway", (byte *)AICast_ScriptAction_PushAway},
 {"AICast_ScriptAction_AnimCondition", (byte *)AICast_ScriptAction_AnimCondition},
 {"AICast_ScriptAction_LockPlayer", (byte *)AICast_ScriptAction_LockPlayer},
+{"AICast_ScriptAction_ScreenFade", (byte *)AICast_ScriptAction_ScreenFade},
 {"AICast_ScriptAction_ExplicitRouting", (byte *)AICast_ScriptAction_ExplicitRouting},
 {"AICast_ScriptAction_MusicQueue", (byte *)AICast_ScriptAction_MusicQueue},
 {"AICast_ScriptAction_MusicFade", (byte *)AICast_ScriptAction_MusicFade},

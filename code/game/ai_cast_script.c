@@ -263,6 +263,7 @@ qboolean AICast_ScriptAction_MusicQueue( cast_state_t *cs, char *params );		//--
 
 qboolean AICast_ScriptAction_ExplicitRouting( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_LockPlayer( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_ScreenFade( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_AnimCondition( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_PushAway( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_CatchFire( cast_state_t *cs, char *params );
@@ -487,6 +488,7 @@ cast_script_stack_action_t scriptActions[] =
 
 	{"explicit_routing", AICast_ScriptAction_ExplicitRouting},
 	{"lockplayer",       AICast_ScriptAction_LockPlayer},
+	{"screenfade",       AICast_ScriptAction_ScreenFade},
 	{"anim_condition",   AICast_ScriptAction_AnimCondition},
 	{"pushaway",     AICast_ScriptAction_PushAway},
 	{"catchfire",        AICast_ScriptAction_CatchFire},

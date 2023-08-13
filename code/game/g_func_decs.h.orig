@@ -73,6 +73,7 @@ extern qboolean AICast_ScriptAction_CatchFire ( cast_state_t * cs , char * param
 extern qboolean AICast_ScriptAction_PushAway ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_AnimCondition ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_LockPlayer ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_ScreenFade ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_ExplicitRouting ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_MusicQueue ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_MusicFade ( cast_state_t * cs , char * params ) ;

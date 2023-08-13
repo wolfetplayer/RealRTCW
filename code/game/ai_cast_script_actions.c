@@ -5170,6 +5170,47 @@ qboolean AICast_ScriptAction_LockPlayer( cast_state_t *cs, char *params ) {
 }
 
 /*
+=================
+AICast_ScriptAction_ScreenFade
+
+  syntax: screenfade <fadetime> <in/out>
+=================
+*/
+qboolean AICast_ScriptAction_ScreenFade( cast_state_t *cs, char *params ) {
+	char    *pString, *token;
+	int fadetime;
+
+	pString = params;
+
+	if (!params || !params[0]) {
+		G_Error("AI Scripting:screenfade without parameters\n");
+	}
+    
+	// Specify fadetime
+	token = COM_ParseExt( &pString, qfalse );
+	if ( !token[0] ) {
+		G_Error( "AI_Scripting: syntax: screenfade <fadetime> <in/out>" );
+	}
+	fadetime = atof ( token );
+
+	// Specify in/out
+    token = COM_ParseExt( &pString, qfalse );
+    	
+	if ( !token[0] ) {
+		G_Error( "AI_Scripting: syntax: screenfade <fadetime> <in/out>" );
+	}
+
+	if (!Q_stricmp (token, "in")) {
+		trap_SetConfigstring( CS_SCREENFADE, va( "1 %i %i", level.time + 10, fadetime ) ); // fading in
+	} else if (!Q_stricmp (token, "out")) {
+	    trap_SetConfigstring( CS_SCREENFADE, va( "0 %i %i", level.time + 10, fadetime ) ); // fading out
+	}
+
+	return qtrue;
+
+	}
+
+/*
 ==================
 AICast_ScriptAction_AnimCondition
 

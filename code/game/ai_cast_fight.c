@@ -617,9 +617,9 @@ qboolean AICast_CheckAttack_real( cast_state_t *cs, int enemy, qboolean allowHit
 	// don't attack while in air (like on a ladder)
 	if ( !ent->waterlevel && ent->client->ps.groundEntityNum == ENTITYNUM_NONE && !ent->active ) {
 		// stim is allowed to fire while in air for flying attack
-		if ( !ent->client->ps.powerups[PW_FLIGHT] ) {
+		/*if ( !ent->client->ps.powerups[PW_FLIGHT] ) {
 			return qfalse;
-		}
+		}*/
 	}
 	//
 	if ( ent->health <= 0 ) {

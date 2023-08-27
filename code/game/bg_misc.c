@@ -4703,6 +4703,35 @@ model="models/powerups/holdable/bg_syringe.md3"
 	},
 
 
+/*QUAKED holdable_lp_syringe(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+pickup sound : "sound/pickup/holdable/get_adrenaline.wav"
+use sound : "sound/pickup/holdable/use_adrenaline.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/lp_syringe.md3"
+*/
+	{
+		"holdable_lp_syringe",
+		"sound/pickup/holdable/get_adrenaline.wav",
+		{
+		"models/powerups/holdable/lp_syringe.md3",
+		0, 
+		0
+		},
+
+		"icons/lp_syringe",            
+		"LP Syringe used",             
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_LP_SYRINGE,
+		0,
+		0,
+		"",                              
+		"sound/pickup/holdable/use_adrenaline.wav", 
+		{1,1,1,1,1}
+	},
+
+
 /*QUAKED holdable_bandages(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 Protection from fatigue
 Using the "sprint" key will not fatigue the character

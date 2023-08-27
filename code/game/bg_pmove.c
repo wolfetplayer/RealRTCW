@@ -365,9 +365,9 @@ static void PM_Friction( void ) {
 	}
 
 	// apply flying friction
-	if ( pm->ps->powerups[PW_FLIGHT] ) {
+	/*if ( pm->ps->powerups[PW_FLIGHT] ) {
 		drop += speed * pm_flightfriction * pml.frametime;
-	}
+	}*/
 
 	if ( pm->ps->pm_type == PM_SPECTATOR ) {
 		drop += speed * pm_spectatorfriction * pml.frametime;
@@ -726,6 +726,11 @@ static qboolean PM_CheckJump( void ) {
 			            pm->ps->velocity[2] = 270; // no realism
 		}
 	#endif
+
+	if ( pm->ps->powerups[PW_FLIGHT] ) 
+	{
+		pm->ps->velocity[2] = 400;
+	}
 
 	PM_AddEvent( EV_JUMP );
 
@@ -3786,7 +3791,7 @@ static void PM_Weapon( void ) {
 			addTime = 2000;         // force "heat recovery minimum" to 2 sec right now
 		}
 	}
-	
+
     /*
 	if ( pm->ps->powerups[PW_HASTE] ) {
 		addTime /= 1.6;
@@ -4598,18 +4603,13 @@ void PmoveSingle( pmove_t *pmove ) {
 		PM_DropTimers();
 	}
 
-	if ( pm->ps->powerups[PW_FLIGHT] ) {
+	/*if ( pm->ps->powerups[PW_FLIGHT] ) {
 		// flight powerup doesn't allow jump and has different friction
 		PM_FlyMove();
 // RF, removed grapple flag since it's not used
-#if 0
-	} else if ( pm->ps->pm_flags & PMF_GRAPPLE_PULL ) {
-		PM_GrappleMove();
-		// We can wiggle a bit
-		PM_AirMove();
-#endif
 		// Ridah, ladders
-	} else if ( pml.ladder ) {
+		*/
+	if ( pml.ladder ) {
 		PM_LadderMove();
 		// done.
 	} else if ( pm->ps->pm_flags & PMF_TIME_WATERJUMP ) {

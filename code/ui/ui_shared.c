@@ -111,6 +111,7 @@ translateString_t translateStrings[] = {
 	{"usedadrenaline"},          //	"You used the adrenaline"
 	{"usedeg_syringe"},           // "You used the EG Syringe"	
 	{"usedbg_syringe"},           // "You used the BG Syringe"	
+	{"usedlp_syringe"},           // "You used the LP Syringe"
 	{"noquickgrenammo"},         //	"No grenades left"
 	{"noitem"},                  //	"No item to use"
 	{"gamesaved"},               //	"Game Saved"

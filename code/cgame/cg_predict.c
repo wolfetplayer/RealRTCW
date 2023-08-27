@@ -470,9 +470,9 @@ static void CG_TouchTriggerPrediction( void ) {
 			}
 
 			// flying characters don't hit bounce pads
-			if ( cg.predictedPlayerState.powerups[PW_FLIGHT] ) {
+			/*if ( cg.predictedPlayerState.powerups[PW_FLIGHT] ) {
 				continue;
-			}
+			}*/
 
 			// if we are already flying along the bounce direction, don't play sound again
 			VectorNormalize2( ent->origin2, dir );

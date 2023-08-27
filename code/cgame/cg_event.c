@@ -133,7 +133,10 @@ static void CG_UseItem( centity_t *cent ) {
 					CG_CenterPrint( "usedadrenaline", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
 				case HI_EG_SYRINGE:
-					CG_CenterPrint( "usedegsyringe", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					CG_CenterPrint( "usedeg_syringe", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
+				case HI_BG_SYRINGE:
+					CG_CenterPrint( "usedbg_syringe", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
 				case HI_BANDAGES:
 					CG_CenterPrint( "usedbandages", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
@@ -167,6 +170,7 @@ static void CG_UseItem( centity_t *cent ) {
 
 	case HI_ADRENALINE:
 	case HI_EG_SYRINGE:
+	case HI_BG_SYRINGE:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.adrenalineSound );
 		break;
 	case HI_BANDAGES:

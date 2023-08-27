@@ -204,7 +204,18 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		{
 		steamSetAchievement("ACH_ADRENALINE");
 		}
-		break;*/
+		*/
+		break;
+	case HI_BG_SYRINGE:       
+        ent->client->ps.powerups[PW_BATTLESUIT] = level.time - ( level.time % 1000 );
+		ent->client->ps.powerups[PW_BATTLESUIT] += 30 * 1000;
+		
+		/*if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_ADRENALINE");
+		}
+		*/
+		break;
 
 	case HI_BANDAGES:       
 		ent->health += 20;

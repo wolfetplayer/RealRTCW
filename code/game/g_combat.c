@@ -1076,10 +1076,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	// and protects 50% against all damage
 	if ( client && client->ps.powerups[PW_BATTLESUIT] ) {
 		G_AddEvent( targ, EV_POWERUP_BATTLESUIT, 0 );
-		if ( dflags & DAMAGE_RADIUS ) {
+		/*if ( dflags & DAMAGE_RADIUS ) {
 			return;
-		}
-		damage *= 0.1;
+		}*/
+
+		damage *= 0.15;
 	}
 
 	// always give half damage if hurting self

@@ -440,7 +440,7 @@ typedef enum {
 	HI_BOOK2,   
 	HI_BOOK3,   
 	HI_EG_SYRINGE,
-	HI_12,
+	HI_BG_SYRINGE,
 	HI_13,
 	HI_14,
 	HI_M97,

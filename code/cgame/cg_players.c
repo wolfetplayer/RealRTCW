@@ -2789,9 +2789,11 @@ static void CG_PlayerPowerups( centity_t *cent ) {
 	}
 
 	// haste leaves smoke trails
+	/*
 	if ( powerups & ( 1 << PW_HASTE ) ) {
 		CG_HasteTrail( cent );
 	}
+	*/
 }
 
 

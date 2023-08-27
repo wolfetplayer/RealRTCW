@@ -4645,6 +4645,37 @@ model="models/powerups/holdable/adrenaline.md3"
 		{1,1,1,1,1}
 	},
 
+	/*QUAKED holdable_eg_syringe(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_adrenaline.wav"
+use sound : "sound/pickup/holdable/use_adrenaline.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/adrenaline.md3"
+*/
+	{
+		"holdable_eg_syringe",
+		"sound/pickup/holdable/get_adrenaline.wav",
+		{
+		"models/powerups/holdable/eg_syringe.md3",
+		0, 
+		0
+		},
+
+		"icons/eg_syringe",            
+		"EG Syringe used",             
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_EG_SYRINGE,
+		0,
+		0,
+		"",                              
+		"sound/pickup/holdable/use_adrenaline.wav", 
+		{1,1,1,1,1}
+	},
+
 
 /*QUAKED holdable_bandages(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 Protection from fatigue

@@ -1403,19 +1403,6 @@ void CG_DrawHoldableItem_old( void ) {
 		CG_DrawPic( 606 - 4, 366 - 4, 32, 32, cgs.media.selectShader );
 	}
 }
-/*
-		if(cg.holdableSelect == HI_WINE) {
-			if(value > 3)
-				value = 3;	// 3 stages to icon, just draw full if beyond 'full'
-
-			CG_DrawPic( 598 + 16, 366, 16, 32, cg_items[item - bg_itemlist].icons[2-(value-1)] );
-			CG_DrawPic( (598 + 16)-4, 366-4, 24, 40, cgs.media.selectShader );
-
-		} else {
-			CG_DrawPic( 598, 366, 32, 32, cg_items[item - bg_itemlist].icons[0] );
-			CG_DrawPic( 598-4, 366-4, 40, 40, cgs.media.selectShader );
-		}
-*/
 
 /*
 ===================

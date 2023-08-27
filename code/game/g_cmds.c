@@ -314,8 +314,8 @@ void Cmd_Give_f( gentity_t *ent ) {
 	}
 
 	if ( give_all || Q_stricmp( name, "holdable" ) == 0 ) {
-		ent->client->ps.stats[STAT_HOLDABLE_ITEM] = ( 1 << ( HI_BOOK3 - 1 ) ) - 1 - ( 1 << HI_NONE );
-		for ( i = 1 ; i <= HI_BOOK3 ; i++ ) {
+		ent->client->ps.stats[STAT_HOLDABLE_ITEM] = ( 1 << ( HI_EG_SYRINGE - 1 ) ) - 1 - ( 1 << HI_NONE );
+		for ( i = 1 ; i <= HI_EG_SYRINGE ; i++ ) {
 			ent->client->ps.holdable[i] = 10;
 		}
 

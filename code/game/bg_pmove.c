@@ -3786,10 +3786,12 @@ static void PM_Weapon( void ) {
 			addTime = 2000;         // force "heat recovery minimum" to 2 sec right now
 		}
 	}
-
+	
+    /*
 	if ( pm->ps->powerups[PW_HASTE] ) {
 		addTime /= 1.6;
 	}
+	*/
 
 	// add the recoil amount to the aimSpreadScale
 //	pm->ps->aimSpreadScale += 3.0*aimSpreadScaleAdd;

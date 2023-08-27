@@ -989,7 +989,7 @@ void ClientThink_real( gentity_t *ent ) {
 	client->ps.speed = g_speed.value;
 
 	if ( client->ps.powerups[PW_HASTE] ) {
-		client->ps.speed *= 1.6;
+		client->ps.speed *= 1.4;
 	}
 
 	// set up for pmove

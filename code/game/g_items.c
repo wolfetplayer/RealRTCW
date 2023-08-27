@@ -195,6 +195,16 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		}
 		}
 		break;
+	case HI_EG_SYRINGE:       
+        ent->client->ps.powerups[PW_HASTE] = level.time - ( level.time % 1000 );
+		ent->client->ps.powerups[PW_HASTE] += 30 * 1000;
+		ent->client->ps.powerups[PW_NOFATIGUE] = 30000;
+		
+		/*if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_ADRENALINE");
+		}
+		break;*/
 
 	case HI_BANDAGES:       
 		ent->health += 20;

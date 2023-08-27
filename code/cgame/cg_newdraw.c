@@ -822,17 +822,14 @@ static void CG_DrawHoldableItem( rectDef_t *rect, int font, float scale, qboolea
 	value = cg.predictedPlayerState.holdable[cg.holdableSelect];
 
 	if ( value ) {
-//		CG_RegisterItemVisuals( value );
 		CG_RegisterItemVisuals( item - bg_itemlist );
 
 		if ( cg.holdableSelect == HI_WINE ) {
 			if ( value > 3 ) {
 				value = 3;  // 3 stages to icon, just draw full if beyond 'full'
 			}
-//			CG_DrawPic( rect->x, rect->y, rect->w, rect->h, cg_items[ value ].icons[2-(value-1)] );
 			CG_DrawPic( rect->x, rect->y, rect->w, rect->h, cg_items[item - bg_itemlist].icons[2 - ( value - 1 )] );
 		} else {
-//			CG_DrawPic( rect->x, rect->y, rect->w, rect->h, cg_items[ value ].icons[0] );
 			CG_DrawPic( rect->x, rect->y, rect->w, rect->h, cg_items[item - bg_itemlist].icons[0] );
 		}
 	}

@@ -3628,6 +3628,7 @@ static bind_t g_bindings[] =
 	{"+moveright",       '.',         -1, -1, -1},
 	{"+moveup",      K_SPACE,        -1, -1, -1},
 	{"+movedown",        'c',         -1, -1, -1},
+	{"=movedown",        -1,         -1, -1, -1},
 	{"+left",            K_LEFTARROW,    -1, -1, -1},
 	{"+right",           K_RIGHTARROW,   -1, -1, -1},
 	{"+strafe",      K_ALT,          -1, -1, -1},

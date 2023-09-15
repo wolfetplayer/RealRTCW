@@ -151,11 +151,13 @@ void IN_KeyUp( kbutton_t *b ) {
 void IN_KeyToggle( kbutton_t *b ) {
 	if ( s_isToggledCrouch ) {
 	 	IN_KeyUp(b);
-	 	// Com_Printf("= 1 -> %i\n", s_isToggledCrouch = qfalse);
+	 	// Com_Printf("= 1 -> %i\n", s_isToggledCrouch);
 	} else {
 	 	IN_KeyDown(b);
-	 	// Com_Printf("= 0 -> %i\n", s_isToggledCrouch = qtrue);
+	 	// Com_Printf("= 0 -> %i\n", s_isToggledCrouch);
 	}
+
+	s_isToggledCrouch = !s_isToggledCrouch;
 }
 
 

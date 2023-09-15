@@ -293,6 +293,18 @@ static void SV_Map_f( void ) {
 		} else {
 			cheat = qfalse;
 		}
+	} else if ( Q_stricmpn( cmd, "sv", 2 ) == 0 ) {
+		Cvar_SetValue( "g_gametype", GT_SURVIVAL );
+		Cvar_SetValue( "g_doWarmup", 0 );
+		// may not set sv_maxclients directly, always set latched
+		Cvar_SetLatched( "sv_maxclients", "32" ); // Ridah, modified this
+		cmd += 2;
+		killBots = qtrue;
+		if ( !Q_stricmp( cmd, "devmap" ) ) {
+			cheat = qtrue;
+		} else {
+			cheat = qfalse;
+		}
 	} else {
 		if ( !Q_stricmp( cmd, "devmap" ) ) {
 			cheat = qtrue;
@@ -570,6 +582,13 @@ void    SV_LoadGame_f( void ) {
 		Cbuf_ExecuteText( EXEC_APPEND, va( "gtdevmap %s", filename ) );
 	} else {    // no cheats
 		Cbuf_ExecuteText( EXEC_APPEND, va( "gtmap %s", filename ) );
+	}
+	} else if ( Cvar_VariableValue( "g_gametype" ) == GT_SURVIVAL ) {
+			// otherwise, do a slow load
+	if ( Cvar_VariableIntegerValue( "sv_cheats" ) ) {
+		Cbuf_ExecuteText( EXEC_APPEND, va( "svdevmap %s", filename ) );
+	} else {    // no cheats
+		Cbuf_ExecuteText( EXEC_APPEND, va( "svmap %s", filename ) );
 	}
 	}
 }
@@ -1675,6 +1694,10 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_SetCommandCompletionFunc( "gtmap", SV_CompleteMapName );
 	Cmd_AddCommand( "gtdevmap", SV_Map_f );
 	Cmd_SetCommandCompletionFunc( "gtdevmap", SV_CompleteMapName );
+	Cmd_AddCommand( "svmap", SV_Map_f );
+	Cmd_SetCommandCompletionFunc( "svmap", SV_CompleteMapName );
+	Cmd_AddCommand( "svdevmap", SV_Map_f );
+	Cmd_SetCommandCompletionFunc( "svdevmap", SV_CompleteMapName );
 	Cmd_AddCommand( "loadgame", SV_LoadGame_f );
 	Cmd_AddCommand( "killserver", SV_KillServer_f );
 	if ( com_dedicated->integer ) {

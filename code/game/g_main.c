@@ -2187,6 +2187,12 @@ void CheckReloadStatus( void ) {
 					} else {
 						trap_SendConsoleCommand( EXEC_APPEND, va( "gtmap %s\n", level.nextMap ) );
 					} 
+				  } else if ( g_gametype.integer == GT_SURVIVAL ) {
+			        if ( g_cheats.integer ) {
+						trap_SendConsoleCommand( EXEC_APPEND, va( "svdevmap %s\n", level.nextMap ) );
+					} else {
+						trap_SendConsoleCommand( EXEC_APPEND, va( "svmap %s\n", level.nextMap ) );
+					} 
 				  }
 				} else if ( g_reloading.integer == RELOAD_ENDGAME ) {
 					G_EndGame();    // kick out to the menu and start the "endgame" menu (credits, etc)

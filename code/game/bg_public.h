@@ -185,6 +185,7 @@ typedef enum {
 	GT_NONE,            // no game mode
 	GT_SINGLE_PLAYER,   // single player
 	GT_GOTHIC,          // castle gothicstein
+	GT_SURVIVAL,        // survival
 	GT_MAX_GAME_TYPE
 } gametype_t;
 

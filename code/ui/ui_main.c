@@ -4283,19 +4283,6 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 1);
 			trap_Cvar_SetValue("r_ext_max_anisotropy", 16);
 
-            // rend2 specific
-			trap_Cvar_SetValue( "r_hdr", 0 );
-			trap_Cvar_SetValue( "r_postProcess", 0 );
-			trap_Cvar_SetValue( "r_toneMap", 0 );
-			trap_Cvar_SetValue( "r_autoExposure", 0 );
-			trap_Cvar_SetValue( "r_normalMapping", 0 );
-			trap_Cvar_SetValue( "r_specularMapping", 0 );
-			trap_Cvar_SetValue( "r_deluxeMapping", 0 );
-			trap_Cvar_SetValue( "r_forceSun", 0 );
-			trap_Cvar_SetValue( "r_drawSunRays", 0 );
-			trap_Cvar_SetValue( "r_sunShadows", 0 );
-			trap_Cvar_SetValue( "r_shadowFilter", 0 );
-
 
             // disable low quality stuff
 			trap_Cvar_SetValue( "r_vertexlight", 0 );
@@ -4343,19 +4330,6 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("r_ext_framebuffer_multisample", 0);
 			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 0);
 			trap_Cvar_SetValue("r_ext_max_anisotropy", 0);
-			
-            // rend2 specific
-			trap_Cvar_SetValue( "r_hdr", 0 );
-			trap_Cvar_SetValue( "r_postProcess", 0 );
-			trap_Cvar_SetValue( "r_toneMap", 0 );
-			trap_Cvar_SetValue( "r_autoExposure", 0 );
-			trap_Cvar_SetValue( "r_normalMapping", 0 );
-			trap_Cvar_SetValue( "r_specularMapping", 0 );
-			trap_Cvar_SetValue( "r_deluxeMapping", 0 );
-			trap_Cvar_SetValue( "r_forceSun", 0 );
-			trap_Cvar_SetValue( "r_drawSunRays", 0 );
-			trap_Cvar_SetValue( "r_sunShadows", 0 );
-			trap_Cvar_SetValue( "r_shadowFilter", 0 );
 
             // disable low quality stuff
 			trap_Cvar_SetValue( "r_vertexlight", 0 );
@@ -4402,19 +4376,6 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 0);
 			trap_Cvar_SetValue("r_ext_max_anisotropy", 0);
 
-            // rend2 specific
-			trap_Cvar_SetValue( "r_hdr", 0 );
-			trap_Cvar_SetValue( "r_postProcess", 0 );
-			trap_Cvar_SetValue( "r_toneMap", 0 );
-			trap_Cvar_SetValue( "r_autoExposure", 0 );
-			trap_Cvar_SetValue( "r_normalMapping", 0 );
-			trap_Cvar_SetValue( "r_specularMapping", 0 );
-			trap_Cvar_SetValue( "r_deluxeMapping", 0 );
-			trap_Cvar_SetValue( "r_forceSun", 0 );
-			trap_Cvar_SetValue( "r_drawSunRays", 0 );
-			trap_Cvar_SetValue( "r_sunShadows", 0 );
-			trap_Cvar_SetValue( "r_shadowFilter", 0 );
-
             // disable low quality stuff
 			trap_Cvar_SetValue( "r_vertexlight", 0 );
 			trap_Cvar_SetValue( "r_fastSky", 0 );
@@ -4460,19 +4421,6 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue("r_ext_framebuffer_multisample", 0);
 			trap_Cvar_SetValue("r_ext_texture_filter_anisotropic", 0);
 			trap_Cvar_SetValue("r_ext_max_anisotropy", 0);
-
-            // rend2 specific
-			trap_Cvar_SetValue( "r_hdr", 0 );
-			trap_Cvar_SetValue( "r_postProcess", 0 );
-			trap_Cvar_SetValue( "r_toneMap", 0 );
-			trap_Cvar_SetValue( "r_autoExposure", 0 );
-			trap_Cvar_SetValue( "r_normalMapping", 0 );
-			trap_Cvar_SetValue( "r_specularMapping", 0 );
-			trap_Cvar_SetValue( "r_deluxeMapping", 0 );
-			trap_Cvar_SetValue( "r_forceSun", 0 );
-			trap_Cvar_SetValue( "r_drawSunRays", 0 );
-			trap_Cvar_SetValue( "r_sunShadows", 0 );
-			trap_Cvar_SetValue( "r_shadowFilter", 0 );
 
             // disable low quality stuff
 			trap_Cvar_SetValue( "r_vertexlight", 1 );

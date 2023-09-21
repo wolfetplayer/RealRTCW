@@ -623,6 +623,20 @@ typedef struct drawSurf_s {
 #define MAX_PATCH_SIZE      32          // max dimensions of a patch mesh in map file
 #define MAX_GRID_SIZE       65          // max dimensions of a grid mesh in memory
 
+typedef byte color4ub_t[4];
+
+typedef struct color4ubhack_s {
+	color4ub_t v;
+} color4ubhack_t;
+
+typedef struct vec4hack_s {
+	vec4_t v;
+} vec4hack_t;
+
+typedef struct vec2hack_s {
+	vec2_t v;
+} vec2hack_t;
+
 // when cgame directly specifies a polygon, it becomes a srfPoly_t
 // as soon as it is called
 typedef struct srfPoly_s {
@@ -1559,6 +1573,14 @@ typedef struct stageVars
 	vec2_t texcoords[NUM_TEXTURE_BUNDLES][SHADER_MAX_VERTEXES];
 } stageVars_t;
 
+
+extern vec4hack_t tess_xyz_et[SHADER_MAX_VERTEXES];
+extern vec4hack_t tess_normal_et[SHADER_MAX_VERTEXES];
+extern vec2hack_t tess_texCoords0_et[SHADER_MAX_VERTEXES];
+extern vec2hack_t tess_texCoords1_et[SHADER_MAX_VERTEXES];
+extern glIndex_t tess_indexes_et[SHADER_MAX_INDEXES];
+extern color4ubhack_t tess_vertexColors_et[SHADER_MAX_VERTEXES];
+
 typedef struct shaderCommands_s
 {
 	glIndex_t	indexes[SHADER_MAX_INDEXES] QALIGN(16);
@@ -1587,6 +1609,13 @@ typedef struct shaderCommands_s
 	int numPasses;
 	void ( *currentStageIteratorFunc )( void );
 	shaderStage_t   **xstages;
+
+	glIndex_t*      indexes_et;
+	vec4hack_t*     normal_et;
+	color4ubhack_t* vertexColors_et;
+	vec4hack_t*     xyz_et;
+	vec2hack_t*     texCoords0_et;
+	vec2hack_t*     texCoords1_et;
 } shaderCommands_t;
 
 extern shaderCommands_t tess;

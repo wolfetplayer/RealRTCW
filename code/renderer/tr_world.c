@@ -134,6 +134,12 @@ static qboolean R_CullSurface( surfaceType_t *surface, shader_t *shader ) {
 		return qfalse;
 	}
 
+	if ( *surface == SF_FOLIAGE ) {
+		if ( !r_drawfoliage->value ) {
+			return qtrue;
+		}
+	}
+
 	// face culling
 	if ( !r_facePlaneCull->integer ) {
 		return qfalse;
@@ -262,7 +268,9 @@ static int R_DlightSurface( msurface_t *surf, int dlightBits ) {
 		dlightBits = R_DlightGrid( (srfGridMesh_t *)surf->data, dlightBits );
 	} else if ( *surf->data == SF_TRIANGLES ) {
 		dlightBits = R_DlightTrisurf( (srfTriangles_t *)surf->data, dlightBits );
-	} else {
+	} else if ( *surf->data == SF_FOLIAGE ) {    // ydnar
+		dlightBits = R_DlightTrisurf( (srfTriangles_t *)surf->data, dlightBits );
+	}else {
 		dlightBits = 0;
 	}
 

@@ -346,6 +346,40 @@ void *R_GetSurfMemory( int size ) {
 }
 
 /*
+SphereFromBounds() - ydnar
+creates a bounding sphere from a bounding box
+*/
+
+static void SphereFromBounds( vec3_t mins, vec3_t maxs, vec3_t origin, float *radius ) {
+	vec3_t temp;
+
+	VectorAdd( mins, maxs, origin );
+	VectorScale( origin, 0.5, origin );
+	VectorSubtract( maxs, origin, temp );
+	*radius = VectorLength( temp );
+}
+
+
+
+/*
+FinishGenericSurface() - ydnar
+handles final surface classification
+*/
+
+static void FinishGenericSurface( dsurface_t *ds, srfGeneric_t *gen, vec3_t pt ) {
+	// set bounding sphere
+	SphereFromBounds( gen->bounds[ 0 ], gen->bounds[ 1 ], gen->origin, &gen->radius );
+
+	// take the plane normal from the lightmap vector and classify it
+	gen->plane.normal[ 0 ] = LittleFloat( ds->lightmapVecs[ 2 ][ 0 ] );
+	gen->plane.normal[ 1 ] = LittleFloat( ds->lightmapVecs[ 2 ][ 1 ] );
+	gen->plane.normal[ 2 ] = LittleFloat( ds->lightmapVecs[ 2 ][ 2 ] );
+	gen->plane.dist = DotProduct( pt, gen->plane.normal );
+	SetPlaneSignbits( &gen->plane );
+	gen->plane.type = PlaneTypeForNormal( gen->plane.normal );
+}
+
+/*
 ===============
 ParseFace
 ===============
@@ -546,6 +580,130 @@ static void ParseTriSurf( dsurface_t *ds, drawVert_t *verts, msurface_t *surf, i
 			ri.Error( ERR_DROP, "Bad index in triangle surface" );
 		}
 	}
+}
+
+
+/*
+ParseFoliage() - ydnar
+parses a foliage drawsurface
+*/
+
+static void ParseFoliage( dsurface_t *ds, drawVert_t *verts, msurface_t *surf, int *indexes ) {
+	srfFoliage_t    *foliage;
+	int i, j, numVerts, numIndexes, numInstances, size;
+	vec4_t          *xyz, *normal /*, *origin*/;
+//	fcolor4ub_t		*color;
+	vec3_t bounds[ 2 ], boundsTranslated[ 2 ];
+	float scale;
+
+
+	// get fog volume
+	surf->fogIndex = LittleLong( ds->fogNum ) + 1;
+
+	// get shader
+	surf->shader = ShaderForShaderNum( ds->shaderNum, LIGHTMAP_BY_VERTEX );
+	if ( r_singleShader->integer && !surf->shader->isSky ) {
+		surf->shader = tr.defaultShader;
+	}
+
+	// foliage surfaces have their actual vert count in patchHeight
+	// and the instance count in patchWidth
+	// the instances are just additional drawverts
+
+	// get counts
+	numVerts = LittleLong( ds->patchHeight );
+	numIndexes = LittleLong( ds->numIndexes );
+	numInstances = LittleLong( ds->patchWidth );
+
+	// calculate size
+	size = sizeof( *foliage ) +
+		   numVerts * ( sizeof( foliage->xyz[ 0 ] ) + sizeof( foliage->normal[ 0 ] ) + sizeof( foliage->texCoords[ 0 ] ) + sizeof( foliage->lmTexCoords[ 0 ] ) ) +
+		   numIndexes * sizeof( foliage->indexes[ 0 ] ) +
+		   numInstances * sizeof( foliage->instances[ 0 ] );
+
+	// get memory
+	foliage = R_GetSurfMemory( size );
+
+	// set up surface
+	foliage->surfaceType = SF_FOLIAGE;
+	foliage->numVerts = numVerts;
+	foliage->numIndexes = numIndexes;
+	foliage->numInstances = numInstances;
+	foliage->xyz = ( vec4_t* )( foliage + 1 );
+	foliage->normal = ( vec4_t* )( foliage->xyz + foliage->numVerts );
+	foliage->texCoords = ( vec2_t* )( foliage->normal + foliage->numVerts );
+	foliage->lmTexCoords = ( vec2_t* )( foliage->texCoords + foliage->numVerts );
+	foliage->indexes = ( int* )( foliage->lmTexCoords + foliage->numVerts );
+	foliage->instances = ( foliageInstance_t* )( foliage->indexes + foliage->numIndexes );
+
+	surf->data = (surfaceType_t*) foliage;
+
+	// get foliage drawscale
+	scale = r_drawfoliage->value;
+	if ( scale < 0.0f ) {
+		scale = 1.0f;
+	} else if ( scale > 2.0f ) {
+		scale = 2.0f;
+	}
+
+	// copy vertexes
+	ClearBounds( bounds[ 0 ], bounds[ 1 ] );
+	verts += LittleLong( ds->firstVert );
+	xyz = foliage->xyz;
+	normal = foliage->normal;
+	for ( i = 0; i < numVerts; i++ )
+	{
+		// copy xyz and normal
+		for ( j = 0; j < 3; j++ )
+		{
+			foliage->xyz[ i ][ j ] = LittleFloat( verts[ i ].xyz[ j ] );
+			foliage->normal[ i ][ j ] = LittleFloat( verts[ i ].normal[ j ] );
+		}
+
+		// scale height
+		foliage->xyz[ i ][ 2 ] *= scale;
+
+		// finish
+		foliage->xyz[ i ][ 3 ] = foliage->normal[ i ][ 3 ] = 0;
+		AddPointToBounds( foliage->xyz[ i ], bounds[ 0 ], bounds[ 1 ] );
+
+		// copy texture coordinates
+		for ( j = 0; j < 2; j++ )
+		{
+			foliage->texCoords[ i ][ j ] = LittleFloat( verts[ i ].st[ j ] );
+			foliage->lmTexCoords[ i ][ j ] = LittleFloat( verts[ i ].lightmap[ j ] );
+		}
+	}
+
+	// copy indexes
+	indexes += LittleLong( ds->firstIndex );
+	for ( i = 0; i < numIndexes; i++ )
+	{
+		foliage->indexes[ i ] = LittleLong( indexes[ i ] );
+		if ( foliage->indexes[ i ] < 0 || foliage->indexes[ i ] >= numVerts ) {
+			ri.Error( ERR_DROP, "Bad index in triangle surface" );
+		}
+	}
+
+	// copy origins and colors
+	ClearBounds( foliage->bounds[ 0 ], foliage->bounds[ 1 ] );
+	verts += numVerts;
+	for ( i = 0; i < numInstances; i++ )
+	{
+		// copy xyz
+		for ( j = 0; j < 3; j++ )
+			foliage->instances[ i ].origin[ j ] = LittleFloat( verts[ i ].xyz[ j ] );
+		VectorAdd( bounds[ 0 ], foliage->instances[ i ].origin, boundsTranslated[ 0 ] );
+		VectorAdd( bounds[ 1 ], foliage->instances[ i ].origin, boundsTranslated[ 1 ] );
+		AddPointToBounds( boundsTranslated[ 0 ], foliage->bounds[ 0 ], foliage->bounds[ 1 ] );
+		AddPointToBounds( boundsTranslated[ 1 ], foliage->bounds[ 0 ], foliage->bounds[ 1 ] );
+
+		// copy color
+		R_ColorShiftLightingBytes( verts[ i ].color, foliage->instances[ i ].color );
+	}
+
+	// finish surface
+	FinishGenericSurface( ds, (srfGeneric_t*) foliage, foliage->xyz[ 0 ] );
 }
 
 /*
@@ -1471,13 +1629,14 @@ static void R_LoadSurfaces( lump_t *surfs, lump_t *verts, lump_t *indexLump ) {
 	drawVert_t  *dv;
 	int         *indexes;
 	int count;
-	int numFaces, numMeshes, numTriSurfs, numFlares;
+	int numFaces, numMeshes, numTriSurfs, numFlares, numFoliage;
 	int i;
 
 	numFaces = 0;
 	numMeshes = 0;
 	numTriSurfs = 0;
 	numFlares = 0;
+	numFoliage = 0;
 
 	in = ( void * )( fileBase + surfs->fileofs );
 	if ( surfs->filelen % sizeof( *in ) ) {
@@ -1522,6 +1681,10 @@ static void R_LoadSurfaces( lump_t *surfs, lump_t *verts, lump_t *indexLump ) {
 		case MST_FLARE:
 			ParseFlare( in, dv, out, indexes );
 			numFlares++;
+			break;
+		case MST_FOLIAGE:   // ydnar
+			ParseFoliage( in, dv, out, indexes );
+			numFoliage++;
 			break;
 		default:
 			ri.Error( ERR_DROP, "Bad surfaceType" );
@@ -1595,15 +1758,52 @@ static void R_LoadSubmodels( lump_t *l ) {
 R_SetParent
 =================
 */
+
 static void R_SetParent( mnode_t *node, mnode_t *parent ) {
+	//  set parent
 	node->parent = parent;
+
+	// handle leaf nodes
 	if ( node->contents != -1 ) {
+		// add node surfaces to bounds
+		if ( node->nummarksurfaces > 0 ) {
+			int c;
+			msurface_t      **mark;
+			srfGeneric_t    *gen;
+
+
+			// add node surfaces to bounds
+			mark = node->firstmarksurface;
+			c = node->nummarksurfaces;
+			while ( c-- )
+			{
+				gen = ( srfGeneric_t* )( **mark ).data;
+				if ( gen->surfaceType != SF_FACE &&
+					 gen->surfaceType != SF_GRID &&
+					 gen->surfaceType != SF_TRIANGLES &&
+					 gen->surfaceType != SF_FOLIAGE ) {
+					continue;
+				}
+				AddPointToBounds( gen->bounds[ 0 ], node->surfMins, node->surfMaxs );
+				AddPointToBounds( gen->bounds[ 1 ], node->surfMins, node->surfMaxs );
+				mark++;
+			}
+		}
+
+		// go back
 		return;
 	}
-	R_SetParent( node->children[0], node );
-	R_SetParent( node->children[1], node );
-}
 
+	// recurse to child nodes
+	R_SetParent( node->children[ 0 ], node );
+	R_SetParent( node->children[ 1 ], node );
+
+	// ydnar: surface bounds
+	AddPointToBounds( node->children[ 0 ]->surfMins, node->surfMins, node->surfMaxs );
+	AddPointToBounds( node->children[ 0 ]->surfMins, node->surfMins, node->surfMaxs );
+	AddPointToBounds( node->children[ 1 ]->surfMins, node->surfMins, node->surfMaxs );
+	AddPointToBounds( node->children[ 1 ]->surfMaxs, node->surfMins, node->surfMaxs );
+}
 /*
 =================
 R_LoadNodesAndLeafs
@@ -1639,6 +1839,10 @@ static void R_LoadNodesAndLeafs( lump_t *nodeLump, lump_t *leafLump ) {
 			out->maxs[j] = LittleLong( in->maxs[j] );
 		}
 
+		// ydnar: surface bounds
+		VectorCopy( out->mins, out->surfMins );
+		VectorCopy( out->maxs, out->surfMaxs );
+
 		p = LittleLong( in->planeNum );
 		out->plane = s_worldData.planes + p;
 
@@ -1664,6 +1868,9 @@ static void R_LoadNodesAndLeafs( lump_t *nodeLump, lump_t *leafLump ) {
 			out->mins[j] = LittleLong( inLeaf->mins[j] );
 			out->maxs[j] = LittleLong( inLeaf->maxs[j] );
 		}
+
+		// ydnar: surface bounds
+		ClearBounds( out->surfMins, out->surfMaxs );
 
 		out->cluster = LittleLong( inLeaf->cluster );
 		out->area = LittleLong( inLeaf->area );

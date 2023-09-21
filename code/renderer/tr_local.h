@@ -409,6 +409,8 @@ typedef struct shader_s {
 	skyParms_t sky;
 	fogParms_t fogParms;
 
+	vec4_t distanceCull;                // ydnar: opaque alpha range for foliage (inner, outer, alpha threshold, 1/(outer-inner))
+
 	float portalRange;                  // distance to fog out at
 
 	int multitextureEnv;                // 0, GL_MODULATE, GL_ADD (FIXME: put in stage)

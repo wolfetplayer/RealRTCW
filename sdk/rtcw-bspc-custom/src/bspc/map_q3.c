@@ -489,7 +489,7 @@ qboolean Q3_ParseBSPEntity( int entnum ) {
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-#define MAX_PATCH_VERTS     1024
+#define MAX_PATCH_VERTS     4096
 
 void AAS_CreateCurveBrushes( void ) {
 	int i, j, n, planenum, numcurvebrushes = 0;
@@ -509,6 +509,11 @@ void AAS_CreateCurveBrushes( void ) {
 	for ( i = 0; i < q3_numDrawSurfaces; i++ )
 	{
 		surface = &q3_drawSurfaces[i];
+
+		if ( surface->surfaceType != MST_PATCH ) {
+			continue;
+		}
+		
 		if ( !surface->patchWidth ) {
 			continue;
 		}

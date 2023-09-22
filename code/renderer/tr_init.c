@@ -215,13 +215,6 @@ int max_polys;
 cvar_t  *r_maxpolyverts;
 int max_polyverts;
 
-vec4hack_t tess_xyz_et[SHADER_MAX_VERTEXES];
-vec4hack_t tess_normal_et[SHADER_MAX_VERTEXES];
-vec2hack_t tess_texCoords0_et[SHADER_MAX_VERTEXES];
-vec2hack_t tess_texCoords1_et[SHADER_MAX_VERTEXES];
-glIndex_t tess_indexes_et[SHADER_MAX_INDEXES];
-color4ubhack_t tess_vertexColors_et[SHADER_MAX_VERTEXES];
-
 #ifndef USE_OPENGLES
 //----(SA)	added
 void ( APIENTRY * qglPNTrianglesiATI )( GLenum pname, GLint param );

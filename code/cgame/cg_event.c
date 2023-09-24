@@ -1829,12 +1829,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 // jpw
 		DEBUGNAME( "EV_FIRE_WEAPON" );
-		CG_FireWeapon( cent );
+		CG_FireWeapon( cent,event );
 		break;
 	case EV_FIRE_WEAPON:
 	case EV_FIRE_WEAPONB:
 		DEBUGNAME( "EV_FIRE_WEAPON" );
-		CG_FireWeapon( cent );
+		CG_FireWeapon( cent, event );
 		if ( event == EV_FIRE_WEAPONB ) {  // akimbo firing colt
 			cent->akimboFire = qtrue;
 		} else {
@@ -1843,7 +1843,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 	case EV_FIRE_WEAPON_LASTSHOT:
 		DEBUGNAME( "EV_FIRE_WEAPON_LASTSHOT" );
-		CG_FireWeapon( cent );
+		CG_FireWeapon( cent, event );
 		break;
 
 //----(SA)	added
@@ -2199,10 +2199,21 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			break;
 		}
 		break;
-
+	case EV_BOUNCE_SOUND:
+		DEBUGNAME("EV_BOUNCE_SOUND");
+		if (cg_weaponBounceSound.integer){
+			weaponInfo_t	*weapon = &cg_weapons[es->weapon];
+			if ( (!es->eventParm && weapon->bounceSound))
+			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, weapon->bounceSound );
+		}
+		break;
 	case EV_OBITUARY:
 		DEBUGNAME( "EV_OBITUARY" );
 		CG_Obituary( es );
+		break;
+	case EV_THROWKNIFE:
+		DEBUGNAME("EV_THROWKNIFE");
+		CG_FireWeapon( cent, event );
 		break;
 
 		//

@@ -710,6 +710,7 @@ extern qboolean AICast_EntityVisible ( cast_state_t * cs , int enemynum , qboole
 extern int AICast_ScanForEnemies ( cast_state_t * cs , int * enemies ) ;
 extern qboolean AICast_StateChange ( cast_state_t * cs , aistateEnum_t newaistate ) ;
 extern void FireWeapon ( gentity_t * ent ) ;
+extern void ThrowKnife( gentity_t	*ent ) ;
 extern void CalcMuzzlePoints ( gentity_t * ent , int weapon ) ;
 extern void CalcMuzzlePointForActivate ( gentity_t * ent , vec3_t forward , vec3_t right , vec3_t up , vec3_t muzzlePoint ) ;
 extern void CalcMuzzlePoint ( gentity_t * ent , int weapon , vec3_t forward , vec3_t right , vec3_t up , vec3_t muzzlePoint ) ;
@@ -1198,6 +1199,8 @@ extern qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params)
 extern void G_RunItem ( gentity_t * ent ) ;
 extern void G_RunItemProp ( gentity_t * ent , vec3_t origin ) ;
 extern void G_BounceItem ( gentity_t * ent , trace_t * trace ) ;
+extern void G_FlushItem ( gentity_t *ent, trace_t *trace);
+extern qboolean G_ItemStick( gentity_t *ent, trace_t *trace, vec3_t velocity );
 extern void G_SpawnItem ( gentity_t * ent , gitem_t * item ) ;
 extern void SaveRegisteredItems ( void ) ;
 extern void RegisterItem ( gitem_t * item ) ;
@@ -1227,6 +1230,7 @@ extern void BG_PlayerStateToEntityState ( playerState_t * ps , entityState_t * s
 extern void BG_AddPredictableEventToPlayerstate ( int newEvent , int eventParm , playerState_t * ps ) ;
 extern void BG_GetMarkDir ( const vec3_t dir , const vec3_t normal , vec3_t out ) ;
 extern void BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result, qboolean isAngle, int splineData ); ;
+extern void BG_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce );
 extern void BG_EvaluateTrajectory ( const trajectory_t * tr , int atTime , vec3_t result ) ;
 extern qboolean BG_CanItemBeGrabbed ( const entityState_t * ent , const playerState_t * ps ) ;
 extern qboolean isClipOnly ( int weap ) ;

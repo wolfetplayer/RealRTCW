@@ -361,7 +361,6 @@ typedef enum {
 
 } persEnum_t;
 
-
 // entityState_t->eFlags
 #define EF_DEAD             0x00000001      // don't draw a foe marker over players with EF_DEAD
 #define EF_NONSOLID_BMODEL  0x00000002      // bmodel is visible, but not solid
@@ -789,6 +788,7 @@ typedef enum {
 	EV_SNOWFLURRY,
 	EV_CONCUSSIVE,
 	EV_DUST,
+	EV_BOUNCE_SOUND,
 	EV_RUMBLE_EFX,
 	EV_GUNSPARKS,
 	EV_FLAMETHROWER_EFFECT,
@@ -799,6 +799,7 @@ typedef enum {
 	EV_CLOSEMENU,   
 	EV_SPAWN_SPIRIT,
 	EV_M97_PUMP, // RealRTCW
+	EV_THROWKNIFE,
 	EV_COUGH,
 	EV_QUICKGRENS,
 	EV_ALERT_SPEAKER,
@@ -1848,3 +1849,4 @@ splinePath_t *BG_Find_Spline( const char *match );
 float BG_SplineLength( splinePath_t* pSpline );
 void BG_AddSplineControl( splinePath_t* spline, const char* name );
 void BG_LinearPathOrigin2( float radius, splinePath_t** pSpline, float *deltaTime, vec3_t result, qboolean backwards );
+void BG_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce );

@@ -1599,6 +1599,99 @@ void Weapon_RocketLauncher_Fire( gentity_t *ent, float aimSpreadScale ) {
 //	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics
 }
 
+void Use_Item( gentity_t *ent, gentity_t *other, gentity_t *activator );
+
+void ThrowKnife( gentity_t *ent )
+{
+	gentity_t	*knife;
+	float		speed;
+	vec3_t		dir;
+	float		r, u;
+
+	CalcMuzzlePoints(ent, ent->s.weapon);
+
+	// 'spread'
+	r = crandom()*(ammoTable[ent->s.weapon].spread/1000);
+	u = crandom()*(ammoTable[ent->s.weapon].spread/1000);
+	VectorScale(forward, 16, dir);
+	VectorMA (dir, r, right, dir);
+	VectorMA (dir, u, up, dir);
+	VectorNormalize(dir);
+
+	// entity handling
+	knife						= G_Spawn();
+	knife->classname 			= "knife";
+	knife->nextthink 			= level.time + 20000;
+	knife->think				= G_FreeEntity;
+
+	// misc
+	knife->s.clientNum			= ent->client->ps.clientNum;
+	knife->s.eType				= ET_ITEM;
+	knife->s.weapon				= ent->s.weapon;						// Use the correct weapon in multiplayer
+	knife->parent 				= ent;
+
+	// usage
+	knife->touch				= Touch_Item;	// no auto-pickup, only activate
+	knife->use					= Use_Item;
+
+	// damage
+	knife->damage 				= ammoTable[ent->s.weapon].playerDamage ;
+	knife->splashRadius			= ammoTable[ent->s.weapon].playerSplashRadius;
+	knife->methodOfDeath 		= MOD_KNIFE;
+
+	// clipping
+	knife->clipmask 			= CONTENTS_SOLID|MASK_MISSILESHOT;
+	knife->r.contents			= CONTENTS_TRIGGER|CONTENTS_ITEM;
+
+	// angles/origin
+	G_SetAngle( knife, ent->client->ps.viewangles );
+	G_SetOrigin( knife, muzzleEffect);
+
+	// trajectory
+	knife->s.pos.trType 		= TR_GRAVITY_LOW;
+	knife->s.pos.trTime 		= level.time - 50;	// move a bit on the very first frame
+
+	// bouncing
+	knife->physicsBounce		= 0.25;
+	knife->physicsObject		= qtrue;
+
+	// NQ physics
+	knife->physicsSlide			= qfalse;
+	knife->physicsFlush			= qtrue;
+
+	// bounding box
+	VectorSet( knife->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, 0 );
+	VectorSet( knife->r.maxs, ITEM_RADIUS, ITEM_RADIUS, 2*ITEM_RADIUS );
+
+	// speed / dir
+	speed = 1300*ent->client->ps.grenadeTimeLeft/500;
+
+	// minimal toss speed
+	if ( speed < 350.f )
+		speed = 350.f;
+
+	VectorScale( dir, speed, knife->s.pos.trDelta );
+	SnapVector( knife->s.pos.trDelta );
+
+	// rotation
+	knife->s.apos.trTime = level.time - 50;
+	knife->s.apos.trType = TR_LINEAR;
+	VectorCopy( ent->client->ps.viewangles, knife->s.apos.trBase );
+	knife->s.apos.trDelta[0] = speed*3;
+
+	// item
+	knife->item =  BG_FindItemForWeapon( ent->s.weapon );
+	knife->s.modelindex = knife->item - bg_itemlist;	// store item number in modelindex
+	knife->s.otherEntityNum2 = 1;	// DHM - Nerve :: this is taking modelindex2's place for a dropped item
+	knife->flags |= FL_DROPPED_ITEM;	// so it gets removd after being picked up
+
+	// add knife to game
+	trap_LinkEntity (knife);
+
+	// player himself
+	ent->client->ps.grenadeTimeLeft = 0;
+}
+
 
 
 

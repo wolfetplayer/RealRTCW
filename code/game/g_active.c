@@ -730,7 +730,9 @@ void ClientEvents( gentity_t *ent, int oldEventSequence ) {
 		case EV_USE_ITEM10:     // ( HI_BOOK3 )
 			UseHoldableItem( ent, event - EV_USE_ITEM0 );
 			break;
-//----(SA)	end
+		case EV_THROWKNIFE:
+			ThrowKnife( ent );
+			break;
 
 		default:
 

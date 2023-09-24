@@ -1018,6 +1018,8 @@ void Props_Activated( gentity_t *self ) {
 
 		self->physicsObject = qtrue;
 		self->physicsBounce = 0.2;
+		self->physicsSlide = qfalse;
+		self->physicsFlush = qfalse;
 
 		self->s.groundEntityNum = -1;
 
@@ -1054,6 +1056,8 @@ void Props_Activated( gentity_t *self ) {
 
 		prop->physicsObject = qtrue;
 		prop->physicsBounce = 0.2;
+		prop->physicsFlush = qfalse;
+		prop->physicsSlide = qfalse;
 
 		VectorCopy( owner->client->ps.origin, prop->s.pos.trBase );
 
@@ -1175,6 +1179,8 @@ void Props_Chair_Think( gentity_t *self ) {
 
 		self->physicsObject = qtrue;
 		self->physicsBounce = 0.2;
+		self->physicsSlide = qfalse;
+		self->physicsFlush = qfalse;
 
 		self->s.pos.trDelta[2] -= 200;
 

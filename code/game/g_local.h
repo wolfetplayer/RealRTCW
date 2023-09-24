@@ -214,6 +214,8 @@ struct gentity_s {
 	qboolean physicsObject;         // if true, it can be pushed by movers and fall off edges
 									// all game items are physicsObjects,
 	float physicsBounce;            // 1.0 = continuous bounce, 0.0 = no bounce
+	qboolean	physicsSlide;
+	qboolean	physicsFlush;			// if true object will never be flushed ( realigned to fit the terrain slope )
 	int clipmask;                   // brushes with this content value will be collided against
 									// when moving.  items and corpses do not collide against
 									// players, for instance
@@ -970,6 +972,7 @@ qboolean G_FilterPacket( char *from );
 // g_weapon.c
 //
 void FireWeapon( gentity_t *ent );
+void ThrowKnife( gentity_t	*ent );
 void G_LoadAmmoTable( weapon_t weaponNum );
 
 //
@@ -1207,6 +1210,7 @@ extern vmCvar_t g_spawnxshepherds;
 extern vmCvar_t g_aicanheadshot;
 extern vmCvar_t g_realism;
 extern vmCvar_t g_regen;
+extern vmCvar_t	g_flushItems;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));
@@ -1423,6 +1427,7 @@ void    trap_BotResetWeaponState( int weaponstate );
 int     trap_GeneticParentsAndChildSelection( int numranks, float *ranks, int *parent1, int *parent2, int *child );
 
 void    trap_SnapVector( float *v );
+void    G_FlushItem( gentity_t *ent, trace_t *trace);
 
 // New in IORTCW
 void	*trap_Alloc( int size );

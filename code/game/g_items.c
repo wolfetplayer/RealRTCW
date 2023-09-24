@@ -900,6 +900,9 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 
 	dropped->s.eFlags |= EF_BOUNCE_HALF;
 
+	dropped->physicsSlide = qtrue;
+	dropped->physicsFlush = qtrue;
+
 	// (SA) TODO: FIXME: don't do this right now.  bug needs to be found.
 //	if(item->giType == IT_WEAPON)
 //		dropped->s.eFlags |= EF_SPINNING;	// spin the weapon as it flies from the dead player.  it will stop when it hits the ground
@@ -1212,6 +1215,8 @@ void G_SpawnItem( gentity_t *ent, gitem_t *item ) {
 	}
 
 	ent->physicsBounce = 0.50;      // items are bouncy
+	ent->physicsSlide = qtrue;
+	ent->physicsFlush = qtrue;
 
 	if ( ent->model ) {
 		ent->s.modelindex2 = G_ModelIndex( ent->model );
@@ -1234,6 +1239,98 @@ void G_SpawnItem( gentity_t *ent, gitem_t *item ) {
 	}
 }
 
+void G_FlushItem( gentity_t *ent, trace_t *trace )
+{
+	vec3_t  forward, start, end;
+	trace_t tr;
+	vec3_t outAxis[ 3 ];
+	float s;
+
+	if ( g_flushItems.integer &&
+		ent->physicsFlush &&
+		trace->plane.normal[2] > 0.7f &&
+		( trace->plane.normal[0] != 0.0f || trace->plane.normal[1] != 0.0f  || trace->plane.normal[2] != 1.0f ) ) { // no need to adjust flat ground, make it faster
+		AngleVectors( ent->r.currentAngles, forward, NULL, NULL );
+		VectorCopy( trace->plane.normal, outAxis[ 2 ] );
+		ProjectPointOnPlane( outAxis[ 0 ], forward, outAxis[ 2 ] );
+
+		if( !VectorNormalize( outAxis[ 0 ] ) )
+		{
+			AngleVectors( ent->r.currentAngles, NULL, NULL, forward );
+			ProjectPointOnPlane( outAxis[ 0 ], forward, outAxis[ 2 ] );
+			VectorNormalize( outAxis[ 0 ] );
+		}
+
+		CrossProduct( outAxis[ 0 ], outAxis[ 2 ], outAxis[ 1 ] );
+		outAxis[ 1 ][ 0 ] = -outAxis[ 1 ][ 0 ];
+		outAxis[ 1 ][ 1 ] = -outAxis[ 1 ][ 1 ];
+		outAxis[ 1 ][ 2 ] = -outAxis[ 1 ][ 2 ];
+
+		AxisToAngles( outAxis, ent->r.currentAngles );
+		VectorMA( trace->endpos, -64.0f, trace->plane.normal, end );
+		VectorMA( trace->endpos, 1.0f, trace->plane.normal, start );
+
+		trap_Trace( &tr, start, NULL, NULL, end, ent->s.number, MASK_SOLID );
+
+		if ( !tr.startsolid ) {
+			s = tr.fraction * -64;
+			VectorMA( trace->endpos, s, trace->plane.normal, trace->endpos );
+		}
+
+		// make sure it is off ground
+		VectorMA( trace->endpos, 1.0f, trace->plane.normal, trace->endpos );
+
+	}
+	else {
+		trace->endpos[2] += 1.0;
+
+		if ( ent->physicsFlush )
+			ent->r.currentAngles[0] = ent->r.currentAngles[2] = 0;
+	}
+
+	G_SetAngle( ent, ent->r.currentAngles);
+	SnapVector( trace->endpos );
+	G_SetOrigin( ent, trace->endpos );
+	ent->s.groundEntityNum = trace->entityNum;
+
+	if ( ent->s.groundEntityNum != ENTITYNUM_WORLD )
+		ent->s.pos.trType = TR_GRAVITY_PAUSED; // jaquboss, so items will fall down when needed
+
+}
+
+
+qboolean G_ItemStick( gentity_t *ent, trace_t *trace, vec3_t velocity )
+{
+	float	dot;
+
+	// check if it is knife
+	if ( !ent->damage )
+		return qfalse;
+
+	if ( ent->s.weapon != WP_KNIFE )
+		return qfalse;
+
+	// reset flushing
+	ent->physicsFlush = qtrue;
+
+	// get a direction
+	VectorNormalize( velocity );
+	dot = DotProduct( velocity, trace->plane.normal );
+
+	// do not lodge
+	if ( dot > -0.75 )
+		return qfalse;
+
+	if ( trace->surfaceFlags & (SURF_GRASS|SURF_SNOW|SURF_WOOD|SURF_GRAVEL) ){
+
+		vectoangles( velocity, ent->r.currentAngles );
+		ent->physicsFlush = qfalse;
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
 
 /*
 ================
@@ -1242,31 +1339,52 @@ G_BounceItem
 ================
 */
 void G_BounceItem( gentity_t *ent, trace_t *trace ) {
-	vec3_t velocity;
-	float dot;
-	int hitTime;
+	vec3_t   velocity;
+	float	dot;
+	int      hitTime;
+
+	hitTime = level.previousTime + ( level.time - level.previousTime ) * trace->fraction;
 
 	// reflect the velocity on the trace plane
-	hitTime = level.previousTime + ( level.time - level.previousTime ) * trace->fraction;
 	BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, velocity, qfalse, ent->s.effect2Time );
-	dot = DotProduct( velocity, trace->plane.normal );
-	VectorMA( velocity, -2 * dot, trace->plane.normal, ent->s.pos.trDelta );
+	dot = -2 * DotProduct( velocity, trace->plane.normal );
+	VectorMA( velocity, dot, trace->plane.normal, ent->s.pos.trDelta );
 
-	// cut the velocity to keep from bouncing forever
-	VectorScale( ent->s.pos.trDelta, ent->physicsBounce, ent->s.pos.trDelta );
 
-	// check for stop
-	if ( trace->plane.normal[2] > 0 && ent->s.pos.trDelta[2] < 40 ) {
-		trace->endpos[2] += 1.0;    // make sure it is off ground
-		SnapVector( trace->endpos );
-		G_SetOrigin( ent, trace->endpos );
-		ent->s.groundEntityNum = trace->entityNum;
-		return;
+	// bounce or just slide? - check if stuck or surface not too step
+	if ( trace->plane.normal[2] >= 0.7 || VectorLength( ent->s.pos.trDelta ) < 16 || !ent->physicsSlide ) {
+		// cut the velocity to keep from bouncing forever
+		VectorScale( ent->s.pos.trDelta, ent->physicsBounce, ent->s.pos.trDelta );
+
+		// do a bounce
+        if ( ent->item && ( ent->item->giType == IT_WEAPON || ent->item->giType == IT_AMMO ) && ent->item->giTag > WP_NONE && ent->item->giTag < WP_NUM_WEAPONS)
+		{
+			G_AddEvent( ent, EV_BOUNCE_SOUND, ent->item->giType == IT_WEAPON ? 0 : 1 );
+			ent->s.weapon = ent->item->giTag;
+		}
+
+		// check for stop
+		if ( G_ItemStick( ent, trace, velocity ) || ( VectorLength(ent->s.pos.trDelta) < 40 && trace->plane.normal[2] > 0) )
+		{
+			G_FlushItem( ent, trace );
+			return;
+		}
+
+		// bounce the angles
+		if ( ent->s.apos.trType != TR_STATIONARY )
+		{
+			VectorScale( ent->s.apos.trDelta, ent->physicsBounce, ent->s.apos.trDelta );
+			ent->s.apos.trTime = level.time;
+		}
+
+
+	} else if ( ent->physicsSlide ) {
+		BG_ClipVelocity( ent->s.pos.trDelta, trace->plane.normal, ent->s.pos.trDelta, 1.001 );
 	}
 
-	VectorAdd( ent->r.currentOrigin, trace->plane.normal, ent->r.currentOrigin );
 	VectorCopy( ent->r.currentOrigin, ent->s.pos.trBase );
 	ent->s.pos.trTime = level.time;
+	VectorAdd( ent->r.currentOrigin, trace->plane.normal, ent->r.currentOrigin);
 }
 
 /*

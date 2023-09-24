@@ -6285,6 +6285,28 @@ void BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t resu
 		break;
 	}
 }
+
+void BG_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce ) {
+	float	backoff;
+	float	change;
+	int		i;
+
+	backoff = DotProduct (in, normal);
+
+	if ( backoff < 0 ) {
+		backoff *= overbounce;
+	}
+	else {
+		backoff /= overbounce;
+	}
+
+	for ( i=0 ; i<3 ; i++ ) {
+		change = normal[i]*backoff;
+		out[i] = in[i] - change;
+	}
+}
+
+
 /*
 ============
 BG_GetMarkDir

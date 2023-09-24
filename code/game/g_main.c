@@ -162,6 +162,7 @@ vmCvar_t g_endmapbonus;
 vmCvar_t g_randomweapons;
 vmCvar_t g_realism;
 vmCvar_t g_regen;
+vmCvar_t g_flushItems;	// items land depending on the slope thy're on
 
 vmCvar_t g_mapname;
 
@@ -296,6 +297,7 @@ cvarTable_t gameCvarTable[] = {
 
 	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
 	{ &g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE },
+	{ &g_flushItems,	"g_flushItems",		"1",	0 },
 	{ &g_mapname, "mapname", "", CVAR_ARCHIVE }
 };
 

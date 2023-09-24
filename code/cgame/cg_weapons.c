@@ -43,6 +43,7 @@ int notebookModel;
 int propellerModel;
 int wolfkickSkin; // eugeny
 
+
 vec3_t ejectBrassCasingOrigin;
 
 //----(SA)
@@ -1417,6 +1418,12 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 				return CG_RW_ParseError( handle, "expected switchSound filename" );
 			} else {
 				weaponInfo->switchSound[0] = trap_S_RegisterSound( filename );
+			}
+		} else if ( !Q_stricmp( token.string, "bounceSound" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
+				return CG_RW_ParseError( handle, "expected bounceSound filename" );
+			} else {
+				weaponInfo->bounceSound = trap_S_RegisterSound( filename );
 			}
 		} else if ( !Q_stricmp( token.string, "weaponIcon" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
@@ -5161,7 +5168,7 @@ Caused by an EV_FIRE_WEAPON event
 
 ================
 */
-void CG_FireWeapon( centity_t *cent ) {
+void CG_FireWeapon( centity_t *cent, int event ) {
 	entityState_t *ent;
 	int c;
 	weaponInfo_t    *weap;
@@ -5235,8 +5242,10 @@ void CG_FireWeapon( centity_t *cent ) {
 	if ( cent->currentState.powerups & ( 1 << PW_QUAD ) ) {
 		trap_S_StartSound( NULL, cent->currentState.number, CHAN_ITEM, cgs.media.quadSound );
 	}
-
-	if ( ( cent->currentState.event & ~EV_EVENT_BITS ) == EV_FIRE_WEAPON_LASTSHOT ) {
+	if ( event == EV_THROWKNIFE ) {
+		trap_S_StartSound( NULL, ent->number, CHAN_WEAPON, cgs.media.knifeThrow );
+	}
+	else if ( ( cent->currentState.event & ~EV_EVENT_BITS ) == EV_FIRE_WEAPON_LASTSHOT ) {
 		firesound = &weap->lastShotSound[0];
 		fireEchosound = &weap->flashEchoSound[0];
 
@@ -5287,6 +5296,7 @@ void CG_FireWeapon( centity_t *cent ) {
 			}
 		}
 	}
+
 
 	// do brass ejection
 	if ( weap->ejectBrassFunc && cg_brassTime.integer > 0 ) {

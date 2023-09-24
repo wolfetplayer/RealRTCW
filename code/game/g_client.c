@@ -324,6 +324,7 @@ A player is respawning, so make an entity that looks
 just like the existing corpse to leave behind.
 =============
 */
+
 void CopyToBodyQue( gentity_t *ent ) {
 	gentity_t       *body;
 	int contents, i;
@@ -353,6 +354,8 @@ void CopyToBodyQue( gentity_t *ent ) {
 	body->timestamp = level.time;
 	body->physicsObject = qtrue;
 	body->physicsBounce = 0;        // don't bounce
+	body->physicsSlide = qfalse;
+	body->physicsFlush = qfalse;
 	if ( body->s.groundEntityNum == ENTITYNUM_NONE ) {
 		body->s.pos.trType = TR_GRAVITY;
 		body->s.pos.trTime = level.time;
@@ -1508,3 +1511,5 @@ void G_RetrieveMoveSpeedsFromClient( int entnum, char *text ) {
 		anim->stepGap = atoi( token );
 	}
 }
+
+

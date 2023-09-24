@@ -711,7 +711,7 @@ typedef struct weaponInfo_s {
 	sfxHandle_t reloadSound;
 	sfxHandle_t reloadFastSound;
 	sfxHandle_t	reloadFullSound;
-
+	sfxHandle_t	bounceSound;
 	sfxHandle_t spinupSound;        //----(SA)	added // sound started when fire button goes down, and stepped on when the first fire event happens
 	sfxHandle_t spindownSound;      //----(SA)	added // sound called if the above is running but player doesn't follow through and fire
 
@@ -1498,6 +1498,7 @@ typedef struct {
 	qhandle_t sizeCursor;
 
 	sfxHandle_t poisonGasCough;
+	sfxHandle_t		knifeThrow;
 
 } cgMedia_t;
 
@@ -1868,6 +1869,7 @@ extern vmCvar_t cg_bodysink;
 extern vmCvar_t cg_gunPosLock;
 
 extern vmCvar_t cg_hudStyle;
+extern vmCvar_t	cg_weaponBounceSound;
 
 //
 // cg_main.c
@@ -2089,7 +2091,7 @@ void CG_FinishWeaponChange( int lastweap, int newweap );
 void CG_RegisterWeapon( int weaponNum, qboolean force );
 void CG_RegisterItemVisuals( int itemNum );
 
-void CG_FireWeapon( centity_t *cent );   //----(SA)	modified.
+void CG_FireWeapon( centity_t *cent, int event );   //----(SA)	modified.
 //void CG_EndFireWeapon( centity_t *cent, int firemode );	//----(SA)	added
 void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, int surfaceFlags );   //	(SA) modified to send missilehitwall surface parameters
 

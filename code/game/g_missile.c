@@ -99,7 +99,24 @@ qboolean G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 
 		// check for stop
 		if ( trace->plane.normal[2] > 0.2 && VectorLength( ent->s.pos.trDelta ) < 40 ) {
-//----(SA)	make the world the owner of the dynamite, so the player can shoot it after it stops moving
+			
+				if (g_flushItems.integer && 0) { // fretn - ground oriented items
+         		vectoangles( trace->plane.normal, ent->s.angles );
+         		ent->s.angles[0] += 90;
+
+		 		if (ent->s.angles[0] > 0.0 && ent->s.angles[0] < 50.0) { // avoid freaky medpacks
+         		   G_SetAngle( ent, ent->s.angles);
+         		   trace->endpos[2] -= (tan(DEG2RAD(ent->s.angles[0])) * ITEM_RADIUS);
+         		}
+		 		else {
+         		   trace->endpos[2] += 1.0;   // make sure it is off ground
+         		}
+         		// -fretn
+      		}
+	  		else {
+      		   trace->endpos[2] += 1.0;   // make sure it is off ground
+      		}
+			
 			if ( ent->s.weapon == WP_DYNAMITE ) {
 				ent->r.ownerNum = ENTITYNUM_WORLD;
 

@@ -108,6 +108,9 @@ If you have questions concerning this license or the applicable additional terms
 #define LIMBO_3D_H  330
 // -NERVE - SMF
 
+#define SOUND_FAR_ECHO_DISTANCE 512
+#define SOUND_MAX_WEAPON_DISTANCE 8192
+
 //=================================================
 
 // player entities need to track more information

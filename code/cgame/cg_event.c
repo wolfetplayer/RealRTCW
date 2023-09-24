@@ -1272,7 +1272,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	const char      *s;
 	int clientNum;
 	clientInfo_t    *ci;
-	//char	tempStr[MAX_QPATH];
 
 	// JPW NERVE copied here for mg42 SFX event
 	vec3_t porg, gorg, norm;    // player/gun origin
@@ -1824,7 +1823,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		VectorCopy( cg.refdef.vieworg, porg );
 		VectorSubtract( gorg, porg, norm );
 		gdist = VectorNormalize( norm );
-		if ( gdist > 512 && gdist < 4096 ) {
+		if ( gdist > SOUND_FAR_ECHO_DISTANCE && gdist < SOUND_MAX_WEAPON_DISTANCE ) {
 			VectorMA( cg.refdef.vieworg, 64, norm, gorg );
 			trap_S_StartSoundEx( gorg, cent->currentState.number, CHAN_WEAPON, hWeaponEchoSnd, SND_NOCUT );
 		}

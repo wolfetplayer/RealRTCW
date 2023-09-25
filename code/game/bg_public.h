@@ -89,6 +89,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #define LIGHTNING_FLASH_TIME    150
 
+#define	KNIFECHARGETIME			500
+
 typedef enum {
 	CLDMG_SPIRIT,
 	CLDMG_FLAMETHROWER,
@@ -269,6 +271,7 @@ typedef struct
 {
 	qboolean bAutoReload;
 	qboolean m97reloadInterrupt;
+	qboolean	releasedFire;
 	int lastRecoilDeltaTime;
 	int weapRecoilDuration;
 	float weapRecoilPitch;       

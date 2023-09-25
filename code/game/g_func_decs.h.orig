@@ -362,7 +362,11 @@ extern void Use_target_remove_powerups ( gentity_t * ent , gentity_t * other , g
 extern void SP_target_give ( gentity_t * ent ) ;
 extern void Use_Target_Give ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
 extern void PM_AdjustAimSpreadScale ( void ) ;
+extern qboolean PM_AltFire ( void ) ;
+extern qboolean PM_AltFiring ( qboolean delayedFire ) ;
 extern void PM_CoolWeapons ( void ) ;
+extern void PM_HandleRecoil ( void ) ;
+extern qboolean PM_CheckGrenade ( void ) ;
 extern int PM_WeaponClipEmpty ( int wp ) ;
 extern int PM_WeaponAmmoAvailable ( int wp ) ;
 extern void PM_WeaponUseAmmo ( int wp , int amount ) ;

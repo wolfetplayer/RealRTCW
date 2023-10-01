@@ -336,14 +336,14 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 	ent->client->ps.ammo[ammoweap] += count;
 
 	switch ( ammoweap ) {
-		// some weaps load straight into the 'clip' since they have no storage outside the clip
+	// some weaps load straight into the 'clip' since they have no storage outside the clip
 
 	case WP_GRENADE_LAUNCHER:       // make sure if he picks up a grenade that he get's the "launcher" too
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_POISONGAS:
+    case WP_KNIFE:
 		COM_BitSet( ent->client->ps.weapons, ammoweap );
-
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
 	case WP_WELROD:
@@ -373,6 +373,16 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 		if ( count >= 999 ) { // 'really, give /all/'
 			ent->client->ps.ammo[ammoweap] = count;
 		}
+	}
+
+		switch (ammoweap) {
+		case WP_KNIFE:
+			ent->client->ps.ammoclip[ammoweap] += count;
+
+			if( ent->client->ps.ammoclip[ammoweap] > ammoTable[ammoweap].maxammo ) {
+				ent->client->ps.ammoclip[ammoweap] = ammoTable[ammoweap].maxammo;
+			}
+			break;
 	}
 
 	if ( ent->client->ps.ammoclip[ammoweap] > ammoTable[ammoweap].maxclip ) {
@@ -483,15 +493,21 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	}
 	}
 
-
-	//----(SA)	added
 	// check for special colt->akimbo add (if you've got a colt already, add the second now)
 	if ( weapon == WP_COLT ) {
 		if ( COM_BitCheck( other->client->ps.weapons, WP_COLT ) ) {
 			weapon = WP_AKIMBO;
 		}
 	}
-//----(SA)	end
+
+
+		if ( ent->item->giTag == WP_KNIFE ){
+		if ( other->client->ps.ammoclip[ent->item->giTag] < ammoTable[WP_KNIFE].maxammo  ){
+			Add_Ammo( other, ent->item->giTag, 1, qfalse );
+			return -1;
+		}
+		return 0;
+	}
 
 	// check if player already had the weapon
 	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );
@@ -499,7 +515,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	// add the weapon
 	COM_BitSet( other->client->ps.weapons, weapon );
 
-//----(SA)	added
 	// snooper/garand
 	if ( weapon == WP_SNOOPERSCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_GARAND );
@@ -523,15 +538,9 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_DELISLE );
 	}
 
-//----(SA)	end
 
 	Add_Ammo( other, weapon, quantity, !alreadyHave );
 
-//----(SA) no hook
-//	if (weapon == WP_GRAPPLING_HOOK)
-//		other->client->ps.ammo[BG_FindAmmoForWeapon(weapon)] = -1; // unlimited ammo
-
-	// single player has no respawns	(SA)
 
 		if ( !( ent->spawnflags & 8 ) ) {
 			return RESPAWN_SP;
@@ -708,6 +717,11 @@ void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 	}
 	// the same pickup rules are used for client side and server side
 	if ( !BG_CanItemBeGrabbed( &ent->s, &other->client->ps ) ) {
+		return;
+	}
+
+	// jaquboss, dont catch hot knives
+	if ( ent->damage && ent->s.pos.trType != TR_STATIONARY && ent->s.pos.trType != TR_GRAVITY_PAUSED && ent->s.pos.trType != TR_GRAVITY_FLOAT ) {
 		return;
 	}
 
@@ -1354,7 +1368,12 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 	// bounce or just slide? - check if stuck or surface not too step
 	if ( trace->plane.normal[2] >= 0.7 || VectorLength( ent->s.pos.trDelta ) < 16 || !ent->physicsSlide ) {
 		// cut the velocity to keep from bouncing forever
+		
+		if (trace->contents & (CONTENTS_BODY)) {
+		VectorScale( ent->s.pos.trDelta, ent->physicsBounce * 0.1, ent->s.pos.trDelta );
+		} else {
 		VectorScale( ent->s.pos.trDelta, ent->physicsBounce, ent->s.pos.trDelta );
+		}
 
 		// do a bounce
         if ( ent->item && ( ent->item->giType == IT_WEAPON || ent->item->giType == IT_AMMO ) && ent->item->giTag > WP_NONE && ent->item->giTag < WP_NUM_WEAPONS)
@@ -1364,7 +1383,7 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 		}
 
 		// check for stop
-		if ( G_ItemStick( ent, trace, velocity ) || ( VectorLength(ent->s.pos.trDelta) < 40 && trace->plane.normal[2] > 0) )
+		if ( G_ItemStick( ent, trace, velocity ) || ( VectorLength(ent->s.pos.trDelta) < 40 && trace->plane.normal[2] > 0)  )
 		{
 			G_FlushItem( ent, trace );
 			return;
@@ -1373,7 +1392,11 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 		// bounce the angles
 		if ( ent->s.apos.trType != TR_STATIONARY )
 		{
-			VectorScale( ent->s.apos.trDelta, ent->physicsBounce, ent->s.apos.trDelta );
+			if (trace->contents & (CONTENTS_BODY)) {
+		    VectorScale( ent->s.pos.trDelta, ent->physicsBounce * 0.1, ent->s.pos.trDelta);
+		    } else {
+		    VectorScale( ent->s.apos.trDelta, ent->physicsBounce, ent->s.apos.trDelta );
+		    }
 			ent->s.apos.trTime = level.time;
 		}
 
@@ -1499,6 +1522,49 @@ void G_RunItem( gentity_t *ent ) {
 			G_FreeEntity( ent );
 		}
 		return;
+	}
+
+
+        // This is needed for throwing knives
+		if ( ent->damage && tr.entityNum != ENTITYNUM_NONE ) {
+		float	speed;
+		vec3_t	delta, dir;
+		int      hitTime;
+
+		hitTime = level.previousTime + ( level.time - level.previousTime ) * tr.fraction;
+
+		BG_EvaluateTrajectoryDelta( &ent->s.pos, hitTime, delta, qfalse, ent->s.effect2Time );
+		VectorCopy ( delta, dir );
+		VectorNormalize( dir );
+		speed = VectorLength( delta );
+        
+		// Let the AI know that the knife hit the ground
+		AICast_ProcessBullet( &g_entities[ent->r.ownerNum], g_entities[ent->r.ownerNum].s.pos.trBase, tr.endpos );
+
+
+		if ( speed > MIN_KNIFESPEED ){
+
+
+			gentity_t		*temp, *traceEnt;
+
+			traceEnt = &g_entities[tr.entityNum];
+
+			// do damage
+			if ( traceEnt->takedamage ){
+				int	damage = ent->damage; //+ ((speed-300)/20);
+
+				G_Damage( traceEnt, ent, ent->parent, dir, tr.endpos, damage, 0, ent->methodOfDeath );
+			}
+
+			// do impact
+			if ( traceEnt->client && traceEnt->takedamage ) {
+				temp = G_TempEntity( tr.endpos, EV_MISSILE_HIT );
+				temp->s.otherEntityNum = traceEnt->s.number;
+				temp->s.weapon = ent->s.weapon;
+				temp->s.clientNum = ent->r.ownerNum;
+			}
+
+		}
 	}
 
 	G_BounceItem( ent, &tr );

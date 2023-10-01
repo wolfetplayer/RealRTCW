@@ -1454,10 +1454,15 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 
 		// monsters have full ammo for their attacks
 		// knife gets infinite ammo too
-		if ( !Q_strncasecmp( params, "monsterattack", 13 ) || weapon == WP_KNIFE || weapon == WP_DAGGER ) {
+		if ( !Q_strncasecmp( params, "monsterattack", 13 ) || weapon == WP_DAGGER ) {
 			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
 			Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );    
 		}
+
+		if (  weapon == WP_KNIFE ) {
+			Add_Ammo(&g_entities[cs->entityNum], WP_KNIFE, 1, qtrue );
+		}
+
 		// conditional flags
 		if ( ent->aiCharacter == AICHAR_ZOMBIE ) {
 			if ( COM_BitCheck( ent->client->ps.weapons, WP_MONSTER_ATTACK1 ) ) {

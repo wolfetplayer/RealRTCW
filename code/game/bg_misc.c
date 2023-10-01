@@ -6488,6 +6488,7 @@ char *eventnames[] = {
 	"EV_GIVEPAGE",
 	"EV_CLOSEMENU",
 	"EV_M97_PUMP", //jaymod
+	"EV_THROWKNIFE",
 	"EV_COUGH",
 	"EV_QUICKGRENS",
 	"EV_ALERT_SPEAKER",

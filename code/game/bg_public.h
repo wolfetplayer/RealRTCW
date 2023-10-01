@@ -90,6 +90,8 @@ If you have questions concerning this license or the applicable additional terms
 #define LIGHTNING_FLASH_TIME    150
 
 #define	KNIFECHARGETIME			500
+#define KNIFESPEED				2000
+#define MIN_KNIFESPEED          250
 
 typedef enum {
 	CLDMG_SPIRIT,
@@ -445,7 +447,7 @@ typedef enum {
 	HI_EG_SYRINGE,
 	HI_BG_SYRINGE,
 	HI_LP_SYRINGE,
-	HI_14,
+	HI_KNIVES,
 	HI_M97,
 	HI_NUM_HOLDABLE
 } holdable_t;

@@ -367,8 +367,6 @@ If you have questions concerning this license or the applicable additional terms
 {"PM_AltFire", (byte *)PM_AltFire},
 {"PM_AltFiring", (byte *)PM_AltFiring},
 {"PM_CoolWeapons", (byte *)PM_CoolWeapons},
-{"PM_HandleRecoil", (byte *)PM_HandleRecoil},
-{"PM_CheckGrenade", (byte *)PM_CheckGrenade},
 {"PM_WeaponClipEmpty", (byte *)PM_WeaponClipEmpty},
 {"PM_WeaponAmmoAvailable", (byte *)PM_WeaponAmmoAvailable},
 {"PM_WeaponUseAmmo", (byte *)PM_WeaponUseAmmo},

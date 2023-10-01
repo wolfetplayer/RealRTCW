@@ -1809,13 +1809,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	}
 	break;
-
-//----(SA)	added
 	case EV_SUGGESTWEAP:
 		CG_WeaponSuggest( es->eventParm );
 		break;
-//----(SA)	end
-
 	case EV_FIRE_WEAPON_MG42:
 		trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, hWeaponSnd );
 // JPW NERVE -- nasty kludge because there's no WP_MG42 struct to hold echosound, so we pull it from GM's predefined globals hweaponSnd & hEchoweaponsnd
@@ -1834,6 +1830,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FIRE_WEAPON:
 	case EV_FIRE_WEAPONB:
 		DEBUGNAME( "EV_FIRE_WEAPON" );
+
 		CG_FireWeapon( cent, event );
 		if ( event == EV_FIRE_WEAPONB ) {  // akimbo firing colt
 			cent->akimboFire = qtrue;
@@ -1845,14 +1842,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		DEBUGNAME( "EV_FIRE_WEAPON_LASTSHOT" );
 		CG_FireWeapon( cent, event );
 		break;
-
-//----(SA)	added
 	case EV_GRENADE_SUICIDE:
 		DEBUGNAME( "EV_GRENADE_SUICIDE" );
 		CG_MissileHitWall( WP_GRENADE_LAUNCHER, 0, position, dir, 0 );  // (SA) modified to send missilehitwall surface parameters
 		break;
-//----(SA)	end
-//----(SA)	added
 	case EV_NOFIRE_UNDERWATER:
 		DEBUGNAME( "EV_NOFIRE_UNDERWATER" );
 		if ( es->number == cg.snap->ps.clientNum ) {   // reset client-side weapon animation
@@ -1862,7 +1855,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cgs.media.noFireUnderwater );
 		}
 		break;
-//----(SA)	end
 	case EV_USE_ITEM0:
 		DEBUGNAME( "EV_USE_ITEM0" );
 		CG_UseItem( cent );
@@ -2013,7 +2005,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_MISSILE_MISS:
 		DEBUGNAME( "EV_MISSILE_MISS" );
 		ByteToDir( es->eventParm, dir );
-		CG_MissileHitWall( es->weapon, 0, position, dir, 0 );   // (SA) modified to send missilehitwall surface parameters
+		CG_MissileHitWall( es->weapon, 0, position, dir, 0 ); 
 		break;
 
 	case EV_MISSILE_MISS_LARGE:
@@ -2214,6 +2206,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_THROWKNIFE:
 		DEBUGNAME("EV_THROWKNIFE");
 		CG_FireWeapon( cent, event );
+		trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, cgs.media.knifeThrow );
 		break;
 
 		//

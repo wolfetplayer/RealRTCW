@@ -1572,18 +1572,6 @@ void Weapon_RocketLauncher_Fire( gentity_t *ent, float aimSpreadScale ) {
 
 		VectorCopy( muzzleEffect, launchpos );
 
-		// check for valid start spot (so you don't lose it in a wall)
-		// (doesn't ever happen)
-//		VectorCopy( ent->s.pos.trBase, viewpos );
-//		viewpos[2] += ent->client->ps.viewheight;
-//		trap_Trace (&tr, viewpos, NULL, NULL, muzzleEffect, ent->s.number, MASK_SHOT);
-//		if(tr.fraction < 1) {	// oops, bad launch spot
-///			VectorCopy(tr.endpos, launchpos);
-//			VectorSubtract(tr.endpos, viewpos, wallDir);
-//			VectorNormalize(wallDir);
-//			VectorMA(tr.endpos, -5, wallDir, launchpos);
-//		}
-
 		m = fire_rocket( ent, launchpos, dir );
 
 		// add kick-back
@@ -1629,14 +1617,16 @@ void ThrowKnife( gentity_t *ent )
 	knife->s.eType				= ET_ITEM;
 	knife->s.weapon				= ent->s.weapon;						// Use the correct weapon in multiplayer
 	knife->parent 				= ent;
+	knife->r.svFlags            = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
 
 	// usage
 	knife->touch				= Touch_Item;	// no auto-pickup, only activate
 	knife->use					= Use_Item;
 
 	// damage
-	knife->damage 				= ammoTable[ent->s.weapon].playerDamage ;
-	knife->splashRadius			= ammoTable[ent->s.weapon].playerSplashRadius;
+	knife->damage 				= 50; 	// JPW NERVE
+	knife->splashDamage			= 0;
+	knife->splashRadius			= 0;
 	knife->methodOfDeath 		= MOD_KNIFE;
 
 	// clipping
@@ -1652,7 +1642,7 @@ void ThrowKnife( gentity_t *ent )
 	knife->s.pos.trTime 		= level.time - 50;	// move a bit on the very first frame
 
 	// bouncing
-	knife->physicsBounce		= 0.25;
+	knife->physicsBounce		= 0.20;
 	knife->physicsObject		= qtrue;
 
 	// NQ physics
@@ -1664,11 +1654,11 @@ void ThrowKnife( gentity_t *ent )
 	VectorSet( knife->r.maxs, ITEM_RADIUS, ITEM_RADIUS, 2*ITEM_RADIUS );
 
 	// speed / dir
-	speed = 1300*ent->client->ps.grenadeTimeLeft/500;
+	speed = KNIFESPEED; //*ent->client->ps.grenadeTimeLeft/500;
 
 	// minimal toss speed
-	if ( speed < 350.f )
-		speed = 350.f;
+	/*if ( speed < MIN_KNIFESPEED )
+		speed = MIN_KNIFESPEED;*/
 
 	VectorScale( dir, speed, knife->s.pos.trDelta );
 	SnapVector( knife->s.pos.trDelta );
@@ -1690,9 +1680,8 @@ void ThrowKnife( gentity_t *ent )
 
 	// player himself
 	ent->client->ps.grenadeTimeLeft = 0;
+
 }
-
-
 
 
 /*
@@ -1864,6 +1853,9 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 	case WP_AKIMBO:     // left side rather than right
 		VectorMA( muzzlePoint, -6, right, muzzlePoint );
 		VectorMA( muzzlePoint, -4, up, muzzlePoint );
+		break;
+	case WP_KNIFE:
+	    break;
 	default:
 		VectorMA( muzzlePoint, 6, right, muzzlePoint );
 		VectorMA( muzzlePoint, -4, up, muzzlePoint );

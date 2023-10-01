@@ -3137,7 +3137,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		}
 	}
 
-
 	// make sure we aren't looking at cg.predictedPlayerEntity for LG
 	nonPredictedCent = &cg_entities[cent->currentState.number];
 
@@ -3720,6 +3719,11 @@ CG_WeaponHasAmmo
 ==============
 */
 static qboolean CG_WeaponHasAmmo( int i ) {
+
+	if( i == WP_KNIFE ) {
+		return qtrue;
+	}
+
 	if ( !( cg.predictedPlayerState.ammo[BG_FindAmmoForWeapon( i )] ) &&
 		 !( cg.predictedPlayerState.ammoclip[BG_FindClipForWeapon( i )] ) ) {
 		return qfalse;
@@ -5242,10 +5246,8 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 	if ( cent->currentState.powerups & ( 1 << PW_QUAD ) ) {
 		trap_S_StartSound( NULL, cent->currentState.number, CHAN_ITEM, cgs.media.quadSound );
 	}
-	if ( event == EV_THROWKNIFE ) {
-		trap_S_StartSound( NULL, ent->number, CHAN_WEAPON, cgs.media.knifeThrow );
-	}
-	else if ( ( cent->currentState.event & ~EV_EVENT_BITS ) == EV_FIRE_WEAPON_LASTSHOT ) {
+	
+	if ( ( cent->currentState.event & ~EV_EVENT_BITS ) == EV_FIRE_WEAPON_LASTSHOT ) {
 		firesound = &weap->lastShotSound[0];
 		fireEchosound = &weap->flashEchoSound[0];
 

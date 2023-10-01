@@ -2777,7 +2777,6 @@ int PM_WeaponAmmoAvailable( int wp ) {
 	if ( pm->noWeapClips ) {
 		return pm->ps->ammo[ BG_FindAmmoForWeapon( wp )];
 	} else {
-//		return pm->ps->ammoclip[BG_FindClipForWeapon( wp )];
 		takeweapon = BG_FindClipForWeapon( wp );
 		if ( wp == WP_AKIMBO ) {
 			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
@@ -2968,7 +2967,7 @@ qboolean PM_AltFiring ( qboolean delayedFire )
 	return qfalse;
 }
 
-void PM_HandleRecoil ( void ) {
+static void PM_HandleRecoil ( void ) {
 		
 		if( !pm->pmext->weapRecoilTime ) {
 		return;
@@ -3015,7 +3014,7 @@ void PM_HandleRecoil ( void ) {
 }
 
 
-qboolean PM_CheckGrenade() {
+static qboolean PM_CheckGrenade() {
 
 		if (pm->ps->weapon != WP_GRENADE_LAUNCHER &&
 		pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
@@ -3062,10 +3061,17 @@ qboolean PM_CheckGrenade() {
 				}
 			}
 
+		// jaquboss don't allow to catch nade again
+		if ( pm->ps->holdable[HI_KNIVES] ){
+			pm->cmd.buttons &= ~BUTTON_ATTACK;
+			pm->cmd.wbuttons &= ~WBUTTON_ATTACK2;
+		}
+
         if ( pm->ps->weapon == WP_KNIFE  && !( pm->cmd.wbuttons & WBUTTON_ATTACK2 ) ) {
                if ( pm->ps->weaponDelay == ammoTable[pm->ps->weapon].fireDelayTime ) {
 			       PM_StartWeaponAnim(WEAP_ATTACK_LASTSHOT); 
                    BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue );
+				   pm->ps->holdable[HI_KNIVES] = 1; // released knife...
 		        }
         } else if ( pm->ps->weapon != WP_KNIFE && !( pm->cmd.buttons & BUTTON_ATTACK )) {
                 if ( pm->ps->weaponDelay == ammoTable[pm->ps->weapon].fireDelayTime ) {
@@ -3075,6 +3081,7 @@ qboolean PM_CheckGrenade() {
 					}
 
 				    BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue );
+					pm->ps->holdable[HI_KNIVES] = 1; // released knife...
 
 		}
 
@@ -3569,8 +3576,9 @@ static void PM_Weapon( void ) {
 				if(!delayedFire) {
 				// throw
 				if ( pm->cmd.wbuttons & WBUTTON_ATTACK2 && PM_WeaponAmmoAvailable(pm->ps->weapon) ) {
-					BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
+					BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue );
 					pm->ps->grenadeTimeLeft = 50;
+					pm->ps->holdable[HI_KNIVES] = 0;
 					PM_StartWeaponAnim(WEAP_ATTACK2);
 					pm->ps->weaponDelay = GetWeaponTableData(pm->ps->weapon)->fireDelayTime;
 				}
@@ -3607,6 +3615,7 @@ static void PM_Weapon( void ) {
 						// start at four seconds and count down
 						pm->ps->grenadeTimeLeft = 4000;
 					}
+					pm->ps->holdable[HI_KNIVES] = 0; // holding nade
 					PM_StartWeaponAnim( WEAP_ATTACK1 );
 				}
 			}
@@ -3633,8 +3642,9 @@ static void PM_Weapon( void ) {
 
 		// jaquboss drain ammo if throwing
 		// make sure we have one to hold
-		if( ( pm->ps->weapon == WP_KNIFE ) && pm->ps->weaponstate == WEAPON_FIRINGALT  )
+		if( ( pm->ps->weapon == WP_KNIFE ) && pm->ps->weaponstate == WEAPON_FIRINGALT  ) {
 			ammoNeeded = 1;
+		}
 
 		if ( ammoNeeded > ammoAvailable ) {
 
@@ -3918,11 +3928,13 @@ static void PM_Weapon( void ) {
 		case WP_POISONGAS:
 		case WP_AIRSTRIKE:
 			pm->ps->weaponstate = WEAPON_DROPPING;
+			pm->ps->holdable[HI_KNIVES] = 0;
 			break;
 
 		case WP_KNIFE:
 			if ( pm->ps->weaponstate == WEAPON_FIRINGALT ){
 				pm->ps->weaponstate = WEAPON_DROPPING;
+			    pm->ps->holdable[HI_KNIVES] = 0;
 			}
 			break;
 

@@ -365,8 +365,6 @@ extern void PM_AdjustAimSpreadScale ( void ) ;
 extern qboolean PM_AltFire ( void ) ;
 extern qboolean PM_AltFiring ( qboolean delayedFire ) ;
 extern void PM_CoolWeapons ( void ) ;
-extern void PM_HandleRecoil ( void ) ;
-extern qboolean PM_CheckGrenade ( void ) ;
 extern int PM_WeaponClipEmpty ( int wp ) ;
 extern int PM_WeaponAmmoAvailable ( int wp ) ;
 extern void PM_WeaponUseAmmo ( int wp , int amount ) ;

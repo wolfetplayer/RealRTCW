@@ -239,7 +239,7 @@ void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 		return;
 	}
 
-		if ( meansOfDeath == MOD_POISONGAS ) {
+	if ( meansOfDeath == MOD_POISONGAS || meansOfDeath == MOD_KNIFE ) {
 		self->health = GIB_HEALTH + 1;
 		return;
 	}

@@ -438,7 +438,7 @@ static void CG_TouchTriggerPrediction( void ) {
 		ent = &cent->currentState;
 
 		if ( ent->eType == ET_ITEM && !spectator ) {
-			CG_TouchItem( cent );
+			//CG_TouchItem( cent );
 			continue;
 		}
 

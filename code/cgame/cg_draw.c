@@ -788,7 +788,7 @@ static void CG_DrawStatusBar( void ) {
 			}
 
 			// don't draw ammo value for knife
-			if ( cg.predictedPlayerState.weapon != WP_KNIFE || cg.predictedPlayerState.weapon != WP_DAGGER ) {
+			if ( cg.predictedPlayerState.weapon != WP_DAGGER ) {
 				if ( cgs.dmflags & DF_NO_WEAPRELOAD ) {
 					CG_DrawBigString2( ( 580 - 23 + 35 ) + wideOffset, STATUSBARHEIGHT, va( "%d.", value ), cg_hudAlpha.value );
 				} else if ( value ) {

@@ -150,7 +150,6 @@ static int weapIconDrawSize( int weap ) {
 	switch ( weap ) {
 
 	// weapons to not draw
-	case WP_KNIFE:
 	case WP_DAGGER:
 	    return 0;
 	// weapons with 'wide' icons
@@ -183,6 +182,8 @@ static int weapIconDrawSize( int weap ) {
 	case WP_M7:
 	case WP_M30:
 		return 2;
+	case WP_KNIFE:
+	     return 1;
 	}
 
 	return 1;
@@ -228,7 +229,11 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 	if ( cg.predictedPlayerState.grenadeTimeLeft ) {   // grenades and dynamite set this
 
 		// these time differently
-		if ( realweap == WP_DYNAMITE ) {
+		if ( realweap ==  WP_KNIFE ) {
+			scale = (float)(cg.predictedPlayerState.grenadeTimeLeft/(KNIFECHARGETIME/7.f));
+			halfScale = scale * 0.5f;
+		}
+		else if ( realweap == WP_DYNAMITE ) {
 			if ( ( ( cg.grenLastTime ) % 1000 ) > ( ( cg.predictedPlayerState.grenadeTimeLeft ) % 1000 ) ) {
 				trap_S_StartLocalSound( cgs.media.grenadePulseSound4, CHAN_LOCAL_SOUND );
 			}
@@ -251,8 +256,11 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 			}
 		}
 
-		scale = (float)( ( cg.predictedPlayerState.grenadeTimeLeft ) % 1000 ) / 100.0f;
-		halfScale = scale * 0.5f;
+		if ( realweap != WP_KNIFE ) {
+			scale = (float)((cg.predictedPlayerState.grenadeTimeLeft)%1000) / 100.0f;
+			halfScale = scale * 0.5f;
+		}
+
 
 		cg.grenLastTime = cg.predictedPlayerState.grenadeTimeLeft;
 	} else {
@@ -513,7 +521,6 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	}
 
 	switch ( weap ) {      // some weapons don't draw ammo count text
-	case WP_KNIFE:
 	case WP_AIRSTRIKE:
 	case WP_DAGGER:
 		return;
@@ -523,6 +530,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 		break;
 
 	case WP_GRENADE_LAUNCHER:
+	case WP_KNIFE:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_TESLA:

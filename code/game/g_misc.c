@@ -1636,8 +1636,6 @@ void Fire_Lead( gentity_t *ent, gentity_t *activator, float spread, int damage, 
 	gentity_t       *traceEnt;
 	vec3_t forward, right, up;
 
-	//qboolean	isflak = qfalse;
-
 	AngleVectors( angles, forward, right, up );
 
 	// 'muzzle' is bogus for mg42.  adjust for it
@@ -1672,7 +1670,6 @@ void Fire_Lead( gentity_t *ent, gentity_t *activator, float spread, int damage, 
 
 			flakPuff( tr.endpos, qtrue, forward );
 		} else {
-//			mg42_muzzleflash (ent, 0);
 			G_AddEvent( ent, EV_FIRE_WEAPON_MG42, 0 );
 		}
 		return;
@@ -1885,9 +1882,6 @@ void clamp_playerbehindgun( gentity_t *self, gentity_t *other, vec3_t dang ) {
 	trap_LinkEntity( other );
 }
 
-#define MG42_SPREAD 200
-#define MG42_DAMAGE 18
-#define MG42_DAMAGE_AI  9
 #define FIREARC         120
 
 #define FLAK_SPREAD 100
@@ -2008,14 +2002,14 @@ void mg42_track( gentity_t *self, gentity_t *other ) {
 							Fire_Lead( self, other, FLAK_SPREAD, FLAK_DAMAGE, muzzle, self->s.apos.trBase );
 						} else
 						{
-							Fire_Lead( self, other, MG42_SPREAD, MG42_DAMAGE, muzzle, self->s.apos.trBase );
+							Fire_Lead( self, other, ammoTable[WP_DUMMY_MG42].spread, ammoTable[WP_DUMMY_MG42].playerDamage, muzzle, self->s.apos.trBase );
 						}
 					} else
 					{
 						if ( self->damage ) {
-							Fire_Lead( self, other, MG42_SPREAD / self->accuracy, self->damage, muzzle, self->s.apos.trBase );
+							Fire_Lead( self, other, ammoTable[WP_DUMMY_MG42].spread / self->accuracy, self->damage, muzzle, self->s.apos.trBase );
 						} else {
-							Fire_Lead( self, other, MG42_SPREAD / self->accuracy, MG42_DAMAGE_AI, muzzle, self->s.apos.trBase );
+							Fire_Lead( self, other, ammoTable[WP_DUMMY_MG42].spread / self->accuracy, ammoTable[WP_DUMMY_MG42].aiDamage, muzzle, self->s.apos.trBase );
 						}
 
 					}

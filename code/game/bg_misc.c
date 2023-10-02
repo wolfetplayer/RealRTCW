@@ -1512,6 +1512,39 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	}, 
 
     // Misc stuff, not actual weapons
+		{   
+		WP_DUMMY_MG42,
+		WEAPON_CLASS_MG,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,             
+		0,     
+		0,
+		0,       
+		0,       
+		0,        
+		0,       
+		0,       
+		0,       
+		0,      
+		0,      
+		0,        
+		0,          
+		0,          
+		0,          
+		0,        
+		0,                 
+		0.0f,            
+		0,              
+		{.0f, .0f},      
+		{0,0},              
+		0,               
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},               
+		MOD_MACHINEGUN,                                  
+	},
+	
 	{   
 		WP_MONSTER_ATTACK1,
 		WEAPON_CLASS_NONE,
@@ -1642,7 +1675,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0, 
 		{0.0, 0.0},              
 		0,                                         
-	} 
+	}
 };
 
 // Skill-based ammo parameters
@@ -7248,6 +7281,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_HOLYCROSS:         return "cross.weap";
 		case WP_DELISLE:           return "delisle.weap";
 		case WP_DELISLESCOPE:      return "delislescope.weap";
+		case WP_DUMMY_MG42:        return "dummy_mg42.weap";
 		case WP_NONE:
 		case WP_MONSTER_ATTACK1:
 		case WP_MONSTER_ATTACK2:

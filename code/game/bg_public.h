@@ -536,12 +536,13 @@ typedef enum {
 	WP_WELROD,             	
 	WP_HOLYCROSS,           
     // Misc stuff, not actual weapons
+	WP_DUMMY_MG42,
 	WP_MONSTER_ATTACK1,     	
 	WP_MONSTER_ATTACK2,     	
 	WP_MONSTER_ATTACK3,    	
-	WP_GAUNTLET,            
+	WP_GAUNTLET,          
 	WP_SNIPER,              
-	WP_MORTAR,             
+	WP_MORTAR,           
 	VERYBIGEXPLOSION,       	
 	WP_NUM_WEAPONS 
 } weapon_t;

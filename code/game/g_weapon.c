@@ -1257,9 +1257,7 @@ void weapon_venom_fire( gentity_t *ent, qboolean fullmode, float aimSpreadScale 
 	{
 		int dam;
 		dam = VENOM_DAMAGE(isPlayer);
-		if ( ent->aiCharacter ) {  // venom guys are /vicious/
-			dam *= 0.5f;
-		}
+
 		Bullet_Fire( ent, VENOM_SPREAD * aimSpreadScale, dam );
 	}
 }

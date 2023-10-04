@@ -659,10 +659,6 @@ qboolean AICast_CheckAttack_real( cast_state_t *cs, int enemy, qboolean allowHit
 
 		traceDist = AICast_WeaponRange( cs, weapnum );
 		switch ( weapnum ) {
-		case WP_GAUNTLET:
-			mins = NULL;
-			maxs = NULL;
-			break;
 		case WP_DYNAMITE:
 		case WP_PANZERFAUST:
 		case WP_GRENADE_LAUNCHER:
@@ -894,8 +890,6 @@ AICast_WeaponWantScale
 */
 float AICast_WeaponWantScale( cast_state_t *cs, int weapon ) {
 	switch ( weapon ) {
-	case WP_GAUNTLET:
-		return 0.1;
 	case WP_FLAMETHROWER:
 		return 2.0;     // if we have this up close, definately use it
 	default:
@@ -918,8 +912,6 @@ qboolean AICast_GotEnoughAmmoForWeapon( cast_state_t *cs, int weapon ) {
 
 	// TODO!! check some kind of weapon list that holds the minimum requirements for each weapon
 	switch ( weapon ) {
-	case WP_GAUNTLET:
-		return qtrue;
 	default:
 		return (qboolean)( ( clip >= ammoTable[weapon].uses ) || ( ammo >= ammoTable[weapon].uses ) );    //----(SA)
 	}

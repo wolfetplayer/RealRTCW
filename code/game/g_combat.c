@@ -109,9 +109,8 @@ void TossClientItems( gentity_t *self ) {
 	// can pick up a weapon, be killed, and not drop the weapon because
 	// their weapon change hasn't completed yet and they are still holding the MG.
 
-// (SA) always drop what you were switching to
+    // (SA) always drop what you were switching to
 	if ( 1 ) {
-//	if ( weapon == WP_MACHINEGUN || weapon == WP_GRAPPLING_HOOK ) {
 		if ( self->client->ps.weaponstate == WEAPON_DROPPING || self->client->ps.weaponstate == WEAPON_DROPPING_TORELOAD ) {
 			weapon = self->client->pers.cmd.weapon;
 		}
@@ -259,7 +258,7 @@ void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 char    *modNames[] = {
 	"MOD_UNKNOWN",
 	"MOD_SHOTGUN",
-	"MOD_GAUNTLET",
+	"MOD_MONSTER_MELEE",
 	"MOD_MACHINEGUN",
 	"MOD_GRENADE",
 	"MOD_GRENADE_SPLASH",

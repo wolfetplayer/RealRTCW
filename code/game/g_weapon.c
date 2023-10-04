@@ -210,160 +210,6 @@ void Weapon_Dagger( gentity_t *ent ) {
 	G_Damage( traceEnt, ent, ent, vec3_origin, tr.endpos, ( damage + rand() % 5 ) * s_quadFactor, 0, mod );
 }
 
-// JPW NERVE
-/*
-======================
-  Weapon_Class_Special
-	class-specific in multiplayer
-======================
-*/
-// JPW NERVE
-void Weapon_Medic( gentity_t *ent ) {
-	vec3_t velocity, org, offset;
-	vec3_t angles;
-
-	trace_t tr;
-	gentity_t   *traceEnt;
-	int healamt, headshot;
-
-	vec3_t end;
-
-	AngleVectors( ent->client->ps.viewangles, forward, right, up );
-	CalcMuzzlePointForActivate( ent, forward, right, up, muzzleTrace );
-	VectorMA( muzzleTrace, 30, forward, end );           // CH_ACTIVATE_DIST
-	trap_Trace( &tr, muzzleTrace, NULL, NULL, end, ent->s.number, MASK_SHOT );
-
-	if ( tr.fraction < 1.0 ) {
-		traceEnt = &g_entities[ tr.entityNum ];
-		if ( traceEnt->client != NULL ) {
-			if ( ( traceEnt->client->ps.pm_type == PM_DEAD ) && ( traceEnt->client->sess.sessionTeam == ent->client->sess.sessionTeam ) ) {
-				if ( level.time - ent->client->ps.classWeaponTime > g_medicChargeTime.integer ) {
-					ent->client->ps.classWeaponTime = level.time - g_medicChargeTime.integer;
-				}
-				ent->client->ps.classWeaponTime += 125;
-				traceEnt->client->medicHealAmt++;
-				if ( ent->client->ps.classWeaponTime > level.time ) { // heal the dude
-					// copy some stuff out that we'll wanna restore
-					VectorCopy( traceEnt->client->ps.origin, org );
-					healamt = traceEnt->client->medicHealAmt;
-					headshot = traceEnt->client->ps.eFlags & EF_HEADSHOT;
-
-					ClientSpawn( traceEnt );
-					if ( healamt > 80 ) {
-						healamt = 80;
-					}
-					if ( healamt < 10 ) {
-						healamt = 10;
-					}
-					if ( headshot ) {
-						traceEnt->client->ps.eFlags |= EF_HEADSHOT;
-					}
-					traceEnt->health = healamt;
-					VectorCopy( org,traceEnt->s.origin );
-					VectorCopy( org,traceEnt->r.currentOrigin );
-					VectorCopy( org,traceEnt->client->ps.origin );
-				}
-			}
-		}
-	} else { // throw out health pack
-		if ( level.time - ent->client->ps.classWeaponTime >= g_medicChargeTime.integer * 0.25f ) {
-			if ( level.time - ent->client->ps.classWeaponTime > g_medicChargeTime.integer ) {
-				ent->client->ps.classWeaponTime = level.time - g_medicChargeTime.integer;
-			}
-			ent->client->ps.classWeaponTime += g_medicChargeTime.integer * 0.25;
-
-			VectorCopy( ent->client->ps.viewangles, angles );
-			angles[PITCH] = 0;  // always forward
-			AngleVectors( angles, velocity, NULL, NULL );
-			VectorScale( velocity, 75, offset );
-			VectorScale( velocity, 50, velocity );
-			velocity[2] += 50 + crandom() * 50;
-
-			VectorAdd( ent->client->ps.origin,offset,org );
-		}
-	}
-}
-// jpw
-
-// DHM - Nerve
-void Weapon_Engineer( gentity_t *ent ) {
-	trace_t tr;
-	gentity_t   *traceEnt;
-//	int			mod = MOD_KNIFE;
-
-	vec3_t end;
-
-	AngleVectors( ent->client->ps.viewangles, forward, right, up );
-	CalcMuzzlePointForActivate( ent, forward, right, up, muzzleTrace );
-	VectorMA( muzzleTrace, 96, forward, end );           // CH_ACTIVATE_DIST
-	trap_Trace( &tr, muzzleTrace, NULL, NULL, end, ent->s.number, MASK_SHOT | CONTENTS_TRIGGER );
-
-	if ( tr.surfaceFlags & SURF_NOIMPACT ) {
-		return;
-	}
-
-	// no contact
-	if ( tr.fraction == 1.0f ) {
-		return;
-	}
-
-	if ( tr.entityNum == ENTITYNUM_NONE || tr.entityNum == ENTITYNUM_WORLD ) {
-		return;
-	}
-
-	traceEnt = &g_entities[ tr.entityNum ];
-	if ( traceEnt->methodOfDeath == MOD_DYNAMITE ) {
-
-		traceEnt->health += 3;
-		if ( traceEnt->health >= 248 ) {
-			traceEnt->health = 255;
-			// Need some kind of event/announcement here
-
-			Add_Ammo( ent, WP_DYNAMITE, 1, qtrue );
-
-			traceEnt->think = G_FreeEntity;
-			traceEnt->nextthink = level.time + FRAMETIME;
-// JPW NERVE
-			if ( ent->client->sess.sessionTeam == TEAM_RED ) {
-				trap_SendServerCommand( -1, "cp \"Axis engineer disarmed a det charge!\n\"" );
-			} else {
-				trap_SendServerCommand( -1, "cp \"Allied engineer disarmed a det charge!\n\"" );
-			}
-// jpw
-		}
-	} else if ( !traceEnt->takedamage && !Q_stricmp( traceEnt->classname, "misc_mg42" ) )       {
-		// "Ammo" for this weapon is time based
-		if ( ent->client->ps.classWeaponTime + g_engineerChargeTime.integer < level.time ) {
-			ent->client->ps.classWeaponTime = level.time - g_engineerChargeTime.integer;
-		}
-		ent->client->ps.classWeaponTime += 150;
-
-		if ( ent->client->ps.classWeaponTime > level.time ) {
-			ent->client->ps.classWeaponTime = level.time;
-			return;     // Out of "ammo"
-		}
-
-		if ( traceEnt->health >= 255 ) {
-			traceEnt->s.frame = 0;
-
-			if ( traceEnt->mg42BaseEnt > 0 ) {
-				g_entities[ traceEnt->mg42BaseEnt ].health = 100;
-				g_entities[ traceEnt->mg42BaseEnt ].takedamage = qtrue;
-				traceEnt->health = 0;
-			} else {
-				traceEnt->health = 100;
-			}
-
-			traceEnt->takedamage = qtrue;
-
-			trap_SendServerCommand( ent - g_entities, "cp \"You have repaired the MG42!\n\"" );
-		} else {
-			traceEnt->health += 3;
-		}
-	}
-}
-
-
 // JPW NERVE -- launch airstrike as line of bombs mostly-perpendicular to line of grenade travel
 // (close air support should *always* drop parallel to friendly lines, tho accidents do happen)
 void G_ExplodeMissile( gentity_t *ent );
@@ -478,42 +324,6 @@ void weapon_callAirStrike( gentity_t *ent ) {
 }
 
 gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity );
-void Weapon_Class_Special( gentity_t *ent ) {
-
-	switch ( ent->client->ps.stats[STAT_PLAYER_CLASS] ) {
-	case PC_SOLDIER:
-		G_Printf( "shooting soldier\n" );
-		break;
-	case PC_MEDIC:
-		Weapon_Medic( ent );
-		break;
-	case PC_ENGINEER:
-		//G_Printf("shooting engineer\n");
-		//ent->client->ps.classWeaponTime = level.time;
-		Weapon_Engineer( ent );
-		break;
-	case PC_LT:
-		if ( level.time - ent->client->ps.classWeaponTime > g_LTChargeTime.integer ) {
-			ent->client->ps.classWeaponTime = level.time;
-		}
-		break;
-	}
-}
-// jpw
-
-/*
-==============
-Weapon_Gauntlet
-==============
-*/
-void Weapon_Gauntlet( gentity_t *ent ) {
-	trace_t *tr;
-	tr = CheckMeleeAttack( ent, 32, qfalse );
-	if ( tr ) {
-		G_Damage( &g_entities[tr->entityNum], ent, ent, vec3_origin, tr->endpos,
-				  ( 10 + rand() % 5 ) * s_quadFactor, 0, MOD_GAUNTLET );
-	}
-}
 
 /*
 ===============
@@ -530,7 +340,7 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 	// set aiming directions
 	AngleVectors( ent->client->ps.viewangles, forward, right, up );
 
-	CalcMuzzlePoint( ent, WP_GAUNTLET, forward, right, up, muzzleTrace );
+	CalcMuzzlePoint( ent, WP_KNIFE, forward, right, up, muzzleTrace );
 
 	VectorMA( muzzleTrace, dist, forward, end );
 
@@ -926,9 +736,6 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 		VectorCopy( tr.endpos, tent->s.origin2 );
 		tent->s.otherEntityNum2 = attacker->s.number;
 	}
-
-
-	RubbleFlagCheck( attacker, tr );
 
 	traceEnt = &g_entities[ tr.entityNum ];
 
@@ -2120,9 +1927,6 @@ void FireWeapon( gentity_t *ent ) {
 				VectorMA( ent->client->ps.velocity, -100, forward, ent->client->ps.velocity );
 			}
 		}
-		break;
-	case WP_GAUNTLET:
-		Weapon_Gauntlet( ent );
 		break;
 
 	case WP_HOLYCROSS:

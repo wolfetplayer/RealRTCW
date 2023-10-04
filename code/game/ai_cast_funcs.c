@@ -2968,7 +2968,7 @@ char *AIFunc_BattleChase( cast_state_t *cs ) {
 	// ...........................................................
 	// speed up over some time
 	#define BATTLE_CHASE_ACCEL_TIME     300
-	if ( ( cs->attributes[RUNNING_SPEED] > 170 ) && ( cs->weaponNum != WP_GAUNTLET ) && ( level.time < ( cs->startBattleChaseTime + BATTLE_CHASE_ACCEL_TIME ) ) ) {
+	if ( ( cs->attributes[RUNNING_SPEED] > 170 ) && ( level.time < ( cs->startBattleChaseTime + BATTLE_CHASE_ACCEL_TIME ) ) ) {
 		float ideal;
 
 		ideal = 0.5 + 0.5 * ( 1.0 - ( (float)( ( cs->startBattleChaseTime + BATTLE_CHASE_ACCEL_TIME ) - level.time ) / BATTLE_CHASE_ACCEL_TIME ) );
@@ -2983,25 +2983,12 @@ char *AIFunc_BattleChase( cast_state_t *cs ) {
 		aicast_predictmove_t move;
 		float moveDist;
 		vec3_t vec;
-		//
-		if ( cs->weaponNum == WP_GAUNTLET ) {
-			simTime = 0.5;
-		}
-		//
+
 		AICast_PredictMovement( cs, 1, simTime, &move, &cs->lastucmd, cs->enemyNum );
 		VectorSubtract( move.endpos, cs->bs->origin, vec );
 		moveDist = VectorNormalize( vec );
-		//
-		if ( cs->weaponNum == WP_GAUNTLET ) {
-			if ( move.stopevent == PREDICTSTOP_HITENT ) {
-				AICast_AimAtEnemy( cs );
-				trap_EA_Attack( bs->client );
-				cs->bFlags |= BFL_ATTACKED;
-			}
-		}
-		//
 		// do we went to play a diving animation into a cover position?
-		else if (   ( ( cs->attributes[TACTICAL] > 0.85 ) && ( cs->aiFlags & AIFL_ROLL_ANIM ) && !client->ps.torsoTimer && !client->ps.legsTimer && ( cs->lastRollMove < level.time - 800 ) && ( move.numtouch == 0 ) && ( moveDist > simTime * cs->attributes[RUNNING_SPEED] * 0.98 ) && move.groundEntityNum == ENTITYNUM_WORLD ) &&
+		if (   ( ( cs->attributes[TACTICAL] > 0.85 ) && ( cs->aiFlags & AIFL_ROLL_ANIM ) && !client->ps.torsoTimer && !client->ps.legsTimer && ( cs->lastRollMove < level.time - 800 ) && ( move.numtouch == 0 ) && ( moveDist > simTime * cs->attributes[RUNNING_SPEED] * 0.98 ) && move.groundEntityNum == ENTITYNUM_WORLD ) &&
 					( AICast_CheckAttackAtPos( cs->entityNum, cs->enemyNum, move.endpos, cs->attackcrouch_time > level.time, qfalse ) ) ) {
 			cs->takeCoverTime = 0;
 			return AIFunc_BattleRollStart( cs, vec );

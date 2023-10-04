@@ -2303,7 +2303,6 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 
 	switch ( newweapon ) {
 
-	case WP_GAUNTLET:
 	case WP_MONSTER_ATTACK1:
 	case WP_MONSTER_ATTACK2:
 	case WP_MONSTER_ATTACK3:
@@ -3592,11 +3591,6 @@ static void PM_Weapon( void ) {
 			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
 		}
 		break;
-	case WP_GAUNTLET:
-		if ( !delayedFire ) {
-			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
-		}
-		break;
 	// throw
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
@@ -3667,7 +3661,6 @@ static void PM_Weapon( void ) {
 
 			switch ( pm->ps->weapon ) {
 			// Ridah, only play if using a triggered weapon
-			case WP_GAUNTLET:
 			case WP_MONSTER_ATTACK1:
 			case WP_DYNAMITE:
 			case WP_GRENADE_LAUNCHER:
@@ -3855,16 +3848,6 @@ static void PM_Weapon( void ) {
 				        addTime = 2 * ammoTable[pm->ps->weapon].nextShotTime;
 			       }
 		       }
-		break;
-		case WP_GAUNTLET:
-		switch ( pm->ps->aiChar ) {
-		case AICHAR_LOPER:            
-			addTime = 1000;
-			break;
-		default:
-	    addTime = 250;
-	    break;
-		}
 		break;
 	}
 

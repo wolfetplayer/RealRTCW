@@ -213,7 +213,7 @@ char *AIFunc_Helga_Melee( cast_state_t *cs ) {
 				trap_Trace( &tr, ent->r.currentOrigin, NULL, NULL, enemy->r.currentOrigin, ent->s.number, MASK_SHOT );
 				if ( tr.entityNum == cs->enemyNum ) {
 					G_Damage( &g_entities[tr.entityNum], ent, ent, vec3_origin, tr.endpos,
-							  helgaHitDamage[anim], 0, MOD_GAUNTLET );
+							  helgaHitDamage[anim], 0, MOD_MONSTER_MELEE );
 					G_AddEvent( enemy, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[STAYSOUNDSCRIPT] ) );
 				}
 			}
@@ -434,7 +434,7 @@ char *AIFunc_Heinrich_SwordLunge( cast_state_t *cs ) {
 			cs->aiFlags |= AIFL_MISCFLAG1;
 			// do melee damage
 			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
-				G_Damage( &g_entities[tr->entityNum], ent, ent, left, tr->endpos, HEINRICH_LUNGE_DAMAGE, 0, MOD_GAUNTLET );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, left, tr->endpos, HEINRICH_LUNGE_DAMAGE, 0, MOD_MONSTER_MELEE );
 				// sound
 				G_AddEvent( ent, EV_GENERAL_SOUND, heinrichSoundIndex[HEINRICH_SWORDIMPACT] );
 			}
@@ -529,7 +529,7 @@ char *AIFunc_Heinrich_SwordKnockback( cast_state_t *cs ) {
 			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
 				AngleVectors( cs->viewangles, NULL, right, NULL );
 				VectorNegate( right, left );
-				G_Damage( &g_entities[tr->entityNum], ent, ent, left, tr->endpos, HEINRICH_KNOCKBACK_DAMAGE, 0, MOD_GAUNTLET );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, left, tr->endpos, HEINRICH_KNOCKBACK_DAMAGE, 0, MOD_MONSTER_MELEE );
 				// sound
 				G_AddEvent( ent, EV_GENERAL_SOUND, heinrichSoundIndex[HEINRICH_SWORDIMPACT] );
 				// throw them in direction of impact
@@ -620,7 +620,7 @@ char *AIFunc_Heinrich_SwordSideSlash( cast_state_t *cs ) {
 			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
 				AngleVectors( cs->viewangles, NULL, right, NULL );
 				VectorNegate( right, left );
-				G_Damage( &g_entities[tr->entityNum], ent, ent, left, tr->endpos, HEINRICH_SLASH_DAMAGE, 0, MOD_GAUNTLET );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, left, tr->endpos, HEINRICH_SLASH_DAMAGE, 0, MOD_MONSTER_MELEE );
 				// sound
 				G_AddEvent( ent, EV_GENERAL_SOUND, heinrichSoundIndex[HEINRICH_SWORDIMPACT] );
 				// throw them in direction of impact
@@ -742,7 +742,7 @@ char *AIFunc_Heinrich_Earthquake( cast_state_t *cs ) {
 			tr = CheckMeleeAttack( ent, 70, qfalse );
 			// do melee damage
 			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
-				G_Damage( &g_entities[tr->entityNum], ent, ent, vec3_origin, tr->endpos, HEINRICH_STOMP_DAMAGE, 0, MOD_GAUNTLET );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, vec3_origin, tr->endpos, HEINRICH_STOMP_DAMAGE, 0, MOD_MONSTER_MELEE );
 			}
 			// call the debris trigger
 			AICast_ScriptEvent( cs, "trigger", "quake" );

@@ -1643,39 +1643,6 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		{0.0, 0.0},             
 		0,                                        
 	},  
-
-	{   
-		WP_GAUNTLET,
-		WEAPON_CLASS_MELEE,
-		WP_NONE,
-		WEAPON_TEAM_NONE,         
-		999,                 
-		0,       
-		999,      
-		0,           
-		50,        
-		250,       
-		250,       
-		0,
-		0,      
-		0,      
-		0,        
-		0,          
-		0,          
-		0,          
-		0,          
-		0,                  
-		0.0f,            
-		0,               
-		{0,0},           
-		{0,0},              
-		64,                 
-		0,                  
-		0,               
-		0, 
-		{0.0, 0.0},              
-		0,                                         
-	}
 };
 
 // Skill-based ammo parameters
@@ -2432,30 +2399,6 @@ model="models/powerups/armor/armor_head1.md3"
 	//
 	// WEAPONS
 	//
-
-/*
-weapon_gauntlet
-*/
-	{
-		"weapon_gauntlet",
-		"sound/misc/w_pkup.wav",
-		{
-		"models/weapons2/gauntlet/gauntlet.md3",
-		0, 
-		0
-		},
-		"", 
-		"Gauntlet",             
-		0,
-		IT_WEAPON,
-		WP_GAUNTLET,
-		WP_GAUNTLET,
-		WP_GAUNTLET,
-		WP_GAUNTLET,
-		"",                      
-		"",                      
-		{0,0,0,0,0}
-	},
 
 
 /*QUAKED weapon_knife (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -7286,7 +7229,6 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_MONSTER_ATTACK1:
 		case WP_MONSTER_ATTACK2:
 		case WP_MONSTER_ATTACK3:
-		case WP_GAUNTLET:
 		case WP_SNIPER:
 		case VERYBIGEXPLOSION:
 		case WP_MORTAR:            return "";

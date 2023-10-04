@@ -2837,13 +2837,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		return;
 	}
 
-	if ( weaponNum == WP_GAUNTLET ) {  // (SA) this is the 'knife'.  no model yet, so we can give it to the zombie and have him visually 'unarmed'
-		if ( debuggingweapon ) {
-			CG_Printf( "returning due to: weaponNum == WP_GAUNTLET\n" );
-		}
-		return;
-	}
-
 	if ( !ps && cg.snap->ps.pm_flags & PMF_LADDER && isPlayer ) {      //----(SA) player on ladder
 		if ( debuggingweapon ) {
 			CG_Printf( "returning due to: !ps && cg.snap->ps.pm_flags & PMF_LADDER\n" );

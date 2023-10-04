@@ -279,7 +279,7 @@ char *AIFunc_ZombieMelee( cast_state_t *cs ) {
 				// do melee damage
 				if ( ( tr = CheckMeleeAttack( ent, AICast_WeaponRange( cs, cs->weaponNum ) + 4.0, qfalse ) ) && ( tr->entityNum == cs->enemyNum ) ) {
 					G_Damage( &g_entities[tr->entityNum], ent, ent, vec3_origin, tr->endpos,
-							  zombieHitDamage[anim], 0, MOD_GAUNTLET );
+							  zombieHitDamage[anim], 0, MOD_MONSTER_MELEE );
 					G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[STAYSOUNDSCRIPT] ) );
 				} else {
 					G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[FOLLOWSOUNDSCRIPT] ) );
@@ -676,7 +676,7 @@ char* AIFunc_DogAttack(cast_state_t* cs) {
 			// do melee damage?
 			if (tr && (tr->entityNum == cs->enemyNum)) {
 				AngleVectors(cs->viewangles, fwd, NULL, NULL);
-				G_Damage(&g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, DOG_KICK_DAMAGE, 0, MOD_GAUNTLET);
+				G_Damage(&g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, DOG_KICK_DAMAGE, 0, MOD_MONSTER_MELEE);
 				// throw them in direction of impact
 				fwd[2] = 0.5;
 				VectorMA(g_entities[cs->enemyNum].client->ps.velocity, 5, fwd, g_entities[cs->enemyNum].client->ps.velocity);
@@ -876,7 +876,7 @@ char *AIFunc_BlackGuardAttack1( cast_state_t *cs ) {
 			// do melee damage?
 			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
 				AngleVectors( cs->viewangles, fwd, NULL, NULL );
-				G_Damage( &g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, BLACKGUARD_KICK_DAMAGE, 0, MOD_GAUNTLET );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, BLACKGUARD_KICK_DAMAGE, 0, MOD_MONSTER_MELEE );
 				// throw them in direction of impact
 				fwd[2] = 0.5;
 				VectorMA( g_entities[cs->enemyNum].client->ps.velocity, 300, fwd, g_entities[cs->enemyNum].client->ps.velocity );
@@ -921,7 +921,7 @@ char *AIFunc_xshepherdbite( cast_state_t *cs ) {
 			// do melee damage?
 			if ( tr && ( tr->entityNum == cs->enemyNum ) ) {
 				AngleVectors( cs->viewangles, fwd, NULL, NULL );
-				G_Damage( &g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, XSHEPHERD_BITE_DAMAGE, 0, MOD_GAUNTLET );
+				G_Damage( &g_entities[tr->entityNum], ent, ent, fwd, tr->endpos, XSHEPHERD_BITE_DAMAGE, 0, MOD_MONSTER_MELEE );
 				// throw them in direction of impact
 				fwd[2] = 0.5;
 				VectorMA( g_entities[cs->enemyNum].client->ps.velocity, 300, fwd, g_entities[cs->enemyNum].client->ps.velocity );
@@ -1068,7 +1068,7 @@ char *AIFunc_WarriorZombieMelee( cast_state_t *cs ) {
 				// do melee damage
 				if ( ( tr = CheckMeleeAttack( ent, 44, qfalse ) ) && ( tr->entityNum == cs->enemyNum ) ) {
 					G_Damage( &g_entities[tr->entityNum], ent, ent, vec3_origin, tr->endpos,
-							  warriorHitDamage[anim], 0, MOD_GAUNTLET );
+							  warriorHitDamage[anim], 0, MOD_MONSTER_MELEE );
 					G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[STAYSOUNDSCRIPT] ) );
 				} else {
 					G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[FOLLOWSOUNDSCRIPT] ) );

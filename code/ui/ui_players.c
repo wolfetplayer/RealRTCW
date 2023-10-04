@@ -100,18 +100,6 @@ tryagain:
 	pi->flashModel = trap_R_RegisterModel( path );
 
 	switch ( weaponNum ) {
-	case WP_GAUNTLET:
-		MAKERGB( pi->flashDlightColor, 0.6, 0.6, 1 );
-		break;
-
-//	case WP_MACHINEGUN:
-//		MAKERGB( pi->flashDlightColor, 1, 1, 0 );
-//		break;
-
-//	case WP_SHOTGUN:
-//		MAKERGB( pi->flashDlightColor, 1, 1, 0 );
-//		break;
-
 	case WP_GRENADE_LAUNCHER:
 		MAKERGB( pi->flashDlightColor, 1, 0.7, 0.5 );
 		break;
@@ -119,18 +107,6 @@ tryagain:
 	case WP_FLAMETHROWER:
 		MAKERGB( pi->flashDlightColor, 0.6, 0.6, 1 );
 		break;
-
-//	case WP_RAILGUN:
-//		MAKERGB( pi->flashDlightColor, 1, 0.5, 0 );
-//		break;
-
-//	case WP_BFG:
-//		MAKERGB( pi->flashDlightColor, 1, 0.7, 1 );
-//		break;
-
-//	case WP_GRAPPLING_HOOK:
-//		MAKERGB( pi->flashDlightColor, 0.6, 0.6, 1 );
-//		break;
 
 	default:
 		MAKERGB( pi->flashDlightColor, 1, 1, 1 );
@@ -185,135 +161,6 @@ static void UI_ForceTorsoAnim( playerInfo_t *pi, int anim ) {
 		pi->torsoAnimationTimer = UI_TIMER_ATTACK;
 	}
 }
-
-
-/*
-===============
-UI_SetTorsoAnim
-===============
-*/
-// TTimo: unused
-/*
-static void UI_SetTorsoAnim( playerInfo_t *pi, int anim ) {
-	if ( pi->pendingTorsoAnim ) {
-		anim = pi->pendingTorsoAnim;
-		pi->pendingTorsoAnim = 0;
-	}
-
-	UI_ForceTorsoAnim( pi, anim );
-}
-*/
-
-/*
-===============
-UI_TorsoSequencing
-===============
-*/
-// TTimo: unused
-/*
-static void UI_TorsoSequencing( playerInfo_t *pi ) {
-	int				currentAnim;
-	animNumber_t	raisetype;	//----(SA) added
-
-	currentAnim = pi->torsoAnim & ~ANIM_TOGGLEBIT;
-
-	if ( pi->weapon != pi->currentWeapon ) {
-		if ( currentAnim != TORSO_DROP ) {
-			pi->torsoAnimationTimer = UI_TIMER_WEAPON_SWITCH;
-			UI_ForceTorsoAnim( pi, TORSO_DROP );
-		}
-	}
-
-	if ( pi->torsoAnimationTimer > 0 ) {
-		return;
-	}
-
-	if( currentAnim == TORSO_GESTURE ) {
-		UI_SetTorsoAnim( pi, TORSO_STAND );
-		return;
-	}
-
-	if( currentAnim == TORSO_ATTACK	|| currentAnim == TORSO_ATTACK2 ||
-		currentAnim == TORSO_ATTACK3 || currentAnim == TORSO_ATTACK4 ||
-		currentAnim == TORSO_ATTACK5 || currentAnim == TORSO_ATTACK5B) {
-		UI_SetTorsoAnim( pi, TORSO_STAND );
-		return;
-	}
-
-	if ( currentAnim == TORSO_DROP ) {
-		UI_PlayerInfo_SetWeapon( pi, pi->weapon );
-		pi->torsoAnimationTimer = UI_TIMER_WEAPON_SWITCH;
-
-//----(SA) added
-		switch(pi->weapon)
-		{
-			case WP_MAUSER:
-				raisetype = TORSO_RAISE2;	// (high)
-				break;
-
-			case WP_GAUNTLET:
-			case WP_SILENCER:
-			case WP_LUGER:
-			case WP_KNIFE:
-				raisetype = TORSO_RAISE3;	// (pistol)
-				break;
-
-			case WP_GRENADE_LAUNCHER:
-				raisetype = TORSO_RAISE5;	// (throw)
-				break;
-
-			default:
-				raisetype = TORSO_RAISE;	// (low)
-				break;
-		}
-
-		UI_ForceTorsoAnim( pi, raisetype );
-
-		return;
-	}
-
-	if (	currentAnim == TORSO_RAISE || currentAnim == TORSO_RAISE2 ||
-			currentAnim == TORSO_RAISE3 || currentAnim == TORSO_RAISE4 ||
-			currentAnim == TORSO_RAISE5) {
-		UI_SetTorsoAnim( pi, TORSO_STAND );
-		return;
-	}
-//----(SA) end
-}
-*/
-
-/*
-===============
-UI_LegsSequencing
-===============
-*/
-// TTimo: unused
-/*
-static void UI_LegsSequencing( playerInfo_t *pi ) {
-	int		currentAnim;
-
-	currentAnim = pi->legsAnim & ~ANIM_TOGGLEBIT;
-
-	if ( pi->legsAnimationTimer > 0 ) {
-		if ( currentAnim == LEGS_JUMP ) {
-			jumpHeight = JUMP_HEIGHT * sin( M_PI * ( UI_TIMER_JUMP - pi->legsAnimationTimer ) / UI_TIMER_JUMP );
-		}
-		return;
-	}
-
-	if ( currentAnim == LEGS_JUMP ) {
-		UI_ForceLegsAnim( pi, LEGS_LAND );
-		pi->legsAnimationTimer = UI_TIMER_LAND;
-		jumpHeight = 0;
-		return;
-	}
-
-	if ( currentAnim == LEGS_LAND ) {
-		UI_SetLegsAnim( pi, LEGS_IDLE );
-		return;
-	}
-}
-*/
 
 /*
 ======================
@@ -1564,7 +1411,7 @@ void UI_PlayerInfo_SetInfo( playerInfo_t *pi, int legsAnim, int torsoAnim, vec3_
 
 	// torso animation
 	if ( torsoAnim == TORSO_STAND || torsoAnim == TORSO_STAND2 ) {
-		if ( weaponNum == WP_NONE || weaponNum == WP_GAUNTLET ) {
+		if ( weaponNum == WP_NONE ) {
 			torsoAnim = TORSO_STAND2;
 		} else {
 			torsoAnim = TORSO_STAND;
@@ -1572,7 +1419,7 @@ void UI_PlayerInfo_SetInfo( playerInfo_t *pi, int legsAnim, int torsoAnim, vec3_
 	}
 
 	if ( torsoAnim == TORSO_ATTACK || torsoAnim == TORSO_ATTACK2 ) {
-		if ( weaponNum == WP_NONE || weaponNum == WP_GAUNTLET ) {
+		if ( weaponNum == WP_NONE ) {
 			torsoAnim = TORSO_ATTACK2;
 		} else {
 			torsoAnim = TORSO_ATTACK;

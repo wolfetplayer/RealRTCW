@@ -858,50 +858,6 @@ void G_RunSpit( gentity_t *ent ) {
 }
 
 
-void G_RunCrowbar( gentity_t *ent ) {
-	vec3_t origin;
-	trace_t tr;
-
-	// get current position
-	BG_EvaluateTrajectory( &ent->s.pos, level.time, origin );
-
-	// trace a line from the previous position to the current position,
-	// ignoring interactions with the missile owner
-	trap_Trace( &tr, ent->r.currentOrigin, ent->r.mins, ent->r.maxs, origin,
-				ent->r.ownerNum, ent->clipmask );
-
-	VectorCopy( tr.endpos, ent->r.currentOrigin );
-
-	if ( tr.startsolid ) {
-		tr.fraction = 0;
-	}
-
-	trap_LinkEntity( ent );
-
-	if ( tr.fraction != 1 ) {
-		// never explode or bounce on sky
-		if  (   tr.surfaceFlags & SURF_NOIMPACT ) {
-			// If grapple, reset owner
-			if ( ent->parent && ent->parent->client->hook == ent ) {
-				ent->parent->client->hook = NULL;
-			}
-			G_FreeEntity( ent );
-			return;
-		}
-
-		if ( ent->s.eType != ET_MISSILE ) {
-			return;     // exploded
-		}
-	}
-
-	// check think function after bouncing
-	G_RunThink( ent );
-}
-
-//=============================================================================
-
-//----(SA) removed unused quake3 weapons.
-
 int G_GetWeaponDamage( int weapon, qboolean player ); // JPW NERVE
 
 /*
@@ -1216,43 +1172,6 @@ gentity_t *fire_zombiespirit( gentity_t *self, gentity_t *bolt, vec3_t start, ve
 
 	bolt->s.pos.trType = TR_INTERPOLATE;        // we'll move it manually, since it needs to track it's enemy
 	bolt->s.pos.trTime = level.time;            // move a bit on the very first frame
-	VectorCopy( start, bolt->s.pos.trBase );
-	VectorScale( dir, 800, bolt->s.pos.trDelta );
-	SnapVector( bolt->s.pos.trDelta );          // save net bandwidth
-	VectorCopy( start, bolt->r.currentOrigin );
-
-	return bolt;
-}
-
-// the crowbar for the mechanic
-gentity_t *fire_crowbar( gentity_t *self, vec3_t start, vec3_t dir ) {
-	gentity_t   *bolt;
-
-	VectorNormalize( dir );
-
-	bolt = G_Spawn();
-	bolt->classname = "crowbar";
-	bolt->nextthink = level.time + 50000;
-	bolt->think = G_ExplodeMissile;
-	bolt->s.eType = ET_CROWBAR;
-
-
-	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
-	// bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
-
-	bolt->s.weapon = WP_PANZERFAUST;
-	bolt->r.ownerNum = self->s.number;
-	bolt->parent = self;
-	bolt->damage = 10;
-	bolt->splashDamage = 0;
-	bolt->splashRadius = 0;
-	bolt->methodOfDeath = MOD_ROCKET;
-	bolt->splashMethodOfDeath = MOD_ROCKET_SPLASH;
-//	bolt->clipmask = MASK_SHOT;
-	bolt->clipmask = MASK_MISSILESHOT;
-
-	bolt->s.pos.trType = TR_GRAVITY;
-	bolt->s.pos.trTime = level.time - MISSILE_PRESTEP_TIME;     // move a bit on the very first frame
 	VectorCopy( start, bolt->s.pos.trBase );
 	VectorScale( dir, 800, bolt->s.pos.trDelta );
 	SnapVector( bolt->s.pos.trDelta );          // save net bandwidth

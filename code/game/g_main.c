@@ -2495,11 +2495,6 @@ void G_RunFrame( int levelTime ) {
 			continue;
 		}
 
-		if ( ent->s.eType == ET_CROWBAR ) {
-			G_RunCrowbar( ent );
-			continue;
-		}
-
 		if ( ent->s.eType == ET_ITEM || ent->physicsObject ) {
 			G_RunItem( ent );
 			continue;

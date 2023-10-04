@@ -2009,44 +2009,6 @@ static void CG_FlamethrowerFlame( centity_t *cent, vec3_t origin ) {
 // done.
 
 /*
-======================
-CG_MachinegunSpinAngle
-======================
-*/
-/*
-//#define		SPIN_SPEED	0.9
-//#define		COAST_TIME	1000
-#define		SPIN_SPEED	1
-#define		COAST_TIME	2000
-
-static float	CG_MachinegunSpinAngle( centity_t *cent ) {
-	int		delta;
-	float	angle;
-	float	speed;
-
-	delta = cg.time - cent->pe.barrelTime;
-	if ( cent->pe.barrelSpinning ) {
-		angle = cent->pe.barrelAngle + delta * SPIN_SPEED;
-	} else {
-		if ( delta > COAST_TIME ) {
-			delta = COAST_TIME;
-		}
-
-		speed = 0.5 * ( SPIN_SPEED + (float)( COAST_TIME - delta ) / COAST_TIME );
-		angle = cent->pe.barrelAngle + delta * speed;
-	}
-
-	if ( cent->pe.barrelSpinning == !(cent->currentState.eFlags & EF_FIRING) ) {
-		cent->pe.barrelTime = cg.time;
-		cent->pe.barrelAngle = AngleMod( angle );
-		cent->pe.barrelSpinning = !!(cent->currentState.eFlags & EF_FIRING);
-	}
-
-	return angle;
-}
-*/
-
-/*
 ==============
 CG_TeslaSpinAngle
 ==============
@@ -2060,7 +2022,6 @@ CG_TeslaSpinAngle
 static float CG_TeslaSpinAngle( centity_t *cent ) {
 	int	delta;
 	float	angle;
-//	float	speed;
 
 	delta = cg.time - cent->pe.barrelTime;
 
@@ -2077,41 +2038,6 @@ static float CG_TeslaSpinAngle( centity_t *cent ) {
 	cent->pe.barrelTime = cg.time;
 
 	return AngleMod( angle );
-
-//----(SA)	trying new tesla effect scheme for MK
-//	angle = -(cent->pe.barrelAngle + delta * TESLA_SPINSPEED);
-//	cent->pe.barrelAngle = AngleMod( angle );
-
-//	if(cent->currentState.eFlags & EF_FIRING)
-//		cent->pe.barrelAngle += delta * TESLA_SPINSPEED;
-//	else
-//		cent->pe.barrelAngle += delta * TESLA_IDLESPEED;
-
-#if 0
-	return AngleMod( cent->pe.barrelAngle );
-
-	return angle;
-
-
-	if ( cent->pe.barrelSpinning ) {
-		angle = -( cent->pe.barrelAngle + delta * TESLA_SPINSPEED );
-	} else {
-		if ( delta > TESLA_COASTTIME ) {
-			delta = TESLA_COASTTIME;
-		}
-
-		speed = 0.5 * ( TESLA_SPINSPEED + (float)( TESLA_COASTTIME - delta ) / TESLA_COASTTIME );
-		angle = -( cent->pe.barrelAngle + delta * speed );
-	}
-
-	if ( cent->pe.barrelSpinning == !( cent->currentState.eFlags & EF_FIRING ) ) {
-		cent->pe.barrelTime = cg.time;
-		cent->pe.barrelAngle = AngleMod( angle );
-		cent->pe.barrelSpinning = !!( cent->currentState.eFlags & EF_FIRING );
-	}
-
-	return angle;
-#endif
 }
 
 //----(SA)	added
@@ -6187,9 +6113,7 @@ void CG_VenomFire( entityState_t *es, qboolean fullmode ) {
 			if ( fullmode ) {
 				CG_SmokePuff( v, up, 24, 1, 1, 1, 0.33, 1200, cg.time, 0, 0, cgs.media.shotgunSmokePuffShader );    // LEF_PUFF_DONT_SCALE
 			}
-//----(SA)	for the time being don't do the single shot smoke as it's position is funky
-//			else
-//				CG_SmokePuff( v, up, 4, 1, 1, 1, 0.33, 700, cg.time, 0, cgs.media.shotgunSmokePuffShader );
+
 		}
 	}
 	if ( fullmode ) {

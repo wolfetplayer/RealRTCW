@@ -1576,7 +1576,6 @@ static void CG_RegisterGraphics( void ) {
 	// cgs.media.mg42muzzleflashgg = trap_R_RegisterModel ("models/weapons2/machinegun/mg42_flash_gg.md3" );
 
 	cgs.media.planemuzzleflash = trap_R_RegisterModel( "models/mapobjects/vehicles/gunflare.md3" );
-	cgs.media.crowbar = trap_R_RegisterModel( "models/weapons2/wrench/wrench.md3" );
 
 	// Rafael shards
 	cgs.media.shardGlass1 = trap_R_RegisterModel( "models/shards/glass1.md3" );

@@ -798,81 +798,6 @@ float G_GetWeaponSpread( int weapon ) {
 
 /*
 ==============
-Cross_Fire
-==============
-*/
-void Cross_Fire( gentity_t *ent ) {
-// (SA) temporarily use the zombie spit effect to check working state
-	weapon_zombiespit( ent );
-}
-
-
-
-/*
-==============
-Tesla_Fire
-==============
-*/
-void Tesla_Fire( gentity_t *ent ) {
-	// TODO: Find all targets in the client's view frame, and lock onto them all, applying damage
-	// and telling all clients to draw the appropriate effects.
-
-	//G_Printf("TODO: Tesla damage/effects\n" );
-}
-
-
-void RubbleFlagCheck( gentity_t *ent, trace_t tr ) {
-#if 0 // (SA) moving client-side
-	qboolean is_valid = qfalse;
-	int type = 0;
-
-	if ( tr.surfaceFlags & SURF_RUBBLE || tr.surfaceFlags & SURF_GRAVEL ) {
-		is_valid = qtrue;
-		type = 4;
-	} else if ( tr.surfaceFlags & SURF_METAL )     {
-//----(SA)	removed
-//		is_valid = qtrue;
-//		type = 2;
-	} else if ( tr.surfaceFlags & SURF_WOOD )     {
-		is_valid = qtrue;
-		type = 1;
-	}
-
-	if ( is_valid && ent->client && ( ent->s.weapon == WP_VENOM
-									  || ent->client->ps.persistant[PERS_HWEAPON_USE] ) ) {
-		if ( rand() % 100 > 75 ) {
-			gentity_t   *sfx;
-			vec3_t start;
-			vec3_t dir;
-
-			sfx = G_Spawn();
-
-			sfx->s.density = type;
-
-			VectorCopy( tr.endpos, start );
-
-			VectorCopy( muzzleTrace, dir );
-			VectorNegate( dir, dir );
-
-			G_SetOrigin( sfx, start );
-			G_SetAngle( sfx, dir );
-
-			G_AddEvent( sfx, EV_SHARD, DirToByte( dir ) );
-
-			sfx->think = G_FreeEntity;
-			sfx->nextthink = level.time + 1000;
-
-			sfx->s.frame = 3 + ( rand() % 3 ) ;
-
-			trap_LinkEntity( sfx );
-
-		}
-	}
-#endif
-}
-
-/*
-==============
 EmitterCheck
 	see if a new particle emitter should be created at the bullet impact point
 ==============
@@ -1222,16 +1147,6 @@ gentity_t *weapon_gpg40_fire( gentity_t *ent, int grenType ) {
 	m->damage = 0;
 
 	// Ridah, return the grenade so we can do some prediction before deciding if we really want to throw it or not
-	return m;
-}
-
-gentity_t *weapon_crowbar_throw( gentity_t *ent ) {
-	gentity_t   *m;
-
-	m = fire_crowbar( ent, muzzleEffect, forward );
-	m->damage *= s_quadFactor;
-	m->splashDamage *= s_quadFactor;
-
 	return m;
 }
 
@@ -1932,8 +1847,6 @@ void FireWeapon( gentity_t *ent ) {
 	qboolean	isPlayer = (ent->client && !ent->aiCharacter);	// Knightmare added
 
 	// Rafael mg42
-	//if (ent->active)
-	//	return;
 	if ( ent->client->ps.persistant[PERS_HWEAPON_USE] && ent->active ) {
 		return;
 	}
@@ -2194,7 +2107,6 @@ void FireWeapon( gentity_t *ent ) {
 		//Weapon_LightningFire( ent );
 		break;
 	case WP_TESLA:
-			Tesla_Fire( ent );
 		// push the player back a bit
 		if ( !ent->aiCharacter ) {
 			vec3_t forward, vangle;

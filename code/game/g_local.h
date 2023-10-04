@@ -881,9 +881,6 @@ int G_PredictMissile( gentity_t *ent, int duration, vec3_t endPos, qboolean allo
 void G_RunSpit( gentity_t *ent );
 void G_RunDebris( gentity_t *ent );
 
-void G_RunCrowbar( gentity_t *ent );
-
-//----(SA) removed unused q3a weapon firing
 gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t aimdir, int grenadeWPID );
 gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir );
 
@@ -896,7 +893,6 @@ gentity_t *fire_mortar( gentity_t *self, vec3_t start, vec3_t dir );
 
 gentity_t *fire_zombiespit( gentity_t *self, vec3_t start, vec3_t dir );
 gentity_t *fire_zombiespirit( gentity_t *self, gentity_t *bolt, vec3_t start, vec3_t dir );
-gentity_t *fire_crowbar( gentity_t *self, vec3_t start, vec3_t dir );
 gentity_t *fire_flamebarrel( gentity_t *self, vec3_t start, vec3_t dir );
 // done
 
@@ -937,7 +933,6 @@ void SnapVectorTowards( vec3_t v, vec3_t to );
 trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest );
 gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenadeWPID );
 gentity_t *quickgren_fire( gentity_t *ent, int grenadeWPID );
-gentity_t *weapon_crowbar_throw( gentity_t *ent );
 void CalcMuzzlePoints( gentity_t *ent, int weapon );
 
 // Rafael - for activate

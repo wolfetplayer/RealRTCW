@@ -1224,9 +1224,6 @@ typedef struct {
 	//qhandle_t	mg42muzzleflashgg;
 	qhandle_t planemuzzleflash;
 
-	// Rafael
-	qhandle_t crowbar;
-
 	qhandle_t waterSplashModel;
 	qhandle_t waterSplashShader;
 

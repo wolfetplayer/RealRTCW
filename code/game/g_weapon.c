@@ -1347,7 +1347,7 @@ void ThrowKnife( gentity_t *ent )
 	knife->damage 				= 50; 	// JPW NERVE
 	knife->splashDamage			= 0;
 	knife->splashRadius			= 0;
-	knife->methodOfDeath 		= MOD_KNIFE;
+	knife->methodOfDeath 		= MOD_THROWKNIFE;
 
 	// clipping
 	knife->clipmask 			= CONTENTS_SOLID|MASK_MISSILESHOT;

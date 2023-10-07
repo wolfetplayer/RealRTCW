@@ -699,7 +699,7 @@ void CG_DrawHoldableSelect( void ) {
 	bits = cg.snap->ps.stats[ STAT_HOLDABLE_ITEM ];
 	count = 0;
 
-	for ( i = 1 ; i <= HI_BOOK3; i++ ) {
+	for ( i = 1 ; i <= HI_LP_SYRINGE; i++ ) {
 		if ( bits & ( 1 << i ) ) {
 			if ( cg.predictedPlayerState.holdable[i] ) {	// don't show ones we're out of
 				count++;
@@ -715,7 +715,7 @@ void CG_DrawHoldableSelect( void ) {
 	y = 370;
 
 
-	for ( i = 1 ; i <= HI_BOOK3 ; i++ ) {
+	for ( i = 1 ; i <= HI_LP_SYRINGE ; i++ ) {
 		if ( !( bits & ( 1 << i ) ) ) {
 			continue;
 		}

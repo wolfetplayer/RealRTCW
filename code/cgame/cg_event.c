@@ -2226,7 +2226,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			cg.powerupActive = PW_BATTLESUIT;
 			cg.powerupTime = cg.time;
 		}
-		trap_S_StartSound( NULL, es->number, CHAN_ITEM, trap_S_RegisterSound( "sound/items/protect3.wav" ) );
+		//trap_S_StartSound( NULL, es->number, CHAN_ITEM, trap_S_RegisterSound( "sound/items/protect3.wav" ) );
 		break;
 	case EV_POWERUP_REGEN:
 		DEBUGNAME( "EV_POWERUP_REGEN" );

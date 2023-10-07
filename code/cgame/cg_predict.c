@@ -334,7 +334,7 @@ static void CG_TouchItem( centity_t *cent ) {
 
 	// (SA) no prediction of books/clipboards
 	if ( item->giType == IT_HOLDABLE ) {
-		if ( item->giTag >= HI_BOOK1 && item->giTag <= HI_BOOK3 ) {
+		if ( item->giTag >= HI_BOOK1 && item->giTag <= HI_LP_SYRINGE ) {
 			return;
 		}
 	}

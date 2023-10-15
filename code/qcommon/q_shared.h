@@ -1289,6 +1289,7 @@ typedef struct {
 
 #define REF_FORCE_DLIGHT    ( 1 << 31 ) // RF, passed in through overdraw parameter, force this dlight under all conditions
 #define REF_JUNIOR_DLIGHT   ( 1 << 30 ) // (SA) this dlight does not light surfaces.  it only affects dynamic light grid
+#define REF_DIRECTED_DLIGHT ( 1 << 29 )   ///< global directional light, origin should be interpreted as a normal vector
 
 //=========================================================
 // shared by AI and animation scripting

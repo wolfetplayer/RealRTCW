@@ -1630,6 +1630,9 @@ R_GenerateDrawSurfs
 ====================
 */
 void R_GenerateDrawSurfs( void ) {
+
+	R_CullDlights();
+	
 	R_AddWorldSurfaces();
 
 	R_AddPolygonSurfaces();

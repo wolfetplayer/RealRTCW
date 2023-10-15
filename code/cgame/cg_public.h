@@ -179,7 +179,6 @@ typedef enum {
 	CG_REAL_TIME,
 	CG_SNAPVECTOR,
 	CG_REMOVECOMMAND,
-//	CG_R_LIGHTFORPOINT,	// not currently used (sorry, trying to keep CG_MEMSET @ 100)
 
 	CG_SENDMOVESPEEDSTOGAME,
 

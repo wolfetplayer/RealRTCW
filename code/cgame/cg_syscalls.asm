@@ -90,7 +90,6 @@ equ trap_RealTime						-87
 equ trap_SnapVector						-88
 equ trap_RemoveCommand					-89
 
-; trap_R_LightForPoint ; not currently used (sorry, trying to keep CG_MEMSET @ 100)
 
 equ trap_SendMoveSpeedsToGame			-90
 equ trap_CIN_PlayCinematic				-91

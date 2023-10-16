@@ -138,6 +138,7 @@ void CG_SetInitialSnapshot( snapshot_t *snap ) {
 	entityState_t   *state;
 
 	cg.snap = snap;
+	cg.holdableSelect = snap->ps.holding;
 
 	BG_PlayerStateToEntityState( &snap->ps, &cg_entities[ snap->ps.clientNum ].currentState, qfalse );
 
@@ -363,6 +364,11 @@ static snapshot_t *CG_ReadNextSnapshot( void ) {
 			if ( cg.snap && !cg.weaponSelect && cg.snap->ps.weapon ) {
 				cg.weaponSelect = cg.snap->ps.weapon;
 				cg.weaponSelectTime = cg.time;
+			}
+
+			if (cg.snap && !cg.holdableSelect && cg.snap->ps.holding) {
+				cg.holdableSelect = cg.snap->ps.holding;
+				cg.holdableSelectTime = cg.time;
 			}
 
 			// Ridah, savegame: we should use this as our new base snapshot

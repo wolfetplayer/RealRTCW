@@ -818,6 +818,7 @@ void ClientThink_real( gentity_t *ent ) {
 	//int i;
 	int monsterslick = 0;
 	vec3_t muzzlebounce;      // JPW NERVE
+	int i;
 
 
 	// Rafael wolfkick
@@ -1007,6 +1008,17 @@ void ClientThink_real( gentity_t *ent ) {
 	// all playing clients are assumed to be in combat mode
 	if ( !client->ps.aiChar ) {
 		client->ps.aiState = AISTATE_COMBAT;
+	}
+
+	// set holding
+	if (client->ps.holdable[ucmd->holdable] <= 0) {
+		for (i = 0; i < MAX_HOLDABLE; i++) {
+			if (client->ps.holdable[i] > 0) {
+				client->ps.holding = i;
+			}
+		}
+	} else {
+		client->ps.holding = ucmd->holdable;
 	}
 
 	client->ps.gravity = g_gravity.value;

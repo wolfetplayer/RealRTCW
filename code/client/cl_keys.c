@@ -2219,7 +2219,7 @@ Called by CL_KeyEvent to handle a keypress
 void CL_KeyDownEvent( int key, unsigned time )
 {
 	char    *kb;
-	int activeMenu = 0;
+	//int activeMenu = 0;
 	keys[key].down = qtrue;
 	keys[key].repeats++;
 	if( keys[key].repeats == 1 )
@@ -2288,9 +2288,9 @@ void CL_KeyDownEvent( int key, unsigned time )
 	}
 
 //----(SA)	get the active menu if in ui mode
-	if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
+	/*if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
 		activeMenu = VM_Call( uivm, UI_GET_ACTIVE_MENU );
-	}
+	}*/
 
 	// escape is always handled special
 	if ( key == K_ESCAPE ) {

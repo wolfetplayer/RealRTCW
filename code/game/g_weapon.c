@@ -705,7 +705,6 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 	trace_t tr;
 	gentity_t   *tent;
 	gentity_t   *traceEnt;
-	int dflags = 0;         // flag if source==attacker, meaning it wasn't shot directly, but was reflected went through an entity that allows bullets to pass through
 	qboolean reflectBullet = qfalse;
 	qboolean hitClient = qfalse;
 
@@ -716,10 +715,6 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 	}
 
 	damage *= s_quadFactor;
-
-	if ( source != attacker ) {
-		dflags = DAMAGE_PASSTHRU;
-	}
 
 	// (SA) changed so player could shoot his own dynamite.
 	// (SA) whoops, but that broke bullets going through explosives...
@@ -1060,7 +1055,6 @@ gentity_t *quickgren_fire( gentity_t *ent, int grenType ) {
 	vec3_t tosspos;
 	qboolean underhand = 0;
 	gentity_t	*tent;
-	trace_t		tr;
 
 
 	s_quadFactor = 1;

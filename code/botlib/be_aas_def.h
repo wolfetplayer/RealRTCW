@@ -40,7 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 //debugging on
 #define AAS_DEBUG
 
-#define MAX_CONFIGSTRINGS   2048    //----(SA)	upped
+#define MAX_CONFIGSTRINGS   4096
 
 #define DF_AASENTNUMBER( x )      ( x - ( *aasworlds ).entities )
 #define DF_NUMBERAASENT( x )      ( &( *aasworlds ).entities[x] )

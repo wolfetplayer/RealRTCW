@@ -616,6 +616,8 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		re.ZombieFXAddNewHit( args[1], VMA( 2 ), VMA( 3 ) );
 		return 0;
 		// done.
+//	case CG_R_LIGHTFORPOINT:
+//		return re.LightForPoint( VMA(1), VMA(2), VMA(3), VMA(4) );
 	case CG_R_ADDLIGHTTOSCENE:
 		re.AddLightToScene( VMA( 1 ), VMF( 2 ), VMF( 3 ), VMF( 4 ), VMF( 5 ), args[6] );
 		return 0;

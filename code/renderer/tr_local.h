@@ -67,8 +67,6 @@ typedef unsigned int glIndex_t;
 #define SHADERNUM_BITS	11
 #define MAX_SHADERS		(1<<SHADERNUM_BITS)
 
-#define ENTITY_LIGHT_STEPS      64
-
 // a trRefEntity_t has all the information passed in by
 // the client game, as well as some locally derived info
 typedef struct {
@@ -80,10 +78,8 @@ typedef struct {
 	qboolean lightingCalculated;
 	vec3_t lightDir;            // normalized direction towards light
 	vec3_t ambientLight;        // color normalized to 0-255
-	int ambientLightInt;        ///< 32 bit rgba packed
 	vec3_t directedLight;
 	float brightness;
-	int entityLightInt[ENTITY_LIGHT_STEPS];
 } trRefEntity_t;
 
 typedef struct {
@@ -468,16 +464,15 @@ typedef struct dlight_s {
 
 	vec3_t transformed;         // origin in local coordinate system
 
+	// Ridah
 	int overdraw;
-
-	shader_t *shader;
-	float intensity;                ///< 1.0 = fullbright, > 1.0 = overbright
+	// done.
 
 	shader_t    *dlshader;	//----(SA) adding a shader to dlights, so, if desired, we can change the blend or texture of a dlight
 
 	qboolean forced;	//----(SA) use this dlight when r_dynamiclight is either 1 or 2 (rather than just 1) for "important" gameplay lights (alarm lights, etc)
 	//done
-	int flags;
+
 } dlight_t;
 
 // trRefdef_t holds everything that comes in refdef_t,
@@ -516,8 +511,6 @@ typedef struct {
 
 	int numDrawSurfs;
 	struct drawSurf_s   *drawSurfs;
-
-	int dlightBits;
 } trRefdef_t;
 
 
@@ -1682,7 +1675,7 @@ LIGHTS
 void R_DlightBmodel( bmodel_t *bmodel );
 void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent );
 void R_TransformDlights( int count, dlight_t * dl, orientationr_t * or );
-void R_CullDlights(void);
+int R_LightForPoint( vec3_t point, vec3_t ambientLight, vec3_t directedLight, vec3_t lightDir );
 
 
 /*

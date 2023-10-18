@@ -303,7 +303,7 @@ static void CG_InterpolatePlayerState( qboolean grabAngles ) {
 CG_TouchItem
 ===================
 */
-static void CG_TouchItem( centity_t *cent ) {
+/*static void CG_TouchItem( centity_t *cent ) {
 	gitem_t     *item;
 
 	if ( !cg_predictItems.integer ) {
@@ -405,7 +405,7 @@ static void CG_TouchItem( centity_t *cent ) {
 	}
 //----(SA)	end
 }
-
+*/
 
 /*
 =========================

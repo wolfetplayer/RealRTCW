@@ -86,10 +86,10 @@ static qboolean S_ValidSoundInterface( soundInterface_t *si )
 S_StartSound
 =================
 */
-void S_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx )
+void S_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int volume )
 {
 	if( si.StartSound ) {
-		si.StartSound( origin, entnum, entchannel, sfx );
+		si.StartSound( origin, entnum, entchannel, sfx, volume );
 	}
 }
 
@@ -257,10 +257,10 @@ S_AddRealLoopingSound
 =================
 */
 void S_AddRealLoopingSound( int entityNum, const vec3_t origin,
-		const vec3_t velocity, const int range, sfxHandle_t sfx )
+		const vec3_t velocity, const int range, sfxHandle_t sfx, int volume )
 {
 	if( si.AddRealLoopingSound ) {
-		si.AddRealLoopingSound( entityNum, origin, velocity, range, sfx );
+		si.AddRealLoopingSound( entityNum, origin, velocity, range, sfx, volume );
 	}
 }
 

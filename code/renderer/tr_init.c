@@ -1637,6 +1637,8 @@ refexport_t *GetRefAPI( int apiVersion, refimport_t *rimp ) {
 	// RF
 	re.ZombieFXAddNewHit = RB_ZombieFXAddNewHit;
 
+	re.inPVS = R_inPVS;
+
 	return &re;
 }
 

@@ -245,6 +245,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_GodMode", (byte *)AICast_ScriptAction_GodMode},
 {"AICast_ScriptAction_FireAtTarget", (byte *)AICast_ScriptAction_FireAtTarget},
 {"AICast_ScriptAction_SaveGame", (byte *)AICast_ScriptAction_SaveGame},
+{"AICast_ScriptAction_SaveCheckpoint", (byte *)AICast_ScriptAction_SaveCheckpoint},
 {"AICast_ScriptAction_AlertEntity", (byte *)AICast_ScriptAction_AlertEntity},
 {"AICast_ScriptAction_Movetype", (byte *)AICast_ScriptAction_Movetype},
 {"AICast_ScriptAction_GiveInventory", (byte *)AICast_ScriptAction_GiveInventory},

@@ -1073,6 +1073,7 @@ void G_UpdateCvars( void ) {
 						// if we are not watching a cutscene, save the game
 						if ( !g_entities[0].client->cameraPortal ) {
 							G_SaveGame( NULL );
+							G_SaveGame( "lastcheckpoint" );
 						}
 
 						trap_Cvar_Set( "cg_norender", "0" );  // camera has started, render 'on'

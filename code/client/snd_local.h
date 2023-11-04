@@ -26,6 +26,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "../qcommon/qcommon.h"
 #include "snd_public.h"
 
+#define MAX_PUSHSTACK   64
+#define LOOP_HASH       128
+#define MAX_LOOP_SOUNDS 1024
+
 #define	PAINTBUFFER_SIZE		4096					// this is in samples
 
 #define SND_CHUNK_SIZE			1024					// samples
@@ -117,6 +121,52 @@ typedef struct
 	qboolean	fullVolume;
 } channel_t;
 
+typedef struct {
+	vec3_t origin;
+	qboolean fixedOrigin;
+	int entityNum;
+	int entityChannel;
+	sfxHandle_t sfx;
+	int flags;
+	int volume;
+} s_pushStack;
+
+// removed many statics into a common sound struct
+typedef struct {
+	sfx_t* sfxHash[LOOP_HASH];
+	int numLoopSounds;
+	loopSound_t loopSounds[MAX_LOOP_SOUNDS];
+
+	float volTarget;
+	float volStart;
+	int volTime1;
+	int volTime2;
+	float volFadeFrac;
+	float volCurrent;
+
+	qboolean stopSounds;
+
+	channel_t* freelist;
+	channel_t* endflist;
+
+	int s_numSfx;
+
+	s_pushStack pushPop[MAX_PUSHSTACK];
+	int tart;
+
+	qboolean s_soundPainted;
+	int s_clearSoundBuffer;
+
+	int s_soundStarted;
+	int s_soundMute;                // 0 - not muted, 1 - muted, 2 - no new sounds, but play out remaining sounds (so they can die if necessary)
+
+	vec3_t entityPositions[MAX_GENTITIES];
+
+	char nextMusicTrack[MAX_QPATH];         // extracted from CS_MUSIC_QUEUE //----(SA)	added
+	int nextMusicTrackType;
+} snd_t;
+
+extern snd_t snd;   // globals for sound
 
 #define	WAV_FORMAT_PCM		1
 
@@ -134,7 +184,7 @@ typedef struct {
 typedef struct
 {
 	void (*Shutdown)(void);
-	void (*StartSound)( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx );
+	void (*StartSound)( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int volume );
 	void (*StartSoundEx)( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int flags );
 	void (*StartLocalSound)( sfxHandle_t sfx, int channelNum );
 	void (*StartBackgroundTrack)( const char *intro, const char *loop );
@@ -148,7 +198,7 @@ typedef struct
 	void (*StopAllSounds)( void );
 	void (*ClearLoopingSounds)( qboolean killall );
 	void (*AddLoopingSound)( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume );
-	void (*AddRealLoopingSound)( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx );
+	void (*AddRealLoopingSound)( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume );
 	void (*StopLoopingSound)(int entityNum );
 	void (*Respatialize)( int entityNum, const vec3_t origin, vec3_t axis[3], int inwater );
 	void (*UpdateEntityPosition)( int entityNum, const vec3_t origin );

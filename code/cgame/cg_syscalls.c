@@ -183,7 +183,7 @@ int     trap_CM_MarkFragments( int numPoints, const vec3_t *points,
 }
 
 void    trap_S_StartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx ) {
-	syscall( CG_S_STARTSOUND, origin, entityNum, entchannel, sfx );
+	syscall( CG_S_STARTSOUND, origin, entityNum, entchannel, sfx, 127 );
 }
 
 void    trap_S_StartSoundVControl( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int volume ) {
@@ -208,10 +208,9 @@ void    trap_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t
 	syscall( CG_S_ADDLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );     // volume was previously removed from CG_S_ADDLOOPINGSOUND.  I added 'range'
 }
 
-// not in use
-//void    trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume ) {
-//	syscall( CG_S_ADDREALLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );	//----(SA)	modified
-//}
+void    trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume ) {
+	syscall( CG_S_ADDREALLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );	//----(SA)	modified
+}
 
 void    trap_S_StopLoopingSound( int entityNum ) {
 	syscall( CG_S_STOPLOOPINGSOUND, entityNum );
@@ -258,6 +257,11 @@ void    trap_S_FadeAllSound( float targetvol, int time ) {
 
 void    trap_S_StartStreamingSound( const char *intro, const char *loop, int entnum, int channel, int attenuation ) {
 	syscall( CG_S_STARTSTREAMINGSOUND, intro, loop, entnum, channel, attenuation );
+}
+
+// ydnar: for timing looped sounds
+int trap_S_GetCurrentSoundTime(void) {
+	return syscall(CG_S_GETCURRENTSOUNDTIME);
 }
 
 void    trap_R_LoadWorldMap( const char *mapname ) {

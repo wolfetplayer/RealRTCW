@@ -1792,7 +1792,7 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
    S_AL_StartSound
    =================
    */
-static void S_AL_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx )
+static void S_AL_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int volume )
 {
   S_AL_MainStartSound( origin, entnum, entchannel, sfx, 0 );
 }
@@ -1946,7 +1946,7 @@ static void S_AL_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_
    S_AL_AddRealLoopingSound
    =================
    */
-static void S_AL_AddRealLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx)
+static void S_AL_AddRealLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume)
 {
   S_AL_SrcLoop(SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, 255);
 }

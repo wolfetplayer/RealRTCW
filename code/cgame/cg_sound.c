@@ -500,14 +500,16 @@ static void CG_PlayScriptSpeaker(bg_speaker_t *speaker, qboolean global)
 			trap_S_StartSoundVControl(speaker->origin, -1, CHAN_ITEM, speaker->noise, speaker->volume);
 		}
 		break;
-	/*case S_LT_LOOPED_ON:
+	case S_LT_LOOPED_ON:
 	case S_LT_LOOPED_OFF:
 		if (speaker->soundTime == 0)
 		{
 			speaker->soundTime = trap_S_GetCurrentSoundTime();
 		}
-		trap_S_AddRealLoopingSound(speaker->origin, vec3_origin, speaker->noise, speaker->range, speaker->volume, speaker->soundTime);
-		break;*/
+		// entityNum = 0 it does not matter
+		// if origin is not zero vector, entityNum is ignored
+		trap_S_AddRealLoopingSound( 0, speaker->origin, vec3_origin, speaker->range, speaker->noise, speaker->volume );
+		break;
 	}
 }
 

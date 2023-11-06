@@ -717,7 +717,7 @@ void CG_PredictPlayerState( void ) {
 		}
 
 		// RF, if waiting for mission stats to go, ignore all input
-		if ( ( cgs.scrFadeAlphaCurrent ) || cg_norender.integer ) {
+		if ( /*( cgs.scrFadeAlphaCurrent ) ||*/ cg_norender.integer ) {
 			cg_pmove.cmd.buttons = 0;
 			cg_pmove.cmd.forwardmove = 0;
 			cg_pmove.cmd.rightmove = 0;

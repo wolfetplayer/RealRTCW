@@ -1317,6 +1317,11 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->ps.clientNum = index;
 
+	// spawn protection for player on initial spawn - might be useful on some custom maps
+	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {  
+	client->ps.powerups[PW_INVULNERABLE] = level.time + 5000;
+	}
+
 	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
 
 	if (g_decaychallenge.integer){

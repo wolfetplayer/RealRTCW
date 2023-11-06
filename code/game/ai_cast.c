@@ -775,8 +775,13 @@ void AICast_CheckLoadGame( void ) {
 
 			// wait for the clients to return from faded screen
 //			trap_SetConfigstring( CS_SCREENFADE, va("0 %i 1500", level.time + 500) );
-			trap_SetConfigstring( CS_SCREENFADE, va( "0 %i 750", level.time + 500 ) );
-			level.reloadPauseTime = level.time + 1100;
+			trap_SetConfigstring( CS_SCREENFADE, va( "0 %i 3000", level.time + 1500 ) );
+			level.reloadPauseTime = level.time + 250;
+
+            // Spawn protection for the player after loading the save
+			if (( ent = AICast_FindEntityForName( "player" ) ) ) {  
+	            ent->client->ps.powerups[PW_INVULNERABLE] = level.time + 5000;
+	        }
 
 			// make sure sound fades up
 			trap_SendServerCommand( -1, va( "snd_fade 1 %d", 2000 ) );  //----(SA)	added
@@ -814,7 +819,7 @@ void AICast_CheckLoadGame( void ) {
 			// (SA) send a command that will be interpreted for both the screenfade and any other effects (music cues, pregame menu, etc)
 			// briefing menu will handle transition, just set a cvar for it to check for drawing the 'continue' button
 			trap_SendServerCommand( -1, "rockandroll\n" );
-			level.reloadPauseTime = level.time + 1100;
+			level.reloadPauseTime = level.time + 250;
 
 			AICast_CastScriptThink();
 		}

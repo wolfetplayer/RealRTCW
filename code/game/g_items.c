@@ -88,9 +88,7 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 	if ( ent->item->giTag == PW_NOFATIGUE ) {
 		if ( Q_stricmp( ent->item->classname, "item_stamina_brandy" ) == 0 ) {
 			other->health += 10;
-			if ( other->health > other->client->ps.stats[STAT_MAX_HEALTH] ) {
-				other->health = other->client->ps.stats[STAT_MAX_HEALTH];
-			}
+			
 			other->client->ps.stats[STAT_HEALTH] = other->health;
 		}
 

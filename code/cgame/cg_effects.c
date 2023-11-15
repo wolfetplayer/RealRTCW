@@ -2146,7 +2146,7 @@ void CG_RenderSmokeGrenadeSmoke( centity_t *cent, const weaponInfo_t *weapon, we
 			}
 		}
 
-CG_S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, weapon->overheatSound, volume);
+CG_S_AddLoopingSound(cent->lerpOrigin, vec3_origin, weapon->overheatSound, volume);
 
 		// emitter is stuck in solid
 		if( cent->dl_atten == 2 ) {

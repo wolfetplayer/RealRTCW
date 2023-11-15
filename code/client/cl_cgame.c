@@ -519,21 +519,21 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		return 0;
 //----(SA)	added
 	case CG_S_STARTSOUNDEX:
-		S_StartSoundEx( VMA( 1 ), args[2], args[3], args[4], args[5] );
+		S_StartSoundEx( VMA( 1 ), args[2], args[3], args[4], args[5], args[6] );
 		return 0;
 //----(SA)	end
 	case CG_S_STARTLOCALSOUND:
-		S_StartLocalSound( args[1], args[2] );
+		S_StartLocalSound( args[1], args[2], args[3] );
 		return 0;
 	case CG_S_CLEARLOOPINGSOUNDS:
-		S_ClearLoopingSounds( args[1] ); // (SA) modified so no_pvs sounds can function
+		S_ClearLoopingSounds( ); // (SA) modified so no_pvs sounds can function
 		return 0;
 	case CG_S_ADDLOOPINGSOUND:
 		// FIXME MrE: handling of looping sounds changed
-		S_AddLoopingSound( args[1], VMA( 2 ), VMA( 3 ), args[4], args[5], args[6] );
+		S_AddLoopingSound( VMA( 1 ), VMA( 2 ), args[3], args[4], args[5], args[6] );
 		return 0;
 	case CG_S_ADDREALLOOPINGSOUND:
-		S_AddRealLoopingSound( args[1], VMA(2), VMA(3), args[4], args[5], args[6] );
+		S_AddRealLoopingSound( VMA(1), VMA(2), args[3], args[4], args[5], args[6] );
 		return 0;
 
 		// ydnar: for looped sound starts
@@ -566,8 +566,7 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		return S_RegisterSound( VMA( 1 ), qfalse );
 #endif  ///// (SA) DOOMSOUND
 	case CG_S_STARTBACKGROUNDTRACK:
-//		S_StartBackgroundTrack( VMA( 1 ), VMA( 2 ), args[3] );  //----(SA)	added fadeup time
-		S_StartBackgroundTrack( VMA( 1 ), VMA( 2 ) );
+		S_StartBackgroundTrack( VMA( 1 ), VMA( 2 ), args[3] );  //----(SA)	added fadeup time
 		return 0;
 	case CG_S_FADESTREAMINGSOUND:
 		S_FadeStreamingSound( VMF( 1 ), args[2], args[3] ); //----(SA)	added music/all-streaming options
@@ -576,7 +575,7 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		S_StartStreamingSound( VMA( 1 ), VMA( 2 ), args[3], args[4], args[5] );
 		return 0;
 	case CG_S_FADEALLSOUNDS:
-		S_FadeAllSounds( VMF( 1 ), args[2] );   //----(SA)	added
+		S_FadeAllSounds( VMF( 1 ), args[2], args[3] );   //----(SA)	added
 		return 0;
 	case CG_R_LOADWORLDMAP:
 		re.LoadWorld( VMA( 1 ) );

@@ -29,108 +29,16 @@
  * id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
  */
  /**
-  * @file null_snddma.c
-  * @brief All other sound mixing is portable
+  * @file sdl_defs.h
   */
 
-#include "../client/client.h"
+#ifndef INCLUDE_SDLDEF_H
+#define INCLUDE_SDLDEF_H
 
-  /**
-   * @brief SNDDMA_Init
-   * @return
-   */
-qboolean SNDDMA_Init(void)
-{
-	return qfalse;
-}
+#include "SDL.h"
+#include "SDL_cpuinfo.h"
+#include "SDL_syswm.h"
+#include "SDL_video.h"
+#include "SDL_loadso.h"
 
-/**
- * @brief SNDDMA_GetDMAPos
- * @return
- */
-int SNDDMA_GetDMAPos(void)
-{
-	return 0;
-}
-
-/**
- * @brief SNDDMA_Shutdown
- */
-void SNDDMA_Shutdown(void)
-{
-}
-
-/**
- * @brief SNDDMA_BeginPainting
- */
-void SNDDMA_BeginPainting(void)
-{
-}
-
-/**
- * @brief SNDDMA_Submit
- */
-void SNDDMA_Submit(void)
-{
-}
-
-/**
- * @brief S_RegisterSound
- * @param name
- * @param compressed
- * @return
- *
- * @note bk001119 - added boolean flag, match client/snd_public.h
- */
-sfxHandle_t S_RegisterSound(const char* name, qboolean compressed)
-{
-	return 0;
-}
-
-/**
- * @brief S_StartLocalSound
- * @param sfxHandle
- * @param channelNum
- * @param volume
- */
-void S_StartLocalSound(sfxHandle_t sfxHandle, int channelNum, int volume)
-{
-}
-
-/**
- * @brief S_ClearSoundBuffer
- * @param killStreaming
- */
-void S_ClearSoundBuffer(qboolean killStreaming)
-{
-}
-
-/**
- * @brief S_GetSoundLength
- * @param sfxHandle
- * @return
- */
-int S_GetSoundLength(sfxHandle_t sfxHandle)
-{
-	Com_Error(ERR_DROP, "null_snddma.c: S_GetSoundLength");
-
-	return 0;
-}
-
-/**
- * @brief S_UpdateThread
- *
- * @note Unused
- */
-void S_UpdateThread(void)
-{
-}
-
-/**
- * @brief S_AddLoopSounds
- *
- * @todo TODO: empty
- */
-void S_AddLoopSounds(void)
-{
-}
+#endif // #ifndef INCLUDE_SDLDEF_H

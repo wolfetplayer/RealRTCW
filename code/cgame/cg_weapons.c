@@ -2849,16 +2849,16 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		cent->pe.lightningFiring = qfalse;
 		if ( ( cent->currentState.eFlags & EF_FIRING ) && weapon->firingSound ) {
 			// lightning gun and guantlet make a different sound when fire is held down
-			CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, weapon->firingSound, 255 );
+			CG_S_AddLoopingSound( cent->lerpOrigin, vec3_origin, weapon->firingSound, 255 );
 			cent->pe.lightningFiring = qtrue;
 		} else if ( weapon->readySound ) {
-			CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, weapon->readySound, 255 );
+			CG_S_AddLoopingSound( cent->lerpOrigin, vec3_origin, weapon->readySound, 255 );
 		}
 	}
 	// RealRTCW
 	if (isPlayer) {
 	if ( cent->currentState.weapon == WP_TESLA && ( ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_IDLE1 ) || ( ( cent->pe.weap.animationNumber & ~ANIM_TOGGLEBIT ) == WEAP_IDLE2 ) ) ) {
-		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 100 );
+		CG_S_AddLoopingSound( cent->lerpOrigin, vec3_origin, cgs.media.teslaLoopSound, 100 );
 	}
 	}
 
@@ -5870,7 +5870,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		if ( gdist > 1200 && gdist < 8000 ) {  // 1200 is max cam shakey dist (2*600) use gorg as the new sound origin
 			VectorMA( cg.refdef_current->vieworg, sfx2range, norm, gorg ); // JPW NERVE non-distance falloff makes more sense; sfx2range was gdist*0.2
 			// sfx2range is variable to give us minimum volume control different explosion sizes (see mortar, panzerfaust, and grenade)
-			trap_S_StartSoundEx( gorg, ENTITYNUM_WORLD, CHAN_WEAPON, sfx2, SND_NOCUT );
+			trap_S_StartSoundEx( gorg, ENTITYNUM_WORLD, CHAN_WEAPON, sfx2, SND_NOCUT, 255 );
 		}
 	}
 

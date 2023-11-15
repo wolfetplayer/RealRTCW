@@ -508,7 +508,7 @@ static void CG_PlayScriptSpeaker(bg_speaker_t *speaker, qboolean global)
 		}
 		// entityNum = 0 it does not matter
 		// if origin is not zero vector, entityNum is ignored
-		trap_S_AddRealLoopingSound( 0, speaker->origin, vec3_origin, speaker->range, speaker->noise, speaker->volume );
+		trap_S_AddRealLoopingSound( speaker->origin, vec3_origin, speaker->range, speaker->noise, speaker->volume, speaker->soundTime );
 		break;
 	}
 }

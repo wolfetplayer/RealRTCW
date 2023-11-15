@@ -908,10 +908,10 @@ noSky:	cg_atmFx.skyOverMe = qfalse;
 	if (rainSFX && cg_lowAtmosphericEffects.integer != 2)
 	{
 		if (cg_atmFx.skyOverMe)
-			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFX, 255);
+			CG_S_AddLoopingSound (cg.refdef.vieworg, vec3_origin, rainSFX, 255);
 		else
 		{
-			CG_S_AddLoopingSound (ENTITYNUM_NONE, cg.refdef.vieworg, vec3_origin, rainSFXindoor, 255);
+			CG_S_AddLoopingSound (cg.refdef.vieworg, vec3_origin, rainSFXindoor, 255);
 		}
 	}
 

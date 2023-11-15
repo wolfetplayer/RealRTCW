@@ -1022,7 +1022,7 @@ void            trap_UpdateScreen( void );
 int             trap_CM_LerpTag( orientation_t *tag, const refEntity_t *refent, const char *tagName, int startIndex );
 void            trap_S_StartLocalSound( sfxHandle_t sfx, int channelNum );
 sfxHandle_t     trap_S_RegisterSound( const char *sample );
-void            trap_S_FadeAllSound( float targetvol, int time ); //----(SA)	added
+void            trap_S_FadeAllSound( float targetvol, int time, qboolean stopSounds ); //----(SA)	added
 void            trap_Key_KeynumToStringBuf( int keynum, char *buf, int buflen );
 void            trap_Key_GetBindingBuf( int keynum, char *buf, int buflen );
 void            trap_Key_SetBinding( int keynum, const char *binding );

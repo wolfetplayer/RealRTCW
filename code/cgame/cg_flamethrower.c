@@ -1503,16 +1503,16 @@ void CG_UpdateFlamethrowerSounds( void ) {
 		if ( centFlameInfo[f->ownerCent].lastSoundUpdate != cg.time ) {
 			// blow/ignition sound
 			if ( centFlameStatus[f->ownerCent].blowVolume * 255.0 > MIN_BLOW_VOLUME ) { // RealRTCW was 255
-				CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameBlowSound, (int)( 255.0 * centFlameStatus[f->ownerCent].blowVolume ) );
+				CG_S_AddLoopingSound( f->org, vec3_origin, cgs.media.flameBlowSound, (int)( 255.0 * centFlameStatus[f->ownerCent].blowVolume ) );
 			} else {
-				CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameBlowSound, MIN_BLOW_VOLUME );
+				CG_S_AddLoopingSound( f->org, vec3_origin, cgs.media.flameBlowSound, MIN_BLOW_VOLUME );
 			}
 
 			if ( centFlameStatus[f->ownerCent].streamVolume ) {
 				if ( cg_entities[f->ownerCent].currentState.aiChar != AICHAR_ZOMBIE ) {
-					CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameStreamSound, (int)( 255.0 ) );
+					CG_S_AddLoopingSound( f->org, vec3_origin, cgs.media.flameStreamSound, (int)( 255.0 ) );
 				} else {
-					CG_S_AddLoopingSound( f->ownerCent, f->org, vec3_origin, cgs.media.flameCrackSound, (int)( 255.0 * centFlameStatus[f->ownerCent].streamVolume ) );
+					CG_S_AddLoopingSound( f->org, vec3_origin, cgs.media.flameCrackSound, (int)( 255.0 * centFlameStatus[f->ownerCent].streamVolume ) );
 				}
 			}
 

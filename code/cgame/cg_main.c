@@ -2825,7 +2825,7 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 	CG_ShaderStateChanged();
 
 	// RF, clear all sounds, so we dont hear anything after level load
-	trap_S_ClearLoopingSounds( 2 );
+	trap_S_ClearLoopingSounds( );
 
 	// start level load music
 	// too late...
@@ -2845,14 +2845,14 @@ void CG_Shutdown( void ) {
 	// like closing files or archiving session data
 }
 
-void CG_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int volume ) {
-	trap_S_AddLoopingSound( entityNum, origin, velocity, 1250, sfx, volume );	// volume was previously removed from CG_S_ADDLOOPINGSOUND. I added 'range'
+void CG_S_AddLoopingSound(const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int volume) {
+	trap_S_AddLoopingSound(origin, velocity, 1250, sfx, volume, 0);	// volume was previously removed from CG_S_ADDLOOPINGSOUND. I added 'range'
 }
 
-void CG_S_AddRangedLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range ) {
-	trap_S_AddLoopingSound( entityNum, origin, velocity, range, sfx, 255 );		// RF, assume full volume, since thats how it worked before
+void CG_S_AddRangedLoopingSound(const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range) {
+	trap_S_AddLoopingSound(origin, velocity, range, sfx, 255, 0);		// RF, assume full volume, since thats how it worked before
 }
 
-void CG_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx ) {
-	trap_S_AddRealLoopingSound( entityNum, origin, velocity, 1250, sfx, 255 );	//----(SA) modified
+void CG_S_AddRealLoopingSound(const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx) {
+	trap_S_AddRealLoopingSound(origin, velocity, 1250, sfx, 255, 0);	//----(SA) modified
 }

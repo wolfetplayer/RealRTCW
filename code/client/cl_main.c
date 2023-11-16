@@ -1447,7 +1447,7 @@ void CL_Disconnect( qboolean showMainMenu ) {
 	}
 
 	SCR_StopCinematic();
-	S_ClearSoundBuffer( qtrue );
+	S_ClearSoundBuffer();
 
 	// send a disconnect message to the server
 	// send it a few times in case one is dropped
@@ -1973,7 +1973,7 @@ void CL_Vid_Restart_f( void ) {
 
 		Cvar_Register( &musicCvar, "s_currentMusic", "", CVAR_ROM );
 		if ( strlen( musicCvar.string ) ) {
-			S_StartBackgroundTrack( musicCvar.string, musicCvar.string, 0 );
+			S_StartBackgroundTrack( musicCvar.string, musicCvar.string );
 		}
 
 		// fade up volume

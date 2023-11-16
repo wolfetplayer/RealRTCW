@@ -6928,7 +6928,7 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 #endif  // #ifdef MISSIONPACK
 			}
 			// ensure sound is there for the menu
-			trap_S_FadeAllSound( 1.0f, 1000, qfalse );    // make sure sound fades up
+			trap_S_FadeAllSound( 1.0f, 1000 );    // make sure sound fades up
 
 			// ensure savegames are loadable
 			trap_Cvar_Set( "g_reloading", "0" );
@@ -6943,7 +6943,7 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 //----(SA)	added
 		case UIMENU_ENDGAME:
 			// ensure sound is there for the menu
-			trap_S_FadeAllSound( 1.0f, 1000, qfalse );
+			trap_S_FadeAllSound( 1.0f, 1000 );
 			// ensure savegames are loadable
 			trap_Cvar_Set( "g_reloading", "0" );
 

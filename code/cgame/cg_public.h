@@ -126,7 +126,6 @@ typedef enum {
 	CG_S_FADESTREAMINGSOUND,    //----(SA)	modified
 	CG_S_FADEALLSOUNDS,         //----(SA)	added for fading out everything
 	CG_S_STARTSTREAMINGSOUND,
-	CG_S_GETCURRENTSOUNDTIME,
 	CG_R_LOADWORLDMAP,
 	CG_R_REGISTERMODEL,
 	CG_R_REGISTERSKIN,
@@ -190,7 +189,7 @@ typedef enum {
 	CG_CIN_DRAWCINEMATIC,
 	CG_CIN_SETEXTENTS,
 	CG_R_REMAP_SHADER,
-	CG_S_ADDREALLOOPINGSOUND,
+//	CG_S_ADDREALLOOPINGSOUND,	// not currently used (sorry, trying to keep CG_MEMSET @ 100)
 	CG_S_STOPLOOPINGSOUND,
 	CG_S_STOPSTREAMINGSOUND,    //----(SA)	added
 
@@ -218,7 +217,7 @@ typedef enum {
 	CG_LIMBOCHAT,           // NERVE - SMF
 
 	CG_GETMODELINFO,
-	
+
 	// New in IORTCW
 	CG_ALLOC = 900,
 

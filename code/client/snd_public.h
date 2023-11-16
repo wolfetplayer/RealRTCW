@@ -25,7 +25,7 @@ void S_Init( void );
 void S_Shutdown( void );
 
 // if origin is NULL, the sound will be dynamically sourced from the entity
-void S_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int volume );
+void S_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx );
 void S_StartSoundEx( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int flags );
 void S_StartLocalSound( sfxHandle_t sfx, int channelNum );
 
@@ -49,7 +49,7 @@ void S_StopAllSounds( void );
 // all continuous looping sounds must be added before calling S_Update
 void S_ClearLoopingSounds( qboolean killall );
 void S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume );
-void S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume );
+void S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx );
 void S_StopLoopingSound(int entityNum );
 
 // recompute the relative volumes for all running sounds
@@ -80,7 +80,6 @@ void SNDDMA_Activate( void );
 
 void S_UpdateBackgroundTrack( void );
 
-int S_GetCurrentSoundTime( void );
 
 #ifdef USE_VOIP
 void S_StartCapture( void );

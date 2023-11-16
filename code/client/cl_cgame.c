@@ -515,7 +515,7 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 	case CG_CM_MARKFRAGMENTS:
 		return re.MarkFragments( args[1], VMA( 2 ), VMA( 3 ), args[4], VMA( 5 ), args[6], VMA( 7 ) );
 	case CG_S_STARTSOUND:
-		S_StartSound( VMA( 1 ), args[2], args[3], args[4], args[5] );
+		S_StartSound( VMA( 1 ), args[2], args[3], args[4] );
 		return 0;
 //----(SA)	added
 	case CG_S_STARTSOUNDEX:
@@ -532,13 +532,12 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		// FIXME MrE: handling of looping sounds changed
 		S_AddLoopingSound( args[1], VMA( 2 ), VMA( 3 ), args[4], args[5], args[6] );
 		return 0;
-	case CG_S_ADDREALLOOPINGSOUND:
-		S_AddRealLoopingSound( args[1], VMA(2), VMA(3), args[4], args[5], args[6] );
-		return 0;
+// not in use
+//	case CG_S_ADDREALLOOPINGSOUND:
+//		S_AddLoopingSound( args[1], VMA(2), VMA(3), args[4], args[5], args[6] );
+//		//S_AddRealLoopingSound( args[1], VMA(2), VMA(3), args[4], args[5] );
+//		return 0;
 
-		// ydnar: for looped sound starts
-	case CG_S_GETCURRENTSOUNDTIME:
-		return S_GetCurrentSoundTime();
 //----(SA)	added
 	case CG_S_STOPSTREAMINGSOUND:
 		S_StopEntStreamingSound( args[1] );

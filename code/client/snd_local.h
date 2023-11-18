@@ -271,15 +271,16 @@ typedef struct
 } streamingSound_t;
 
 #define MAX_RAW_SAMPLES 16384
-#define MAX_RAW_STREAMS 128
 #define MAX_STREAMING_SOUNDS 12
 
 #define RAW_STREAM_MUSIC 0
 #ifdef USE_VOIP
 #define RAW_STREAM_VOIP (RAW_STREAM_MUSIC + 1)
 #define RAW_STREAM_SOUNDS (RAW_STREAM_VOIP + MAX_CLIENTS)
+#define MAX_RAW_STREAMS 128 + MAX_CLIENTS
 #else
 #define RAW_STREAM_SOUNDS (RAW_STREAM_MUSIC + 1)
+#define MAX_RAW_STREAMS 128
 #endif
 #define RAW_STREAM(x) ((x ? RAW_STREAM_SOUNDS + x - 1 : 0))
 

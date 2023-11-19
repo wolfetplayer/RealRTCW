@@ -994,7 +994,7 @@ static void CG_ServerCommand( void ) {
 	if ( !strcmp( cmd, "snd_fade" ) ) {
 		int time = atoi( CG_Argv( 2 ) );
 
-		trap_S_FadeAllSound( atof( CG_Argv( 1 ) ), time, qfalse ); // !!!!!! ЗАМЕНИТЬ
+		trap_S_FadeAllSound( atof( CG_Argv( 1 ) ), time, qfalse );
 		return;
 	}
 

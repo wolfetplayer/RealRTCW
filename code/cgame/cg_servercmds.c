@@ -147,6 +147,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.timelimit = atoi( Info_ValueForKey( info, "timelimit" ) );
 	cgs.maxclients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
 	mapname = Info_ValueForKey( info, "mapname" );
+	Q_strncpyz(cgs.rawmapname, mapname, sizeof(cgs.rawmapname));
 	Com_sprintf( cgs.mapname, sizeof( cgs.mapname ), "maps/%s.bsp", mapname );
 
 // JPW NERVE
@@ -689,7 +690,7 @@ static void CG_MapRestart( void ) {
 
 	CG_StartMusic();
 
-	trap_S_ClearLoopingSounds( qtrue );
+	trap_S_ClearLoopingSounds( );
 
 	// we really should clear more parts of cg here and stop sounds
 	cg.v_dmg_time = 0;
@@ -993,7 +994,7 @@ static void CG_ServerCommand( void ) {
 	if ( !strcmp( cmd, "snd_fade" ) ) {
 		int time = atoi( CG_Argv( 2 ) );
 
-		trap_S_FadeAllSound( atof( CG_Argv( 1 ) ), time );
+		trap_S_FadeAllSound( atof( CG_Argv( 1 ) ), time, qfalse );
 		return;
 	}
 
@@ -1002,7 +1003,7 @@ static void CG_ServerCommand( void ) {
 		trap_UI_Popup( "pregame" );                // start pregame menu
 		trap_Cvar_Set( "cg_norender", "1" );    // don't render the world until the player clicks in and the 'playerstart' func has been called (g_main in G_UpdateCvars() ~ilne 949)
 
-		trap_S_FadeAllSound( 1.0f, 1000 );    // fade sound up
+		trap_S_FadeAllSound( 1.0f, 1000, qfalse );    // fade sound up
 
 		return;
 	}

@@ -1070,8 +1070,8 @@ void Key_KeynameCompletion( void(*callback)(const char *s) );
 void Key_WriteBindings( fileHandle_t f );
 // for writing the config files
 
-//void S_ClearSoundBuffer( qboolean killStreaming );  //----(SA)	modified
-void S_ClearSoundBuffer( void );
+void S_ClearSoundBuffer( qboolean killStreaming );  //----(SA)	modified
+//void S_ClearSoundBuffer( void );
 // call before filesystem access
 
 void SCR_DebugGraph (float value);	// FIXME: move logging to common?

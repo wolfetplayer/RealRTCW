@@ -206,7 +206,7 @@ int trap_CM_LerpTag( orientation_t *tag, const refEntity_t *refent, const char *
 }
 
 void trap_S_StartLocalSound( sfxHandle_t sfx, int channelNum ) {
-	syscall( UI_S_STARTLOCALSOUND, sfx, channelNum );
+	syscall( UI_S_STARTLOCALSOUND, sfx, channelNum, 255 );
 }
 
 sfxHandle_t trap_S_RegisterSound( const char *sample ) {
@@ -218,8 +218,8 @@ void    trap_S_FadeBackgroundTrack( float targetvol, int time, int num ) {   // 
 	syscall( UI_S_FADESTREAMINGSOUND, PASSFLOAT( targetvol ), time, num ); // 'num' is '0' if it's music, '1' if it's "all streaming sounds"
 }
 
-void    trap_S_FadeAllSound( float targetvol, int time ) {
-	syscall( UI_S_FADEALLSOUNDS, PASSFLOAT( targetvol ), time );
+void    trap_S_FadeAllSound( float targetvol, int time, qboolean stopSounds ) {
+	syscall( UI_S_FADEALLSOUNDS, PASSFLOAT( targetvol ), time, stopSounds );
 }
 //----(SA)	end
 

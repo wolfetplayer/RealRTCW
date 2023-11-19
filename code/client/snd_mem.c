@@ -79,21 +79,29 @@ void SND_setup(void) {
 	cvar_t	*cv;
 	int scs;
 
-	cv = Cvar_Get( "com_soundMegs", DEF_COMSOUNDMEGS, CVAR_LATCH | CVAR_ARCHIVE );
+	cv = Cvar_Get("com_soundMegs", DEF_COMSOUNDMEGS, CVAR_LATCH | CVAR_ARCHIVE);
+	scs = (cv->integer * 512); // q3 uses a value of 1536 - reverted to genuine ET value
 
-	scs = (cv->integer*1536);
+	buffer = Com_Allocate(scs*sizeof(sndBuffer) );
+	if (!buffer)
+	{
+		Com_Error(ERR_FATAL, "Sound buffer failed to allocate %1.1f megs", (double)(scs / (1024.f * 1024.f)));
+	}
 
-	buffer = malloc(scs*sizeof(sndBuffer) );
 	// allocate the stack based hunk allocator
-	sfxScratchBuffer = malloc(SND_CHUNK_SIZE * sizeof(short) * 4);	//Hunk_Alloc(SND_CHUNK_SIZE * sizeof(short) * 4);
+	sfxScratchBuffer = Com_Allocate(SND_CHUNK_SIZE * sizeof(short) * 4);	//Hunk_Alloc(SND_CHUNK_SIZE * sizeof(short) * 4);
+	if (!sfxScratchBuffer)
+	{
+		Com_Error(ERR_FATAL, "Unable to allocate sound scratch buffer");
+	}
 	sfxScratchPointer = NULL;
 
 	inUse = scs*sizeof(sndBuffer);
-	p = buffer;;
+	p = buffer;
 	q = p + scs;
 	while (--q > p)
 		*(sndBuffer **)q = q-1;
-	
+
 	*(sndBuffer **)q = NULL;
 	freelist = p + scs - 1;
 
@@ -102,8 +110,8 @@ void SND_setup(void) {
 
 void SND_shutdown(void)
 {
-		free(sfxScratchBuffer);
-		free(buffer);
+	Com_Dealloc(sfxScratchBuffer);
+	Com_Dealloc(buffer);
 }
 
 /*
@@ -112,29 +120,19 @@ ResampleSfx
 
 resample / decimate to the current source rate
 ================
-*/
-static int ResampleSfx( sfx_t *sfx, int channels, int inrate, int inwidth, int samples, byte *data, qboolean compressed ) {
-	int		outcount;
-	int		srcsample;
-	float	stepscale;
-	int		i, j;
-	int		sample, samplefrac, fracstep;
-	int			part;
-	sndBuffer	*chunk;
-	
-	stepscale = (float)inrate / dma.speed;	// this is usually 0.5, 1, or 2
-
-	outcount = samples / stepscale;
-
-	srcsample = 0;
-	samplefrac = 0;
-	fracstep = stepscale * 256 * channels;
-	chunk = sfx->soundData;
+ */
+static int ResampleSfx( sfx_t *sfx, int channels, int inrate, int inwidth, int samples, byte *data, qboolean compressed) {
+	float     stepscale = (float)inrate / dma.speed;  // this is usually 0.5, 1, or 2
+	int       outcount = (int)(samples / stepscale);
+	int       srcsample;
+	int       i, j;
+	int       sample, samplefrac = 0, fracstep = (int)(stepscale * 256 * channels);
+	int       part;
+	sndBuffer* chunk = sfx->soundData;
 
 	for (i=0 ; i<outcount ; i++)
 	{
-		srcsample += samplefrac >> 8;
-		samplefrac &= 255;
+		srcsample = samplefrac >> 8;
 		samplefrac += fracstep;
 		for (j=0 ; j<channels ; j++)
 		{
@@ -168,26 +166,16 @@ ResampleSfx
 
 resample / decimate to the current source rate
 ================
-*/
+ */
 static int ResampleSfxRaw( short *sfx, int channels, int inrate, int inwidth, int samples, byte *data ) {
-	int			outcount;
-	int			srcsample;
-	float		stepscale;
-	int			i, j;
-	int			sample, samplefrac, fracstep;
-	
-	stepscale = (float)inrate / dma.speed;	// this is usually 0.5, 1, or 2
-
-	outcount = samples / stepscale;
-
-	srcsample = 0;
-	samplefrac = 0;
-	fracstep = stepscale * 256 * channels;
+	float stepscale = (float)inrate / dma.speed;  // this is usually 0.5, 1, or 2
+	int   outcount = (int)(samples / stepscale);
+	int   srcsample, i, j, sample;
+	int   samplefrac = 0, fracstep = (int)(stepscale * 256 * channels);
 
 	for (i=0 ; i<outcount ; i++)
 	{
-		srcsample += samplefrac >> 8;
-		samplefrac &= 255;
+		srcsample = samplefrac >> 8;
 		samplefrac += fracstep;
 		for (j=0 ; j<channels ; j++)
 		{
@@ -196,7 +184,7 @@ static int ResampleSfxRaw( short *sfx, int channels, int inrate, int inwidth, in
 			} else {
 				sample = (int)( (unsigned char)(data[srcsample+j]) - 128) << 8;
 			}
-			sfx[i*channels+j] = sample;
+			sfx[i] = sample;
 		}
 	}
 	return outcount;
@@ -211,16 +199,23 @@ S_LoadSound
 The filename may be different than sfx->name in the case
 of a forced fallback of a player specific sound
 ==============
-*/
+ */
 qboolean S_LoadSound( sfx_t *sfx )
 {
-	byte	*data;
-	short	*samples;
-	snd_info_t	info;
-//	int		size;
+	byte* data;
+	short* samples;
+	snd_info_t info;
 
 	// player specific sounds are never directly loaded
 	if ( sfx->soundName[0] == '*') {
+		return qfalse;
+	}
+
+	if (FS_FOpenFileRead(sfx->soundName, NULL, qfalse) <= 0)
+	{
+		// changed from debug to common print - let admins know and fix such missing files ...
+		// if default mod is printing this - there is a missing sound to fix
+		//Com_Printf(S_COLOR_RED "ERROR: sound file '%s' does not exist or can't be read\n", sfx->soundName);
 		return qfalse;
 	}
 
@@ -233,13 +228,14 @@ qboolean S_LoadSound( sfx_t *sfx )
 		Com_DPrintf(S_COLOR_YELLOW "WARNING: %s is a 8 bit audio file\n", sfx->soundName);
 	}
 
-	if ( info.rate != 22050 ) {
-		Com_DPrintf(S_COLOR_YELLOW "WARNING: %s is not a 22kHz audio file\n", sfx->soundName);
+	if ((info.rate != 11025) && (info.rate != 22050) && (info.rate != 44100))
+	{
+		Com_DPrintf(S_COLOR_YELLOW "WARNING: %s is not a 11kHz, 22kHz nor 44kHz audio file. It has sample rate %i\n", sfx->soundName, info.rate);
 	}
 
 	samples = Hunk_AllocateTempMemory(info.channels * info.samples * sizeof(short) * 2);
 
-	sfx->lastTimeUsed = Com_Milliseconds()+1;
+	sfx->lastTimeUsed = Sys_Milliseconds()+1;
 
 	// each of these compression schemes works just fine
 	// but the 16bit quality is much nicer and with a local
@@ -266,12 +262,12 @@ qboolean S_LoadSound( sfx_t *sfx )
 #endif
 	} else {
 		sfx->soundCompressionMethod = 0;
+		sfx->soundLength = info.samples;
 		sfx->soundData = NULL;
 		sfx->soundLength = ResampleSfx( sfx, info.channels, info.rate, info.width, info.samples, data + info.dataofs, qfalse );
 	}
-
 	sfx->soundChannels = info.channels;
-	
+
 	Hunk_FreeTempMemory(samples);
 	Hunk_FreeTempMemory(data);
 
@@ -279,5 +275,5 @@ qboolean S_LoadSound( sfx_t *sfx )
 }
 
 void S_DisplayFreeMemory(void) {
-	Com_Printf("%d bytes free sound buffer memory, %d total used\n", inUse, totalInUse);
+	Com_Printf("%d bytes (%6.2f MB) free sound buffer memory, %d bytes (%6.2f MB) total used.\n", inUse, (double)(inUse / Square(1024.f)), totalInUse, (double)(totalInUse / Square(1024.f)));
 }

@@ -36,14 +36,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifdef USE_LOCAL_HEADERS
 #include "../AL/al.h"
 #include "../AL/alc.h"
+#include "../AL/alext.h"
+#include "../AL/efx.h"
 #else
 #ifdef _MSC_VER
   // MSVC users must install the OpenAL SDK which doesn't use the AL/*.h scheme.
   #include <al.h>
   #include <alc.h>
+  #include <alext.h>
+  #include <efx.h>
 #else
   #include <AL/al.h>
   #include <AL/alc.h>
+  #include <AL/alext.h>
+  #include <AL/efx.h>
 #endif
 #endif
 
@@ -125,6 +131,7 @@ extern LPALGETBUFFERI qalGetBufferi;
 extern LPALGETBUFFER3I qalGetBuffer3i;
 extern LPALGETBUFFERIV qalGetBufferiv;
 extern LPALDOPPLERFACTOR qalDopplerFactor;
+extern LPALDOPPLERVELOCITY qalDopplerVelocity;
 extern LPALSPEEDOFSOUND qalSpeedOfSound;
 extern LPALDISTANCEMODEL qalDistanceModel;
 
@@ -148,6 +155,12 @@ extern LPALCCAPTURECLOSEDEVICE qalcCaptureCloseDevice;
 extern LPALCCAPTURESTART qalcCaptureStart;
 extern LPALCCAPTURESTOP qalcCaptureStop;
 extern LPALCCAPTURESAMPLES qalcCaptureSamples;
+
+extern LPALGENEFFECTS              qalGenEffects;
+extern LPALEFFECTI                 qalEffecti;
+extern LPALEFFECTF                 qalEffectf;
+extern LPALGENAUXILIARYEFFECTSLOTS qalGenAuxiliaryEffectSlots;
+extern LPALAUXILIARYEFFECTSLOTI    qalAuxiliaryEffectSloti;
 #else
 #define qalEnable alEnable
 #define qalDisable alDisable
@@ -219,6 +232,7 @@ extern LPALCCAPTURESAMPLES qalcCaptureSamples;
 #define qalGetBuffer3i alGetBuffer3i
 #define qalGetBufferiv alGetBufferiv
 #define qalDopplerFactor alDopplerFactor
+#define qalDopplerVelocity alDopplerVelocity
 #define qalSpeedOfSound alSpeedOfSound
 #define qalDistanceModel alDistanceModel
 
@@ -242,6 +256,12 @@ extern LPALCCAPTURESAMPLES qalcCaptureSamples;
 #define qalcCaptureStart alcCaptureStart
 #define qalcCaptureStop alcCaptureStop
 #define qalcCaptureSamples alcCaptureSamples
+
+#define qalGenEffects alGenEffects
+#define qalEffecti alEffecti
+#define qalEffectf alEffectf
+#define qalGenAuxiliaryEffectSlots alGenAuxiliaryEffectSlots
+#define qalAuxiliaryEffectSloti alAuxiliaryEffectSloti
 #endif
 
 qboolean QAL_Init(const char *libname);

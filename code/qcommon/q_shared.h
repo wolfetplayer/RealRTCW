@@ -260,6 +260,7 @@ typedef int clipHandle_t;
 #define     SND_CUTOFF          0x004   // Cut off sounds on this channel that are marked 'SND_REQUESTCUT'
 #define     SND_CUTOFF_ALL      0x008   // Cut off all sounds on this channel
 #define     SND_NOCUT           0x010   // Don't cut off.  Always let finish (overridden by SND_CUTOFF_ALL)
+#define     SND_NO_ATTENUATION  0x020   ///< don't attenuate (even though the sound is in voice channel, for example)
 
 
 #ifndef NULL
@@ -397,6 +398,9 @@ void *Hunk_Alloc( int size, ha_pref preference );
 
 #define Com_Memset memset
 #define Com_Memcpy memcpy
+
+#define Com_Allocate malloc
+#define Com_Dealloc free
 
 #define CIN_system      0x01
 #define CIN_loop        0x02
@@ -1041,31 +1045,46 @@ default values.
 ==========================================================
 */
 
-#define	CVAR_ARCHIVE		0x0001	// set to cause it to be saved to vars.rc
+#ifndef BIT
+#if defined(_WIN64) || defined(__LP64__)
+#define BIT(x)              (1ULL << (x))
+#else
+#define BIT(x)              (1U << (x))
+#endif
+#endif
+
+#define	CVAR_ARCHIVE		BIT(0)	// set to cause it to be saved to vars.rc
 					// used for system variables, not for player
 					// specific configurations
-#define	CVAR_USERINFO		0x0002	// sent to server on connect or change
-#define	CVAR_SERVERINFO		0x0004	// sent in response to front end requests
-#define	CVAR_SYSTEMINFO		0x0008	// these cvars will be duplicated on all clients
-#define	CVAR_INIT		0x0010	// don't allow change from console at all,
+#define	CVAR_USERINFO		BIT(1)	// sent to server on connect or change
+#define	CVAR_SERVERINFO		BIT(2)	// sent in response to front end requests
+#define	CVAR_SYSTEMINFO		BIT(3)	// these cvars will be duplicated on all clients
+#define	CVAR_INIT		BIT(4)	// don't allow change from console at all,
 					// but can be set from the command line
-#define	CVAR_LATCH		0x0020	// will only change when C code next does
+#define	CVAR_LATCH		BIT(5)	// will only change when C code next does
 					// a Cvar_Get(), so it can't be changed
 					// without proper initialization.  modified
 					// will be set, even though the value hasn't
 					// changed yet
-#define	CVAR_ROM		0x0040	// display only, cannot be set by user at all
-#define	CVAR_USER_CREATED	0x0080	// created by a set command
-#define	CVAR_TEMP		0x0100	// can be set even when cheats are disabled, but is not archived
-#define CVAR_CHEAT		0x0200	// can not be changed if cheats are disabled
-#define CVAR_NORESTART		0x0400	// do not clear when a cvar_restart is issued
-
-#define CVAR_SERVER_CREATED	0x0800	// cvar was created by a server the client connected to.
-#define CVAR_VM_CREATED		0x1000	// cvar was created exclusively in one of the VMs.
-#define CVAR_PROTECTED		0x2000	// prevent modifying this var from VMs or the server
+#define	CVAR_ROM		BIT(6)	// display only, cannot be set by user at all
+#define	CVAR_USER_CREATED	BIT(7)	// created by a set command
+#define	CVAR_TEMP		BIT(8)	// can be set even when cheats are disabled, but is not archived
+#define CVAR_CHEAT		BIT(9)	// can not be changed if cheats are disabled
+#define CVAR_NORESTART		BIT(10)	// do not clear when a cvar_restart is issued
+#define CVAR_UNSAFE         BIT(11) ///< unsafe system cvars (renderer, sound settings, anything that might cause a crash)
+#define CVAR_SERVER_CREATED	BIT(12)	// cvar was created by a server the client connected to.
+#define CVAR_VM_CREATED		BIT(13)	// cvar was created exclusively in one of the VMs.
+#define CVAR_PROTECTED		BIT(14)	// prevent modifying this var from VMs or the server
+#define CVAR_NODEFAULT      BIT(15)  ///< do not write to config if matching with default value
 // These flags are only returned by the Cvar_Flags() function
-#define CVAR_MODIFIED		0x40000000	// Cvar was modified
-#define CVAR_NONEXISTENT	0x80000000	// Cvar doesn't exist.
+#define CVAR_MODIFIED		BIT(16)	// Cvar was modified
+#define CVAR_NONEXISTENT	BIT(17)	// Cvar doesn't exist.
+
+#define CVAR_ARCHIVE_ND     (CVAR_ARCHIVE | CVAR_NODEFAULT)
+
+#define Q_atoi(str) (int) strtol(str, NULL, 10)
+
+#define Com_Dealloc free
 
 // nothing outside the Cvar_*() functions should modify these fields!
 typedef struct cvar_s cvar_t;

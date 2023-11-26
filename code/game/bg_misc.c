@@ -717,6 +717,39 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		{0.0, 0.0},             
 		MOD_G43,                                  
 	},
+
+	{   
+		WP_M1941,
+		WEAPON_CLASS_AUTO_RIFLE,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,              
+		0,     
+		0,       
+		0,       
+		0,        
+		0,       
+		0,       
+		0,       
+		0,
+		0,      
+		0,      
+		0,       
+		0,          
+		0,          
+		0,          
+		0,        
+		0,                 
+		0.0f,            
+		0,              
+		{.0f,.0f},       
+		{.0f, .0f},         
+		0,               
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},             
+		MOD_M1941,                                  
+	},
 	// Assault Rifles
 	{   
 		WP_MP44,
@@ -1655,7 +1688,7 @@ int reloadableWeapons[] = {
 	WP_LUGER,       WP_MORTAR,      WP_AKIMBO,          WP_PPSH,                WP_M7,                  WP_MP34,
 	WP_MAUSER,      WP_SNIPERRIFLE, WP_SNOOPERSCOPE,    WP_MOSIN,               WP_M1GARAND,            WP_G43,
 	WP_MP44,        WP_BAR,         WP_M97,             WP_FG42SCOPE,           WP_BROWNING,            WP_VENOM,
-	WP_P38,         WP_M30,         WP_DELISLE,         WP_DELISLESCOPE,        WP_TESLA,        
+	WP_P38,         WP_M30,         WP_DELISLE,         WP_DELISLESCOPE,        WP_TESLA,               WP_M1941,
 	-1
 };
 
@@ -3311,6 +3344,36 @@ model="models/multiplayer/g43/g43_3rd.md3"
 		WP_G43,
 		WP_MAUSER,
 		WP_G43,
+		"",                  
+		"",                  
+		{0,0,0,0,0}
+	},
+
+
+/*QUAKED weapon_m1941 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+"stand" values:
+	no value:	laying in a default position on it's side (default)
+	2:			upright, barrel pointing up, slightly angled (rack mount)
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/multiplayer/m1941/m1941_3rd.md3"
+*/
+	{
+		"weapon_m1941",
+		"sound/misc/w_pkup.wav",
+		{   
+		"",
+		"",
+		""
+		},
+
+		"icons/iconw_m1941",    
+		"m1941",             
+		30,
+		IT_WEAPON,
+		WP_M1941,
+		WP_M1941,
+		WP_M1GARAND,
+		WP_M1941,
 		"",                  
 		"",                  
 		{0,0,0,0,0}
@@ -7225,6 +7288,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_DELISLE:           return "delisle.weap";
 		case WP_DELISLESCOPE:      return "delislescope.weap";
 		case WP_DUMMY_MG42:        return "dummy_mg42.weap";
+		case WP_M1941:             return "m1941.weap";
 		case WP_NONE:
 		case WP_MONSTER_ATTACK1:
 		case WP_MONSTER_ATTACK2:

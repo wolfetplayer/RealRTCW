@@ -504,6 +504,7 @@ typedef enum {
 	// Semi auto rifles
 	WP_M1GARAND,
 	WP_G43,
+	WP_M1941,
 	// Assault Rifles
 	WP_MP44,
 	WP_FG42,
@@ -609,7 +610,7 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
 		weapon == WP_BROWNING || weapon == WP_P38 || weapon == WP_DELISLE ||  \
-        weapon == WP_DELISLESCOPE \
+        weapon == WP_DELISLESCOPE || weapon == WP_M1941 \
 	)
 
  // entityState_t->event values
@@ -1114,6 +1115,7 @@ typedef enum {
 	MOD_PPSH,
 	MOD_MOSIN,
 	MOD_G43,
+	MOD_M1941,
 	MOD_M1GARAND,
 	MOD_M7,
 	MOD_BAR,

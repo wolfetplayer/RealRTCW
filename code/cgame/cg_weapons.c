@@ -61,7 +61,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_WELROD,    WP_P38       },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     WP_DELISLE,      0,            0            },  //	4
-    {WP_G43,                WP_M1GARAND,            0,            0,               0,            0            },  //	5
+    {WP_G43,                WP_M1GARAND,            WP_M1941,     0,               0,            0            },  //	5
 	{WP_FG42,               WP_MP44,                WP_BAR,       0,               0,            0            },  //	6
 	{WP_M97,                WP_M30,                 0,            0,               0,            0            },  //	7
 	{WP_GRENADE_LAUNCHER,   WP_GRENADE_PINEAPPLE,   WP_DYNAMITE,  WP_AIRSTRIKE,    WP_POISONGAS, 0            },  //	8
@@ -3539,6 +3539,7 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_FLAMETHROWER:
 		case WP_FG42:
 		case WP_FG42SCOPE:
+		case WP_M1941:
 			wideweap = qtrue;
 			break;
 		default:
@@ -5010,6 +5011,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_MOSIN:
 	case WP_GARAND:
 	case WP_G43:
+	case WP_M1941:
 	case WP_M1GARAND:
 		pitchAdd = 1;
 		yawRandom = 1; 
@@ -5532,6 +5534,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_STEN:
 	case WP_SILENCER:
 	case WP_VENOM:
+	case WP_M1941:
 
 		r = rand() & 31;
 

@@ -555,6 +555,9 @@ float G_GetWeaponSpread( int weapon ) {
 #define G43_SPREAD     G_GetWeaponSpread( WP_G43 )
 #define G43_DAMAGE(e)     G_GetWeaponDamage( WP_G43, e ) 
 
+#define M1941_SPREAD     G_GetWeaponSpread( WP_M1941 )
+#define M1941_DAMAGE(e)     G_GetWeaponDamage( WP_M1941, e ) 
+
 #define M1GARAND_SPREAD     G_GetWeaponSpread( WP_M1GARAND )
 #define M1GARAND_DAMAGE(e)     G_GetWeaponDamage( WP_M1GARAND, e ) 
 
@@ -1811,6 +1814,9 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_G43: 
 		Bullet_Fire( ent, G43_SPREAD * aimSpreadScale, G43_DAMAGE(isPlayer)  );
+		break;
+	case WP_M1941: 
+		Bullet_Fire( ent, M1941_SPREAD * aimSpreadScale, M1941_DAMAGE(isPlayer)  );
 		break;
 	case WP_M1GARAND: 
 		Bullet_Fire( ent, M1GARAND_SPREAD * aimSpreadScale, M1GARAND_DAMAGE(isPlayer)  );

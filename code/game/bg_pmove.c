@@ -3561,6 +3561,7 @@ static void PM_Weapon( void ) {
 	case WP_M1GARAND:
 	case WP_GARAND:
     case WP_M7:
+	case WP_M1941:
 		if ( !weaponstateFiring ) {
 			// NERVE's panzerfaust spinup
 //			if (pm->ps->weapon == WP_PANZERFAUST)
@@ -3743,6 +3744,7 @@ static void PM_Weapon( void ) {
 	case WP_DELISLE:
 	case WP_MOSIN:
 	case WP_G43:
+	case WP_M1941:
 	case WP_M1GARAND:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
@@ -3823,6 +3825,7 @@ static void PM_Weapon( void ) {
 	        addTime = pm->ps->weaponstate == WEAPON_FIRINGALT ? 750 : GetWeaponTableData(pm->ps->weapon)->nextShotTime;
 	    break;
 	    case WP_G43:
+		case WP_M1941:
 	    case WP_M1GARAND:
 	        if ( pm->ps->aiChar )
 	        {

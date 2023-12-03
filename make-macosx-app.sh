@@ -350,7 +350,7 @@ PLIST="${PLIST}
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>NSHighResolutionCapable</key>
-    <false/>
+    <true/>
 </dict>
 </plist>
 "

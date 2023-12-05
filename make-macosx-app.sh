@@ -350,7 +350,9 @@ PLIST="${PLIST}
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>NSHighResolutionCapable</key>
-    <false/>
+    <true/>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.games</string>
 </dict>
 </plist>
 "

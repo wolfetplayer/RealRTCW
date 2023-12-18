@@ -163,6 +163,7 @@ vmCvar_t g_randomweapons;
 vmCvar_t g_realism;
 vmCvar_t g_regen;
 vmCvar_t g_flushItems;	// items land depending on the slope thy're on
+vmCvar_t g_midgame;
 
 vmCvar_t g_mapname;
 
@@ -193,6 +194,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_randomweapons, "g_randomweapons", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_realism, "g_realism", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_regen, "g_regen", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 

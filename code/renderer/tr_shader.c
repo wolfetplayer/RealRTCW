@@ -3249,7 +3249,7 @@ void    R_ShaderList_f( void ) {
 
 // Ridah, optimized shader loading
 
-#define MAX_SHADER_STRING_POINTERS  100000
+#define MAX_SHADER_STRING_POINTERS  1000000
 shaderStringPointer_t shaderStringPointerList[MAX_SHADER_STRING_POINTERS];
 
 /*

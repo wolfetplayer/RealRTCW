@@ -81,6 +81,10 @@ If you have questions concerning this license or the applicable additional terms
 #define CROUCH_VIEWHEIGHT   16
 #define DEAD_VIEWHEIGHT     -16
 
+#define DEFAULT_RUN_SPEED_SCALE     0.8
+#define DEFAULT_SPRINT_SPEED_SCALE  1.2
+#define DEFAULT_CROUCH_SPEED_SCALE  0.25
+
 #define DEFAULT_MODEL       "bj2"
 #define DEFAULT_HEAD        "default"   
 

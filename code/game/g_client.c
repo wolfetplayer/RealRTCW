@@ -1300,9 +1300,9 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->ps.crouchMaxZ = client->ps.maxs[2] - ( client->ps.standViewHeight - client->ps.crouchViewHeight );
 
-	client->ps.runSpeedScale = 0.8;
-	client->ps.sprintSpeedScale = 1.2;  // RealRTCW was 1.1
-	client->ps.crouchSpeedScale = 0.25;
+	client->ps.runSpeedScale = DEFAULT_RUN_SPEED_SCALE;
+	client->ps.sprintSpeedScale = DEFAULT_SPRINT_SPEED_SCALE;
+	client->ps.crouchSpeedScale = DEFAULT_CROUCH_SPEED_SCALE;
 
 	// Rafael
 	client->ps.sprintTime = 20000;

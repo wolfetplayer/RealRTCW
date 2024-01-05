@@ -1080,7 +1080,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			return;
 		}*/
 
-		damage *= 0.15;
+		damage *= 0.30;
 	}
 
 	// always give half damage if hurting self

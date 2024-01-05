@@ -729,7 +729,7 @@ static qboolean PM_CheckJump( void ) {
 
 	if ( pm->ps->powerups[PW_FLIGHT] ) 
 	{
-		pm->ps->velocity[2] = 400;
+		pm->ps->velocity[2] = 350;
 	}
 
 	PM_AddEvent( EV_JUMP );

@@ -231,6 +231,8 @@ static persField_t castStatePersFields[] = {
 	// TODO: will we be transporting AI's between levels?
 	// FIXME: if so, we can't save strings in here, so how are we going to create the new AI
 	// in the next level, with all his strings and pointers attached?
+	{CSFOFS( scriptGlobalAccumBuffer ),    sizeof( int ) * MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS },
+
 	{0, 0}
 };
 

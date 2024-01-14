@@ -49,7 +49,8 @@ If you have questions concerning this license or the applicable additional terms
 // Cast AI specific action flags (get translated into ucmd's
 #define CASTACTION_WALK     1
 //
-#define MAX_SCRIPT_ACCUM_BUFFERS    8
+#define MAX_SCRIPT_ACCUM_BUFFERS           8
+#define MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS    8
 //
 #define AICAST_PRT_ALWAYS   0
 #define AICAST_PRT_DEBUG    1
@@ -586,6 +587,7 @@ typedef struct cast_state_s
 	qboolean died;            // for g_airespawn
 	qboolean norespawn;
 	int respawnsleft;
+	int scriptGlobalAccumBuffer[MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS];
 } cast_state_t;
 //
 #define CSFOFS( x ) ( (size_t)&( ( (cast_state_t *)0 )->x ) )

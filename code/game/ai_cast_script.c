@@ -89,7 +89,6 @@ qboolean AICast_ScriptAction_SaveCheckpoint( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_FireAtTarget( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GodMode( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Accum( cast_state_t *cs, char *params );
-qboolean AICast_ScriptAction_GlobalAccum( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SpawnCast( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_MissionFailed( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_ObjectiveMet( cast_state_t *cs, char *params );
@@ -274,7 +273,6 @@ qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_AccumPrint(cast_state_t* cs, char* params);
-qboolean AICast_ScriptAction_GlobalAccumPrint(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params);
 
 // these are the actions that each event can call
@@ -285,7 +283,6 @@ cast_script_stack_action_t scriptActions[] =
 	{"changeainame", AICast_ScriptAction_ChangeAiName},
 	{"burn", AICast_ScriptAction_Burned},
 	{"accumprint", AICast_ScriptAction_AccumPrint},
-	{"globalaccumprint", AICast_ScriptAction_GlobalAccumPrint},
 	{"gotomarker",       AICast_ScriptAction_GotoMarker},
 	{"runtomarker",      AICast_ScriptAction_GotoMarker},
 	{"walktomarker", AICast_ScriptAction_WalkToMarker},
@@ -325,7 +322,6 @@ cast_script_stack_action_t scriptActions[] =
 	{"fireattarget", AICast_ScriptAction_FireAtTarget},
 	{"godmode",          AICast_ScriptAction_GodMode},
 	{"accum",            AICast_ScriptAction_Accum},
-	{"globalaccum",      AICast_ScriptAction_GlobalAccum},
 	{"spawncast",        AICast_ScriptAction_SpawnCast},
 	{"missionfailed",    AICast_ScriptAction_MissionFailed},
 	{"missionsuccess",   AICast_ScriptAction_ObjectiveMet},

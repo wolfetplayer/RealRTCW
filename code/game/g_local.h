@@ -173,7 +173,11 @@ typedef struct
 	char    *animatingParams;
 } g_script_status_t;
 //
-#define G_MAX_SCRIPT_ACCUM_BUFFERS  8
+#define G_MAX_SCRIPT_ACCUM_BUFFERS         8
+#define G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS  8
+
+extern int g_scriptGlobalAccumBuffer[G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS];
+
 //
 void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params );
 //====================================================================

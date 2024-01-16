@@ -1309,6 +1309,11 @@ qboolean G_SaveGame( char *username ) {
 		G_SaveWriteError();
 	}
 
+	// write out the globalaccum buffer
+	if ( !G_SaveWrite( ( void * )( (byte *)g_scriptGlobalAccumBuffer ), G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS * sizeof( int ), f ) ) {
+		G_SaveWriteError();
+	}
+
 	// write out the client structures
 	i = sizeof( gclient_t );
 	if ( !G_SaveWrite( &i, sizeof( i ), f ) ) {
@@ -1608,6 +1613,9 @@ void G_LoadGame( char *filename ) {
 			ent->freetime = level.time;
 			ent->inuse = qfalse;
 		}
+
+		// read the globalaccum buffer
+		trap_FS_Read( ( void * )( (byte *)g_scriptGlobalAccumBuffer ), G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS * sizeof( int ), f );
 
 		// read the client structures
 		trap_FS_Read( &i, sizeof( i ), f );

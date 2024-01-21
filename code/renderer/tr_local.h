@@ -2096,6 +2096,4 @@ extern int drawskyboxportal;
 void *R_Hunk_Begin( void );
 void R_Hunk_End( void );
 
-qboolean R_inPVS(const vec3_t p1, const vec3_t p2);
-
 #endif //TR_LOCAL_H (THIS MUST BE LAST!!)

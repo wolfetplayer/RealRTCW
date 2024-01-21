@@ -67,8 +67,6 @@ static		qboolean	s_soundMuted;
 
 dma_t		dma;
 
-snd_t snd;  // globals for sound
-
 static int			listener_number;
 static vec3_t		listener_origin;
 static vec3_t		listener_axis[3];
@@ -564,7 +562,7 @@ Entchannel 0 will never override a playing sound
 	SND_CUTOFF_ALL		0x008	- cut off all sounds on this channel
 ====================
 */
-static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags, int volume );
+static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags );
 
 void S_Base_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, int flags ) {
 	if ( !s_soundStarted || s_soundMuted || ( clc.state != CA_ACTIVE && clc.state != CA_DISCONNECTED ) ) {
@@ -577,7 +575,7 @@ void S_Base_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandl
 	}
 
 	// RF, make the call now, or else we could override following streaming sounds in the same frame, due to the delay
-	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, flags, 127 );
+	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, flags );
 /*
 	if ( tart < MAX_PUSHSTACK ) {
 		sfx_t       *sfx;
@@ -611,7 +609,7 @@ if origin is NULL, the sound will be dynamically sourced from the entity
 Entchannel 0 will never override a playing sound
 ====================
 */
-static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags, int volume ) {
+static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags ) {
 	channel_t	*ch;
 	sfx_t		*sfx;
 	int		i, oldest, chosen, time;
@@ -799,7 +797,7 @@ static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel,
 	}
 
 	ch->flags = flags;  //----(SA)	added
-	ch->master_vol = volume;
+	ch->master_vol = 127;
 	ch->entnum = entityNum;
 	ch->thesfx = sfx;
 	ch->entchannel = entchannel;
@@ -825,8 +823,8 @@ S_StartSound
 if origin is NULL, the sound will be dynamically sourced from the entity
 ====================
 */
-void S_Base_StartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, int volume ) {
-	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, 0, volume );
+void S_Base_StartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle ) {
+	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, 0 );
 }
 
 /*
@@ -844,7 +842,7 @@ void S_Base_StartLocalSound( sfxHandle_t sfxHandle, int channelNum ) {
 		return;
 	}
 
-	S_Base_MainStartSound( NULL, listener_number, channelNum, sfxHandle, qtrue, 0, 127 );
+	S_Base_MainStartSound( NULL, listener_number, channelNum, sfxHandle, qtrue, 0 );
 }
 
 
@@ -1034,7 +1032,7 @@ Called during entity generation for a frame
 Include velocity in case I get around to doing doppler...
 ==================
 */
-void S_Base_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfxHandle, int volume ) {
+void S_Base_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfxHandle ) {
 	sfx_t *sfx;
 
 	if ( !s_soundStarted || s_soundMuted ) {
@@ -1045,8 +1043,6 @@ void S_Base_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_
 		Com_Printf( S_COLOR_YELLOW "S_AddRealLoopingSound: handle %i out of range\n", sfxHandle );
 		return;
 	}
-
-	entityNum = snd.numLoopSounds++;
 
 	if ( entityNum < 0 || entityNum >= MAX_GENTITIES )
 		return;
@@ -1067,7 +1063,6 @@ void S_Base_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_
 	} else {
 		loopSounds[entityNum].range = SOUND_RANGE_DEFAULT;
 	}
-	loopSounds[entityNum].vol = volume;
 	loopSounds[entityNum].sfx = sfx;
 	loopSounds[entityNum].active = qtrue;
 	loopSounds[entityNum].kill = qfalse;
@@ -1857,7 +1852,7 @@ qboolean S_Base_Init( soundInterface_t *si ) {
 	if( !si ) {
 		return qfalse;
 	}
-	
+
 	s_mixahead = Cvar_Get ("s_mixahead", "0.2", CVAR_ARCHIVE);
 	s_mixPreStep = Cvar_Get ("s_mixPreStep", "0.05", CVAR_ARCHIVE);
 	s_show = Cvar_Get ("s_show", "0", CVAR_CHEAT);
@@ -1916,10 +1911,4 @@ qboolean S_Base_Init( soundInterface_t *si ) {
 #endif
 
 	return qtrue;
-}
-
-// ydnar: for looped sound synchronization
-int S_GetCurrentSoundTime(void) {
-	return s_soundtime + dma.speed;
-	//	 return s_paintedtime;
 }

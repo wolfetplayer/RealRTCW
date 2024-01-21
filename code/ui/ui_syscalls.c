@@ -206,7 +206,7 @@ int trap_CM_LerpTag( orientation_t *tag, const refEntity_t *refent, const char *
 }
 
 void trap_S_StartLocalSound( sfxHandle_t sfx, int channelNum ) {
-	syscall( UI_S_STARTLOCALSOUND, sfx, channelNum, 255 );
+	syscall( UI_S_STARTLOCALSOUND, sfx, channelNum, 255 ); // !!!!!!!!!!!!!!!! ЗАМЕНИТЬ
 }
 
 sfxHandle_t trap_S_RegisterSound( const char *sample ) {

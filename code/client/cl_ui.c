@@ -895,7 +895,7 @@ intptr_t CL_UISystemCalls( intptr_t *args ) {
 #endif  ///// (SA) DOOMSOUND
 
 	case UI_S_STARTLOCALSOUND:
-		S_StartLocalSound( args[1], args[2], args[3] );
+		S_StartLocalSound( args[1], args[2] );
 		return 0;
 
 //----(SA)	added
@@ -904,7 +904,7 @@ intptr_t CL_UISystemCalls( intptr_t *args ) {
 		return 0;
 
 	case UI_S_FADEALLSOUNDS:
-		S_FadeAllSounds( VMF( 1 ), args[2], args[3] );
+		S_FadeAllSounds( VMF( 1 ), args[2] );
 		return 0;
 //----(SA)	end
 
@@ -1083,7 +1083,7 @@ intptr_t CL_UISystemCalls( intptr_t *args ) {
 		S_StopBackgroundTrack();
 		return 0;
 	case UI_S_STARTBACKGROUNDTRACK:
-		S_StartBackgroundTrack( VMA( 1 ), VMA( 2 ), args[3] ); // added fadeup time
+		S_StartBackgroundTrack( VMA( 1 ), VMA( 2 ) );
 		return 0;
 
 	case UI_REAL_TIME:

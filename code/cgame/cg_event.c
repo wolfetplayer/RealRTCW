@@ -1821,7 +1821,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		gdist = VectorNormalize( norm );
 		if ( gdist > SOUND_FAR_ECHO_DISTANCE && gdist < SOUND_MAX_WEAPON_DISTANCE ) {
 			VectorMA( cg.refdef.vieworg, 64, norm, gorg );
-			trap_S_StartSoundEx( gorg, cent->currentState.number, CHAN_WEAPON, hWeaponEchoSnd, SND_NOCUT, 255 );
+			trap_S_StartSoundEx( gorg, cent->currentState.number, CHAN_WEAPON, hWeaponEchoSnd, SND_NOCUT );
 		}
 // jpw
 		DEBUGNAME( "EV_FIRE_WEAPON" );

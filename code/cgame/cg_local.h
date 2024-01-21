@@ -2413,16 +2413,16 @@ int         trap_CM_MarkFragments( int numPoints, const vec3_t *points,
 // moves and the listener moves
 void        trap_S_StartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx );
 void        trap_S_StartSoundVControl( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int volume );
-void        trap_S_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int flags, int volume );
+void        trap_S_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int flags );
 void        trap_S_StopLoopingSound( int entnum );
 void        trap_S_StopStreamingSound( int entnum );  // usually AI.  character is talking and needs to be shut up /now/
 int         trap_S_GetCurrentSoundTime( void ); // ydnar
 
 // a local sound is always played full volume
 void        trap_S_StartLocalSound( sfxHandle_t sfx, int channelNum );
-void        trap_S_ClearLoopingSounds( );
-void        trap_S_AddLoopingSound( const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume, int soundTime );
-void        trap_S_AddRealLoopingSound( const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume, int soundTime );
+void        trap_S_ClearLoopingSounds( qboolean killall );
+void        trap_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume );
+void        trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume );
 void        trap_S_UpdateEntityPosition( int entityNum, const vec3_t origin );
 
 // Ridah, talking animations
@@ -2437,7 +2437,7 @@ void        trap_S_StartBackgroundTrack( const char *intro, const char *loop, in
 void        trap_S_StopBackgroundTrack( void );
 void        trap_S_FadeBackgroundTrack( float targetvol, int time, int sound );  //----(SA)	added
 void        trap_S_StartStreamingSound( const char *intro, const char *loop, int entnum, int channel, int attenuation );
-void        trap_S_FadeAllSound( float targetvol, int time, qboolean stopSounds ); //----(SA)	added
+void        trap_S_FadeAllSound( float targetvol, int time ); //----(SA)	added
 
 void        trap_R_LoadWorldMap( const char *mapname );
 
@@ -2529,9 +2529,9 @@ int         trap_Key_GetCatcher( void );
 void        trap_Key_SetCatcher( int catcher );
 int         trap_Key_GetKey( const char *binding );
 
-void CG_S_AddLoopingSound(const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int volume);
-void CG_S_AddRangedLoopingSound(const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range);
-void CG_S_AddRealLoopingSound(const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx);
+void CG_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int volume );
+void CG_S_AddRangedLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range );
+void CG_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx );
 
 // RF
 void trap_SendMoveSpeedsToGame( int entnum, char *movespeeds );

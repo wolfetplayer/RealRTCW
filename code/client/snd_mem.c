@@ -83,18 +83,9 @@ void SND_setup(void) {
 
 	scs = (cv->integer*1536);
 
-	buffer = Com_Allocate(scs*sizeof(sndBuffer) );
-	if (!buffer)
-	{
-		Com_Error(ERR_FATAL, "Sound buffer failed to allocate %1.1f megs", (double)(scs / (1024.f * 1024.f)));
-	}
-
+	buffer = malloc(scs*sizeof(sndBuffer) );
 	// allocate the stack based hunk allocator
-	sfxScratchBuffer = Com_Allocate(SND_CHUNK_SIZE * sizeof(short) * 4);	//Hunk_Alloc(SND_CHUNK_SIZE * sizeof(short) * 4);
-	if (!sfxScratchBuffer)
-	{
-		Com_Error(ERR_FATAL, "Unable to allocate sound scratch buffer");
-	}
+	sfxScratchBuffer = malloc(SND_CHUNK_SIZE * sizeof(short) * 4);	//Hunk_Alloc(SND_CHUNK_SIZE * sizeof(short) * 4);
 	sfxScratchPointer = NULL;
 
 	inUse = scs*sizeof(sndBuffer);
@@ -233,14 +224,6 @@ qboolean S_LoadSound( sfx_t *sfx )
 		return qfalse;
 	}
 
-	if (FS_FOpenFileRead(sfx->soundName, NULL, qfalse) <= 0)
-	{
-		// changed from debug to common print - let admins know and fix such missing files ...
-		// if default mod is printing this - there is a missing sound to fix
-		Com_Printf(S_COLOR_RED "ERROR: sound file '%s' does not exist or can't be read\n", sfx->soundName);
-		return qfalse;
-	}
-
 	// load it in
 	data = S_CodecLoad(sfx->soundName, &info);
 	if(!data)
@@ -250,9 +233,8 @@ qboolean S_LoadSound( sfx_t *sfx )
 		Com_DPrintf(S_COLOR_YELLOW "WARNING: %s is a 8 bit audio file\n", sfx->soundName);
 	}
 
-	if ((info.rate != 11025) && (info.rate != 22050) && (info.rate != 44100))
-	{
-		Com_DPrintf(S_COLOR_YELLOW "WARNING: %s is not a 11kHz, 22kHz nor 44kHz audio file. It has sample rate %i\n", sfx->soundName, info.rate);
+	if ( info.rate != 22050 ) {
+		Com_DPrintf(S_COLOR_YELLOW "WARNING: %s is not a 22kHz audio file\n", sfx->soundName);
 	}
 
 	samples = Hunk_AllocateTempMemory(info.channels * info.samples * sizeof(short) * 2);

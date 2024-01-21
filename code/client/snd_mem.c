@@ -237,7 +237,7 @@ qboolean S_LoadSound( sfx_t *sfx )
 	{
 		// changed from debug to common print - let admins know and fix such missing files ...
 		// if default mod is printing this - there is a missing sound to fix
-		//Com_Printf(S_COLOR_RED "ERROR: sound file '%s' does not exist or can't be read\n", sfx->soundName);
+		Com_Printf(S_COLOR_RED "ERROR: sound file '%s' does not exist or can't be read\n", sfx->soundName);
 		return qfalse;
 	}
 

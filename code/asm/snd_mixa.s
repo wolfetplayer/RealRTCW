@@ -144,7 +144,7 @@ LDone:
 //----------------------------------------------------------------------
 // Transfer of stereo buffer to 16-bit DMA buffer code
 //----------------------------------------------------------------------
-/*
+
 .globl C(S_WriteLinearBlastStereo16)
 C(S_WriteLinearBlastStereo16):
 	pushl	%edi
@@ -212,6 +212,6 @@ LClampDone2:
 	popl	%edi
 
 	ret
-*/
+
 #endif	// id386
 

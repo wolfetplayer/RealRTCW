@@ -559,6 +559,8 @@ typedef struct {
 	float surface[4];
 } fog_t;
 
+#define MAX_FRUSTUM 4
+
 typedef struct {
 	orientationr_t  or;
 	orientationr_t world;
@@ -571,7 +573,7 @@ typedef struct {
 	int viewportX, viewportY, viewportWidth, viewportHeight;
 	float fovX, fovY;
 	float projectionMatrix[16];
-	cplane_t frustum[4];
+	cplane_t frustum[MAX_FRUSTUM];
 	vec3_t visBounds[2];
 	float zFar;
 	stereoFrame_t	stereoFrame;

@@ -318,7 +318,7 @@ int R_CullLocalBox( vec3_t bounds[2] ) {
 
 	// check against frustum planes
 	anyBack = 0;
-	for ( i = 0 ; i < 4 ; i++ ) {
+	for ( i = 0 ; i < MAX_FRUSTUM ; i++ ) {
 		frust = &tr.viewParms.frustum[i];
 
 		front = back = 0;
@@ -372,7 +372,7 @@ int R_CullPointAndRadius( vec3_t pt, float radius ) {
 	}
 
 	// check against frustum planes
-	for ( i = 0 ; i < 4 ; i++ )
+	for ( i = 0 ; i < MAX_FRUSTUM ; i++ )
 	{
 		frust = &tr.viewParms.frustum[i];
 
@@ -840,7 +840,7 @@ void R_SetupFrustum (viewParms_t *dest, float xmin, float xmax, float ymax, floa
 	VectorScale(dest->or.axis[0], oppleg, dest->frustum[3].normal);
 	VectorMA(dest->frustum[3].normal, -adjleg, dest->or.axis[2], dest->frustum[3].normal);
 	
-	for (i=0 ; i<4 ; i++) {
+	for (i=0 ; i<MAX_FRUSTUM ; i++) {
 		dest->frustum[i].type = PLANE_NON_AXIAL;
 		dest->frustum[i].dist = DotProduct (ofsorigin, dest->frustum[i].normal);
 		SetPlaneSignbits( &dest->frustum[i] );

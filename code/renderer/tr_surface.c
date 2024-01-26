@@ -358,7 +358,7 @@ void RB_SurfaceFoliage(srfFoliage_t *srf)
 			}
 
 			// check against frustum planes
-			for (i = 0; i < 5; i++)
+			for (i = 0; i < MAX_FRUSTUM; i++)
 			{
 				dist = DotProduct(instance->origin, backEnd.viewParms.frustum[i].normal) - backEnd.viewParms.frustum[i].dist;
 				if (dist < -64)
@@ -366,7 +366,7 @@ void RB_SurfaceFoliage(srfFoliage_t *srf)
 					break;
 				}
 			}
-			if (i != 5)
+			if (i != MAX_FRUSTUM)
 			{
 				continue;
 			}

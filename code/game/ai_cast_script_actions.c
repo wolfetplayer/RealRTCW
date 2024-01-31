@@ -1941,7 +1941,7 @@ qboolean AICast_ScriptAction_SaveCheckpoint ( cast_state_t *cs, char *params ) {
 		G_SaveGame( saveName );
 	}
 
-	trap_SendServerCommand( -1, "cp checkpointsaved" );  // yes save for u
+	trap_SendServerCommand( -1, "cptop checkpointsaved" );  // yes save for u
 //----(SA)	end
 
 	return qtrue;

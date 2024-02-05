@@ -882,6 +882,39 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		{0.0, 0.0},              
 		MOD_M97,                                   
 	},
+
+	{   
+		WP_AUTO5,
+		WEAPON_CLASS_SHOTGUN,
+		WP_NONE,
+		WEAPON_TEAM_ALLIES,              
+		0,        
+		0,       
+		0,        
+		0,        
+		0,       
+		0,      
+		0,      
+		0,      
+		0,      
+		0,       
+		0,
+		0,          
+		0,          
+		0,          
+		0,       
+		0,                 
+		0.0f,            
+		0,             
+		{.0f, .0f},     
+		{.0f, .0f},         
+		0,               
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},              
+		MOD_AUTO5,                                   
+	},
    // Heavy Weapons
 	{   
 		WP_BROWNING,
@@ -1689,7 +1722,7 @@ int reloadableWeapons[] = {
 	WP_MAUSER,      WP_SNIPERRIFLE, WP_SNOOPERSCOPE,    WP_MOSIN,               WP_M1GARAND,            WP_G43,
 	WP_MP44,        WP_BAR,         WP_M97,             WP_FG42SCOPE,           WP_BROWNING,            WP_VENOM,
 	WP_P38,         WP_M30,         WP_DELISLE,         WP_DELISLESCOPE,        WP_TESLA,               WP_M1941,
-	-1
+	WP_AUTO5,       -1
 };
 
 // new (10/18/00)
@@ -3566,6 +3599,33 @@ model="models/weapons2/m97/m97_3rd.md3"
 			WP_M97,
 			WP_M97,
 			WP_M97,
+			"",                      
+			"",                     
+			{ 0,0,0,0,0 }
+	},
+
+
+	/*QUAKED weapon_auto5 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/weapons2/m97/m97_3rd.md3"
+*/
+	{
+		"weapon_auto5",
+		"sound/misc/w_pkup.wav",
+		{ 
+		"",
+		"",
+		""
+		},
+
+			"icons/iconw_auto5",  
+			"auto5",            
+			700,
+			IT_WEAPON,
+			WP_AUTO5,
+			WP_AUTO5,
+			WP_M97,
+			WP_AUTO5,
 			"",                      
 			"",                     
 			{ 0,0,0,0,0 }
@@ -7271,6 +7331,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_MP44:              return "mp44.weap";
 		case WP_BAR:               return "bar.weap";
 		case WP_M97:               return "ithaca.weap";
+		case WP_AUTO5:             return "auto5.weap";
 		case WP_FLAMETHROWER:      return "flamethrower.weap";
 		case WP_PANZERFAUST:       return "panzerfaust.weap";
 		case WP_MG42M:             return "mg42m.weap";

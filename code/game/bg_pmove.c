@@ -2201,6 +2201,11 @@ static void PM_BeginWeaponReload( int weapon ) {
 		return;
 	}
 
+	if (weapon == WP_AUTO5) {
+		PM_BeginAuto5Reload();
+		return;
+	}
+
 	switch ( weapon ) {
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
@@ -2521,7 +2526,7 @@ static void PM_ReloadClip( int weapon ) {
 
 	ammomove = ammoTable[weapon].maxclip - ammoclip;
       // Jaymod
-	if( weapon == WP_M97 ) {
+	if( weapon == WP_M97 || weapon == WP_AUTO5 ) {
 		ammomove = 1;
 	}
 
@@ -2550,6 +2555,11 @@ static void PM_FinishWeaponReload( void ) {
 	// Jaymod Overrides for Shotgun
 	if( pm->ps->weapon == WP_M97 ) {
 		PM_M97Reload();
+		return;
+	}
+
+	if( pm->ps->weapon == WP_AUTO5 ) {
+		PM_Auto5Reload();
 		return;
 	}
 
@@ -2604,7 +2614,7 @@ void PM_CheckForReload( int weapon ) {
 	return;
 	case WEAPON_RELOADING:
 		// Jaymod
-		if( pm->ps->weapon == WP_M97 ) {
+		if( pm->ps->weapon == WP_M97 || pm->ps->weapon == WP_AUTO5 ) {
 			if(( pm->cmd.buttons & BUTTON_ATTACK) || ( pm->cmd.wbuttons & WBUTTON_ATTACK2) ) {
 				pm->pmext->m97reloadInterrupt = qtrue;
 			}
@@ -3529,6 +3539,7 @@ static void PM_Weapon( void ) {
 	case WP_BROWNING:
 	case WP_FG42SCOPE:
 	case WP_M97:
+	case WP_AUTO5:
 	case WP_AIRSTRIKE:
 	case WP_M30:
 		if ( !weaponstateFiring ) {
@@ -3750,6 +3761,7 @@ static void PM_Weapon( void ) {
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_M97:
+	case WP_AUTO5:
     case WP_M7:
 	case WP_M30:
 		PM_StartWeaponAnim( weapattackanim );
@@ -4958,3 +4970,90 @@ void PM_M97Reload() {
 		pm->ps->weaponstate = WEAPON_READY;
 	}
 }
+
+
+/*
+=================
+PM_BeginAuto5Reload
+=================
+*/
+void PM_BeginAuto5Reload( void )
+{
+	int anim;
+	
+	// Choose which first person animation to play 
+	if ( pm->ps->ammoclip[BG_FindClipForWeapon(WP_AUTO5)] == 0 ) {
+		
+		anim = WEAP_ALTSWITCHFROM;
+		PM_AddEvent( EV_M97_PUMP );
+		pm->ps->weaponTime += AUTO5_RLT_ALTSWITCHFROM;
+		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN_PUMP;
+
+	} else {
+		anim = WEAP_RELOAD1;
+		pm->ps->weaponTime += AUTO5_RLT_RELOAD1;
+		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN;
+	}
+
+	// Play it
+	PM_StartWeaponAnim(anim);
+
+	// Initialize override
+	pm->pmext->m97reloadInterrupt = qfalse;
+
+	// Set state to reloading
+	pm->ps->weaponstate = WEAPON_RELOADING;
+
+}
+
+void PM_Auto5Reload() {
+	
+	// Transition from shell + pump
+	if( pm->ps->holdable[HI_AUTO5] == AUTO5_RELOADING_BEGIN_PUMP ) {
+		
+		// Load a shell
+		PM_ReloadClip( WP_AUTO5 );
+
+		// Branch depending on if we need another shell or not
+		if (!pm->ps->ammo[BG_FindAmmoForWeapon(WP_AUTO5)] || pm->pmext->m97reloadInterrupt) {
+			
+			// Break back to ready position
+			PM_StartWeaponAnim(WEAP_DROP2);
+			pm->ps->weaponTime += AUTO5_RLT_DROP2;
+			pm->ps->weaponstate = WEAPON_READY;
+		} else {
+			
+			// Transition to load another shell
+			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
+			pm->ps->weaponTime += AUTO5_RLT_ALTSWITCHTO;
+			pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_AFTER_PUMP;
+		}
+		return;
+	}
+	
+	// Load a shell on most states
+	if (pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_AFTER_PUMP && pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_BEGIN) {
+		PM_ReloadClip( WP_AUTO5 );
+	}
+
+	// Override - but must load at least one shell!
+	if( pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_BEGIN ) {
+		PM_StartWeaponAnim(WEAP_RELOAD3);
+		pm->ps->weaponTime += AUTO5_RLT_RELOAD3;
+		pm->ps->weaponstate = WEAPON_READY;
+		return;
+	}
+
+	// If clip isn't full, load another shell
+	if( pm->ps->ammoclip[WP_AUTO5] < ammoTable[WP_AUTO5].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_AUTO5)] ) {
+		PM_AddEvent( EV_FILL_CLIP );
+		PM_StartWeaponAnim(WEAP_RELOAD2);
+		pm->ps->weaponTime += AUTO5_RLT_RELOAD2;
+		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_LOOP;
+	} else {
+		PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
+		pm->ps->weaponTime += AUTO5_RLT_RELOAD3;
+		pm->ps->weaponstate = WEAPON_READY;
+	}
+}
+

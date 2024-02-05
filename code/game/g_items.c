@@ -1090,7 +1090,8 @@ void FinishSpawningItem( gentity_t *ent ) {
 									|| ent->item->giWeapon == WP_MP44
 									|| ent->item->giWeapon == WP_M7
 									|| ent->item->giWeapon == WP_BROWNING
-									|| ent->item->giWeapon == WP_M1941 ) )
+									|| ent->item->giWeapon == WP_M1941
+									|| ent->item->giWeapon == WP_AUTO5 ) )
 	{
     return;
 	}

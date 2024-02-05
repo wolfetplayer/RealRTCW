@@ -96,6 +96,7 @@ void CG_CheckAmmo( void ) {
 		case WP_MP44:
 		case WP_MG42M:
 		case WP_M97:
+		case WP_AUTO5:
 		case WP_REVOLVER:
 		case WP_BROWNING:
 		case WP_M30:

@@ -2189,7 +2189,11 @@ static void PM_BeginWeaponReload( int weapon ) {
 
 	if((weapon == WP_M1GARAND) && pm->ps->ammoclip[WP_M1GARAND] != 0) {
 			return;	
-		}
+	}
+
+	if((weapon == WP_M1941) && pm->ps->ammoclip[WP_M1941] > (0.5 * ammoTable[WP_M1941].maxclip)) {
+			return;	
+	}
 
 	// no reload when you've got a chair in your hands
 	if ( pm->ps->eFlags & EF_MELEE_ACTIVE ) {
@@ -2528,6 +2532,10 @@ static void PM_ReloadClip( int weapon ) {
       // Jaymod
 	if( weapon == WP_M97 || weapon == WP_AUTO5 ) {
 		ammomove = 1;
+	}
+
+	if( weapon == WP_M1941 && pm->ps->ammoclip[WP_M1941] > 0 ) {
+		ammomove = 5;
 	}
 
 	if ( ammoreserve < ammomove ) {

@@ -36,9 +36,14 @@ If you have questions concerning this license or the applicable additional terms
 //#define	MAX_SUBMODELS		256
 //#define	BOX_MODEL_HANDLE	255
 
-#define MAX_SUBMODELS           512
-#define BOX_MODEL_HANDLE        511
-#define CAPSULE_MODEL_HANDLE    510
+// (WETP) WF needed even more than 512
+//#define MAX_SUBMODELS           1024
+//#define BOX_MODEL_HANDLE        511
+//#define CAPSULE_MODEL_HANDLE    510
+
+#define MAX_SUBMODELS           1024
+#define BOX_MODEL_HANDLE        1023
+#define CAPSULE_MODEL_HANDLE    1022
 
 
 typedef struct {

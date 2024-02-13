@@ -502,24 +502,39 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			}
 
 		// regenerate health only if cvar is turned on
-		if (g_regen.integer == 1) {
+     if (g_regen.integer == 1 && level.time >= client->healthRegenStartTime) {
+
 		    if (ent->health < client->ps.stats[STAT_MAX_HEALTH])
 		    {
-				if (!ent->aiCharacter){
-				if (ent->health > client->ps.stats[STAT_MAX_HEALTH] / 2)
+			if (!ent->aiCharacter){ // no regen for AI
+
+
+			if (ent->health >= client->ps.stats[STAT_MAX_HEALTH] * 0.75)
 				{
-					ent->health += 2;
+					client->healthRegenStartTime = level.time + 500;
+					ent->health += 10;
 
 					if (ent->health > client->ps.stats[STAT_MAX_HEALTH])
 					{
 						ent->health = client->ps.stats[STAT_MAX_HEALTH];
 					}
 				}
-				else
+				  else if (ent->health >= client->ps.stats[STAT_MAX_HEALTH] * 0.50 && ent->health < client->ps.stats[STAT_MAX_HEALTH] * 0.75)
 				{
-					ent->health += 3;
+					client->healthRegenStartTime = level.time + 750;
+					ent->health += 9;
+				} else if (ent->health >= client->ps.stats[STAT_MAX_HEALTH] * 0.25 && ent->health < client->ps.stats[STAT_MAX_HEALTH] * 0.50)
+				{
+                   	client->healthRegenStartTime = level.time + 1000;
+					ent->health += 7;
+				}  else if (ent->health < client->ps.stats[STAT_MAX_HEALTH] * 0.25)
+				{
+					client->healthRegenStartTime = level.time + 1500;
+					ent->health += 5;
 				}
-				}
+
+
+			}
 		    }
 		}
 

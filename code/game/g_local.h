@@ -621,6 +621,8 @@ struct gclient_s {
 	int saved_persistant[MAX_PERSISTANT];           // DHM - Nerve :: Save ps->persistant here during Limbo
 	
 	pmoveExt_t pmext;
+
+	int healthRegenStartTime;
 };
 
 

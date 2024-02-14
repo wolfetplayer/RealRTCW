@@ -897,9 +897,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			// Rafael - had to change this since the
 			// we added a new lvl of diff
 			if ( g_gameskill.integer == GSKILL_EASY ) {
-				damage *= 0.25;
-			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
 				damage *= 0.75;
+			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
+				damage *= 0.80;
 			} else if ( g_gameskill.integer == GSKILL_HARD ) {
 				damage *= 0.9;
 			} else {

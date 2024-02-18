@@ -588,6 +588,12 @@ typedef struct ammoTable_s {
 	int upAngle;
 	float falloffDistance[2];
 	int mod;   
+	int shotgunReloadStart;
+	int shotgunReloadLoop;
+	int shotgunReloadEnd;
+	int shotgunPumpStart;
+	int shotgunPumpLoop;
+	int shotgunPumpEnd;
 } ammoTable_t;
 
 // Skill-based ammo parameters

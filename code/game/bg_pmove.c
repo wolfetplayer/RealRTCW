@@ -4908,12 +4908,12 @@ void PM_BeginM97Reload( void )
 		
 		anim = WEAP_ALTSWITCHFROM;
 		PM_AddEvent( EV_M97_PUMP );
-		pm->ps->weaponTime += M97_RLT_ALTSWITCHFROM;
+		pm->ps->weaponTime += ammoTable[WP_M97].shotgunPumpStart;
 		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN_PUMP;
 
 	} else {
 		anim = WEAP_RELOAD1;
-		pm->ps->weaponTime += M97_RLT_RELOAD1;
+		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadStart;
 		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN;
 	}
 
@@ -4941,13 +4941,13 @@ void PM_M97Reload() {
 			
 			// Break back to ready position
 			PM_StartWeaponAnim(WEAP_DROP2);
-			pm->ps->weaponTime += M97_RLT_DROP2;
+			pm->ps->weaponTime += ammoTable[WP_M97].shotgunPumpEnd;
 			pm->ps->weaponstate = WEAPON_READY;
 		} else {
 			
 			// Transition to load another shell
 			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
-			pm->ps->weaponTime += M97_RLT_ALTSWITCHTO;
+			pm->ps->weaponTime += ammoTable[WP_M97].shotgunPumpLoop;
 			pm->ps->holdable[HI_M97] = M97_RELOADING_AFTER_PUMP;
 		}
 		return;
@@ -4961,7 +4961,7 @@ void PM_M97Reload() {
 	// Override - but must load at least one shell!
 	if( pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN ) {
 		PM_StartWeaponAnim(WEAP_RELOAD3);
-		pm->ps->weaponTime += M97_RLT_RELOAD3;
+		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
 	}
@@ -4970,11 +4970,11 @@ void PM_M97Reload() {
 	if( pm->ps->ammoclip[WP_M97] < ammoTable[WP_M97].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] ) {
 		PM_AddEvent( EV_FILL_CLIP );
 		PM_StartWeaponAnim(WEAP_RELOAD2);
-		pm->ps->weaponTime += M97_RLT_RELOAD2;
+		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadLoop;
 		pm->ps->holdable[HI_M97] = M97_RELOADING_LOOP;
 	} else {
 		PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
-		pm->ps->weaponTime += M97_RLT_RELOAD3;
+		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 	}
 }
@@ -4994,12 +4994,12 @@ void PM_BeginAuto5Reload( void )
 		
 		anim = WEAP_ALTSWITCHFROM;
 		PM_AddEvent( EV_M97_PUMP );
-		pm->ps->weaponTime += AUTO5_RLT_ALTSWITCHFROM;
+		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunPumpStart;
 		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN_PUMP;
 
 	} else {
 		anim = WEAP_RELOAD1;
-		pm->ps->weaponTime += AUTO5_RLT_RELOAD1;
+		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadStart;
 		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN;
 	}
 
@@ -5027,13 +5027,13 @@ void PM_Auto5Reload() {
 			
 			// Break back to ready position
 			PM_StartWeaponAnim(WEAP_DROP2);
-			pm->ps->weaponTime += AUTO5_RLT_DROP2;
+			pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunPumpEnd;
 			pm->ps->weaponstate = WEAPON_READY;
 		} else {
 			
 			// Transition to load another shell
 			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
-			pm->ps->weaponTime += AUTO5_RLT_ALTSWITCHTO;
+			pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunPumpLoop;
 			pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_AFTER_PUMP;
 		}
 		return;
@@ -5047,7 +5047,7 @@ void PM_Auto5Reload() {
 	// Override - but must load at least one shell!
 	if( pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_BEGIN ) {
 		PM_StartWeaponAnim(WEAP_RELOAD3);
-		pm->ps->weaponTime += AUTO5_RLT_RELOAD3;
+		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
 	}
@@ -5056,11 +5056,11 @@ void PM_Auto5Reload() {
 	if( pm->ps->ammoclip[WP_AUTO5] < ammoTable[WP_AUTO5].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_AUTO5)] ) {
 		PM_AddEvent( EV_FILL_CLIP );
 		PM_StartWeaponAnim(WEAP_RELOAD2);
-		pm->ps->weaponTime += AUTO5_RLT_RELOAD2;
+		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadLoop;
 		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_LOOP;
 	} else {
 		PM_StartWeaponAnim(WEAP_RELOAD3);			// From loop to read
-		pm->ps->weaponTime += AUTO5_RLT_RELOAD3;
+		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 	}
 }

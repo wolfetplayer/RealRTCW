@@ -5,21 +5,20 @@
 
 // Shotgun
 // Animation time = 1000 / fps * numFrames
-#define M97_RLT_RELOAD1			400		// Reload normal shell start
-#define	M97_RLT_RELOAD2			900		// Reload normal shell loop
-#define	M97_RLT_RELOAD2_QUICK	600		// Reload normal shell loop FAST
-#define	M97_RLT_RELOAD3			550		// Reload normal shell end
-#define	M97_RLT_ALTSWITCHFROM	2000	// Reload first shell and pump start
-#define	M97_RLT_ALTSWITCHTO		300		// Reload first shell and pump to loop
-#define	M97_RLT_DROP2			375		// Reload first shell and pump end
+// moved all those timings to .weap files
+//#define   M97_RLT_RELOAD1			400		// Reload normal shell start
+//#define	M97_RLT_RELOAD2			900		// Reload normal shell loop
+//#define	M97_RLT_RELOAD3			550		// Reload normal shell end
+//#define	M97_RLT_ALTSWITCHFROM	2000	// Reload first shell and pump start
+//#define	M97_RLT_ALTSWITCHTO		300		// Reload first shell and pump to loop
+//#define	M97_RLT_DROP2			375		// Reload first shell and pump end
 
-#define AUTO5_RLT_RELOAD1		400		// Reload normal shell start
-#define	AUTO5_RLT_RELOAD2		900		// Reload normal shell loop
-#define	AUTO5_RLT_RELOAD2_QUICK	600		// Reload normal shell loop FAST
-#define	AUTO5_RLT_RELOAD3		550		// Reload normal shell end
-#define	AUTO5_RLT_ALTSWITCHFROM	2000	// Reload first shell and pump start
-#define	AUTO5_RLT_ALTSWITCHTO	300		// Reload first shell and pump to loop
-#define	AUTO5_RLT_DROP2			375		// Reload first shell and pump end
+//#define AUTO5_RLT_RELOAD1		400		// Reload normal shell start
+//#define	AUTO5_RLT_RELOAD2		900		// Reload normal shell loop
+//#define	AUTO5_RLT_RELOAD3		550		// Reload normal shell end
+//#define	AUTO5_RLT_ALTSWITCHFROM	2000	// Reload first shell and pump start
+//#define	AUTO5_RLT_ALTSWITCHTO	300		// Reload first shell and pump to loop
+//#define	AUTO5_RLT_DROP2			375		// Reload first shell and pump end
 
 // Shotgun reload states
 typedef enum {

@@ -220,7 +220,8 @@ static persField_t gclientPersFields[] = {
 	{CFOFS( ps.persistant[0] ),   sizeof( int ) * MAX_PERSISTANT},
 	{CFOFS( ps.stats[0] ),        sizeof( int ) * MAX_STATS},
 	{CFOFS( ps.weapons[0] ),      sizeof( int ) * MAX_WEAPONS / ( sizeof( int ) * 8 )}, // //----(SA)	added.  weapons owned got moved outside stats[]
-	{CFOFS( ps.powerups[0] ),     sizeof( int ) * MAX_POWERUPS},
+	// We dont need temp powerups persist between levels
+	//{CFOFS( ps.powerups[0] ),     sizeof( int ) * MAX_POWERUPS},
 	{CFOFS( ps.holdable[0] ),     sizeof( int ) * MAX_HOLDABLE},    //----(SA)	added
 	{CFOFS( ps.holding ),         sizeof( int )},                   //----(SA)	added
 

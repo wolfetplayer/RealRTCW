@@ -762,7 +762,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	// Semi auto rifles
 	{   
 		WP_M1GARAND,
-		WEAPON_CLASS_AUTO_RIFLE,
+		WEAPON_CLASS_RIFLE,
 		WP_M7,
 		WEAPON_TEAM_ALLIES,         
 		0,    
@@ -801,7 +801,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_G43,
-		WEAPON_CLASS_AUTO_RIFLE,
+		WEAPON_CLASS_RIFLE,
 		WP_NONE,
 		WEAPON_TEAM_AXIS,              
 		0,     
@@ -840,7 +840,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_M1941,
-		WEAPON_CLASS_AUTO_RIFLE,
+		WEAPON_CLASS_RIFLE,
 		WP_NONE,
 		WEAPON_TEAM_ALLIES,              
 		0,     
@@ -1542,7 +1542,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_AKIMBO,
-		WEAPON_CLASS_PISTOL,
+		WEAPON_CLASS_AKIMBO,
 		WP_COLT,
 		WEAPON_TEAM_ALLIES,           
 		0,         
@@ -1621,7 +1621,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     // Currently unused Gothicstein weapons
 	{   
 		WP_P38,
-		WEAPON_CLASS_PISTOL,
+		WEAPON_CLASS_UNUSED,
 		WP_NONE, 
 		WEAPON_TEAM_AXIS,             
 		0,        
@@ -1660,7 +1660,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_M30,
-		WEAPON_CLASS_SHOTGUN,
+		WEAPON_CLASS_UNUSED,
 		WP_NONE,
 		WEAPON_TEAM_COMMON,              
 		0,        
@@ -1777,7 +1777,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 
 	{   
 		WP_WELROD,
-		WEAPON_CLASS_PISTOL,
+		WEAPON_CLASS_UNUSED,
 		WP_NONE,
 		WEAPON_TEAM_ALLIES,           
 		0,     
@@ -1818,7 +1818,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		WP_HOLYCROSS,
 		WEAPON_CLASS_BEAM,
 		WP_NONE,
-		WEAPON_TEAM_COMMON,        
+		WEAPON_TEAM_NONE,        
 		0,                  
 		0,       
 		0,       
@@ -1856,7 +1856,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     // Misc stuff, not actual weapons
 		{   
 		WP_DUMMY_MG42,
-		WEAPON_CLASS_MG,
+		WEAPON_CLASS_UNUSED,
 		WP_NONE,
 		WEAPON_TEAM_COMMON,             
 		0,     

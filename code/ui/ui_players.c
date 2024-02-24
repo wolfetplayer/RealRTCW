@@ -828,7 +828,7 @@ static qboolean UI_RegisterClientSkin( playerInfo_t *pi, const char *modelName, 
 return a hash value for the given string
 ================
 */
-static long BG_StringHashValue( const char *fname ) {
+long BG_StringHashValue( const char *fname ) {
 	int i;
 	long hash;
 	char letter;

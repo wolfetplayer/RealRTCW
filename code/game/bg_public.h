@@ -1754,6 +1754,9 @@ int PM_AltSwitchToForWeapon( int weapon );
 extern animStringItem_t animStateStr[];
 extern animStringItem_t animBodyPartsStr[];
 
+long BG_StringHashValue(const char *fname);
+long BG_StringHashValue_Lwr(const char *fname);
+
 int trap_PC_LoadSource( const char *filename );
 int trap_PC_ReadToken( int handle, pc_token_t *pc_token );
 int trap_PC_FreeSource( int handle );

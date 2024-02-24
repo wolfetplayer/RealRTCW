@@ -302,6 +302,7 @@ vmCvar_t int_cl_timenudge;
 vmCvar_t cg_bodysink;
 vmCvar_t cg_gunPosLock;
 vmCvar_t cg_weaponBounceSound;
+vmCvar_t cg_regen;
 
 typedef struct {
 	vmCvar_t    *vmCvar;
@@ -488,6 +489,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_nopickupChallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_decayChallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
+	{ &cg_regen, "g_regen", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 
 	{ &cg_reloading, "g_reloading", "0", 0 }, //----(SA)	added
 

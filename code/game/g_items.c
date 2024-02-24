@@ -1070,6 +1070,11 @@ void FinishSpawningItem( gentity_t *ent ) {
     return;
 	}
 
+	if ( g_regen.integer && ent->item->giType == IT_HEALTH )
+	{
+    return;
+	}
+
 	if ( g_decaychallenge.integer && ent->item->giType == IT_HEALTH )
 	{
     return;

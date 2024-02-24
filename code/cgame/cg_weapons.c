@@ -1592,9 +1592,15 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 	filename = BG_GetWeaponFilename( weaponNum );
 	if ( !*filename )
 		return;
-
-	if ( !CG_RegisterWeaponFromWeaponFile( va( "weapons/%s", filename ), weaponInfo, weaponNum ) ) {
+     
+	if ( cg_vanilla_plus.integer ) {
+     	if ( !CG_RegisterWeaponFromWeaponFile( va( "weapons/vanilla/%s", filename ), weaponInfo, weaponNum ) ) {
 		CG_Printf( S_COLOR_RED "WARNING: failed to register media for weapon %i from %s\n", weaponNum, filename );
+	}
+	} else {
+	    if ( !CG_RegisterWeaponFromWeaponFile( va( "weapons/%s", filename ), weaponInfo, weaponNum ) ) {
+		CG_Printf( S_COLOR_RED "WARNING: failed to register media for weapon %i from %s\n", weaponNum, filename );
+	}
 	}
 
 }

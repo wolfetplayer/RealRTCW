@@ -1997,8 +1997,15 @@ void G_LoadAmmoTable( weapon_t weaponNum )
 	filename = BG_GetWeaponFilename( weaponNum );
 	if ( !*filename )
 		return;
+    
+    if ( g_vanilla_plus.integer ) 
+	{
+	    handle = trap_PC_LoadSource( va( "weapons/vanilla/%s", filename ) );
+	} else {
+		handle = trap_PC_LoadSource( va( "weapons/%s", filename ) );
+	}
 
-	handle = trap_PC_LoadSource( va( "weapons/%s", filename ) );
+
 	if ( !handle ) {
 		G_Printf( S_COLOR_RED "ERROR: Failed to load weap file %s\n", filename );
 		return;

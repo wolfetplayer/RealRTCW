@@ -219,9 +219,7 @@ typedef enum {
 	CG_GETMODELINFO,
 
 	// New in IORTCW
-	CG_ALLOC = 900,
-
-	CG_R_INPVS
+	CG_ALLOC = 900
 
 } cgameImport_t;
 

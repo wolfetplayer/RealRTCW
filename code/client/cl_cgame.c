@@ -751,9 +751,6 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 	case CG_R_REMAP_SHADER:
 		re.RemapShader( VMA( 1 ), VMA( 2 ), VMA( 3 ) );
 		return 0;
-	
-	case CG_R_INPVS:
-		return re.inPVS( VMA( 1 ), VMA( 2 ) );
 
 	case CG_TESTPRINTINT:
 //		Com_Printf( "%s%i\n", (const char*)VMA( 1 ), args[2] );

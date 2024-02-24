@@ -485,7 +485,7 @@ void CG_SetActiveOnScriptSpeaker(int index)
 	}
 }
 
-
+/*
 static void CG_PlayScriptSpeaker(bg_speaker_t *speaker, qboolean global)
 {
 	switch (speaker->loop)
@@ -500,14 +500,14 @@ static void CG_PlayScriptSpeaker(bg_speaker_t *speaker, qboolean global)
 			trap_S_StartSoundVControl(speaker->origin, -1, CHAN_ITEM, speaker->noise, speaker->volume);
 		}
 		break;
-	/*case S_LT_LOOPED_ON:
+	case S_LT_LOOPED_ON:
 	case S_LT_LOOPED_OFF:
 		if (speaker->soundTime == 0)
 		{
 			speaker->soundTime = trap_S_GetCurrentSoundTime();
 		}
 		trap_S_AddRealLoopingSound(speaker->origin, vec3_origin, speaker->noise, speaker->range, speaker->volume, speaker->soundTime);
-		break;*/
+		break;
 	}
 }
 
@@ -515,6 +515,11 @@ void CG_AddScriptSpeakers(void)
 {
 	int          i;
 	bg_speaker_t *speaker;
+
+	if (cg.editingSpeakers)
+	{
+		CG_RenderScriptSpeakers();
+	}
 
 	for (i = 0; i < BG_NumScriptSpeakers(); i++)
 	{
@@ -564,3 +569,4 @@ void CG_AddScriptSpeakers(void)
 		}
 	}
 }
+*/

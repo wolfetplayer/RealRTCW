@@ -186,10 +186,6 @@ void    trap_S_StartSound( vec3_t origin, int entityNum, int entchannel, sfxHand
 	syscall( CG_S_STARTSOUND, origin, entityNum, entchannel, sfx );
 }
 
-void    trap_S_StartSoundVControl( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int volume ) {
-	syscall( CG_S_STARTSOUND, origin, entityNum, entchannel, sfx, volume );
-}
-
 //----(SA)	added
 void    trap_S_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int flags ) {
 	syscall( CG_S_STARTSOUNDEX, origin, entityNum, entchannel, sfx, flags );
@@ -541,8 +537,4 @@ qboolean trap_GetModelInfo( int clientNum, char *modelName, animModelInfo_t **mo
 // New in IORTCW
 void *trap_Alloc( int size ) {
 	return (void*)syscall( CG_ALLOC, size );
-}
-
-qboolean trap_R_inPVS( const vec3_t p1, const vec3_t p2 ) {
-	return syscall( CG_R_INPVS, p1, p2 );
 }

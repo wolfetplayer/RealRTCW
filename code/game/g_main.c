@@ -1251,8 +1251,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_InitWorldSession();
 
 	trap_GetServerinfo(cs, sizeof(cs));
-	Q_strncpyz(level.mapname, Info_ValueForKey(cs, "mapname"), sizeof(level.mapname));
-	G_LogPrintf("map: %s\n", level.mapname);
+	Q_strncpyz(level.rawmapname, Info_ValueForKey(cs, "mapname"), sizeof(level.rawmapname));
+	G_LogPrintf("map: %s\n", level.rawmapname);
 
 	// initialize all entities for this game
 	memset( g_entities, 0, MAX_GENTITIES * sizeof( g_entities[0] ) );
@@ -1324,7 +1324,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	BG_ClearScriptSpeakerPool();
 
-	BG_LoadSpeakerScript(va("sound/maps/%s.sps", level.mapname));
+	BG_LoadSpeakerScript(va("sound/maps/%s.sps", level.rawmapname));
+
 
 	G_ModelIndex( SP_PODIUM_MODEL );
 

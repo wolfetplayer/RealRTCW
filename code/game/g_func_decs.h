@@ -1691,7 +1691,3 @@ extern qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params);
 extern qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params);
-extern qboolean BG_LoadSpeakerScript ( const char * filename ) ;
-extern bg_speaker_t * BG_GetScriptSpeaker ( int index ) ;
-extern int BG_NumScriptSpeakers ( void ) ;
-extern void BG_ClearScriptSpeakerPool ( void ) ;

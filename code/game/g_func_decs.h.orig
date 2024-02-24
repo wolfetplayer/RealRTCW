@@ -1679,7 +1679,3 @@ extern void AIChar_Pain ( gentity_t * ent , gentity_t * attacker , int damage , 
 extern int AIChar_GetPainLocation ( gentity_t * ent , vec3_t point ) ;
 extern void AIChar_Death ( gentity_t * ent , gentity_t * attacker , int damage , int mod ) ;
 extern void AIChar_SetBBox ( gentity_t * ent , cast_state_t * cs , qboolean useHeadTag ) ;
-extern qboolean BG_LoadSpeakerScript ( const char * filename ) ;
-extern bg_speaker_t * BG_GetScriptSpeaker ( int index ) ;
-extern int BG_NumScriptSpeakers ( void ) ;
-extern void BG_ClearScriptSpeakerPool ( void ) ;

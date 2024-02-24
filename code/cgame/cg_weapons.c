@@ -1275,6 +1275,8 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 	char filename[MAX_QPATH];
 	int i;
 
+	weaponInfo->reloadFullSound = 0;
+
 	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
 		return CG_RW_ParseError( handle, "expected '{'" );
 	}
@@ -1514,6 +1516,11 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			return CG_RW_ParseError( handle, "unknown token '%s'", token.string );
 		}
 	}
+
+    // If reloadFullSound is not set, use reloadSound
+    if (weaponInfo->reloadFullSound == 0) {
+        weaponInfo->reloadFullSound = weaponInfo->reloadSound;
+    }
 
 	return qtrue;
 }

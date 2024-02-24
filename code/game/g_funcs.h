@@ -656,9 +656,6 @@ If you have questions concerning this license or the applicable additional terms
 {"G_ScriptAction_MissionSuccess", (byte *)G_ScriptAction_MissionSuccess},
 {"G_ScriptAction_MissionFailed", (byte *)G_ScriptAction_MissionFailed},
 {"G_ScriptAction_Accum", (byte *)G_ScriptAction_Accum},
-{"G_ScriptAction_EnableSpeaker", (byte *)G_ScriptAction_EnableSpeaker},
-{"G_ScriptAction_DisableSpeaker", (byte *)G_ScriptAction_DisableSpeaker},
-{"G_ScriptAction_ToggleSpeaker", (byte *)G_ScriptAction_ToggleSpeaker},
 //1NTERRUPTOR
 { "G_ScriptAction_AccumGameTime", (byte *)G_ScriptAction_AccumGameTime },
 { "G_ScriptAction_AccumAction", (byte *)G_ScriptAction_AccumAction },

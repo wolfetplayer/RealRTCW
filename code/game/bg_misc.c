@@ -6890,7 +6890,6 @@ char *eventnames[] = {
 	"EV_THROWKNIFE",
 	"EV_COUGH",
 	"EV_QUICKGRENS",
-	"EV_ALERT_SPEAKER",
 	"EV_MAX_EVENTS"
 };
 

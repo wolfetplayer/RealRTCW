@@ -55,9 +55,6 @@ qboolean G_ScriptAction_PlaySound( gentity_t *ent, char *params );
 qboolean G_ScriptAction_PlayAnim( gentity_t *ent, char *params );
 qboolean G_ScriptAction_AlertEntity( gentity_t *ent, char *params );
 qboolean G_ScriptAction_Accum( gentity_t *ent, char *params );
-qboolean G_ScriptAction_ToggleSpeaker( gentity_t *ent, char *params );
-qboolean G_ScriptAction_DisableSpeaker( gentity_t *ent, char *params );
-qboolean G_ScriptAction_EnableSpeaker( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MissionFailed( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MissionSuccess( gentity_t *ent, char *params );
 qboolean G_ScriptAction_Print( gentity_t *ent, char *params );
@@ -118,9 +115,6 @@ g_script_stack_action_t gScriptActions[] =
 	{"trigger",                  G_ScriptAction_Trigger},
 	{"alertentity",              G_ScriptAction_AlertEntity},
 	{"accum",                    G_ScriptAction_Accum},
-	{"togglespeaker",                    G_ScriptAction_ToggleSpeaker},
-	{"disablespeaker",                   G_ScriptAction_DisableSpeaker},
-	{"enablespeaker",                    G_ScriptAction_EnableSpeaker},
 	{"missionfailed",            G_ScriptAction_MissionFailed},
 	{"missionsuccess",           G_ScriptAction_MissionSuccess},
 	{"print",                    G_ScriptAction_Print},

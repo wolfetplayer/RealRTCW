@@ -2546,17 +2546,6 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		CG_SpawnSpirit( cent );
 		break;
 
-	case EV_ALERT_SPEAKER:
-		DEBUGNAME( "EV_ALERT_SPEAKER" );
-		switch ( cent->currentState.otherEntityNum2 )
-		{
-		case 1:     CG_UnsetActiveOnScriptSpeaker( cent->currentState.otherEntityNum ); break;
-		case 2:     CG_SetActiveOnScriptSpeaker( cent->currentState.otherEntityNum );   break;
-		case 0:
-		default:    CG_ToggleActiveOnScriptSpeaker( cent->currentState.otherEntityNum );    break;
-		}
-		break;
-
 	default:
 		DEBUGNAME( "UNKNOWN" );
 		CG_Error( "Unknown event: %i", event );

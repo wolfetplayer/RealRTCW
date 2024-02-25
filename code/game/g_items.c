@@ -394,7 +394,6 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 		COM_BitSet( ent->client->ps.weapons, ammoweap );
 	case WP_TESLA:
 	case WP_FLAMETHROWER:
-	case WP_WELROD:
 	case WP_HOLYCROSS:
 		noPack = qtrue;
 		break;

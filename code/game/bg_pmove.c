@@ -2601,7 +2601,6 @@ void PM_CheckForReload( int weapon ) {
 		case WP_DYNAMITE:
 		case WP_NONE:
 	    case WP_TESLA:
-	    case WP_WELROD:
 	    case WP_DAGGER:
 	    case WP_HOLYCROSS:
 			return;
@@ -3566,6 +3565,7 @@ static void PM_Weapon( void ) {
 	case WP_SILENCER:
 	case WP_LUGER:
 	case WP_TT33:
+	case WP_HDM:
 	case WP_P38:
 	case WP_REVOLVER:
 	case WP_COLT:

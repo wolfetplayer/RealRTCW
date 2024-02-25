@@ -1776,8 +1776,8 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	}, 
 
 	{   
-		WP_WELROD,
-		WEAPON_CLASS_UNUSED,
+		WP_HDM,
+		WEAPON_CLASS_PISTOL,
 		WP_NONE,
 		WEAPON_TEAM_ALLIES,           
 		0,     
@@ -1805,7 +1805,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,               
 		0,
 		{0.0, 0.0},               
-		MOD_WELROD, 
+		MOD_HDM, 
 		0,
 		0,
 		0,
@@ -3958,7 +3958,7 @@ model="models/weapons2/m30/m30_3rd.md3"
 			{ 0,0,0,0,0 }
 	},
 
-/*QUAKED weapon_welrod (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+/*QUAKED weapon_hdm (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
 	no value:	laying in a default position on it's side (default)
 	2:			upright, barrel pointing up, slightly angled (rack mount)
@@ -3966,7 +3966,7 @@ model="models/weapons2/m30/m30_3rd.md3"
 model="models/weapons2/p38/luger.md3"
 */
 	{
-		"weapon_welrod",
+		"weapon_hdm",
 		"sound/misc/w_pkup.wav",
 		{   
 		"",
@@ -3974,14 +3974,14 @@ model="models/weapons2/p38/luger.md3"
 		"",
 		},
 
-		"icons/iconw_welrod",    
-		"welrod",              
+		"icons/iconw_hdm",    
+		"hdm",              
 		30,
 		IT_WEAPON,
-		WP_WELROD,
-		WP_WELROD,
-		WP_GARAND,
-		WP_WELROD,
+		WP_HDM,
+		WP_HDM,
+		WP_HDM,
+		WP_HDM,
 		"",                  
 		"",                 
 		{0,0,0,0}
@@ -7643,7 +7643,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_AIRSTRIKE:         return "airstrike.weap";
 		case WP_POISONGAS:         return "poisongas.weap";
 		case WP_M30:               return "m30.weap";
-		case WP_WELROD:            return "welrod.weap";
+		case WP_HDM:               return "hdm.weap";
 		case WP_HOLYCROSS:         return "cross.weap";
 		case WP_DELISLE:           return "delisle.weap";
 		case WP_DELISLESCOPE:      return "delislescope.weap";

@@ -533,7 +533,8 @@ typedef enum {
 	WP_POISONGAS,
 	// Misc Alt modes
 	WP_FG42SCOPE,   
-	WP_AKIMBO,     
+	WP_AKIMBO,
+	WP_DUAL_TT33,     
 	WP_M7,
 	WP_M1941SCOPE,
 
@@ -624,7 +625,7 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
 		weapon == WP_BROWNING || weapon == WP_P38 || weapon == WP_DELISLE ||  \
         weapon == WP_DELISLESCOPE || weapon == WP_M1941 || weapon == WP_AUTO5 || \
-		weapon == WP_HDM || weapon == WP_M1941SCOPE \
+		weapon == WP_HDM || weapon == WP_M1941SCOPE ||  weapon == WP_DUAL_TT33  \
 	)
 
  // entityState_t->event values
@@ -1111,7 +1112,8 @@ typedef enum {
 	MOD_GARAND,
 	MOD_SNOOPERSCOPE,
 	MOD_SILENCER,   
-	MOD_AKIMBO,     
+	MOD_AKIMBO,
+	MOD_DUAL_TT33,     
 	MOD_FG42,
 	MOD_FG42SCOPE,
 	MOD_PANZERFAUST,

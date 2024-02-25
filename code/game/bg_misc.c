@@ -295,7 +295,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{   
 		WP_TT33,
 		WEAPON_CLASS_PISTOL,
-		WP_NONE,
+		WP_DUAL_TT33,
 		WEAPON_TEAM_SOVIET,             
 		0,     
 		0,       
@@ -1580,6 +1580,45 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
     }, 
 
 	{   
+		WP_DUAL_TT33,
+		WEAPON_CLASS_AKIMBO,
+		WP_TT33,
+		WEAPON_TEAM_SOVIET,           
+		0,         
+		0,       
+		0,        
+		0,        
+		0, 
+		0,      
+		0,       
+		0,       
+		0,      
+		0,      
+		0,       
+		0,          
+		0,          
+		0,          
+		0,        
+		0,                 
+		0.0f,            
+		0,              
+		{.0f, .0f},      
+		{0,0},              
+		0,                
+		0.0,               
+		0,               
+		0,  
+		{0.0, 0.0},             
+		MOD_DUAL_TT33,    
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,                                
+    }, 
+
+	{   
 		WP_M7,
 		WEAPON_CLASS_RIFLENADE,
 		WP_M1GARAND,
@@ -2061,7 +2100,7 @@ int reloadableWeapons[] = {
 	WP_MAUSER,      WP_SNIPERRIFLE, WP_SNOOPERSCOPE,    WP_MOSIN,               WP_M1GARAND,            WP_G43,
 	WP_MP44,        WP_BAR,         WP_M97,             WP_FG42SCOPE,           WP_BROWNING,            WP_VENOM,
 	WP_P38,         WP_M30,         WP_DELISLE,         WP_DELISLESCOPE,        WP_TESLA,               WP_M1941,
-	WP_AUTO5,       WP_M1941SCOPE,  -1
+	WP_AUTO5,       WP_M1941SCOPE,  WP_DUAL_TT33, -1
 };
 
 // new (10/18/00)
@@ -3062,6 +3101,32 @@ dual colts
 		WP_AKIMBO,
 		WP_COLT,
 		WP_AKIMBO,
+		"",                     
+		"",                     
+		{0,0,0,0,0}
+	},
+
+
+/*weapon_akimbo
+dual TT33
+*/
+	{
+		"weapon_dualtt33",
+		"sound/misc/w_pkup.wav",
+		{   
+		"",
+		"",
+		""
+		},
+
+		"icons/iconw_tt33",    
+		"Dual TT33",            
+		50,
+		IT_WEAPON,
+		WP_DUAL_TT33,
+		WP_DUAL_TT33,
+		WP_TT33,
+		WP_DUAL_TT33,
 		"",                     
 		"",                     
 		{0,0,0,0,0}
@@ -5631,7 +5696,7 @@ BG_AkimboFireSequence
 qboolean BG_AkimboFireSequence( int weapon, int akimboClip, int coltClip ) {
 	// NOTE: this doesn't work when clips are turned off (dmflags 64)
 
-	if ( weapon != WP_AKIMBO ) {
+	if ( weapon != WP_AKIMBO && weapon != WP_DUAL_TT33 ) {
 		return qfalse;
 	}
 
@@ -5941,7 +6006,7 @@ qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
 					}
 					ammoAdded = qtrue;
 
-					if ( weapon == WP_AKIMBO ) {
+					if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33  ) {
 						weapNumOfClips = numOfClips * 2; // double clips babeh!
 					} else {
 						weapNumOfClips = numOfClips;
@@ -7675,6 +7740,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_COLT:              return "colt.weap";
 		case WP_AKIMBO:            return "akimbo.weap";
 		case WP_TT33:              return "tt33.weap";
+		case WP_DUAL_TT33:         return "dualtt33.weap";
 		case WP_P38:               return "p38.weap";
 		case WP_REVOLVER:          return "revolver.weap";
 		case WP_THOMPSON:          return "thompson.weap";

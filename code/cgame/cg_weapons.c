@@ -2776,7 +2776,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	centity_t   *nonPredictedCent;
 	qboolean firing;    // Ridah
 
-	qboolean akimboFire = qfalse;       //----(SA)	added
+	qboolean akimboFire_colt = qfalse;       //----(SA)	added
+    qboolean akimboFire_tt33 = qfalse;       
 
 	qboolean playerScaled;
 	qboolean drawpart, drawrealweap;
@@ -2823,9 +2824,11 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 
 	if ( isPlayer ) {
-		akimboFire = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_AKIMBO], cg.predictedPlayerState.ammoclip[WP_COLT] );
+		akimboFire_colt = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_AKIMBO], cg.predictedPlayerState.ammoclip[WP_COLT] );
+        akimboFire_tt33 = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_DUAL_TT33], cg.predictedPlayerState.ammoclip[WP_TT33] );
 	} else if ( ps ) {
-		akimboFire = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_AKIMBO], ps->ammoclip[WP_AKIMBO] );
+		akimboFire_colt = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_AKIMBO], ps->ammoclip[WP_AKIMBO] );
+        akimboFire_tt33 = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_DUAL_TT33], ps->ammoclip[WP_DUAL_TT33] );
 	}
 
 	// add the weapon
@@ -2938,7 +2941,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 		// opposite tag in akimbo, since at this point the weapon
 		// has fired and the fire seq has switched over
-		if ( weaponNum == WP_AKIMBO && akimboFire ) {
+		if ( (weaponNum == WP_AKIMBO  && akimboFire_colt) || (weaponNum == WP_DUAL_TT33  && akimboFire_tt33)) {
 			CG_PositionRotatedEntityOnTag( &brass, &gun, "tag_brass2" );
 		} else {
 			CG_PositionRotatedEntityOnTag( &brass, &gun, "tag_brass" );
@@ -3115,7 +3118,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	angles[ROLL]    = crandom() * 10;
 	AnglesToAxis( angles, flash.axis );
 
-	if ( weaponNum == WP_AKIMBO )
+	if ( weaponNum == WP_AKIMBO || weaponNum == WP_DUAL_TT33 )
 	{
 		if (!ps || cg.renderingThirdPerson)
 		{
@@ -4230,6 +4233,12 @@ void CG_AltWeapon_f( void ) {
 		case WP_COLT:
 			weapBanks[2][1] = WP_AKIMBO;
 			break;
+		case WP_DUAL_TT33:
+			weapBanks[2][2] = WP_TT33;
+			break;
+		case WP_TT33:
+			weapBanks[2][2] = WP_DUAL_TT33;
+			break;
 		case WP_MAUSER:
 		case WP_GARAND:
 		case WP_FG42:
@@ -4289,6 +4298,9 @@ void CG_NextWeap( qboolean switchBanks ) {
 		break;
 	case WP_AKIMBO:
 		curweap = num = WP_COLT;
+		break;
+	case WP_DUAL_TT33:
+		curweap = num = WP_TT33;
 		break;
 	}
 
@@ -4432,6 +4444,9 @@ void CG_PrevWeap( qboolean switchBanks ) {
 		break;
 	case WP_AKIMBO:
 		curweap = num = WP_COLT;
+		break;
+	case WP_DUAL_TT33:
+		curweap = num = WP_TT33;
 		break;
 	}
 
@@ -5044,6 +5059,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_COLT:
 	case WP_TT33:
 	case WP_AKIMBO:
+	case WP_DUAL_TT33:
 	case WP_P38: 
 	   yawRandom = 0.5;
 	   pitchRecoilAdd = 2;
@@ -5555,6 +5571,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 
 	case WP_LUGER:
 	case WP_AKIMBO: 
+	case WP_DUAL_TT33:
 	case WP_COLT:
 	case WP_MAUSER:
 	case WP_DELISLE:

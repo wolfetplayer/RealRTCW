@@ -547,6 +547,12 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
+		if ( weapon == WP_TT33 ) {
+		if ( COM_BitCheck( other->client->ps.weapons, WP_TT33 ) ) {
+			weapon = WP_DUAL_TT33;
+		}
+	}
+
 
 		if ( ent->item->giTag == WP_KNIFE ){
 		if ( other->client->ps.ammoclip[ent->item->giTag] < ammoTable[WP_KNIFE].maxammo  ){

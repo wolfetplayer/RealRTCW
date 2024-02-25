@@ -2551,6 +2551,10 @@ static void PM_ReloadClip( int weapon ) {
 	if ( weapon == WP_AKIMBO ) { // reload colt too
 		PM_ReloadClip( WP_COLT );
 	}
+
+    if ( weapon == WP_DUAL_TT33 ) { // reload colt too
+		PM_ReloadClip( WP_TT33 );
+	}
 }
 
 /*
@@ -2675,19 +2679,42 @@ void PM_CheckForReload( int weapon ) {
 						doReload = qtrue;
 					}
 				}
+
+					if ( weapon == WP_DUAL_TT33 ) {
+					// akimbo should also check Colt status
+					if ( pm->ps->ammoclip[BG_FindClipForWeapon( WP_TT33 )] < ammoTable[BG_FindClipForWeapon( WP_TT33 )].maxclip ) {
+						doReload = qtrue;
+					}
+				}
 			}
 		} else if ( autoreload ) {
 		// clip is empty, but you have reserves.  (auto reload)
 		if ( !( pm->ps->ammoclip[clipWeap] ) ) {    // clip is empty...
-			if ( pm->ps->ammo[ammoWeap] ) {         // and you have reserves
+			if ( pm->ps->ammo[ammoWeap] ) {    
+				
+				
+				
+			    // and you have reserves
 				if ( weapon == WP_AKIMBO ) {    // if colt's got ammo, don't force reload yet (you know you've got it 'out' since you've got the akimbo selected
 					if ( !( pm->ps->ammoclip[WP_COLT] ) ) {
 						doReload = qtrue;
 					}
 					// likewise.  however, you need to check if you've got the akimbo selected, since you could have the colt alone
+				} else if ( weapon == WP_DUAL_TT33 ) {   
+					if ( !( pm->ps->ammoclip[WP_TT33] ) ) {
+						doReload = qtrue;
+					}
 				} else if ( weapon == WP_COLT ) {   // weapon checking for reload is colt...
 					if ( pm->ps->weapon == WP_AKIMBO ) {    // you've got the akimbo selected...
 						if ( !( pm->ps->ammoclip[WP_AKIMBO] ) ) {   // and it's got no ammo either
+							doReload = qtrue;       // so reload
+						}
+					} else {     // single colt selected
+						doReload = qtrue;       // so reload
+					}
+				} else if ( weapon == WP_TT33 ) {   // weapon checking for reload is colt...
+					if ( pm->ps->weapon == WP_DUAL_TT33 ) {    // you've got the akimbo selected...
+						if ( !( pm->ps->ammoclip[WP_DUAL_TT33] ) ) {   // and it's got no ammo either
 							doReload = qtrue;       // so reload
 						}
 					} else {     // single colt selected
@@ -2776,6 +2803,10 @@ void PM_WeaponUseAmmo( int wp, int amount ) {
 			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
 				takeweapon = WP_COLT;
 			}
+		} else if ( wp == WP_DUAL_TT33 ) {
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
+				takeweapon = WP_TT33;
+			}
 		}
 
 		pm->ps->ammoclip[takeweapon] -= amount;
@@ -2799,6 +2830,10 @@ int PM_WeaponAmmoAvailable( int wp ) {
 		if ( wp == WP_AKIMBO ) {
 			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
 				takeweapon = WP_COLT;
+			}
+		} else if ( wp == WP_DUAL_TT33 ) {
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
+				takeweapon = WP_TT33;
 			}
 		}
 
@@ -3163,7 +3198,8 @@ static void PM_Weapon( void ) {
 	int addTime  = GetWeaponTableData(pm->ps->weapon)->nextShotTime;
 	int aimSpreadScaleAdd = GetWeaponTableData(pm->ps->weapon)->aimSpreadScaleAdd;
 	int weapattackanim;
-	qboolean akimboFire;
+	qboolean akimboFire_colt;
+	qboolean akimboFire_tt33;
 	qboolean gameReloading;
 
 	// don't allow attack until all buttons are up
@@ -3199,7 +3235,8 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-	akimboFire = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] );
+	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] );
+	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] );
 
 	if ( 0 ) {
 		switch ( pm->ps->weaponstate ) {
@@ -3572,7 +3609,8 @@ static void PM_Weapon( void ) {
 	case WP_P38:
 	case WP_REVOLVER:
 	case WP_COLT:
-	case WP_AKIMBO:         
+	case WP_AKIMBO:
+	case WP_DUAL_TT33:         
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_MAUSER:
@@ -3750,7 +3788,13 @@ static void PM_Weapon( void ) {
 	// if this was the last round in the clip, play the 'lastshot' animation
 	// this animation has the weapon in a "ready to reload" state
 	if ( pm->ps->weapon == WP_AKIMBO ) {
-		if ( akimboFire ) {
+		if ( akimboFire_colt ) {
+			weapattackanim = WEAP_ATTACK1;      // attack1 is right hand
+		} else {
+			weapattackanim = WEAP_ATTACK2;      // attack2 is left hand
+		}
+	} else if ( pm->ps->weapon == WP_DUAL_TT33 ) {
+		if ( akimboFire_tt33 ) {
 			weapattackanim = WEAP_ATTACK1;      // attack1 is right hand
 		} else {
 			weapattackanim = WEAP_ATTACK2;      // attack2 is left hand
@@ -3815,7 +3859,13 @@ static void PM_Weapon( void ) {
 
 
 	if ( pm->ps->weapon == WP_AKIMBO ) {
-		if ( pm->ps->weapon == WP_AKIMBO && !akimboFire ) {
+		if ( pm->ps->weapon == WP_AKIMBO && !akimboFire_colt ) {
+			PM_AddEvent( EV_FIRE_WEAPONB );     // really firing colt
+		} else {
+			PM_AddEvent( EV_FIRE_WEAPON );
+		}
+	} else if ( pm->ps->weapon == WP_DUAL_TT33 ) {
+		if ( pm->ps->weapon == WP_DUAL_TT33 && !akimboFire_tt33 ) {
 			PM_AddEvent( EV_FIRE_WEAPONB );     // really firing colt
 		} else {
 			PM_AddEvent( EV_FIRE_WEAPON );
@@ -3872,7 +3922,15 @@ static void PM_Weapon( void ) {
 	    case WP_AKIMBO:
 		    addTime = ammoTable[pm->ps->weapon].nextShotTime;
 		       if ( !pm->ps->ammoclip[WP_AKIMBO] || !pm->ps->ammoclip[WP_COLT] ) {
-			       if ( ( !pm->ps->ammoclip[WP_AKIMBO] && !akimboFire ) || ( !pm->ps->ammoclip[WP_COLT] && akimboFire ) ) {
+			       if ( ( !pm->ps->ammoclip[WP_AKIMBO] && !akimboFire_colt ) || ( !pm->ps->ammoclip[WP_COLT] && akimboFire_colt ) ) {
+				        addTime = 2 * ammoTable[pm->ps->weapon].nextShotTime;
+			       }
+		       }
+		break;
+	    case WP_DUAL_TT33:
+		    addTime = ammoTable[pm->ps->weapon].nextShotTime;
+		       if ( !pm->ps->ammoclip[WP_DUAL_TT33] || !pm->ps->ammoclip[WP_TT33] ) {
+			       if ( ( !pm->ps->ammoclip[WP_DUAL_TT33] && !akimboFire_tt33 ) || ( !pm->ps->ammoclip[WP_TT33] && akimboFire_tt33 ) ) {
 				        addTime = 2 * ammoTable[pm->ps->weapon].nextShotTime;
 			       }
 		       }

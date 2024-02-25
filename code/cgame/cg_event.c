@@ -219,6 +219,12 @@ static void CG_ItemPickup( int itemNum ) {
 			}
 		}
 
+		if ( weapon == WP_TT33 ) {
+			if ( COM_BitCheck( cg.snap->ps.weapons, weapon ) ) {
+				weapon = WP_DUAL_TT33; // you have TT33, now get DUAL TT33(second)
+			}
+		}
+
 		if ( cg_autoswitch.integer && cg.predictedPlayerState.weaponstate != WEAPON_RELOADING ) {
 
 			//	0 - "Off"

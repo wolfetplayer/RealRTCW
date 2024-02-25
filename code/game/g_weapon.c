@@ -1574,6 +1574,7 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 		VectorMA( muzzlePoint, 20, right, muzzlePoint );
 		break;
 	case WP_AKIMBO:     // left side rather than right
+	case WP_DUAL_TT33:
 		VectorMA( muzzlePoint, -6, right, muzzlePoint );
 		VectorMA( muzzlePoint, -4, up, muzzlePoint );
 		break;
@@ -1685,6 +1686,7 @@ void FireWeapon( gentity_t *ent ) {
 			case WP_SILENCER:
 			case WP_COLT:
 			case WP_AKIMBO:
+			case WP_DUAL_TT33:
 				aimSpreadScale += 0.4f;
 				break;
 
@@ -1801,6 +1803,7 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, MP34_SPREAD * aimSpreadScale, MP34_DAMAGE(isPlayer)  );
 		break;
 	case WP_TT33:
+	case WP_DUAL_TT33:
 		Bullet_Fire( ent, TT33_SPREAD * aimSpreadScale, TT33_DAMAGE(isPlayer)  );
 		break;
 	case WP_P38:

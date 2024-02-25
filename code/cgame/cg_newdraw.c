@@ -529,6 +529,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 		return;
 
 	case WP_AKIMBO:
+	case WP_DUAL_TT33:
 		special = qtrue;
 		break;
 

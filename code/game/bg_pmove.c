@@ -2439,6 +2439,7 @@ static void PM_FinishWeaponChange( void ) {
 	case WP_SNIPERRIFLE:
 	case WP_FG42SCOPE:
 	case WP_DELISLESCOPE:
+	case WP_M1941SCOPE:
 		pm->ps->aimSpreadScale = 255;               // initially at lowest accuracy
 		pm->ps->aimSpreadScaleFloat = 255.0f;       // initially at lowest accuracy
 
@@ -2643,6 +2644,7 @@ void PM_CheckForReload( int weapon ) {
 		case WP_SNIPERRIFLE:
 		case WP_FG42SCOPE:
 		case WP_DELISLESCOPE:
+	    case WP_M1941SCOPE:
             if ( reloadRequested && pm->ps->ammo[ammoWeap] ) {
 			if ( pm->ps->ammoclip[clipWeap] < ammoTable[weapon].maxclip ) {
 			PM_BeginWeaponChange( weapon, ammoTable[weapon].weapAlts, !( pm->ps->ammo[ammoWeap] ) ? qfalse : qtrue );
@@ -2910,6 +2912,7 @@ void PM_AdjustAimSpreadScale( void ) {
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
 		case WP_DELISLESCOPE:
+		case WP_M1941SCOPE:
 		//case WP_M1GARAND: //haha no plz
 			for ( i = 0; i < 2; i++ )
 				viewchange += fabs( pm->ps->velocity[i] );
@@ -3581,6 +3584,7 @@ static void PM_Weapon( void ) {
 	case WP_GARAND:
     case WP_M7:
 	case WP_M1941:
+	case WP_M1941SCOPE:
 		if ( !weaponstateFiring ) {
 			// NERVE's panzerfaust spinup
 //			if (pm->ps->weapon == WP_PANZERFAUST)
@@ -3693,6 +3697,7 @@ static void PM_Weapon( void ) {
 			case WP_SNIPERRIFLE:
 			case WP_FG42SCOPE:
 			case WP_DELISLESCOPE:
+			case WP_M1941SCOPE:
 				reloadingW = qfalse;
 				break;
 			}
@@ -4602,7 +4607,7 @@ void PmoveSingle( pmove_t *pmove ) {
 
 	if ( pm->cmd.wbuttons & WBUTTON_ZOOM ) {
 		if ( pm->ps->stats[STAT_KEYS] & ( 1 << INV_BINOCS ) ) {        // (SA) binoculars are an inventory item (inventory==keys)
-			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE && pm->ps->weapon != WP_DELISLESCOPE ) {   // don't allow binocs if using scope
+			if ( pm->ps->weapon != WP_SNIPERRIFLE && pm->ps->weapon != WP_SNOOPERSCOPE && pm->ps->weapon != WP_FG42SCOPE && pm->ps->weapon != WP_DELISLESCOPE && pm->ps->weapon != WP_M1941SCOPE ) {   // don't allow binocs if using scope
 				if ( !( pm->ps->eFlags & EF_MG42_ACTIVE ) ) {    // or if mounted on a weapon
 					pm->ps->eFlags |= EF_ZOOMING;
 				}

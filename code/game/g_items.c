@@ -583,9 +583,10 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
 	} else if ( weapon == WP_DELISLESCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_DELISLE );
+	} else if ( weapon == WP_M1941SCOPE ) {
+		COM_BitSet( other->client->ps.weapons, WP_M1941 );
 	}
-
-
+	
 	Add_Ammo( other, weapon, quantity, !alreadyHave );
 
 

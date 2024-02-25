@@ -534,8 +534,9 @@ typedef enum {
 	// Misc Alt modes
 	WP_FG42SCOPE,   
 	WP_AKIMBO,     
-	WP_M7,      
-	// Currently inactive Gothicstein weapons expect for HDM                                 
+	WP_M7,
+	WP_M1941SCOPE,
+
 	WP_P38,                 
 	WP_M30,                
 	WP_DELISLE,            
@@ -623,7 +624,7 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
 		weapon == WP_BROWNING || weapon == WP_P38 || weapon == WP_DELISLE ||  \
         weapon == WP_DELISLESCOPE || weapon == WP_M1941 || weapon == WP_AUTO5 || \
-		weapon == WP_HDM \
+		weapon == WP_HDM || weapon == WP_M1941SCOPE \
 	)
 
  // entityState_t->event values
@@ -1128,6 +1129,7 @@ typedef enum {
 	MOD_MOSIN,
 	MOD_G43,
 	MOD_M1941,
+	MOD_M1941SCOPE,
 	MOD_M1GARAND,
 	MOD_M7,
 	MOD_BAR,

@@ -172,6 +172,7 @@ static int weapIconDrawSize( int weap ) {
 	case WP_MOSIN:
 	case WP_DELISLE:
 	case WP_DELISLESCOPE:
+	case WP_M1941SCOPE:
 	case WP_G43:
 	case WP_M1GARAND:
 	case WP_BAR:
@@ -1422,6 +1423,12 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 		}
 	}
 
+	if ( flags & CG_SHOW_NOT_V_SNIPER ) {     // if looking through sniper scope
+		if ( cg.weaponSelect == WP_M1941SCOPE ) {
+			return qfalse;
+		}
+	}
+
 	if ( flags & CG_SHOW_NOT_V_SNOOPER ) {        // if looking through snooper scope
 		if ( cg.weaponSelect == WP_SNOOPERSCOPE ) {
 			return qfalse;
@@ -1476,7 +1483,7 @@ qboolean CG_OwnerDrawVisible( int flags ) {
 //----(SA)	added
 	if ( flags & CG_SHOW_NOT_V_CLEAR ) {
 		// if /not/ looking through binocs,snooper or sniper
-		if ( !cg.zoomedBinoc && !( cg.weaponSelect == WP_SNIPERRIFLE ) && !( cg.weaponSelect == WP_SNOOPERSCOPE ) && !( cg.weaponSelect == WP_FG42SCOPE ) && !( cg.weaponSelect == WP_DELISLESCOPE ) ) {
+		if ( !cg.zoomedBinoc && !( cg.weaponSelect == WP_SNIPERRIFLE ) && !( cg.weaponSelect == WP_SNOOPERSCOPE ) && !( cg.weaponSelect == WP_FG42SCOPE ) && !( cg.weaponSelect == WP_DELISLESCOPE ) && !( cg.weaponSelect == WP_M1941SCOPE ) ) {
 			return qfalse;
 		}
 	}
@@ -1900,7 +1907,7 @@ void CG_DrawWeapStability( rectDef_t *rect, vec4_t color, int align ) {
 		return;
 	}
 
-	if ( cg_drawSpreadScale.integer == 1 && !( cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE || cg.weaponSelect == WP_FG42SCOPE || cg.weaponSelect == WP_DELISLESCOPE ) ) {
+	if ( cg_drawSpreadScale.integer == 1 && !( cg.weaponSelect == WP_SNOOPERSCOPE || cg.weaponSelect == WP_SNIPERRIFLE || cg.weaponSelect == WP_FG42SCOPE || cg.weaponSelect == WP_DELISLESCOPE || cg.weaponSelect == WP_M1941SCOPE ) ) {
 		// cg_drawSpreadScale of '1' means only draw for scoped weapons, '2' means draw all the time (for debugging)
 		return;
 	}

@@ -1912,6 +1912,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		case WP_TESLA:
 		case WP_MAUSER:
 		case WP_DELISLE:
+		case WP_M1941:
 		case WP_M1GARAND:
 		case WP_M7:
 		case WP_HOLYCROSS:
@@ -2804,8 +2805,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	// don't draw weapon stuff when looking through a scope
-	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE || weaponNum == WP_DELISLESCOPE ||
-		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE || weapSelect == WP_DELISLESCOPE ) {
+	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE || weaponNum == WP_DELISLESCOPE || weaponNum == WP_M1941SCOPE ||
+		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE || weapSelect == WP_DELISLESCOPE || weapSelect == WP_M1941SCOPE ) {
 		if ( isPlayer && !cg.renderingThirdPerson ) {
 			return;
 		}
@@ -3054,7 +3055,20 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_DELISLESCOPE ) ) {
 				barrel.hModel = weapon->modModels[0];
 				if ( barrel.hModel ) {
-					CG_PositionEntityOnTag( &barrel, &gun, "tag_scope", 0, NULL );
+					CG_PositionEntityOnTag(&barrel, parent, "tag_scope", 0, NULL);
+					CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
+				}
+			}
+		}
+	}
+
+	
+		if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
+		if ( weaponNum == WP_M1941) {
+			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_M1941SCOPE ) ) {
+				barrel.hModel = weapon->modModels[0];
+				if ( barrel.hModel ) {
+					CG_PositionEntityOnTag(&barrel, parent, "tag_scope", 0, NULL);
 					CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
 				}
 			}
@@ -3710,6 +3724,11 @@ static qboolean CG_WeaponSelectable( int i ) {
 			return qtrue;
 		}
 		break;
+	case WP_M1941SCOPE:
+		if ( i == WP_M1941 ) {
+			return qtrue;
+		}
+		break;
 	case WP_FG42SCOPE:
 		if ( i == WP_FG42 ) {
 			return qtrue;
@@ -4006,6 +4025,10 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 //			cg.zoomedScope	= 1;	// TODO: add to zoomTable
 //			cg.zoomTime		= cg.time;
 		break;
+	case WP_M1941SCOPE:
+//			cg.zoomedScope	= 1;	// TODO: add to zoomTable
+//			cg.zoomTime		= cg.time;
+		break;
 	}
 
 	switch ( newweap ) {
@@ -4019,6 +4042,11 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 		zoomindex = ZOOM_SNIPER;
 		break;
 	case WP_DELISLESCOPE:
+		cg.zoomval = cg_zoomDefaultSniper.value;
+		cg.zoomedScope  = 700;      // TODO: add to zoomTable
+		zoomindex = ZOOM_SNIPER;
+		break;
+	case WP_M1941SCOPE:
 		cg.zoomval = cg_zoomDefaultSniper.value;
 		cg.zoomedScope  = 700;      // TODO: add to zoomTable
 		zoomindex = ZOOM_SNIPER;
@@ -4120,6 +4148,7 @@ void CG_FinishWeaponChange( int lastweap, int newweap ) {
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
 		case WP_DELISLESCOPE:
+		case WP_M1941SCOPE:
 			break;
 		default:
 			cg.switchbackWeapon = lastweap;
@@ -4205,6 +4234,7 @@ void CG_AltWeapon_f( void ) {
 		case WP_GARAND:
 		case WP_FG42:
 		case WP_DELISLE:
+		case WP_M1941:
 		    if ( spd > 180.0f ) 
 			{
 				return;
@@ -5038,6 +5068,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_DELISLESCOPE:
+	case WP_M1941SCOPE:
 		pitchAdd = 0.8;
 	break;
 	case WP_MP40:
@@ -5528,6 +5559,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_MAUSER:
 	case WP_DELISLE:
 	case WP_DELISLESCOPE:
+	case WP_M1941SCOPE:
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
@@ -5656,7 +5688,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		// enough to see it, this way we can leave other marks around a lot
 		// longer, since most of the time we can't actually see the bullet holes
 // (SA) small modification.  only do this for non-rifles (so you can see your shots hitting when you're zooming with a rifle scope)
-		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_DELISLESCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
+		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_DELISLESCOPE || weapon == WP_M1941SCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
 
 			if ( clientNum ) {
 

@@ -539,8 +539,7 @@ typedef enum {
 	WP_M1941SCOPE,
              
 	WP_M30,                
-	WP_DELISLE,            
-	WP_DELISLESCOPE, 	   
+	WP_DELISLE,             
 	WP_HDM,             	
 	WP_HOLYCROSS,           
     // Misc stuff, not actual weapons
@@ -623,7 +622,7 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
 		weapon == WP_BROWNING ||  weapon == WP_DELISLE ||  \
-        weapon == WP_DELISLESCOPE || weapon == WP_M1941 || weapon == WP_AUTO5 || \
+        weapon == WP_M1941 || weapon == WP_AUTO5 || \
 		weapon == WP_HDM || weapon == WP_M1941SCOPE ||  weapon == WP_DUAL_TT33  \
 	)
 
@@ -1107,7 +1106,6 @@ typedef enum {
 	MOD_MAUSER,
 	MOD_SNIPERRIFLE,
 	MOD_DELISLE,
-	MOD_DELISLESCOPE,
 	MOD_GARAND,
 	MOD_SNOOPERSCOPE,
 	MOD_SILENCER,   

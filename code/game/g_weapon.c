@@ -597,9 +597,6 @@ float G_GetWeaponSpread( int weapon ) {
 #define DELISLE_SPREAD   G_GetWeaponSpread( WP_DELISLE )
 #define DELISLE_DAMAGE(e)   G_GetWeaponDamage( WP_DELISLE, e ) 
 
-#define DELISLESCOPE_SPREAD   G_GetWeaponSpread( WP_DELISLESCOPE )
-#define DELISLESCOPE_DAMAGE(e)   G_GetWeaponDamage( WP_DELISLESCOPE, e ) 
-
 #define GARAND_SPREAD   G_GetWeaponSpread( WP_GARAND )
 #define GARAND_DAMAGE(e)   G_GetWeaponDamage( WP_GARAND, e ) 
 
@@ -672,7 +669,7 @@ void Bullet_Endpos( gentity_t *ent, float spread, vec3_t *end ) {
 		r += crandom() * accuracy;
 		u += crandom() * ( accuracy * 1.25 );
 	} else {
-		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE || ent->s.weapon == WP_DELISLESCOPE  ) {
+		if ( ent->s.weapon == WP_SNOOPERSCOPE || ent->s.weapon == WP_SNIPERRIFLE || ent->s.weapon == WP_FG42SCOPE  ) {
 			dist *= 2;
 			randSpread = qfalse;
 		}
@@ -1618,7 +1615,7 @@ void CalcMuzzlePoints( gentity_t *ent, int weapon ) {
 	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {   // non ai's take into account scoped weapon 'sway' (just another way aimspread is visualized/utilized)
 		float spreadfrac, phase;
 
-		if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE || weapon == WP_DELISLESCOPE || weapon == WP_M1941SCOPE ) {
+		if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE || weapon == WP_M1941SCOPE ) {
 			spreadfrac = ent->client->currentAimSpreadScale;
 
 			// rotate 'forward' vector by the sway
@@ -1763,16 +1760,6 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	case WP_DELISLE:
 		Bullet_Fire( ent, DELISLE_SPREAD * aimSpreadScale, DELISLE_DAMAGE(isPlayer) );
-		break;
-	case WP_DELISLESCOPE:
-		Bullet_Fire( ent, DELISLESCOPE_SPREAD * aimSpreadScale, DELISLESCOPE_DAMAGE(isPlayer) );
-		if ( !ent->aiCharacter ) {
-			VectorCopy( ent->client->ps.viewangles,viewang );
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
-			ent->client->sniperRifleMuzzlePitch = 0.8f;
-			ent->client->sniperRifleFiredTime = level.time;
-			SetClientViewAngle( ent,viewang );
-		}
 		break;
 	case WP_GARAND:
 		Bullet_Fire( ent, GARAND_SPREAD * aimSpreadScale, GARAND_DAMAGE(isPlayer) );

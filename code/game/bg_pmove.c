@@ -3606,7 +3606,6 @@ static void PM_Weapon( void ) {
 	case WP_LUGER:
 	case WP_TT33:
 	case WP_HDM:
-	case WP_P38:
 	case WP_REVOLVER:
 	case WP_COLT:
 	case WP_AKIMBO:

@@ -58,7 +58,7 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0,            0            },  //	0 (empty)
 	{WP_KNIFE,              WP_DAGGER,              WP_HOLYCROSS, 0,               0,            0            },  //	1
-	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_HDM,    WP_P38       },  //	2
+	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_HDM,       0            },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     WP_DELISLE,      0,            0            },  //	4
     {WP_G43,                WP_M1GARAND,            WP_M1941,     0,               0,            0            },  //	5
@@ -5060,7 +5060,6 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_TT33:
 	case WP_AKIMBO:
 	case WP_DUAL_TT33:
-	case WP_P38: 
 	   yawRandom = 0.5;
 	   pitchRecoilAdd = 2;
 	   pitchAdd = 1;
@@ -5583,7 +5582,6 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_MP40:
 	case WP_MP34:
 	case WP_TT33:
-	case WP_P38:
 	case WP_HDM:
 	case WP_PPSH:
 	case WP_MOSIN:

@@ -553,6 +553,7 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 		break;
 
 	case WP_DELISLE:
+	case WP_DELISLESCOPE:
 		return 5000;
 		break;
 	case WP_VENOM:
@@ -1582,6 +1583,7 @@ qboolean AICast_CanMoveWhileFiringWeapon(int weaponnum ) {
 	switch ( weaponnum ) {
 	case WP_MAUSER:
 	case WP_DELISLE:
+	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
 	case WP_MOSIN:
 	case WP_GARAND:
@@ -1930,7 +1932,7 @@ float AICast_GetAccuracy( int entnum ) {
 	// the more they stay in our sights, the more accurate we get
     
 	// RealRTCW - extra accuracy for guys with bolt action rifles
-	if (cs->weaponNum == WP_MAUSER || cs->weaponNum == WP_SNIPERRIFLE || cs->weaponNum == WP_DELISLE || cs->weaponNum == WP_M1941SCOPE || cs->weaponNum == WP_GARAND || cs->weaponNum == WP_SNOOPERSCOPE || cs->weaponNum == WP_MOSIN ) {
+	if (cs->weaponNum == WP_MAUSER || cs->weaponNum == WP_SNIPERRIFLE || cs->weaponNum == WP_DELISLE || cs->weaponNum == WP_DELISLESCOPE || cs->weaponNum == WP_M1941SCOPE || cs->weaponNum == WP_GARAND || cs->weaponNum == WP_SNOOPERSCOPE || cs->weaponNum == WP_MOSIN ) {
 		acc = cs->attributes[AIM_ACCURACY] + 0.2;
 	    } else {
 	    acc = cs->attributes[AIM_ACCURACY];

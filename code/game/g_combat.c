@@ -592,6 +592,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 		// ai's are always allowed headshots from these weapons
 		   if ( mod == MOD_SNIPERRIFLE ||
 			    mod == MOD_SNOOPERSCOPE ||
+			    mod == MOD_DELISLESCOPE ||
 				mod == MOD_M1941SCOPE ||
 			    mod == MOD_MAUSER ) {
 			    return qtrue;

@@ -689,6 +689,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 					if ( ent->s.weapon != WP_SNIPERRIFLE &&
 						 ent->s.weapon != WP_SNOOPERSCOPE &&
 						 ent->s.weapon != WP_FG42SCOPE &&
+						 ent->s.weapon != WP_DELISLESCOPE &&
 						 ent->s.weapon != WP_M1941SCOPE ) 
 						{
 						if ( traceEnt->takedamage ) {

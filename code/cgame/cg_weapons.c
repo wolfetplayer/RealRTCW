@@ -2806,8 +2806,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	// don't draw weapon stuff when looking through a scope
-	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE  || weaponNum == WP_M1941SCOPE ||
-		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE || weapSelect == WP_M1941SCOPE ) {
+	if ( weaponNum == WP_SNOOPERSCOPE || weaponNum == WP_SNIPERRIFLE || weaponNum == WP_FG42SCOPE || weaponNum == WP_DELISLESCOPE || weaponNum == WP_M1941SCOPE ||
+		 weapSelect == WP_SNOOPERSCOPE || weapSelect == WP_SNIPERRIFLE || weapSelect == WP_FG42SCOPE || weapSelect == WP_DELISLESCOPE || weapSelect == WP_M1941SCOPE ) {
 		if ( isPlayer && !cg.renderingThirdPerson ) {
 			return;
 		}
@@ -3044,6 +3044,18 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
 		if ( weaponNum == WP_MAUSER ) {
 			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_SNIPERRIFLE ) ) {
+				barrel.hModel = weapon->modModels[0];
+				if ( barrel.hModel ) {
+					CG_PositionEntityOnTag(&barrel, parent, "tag_scope", 0, NULL);
+					CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
+				}
+			}
+		}
+	}
+
+		if ( isPlayer && !cg.renderingThirdPerson ) {      // (SA) for now just do it on the first person weapons
+		if ( weaponNum == WP_DELISLE ) {
+			if ( COM_BitCheck( cg.predictedPlayerState.weapons, WP_DELISLESCOPE ) ) {
 				barrel.hModel = weapon->modModels[0];
 				if ( barrel.hModel ) {
 					CG_PositionEntityOnTag(&barrel, parent, "tag_scope", 0, NULL);
@@ -3710,6 +3722,11 @@ static qboolean CG_WeaponSelectable( int i ) {
 			return qtrue;
 		}
 		break;
+	case WP_DELISLESCOPE:
+		if ( i == WP_DELISLE ) {
+			return qtrue;
+		}
+		break;
 	case WP_M1941SCOPE:
 		if ( i == WP_M1941 ) {
 			return qtrue;
@@ -4007,6 +4024,10 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 //			cg.zoomedScope	= 1;	// TODO: add to zoomTable
 //			cg.zoomTime		= cg.time;
 		break;
+	case WP_DELISLESCOPE:
+//			cg.zoomedScope	= 1;	// TODO: add to zoomTable
+//			cg.zoomTime		= cg.time;
+		break;
 	case WP_M1941SCOPE:
 //			cg.zoomedScope	= 1;	// TODO: add to zoomTable
 //			cg.zoomTime		= cg.time;
@@ -4021,6 +4042,11 @@ void CG_SetSniperZoom( int lastweap, int newweap ) {
 	case WP_SNIPERRIFLE:
 		cg.zoomval = cg_zoomDefaultSniper.value;
 		cg.zoomedScope  = 900;      // TODO: add to zoomTable
+		zoomindex = ZOOM_SNIPER;
+		break;
+	case WP_DELISLESCOPE:
+		cg.zoomval = cg_zoomDefaultSniper.value;
+		cg.zoomedScope  = 700;      // TODO: add to zoomTable
 		zoomindex = ZOOM_SNIPER;
 		break;
 	case WP_M1941SCOPE:
@@ -4124,6 +4150,7 @@ void CG_FinishWeaponChange( int lastweap, int newweap ) {
 		case WP_SNIPERRIFLE:
 		case WP_SNOOPERSCOPE:
 		case WP_FG42SCOPE:
+		case WP_DELISLESCOPE:
 		case WP_M1941SCOPE:
 			break;
 		default:
@@ -4857,7 +4884,7 @@ void CG_OutOfAmmoChange( void ) {
 
 	// if you're using an alt mode weapon, try switching back to the parent
 	// otherwise, switch to the equivalent if you've got it
-	if ( cg.weaponSelect >= WP_SILENCER && cg.weaponSelect <= WP_DELISLE ) {
+	if ( cg.weaponSelect >= WP_SILENCER && cg.weaponSelect <= WP_DELISLESCOPE ) {
 		cg.weaponSelect = equiv = getAltWeapon( cg.weaponSelect );    // base any further changes on the parent
 		if ( CG_WeaponSelectable( equiv ) ) {    // the parent was selectable, drop back to that
 			CG_FinishWeaponChange( cg.predictedPlayerState.weapon, cg.weaponSelect ); //----(SA)
@@ -5055,6 +5082,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	break;
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
+	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
 		pitchAdd = 0.8;
 	break;
@@ -5546,6 +5574,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_COLT:
 	case WP_MAUSER:
 	case WP_DELISLE:
+	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
 	case WP_GARAND:
 	case WP_SNIPERRIFLE:
@@ -5674,7 +5703,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		// enough to see it, this way we can leave other marks around a lot
 		// longer, since most of the time we can't actually see the bullet holes
 // (SA) small modification.  only do this for non-rifles (so you can see your shots hitting when you're zooming with a rifle scope)
-		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_M1941SCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
+		if ( weapon == WP_FG42SCOPE || weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_DELISLESCOPE || weapon == WP_M1941SCOPE || ( Distance( cg.refdef.vieworg, origin ) < 384 ) ) {
 
 			if ( clientNum ) {
 

@@ -1696,6 +1696,46 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                            
 	}, 
 
+    // Currently unused Gothicstein weapons
+	{   
+		WP_P38,
+		WEAPON_CLASS_UNUSED,
+		WP_NONE, 
+		WEAPON_TEAM_AXIS,             
+		0,        
+		0,       
+		0,        
+		0,        
+		0,       
+		0,       
+		0, 
+		0,      
+		0,      
+		0,      
+		0,        
+		0,          
+		0,          
+		0,          
+		0,        
+		0,                 
+		0.0f,            
+		0,              
+		{.0f, .0f},      
+		{0,0},              
+		0,                
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},              
+		MOD_P38,      
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,                                  
+	}, 
+
 	{   
 		WP_M30,
 		WEAPON_CLASS_UNUSED,
@@ -2059,7 +2099,7 @@ int reloadableWeapons[] = {
 	WP_LUGER,       WP_MORTAR,      WP_AKIMBO,          WP_PPSH,                WP_M7,                  WP_MP34,
 	WP_MAUSER,      WP_SNIPERRIFLE, WP_SNOOPERSCOPE,    WP_MOSIN,               WP_M1GARAND,            WP_G43,
 	WP_MP44,        WP_BAR,         WP_M97,             WP_FG42SCOPE,           WP_BROWNING,            WP_VENOM,
-	WP_M30,         WP_DELISLE,     WP_DELISLESCOPE,    WP_TESLA,               WP_M1941,
+	WP_P38,         WP_M30,         WP_DELISLE,         WP_DELISLESCOPE,        WP_TESLA,               WP_M1941,
 	WP_AUTO5,       WP_M1941SCOPE,  WP_DUAL_TT33, -1
 };
 
@@ -3651,6 +3691,35 @@ model="models/weapons2/tt33/tt33.md3"
 		WP_TT33,
 		WP_TT33,
 		WP_TT33,
+		"",                 
+		"",                 
+		{0,0,0,0,0}
+	},
+
+	/*QUAKED weapon_p38 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+"stand" values:
+	no value:	laying in a default position on it's side (default)
+	2:			upright, barrel pointing up, slightly angled (rack mount)
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/weapons2/p38/p38.md3"
+*/
+	{
+		"weapon_p38",
+		"sound/misc/w_pkup.wav",
+		{   
+		"",
+		"",
+		""
+		},
+
+		"icons/iconw_p38",    
+		"p38",             
+		30,
+		IT_WEAPON,
+		WP_P38,
+		WP_P38,
+		WP_LUGER,
+		WP_P38,
 		"",                 
 		"",                 
 		{0,0,0,0,0}
@@ -7672,6 +7741,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_AKIMBO:            return "akimbo.weap";
 		case WP_TT33:              return "tt33.weap";
 		case WP_DUAL_TT33:         return "dualtt33.weap";
+		case WP_P38:               return "p38.weap";
 		case WP_REVOLVER:          return "revolver.weap";
 		case WP_THOMPSON:          return "thompson.weap";
 		case WP_STEN:              return "sten.weap";

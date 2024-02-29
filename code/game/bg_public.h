@@ -537,7 +537,8 @@ typedef enum {
 	WP_DUAL_TT33,     
 	WP_M7,
 	WP_M1941SCOPE,
-             
+
+	WP_P38,                 
 	WP_M30,                
 	WP_DELISLE,            
 	WP_DELISLESCOPE, 	   
@@ -622,7 +623,7 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
 		weapon == WP_PPSH    || weapon == WP_GARAND      || \
 		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
-		weapon == WP_BROWNING ||  weapon == WP_DELISLE ||  \
+		weapon == WP_BROWNING || weapon == WP_P38 || weapon == WP_DELISLE ||  \
         weapon == WP_DELISLESCOPE || weapon == WP_M1941 || weapon == WP_AUTO5 || \
 		weapon == WP_HDM || weapon == WP_M1941SCOPE ||  weapon == WP_DUAL_TT33  \
 	)

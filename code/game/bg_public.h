@@ -487,13 +487,15 @@ typedef enum {
 	WP_NONE,                
 	// Melee Weapons
 	WP_KNIFE,               
-	WP_DAGGER,              
+	WP_DAGGER,   
+	WP_HOLYCROSS,            
 	// One handed pistols
 	WP_LUGER,              
 	WP_SILENCER,           
     WP_COLT,               
 	WP_TT33,               
-	WP_REVOLVER,           
+	WP_REVOLVER,
+	WP_HDM,           
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         
@@ -506,6 +508,7 @@ typedef enum {
 	WP_GARAND,            
 	WP_SNOOPERSCOPE,
 	WP_MOSIN,
+    WP_DELISLE,
 	// Semi auto rifles
 	WP_M1GARAND,
 	WP_G43,
@@ -517,6 +520,7 @@ typedef enum {
 	// Shotguns
 	WP_M97,
 	WP_AUTO5, 
+	WP_M30,  
 	// Heavy Weapons
 	WP_BROWNING,
 	WP_MG42M,
@@ -536,12 +540,7 @@ typedef enum {
 	WP_AKIMBO,
 	WP_DUAL_TT33,     
 	WP_M7,
-	WP_M1941SCOPE,
-             
-	WP_M30,                
-	WP_DELISLE,             
-	WP_HDM,             	
-	WP_HOLYCROSS,           
+	WP_M1941SCOPE,          
     // Misc stuff, not actual weapons
 	WP_DUMMY_MG42,
 	WP_MONSTER_ATTACK1,     	

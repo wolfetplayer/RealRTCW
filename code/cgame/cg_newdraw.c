@@ -474,10 +474,15 @@ CG_DrawMessageIcon
 
 static void CG_DrawMessageIcon( rectDef_t *rect ) {
 	int icon;
+	float       *color;
 
-	if ( !cg_youGotMail.integer || !cg_journalStyle.integer ) {
+	color = CG_FadeColor( cg.yougotmailTime, OBJECTIVE_MET_TIME );
+
+	if ( !color ) {
 		return;
 	}
+
+	trap_R_SetColor( color );
 
 	if ( cg_youGotMail.integer == 2 ) {
 		icon = cgs.media.youGotObjectiveShader;

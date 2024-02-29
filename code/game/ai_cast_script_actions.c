@@ -3023,7 +3023,7 @@ qboolean AICast_ScriptAction_ObjectiveMet( cast_state_t *cs, char *params ) {
 			G_Error( "AI Scripting: missionsuccess with unknown parameter: %s\n", token );
 		}
 	} else {    // show on-screen information
-		trap_Cvar_Set( "cg_youGotMail", "2" ); // set flag to draw icon
+		G_AddEvent( player, EV_OBJECTIVE_MET, G_SoundIndex( "sound/misc/objective_met.wav" ) );
 	}
 
 	return qtrue;

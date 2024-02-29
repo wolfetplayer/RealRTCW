@@ -58,6 +58,7 @@ If you have questions concerning this license or the applicable additional terms
 #define PAIN_TWITCH_TIME    200
 #define WEAPON_SELECT_TIME  1400
 #define HOLDABLE_SELECT_TIME 2000   //----(SA)	for drawing holdable icons
+#define OBJECTIVE_MET_TIME  5000
 #define ITEM_SCALEUP_TIME   1000
 #define ZOOM_TIME           150
 #define ITEM_BLOB_TIME      200

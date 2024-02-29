@@ -2077,7 +2077,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_CLOSEMENU:
 		Menus_CloseAll();
 		break;
-
+	case EV_OBJECTIVE_MET:
+		trap_Cvar_Set( "cg_youGotMail", "2" ); 
+		cg.yougotmailTime = cg.time;
+	break;
 	case EV_GIVEPAGE:
 	{
 		int havepages = cg_notebookpages.integer;

@@ -943,6 +943,8 @@ typedef struct {
 	// message icon popup time	//----(SA)	added
 	int yougotmailTime;
 
+	int checkpointTime;
+
 	//==========================
 
 	int itemPickup;

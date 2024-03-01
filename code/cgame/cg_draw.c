@@ -1304,6 +1304,34 @@ static void CG_DrawLowerRight( void ) {
 
 //----(SA)	modified
 //----(SA)	modified
+
+/*
+===================
+CG_DrawCheckpointString
+===================
+*/
+static void CG_DrawCheckpointString ( void ) {
+	float   *fadeColor;
+	char pickupText[256];
+	float    *color;
+
+	color = CG_FadeColor( cg.checkpointTime, 5000 );
+
+	if ( !color ) {
+		return;
+	}
+
+	trap_R_SetColor( color );
+
+	if ( cg_fixedAspect.integer == 2 ) {
+		CG_SetScreenPlacement(PLACE_LEFT, PLACE_TOP);
+	}
+
+	CG_DrawStringExt2( 320, 420, CG_translateString( "checkpointsaved" ), color, qfalse, qtrue, 10, 10, 0 );
+
+}
+
+
 /*
 ===================
 CG_DrawPickupItem
@@ -3532,6 +3560,7 @@ if ( !cg_oldWolfUI.integer ) {
 			CG_DrawWeaponSelect();
 			CG_DrawHoldableSelect();
 			CG_DrawPickupItem();
+			CG_DrawCheckpointString();
 			CG_DrawReward();
 		}
 	}

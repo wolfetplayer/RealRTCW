@@ -2108,6 +2108,10 @@ qboolean AICast_ScriptAction_SaveCheckpoint ( cast_state_t *cs, char *params ) {
 	char *pString, *saveName;
 	pString = params;
 
+	gentity_t   *player;
+
+	player = AICast_FindEntityForName( "player" );
+
 	if ( cs->bs ) {
 		G_Error( "AI Scripting: savegame attempted on a non-player" );
 	}
@@ -2115,14 +2119,15 @@ qboolean AICast_ScriptAction_SaveCheckpoint ( cast_state_t *cs, char *params ) {
 //----(SA)	check for parameter
 	saveName = COM_ParseExt( &pString, qfalse );
 	if ( !saveName[0] ) {
-		G_SaveGame( "lastcheckpoint" );	// save the default "current" savegame
+		G_SaveGame( "lastcheckpoint" );	// save the default "current" savegame  
 		G_SaveGame( "current" );	   // save the default "current" savegame
 	} else {
 		G_SaveGame( saveName );
 	}
 
-	trap_SendServerCommand( -1, "cptop checkpointsaved" );  // yes save for u
-//----(SA)	end
+	//trap_SendServerCommand( -1, "cptop checkpointsaved" );  // yes save for u
+	G_AddEvent( player, EV_CHECKPOINT_PASSED, G_SoundIndex( "sound/misc/blank.wav" ) );
+    //----(SA)	end
 
 	return qtrue;
 }

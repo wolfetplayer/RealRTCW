@@ -2081,6 +2081,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		trap_Cvar_Set( "cg_youGotMail", "2" ); 
 		cg.yougotmailTime = cg.time;
 	break;
+	case EV_CHECKPOINT_PASSED:
+		cg.checkpointTime = cg.time;
+	break;
 	case EV_GIVEPAGE:
 	{
 		int havepages = cg_notebookpages.integer;

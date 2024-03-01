@@ -611,22 +611,19 @@ extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 #define GetWeaponTableData(weaponIndex) ((ammoTable_t *)(&ammoTable[weaponIndex]))
 
 
-#define IS_AUTORELOAD_WEAPON( weapon ) \
-	(	\
-		weapon == WP_LUGER    || weapon == WP_COLT          || weapon == WP_MP40          || \
-		weapon == WP_THOMPSON || weapon == WP_STEN      || \
-		weapon == WP_MAUSER    || weapon == WP_SNIPERRIFLE       || weapon == WP_M1GARAND  || \
-		weapon == WP_FG42     || weapon == WP_G43           || weapon == WP_MG42M   || \
-		weapon == WP_SILENCER    || weapon == WP_VENOM      || \
-		weapon == WP_GARAND   || weapon == WP_TT33     || weapon == WP_FG42SCOPE     || \
-		weapon == WP_BAR    || weapon == WP_MP44      || \
-		weapon == WP_M97   || weapon == WP_MP34     || weapon == WP_MOSIN     || \
-		weapon == WP_PPSH    || weapon == WP_GARAND      || \
-		weapon == WP_SNOOPERSCOPE  || weapon == WP_REVOLVER || weapon == WP_AKIMBO ||      \
-		weapon == WP_BROWNING || weapon == WP_P38 || weapon == WP_DELISLE ||  \
-        weapon == WP_DELISLESCOPE || weapon == WP_M1941 || weapon == WP_AUTO5 || \
-		weapon == WP_HDM || weapon == WP_M1941SCOPE ||  weapon == WP_DUAL_TT33  \
-	)
+// Define the auto-reload weapons
+static const int autoReloadWeapons[] = {
+    WP_GRENADE_LAUNCHER,
+	WP_GRENADE_PINEAPPLE,
+	WP_DYNAMITE,
+	WP_PANZERFAUST,
+	WP_TESLA,
+	WP_FLAMETHROWER,
+	WP_POISONGAS,
+	WP_AIRSTRIKE,
+	WP_KNIFE,
+	WP_M7,
+};
 
  // entityState_t->event values
 // entity events are for effects that take place reletive

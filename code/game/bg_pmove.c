@@ -2582,6 +2582,17 @@ static void PM_FinishWeaponReload( void ) {
 }
 
 
+static int isAutoReloadWeapon(int weapon) {
+    int i;
+    for (i = 0; i < sizeof(autoReloadWeapons) / sizeof(int); i++) {
+        if (autoReloadWeapons[i] == weapon) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
 /*
 ==============
 PM_CheckforReload
@@ -2635,7 +2646,8 @@ void PM_CheckForReload( int weapon ) {
 	default:
 		break;
 	}
-    autoreload = pm->pmext->bAutoReload || !IS_AUTORELOAD_WEAPON( weapon ); // autoreload
+
+    autoreload = pm->pmext->bAutoReload || isAutoReloadWeapon( pm->ps->weapon ); // autoreload
 	clipWeap = BG_FindClipForWeapon( weapon );
 	ammoWeap = BG_FindAmmoForWeapon( weapon );
 
@@ -3708,7 +3720,7 @@ static void PM_Weapon( void ) {
 			reloadingW = (qboolean)( ammoNeeded <= pm->ps->ammo[ BG_FindAmmoForWeapon( pm->ps->weapon )] );
 
 			// autoreload if not in auto-reload mode, and reload was not explicitely requested, just play the 'out of ammo' sound
-			if ( !pm->pmext->bAutoReload && IS_AUTORELOAD_WEAPON( pm->ps->weapon ) && !( pm->cmd.wbuttons & WBUTTON_RELOAD ) ) {
+			if ( !pm->pmext->bAutoReload && !isAutoReloadWeapon( pm->ps->weapon ) && !( pm->cmd.wbuttons & WBUTTON_RELOAD ) ) {
 				reloadingW = qfalse;
 			} 
 

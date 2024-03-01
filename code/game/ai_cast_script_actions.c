@@ -2126,8 +2126,8 @@ qboolean AICast_ScriptAction_SaveCheckpoint ( cast_state_t *cs, char *params ) {
 	}
 
 	//trap_SendServerCommand( -1, "cptop checkpointsaved" );  // yes save for u
+	
 	G_AddEvent( player, EV_CHECKPOINT_PASSED, G_SoundIndex( "sound/misc/blank.wav" ) );
-    //----(SA)	end
 
 	return qtrue;
 }

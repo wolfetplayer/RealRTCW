@@ -2084,6 +2084,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_CHECKPOINT_PASSED:
 		cg.checkpointTime = cg.time;
 	break;
+	case EV_GAME_SAVED:
+		cg.gameSavedTime = cg.time;
+	break;
 	case EV_GIVEPAGE:
 	{
 		int havepages = cg_notebookpages.integer;

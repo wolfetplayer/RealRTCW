@@ -464,6 +464,10 @@ ConsoleCommand
 qboolean    ConsoleCommand( void ) {
 	char cmd[MAX_TOKEN_CHARS];
 
+	gentity_t   *player;
+
+	player = AICast_FindEntityForName( "player" );
+
 	trap_Argv( 0, cmd, sizeof( cmd ) );
 
 	// Ridah, savegame
@@ -509,7 +513,8 @@ qboolean    ConsoleCommand( void ) {
 			}
 
 			if ( G_SaveGame( cmd ) ) {
-				trap_SendServerCommand( -1, "cp gamesaved" );  // deletedgame
+				//trap_SendServerCommand( -1, "cp gamesaved" );  // deletedgame
+				G_AddEvent( player, EV_GAME_SAVED, G_SoundIndex( "sound/misc/blank.wav" ) );
 			} else {
 				G_Printf( "Unable to save game.\n" );
 			}

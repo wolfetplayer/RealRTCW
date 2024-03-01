@@ -1311,11 +1311,9 @@ CG_DrawCheckpointString
 ===================
 */
 static void CG_DrawCheckpointString ( void ) {
-	float   *fadeColor;
-	char pickupText[256];
 	float    *color;
 
-	color = CG_FadeColor( cg.checkpointTime, 5000 );
+	color = CG_FadeColor( cg.checkpointTime, CHECKPOINT_PASSED_TIME );
 
 	if ( !color ) {
 		return;
@@ -1323,11 +1321,27 @@ static void CG_DrawCheckpointString ( void ) {
 
 	trap_R_SetColor( color );
 
-	if ( cg_fixedAspect.integer == 2 ) {
-		CG_SetScreenPlacement(PLACE_LEFT, PLACE_TOP);
+	CG_DrawStringExt2( -25, 100, CG_translateString( "checkpointsaved" ), color, qfalse, qtrue, 10, 10, 0 );
+
+}
+
+/*
+===================
+CG_DrawGameSavedString
+===================
+*/
+static void CG_DrawGameSavedString ( void ) {
+	float    *color;
+
+	color = CG_FadeColor( cg.gameSavedTime, GAME_SAVED_TIME );
+
+	if ( !color ) {
+		return;
 	}
 
-	CG_DrawStringExt2( 320, 420, CG_translateString( "checkpointsaved" ), color, qfalse, qtrue, 10, 10, 0 );
+	trap_R_SetColor( color );
+
+	CG_DrawStringExt2( -25, 115, CG_translateString( "gamesaved" ), color, qfalse, qtrue, 10, 10, 0 );
 
 }
 
@@ -1375,9 +1389,9 @@ static void CG_DrawPickupItem( void ) {
 			color[3] = fadeColor[0];
 			w = CG_DrawStrlen( pickupText ) * 10;
 #ifdef LOCALISATION
-			CG_DrawStringExt2( 320 - ( w / 2 ), 420, CG_TranslateString( pickupText ), color, qfalse, qtrue, 10, 10, 0 );
+			CG_DrawStringExt2( 640 - ( w / 2 ), 375, CG_TranslateString( pickupText ), color, qfalse, qtrue, 10, 10, 0 );
 #else
-			CG_DrawStringExt2( 320 - ( w / 2 ), 420, pickupText, color, qfalse, qtrue, 10, 10, 0 );
+			CG_DrawStringExt2( 640 - ( w / 2 ), 375, pickupText, color, qfalse, qtrue, 10, 10, 0 );
 #endif
 
 			trap_R_SetColor( NULL );
@@ -3561,6 +3575,7 @@ if ( !cg_oldWolfUI.integer ) {
 			CG_DrawHoldableSelect();
 			CG_DrawPickupItem();
 			CG_DrawCheckpointString();
+			CG_DrawGameSavedString();
 			CG_DrawReward();
 		}
 	}

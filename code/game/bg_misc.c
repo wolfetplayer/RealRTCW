@@ -7016,6 +7016,7 @@ char *eventnames[] = {
 	"EV_POPUPBOOK",
 	"EV_OBJECTIVE_MET",
 	"EV_CHECKPOINT_PASSED",
+	"EV_GAME_SAVED",
 	"EV_GIVEPAGE",
 	"EV_CLOSEMENU",
 	"EV_M97_PUMP", //jaymod

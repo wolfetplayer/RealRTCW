@@ -2247,7 +2247,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	    } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTime ) {
 		    pm->ps->weaponTime += ( ammoTable[weapon].reloadTime - pm->ps->weaponTime );
 	      }
-		 PM_AddEvent( EV_FILL_CLIP );
+		 PM_AddEvent( EV_FILL_CLIP_AI );
 	}
 
 	pm->ps->weaponstate = WEAPON_RELOADING;

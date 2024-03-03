@@ -1276,6 +1276,7 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 	int i;
 
 	weaponInfo->reloadFullSound = 0;
+	weaponInfo->reloadSoundAi = 0;
 
 	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
 		return CG_RW_ParseError( handle, "expected '{'" );
@@ -1401,6 +1402,12 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			} else {
 				weaponInfo->reloadFullSound = trap_S_RegisterSound( filename );
 			}
+		} else if ( !Q_stricmp( token.string, "reloadSoundAi" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
+				return CG_RW_ParseError( handle, "expected reloadSoundAi filename" );
+			} else {
+				weaponInfo->reloadSoundAi = trap_S_RegisterSound( filename );
+			}
 		} else if ( !Q_stricmp( token.string, "reloadFastSound" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected reloadFastSound filename" );
@@ -1521,6 +1528,11 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
     if (weaponInfo->reloadFullSound == 0) {
         weaponInfo->reloadFullSound = weaponInfo->reloadSound;
     }
+
+	if (weaponInfo->reloadSoundAi == 0) {
+        weaponInfo->reloadSoundAi = weaponInfo->reloadSound;
+    }
+
 
 	return qtrue;
 }

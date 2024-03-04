@@ -4001,7 +4001,7 @@ model="models/multiplayer/mg42/mg42_3rd.md3"
 		IT_WEAPON,
 		WP_BROWNING,
 		WP_BROWNING,
-		WP_BAR,
+		WP_VENOM,
 		WP_BROWNING,
 		"",                      
 		"",                      

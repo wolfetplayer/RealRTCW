@@ -4544,7 +4544,7 @@ model="models/powerups/ammo/44ammo_l.md3"
 		WP_REVOLVER,
 		"",                 
 		"",                  
-		{ 6,6,6,6,6 }
+		{ 12,12,12,12,12 }
 	},
 
 

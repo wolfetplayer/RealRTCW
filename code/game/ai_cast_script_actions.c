@@ -1787,6 +1787,7 @@ qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params ) {
 		memset( g_entities[cs->entityNum].client->ps.weapons, 0, sizeof( g_entities[cs->entityNum].client->ps.weapons ) );
 		memset( g_entities[cs->entityNum].client->ps.ammo, 0, sizeof( g_entities[cs->entityNum].client->ps.ammo ) );
 		memset( g_entities[cs->entityNum].client->ps.ammoclip, 0, sizeof( g_entities[cs->entityNum].client->ps.ammoclip ) );
+		memset( g_entities[cs->entityNum].client->ps.holdable, 0, sizeof( g_entities[cs->entityNum].client->ps.holdable ) );
 		cs->weaponNum = WP_NONE;
 
 	} else {

@@ -1973,8 +1973,8 @@ typedef enum {
 // Ridah, these aren't enough for cool effects
 //#define	MAX_POLYS		256
 //#define	MAX_POLYVERTS	1024
-#define MAX_POLYS       4096
-#define MAX_POLYVERTS   8192
+#define MAX_POLYS       16384 ///< was 4096
+#define MAX_POLYVERTS   32768 ///< was 8192
 // done.
 
 // all of the information needed by the back end must be

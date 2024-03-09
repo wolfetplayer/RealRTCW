@@ -471,7 +471,7 @@ cvarTable_t cvarTable[] = {
 	// done
 
 	{ &cg_atmosphericEffects,     "cg_atmosphericEffects",     "1",           CVAR_ARCHIVE, }, // RealRTCW
-	{ &cg_lowAtmosphericEffects, "cg_lowAtmosphericEffects", "1", 0 },		/// added by Berserker
+	{ &cg_lowAtmosphericEffects, "cg_lowAtmosphericEffects", "0", CVAR_ARCHIVE },		/// added by Berserker
 	{ &cg_forceAtmosphericEffects, "cg_forceAtmosphericEffects", "0", CVAR_LATCH },		/// added by Berserker
 
 	{ &cg_autoReload, "cg_autoReload", "1", CVAR_ARCHIVE },

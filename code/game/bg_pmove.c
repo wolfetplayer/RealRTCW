@@ -2028,6 +2028,10 @@ static void PM_Footsteps( void ) {
 		}
 	#endif
 
+			if ( pm->ps->aiChar) {
+				pm->ps->footstepCount  += pm->xyspeed * pml.frametime;
+			}
+
 
 
 		if ( pm->ps->footstepCount > animGap ) {

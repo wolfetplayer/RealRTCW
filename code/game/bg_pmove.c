@@ -2013,26 +2013,28 @@ static void PM_Footsteps( void ) {
 
 		// now footsteps
 	#ifdef GAMEDLL
+	    if ( !pm->ps->aiChar ) {
 		if (g_realism.value) {
 			pm->ps->footstepCount += pm_realismSlowScale * (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
 		} else {
 			pm->ps->footstepCount += (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
 		}
+		} else {
+		    pm->ps->footstepCount  += 1.0 * (pm->xyspeed * pml.frametime);
+		}
 	
 	#endif
 	#ifdef CGAMEDLL
+		if ( !pm->ps->aiChar ) {
 		if (cg_realism.value) {
 			pm->ps->footstepCount += pm_realismSlowScale * (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
 		} else {
 		    pm->ps->footstepCount += (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
 		}
+		} else {
+		    pm->ps->footstepCount  += 1.0 * (pm->xyspeed * pml.frametime);
+		}
 	#endif
-
-			if ( pm->ps->aiChar) {
-				pm->ps->footstepCount  += pm->xyspeed * pml.frametime;
-			}
-
-
 
 		if ( pm->ps->footstepCount > animGap ) {
 

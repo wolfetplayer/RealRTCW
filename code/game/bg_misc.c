@@ -5923,51 +5923,6 @@ qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
 	int clip;
 	int weapNumOfClips;
 
-	// Gordon: handle grenades first
-	weapon = WP_GRENADE_LAUNCHER;
-	i = ammoTable[weapon].maxammo;
-
-	clip = BG_FindClipForWeapon( weapon );
-	if ( ps->ammoclip[clip] < i ) {
-
-		// Gordon: early out
-		if ( !numOfClips ) {
-			return qtrue;
-		}
-
-		ps->ammoclip[clip] += numOfClips;
-
-		ammoAdded = qtrue;
-
-		COM_BitSet( ps->weapons, weapon );
-
-		if ( ps->ammoclip[clip] > i ) {
-			ps->ammoclip[clip] = i;
-		}
-	}
-
-	weapon = WP_GRENADE_PINEAPPLE;
-	i = ammoTable[weapon].maxammo;
-
-	clip = BG_FindClipForWeapon( weapon );
-	if ( ps->ammoclip[clip] < i ) {
-
-		// Gordon: early out
-		if ( !numOfClips ) {
-			return qtrue;
-		}
-
-		ps->ammoclip[clip] += numOfClips;
-
-		ammoAdded = qtrue;
-
-		COM_BitSet( ps->weapons, weapon );
-
-		if ( ps->ammoclip[clip] > i ) {
-			ps->ammoclip[clip] = i;
-		}
-	}
-
 	// Gordon: now other weapons
 	for ( i = 0; reloadableWeapons[i] >= 0; i++ ) {
 		weapon = reloadableWeapons[i];

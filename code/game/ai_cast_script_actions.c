@@ -1056,7 +1056,11 @@ qboolean AICast_ScriptAction_SetAmmo( cast_state_t *cs, char *params ) {
 			int amt;
 			amt = atoi( token );
 			if ( amt > 50 + ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo ) {
+				if ( cs->aiCharacter ) { 
 				amt = 999;  // unlimited
+				} else {
+					amt = ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo;
+				}
 			}
 			Add_Ammo( &g_entities[cs->entityNum], weapon, amt, qtrue );
 		} else {

@@ -645,7 +645,10 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_SILENCER:
 	case MOD_FG42SCOPE:
 	case MOD_SNOOPERSCOPE:
+	case MOD_DELISLE:
 	case MOD_SNIPERRIFLE:
+	case MOD_BROWNING:
+	case MOD_MG42M:
 	return qtrue;
 	}
 	return qfalse;

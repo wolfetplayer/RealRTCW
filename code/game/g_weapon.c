@@ -2014,7 +2014,7 @@ void G_LoadAmmoTable( weapon_t weaponNum )
 	if ( !*filename )
 		return;
     
-    if ( g_vanilla_plus.integer ) 
+    if ( g_vanilla_guns.integer ) 
 	{
 	    handle = trap_PC_LoadSource( va( "weapons/vanilla/%s", filename ) );
 	} else {

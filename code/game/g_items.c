@@ -1107,6 +1107,14 @@ void FinishSpawningItem( gentity_t *ent ) {
     return;
 	}
 
+	if ( !g_dlc1.integer &&       (    ent->item->giWeapon == WP_M1941SCOPE
+									|| ent->item->giWeapon == WP_DELISLE
+									|| ent->item->giWeapon == WP_M1941
+									|| ent->item->giWeapon == WP_AUTO5 ) )
+	{
+    return;
+	}
+
 
 
 	// if clipboard, add the menu name string to the client's configstrings

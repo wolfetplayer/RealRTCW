@@ -1118,6 +1118,7 @@ extern vmCvar_t g_fullarsenal;
 extern vmCvar_t g_endmapbonus;
 extern vmCvar_t g_randomweapons;
 extern vmCvar_t g_midgame;
+extern vmCvar_t g_dlc1;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 
@@ -1211,7 +1212,7 @@ extern vmCvar_t g_aicanheadshot;
 extern vmCvar_t g_realism;
 extern vmCvar_t g_regen;
 extern vmCvar_t	g_flushItems;
-extern vmCvar_t g_vanilla_plus;
+extern vmCvar_t g_vanilla_guns;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));

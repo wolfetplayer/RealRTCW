@@ -231,6 +231,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Mount", (byte *)AICast_ScriptAction_Mount},
 {"AICast_ScriptAction_ResetScript", (byte *)AICast_ScriptAction_ResetScript},
 {"AICast_ScriptAction_FaceTargetAngles", (byte *)AICast_ScriptAction_FaceTargetAngles},
+{"AICast_ScriptAction_FaceEntity", (byte *)AICast_ScriptAction_FaceEntity},
 {"AICast_ScriptAction_Print", (byte *)AICast_ScriptAction_Print},
 {"AICast_ScriptAction_NoAIDamage", (byte *)AICast_ScriptAction_NoAIDamage},
 {"AICast_ScriptAction_ObjectiveMet", (byte *)AICast_ScriptAction_ObjectiveMet},

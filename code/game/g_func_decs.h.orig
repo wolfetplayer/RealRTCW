@@ -231,6 +231,7 @@ extern qboolean AICast_ScriptAction_Unmount ( cast_state_t * cs , char * params 
 extern qboolean AICast_ScriptAction_Mount ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_ResetScript ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_FaceTargetAngles ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_FaceEntity ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Print ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_NoAIDamage ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_ObjectiveMet ( cast_state_t * cs , char * params ) ;

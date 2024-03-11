@@ -3106,6 +3106,41 @@ qboolean AICast_ScriptAction_FaceTargetAngles( cast_state_t *cs, char *params ) 
 }
 
 /*
+=================
+AICast_ScriptAction_FaceEntity
+
+  syntax: face_entity <targetname>
+
+  The AI will look at the target entity
+=================
+*/
+qboolean AICast_ScriptAction_FaceEntity ( cast_state_t *cs, char *params ) {
+    gentity_t *ent;
+	vec3_t org, vec;
+
+	if ( !params || !params[0] ) {
+		G_Error( "AI Scripting: face_entity requires a targetname\n" );
+	}
+		
+	// find this targetname
+	ent = G_Find( NULL, FOFS( targetname ), params );
+	if ( !ent ) {
+		ent = AICast_FindEntityForName( params );
+		if ( !ent ) {
+			G_Error( "AI Scripting: wait cannot find targetname \"%s\"\n", params );
+		    }
+		}
+		// set the view angle manually
+		BG_EvaluateTrajectory( &ent->s.pos, level.time, org );
+		VectorSubtract( org, cs->bs->origin, vec );
+		VectorNormalize( vec );
+		vectoangles( vec, cs->ideal_viewangles );
+
+	return qtrue;
+}
+
+
+/*
 ===================
 AICast_ScriptAction_ResetScript
 

@@ -336,7 +336,7 @@ cast_script_stack_action_t scriptActions[] =
 	{"noaidamage",       AICast_ScriptAction_NoAIDamage},
 	{"print",            AICast_ScriptAction_Print},
 	{"facetargetangles",AICast_ScriptAction_FaceTargetAngles},
-	{"face_entity",AICast_ScriptAction_FaceEntity},
+	{"face_entity",      AICast_ScriptAction_FaceEntity},
 	{"resetscript",      AICast_ScriptAction_ResetScript},
 	{"mount",            AICast_ScriptAction_Mount},
 	{"unmount",          AICast_ScriptAction_Unmount},

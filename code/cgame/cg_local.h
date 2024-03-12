@@ -918,6 +918,11 @@ typedef struct {
 	int crosshairPowerupNum;
 	int crosshairPowerupTime;
 
+	int identifyClientNum;                  // NERVE - SMF
+	int identifyClientHealth;               // NERVE - SMF
+	int identifyNextTime;                   // NERVE - SMF
+	int identifyClientRequest;              // NERVE - SMF
+
 //----(SA)	added
 	// cursorhints
 	int cursorHintIcon;

@@ -98,29 +98,23 @@ static void CG_ParseTeamInfo( void ) {
 	int i;
 	int client;
 
-	numSortedTeamPlayers = atoi( CG_Argv( 1 ) );
-	if( numSortedTeamPlayers < 0 || numSortedTeamPlayers > TEAM_MAXOVERLAY )
-	{
-		CG_Error( "CG_ParseTeamInfo: numSortedTeamPlayers out of range (%d)",
-				numSortedTeamPlayers );
-		return;
-	}
+	// NERVE - SMF
+	cg.identifyClientNum = atoi( CG_Argv( 1 ) );
+	cg.identifyClientHealth = atoi( CG_Argv( 2 ) );
+	// -NERVE - SMF
+
+	numSortedTeamPlayers = atoi( CG_Argv( 3 ) );
 
 	for ( i = 0 ; i < numSortedTeamPlayers ; i++ ) {
-		client = atoi( CG_Argv( i * 6 + 2 ) );
-		if( client < 0 || client >= MAX_CLIENTS )
-		{
-		  CG_Error( "CG_ParseTeamInfo: bad client number: %d", client );
-		  return;
-		}
+		client = atoi( CG_Argv( i * 5 + 4 ) );
 
 		sortedTeamPlayers[i] = client;
 
-		cgs.clientinfo[ client ].location = atoi( CG_Argv( i * 6 + 3 ) );
-		cgs.clientinfo[ client ].health = atoi( CG_Argv( i * 6 + 4 ) );
-		cgs.clientinfo[ client ].armor = atoi( CG_Argv( i * 6 + 5 ) );
-		cgs.clientinfo[ client ].curWeapon = atoi( CG_Argv( i * 6 + 6 ) );
-		cgs.clientinfo[ client ].powerups = atoi( CG_Argv( i * 6 + 7 ) );
+		cgs.clientinfo[ client ].location = atoi( CG_Argv( i * 5 + 5 ) );
+		cgs.clientinfo[ client ].health = atoi( CG_Argv( i * 5 + 6 ) );
+		cgs.clientinfo[ client ].powerups = atoi( CG_Argv( i * 5 + 7 ) );
+
+		cg_entities[ client ].currentState.teamNum = atoi( CG_Argv( i * 5 + 8 ) );
 	}
 }
 

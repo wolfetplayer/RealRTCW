@@ -2767,6 +2767,45 @@ static void CG_DrawDynamiteStatus( void ) {
 	trap_R_SetColor( NULL );
 }
 
+/*
+=================
+CG_ScanForCrosshairEntity
+=================
+*/
+static void CG_ScanForCrosshairEntity( void ) {
+	trace_t trace;
+	vec3_t start, end;
+	int content;
+
+	VectorCopy( cg.refdef.vieworg, start );
+	VectorMA( start, 8192, cg.refdef.viewaxis[0], end );  
+
+	CG_Trace( &trace, start, vec3_origin, vec3_origin, end,
+			  cg.snap->ps.clientNum, CONTENTS_SOLID | CONTENTS_BODY | CONTENTS_ITEM );
+
+	if ( trace.entityNum >= MAX_CLIENTS ) {
+		return;
+	}
+
+	// if the player is in fog, don't show it
+	content = trap_CM_PointContents( trace.endpos, 0 );
+	if ( content & CONTENTS_FOG ) {
+		return;
+	}
+
+	// if the player is invisible, don't show it
+	if ( cg_entities[ trace.entityNum ].currentState.powerups & ( 1 << PW_INVIS ) ) {
+		return;
+	}
+
+	// update the fade timer
+	cg.crosshairClientNum = trace.entityNum;
+	cg.crosshairClientTime = cg.time;
+	if ( cg.crosshairClientNum != cg.identifyClientNum && cg.crosshairClientNum != ENTITYNUM_WORLD ) {
+		cg.identifyClientRequest = cg.crosshairClientNum;
+	}
+}
+
 
 
 /*
@@ -2797,7 +2836,82 @@ CG_DrawCrosshairNames
 =====================
 */
 static void CG_DrawCrosshairNames( void ) {
-return;
+	float       *color;
+	char        *name;
+	float w;
+	centity_t *cent;
+
+	cent = &cg_entities[cg.snap->ps.clientNum];
+
+	int playerTeam;
+
+	const char  *s;
+	int playerHealth, val;
+	vec4_t c;
+	float barFrac;
+
+	if ( cg_drawCrosshair.integer < 0 ) {
+		return;
+	}
+	if ( !cg_drawCrosshairNames.integer ) {
+		return;
+	}
+	if ( cg.renderingThirdPerson ) {
+		return;
+	}
+
+	// scan the known entities to see if the crosshair is sighted on one
+	CG_ScanForCrosshairEntity();
+
+	// draw the name of the player being looked at
+	color = CG_FadeColor( cg.crosshairClientTime, 500 );
+
+	if ( !color ) {
+		trap_R_SetColor( NULL );
+		return;
+	}
+
+	if ( cg.crosshairClientNum > MAX_CLIENTS ) {
+		return;
+	}
+
+	playerTeam = cg.snap->ps.teamNum;
+	// we only want to see players on our team
+	if ( cg.snap->ps.teamNum != playerTeam ) {
+		return;
+	}
+
+	name = cgs.clientinfo[ cg.crosshairClientNum ].skinName;
+
+	s = va( "%s", name );
+	if ( !s ) {
+		return;
+	}
+	w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+
+	// draw the name and class
+	CG_DrawSmallStringColor( 320 - w / 2, 170, s, color );
+
+	// draw the health bar
+	playerHealth = cg.identifyClientHealth;
+
+	if ( cg.crosshairClientNum == cg.identifyClientNum ) {
+		barFrac = (float)playerHealth / 100;
+
+		if ( barFrac > 1.0 ) {
+			barFrac = 1.0;
+		} else if ( barFrac < 0 ) {
+			barFrac = 0;
+		}
+
+		c[0] = 1.0f;
+		c[1] = c[2] = barFrac;
+		c[3] = 0.25 + barFrac * 0.5 * color[3];
+
+		CG_FilledBar( 320 - w / 2, 190, 110, 10, c, NULL, NULL, barFrac, 16 );
+	}
+
+	trap_R_SetColor( NULL );
 }
 
 

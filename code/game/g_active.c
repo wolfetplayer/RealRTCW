@@ -676,7 +676,7 @@ void ClientEvents( gentity_t *ent, int oldEventSequence ) {
 			}
 
 			ent->pain_debounce_time = level.time + 200; // no normal pain sound
-			G_Damage( ent, NULL, NULL, NULL, NULL, damage, 0, MOD_FALLING );
+			G_Damage( ent, NULL, NULL, NULL, NULL, damage, DAMAGE_NO_ARMOR, MOD_FALLING );
 			// falls through to FALL_SHORT
 
 //----(SA)	added the audible events for jumping/falling

@@ -927,40 +927,78 @@ void ClientThink_real( gentity_t *ent ) {
 		return;
 	}
 
-	// NOTE: -------------- SP uses now too
-// JPW NERVE do some time-based muzzle flip -- this never gets touched in single player (see g_weapon.c)
-// #define RIFLE_SHAKE_TIME 150 // JPW NERVE this one goes with the commented out old damped "realistic" behavior below
-#define RIFLE_SHAKE_TIME 300 // per Id request, longer recoil time
-	if ( client->sniperRifleFiredTime ) {
-		if ( level.time - client->sniperRifleFiredTime > RIFLE_SHAKE_TIME ) {
-			client->sniperRifleFiredTime = 0;
-		} else {
-			VectorCopy( client->ps.viewangles,muzzlebounce );
-
-// JPW old damped behavior -- feels more like a real rifle (modeled on Remington 700 7.62x51mm w/ 14x scope)
-/*
-			muzzlebounce[PITCH] -= 2*cos(1.0-(level.time - client->sniperRifleFiredTime)*3/RIFLE_SHAKE_TIME);
-			muzzlebounce[YAW] += client->sniperRifleMuzzleYaw*cos(1.0-(level.time - client->sniperRifleFiredTime)*3/RIFLE_SHAKE_TIME);
-			muzzlebounce[PITCH] -= random()*(1.0f-(level.time - client->sniperRifleFiredTime)/RIFLE_SHAKE_TIME);
-			muzzlebounce[YAW] += crandom()*(1.0f-(level.time - client->sniperRifleFiredTime)/RIFLE_SHAKE_TIME);
-*/
-
-// JPW per Id request, longer recoil time
-
-			// MP method \/
-/*			muzzlebounce[PITCH] -= 2*cos(2.5*(level.time - client->sniperRifleFiredTime)/RIFLE_SHAKE_TIME);
-			muzzlebounce[YAW] += 0.5*client->sniperRifleMuzzleYaw*cos(1.0-(level.time - client->sniperRifleFiredTime)*3/RIFLE_SHAKE_TIME);
-			muzzlebounce[PITCH] -= 0.25*random()*(1.0f-(level.time - client->sniperRifleFiredTime)/RIFLE_SHAKE_TIME);
-			muzzlebounce[YAW] += 0.5*crandom()*(1.0f-(level.time - client->sniperRifleFiredTime)/RIFLE_SHAKE_TIME);
-*/
-
-			// NOTE: ----------------- SP uses this method
-			muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*cos( 2.5*( level.time - client->sniperRifleFiredTime ) / RIFLE_SHAKE_TIME );
-			muzzlebounce[YAW] += 0.2*client->sniperRifleMuzzleYaw*cos( 1.0 - ( level.time - client->sniperRifleFiredTime )*3 / RIFLE_SHAKE_TIME );
-			muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*random() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / RIFLE_SHAKE_TIME );
-			muzzlebounce[YAW] += 0.2 * crandom() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / RIFLE_SHAKE_TIME );
-			SetClientViewAngle( ent,muzzlebounce );
-		}
+    // calculating scoped weapons recoil
+    switch ( client->ps.weapon ) {
+		case WP_SNIPERRIFLE:
+	             if ( client->sniperRifleFiredTime ) {
+		            if ( level.time - client->sniperRifleFiredTime >  ammoTable[WP_SNIPERRIFLE].weapRecoilDuration ) {
+			        client->sniperRifleFiredTime = 0;
+		            } else {
+			        VectorCopy( client->ps.viewangles,muzzlebounce );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*cos( 2.5*( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_SNIPERRIFLE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2*client->sniperRifleMuzzleYaw*cos( 1.0 - ( level.time - client->sniperRifleFiredTime )*3 / ammoTable[WP_SNIPERRIFLE].weapRecoilDuration );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*random() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_SNIPERRIFLE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2 * crandom() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_SNIPERRIFLE].weapRecoilDuration );
+			         SetClientViewAngle( ent,muzzlebounce );
+		            }
+	                }
+		break;
+		case WP_SNOOPERSCOPE:
+	             if ( client->sniperRifleFiredTime ) {
+		            if ( level.time - client->sniperRifleFiredTime >  ammoTable[WP_SNOOPERSCOPE].weapRecoilDuration ) {
+			        client->sniperRifleFiredTime = 0;
+		            } else {
+			        VectorCopy( client->ps.viewangles,muzzlebounce );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*cos( 2.5*( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_SNOOPERSCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2*client->sniperRifleMuzzleYaw*cos( 1.0 - ( level.time - client->sniperRifleFiredTime )*3 / ammoTable[WP_SNOOPERSCOPE].weapRecoilDuration );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*random() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_SNOOPERSCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2 * crandom() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_SNOOPERSCOPE].weapRecoilDuration );
+			         SetClientViewAngle( ent,muzzlebounce );
+		            }
+	                }
+		break;
+		case WP_FG42SCOPE:
+	             if ( client->sniperRifleFiredTime ) {
+		            if ( level.time - client->sniperRifleFiredTime >  ammoTable[WP_FG42SCOPE].weapRecoilDuration ) {
+			        client->sniperRifleFiredTime = 0;
+		            } else {
+			        VectorCopy( client->ps.viewangles,muzzlebounce );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*cos( 2.5*( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_FG42SCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2*client->sniperRifleMuzzleYaw*cos( 1.0 - ( level.time - client->sniperRifleFiredTime )*3 / ammoTable[WP_FG42SCOPE].weapRecoilDuration );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*random() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_FG42SCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2 * crandom() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_FG42SCOPE].weapRecoilDuration );
+			         SetClientViewAngle( ent,muzzlebounce );
+		            }
+	                }
+		break;
+		case WP_M1941SCOPE:
+	             if ( client->sniperRifleFiredTime ) {
+		            if ( level.time - client->sniperRifleFiredTime >  ammoTable[WP_M1941SCOPE].weapRecoilDuration ) {
+			        client->sniperRifleFiredTime = 0;
+		            } else {
+			        VectorCopy( client->ps.viewangles,muzzlebounce );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*cos( 2.5*( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_M1941SCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2*client->sniperRifleMuzzleYaw*cos( 1.0 - ( level.time - client->sniperRifleFiredTime )*3 / ammoTable[WP_M1941SCOPE].weapRecoilDuration );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*random() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_M1941SCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2 * crandom() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_M1941SCOPE].weapRecoilDuration );
+			         SetClientViewAngle( ent,muzzlebounce );
+		            }
+	                }
+		break;
+		case WP_DELISLESCOPE:
+	             if ( client->sniperRifleFiredTime ) {
+		            if ( level.time - client->sniperRifleFiredTime >  ammoTable[WP_DELISLESCOPE].weapRecoilDuration ) {
+			        client->sniperRifleFiredTime = 0;
+		            } else {
+			        VectorCopy( client->ps.viewangles,muzzlebounce );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*cos( 2.5*( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_DELISLESCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2*client->sniperRifleMuzzleYaw*cos( 1.0 - ( level.time - client->sniperRifleFiredTime )*3 / ammoTable[WP_DELISLESCOPE].weapRecoilDuration );
+			         muzzlebounce[PITCH] -= 0.25*client->sniperRifleMuzzlePitch*random() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_DELISLESCOPE].weapRecoilDuration );
+			         muzzlebounce[YAW] += 0.2 * crandom() * ( 1.0f - ( level.time - client->sniperRifleFiredTime ) / ammoTable[WP_DELISLESCOPE].weapRecoilDuration );
+			         SetClientViewAngle( ent,muzzlebounce );
+		            }
+	                }
+		break;
 	}
 	if ( client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC ) {
 		if ( level.time > client->ps.powerups[PW_REGEN] + 5000 ) {

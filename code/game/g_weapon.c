@@ -1744,8 +1744,8 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
-			ent->client->sniperRifleMuzzlePitch = 0.8f;
+			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_SNIPERRIFLE].weapRecoilYaw[0]; // used in clientthink
+			ent->client->sniperRifleMuzzlePitch = ammoTable[WP_SNIPERRIFLE].weapRecoilPitch[0];
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
@@ -1755,8 +1755,8 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, SNOOPER_SPREAD * aimSpreadScale, SNOOPER_DAMAGE(isPlayer)  );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
-			ent->client->sniperRifleMuzzlePitch = 0.9f;
+			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_SNOOPERSCOPE].weapRecoilYaw[0]; // used in clientthink
+			ent->client->sniperRifleMuzzlePitch = ammoTable[WP_SNOOPERSCOPE].weapRecoilPitch[0];
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
@@ -1771,8 +1771,8 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, DELISLESCOPE_SPREAD * aimSpreadScale, DELISLESCOPE_DAMAGE(isPlayer) );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
-			ent->client->sniperRifleMuzzlePitch = 0.8f;
+			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_DELISLESCOPE].weapRecoilYaw[0]; // used in clientthink
+			ent->client->sniperRifleMuzzlePitch = ammoTable[WP_DELISLESCOPE].weapRecoilPitch[0];
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
@@ -1784,8 +1784,8 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, FG42SCOPE_SPREAD*aimSpreadScale, FG42SCOPE_DAMAGE(isPlayer)  ); 
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.1; 
-			ent->client->sniperRifleMuzzlePitch = 0.1f;
+			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_FG42SCOPE].weapRecoilYaw[0]; // used in clientthink
+			ent->client->sniperRifleMuzzlePitch = ammoTable[WP_FG42SCOPE].weapRecoilPitch[0];
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}
@@ -1831,8 +1831,8 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire( ent, M1941SCOPE_SPREAD * aimSpreadScale, M1941SCOPE_DAMAGE (isPlayer) );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
-			ent->client->sniperRifleMuzzleYaw = crandom() * 0.5; // used in clientthink
-			ent->client->sniperRifleMuzzlePitch = 0.8f;
+			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_M1941SCOPE].weapRecoilYaw[0]; // used in clientthink
+			ent->client->sniperRifleMuzzlePitch = ammoTable[WP_M1941SCOPE].weapRecoilPitch[0];
 			ent->client->sniperRifleFiredTime = level.time;
 			SetClientViewAngle( ent,viewang );
 		}

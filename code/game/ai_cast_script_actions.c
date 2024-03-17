@@ -2504,7 +2504,17 @@ qboolean AICast_ScriptAction_Accum( cast_state_t *cs, char *params ) {
 			G_Error( "AI Scripting: accum %s requires a parameter\n", lastToken );
 		}
 		cs->scriptAccumBuffer[bufferIndex] = rand() % atoi( token );
-	} else {
+	} else if ( !Q_stricmp( lastToken, "random_no_zero" ) ) {
+    if ( !token[0] ) {
+        G_Error( "AI Scripting: accum %s requires a parameter\n", lastToken );
+    }
+    int tokenValue = atoi(token);
+    if (tokenValue > 1) {
+        cs->scriptAccumBuffer[bufferIndex] = (rand() % (tokenValue - 1)) + 1;
+    } else {
+        G_Error( "AI Scripting: accum %s requires a parameter greater than 1\n", lastToken );
+    }
+}  else {
 		G_Error( "AI Scripting: accum %s: unknown command\n", params );
 	}
 

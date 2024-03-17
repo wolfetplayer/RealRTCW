@@ -1118,7 +1118,6 @@ extern vmCvar_t g_fullarsenal;
 extern vmCvar_t g_endmapbonus;
 extern vmCvar_t g_randomweapons;
 extern vmCvar_t g_midgame;
-extern vmCvar_t g_dlc1;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 

@@ -254,7 +254,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace, int impactDamage, vec3_t d
 //		vec3_t dir;
 //		BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, dir );
 		BG_GetMarkDir( dir, trace->plane.normal, dir );
-		G_AddEvent( ent, EV_MISSILE_MISS, DirToByte( dir ) );
+		G_AddEvent( ent, EV_MISSILE_MISS_LARGE, DirToByte( dir ) );
 	}
 
 	ent->freeAfterEvent = qtrue;
@@ -494,6 +494,9 @@ void G_ExplodeMissile( gentity_t *ent ) {
 		ent->freeAfterEvent = qtrue;
 		trap_LinkEntity( ent );
 		return;
+	} else if ( !Q_stricmp( ent->classname, "rocket" ) ) {
+		G_AddEvent( ent, EV_MISSILE_MISS_LARGE, DirToByte( dir ) );
+		small = qfalse;
 	} else {
 		G_AddEvent( ent, EV_MISSILE_MISS, DirToByte( dir ) );
 	}

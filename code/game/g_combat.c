@@ -1115,9 +1115,14 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			damage *= 0.5;
 		}
 
+		if ( venomgun && targ->aiCharacter == AICHAR_LOPER ) {
+			//LOPER gets special venom damage
+			damage *= 1.2;
+		}
+
 		if ( venomgun && targ->aiCharacter == AICHAR_SUPERSOLDIER ) {
 			//supersoldier gets special venom damage
-			damage *= 0.6;
+			damage *= 0.8;
 		}
 
 	

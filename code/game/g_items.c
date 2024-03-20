@@ -468,6 +468,10 @@ int Pickup_Ammo( gentity_t *ent, gentity_t *other ) {
 
 	Add_Ammo( other, ent->item->giTag, quantity, qfalse );   //----(SA)	modified
 
+	if (strcmp(ent->item->classname, "ammo_panzerfaust") == 0) {
+       COM_BitSet( other->client->ps.weapons, WP_PANZERFAUST);
+    }
+
 	// single player has no respawns	(SA)
 
 		if ( !( ent->spawnflags & 8 ) ) {

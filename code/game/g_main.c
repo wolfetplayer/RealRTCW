@@ -212,7 +212,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_spawndogs, "g_spawndogs", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_spawnpriests, "g_spawnpriests", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_spawnxshepherds, "g_spawnxshepherds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_aicanheadshot, "g_aicanheadshot", "0", CVAR_ARCHIVE, 0, qfalse },
+	{ &g_aicanheadshot, "g_aicanheadshot", "1", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 // jpw

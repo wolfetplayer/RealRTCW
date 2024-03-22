@@ -2778,7 +2778,7 @@ static void CG_ScanForCrosshairEntity( void ) {
 	int content;
 
 	VectorCopy( cg.refdef.vieworg, start );
-	VectorMA( start, 8192, cg.refdef.viewaxis[0], end );  
+	VectorMA( start, 4096, cg.refdef.viewaxis[0], end );  
 
 	CG_Trace( &trace, start, vec3_origin, vec3_origin, end,
 			  cg.snap->ps.clientNum, CONTENTS_SOLID | CONTENTS_BODY | CONTENTS_ITEM );
@@ -2839,16 +2839,8 @@ static void CG_DrawCrosshairNames( void ) {
 	float       *color;
 	char        *name;
 	float w;
-	centity_t *cent;
-
-	cent = &cg_entities[cg.snap->ps.clientNum];
-
-	int playerTeam;
 
 	const char  *s;
-	int playerHealth, val;
-	vec4_t c;
-	float barFrac;
 
 	if ( cg_drawCrosshair.integer < 0 ) {
 		return;
@@ -2864,7 +2856,7 @@ static void CG_DrawCrosshairNames( void ) {
 	CG_ScanForCrosshairEntity();
 
 	// draw the name of the player being looked at
-	color = CG_FadeColor( cg.crosshairClientTime, 500 );
+	color = CG_FadeColor( cg.crosshairClientTime, 100 );
 
 	if ( !color ) {
 		trap_R_SetColor( NULL );
@@ -2872,12 +2864,6 @@ static void CG_DrawCrosshairNames( void ) {
 	}
 
 	if ( cg.crosshairClientNum > MAX_CLIENTS ) {
-		return;
-	}
-
-	playerTeam = cg.snap->ps.teamNum;
-	// we only want to see players on our team
-	if ( cg.snap->ps.teamNum != playerTeam ) {
 		return;
 	}
 
@@ -2890,26 +2876,7 @@ static void CG_DrawCrosshairNames( void ) {
 	w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
 
 	// draw the name and class
-	CG_DrawSmallStringColor( 320 - w / 2, 170, s, color );
-
-	// draw the health bar
-	playerHealth = cg.identifyClientHealth;
-
-	if ( cg.crosshairClientNum == cg.identifyClientNum ) {
-		barFrac = (float)playerHealth / 100;
-
-		if ( barFrac > 1.0 ) {
-			barFrac = 1.0;
-		} else if ( barFrac < 0 ) {
-			barFrac = 0;
-		}
-
-		c[0] = 1.0f;
-		c[1] = c[2] = barFrac;
-		c[3] = 0.25 + barFrac * 0.5 * color[3];
-
-		CG_FilledBar( 320 - w / 2, 190, 110, 10, c, NULL, NULL, barFrac, 16 );
-	}
+	CG_DrawSmallStringColor( 370 - w / 2, 190, s, color );
 
 	trap_R_SetColor( NULL );
 }

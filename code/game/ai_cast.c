@@ -241,6 +241,7 @@ gentity_t *AICast_AddCastToGame( gentity_t *ent, char *castname, char *model, ch
 	userinfo[0] = '\0';
 
 	Info_SetValueForKey( userinfo, "name", castname );
+	Info_SetValueForKey( userinfo, "translation", (ent->translation ? ent->translation : "") );
 	Info_SetValueForKey( userinfo, "rate", "25000" );
 	Info_SetValueForKey( userinfo, "snaps", "20" );
 	Info_SetValueForKey( userinfo, "handicap", handicap );
@@ -401,6 +402,7 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
 	cs->castScriptStatus.scriptGotoEnt = -1;
 	//
 	newent->aiName = ent->aiName;
+	newent->translation = ent->translation;
 	newent->aiTeam = ent->aiTeam;
 	newent->targetname = ent->targetname;
 	//

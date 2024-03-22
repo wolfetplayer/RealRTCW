@@ -206,6 +206,7 @@ struct gentity_s {
 									// bodyque uses this
 
 	int flags;                      // FL_* variables
+	char        *translation;
 	char		*Name;
 	char        *model;
 	char        *model2;
@@ -495,6 +496,8 @@ typedef struct {
 //
 #define MAX_NETNAME         36
 #define MAX_VOTE_COUNT      3
+
+#define MAX_TRANSLATION_TOKEN 36
 
 #define PICKUP_ACTIVATE 0   // pickup items only when using "+activate"
 #define PICKUP_TOUCH    1   // pickup items when touched

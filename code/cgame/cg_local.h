@@ -552,6 +552,7 @@ typedef struct {
 	int clientNum;
 
 	char name[MAX_QPATH];
+	char translation[MAX_QPATH];
 	team_t team;
 
 	int botSkill;                   // 0 = not bot, 1-5 = bot

@@ -1506,6 +1506,10 @@ void CG_NewClientInfo( int clientNum ) {
 	v = Info_ValueForKey( configstring, "n" );
 	Q_strncpyz( newInfo.name, v, sizeof( newInfo.name ) );
 
+	// isolate the player's translation token
+	v = CG_translateTextString( Info_ValueForKey( configstring, "tr" ) );
+	Q_strncpyz( newInfo.translation, v, sizeof( newInfo.translation ) );
+
 	// colors
 	v = Info_ValueForKey( configstring, "c1" );
 	CG_ColorFromString( v, newInfo.color );

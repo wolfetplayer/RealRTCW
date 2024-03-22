@@ -2881,7 +2881,7 @@ static void CG_DrawCrosshairNames( void ) {
 		return;
 	}
 
-	name = cgs.clientinfo[ cg.crosshairClientNum ].skinName;
+	name = cgs.clientinfo[ cg.crosshairClientNum ].translation;
 
 	s = va( "%s", name );
 	if ( !s ) {

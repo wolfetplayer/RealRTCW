@@ -304,7 +304,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse },
 
 	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
-	{ &g_weaponfalloff, "g_weaponfalloff", "1", CVAR_ARCHIVE },
+	{ &g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE },
 	{ &g_flushItems,	"g_flushItems",		"1",	0 },
 	{ &g_mapname, "mapname", "", CVAR_ARCHIVE }
 };

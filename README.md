@@ -10,12 +10,14 @@ Features:
 * Reworked difficulty levels
 * Automatic AI attributes system
 * Greatly expanded arsenal of weapons
-* Adapted recoil system from Enemy Territory
-* Atmospheric effects support from Enemy Territory
+* Overhauled recoil system
+* Atmospheric effects support
+* Foliage tech support
 * Subtitles support
 * New inventory items
 * Increased engine limits
 * Improved controller support
+* Extended scripting functionality
 * Custom BSPC and BSPCUI included in sdk folder
 * A lot of bug fixes and QOL improvements
 

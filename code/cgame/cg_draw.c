@@ -2775,7 +2775,7 @@ CG_ScanForCrosshairEntity
 static void CG_ScanForCrosshairEntity( void ) {
 	trace_t trace;
 	vec3_t start, end;
-	int content;
+	//int content;
 
 	VectorCopy( cg.refdef.vieworg, start );
 	VectorMA( start, 4096, cg.refdef.viewaxis[0], end );  
@@ -2788,10 +2788,10 @@ static void CG_ScanForCrosshairEntity( void ) {
 	}
 
 	// if the player is in fog, don't show it
-	content = trap_CM_PointContents( trace.endpos, 0 );
+	/*content = trap_CM_PointContents( trace.endpos, 0 );
 	if ( content & CONTENTS_FOG ) {
 		return;
-	}
+	}*/
 
 	// if the player is invisible, don't show it
 	if ( cg_entities[ trace.entityNum ].currentState.powerups & ( 1 << PW_INVIS ) ) {

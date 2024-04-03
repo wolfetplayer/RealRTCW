@@ -2205,15 +2205,19 @@ static void PM_BeginWeaponReload( int weapon ) {
 	if ( pm->ps->eFlags & EF_MELEE_ACTIVE ) {
 		return;
 	}
-       // Jaymod
+    
+	// Jaymod
+	if ( !pm->ps->aiChar) { 
 	if (weapon == WP_M97) {
 		PM_BeginM97Reload();
 		return;
 	}
+	
 
 	if (weapon == WP_AUTO5) {
 		PM_BeginAuto5Reload();
 		return;
+	}
 	}
 
 	switch ( weapon ) {
@@ -2537,12 +2541,14 @@ static void PM_ReloadClip( int weapon ) {
 
 	ammomove = ammoTable[weapon].maxclip - ammoclip;
       // Jaymod
+	if ( !pm->ps->aiChar) { 
 	if( weapon == WP_M97 || weapon == WP_AUTO5 ) {
 		ammomove = 1;
 	}
 
 	if( weapon == WP_M1941 && pm->ps->ammoclip[WP_M1941] > 0 ) {
 		ammomove = 5;
+	}
 	}
 
 	if ( ammoreserve < ammomove ) {
@@ -2572,6 +2578,7 @@ PM_FinishWeaponReload
 static void PM_FinishWeaponReload( void ) {
 
 	// Jaymod Overrides for Shotgun
+	if ( !pm->ps->aiChar) { 
 	if( pm->ps->weapon == WP_M97 ) {
 		PM_M97Reload();
 		return;
@@ -2580,6 +2587,7 @@ static void PM_FinishWeaponReload( void ) {
 	if( pm->ps->weapon == WP_AUTO5 ) {
 		PM_Auto5Reload();
 		return;
+	}
 	}
 
 	PM_ReloadClip( pm->ps->weapon );          // move ammo into clip
@@ -2643,10 +2651,12 @@ void PM_CheckForReload( int weapon ) {
 	return;
 	case WEAPON_RELOADING:
 		// Jaymod
+		if ( !pm->ps->aiChar) { 
 		if( pm->ps->weapon == WP_M97 || pm->ps->weapon == WP_AUTO5 ) {
 			if(( pm->cmd.buttons & BUTTON_ATTACK) || ( pm->cmd.wbuttons & WBUTTON_ATTACK2) ) {
 				pm->pmext->m97reloadInterrupt = qtrue;
 			}
+		}
 		}
 		return;
 	default:

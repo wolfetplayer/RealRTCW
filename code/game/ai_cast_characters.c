@@ -1066,6 +1066,7 @@ void AIChar_spawn( gentity_t *ent ) {
 	newent->client->ps.aiChar = ent->aiCharacter;
 	newent->spawnflags = ent->spawnflags;
 	newent->aiTeam = ent->aiTeam;
+	newent->canSpeak = ent->canSpeak;
 	if ( newent->aiTeam < 0 ) {
 		newent->aiTeam = aiCharDefaults->aiTeam;
 	}

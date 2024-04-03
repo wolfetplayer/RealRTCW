@@ -185,6 +185,7 @@ field_t fields[] = {
 	{"scriptName",       FOFS( scriptName ),           F_STRING},
 
 	{"stringname",       FOFS( translation ),          F_STRING},
+	{"canSpeak",         FOFS( canSpeak ),             F_INT},
 	{NULL}
 };
 

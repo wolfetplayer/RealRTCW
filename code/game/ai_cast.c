@@ -405,6 +405,7 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
 	newent->translation = ent->translation;
 	newent->aiTeam = ent->aiTeam;
 	newent->targetname = ent->targetname;
+	newent->canSpeak = ent->canSpeak;
 	//
 	newent->AIScript_AlertEntity = ent->AIScript_AlertEntity;
 	newent->aiInactive = ent->aiInactive;

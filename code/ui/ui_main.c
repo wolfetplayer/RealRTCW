@@ -4275,7 +4275,7 @@ static void UI_Update( const char *name ) {
 			trap_Cvar_SetValue( "cg_coronafardist", 4096 );
 			trap_Cvar_SetValue("cg_markTime", 30000 );
 			trap_Cvar_SetValue("cg_bloodTime", 360 );
-			trap_Cvar_SetValue("cg_particleDist", 2048 );
+			trap_Cvar_SetValue("cg_particleDist", 4096 );
 			trap_Cvar_SetValue( "cg_brassTime", 2500 );
 
 			trap_Cvar_SetValue("r_ext_multisample", 4);

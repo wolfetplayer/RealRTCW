@@ -270,6 +270,10 @@ static void CG_MachineGunEjectBrass( centity_t *cent ) {
 	le->leMarkType = LEMT_NONE;
 }
 
+static void CG_MachineGunEjectBrassDelay( centity_t *cent, int delay ) {
+	CG_AllocDelayedBrass( cent, cg.time + delay, CG_MachineGunEjectBrass );
+}
+
 /*
 ==============
 CG_PistolEjectBrassNew
@@ -461,6 +465,9 @@ static void CG_PistolEjectBrass( centity_t *cent ) {
 	le->leMarkType = LEMT_NONE;
 }
 
+static void CG_PistolEjectBrassDelay( centity_t *cent, int delay ) {
+	CG_AllocDelayedBrass( cent, cg.time + delay, CG_PistolEjectBrass );
+}
 
 //----(SA)	added
 /*
@@ -553,6 +560,11 @@ static void CG_PanzerFaustEjectBrass( centity_t *cent ) {
 
 	le->leMarkType = LEMT_NONE;
 }
+
+static void CG_PanzerFaustEjectBrassDelay( centity_t *cent, int delay ) {
+	CG_AllocDelayedBrass( cent, cg.time + delay, CG_PanzerFaustEjectBrass );
+}
+
 /*
 ==============
 CG_SpearTrail
@@ -1500,11 +1512,11 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 				return CG_RW_ParseError( handle, "expected ejectBrassFunc" );
 			} else {
 				if ( !Q_stricmp( filename, "MachineGunEjectBrass" ) ) {
-					weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
+					weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrassDelay;
 				} else if ( !Q_stricmp( filename, "PanzerFaustEjectBrass" ) ) {
-					weaponInfo->ejectBrassFunc = CG_PanzerFaustEjectBrass;
+					weaponInfo->ejectBrassFunc = CG_PanzerFaustEjectBrassDelay;
 				} else if ( !Q_stricmp( filename, "PistolEjectBrass" ) ) {
-					weaponInfo->ejectBrassFunc = CG_PistolEjectBrass;
+					weaponInfo->ejectBrassFunc = CG_PistolEjectBrassDelay;
 				}
 			}
 		} else if ( !Q_stricmp( token.string, "modModel" ) ) {
@@ -5301,7 +5313,7 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 
 	// do brass ejection
 	if ( weap->ejectBrassFunc && cg_brassTime.integer > 0 ) {
-		weap->ejectBrassFunc( cent );
+		weap->ejectBrassFunc( cent, 0 );
 	}
 }
 

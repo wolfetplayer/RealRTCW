@@ -42,6 +42,8 @@ localEntity_t cg_localEntities[MAX_LOCAL_ENTITIES];
 localEntity_t cg_activeLocalEntities;       // double linked list
 localEntity_t   *cg_freeLocalEntities;      // single linked list
 
+delayedBrass_t  *cg_delayedBrasses = NULL;
+
 // Ridah, debugging
 int localEntCount = 0;
 
@@ -126,6 +128,54 @@ localEntity_t   *CG_AllocLocalEntity( void ) {
 	return le;
 }
 
+
+/*
+==================
+CG_FreeDelayedBrass
+==================
+*/
+void CG_FreeDelayedBrass( delayedBrass_t * delayedBrass ) {
+	if ( !delayedBrass ) {
+		CG_Error( "CG_FreeDelayedBrass: delayedBrass is NULL" );
+	}
+
+	if ( delayedBrass->prev ) {
+		delayedBrass->prev->next = delayedBrass->next;
+	}
+
+	if ( delayedBrass->next ) {
+		delayedBrass->next->prev = delayedBrass->prev;
+	}
+
+	if ( delayedBrass->prev == NULL && delayedBrass->next == NULL ) {
+		cg_delayedBrasses = NULL;
+	}
+
+	free( delayedBrass );
+}
+
+
+/*
+===================
+CG_AllocDelayedBrass
+===================
+*/
+void CG_AllocDelayedBrass( centity_t * cent, int time, void ( *ejectBrassFunc )( centity_t * ) ) {
+
+	delayedBrass_t *delayedBrasses = ( delayedBrass_t* )malloc( sizeof( delayedBrass_t ) );
+	memset( delayedBrasses, 0, sizeof( delayedBrass_t ) );
+	delayedBrasses->centity = cent;
+	delayedBrasses->time = time;
+	delayedBrasses->ejectBrassFunc = ejectBrassFunc;
+
+	if ( !cg_delayedBrasses ) {
+		cg_delayedBrasses = delayedBrasses;
+	} else {
+		delayedBrasses->next = cg_delayedBrasses;
+		cg_delayedBrasses->prev = delayedBrasses;
+		cg_delayedBrasses = delayedBrasses;
+	}
+}
 
 /*
 ====================================================================================
@@ -1668,8 +1718,19 @@ CG_AddLocalEntities
 */
 void CG_AddLocalEntities( void ) {
 	localEntity_t   *le, *next;
+	delayedBrass_t *dlBrass;
 
 	cg.viewFade = 0.0;
+
+	dlBrass = cg_delayedBrasses;
+	for ( ; dlBrass != NULL ; dlBrass = dlBrass->next ) {
+		if ( cg.time < dlBrass->time ) {
+			continue;
+		}
+
+		dlBrass->ejectBrassFunc(dlBrass->centity);
+		CG_FreeDelayedBrass( dlBrass );
+	}
 
 	// walk the list backwards, so any new local entities generated
 	// (trails, marks, etc) will be present this frame

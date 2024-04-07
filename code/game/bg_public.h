@@ -596,6 +596,8 @@ typedef struct ammoTable_s {
 	int shotgunPumpStart;
 	int shotgunPumpLoop;
 	int shotgunPumpEnd;
+	int brassDelayEmpty;
+	int brassDelay;
 } ammoTable_t;
 
 // Skill-based ammo parameters

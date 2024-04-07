@@ -5311,10 +5311,49 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 	}
 
 
-	// do brass ejection
+	// do brass ejection with special delays for some weapons
 	if ( weap->ejectBrassFunc && cg_brassTime.integer > 0 ) {
-		weap->ejectBrassFunc( cent, 0 );
+		if (cg.predictedPlayerState.ammoclip[ent->weapon] == 0) {
+			weap->ejectBrassFunc( cent, ammoTable[ent->weapon].brassDelayEmpty );
+		} else {
+			weap->ejectBrassFunc( cent, ammoTable[ent->weapon].brassDelay );
+		}
 	}
+
+
+		// do brass ejection with special delays for some weapons
+/*	if ( weap->ejectBrassFunc && cg_brassTime.integer > 0 ) {
+	    if ( ent->weapon == WP_MAUSER ) {
+		    if (cg.predictedPlayerState.ammoclip[WP_MAUSER] == 0) {
+			weap->ejectBrassFunc( cent, 1700 );
+		    } else {
+		    weap->ejectBrassFunc( cent, 500 );
+		    }
+	    } else if ( ent->weapon == WP_SNIPERRIFLE ) {
+		    if (cg.predictedPlayerState.ammoclip[WP_SNIPERRIFLE] == 0) {
+			weap->ejectBrassFunc( cent, 1700 );
+		    } else {
+		    weap->ejectBrassFunc( cent, 500 );
+		    }
+	    } else if ( ent->weapon == WP_MOSIN ) {
+		    if (cg.predictedPlayerState.ammoclip[WP_MOSIN] == 0) {
+			weap->ejectBrassFunc( cent, 1800 );
+		    } else {
+		    weap->ejectBrassFunc( cent, 700 );
+		    }
+	    } else if ( ent->weapon == WP_DELISLE ) {
+		    if (cg.predictedPlayerState.ammoclip[WP_DELISLE] == 0) {
+			weap->ejectBrassFunc( cent, 700 );
+		    } else {
+		    weap->ejectBrassFunc( cent, 600 );
+		    }
+	    } else if ( ent->weapon == WP_PANZERFAUST ) {
+		   weap->ejectBrassFunc( cent, 550 ); 
+	    } else {
+		   weap->ejectBrassFunc( cent, 0 );  // brass delay for everything else
+	    }
+    }*/
+
 }
 
 

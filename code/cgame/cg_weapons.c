@@ -98,10 +98,7 @@ static void CG_MachineGunEjectBrassNew( centity_t *cent ) {
 		return;
 	}
 
-	if (cent->currentState.weapon == WP_M97 
-	|| cent->currentState.weapon == WP_M30 
-	|| cent->currentState.weapon == WP_REVOLVER
-	|| cent->currentState.weapon == WP_AUTO5)
+	if ( cent->currentState.weapon == WP_REVOLVER )
 		return;
 
 	le = CG_AllocLocalEntity();
@@ -276,6 +273,195 @@ static void CG_MachineGunEjectBrassDelay( centity_t *cent, int delay ) {
 
 /*
 ==============
+CG_ShotgunEjectBrassNew
+==============
+*/
+static void CG_ShotgunEjectBrassNew( centity_t *cent ) {
+	localEntity_t   *le;
+	refEntity_t     *re;
+	vec3_t velocity, xvelocity;
+	float waterScale = 1.0f;
+	vec3_t v[3];
+
+	if ( cg_brassTime.integer <= 0 ) {
+		return;
+	}
+
+	if (cent->currentState.weapon == WP_REVOLVER) // no brass for revolver
+		return;
+
+	le = CG_AllocLocalEntity();
+	re = &le->refEntity;
+
+	velocity[0] = -50 + 25 * crandom(); // New eject brass RealRTCW
+	velocity[1] = -100 + 40 * crandom();
+	velocity[2] = 200 + 50 * random();
+
+	le->leType = LE_FRAGMENT;
+	le->startTime = cg.time;
+	le->endTime = le->startTime + cg_brassTime.integer + ( cg_brassTime.integer / 4 ) * random();
+
+	le->pos.trType = TR_GRAVITY;
+	le->pos.trTime = cg.time - ( rand() & 15 );
+
+	AnglesToAxis( cent->lerpAngles, v );
+
+	VectorCopy( ejectBrassCasingOrigin, re->origin );
+
+	VectorCopy( re->origin, le->pos.trBase );
+
+	if ( CG_PointContents( re->origin, -1 ) & ( CONTENTS_WATER | CONTENTS_SLIME ) ) { //----(SA)	modified since slime is no longer deadly
+//	if ( CG_PointContents( re->origin, -1 ) & CONTENTS_WATER ) {
+		waterScale = 0.10;
+	}
+
+	xvelocity[0] = velocity[0] * v[0][0] + velocity[1] * v[1][0] + velocity[2] * v[2][0];
+	xvelocity[1] = velocity[0] * v[0][1] + velocity[1] * v[1][1] + velocity[2] * v[2][1];
+	xvelocity[2] = velocity[0] * v[0][2] + velocity[1] * v[1][2] + velocity[2] * v[2][2];
+	VectorScale( xvelocity, waterScale, le->pos.trDelta );
+
+	AxisCopy( axisDefault, re->axis );
+	re->hModel = cgs.media.shotgunBrassModel;
+
+	le->bounceFactor = 0.4 * waterScale;
+
+	le->angles.trType = TR_LINEAR;
+	le->angles.trTime = cg.time;
+	le->angles.trBase[0]  = (rand() & 31) + 60;  // new eject brass RealRTCW
+	le->angles.trBase[1]  = rand() & 255; 
+	le->angles.trBase[2]  = rand() & 31;
+	le->angles.trDelta[0] = 2;
+	le->angles.trDelta[1] = 1;
+	le->angles.trDelta[2] = 0;
+
+	le->leFlags = LEF_TUMBLE;
+
+
+	{
+		int contents;
+		vec3_t end;
+		VectorCopy( cent->lerpOrigin, end );
+		end[2] -= 24;
+		contents = trap_CM_PointContents( end, 0 );
+		if ( contents & ( CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA ) ) {
+			le->leBounceSoundType = LEBS_NONE;
+		} else {
+			le->leBounceSoundType = LEBS_BRASS;
+		}
+	}
+
+	le->leMarkType = LEMT_NONE;
+}
+
+/*
+==========================
+CG_ShotgunEjectBrass
+==========================
+*/
+
+static void CG_ShotgunEjectBrass( centity_t *cent ) {
+	localEntity_t   *le;
+	refEntity_t     *re;
+	vec3_t velocity, xvelocity;
+	vec3_t offset, xoffset;
+	float waterScale = 1.0f;
+	vec3_t v[3];
+
+	if ( cg_brassTime.integer <= 0 ) {
+		return;
+	}
+
+	if ( !( cg.snap->ps.persistant[PERS_HWEAPON_USE] ) && ( cent->currentState.clientNum == cg.snap->ps.clientNum ) ) {
+		CG_ShotgunEjectBrassNew( cent );
+		return;
+	}
+
+	le = CG_AllocLocalEntity();
+	re = &le->refEntity;
+
+	velocity[0]           = -20 + 40 * crandom(); // New eject brass RealRTCW
+	velocity[1]           = -150 + 40 * crandom();
+	velocity[2]           = 100 + 50 * crandom();
+
+	le->leType = LE_FRAGMENT;
+	le->startTime = cg.time;
+	le->endTime = le->startTime + cg_brassTime.integer + ( cg_brassTime.integer / 4 ) * random();
+
+	le->pos.trType = TR_GRAVITY;
+	le->pos.trTime = cg.time - ( rand() & 15 );
+
+	AnglesToAxis( cent->lerpAngles, v );
+
+	if ( cg.snap->ps.persistant[PERS_HWEAPON_USE] ) {
+		offset[0] = 32;
+		offset[1] = -4;
+		offset[2] = 0;
+	} else if ( cg.predictedPlayerState.weapon == WP_MP40 || cg.predictedPlayerState.weapon == WP_THOMPSON )     {
+		offset[0] = 20; // Maxx Kaufman offset value
+		offset[1] = -4;
+		offset[2] = 24;
+	} else if ( cg.predictedPlayerState.weapon == WP_VENOM )     {
+		offset[0] = 12;
+		offset[1] = -4;
+		offset[2] = 24;
+	} else {
+		VectorClear( offset );
+	}
+
+	xoffset[0] = offset[0] * v[0][0] + offset[1] * v[1][0] + offset[2] * v[2][0];
+	xoffset[1] = offset[0] * v[0][1] + offset[1] * v[1][1] + offset[2] * v[2][1];
+	xoffset[2] = offset[0] * v[0][2] + offset[1] * v[1][2] + offset[2] * v[2][2];
+	VectorAdd( cent->lerpOrigin, xoffset, re->origin );
+
+	VectorCopy( re->origin, le->pos.trBase );
+
+	if ( CG_PointContents( re->origin, -1 ) & ( CONTENTS_WATER | CONTENTS_SLIME ) ) { //----(SA)	modified since slime is no longer deadly
+		waterScale = 0.10;
+	}
+
+	xvelocity[0] = velocity[0] * v[0][0] + velocity[1] * v[1][0] + velocity[2] * v[2][0];
+	xvelocity[1] = velocity[0] * v[0][1] + velocity[1] * v[1][1] + velocity[2] * v[2][1];
+	xvelocity[2] = velocity[0] * v[0][2] + velocity[1] * v[1][2] + velocity[2] * v[2][2];
+	VectorScale( xvelocity, waterScale, le->pos.trDelta );
+
+	AxisCopy( axisDefault, re->axis );
+	re->hModel = cgs.media.machinegunBrassModel;
+
+	le->bounceFactor = 0.4 * waterScale;
+
+	le->angles.trType = TR_LINEAR;
+	le->angles.trTime = cg.time;
+	le->angles.trBase[0] = rand() & 31;
+	le->angles.trBase[1] = rand() & 31;
+	le->angles.trBase[2] = rand() & 31;
+	le->angles.trDelta[0] = 2;
+	le->angles.trDelta[1] = 1;
+	le->angles.trDelta[2] = 0;
+
+	le->leFlags = LEF_TUMBLE;
+
+	{
+		int contents;
+		vec3_t end;
+		VectorCopy( cent->lerpOrigin, end );
+		end[2] -= 24;
+		contents = trap_CM_PointContents( end, 0 );
+		if ( contents & ( CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA ) ) {
+			le->leBounceSoundType = LEBS_NONE;
+		} else {
+			le->leBounceSoundType = LEBS_BRASS;
+		}
+	}
+
+	le->leMarkType = LEMT_NONE;
+}
+
+static void  CG_ShotgunEjectBrassDelay( centity_t *cent, int delay ) {
+	CG_AllocDelayedBrass( cent, cg.time + delay, CG_ShotgunEjectBrass );
+}
+
+/*
+==============
 CG_PistolEjectBrassNew
 ==============
 */
@@ -289,12 +475,6 @@ static void CG_PistolEjectBrassNew( centity_t *cent ) {
 	if ( cg_brassTime.integer <= 0 ) {
 		return;
 	}
-
-	if (cent->currentState.weapon == WP_M97) //jaymod
-		return;
-
-	if (cent->currentState.weapon == WP_AUTO5) 
-		return;
 
 	if (cent->currentState.weapon == WP_REVOLVER) // no brass for revolver
 		return;
@@ -1517,6 +1697,8 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 					weaponInfo->ejectBrassFunc = CG_PanzerFaustEjectBrassDelay;
 				} else if ( !Q_stricmp( filename, "PistolEjectBrass" ) ) {
 					weaponInfo->ejectBrassFunc = CG_PistolEjectBrassDelay;
+				} else if ( !Q_stricmp( filename, "ShotgunEjectBrass" ) ) {
+					weaponInfo->ejectBrassFunc = CG_ShotgunEjectBrassDelay;
 				}
 			}
 		} else if ( !Q_stricmp( token.string, "modModel" ) ) {
@@ -5319,41 +5501,6 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 			weap->ejectBrassFunc( cent, ammoTable[ent->weapon].brassDelay );
 		}
 	}
-
-
-		// do brass ejection with special delays for some weapons
-/*	if ( weap->ejectBrassFunc && cg_brassTime.integer > 0 ) {
-	    if ( ent->weapon == WP_MAUSER ) {
-		    if (cg.predictedPlayerState.ammoclip[WP_MAUSER] == 0) {
-			weap->ejectBrassFunc( cent, 1700 );
-		    } else {
-		    weap->ejectBrassFunc( cent, 500 );
-		    }
-	    } else if ( ent->weapon == WP_SNIPERRIFLE ) {
-		    if (cg.predictedPlayerState.ammoclip[WP_SNIPERRIFLE] == 0) {
-			weap->ejectBrassFunc( cent, 1700 );
-		    } else {
-		    weap->ejectBrassFunc( cent, 500 );
-		    }
-	    } else if ( ent->weapon == WP_MOSIN ) {
-		    if (cg.predictedPlayerState.ammoclip[WP_MOSIN] == 0) {
-			weap->ejectBrassFunc( cent, 1800 );
-		    } else {
-		    weap->ejectBrassFunc( cent, 700 );
-		    }
-	    } else if ( ent->weapon == WP_DELISLE ) {
-		    if (cg.predictedPlayerState.ammoclip[WP_DELISLE] == 0) {
-			weap->ejectBrassFunc( cent, 700 );
-		    } else {
-		    weap->ejectBrassFunc( cent, 600 );
-		    }
-	    } else if ( ent->weapon == WP_PANZERFAUST ) {
-		   weap->ejectBrassFunc( cent, 550 ); 
-	    } else {
-		   weap->ejectBrassFunc( cent, 0 );  // brass delay for everything else
-	    }
-    }*/
-
 }
 
 

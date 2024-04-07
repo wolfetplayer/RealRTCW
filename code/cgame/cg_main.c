@@ -1481,6 +1481,7 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.machinegunBrassModel = trap_R_RegisterModel( "models/weapons/shells/m_shell.md3" );
 	cgs.media.panzerfaustBrassModel = trap_R_RegisterModel( "models/weapons/shells/pf_shell.md3" );
 	cgs.media.smallgunBrassModel = trap_R_RegisterModel( "models/weapons/shells/sm_shell.md3" );
+	cgs.media.shotgunBrassModel = trap_R_RegisterModel( "models/weapons/shells/sh_shell.md3" );
 
 	//----(SA) wolf debris
 	cgs.media.debBlock[0] = trap_R_RegisterModel( "models/mapobjects/debris/brick1.md3" );

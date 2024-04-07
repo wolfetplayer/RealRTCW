@@ -2960,7 +2960,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		CG_AddWeaponWithPowerups( &gun, cent->currentState.powerups, ps, cent );
 	}
 
-	if ( isPlayer ) {
+	if ( isPlayer && ps != NULL ) {
 		refEntity_t brass;
 
 		// opposite tag in akimbo, since at this point the weapon

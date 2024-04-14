@@ -53,14 +53,14 @@ If you have questions concerning this license or the applicable additional terms
 #else
   #define PRODUCT_NAME			"RealRTCW" // iortcw
   #define BASEGAME			"main"
-  #define CLIENT_WINDOW_TITLE     	"Return To Castle Wolfenstein"
+  #define CLIENT_WINDOW_TITLE     	"RealRTCW"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" // iowolfsp
 #ifdef USE_XDG
   #define HOMEPATH_NAME_UNIX		"RealRTCW"
 #else
   #define HOMEPATH_NAME_UNIX		".wolf"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW 4.0"
+  #define HOMEPATH_NAME_WIN		"Real_RTCW"
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
   #define GAMENAME_FOR_MASTER		"wolfsp"
   #define LEGACY_PROTOCOL
@@ -76,7 +76,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "4.0"
+  #define PRODUCT_VERSION "5.0"
 #endif
 
 #define Q3_VERSION PRODUCT_NAME " " PRODUCT_VERSION

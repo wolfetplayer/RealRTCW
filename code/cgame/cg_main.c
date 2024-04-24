@@ -366,7 +366,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_weaponCycleDelay, "cg_weaponCycleDelay", "150", CVAR_ARCHIVE }, //----(SA)	added
 	{ &cg_cycleAllWeaps,    "cg_cycleAllWeaps", "1", CVAR_ARCHIVE },
 	{ &cg_drawAllWeaps,     "cg_drawAllWeaps",   "1", CVAR_ARCHIVE },
-	{ &cg_crosshairSize, "cg_crosshairSize", "24", CVAR_ARCHIVE },
+	{ &cg_crosshairSize, "cg_crosshairSize", "48", CVAR_ARCHIVE },
 	{ &cg_crosshairAlpha, "cg_crosshairAlpha", "1.0", CVAR_ARCHIVE }, //----(SA)	added
 	{ &cg_crosshairHealth, "cg_crosshairHealth", "1", CVAR_ARCHIVE },
 	{ &cg_crosshairX, "cg_crosshairX", "0", CVAR_ARCHIVE },

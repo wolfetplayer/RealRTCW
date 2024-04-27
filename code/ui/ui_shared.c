@@ -3720,6 +3720,7 @@ static bind_t g_bindings[] =
 
 	{"savegame quicksave",   -1,         -1, -1, -1},    //----(SA)	added
 	{"loadgame quicksave",   -1,         -1, -1, -1},    //----(SA)	added
+	{"loadgame lastcheckpoint",   -1,         -1, -1, -1},    //----(SA)	added
 
 	{"+activate",        -1,             -1, -1, -1},
 	{"zoomin",           -1,             -1, -1, -1},

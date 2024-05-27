@@ -169,6 +169,7 @@ vmCvar_t cg_simpleItems;
 vmCvar_t cg_fov;
 vmCvar_t cg_fixedAspect;
 vmCvar_t cg_fixedAspectFOV;
+vmCvar_t cg_drawCheckpoint;
 vmCvar_t cg_oldWolfUI;
 vmCvar_t cg_drawStatusHead;
 vmCvar_t cg_hudWeapIcon;
@@ -389,6 +390,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_bobroll, "cg_bobroll", "0.002", CVAR_ARCHIVE },
 
 	{ &cg_bobbing, "cg_bobbing", "1", CVAR_ARCHIVE },
+
+	{ &cg_drawCheckpoint, "cg_drawCheckpoint", "1", CVAR_ARCHIVE },
 
 	
 

@@ -1321,7 +1321,10 @@ static void CG_DrawCheckpointString ( void ) {
 
 	trap_R_SetColor( color );
 
+	if ( cg_drawCheckpoint.integer == 1 ) 
+	{
 	CG_DrawStringExt2( -25, 100, CG_translateString( "checkpointsaved" ), color, qfalse, qtrue, 10, 10, 0 );
+	}
 
 }
 

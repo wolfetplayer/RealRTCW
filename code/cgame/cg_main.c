@@ -1893,6 +1893,14 @@ qboolean CG_Asset_Parse( int handle ) {
 			continue;
 		}
 
+		if ( Q_stricmp( token.string, "speakHint" ) == 0 ) {
+			if ( !PC_String_Parse( handle, &tempStr ) ) {
+				return qfalse;
+			}
+			cgs.media.hintShaders[HINT_PLYR_SPEAK] = trap_R_RegisterShader( tempStr );
+			continue;
+		}
+
 		if ( Q_stricmp( token.string, "usableHint" ) == 0 ) {
 			if ( !PC_String_Parse( handle, &tempStr ) ) {
 				return qfalse;

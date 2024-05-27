@@ -608,9 +608,18 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 
 		// check for friendly.
 		if ( traceEnt->aiTeam == AITEAM_ALLIES || traceEnt->aiTeam == AITEAM_NEUTRAL ) {
+		
 			if (traceEnt->canSpeak == 1 ) {
-			    hintType = HINT_PLYR_FRIEND;
-			    hintDist = CH_ACTIVATE_DIST; 
+				if ( dist > CH_ACTIVATE_DIST ) {
+				   hintType = HINT_PLYR_FRIEND;
+			       hintDist = CH_FRIENDLY_DIST; 
+				} else {
+			       hintType = HINT_PLYR_SPEAK;
+			       hintDist = CH_ACTIVATE_DIST; 
+				}
+			} else {
+   		        hintType = HINT_PLYR_FRIEND;
+			    hintDist = CH_FRIENDLY_DIST; 
 			}
 		}
 
@@ -849,6 +858,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 		case HINT_NOEXIT:
 		case HINT_NOEXIT_FAR:
 		case HINT_PLYR_FRIEND:
+		case HINT_PLYR_SPEAK:
 		case HINT_PLYR_NEUTRAL:
 		case HINT_PLYR_ENEMY:
 		case HINT_PLYR_UNKNOWN:

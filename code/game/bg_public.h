@@ -1397,6 +1397,7 @@ typedef enum {
 	HINT_PLYR_ENEMY,
 	HINT_PLYR_UNKNOWN,      // 40
 	HINT_BUILD,
+	HINT_PLYR_SPEAK,
 
 	HINT_BAD_USER,  // invisible user with no target
 

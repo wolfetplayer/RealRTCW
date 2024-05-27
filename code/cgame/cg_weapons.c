@@ -1465,10 +1465,11 @@ static qboolean CG_RW_ParseModModel( int handle, weaponInfo_t *weaponInfo ) {
 static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int weaponNum ) {
 	pc_token_t token;
 	char filename[MAX_QPATH];
-	int i;
+	int i = 0;
 
 	weaponInfo->reloadFullSound = 0;
 	weaponInfo->reloadSoundAi = 0;
+	weaponInfo->flashSoundAi[i] = 0;
 
 	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
 		return CG_RW_ParseError( handle, "expected '{'" );
@@ -1529,6 +1530,20 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 				for ( i = 0; i < 4; i++ ) {
 					if ( !weaponInfo->flashSound[i] ) {
 						weaponInfo->flashSound[i] = trap_S_RegisterSound( filename );
+						break;
+					}
+				}
+				if ( i == 4 ) {
+					CG_Printf( S_COLOR_YELLOW "WARNING: only up to 4 flashSounds supported per weapon\n" );
+				}
+			}
+		} else if ( !Q_stricmp( token.string, "flashSoundAi" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
+				return CG_RW_ParseError( handle, "expected flashSound filename" );
+			} else {
+				for ( i = 0; i < 4; i++ ) {
+					if ( !weaponInfo->flashSoundAi[i] ) {
+						weaponInfo->flashSoundAi[i] = trap_S_RegisterSound( filename );
 						break;
 					}
 				}
@@ -1725,6 +1740,10 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 
 	if (weaponInfo->reloadSoundAi == 0) {
         weaponInfo->reloadSoundAi = weaponInfo->reloadSound;
+    }
+
+	if (weaponInfo->flashSoundAi[i] == 0) {
+        weaponInfo->flashSoundAi[i] = weaponInfo->flashSound[i];
     }
 
 
@@ -5453,11 +5472,19 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 			}
 		}
 		if ( !c ) {
-			firesound = &weap->flashSound[0];
+			if (cent->currentState.aiChar) {
+			   firesound = &weap->flashSoundAi[0];
+			} else {
+			   firesound = &weap->flashSound[0];
+			}
 			fireEchosound = &weap->flashEchoSound[0];
 		}
 	} else {
-		firesound = &weap->flashSound[0];
+			if (cent->currentState.aiChar) {
+			   firesound = &weap->flashSoundAi[0];
+			} else {
+			   firesound = &weap->flashSound[0];
+			}
 		fireEchosound = &weap->flashEchoSound[0];
 	}
 

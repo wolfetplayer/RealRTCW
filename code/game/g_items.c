@@ -1109,6 +1109,12 @@ void FinishSpawningItem( gentity_t *ent ) {
 	{
     return;
 	}
+       
+    // No new ammo types too
+	if ( g_fullarsenal.integer == 0 && ent->item->giType == IT_AMMO && (ent->item->giAmmoIndex == WP_MP44 || ent->item->giAmmoIndex == WP_M97 || ent->item->giAmmoIndex == WP_BAR)) 
+	{
+	return;
+	} 
     
 	// RealRTCW arsenal without extra guns, value 2 will ge everything
 	if ( !g_dlc1.integer && ( ent->item->giWeapon == WP_M1941SCOPE

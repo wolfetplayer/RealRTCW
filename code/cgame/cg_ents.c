@@ -215,7 +215,13 @@ void CG_LoseArmor( centity_t *cent, int index ) {
 		dynamicparts = 14;  // the other two stay permanent
 		totalparts = superParts;
 		sound = cgs.media.superArmorBreak;
-	} else if ( cent->currentState.aiChar == AICHAR_HEINRICH ) {
+	} else if ( cent->currentState.aiChar == AICHAR_SUPERSOLDIER_LAB ) {
+		tags = &ssTags[0];
+		models = &cgs.media.superArmor[0];
+		dynamicparts = 14;  // the other two stay permanent
+		totalparts = superParts;
+		sound = cgs.media.superArmorBreak;
+	}  else if ( cent->currentState.aiChar == AICHAR_HEINRICH ) {
 		tags = &heinrichTags[0];
 		models = &cgs.media.heinrichArmor[0];
 		dynamicparts = 20;  // will get kicked down to 16
@@ -356,11 +362,14 @@ void CG_AttachedPartChange( centity_t *cent ) {
 
 	if ( aiCharNum == AICHAR_PROTOSOLDIER ||
 		 aiCharNum == AICHAR_SUPERSOLDIER ||
+		 aiCharNum == AICHAR_SUPERSOLDIER_LAB ||
 		 aiCharNum == AICHAR_HEINRICH ) {
 		// TODO: get these from a bloody #define (or something)
 		if ( aiCharNum == AICHAR_PROTOSOLDIER ) {
 			numParts = 9;
 		} else if ( aiCharNum == AICHAR_SUPERSOLDIER ) {
+			numParts = 14;
+		} else if ( aiCharNum == AICHAR_SUPERSOLDIER_LAB ) {
 			numParts = 14;
 		} else if ( aiCharNum == AICHAR_HEINRICH ) {
 			numParts = 20;

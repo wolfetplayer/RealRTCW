@@ -2355,6 +2355,7 @@ qboolean CG_DrawRealWeapons( centity_t *cent ) {
 	switch ( cent->currentState.aiChar ) {
 	case AICHAR_LOPER:
 	case AICHAR_SUPERSOLDIER:       //----(SA)	added
+	case AICHAR_SUPERSOLDIER_LAB:   
 	case AICHAR_PROTOSOLDIER:
 	case AICHAR_ZOMBIE:
 	case AICHAR_HELGA:      //----(SA)	added	// boss1 is now helga-blob
@@ -6672,6 +6673,7 @@ void CG_Bullet( vec3_t end, int sourceEntityNum, vec3_t normal, qboolean flesh, 
 
 			// (SA) TODO: for metal guys, make metal a flag rather than an aitype check?
 			if ( aiType == AICHAR_PROTOSOLDIER ||
+			     aiType == AICHAR_SUPERSOLDIER_LAB ||
 				 aiType == AICHAR_SUPERSOLDIER ) {
 				CG_SoundPlayIndexedScript( cgs.media.bulletHitFleshMetalScript, NULL, fleshEntityNum );
 			} else {
@@ -6681,6 +6683,7 @@ void CG_Bullet( vec3_t end, int sourceEntityNum, vec3_t normal, qboolean flesh, 
 			VectorSubtract( cg_entities[fleshEntityNum].lerpOrigin, cg.snap->ps.origin, origin );
 			VectorMA( cg.snap->ps.origin, 3, origin, origin );
 			if ( aiType == AICHAR_PROTOSOLDIER ||
+			     aiType == AICHAR_SUPERSOLDIER_LAB ||
 				 aiType == AICHAR_SUPERSOLDIER ) {
 				CG_SoundPlayIndexedScript( cgs.media.bulletHitFleshMetalScript, origin, ENTITYNUM_WORLD );
 			} else {

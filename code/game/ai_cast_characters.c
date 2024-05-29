@@ -559,6 +559,34 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		NULL,
 		AISTATE_RELAXED
 	},
+
+		//AICHAR_SUPERSOLDIER_LAB
+	{
+		"Super Soldier Lab",
+		{ // Default
+			0
+		},
+		{
+			"superSoldierSightPlayer",
+			"superSoldierAttackPlayer",
+			"superSoldierOrders",
+			"superSoldierDeath",
+			"superSoldierSilentDeath",	//----(SA)	added
+			"superSoldierFlameDeath",	//----(SA)	added
+			"superSoldierPain",
+			"superSoldierStay",			// stay - you're told to stay put
+			"superSoldierFollow",		// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"superSoldierOrdersDeny",	// deny - refuse orders (doing something else)
+		},
+		AITEAM_NAZI,
+		"supersoldier/default",
+		{WP_VENOM},
+		BBOX_LARGE, {48,64},
+		AIFL_NO_RELOAD | AIFL_NO_FLAME_DAMAGE | AIFL_NO_TESLA_DAMAGE,
+		0, 0, 0,
+		NULL,
+		AISTATE_ALERT
+	},
 };
 //---------------------------------------------------------------------------
 
@@ -1426,6 +1454,23 @@ void SP_ai_supersoldier( gentity_t *ent ) {
 	AICast_DelayedSpawnCast( ent, AICHAR_SUPERSOLDIER );
 }
 
+//----------------------------------------------------------------------------------------------------------------------------
+/*QUAKED ai_supersoldier_lab (1 0.25 0) (-32 -32 -24) (32 32 64) TriggerSpawn NoRevive
+supersoldier entity
+"skin" the .skin file to use for this character (must exist in the player characters directory, otherwise 'supersoldier/default' is used)
+"head" the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)
+"ainame" name of AI
+*/
+
+/*
+============
+SP_ai_supersoldier_lab
+============
+*/
+void SP_ai_supersoldier_lab( gentity_t *ent ) {
+	AICast_DelayedSpawnCast( ent, AICHAR_SUPERSOLDIER_LAB );
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------------
 /*QUAKED ai_priest (1 0.25 0) (-32 -32 -24) (32 32 64) TriggerSpawn NoRevive
@@ -1540,6 +1585,7 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_LOPER:             return "loper.aidefaults";
 		case AICHAR_ELITEGUARD:        return "eliteguard.aidefaults";
 		case AICHAR_SUPERSOLDIER:      return "supersoldier.aidefaults";
+		case AICHAR_SUPERSOLDIER_LAB:  return "supersoldier_lab.aidefaults";
 		case AICHAR_BLACKGUARD:        return "blackguard.aidefaults";
 		case AICHAR_PROTOSOLDIER:      return "protosoldier.aidefaults";
 		case AICHAR_HELGA:             return "helga.aidefaults";

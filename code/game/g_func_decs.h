@@ -1638,6 +1638,7 @@ extern char *AIFunc_DogAttack ( cast_state_t * cs ) ;
 extern void SP_ai_blackguard ( gentity_t * ent ) ;
 extern void SP_ai_protosoldier ( gentity_t * ent ) ;
 extern void SP_ai_supersoldier ( gentity_t * ent ) ;
+extern void SP_ai_supersoldier_lab ( gentity_t * ent ) ;
 extern void SP_ai_priest ( gentity_t * ent ) ;
 extern void SP_ai_xshepherd ( gentity_t * ent ) ;
 extern void SP_ai_eliteguard ( gentity_t * ent ) ;

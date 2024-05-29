@@ -1635,6 +1635,7 @@ If you have questions concerning this license or the applicable additional terms
 {"SP_ai_blackguard", (byte *)SP_ai_blackguard},
 {"SP_ai_protosoldier", (byte *)SP_ai_protosoldier},
 {"SP_ai_supersoldier", (byte *)SP_ai_supersoldier},
+{"SP_ai_supersoldier_lab", (byte *)SP_ai_supersoldier_lab},
 {"SP_ai_priest", (byte *)SP_ai_priest},
 {"SP_ai_xshepherd", (byte *)SP_ai_xshepherd},
 {"SP_ai_eliteguard", (byte *)SP_ai_eliteguard},

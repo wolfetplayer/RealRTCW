@@ -1067,7 +1067,7 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 
     if ( g_gametype.integer == GT_GOTHIC ) 
 	        {
-	           if ( self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_PROTOSOLDIER ) { 
+	           if ( self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_PROTOSOLDIER || self->aiCharacter == AICHAR_SUPERSOLDIER_LAB ) { 
 		       bolt->s.pos.trType = TR_LINEAR; // no special behaviour for robots - it looks cringe
 		       } else {
 		       bolt->s.pos.trType = TR_GRAVITY_LOW; //special rocket behaviour for gothicstein

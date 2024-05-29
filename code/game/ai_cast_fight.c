@@ -478,6 +478,11 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			if ( !COM_BitCheck( cs->bs->cur_ps.weapons, WP_PANZERFAUST ) ) {
 				return TESLA_SUPERSOLDIER_RANGE;
 			}
+		case AICHAR_SUPERSOLDIER_LAB:   // BOSS2
+			// if they have a panzer, give this weapon a shorter range
+			if ( !COM_BitCheck( cs->bs->cur_ps.weapons, WP_PANZERFAUST ) ) {
+				return TESLA_SUPERSOLDIER_LAB_RANGE;
+			}
 		case AICHAR_PRIEST:
 		return 450;
 		}
@@ -563,6 +568,8 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum ) {
 			return 1000;
 		case AICHAR_SUPERSOLDIER: 
 			return 1500;
+		case AICHAR_SUPERSOLDIER_LAB: 
+			return 1000;
 		case AICHAR_PROTOSOLDIER:  
 			return 1500;
 		case AICHAR_XSHEPHERD:

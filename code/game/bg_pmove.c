@@ -503,6 +503,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 		     scale *= 1.3;
 			 break;
 		case AICHAR_SUPERSOLDIER:
+		case AICHAR_SUPERSOLDIER_LAB:
 		     scale *= 1.3;
 			 break;
 		case AICHAR_HELGA:
@@ -2068,7 +2069,7 @@ static void PM_Footsteps( void ) {
 
 		old = pm->ps->bobCycle;
 
-		if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER || pm->ps->aiChar == AICHAR_PROTOSOLDIER ) {
+		if ( pm->ps->aiChar == AICHAR_SUPERSOLDIER || pm->ps->aiChar == AICHAR_PROTOSOLDIER || pm->ps->aiChar == AICHAR_SUPERSOLDIER_LAB ) {
 			//iswalking = qfalse;
 			bobmove = 0.4 * 0.75f;  // slow down footsteps for big guys
 		}
@@ -3989,6 +3990,7 @@ static void PM_Weapon( void ) {
 	// the weapon can overheat, and it's hot
 	if ( ( pm->ps->aiChar != AICHAR_PROTOSOLDIER ) &&
 		 ( pm->ps->aiChar != AICHAR_SUPERSOLDIER ) &&
+		( pm->ps->aiChar != AICHAR_SUPERSOLDIER_LAB ) &&
 		 ( pm->ps->aiChar != AICHAR_XSHEPHERD ) &&
 		 ( ammoTable[pm->ps->weapon].maxHeat && pm->ps->weapHeat[pm->ps->weapon] ) ) {
 		// it is overheating

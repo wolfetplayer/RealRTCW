@@ -79,6 +79,7 @@ void TossClientItems( gentity_t *self ) {
 	case AICHAR_LOPER:
 	case AICHAR_PROTOSOLDIER:
 	case AICHAR_SUPERSOLDIER:
+	case AICHAR_SUPERSOLDIER_LAB:
 	case AICHAR_DOG:
 	case AICHAR_PRIEST:
 	case AICHAR_XSHEPHERD:
@@ -246,7 +247,7 @@ void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 		return;
 	}
 
-	if ( self->aiCharacter == AICHAR_HEINRICH || self->aiCharacter == AICHAR_HELGA || self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_PROTOSOLDIER ) {
+	if ( self->aiCharacter == AICHAR_HEINRICH || self->aiCharacter == AICHAR_HELGA || self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_SUPERSOLDIER_LAB || self->aiCharacter == AICHAR_PROTOSOLDIER ) {
 		if ( self->health <= GIB_HEALTH ) {
 			self->health = -1;
 			return;
@@ -773,6 +774,8 @@ void G_ArmorDamage( gentity_t *targ ) {
 		numParts = 9;
 	} else if ( targ->s.aiChar == AICHAR_SUPERSOLDIER ) {
 		numParts = 14;
+	} else if ( targ->s.aiChar == AICHAR_SUPERSOLDIER_LAB ) {
+		numParts = 14;
 	} else if ( targ->s.aiChar == AICHAR_HEINRICH ) {
 		numParts = 20;
 	} else {
@@ -1120,6 +1123,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 
 		if ( venomgun && targ->aiCharacter == AICHAR_SUPERSOLDIER ) {
+			//supersoldier gets special venom damage
+			damage *= 0.8;
+		}
+
+		if ( venomgun && targ->aiCharacter == AICHAR_SUPERSOLDIER_LAB ) {
 			//supersoldier gets special venom damage
 			damage *= 0.8;
 		}

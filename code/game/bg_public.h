@@ -59,6 +59,7 @@ If you have questions concerning this license or the applicable additional terms
 #define TESLA_RANGE         1200
 #define HOLYCROSS_RANGE     800
 #define TESLA_SUPERSOLDIER_RANGE    2000
+#define TESLA_SUPERSOLDIER_LAB_RANGE    400
 
 #define FLAMETHROWER_RANGE 2000
 
@@ -478,6 +479,7 @@ typedef enum
 	AICHAR_DOG,
 	AICHAR_PRIEST,
 	AICHAR_XSHEPHERD,
+	AICHAR_SUPERSOLDIER_LAB,
 	NUM_CHARACTERS
 } AICharacters_t;
 

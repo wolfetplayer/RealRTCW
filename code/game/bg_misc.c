@@ -3153,7 +3153,7 @@ model="models/weapons2/mauser/mauser.md3"
 		IT_WEAPON,
 		WP_M1941SCOPE,
 		WP_M1941SCOPE,
-		WP_BAR,
+		WP_M1941,
 		WP_M1941,
 		"",                      
 		"",                      
@@ -3939,7 +3939,7 @@ model="models/multiplayer/m1941/m1941_3rd.md3"
 		IT_WEAPON,
 		WP_M1941,
 		WP_M1941,
-		WP_BAR,
+		WP_M1941,
 		WP_M1941,
 		"",                  
 		"",                  
@@ -4537,6 +4537,34 @@ model="models/powerups/ammo/barammo_l.md3"
 		"",                 
 		"",                  
 		{60,60,45,45,45}	
+	},
+
+/*QUAKED ammo_m1941ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: M1941
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/barammo.md3"
+*/
+{
+		"ammo_m1941",
+		"sound/misc/am_pkup.wav",
+		{ 
+		"models/powerups/ammo/barammo.md3",
+		0, 
+		0
+		},
+
+		"icons/iconw_luger_1", 
+		"ammo_m1941",           
+		60,
+		IT_AMMO,
+		WP_NONE,
+		WP_M1941,
+		WP_M1941,
+		WP_M1941,
+		"",                 
+		"",                  
+		{40,40,30,30,30}	
 	},
 
 /*QUAKED ammo_44ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN

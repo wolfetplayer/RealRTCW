@@ -595,7 +595,7 @@ void AICast_AIDoor_Touch( gentity_t *ent, gentity_t *aidoor_trigger, gentity_t *
 
 	// does the aidoor have ai_marker's?
 	if ( !aidoor_trigger->targetname ) {
-		G_Printf( "trigger_aidoor has no ai_marker's at %s\n", vtos( ent->r.currentOrigin ) );
+		//G_Printf( "trigger_aidoor has no ai_marker's at %s\n", vtos( ent->r.currentOrigin ) );
 		return;
 	}
 

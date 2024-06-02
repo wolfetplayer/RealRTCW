@@ -223,6 +223,10 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_WARBELL3", (byte *)AICast_ScriptAction_Achievement_WARBELL3},
 {"AICast_ScriptAction_Achievement_WARBELL4", (byte *)AICast_ScriptAction_Achievement_WARBELL4},
 {"AICast_ScriptAction_Achievement_WARBELL5", (byte *)AICast_ScriptAction_Achievement_WARBELL5},
+// Malta Update achievements
+{"AICast_ScriptAction_Achievement_MALTA_NIGHTMARE", (byte *)AICast_ScriptAction_Achievement_MALTA_NIGHTMARE},
+{"AICast_ScriptAction_Achievement_MALTA_LEAP", (byte *)AICast_ScriptAction_Achievement_MALTA_LEAP},
+{"AICast_ScriptAction_Achievement_MALTA_OSA", (byte *)AICast_ScriptAction_Achievement_MALTA_OSA},
 // end achievements
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
 {"AICast_ScriptAction_Teleport", (byte *)AICast_ScriptAction_Teleport},

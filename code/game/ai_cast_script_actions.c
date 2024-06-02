@@ -4940,6 +4940,46 @@ qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char *param
 	return qtrue;
 }
 
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_NIGHTMARE
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_NIGHTMARE( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_NIGHTMARE");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_LEAP
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_LEAP( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_LEAP");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_OSA
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_OSA( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_OSA");
+	}
+	return qtrue;
+}
+
+
 
 /*
 ==================

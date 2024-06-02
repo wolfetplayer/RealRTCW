@@ -227,6 +227,10 @@ qboolean AICast_ScriptAction_Achievement_WARBELL3( cast_state_t *cs, char *param
 qboolean AICast_ScriptAction_Achievement_WARBELL4( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char *params );
 
+// Malta Update Achievements
+qboolean AICast_ScriptAction_Achievement_MALTA_NIGHTMARE( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_LEAP( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_OSA( cast_state_t *cs, char *params );
 
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
@@ -457,6 +461,10 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_blavWarbell",      AICast_ScriptAction_Achievement_WARBELL3},
 	{"achievement_olaricWarbell",    AICast_ScriptAction_Achievement_WARBELL4},
 	{"achievement_heinrichWarbell",  AICast_ScriptAction_Achievement_WARBELL5},
+	// Malta Update Achievements
+	{"achievement_malta_nightmare",  AICast_ScriptAction_Achievement_MALTA_NIGHTMARE},
+	{"achievement_malta_leap",       AICast_ScriptAction_Achievement_MALTA_LEAP},
+	{"achievement_malta_osa",       AICast_ScriptAction_Achievement_MALTA_OSA},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

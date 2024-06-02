@@ -223,6 +223,10 @@ extern qboolean AICast_ScriptAction_Achievement_WARBELL2( cast_state_t *cs, char
 extern qboolean AICast_ScriptAction_Achievement_WARBELL3( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_Achievement_WARBELL4( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char *params );
+// Malta update achievements
+extern qboolean AICast_ScriptAction_Achievement_MALTA_NIGHTMARE( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_LEAP( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_OSA( cast_state_t *cs, char *params );
 // end achievements
 extern qboolean AICast_ScriptAction_EndGame ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Teleport ( cast_state_t * cs , char * params ) ;

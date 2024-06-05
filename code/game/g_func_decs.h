@@ -1439,6 +1439,17 @@ extern qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char
 extern qboolean AICast_ScriptAction_Achievement_MALTA_NIGHTMARE( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_Achievement_MALTA_LEAP( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_Achievement_MALTA_OSA( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_GOAT( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_COURSE( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_RADIO( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_EGYPT( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_WIDE( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_FIREFLY( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_LAIR( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_HIDEOUT( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_BARTENDER( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_BETRAYER( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *params );
 
 
 // end achievements

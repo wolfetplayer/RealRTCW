@@ -4980,6 +4980,148 @@ qboolean AICast_ScriptAction_Achievement_MALTA_OSA( cast_state_t *cs, char *para
 }
 
 
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_GOAT
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_GOAT( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_GOAT");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_COURSE
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_COURSE( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_COURSE");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_RADIO
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_RADIO( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_RADIO");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_EGYPT
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_EGYPT( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_EGYPT");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_WIDE
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_WIDE( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_WIDE");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_FIREFLY
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_FIREFLY( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_FIREFLY");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_LAIR
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_LAIR( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_LAIR");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_HIDEOUT
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_HIDEOUT( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_HIDEOUT");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_BARTENDER
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_BARTENDER( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_BARTENDER");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_BETRAYER
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_BETRAYER( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_BETRAYER");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_MALTA_AGENT2
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_MALTA_AGENT2");
+	}
+	return qtrue;
+}
 
 /*
 ==================

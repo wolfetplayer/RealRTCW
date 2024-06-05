@@ -231,6 +231,18 @@ qboolean AICast_ScriptAction_Achievement_WARBELL5( cast_state_t *cs, char *param
 qboolean AICast_ScriptAction_Achievement_MALTA_NIGHTMARE( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_MALTA_LEAP( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_MALTA_OSA( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_GOAT( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_COURSE( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_RADIO( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_EGYPT( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_WIDE( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_FIREFLY( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_LAIR( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_HIDEOUT( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_BARTENDER( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_BETRAYER( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *params );
+
 
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
@@ -465,6 +477,17 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_malta_nightmare",  AICast_ScriptAction_Achievement_MALTA_NIGHTMARE},
 	{"achievement_malta_leap",       AICast_ScriptAction_Achievement_MALTA_LEAP},
 	{"achievement_malta_osa",       AICast_ScriptAction_Achievement_MALTA_OSA},
+	{"achievement_malta_goat",       AICast_ScriptAction_Achievement_MALTA_GOAT},
+	{"achievement_malta_course",       AICast_ScriptAction_Achievement_MALTA_COURSE},
+	{"achievement_malta_radio",       AICast_ScriptAction_Achievement_MALTA_RADIO},
+	{"achievement_malta_egypt",       AICast_ScriptAction_Achievement_MALTA_EGYPT},
+	{"achievement_malta_wide",       AICast_ScriptAction_Achievement_MALTA_WIDE},
+	{"achievement_malta_firefly",       AICast_ScriptAction_Achievement_MALTA_FIREFLY},
+	{"achievement_malta_lair",       AICast_ScriptAction_Achievement_MALTA_LAIR},
+	{"achievement_malta_hideout",       AICast_ScriptAction_Achievement_MALTA_HIDEOUT},
+	{"achievement_malta_bartender",       AICast_ScriptAction_Achievement_MALTA_BARTENDER},
+	{"achievement_malta_betrayer",       AICast_ScriptAction_Achievement_MALTA_BETRAYER},
+	{"achievement_malta_agent2",       AICast_ScriptAction_Achievement_MALTA_AGENT2},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added

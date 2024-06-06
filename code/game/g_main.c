@@ -169,6 +169,7 @@ vmCvar_t g_midgame;
 vmCvar_t g_vanilla_guns;
 vmCvar_t g_dlc1;
 vmCvar_t g_class;
+vmCvar_t g_noobTube;
 
 vmCvar_t g_mapname;
 
@@ -203,6 +204,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_vanilla_guns, "g_vanilla_guns", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse },
+	{ &g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 

@@ -60,11 +60,11 @@ If you have questions concerning this license or the applicable additional terms
   #define CLIENT_WINDOW_TITLE     	"RealRTCW"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" //iowolfsp
 #ifdef USE_XDG
-  #define HOMEPATH_NAME_UNIX		"Real_RTCW"
+  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.0"
 #else
   #define HOMEPATH_NAME_UNIX		".realrtcw"
 #endif
-  #define HOMEPATH_NAME_WIN		"Real_RTCW"
+  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.0"
   #define STEAMPATH_NAME		"Return To Castle Wolfenstein"
   #define STEAMPATH_APPID		"9010"
 

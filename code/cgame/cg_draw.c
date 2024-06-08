@@ -1821,14 +1821,19 @@ void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
 		}
 		s++;
 	}
-	len = CG_DrawStrlen(cg.centerPrint);
-	if (len > 85) {
-		cg.centerPrintTime = cg.time + len * 230;
-	} else if (len > 50) {
-		cg.centerPrintTime = cg.time + len * 125;
-	} else {
-		cg.centerPrintTime = cg.time;
-	}
+    // Calculate the number of characters in the message
+    len = CG_DrawStrlen(cg.centerPrint);
+	// Calculate the display time based on an average reading speed of 17 characters per second
+    int displayTime = (len / 17.0) * 1000; // Convert to milliseconds
+
+	// Ensure the display time is at least a certain minimum value to prevent very short messages from disappearing too quickly
+    int minDisplayTime = 2000; // 2 seconds
+    if (displayTime < minDisplayTime) {
+       displayTime = minDisplayTime;
+    }
+
+	// Set the time at which the message should disappear
+    cg.centerPrintTime = cg.time + displayTime;
 }
 
 /*

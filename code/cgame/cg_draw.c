@@ -1799,9 +1799,19 @@ for a few moments
 void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
 	char   *s;
 	int len;
-//----(SA)	added translation lookup
-	Q_strncpyz( cg.centerPrint, CG_translateTextString( (char*)str ), sizeof( cg.centerPrint ) );
-//----(SA)	end
+
+
+    // Translate the input string
+    const char* translated = CG_translateTextString(str);
+
+    // Check if the translated string is "IGNORED_SUBTITLE", indicating an ignored subtitle
+    if (strcmp(translated, "IGNORED_SUBTITLE") == 0) {
+        // If it is, return immediately to prevent the subtitle from being displayed
+        return;
+    }
+
+    // Copy the translated string to cg.centerPrint
+    Q_strncpyz(cg.centerPrint, translated, sizeof(cg.centerPrint));
 
 
 	

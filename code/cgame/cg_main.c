@@ -1076,6 +1076,33 @@ static void CG_LoadTranslateStrings( void ) {
 const char *CG_translateTextString(const char *str) {
 	int i, numStrings;
 
+    numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
+    for (i = 0; i < numStrings; i++) {
+        if (!strcmp(str, cgs.ignoredSubtitles[i])) {
+            // Return a special string to indicate an ignored subtitle
+            return "IGNORED_SUBTITLE";
+        }
+    }
+	numStrings = sizeof(translateTextStrings) / sizeof(translateTextStrings[0]) - 1;
+	i = 0;
+	
+	for (i = 0; i < numStrings; i++) {
+		if (!translateTextStrings[i].stringname || !strlen(translateTextStrings[i].stringname)) {
+			return str;
+		}
+		if (!strcmp(str, translateTextStrings[i].stringname)) {
+			if (translateTextStrings[i].stringtext && strlen(translateTextStrings[i].stringtext)) {
+				return translateTextStrings[i].stringtext;
+			}
+			break;
+		}
+	}
+	return str;
+}
+
+const char *CG_translateTextString2(const char *str) {
+	int i, numStrings;
+
 	numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
 	for (i = 0; i < numStrings; i++) {
 		if (!strcmp(str, cgs.ignoredSubtitles[i])) {

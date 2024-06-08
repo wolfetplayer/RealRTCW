@@ -2313,6 +2313,7 @@ void CG_DrawInformation( void );
 const char *CG_translateString( const char *str );
 const char *CG_bonusString( const char *str );
 const char *CG_translateTextString( const char *str );
+const char *CG_translateTextString2( const char *str );
 
 
 //

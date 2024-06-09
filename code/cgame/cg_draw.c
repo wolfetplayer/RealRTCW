@@ -1810,29 +1810,29 @@ void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
         return;
     }
 
-    // Copy the translated string to cg.centerPrint
-    Q_strncpyz(cg.centerPrint, translated, sizeof(cg.centerPrint));
+    // Copy the translated string to cg.subtitlePrint
+    Q_strncpyz(cg.subtitlePrint, translated, sizeof(cg.subtitlePrint));
 
 
 	
-	cg.centerPrintY = y;
-	cg.centerPrintCharWidth = charWidth;
+	cg.subtitlePrintY = y;
+	cg.subtitlePrintCharWidth = charWidth;
 
 	// count the number of lines for centering
-	cg.centerPrintLines = 1;
-	s = cg.centerPrint;
+	cg.subtitlePrintLines = 1;
+	s = cg.subtitlePrint;
 	while ( *s ) {
 		if ( *s == '\n' ) {
-			cg.centerPrintLines++;
+			cg.subtitlePrintLines++;
 		}
 		if ( !Q_strncmp( s, "\\n", 1 ) ) {
-			cg.centerPrintLines++;
+			cg.subtitlePrintLines++;
 			s++;
 		}
 		s++;
 	}
     // Calculate the number of characters in the message
-    len = CG_DrawStrlen(cg.centerPrint);
+    len = CG_DrawStrlen(cg.subtitlePrint);
 	// Calculate the display time based on an average reading speed of 17 characters per second
     int displayTime = (len / 17.0) * 1000; // Convert to milliseconds
 
@@ -1843,7 +1843,7 @@ void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
     }
 
 	// Set the time at which the message should disappear
-    cg.centerPrintTime = cg.time + displayTime;
+    cg.subtitlePrintTime = cg.time + displayTime;
 }
 
 /*
@@ -1872,7 +1872,7 @@ static void CG_DrawCenterString( void ) {
 
 	trap_R_SetColor( color );
 
-	start = cg.centerPrint;
+	start = cg.subtitlePrint;
 
 	y = cg.centerPrintY - cg.centerPrintLines * BIGCHAR_HEIGHT / 2;
 
@@ -1894,6 +1894,71 @@ static void CG_DrawCenterString( void ) {
 		CG_DrawStringExt( x, y, linebuffer, color, qfalse, qtrue, cg.centerPrintCharWidth, (int)( cg.centerPrintCharWidth * 1.5 ), 0 );
 
 		y += cg.centerPrintCharWidth * 2;
+
+		while ( *start && ( *start != '\n' ) ) {
+			if ( !Q_strncmp( start, "\\n", 1 ) ) {
+				start++;
+				break;
+			}
+			start++;
+		}
+		if ( !*start ) {
+			break;
+		}
+		start++;
+	}
+
+	trap_R_SetColor( NULL );
+}
+
+/*
+===================
+CG_DrawSubtitleString
+===================
+*/
+static void CG_DrawSubtitleString( void ) {
+	char    *start;
+	int l;
+	int x, y, w;
+	float   *color;
+
+	if ( !cg.subtitlePrintTime ) {
+		return;
+	}
+
+	color = CG_FadeColor( cg.subtitlePrintTime, 1000 * cg_centertime.value );
+	if ( !color ) {
+		return;
+	}
+
+	if ( cg_fixedAspect.integer ) {
+		CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
+	}
+
+	trap_R_SetColor( color );
+
+	start = cg.subtitlePrint;
+
+	y = cg.subtitlePrintY - cg.subtitlePrintLines * BIGCHAR_HEIGHT / 2;
+
+	while ( 1 ) {
+		char linebuffer[1024];
+
+		for ( l = 0; l < 50; l++ ) {
+			if ( !start[l] || start[l] == '\n' || !Q_strncmp( &start[l], "\\n", 1 ) ) {
+				break;
+			}
+			linebuffer[l] = start[l];
+		}
+		linebuffer[l] = 0;
+
+		w = cg.subtitlePrintCharWidth * CG_DrawStrlen( linebuffer );
+
+		x = ( SCREEN_WIDTH - w ) / 2;
+
+		CG_DrawStringExt( x, y, linebuffer, color, qfalse, qfalse, cg.subtitlePrintCharWidth, (int)( cg.subtitlePrintCharWidth * 1.5 ), 0 );
+
+		y += cg.subtitlePrintCharWidth * 2;
 
 		while ( *start && ( *start != '\n' ) ) {
 			if ( !Q_strncmp( start, "\\n", 1 ) ) {
@@ -2953,6 +3018,7 @@ CG_DrawIntermission
 static void CG_DrawIntermission( void ) {
 
 	CG_DrawCenterString();
+	CG_DrawSubtitleString();
 	return;
 
 	//cg.scoreFadeTime = cg.time;
@@ -3700,7 +3766,7 @@ if ( !cg_oldWolfUI.integer ) {
 	// don't draw center string if scoreboard is up
 	if ( !CG_DrawScoreboard() ) {
 		CG_DrawCenterString();
-
+		CG_DrawSubtitleString();
 		CG_DrawObjectiveInfo();     // NERVE - SMF
 	}
 

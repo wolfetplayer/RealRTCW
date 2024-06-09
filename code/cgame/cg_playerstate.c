@@ -270,6 +270,7 @@ void CG_Respawn( void ) {
 	cg.pmext.bAutoReload = ( cg_autoReload.integer > 0 ); // autoreload
 
 	cg.centerPrintTime = 0;     //----(SA)	reset centerprint counter so previous messages don't re-appear
+	cg.subtitlePrintTime = 0;     //----(SA)	reset centerprint counter so previous messages don't re-appear
 	cg.cursorHintIcon = 0;
 	cg.cursorHintTime = 0;
 	cg.yougotmailTime = 0;

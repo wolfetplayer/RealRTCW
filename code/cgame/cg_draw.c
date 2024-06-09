@@ -1941,37 +1941,40 @@ static void CG_DrawSubtitleString( void ) {
 
 	y = cg.subtitlePrintY - cg.subtitlePrintLines * BIGCHAR_HEIGHT / 2;
 
-	while ( 1 ) {
-		char linebuffer[1024];
+while ( 1 ) {
+    char linebuffer[1024]; // Buffer size
 
-		for ( l = 0; l < 50; l++ ) {
-			if ( !start[l] || start[l] == '\n' || !Q_strncmp( &start[l], "\\n", 1 ) ) {
-				break;
-			}
-			linebuffer[l] = start[l];
-		}
-		linebuffer[l] = 0;
+    for ( l = 0; l < 50; l++ ) { // Line length limit
+        if ( !start[l] || start[l] == '\n' || !Q_strncmp( &start[l], "\\n", 1 ) ) {
+            break;
+        }
+        linebuffer[l] = start[l];
+        if (l >= 49 && start[l+1] != ' ' && start[l+1] != '\0') { // Check if the next character is a space or end of string
+            while(l > 0 && linebuffer[l] != ' ') { // Move back to the last space
+                l--;
+            }
+            break;
+        }
+    }
+    linebuffer[l] = 0;
 
-		w = cg.subtitlePrintCharWidth * CG_DrawStrlen( linebuffer );
+    w = cg.subtitlePrintCharWidth * CG_DrawStrlen( linebuffer );
 
-		x = ( SCREEN_WIDTH - w ) / 2;
+    x = ( SCREEN_WIDTH - w ) / 2;
 
-		CG_DrawStringExt( x, y, linebuffer, color, qfalse, qfalse, cg.subtitlePrintCharWidth, (int)( cg.subtitlePrintCharWidth * 1.5 ), 0 );
+    CG_DrawStringExt( x, y, linebuffer, color, qfalse, qfalse, cg.subtitlePrintCharWidth, (int)( cg.subtitlePrintCharWidth * 1.5 ), 0 );
 
-		y += cg.subtitlePrintCharWidth * 2;
+    y += cg.subtitlePrintCharWidth * 2;
 
-		while ( *start && ( *start != '\n' ) ) {
-			if ( !Q_strncmp( start, "\\n", 1 ) ) {
-				start++;
-				break;
-			}
-			start++;
-		}
-		if ( !*start ) {
-			break;
-		}
-		start++;
-	}
+    // Skip processed characters and newline characters
+    start += l;
+    while ( *start && ( *start == '\n' || !Q_strncmp( start, "\\n", 1 ) ) ) {
+        start++;
+    }
+    if ( !*start ) {
+        break;
+    }
+}
 
 	trap_R_SetColor( NULL );
 }

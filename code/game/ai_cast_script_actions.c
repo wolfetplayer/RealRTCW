@@ -2129,6 +2129,11 @@ qboolean AICast_ScriptAction_SaveCheckpoint ( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: savegame attempted on a non-player" );
 	}
 
+	if (  g_ironchallenge.integer)
+	{
+		return qfalse;
+	}
+
 //----(SA)	check for parameter
 	saveName = COM_ParseExt( &pString, qfalse );
 	if ( !saveName[0] ) {

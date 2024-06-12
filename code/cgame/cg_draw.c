@@ -1962,7 +1962,12 @@ while ( 1 ) {
 
     x = ( SCREEN_WIDTH - w ) / 2;
 
-    CG_DrawStringExt( x, y, linebuffer, color, qfalse, qfalse, cg.subtitlePrintCharWidth, (int)( cg.subtitlePrintCharWidth * 1.5 ), 0 );
+
+    if ( cg_subtitleShadow.integer ) {
+       CG_DrawStringExt( x, y, linebuffer, color, qfalse, qtrue, cg.subtitlePrintCharWidth, (int)( cg.subtitlePrintCharWidth * 1.5 ), 0 );
+	} else {
+       CG_DrawStringExt( x, y, linebuffer, color, qfalse, qfalse, cg.subtitlePrintCharWidth, (int)( cg.subtitlePrintCharWidth * 1.5 ), 0 );
+	}
 
     y += cg.subtitlePrintCharWidth * 2;
 

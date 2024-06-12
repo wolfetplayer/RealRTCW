@@ -1728,6 +1728,7 @@ extern vmCvar_t cg_drawStatus;
 extern vmCvar_t cg_draw2D;
 extern vmCvar_t cg_drawSubtitles;
 extern vmCvar_t cg_subtitleSize;
+extern vmCvar_t cg_subtitleShadow;
 extern vmCvar_t cg_drawFrags;
 extern vmCvar_t cg_animSpeed;
 extern vmCvar_t cg_debugAnim;

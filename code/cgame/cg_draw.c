@@ -2853,7 +2853,7 @@ static void CG_DrawDynamiteStatus( void ) {
 	w = CG_DrawStrlen( name ) * BIGCHAR_WIDTH;
 
 	color[3] *= cg_hudAlpha.value;
-	CG_DrawBigStringColor( 320 - w / 2, 170, name, color );
+	CG_DrawBigStringColor( 300 - w / 2, 170, name, color );
 
 	trap_R_SetColor( NULL );
 }

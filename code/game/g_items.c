@@ -520,7 +520,7 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 
 	}
 
-	if (( weapon == WP_PPSH ) && strstr (level.scriptAI, "Village1"))
+	if (( weapon == WP_PPSH ) && strstr (level.scriptAI, "Factory"))
 	{
 	if ( !g_cheats.integer ) 
 	{
@@ -528,7 +528,7 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	}
 	}
 
-	if (( weapon == WP_MOSIN ) && strstr (level.scriptAI, "chateau"))
+	if (( weapon == WP_MOSIN ) && strstr (level.scriptAI, "Village2_118"))
 	{
 	if ( !g_cheats.integer ) 
 	{

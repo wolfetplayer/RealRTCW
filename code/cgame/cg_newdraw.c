@@ -479,7 +479,7 @@ static void CG_DrawMessageIcon( rectDef_t *rect ) {
 
 	color = CG_FadeColor( cg.yougotmailTime, OBJECTIVE_MET_TIME );
 
-	if ( !color ) {
+	if ( !color || !cg_journalStyle.integer ) {
 		return;
 	}
 

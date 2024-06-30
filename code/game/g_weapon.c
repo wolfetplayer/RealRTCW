@@ -2024,7 +2024,7 @@ void G_LoadAmmoTable( weapon_t weaponNum )
 
 
 	if ( !handle ) {
-		G_Printf( S_COLOR_RED "ERROR: Failed to load weap file %s\n", filename );
+		//G_Printf( S_COLOR_RED "ERROR: Failed to load weap file %s\n", filename );
 		return;
 	}
 

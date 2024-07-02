@@ -497,14 +497,14 @@ typedef struct localEntity_s {
 
 } localEntity_t;
 
-typedef struct delayedBrass_s {
+/*typedef struct delayedBrass_s {
 	struct centity_s *centity;
 	int time;
 	void ( *ejectBrassFunc )( centity_t * );
 	struct delayedBrass_s *prev;
 	struct delayedBrass_s *next;
 
-} delayedBrass_t;
+} delayedBrass_t;*/
 
 //======================================================================
 
@@ -714,7 +714,9 @@ typedef struct weaponInfo_s {
 	vec3_t missileDlightColor;
 	int missileRenderfx;
 
-	void ( *ejectBrassFunc )( centity_t *, int delay );
+	//void ( *ejectBrassFunc )( centity_t *, int delay );
+
+    void ( *ejectBrassFunc )( centity_t * );
 
 	float trailRadius;
 	float wiTrailTime;
@@ -2251,8 +2253,8 @@ void CG_FlameDamage( int owner, vec3_t org, float radius );
 void    CG_InitLocalEntities( void );
 localEntity_t   *CG_AllocLocalEntity( void );
 void    CG_AddLocalEntities( void );
-void    CG_FreeDelayedBrass( delayedBrass_t * );
-void    CG_AllocDelayedBrass( centity_t *, int, void ( *ejectBrassFunc )( centity_t * ) );
+//void    CG_FreeDelayedBrass( delayedBrass_t * );
+//void    CG_AllocDelayedBrass( centity_t *, int, void ( *ejectBrassFunc )( centity_t * ) );
 
 //
 // cg_effects.c

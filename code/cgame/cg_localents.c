@@ -42,7 +42,7 @@ localEntity_t cg_localEntities[MAX_LOCAL_ENTITIES];
 localEntity_t cg_activeLocalEntities;       // double linked list
 localEntity_t   *cg_freeLocalEntities;      // single linked list
 
-delayedBrass_t  *cg_delayedBrasses = NULL;
+//delayedBrass_t  *cg_delayedBrasses = NULL;
 
 // Ridah, debugging
 int localEntCount = 0;
@@ -134,6 +134,7 @@ localEntity_t   *CG_AllocLocalEntity( void ) {
 CG_FreeDelayedBrass
 ==================
 */
+/*
 void CG_FreeDelayedBrass( delayedBrass_t * delayedBrass ) {
 	if ( !delayedBrass ) {
 		CG_Error( "CG_FreeDelayedBrass: delayedBrass is NULL" );
@@ -154,12 +155,13 @@ void CG_FreeDelayedBrass( delayedBrass_t * delayedBrass ) {
 	free( delayedBrass );
 }
 
-
+*/
 /*
 ===================
 CG_AllocDelayedBrass
 ===================
 */
+/*
 void CG_AllocDelayedBrass( centity_t * cent, int time, void ( *ejectBrassFunc )( centity_t * ) ) {
 
 	delayedBrass_t *delayedBrasses = ( delayedBrass_t* )malloc( sizeof( delayedBrass_t ) );
@@ -176,7 +178,7 @@ void CG_AllocDelayedBrass( centity_t * cent, int time, void ( *ejectBrassFunc )(
 		cg_delayedBrasses = delayedBrasses;
 	}
 }
-
+*/
 /*
 ====================================================================================
 
@@ -1718,11 +1720,11 @@ CG_AddLocalEntities
 */
 void CG_AddLocalEntities( void ) {
 	localEntity_t   *le, *next;
-	delayedBrass_t *dlBrass;
+	//delayedBrass_t *dlBrass;
 
 	cg.viewFade = 0.0;
 
-	dlBrass = cg_delayedBrasses;
+	/*dlBrass = cg_delayedBrasses;
 	for ( ; dlBrass != NULL ; dlBrass = dlBrass->next ) {
 		if ( cg.time < dlBrass->time ) {
 			continue;
@@ -1730,7 +1732,7 @@ void CG_AddLocalEntities( void ) {
 
 		dlBrass->ejectBrassFunc(dlBrass->centity);
 		CG_FreeDelayedBrass( dlBrass );
-	}
+	}*/
 
 	// walk the list backwards, so any new local entities generated
 	// (trails, marks, etc) will be present this frame

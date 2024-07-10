@@ -507,30 +507,33 @@ static void DrawSkyBox( shader_t *shader ) {
 	int i;
 
 	memset( s_skyTexCoords, 0, sizeof( s_skyTexCoords ) );
+	float	w_offset, w_scale;
+	float	h_offset, h_scale;
 
 	sky_min = 0;
 	sky_max = 1;
+
+	Com_Memset( s_skyTexCoords, 0, sizeof( s_skyTexCoords ) );
+
+	w_offset = h_offset = 0;
+	w_scale = h_scale = 1;
 
 	for ( i = 0 ; i < 6 ; i++ )
 	{
 		int sky_mins_subd[2], sky_maxs_subd[2];
 		int s, t;
-
 		sky_mins[0][i] = floor( sky_mins[0][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
 		sky_mins[1][i] = floor( sky_mins[1][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
 		sky_maxs[0][i] = ceil( sky_maxs[0][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
 		sky_maxs[1][i] = ceil( sky_maxs[1][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
-
 		if ( ( sky_mins[0][i] >= sky_maxs[0][i] ) ||
 			 ( sky_mins[1][i] >= sky_maxs[1][i] ) ) {
 			continue;
 		}
-
 		sky_mins_subd[0] = sky_mins[0][i] * HALF_SKY_SUBDIVISIONS;
 		sky_mins_subd[1] = sky_mins[1][i] * HALF_SKY_SUBDIVISIONS;
 		sky_maxs_subd[0] = sky_maxs[0][i] * HALF_SKY_SUBDIVISIONS;
 		sky_maxs_subd[1] = sky_maxs[1][i] * HALF_SKY_SUBDIVISIONS;
-
 		if ( sky_mins_subd[0] < -HALF_SKY_SUBDIVISIONS ) {
 			sky_mins_subd[0] = -HALF_SKY_SUBDIVISIONS;
 		} else if ( sky_mins_subd[0] > HALF_SKY_SUBDIVISIONS ) {
@@ -541,7 +544,6 @@ static void DrawSkyBox( shader_t *shader ) {
 		} else if ( sky_mins_subd[1] > HALF_SKY_SUBDIVISIONS ) {
 			sky_mins_subd[1] = HALF_SKY_SUBDIVISIONS;
 		}
-
 		if ( sky_maxs_subd[0] < -HALF_SKY_SUBDIVISIONS ) {
 			sky_maxs_subd[0] = -HALF_SKY_SUBDIVISIONS;
 		} else if ( sky_maxs_subd[0] > HALF_SKY_SUBDIVISIONS ) {
@@ -551,6 +553,15 @@ static void DrawSkyBox( shader_t *shader ) {
 			sky_maxs_subd[1] = -HALF_SKY_SUBDIVISIONS;
 		} else if ( sky_maxs_subd[1] > HALF_SKY_SUBDIVISIONS ) {
 			sky_maxs_subd[1] = HALF_SKY_SUBDIVISIONS;
+		}
+
+		if ( !haveClampToEdge )
+		{
+			w_offset = 0.5f / shader->sky.outerbox[sky_texorder[i]]->width;
+			h_offset = 0.5f / shader->sky.outerbox[sky_texorder[i]]->height;
+
+			w_scale = 1.0f - w_offset * 2;
+			h_scale = 1.0f - h_offset * 2;
 		}
 
 		//
@@ -565,6 +576,12 @@ static void DrawSkyBox( shader_t *shader ) {
 							i,
 							s_skyTexCoords[t][s],
 							s_skyPoints[t][s] );
+
+				s_skyTexCoords[t][s][0] *= w_scale;
+				s_skyTexCoords[t][s][0] += w_offset;
+
+				s_skyTexCoords[t][s][1] *= h_scale;
+				s_skyTexCoords[t][s][1] += h_offset;
 			}
 		}
 
@@ -572,35 +589,37 @@ static void DrawSkyBox( shader_t *shader ) {
 					 sky_mins_subd,
 					 sky_maxs_subd );
 	}
-
 }
+
 
 
 static void DrawSkyBoxInner( shader_t *shader ) {
 	int i;
+	float	w_offset, w_scale;
+	float	h_offset, h_scale;
+
+	Com_Memset( s_skyTexCoords, 0, sizeof( s_skyTexCoords ) );
 
 	memset( s_skyTexCoords, 0, sizeof( s_skyTexCoords ) );
+	w_offset = h_offset = 0;
+	w_scale = h_scale = 1;
 
 	for ( i = 0 ; i < 6 ; i++ )
 	{
 		int sky_mins_subd[2], sky_maxs_subd[2];
 		int s, t;
-
 		sky_mins[0][i] = floor( sky_mins[0][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
 		sky_mins[1][i] = floor( sky_mins[1][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
 		sky_maxs[0][i] = ceil( sky_maxs[0][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
 		sky_maxs[1][i] = ceil( sky_maxs[1][i] * HALF_SKY_SUBDIVISIONS ) / HALF_SKY_SUBDIVISIONS;
-
 		if ( ( sky_mins[0][i] >= sky_maxs[0][i] ) ||
 			 ( sky_mins[1][i] >= sky_maxs[1][i] ) ) {
 			continue;
 		}
-
 		sky_mins_subd[0] = sky_mins[0][i] * HALF_SKY_SUBDIVISIONS;
 		sky_mins_subd[1] = sky_mins[1][i] * HALF_SKY_SUBDIVISIONS;
 		sky_maxs_subd[0] = sky_maxs[0][i] * HALF_SKY_SUBDIVISIONS;
 		sky_maxs_subd[1] = sky_maxs[1][i] * HALF_SKY_SUBDIVISIONS;
-
 		if ( sky_mins_subd[0] < -HALF_SKY_SUBDIVISIONS ) {
 			sky_mins_subd[0] = -HALF_SKY_SUBDIVISIONS;
 		} else if ( sky_mins_subd[0] > HALF_SKY_SUBDIVISIONS ) {
@@ -611,7 +630,6 @@ static void DrawSkyBoxInner( shader_t *shader ) {
 		} else if ( sky_mins_subd[1] > HALF_SKY_SUBDIVISIONS ) {
 			sky_mins_subd[1] = HALF_SKY_SUBDIVISIONS;
 		}
-
 		if ( sky_maxs_subd[0] < -HALF_SKY_SUBDIVISIONS ) {
 			sky_maxs_subd[0] = -HALF_SKY_SUBDIVISIONS;
 		} else if ( sky_maxs_subd[0] > HALF_SKY_SUBDIVISIONS ) {
@@ -621,6 +639,15 @@ static void DrawSkyBoxInner( shader_t *shader ) {
 			sky_maxs_subd[1] = -HALF_SKY_SUBDIVISIONS;
 		} else if ( sky_maxs_subd[1] > HALF_SKY_SUBDIVISIONS ) {
 			sky_maxs_subd[1] = HALF_SKY_SUBDIVISIONS;
+		}
+
+		if ( !haveClampToEdge )
+		{
+			w_offset = 0.5f / shader->sky.outerbox[sky_texorder[i]]->width;
+			h_offset = 0.5f / shader->sky.outerbox[sky_texorder[i]]->height;
+
+			w_scale = 1.0f - w_offset * 2;
+			h_scale = 1.0f - h_offset * 2;
 		}
 
 		//
@@ -635,6 +662,12 @@ static void DrawSkyBoxInner( shader_t *shader ) {
 							i,
 							s_skyTexCoords[t][s],
 							s_skyPoints[t][s] );
+
+				s_skyTexCoords[t][s][0] *= w_scale;
+				s_skyTexCoords[t][s][0] += w_offset;
+
+				s_skyTexCoords[t][s][1] *= h_scale;
+				s_skyTexCoords[t][s][1] += h_offset;
 			}
 		}
 
@@ -642,7 +675,6 @@ static void DrawSkyBoxInner( shader_t *shader ) {
 						  sky_mins_subd,
 						  sky_maxs_subd );
 	}
-
 }
 
 static void FillCloudySkySide( const int mins[2], const int maxs[2], qboolean addIndexes ) {

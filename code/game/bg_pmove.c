@@ -700,13 +700,13 @@ static qboolean PM_CheckJump( void ) {
 	// Total stamina count is 20000
 		if (g_realism.value) {
 		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
-		                pm->ps->velocity[2] = 220;
+		                pm->ps->velocity[2] = 260;
 		   } else if ((pm->ps->sprintTime < 10000) && (pm->ps->sprintTime > 5000)) {
-		                pm->ps->velocity[2] = 200;
+		                pm->ps->velocity[2] = 250;
 		   } else if ((pm->ps->sprintTime < 5000) && (pm->ps->sprintTime >= 0)) {
-					    pm->ps->velocity[2] = 180;
+					    pm->ps->velocity[2] = 230;
 		   } else { 
-		                pm->ps->velocity[2] = 240; // basically first jump
+		                pm->ps->velocity[2] = 270; // basically first jump
 		   }
 		} else {
 			            pm->ps->velocity[2] = 270; // no realism
@@ -715,13 +715,13 @@ static qboolean PM_CheckJump( void ) {
 	#ifdef CGAMEDLL
 		if (cg_realism.value) {
 		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
-		                pm->ps->velocity[2] = 220;
+		                pm->ps->velocity[2] = 260;
 		   } else if ((pm->ps->sprintTime < 10000) && (pm->ps->sprintTime > 5000)) {
-		                pm->ps->velocity[2] = 200;
+		                pm->ps->velocity[2] = 250;
 		   } else if ((pm->ps->sprintTime < 5000) && (pm->ps->sprintTime >= 0)) {
-					    pm->ps->velocity[2] = 180;
+					    pm->ps->velocity[2] = 230;
 		   } else { 
-		                pm->ps->velocity[2] = 240; // basically first jump
+		                pm->ps->velocity[2] = 270; // basically first jump
 		   }
 		} else {
 			            pm->ps->velocity[2] = 270; // no realism
@@ -4522,14 +4522,14 @@ void PM_LadderMove( void ) {
 		} else { // player speed
 	            #ifdef GAMEDLL
 				if (g_realism.value) {
-			    wishvel[2] = 0.7 * upscale * scale * (float)pm->cmd.forwardmove;
+			    wishvel[2] = 0.8 * upscale * scale * (float)pm->cmd.forwardmove;
 		        } else {
 			    wishvel[2] = 0.9 * upscale * scale * (float)pm->cmd.forwardmove;
 		        }
 				#endif
 				 #ifdef CGAMEDLL
 				if (cg_realism.value) {
-			    wishvel[2] = 0.7 * upscale * scale * (float)pm->cmd.forwardmove;
+			    wishvel[2] = 0.8 * upscale * scale * (float)pm->cmd.forwardmove;
 		        } else {
 			    wishvel[2] = 0.9 * upscale * scale * (float)pm->cmd.forwardmove;
 		        }

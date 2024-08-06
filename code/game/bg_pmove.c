@@ -4590,9 +4590,7 @@ PM_Sprint
 void PM_Sprint( void ) {
 	if (    ( pm->cmd.buttons & BUTTON_SPRINT ) &&
 			( pm->cmd.forwardmove || pm->cmd.rightmove ) &&
-			!( pm->ps->pm_flags & PMF_DUCKED ) &&
-			( !pm->waterlevel )
-			) {
+			!( pm->ps->pm_flags & PMF_DUCKED ) ) {
 
 		if ( pm->ps->powerups[PW_NOFATIGUE] ) {    // take time from powerup before taking it from sprintTime
 			pm->ps->powerups[PW_NOFATIGUE] -= 2000 * pml.frametime; 

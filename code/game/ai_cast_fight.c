@@ -1251,8 +1251,8 @@ float AICast_Aggression( cast_state_t *cs ) {
 	//	scale -= (cs->enemyHeight)/800.0;
 
 	//if very low on health
-	if ( bs->cur_ps.stats[STAT_HEALTH] < 50 ) {
-		scale -= ( 1.0 - cs->attributes[AGGRESSION] ) * ( 1.0 - ( (float)bs->cur_ps.stats[STAT_HEALTH] / 50.0 ) );
+	if ( bs->cur_ps.stats[STAT_HEALTH] < 5 ) {
+		scale -= ( 1.0 - cs->attributes[AGGRESSION] ) * ( 1.0 - ( (float)bs->cur_ps.stats[STAT_HEALTH] / 5.0 ) );
 	}
 
 	// if they've recently hit us, factor that in, so we get scared off by being

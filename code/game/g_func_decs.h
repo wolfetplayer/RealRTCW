@@ -1135,12 +1135,18 @@ extern void InitBodyQue ( void ) ;
 extern gentity_t * SelectSpectatorSpawnPoint ( vec3_t origin , vec3_t angles ) ;
 extern gentity_t * SelectInitialSpawnPoint ( vec3_t origin , vec3_t angles , qboolean isbot ) ;
 extern gentity_t * SelectSpawnPoint ( vec3_t avoidPoint , vec3_t origin , vec3_t angles ) ;
+extern gentity_t * SelectSpawnPoint_AI ( vec3_t avoidPoint , vec3_t origin , vec3_t angles ) ;
 extern gentity_t * SelectRandomDeathmatchSpawnPoint ( void ) ;
+extern gentity_t * SelectRandomDeathmatchSpawnPoint_AI ( void ) ;
 extern gentity_t * SelectNearestDeathmatchSpawnPoint ( vec3_t from ) ;
+extern gentity_t * SelectNearestDeathmatchSpawnPoint_AI ( vec3_t from ) ;
 extern qboolean SpotWouldTelefrag ( gentity_t * spot ) ;
 extern void SP_info_player_intermission ( gentity_t * ent ) ;
 extern void SP_info_player_start ( gentity_t * ent ) ;
 extern void SP_info_player_deathmatch ( gentity_t * ent ) ;
+
+extern void SP_info_ai_respawn ( gentity_t * ent ) ;
+
 extern char * G_GetBotInfoByName ( const char * name ) ;
 extern char * G_GetBotInfoByNumber ( int num ) ;
 extern void Svcmd_AddBot_f ( void ) ;

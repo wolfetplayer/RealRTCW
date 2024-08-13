@@ -1132,12 +1132,18 @@ If you have questions concerning this license or the applicable additional terms
 {"SelectSpectatorSpawnPoint", (byte *)SelectSpectatorSpawnPoint},
 {"SelectInitialSpawnPoint", (byte *)SelectInitialSpawnPoint},
 {"SelectSpawnPoint", (byte *)SelectSpawnPoint},
+{"SelectSpawnPoint_AI", (byte *)SelectSpawnPoint_AI},
 {"SelectRandomDeathmatchSpawnPoint", (byte *)SelectRandomDeathmatchSpawnPoint},
+{"SelectRandomDeathmatchSpawnPoint_AI", (byte *)SelectRandomDeathmatchSpawnPoint_AI},
 {"SelectNearestDeathmatchSpawnPoint", (byte *)SelectNearestDeathmatchSpawnPoint},
+{"SelectNearestDeathmatchSpawnPoint_AI", (byte *)SelectNearestDeathmatchSpawnPoint_AI},
 {"SpotWouldTelefrag", (byte *)SpotWouldTelefrag},
 {"SP_info_player_intermission", (byte *)SP_info_player_intermission},
 {"SP_info_player_start", (byte *)SP_info_player_start},
 {"SP_info_player_deathmatch", (byte *)SP_info_player_deathmatch},
+
+{"SP_info_ai_respawn", (byte *)SP_info_ai_respawn},
+
 {"G_GetBotInfoByName", (byte *)G_GetBotInfoByName},
 {"G_GetBotInfoByNumber", (byte *)G_GetBotInfoByNumber},
 {"Svcmd_AddBot_f", (byte *)Svcmd_AddBot_f},

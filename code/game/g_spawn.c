@@ -199,6 +199,8 @@ void SP_info_player_start( gentity_t *ent );
 void SP_info_player_deathmatch( gentity_t *ent );
 void SP_info_player_intermission( gentity_t *ent );
 
+void SP_info_ai_respawn( gentity_t *ent );
+
 void SP_func_plat( gentity_t *ent );
 void SP_func_static( gentity_t *ent );
 void SP_func_leaky( gentity_t *ent ); //----(SA)	added
@@ -434,6 +436,9 @@ spawn_t spawns[] = {
 	{"info_player_start", SP_info_player_start},
 	{"info_player_deathmatch", SP_info_player_deathmatch},
 	{"info_player_intermission", SP_info_player_intermission},
+
+	{"info_ai_respawn", SP_info_ai_respawn},
+	
 	{"info_null", SP_info_null},
 	{"info_notnull", SP_info_notnull},
 	{"info_notnull_big", SP_info_notnull_big},   //----(SA)	added

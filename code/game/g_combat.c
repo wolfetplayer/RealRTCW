@@ -45,9 +45,25 @@ Adds score to both the client and his team
 ============
 */
 void AddScore( gentity_t *ent, int score ) {
+	if ( !ent->client ) {
+		return;
+	}
+	// no scoring during pre-match warmup
+	if ( level.warmupTime ) {
+		return;
+	}
 
-	return;
-	
+	// Ridah, no scoring during single player
+	// DHM - Nerve :: fix typo
+	if ( g_gametype.integer != GT_SURVIVAL ) {
+		return;
+	}
+	// done.
+
+
+	ent->client->ps.persistant[PERS_SCORE] += score;
+
+	//CalculateRanks();
 }
 
 

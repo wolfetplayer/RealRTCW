@@ -4577,7 +4577,7 @@ model="models/powerups/ammo/barammo.md3"
 		"ammo_hdm",
 		"sound/misc/am_pkup.wav",
 		{ 
-		"models/powerups/ammo/barammo.md3",
+		"models/powerups/ammo/22cal.md3",
 		0, 
 		0
 		},

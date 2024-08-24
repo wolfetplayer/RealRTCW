@@ -4567,6 +4567,34 @@ model="models/powerups/ammo/barammo.md3"
 		{40,40,30,30,30}	
 	},
 
+/*QUAKED ammo_hdmammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: HDM
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/barammo.md3"
+*/
+{
+		"ammo_hdm",
+		"sound/misc/am_pkup.wav",
+		{ 
+		"models/powerups/ammo/barammo.md3",
+		0, 
+		0
+		},
+
+		"icons/iconw_luger_1", 
+		"ammo_hdm",           
+		60,
+		IT_AMMO,
+		WP_NONE,
+		WP_HDM,
+		WP_HDM,
+		WP_HDM,
+		"",                 
+		"",                  
+		{50,40,40,30,30}	
+	},
+
 /*QUAKED ammo_44ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 used by: MP44
 

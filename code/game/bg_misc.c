@@ -2204,7 +2204,7 @@ int reloadableWeapons[] = {
 	WP_MAUSER,      WP_SNIPERRIFLE, WP_SNOOPERSCOPE,    WP_MOSIN,               WP_M1GARAND,            WP_G43,
 	WP_MP44,        WP_BAR,         WP_M97,             WP_FG42SCOPE,           WP_BROWNING,            WP_VENOM,
 	WP_P38,         WP_M30,         WP_DELISLE,         WP_DELISLESCOPE,        WP_TESLA,               WP_M1941,
-	WP_AUTO5,       WP_M1941SCOPE,  WP_DUAL_TT33, -1
+	WP_AUTO5,       WP_M1941SCOPE,  WP_DUAL_TT33,       WP_HDM, -1
 };
 
 // new (10/18/00)

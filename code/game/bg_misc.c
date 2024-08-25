@@ -3100,7 +3100,7 @@ model="models/weapons2/mauser/mauser.md3"
 		IT_WEAPON,
 		WP_DELISLE,
 		WP_DELISLE,
-		WP_COLT,
+		WP_DELISLE,
 		WP_DELISLE,
 		"",                      
 		"",                      
@@ -3127,7 +3127,7 @@ model="models/weapons2/mauser/mauser.md3"
 		IT_WEAPON,
 		WP_DELISLESCOPE,
 		WP_DELISLESCOPE,
-		WP_COLT,
+		WP_DELISLE,
 		WP_DELISLE,
 		"",                      
 		"",                      
@@ -4593,6 +4593,34 @@ model="models/powerups/ammo/barammo.md3"
 		"",                 
 		"",                  
 		{50,40,40,30,30}	
+	},
+
+/*QUAKED ammo_delisle (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: HDM
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/ammo/am45cal_m.md3"
+*/
+{
+		"ammo_delisle",
+		"sound/misc/am_pkup.wav",
+		{ 
+		"models/powerups/ammo/am45cal_m.md3",
+		0, 
+		0
+		},
+
+		"icons/iconw_luger_1", 
+		"ammo_delisle",           
+		60,
+		IT_AMMO,
+		WP_NONE,
+		WP_DELISLE,
+		WP_DELISLE,
+		WP_DELISLE,
+		"",                 
+		"",                  
+		{30,30,30,20,20}	
 	},
 
 /*QUAKED ammo_44ammo (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN

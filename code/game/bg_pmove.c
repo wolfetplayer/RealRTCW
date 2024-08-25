@@ -3486,7 +3486,7 @@ static void PM_Weapon( void ) {
 	// unable to use weapon while sprinting
 	#ifdef GAMEDLL
 	if (!delayedFire && g_realism.value ) {
-			if ( ( pm->ps->pm_flags & PMF_SPRINTING ) ){
+			if ( ( pm->ps->pm_flags & PMF_SPRINTING ) && ( pm->ps->sprintTime > 0 ) ){
 			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
 				pm->ps->weaponstate = WEAPON_SPRINT_IN;
 				PM_StartWeaponAnim(PM_SprintInAnimForWeapon(pm->ps->weapon));
@@ -3513,7 +3513,7 @@ static void PM_Weapon( void ) {
 	#ifdef CGAMEDLL
 	if ( !delayedFire && cg_realism.value ) {
 
-		if ( ( pm->ps->pm_flags & PMF_SPRINTING ) ){
+		if ( ( pm->ps->pm_flags & PMF_SPRINTING ) && ( pm->ps->sprintTime > 0 ) ){
 			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
 				pm->ps->weaponstate = WEAPON_SPRINT_IN;
 				PM_StartWeaponAnim(PM_SprintInAnimForWeapon(pm->ps->weapon));

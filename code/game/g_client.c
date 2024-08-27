@@ -100,7 +100,7 @@ void SP_info_ai_respawn( gentity_t *ent ) {
 equivelant to info_player_deathmatch
 */
 void SP_info_player_start( gentity_t *ent ) {
-	ent->classname = "info_player_deathmatch";
+	ent->classname = "info_player_start";
 	SP_info_player_deathmatch( ent );
 }
 
@@ -166,7 +166,7 @@ gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from ) {
 	nearestSpot = NULL;
 	spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
 
 		VectorSubtract( spot->s.origin, from, delta );
 		dist = VectorLength( delta );
@@ -220,7 +220,7 @@ gentity_t *SelectRandomDeathmatchSpawnPoint( void ) {
 	count = 0;
 	spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
 		if ( SpotWouldTelefrag( spot ) ) {
 			continue;
 		}
@@ -229,7 +229,7 @@ gentity_t *SelectRandomDeathmatchSpawnPoint( void ) {
 	}
 
 	if ( !count ) { // no spots that won't telefrag
-		return G_Find( NULL, FOFS( classname ), "info_player_deathmatch" );
+		return G_Find( NULL, FOFS( classname ), "info_player_start" );
 	}
 
 	selection = rand() % count;
@@ -353,7 +353,7 @@ gentity_t *SelectInitialSpawnPoint( vec3_t origin, vec3_t angles, qboolean isbot
 
 	spot = NULL;
 
-	while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL)
+	while ((spot = G_Find (spot, FOFS(classname), "info_player_start")) != NULL)
 	{
 		if(((spot->flags & FL_NO_BOTS) && isbot) ||
 		   ((spot->flags & FL_NO_HUMANS) && !isbot))
@@ -1326,7 +1326,7 @@ void ClientSpawn( gentity_t *ent ) {
 					spawnPoint = SelectInitialSpawnPoint( spawn_origin, spawn_angles, !!(ent->r.svFlags & SVF_BOT) );
 				} else {
 					// don't spawn near existing origin if possible
-					spawnPoint = SelectSpawnPoint(
+					spawnPoint = SelectSpawnPoint_AI(
 						client->ps.origin,
 						spawn_origin, spawn_angles );
 				}

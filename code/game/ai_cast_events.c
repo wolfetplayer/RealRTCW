@@ -502,8 +502,8 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		respawn = qtrue;
 	}
 
-	if ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
-		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) {
+	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
+		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) || g_gametype.integer == GT_SURVIVAL ) {
 
 		if ( cs->respawnsleft != 0 ) {
 

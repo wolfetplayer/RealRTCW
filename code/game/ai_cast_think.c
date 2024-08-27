@@ -443,6 +443,8 @@ void AICast_Think( int client, float thinktime ) {
 	int i;
 	int animIndex;
 	animation_t     *anim;
+	// gentity_t   *spawnPoint;
+	vec3_t spawn_origin, spawn_angles;
 
 //	if (saveGamePending || (strlen( g_missionStats.string ) > 2 )) {
 //		return;
@@ -582,6 +584,18 @@ void AICast_Think( int client, float thinktime ) {
 				ent->die = AICast_Die;
 				ent->client->ps.eFlags &= ~EF_DEAD;
 				ent->s.eFlags &= ~EF_DEAD;
+
+				if ( g_gametype.integer == GT_SURVIVAL )
+				{
+					/* spawnPoint = */SelectSpawnPoint_AI(
+						ent->client->ps.origin,
+						spawn_origin, spawn_angles );
+
+					G_SetOrigin( ent, spawn_origin );
+					VectorCopy( spawn_origin, ent->client->ps.origin );
+
+					SetClientViewAngle( ent, spawn_angles );
+				}
 
 				cs->rebirthTime = 0;
 				cs->deathTime = 0;

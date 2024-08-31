@@ -116,6 +116,11 @@ void TossClientItems( gentity_t *self ) {
 		break;
 	} 
 	}
+    
+	// no dropping in survival mode
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		return;
+	} 
 
 	AngleVectors( self->r.currentAngles, forward, NULL, NULL );
 

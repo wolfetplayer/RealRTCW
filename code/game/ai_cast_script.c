@@ -543,6 +543,7 @@ qboolean AICast_EventMatch_IntInRange( cast_script_event_t *event, char *eventPa
 cast_script_event_define_t scriptEvents[] =
 {
 	{"spawn",            0},          // called as each character is spawned into the game
+	{"respawn",          0},          // called as each character is respawned into the game
 	{"playerstart",      0},          // called when player hits 'start' button
 	{"enemysight",       AICast_EventMatch_StringEqual}, // enemy has been sighted for the first time (once only)
 	{"sight",            AICast_EventMatch_StringEqual}, // non-enemy has been sighted for the first time (once only)

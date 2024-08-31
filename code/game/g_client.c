@@ -1404,7 +1404,7 @@ void ClientSpawn( gentity_t *ent ) {
 	if ( ent->r.svFlags & SVF_CASTAI ) {
 		ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
 	} else {
-		ent->clipmask = MASK_PLAYERSOLID;
+		ent->clipmask = MASK_PLAYERSOLID | CONTENTS_PLAYERCLIP2;
 	}
 
 	ent->die = player_die;

@@ -2273,6 +2273,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		CG_LoseHat( cent, dir );
 		break;
 
+	case EV_REATTACH_HAT:
+		DEBUGNAME( "EV_REATTACH_HAT" );
+		ByteToDir( es->eventParm, dir );
+		CG_Player( cent );
+		break;
+
 	case EV_GIB_HEAD:
 		DEBUGNAME( "EV_GIB_HEAD" );
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.gibSound );

@@ -582,16 +582,17 @@ void AICast_Think( int client, float thinktime ) {
 				ent->s.eFlags &= ~EF_DEAD;
 
                 // Selecting the spawn point for the AI
-					    SelectSpawnPoint_AI(
-						ent->client->ps.origin,
-						spawn_origin, spawn_angles );
+				SelectSpawnPoint_AI( ent->client->ps.origin, spawn_origin, spawn_angles );
+				G_SetOrigin( ent, spawn_origin );
+				VectorCopy( spawn_origin, ent->client->ps.origin );
+				SetClientViewAngle( ent, spawn_angles );
 
-					G_SetOrigin( ent, spawn_origin );
-					VectorCopy( spawn_origin, ent->client->ps.origin );
-
-					SetClientViewAngle( ent, spawn_angles );
-					// Activate respawn scripts for AI
-					AICast_ScriptEvent(cs, "respawn", "");
+				// Activate respawn scripts for AI
+				AICast_ScriptEvent(cs, "respawn", "");
+                
+				// Turn off Headshot flag and reattach hat
+				ent->client->ps.eFlags &= ~EF_HEADSHOT;
+				G_AddEvent( ent, EV_REATTACH_HAT, 0 );
 
 				cs->rebirthTime = 0;
 				cs->deathTime = 0;

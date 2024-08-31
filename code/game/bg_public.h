@@ -757,6 +757,7 @@ typedef enum {
 	EV_VENOMFULL,
 	EV_BULLET,              // otherEntity is the shooter
 	EV_LOSE_HAT,            
+	EV_REATTACH_HAT,
 	EV_GIB_HEAD,            // only blow off the head
 	EV_PAIN,
 	EV_CROUCH_PAIN,

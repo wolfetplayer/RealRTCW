@@ -432,8 +432,13 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
 	} else {
 		newent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH];
 	}
-
-	cs->respawnsleft = g_airespawn.integer;
+    
+	// Unlimited respawn in Survival mode
+	if ( g_gametype.integer == GT_SURVIVAL )  {
+	    cs->respawnsleft = -1;
+	} else {
+		cs->respawnsleft = g_airespawn.integer;
+	}
 	//
 	cs->weaponInfo = weaponInfo;
 	//

@@ -508,7 +508,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
-		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) || g_gametype.integer == GT_SURVIVAL ) {
+		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
 
 		if ( cs->respawnsleft != 0 ) {
 
@@ -531,6 +531,11 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	trap_LinkEntity( self );
+
+	// Decrement the counter for active AI characters
+	if ( g_gametype.integer == GT_SURVIVAL )  {
+       activeAI[self->aiCharacter]--;
+	}
 
 	// kill, instanly, any streaming sound the character had going
 	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );

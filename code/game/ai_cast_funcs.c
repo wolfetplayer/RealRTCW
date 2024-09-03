@@ -77,6 +77,8 @@ char *AIFunc_Battle( cast_state_t *cs );
 
 static bot_moveresult_t *moveresult;
 
+int activeAI[NUM_CHARACTERS];
+
 /*
 ============
 AIFunc_Restore()
@@ -346,6 +348,120 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 			return 1.0;
 		}
 	}
+}
+
+/*
+============
+AICast_SurvivalRespawn
+============
+*/
+void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
+
+   vec3_t mins, maxs;
+   int touch[10], numTouch;
+   float oldmaxZ;
+   int i;
+   gentity_t *player;
+   vec3_t spawn_origin, spawn_angles;
+
+			if ( ent->aiCharacter != AICHAR_ZOMBIE && ent->aiCharacter != AICHAR_HELGA
+				 && ent->aiCharacter != AICHAR_HEINRICH ) {
+
+				for ( i = 0 ; i < g_maxclients.integer ; i++ ) {
+					player = &g_entities[i];
+
+					if ( !player || !player->inuse ) {
+						continue;
+					}
+
+					if ( player->r.svFlags & SVF_CASTAI ) {
+						continue;
+					}
+				}
+			}
+
+
+			cs->rebirthTime = level.time + 5000 + rand() % 2000;
+
+			oldmaxZ = ent->r.maxs[2];
+
+			// make sure the area is clear
+			AIChar_SetBBox( ent, cs, qfalse );
+
+			VectorAdd( ent->r.currentOrigin, ent->r.mins, mins );
+			VectorAdd( ent->r.currentOrigin, ent->r.maxs, maxs );
+			trap_UnlinkEntity( ent );
+
+			numTouch = trap_EntitiesInBox( mins, maxs, touch, 10 );
+
+			if ( numTouch ) {
+				for ( i = 0; i < numTouch; i++ ) {
+					if ( g_entities[touch[i]].r.contents & MASK_PLAYERSOLID ) {
+						break;
+					}
+				}
+				if ( i == numTouch ) {
+					numTouch = 0;
+				}
+			}
+
+			
+			if ( numTouch == 0 ) {    // ok to spawn
+
+				// give them health when they start reviving, so we won't gib after
+				// just a couple shots while reviving
+				ent->health =
+					ent->client->ps.stats[STAT_HEALTH] =
+						ent->client->ps.stats[STAT_MAX_HEALTH] =
+							( ( cs->attributes[STARTING_HEALTH] - 50 ) > 30 ? ( cs->attributes[STARTING_HEALTH] - 50 ) : 30 );
+
+				ent->r.contents = CONTENTS_BODY;
+				ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
+				ent->takedamage = qtrue;
+				ent->waterlevel = 0;
+				ent->watertype = 0;
+				ent->flags = 0;
+				ent->die = AICast_Die;
+				ent->client->ps.eFlags &= ~EF_DEAD;
+				ent->s.eFlags &= ~EF_DEAD;
+
+                // Selecting the spawn point for the AI
+				SelectSpawnPoint_AI( ent->client->ps.origin, spawn_origin, spawn_angles );
+				G_SetOrigin( ent, spawn_origin );
+				VectorCopy( spawn_origin, ent->client->ps.origin );
+				SetClientViewAngle( ent, spawn_angles );
+
+				// Activate respawn scripts for AI
+				AICast_ScriptEvent(cs, "respawn", "");
+                
+				// Turn off Headshot flag and reattach hat
+				ent->client->ps.eFlags &= ~EF_HEADSHOT;
+				G_AddEvent( ent, EV_REATTACH_HAT, 0 );
+
+				cs->rebirthTime = 0;
+				cs->deathTime = 0;
+
+				ent->client->ps.eFlags &= ~EF_DEATH_FRAME;
+				ent->client->ps.eFlags &= ~EF_FORCE_END_FRAME;
+				ent->client->ps.eFlags |= EF_NO_TURN_ANIM;
+
+				// play the revive animation
+				cs->revivingTime = level.time + BG_AnimScriptEvent( &ent->client->ps, ANIM_ET_REVIVE, qfalse, qtrue );
+
+				AICast_StateChange( cs, AISTATE_RELAXED );
+				cs->enemyNum = -1;
+				
+				// Increment the counter for active AI characters
+                activeAI[ent->aiCharacter]++;
+
+			} else {
+				// can't spawn yet, so set bbox back, and wait
+				ent->r.maxs[2] = oldmaxZ;
+				ent->client->ps.maxs[2] = ent->r.maxs[2];
+			}
+			trap_LinkEntity( ent );
+
+
 }
 
 /*

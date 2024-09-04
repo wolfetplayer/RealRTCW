@@ -634,6 +634,8 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 				G_SetOrigin( ent, spawn_origin );
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );
+				// Increment the counter for active AI characters
+                activeAI[ent->aiCharacter]++;
 	}
 
 	// RF, has to disable this so I could test some maps which have erroneously placed alertentity calls

@@ -452,10 +452,47 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 
 				// give them health when they start reviving, so we won't gib after
 				// just a couple shots while reviving
-				ent->health =
-					ent->client->ps.stats[STAT_HEALTH] =
-						ent->client->ps.stats[STAT_MAX_HEALTH] =
-							( ( cs->attributes[STARTING_HEALTH] - 50 ) > 30 ? ( cs->attributes[STARTING_HEALTH] - 50 ) : 30 );
+				
+
+
+			int increase = survivalKillCount / 10;  // Calculate increase based on survivalKillCount
+
+            switch (cs->aiCharacter) {
+            case AICHAR_SOLDIER:
+                cs->attributes[STARTING_HEALTH] = 30 + increase;  // Increase starting_health for AICHAR_SOLDIER
+                if (cs->attributes[STARTING_HEALTH] > 50) {  // Cap health for AICHAR_SOLDIER
+                cs->attributes[STARTING_HEALTH] = 50;
+                }
+                break;
+            case AICHAR_ELITEGUARD:
+               cs->attributes[STARTING_HEALTH] = 35 + increase;  // Increase starting_health for AICHAR_ELITEGUARD
+               if (cs->attributes[STARTING_HEALTH] > 70) {  // Cap health for AICHAR_ELITEGUARD
+               cs->attributes[STARTING_HEALTH] = 70;
+               }
+               break;
+            case AICHAR_BLACKGUARD:
+               cs->attributes[STARTING_HEALTH] = 50 + increase;  // Increase starting_health for AICHAR_BLACKGUARD
+               if (cs->attributes[STARTING_HEALTH] > 80) {  // Cap health for AICHAR_BLACKGUARD
+               cs->attributes[STARTING_HEALTH] = 80;
+               }
+               break;
+            case AICHAR_VENOM:
+                cs->attributes[STARTING_HEALTH] = 80 + increase;  // Increase starting_health for AICHAR_VENOM
+                if (cs->attributes[STARTING_HEALTH] > 150) {  // Cap health for AICHAR_VENOM
+                cs->attributes[STARTING_HEALTH] = 150;
+               }
+               break;
+            default:
+               cs->attributes[STARTING_HEALTH] = 30 + increase;  // Increase default starting_health
+               if (cs->attributes[STARTING_HEALTH] > 60) {  // Cap default health
+               cs->attributes[STARTING_HEALTH] = 60;
+               }
+              break;
+}
+
+
+              // Set health
+              ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH]; 
 
 				ent->r.contents = CONTENTS_BODY;
 				ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;

@@ -492,6 +492,7 @@ void AICast_Init( void ) {
 	    maxActiveAI[AICHAR_SOLDIER] = 4;
 	    maxActiveAI[AICHAR_ELITEGUARD] = 0;
 		maxActiveAI[AICHAR_BLACKGUARD] = 0;
+		maxActiveAI[AICHAR_VENOM] = 0;
 	}
 
 	trap_Cvar_Register( &aicast_debug, "aicast_debug", "0", 0 );

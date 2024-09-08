@@ -366,24 +366,28 @@ void AICast_IncreaseMaxActiveAI() {
         maxActiveAI[AICHAR_SOLDIER] = 10;
     }
 
-    // Increase maxActiveAI for AICHAR_ELITEGUARD based on survivalKillCount
     if (survivalKillCount % 20 == 0) {
         maxActiveAI[AICHAR_ELITEGUARD] += 2;
     }
 
-    // Clamp maxActiveAI for AICHAR_ELITEGUARD to a maximum value
     if (maxActiveAI[AICHAR_ELITEGUARD] > 4) {
         maxActiveAI[AICHAR_ELITEGUARD] = 4;
     }
 
-	// Increase maxActiveAI for AICHAR_BLACKGUARD based on survivalKillCount
     if (survivalKillCount % 30 == 0) {
         maxActiveAI[AICHAR_BLACKGUARD] += 2;
     }
 
-	    // Clamp maxActiveAI for AICHAR_ELITEGUARD to a maximum value
     if (maxActiveAI[AICHAR_BLACKGUARD] > 4) {
         maxActiveAI[AICHAR_BLACKGUARD] = 4;
+    }
+
+    if (survivalKillCount % 40 == 0) {
+        maxActiveAI[AICHAR_VENOM] += 2;
+    }
+
+    if (maxActiveAI[AICHAR_VENOM] > 4) {
+        maxActiveAI[AICHAR_VENOM] = 2;
     }
 }
 
@@ -418,7 +422,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 			}
 
 
-			cs->rebirthTime = level.time + 5000 + rand() % 2000;
+			//cs->rebirthTime = level.time + 5000 + rand() % 2000;
+
 
 			oldmaxZ = ent->r.maxs[2];
 

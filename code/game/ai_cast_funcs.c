@@ -77,7 +77,11 @@ char *AIFunc_Battle( cast_state_t *cs );
 
 static bot_moveresult_t *moveresult;
 
+// Survival mode
 int activeAI[NUM_CHARACTERS];
+int survivalKillCount;
+int maxActiveAI[NUM_CHARACTERS];
+
 
 /*
 ============
@@ -350,6 +354,39 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 	}
 }
 
+void AICast_IncreaseMaxActiveAI() {
+
+    // Increase maxActiveAI for AICHAR_SOLDIER based on survivalKillCount
+    if (survivalKillCount % 10 == 0) {
+        maxActiveAI[AICHAR_SOLDIER] += 1;
+    }
+
+    // Clamp maxActiveAI for AICHAR_SOLDIER to a maximum value
+    if (maxActiveAI[AICHAR_SOLDIER] > 10) {
+        maxActiveAI[AICHAR_SOLDIER] = 10;
+    }
+
+    // Increase maxActiveAI for AICHAR_ELITEGUARD based on survivalKillCount
+    if (survivalKillCount % 20 == 0) {
+        maxActiveAI[AICHAR_ELITEGUARD] += 2;
+    }
+
+    // Clamp maxActiveAI for AICHAR_ELITEGUARD to a maximum value
+    if (maxActiveAI[AICHAR_ELITEGUARD] > 4) {
+        maxActiveAI[AICHAR_ELITEGUARD] = 4;
+    }
+
+	// Increase maxActiveAI for AICHAR_BLACKGUARD based on survivalKillCount
+    if (survivalKillCount % 30 == 0) {
+        maxActiveAI[AICHAR_BLACKGUARD] += 2;
+    }
+
+	    // Clamp maxActiveAI for AICHAR_ELITEGUARD to a maximum value
+    if (maxActiveAI[AICHAR_BLACKGUARD] > 4) {
+        maxActiveAI[AICHAR_BLACKGUARD] = 4;
+    }
+}
+
 /*
 ============
 AICast_SurvivalRespawn
@@ -452,7 +489,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				cs->enemyNum = -1;
 				
 				// Increment the counter for active AI characters
-                activeAI[ent->aiCharacter]++;
+                //activeAI[ent->aiCharacter]++;
 
 			} else {
 				// can't spawn yet, so set bbox back, and wait

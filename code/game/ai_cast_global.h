@@ -84,4 +84,7 @@ int AICast_NumAttempts( int entnum );
 
 void AICast_RegisterPain( int entnum );
 
+
 extern int activeAI[NUM_CHARACTERS];
+extern int maxActiveAI[NUM_CHARACTERS];
+extern int survivalKillCount;

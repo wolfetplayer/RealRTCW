@@ -487,6 +487,13 @@ void AICast_Init( void ) {
 	numSpawningCast = 0;
 	saveGamePending = qtrue;
 
+    // Initial count of AIs for survival mode
+    if ( g_gametype.integer == GT_SURVIVAL )  {
+	    maxActiveAI[AICHAR_SOLDIER] = 4;
+	    maxActiveAI[AICHAR_ELITEGUARD] = 0;
+		maxActiveAI[AICHAR_BLACKGUARD] = 0;
+	}
+
 	trap_Cvar_Register( &aicast_debug, "aicast_debug", "0", 0 );
 	trap_Cvar_Register( &aicast_debugname, "aicast_debugname", "", 0 );
 	trap_Cvar_Register( &aicast_scripts, "aicast_scripts", "1", 0 );
@@ -626,6 +633,13 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 		// invalid location
 		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
 		return;
+	}
+
+    if ( g_gametype.integer == GT_SURVIVAL )  {
+	   if ( activeAI[ent->aiCharacter] >= maxActiveAI[ent->aiCharacter])  { 
+		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
+		return;
+	   }
 	}
 
 	// Selecting the spawn point for the AI

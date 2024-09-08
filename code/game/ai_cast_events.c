@@ -516,7 +516,17 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 				cs->respawnsleft--;
 			}
 
-			if ( g_gameskill.integer == GSKILL_EASY ) {
+			if ( g_gametype.integer == GT_SURVIVAL ) {
+               int decrease = survivalKillCount / 15;  // Calculate decrease based on survivalKillCount
+               int rebirthTime = 20000 - decrease * 1000;  // Calculate rebirthTime
+
+                // Clamp rebirthTime to a minimum of 10 seconds
+               if (rebirthTime < 5000) {
+                 rebirthTime = 5000;
+               }
+
+                cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+           } else if ( g_gameskill.integer == GSKILL_EASY ) {
 				cs->rebirthTime = level.time + 25000 + rand() % 2000;
 			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
 				cs->rebirthTime = level.time + 20000 + rand() % 2000;

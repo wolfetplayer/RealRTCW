@@ -1333,7 +1333,7 @@ void ThrowKnife( gentity_t *ent )
 	// entity handling
 	knife						= G_Spawn();
 	knife->classname 			= "knife";
-	knife->nextthink 			= level.time + 100000;
+	knife->nextthink 			= 0;
 	knife->think				= G_FreeEntity;
 
 	// misc

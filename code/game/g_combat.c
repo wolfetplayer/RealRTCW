@@ -116,11 +116,6 @@ void TossClientItems( gentity_t *self ) {
 		break;
 	} 
 	}
-    
-	// no dropping in survival mode
-	if ( g_gametype.integer == GT_SURVIVAL ) {
-		return;
-	} 
 
 	AngleVectors( self->r.currentAngles, forward, NULL, NULL );
 
@@ -168,10 +163,15 @@ void TossClientItems( gentity_t *self ) {
 		}
 	}
 
- // dropped items stay forever in SP
+        // dropped items stay forever in SP
 		if ( drop ) {
-			drop->nextthink = 0;
+	        if ( g_gametype.integer == GT_SURVIVAL ) {
+	           drop->nextthink = level.time + 100000;                                  
+		 }  else {
+			   drop->nextthink = 0;
 		}
+
+
 
 		angle = 45;
 		for ( i = 1 ; i < PW_NUM_POWERUPS ; i++ ) {
@@ -191,6 +191,7 @@ void TossClientItems( gentity_t *self ) {
 			}
 		}
 	
+}
 }
 
 

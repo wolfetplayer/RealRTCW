@@ -516,10 +516,10 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 
 	weapon = ent->item->giTag;
 
-	if ( g_gametype.integer == GT_SURVIVAL ) {
-		other->client->ps.persistant[PERS_SCORE] += G_GetWeaponPrice( weapon );
-		return RESPAWN_SP;
-	}
+	//if ( g_gametype.integer == GT_SURVIVAL ) {
+		//other->client->ps.persistant[PERS_SCORE] += G_GetWeaponPrice( weapon );
+		//return RESPAWN_SP;
+	//}
 
 	if ( ent->count < 0 ) {
 		quantity = 0; // None for you, sir!

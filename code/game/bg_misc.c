@@ -5611,6 +5611,30 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0}
 	},
 
+	/*QUAKED item_haste (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_haste_surv",
+		"sound/pickup/q3powerups/haste.wav",
+		{
+		"models/powerups/instant/haste.md3",
+		0, 
+		0
+		},
+		"",                    
+		"Haste",     
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_HASTE_SURV,
+		0,
+		0,
+		"",                          
+		"",   
+		{0,0,0,0,0}
+	},
+
+
 
 		/*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */

@@ -991,10 +991,14 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 
 	dropped->classname = item->classname;
 	dropped->item = item;
-//	VectorSet (dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
-//	VectorSet (dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS);
-	VectorSet( dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, 0 );            //----(SA)	so items sit on the ground
-	VectorSet( dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, 2 * ITEM_RADIUS );  //----(SA)	so items sit on the ground
+    
+	if (item->giType == IT_POWERUP) {
+		VectorSet( dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS );
+		VectorSet( dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS );
+	} else {
+	   VectorSet( dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, 0 );            //----(SA)	so items sit on the ground
+	   VectorSet( dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, 2 * ITEM_RADIUS );  //----(SA)	so items sit on the ground
+	}
 	dropped->r.contents = CONTENTS_TRIGGER | CONTENTS_ITEM;
 
 	dropped->touch = Touch_Item_Auto;
@@ -1010,9 +1014,9 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 	dropped->physicsFlush = qtrue;
 
 	// (SA) TODO: FIXME: don't do this right now.  bug needs to be found.
-//	if(item->giType == IT_WEAPON)
-//		dropped->s.eFlags |= EF_SPINNING;	// spin the weapon as it flies from the dead player.  it will stop when it hits the ground
-
+	if(item->giType == IT_POWERUP) {
+		dropped->s.eFlags |= EF_SPINNING;	// spin the weapon as it flies from the dead player.  it will stop when it hits the ground
+	}
 
 	if ( item->giType == IT_TEAM ) { // Special case for CTF flags
 		dropped->think = Team_DroppedFlagThink;

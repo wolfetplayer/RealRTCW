@@ -4002,11 +4002,11 @@ static void PM_Weapon( void ) {
 		}
 	}
 
-    /*
-	if ( pm->ps->powerups[PW_HASTE] ) {
-		addTime /= 1.6;
+    
+	if ( pm->ps->powerups[PW_HASTE_SURV] ) {
+		addTime /= 1.3;
 	}
-	*/
+	
 
 	// add the recoil amount to the aimSpreadScale
 //	pm->ps->aimSpreadScale += 3.0*aimSpreadScaleAdd;

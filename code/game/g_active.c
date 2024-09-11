@@ -1083,6 +1083,10 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.speed *= 1.2;
 	}
 
+	if ( client->ps.powerups[PW_HASTE_SURV] ) {
+		client->ps.speed *= 1.4;
+	}
+
 	// set up for pmove
 	oldEventSequence = client->ps.eventSequence;
 

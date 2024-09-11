@@ -171,9 +171,21 @@ void TossClientItems( gentity_t *self ) {
 			   drop->nextthink = 0;
 		}
 
-
-
 		angle = 45;
+
+   // Drop random powerup in survival mode
+    if (g_gametype.integer == GT_SURVIVAL && rand() % 100 < 7) {  // 7% chance 
+       int powerup = (rand() % 2 == 0) ? PW_HASTE_SURV : PW_QUAD;  // Random powerup
+       item = BG_FindItemForPowerup(powerup);
+    if (item) {
+        drop = Drop_Item(self, item, 0, qfalse);
+        if (drop) {
+            drop->nextthink = level.time + 30000;  // Stay for 30 seconds
+			angle += 45;
+        }
+    }
+    }
+
 		for ( i = 1 ; i < PW_NUM_POWERUPS ; i++ ) {
 			if ( self->client->ps.powerups[ i ] > level.time ) {
 				item = BG_FindItemForPowerup( i );

@@ -2185,6 +2185,10 @@ PM_BeginWeaponReload
 ==============
 */
 static void PM_BeginWeaponReload( int weapon ) {
+
+	int reloadTime = ammoTable[weapon].reloadTime;
+    int reloadTimeFull = ammoTable[weapon].reloadTimeFull;
+
 	// only allow reload if the weapon isn't already occupied (firing is okay)
 	if ( pm->ps->weaponstate != WEAPON_READY && pm->ps->weaponstate != WEAPON_FIRING ) {
 		return;
@@ -2233,30 +2237,36 @@ static void PM_BeginWeaponReload( int weapon ) {
 		break;
 	}
 
+	// If PW_HASTE_SURV powerup is active, reduce reloadTime by half
+    if ( pm->ps->powerups[PW_HASTE_SURV] ){
+       reloadTime /= 2;
+       reloadTimeFull /= 2;
+    }
+
     if ( !pm->ps->aiChar) { 
 	if ( pm->ps->ammoclip[BG_FindClipForWeapon(weapon)] == 0 ) {
-		  PM_ContinueWeaponAnim( WEAP_RELOAD2 );
+		  PM_ContinueWeaponAnim(pm->ps->powerups[PW_HASTE_SURV] ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
 	      if ( pm->ps->weaponstate == WEAPON_READY ) {
-		      pm->ps->weaponTime += ammoTable[weapon].reloadTimeFull;
-	      } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTimeFull ) {
-		      pm->ps->weaponTime += ( ammoTable[weapon].reloadTimeFull - pm->ps->weaponTime );
+		       pm->ps->weaponTime += reloadTimeFull;
+	      } else if (pm->ps->weaponTime < reloadTimeFull) {
+		      pm->ps->weaponTime += (reloadTimeFull - pm->ps->weaponTime);
 	      }
 		  PM_AddEvent( EV_FILL_CLIP_FULL );
 	} else {
-	      PM_ContinueWeaponAnim( WEAP_RELOAD1 );
+	      PM_ContinueWeaponAnim(pm->ps->powerups[PW_HASTE_SURV] ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
 	      if ( pm->ps->weaponstate == WEAPON_READY ) {
-		      pm->ps->weaponTime += ammoTable[weapon].reloadTime;
-	      } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTime ) {
-		      pm->ps->weaponTime += ( ammoTable[weapon].reloadTime - pm->ps->weaponTime );
+		      pm->ps->weaponTime += reloadTime;
+	       } else if (pm->ps->weaponTime < reloadTime) {
+		      pm->ps->weaponTime += (reloadTime - pm->ps->weaponTime);
 	      }
 		  PM_AddEvent( EV_FILL_CLIP );
 	}
 	} else {
-	  PM_ContinueWeaponAnim( WEAP_RELOAD1 );
+	  PM_ContinueWeaponAnim(pm->ps->powerups[PW_HASTE_SURV] ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
 	  	if ( pm->ps->weaponstate == WEAPON_READY ) {
-		    pm->ps->weaponTime += ammoTable[weapon].reloadTime;
-	    } else if ( pm->ps->weaponTime < ammoTable[weapon].reloadTime ) {
-		    pm->ps->weaponTime += ( ammoTable[weapon].reloadTime - pm->ps->weaponTime );
+		    pm->ps->weaponTime += reloadTime;
+	    } else if (pm->ps->weaponTime < reloadTime) {
+		    pm->ps->weaponTime += (reloadTime - pm->ps->weaponTime);
 	      }
 		 PM_AddEvent( EV_FILL_CLIP_AI );
 	}

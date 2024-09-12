@@ -1747,14 +1747,21 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FILL_CLIP:
 		DEBUGNAME( "EV_FILL_CLIP" );
 		if ( cg_weapons[es->weapon].reloadSound ) {
-			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound ); // JPW NERVE following sherman's SP fix, should allow killing reload sound when player dies
+			if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] ) {
+			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast );
+			} else {
+			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
+			}
 		}
 		break;
-
 	case EV_FILL_CLIP_FULL:
 		DEBUGNAME( "EV_FILL_CLIP_FULL" );
 		if ( cg_weapons[es->weapon].reloadFullSound ) {
-			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound ); // JPW NERVE following sherman's SP fix, should allow killing reload sound when player dies
+			if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] ) {
+			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast );
+			} else {
+			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound );
+			}
 		}
 		break;
 	case EV_FILL_CLIP_AI:

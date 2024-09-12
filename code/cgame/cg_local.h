@@ -725,8 +725,10 @@ typedef struct weaponInfo_s {
 	sfxHandle_t firingSound;
 	sfxHandle_t overheatSound;
 	sfxHandle_t reloadSound;
+	sfxHandle_t reloadSoundFast;
 	sfxHandle_t reloadFastSound;
 	sfxHandle_t	reloadFullSound;
+	sfxHandle_t	reloadFullSoundFast;
 	sfxHandle_t reloadSoundAi;
 	sfxHandle_t	bounceSound;
 	sfxHandle_t spinupSound;        //----(SA)	added // sound started when fire button goes down, and stepped on when the first fire event happens

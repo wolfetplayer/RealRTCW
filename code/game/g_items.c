@@ -97,6 +97,13 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 			other->client->ps.powerups[PW_NOFATIGUE] = 60000;
 		}
 	}
+   
+
+   if ( ent->item->giTag == PW_INVIS ) {
+
+	  other->flags |= FL_NOTARGET;
+
+   }
 
 	if ( ent->s.density == 2 ) {   // multi-stage health first stage
 		return RESPAWN_PARTIAL;

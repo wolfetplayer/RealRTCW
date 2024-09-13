@@ -1087,6 +1087,10 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.speed *= 1.4;
 	}
 
+    if (ent->client->ps.powerups[PW_INVIS] <= level.time) {
+        ent->flags &= ~FL_NOTARGET;
+    }
+
 	// set up for pmove
 	oldEventSequence = client->ps.eventSequence;
 

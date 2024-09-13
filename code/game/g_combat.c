@@ -174,7 +174,7 @@ void TossClientItems( gentity_t *self ) {
 		angle = 45;
 
    // Drop random powerup in survival mode
-    if (g_gametype.integer == GT_SURVIVAL && rand() % 100 < 99) {  // 7% chance 
+    if (g_gametype.integer == GT_SURVIVAL && rand() % 100 < 7) {  // 7% chance 
        int powerup = 0;
        switch (rand() % 4) {  // Random number between 0 and 3
         case 0:

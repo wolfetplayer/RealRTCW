@@ -5660,6 +5660,30 @@ model="models/powerups/holdable/zemphr_book.md3"
 	},
 
 
+		/*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_enviro_surv",
+		"sound/pickup/q3powerups/protect.wav",
+		{
+		"models/powerups/instant/enviro.md3",
+		0, 
+		0
+		},
+		"",                             
+		"Battle Suit",     
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_BATTLESUIT_SURV,
+		0,
+		0,
+		"",                          
+		"sound/items/airout.wav sound/items/protect3.wav",   
+		{0,0,0,0,0}
+	},
+
+
 
 /*QUAKED item_invis (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
@@ -7133,6 +7157,7 @@ char *eventnames[] = {
 	"EV_OBITUARY",
 	"EV_POWERUP_QUAD",
 	"EV_POWERUP_BATTLESUIT",
+	"EV_POWERUP_BATTLESUIT_SURV",
 	"EV_POWERUP_REGEN",
 	"EV_GIB_PLAYER",         // gib a previously living player
 	"EV_GIB_VAMPIRISM",

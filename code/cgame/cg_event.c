@@ -2263,6 +2263,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		//trap_S_StartSound( NULL, es->number, CHAN_ITEM, trap_S_RegisterSound( "sound/items/protect3.wav" ) );
 		break;
+	case EV_POWERUP_BATTLESUIT_SURV:
+		DEBUGNAME( "EV_POWERUP_BATTLESUIT_SURV" );
+		if ( es->number == cg.snap->ps.clientNum ) {
+			cg.powerupActive = PW_BATTLESUIT_SURV;
+			cg.powerupTime = cg.time;
+		}
+		trap_S_StartSound( NULL, es->number, CHAN_ITEM, trap_S_RegisterSound( "sound/items/protect3.wav" ) );
+		break;
 	case EV_POWERUP_REGEN:
 		DEBUGNAME( "EV_POWERUP_REGEN" );
 		if ( es->number == cg.snap->ps.clientNum ) {

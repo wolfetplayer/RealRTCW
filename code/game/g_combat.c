@@ -187,7 +187,7 @@ void TossClientItems( gentity_t *self ) {
             powerup = PW_INVIS;
             break;
         case 3:
-            powerup = PW_BATTLESUIT;
+            powerup = PW_BATTLESUIT_SURV;
             break;
        }
 	item = BG_FindItemForPowerup(powerup);
@@ -1135,11 +1135,14 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	// and protects 50% against all damage
 	if ( client && client->ps.powerups[PW_BATTLESUIT] ) {
 		G_AddEvent( targ, EV_POWERUP_BATTLESUIT, 0 );
-		/*if ( dflags & DAMAGE_RADIUS ) {
-			return;
-		}*/
 
 		damage *= 0.30;
+	}
+
+	if ( client && client->ps.powerups[PW_BATTLESUIT_SURV] ) {
+		G_AddEvent( targ, EV_POWERUP_BATTLESUIT_SURV, 0 );
+
+		damage *= 0.05;
 	}
 
 	// always give half damage if hurting self

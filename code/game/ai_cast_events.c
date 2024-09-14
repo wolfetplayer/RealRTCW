@@ -105,6 +105,8 @@ AICast_Pain
 void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point ) {
 	cast_state_t    *cs;
 
+	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
+
 	cs = AICast_GetCastState( targ->s.number );
 
 	// print debugging message
@@ -119,6 +121,11 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 
 	if ( cs->aiFlags & AIFL_NOPAIN ) {
 		return;
+	}
+
+	if ( g_gametype.integer == GT_SURVIVAL && killerPlayer ) {
+
+	      attacker->client->ps.persistant[PERS_SCORE] += 10;
 	}
 
 	// process the event (turn to face the attacking direction? go into hide/retreat state?)
@@ -257,6 +264,36 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		steamSetAchievement("ACH_GAS");
 		}
 	}
+
+    if (g_gametype.integer == GT_SURVIVAL && killerPlayer) {
+        int score = 50;  // Default score
+
+    // Add score based on aiCharacter type
+    switch (attacker->aiCharacter) {
+        case AICHAR_SOLDIER:
+            score += 10;
+            break;
+        case AICHAR_ELITEGUARD:
+            score += 10;
+            break;
+        case AICHAR_BLACKGUARD:
+            score += 20;
+            break;
+        case AICHAR_VENOM:
+            score += 40;
+            break;
+        default:
+            break;
+    }
+
+    // Add additional score if killed with knife
+    if (modKnife) {
+        score += 100;
+    }
+
+
+    attacker->client->ps.persistant[PERS_SCORE] += score;
+    }
 
 
 	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modDagger ) // vampirism

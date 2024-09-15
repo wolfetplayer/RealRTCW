@@ -186,6 +186,8 @@ field_t fields[] = {
 
 	{"stringname",       FOFS( translation ),          F_STRING},
 	{"canSpeak",         FOFS( canSpeak ),             F_INT},
+	{"price",            FOFS( price ),                F_INT},
+	{"buy_weapon",       FOFS( buy_weapon ),           F_STRING},
 	{NULL}
 };
 
@@ -429,6 +431,8 @@ void SP_misc_tagemitter( gentity_t *ent );   //----(SA)	added
 void SP_trigger_deathCheck( gentity_t *ent );
 void SP_misc_spawner( gentity_t *ent );
 void SP_props_decor_Scale( gentity_t *ent );
+
+void SP_target_buy( gentity_t *ent );
 
 spawn_t spawns[] = {
 	// info entities don't do anything at all, but provide positional
@@ -698,6 +702,8 @@ spawn_t spawns[] = {
 	{"script_model_med", SP_script_model_med},
 	{"script_mover", SP_script_mover},
 	{"script_multiplayer", SP_script_multiplayer},           // DHM - Nerve
+
+	{"target_buy", SP_target_buy},
 
 	{NULL, 0}
 };

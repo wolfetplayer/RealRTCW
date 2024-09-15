@@ -390,6 +390,8 @@ extern void SP_target_remove_powerups ( gentity_t * ent ) ;
 extern void Use_target_remove_powerups ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
 extern void SP_target_give ( gentity_t * ent ) ;
 extern void Use_Target_Give ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
+extern void SP_target_buy ( gentity_t * ent ) ;
+extern void Use_Target_buy ( gentity_t * ent , gentity_t * other, gentity_t *activator ) ;
 extern void * trap_Alloc ( int size ) ;
 extern int trap_GeneticParentsAndChildSelection ( int numranks , float * ranks , int * parent1 , int * parent2 , int * child ) ;
 extern void trap_BotResetWeaponState ( int weaponstate ) ;

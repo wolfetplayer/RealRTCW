@@ -383,6 +383,8 @@ If you have questions concerning this license or the applicable additional terms
 {"Use_target_remove_powerups", (byte *)Use_target_remove_powerups},
 {"SP_target_give", (byte *)SP_target_give},
 {"Use_Target_Give", (byte *)Use_Target_Give},
+{"SP_target_buy", (byte *)SP_target_buy},
+{"Use_Target_buy", (byte *)Use_Target_buy},
 {"PM_AdjustAimSpreadScale", (byte *)PM_AdjustAimSpreadScale},
 {"PM_AltFire", (byte *)PM_AltFire},
 {"PM_AltFiring", (byte *)PM_AltFiring},

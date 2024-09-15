@@ -441,6 +441,8 @@ struct gentity_s {
 	// if working on a post release patch, new variables should ONLY be inserted after this point
 
 	int canSpeak;               // can this entity speak?
+	int price;                 // item price, survival mode
+    char  *buy_weapon;
 };
 
 // Ridah

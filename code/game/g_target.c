@@ -70,6 +70,73 @@ void SP_target_give( gentity_t *ent ) {
 	ent->use = Use_Target_Give;
 }
 
+/*QUAKED target_buy (1 0 0) (-8 -8 -8) (8 8 8)
+Gives the activator all the items pointed to.
+*/
+void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
+
+    int weapon;
+    int i;
+    int price;
+    char *weaponName;
+
+    price = ent->price;
+    weaponName = ent->buy_weapon;
+
+	// Check if weapon or price were not specified
+    if ( !weaponName || price <= 0 ) {
+        return;
+    }
+
+
+	if ( !activator->client ) {
+		return;
+	}
+
+    // Convert weapon name to weapon ID
+    weapon = WP_NONE;
+    for ( i = 1; bg_itemlist[i].classname; i++ ) {
+        if ( !Q_strcasecmp( weaponName, bg_itemlist[i].classname ) ) {
+            weapon = bg_itemlist[i].giTag;
+            break;
+        }
+    }
+
+    // Check if player has enough points
+    if (activator->client->ps.persistant[PERS_SCORE] < price) {
+        return;  // Player doesn't have enough points, return without giving weapon
+    }
+
+    // Check if player already has the weapon
+    if (COM_BitCheck(activator->client->ps.weapons, weapon)) {
+        // Player already has the weapon, give ammo instead and halve the price
+        price /= 2;
+    } else {
+        // Player doesn't have the weapon, give it to them
+        COM_BitSet( activator->client->ps.weapons, weapon );
+    }
+
+	// Check if player's ammo is already full
+    if (activator->client->ps.ammo[weapon] >= ammoTable[weapon].maxammo) {
+        return;  // Player's ammo is already full, return without adding ammo
+    }
+
+    // Set the ammo of the bought weapon to the "maxammo" from the ammo table
+    Add_Ammo( activator, weapon, ammoTable[weapon].maxammo, qtrue );
+
+    // Select the bought weapon
+    activator->client->ps.weapon = weapon;
+    activator->client->ps.weaponstate = WEAPON_READY;
+
+    // Subtract price from player's score
+    activator->client->ps.persistant[PERS_SCORE] -= price;
+
+}
+
+void SP_target_buy( gentity_t *ent ) {
+	ent->use = Use_Target_buy;
+}
+
 
 //==========================================================
 

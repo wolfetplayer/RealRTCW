@@ -125,8 +125,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     Add_Ammo( activator, weapon, ammoTable[weapon].maxammo, qtrue );
 
     // Select the bought weapon
-    activator->client->ps.weapon = weapon;
-    activator->client->ps.weaponstate = WEAPON_READY;
+    G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( weapon ) - bg_itemlist );
 
     // Subtract price from player's score
     activator->client->ps.persistant[PERS_SCORE] -= price;

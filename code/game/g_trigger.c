@@ -1272,31 +1272,40 @@ You specify which objective it is with a number in "count"
 
 void Touch_objective_info( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 
-	if ( other->timestamp > level.time ) {
-		return;
-	}
+    int price;
+	int ammoPrice;
+    char *weaponName;
 
-	other->timestamp = level.time + 4500;
+    price = ent->price;
+    weaponName = ent->buy_weapon;
+	ammoPrice = price /2;
+	
 
-	if ( ent->track ) {
-		if ( ent->spawnflags & AXIS_OBJECTIVE ) {
-			trap_SendServerCommand( other - g_entities, va( "oid 0 \"" S_COLOR_RED "You are near %s\n\"", ent->track ) );
-		} else if ( ent->spawnflags & ALLIED_OBJECTIVE ) {
-			trap_SendServerCommand( other - g_entities, va( "oid 1 \"" S_COLOR_BLUE "You are near %s\n\"", ent->track ) );
-		} else {
-			trap_SendServerCommand( other - g_entities, va( "oid -1 \"You are near %s\n\"", ent->track ) );
-		}
-	} else {
-		if ( ent->spawnflags & AXIS_OBJECTIVE ) {
-			trap_SendServerCommand( other - g_entities, va( "oid 0 \"" S_COLOR_RED "You are near objective #%i\n\"", ent->count ) );
-		} else if ( ent->spawnflags & ALLIED_OBJECTIVE ) {
-			trap_SendServerCommand( other - g_entities, va( "oid 1 \"" S_COLOR_BLUE "You are near objective #%i\n\"", ent->count ) );
-		} else {
-			trap_SendServerCommand( other - g_entities, va( "oid -1 \"You are near objective #%i\n\"", ent->count ) );
-		}
-	}
+    if ( price && weaponName ) {
+        trap_SendServerCommand( other - g_entities, va( "cp \"Weapon: %s\nPrice: %d\nAmmo Price: %d\"", weaponName, price, ammoPrice));
+    } else if ( other->timestamp <= level.time ) {
+        other->timestamp = level.time + 4500;
 
+        if ( ent->track ) {
+            if ( ent->spawnflags & AXIS_OBJECTIVE ) {
+                trap_SendServerCommand( other - g_entities, va( "oid 0 \"" S_COLOR_RED "You are near %s\n\"", ent->track ) );
+            } else if ( ent->spawnflags & ALLIED_OBJECTIVE ) {
+                trap_SendServerCommand( other - g_entities, va( "oid 1 \"" S_COLOR_BLUE "You are near %s\n\"", ent->track ) );
+            } else {
+                trap_SendServerCommand( other - g_entities, va( "oid -1 \"You are near %s\n\"", ent->track ) );
+            }
+        } else {
+            if ( ent->spawnflags & AXIS_OBJECTIVE ) {
+                trap_SendServerCommand( other - g_entities, va( "oid 0 \"" S_COLOR_RED "You are near objective #%i\n\"", ent->count ) );
+            } else if ( ent->spawnflags & ALLIED_OBJECTIVE ) {
+                trap_SendServerCommand( other - g_entities, va( "oid 1 \"" S_COLOR_BLUE "You are near objective #%i\n\"", ent->count ) );
+            } else {
+                trap_SendServerCommand( other - g_entities, va( "oid -1 \"You are near objective #%i\n\"", ent->count ) );
+            }
+        }
+    }
 }
+
 
 void SP_trigger_objective_info( gentity_t *ent ) {
 	ent->touch  = Touch_objective_info;

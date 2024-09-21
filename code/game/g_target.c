@@ -75,62 +75,72 @@ Gives the activator all the items pointed to.
 */
 void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
-    int weapon;
+    int itemIndex;
     int i;
     int price;
-    char *weaponName;
+    char *itemName;
+	gitem_t *item;
 
     price = ent->price;
-    weaponName = ent->buy_weapon;
+    itemName = ent->buy_item;
 
-	// Check if weapon or price were not specified
-    if ( !weaponName || price <= 0 ) {
+    // Check if weapon or price were not specified
+    if ( !itemName || price <= 0 ) {
         return;
     }
 
+    if ( !activator->client ) {
+        return;
+    }
 
-	if ( !activator->client ) {
-		return;
-	}
-
-    // Convert weapon name to weapon ID
-    weapon = WP_NONE;
+    // Find the item
+    itemIndex = 0;
     for ( i = 1; bg_itemlist[i].classname; i++ ) {
-        if ( !Q_strcasecmp( weaponName, bg_itemlist[i].classname ) ) {
-            weapon = bg_itemlist[i].giTag;
+        if ( !Q_strcasecmp( itemName, bg_itemlist[i].classname ) ) {
+            itemIndex = i;
             break;
         }
     }
 
+    item = &bg_itemlist[itemIndex];
+
     // Check if player has enough points
     if (activator->client->ps.persistant[PERS_SCORE] < price) {
-		trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
-        return;  // Player doesn't have enough points, return without giving weapon
+        trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
+        return;  // Player doesn't have enough points, return without giving anything
     }
-
-    // Check if player already has the weapon
-    if (COM_BitCheck(activator->client->ps.weapons, weapon)) {
-        // Player already has the weapon, give ammo instead and halve the price
-        price /= 2;
-    } else {
-        // Player doesn't have the weapon, give it to them
-        COM_BitSet( activator->client->ps.weapons, weapon );
-    }
-
-	// Check if player's ammo is already full
-    if (activator->client->ps.ammo[weapon] >= ammoTable[weapon].maxammo) {
-        return;  // Player's ammo is already full, return without adding ammo
-    }
-
-    // Set the ammo of the bought weapon to the "maxammo" from the ammo table
-    Add_Ammo( activator, weapon, ammoTable[weapon].maxammo, qtrue );
-
-    // Select the bought weapon
-    G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( weapon ) - bg_itemlist );
 
     // Subtract price from player's score
     activator->client->ps.persistant[PERS_SCORE] -= price;
 
+    if ( item->giType == IT_WEAPON ) {
+
+        // Check if player already has the weapon
+        if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
+            // Player already has the weapon, give ammo instead and halve the price
+            price /= 2;
+        } else {
+            // Player doesn't have the weapon, give it to them
+            COM_BitSet( activator->client->ps.weapons, item->giTag );
+        }
+
+        // Check if player's ammo is already full
+        if (activator->client->ps.ammo[item->giTag] >= ammoTable[item->giTag].maxammo) {
+            return;  // Player's ammo is already full, return without adding ammo
+        }
+
+        // Set the ammo of the bought weapon to the "maxammo" from the ammo table
+        Add_Ammo( activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue );
+
+        // Select the bought weapon
+        G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );
+
+    } else if ( item->giType == IT_ARMOR )  {
+		activator->client->ps.stats[STAT_ARMOR] = 100;
+        G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
+    } else {
+		return;
+	}
 }
 
 void SP_target_buy( gentity_t *ent ) {

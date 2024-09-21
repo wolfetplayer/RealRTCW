@@ -187,7 +187,8 @@ field_t fields[] = {
 	{"stringname",       FOFS( translation ),          F_STRING},
 	{"canSpeak",         FOFS( canSpeak ),             F_INT},
 	{"price",            FOFS( price ),                F_INT},
-	{"buy_weapon",       FOFS( buy_weapon ),           F_STRING},
+	{"buy_item",         FOFS( buy_item ),           F_STRING},
+	{"isWeapon",         FOFS( isWeapon ),             F_INT},
 	{NULL}
 };
 

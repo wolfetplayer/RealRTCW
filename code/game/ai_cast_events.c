@@ -322,6 +322,19 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		    }
 	}
 
+	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {
+
+			trap_SendServerCommand( -1, "mu_play sound/Zombie/firstsight/firstsight3.wav 0\n" );
+			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
+		    attacker->health += 25;
+		
+			if ( attacker->health > 300 ) 
+			{
+			attacker->health = 300;
+		    }
+
+	  }
+
 	// print debugging message
 	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {
 		G_Printf( "killed %s\n", self->aiName );

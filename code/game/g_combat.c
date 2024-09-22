@@ -176,7 +176,7 @@ void TossClientItems( gentity_t *self ) {
    // Drop random powerup in survival mode
     if (g_gametype.integer == GT_SURVIVAL && rand() % 100 < 10) {  // 10% chance 
        int powerup = 0;
-       switch (rand() % 4) {  // Random number between 0 and 3
+       switch (rand() % 5) {  // Random number
         case 0:
             powerup = PW_HASTE_SURV;
             break;
@@ -188,6 +188,9 @@ void TossClientItems( gentity_t *self ) {
             break;
         case 3:
             powerup = PW_BATTLESUIT_SURV;
+            break;
+        case 4:
+            powerup = PW_VAMPIRE;
             break;
        }
 	item = BG_FindItemForPowerup(powerup);

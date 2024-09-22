@@ -5588,6 +5588,29 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0}
 	},
 
+/*QUAKED item_vampire (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_vampire",
+		"sound/Zombie/firstsight/firstsight1.wav",
+		{
+		"models/mapobjects/Skull/skul2.md3",
+		0, 
+		0
+		},
+		"",              
+		"Vampirism",       
+		30,
+		IT_POWERUP,
+		WP_NONE,
+		PW_VAMPIRE,
+		0,
+		0,
+		"",                            
+		"",   
+		{0,0,0,0,0}
+	},
+
 	/*QUAKED item_haste (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
 		{

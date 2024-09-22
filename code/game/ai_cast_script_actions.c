@@ -1278,6 +1278,24 @@ qboolean AICast_ScriptAction_SetMoveSpeed( cast_state_t *cs, char *params ) {
 }
 
 
+/*
+==============
+AICast_ScriptAction_GiveScore
+	syntax: givescore <amount>
+
+==============
+*/
+qboolean AICast_ScriptAction_GiveScore( cast_state_t *cs, char *params ) {
+	if ( !params || !params[0] ) {
+		G_Error( "AI Scripting: setarmor requires an armor value" );
+	}
+
+	g_entities[cs->entityNum].client->ps.persistant[PERS_SCORE] += atoi( params );
+
+	return qtrue;
+}
+
+
 //----(SA)	added
 /*
 ==============

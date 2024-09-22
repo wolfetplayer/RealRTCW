@@ -555,6 +555,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
     // in Survival mode, we always respawn
 	if ( g_gametype.integer == GT_SURVIVAL )  {
 		respawn = qtrue;
+		nogib = qtrue;
 	}
 
 	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA

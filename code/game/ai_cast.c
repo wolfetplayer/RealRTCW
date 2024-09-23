@@ -490,6 +490,7 @@ void AICast_Init( void ) {
     // Initial count of AIs for survival mode
     if ( g_gametype.integer == GT_SURVIVAL )  {
 	    maxActiveAI[AICHAR_SOLDIER] = 4;
+	    maxActiveAI[AICHAR_ZOMBIE_SURV] = 4;
 	    maxActiveAI[AICHAR_ELITEGUARD] = 0;
 		maxActiveAI[AICHAR_BLACKGUARD] = 0;
 		maxActiveAI[AICHAR_VENOM] = 0;

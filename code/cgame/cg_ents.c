@@ -2280,7 +2280,12 @@ void CG_FlamethrowerProp( centity_t *cent ) {
 	int flags;
 
 	old = cent->currentState.aiChar;
-	cent->currentState.aiChar = AICHAR_ZOMBIE;
+    // Add condition for AICHAR_ZOMBIE_SURV
+    if (cent->currentState.aiChar == AICHAR_ZOMBIE_SURV) {
+        cent->currentState.aiChar = AICHAR_ZOMBIE_SURV;
+    } else {
+        cent->currentState.aiChar = AICHAR_ZOMBIE;
+    }
 
 	if ( !( cent->currentState.eFlags & EF_FIRING ) ) {
 		return;

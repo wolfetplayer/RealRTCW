@@ -2381,6 +2381,7 @@ qboolean CG_DrawRealWeapons( centity_t *cent ) {
 	case AICHAR_SUPERSOLDIER_LAB:   
 	case AICHAR_PROTOSOLDIER:
 	case AICHAR_ZOMBIE:
+	case AICHAR_ZOMBIE_SURV:
 	case AICHAR_HELGA:      //----(SA)	added	// boss1 is now helga-blob
 	case AICHAR_WARZOMBIE:
 	case AICHAR_DOG:

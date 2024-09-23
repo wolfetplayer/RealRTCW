@@ -1320,6 +1320,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ELITE_STEP ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_ZOMBIE ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ZOMBIE_STEP ][footstepcnt] );
+			} else if ( cent->currentState.aiChar == AICHAR_ZOMBIE_SURV ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ZOMBIE_STEP ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_LOPER ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_LOPER_STEP ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_PROTOSOLDIER ) {
@@ -1369,6 +1371,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ELITE_WOOD ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_ZOMBIE ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ZOMBIE_WOOD ][footstepcnt] );
+			} else if ( cent->currentState.aiChar == AICHAR_ZOMBIE_SURV ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ZOMBIE_WOOD ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_LOPER ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_LOPER_WOOD ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_PROTOSOLDIER ) {
@@ -1413,6 +1417,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			if ( cent->currentState.aiChar == AICHAR_ELITEGUARD ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ELITE_GRAVEL ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_ZOMBIE ) {
+				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ZOMBIE_GRAVEL ][footstepcnt] );
+			} else if ( cent->currentState.aiChar == AICHAR_ZOMBIE_SURV ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_ZOMBIE_GRAVEL ][footstepcnt] );
 			} else if ( cent->currentState.aiChar == AICHAR_PROTOSOLDIER ) {
 				trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.footsteps[ FOOTSTEP_PROTOSOLDIER_GRAVEL][footstepcnt] );
@@ -2306,7 +2312,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_GIB_PLAYER:
 		DEBUGNAME( "EV_GIB_PLAYER" );
-		if ( es->aiChar == AICHAR_ZOMBIE ) {
+		if ( es->aiChar == AICHAR_ZOMBIE || es->aiChar == AICHAR_ZOMBIE_SURV ) {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.zombieDeathSound );
 		} else {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.gibSound );
@@ -2316,7 +2322,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 	case EV_GIB_VAMPIRISM:
 		DEBUGNAME( "EV_GIB_VAMPIRISM" );
-		if ( es->aiChar == AICHAR_ZOMBIE ) {
+		if ( es->aiChar == AICHAR_ZOMBIE || es->aiChar == AICHAR_ZOMBIE_SURV ) {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.zombieDeathSound );
 		} else {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.gibSound );
@@ -2369,7 +2375,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	{
 		int old;
 		old = cent->currentState.aiChar;
-		cent->currentState.aiChar = AICHAR_ZOMBIE;
+    // Add condition for AICHAR_ZOMBIE_SURV
+    if (cent->currentState.aiChar == AICHAR_ZOMBIE_SURV) {
+        cent->currentState.aiChar = AICHAR_ZOMBIE_SURV;
+    } else {
+        cent->currentState.aiChar = AICHAR_ZOMBIE;
+    }
 
 		// shoot this only in bursts
 

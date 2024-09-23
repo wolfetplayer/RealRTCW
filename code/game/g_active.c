@@ -1710,12 +1710,12 @@ void ClientEndFrame( gentity_t *ent ) {
 			AICast_CheckDangerousEntity( ent, DANGER_CLIENTAIM, HOLYCROSS_RANGE + 150, 0.5, 0.6, ( ent->client->buttons & BUTTON_ATTACK ? qtrue : qfalse ) );
 			break;
 		case WP_MONSTER_ATTACK1:
-			if ( ent->aiCharacter == AICHAR_ZOMBIE ) {
+			if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV ) {
 				AICast_CheckDangerousEntity( ent, DANGER_CLIENTAIM | DANGER_FLAMES, FLAMETHROWER_RANGE + 150, 0.5, 0.8, qtrue );
 			}
 			break;
 		case WP_MONSTER_ATTACK2:
-			if ( ent->aiCharacter == AICHAR_ZOMBIE ) {
+			if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV ) {
 				if ( ent->client->ps.eFlags & EF_MONSTER_EFFECT ) {
 					AICast_CheckDangerousEntity( ent, 0, 4000, 0.5, 0.8, qtrue );
 				}

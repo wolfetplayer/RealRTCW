@@ -1701,6 +1701,7 @@ extern void SP_ai_loper ( gentity_t * ent ) ;
 extern void SP_ai_venom ( gentity_t * ent ) ;
 extern void SP_ai_warzombie ( gentity_t * ent ) ;
 extern void SP_ai_zombie ( gentity_t * ent ) ;
+extern void SP_ai_zombie_surv ( gentity_t * ent ) ;
 extern void SP_ai_american ( gentity_t * ent ) ;
 extern void SP_ai_soldier ( gentity_t * ent ) ;
 extern void AIChar_spawn ( gentity_t * ent ) ;

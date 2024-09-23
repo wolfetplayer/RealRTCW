@@ -224,9 +224,9 @@ void CG_BloodTrail( localEntity_t *le ) {
 	step = ( 1000 * 3 ) / VectorLength( le->pos.trDelta );
 #endif
 
-	if ( cent && cent->currentState.aiChar == AICHAR_ZOMBIE ) {
-		step = 30;
-	}
+  if ( cent && (cent->currentState.aiChar == AICHAR_ZOMBIE || cent->currentState.aiChar == AICHAR_ZOMBIE_SURV) ) {
+    step = 30;
+  }
 
 	t = step * ( ( cg.time - cg.frametime + step ) / step );
 	t2 = step * ( cg.time / step );
@@ -239,7 +239,7 @@ void CG_BloodTrail( localEntity_t *le ) {
 #else
 
 
-		if ( cent && cent->currentState.aiChar == AICHAR_ZOMBIE ) {
+   if ( cent && (cent->currentState.aiChar == AICHAR_ZOMBIE || cent->currentState.aiChar == AICHAR_ZOMBIE_SURV) ) {
 			CG_Particle_Bleed( cgs.media.smokePuffShader, newOrigin, vec3_origin, 1, 500 + rand() % 200 );
 		} else {
 			// Ridah, blood trail using trail code (should be faster since we don't have to spawn as many)

@@ -1980,6 +1980,7 @@ void FireWeapon( gentity_t *ent ) {
 		case AICHAR_WARZOMBIE:
 			break;
 		case AICHAR_ZOMBIE:
+		case AICHAR_ZOMBIE_SURV:
 			// temp just to show it works
 			// G_Printf("ptoo\n");
 			weapon_zombiespit( ent );

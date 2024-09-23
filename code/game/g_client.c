@@ -179,30 +179,6 @@ gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from ) {
 	return nearestSpot;
 }
 
-gentity_t *SelectNearestDeathmatchSpawnPoint_AI( vec3_t from ) {
-	gentity_t   *spot;
-	vec3_t delta;
-	float dist, nearestDist;
-	gentity_t   *nearestSpot;
-
-	nearestDist = 999999;
-	nearestSpot = NULL;
-	spot = NULL;
-
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
-
-		VectorSubtract( spot->s.origin, from, delta );
-		dist = VectorLength( delta );
-		if ( dist < nearestDist ) {
-			nearestDist = dist;
-			nearestSpot = spot;
-		}
-	}
-
-	return nearestSpot;
-}
-
-
 /*
 ================
 SelectRandomDeathmatchSpawnPoint
@@ -236,6 +212,30 @@ gentity_t *SelectRandomDeathmatchSpawnPoint( void ) {
 	return spots[ selection ];
 }
 
+gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player ) {
+	gentity_t   *spot;
+	vec3_t delta;
+	float dist, nearestDist;
+	gentity_t   *nearestSpot;
+
+	nearestDist = 999999;
+	nearestSpot = NULL;
+	spot = NULL;
+
+	while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
+
+		VectorSubtract( spot->s.origin, player->r.currentOrigin, delta );
+		dist = VectorLength( delta );
+		if ( dist < nearestDist ) {
+			nearestDist = dist;
+			nearestSpot = spot;
+		}
+	}
+
+	return nearestSpot;
+}
+
+
 /*
 ================
 SelectRandomDeathmatchSpawnPoint_AI
@@ -244,31 +244,79 @@ go to a random point that doesn't telefrag
 ================
 */
 #define MAX_SPAWN_POINTS_AI    128
-gentity_t *SelectRandomDeathmatchSpawnPoint_AI( void ) {
-	gentity_t   *spot;
-	int count;
-	int selection;
-	gentity_t   *spots[MAX_SPAWN_POINTS_AI];
+#define MAX_SPAWN_POINT_DISTANCE    2048
+gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player ) {
+    gentity_t   *spot;
+    vec3_t delta;
+    float dist;
+    gentity_t   *spots[MAX_SPAWN_POINTS_AI];
+    int numSpots = 0;
 
-	count = 0;
-	spot = NULL;
+    spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
-		if ( SpotWouldTelefrag( spot ) ) {
-			continue;
-		}
-		spots[ count ] = spot;
-		count++;
-	}
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
 
-	if ( !count ) { // no spots that won't telefrag
-		return G_Find( NULL, FOFS( classname ), "info_ai_respawn" );
-	}
+        if ( player ) {
+            VectorSubtract( spot->s.origin, player->r.currentOrigin, delta );
+            dist = VectorLength( delta );
+            if ( dist < MAX_SPAWN_POINT_DISTANCE ) {
+                // Check if the spawn point is occupied
+                if ( !SpotWouldTelefrag( spot ) ) {
+                    spots[numSpots++] = spot;
+                }
+            }
+        } else {
+            spots[numSpots++] = spot;
+        }
+    }
 
-	selection = rand() % count;
-	return spots[ selection ];
+    if ( numSpots == 0 ) {
+        return NULL;
+    }
+
+    return spots[rand() % numSpots];
 }
 
+
+/*
+===========
+SelectSpawnPoint_AI
+
+Chooses a player start, deathmatch start, etc
+============
+*/
+gentity_t *SelectSpawnPoint_AI( gentity_t *player, vec3_t origin, vec3_t angles ) {
+    gentity_t   *spot;
+    gentity_t   *nearestSpot;
+
+    nearestSpot = SelectNearestDeathmatchSpawnPoint_AI( player );
+
+    spot = SelectRandomDeathmatchSpawnPoint_AI(player);
+    if ( spot == nearestSpot ) {
+        // roll again if it would be real close to point of death
+        spot = SelectRandomDeathmatchSpawnPoint_AI(player);
+        if ( spot == nearestSpot ) {
+            // last try
+            spot = SelectRandomDeathmatchSpawnPoint_AI(player);
+        }
+    }
+
+    // If no nearby spawn point was found, select any spawn point
+    if ( !spot ) {
+        spot = SelectRandomDeathmatchSpawnPoint_AI( NULL );
+    }
+
+    // If still no spawn point was found, report an error
+    if ( !spot ) {
+        G_Error( "Couldn't find a spawn point" );
+    }
+
+    VectorCopy( spot->s.origin, origin );
+    origin[2] += 9;
+    VectorCopy( spot->s.angles, angles );
+
+    return spot;
+}
 
 /*
 ===========
@@ -305,40 +353,6 @@ gentity_t *SelectSpawnPoint( vec3_t avoidPoint, vec3_t origin, vec3_t angles ) {
 	return spot;
 }
 
-/*
-===========
-SelectSpawnPoint_AI
-
-Chooses a player start, deathmatch start, etc
-============
-*/
-gentity_t *SelectSpawnPoint_AI( vec3_t avoidPoint, vec3_t origin, vec3_t angles ) {
-	gentity_t   *spot;
-	gentity_t   *nearestSpot;
-
-	nearestSpot = SelectNearestDeathmatchSpawnPoint_AI( avoidPoint );
-
-	spot = SelectRandomDeathmatchSpawnPoint_AI();
-	if ( spot == nearestSpot ) {
-		// roll again if it would be real close to point of death
-		spot = SelectRandomDeathmatchSpawnPoint_AI();
-		if ( spot == nearestSpot ) {
-			// last try
-			spot = SelectRandomDeathmatchSpawnPoint_AI();
-		}
-	}
-
-	// find a single player start spot
-	if ( !spot ) {
-		G_Error( "Couldn't find a spawn point" );
-	}
-
-	VectorCopy( spot->s.origin, origin );
-	origin[2] += 9;
-	VectorCopy( spot->s.angles, angles );
-
-	return spot;
-}
 
 /*
 ===========
@@ -1291,6 +1305,7 @@ void ClientSpawn( gentity_t *ent ) {
 	int flags;
 	int savedPing;
 	int savedTeam;
+	gentity_t *player = AICast_FindEntityForName( "player" );
 
 	index = ent - g_entities;
 	client = ent->client;
@@ -1327,7 +1342,7 @@ void ClientSpawn( gentity_t *ent ) {
 				} else {
 					// don't spawn near existing origin if possible
 					spawnPoint = SelectSpawnPoint_AI(
-						client->ps.origin,
+						player,
 						spawn_origin, spawn_angles );
 				}
 

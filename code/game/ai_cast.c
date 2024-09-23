@@ -604,6 +604,8 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 	cast_state_t    *cs;
 	vec3_t spawn_origin, spawn_angles;
 
+	gentity_t *player = AICast_FindEntityForName( "player" );
+
 	if ( !ent->aiInactive ) {
 		return;
 	}
@@ -646,7 +648,7 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 
 	// Selecting the spawn point for the AI
     if ( g_gametype.integer == GT_SURVIVAL )  {
-				SelectSpawnPoint_AI( ent->client->ps.origin, spawn_origin, spawn_angles );
+				SelectSpawnPoint_AI( player, spawn_origin, spawn_angles );
 				G_SetOrigin( ent, spawn_origin );
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );

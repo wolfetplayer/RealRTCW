@@ -511,9 +511,10 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				ent->die = AICast_Die;
 				ent->client->ps.eFlags &= ~EF_DEAD;
 				ent->s.eFlags &= ~EF_DEAD;
+				player = AICast_FindEntityForName( "player" );
 
                 // Selecting the spawn point for the AI
-				SelectSpawnPoint_AI( ent->client->ps.origin, spawn_origin, spawn_angles );
+				SelectSpawnPoint_AI( player, spawn_origin, spawn_angles );
 				G_SetOrigin( ent, spawn_origin );
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );

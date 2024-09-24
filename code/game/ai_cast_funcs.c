@@ -472,6 +472,12 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
                 cs->attributes[STARTING_HEALTH] = 50;
                 }
                 break;
+            case AICHAR_ZOMBIE_SURV:
+                cs->attributes[STARTING_HEALTH] = 40 + increase;  
+                if (cs->attributes[STARTING_HEALTH] > 120) {  
+                cs->attributes[STARTING_HEALTH] = 120;
+                }
+                break;
             case AICHAR_ELITEGUARD:
                cs->attributes[STARTING_HEALTH] = 35 + increase;  // Increase starting_health for AICHAR_ELITEGUARD
                if (cs->attributes[STARTING_HEALTH] > 70) {  // Cap health for AICHAR_ELITEGUARD

@@ -490,7 +490,6 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 
 	switch ( pm->ps->aiChar ) {
 		case AICHAR_ZOMBIE:
-		case AICHAR_ZOMBIE_SURV:
 		case AICHAR_WARZOMBIE:
 			 scale *= 1.1;
 			 break;
@@ -509,6 +508,9 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 			 break;
 		case AICHAR_HELGA:
 		     scale *= 1.3;
+			 break;
+		case AICHAR_ZOMBIE_SURV:
+		     scale *= 1.2;
 			 break;
 		default:
 		    scale *= 1.0;

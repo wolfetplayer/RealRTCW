@@ -1341,6 +1341,7 @@ typedef struct accumPrintLabel_s {
 #define MAX_POWERUPS            16
 #define MAX_WEAPONS             64  // (SA) and yet more!
 #define MAX_HOLDABLE            16
+#define MAX_PERKS 			    16
 
 // Ridah, increased this
 //#define	MAX_PS_EVENTS			2
@@ -1438,6 +1439,7 @@ typedef struct playerState_s {
 	int holdable[MAX_HOLDABLE];
 	int holding;                        // the current item in holdable[] that is selected (held)
 	int weapons[MAX_WEAPONS / ( sizeof( int ) * 8 )];   // 64 bits for weapons held
+	int perk[MAX_PERKS];                // Perks
 
 	// Ridah, allow for individual bounding boxes
 	vec3_t mins, maxs;

@@ -343,7 +343,8 @@ typedef enum {
 	STAT_DEAD_YAW,                  // look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,             // bit mask of clients wishing to exit the intermission (FIXME: configstring?)
 	STAT_MAX_HEALTH,                // health / armor limit, changable by handicap
-	STAT_PLAYER_CLASS               // DHM - Nerve :: player class in multiplayer
+	STAT_PLAYER_CLASS,               // DHM - Nerve :: player class in multiplayer
+	STAT_PERK
 } statIndex_t;
 
 
@@ -460,6 +461,12 @@ typedef enum {
 	HI_AUTO5,
 	HI_NUM_HOLDABLE
 } holdable_t;
+
+typedef enum {
+	PERK_NONE,
+	PERK_RESILIENCE,
+	NUM_PERKS
+} perk_t;
 
 typedef enum
 {
@@ -1242,7 +1249,8 @@ typedef enum {
 	IT_KEY,
 	IT_TREASURE,            // gold bars, etc.  things that can be picked up and counted for a tally at end-level
 	IT_CLIPBOARD,           // 'clipboard' used as a general term for 'popup' items where you pick up the item and it pauses and opens a menu
-	IT_TEAM
+	IT_TEAM,
+	IT_PERK
 } itemType_t;
 
 #define MAX_ITEM_MODELS 3
@@ -1286,6 +1294,7 @@ gitem_t *BG_FindItemForAmmo( int ammo );
 gitem_t *BG_FindItemForKey( wkey_t k, int *index );
 weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
 weapon_t BG_FindClipForWeapon( weapon_t weapon );
+gitem_t *BG_FindItemForPerk( perk_t perk );
 
 qboolean BG_AkimboFireSequence( int weapon, int akimboClip, int coltClip );
 

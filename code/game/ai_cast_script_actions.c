@@ -2015,6 +2015,37 @@ qboolean AICast_ScriptAction_GiveInventory( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+/*
+==============
+AICast_ScriptAction_GivePerk
+==============
+*/
+qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params ) {
+	int i;
+	gitem_t     *item = 0;
+
+	for ( i = 1; bg_itemlist[i].classname; i++ ) {
+		if ( !Q_strcasecmp( params, bg_itemlist[i].classname ) ) {
+			item = &bg_itemlist[i];
+		}
+
+		if ( !Q_strcasecmp( params, bg_itemlist[i].pickup_name ) ) {
+			item = &bg_itemlist[i];
+		}
+	}
+
+	if ( !item ) { // item not found
+		G_Error( "AI Scripting: giveperk %s, unknown item", params );
+	}
+
+     if ( item->giType == IT_PERK )  {
+		g_entities[cs->entityNum].client->ps.perk[item->giTag] += 1;   // add default of 1
+		g_entities[cs->entityNum].client->ps.stats[STAT_PERK] |= ( 1 << item->giTag );
+	}
+
+	return qtrue;
+}
+
 
 //----(SA)	end
 

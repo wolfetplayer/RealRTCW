@@ -5731,6 +5731,38 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0}
 	},
 
+
+/*QUAKED perk_resilience(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_bandages.wav"
+use sound : "sound/pickup/holdable/use_bandages.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/bandages.md3"
+*/
+	{
+		"perk_resilience",
+		"sound/pickup/holdable/get_bandages.wav",
+		{
+		"models/powerups/holdable/bandages.md3",
+		0, 
+		0
+		},
+
+		"icons/bandages",             
+		"Bandages used",             
+		1,
+		IT_PERK,
+		WP_NONE,
+		PERK_RESILIENCE,
+		0,
+		0,
+		"",                             
+		"sound/pickup/holdable/use_bandages.wav",
+		{0,0,0,0,0}
+	},
+
 /*QUAKED key_binocs (1 1 0) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 Binoculars.
 
@@ -5833,6 +5865,23 @@ gitem_t *BG_FindItemForHoldable( holdable_t pw ) {
 	return NULL;
 }
 
+
+/*
+==============
+BG_FindItemForPerk
+==============
+*/
+gitem_t *BG_FindItemForPerk( perk_t perk ) {
+	int i;
+
+	for ( i = 0 ; i < bg_numItems ; i++ ) {
+		if ( bg_itemlist[i].giType == IT_PERK && bg_itemlist[i].giTag == perk ) {
+			return &bg_itemlist[i];
+		}
+	}
+
+	return NULL;
+}
 
 /*
 ===============

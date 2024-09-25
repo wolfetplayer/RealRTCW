@@ -51,6 +51,7 @@ If you have questions concerning this license or the applicable additional terms
 #define RESPAWN_HEALTH      35
 #define RESPAWN_AMMO        40
 #define RESPAWN_HOLDABLE    60
+#define RESPAWN_PERK        65
 #define RESPAWN_MEGAHEALTH  120
 #define RESPAWN_POWERUP     120
 #define RESPAWN_PARTIAL     998     // for multi-stage ammo/health
@@ -338,6 +339,25 @@ int Pickup_Holdable( gentity_t *ent, gentity_t *other ) {
 		}
 
 	return RESPAWN_HOLDABLE;
+}
+
+
+//======================================================================
+
+int Pickup_Perk( gentity_t *ent, gentity_t *other ) {
+	gitem_t *item;
+
+	item = ent->item;
+
+	other->client->ps.perk[item->giTag] += 1;   // add default of 1
+
+	other->client->ps.stats[STAT_PERK] |= ( 1 << ent->item->giTag );   //----(SA)	added
+
+		if ( !( ent->spawnflags & 8 ) ) {
+			return RESPAWN_SP;
+		}
+
+	return RESPAWN_PERK;
 }
 
 
@@ -848,6 +868,9 @@ void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 		break;
 	case IT_HOLDABLE:
 		respawn = Pickup_Holdable( ent, other );
+		break;
+	case IT_PERK:
+		respawn = Pickup_Perk( ent, other );
 		break;
 	case IT_KEY:
 		respawn = Pickup_Key( ent, other );

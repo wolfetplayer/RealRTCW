@@ -1513,6 +1513,7 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.invisShader = trap_R_RegisterShader("powerups/invisibility" );
 //	cgs.media.regenShader = trap_R_RegisterShader("powerups/regen" );
 	cgs.media.hastePuffShader = trap_R_RegisterShader("hasteSmokePuff" );
+	cgs.media.redQuadShader = trap_R_RegisterShader("powerups/vampire" );
 
 	CG_LoadingString( " - models" );
 

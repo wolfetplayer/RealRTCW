@@ -2416,6 +2416,10 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
 			gun->customShader = cgs.media.quadWeaponShader;
 			trap_R_AddRefEntityToScene( gun );
 		}
+		if ( powerups & ( 1 << PW_VAMPIRE ) ) {
+			gun->customShader = cgs.media.redQuadShader;
+			trap_R_AddRefEntityToScene( gun );
+		}
 	}
 /*
 	if (ps && ps->clientNum == cg.snap->ps.clientNum) {

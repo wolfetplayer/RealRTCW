@@ -2775,6 +2775,12 @@ static void CG_PlayerPowerups( centity_t *cent ) {
 		trap_R_AddLightToScene( cent->lerpOrigin, 200 + ( rand() & 31 ), 0.2, 0.2, 1, 0 );
 	}
 
+	// vampire gives a red light
+	if ( powerups & ( 1 << PW_VAMPIRE ) ) {
+		trap_R_AddLightToScene( cent->lerpOrigin, 200 + ( rand() & 31 ), 1.0, 0.0, 0.0, 0 );
+	}
+
+
 	// flight plays a looped sound
 //	if ( powerups & ( 1 << PW_FLIGHT ) ) {
 //		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.flightSound, 255 );
@@ -4378,6 +4384,13 @@ void CG_AddRefEntityWithPowerups( refEntity_t *ent, int powerups, int team, enti
 			} else {
 				ent->customShader = cgs.media.quadShader;
 			}
+			trap_R_AddRefEntityToScene( ent );
+		}
+
+		if ( powerups & ( 1 << PW_VAMPIRE ) ) {
+
+			ent->customShader = cgs.media.redQuadShader;
+			
 			trap_R_AddRefEntityToScene( ent );
 		}
 		if ( powerups & ( 1 << PW_REGEN ) ) {

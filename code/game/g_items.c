@@ -349,7 +349,7 @@ int Pickup_Perk( gentity_t *ent, gentity_t *other ) {
 
 	item = ent->item;
 
-	other->client->ps.perk[item->giTag] += 1;   // add default of 1
+	other->client->ps.perks[item->giTag] += 1;   // add default of 1
 
 	other->client->ps.stats[STAT_PERK] |= ( 1 << ent->item->giTag );   //----(SA)	added
 

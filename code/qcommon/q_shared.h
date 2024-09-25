@@ -1439,7 +1439,7 @@ typedef struct playerState_s {
 	int holdable[MAX_HOLDABLE];
 	int holding;                        // the current item in holdable[] that is selected (held)
 	int weapons[MAX_WEAPONS / ( sizeof( int ) * 8 )];   // 64 bits for weapons held
-	int perk[MAX_PERKS];                // Perks
+	int perks[MAX_PERKS];                // Perks
 
 	// Ridah, allow for individual bounding boxes
 	vec3_t mins, maxs;

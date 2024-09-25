@@ -852,6 +852,29 @@ static void CG_DrawHoldableItem( rectDef_t *rect, int font, float scale, qboolea
 	}
 }
 
+static void CG_DrawPerks( rectDef_t *rect, int font, float scale, qboolean draw2D ) {
+    int i;
+    gitem_t *item;
+    float x = 320; // Start at the center of the screen
+    float y = 440; // Lower part of the screen
+
+    if ( cg_fixedAspect.integer == 2 ) {
+        CG_SetScreenPlacement(PLACE_RIGHT, PLACE_CENTER);
+    }
+
+    for ( i = 0; i < MAX_PERKS; i++ ) {
+        if ( cg.snap->ps.perks[i] > 0 || (cg.snap->ps.stats[STAT_PERK] & (1 << i)) ) {
+            item = BG_FindItemForPerk( i );
+
+            if ( item ) {
+                CG_RegisterItemVisuals( item - bg_itemlist );
+                CG_DrawPic( x, y, rect->w, rect->h, cg_items[item - bg_itemlist].icons[0] );
+                x += rect->w + 5; // 5 is the space between icons
+            }
+        }
+    }
+}
+
 void flubfoo( void ) {
 	int value;
 	gitem_t *item;
@@ -2138,6 +2161,9 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 		break;
 	case CG_PLAYER_HOLDABLE:
 		CG_DrawHoldableItem( &rect, font, scale, ownerDrawFlags & CG_SHOW_2DONLY );
+		break;
+	case CG_PLAYER_PERKS:
+		CG_DrawPerks( &rect, font, scale, ownerDrawFlags & CG_SHOW_2DONLY );
 		break;
 	case CG_PLAYER_ITEM:
 		CG_DrawPlayerItem( &rect, font, scale, ownerDrawFlags & CG_SHOW_2DONLY );

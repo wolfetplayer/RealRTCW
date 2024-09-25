@@ -5751,7 +5751,7 @@ model="models/powerups/holdable/bandages.md3"
 		},
 
 		"icons/bandages",             
-		"Bandages used",             
+		"Resilience",             
 		1,
 		IT_PERK,
 		WP_NONE,
@@ -5759,7 +5759,7 @@ model="models/powerups/holdable/bandages.md3"
 		0,
 		0,
 		"",                             
-		"sound/pickup/holdable/use_bandages.wav",
+		"",
 		{0,0,0,0,0}
 	},
 

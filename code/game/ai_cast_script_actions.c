@@ -2039,7 +2039,7 @@ qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params ) {
 	}
 
      if ( item->giType == IT_PERK )  {
-		g_entities[cs->entityNum].client->ps.perk[item->giTag] += 1;   // add default of 1
+		g_entities[cs->entityNum].client->ps.perks[item->giTag] += 1;   // add default of 1
 		g_entities[cs->entityNum].client->ps.stats[STAT_PERK] |= ( 1 << item->giTag );
 	}
 

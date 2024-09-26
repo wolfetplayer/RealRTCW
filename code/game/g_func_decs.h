@@ -1076,7 +1076,7 @@ extern void body_die ( gentity_t * self , gentity_t * inflictor , gentity_t * at
 extern void GibEntity ( gentity_t * self , int killer ) ;
 extern void GibHead ( gentity_t * self , int killer ) ;
 extern void LookAtKiller ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker ) ;
-extern void TossClientItems ( gentity_t * self ) ;
+extern void TossClientItems ( gentity_t * self, gentity_t *attacker ) ;
 extern void AddScore ( gentity_t * ent , int score ) ;
 extern void ClientCommand ( int clientNum ) ;
 extern void Cmd_SetSpawnPoint_f ( gentity_t * clent ) ;

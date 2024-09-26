@@ -543,10 +543,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 
 	weapon = ent->item->giTag;
 
-	//if ( g_gametype.integer == GT_SURVIVAL ) {
-		//other->client->ps.persistant[PERS_SCORE] += G_GetWeaponPrice( weapon );
-		//return RESPAWN_SP;
-	//}
 
 	if ( ent->count < 0 ) {
 		quantity = 0; // None for you, sir!
@@ -556,6 +552,11 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		} else {
 			quantity = ( random() * ( ammoTable[weapon].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
 		}
+
+		// Increase quantity if player has PERK_SCAVENGER
+        if (other->client->ps.perks[PERK_SCAVENGER] > 0) {
+            quantity *= 2; // Increase quantity
+        }
 
 		if (g_decaychallenge.integer) {
 			quantity = 999;

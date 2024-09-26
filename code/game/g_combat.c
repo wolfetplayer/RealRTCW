@@ -77,7 +77,7 @@ TossClientItems
 Toss the weapon and powerups for the killed player
 =================
 */
-void TossClientItems( gentity_t *self ) {
+void TossClientItems( gentity_t *self, gentity_t *attacker ) {
 	gitem_t     *item;
 	vec3_t forward;
 	int weapon;
@@ -174,7 +174,14 @@ void TossClientItems( gentity_t *self ) {
 		angle = 45;
 
    // Drop random powerup in survival mode
-    if (g_gametype.integer == GT_SURVIVAL && rand() % 100 < 10) {  // 10% chance 
+    int dropChance = 10; // Base drop chance
+
+	// Increase drop chance if attacker has PERK_SCAVENGER
+    if (attacker->client->ps.perks[PERK_SCAVENGER] > 0) {
+        dropChance += 7;
+    }
+
+    if (g_gametype.integer == GT_SURVIVAL && rand() % 100 < dropChance) {
        int powerup = 0;
        switch (rand() % 5) {  // Random number
         case 0:
@@ -471,7 +478,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
-			TossClientItems( self );
+			TossClientItems( self, attacker );
 		}
 
 	Cmd_Score_f( self );        // show scores

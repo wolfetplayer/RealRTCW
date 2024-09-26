@@ -420,7 +420,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		// if client is in a nodrop area, don't drop anything
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
-			TossClientItems( self );
+			TossClientItems( self, attacker );
 		}
 
 		// make sure the client doesn't forget about this entity until it's set to "dead" frame

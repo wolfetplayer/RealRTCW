@@ -161,7 +161,7 @@ int Pickup_Treasure( gentity_t *ent, gentity_t *other ) {
 	return RESPAWN_SP;  // no respawn
 
 	if ( g_gametype.integer == GT_SURVIVAL ) {
-	    other->client->ps.persistant[PERS_SCORE] += 400;
+	    other->client->ps.persistant[PERS_SCORE] += 50;
 	}
 }
 
@@ -480,10 +480,6 @@ Pickup_Ammo
 int Pickup_Ammo( gentity_t *ent, gentity_t *other ) {
 	int quantity;
 
-	if ( g_gametype.integer == GT_SURVIVAL ) {
-		other->client->ps.persistant[PERS_SCORE] += G_GetAmmoPrice( ent->item->giTag );
-		return RESPAWN_SP;
-	}
 
 			if (g_decaychallenge.integer) {
 			quantity = 999;

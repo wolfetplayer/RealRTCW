@@ -5781,7 +5781,7 @@ model="models/powerups/holdable/bandages.md3"
 		0
 		},
 
-		"icons/bandages",             
+		"icons/perk_scavenger",             
 		"Scavenger",             
 		1,
 		IT_PERK,

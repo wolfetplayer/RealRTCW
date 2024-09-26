@@ -537,7 +537,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 
 	#ifdef GAMEDLL
 	if ( ! (pm->ps->aiChar)) {
-		if (g_realism.value) {
+		if (g_realism.value || g_gametype.integer == GT_SURVIVAL) {
 			scale *= (pm_realismSlowScale * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
 		} else {
 			scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
@@ -546,7 +546,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 	#endif
 	#ifdef CGAMEDLL
 	if ( ! (pm->ps->aiChar)) {
-		if (cg_realism.value) {
+		if (cg_realism.value || cg_gameType.integer == GT_SURVIVAL) {
 			scale *= (pm_realismSlowScale * GetWeaponTableData(pm->ps->weapon)->moveSpeed);
 		} else {
 		    scale *= GetWeaponTableData(pm->ps->weapon)->moveSpeed;
@@ -701,7 +701,7 @@ static qboolean PM_CheckJump( void ) {
     // Below is a JUMP_VELOCITY definition cases. Define was removed completely.
 	#ifdef GAMEDLL
 	// Total stamina count is 20000
-		if (g_realism.value) {
+		if (g_realism.value || g_gametype.integer == GT_SURVIVAL ) {
 		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
 		                pm->ps->velocity[2] = 260;
 		   } else if ((pm->ps->sprintTime < 10000) && (pm->ps->sprintTime > 5000)) {
@@ -716,7 +716,7 @@ static qboolean PM_CheckJump( void ) {
 		}
 	#endif
 	#ifdef CGAMEDLL
-		if (cg_realism.value) {
+		if (cg_realism.value || cg_gameType.integer == GT_SURVIVAL) {
 		   if ((pm->ps->sprintTime < 15000) && (pm->ps->sprintTime > 10000)) {
 		                pm->ps->velocity[2] = 260;
 		   } else if ((pm->ps->sprintTime < 10000) && (pm->ps->sprintTime > 5000)) {
@@ -1102,14 +1102,14 @@ static void PM_WalkMove( void ) {
 				pm->ps->jumpTime = pm->cmd.serverTime;
 	
 	#ifdef GAMEDLL
-		if (g_realism.value) {
+		if (g_realism.value || g_gametype.integer == GT_SURVIVAL) {
 			stamtake = 3000;
 		} else {
 			stamtake = 1000;
 		}
 	#endif
 	#ifdef CGAMEDLL
-		if (cg_realism.value) {
+		if (cg_realism.value || cg_gameType.integer == GT_SURVIVAL ) {
 			stamtake = 3000;
 		} else {
 			stamtake = 1000;
@@ -2018,7 +2018,7 @@ static void PM_Footsteps( void ) {
 		// now footsteps
 	#ifdef GAMEDLL
 	    if ( !pm->ps->aiChar ) {
-		if (g_realism.value) {
+		if (g_realism.value || g_gametype.integer == GT_SURVIVAL) {
 			pm->ps->footstepCount += pm_realismSlowScale * (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
 		} else {
 			pm->ps->footstepCount += (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
@@ -2030,7 +2030,7 @@ static void PM_Footsteps( void ) {
 	#endif
 	#ifdef CGAMEDLL
 		if ( !pm->ps->aiChar ) {
-		if (cg_realism.value) {
+		if (cg_realism.value || cg_gameType.integer == GT_SURVIVAL) {
 			pm->ps->footstepCount += pm_realismSlowScale * (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
 		} else {
 		    pm->ps->footstepCount += (GetWeaponTableData(pm->ps->weapon)->moveSpeed * (pm->xyspeed * pml.frametime));
@@ -3443,7 +3443,7 @@ static void PM_Weapon( void ) {
 
 	// unable to use weapon	on the ladder
 	#ifdef GAMEDLL
-	if ( !delayedFire && g_realism.value ) {
+    if (!delayedFire && (g_realism.value || g_gametype.integer == GT_SURVIVAL)) {
 			if ( ( pm->ps->pm_flags & PMF_LADDER )  ){
 			if ( pm->ps->weaponstate != WEAPON_HOLSTER_IN ) {
 				pm->ps->weaponstate = WEAPON_HOLSTER_IN;
@@ -3469,7 +3469,7 @@ static void PM_Weapon( void ) {
 	}
 	#endif
 	#ifdef CGAMEDLL
-	if ( !delayedFire && cg_realism.value ) {
+    if (!delayedFire && (cg_realism.value || cg_gameType.integer == GT_SURVIVAL)) {
 
 		if ( ( pm->ps->pm_flags & PMF_LADDER ) ){
 			if ( pm->ps->weaponstate != WEAPON_HOLSTER_IN ) {
@@ -3498,7 +3498,7 @@ static void PM_Weapon( void ) {
 
 	// unable to use weapon while sprinting
 	#ifdef GAMEDLL
-	if (!delayedFire && g_realism.value ) {
+    if (!delayedFire && (g_realism.value || g_gametype.integer == GT_SURVIVAL)) {
 			if ( ( pm->ps->pm_flags & PMF_SPRINTING ) && ( pm->ps->sprintTime > 0 ) ){
 			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
 				pm->ps->weaponstate = WEAPON_SPRINT_IN;
@@ -3524,7 +3524,7 @@ static void PM_Weapon( void ) {
 	}
 	#endif
 	#ifdef CGAMEDLL
-	if ( !delayedFire && cg_realism.value ) {
+    if (!delayedFire && (cg_realism.value || cg_gameType.integer == GT_SURVIVAL)) {
 
 		if ( ( pm->ps->pm_flags & PMF_SPRINTING ) && ( pm->ps->sprintTime > 0 ) ){
 			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
@@ -4534,14 +4534,14 @@ void PM_LadderMove( void ) {
 			wishvel[2] = 0.5 * upscale * scale * (float)pm->cmd.forwardmove;
 		} else { // player speed
 	            #ifdef GAMEDLL
-				if (g_realism.value) {
+				if (g_realism.value || g_gametype.integer == GT_SURVIVAL) {
 			    wishvel[2] = 0.8 * upscale * scale * (float)pm->cmd.forwardmove;
 		        } else {
 			    wishvel[2] = 0.9 * upscale * scale * (float)pm->cmd.forwardmove;
 		        }
 				#endif
 				 #ifdef CGAMEDLL
-				if (cg_realism.value) {
+				if (cg_realism.value || cg_gameType.integer == GT_SURVIVAL) {
 			    wishvel[2] = 0.8 * upscale * scale * (float)pm->cmd.forwardmove;
 		        } else {
 			    wishvel[2] = 0.9 * upscale * scale * (float)pm->cmd.forwardmove;

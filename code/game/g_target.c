@@ -104,6 +104,12 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
     item = &bg_itemlist[itemIndex];
 
+	if (activator->client->ps.perks[item->giTag] > 0) {
+        // The player already has the perk, so don't give it to them again
+		trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
+        return;
+    }
+
     // Check if player has enough points
     if (activator->client->ps.persistant[PERS_SCORE] < price) {
         trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
@@ -138,7 +144,11 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     } else if ( item->giType == IT_ARMOR )  {
 		activator->client->ps.stats[STAT_ARMOR] = 100;
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
-    } else {
+    } else if ( item->giType == IT_PERK ) {
+	   activator->client->ps.perks[item->giTag] += 1;
+	   activator->client->ps.stats[STAT_PERK] |= ( 1 << item->giTag );
+       G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
+	} else {
 		return;
 	}
 }

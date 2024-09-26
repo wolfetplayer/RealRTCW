@@ -5750,7 +5750,7 @@ model="models/powerups/holdable/bandages.md3"
 		0
 		},
 
-		"icons/bandages",             
+		"icons/perk_regen",             
 		"Resilience",             
 		1,
 		IT_PERK,

@@ -1084,7 +1084,7 @@ void ClientThink_real( gentity_t *ent ) {
 	}
 
 	if ( client->ps.powerups[PW_HASTE_SURV] ) {
-		client->ps.speed *= 1.4;
+		client->ps.speed *= 2.0;
 	}
 
     if (ent->client->ps.powerups[PW_INVIS] <= level.time) {

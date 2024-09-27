@@ -156,6 +156,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
 	// Subtract price from player's score
     activator->client->ps.persistant[PERS_SCORE] -= price;
+	trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
 }
 
 void SP_target_buy( gentity_t *ent ) {

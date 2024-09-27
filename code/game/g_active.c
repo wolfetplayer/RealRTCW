@@ -621,47 +621,73 @@ void ClientEvents( gentity_t *ent, int oldEventSequence ) {
 
 			stunTime = 0;   //----(SA)	added
 
-//----(SA)	FIXME: TODO:  hmm, going through here adding surfaceparms it seems that the value for ent->client->ps.pm_time was weird.  (1000 for all but dmg_25 which has 250?)
-			if ( event == EV_FALL_NDIE ) {
+			if (event == EV_FALL_NDIE)
+			{
 				damage = 9999;
-			} else if ( event == EV_FALL_DMG_50 ) {
-			if ( client->ps.powerups[PW_FLIGHT] ) 
-			    {
-				damage = 25;
-				stunTime = 500;
-			    } else {
-				damage = 50;
-				stunTime = 1000;
+			}
+			else if (client->ps.perks[PERK_RUNNER] > 0)
+			{
+				damage = 0;
+				stunTime = 0;
+			}
+			else
+			{
+				if (event == EV_FALL_DMG_50)
+				{
+					if (client->ps.powerups[PW_FLIGHT])
+					{
+						damage = 25;
+						stunTime = 500;
+					}
+					else
+					{
+						damage = 50;
+						stunTime = 1000;
+					}
 				}
-			} else if ( event == EV_FALL_DMG_25 ) {
-			if ( client->ps.powerups[PW_FLIGHT] ) 
-			    {
-				damage = 12;
-				stunTime = 125;
-			    } else {
-				damage = 25;
-				stunTime = 250;
+				else if (event == EV_FALL_DMG_25)
+				{
+					if (client->ps.powerups[PW_FLIGHT])
+					{
+						damage = 12;
+						stunTime = 125;
+					}
+					else
+					{
+						damage = 25;
+						stunTime = 250;
+					}
 				}
-			} else if ( event == EV_FALL_DMG_15 ) {
-			if ( client->ps.powerups[PW_FLIGHT] ) 
-			    {
-				damage = 7;
-				stunTime = 500;
-			    } else {
-				damage = 15;
-				stunTime = 1000;
+				else if (event == EV_FALL_DMG_15)
+				{
+					if (client->ps.powerups[PW_FLIGHT])
+					{
+						damage = 7;
+						stunTime = 500;
+					}
+					else
+					{
+						damage = 15;
+						stunTime = 1000;
+					}
 				}
-			} else if ( event == EV_FALL_DMG_10 ) {
-			if ( client->ps.powerups[PW_FLIGHT] ) 
-			    {
-				damage = 5;
-				stunTime = 500;
-			    } else {
-				damage = 10;
-				stunTime = 1000;
+				else if (event == EV_FALL_DMG_10)
+				{
+					if (client->ps.powerups[PW_FLIGHT])
+					{
+						damage = 5;
+						stunTime = 500;
+					}
+					else
+					{
+						damage = 10;
+						stunTime = 1000;
+					}
 				}
-			} else {
-				damage = 5; // never used
+				else
+				{
+					damage = 5; // never used
+				}
 			}
 
 			fallSoundMul *= 2;  // double range for falls greater than FALL_SHORT

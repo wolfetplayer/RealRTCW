@@ -4601,12 +4601,25 @@ PM_Sprint
 */
 //----(SA)	cleaned up for SP (10/22/01)
 void PM_Sprint( void ) {
+
+	int staminaDrain = 2000;
+    int staminaRecharge = 500;
+
+
+    // Check if the player has PERK_RUNNER
+    if (pm->ps->perks[PERK_RUNNER] > 0) {
+        // Decrease stamina drain and increase recharge
+        staminaDrain = 1500;
+        staminaRecharge = 1000;
+    }
+
+
 	if (    ( pm->cmd.buttons & BUTTON_SPRINT ) &&
 			( pm->cmd.forwardmove || pm->cmd.rightmove ) &&
 			!( pm->ps->pm_flags & PMF_DUCKED ) ) {
 
 		if ( pm->ps->powerups[PW_NOFATIGUE] ) {    // take time from powerup before taking it from sprintTime
-			pm->ps->powerups[PW_NOFATIGUE] -= 2000 * pml.frametime; 
+			pm->ps->powerups[PW_NOFATIGUE] -= staminaDrain * pml.frametime; 
 
 			pm->ps->sprintTime += 10;           // (SA) go ahead and continue to recharge stamina at double rate with stamina powerup even when exerting
 			if ( pm->ps->sprintTime > 20000 ) {
@@ -4619,7 +4632,7 @@ void PM_Sprint( void ) {
 		} else {
 			// RF, dont drain sprintTime if not moving
 			if ( VectorLength( pm->ps->velocity ) > 128 ) { // (SA) check for a bit more movement
-				pm->ps->sprintTime -= 2000 * pml.frametime; 
+				pm->ps->sprintTime -= staminaDrain * pml.frametime; 
 			}
 		}
 
@@ -4638,16 +4651,16 @@ void PM_Sprint( void ) {
 		// JPW NERVE adjusted for framerate independence
 
 		// regular recharge
-		pm->ps->sprintTime += 500 * pml.frametime;
+		pm->ps->sprintTime += staminaRecharge * pml.frametime;
 
 		// additional (2x) recharge if in top 75% of sprint bar, or with stamina powerup
 		if ( pm->ps->sprintTime > 5000 || pm->ps->powerups[PW_NOFATIGUE] ) {
-			pm->ps->sprintTime += 500 * pml.frametime;
+			pm->ps->sprintTime +=  staminaRecharge * pml.frametime;
 		}
 
 		// additional recharge if standing still
 		if ( !( pm->cmd.forwardmove || pm->cmd.rightmove ) ) {
-			pm->ps->sprintTime += 500 * pml.frametime;
+			pm->ps->sprintTime +=  staminaRecharge * pml.frametime;
 		}
 
 		if ( pm->ps->sprintTime > 20000 ) {

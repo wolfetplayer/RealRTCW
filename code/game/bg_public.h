@@ -466,6 +466,7 @@ typedef enum {
 	PERK_NONE,
 	PERK_RESILIENCE,
 	PERK_SCAVENGER,
+	PERK_RUNNER,
 	NUM_PERKS
 } perk_t;
 

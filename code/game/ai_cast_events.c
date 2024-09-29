@@ -271,15 +271,18 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
     // Add score based on aiCharacter type
     switch (attacker->aiCharacter) {
         case AICHAR_SOLDIER:
+		case AICHAR_ZOMBIE:
             score += 0;
             break;
         case AICHAR_ELITEGUARD:
+		case AICHAR_WARZOMBIE:
             score += 2;
             break;
         case AICHAR_BLACKGUARD:
             score += 5;
             break;
         case AICHAR_VENOM:
+		case AICHAR_PRIEST:
             score += 7;
             break;
         default:

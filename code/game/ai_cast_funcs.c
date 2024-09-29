@@ -382,12 +382,28 @@ void AICast_IncreaseMaxActiveAI() {
         maxActiveAI[AICHAR_ELITEGUARD] = 4;
     }
 
+    if (survivalKillCount % 20 == 0) {
+        maxActiveAI[AICHAR_WARZOMBIE] += 2;
+    }
+
+    if (maxActiveAI[AICHAR_WARZOMBIE] > 5) {
+        maxActiveAI[AICHAR_WARZOMBIE] = 5;
+    }
+
     if (survivalKillCount % 30 == 0) {
         maxActiveAI[AICHAR_BLACKGUARD] += 2;
     }
 
     if (maxActiveAI[AICHAR_BLACKGUARD] > 4) {
         maxActiveAI[AICHAR_BLACKGUARD] = 4;
+    }
+
+	if (survivalKillCount % 30 == 0) {
+        maxActiveAI[AICHAR_PRIEST] += 1;
+    }
+
+    if (maxActiveAI[AICHAR_PRIEST] > 3) {
+        maxActiveAI[AICHAR_PRIEST] = 3;
     }
 
     if (survivalKillCount % 40 == 0) {
@@ -490,6 +506,48 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 					cs->attributes[WALKING_SPEED] = 250;
 				}
 				cs->attributes[CROUCHING_SPEED] = 80 + increase; 
+				if (cs->attributes[CROUCHING_SPEED] > 200)
+				{ 
+					cs->attributes[CROUCHING_SPEED] = 200;
+				}
+				break;
+			case AICHAR_WARZOMBIE:
+				cs->attributes[STARTING_HEALTH] = 60 + increase;
+				if (cs->attributes[STARTING_HEALTH] > 350)
+				{
+					cs->attributes[STARTING_HEALTH] = 350;
+				}
+				cs->attributes[RUNNING_SPEED] = 250 + increase; 
+				if (cs->attributes[RUNNING_SPEED] > 300) {
+					cs->attributes[RUNNING_SPEED] = 300;
+				}
+				cs->attributes[WALKING_SPEED] = 60 + increase; 
+				if (cs->attributes[WALKING_SPEED] > 250)
+				{ 
+					cs->attributes[WALKING_SPEED] = 250;
+				}
+				cs->attributes[CROUCHING_SPEED] = 80 + increase; 
+				if (cs->attributes[CROUCHING_SPEED] > 200)
+				{ 
+					cs->attributes[CROUCHING_SPEED] = 200;
+				}
+				break;
+			case AICHAR_PRIEST:
+				cs->attributes[STARTING_HEALTH] = 80 + increase;
+				if (cs->attributes[STARTING_HEALTH] > 250)
+				{
+					cs->attributes[STARTING_HEALTH] = 250;
+				}
+				cs->attributes[RUNNING_SPEED] = 170 + increase; 
+				if (cs->attributes[RUNNING_SPEED] > 300) {
+					cs->attributes[RUNNING_SPEED] = 300;
+				}
+				cs->attributes[WALKING_SPEED] = 120 + increase; 
+				if (cs->attributes[WALKING_SPEED] > 250)
+				{ 
+					cs->attributes[WALKING_SPEED] = 250;
+				}
+				cs->attributes[CROUCHING_SPEED] = 90 + increase; 
 				if (cs->attributes[CROUCHING_SPEED] > 200)
 				{ 
 					cs->attributes[CROUCHING_SPEED] = 200;

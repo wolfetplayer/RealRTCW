@@ -1577,7 +1577,7 @@ void ClientDisconnect( int clientNum ) {
 
 			// They don't get to take powerups with them!
 			// Especially important for stuff like CTF flags
-			//TossClientItems( ent );
+			TossClientWeapons( ent );
 		}
 
 		G_LogPrintf( "ClientDisconnect: %i\n", clientNum );

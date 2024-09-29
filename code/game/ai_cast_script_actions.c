@@ -2315,9 +2315,6 @@ qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params) {
 	int weapon;
 	weapon = WP_NONE;
 
-	gentity_t   *player;
-	player = AICast_FindEntityForName( "player" );
-
 	// find the cast/player with the given "name"
 	ent = AICast_FindEntityForName(params);
 	if (!ent) {
@@ -2326,7 +2323,7 @@ qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params) {
 	}
 	weapon = cs->weaponNum;
 	if (weapon != WP_NONE) {
-		TossClientItems(ent, player);
+		TossClientWeapons( ent );
 		COM_BitClear(g_entities[cs->entityNum].client->ps.weapons, cs->weaponNum);
 		g_entities[cs->entityNum].client->ps.weapon = WP_NONE;
 	}

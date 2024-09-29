@@ -872,7 +872,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod );
 qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod, RadiusScope scope );
 void body_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
-void TossClientItems( gentity_t *self, gentity_t *attacker );
+void TossClientWeapons( gentity_t *self );
+void TossClientPowerups( gentity_t *self, gentity_t *attacker );
 
 // damage flags
 #define DAMAGE_RADIUS               0x00000001  // damage was indirect

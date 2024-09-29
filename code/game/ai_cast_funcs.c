@@ -465,47 +465,67 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 
 			int increase = survivalKillCount / 10;  // Calculate increase based on survivalKillCount
 
-            switch (cs->aiCharacter) {
-            case AICHAR_SOLDIER:
-                cs->attributes[STARTING_HEALTH] = 30 + increase;  // Increase starting_health for AICHAR_SOLDIER
-                if (cs->attributes[STARTING_HEALTH] > 50) {  // Cap health for AICHAR_SOLDIER
-                cs->attributes[STARTING_HEALTH] = 50;
-                }
-                break;
-            case AICHAR_ZOMBIE_SURV:
-                cs->attributes[STARTING_HEALTH] = 40 + increase;  
-                if (cs->attributes[STARTING_HEALTH] > 120) {  
-                cs->attributes[STARTING_HEALTH] = 120;
-                }
-                break;
-            case AICHAR_ELITEGUARD:
-               cs->attributes[STARTING_HEALTH] = 35 + increase;  // Increase starting_health for AICHAR_ELITEGUARD
-               if (cs->attributes[STARTING_HEALTH] > 70) {  // Cap health for AICHAR_ELITEGUARD
-               cs->attributes[STARTING_HEALTH] = 70;
-               }
-               break;
-            case AICHAR_BLACKGUARD:
-               cs->attributes[STARTING_HEALTH] = 50 + increase;  // Increase starting_health for AICHAR_BLACKGUARD
-               if (cs->attributes[STARTING_HEALTH] > 80) {  // Cap health for AICHAR_BLACKGUARD
-               cs->attributes[STARTING_HEALTH] = 80;
-               }
-               break;
-            case AICHAR_VENOM:
-                cs->attributes[STARTING_HEALTH] = 80 + increase;  // Increase starting_health for AICHAR_VENOM
-                if (cs->attributes[STARTING_HEALTH] > 150) {  // Cap health for AICHAR_VENOM
-                cs->attributes[STARTING_HEALTH] = 150;
-               }
-               break;
-            default:
-               cs->attributes[STARTING_HEALTH] = 30 + increase;  // Increase default starting_health
-               if (cs->attributes[STARTING_HEALTH] > 60) {  // Cap default health
-               cs->attributes[STARTING_HEALTH] = 60;
-               }
-              break;
-}
+			switch (cs->aiCharacter)
+			{
+			case AICHAR_SOLDIER:
+				cs->attributes[STARTING_HEALTH] = 30 + increase; 
+				if (cs->attributes[STARTING_HEALTH] > 50)
+				{ 
+					cs->attributes[STARTING_HEALTH] = 50;
+				}
+				break;
+			case AICHAR_ZOMBIE_SURV:
+				cs->attributes[STARTING_HEALTH] = 40 + increase;
+				if (cs->attributes[STARTING_HEALTH] > 300)
+				{
+					cs->attributes[STARTING_HEALTH] = 300;
+				}
+				cs->attributes[RUNNING_SPEED] = 200 + increase; 
+				if (cs->attributes[RUNNING_SPEED] > 300) {
+					cs->attributes[RUNNING_SPEED] = 300;
+				}
+				cs->attributes[WALKING_SPEED] = 60 + increase; 
+				if (cs->attributes[WALKING_SPEED] > 250)
+				{ 
+					cs->attributes[WALKING_SPEED] = 250;
+				}
+				cs->attributes[CROUCHING_SPEED] = 80 + increase; 
+				if (cs->attributes[CROUCHING_SPEED] > 200)
+				{ 
+					cs->attributes[CROUCHING_SPEED] = 200;
+				}
+				break;
+			case AICHAR_ELITEGUARD:
+				cs->attributes[STARTING_HEALTH] = 35 + increase; 
+				if (cs->attributes[STARTING_HEALTH] > 70)
+				{ 
+					cs->attributes[STARTING_HEALTH] = 70;
+				}
+				break;
+			case AICHAR_BLACKGUARD:
+				cs->attributes[STARTING_HEALTH] = 50 + increase; 
+				if (cs->attributes[STARTING_HEALTH] > 80)
+				{ 
+					cs->attributes[STARTING_HEALTH] = 80;
+				}
+				break;
+			case AICHAR_VENOM:
+				cs->attributes[STARTING_HEALTH] = 80 + increase; 
+				if (cs->attributes[STARTING_HEALTH] > 150)
+				{ 
+					cs->attributes[STARTING_HEALTH] = 150;
+				}
+				break;
+			default:
+				cs->attributes[STARTING_HEALTH] = 30 + increase; 
+				if (cs->attributes[STARTING_HEALTH] > 60)
+				{ 
+					cs->attributes[STARTING_HEALTH] = 60;
+				}
+				break;
+			}
 
-
-              // Set health
+			  // Set health
               ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH]; 
 
 				ent->r.contents = CONTENTS_BODY;

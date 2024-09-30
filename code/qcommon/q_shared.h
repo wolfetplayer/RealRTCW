@@ -1712,6 +1712,8 @@ typedef struct entityState_s {
 
 	int animMovetype;       // clients can't derive movetype of other clients for anim scripting system
 
+	int perks;
+
 } entityState_t;
 
 typedef enum {

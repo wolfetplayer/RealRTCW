@@ -479,113 +479,102 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				
 
 
-			int increase = survivalKillCount / 10;  // Calculate increase based on survivalKillCount
+			int health_increase = survivalKillCount / 2;
+			float speed_increase = survivalKillCount / 50;
+		    float crouchSpeedScale = 1;
+			float runSpeedScale = 1;
+			float sprintSpeedScale = 1;
+			int newHealth = 50; 
+
 
 			switch (cs->aiCharacter)
 			{
 			case AICHAR_SOLDIER:
-				cs->attributes[STARTING_HEALTH] = 30 + increase; 
-				if (cs->attributes[STARTING_HEALTH] > 50)
-				{ 
-					cs->attributes[STARTING_HEALTH] = 50;
+				newHealth = 30 + health_increase;
+				if (newHealth > 60) {
+					newHealth = 60;
 				}
-				break;
 			case AICHAR_ZOMBIE_SURV:
-				cs->attributes[STARTING_HEALTH] = 40 + increase;
-				if (cs->attributes[STARTING_HEALTH] > 300)
-				{
-					cs->attributes[STARTING_HEALTH] = 300;
+				newHealth = 40 + health_increase;
+				if (newHealth > 300) {
+					newHealth = 300;
 				}
-				cs->attributes[RUNNING_SPEED] = 200 + increase; 
-				if (cs->attributes[RUNNING_SPEED] > 300) {
-					cs->attributes[RUNNING_SPEED] = 300;
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
 				}
-				cs->attributes[WALKING_SPEED] = 60 + increase; 
-				if (cs->attributes[WALKING_SPEED] > 250)
-				{ 
-					cs->attributes[WALKING_SPEED] = 250;
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
 				}
-				cs->attributes[CROUCHING_SPEED] = 80 + increase; 
-				if (cs->attributes[CROUCHING_SPEED] > 200)
-				{ 
-					cs->attributes[CROUCHING_SPEED] = 200;
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.75) {
+					crouchSpeedScale = 0.75;
 				}
 				break;
 			case AICHAR_WARZOMBIE:
-				cs->attributes[STARTING_HEALTH] = 60 + increase;
-				if (cs->attributes[STARTING_HEALTH] > 350)
-				{
-					cs->attributes[STARTING_HEALTH] = 350;
+				newHealth = 60 + health_increase;
+				if (newHealth > 350) {
+					newHealth = 350;
 				}
-				cs->attributes[RUNNING_SPEED] = 250 + increase; 
-				if (cs->attributes[RUNNING_SPEED] > 300) {
-					cs->attributes[RUNNING_SPEED] = 300;
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
 				}
-				cs->attributes[WALKING_SPEED] = 60 + increase; 
-				if (cs->attributes[WALKING_SPEED] > 250)
-				{ 
-					cs->attributes[WALKING_SPEED] = 250;
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
 				}
-				cs->attributes[CROUCHING_SPEED] = 80 + increase; 
-				if (cs->attributes[CROUCHING_SPEED] > 200)
-				{ 
-					cs->attributes[CROUCHING_SPEED] = 200;
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.75) {
+					crouchSpeedScale = 0.75;
 				}
 				break;
 			case AICHAR_PRIEST:
-				cs->attributes[STARTING_HEALTH] = 80 + increase;
-				if (cs->attributes[STARTING_HEALTH] > 250)
-				{
-					cs->attributes[STARTING_HEALTH] = 250;
+				newHealth = 80 + health_increase;
+				if (newHealth > 250) {
+					newHealth = 250;
 				}
-				cs->attributes[RUNNING_SPEED] = 170 + increase; 
-				if (cs->attributes[RUNNING_SPEED] > 300) {
-					cs->attributes[RUNNING_SPEED] = 300;
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.4) {
+					runSpeedScale = 1.4;
 				}
-				cs->attributes[WALKING_SPEED] = 120 + increase; 
-				if (cs->attributes[WALKING_SPEED] > 250)
-				{ 
-					cs->attributes[WALKING_SPEED] = 250;
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
 				}
-				cs->attributes[CROUCHING_SPEED] = 90 + increase; 
-				if (cs->attributes[CROUCHING_SPEED] > 200)
-				{ 
-					cs->attributes[CROUCHING_SPEED] = 200;
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.5) {
+					crouchSpeedScale = 0.5;
 				}
 				break;
 			case AICHAR_ELITEGUARD:
-				cs->attributes[STARTING_HEALTH] = 35 + increase; 
-				if (cs->attributes[STARTING_HEALTH] > 70)
-				{ 
-					cs->attributes[STARTING_HEALTH] = 70;
+				newHealth = 35 + health_increase;
+				if (newHealth > 80) {
+					newHealth = 80;
 				}
 				break;
 			case AICHAR_BLACKGUARD:
-				cs->attributes[STARTING_HEALTH] = 50 + increase; 
-				if (cs->attributes[STARTING_HEALTH] > 80)
-				{ 
-					cs->attributes[STARTING_HEALTH] = 80;
+			    newHealth = 50 + health_increase;
+				if (newHealth > 100) {
+					newHealth = 100;
 				}
 				break;
 			case AICHAR_VENOM:
-				cs->attributes[STARTING_HEALTH] = 80 + increase; 
-				if (cs->attributes[STARTING_HEALTH] > 150)
-				{ 
-					cs->attributes[STARTING_HEALTH] = 150;
+			    newHealth = 80 + health_increase;
+				if (newHealth > 160) {
+					newHealth = 160;
 				}
 				break;
 			default:
-				cs->attributes[STARTING_HEALTH] = 30 + increase; 
-				if (cs->attributes[STARTING_HEALTH] > 60)
-				{ 
-					cs->attributes[STARTING_HEALTH] = 60;
-				}
 				break;
 			}
 
-			  // Set health
-              ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH]; 
 
+                ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH] = newHealth;
+				ent->client->ps.runSpeedScale = runSpeedScale;
+				ent->client->ps.sprintSpeedScale = sprintSpeedScale;
+				ent->client->ps.crouchSpeedScale = crouchSpeedScale;				
 				ent->r.contents = CONTENTS_BODY;
 				ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
 				ent->takedamage = qtrue;

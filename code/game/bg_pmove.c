@@ -2240,38 +2240,54 @@ static void PM_BeginWeaponReload( int weapon ) {
 		break;
 	}
 
-	// If PW_HASTE_SURV powerup is active, reduce reloadTime by half
-    if ( pm->ps->powerups[PW_HASTE_SURV] ){
-       reloadTime /= 2;
-       reloadTimeFull /= 2;
-    }
-
-    if ( !pm->ps->aiChar) { 
-	if ( pm->ps->ammoclip[BG_FindClipForWeapon(weapon)] == 0 ) {
-		  PM_ContinueWeaponAnim(pm->ps->powerups[PW_HASTE_SURV] ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
-	      if ( pm->ps->weaponstate == WEAPON_READY ) {
-		       pm->ps->weaponTime += reloadTimeFull;
-	      } else if (pm->ps->weaponTime < reloadTimeFull) {
-		      pm->ps->weaponTime += (reloadTimeFull - pm->ps->weaponTime);
-	      }
-		  PM_AddEvent( EV_FILL_CLIP_FULL );
-	} else {
-	      PM_ContinueWeaponAnim(pm->ps->powerups[PW_HASTE_SURV] ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
-	      if ( pm->ps->weaponstate == WEAPON_READY ) {
-		      pm->ps->weaponTime += reloadTime;
-	       } else if (pm->ps->weaponTime < reloadTime) {
-		      pm->ps->weaponTime += (reloadTime - pm->ps->weaponTime);
-	      }
-		  PM_AddEvent( EV_FILL_CLIP );
+	// If PW_HASTE_SURV powerup or PERK_WEAPONHANDLING perk is active, reduce reloadTime by half
+	if (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING])
+	{
+		reloadTime *= 0.67;
+		reloadTimeFull *= 0.67;
 	}
-	} else {
-	  PM_ContinueWeaponAnim(pm->ps->powerups[PW_HASTE_SURV] ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
-	  	if ( pm->ps->weaponstate == WEAPON_READY ) {
-		    pm->ps->weaponTime += reloadTime;
-	    } else if (pm->ps->weaponTime < reloadTime) {
-		    pm->ps->weaponTime += (reloadTime - pm->ps->weaponTime);
-	      }
-		 PM_AddEvent( EV_FILL_CLIP_AI );
+
+	if (!pm->ps->aiChar)
+	{
+		if (pm->ps->ammoclip[BG_FindClipForWeapon(weapon)] == 0)
+		{
+			PM_ContinueWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
+			if (pm->ps->weaponstate == WEAPON_READY)
+			{
+				pm->ps->weaponTime += reloadTimeFull;
+			}
+			else if (pm->ps->weaponTime < reloadTimeFull)
+			{
+				pm->ps->weaponTime += (reloadTimeFull - pm->ps->weaponTime);
+			}
+			PM_AddEvent(EV_FILL_CLIP_FULL);
+		}
+		else
+		{
+			PM_ContinueWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
+			if (pm->ps->weaponstate == WEAPON_READY)
+			{
+				pm->ps->weaponTime += reloadTime;
+			}
+			else if (pm->ps->weaponTime < reloadTime)
+			{
+				pm->ps->weaponTime += (reloadTime - pm->ps->weaponTime);
+			}
+			PM_AddEvent(EV_FILL_CLIP);
+		}
+	}
+	else
+	{
+		PM_ContinueWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
+		if (pm->ps->weaponstate == WEAPON_READY)
+		{
+			pm->ps->weaponTime += reloadTime;
+		}
+		else if (pm->ps->weaponTime < reloadTime)
+		{
+			pm->ps->weaponTime += (reloadTime - pm->ps->weaponTime);
+		}
+		PM_AddEvent(EV_FILL_CLIP_AI);
 	}
 
 	pm->ps->weaponstate = WEAPON_RELOADING;

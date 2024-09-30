@@ -1750,26 +1750,26 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		DEBUGNAME( "EV_EMPTYCLIP" );
 		break;
 
-	case EV_FILL_CLIP:
-		DEBUGNAME( "EV_FILL_CLIP" );
-		if ( cg_weapons[es->weapon].reloadSound ) {
-			if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] ) {
-			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast );
-			} else {
-			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
-			}
-		}
-		break;
-	case EV_FILL_CLIP_FULL:
-		DEBUGNAME( "EV_FILL_CLIP_FULL" );
-		if ( cg_weapons[es->weapon].reloadFullSound ) {
-			if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] ) {
-			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast );
-			} else {
-			    trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound );
-			}
-		}
-		break;
+case EV_FILL_CLIP:
+    DEBUGNAME( "EV_FILL_CLIP" );
+    if ( cg_weapons[es->weapon].reloadSound ) {
+        if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] || cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
+            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast );
+        } else {
+            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
+        }
+    }
+    break;
+case EV_FILL_CLIP_FULL:
+    DEBUGNAME( "EV_FILL_CLIP_FULL" );
+    if ( cg_weapons[es->weapon].reloadFullSound ) {
+        if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] || cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
+            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast );
+        } else {
+            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound );
+        }
+    }
+    break;
 	case EV_FILL_CLIP_AI:
 		DEBUGNAME( "EV_FILL_CLIP_AI" );
 		if ( cg_weapons[es->weapon].reloadSound ) {

@@ -141,6 +141,24 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
     } else if ( item->giType == IT_PERK ) {
 
+		int i, perkCount = 0;
+
+		// Count the number of perks the player already has
+		for (i = 0; i < MAX_PERKS; i++)
+		{
+			if (activator->client->ps.perks[i] > 0)
+			{
+				perkCount++;
+			}
+		}
+
+		// If the player already has 3 perks, don't allow them to buy more
+		if (perkCount >= 3)
+		{
+			trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+			return;
+		}
+
 		if (activator->client->ps.perks[item->giTag] > 0) {
         // The player already has the perk, so don't give it to them again
 		trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );

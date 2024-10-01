@@ -1468,6 +1468,7 @@ extern qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, 
 
 // end achievements
 extern qboolean AICast_ScriptAction_EndGame ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Announce( gentity_t *ent, char *params ) ;
 extern qboolean AICast_ScriptAction_Teleport ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SavePersistant ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Unmount ( cast_state_t * cs , char * params ) ;

@@ -247,6 +247,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_MALTA_AGENT2", (byte *)AICast_ScriptAction_Achievement_MALTA_AGENT2},
 // end achievements
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
+{"AICast_ScriptAction_Announce", (byte *)AICast_ScriptAction_Announce},
 {"AICast_ScriptAction_Teleport", (byte *)AICast_ScriptAction_Teleport},
 {"AICast_ScriptAction_SavePersistant", (byte *)AICast_ScriptAction_SavePersistant},
 {"AICast_ScriptAction_Unmount", (byte *)AICast_ScriptAction_Unmount},

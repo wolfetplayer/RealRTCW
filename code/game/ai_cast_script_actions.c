@@ -3390,6 +3390,27 @@ qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params ) {
 }
 
 
+/*
+===================
+AICast_ScriptAction_Announce
+
+  syntax: wm_announce <"text to send to all clients">
+===================
+*/
+qboolean AICast_ScriptAction_Announce( gentity_t *ent, char *params ) {
+	char *pString, *token;
+
+	pString = params;
+	token = COM_Parse( &pString );
+	if ( !token[0] ) {
+		G_Error( "AI_ScriptAction_Announce: statement parameter required\n" );
+	}
+
+	trap_SendServerCommand( -1, va( "cp \"%s\"", token ) );
+
+	return qtrue;
+}
+
 
 
 /*

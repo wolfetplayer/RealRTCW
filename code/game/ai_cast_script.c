@@ -248,6 +248,7 @@ qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *p
 
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
+qboolean AICast_ScriptAction_Announce( cast_state_t *cs, char *params );		
 qboolean AICast_ScriptAction_Teleport( cast_state_t *cs, char *params );		//----(SA)	added
 qboolean AICast_ScriptAction_FoundSecret( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_NoSight( cast_state_t *cs, char *params );
@@ -493,6 +494,7 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_malta_agent2",       AICast_ScriptAction_Achievement_MALTA_AGENT2},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
+	{"announce",     AICast_ScriptAction_Announce},
 	{"teleport",     AICast_ScriptAction_Teleport},					//----(SA)	added
 	{"foundsecret",      AICast_ScriptAction_FoundSecret},
 	{"nosight",          AICast_ScriptAction_NoSight},

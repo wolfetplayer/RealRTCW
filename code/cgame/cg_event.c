@@ -2312,7 +2312,7 @@ case EV_FILL_CLIP_FULL:
 
 	case EV_GIB_PLAYER:
 		DEBUGNAME( "EV_GIB_PLAYER" );
-		if ( es->aiChar == AICHAR_ZOMBIE || es->aiChar == AICHAR_ZOMBIE_SURV ) {
+		if ( es->aiChar == AICHAR_ZOMBIE || es->aiChar == AICHAR_ZOMBIE_SURV || es->aiChar == AICHAR_ZOMBIE_GHOST ) {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.zombieDeathSound );
 		} else {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.gibSound );
@@ -2322,7 +2322,7 @@ case EV_FILL_CLIP_FULL:
 		break;
 	case EV_GIB_VAMPIRISM:
 		DEBUGNAME( "EV_GIB_VAMPIRISM" );
-		if ( es->aiChar == AICHAR_ZOMBIE || es->aiChar == AICHAR_ZOMBIE_SURV ) {
+		if ( es->aiChar == AICHAR_ZOMBIE || es->aiChar == AICHAR_ZOMBIE_SURV || es->aiChar == AICHAR_ZOMBIE_GHOST ) {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.zombieDeathSound );
 		} else {
 			trap_S_StartSound( es->pos.trBase, es->number, CHAN_VOICE, cgs.media.gibSound );

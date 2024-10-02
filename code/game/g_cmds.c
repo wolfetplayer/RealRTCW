@@ -2084,7 +2084,7 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 		G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 3 + rand() % 3, DAMAGE_NO_KNOCKBACK, MOD_EXPLOSIVE );
 		break;
 	case CLDMG_SPIRIT:
-			if ( enemy->aiCharacter == AICHAR_ZOMBIE || enemy->aiCharacter == AICHAR_ZOMBIE_SURV ) {
+			if ( enemy->aiCharacter == AICHAR_ZOMBIE || enemy->aiCharacter == AICHAR_ZOMBIE_SURV || enemy->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
 				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 6, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT );
 			} else {
 				G_Damage( ent, enemy, enemy, vec3_origin, vec3_origin, 8 + rand() % 4, DAMAGE_NO_KNOCKBACK, MOD_ZOMBIESPIRIT );

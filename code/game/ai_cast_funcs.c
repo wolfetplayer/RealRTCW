@@ -399,11 +399,11 @@ void AICast_IncreaseMaxActiveAI() {
     }
 
 	if (survivalKillCount % 30 == 0) {
-        maxActiveAI[AICHAR_PRIEST] += 1;
+        maxActiveAI[AICHAR_ZOMBIE_GHOST] += 1;
     }
 
-    if (maxActiveAI[AICHAR_PRIEST] > 3) {
-        maxActiveAI[AICHAR_PRIEST] = 3;
+    if (maxActiveAI[AICHAR_ZOMBIE_GHOST] > 3) {
+        maxActiveAI[AICHAR_ZOMBIE_GHOST] = 3;
     }
 
     if (survivalKillCount % 40 == 0) {
@@ -495,6 +495,24 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 					newHealth = 60;
 				}
 			case AICHAR_ZOMBIE_SURV:
+				newHealth = 40 + health_increase;
+				if (newHealth > 300) {
+					newHealth = 300;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.2) {
+					runSpeedScale = 1.2;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.5) {
+					crouchSpeedScale = 0.5;
+				}
+				break;
+			case AICHAR_ZOMBIE_GHOST:
 				newHealth = 40 + health_increase;
 				if (newHealth > 300) {
 					newHealth = 300;
@@ -725,6 +743,7 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 		break;
 	case AICHAR_ZOMBIE:
 	case AICHAR_ZOMBIE_SURV:
+	case AICHAR_ZOMBIE_GHOST:
 		if ( COM_BitCheck( cs->bs->cur_ps.weapons, WP_MONSTER_ATTACK1 ) ) { // flaming zombie, run
 			BG_UpdateConditionValue( cs->entityNum, ANIM_COND_CHARGING, 1, qfalse );
 		}
@@ -3081,7 +3100,7 @@ char *AIFunc_BattleChase( cast_state_t *cs ) {
 	}
 	//
 	// Flaming Zombie? Shoot flames while running
-	if ( ( cs->aiCharacter == AICHAR_ZOMBIE || cs->aiCharacter == AICHAR_ZOMBIE_SURV) &&
+	if ( ( cs->aiCharacter == AICHAR_ZOMBIE || cs->aiCharacter == AICHAR_ZOMBIE_SURV || cs->aiCharacter == AICHAR_ZOMBIE_GHOST) &&
 		 ( IS_FLAMING_ZOMBIE( ent->s ) ) &&
 		 ( fabs( cs->ideal_viewangles[YAW] - cs->viewangles[YAW] ) < 5 ) ) {
 		if ( fabs( sin( ( level.time + cs->entityNum * 314 ) / 1000 ) * cos( ( level.time + cs->entityNum * 267 ) / 979 ) ) < 0.5 ) {
@@ -5275,6 +5294,7 @@ char *AIFunc_DefaultStart( cast_state_t *cs ) {
 	switch ( cs->aiCharacter ) {
 	case AICHAR_ZOMBIE:
 	case AICHAR_ZOMBIE_SURV:
+	case AICHAR_ZOMBIE_GHOST:
 		// portal zombie, requires spawning effect
 		if ( first && ( g_entities[cs->entityNum].spawnflags & 4 ) ) {
 			return AIFunc_FlameZombie_PortalStart( cs );

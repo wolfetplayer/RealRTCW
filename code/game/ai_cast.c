@@ -491,6 +491,7 @@ void AICast_Init( void ) {
     if ( g_gametype.integer == GT_SURVIVAL )  {
 	    maxActiveAI[AICHAR_SOLDIER] = 4;
 	    maxActiveAI[AICHAR_ZOMBIE_SURV] = 4;
+	    maxActiveAI[AICHAR_ZOMBIE_GHOST] = 0;
 	    maxActiveAI[AICHAR_WARZOMBIE] = 0;
 	    maxActiveAI[AICHAR_PRIEST] = 0;
 	    maxActiveAI[AICHAR_ELITEGUARD] = 0;

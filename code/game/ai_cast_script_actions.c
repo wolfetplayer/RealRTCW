@@ -1438,6 +1438,11 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 	int weapon;
 	int i;
 	gentity_t   *ent = &g_entities[cs->entityNum];
+	int slotId = G_GetFreeWeaponSlot( ent );
+
+	if ( slotId < 0 ) {
+		return qfalse;
+	}
 
 	weapon = WP_NONE;
 
@@ -1470,6 +1475,15 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 
 	if ( weapon != WP_NONE ) {
 		COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, weapon );
+
+		// if ( weapon == WP_KNIFE ) {
+		// 	if ( ent->client->ps.weaponSlots[ 0 ] != WP_NONE ) {
+		// 		ent->client->ps.weaponSlots[ slotId ] = ent->client->ps.weaponSlots[ 0 ];
+		// 		ent->client->ps.weaponSlots[ 0 ] = weapon;
+		// 	}
+		// }
+
+		ent->client->ps.weaponSlots[ slotId ] = weapon;
 
 //----(SA)	some weapons always go together (and they share a clip, so this is okay)
 		if ( weapon == WP_GARAND ) {

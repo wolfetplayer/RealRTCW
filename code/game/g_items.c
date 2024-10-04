@@ -655,8 +655,264 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	return g_weaponRespawn.integer;
 }
 
+//======================================================================
+
+/**
+ * @brief Drop Weapon
+ * @param[in] ent
+ * @param[in] weapon
+ */
+void G_DropWeapon( gentity_t *ent, int weapon ) {
+	vec3_t    angles, velocity, org, offset, mins, maxs;
+	gclient_t *client = ent->client;
+	gentity_t *ent2;
+	gitem_t   *item;
+	trace_t   tr;
+
+	int slotId;
+	int i;
+
+	// find the slot where the current weapon is located
+	slotId = G_FindWeaponSlot( ent, weapon );
+
+	if ( !IS_VALID_WEAPON( weapon ) ) {
+		return;
+	}
+
+	// item = BG_GetItem( GetWeaponTableData( weapon )->item );
+	item = BG_FindItemForWeapon( GetWeaponTableData( weapon )->weaponindex );
+
+	if ( item->giType != IT_WEAPON || item->giWeapon != weapon ) {
+		Com_Error( ERR_DROP, "Couldn't get item for weapon %i", weapon );
+	}
+
+	VectorCopy( client->ps.viewangles, angles );
+
+	// clamp pitch
+	if ( angles[ PITCH ] < -30 ) {
+		angles[ PITCH ] = -30;
+	} else if ( angles[ PITCH ] > 30 ) {
+		angles[ PITCH ] = 30;
+	}
+
+	AngleVectors( angles, velocity, NULL, NULL );
+	VectorScale( velocity, 64, offset );
+	offset[ 2 ] += client->ps.viewheight / 2.f;
+	VectorScale( velocity, 75, velocity );
+	velocity[ 2 ] += 50 + random( ) * 35;
+
+	VectorAdd( client->ps.origin, offset, org );
+
+	VectorSet( mins, -ITEM_RADIUS, -ITEM_RADIUS, 0 );
+	VectorSet( maxs, ITEM_RADIUS, ITEM_RADIUS, 2 * ITEM_RADIUS );
+
+	trap_Trace( &tr, client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID );
+	VectorCopy( tr.endpos, org );
+
+	ent2 = LaunchItem( item, org, velocity );
+	COM_BitClear( client->ps.weapons, weapon );
+	client->ps.weaponSlots[ slotId ] = WP_NONE;
+
+	// if ( GetWeaponTableData( weapon )->weapAlts ) {
+	// 	weapon_t weapAlts = GetWeaponTableData( weapon )->weapAlts;
+
+	// 	if ( GetWeaponTableData( weapAlts )->type & ( WEAPON_TYPE_RIFLENADE | WEAPON_TYPE_SCOPED | WEAPON_TYPE_SET ) ) {
+	// 		COM_BitClear( client->ps.weapons, weapAlts );
+	// 	}
+	// }
+
+	// Clear out empty weapon, change to next best weapon
+	// 																G_AddEvent( ent, EV_CHANGE_WEAPON, 0 );
+
+	if ( weapon == client->ps.weapon ) {
+		client->ps.weapon = 0;
+	}
+
+	// if ( !GetWeaponTableData( weapon )->useClip ) {
+	// 	ent2->count = client->ps.ammo[ GetWeaponTableData( weapon )->ammoIndex ] + client->ps.ammoclip[ GetWeaponTableData( weapon )->clipIndex ];
+	// } else {
+	// 	ent2->count = client->ps.ammoclip[ GetWeaponTableData( weapon )->clipIndex ];
+	// }
+
+	// may it is wrong fields of struct
+	// if ( !GetWeaponTableData( weapon )->uses ) {
+	// 	ent2->count = client->ps.ammo[ GetWeaponTableData( weapon )->maxammo ] + client->ps.ammoclip[ GetWeaponTableData( weapon )->maxclip ];
+	// } else {
+	// 	ent2->count = client->ps.ammoclip[ GetWeaponTableData( weapon )->maxclip ];
+	// }
+
+	// if ( weapon == WP_KAR98 || weapon == WP_CARBINE ) {
+	// 	ent2->delay = client->ps.ammo[ GetWeaponTableData( GetWeaponTableData( weapon )->weapAlts ).ammoIndex ];
+	// } else {
+	// 	ent2->delay = 0;
+	// }
+
+	//  ent2->item->quantity = client->ps.ammoclip[ BG_FindClipForWeapon( *weapon ) ]; // um, modifying an item is not a good idea
+	// client->ps.ammoclip[ GetWeaponTableData( weapon )->clipIndex ] = 0;
+	// client->ps.ammoclip[ GetWeaponTableData( weapon )->maxclip ] = 0;
+
+// #ifdef FEATURE_OMNIBOT
+// 	Bot_Event_RemoveWeapon( client->ps.clientNum, Bot_WeaponGameToBot( *weapon ) );
+// #endif
+}
 
 //======================================================================
+
+int G_FindWeaponSlot( gentity_t *other, int weapon ) {
+	int i;
+
+	for ( i = 0; i < MAX_WEAPON_SLOTS; ++i ) {
+		if ( other->client->ps.weaponSlots[i] == weapon ) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+int G_GetFreeWeaponSlot( gentity_t *other ) {
+	return G_FindWeaponSlot( other, WP_NONE );
+}
+
+int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
+	int quantity;
+	qboolean alreadyHave = qfalse;
+	int weapon = ent->item->giTag;
+	int freeWeaponSlotId = G_GetFreeWeaponSlot( other );
+	int currentWeaponSlotId = G_FindWeaponSlot( other, other->client->ps.weapon );
+	int alreadyHavedWeaponSlotId = G_FindWeaponSlot( other, weapon );
+	int slotId = 1;
+
+	//if ( g_gametype.integer == GT_SURVIVAL ) {
+		//other->client->ps.persistant[PERS_SCORE] += G_GetWeaponPrice( weapon );
+		//return RESPAWN_SP;
+	//}
+
+	if ( ent->count < 0 ) {
+		quantity = 0; // None for you, sir!
+	} else {
+		if ( ent->count ) {
+			quantity = ent->count;
+		} else {
+			quantity = ( random() * ( ammoTable[ weapon ].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
+		}
+
+		if ( g_decaychallenge.integer ) {
+			quantity = 999;
+		}
+	}
+
+	if ( ( weapon == WP_PPSH ) && strstr ( level.scriptAI, "Factory" ) ) {
+		if ( !g_cheats.integer ) {
+			steamSetAchievement( "ACH_PPSH" );
+		}
+	}
+
+	if ( ( weapon == WP_MOSIN ) && strstr ( level.scriptAI, "Village2_118" ) ) {
+		if ( !g_cheats.integer ) {
+			steamSetAchievement( "ACH_MOSIN" );
+		}
+	}
+
+	if ( ( weapon == WP_TESLA ) && strstr ( level.scriptAI, "Escape #2" ) ) {
+		if ( !g_cheats.integer ) {
+			steamSetAchievement( "ACH_WINTERSTEIN_TESLA" );
+		}
+	}
+
+	if ( ( weapon == WP_REVOLVER ) && strstr ( level.scriptAI, "Escape #2") ) {
+		if ( !g_cheats.integer ) {
+			steamSetAchievement( "ACH_AGENT1" );
+		}
+	}
+
+	// check for special colt->akimbo add (if you've got a colt already, add the second now)
+	if ( weapon == WP_COLT ) {
+		if ( COM_BitCheck( other->client->ps.weapons, WP_COLT ) ) {
+			weapon = WP_AKIMBO;
+		}
+	}
+
+	if ( weapon == WP_TT33 ) {
+		if ( COM_BitCheck( other->client->ps.weapons, WP_TT33 ) ) {
+			weapon = WP_DUAL_TT33;
+		}
+	}
+
+	if ( weapon == WP_KNIFE ) {
+		if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
+			Add_Ammo( other, weapon, 1, qfalse );
+			return -1;
+		}
+
+		return 0;
+	}
+
+	// check if player already had the weapon
+	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );
+
+	if (!alreadyHave) {
+		
+		if ( freeWeaponSlotId < 0 && !( other->client->latched_buttons & BUTTON_ACTIVATE ) || level.time - other->client->dropWeaponTime < 1000 ) {
+			ent->active = qtrue;
+			return 0;
+
+		} else if ( freeWeaponSlotId >= 0 ) {
+			slotId = freeWeaponSlotId;
+
+		} else if ( currentWeaponSlotId >= 0 ) {
+			if ( currentWeaponSlotId <= 0 ) {
+				currentWeaponSlotId = 1;
+			}
+
+			slotId = currentWeaponSlotId;
+
+			if ( other->client->ps.weaponSlots[ slotId ] != WP_NONE ) {
+				G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+
+				// now pickup the other one
+				other->client->dropWeaponTime = level.time;
+			}
+		}
+
+		// add the weapon
+		COM_BitSet( other->client->ps.weapons, weapon );
+		other->client->ps.weaponSlots[ slotId ] = weapon;
+
+		// snooper/garand
+		if ( weapon == WP_SNOOPERSCOPE ) {
+			COM_BitSet( other->client->ps.weapons, WP_GARAND );
+		} else if ( weapon == WP_GARAND ) {
+			COM_BitSet( other->client->ps.weapons, WP_SNOOPERSCOPE );
+		}
+		// fg42/scope
+		else if ( weapon == WP_FG42SCOPE ) {
+			COM_BitSet( other->client->ps.weapons, WP_FG42 );
+		} else if ( weapon == WP_FG42 ) {
+			COM_BitSet( other->client->ps.weapons, WP_FG42SCOPE );
+		} else if ( weapon == WP_SNIPERRIFLE ) {
+			COM_BitSet( other->client->ps.weapons, WP_MAUSER );
+		} else if (weapon == WP_SILENCER) {
+			COM_BitSet( other->client->ps.weapons, WP_LUGER );
+		} else if ( weapon == WP_M1GARAND ) {
+			COM_BitSet( other->client->ps.weapons, WP_M7 );
+		} else if ( weapon == WP_M7 ) {
+			COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
+		} else if ( weapon == WP_DELISLESCOPE ) {
+			COM_BitSet( other->client->ps.weapons, WP_DELISLE );
+		} else if ( weapon == WP_M1941SCOPE ) {
+			COM_BitSet( other->client->ps.weapons, WP_M1941 );
+		}
+	}
+
+	Add_Ammo( other, weapon, quantity, !alreadyHave );
+
+	if ( !( ent->spawnflags & 8 ) ) {
+		return RESPAWN_SP;
+	}
+
+	return g_weaponRespawn.integer;
+}
 
 int Pickup_Health( gentity_t *ent, gentity_t *other ) {
 	int max;
@@ -836,7 +1092,11 @@ void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 	// call the item-specific pickup function
 	switch ( ent->item->giType ) {
 	case IT_WEAPON:
-		respawn = Pickup_Weapon( ent, other );
+		if ( g_newinventory.integer > 0 ) {
+			respawn = Pickup_Weapon_New_Inventory( ent, other );
+		} else {
+			respawn = Pickup_Weapon( ent, other );
+		}
 		
 		if ( g_gametype.integer == GT_SURVIVAL) {
 			ent->wait = -1;

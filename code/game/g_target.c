@@ -84,6 +84,15 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     price = ent->price;
     itemName = ent->buy_item;
 
+	int slotId = G_GetFreeWeaponSlot( activator );
+
+	if ( slotId <= 0 ) {
+		slotId = G_FindWeaponSlot( activator, activator->client->ps.weapon );
+		if ( slotId <= 0 ) {
+			slotId = 1;
+		}
+	}
+
     // Check if weapon or price were not specified
     if ( !itemName || price <= 0 ) {
         return;
@@ -112,6 +121,13 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
     if ( item->giType == IT_WEAPON ) {
 
+		if ( activator->client->ps.weaponSlots[ slotId ] != WP_NONE ) {
+			G_DropWeapon( activator, activator->client->ps.weaponSlots[ slotId ] );
+
+			// now pickup the other one
+			activator->client->dropWeaponTime = level.time;
+		}
+
         // Check if player already has the weapon
         if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
             // Player already has the weapon, give ammo instead and halve the price
@@ -119,6 +135,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
         } else {
             // Player doesn't have the weapon, give it to them
             COM_BitSet( activator->client->ps.weapons, item->giTag );
+			activator->client->ps.weaponSlots[ slotId ] = item->giTag;
         }
 
         // Check if player's ammo is already full

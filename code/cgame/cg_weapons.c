@@ -4002,7 +4002,7 @@ static qboolean CG_WeaponSelectable( int i ) {
 		return qfalse;
 	}
 
-	if ( !CG_WeaponHasAmmo( i ) ) {
+	if ( !CG_WeaponHasAmmo( i ) && cg_newinventory.integer <= 0 ) {
 		return qfalse;
 	}
 

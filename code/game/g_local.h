@@ -620,6 +620,7 @@ struct gclient_s {
 	gentity_t   *cameraPortal;              // grapple hook if out
 	vec3_t cameraOrigin;
 
+	int dropWeaponTime;         // JPW NERVE last time a weapon was dropped
 	int limboDropWeapon;         // JPW NERVE weapon to drop in limbo
 	int deployQueueNumber;         // JPW NERVE player order in reinforcement FIFO queue
 	int sniperRifleFiredTime;         // JPW NERVE last time a sniper rifle was fired (for muzzle flip effects)
@@ -811,6 +812,10 @@ void Fill_Clip( playerState_t *ps, int weapon );
 void    Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip );
 void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace );
 qboolean AddMagicAmmo( gentity_t *receiver, int numOfClips );
+
+int G_FindWeaponSlot( gentity_t *other, int weapon );
+int G_GetFreeWeaponSlot( gentity_t *other );
+void G_DropWeapon( gentity_t *ent, int weapon );
 
 // Touch_Item_Auto is bound by the rules of autoactivation (if cg_autoactivate is 0, only touch on "activate")
 void Touch_Item_Auto( gentity_t *ent, gentity_t *other, trace_t *trace );
@@ -1113,6 +1118,8 @@ extern gentity_t       *g_camEnt;
 #define	FOFS(x) ((size_t)&(((gentity_t *)0)->x))
 
 extern vmCvar_t g_gametype;
+
+extern vmCvar_t g_newinventory;
 
 // Rafael gameskill
 extern vmCvar_t g_gameskill;

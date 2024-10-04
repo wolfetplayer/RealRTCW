@@ -1302,6 +1302,7 @@ gitem_t *BG_FindItemForPerk( perk_t perk );
 
 qboolean BG_AkimboFireSequence( int weapon, int akimboClip, int coltClip );
 
+#define IS_VALID_WEAPON(w) ((w) > WP_NONE && (w) < WP_NUM_WEAPONS)
 #define ITEM_INDEX( x ) ( ( x ) - bg_itemlist )
 
 qboolean    BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps );

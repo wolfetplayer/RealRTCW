@@ -1340,6 +1340,7 @@ typedef struct accumPrintLabel_s {
 #define MAX_PERSISTANT          16
 #define MAX_POWERUPS            16
 #define MAX_WEAPONS             64  // (SA) and yet more!
+#define MAX_WEAPON_SLOTS        4 // knife, weapon1, weapon2, weapon3, grenade
 #define MAX_HOLDABLE            16
 #define MAX_PERKS 			    16
 
@@ -1439,6 +1440,7 @@ typedef struct playerState_s {
 	int holdable[MAX_HOLDABLE];
 	int holding;                        // the current item in holdable[] that is selected (held)
 	int weapons[MAX_WEAPONS / ( sizeof( int ) * 8 )];   // 64 bits for weapons held
+	int weaponSlots[MAX_WEAPON_SLOTS];
 	int perks[MAX_PERKS];                // Perks
 
 	// Ridah, allow for individual bounding boxes

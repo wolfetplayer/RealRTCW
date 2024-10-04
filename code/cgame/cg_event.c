@@ -1796,7 +1796,9 @@ case EV_FILL_CLIP_FULL:
 			trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		}
 		if ( es->number == cg.snap->ps.clientNum && cg_autoReload.integer == 1 ) {
-			CG_OutOfAmmoChange();
+			if ( cg_newinventory.integer <= 0 ) {
+				CG_OutOfAmmoChange();
+			}
 		}
 		break;
 	case EV_NOQUICKGRENAMMO:

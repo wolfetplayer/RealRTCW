@@ -839,14 +839,14 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
-	if ( weapon == WP_KNIFE ) {
-		if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
-			Add_Ammo( other, weapon, 1, qfalse );
-			return -1;
-		}
+	// if ( weapon == WP_KNIFE ) {
+	// 	if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
+	// 		Add_Ammo( other, weapon, 1, qfalse );
+	// 		return -1;
+	// 	}
 
-		return 0;
-	}
+	// 	return 0;
+	// }
 
 	// check if player already had the weapon
 	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );

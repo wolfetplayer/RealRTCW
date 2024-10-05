@@ -761,7 +761,7 @@ void G_DropWeapon( gentity_t *ent, int weapon ) {
 int G_FindWeaponSlot( gentity_t *other, int weapon ) {
 	int i;
 
-	for ( i = 0; i < MAX_WEAPON_SLOTS; ++i ) {
+	for ( i = 1; i < MAX_WEAPON_SLOTS; ++i ) {
 		if ( other->client->ps.weaponSlots[i] == weapon ) {
 			return i;
 		}
@@ -780,7 +780,7 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 	int weapon = ent->item->giTag;
 	int freeWeaponSlotId = G_GetFreeWeaponSlot( other );
 	int currentWeaponSlotId = G_FindWeaponSlot( other, other->client->ps.weapon );
-	int alreadyHavedWeaponSlotId = G_FindWeaponSlot( other, weapon );
+	//int alreadyHavedWeaponSlotId = G_FindWeaponSlot( other, weapon );
 	int slotId = 1;
 
 	//if ( g_gametype.integer == GT_SURVIVAL ) {
@@ -839,14 +839,15 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
-	// if ( weapon == WP_KNIFE ) {
-	// 	if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
-	// 		Add_Ammo( other, weapon, 1, qfalse );
-	// 		return -1;
-	// 	}
+	if ( weapon == WP_KNIFE ) {
+		freeWeaponSlotId = 0;
+		// if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
+		// 	Add_Ammo( other, weapon, 1, qfalse );
+		// 	return -1;
+		// }
 
-	// 	return 0;
-	// }
+		// return 0;
+	}
 
 	// check if player already had the weapon
 	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );
@@ -860,7 +861,7 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		} else if ( freeWeaponSlotId >= 0 ) {
 			slotId = freeWeaponSlotId;
 
-		} else if ( currentWeaponSlotId >= 0 ) {
+		} else {
 			if ( currentWeaponSlotId <= 0 ) {
 				currentWeaponSlotId = 1;
 			}

@@ -1440,10 +1440,6 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 	gentity_t   *ent = &g_entities[cs->entityNum];
 	int slotId = G_GetFreeWeaponSlot( ent );
 
-	if ( slotId < 0 ) {
-		return qfalse;
-	}
-
 	weapon = WP_NONE;
 
 	for ( i = 1; bg_itemlist[i].classname; i++ )
@@ -1472,6 +1468,16 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 			weapon = WP_DUAL_TT33;
 		}
 	}
+
+	if ( weapon != WP_KNIFE ) {
+		if ( slotId < 0 ) {
+			return qfalse;
+		}
+		
+	} else {
+		slotId = 0;
+	}
+
 
 	if ( weapon != WP_NONE ) {
 		COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, weapon );

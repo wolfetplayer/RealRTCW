@@ -1238,7 +1238,7 @@ If you have questions concerning this license or the applicable additional terms
 {"Pickup_Weapon", (byte *)Pickup_Weapon},
 {"Pickup_Weapon_New_Inventory", (byte *)Pickup_Weapon_New_Inventory},
 {"G_DropWeapon", (byte *)G_DropWeapon},
-{"FindWeaponSlot", (byte *)FindWeaponSlot},
+{"G_FindWeaponSlot", (byte *)G_FindWeaponSlot},
 {"G_GetFreeWeaponSlot", (byte *)G_GetFreeWeaponSlot},
 {"AddMagicAmmo", (byte *)AddMagicAmmo},
 {"Pickup_Ammo", (byte *)Pickup_Ammo},

@@ -72,9 +72,6 @@ void *remove_powerup_after_delay(void *arg) {
     // Remove the FL_NOTARGET flag
     other->flags &= ~FL_NOTARGET;
 
-    // Call the Remove_Powerup function
-    //Remove_Powerup(other, PW_INVIS);
-
     return NULL;
 }
 
@@ -119,7 +116,7 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 	}
    
 
-    // If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
+    // DIRTY HACK!!!!! If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
     if (ent->item->giTag == PW_INVIS) {
         other->flags |= FL_NOTARGET;
 

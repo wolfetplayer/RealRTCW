@@ -37,6 +37,8 @@ If you have questions concerning this license or the applicable additional terms
  *				movers and respawn apropriately.
  *
 */
+#include <pthread.h>
+#include <unistd.h>
 
 #include "g_local.h"
 
@@ -59,6 +61,23 @@ If you have questions concerning this license or the applicable additional terms
 
 
 //======================================================================
+
+
+void *remove_powerup_after_delay(void *arg) {
+    gentity_t *other = (gentity_t *)arg;
+
+    // Sleep for 30 seconds
+    sleep(30);
+
+    // Remove the FL_NOTARGET flag
+    other->flags &= ~FL_NOTARGET;
+
+    // Call the Remove_Powerup function
+    //Remove_Powerup(other, PW_INVIS);
+
+    return NULL;
+}
+
 
 int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 	int quantity;
@@ -100,11 +119,13 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 	}
    
 
-   if ( ent->item->giTag == PW_INVIS ) {
+    // If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
+    if (ent->item->giTag == PW_INVIS) {
+        other->flags |= FL_NOTARGET;
 
-	  other->flags |= FL_NOTARGET;
-
-   }
+        pthread_t thread_id;
+        pthread_create(&thread_id, NULL, remove_powerup_after_delay, (void *)other);
+    }
 
 	if ( ent->s.density == 2 ) {   // multi-stage health first stage
 		return RESPAWN_PARTIAL;

@@ -266,7 +266,9 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
     if (g_gametype.integer == GT_SURVIVAL && killerPlayer) {
-        int score = 5;  // Default score
+
+
+    int score = 5;  // Default score
 
     // Add score based on aiCharacter type
     switch (attacker->aiCharacter) {
@@ -296,6 +298,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 
     attacker->client->ps.persistant[PERS_SCORE] += score;
+	attacker->client->ps.persistant[PERS_KILLS]++;
     }
 
 

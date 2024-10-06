@@ -368,7 +368,8 @@ typedef enum {
 	PERS_ACCURACY_SHOTS,
 	PERS_ACCURACY_HITS,
 	PERS_HWEAPON_USE, // Rafael - mg42
-	PERS_WOLFKICK // Rafael wolfkick
+	PERS_WOLFKICK, // Rafael wolfkick
+	PERS_KILLS
 
 } persEnum_t;
 

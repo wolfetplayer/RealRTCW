@@ -1236,7 +1236,7 @@ extern int Pickup_Armor ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Health ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Weapon ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Weapon_New_Inventory ( gentity_t * ent , gentity_t * other ) ;
-extern void G_DropWeapon ( gentity_t * ent, int weapon ) ;
+extern void G_DropWeapon ( gentity_t * ent, weapon_t weapon ) ;
 extern int G_FindWeaponSlot( gentity_t *other, int weapon );
 extern int G_GetFreeWeaponSlot ( gentity_t * other ) ;
 extern qboolean AddMagicAmmo ( gentity_t * receiver , int numOfClips ) ;

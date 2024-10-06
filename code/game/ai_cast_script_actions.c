@@ -1473,7 +1473,7 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		if ( slotId < 0 ) {
 			return qfalse;
 		}
-		
+
 	} else {
 		slotId = 0;
 	}
@@ -1581,7 +1581,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all weapons
            for (int i = 0; i < maxAmmo; i++) {
-                if (ammoTable[i].weaponClass != WEAPON_CLASS_UNUSED || ammoTable[i].weaponClass != WEAPON_CLASS_MELEE || ammoTable[i].weaponClass != WEAPON_CLASS_AKIMBO || ammoTable[i].weaponClass != WEAPON_CLASS_GRENADE )
+                if ( !( ammoTable[i].weaponClass & WEAPON_CLASS_UNUSED && ammoTable[i].weaponClass & WEAPON_CLASS_MELEE && ammoTable[i].weaponClass & WEAPON_CLASS_AKIMBO && ammoTable[i].weaponClass & WEAPON_CLASS_GRENADE ) )
 				{
                    wpnIndices[numWpns] = i;
                    numWpns++;
@@ -1603,8 +1603,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all pistols
            for (int i = 0; i < maxAmmo; i++) {
-                if (ammoTable[i].weaponClass == WEAPON_CLASS_PISTOL)
-				{
+                if ( ammoTable[i].weaponClass & WEAPON_CLASS_PISTOL ) {
                    pistolIndices[numPistols] = i;
                    numPistols++;
                 }
@@ -1626,8 +1625,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all SMGs
            for (int i = 0; i < maxAmmo; i++) {
-                if (ammoTable[i].weaponClass == WEAPON_CLASS_SMG)
-				{
+                if ( ammoTable[i].weaponClass & WEAPON_CLASS_SMG ) {
                    smgIndices[numSmgs] = i;
                    numSmgs++;
                 }
@@ -1648,8 +1646,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all Rifles
            for (int i = 0; i < maxAmmo; i++) {
-                if (ammoTable[i].weaponClass == WEAPON_CLASS_RIFLE || ammoTable[i].weaponClass == WEAPON_CLASS_ASSAULT_RIFLE)
-				{
+                if ( ammoTable[i].weaponClass & WEAPON_CLASS_RIFLE || ammoTable[i].weaponClass & WEAPON_CLASS_ASSAULT_RIFLE ) {
                    rifleIndices[numRifles] = i;
                    numRifles++;
                 }
@@ -1670,8 +1667,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all Heavy weapons
            for (int i = 0; i < maxAmmo; i++) {
-                if (ammoTable[i].weaponClass == WEAPON_CLASS_MG || ammoTable[i].weaponClass == WEAPON_CLASS_LAUNCHER || ammoTable[i].weaponClass == WEAPON_CLASS_BEAM || ammoTable[i].weaponClass == WEAPON_CLASS_SHOTGUN  )
-				{
+                if ( ammoTable[i].weaponClass & WEAPON_CLASS_MG || ammoTable[i].weaponClass & WEAPON_CLASS_LAUNCHER || ammoTable[i].weaponClass & WEAPON_CLASS_BEAM || ammoTable[i].weaponClass & WEAPON_CLASS_SHOTGUN ) {
                    heavyIndices[numHeavies] = i;
                    numHeavies++;
                 }
@@ -1692,8 +1688,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all Axis Weapons
            for (int i = 0; i < maxAmmo; i++) {
-                if ( (ammoTable[i].weaponTeam == WEAPON_TEAM_AXIS || ammoTable[i].weaponTeam == WEAPON_TEAM_COMMON) && ammoTable[i].weaponClass != WEAPON_CLASS_UNUSED && ammoTable[i].weaponClass != WEAPON_CLASS_GRENADE )
-				{
+                if ( ( ammoTable[i].weaponTeam == WEAPON_TEAM_AXIS || ammoTable[i].weaponTeam == WEAPON_TEAM_COMMON ) && !( ammoTable[i].weaponClass & WEAPON_CLASS_UNUSED ) && !( ammoTable[i].weaponClass & WEAPON_CLASS_GRENADE ) ) {
                    axisIndices[numAxis] = i;
                    numAxis++;
                 }
@@ -1714,8 +1709,7 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
         
 		   // Find all Allied Weapons
            for (int i = 0; i < maxAmmo; i++) {
-                if ( (ammoTable[i].weaponTeam == WEAPON_TEAM_ALLIES || ammoTable[i].weaponTeam == WEAPON_TEAM_COMMON) && ammoTable[i].weaponClass != WEAPON_CLASS_UNUSED && ammoTable[i].weaponClass != WEAPON_CLASS_GRENADE )
-				{
+                if ( ( ammoTable[i].weaponTeam == WEAPON_TEAM_ALLIES || ammoTable[i].weaponTeam == WEAPON_TEAM_COMMON) && !( ammoTable[i].weaponClass & WEAPON_CLASS_UNUSED) && !( ammoTable[i].weaponClass & WEAPON_CLASS_GRENADE ) ) {
                    alliesIndices[numAllies] = i;
                    numAllies++;
                 }
@@ -1736,8 +1730,7 @@ if ( !Q_strcasecmp (params, "soviet_random") )
         
 		   // Find all Soviet Weapons
            for (int i = 0; i < maxAmmo; i++) {
-                if ( (ammoTable[i].weaponTeam == WEAPON_TEAM_SOVIET || ammoTable[i].weaponTeam == WEAPON_TEAM_COMMON) && ammoTable[i].weaponClass != WEAPON_CLASS_UNUSED && ammoTable[i].weaponClass != WEAPON_CLASS_GRENADE )
-				{
+                if ( ( ammoTable[i].weaponTeam == WEAPON_TEAM_SOVIET || ammoTable[i].weaponTeam == WEAPON_TEAM_COMMON) && !( ammoTable[i].weaponClass & WEAPON_CLASS_UNUSED ) && !( ammoTable[i].weaponClass & WEAPON_CLASS_GRENADE ) ) {
                    sovietIndices[numSoviet] = i;
                    numSoviet++;
                 }

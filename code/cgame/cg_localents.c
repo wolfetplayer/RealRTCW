@@ -152,6 +152,7 @@ void CG_FreeDelayedBrass( delayedBrass_t * delayedBrass ) {
 	}
 
 	free( delayedBrass );
+	delayedBrass = NULL;
 }
 
 
@@ -1718,18 +1719,25 @@ CG_AddLocalEntities
 */
 void CG_AddLocalEntities( void ) {
 	localEntity_t   *le, *next;
-	delayedBrass_t *dlBrass;
+	delayedBrass_t *dlBrass, *nextDlBrass;
 
 	cg.viewFade = 0.0;
 
 	dlBrass = cg_delayedBrasses;
-	for ( ; dlBrass != NULL ; dlBrass = dlBrass->next ) {
+	while ( dlBrass != NULL ) {
 		if ( cg.time < dlBrass->time ) {
-			continue;
+			return;
 		}
 
 		dlBrass->ejectBrassFunc(dlBrass->centity);
+		dlBrass = dlBrass->next;
+	}
+
+	dlBrass = cg_delayedBrasses;
+	while ( dlBrass != NULL ) {
+		nextDlBrass = dlBrass->next;
 		CG_FreeDelayedBrass( dlBrass );
+		dlBrass = nextDlBrass;
 	}
 
 	// walk the list backwards, so any new local entities generated

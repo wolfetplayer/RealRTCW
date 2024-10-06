@@ -150,6 +150,26 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
         // Select the bought weapon
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );
 
+	// all grenades should be IT_AMMO
+    } else if ( item->giType == IT_AMMO ) {
+		// Check if player's ammo is already full
+		// ammoclip for grenades
+        if ( activator->client->ps.ammoclip[ item->giTag ] >= ammoTable[ item->giTag ].maxammo ) {
+            return;  // Player's ammo is already full, return without adding ammo
+        }
+
+        // Check if player already has the weapon
+        if ( COM_BitCheck( activator->client->ps.weapons, item->giTag ) ) {
+            // Player already has the weapon, give ammo instead and halve the price
+            price /= 2;
+        }
+
+        // Set the ammo of the bought weapon to the "maxammo" from the ammo table
+        Add_Ammo( activator, item->giTag, ammoTable[ item->giTag ].maxammo, qtrue );
+
+        // Select the bought weapon
+        G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );
+
     } else if ( item->giType == IT_ARMOR )  {
        if (activator->client->ps.stats[STAT_ARMOR] >= 100) {
 		  trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );

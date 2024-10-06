@@ -495,7 +495,7 @@ cvarTable_t cvarTable[] = {
 
 	// Ridah
 	{ &cg_gameType, "g_gametype", "0", 0 }, // communicated by systeminfo
-	{ &cg_newinventory, "g_newinventory", "0", 0 }, // communicated by systeminfo
+	{ &cg_newinventory, "g_newinventory", "0", CVAR_ARCHIVE }, // communicated by systeminfo
 	{ &cg_norender, "cg_norender", "0", 0 },  // only used during single player, to suppress rendering until the server is ready
 
 	{ &cg_gameSkill, "g_gameskill", "2", 0 }, // communicated by systeminfo	// (SA) new default '2' (was '1')

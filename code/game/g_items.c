@@ -1111,13 +1111,17 @@ void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 	// call the item-specific pickup function
 	switch ( ent->item->giType ) {
 	case IT_WEAPON:
-		if ( g_newinventory.integer > 0 ) {
-			respawn = Pickup_Weapon_New_Inventory( ent, other );
-		} else {
-			respawn = Pickup_Weapon( ent, other );
+		if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
+		{
+			respawn = Pickup_Weapon_New_Inventory(ent, other);
 		}
-		
-		if ( g_gametype.integer == GT_SURVIVAL) {
+		else
+		{
+			respawn = Pickup_Weapon(ent, other);
+		}
+
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
 			ent->wait = -1;
 		}
 

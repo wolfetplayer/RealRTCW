@@ -1796,7 +1796,7 @@ case EV_FILL_CLIP_FULL:
 			trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		}
 		if ( es->number == cg.snap->ps.clientNum && cg_autoReload.integer == 1 ) {
-			if ( cg_newinventory.integer <= 0 ) {
+            if (cg_newinventory.integer <= 0 && cg_gameType.integer != GT_SURVIVAL) {
 				CG_OutOfAmmoChange();
 			}
 		}

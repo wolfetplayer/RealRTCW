@@ -4002,7 +4002,8 @@ static qboolean CG_WeaponSelectable( int i ) {
 		return qfalse;
 	}
 
-	if ( !CG_WeaponHasAmmo( i ) && cg_newinventory.integer <= 0 ) {
+	if (!CG_WeaponHasAmmo(i) && (cg_newinventory.integer <= 0 && cg_gameType.integer != GT_SURVIVAL))
+	{
 		return qfalse;
 	}
 

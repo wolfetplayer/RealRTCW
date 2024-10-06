@@ -122,8 +122,8 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     if ( item->giType == IT_WEAPON ) {
 
 		if ( activator->client->ps.weaponSlots[ slotId ] != WP_NONE ) {
-           // Take the weapon from the player
-		   COM_BitClear(activator->client->ps.weapons, activator->client->ps.weaponSlots[ slotId ]);
+            // Take the weapon from the player
+		    COM_BitClear(activator->client->ps.weapons, activator->client->ps.weaponSlots[ slotId ]);
 
 			// now pickup the other one
 			activator->client->dropWeaponTime = level.time;

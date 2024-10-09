@@ -1340,7 +1340,7 @@ typedef struct accumPrintLabel_s {
 #define MAX_PERSISTANT          32
 #define MAX_POWERUPS            16
 #define MAX_WEAPONS             64  // (SA) and yet more!
-#define MAX_WEAPON_SLOTS        4 // knife, weapon1, weapon2, weapon3, grenade
+#define MAX_WEAPON_SLOTS        3 // knife, weapon1, weapon2, weapon3, grenade
 #define MAX_HOLDABLE            16
 #define MAX_PERKS 			    16
 

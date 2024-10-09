@@ -5550,10 +5550,6 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 		}
 	}
 
-	if (cent->currentState.aiChar) {
-		return;
-	}
-
 
 	// do brass ejection with special delays for some weapons
 	if ( weap->ejectBrassFunc && cg_brassTime.integer > 0 ) {

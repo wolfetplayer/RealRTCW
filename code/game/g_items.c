@@ -921,7 +921,7 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 
 	if ( weapon == WP_KNIFE ) {
 		if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
-			Add_Ammo( other, weapon, quantity, qfalse );
+			Add_Ammo( other, weapon, 1, qfalse );
 		}
 
 		if ( !( ent->spawnflags & 8 ) ) {

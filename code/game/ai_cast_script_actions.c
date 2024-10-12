@@ -1296,6 +1296,24 @@ qboolean AICast_ScriptAction_GiveScore( cast_state_t *cs, char *params ) {
 }
 
 
+/*
+==============
+AICast_ScriptAction_SetWave
+	syntax: setwave <amount>
+
+==============
+*/
+qboolean AICast_ScriptAction_SetWave( cast_state_t *cs, char *params ) {
+	if ( !params || !params[0] ) {
+		G_Error( "AI Scripting: setwave requires an wave value" );
+	}
+
+	g_entities[cs->entityNum].client->ps.persistant[PERS_WAVES] = atoi( params );
+
+	return qtrue;
+}
+
+
 //----(SA)	added
 /*
 ==============

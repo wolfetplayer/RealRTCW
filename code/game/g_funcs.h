@@ -1499,6 +1499,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_SetMoveSpeed", (byte *)AICast_ScriptAction_SetMoveSpeed},
 {"AICast_ScriptAction_GiveArmor", (byte *)AICast_ScriptAction_GiveArmor},
 {"AICast_ScriptAction_GiveScore", (byte *)AICast_ScriptAction_GiveScore},
+{"AICast_ScriptAction_SetWave", (byte *)AICast_ScriptAction_SetWave},
 {"AICast_ScriptAction_SetArmor", (byte *)AICast_ScriptAction_SetArmor},
 {"AICast_ScriptAction_GiveAmmo", (byte *)AICast_ScriptAction_GiveAmmo},
 {"AICast_ScriptAction_GiveHealth", (byte *)AICast_ScriptAction_GiveHealth},

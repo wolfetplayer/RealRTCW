@@ -604,9 +604,9 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	// Decrement the counter for active AI characters
 	if ( g_gametype.integer == GT_SURVIVAL )  {
-       //activeAI[self->aiCharacter]--;
 	   survivalKillCount++;
-	   AICast_IncreaseMaxActiveAI();
+	   waveKillCount++;
+	   AICast_IncreaseMaxActiveAI( attacker );
 	}
 
 	// kill, instanly, any streaming sound the character had going

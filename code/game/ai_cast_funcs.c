@@ -81,6 +81,9 @@ static bot_moveresult_t *moveresult;
 int activeAI[NUM_CHARACTERS];
 int survivalKillCount;
 int maxActiveAI[NUM_CHARACTERS];
+int waveCount = 0;
+int waveKillCount = 0;
+int killCountRequirement = 0;
 
 
 /*
@@ -354,66 +357,76 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 	}
 }
 
-void AICast_IncreaseMaxActiveAI() {
+void AICast_IncreaseMaxActiveAI( gentity_t *attacker ) {
 
-    // Increase maxActiveAI for AICHAR_SOLDIER based on survivalKillCount
-    if (survivalKillCount % 10 == 0) {
-        maxActiveAI[AICHAR_SOLDIER] += 1;
-    }
+    // Wave Change Event
+    if (survivalKillCount == killCountRequirement) {
+        waveCount++;
+        killCountRequirement += waveKillCount + rand() % 5;  
+		attacker->client->ps.persistant[PERS_WAVES]++;
+		waveKillCount = 0;
 
-    // Clamp maxActiveAI for AICHAR_SOLDIER to a maximum value
+   // Normal soldiers
+    maxActiveAI[AICHAR_SOLDIER] += 1;
     if (maxActiveAI[AICHAR_SOLDIER] > 10) {
         maxActiveAI[AICHAR_SOLDIER] = 10;
     }
 
-    if (survivalKillCount % 10 == 0) {
-        maxActiveAI[AICHAR_ZOMBIE_SURV] += 1;
-    }
+	// Elite Guards
+	if (waveCount >= 7)
+	{
+		maxActiveAI[AICHAR_ELITEGUARD] += 1;
+		if (maxActiveAI[AICHAR_ELITEGUARD] > 4) {
+			maxActiveAI[AICHAR_ELITEGUARD] = 4;
+		}
+	}
 
+	// Black Guards
+	if (waveCount >= 15)
+	{
+		maxActiveAI[AICHAR_BLACKGUARD] += 1;
+		if (maxActiveAI[AICHAR_BLACKGUARD] > 4) {
+			maxActiveAI[AICHAR_BLACKGUARD] = 4;
+		}
+	}
+
+    // Venoms
+	if (waveCount >= 25)
+	{
+		maxActiveAI[AICHAR_VENOM] += 1;
+		if (maxActiveAI[AICHAR_VENOM] > 2){
+			maxActiveAI[AICHAR_VENOM] = 2;
+		}
+	}
+
+	// Default Zombies
+	maxActiveAI[AICHAR_ZOMBIE_SURV] += 1;
     if (maxActiveAI[AICHAR_ZOMBIE_SURV] > 15) {
         maxActiveAI[AICHAR_ZOMBIE_SURV] = 15;
     }
 
-    if (survivalKillCount % 20 == 0) {
-        maxActiveAI[AICHAR_ELITEGUARD] += 2;
+	// Warrirors
+	if (waveCount >= 7)
+	{
+		maxActiveAI[AICHAR_WARZOMBIE] += 1;
+		if (maxActiveAI[AICHAR_WARZOMBIE] > 5) {
+			maxActiveAI[AICHAR_WARZOMBIE] = 5;
+		}
+	}
+
+	// Ghost Zombies
+	if (waveCount >= 15)
+	{
+		maxActiveAI[AICHAR_ZOMBIE_GHOST] += 1;
+		if (maxActiveAI[AICHAR_ZOMBIE_GHOST] > 3) {
+			maxActiveAI[AICHAR_ZOMBIE_GHOST] = 3;
+		}
+	}
+
     }
 
-    if (maxActiveAI[AICHAR_ELITEGUARD] > 4) {
-        maxActiveAI[AICHAR_ELITEGUARD] = 4;
-    }
-
-    if (survivalKillCount % 20 == 0) {
-        maxActiveAI[AICHAR_WARZOMBIE] += 2;
-    }
-
-    if (maxActiveAI[AICHAR_WARZOMBIE] > 5) {
-        maxActiveAI[AICHAR_WARZOMBIE] = 5;
-    }
-
-    if (survivalKillCount % 30 == 0) {
-        maxActiveAI[AICHAR_BLACKGUARD] += 2;
-    }
-
-    if (maxActiveAI[AICHAR_BLACKGUARD] > 4) {
-        maxActiveAI[AICHAR_BLACKGUARD] = 4;
-    }
-
-	if (survivalKillCount % 30 == 0) {
-        maxActiveAI[AICHAR_ZOMBIE_GHOST] += 1;
-    }
-
-    if (maxActiveAI[AICHAR_ZOMBIE_GHOST] > 3) {
-        maxActiveAI[AICHAR_ZOMBIE_GHOST] = 3;
-    }
-
-    if (survivalKillCount % 40 == 0) {
-        maxActiveAI[AICHAR_VENOM] += 2;
-    }
-
-    if (maxActiveAI[AICHAR_VENOM] > 4) {
-        maxActiveAI[AICHAR_VENOM] = 2;
-    }
 }
+
 
 /*
 ============
@@ -471,7 +484,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				}
 			}
 
-			
+
 			if ( numTouch == 0 ) {    // ok to spawn
 
 				// give them health when they start reviving, so we won't gib after

@@ -606,7 +606,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	if ( g_gametype.integer == GT_SURVIVAL )  {
 	   survivalKillCount++;
 	   waveKillCount++;
-	   AICast_IncreaseMaxActiveAI( attacker );
+	   AICast_CheckSurvivalProgression( attacker );
 	}
 
 	// kill, instanly, any streaming sound the character had going

@@ -1567,7 +1567,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AIFunc_Idle", (byte *)AIFunc_Idle},
 {"AICast_SpecialFunc", (byte *)AICast_SpecialFunc},
 {"AICast_SurvivalRespawn", (byte *)AICast_SurvivalRespawn},
-{"AICast_IncreaseMaxActiveAI", (byte *)AICast_IncreaseMaxActiveAI},
+{"AICast_CheckSurvivalProgression", (byte *)AICast_CheckSurvivalProgression},
 {"AICast_SpeedScaleForDistance", (byte *)AICast_SpeedScaleForDistance},
 {"AICast_MoveToPos", (byte *)AICast_MoveToPos},
 {"AICast_GetRandomViewAngle", (byte *)AICast_GetRandomViewAngle},

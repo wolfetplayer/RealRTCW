@@ -85,6 +85,22 @@ int waveCount = 0;
 int waveKillCount = 0;
 int killCountRequirement = 0;
 
+int maxSoldiers = 10;
+int maxEliteGuards = 4;
+int maxBlackGuards = 4;
+int maxVenoms = 2;
+
+int maxZombies = 15;
+int maxWarrirors = 5;
+int maxGhosts = 3;
+
+int waveEg = 3;
+int waveBg = 6;
+int waveV = 10;
+
+int waveWarz = 3;
+int waveGhosts = 6;
+
 
 /*
 ============
@@ -357,7 +373,7 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 	}
 }
 
-void AICast_IncreaseMaxActiveAI( gentity_t *attacker ) {
+void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 
     // Wave Change Event
     if (survivalKillCount == killCountRequirement) {
@@ -368,58 +384,58 @@ void AICast_IncreaseMaxActiveAI( gentity_t *attacker ) {
 
    // Normal soldiers
     maxActiveAI[AICHAR_SOLDIER] += 1;
-    if (maxActiveAI[AICHAR_SOLDIER] > 10) {
-        maxActiveAI[AICHAR_SOLDIER] = 10;
+    if (maxActiveAI[AICHAR_SOLDIER] > maxSoldiers) {
+        maxActiveAI[AICHAR_SOLDIER] = maxSoldiers;
     }
 
 	// Elite Guards
-	if (waveCount >= 7)
+	if (waveCount >= waveEg)
 	{
 		maxActiveAI[AICHAR_ELITEGUARD] += 1;
-		if (maxActiveAI[AICHAR_ELITEGUARD] > 4) {
-			maxActiveAI[AICHAR_ELITEGUARD] = 4;
+		if (maxActiveAI[AICHAR_ELITEGUARD] >  maxEliteGuards) {
+			maxActiveAI[AICHAR_ELITEGUARD] =  maxEliteGuards;
 		}
 	}
 
 	// Black Guards
-	if (waveCount >= 15)
+	if (waveCount >= waveBg)
 	{
 		maxActiveAI[AICHAR_BLACKGUARD] += 1;
-		if (maxActiveAI[AICHAR_BLACKGUARD] > 4) {
-			maxActiveAI[AICHAR_BLACKGUARD] = 4;
+		if (maxActiveAI[AICHAR_BLACKGUARD] >  maxBlackGuards) {
+			maxActiveAI[AICHAR_BLACKGUARD] =  maxBlackGuards;
 		}
 	}
 
     // Venoms
-	if (waveCount >= 25)
+	if (waveCount >= waveV)
 	{
 		maxActiveAI[AICHAR_VENOM] += 1;
-		if (maxActiveAI[AICHAR_VENOM] > 2){
-			maxActiveAI[AICHAR_VENOM] = 2;
+		if (maxActiveAI[AICHAR_VENOM] > maxVenoms){
+			maxActiveAI[AICHAR_VENOM] = maxVenoms;
 		}
 	}
 
 	// Default Zombies
 	maxActiveAI[AICHAR_ZOMBIE_SURV] += 1;
-    if (maxActiveAI[AICHAR_ZOMBIE_SURV] > 15) {
-        maxActiveAI[AICHAR_ZOMBIE_SURV] = 15;
+    if (maxActiveAI[AICHAR_ZOMBIE_SURV] > maxZombies) {
+        maxActiveAI[AICHAR_ZOMBIE_SURV] = maxZombies;
     }
 
 	// Warrirors
-	if (waveCount >= 7)
+	if (waveCount >= waveWarz)
 	{
 		maxActiveAI[AICHAR_WARZOMBIE] += 1;
-		if (maxActiveAI[AICHAR_WARZOMBIE] > 5) {
-			maxActiveAI[AICHAR_WARZOMBIE] = 5;
+		if (maxActiveAI[AICHAR_WARZOMBIE] > maxWarrirors) {
+			maxActiveAI[AICHAR_WARZOMBIE] = maxWarrirors;
 		}
 	}
 
 	// Ghost Zombies
-	if (waveCount >= 15)
+	if (waveCount >= waveGhosts)
 	{
 		maxActiveAI[AICHAR_ZOMBIE_GHOST] += 1;
-		if (maxActiveAI[AICHAR_ZOMBIE_GHOST] > 3) {
-			maxActiveAI[AICHAR_ZOMBIE_GHOST] = 3;
+		if (maxActiveAI[AICHAR_ZOMBIE_GHOST] > maxGhosts) {
+			maxActiveAI[AICHAR_ZOMBIE_GHOST] = maxGhosts;
 		}
 	}
 
@@ -492,8 +508,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				
 
 
-			int health_increase = survivalKillCount / 2;
-			float speed_increase = survivalKillCount / 50;
+			int health_increase = waveCount;
+			float speed_increase = waveCount / 20;
 		    float crouchSpeedScale = 1;
 			float runSpeedScale = 1;
 			float sprintSpeedScale = 1;

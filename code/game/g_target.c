@@ -84,6 +84,9 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     price = ent->price;
     itemName = ent->buy_item;
 
+	// Define the list of random box weapons
+    char *random_box_weapons[] = {"weapon_luger", "weapon_revolver", "weapon_colt", "weapon_tt33", "weapon_mauserrifle", "weapon_mosin", "weapon_m1garand", "weapon_mp44", "weapon_fg42", "weapon_g43", "weapon_mp40", "weapon_mp34", "weapon_sten", "weapon_ppsh", "weapon_thompson"}; 
+
 	int slotId = G_GetFreeWeaponSlot( activator );
 
 	if ( slotId <= 0 ) {
@@ -102,7 +105,15 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
         return;
     }
 
-    // Find the item
+	// If itemName is "random_weapon", select a random weapon from the list
+	if (strcmp(itemName, "random_weapon") == 0)
+	{
+		int numWeapons = sizeof(random_box_weapons) / sizeof(random_box_weapons[0]); // Get the number of weapons in the list
+		int randomIndex = rand() % numWeapons;				   // Generate a random index
+		itemName = random_box_weapons[randomIndex];					   // Select a random weapon
+	}
+
+	// Find the item
     itemIndex = 0;
     for ( i = 1; bg_itemlist[i].classname; i++ ) {
         if ( !Q_strcasecmp( itemName, bg_itemlist[i].classname ) ) {

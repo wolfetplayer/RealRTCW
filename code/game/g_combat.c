@@ -222,21 +222,18 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 
 		if (rand() % 100 < dropChance)
 		{
-			switch (rand() % 5)
+			switch (rand() % 4)
 			{ // Random number
 			case 0:
-				powerup = PW_HASTE_SURV;
-				break;
-			case 1:
 				powerup = PW_QUAD;
 				break;
-			case 2:
+			case 1:
 				powerup = PW_INVIS;
 				break;
-			case 3:
+			case 2:
 				powerup = PW_BATTLESUIT_SURV;
 				break;
-			case 4:
+			case 3:
 				powerup = PW_VAMPIRE;
 				break;
 			}

@@ -35,6 +35,9 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
+#include <pthread.h>
+#include <unistd.h>
+
 extern vec3_t muzzleTrace; // used by falloff mechanic
 
 /*
@@ -222,18 +225,15 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 
 		if (rand() % 100 < dropChance)
 		{
-			switch (rand() % 4)
+			switch (rand() % 3)
 			{ // Random number
 			case 0:
 				powerup = PW_QUAD;
 				break;
 			case 1:
-				powerup = PW_INVIS;
-				break;
-			case 2:
 				powerup = PW_BATTLESUIT_SURV;
 				break;
-			case 3:
+			case 2:
 				powerup = PW_VAMPIRE;
 				break;
 			}
@@ -412,6 +412,56 @@ char    *modNames[] = {
 	"MOD_BAT"
 };
 
+
+void *remove_powerup_after_delay2(void *arg) {
+    gentity_t *other = (gentity_t *)arg;
+
+    // Sleep for 30 seconds
+    sleep(30);
+
+    // Remove the FL_NOTARGET flag
+    other->flags &= ~FL_NOTARGET;
+
+    return NULL;
+}
+
+
+/*
+==================
+player_die_secondchance
+==================
+*/
+void player_die_secondchance( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {
+
+
+	if ( self->client->ps.pm_type == PM_DEAD ) {
+		return;
+	}
+
+	if ( level.intermissiontime ) {
+		return;
+	}
+
+	// Grant the player 200 health points
+    self->health = 200;
+
+	 // Grant the player invisibility powerup for a limited time (e.g., 30 seconds)
+    self->client->ps.powerups[PW_INVIS] = level.time + 30000;
+    G_AddPredictableEvent( self, EV_ITEM_PICKUP, BG_FindItemForClassName( "item_invis" ) - bg_itemlist );
+	self->flags |= FL_NOTARGET;
+    pthread_t thread_id;
+    pthread_create(&thread_id, NULL, remove_powerup_after_delay2, (void *)self);
+
+	// Remove all current perks from the player
+    memset(self->client->ps.perks, 0, sizeof(self->client->ps.perks));
+	self->client->ps.stats[STAT_PERK] = 0; // Clear all perk bits
+
+	 // Reset the player's state to prevent immediate death again
+    self->client->ps.pm_type = PM_NORMAL;
+    self->client->ps.stats[STAT_HEALTH] = self->health;
+
+}
+
 /*
 ==================
 player_die
@@ -425,6 +475,13 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	int i;
 	char        *killerName, *obit;
 	qboolean nogib = qtrue;
+
+
+	// Check if the player has the PERK_SECONDCHANCE perk
+    if (self->client->ps.perks[PERK_SECONDCHANCE]) {
+        player_die_secondchance(self, inflictor, attacker, damage, meansOfDeath);
+        return;
+    }
 
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		return;

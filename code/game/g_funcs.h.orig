@@ -69,6 +69,7 @@ If you have questions concerning this license or the applicable additional terms
 {"IsHeadShotWeapon", (byte *)IsHeadShotWeapon},
 {"CheckArmor", (byte *)CheckArmor},
 {"player_die", (byte *)player_die},
+{"player_die_secondchance", (byte *)player_die_secondchance},
 {"body_die", (byte *)body_die},
 {"GibEntity", (byte *)GibEntity},
 {"GibHead", (byte *)GibHead},

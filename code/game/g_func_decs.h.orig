@@ -69,6 +69,7 @@ extern qboolean IsHeadShot ( gentity_t * targ , gentity_t * attacker , vec3_t di
 extern qboolean IsHeadShotWeapon ( int mod , gentity_t * targ , gentity_t * attacker ) ;
 extern int CheckArmor ( gentity_t * ent , int damage , int dflags ) ;
 extern void player_die ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker , int damage , int meansOfDeath ) ;
+extern void player_die_secondchance( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod );
 extern void body_die ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker , int damage , int meansOfDeath ) ;
 extern void GibEntity ( gentity_t * self , int killer ) ;
 extern void GibHead ( gentity_t * self , int killer ) ;

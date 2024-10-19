@@ -1374,7 +1374,16 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 	dropped->touch = Touch_Item_Auto;
 
 	G_SetOrigin( dropped, origin );
-	dropped->s.pos.trType = TR_GRAVITY;
+
+	if (item->giType == IT_POWERUP)
+	{
+		dropped->s.pos.trType = TR_GRAVITY_PAUSED;
+	}
+	else
+	{
+		dropped->s.pos.trType = TR_GRAVITY;
+	}
+
 	dropped->s.pos.trTime = level.time;
 	VectorCopy( velocity, dropped->s.pos.trDelta );
 

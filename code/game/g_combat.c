@@ -598,16 +598,33 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	// don't allow respawn until the death anim is done
 	// g_forcerespawn may force spawning at some later time
-	self->client->respawnTime = level.time + 1700;
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		self->client->respawnTime = level.time + 7000; // 10 seconds
+
+		// Fetch the number of waves and enemies killed
+		int numberOfWaves = waveCount;
+		int numberOfEnemiesKilled = survivalKillCount;
+
+		// Format the message
+		const char *messageTemplate = "Game Over \n You reached level %d and killed %d enemies";
+		char message[256];
+		snprintf(message, sizeof(message), messageTemplate, numberOfWaves, numberOfEnemiesKilled);
+
+		// Send the message to the server
+        trap_SendServerCommand(self - g_entities, va("cp \"%s\"", message));
+		trap_SendServerCommand(-1, "mu_play sound/music/l_finale.wav 0\n");
+	}
+	else
+	{
+		self->client->respawnTime = level.time + 1700;
+		trap_SendServerCommand(-1, "mu_play sound/music/l_failed_1.wav 0\n");
+		trap_SetConfigstring(CS_MUSIC_QUEUE, ""); // clear queue so it'll be quiet after hit
+		trap_SendServerCommand(-1, "cp missionfail0");
+	}
 
 	// remove powerups
-	memset( self->client->ps.powerups, 0, sizeof( self->client->ps.powerups ) );
-
-	trap_SendServerCommand( -1, "mu_play sound/music/l_failed_1.wav 0\n" );
-	trap_SetConfigstring( CS_MUSIC_QUEUE, "" );  // clear queue so it'll be quiet after hit
-	trap_SendServerCommand( -1, "cp missionfail0" );
-
-
+	memset(self->client->ps.powerups, 0, sizeof(self->client->ps.powerups));
 
 	// never gib in a nodrop
 	contents = trap_PointContents( self->r.currentOrigin, -1 );

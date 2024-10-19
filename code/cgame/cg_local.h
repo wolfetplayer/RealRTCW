@@ -901,6 +901,12 @@ typedef struct {
 	char buyPrint[1024];
 	int buyPrintLines;
 
+	int egPrintTime;
+	int egPrintCharWidth;
+	int egPrintY;
+	char egPrint[1024];
+	int egPrintLines;
+
 	int subtitlePrintTime;
 	int subtitlePrintCharWidth;
 	int subtitlePrintY;
@@ -1698,6 +1704,7 @@ extern markPoly_t cg_markPolys[MAX_MARK_POLYS];
 
 extern vmCvar_t cg_centertime;
 extern vmCvar_t cg_buyprinttime;
+extern vmCvar_t cg_egprinttime;
 
 extern vmCvar_t cg_bobbing;
 
@@ -2024,6 +2031,7 @@ void CG_CenterPrint( const char *str, int y, int charWidth );
 void CG_BonusCenterPrint( const char *str, int y, int charWidth );
 void CG_SubtitlePrint( const char *str, int y, int charWidth );
 void CG_BuyPrint( const char *str, int y, int charWidth );
+void CG_EndGamePrint( const char *str, int y, int charWidth );
 
 void CG_ObjectivePrint( const char *str, int charWidth, int team );     // NERVE - SMF
 void CG_DrawHead( float x, float y, float w, float h, int clientNum, vec3_t headAngles );

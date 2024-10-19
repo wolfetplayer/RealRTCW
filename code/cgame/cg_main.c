@@ -101,6 +101,7 @@ vmCvar_t cg_bobbing;
 vmCvar_t cg_railTrailTime;
 vmCvar_t cg_centertime;
 vmCvar_t cg_buyprinttime;
+vmCvar_t cg_egprinttime;
 vmCvar_t cg_runpitch;
 vmCvar_t cg_runroll;
 vmCvar_t cg_bobup;
@@ -394,6 +395,7 @@ cvarTable_t cvarTable[] = {
 	{ &cg_gun_z, "cg_gunZ", "0", CVAR_CHEAT  },
 	{ &cg_centertime, "cg_centertime", "3", CVAR_CHEAT },
 	{ &cg_buyprinttime, "cg_buyprinttime", "1", CVAR_CHEAT },
+	{ &cg_egprinttime, "cg_egprinttime", "7", CVAR_CHEAT },
 	{ &cg_runpitch, "cg_runpitch", "0.002", CVAR_ARCHIVE},
 	{ &cg_runroll, "cg_runroll", "0.005", CVAR_ARCHIVE },
 	{ &cg_bobup, "cg_bobup", "0.005", CVAR_ARCHIVE },

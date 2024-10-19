@@ -370,7 +370,7 @@ void Cmd_Buy_f( gentity_t *ent ) {
 			G_FreeEntity( it_ent );
 		}
 
-		ent->client->ps.persistant[PERS_SCORE] -= 20;;
+		ent->client->ps.persistant[PERS_SCORE] -= 20;
 		return;
 	}
 

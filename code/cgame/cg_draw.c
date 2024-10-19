@@ -1789,6 +1789,42 @@ void CG_BuyPrint( const char *str, int y, int charWidth ) {
 
 /*
 ==============
+CG_EndGamePrint
+
+Called for important messages that should stay in the center of the screen
+for a few moments
+==============
+*/
+void CG_EndGamePrint( const char *str, int y, int charWidth ) {
+	char   *s;
+
+//----(SA)	added translation lookup
+	Q_strncpyz( cg.egPrint, CG_translateString( (char*)str ), sizeof( cg.egPrint ) );
+//----(SA)	end
+
+
+	cg.egPrintTime = cg.time;
+	cg.egPrintY = y;
+	cg.egPrintCharWidth = charWidth;
+
+	// count the number of lines for centering
+	cg.egPrintLines = 1;
+	s = cg.egPrint;
+	while ( *s ) {
+		if ( *s == '\n' ) {
+			cg.egPrintLines++;
+		}
+		if ( !Q_strncmp( s, "\\n", 1 ) ) {
+			cg.egPrintLines++;
+			s++;
+		}
+		s++;
+	}
+}
+
+
+/*
+==============
 CG_BonusCenterPrint
 
 Called for important messages that should stay in the center of the screen
@@ -1996,6 +2032,72 @@ static void CG_DrawBuyString( void ) {
 		CG_DrawStringExt( x, y, linebuffer, color, qfalse, qtrue, cg.buyPrintCharWidth, (int)( cg.buyPrintCharWidth * 1.5 ), 0 );
 
 		y += cg.buyPrintCharWidth * 2;
+
+		while ( *start && ( *start != '\n' ) ) {
+			if ( !Q_strncmp( start, "\\n", 1 ) ) {
+				start++;
+				break;
+			}
+			start++;
+		}
+		if ( !*start ) {
+			break;
+		}
+		start++;
+	}
+
+	trap_R_SetColor( NULL );
+}
+
+
+/*
+===================
+CG_DrawEgString
+===================
+*/
+static void CG_DrawEgString( void ) {
+	char    *start;
+	int l;
+	int x, y, w;
+	float   *color;
+
+	if ( !cg.egPrintTime ) {
+		return;
+	}
+
+	color = CG_FadeColor( cg.egPrintTime, 1000 * cg_egprinttime.value );
+	if ( !color ) {
+		return;
+	}
+
+	if ( cg_fixedAspect.integer ) {
+		CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
+	}
+
+	trap_R_SetColor( color );
+
+	start = cg.egPrint;
+
+	y = cg.egPrintY - cg.egPrintLines * BIGCHAR_HEIGHT / 2;
+
+	while ( 1 ) {
+		char linebuffer[1024];
+
+		for ( l = 0; l < 50; l++ ) {
+			if ( !start[l] || start[l] == '\n' || !Q_strncmp( &start[l], "\\n", 1 ) ) {
+				break;
+			}
+			linebuffer[l] = start[l];
+		}
+		linebuffer[l] = 0;
+
+		w = cg.egPrintCharWidth * CG_DrawStrlen( linebuffer );
+
+		x = ( SCREEN_WIDTH - w ) / 2;
+
+		CG_DrawStringExt( x, y, linebuffer, color, qfalse, qtrue, cg.egPrintCharWidth, (int)( cg.egPrintCharWidth * 1.5 ), 0 );
+
+		y += cg.egPrintCharWidth * 2;
 
 		while ( *start && ( *start != '\n' ) ) {
 			if ( !Q_strncmp( start, "\\n", 1 ) ) {
@@ -3129,6 +3231,7 @@ static void CG_DrawIntermission( void ) {
 
 	CG_DrawCenterString();
 	CG_DrawBuyString();
+	CG_DrawEgString();
 	CG_DrawSubtitleString();
 	return;
 
@@ -3880,6 +3983,7 @@ if ( !cg_oldWolfUI.integer ) {
 	if ( !CG_DrawScoreboard() ) {
 		CG_DrawCenterString();
 		CG_DrawBuyString();
+		CG_DrawEgString();
 		CG_DrawSubtitleString();
 		CG_DrawObjectiveInfo();     // NERVE - SMF
 	}

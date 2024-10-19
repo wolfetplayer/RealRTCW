@@ -4052,6 +4052,11 @@ static void PM_Weapon( void ) {
 	if ( pm->ps->powerups[PW_HASTE_SURV] ) {
 		addTime /= 1.3;
 	}
+
+
+	if ( pm->ps->perks[PERK_RIFLING] ) {
+		addTime /= 1.25;
+	}
 	
 
 	// add the recoil amount to the aimSpreadScale

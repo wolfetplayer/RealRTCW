@@ -1103,22 +1103,36 @@ static void PM_WalkMove( void ) {
 			PM_AirMove();
 
 				pm->ps->jumpTime = pm->cmd.serverTime;
-	
-	#ifdef GAMEDLL
-		if (g_realism.value) {
-			stamtake = 3000;
-		} else {
-			stamtake = 1000;
-		}
-	#endif
-	#ifdef CGAMEDLL
-		if (cg_realism.value) {
-			stamtake = 3000;
-		} else {
-			stamtake = 1000;
-		}
-	#endif
-				
+
+#ifdef GAMEDLL
+				if (pm->ps->perks[PERK_RUNNER])
+				{
+					stamtake = 0; // No stamina take if the player has the PERK_RUNNER perk
+				}
+				else if (g_realism.value)
+				{
+					stamtake = 3000;
+				}
+				else
+				{
+					stamtake = 1000;
+				}
+#endif
+#ifdef CGAMEDLL
+				if (pm->ps->perks[PERK_RUNNER])
+				{
+					stamtake = 0; // No stamina take if the player has the PERK_RUNNER perk
+				}
+				else if (cg_realism.value)
+				{
+					stamtake = 3000;
+				}
+				else
+				{
+					stamtake = 1000;
+				}
+#endif
+
 				// take time from powerup before taking it from sprintTime
 				if ( pm->ps->powerups[PW_NOFATIGUE] ) {
 					if ( pm->ps->powerups[PW_NOFATIGUE] > stamtake ) {
@@ -4627,9 +4641,8 @@ void PM_Sprint( void ) {
 
     // Check if the player has PERK_RUNNER
     if (pm->ps->perks[PERK_RUNNER] > 0) {
-        // Decrease stamina drain and increase recharge
-        staminaDrain = 1500;
-        staminaRecharge = 1000;
+        // Remove stamina drain
+        staminaDrain = 0;
     }
 
 

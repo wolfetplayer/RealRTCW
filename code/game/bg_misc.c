@@ -5571,7 +5571,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		"item_quad",
 		"sound/pickup/q3powerups/quaddamage.wav",
 		{
-		"models/powerups/instant/quad.md3",
+		"models/powerups/survival/thule_b.md3",
 		0, 
 		0
 		},
@@ -5594,7 +5594,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		"item_vampire",
 		"sound/Zombie/firstsight/firstsight1.wav",
 		{
-		"models/mapobjects/Skull/skul2.md3",
+		"models/powerups/survival/thule_r.md3",
 		0, 
 		0
 		},
@@ -5689,7 +5689,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		"item_enviro_surv",
 		"sound/pickup/q3powerups/protect.wav",
 		{
-		"models/powerups/instant/enviro.md3",
+		"models/powerups/survival/thule_g.md3",
 		0, 
 		0
 		},

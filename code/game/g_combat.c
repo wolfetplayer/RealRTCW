@@ -615,7 +615,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		snprintf(message, sizeof(message), messageTemplate, numberOfWaves, numberOfEnemiesKilled);
 
 		// Send the message to the server
-        trap_SendServerCommand(self - g_entities, va("cp \"%s\"", message));
+        trap_SendServerCommand(self - g_entities, va("egp \"%s\"", message));
 		trap_SendServerCommand(-1, "mu_play sound/music/l_finale.wav 0\n");
 	}
 	else

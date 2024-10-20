@@ -1397,10 +1397,10 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 	{
 		dropped->s.eFlags |= EF_SPINNING; // spin the weapon as it flies from the dead player.  it will stop when it hits the ground
 		// Add dynamic light to the dropped powerup
-		dropped->s.constantLight = 150;			 // RGB intensity
-		dropped->s.constantLight |= (255 << 8);	 // R
-		dropped->s.constantLight |= (223 << 16); // G
-		dropped->s.constantLight |= (0 << 24);	 // B
+		//dropped->s.constantLight = 50;	
+		//dropped->s.constantLight |= (255 << 8);	 
+		//dropped->s.constantLight |= (255 << 16); 
+		//dropped->s.constantLight |= (255 << 24);	
 
 		// Play a sound at the location of the dropped item
 		dropped->s.loopSound = G_SoundIndex("sound/misc/powerup_ambience.wav");

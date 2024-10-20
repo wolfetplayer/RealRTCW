@@ -114,6 +114,11 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 			other->client->ps.powerups[PW_NOFATIGUE] = 60000;
 		}
 	}
+
+    if (ent->item->giTag == PW_AMMO) {
+         Add_Ammo( other, other->client->ps.weapon, ammoTable[other->client->ps.weapon].maxammo, qtrue );
+    }
+
    
 
     // DIRTY HACK!!!!! If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it

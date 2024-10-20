@@ -215,17 +215,17 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 		angle = 45;
 
 		// Drop random powerup in survival mode
-		int dropChance = 10; // Base drop chance
+		int dropChance = 5; // Base drop chance
 
 		// Increase drop chance if attacker has PERK_SCAVENGER
 		if (attacker->client->ps.perks[PERK_SCAVENGER] > 0)
 		{
-			dropChance += 7;
+			dropChance += 5;
 		}
 
 		if (rand() % 100 < dropChance)
 		{
-			switch (rand() % 3)
+			switch (rand() % 4)
 			{ // Random number
 			case 0:
 				powerup = PW_QUAD;
@@ -235,6 +235,9 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 				break;
 			case 2:
 				powerup = PW_VAMPIRE;
+				break;
+			case 3:
+				powerup = PW_AMMO;
 				break;
 			}
 			item = BG_FindItemForPowerup(powerup);

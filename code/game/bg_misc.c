@@ -5611,6 +5611,29 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0}
 	},
 
+/*QUAKED item_ammopw (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_ammopw",
+		"sound/Zombie/firstsight/firstsight1.wav",
+		{
+		"models/powerups/survival/thule_gr.md3",
+		0, 
+		0
+		},
+		"",              
+		"Veil Ressuply",       
+		1,
+		IT_POWERUP,
+		WP_NONE,
+		PW_AMMO,
+		0,
+		0,
+		"",                            
+		"",   
+		{0,0,0,0,0}
+	},
+
 	/*QUAKED item_haste (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
 		{

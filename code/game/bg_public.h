@@ -433,6 +433,7 @@ typedef enum {
 	PW_BLUEFLAG,
 	PW_BALL,
 	PW_VAMPIRE,
+	PW_AMMO,
 	PW_NUM_POWERUPS
 } powerup_t;
 

@@ -5576,7 +5576,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		0
 		},
 		"",              
-		"Quad Damage",       
+		"Veil Empower",       
 		30,
 		IT_POWERUP,
 		WP_NONE,
@@ -5599,7 +5599,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		0
 		},
 		"",              
-		"Vampirism",       
+		"Veil Essence Reaver",       
 		30,
 		IT_POWERUP,
 		WP_NONE,
@@ -5694,7 +5694,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 		0
 		},
 		"",                             
-		"Battle Suit",     
+		"Veil Shield",     
 		30,
 		IT_POWERUP,
 		WP_NONE,

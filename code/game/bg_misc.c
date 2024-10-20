@@ -5592,7 +5592,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_vampire",
-		"sound/Zombie/firstsight/firstsight1.wav",
+		"sound/pickup/q3powerups/vampire.wav",
 		{
 		"models/powerups/survival/thule_r.md3",
 		0, 
@@ -5615,7 +5615,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_ammopw",
-		"sound/Zombie/firstsight/firstsight1.wav",
+		"sound/pickup/q3powerups/ammo.wav",
 		{
 		"models/powerups/survival/thule_gr.md3",
 		0, 

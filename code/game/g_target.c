@@ -101,6 +101,8 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	"weapon_sten", "weapon_ppsh", "weapon_thompson", "weapon_panzerfaust", "weapon_tesla",
 	"weapon_hdm", "weapon_m1941", "weapon_auto5", "weapon_delisle"}; 
 
+    char *random_perks[] = {"perk_resilience", "perk_scavenger", "perk_runner", "perk_weaponhandling", "perk_rifling", "perk_secondchance"}; 
+
 	int slotId = G_GetFreeWeaponSlot( activator );
 
 	if ( slotId <= 0 ) {
@@ -138,6 +140,19 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		int randomIndex = rand() % numWeapons;	  // Generate a random index
 		itemName = selected_weapons[randomIndex]; // Select a random weapon
 	}
+
+if (strcmp(itemName, "random_perk") == 0)
+    {
+        char **selected_perks;
+        int numPerks;
+
+        selected_perks = random_perks;
+        numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
+        
+
+        int randomIndex = rand() % numPerks;	  // Generate a random index
+        itemName = selected_perks[randomIndex]; // Select a random perk
+    }
 
 	// Find the item
     itemIndex = 0;

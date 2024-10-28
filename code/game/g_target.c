@@ -202,6 +202,8 @@ if (strcmp(itemName, "random_perk") == 0)
         // Select the bought weapon
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );
 
+		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
+
 	// all grenades should be IT_AMMO
     } else if ( item->giType == IT_AMMO ) {
 		// Check if player's ammo is already full
@@ -221,6 +223,7 @@ if (strcmp(itemName, "random_perk") == 0)
 
         // Select the bought weapon
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );
+		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
 
     } else if ( item->giType == IT_ARMOR )  {
        if (activator->client->ps.stats[STAT_ARMOR] >= 100) {
@@ -229,6 +232,7 @@ if (strcmp(itemName, "random_perk") == 0)
        }
 		activator->client->ps.stats[STAT_ARMOR] = 100;
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
+		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
     } else if ( item->giType == IT_PERK ) {
 
 		int i, perkCount = 0;
@@ -258,13 +262,13 @@ if (strcmp(itemName, "random_perk") == 0)
 	   activator->client->ps.perks[item->giTag] += 1;
 	   activator->client->ps.stats[STAT_PERK] |= ( 1 << item->giTag );
        G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
+	   	trap_SendServerCommand( -1, "mu_play sound/misc/buy_perk.wav 0\n" );
 	} else {
 		return;
 	}
 
 	// Subtract price from player's score
     activator->client->ps.persistant[PERS_SCORE] -= price;
-	trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
 }
 
 void SP_target_buy( gentity_t *ent ) {

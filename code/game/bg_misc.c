@@ -5569,7 +5569,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_quad",
-		"sound/pickup/q3powerups/quaddamage.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/survival/thule_b.md3",
 		0, 
@@ -5592,7 +5592,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_vampire",
-		"sound/pickup/q3powerups/vampire.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/survival/thule_r.md3",
 		0, 
@@ -5615,7 +5615,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_ammopw",
-		"sound/pickup/q3powerups/ammo.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/survival/thule_gr.md3",
 		0, 
@@ -5638,7 +5638,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_haste",
-		"sound/pickup/q3powerups/haste.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/instant/haste.md3",
 		0, 
@@ -5661,7 +5661,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_haste_surv",
-		"sound/pickup/q3powerups/haste.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/instant/haste.md3",
 		0, 
@@ -5686,7 +5686,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_enviro",
-		"sound/pickup/q3powerups/protect.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/instant/enviro.md3",
 		0, 
@@ -5710,7 +5710,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_enviro_surv",
-		"sound/pickup/q3powerups/protect.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/survival/thule_g.md3",
 		0, 
@@ -5735,7 +5735,7 @@ model="models/powerups/holdable/zemphr_book.md3"
 */
 		{
 		"item_invis",
-		"sound/pickup/q3powerups/invisibility.wav",
+		"sound/misc/powerup_pickup.wav",
 		{
 		"models/powerups/instant/invis.md3",
 		0, 

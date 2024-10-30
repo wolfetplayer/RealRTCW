@@ -706,6 +706,8 @@ int GetCurrentSlotId( gentity_t *other ) {
 	if ( idx < 0 ) {
 		return G_FindWeaponSlot( other, GetComplexWeapon( other->client->ps.weapon ) );
 	}
+
+	return idx;
 }
 
 qboolean IsThereEmptySlot( gentity_t *other ) {

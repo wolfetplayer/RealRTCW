@@ -234,6 +234,10 @@ static void CG_ItemPickup( int itemNum ) {
 			//	4 - "New or Better"
 			//	5 - "New and Better"
 
+			if ( weapon == WP_SNIPERRIFLE || weapon == WP_SNOOPERSCOPE || weapon == WP_FG42SCOPE || weapon == WP_DELISLESCOPE || weapon == WP_M1941SCOPE ) {
+				weapon = GetWeaponTableData( weapon )->weapAlts;
+			}
+
 			// don't ever autoswitch to secondary fire weapons
 			if ( weapon != WP_SNIPERRIFLE && weapon != WP_SNOOPERSCOPE && weapon != WP_FG42SCOPE && weapon != WP_DELISLESCOPE && weapon != WP_M1941SCOPE ) {  //----(SA)	modified
 

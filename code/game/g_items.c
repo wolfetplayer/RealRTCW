@@ -62,6 +62,10 @@ If you have questions concerning this license or the applicable additional terms
 
 //======================================================================
 
+weapon_t GetComplexWeapon( weapon_t weapon );
+weapon_t GetSimpleWeapon( weapon_t weapon );
+qboolean IsWeaponComplex( weapon_t weapon );
+
 
 void *remove_powerup_after_delay(void *arg) {
     gentity_t *other = (gentity_t *)arg;
@@ -697,7 +701,11 @@ int G_GetFreeWeaponSlot( gentity_t *other ) {
 }
 
 int GetCurrentSlotId( gentity_t *other ) {
-	return G_FindWeaponSlot( other, other->client->ps.weapon );
+	int idx = G_FindWeaponSlot( other, other->client->ps.weapon );
+
+	if ( idx < 0 ) {
+		return G_FindWeaponSlot( other, GetComplexWeapon( other->client->ps.weapon ) );
+	}
 }
 
 qboolean IsThereEmptySlot( gentity_t *other ) {
@@ -743,6 +751,9 @@ weapon_t GetSimpleWeapon( weapon_t weapon ) {
 qboolean IsWeaponComplex( weapon_t weapon ) {
 	switch ( weapon )
 	{
+	case WP_AKIMBO:
+	case WP_DUAL_TT33:
+	
 	case WP_LUGER:
 	case WP_GARAND:
 	case WP_FG42:
@@ -767,6 +778,10 @@ qboolean IsUpgradingWeapon( gentity_t *other, weapon_t weapon ) {
 	weapon_t simpleWeapon = GetSimpleWeapon( weapon );
 	weapon_t complexWeapon = GetComplexWeapon( weapon );
 	int simpleWeaponSlotId = G_FindWeaponSlot( other, simpleWeapon );
+
+	if ( simpleWeaponSlotId < 0 ) {
+		return qfalse;
+	}
 
 	return simpleWeaponSlotId > 0 && other->client->ps.weaponSlots[ simpleWeaponSlotId ] == simpleWeapon && weapon == complexWeapon;
 }
@@ -861,15 +876,13 @@ void G_DropWeapon( gentity_t *ent, weapon_t weapon ) {
 	if ( weapon == client->ps.weapon ) {
 		client->ps.weapon = 0;
 	}
-
-	// now pickup the other one
-	client->dropWeaponTime = level.time;
 }
 
 //======================================================================
 
 int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 	int quantity;
+	qboolean isPickedUp = qfalse;
 	qboolean alreadyHave = qfalse;
 	weapon_t weapon = ent->item->giTag;
 
@@ -941,6 +954,8 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		return 0;
 	}
 
+	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );
+
 	if ( !COM_BitCheck( other->client->ps.weapons, weapon ) ) {
 		if ( IsThereEmptySlot( other ) || IsUpgradingWeapon( other, weapon ) || other->client->latched_buttons & BUTTON_ACTIVATE ) {
 			if ( IsUpgradingWeapon( other, weapon ) ) {
@@ -974,21 +989,28 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 					weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
 					COM_BitSet( other->client->ps.weapons, weapon );
 					COM_BitSet( other->client->ps.weapons, altWeapon );
-					other->client->ps.weaponSlots[ slotId ] = GetComplexWeapon( weapon );
+					other->client->ps.weaponSlots[ slotId ] = weapon;
 
 				} else {
 					COM_BitSet( other->client->ps.weapons, weapon );
 					other->client->ps.weaponSlots[ slotId ] = weapon;
 				}
 			}
+
+			isPickedUp = qtrue;
 		}
 	}
 
 	if ( NeedAmmo( other, weapon ) ) {
 		Add_Ammo( other, weapon, quantity, !alreadyHave );
-	} else {
+	} else if ( !isPickedUp ) {
 		ent->active = qtrue;
 		return 0;
+	}
+
+	if ( isPickedUp ) {
+		// now pickup the other one
+		other->client->dropWeaponTime = level.time;
 	}
 
 	if ( !( ent->spawnflags & 8 ) ) {

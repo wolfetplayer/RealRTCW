@@ -33,6 +33,8 @@ If you have questions concerning this license or the applicable additional terms
  *
 */
 
+#include <stdlib.h> // For rand()
+#include <stdio.h>  // For snprintf()
 
 #include "g_local.h"
 #include "../qcommon/q_shared.h"
@@ -381,6 +383,11 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
         killCountRequirement += waveKillCount + rand() % 5;  
 		attacker->client->ps.persistant[PERS_WAVES]++;
 		waveKillCount = 0;
+
+		int randomIndex = rand() % 19 + 1;
+		static char command[256];
+		snprintf(command, sizeof(command), "mu_play sound/announcer/hein%d.wav 0\n", randomIndex);
+		trap_SendServerCommand(-1, command);
 
    // Normal soldiers
     maxActiveAI[AICHAR_SOLDIER] += 1;

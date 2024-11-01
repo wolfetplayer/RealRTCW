@@ -103,6 +103,16 @@ int waveV = 10;
 int waveWarz = 3;
 int waveGhosts = 6;
 
+int zombieHealthCap = 100;
+int soldierHealthCap = 100;	
+int eliteGuardHealthCap = 150;
+int venomHealthCap = 200;
+int blackGuardHealthCap = 250;
+int warriorHealthCap = 300;
+int ghostHealthCap = 400;
+int priestHealthCap = 500;
+
+
 
 /*
 ============
@@ -527,13 +537,13 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 			{
 			case AICHAR_SOLDIER:
 				newHealth = 30 + health_increase;
-				if (newHealth > 60) {
-					newHealth = 60;
+				if (newHealth > soldierHealthCap) {
+					newHealth = soldierHealthCap;
 				}
 			case AICHAR_ZOMBIE_SURV:
 				newHealth = 40 + health_increase;
-				if (newHealth > 300) {
-					newHealth = 300;
+				if (newHealth > zombieHealthCap) {
+					newHealth = zombieHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.2) {
@@ -550,8 +560,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_ZOMBIE_GHOST:
 				newHealth = 40 + health_increase;
-				if (newHealth > 300) {
-					newHealth = 300;
+				if (newHealth > ghostHealthCap) {
+					newHealth = ghostHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.6) {
@@ -568,8 +578,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_WARZOMBIE:
 				newHealth = 60 + health_increase;
-				if (newHealth > 350) {
-					newHealth = 350;
+				if (newHealth > warriorHealthCap) {
+					newHealth = warriorHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.6) {
@@ -604,20 +614,20 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_ELITEGUARD:
 				newHealth = 35 + health_increase;
-				if (newHealth > 80) {
-					newHealth = 80;
+				if (newHealth > eliteGuardHealthCap) {
+					newHealth = eliteGuardHealthCap;
 				}
 				break;
 			case AICHAR_BLACKGUARD:
 			    newHealth = 50 + health_increase;
-				if (newHealth > 100) {
-					newHealth = 100;
+				if (newHealth > blackGuardHealthCap) {
+					newHealth = blackGuardHealthCap;
 				}
 				break;
 			case AICHAR_VENOM:
 			    newHealth = 80 + health_increase;
-				if (newHealth > 160) {
-					newHealth = 160;
+				if (newHealth > venomHealthCap) {
+					newHealth = venomHealthCap;
 				}
 				break;
 			default:

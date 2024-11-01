@@ -103,14 +103,15 @@ int waveV = 10;
 int waveWarz = 3;
 int waveGhosts = 6;
 
-int zombieHealthCap = 100;
+int zombieHealthCap = 300;
+int warriorHealthCap = 350;
+int ghostHealthCap = 300;
+int priestHealthCap = 500;
+
 int soldierHealthCap = 100;	
 int eliteGuardHealthCap = 150;
-int venomHealthCap = 200;
-int blackGuardHealthCap = 250;
-int warriorHealthCap = 300;
-int ghostHealthCap = 400;
-int priestHealthCap = 500;
+int blackGuardHealthCap = 200;
+int venomHealthCap = 300;
 
 
 

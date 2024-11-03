@@ -209,6 +209,10 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 	gentity_t *drop = 0;
 	int powerup = 0;
 
+	if (!attacker->client) {
+	   return;
+	}
+
 	AngleVectors(self->r.currentAngles, forward, NULL, NULL);
 
 

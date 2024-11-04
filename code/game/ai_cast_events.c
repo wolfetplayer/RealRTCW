@@ -603,7 +603,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	trap_LinkEntity( self );
 
 	// Decrement the counter for active AI characters
-	if ( g_gametype.integer == GT_SURVIVAL )  {
+	if ( g_gametype.integer == GT_SURVIVAL && killerPlayer )  {
 	   survivalKillCount++;
 	   waveKillCount++;
 	   AICast_CheckSurvivalProgression( attacker );

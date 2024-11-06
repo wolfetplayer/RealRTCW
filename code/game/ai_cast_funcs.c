@@ -526,8 +526,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				
 
 
-			int health_increase = waveCount;
-			float speed_increase = waveCount / 20;
+			int health_increase = waveCount * 5;
+			float speed_increase = waveCount / 5;
 		    float crouchSpeedScale = 1;
 			float runSpeedScale = 1;
 			float sprintSpeedScale = 1;

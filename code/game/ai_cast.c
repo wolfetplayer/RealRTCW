@@ -489,7 +489,7 @@ void AICast_Init( void ) {
 
     // Initial count of AIs for survival mode
     if ( g_gametype.integer == GT_SURVIVAL )  {
-		killCountRequirement = initialKillcountRequirement;
+		killCountRequirement = initialKillCountRequirement;
 		waveCount = 1;
 
 		maxActiveAI[AICHAR_SOLDIER] = initialSoldiersCount;

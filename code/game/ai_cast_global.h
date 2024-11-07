@@ -102,4 +102,4 @@ extern int initialWarriorsCount;
 extern int initialGhostsCount;
 extern int initialPriestsCount;
 
-extern int initialKillcountRequirement;
+extern int initialKillCountRequirement;

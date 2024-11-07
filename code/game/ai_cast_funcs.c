@@ -88,7 +88,7 @@ int waveCount = 0;
 int waveKillCount = 0;
 int killCountRequirement = 0;
 
-int initialKillcountRequirement = 5;
+int initialKillCountRequirement = 5;
 
 int initialSoldiersCount = 5;
 int initialEliteGuardsCount = 0;

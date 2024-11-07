@@ -936,6 +936,7 @@ netField_t entityStateFields[] =
 	{ NETF( otherEntityNum2 ), GENTITYNUM_BITS },
 	{ NETF( groundEntityNum ), GENTITYNUM_BITS },
 	{ NETF( loopSound ), 10 },
+	{ NETF( oldloopSound ), 10 },
 	{ NETF( constantLight ), 32 },
 	{ NETF( dl_intensity ), 32 }, //----(SA)	longer now to carry the corona colors
 	{ NETF( modelindex ), 10 },

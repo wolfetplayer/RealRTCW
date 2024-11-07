@@ -489,16 +489,17 @@ void AICast_Init( void ) {
 
     // Initial count of AIs for survival mode
     if ( g_gametype.integer == GT_SURVIVAL )  {
-		killCountRequirement = 5;
+		killCountRequirement = initialKillcountRequirement;
 		waveCount = 1;
-		maxActiveAI[AICHAR_SOLDIER] = 5;
-	    maxActiveAI[AICHAR_ZOMBIE_SURV] = 5;
-	    maxActiveAI[AICHAR_ZOMBIE_GHOST] = 0;
-	    maxActiveAI[AICHAR_WARZOMBIE] = 0;
-	    maxActiveAI[AICHAR_PRIEST] = 0;
-	    maxActiveAI[AICHAR_ELITEGUARD] = 0;
-		maxActiveAI[AICHAR_BLACKGUARD] = 0;
-		maxActiveAI[AICHAR_VENOM] = 0;
+
+		maxActiveAI[AICHAR_SOLDIER] = initialSoldiersCount;
+	    maxActiveAI[AICHAR_ZOMBIE_SURV] = initialZombiesCount;
+	    maxActiveAI[AICHAR_ZOMBIE_GHOST] = initialGhostsCount;
+	    maxActiveAI[AICHAR_WARZOMBIE] = initialWarriorsCount;
+	    maxActiveAI[AICHAR_PRIEST] = initialPriestsCount;
+	    maxActiveAI[AICHAR_ELITEGUARD] = initialEliteGuardsCount;
+		maxActiveAI[AICHAR_BLACKGUARD] = initialBlackGuardsCount;
+		maxActiveAI[AICHAR_VENOM] = initialVenomsCount;
 	}
 
 	trap_Cvar_Register( &aicast_debug, "aicast_debug", "0", 0 );

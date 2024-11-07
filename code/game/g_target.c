@@ -157,6 +157,16 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		}
     }
 
+	// Find the item
+	if ( itemIndex <= 0 ) {
+		for ( i = 1; bg_itemlist[i].classname; i++ ) {
+			if ( !Q_strcasecmp( itemName, bg_itemlist[i].classname ) ) {
+				itemIndex = i;
+				break;
+			}
+		}
+	}
+
     item = &bg_itemlist[itemIndex];
 
     // Check if player has enough points

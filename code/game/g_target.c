@@ -85,20 +85,101 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     itemName = ent->buy_item;
 
 	// Define the list of random box weapons
-    weapon_t random_box_weapons[] = { WP_LUGER, WP_SILENCER, WP_AKIMBO, WP_REVOLVER, WP_COLT, WP_TT33, WP_DUAL_TT33, WP_SNIPERRIFLE,
-	WP_SNOOPERSCOPE, WP_BAR, WP_VENOM, WP_MG42M, WP_BROWNING, WP_FLAMETHROWER, WP_MAUSER, WP_MOSIN, WP_M1GARAND, WP_MP44, WP_FG42, WP_G43, WP_MP40,
-	WP_MP34, WP_STEN, WP_PPSH, WP_THOMPSON, WP_PANZERFAUST, WP_TESLA };
+    weapon_t random_box_weapons[] = {                           
+	// One handed pistols
+	WP_LUGER,              
+	//WP_SILENCER,           
+    WP_COLT,               
+	WP_TT33,               
+	WP_REVOLVER,           
+	// SMGs
+	WP_MP40,             
+	WP_THOMPSON,         
+	WP_STEN,             
+	WP_PPSH,             
+	WP_MP34,             
+	// Rifles
+	WP_MAUSER,              
+	WP_SNIPERRIFLE,            
+	WP_SNOOPERSCOPE,
+	WP_MOSIN,
+	// Semi auto rifles
+	WP_M1GARAND,
+	WP_G43,
+	// Assault Rifles
+	WP_MP44,
+	WP_FG42,
+	WP_BAR,
+	// Shotguns
+	WP_M97,
+	// Heavy Weapons
+	WP_BROWNING,
+	WP_MG42M,
+	WP_PANZERFAUST,
+	WP_FLAMETHROWER,
+	// Secret Weapons
+	WP_VENOM,
+	WP_TESLA   
+	//WP_AKIMBO,
+	//WP_DUAL_TT33,     
+	//WP_M7, 
+	};
 
 	// Define the list of random box weapons
-    weapon_t random_box_weapons_dlc[] = { WP_LUGER, WP_SILENCER, WP_AKIMBO, WP_REVOLVER, WP_COLT, WP_TT33, WP_DUAL_TT33,
-	WP_SNOOPERSCOPE, WP_BAR, WP_VENOM, WP_MG42M, WP_BROWNING, WP_FLAMETHROWER, WP_MAUSER, WP_MOSIN, WP_M1GARAND, WP_MP44, WP_FG42, WP_G43, WP_MP40,
-	WP_MP34, WP_STEN, WP_PPSH, WP_THOMPSON, WP_PANZERFAUST, WP_TESLA, WP_HDM, WP_M1941, WP_AUTO5, WP_DELISLE };
+    weapon_t random_box_weapons_dlc[] = { 	            
+	// One handed pistols
+	WP_LUGER,              
+	//WP_SILENCER,           
+    WP_COLT,               
+	WP_TT33,               
+	WP_REVOLVER,           
+	// SMGs
+	WP_MP40,             
+	WP_THOMPSON,         
+	WP_STEN,             
+	WP_PPSH,             
+	WP_MP34,             
+	// Rifles
+	WP_MAUSER,              
+	WP_SNIPERRIFLE,             
+	WP_SNOOPERSCOPE,
+	WP_MOSIN,
+	// Semi auto rifles
+	WP_M1GARAND,
+	WP_G43,
+	WP_M1941,
+	// Assault Rifles
+	WP_MP44,
+	WP_FG42,
+	WP_BAR,
+	// Shotguns
+	WP_M97,
+	WP_AUTO5, 
+	// Heavy Weapons
+	WP_BROWNING,
+	WP_MG42M,
+	WP_PANZERFAUST,
+	WP_FLAMETHROWER,
+	// Secret Weapons
+	WP_VENOM,
+	WP_TESLA,   
+	// Misc Alt modes
+	//WP_AKIMBO,
+	//WP_DUAL_TT33,     
+	//WP_M7,
+	WP_M1941SCOPE,
+	WP_DELISLE,               
+	WP_HDM };
 
     char *random_perks[] = {"perk_resilience", "perk_scavenger", "perk_runner", "perk_weaponhandling", "perk_rifling", "perk_secondchance"}; 
 
     // Check if weapon or price were not specified
-    if ( !itemName || price <= 0 ) {
+    if ( !itemName ) {
         return;
+    }
+
+    if ( !price || price < 0 ) {
+        price = 0;
     }
 
     if ( !activator->client ) {

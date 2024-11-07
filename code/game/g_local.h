@@ -813,7 +813,7 @@ void    Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip );
 void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace );
 qboolean AddMagicAmmo( gentity_t *receiver, int numOfClips );
 
-int G_FindWeaponSlot( gentity_t *other, int weapon );
+int G_FindWeaponSlot( gentity_t *other, weapon_t weapon );
 int G_GetFreeWeaponSlot( gentity_t *other );
 void G_DropWeapon( gentity_t *ent, weapon_t weapon );
 qboolean Give_Weapon_New_Inventory( gentity_t *other, weapon_t weapon, qboolean needThrowItem );

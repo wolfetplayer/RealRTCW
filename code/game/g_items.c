@@ -684,7 +684,7 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 
 //======================================================================
 
-int G_FindWeaponSlot( gentity_t *other, int weapon ) {
+int G_FindWeaponSlot( gentity_t *other, weapon_t weapon ) {
 	int i;
 
 	for ( i = 1; i < MAX_WEAPON_SLOTS; ++i ) {

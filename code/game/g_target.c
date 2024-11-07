@@ -75,7 +75,7 @@ Gives the activator all the items pointed to.
 */
 void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
-    int itemIndex;
+    int itemIndex = 0;
     int i;
     int price;
     char *itemName;
@@ -85,21 +85,14 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     itemName = ent->buy_item;
 
 	// Define the list of random box weapons
-    char *random_box_weapons[] = {"weapon_luger", "weapon_silencer", "weapon_akimbo", 
-	"weapon_revolver", "weapon_colt", "weapon_tt33", "weapon_dualtt33", "weapon_sniperScope", 
-	"weapon_snooperrifle", "weapon_bar", "weapon_venom", "weapon_mg42m", "weapon_browning", 
-	"weapon_flamethrower", "weapon_mauserrifle", "weapon_mosin", "weapon_m1garand", 
-	"weapon_mp44", "weapon_fg42", "weapon_g43", "weapon_mp40", "weapon_mp34", 
-	"weapon_sten", "weapon_ppsh", "weapon_thompson", "weapon_panzerfaust", "weapon_tesla"}; 
+    weapon_t random_box_weapons[] = { WP_LUGER, WP_SILENCER, WP_AKIMBO, WP_REVOLVER, WP_COLT, WP_TT33, WP_DUAL_TT33, WP_SNIPERRIFLE,
+	WP_SNOOPERSCOPE, WP_BAR, WP_VENOM, WP_MG42M, WP_BROWNING, WP_FLAMETHROWER, WP_MAUSER, WP_MOSIN, WP_M1GARAND, WP_MP44, WP_FG42, WP_G43, WP_MP40,
+	WP_MP34, WP_STEN, WP_PPSH, WP_THOMPSON, WP_PANZERFAUST, WP_TESLA };
 
 	// Define the list of random box weapons
-    char *random_box_weapons_dlc[] = {"weapon_luger", "weapon_silencer", "weapon_akimbo", 
-	"weapon_revolver", "weapon_colt", "weapon_tt33", "weapon_dualtt33", 
-	"weapon_snooperrifle", "weapon_bar", "weapon_venom", "weapon_mg42m", "weapon_browning", 
-	"weapon_flamethrower", "weapon_mauserrifle", "weapon_mosin", "weapon_m1garand", 
-	"weapon_mp44", "weapon_fg42", "weapon_g43", "weapon_mp40", "weapon_mp34", 
-	"weapon_sten", "weapon_ppsh", "weapon_thompson", "weapon_panzerfaust", "weapon_tesla",
-	"weapon_hdm", "weapon_m1941", "weapon_auto5", "weapon_delisle"}; 
+    weapon_t random_box_weapons_dlc[] = { WP_LUGER, WP_SILENCER, WP_AKIMBO, WP_REVOLVER, WP_COLT, WP_TT33, WP_DUAL_TT33,
+	WP_SNOOPERSCOPE, WP_BAR, WP_VENOM, WP_MG42M, WP_BROWNING, WP_FLAMETHROWER, WP_MAUSER, WP_MOSIN, WP_M1GARAND, WP_MP44, WP_FG42, WP_G43, WP_MP40,
+	WP_MP34, WP_STEN, WP_PPSH, WP_THOMPSON, WP_PANZERFAUST, WP_TESLA, WP_HDM, WP_M1941, WP_AUTO5, WP_DELISLE };
 
     char *random_perks[] = {"perk_resilience", "perk_scavenger", "perk_runner", "perk_weaponhandling", "perk_rifling", "perk_secondchance"}; 
 
@@ -114,8 +107,8 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
 	if (strcmp(itemName, "random_weapon") == 0)
 	{
-		char **selected_weapons;
-		int numWeapons;
+		weapon_t* selected_weapons;
+		int numWeapons, randomIndex;
 
 		if (g_dlc1.integer == 1)
 		{
@@ -128,11 +121,22 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 			numWeapons = sizeof(random_box_weapons) / sizeof(random_box_weapons[0]);
 		}
 
-		int randomIndex = rand() % numWeapons;	  // Generate a random index
-		itemName = selected_weapons[randomIndex]; // Select a random weapon
+		// Generate a random index
+		do {
+			randomIndex = rand() % numWeapons;
+
+		} while ( G_FindWeaponSlot( activator, selected_weapons[ randomIndex ] ) >= 0 );
+
+		// Find the item
+		for ( i = 1; bg_itemlist[i].classname; i++ ) {
+			if ( bg_itemlist[i].giWeapon == selected_weapons[ randomIndex ] ) {
+				itemIndex = i;
+				break;
+			}
+		}
 	}
 
-if (strcmp(itemName, "random_perk") == 0)
+	if (strcmp(itemName, "random_perk") == 0)
     {
         char **selected_perks;
         int numPerks;
@@ -143,17 +147,26 @@ if (strcmp(itemName, "random_perk") == 0)
 
         int randomIndex = rand() % numPerks;	  // Generate a random index
         itemName = selected_perks[randomIndex]; // Select a random perk
+
+		// Find the item
+		for ( i = 1; bg_itemlist[i].classname; i++ ) {
+			if ( !Q_strcasecmp( itemName, bg_itemlist[i].classname ) ) {
+				itemIndex = i;
+				break;
+			}
+		}
     }
 
 	// Find the item
-    itemIndex = 0;
-    for ( i = 1; bg_itemlist[i].classname; i++ ) {
-        if ( !Q_strcasecmp( itemName, bg_itemlist[i].classname ) ) {
-            itemIndex = i;
-            break;
-        }
-    }
-
+	if ( itemIndex <= 0 ) {
+		for ( i = 1; bg_itemlist[i].classname; i++ ) {
+			if ( !Q_strcasecmp( itemName, bg_itemlist[i].classname ) ) {
+				itemIndex = i;
+				break;
+			}
+		}
+	}
+	
     item = &bg_itemlist[itemIndex];
 
     // Check if player has enough points

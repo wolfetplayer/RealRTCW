@@ -812,6 +812,33 @@ qboolean NeedAmmo(gentity_t *other, weapon_t weapon ) {
 }
 
 /**
+ * @brief Remove Weapon
+ * @param[in] ent
+ * @param[in] weapon
+ */
+void G_RemoveWeapon( gentity_t *ent, weapon_t weapon ) {
+	if ( IsWeaponComplex( weapon ) ) {
+		weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
+		int complexWeaponSlotId = G_FindWeaponSlot( ent, weapon );
+		COM_BitClear( ent->client->ps.weapons, weapon );
+		COM_BitClear( ent->client->ps.weapons, altWeapon );
+		ent->client->ps.weaponSlots[ complexWeaponSlotId ] = WP_NONE;
+		
+	} else {
+		int simpleSlotId = G_FindWeaponSlot( ent, weapon );
+		COM_BitClear( ent->client->ps.weapons, weapon );
+		ent->client->ps.weaponSlots[ simpleSlotId ] = WP_NONE;
+	}
+
+	// Clear out empty weapon, change to next best weapon
+	// 																G_AddEvent( ent, EV_CHANGE_WEAPON, 0 );
+
+	if ( weapon == ent->client->ps.weapon ) {
+		ent->client->ps.weapon = 0;
+	}
+}
+
+/**
  * @brief Drop Weapon
  * @param[in] ent
  * @param[in] weapon
@@ -859,49 +886,12 @@ void G_DropWeapon( gentity_t *ent, weapon_t weapon ) {
 
 	ent2 = LaunchItem( item, org, velocity );
 
-	if ( IsWeaponComplex( weapon ) ) {
-		weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
-		int complexWeaponSlotId = G_FindWeaponSlot( ent, weapon );
-		COM_BitClear( ent->client->ps.weapons, weapon );
-		COM_BitClear( ent->client->ps.weapons, altWeapon );
-		ent->client->ps.weaponSlots[ complexWeaponSlotId ] = WP_NONE;
-		
-	} else {
-		int simpleSlotId = G_FindWeaponSlot( ent, weapon );
-		COM_BitClear( ent->client->ps.weapons, weapon );
-		ent->client->ps.weaponSlots[ simpleSlotId ] = WP_NONE;
-	}
-
-	// Clear out empty weapon, change to next best weapon
-	// 																G_AddEvent( ent, EV_CHANGE_WEAPON, 0 );
-
-	if ( weapon == client->ps.weapon ) {
-		client->ps.weapon = 0;
-	}
+	G_RemoveWeapon( ent, weapon );
 }
 
 //======================================================================
 
-int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
-	int quantity;
-	qboolean isPickedUp = qfalse;
-	qboolean alreadyHave = qfalse;
-	weapon_t weapon = ent->item->giTag;
-
-	if ( ent->count < 0 ) {
-		quantity = 0; // None for you, sir!
-	} else {
-		if ( ent->count ) {
-			quantity = ent->count;
-		} else {
-			quantity = ( random() * ( ammoTable[ weapon ].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
-		}
-
-		if ( g_decaychallenge.integer ) {
-			quantity = 999;
-		}
-	}
-
+qboolean Give_Weapon_New_Inventory( gentity_t *other, weapon_t weapon, qboolean needThrowItem ) {
 	if ( ( weapon == WP_PPSH ) && strstr ( level.scriptAI, "Factory" ) ) {
 		if ( !g_cheats.integer ) {
 			steamSetAchievement( "ACH_PPSH" );
@@ -923,6 +913,83 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 	if ( ( weapon == WP_REVOLVER ) && strstr ( level.scriptAI, "Escape #2") ) {
 		if ( !g_cheats.integer ) {
 			steamSetAchievement( "ACH_AGENT1" );
+		}
+	}
+
+	if ( !COM_BitCheck( other->client->ps.weapons, weapon ) ) {
+		if ( IsThereEmptySlot( other ) || IsUpgradingWeapon( other, weapon ) || other->client->latched_buttons & BUTTON_ACTIVATE ) {
+			if ( IsUpgradingWeapon( other, weapon ) ) {
+				weapon_t simpleWeapon = GetSimpleWeapon( weapon );
+				int simpleWeaponSlotId = G_FindWeaponSlot( other, simpleWeapon );
+				COM_BitSet( other->client->ps.weapons, weapon );
+				other->client->ps.weaponSlots[ simpleWeaponSlotId ] = weapon;
+
+			} else {
+				int slotId;
+
+				if ( IsThereEmptySlot( other ) ) {
+					int freeWeaponSlotId = G_GetFreeWeaponSlot( other );
+
+					slotId = freeWeaponSlotId;
+
+				} else {
+					int currentWeaponSlotId = GetCurrentSlotId( other );
+
+					if ( currentWeaponSlotId < 1 ) {
+						slotId = 1;
+
+					} else {
+						slotId = currentWeaponSlotId;
+					}
+
+					if ( needThrowItem ) {
+						G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+					} else {
+						G_RemoveWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+					}
+				}
+
+				if ( IsWeaponComplex( weapon ) ) {
+					weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
+					COM_BitSet( other->client->ps.weapons, weapon );
+					COM_BitSet( other->client->ps.weapons, altWeapon );
+					other->client->ps.weaponSlots[ slotId ] = weapon;
+
+				} else {
+					COM_BitSet( other->client->ps.weapons, weapon );
+					other->client->ps.weaponSlots[ slotId ] = weapon;
+				}
+			}
+
+			return qtrue;
+		}
+	}
+
+	return qfalse;
+}
+
+int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
+	qboolean isPickedUp = qfalse;
+	qboolean alreadyHave = qfalse;
+	weapon_t weapon = ent->item->giTag;
+	int quantity;
+
+	if ( level.time - other->client->dropWeaponTime < 1000 ) {
+		ent->active = qtrue;
+		return 0;
+	}
+
+	if ( ent->count < 0 ) {
+		quantity = 0; // None for you, sir!
+	} else {
+		if ( ent->count ) {
+			quantity = ent->count;
+		} else {
+			quantity = ( random() * ( ammoTable[ weapon ].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
+		}
+
+		if ( g_decaychallenge.integer ) {
+			quantity = 999;
 		}
 	}
 
@@ -951,57 +1018,9 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		return g_weaponRespawn.integer;
 	}
 
-	if ( level.time - other->client->dropWeaponTime < 1000 ) {
-		ent->active = qtrue;
-		return 0;
-	}
-
 	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );
 
-	if ( !COM_BitCheck( other->client->ps.weapons, weapon ) ) {
-		if ( IsThereEmptySlot( other ) || IsUpgradingWeapon( other, weapon ) || other->client->latched_buttons & BUTTON_ACTIVATE ) {
-			if ( IsUpgradingWeapon( other, weapon ) ) {
-				weapon_t simpleWeapon = GetSimpleWeapon( weapon );
-				int simpleWeaponSlotId = G_FindWeaponSlot( other, simpleWeapon );
-				COM_BitSet( other->client->ps.weapons, weapon );
-				other->client->ps.weaponSlots[ simpleWeaponSlotId ] = weapon;
-
-			} else {
-				int slotId;
-
-				if ( IsThereEmptySlot( other ) ) {
-					int freeWeaponSlotId = G_GetFreeWeaponSlot( other );
-
-					slotId = freeWeaponSlotId;
-
-				} else {
-					int currentWeaponSlotId = GetCurrentSlotId( other );
-
-					if ( currentWeaponSlotId < 1 ) {
-						slotId = 1;
-
-					} else {
-						slotId = currentWeaponSlotId;
-					}
-
-					G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
-				}
-
-				if ( IsWeaponComplex( weapon ) ) {
-					weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
-					COM_BitSet( other->client->ps.weapons, weapon );
-					COM_BitSet( other->client->ps.weapons, altWeapon );
-					other->client->ps.weaponSlots[ slotId ] = weapon;
-
-				} else {
-					COM_BitSet( other->client->ps.weapons, weapon );
-					other->client->ps.weaponSlots[ slotId ] = weapon;
-				}
-			}
-
-			isPickedUp = qtrue;
-		}
-	}
+	isPickedUp = Give_Weapon_New_Inventory( other, weapon, qtrue );
 
 	if ( NeedAmmo( other, weapon ) ) {
 		Add_Ammo( other, weapon, quantity, !alreadyHave );

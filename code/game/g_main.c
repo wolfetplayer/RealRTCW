@@ -1217,7 +1217,7 @@ int G_SendMissionStats( void ) {
 	return canExit;
 }
 
-inline const char* G_GameSkillIntToStr( int skill ) {
+static inline const char* G_GameSkillIntToStr( int skill ) {
 	switch ( skill ) {
 		case GSKILL_EASY:		return "easy";
 		case GSKILL_MEDIUM:		return "medium";

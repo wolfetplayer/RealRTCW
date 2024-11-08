@@ -1082,6 +1082,7 @@ extern void GibEntity ( gentity_t * self , int killer ) ;
 extern void GibHead ( gentity_t * self , int killer ) ;
 extern void LookAtKiller ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker ) ;
 extern void TossClientWeapons ( gentity_t * self ) ;
+extern void TossClientItems ( gentity_t * self, gentity_t *attacker ) ;
 extern void TossClientPowerups ( gentity_t * self, gentity_t *attacker ) ;
 extern void AddScore ( gentity_t * ent , int score ) ;
 extern void ClientCommand ( int clientNum ) ;

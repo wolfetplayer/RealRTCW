@@ -90,6 +90,11 @@ void TossClientWeapons( gentity_t *self )
 	// drop the weapon if not a gauntlet or machinegun
 	weapon = self->s.weapon;
 
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		return;
+	}
+
 	if (g_gametype.integer == GT_GOTHIC)
 	{ // Gothicstein. Robots never drop weapons.
 		switch (self->aiCharacter)
@@ -191,6 +196,56 @@ void TossClientWeapons( gentity_t *self )
 		}
 
 	}
+}
+
+
+/*
+=================
+TossClientItems
+
+Toss the items like gold etc.
+=================
+*/
+void TossClientItems( gentity_t *self, gentity_t *attacker )
+{
+    gitem_t *item;
+    vec3_t forward;
+    float angle;
+    gentity_t *drop = NULL;
+
+	if (!attacker->client)
+	{
+		return;
+	}
+
+    const char *treasure = "item_treasure"; // Correctly define the treasure item name
+
+    AngleVectors(self->r.currentAngles, forward, NULL, NULL);
+
+    angle = 45;
+
+    // Drop random powerup in survival mode
+    int dropChance = 4; // 4% drop chance
+
+    // Increase drop chance if attacker has PERK_SCAVENGER
+    if (attacker->client->ps.perks[PERK_SCAVENGER] > 0)
+    {
+        dropChance += 4;
+    }
+
+    if (rand() % 100 < dropChance)
+    {
+        item = BG_FindItemForClassName(treasure);
+        if (item)
+        {
+            drop = Drop_Item(self, item, 0, qfalse);
+            if (drop)
+            {
+                drop->nextthink = level.time + 30000; // Stay for 30 seconds
+                angle += 45;
+            }
+        }
+    }
 }
 
 
@@ -565,6 +620,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
 			if (g_gametype.integer == GT_SURVIVAL) {
+			TossClientItems( self, attacker );
 			TossClientPowerups( self, attacker );
 			}
 		}

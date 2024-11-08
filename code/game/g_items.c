@@ -181,15 +181,24 @@ int Pickup_Clipboard( gentity_t *ent, gentity_t *other ) {
 Pickup_Treasure
 ==============
 */
-int Pickup_Treasure( gentity_t *ent, gentity_t *other ) {
-	gentity_t *player = AICast_FindEntityForName( "player" );
-	player->numTreasureFound++;
-	G_SendMissionStats();
-	return RESPAWN_SP;  // no respawn
+int Pickup_Treasure(gentity_t *ent, gentity_t *other) {
+    gentity_t *player = AICast_FindEntityForName("player");
 
-	if ( g_gametype.integer == GT_SURVIVAL ) {
-	    other->client->ps.persistant[PERS_SCORE] += 50;
-	}
+    if (g_gametype.integer == GT_SURVIVAL) {
+        if (other && other->client) {
+            // Generate a random score between 50 and 100
+            int randomScore = 50 + rand() % 51; // 50 to 100 inclusive
+
+            // Add the random score to the player's score
+            other->client->ps.persistant[PERS_SCORE] += randomScore;
+        }
+    } else {
+        if (player) {
+            player->numTreasureFound++;
+            G_SendMissionStats();
+        }
+    }
+    return RESPAWN_SP; // no respawn
 }
 
 

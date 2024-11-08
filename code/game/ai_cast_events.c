@@ -428,6 +428,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
 			if (g_gametype.integer == GT_SURVIVAL) {
+			TossClientItems( self, attacker );
 			TossClientPowerups( self, attacker );
 			}
 		}

@@ -777,14 +777,16 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 	
 	}
 
-	// should we reflect this bullet?
-	if ( traceEnt->flags & FL_DEFENSE_GUARD ) {
-		reflectBullet = qtrue;
-	} else if ( traceEnt->flags & FL_DEFENSE_CROUCH ) {
-		if ( rand() % 3 < 2 ) {
-			reflectBullet = qtrue;
-		}
-	}
+    // should we reflect this bullet?
+    if ( traceEnt->flags & FL_DEFENSE_GUARD ) {
+        reflectBullet = qtrue;
+    } else if ( traceEnt->flags & FL_DEFENSE_CROUCH ) {
+        if ( rand() % 3 < 2 ) {
+            reflectBullet = qtrue;
+        }
+    } else if ( traceEnt->client && traceEnt->client->ps.powerups[PW_BATTLESUIT_SURV] ) {
+        reflectBullet = qtrue;
+    }
 
 	// send bullet impact
 	if ( traceEnt->takedamage && traceEnt->client && !reflectBullet ) {

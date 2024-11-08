@@ -443,7 +443,8 @@ struct gentity_s {
 	int canSpeak;               // can this entity speak?
 	int price;                 // item price, survival mode
     char  *buy_item;
-	int isWeapon;               
+	int isWeapon;    
+	int wave;				   // wave number, survival mode           
 };
 
 // Ridah

@@ -123,9 +123,20 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 		return;
 	}
 
-	if ( g_gametype.integer == GT_SURVIVAL && killerPlayer ) {
+	if (g_gametype.integer == GT_SURVIVAL && killerPlayer)
+	{
 
-	      attacker->client->ps.persistant[PERS_SCORE] += 1;
+		if (attacker->client->ps.powerups[PW_VAMPIRE])
+		{
+			attacker->health += 5;
+
+			if (attacker->health > 300)
+			{
+				attacker->health = 300;
+			}
+		}
+
+		attacker->client->ps.persistant[PERS_SCORE] += 1;
 	}
 
 	// process the event (turn to face the attacking direction? go into hide/retreat state?)

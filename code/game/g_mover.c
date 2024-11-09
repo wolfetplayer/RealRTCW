@@ -84,6 +84,8 @@ char *hintStrings[] = {
 	"",                  // HINT_BAD_USER
 };
 
+extern svParams_t svParams;
+
 /*
 ===============================================================================
 
@@ -4695,7 +4697,7 @@ void use_invisible_user( gentity_t *ent, gentity_t *other, gentity_t *activator 
 		if (wave)
 		{
 
-			if (waveCount < wave)
+			if (svParams.waveCount < wave)
 			{
 				trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
 				return;

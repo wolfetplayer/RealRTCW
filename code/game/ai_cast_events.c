@@ -48,6 +48,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "../steam/steam.h"
 
+extern svParams_t svParams;
+
 /*
 Contains response functions for various events that require specific handling
 for Cast AI's.
@@ -589,7 +591,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			}
 
 			if ( g_gametype.integer == GT_SURVIVAL ) {
-               int decrease = survivalKillCount / 15;  // Calculate decrease based on survivalKillCount
+               int decrease = svParams.survivalKillCount / 15;  // Calculate decrease based on survivalKillCount
                int rebirthTime = 20000 - decrease * 1000;  // Calculate rebirthTime
 
                 // Clamp rebirthTime to a minimum of 10 seconds
@@ -616,8 +618,8 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	// Decrement the counter for active AI characters
 	if ( g_gametype.integer == GT_SURVIVAL && killerPlayer )  {
-	   survivalKillCount++;
-	   waveKillCount++;
+	   svParams.survivalKillCount++;
+	   svParams.waveKillCount++;
 	   AICast_CheckSurvivalProgression( attacker );
 	}
 

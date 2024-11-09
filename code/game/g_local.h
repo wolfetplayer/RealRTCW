@@ -99,6 +99,81 @@ typedef enum {
 	MOVER_2TO1ROTATE
 } moverState_t;
 
+typedef struct svParams_s
+{
+	// not loaded
+	int activeAI[NUM_CHARACTERS];
+	int survivalKillCount;
+	int maxActiveAI[NUM_CHARACTERS];
+	int waveCount;
+	int waveKillCount;
+	int killCountRequirement;
+
+
+	// loaded from .surv file
+	int initialKillCountRequirement;
+
+	int initialSoldiersCount;
+	int initialEliteGuardsCount;
+	int initialBlackGuardsCount;
+	int initialVenomsCount;
+
+	int initialZombiesCount;
+	int initialWarriorsCount;
+	int initialGhostsCount;
+	int initialPriestsCount;
+
+	float healthIncreaseMultiplier;
+	float speedIncreaseDivider;
+
+	int soldiersIncrease;
+	int eliteGuardsIncrease;
+	int blackGuardsIncrease;
+	int venomsIncrease;
+	int zombiesIncrease;
+	int warriorsIncrease;
+	int ghostsIncrease;
+	int priestsIncrease;
+
+	int maxSoldiers;
+	int maxEliteGuards;
+	int maxBlackGuards;
+	int maxVenoms;
+
+	int maxZombies;
+	int maxWarrirors;
+	int maxGhosts;
+	int maxPriests;
+
+	int waveEg;
+	int waveBg;
+	int waveV;
+
+	int waveWarz;
+	int waveGhosts;
+	int wavePriests;
+
+	int zombieHealthCap;
+	int warriorHealthCap;
+	int ghostHealthCap;
+	int priestHealthCap;
+
+	int soldierHealthCap;	
+	int eliteGuardHealthCap;
+	int blackGuardHealthCap;
+	int venomHealthCap;
+
+	int soldierBaseHealth;
+	int eliteGuardBaseHealth;
+	int blackGuardBaseHealth;
+	int venomBaseHealth;
+
+	int zombieBaseHealth;
+	int warriorBaseHealth;
+	int ghostBaseHealth;
+	int priestBaseHealth;
+} svParams_t;
+
 typedef enum {
     RADIUS_SCOPE_ANY,
     RADIUS_SCOPE_CLIENTS,
@@ -1069,6 +1144,10 @@ void Svcmd_AddBot_f( void );
 
 // ai_cast_characters.c
 void AI_LoadBehaviorTable( AICharacters_t characterNum );
+
+// ai_cast_funcs.c
+void AI_LoadSurvivalTable( const char* mapname );
+qboolean BG_ParseSurvivalTable( int handle );
 
 // ai_main.c
 #define MAX_FILEPATH            144

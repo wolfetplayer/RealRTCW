@@ -80,76 +80,8 @@ char *AIFunc_Battle( cast_state_t *cs );
 
 static bot_moveresult_t *moveresult;
 
-// Survival mode globals
-int activeAI[NUM_CHARACTERS];
-int survivalKillCount;
-int maxActiveAI[NUM_CHARACTERS];
-int waveCount = 0;
-int waveKillCount = 0;
-int killCountRequirement = 0;
+extern svParams_t svParams;
 
-int initialKillCountRequirement = 5;
-
-int initialSoldiersCount = 5;
-int initialEliteGuardsCount = 0;
-int initialBlackGuardsCount = 0;
-int initialVenomsCount = 0;
-
-int initialZombiesCount = 5;
-int initialWarriorsCount = 0;
-int initialGhostsCount = 0;
-int initialPriestsCount = 0;
-
-// Survival mode locals
-float healthIncreaseMultiplier = 5.0;
-float speedIncreaseDivider = 5.0;
-
-int soldiersIncrease = 1;
-int eliteGuardsIncrease = 1;
-int blackGuardsIncrease = 1;
-int venomsIncrease = 1;
-int zombiesIncrease = 1;
-int warriorsIncrease = 1;
-int ghostsIncrease = 1;
-int priestsIncrease = 1;
-
-int maxSoldiers = 10;
-int maxEliteGuards = 4;
-int maxBlackGuards = 4;
-int maxVenoms = 2;
-
-int maxZombies = 15;
-int maxWarrirors = 5;
-int maxGhosts = 3;
-int maxPriests = 2;
-
-int waveEg = 3;
-int waveBg = 6;
-int waveV = 10;
-
-int waveWarz = 3;
-int waveGhosts = 6;
-int wavePriests = 10;
-
-int zombieHealthCap = 300;
-int warriorHealthCap = 350;
-int ghostHealthCap = 300;
-int priestHealthCap = 500;
-
-int soldierHealthCap = 100;	
-int eliteGuardHealthCap = 150;
-int blackGuardHealthCap = 200;
-int venomHealthCap = 300;
-
-int soldierBaseHealth = 30;
-int eliteGuardBaseHealth = 35;
-int blackGuardBaseHealth = 50;
-int venomBaseHealth = 80;
-
-int zombieBaseHealth = 40;
-int warriorBaseHealth = 60;
-int ghostBaseHealth = 40;
-int priestBaseHealth = 80;
 
 /*
 ============
@@ -425,11 +357,11 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 
     // Wave Change Event
-    if (survivalKillCount == killCountRequirement) {
-        waveCount++;
-        killCountRequirement += waveKillCount + rand() % 5;  
+    if (svParams.survivalKillCount == svParams.killCountRequirement) {
+        svParams.waveCount++;
+        svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
 		attacker->client->ps.persistant[PERS_WAVES]++;
-		waveKillCount = 0;
+		svParams.waveKillCount = 0;
 
 		int randomIndex = rand() % 19 + 1;
 		static char command[256];
@@ -437,68 +369,68 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 		trap_SendServerCommand(-1, command);
 
    // Normal soldiers
-    maxActiveAI[AICHAR_SOLDIER] += soldiersIncrease;
-    if (maxActiveAI[AICHAR_SOLDIER] > maxSoldiers) {
-        maxActiveAI[AICHAR_SOLDIER] = maxSoldiers;
+    svParams.maxActiveAI[AICHAR_SOLDIER] += svParams.soldiersIncrease;
+    if (svParams.maxActiveAI[AICHAR_SOLDIER] > svParams.maxSoldiers) {
+        svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.maxSoldiers;
     }
 
 	// Elite Guards
-	if (waveCount >= waveEg)
+	if (svParams.waveCount >= svParams.waveEg)
 	{
-		maxActiveAI[AICHAR_ELITEGUARD] += eliteGuardsIncrease;
-		if (maxActiveAI[AICHAR_ELITEGUARD] >  maxEliteGuards) {
-			maxActiveAI[AICHAR_ELITEGUARD] =  maxEliteGuards;
+		svParams.maxActiveAI[AICHAR_ELITEGUARD] += svParams.eliteGuardsIncrease;
+		if (svParams.maxActiveAI[AICHAR_ELITEGUARD] >  svParams.maxEliteGuards) {
+			svParams.maxActiveAI[AICHAR_ELITEGUARD] =  svParams.maxEliteGuards;
 		}
 	}
 
 	// Black Guards
-	if (waveCount >= waveBg)
+	if (svParams.waveCount >= svParams.waveBg)
 	{
-		maxActiveAI[AICHAR_BLACKGUARD] += blackGuardsIncrease;
-		if (maxActiveAI[AICHAR_BLACKGUARD] >  maxBlackGuards) {
-			maxActiveAI[AICHAR_BLACKGUARD] =  maxBlackGuards;
+		svParams.maxActiveAI[AICHAR_BLACKGUARD] += svParams.blackGuardsIncrease;
+		if (svParams.maxActiveAI[AICHAR_BLACKGUARD] >  svParams.maxBlackGuards) {
+			svParams.maxActiveAI[AICHAR_BLACKGUARD] =  svParams.maxBlackGuards;
 		}
 	}
 
     // Venoms
-	if (waveCount >= waveV)
+	if (svParams.waveCount >= svParams.waveV)
 	{
-		maxActiveAI[AICHAR_VENOM] += venomsIncrease;
-		if (maxActiveAI[AICHAR_VENOM] > maxVenoms){
-			maxActiveAI[AICHAR_VENOM] = maxVenoms;
+		svParams.maxActiveAI[AICHAR_VENOM] += svParams.venomsIncrease;
+		if (svParams.maxActiveAI[AICHAR_VENOM] > svParams.maxVenoms){
+			svParams.maxActiveAI[AICHAR_VENOM] = svParams.maxVenoms;
 		}
 	}
 
 	// Default Zombies
-	maxActiveAI[AICHAR_ZOMBIE_SURV] += zombiesIncrease;
-    if (maxActiveAI[AICHAR_ZOMBIE_SURV] > maxZombies) {
-        maxActiveAI[AICHAR_ZOMBIE_SURV] = maxZombies;
+	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] += svParams.zombiesIncrease;
+    if (svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] > svParams.maxZombies) {
+        svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.maxZombies;
     }
 
 	// Warrirors
-	if (waveCount >= waveWarz)
+	if (svParams.waveCount >= svParams.waveWarz)
 	{
-		maxActiveAI[AICHAR_WARZOMBIE] += warriorsIncrease;
-		if (maxActiveAI[AICHAR_WARZOMBIE] > maxWarrirors) {
-			maxActiveAI[AICHAR_WARZOMBIE] = maxWarrirors;
+		svParams.maxActiveAI[AICHAR_WARZOMBIE] += svParams.warriorsIncrease;
+		if (svParams.maxActiveAI[AICHAR_WARZOMBIE] > svParams.maxWarrirors) {
+			svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.maxWarrirors;
 		}
 	}
 
 	// Ghost Zombies
-	if (waveCount >= waveGhosts)
+	if (svParams.waveCount >= svParams.waveGhosts)
 	{
-		maxActiveAI[AICHAR_ZOMBIE_GHOST] += ghostsIncrease;
-		if (maxActiveAI[AICHAR_ZOMBIE_GHOST] > maxGhosts) {
-			maxActiveAI[AICHAR_ZOMBIE_GHOST] = maxGhosts;
+		svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] += svParams.ghostsIncrease;
+		if (svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] > svParams.maxGhosts) {
+			svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.maxGhosts;
 		}
 	}
 
 	// Priests
-	if (waveCount >= wavePriests)
+	if (svParams.waveCount >= svParams.wavePriests)
 	{
-		maxActiveAI[AICHAR_PRIEST] += priestsIncrease;
-		if (maxActiveAI[AICHAR_PRIEST] > maxPriests) {
-			maxActiveAI[AICHAR_PRIEST] = maxPriests;
+		svParams.maxActiveAI[AICHAR_PRIEST] += svParams.priestsIncrease;
+		if (svParams.maxActiveAI[AICHAR_PRIEST] > svParams.maxPriests) {
+			svParams.maxActiveAI[AICHAR_PRIEST] = svParams.maxPriests;
 		}
 	}
 
@@ -561,8 +493,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 
 			if ( numTouch == 0 ) {    // ok to spawn
 
-			int health_increase = waveCount * healthIncreaseMultiplier;
-			float speed_increase = waveCount / speedIncreaseDivider;
+			int health_increase = svParams.waveCount * svParams.healthIncreaseMultiplier;
+			float speed_increase = svParams.waveCount / svParams.speedIncreaseDivider;
 		    float crouchSpeedScale = 1;
 			float runSpeedScale = 1;
 			float sprintSpeedScale = 1;
@@ -572,14 +504,14 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 			switch (cs->aiCharacter)
 			{
 			case AICHAR_SOLDIER:
-				newHealth = soldierBaseHealth + health_increase;
-				if (newHealth > soldierHealthCap) {
-					newHealth = soldierHealthCap;
+				newHealth = svParams.soldierBaseHealth + health_increase;
+				if (newHealth > svParams.soldierHealthCap) {
+					newHealth = svParams.soldierHealthCap;
 				}
 			case AICHAR_ZOMBIE_SURV:
-				newHealth = zombieBaseHealth + health_increase;
-				if (newHealth > zombieHealthCap) {
-					newHealth = zombieHealthCap;
+				newHealth = svParams.zombieBaseHealth + health_increase;
+				if (newHealth > svParams.zombieHealthCap) {
+					newHealth = svParams.zombieHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.2) {
@@ -595,9 +527,9 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				}
 				break;
 			case AICHAR_ZOMBIE_GHOST:
-				newHealth = ghostBaseHealth + health_increase;
-				if (newHealth > ghostHealthCap) {
-					newHealth = ghostHealthCap;
+				newHealth = svParams.ghostBaseHealth + health_increase;
+				if (newHealth > svParams.ghostHealthCap) {
+					newHealth = svParams.ghostHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.6) {
@@ -613,9 +545,9 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				}
 				break;
 			case AICHAR_WARZOMBIE:
-				newHealth = warriorBaseHealth + health_increase;
-				if (newHealth > warriorHealthCap) {
-					newHealth = warriorHealthCap;
+				newHealth = svParams.warriorBaseHealth + health_increase;
+				if (newHealth > svParams.warriorHealthCap) {
+					newHealth = svParams.warriorHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.6) {
@@ -631,9 +563,9 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				}
 				break;
 			case AICHAR_PRIEST:
-				newHealth = priestBaseHealth + health_increase;
-				if (newHealth > priestHealthCap) {
-					newHealth = priestHealthCap;
+				newHealth = svParams.priestBaseHealth + health_increase;
+				if (newHealth > svParams.priestHealthCap) {
+					newHealth = svParams.priestHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.4) {
@@ -649,21 +581,21 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				}
 				break;
 			case AICHAR_ELITEGUARD:
-				newHealth = eliteGuardBaseHealth + health_increase;
-				if (newHealth > eliteGuardHealthCap) {
-					newHealth = eliteGuardHealthCap;
+				newHealth = svParams.eliteGuardBaseHealth + health_increase;
+				if (newHealth > svParams.eliteGuardHealthCap) {
+					newHealth = svParams.eliteGuardHealthCap;
 				}
 				break;
 			case AICHAR_BLACKGUARD:
-			    newHealth = blackGuardBaseHealth + health_increase;
-				if (newHealth > blackGuardHealthCap) {
-					newHealth = blackGuardHealthCap;
+			    newHealth = svParams.blackGuardBaseHealth + health_increase;
+				if (newHealth > svParams.blackGuardHealthCap) {
+					newHealth = svParams.blackGuardHealthCap;
 				}
 				break;
 			case AICHAR_VENOM:
-			    newHealth = venomBaseHealth + health_increase;
-				if (newHealth > venomHealthCap) {
-					newHealth = venomHealthCap;
+			    newHealth = svParams.venomBaseHealth + health_increase;
+				if (newHealth > svParams.venomHealthCap) {
+					newHealth = svParams.venomHealthCap;
 				}
 				break;
 			default:
@@ -5391,4 +5323,314 @@ char *AIFunc_DefaultStart( cast_state_t *cs ) {
 	}
 	//
 	return rval;
+}
+
+// Load survival gamemode parameters from .surv file
+void AI_LoadSurvivalTable( const char* mapname )
+{
+	int handle;
+	pc_token_t token;
+
+	handle = trap_PC_LoadSource( va( "maps/%s.surv", mapname ) );
+	if ( !handle ) {
+		G_Printf( S_COLOR_YELLOW "WARNING: Failed to load .surv file. Trying to load default.surv\n" );
+
+		handle = trap_PC_LoadSource( "maps/default.surv" );
+
+		if ( !handle ) {
+			G_Printf( S_COLOR_RED "ERROR: Failed to load default.surv file\n" );
+			return;
+		}
+	}
+
+	memset( &svParams, 0, sizeof( svParams_t ) );
+
+	// Find and parse parameter
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( !Q_stricmp( token.string, "survival" ) ) {
+			BG_ParseSurvivalTable( handle );
+			break;
+		}
+	}
+
+	trap_PC_FreeSource( handle );
+}
+
+// Read survival parameters into aiDefaults from given file handle
+// File handle position expected to be at opening brace of survival block
+qboolean BG_ParseSurvivalTable( int handle )
+{
+	pc_token_t token;
+
+	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
+		PC_SourceError( handle, "expected '{'" );
+		return qfalse;
+	}
+
+	while ( 1 ) {
+		if ( !trap_PC_ReadToken( handle, &token ) ) {
+			break;
+		}
+		if ( token.string[0] == '}' ) {
+			break;
+		}
+
+		// float
+		if ( !Q_stricmp( token.string, "healthIncreaseMultiplier" ) ) {
+			if ( !PC_Float_Parse( handle, &svParams.healthIncreaseMultiplier ) ) {
+				PC_SourceError( handle, "expected healthIncreaseMultiplier value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "speedIncreaseDivider" ) ) {
+			if ( !PC_Float_Parse( handle, &svParams.speedIncreaseDivider ) ) {
+				PC_SourceError( handle, "expected speedIncreaseDivider value" );
+				return qfalse;
+			}
+
+		// int
+		} else if ( !Q_stricmp( token.string, "initialKillCountRequirement" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialKillCountRequirement ) ) {
+				PC_SourceError( handle, "expected initialKillCountRequirement value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialSoldiersCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialSoldiersCount ) ) {
+				PC_SourceError( handle, "expected initialSoldiersCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialEliteGuardsCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialEliteGuardsCount ) ) {
+				PC_SourceError( handle, "expected initialEliteGuardsCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialBlackGuardsCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialBlackGuardsCount ) ) {
+				PC_SourceError( handle, "expected initialBlackGuardsCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialVenomsCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialVenomsCount ) ) {
+				PC_SourceError( handle, "expected initialVenomsCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialZombiesCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialZombiesCount ) ) {
+				PC_SourceError( handle, "expected initialZombiesCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialWarriorsCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialWarriorsCount ) ) {
+				PC_SourceError( handle, "expected initialWarriorsCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialGhostsCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialGhostsCount ) ) {
+				PC_SourceError( handle, "expected initialGhostsCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "initialPriestsCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialPriestsCount ) ) {
+				PC_SourceError( handle, "expected initialPriestsCount value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "soldiersIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.soldiersIncrease ) ) {
+				PC_SourceError( handle, "expected soldiersIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "eliteGuardsIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.eliteGuardsIncrease ) ) {
+				PC_SourceError( handle, "expected eliteGuardsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "blackGuardsIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.blackGuardsIncrease ) ) {
+				PC_SourceError( handle, "expected blackGuardsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "venomsIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.venomsIncrease ) ) {
+				PC_SourceError( handle, "expected venomsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "zombiesIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.zombiesIncrease ) ) {
+				PC_SourceError( handle, "expected zombiesIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "warriorsIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.warriorsIncrease ) ) {
+				PC_SourceError( handle, "expected warriorsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "ghostsIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.ghostsIncrease ) ) {
+				PC_SourceError( handle, "expected ghostsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "priestsIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.priestsIncrease ) ) {
+				PC_SourceError( handle, "expected priestsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxSoldiers" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxSoldiers ) ) {
+				PC_SourceError( handle, "expected maxSoldiers value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxEliteGuards" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxEliteGuards ) ) {
+				PC_SourceError( handle, "expected maxEliteGuards value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxBlackGuards" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxBlackGuards ) ) {
+				PC_SourceError( handle, "expected maxBlackGuards value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxVenoms" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxVenoms ) ) {
+				PC_SourceError( handle, "expected maxVenoms value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxZombies" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxZombies ) ) {
+				PC_SourceError( handle, "expected maxZombies value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxWarrirors" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxWarrirors ) ) {
+				PC_SourceError( handle, "expected maxWarrirors value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxGhosts" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxGhosts ) ) {
+				PC_SourceError( handle, "expected maxGhosts value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxPriests" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxPriests ) ) {
+				PC_SourceError( handle, "expected maxPriests value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "waveEg" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.waveEg ) ) {
+				PC_SourceError( handle, "expected waveEg value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "waveBg" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.waveBg ) ) {
+				PC_SourceError( handle, "expected waveBg value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "waveV" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.waveV ) ) {
+				PC_SourceError( handle, "expected waveV value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "waveWarz" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.waveWarz ) ) {
+				PC_SourceError( handle, "expected waveWarz value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "waveGhosts" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.waveGhosts ) ) {
+				PC_SourceError( handle, "expected waveGhosts value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "wavePriests" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.wavePriests ) ) {
+				PC_SourceError( handle, "expected wavePriests value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "zombieHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.zombieHealthCap ) ) {
+				PC_SourceError( handle, "expected zombieHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "warriorHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.warriorHealthCap ) ) {
+				PC_SourceError( handle, "expected warriorHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "ghostHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.ghostHealthCap ) ) {
+				PC_SourceError( handle, "expected ghostHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "priestHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.priestHealthCap ) ) {
+				PC_SourceError( handle, "expected priestHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "soldierHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.soldierHealthCap ) ) {
+				PC_SourceError( handle, "expected soldierHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "eliteGuardHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.eliteGuardHealthCap ) ) {
+				PC_SourceError( handle, "expected eliteGuardHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "blackGuardHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.blackGuardHealthCap ) ) {
+				PC_SourceError( handle, "expected blackGuardHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "venomHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.venomHealthCap ) ) {
+				PC_SourceError( handle, "expected venomHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "soldierBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.soldierBaseHealth ) ) {
+				PC_SourceError( handle, "expected soldierBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "eliteGuardBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.eliteGuardBaseHealth ) ) {
+				PC_SourceError( handle, "expected eliteGuardBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "blackGuardBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.blackGuardBaseHealth ) ) {
+				PC_SourceError( handle, "expected blackGuardBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "venomBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.venomBaseHealth ) ) {
+				PC_SourceError( handle, "expected venomBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "zombieBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.zombieBaseHealth ) ) {
+				PC_SourceError( handle, "expected zombieBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "warriorBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.warriorBaseHealth ) ) {
+				PC_SourceError( handle, "expected warriorBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "ghostBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.ghostBaseHealth ) ) {
+				PC_SourceError( handle, "expected ghostBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "priestBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.priestBaseHealth ) ) {
+				PC_SourceError( handle, "expected priestBaseHealth value" );
+				return qfalse;
+			}
+		} else {
+			PC_SourceError( handle, "unknown token '%s'", token.string );
+			return qfalse;
+		}
+	}
+
+	return qtrue;
 }

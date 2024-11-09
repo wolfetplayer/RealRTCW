@@ -40,6 +40,8 @@ If you have questions concerning this license or the applicable additional terms
 
 extern vec3_t muzzleTrace; // used by falloff mechanic
 
+extern svParams_t svParams;
+
 /*
 ============
 AddScore
@@ -667,8 +669,8 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		self->client->respawnTime = level.time + 7000; // 10 seconds
 
 		// Fetch the number of waves and enemies killed
-		int numberOfWaves = waveCount;
-		int numberOfEnemiesKilled = survivalKillCount;
+		int numberOfWaves = svParams.waveCount;
+		int numberOfEnemiesKilled = svParams.survivalKillCount;
 
 		// Format the message
 		const char *messageTemplate = "Game Over \n You reached level %d and killed %d enemies";

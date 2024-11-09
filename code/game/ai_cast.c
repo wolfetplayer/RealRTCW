@@ -60,6 +60,8 @@ use the AAS for navigation, we want to avoid having to re-write the movement
 routines which are heavily associated with the AAS information.
 */
 
+svParams_t svParams;
+
 //cast states (allocated at run-time)
 cast_state_t    *caststates;
 //number of characters
@@ -489,17 +491,17 @@ void AICast_Init( void ) {
 
     // Initial count of AIs for survival mode
     if ( g_gametype.integer == GT_SURVIVAL )  {
-		killCountRequirement = initialKillCountRequirement;
-		waveCount = 1;
+		svParams.killCountRequirement = svParams.initialKillCountRequirement;
+		svParams.waveCount = 1;
 
-		maxActiveAI[AICHAR_SOLDIER] = initialSoldiersCount;
-	    maxActiveAI[AICHAR_ZOMBIE_SURV] = initialZombiesCount;
-	    maxActiveAI[AICHAR_ZOMBIE_GHOST] = initialGhostsCount;
-	    maxActiveAI[AICHAR_WARZOMBIE] = initialWarriorsCount;
-	    maxActiveAI[AICHAR_PRIEST] = initialPriestsCount;
-	    maxActiveAI[AICHAR_ELITEGUARD] = initialEliteGuardsCount;
-		maxActiveAI[AICHAR_BLACKGUARD] = initialBlackGuardsCount;
-		maxActiveAI[AICHAR_VENOM] = initialVenomsCount;
+		svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
+	    svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
+	    svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
+	    svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
+	    svParams.maxActiveAI[AICHAR_PRIEST] = svParams.initialPriestsCount;
+	    svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.initialEliteGuardsCount;
+		svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;
+		svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
 	}
 
 	trap_Cvar_Register( &aicast_debug, "aicast_debug", "0", 0 );
@@ -646,7 +648,7 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 	}
 
     if ( g_gametype.integer == GT_SURVIVAL )  {
-	   if ( activeAI[ent->aiCharacter] >= maxActiveAI[ent->aiCharacter])  { 
+	   if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter])  { 
 		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
 		return;
 	   }
@@ -659,7 +661,7 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );
 				// Increment the counter for active AI characters
-                activeAI[ent->aiCharacter]++;
+                svParams.activeAI[ent->aiCharacter]++;
 	}
 
 	// RF, has to disable this so I could test some maps which have erroneously placed alertentity calls

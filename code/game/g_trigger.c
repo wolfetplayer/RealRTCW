@@ -28,6 +28,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
+extern svParams_t svParams;
+
 
 void InitTrigger( gentity_t *self ) {
 	if ( !VectorCompare( self->s.angles, vec3_origin ) ) {
@@ -633,9 +635,13 @@ void heal_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 		return;
 	}
 
-	if (other->client->ps.persistant[PERS_SCORE] < 20) {
-        return;
-    }
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		if (other->client->ps.persistant[PERS_SCORE] < svParams.healthStandPrice)
+		{
+			return;
+		}
+	}
 
 	for ( i = 0; i < clientcount; i++ ) {
 		healvalue = min( touchClients[i]->client->ps.stats[STAT_MAX_HEALTH] - touchClients[i]->health, self->damage );
@@ -650,9 +656,10 @@ void heal_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 		// add the medicheal event (to get sound, etc.)
 		G_AddPredictableEvent( other, EV_ITEM_PICKUP, BG_FindItemForClassName( "item_health_wall" ) - bg_itemlist );
 
-			if ( g_gametype.integer == GT_SURVIVAL )  {
-			    other->client->ps.persistant[PERS_SCORE] -= 20;
-			}
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
+			other->client->ps.persistant[PERS_SCORE] -= svParams.healthStandPrice;
+		}
 
 		if ( self->health != -9999 ) {
 			self->health -= healvalue;
@@ -818,11 +825,13 @@ void ammo_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 		count = min( clientcount, self->health / (float)self->damage );
 	}
 
-	if (g_gametype.integer == GT_SURVIVAL) {
-        if (other->client->ps.persistant[PERS_SCORE] < 20) {
-             return;
-        }
-    }
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		if (other->client->ps.persistant[PERS_SCORE] < svParams.ammoStandPrice)
+		{
+			return;
+		}
+	}
 
 	for ( i = 0; i < count; i++ ) {
 		int ammoAdded = qfalse;
@@ -833,9 +842,12 @@ void ammo_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 		if ( ammoAdded ) {
 			// add the cell event (to get sound, etc.)
 			G_AddPredictableEvent( touchClients[i], EV_ITEM_PICKUP, BG_FindItem( "Ammo Pack" ) - bg_itemlist );
-			if ( g_gametype.integer == GT_SURVIVAL )  {
-			    other->client->ps.persistant[PERS_SCORE] -= 20;
+
+			if (g_gametype.integer == GT_SURVIVAL)
+			{
+				other->client->ps.persistant[PERS_SCORE] -= svParams.ammoStandPrice;
 			}
+
 			if ( self->health != -9999 ) {
 				// reduce the ammount of available ammo by the added clip number
 				self->health -= self->damage;

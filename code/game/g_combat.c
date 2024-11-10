@@ -227,12 +227,12 @@ void TossClientItems( gentity_t *self, gentity_t *attacker )
     angle = 45;
 
     // Drop random powerup in survival mode
-    int dropChance = 4; // 4% drop chance
+    int dropChance = svParams.treasureDropChance; 
 
     // Increase drop chance if attacker has PERK_SCAVENGER
     if (attacker->client->ps.perks[PERK_SCAVENGER] > 0)
     {
-        dropChance += 4;
+        dropChance += svParams.treasureDropChanceScavengerIncrease;
     }
 
     if (rand() % 100 < dropChance)
@@ -277,12 +277,12 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 		angle = 45;
 
 		// Drop random powerup in survival mode
-		int dropChance = 5; // Base drop chance
+		int dropChance = svParams.powerupDropChance; // Base drop chance
 
 		// Increase drop chance if attacker has PERK_SCAVENGER
 		if (attacker->client->ps.perks[PERK_SCAVENGER] > 0)
 		{
-			dropChance += 5;
+			dropChance += svParams.powerupDropChanceScavengerIncrease;
 		}
 
 		if (rand() % 100 < dropChance)

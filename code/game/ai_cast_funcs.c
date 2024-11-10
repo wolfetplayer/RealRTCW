@@ -5626,6 +5626,96 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected priestBaseHealth value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "powerupDropChance" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.powerupDropChance ) ) {
+				PC_SourceError( handle, "expected powerupDropChance value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "powerupDropChanceScavengerIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.powerupDropChanceScavengerIncrease ) ) {
+				PC_SourceError( handle, "expected powerupDropChanceScavengerIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "treasureDropChance" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.treasureDropChance ) ) {
+				PC_SourceError( handle, "expected treasureDropChance value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "treasureDropChanceScavengerIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.treasureDropChanceScavengerIncrease ) ) {
+				PC_SourceError( handle, "expected treasureDropChanceScavengerIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "ammoStandPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.ammoStandPrice ) ) {
+				PC_SourceError( handle, "expected ammoStandPrice value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "healthStandPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.healthStandPrice ) ) {
+				PC_SourceError( handle, "expected healthStandPrice value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreHeadshotKill" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreHeadshotKill ) ) {
+				PC_SourceError( handle, "expected scoreHeadshotKill value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreHit" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreHit ) ) {
+				PC_SourceError( handle, "expected scoreHit value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreBaseKill" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreBaseKill ) ) {
+				PC_SourceError( handle, "expected scoreBaseKill value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreSoldierBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreSoldierBonus ) ) {
+				PC_SourceError( handle, "expected scoreSoldierBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreZombieBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreZombieBonus ) ) {
+				PC_SourceError( handle, "expected scoreZombieBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreEliteBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreEliteBonus ) ) {
+				PC_SourceError( handle, "expected scoreEliteBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreWarzBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreWarzBonus ) ) {
+				PC_SourceError( handle, "expected scoreWarzBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreBlackBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreBlackBonus) ) {
+				PC_SourceError( handle, "expected scoreBlackBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreVenomBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreVenomBonus) ) {
+				PC_SourceError( handle, "expected scoreVenomBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scorePriestBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scorePriestBonus) ) {
+				PC_SourceError( handle, "expected scorePriestBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreGhostBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreGhostBonus) ) {
+				PC_SourceError( handle, "expected scoreGhostBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreKnifeBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreKnifeBonus ) ) {
+				PC_SourceError( handle, "expected scoreKnifeBonus value" );
+				return qfalse;
+			}
 		} else {
 			PC_SourceError( handle, "unknown token '%s'", token.string );
 			return qfalse;

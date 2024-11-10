@@ -172,6 +172,28 @@ typedef struct svParams_s
 	int warriorBaseHealth;
 	int ghostBaseHealth;
 	int priestBaseHealth;
+
+	int powerupDropChance;
+	int powerupDropChanceScavengerIncrease;
+
+	int treasureDropChance;
+	int treasureDropChanceScavengerIncrease;
+
+	int ammoStandPrice;
+	int healthStandPrice;
+
+	int scoreHeadshotKill;
+	int scoreHit;
+	int scoreBaseKill;
+	int scoreSoldierBonus;
+	int scoreZombieBonus;
+	int scoreEliteBonus;
+	int scoreWarzBonus;
+	int scoreBlackBonus;
+	int scoreVenomBonus;
+	int scorePriestBonus;
+	int scoreGhostBonus;
+	int scoreKnifeBonus;
 } svParams_t;
 
 typedef enum {

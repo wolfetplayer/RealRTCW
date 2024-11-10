@@ -585,11 +585,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 			quantity = ( random() * ( ammoTable[weapon].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
 		}
 
-		// Increase quantity if player has PERK_SCAVENGER
-        if (other->client->ps.perks[PERK_SCAVENGER] > 0) {
-            quantity *= 2; // Increase quantity
-        }
-
 		if (g_decaychallenge.integer) {
 			quantity = 999;
 		}

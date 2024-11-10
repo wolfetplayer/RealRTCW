@@ -138,7 +138,7 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 			}
 		}
 
-		attacker->client->ps.persistant[PERS_SCORE] += 1;
+		attacker->client->ps.persistant[PERS_SCORE] += svParams.scoreHit;
 	}
 
 	// process the event (turn to face the attacking direction? go into hide/retreat state?)
@@ -281,24 +281,33 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
     if (g_gametype.integer == GT_SURVIVAL && killerPlayer) {
 
 
-    int score = 5;  // Default score
+    int score = svParams.scoreBaseKill;  // Default score
 
     // Add score based on aiCharacter type
     switch (attacker->aiCharacter) {
         case AICHAR_SOLDIER:
+            score += svParams.scoreSoldierBonus;
+            break;
 		case AICHAR_ZOMBIE:
-            score += 0;
+            score += svParams.scoreZombieBonus;
             break;
         case AICHAR_ELITEGUARD:
+            score += svParams.scoreEliteBonus;
+            break;
 		case AICHAR_WARZOMBIE:
-            score += 2;
+            score += svParams.scoreWarzBonus;
             break;
         case AICHAR_BLACKGUARD:
-            score += 5;
+            score += svParams.scoreBlackBonus;
             break;
         case AICHAR_VENOM:
+            score += svParams.scoreVenomBonus;
+            break;
 		case AICHAR_PRIEST:
-            score += 7;
+            score += svParams.scorePriestBonus;
+            break;
+		case AICHAR_ZOMBIE_GHOST:
+            score += svParams.scoreGhostBonus;
             break;
         default:
             break;
@@ -306,7 +315,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
     // Add additional score if killed with knife
     if (modKnife) {
-        score += 15;
+        score += svParams.scoreKnifeBonus;
     }
 
 

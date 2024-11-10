@@ -45,6 +45,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+extern svParams_t svParams;
+
 // Skill-based behavior parameters
 behaviorskill_t behaviorSkill[GSKILL_NUM_SKILLS][NUM_CHARACTERS];
 
@@ -757,7 +759,7 @@ void AIChar_Death( gentity_t *ent, gentity_t *attacker, int damage, int mod ) { 
 	if ( ent->health > GIB_HEALTH  ) {
 		if ( ent->client->ps.eFlags & EF_HEADSHOT ) {
 			if ( g_gametype.integer == GT_SURVIVAL )  {
-			    attacker->client->ps.persistant[PERS_SCORE] += 5;
+			    attacker->client->ps.persistant[PERS_SCORE] += svParams.scoreHeadshotKill;
 			}
 			G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT] ) );
 		} else {

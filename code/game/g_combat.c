@@ -1538,13 +1538,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		targ->health = targ->health - take;
 
 		// Ridah, can't gib with bullet weapons (except VENOM)
-		if ( targ->client ) {
-			if ( mod != MOD_VENOM && attacker == inflictor && targ->health <= GIB_HEALTH ) {
-				if ( targ->aiCharacter != AICHAR_ZOMBIE ) { // zombie needs to be able to gib so we can kill him (although he doesn't actually GIB, he just dies)
-					targ->health = GIB_HEALTH + 1;
-				}
-			}
-		}
+        if ( targ->client ) {
+            if ( mod != MOD_VENOM && attacker == inflictor && targ->health <= GIB_HEALTH ) {
+                if ( targ->aiCharacter != AICHAR_ZOMBIE ) { // zombie needs to be able to gib so we can kill him (although he doesn't actually GIB, he just dies)
+                    if (!(attacker && attacker->client && attacker->client->ps.powerups[PW_QUAD])) {
+                        targ->health = GIB_HEALTH + 1;
+                    }
+                }
+            }
+        }
 
 		//G_Printf("health at: %d\n", targ->health);
 		if ( targ->health <= 0 ) {

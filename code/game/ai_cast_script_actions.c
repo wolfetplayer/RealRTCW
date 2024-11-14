@@ -1487,15 +1487,20 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		}
 	}
 
-	if ( weapon != WP_KNIFE ) {
-		if ( slotId < 0 ) {
-			return qfalse;
+	if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
+	{
+		if (weapon != WP_KNIFE)
+		{
+			if (slotId < 0)
+			{
+				return qfalse;
+			}
 		}
-
-	} else {
-		slotId = 0;
+		else
+		{
+			slotId = 0;
+		}
 	}
-
 
 	if ( weapon != WP_NONE ) {
 		COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, weapon );
@@ -1507,7 +1512,10 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		// 	}
 		// }
 
-		ent->client->ps.weaponSlots[ slotId ] = weapon;
+		if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
+		{
+			ent->client->ps.weaponSlots[slotId] = weapon;
+		}
 
 //----(SA)	some weapons always go together (and they share a clip, so this is okay)
 		if ( weapon == WP_GARAND ) {

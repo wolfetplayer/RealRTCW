@@ -407,12 +407,12 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
         svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.maxZombies;
     }
 
-	// Warrirors
+	// Warriors
 	if (svParams.waveCount >= svParams.waveWarz)
 	{
 		svParams.maxActiveAI[AICHAR_WARZOMBIE] += svParams.warriorsIncrease;
-		if (svParams.maxActiveAI[AICHAR_WARZOMBIE] > svParams.maxWarrirors) {
-			svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.maxWarrirors;
+		if (svParams.maxActiveAI[AICHAR_WARZOMBIE] > svParams.maxWarriors) {
+			svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.maxWarriors;
 		}
 	}
 
@@ -5501,9 +5501,9 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected maxZombies value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxWarrirors" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxWarrirors ) ) {
-				PC_SourceError( handle, "expected maxWarrirors value" );
+		} else if ( !Q_stricmp( token.string, "maxWarriors" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxWarriors ) ) {
+				PC_SourceError( handle, "expected maxWarriors value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "maxGhosts" ) ) {

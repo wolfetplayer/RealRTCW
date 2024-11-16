@@ -141,7 +141,7 @@ typedef struct svParams_s
 	int maxVenoms;
 
 	int maxZombies;
-	int maxWarrirors;
+	int maxWarriors;
 	int maxGhosts;
 	int maxPriests;
 

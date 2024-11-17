@@ -246,6 +246,13 @@ qboolean AICast_ScriptAction_Achievement_MALTA_BARTENDER( cast_state_t *cs, char
 qboolean AICast_ScriptAction_Achievement_MALTA_BETRAYER( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *params );
 
+//Ice
+qboolean AICast_ScriptAction_Achievement_ICE_BEAT( cast_state_t *cs, char *params ) ;
+qboolean AICast_ScriptAction_Achievement_ICE_DH( cast_state_t *cs, char *params ) ;
+qboolean AICast_ScriptAction_Achievement_ICE_STEALTH( cast_state_t *cs, char *params ) ;
+qboolean AICast_ScriptAction_Achievement_ICE_SECRET( cast_state_t *cs, char *params ) ;
+qboolean AICast_ScriptAction_Achievement_ICE_DEFENSE ( cast_state_t *cs, char *params ) ;
+qboolean AICast_ScriptAction_Achievement_ICE_EE( cast_state_t *cs, char *params ) ;
 
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
@@ -493,6 +500,13 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_malta_bartender",       AICast_ScriptAction_Achievement_MALTA_BARTENDER},
 	{"achievement_malta_betrayer",       AICast_ScriptAction_Achievement_MALTA_BETRAYER},
 	{"achievement_malta_agent2",       AICast_ScriptAction_Achievement_MALTA_AGENT2},
+	//Ice
+	{"achievement_map_ice",       AICast_ScriptAction_Achievement_ICE_BEAT},
+	{"achievement_dhIce",       AICast_ScriptAction_Achievement_ICE_DH},
+	{"achievement_stealthIce",       AICast_ScriptAction_Achievement_ICE_STEALTH},
+	{"achievement_secretIce",       AICast_ScriptAction_Achievement_ICE_SECRET},
+	{"achievement_defenseIce",       AICast_ScriptAction_Achievement_ICE_DEFENSE},
+	{"achievement_easterIce",       AICast_ScriptAction_Achievement_ICE_EE},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"announce",     AICast_ScriptAction_Announce},

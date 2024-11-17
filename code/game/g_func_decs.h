@@ -1472,6 +1472,14 @@ extern qboolean AICast_ScriptAction_Achievement_MALTA_BARTENDER( cast_state_t *c
 extern qboolean AICast_ScriptAction_Achievement_MALTA_BETRAYER( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *params );
 
+//Ice
+extern qboolean AICast_ScriptAction_Achievement_ICE_BEAT( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ICE_DH( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ICE_STEALTH( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ICE_SECRET( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ICE_DEFENSE ( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_Achievement_ICE_EE( cast_state_t *cs, char *params ) ;
+
 
 // end achievements
 extern qboolean AICast_ScriptAction_EndGame ( cast_state_t * cs , char * params ) ;

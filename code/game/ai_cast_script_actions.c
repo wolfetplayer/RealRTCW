@@ -5239,6 +5239,85 @@ qboolean AICast_ScriptAction_Achievement_MALTA_AGENT2( cast_state_t *cs, char *p
 
 /*
 ==================
+AICast_ScriptAction_Achievement_ICE_BEAT
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ICE_BEAT( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_ICE_BEAT");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_ICE_DH
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ICE_DH( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_ICE_DH");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_ICE_STEALTH
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ICE_STEALTH( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_ICE_STEALTH");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_ICE_SECRET
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ICE_SECRET( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_ICE_SECRET");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_ICE_DEFENSE
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ICE_DEFENSE( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_ICE_DEFENSE");
+	}
+	return qtrue;
+}
+
+/*
+==================
+AICast_ScriptAction_Achievement_ICE_EE
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_ICE_EE( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_ICE_EE");
+	}
+	return qtrue;
+}
+
+
+/*
+==================
 AICast_ScriptAction_FoundSecret
 ==================
 */

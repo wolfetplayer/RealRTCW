@@ -1467,6 +1467,13 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_MALTA_BARTENDER", (byte *)AICast_ScriptAction_Achievement_MALTA_BARTENDER},
 {"AICast_ScriptAction_Achievement_MALTA_BETRAYER", (byte *)AICast_ScriptAction_Achievement_MALTA_BETRAYER},
 {"AICast_ScriptAction_Achievement_MALTA_AGENT2", (byte *)AICast_ScriptAction_Achievement_MALTA_AGENT2},
+// ICE
+{"AICast_ScriptAction_Achievement_ICE_BEAT", (byte *)AICast_ScriptAction_Achievement_ICE_BEAT},
+{"AICast_ScriptAction_Achievement_ICE_DH", (byte *)AICast_ScriptAction_Achievement_ICE_DH},
+{"AICast_ScriptAction_Achievement_ICE_STEALTH", (byte *)AICast_ScriptAction_Achievement_ICE_STEALTH},
+{"AICast_ScriptAction_Achievement_ICE_SECRET", (byte *)AICast_ScriptAction_Achievement_ICE_SECRET},
+{"AICast_ScriptAction_Achievement_ICE_DEFENSE", (byte *)AICast_ScriptAction_Achievement_ICE_DEFENSE},
+{"AICast_ScriptAction_Achievement_ICE_EE", (byte *)AICast_ScriptAction_Achievement_ICE_EE},
 // end achievements
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
 {"AICast_ScriptAction_Announce", (byte *)AICast_ScriptAction_Announce},

@@ -1062,7 +1062,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
 	if (cg_drawFPS.integer && (stereoFrame == STEREO_CENTER || stereoFrame == STEREO_RIGHT)) {
 		y = CG_DrawFPS( y );
 	}
-	if (cg_drawTimer.integer || cgs.gametype == GT_SURVIVAL)
+	if (cg_drawTimer.integer)
 	{
 		y = CG_DrawTimer(y);
 	}

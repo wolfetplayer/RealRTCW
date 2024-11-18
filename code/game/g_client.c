@@ -37,6 +37,18 @@ vec3_t playerMins = {-18, -18, -24};
 vec3_t playerMaxs = {18, 18, 48};
 // done.
 
+void info_ai_respawn_toggle( gentity_t *ent ) {
+	if ( !ent ) {
+		return;
+	}
+
+	if ( ent->spawnflags & 1 ) {
+		ent->spawnflags &= ~1;
+	} else {
+		ent->spawnflags |= 1;
+	}
+}
+
 /*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 32) initial
 potential spawning position for deathmatch games.
 The first time a player enters the game, they will be at an 'initial' spot.
@@ -93,6 +105,7 @@ void SP_info_ai_respawn( gentity_t *ent ) {
 		vectoangles( dir, ent->s.angles );
 	}
 
+	ent->AIScript_AlertEntity = info_ai_respawn_toggle;
 }
 
 
@@ -224,6 +237,10 @@ gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player ) {
 
 	while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
 
+		if ( spot->spawnflags & 1 ) {
+			continue;
+		}
+
 		VectorSubtract( spot->s.origin, player->r.currentOrigin, delta );
 		dist = VectorLength( delta );
 		if ( dist < nearestDist ) {
@@ -255,6 +272,10 @@ gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player ) {
     spot = NULL;
 
     while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
+
+		if ( spot->spawnflags & 1 ) {
+			continue;
+		}
 
         if ( player ) {
             VectorSubtract( spot->s.origin, player->r.currentOrigin, delta );

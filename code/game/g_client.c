@@ -225,7 +225,7 @@ gentity_t *SelectRandomDeathmatchSpawnPoint( void ) {
 	return spots[ selection ];
 }
 
-gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player ) {
+gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {
 	gentity_t   *spot;
 	vec3_t delta;
 	float dist, nearestDist;
@@ -239,6 +239,36 @@ gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player ) {
 
 		if ( spot->spawnflags & 1 ) {
 			continue;
+		}
+
+		if ( ent ) {
+			switch ( ent->aiCharacter ) {
+			case AICHAR_PROTOSOLDIER:
+			case AICHAR_SUPERSOLDIER:
+			case AICHAR_HELGA:
+			case AICHAR_HEINRICH:
+			case AICHAR_SUPERSOLDIER_LAB:
+				if ( !( spot->spawnflags & 2 ) ) {
+					continue;
+				}
+				break;
+			
+			default:
+				if ( spot->spawnflags & 2 ) {
+					continue;
+				}
+				break;
+			}
+
+			if ( ent->aiTeam != spot->aiTeam ) {
+				continue;
+			}
+
+		} else {
+			// Remove code if the calling SelectSpawnPoint_AI from ClientSpawn (g_client.c) is the misstake
+			if ( player->aiTeam != spot->aiTeam ) {
+				continue;
+			}
 		}
 
 		VectorSubtract( spot->s.origin, player->r.currentOrigin, delta );
@@ -262,7 +292,7 @@ go to a random point that doesn't telefrag
 */
 #define MAX_SPAWN_POINTS_AI    128
 #define MAX_SPAWN_POINT_DISTANCE    2048
-gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player ) {
+gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {
     gentity_t   *spot;
     vec3_t delta;
     float dist;
@@ -275,6 +305,36 @@ gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player ) {
 
 		if ( spot->spawnflags & 1 ) {
 			continue;
+		}
+
+		if ( ent ) {
+			switch ( ent->aiCharacter ) {
+			case AICHAR_PROTOSOLDIER:
+			case AICHAR_SUPERSOLDIER:
+			case AICHAR_HELGA:
+			case AICHAR_HEINRICH:
+			case AICHAR_SUPERSOLDIER_LAB:
+				if ( !( spot->spawnflags & 2 ) ) {
+					continue;
+				}
+				break;
+			
+			default:
+				if ( spot->spawnflags & 2 ) {
+					continue;
+				}
+				break;
+			}
+
+			if ( ent->aiTeam != spot->aiTeam ) {
+				continue;
+			}
+
+		} else {
+			// Remove me if the calling SelectSpawnPoint_AI from ClientSpawn (g_client.c) is the misstake
+			if ( player->aiTeam != spot->aiTeam ) {
+				continue;
+			}
 		}
 
         if ( player ) {
@@ -306,25 +366,25 @@ SelectSpawnPoint_AI
 Chooses a player start, deathmatch start, etc
 ============
 */
-gentity_t *SelectSpawnPoint_AI( gentity_t *player, vec3_t origin, vec3_t angles ) {
+gentity_t *SelectSpawnPoint_AI( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) {
     gentity_t   *spot;
     gentity_t   *nearestSpot;
 
-    nearestSpot = SelectNearestDeathmatchSpawnPoint_AI( player );
+    nearestSpot = SelectNearestDeathmatchSpawnPoint_AI( player, ent );
 
-    spot = SelectRandomDeathmatchSpawnPoint_AI(player);
+    spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent );
     if ( spot == nearestSpot ) {
         // roll again if it would be real close to point of death
-        spot = SelectRandomDeathmatchSpawnPoint_AI(player);
+        spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent );
         if ( spot == nearestSpot ) {
             // last try
-            spot = SelectRandomDeathmatchSpawnPoint_AI(player);
+            spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent );
         }
     }
 
     // If no nearby spawn point was found, select any spawn point
     if ( !spot ) {
-        spot = SelectRandomDeathmatchSpawnPoint_AI( NULL );
+        spot = SelectRandomDeathmatchSpawnPoint_AI( NULL, ent );
     }
 
     // If still no spawn point was found, report an error
@@ -1364,6 +1424,7 @@ void ClientSpawn( gentity_t *ent ) {
 					// don't spawn near existing origin if possible
 					spawnPoint = SelectSpawnPoint_AI(
 						player,
+						NULL,
 						spawn_origin, spawn_angles );
 				}
 

@@ -120,7 +120,7 @@ typedef struct svParams_s
 
 	int initialZombiesCount;
 	int initialWarriorsCount;
-int initialProtosCount;
+	int initialProtosCount;
 	int initialGhostsCount;
 	int initialPriestsCount;
 
@@ -133,7 +133,7 @@ int initialProtosCount;
 	int venomsIncrease;
 	int zombiesIncrease;
 	int warriorsIncrease;
-int protosIncrease;
+	int protosIncrease;
 	int ghostsIncrease;
 	int priestsIncrease;
 
@@ -144,7 +144,7 @@ int protosIncrease;
 
 	int maxZombies;
 	int maxWarriors;
-int maxProtos;
+	int maxProtos;
 	int maxGhosts;
 	int maxPriests;
 
@@ -153,13 +153,13 @@ int maxProtos;
 	int waveV;
 
 	int waveWarz;
-int waveProtos;
+	int waveProtos;
 	int waveGhosts;
 	int wavePriests;
 
 	int zombieHealthCap;
 	int warriorHealthCap;
-int protosHealthCap;
+	int protosHealthCap;
 	int ghostHealthCap;
 	int priestHealthCap;
 
@@ -175,7 +175,7 @@ int protosHealthCap;
 
 	int zombieBaseHealth;
 	int warriorBaseHealth;
-int protosBaseHealth;
+	int protosBaseHealth;
 	int ghostBaseHealth;
 	int priestBaseHealth;
 
@@ -195,7 +195,7 @@ int protosBaseHealth;
 	int scoreZombieBonus;
 	int scoreEliteBonus;
 	int scoreWarzBonus;
-int scoreProtosBonus;
+	int scoreProtosBonus;
 	int scoreBlackBonus;
 	int scoreVenomBonus;
 	int scorePriestBonus;
@@ -1071,7 +1071,7 @@ int TeamCount( int ignoreClientNum, team_t team );
 team_t PickTeam( int ignoreClientNum );
 void SetClientViewAngle( gentity_t *ent, vec3_t angle );
 gentity_t *SelectSpawnPoint( vec3_t avoidPoint, vec3_t origin, vec3_t angles );
-gentity_t *SelectSpawnPoint_AI( gentity_t *player, vec3_t origin, vec3_t angles );
+gentity_t *SelectSpawnPoint_AI ( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) ;
 void ClientRespawn(gentity_t *ent);
 void BeginIntermission( void );
 void InitBodyQue( void );

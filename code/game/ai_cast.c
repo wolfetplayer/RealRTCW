@@ -657,7 +657,7 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 
 	// Selecting the spawn point for the AI
     if ( g_gametype.integer == GT_SURVIVAL )  {
-				SelectSpawnPoint_AI( player, spawn_origin, spawn_angles );
+				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
 				G_SetOrigin( ent, spawn_origin );
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );

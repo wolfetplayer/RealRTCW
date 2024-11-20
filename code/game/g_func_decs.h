@@ -1148,7 +1148,7 @@ extern void InitBodyQue ( void ) ;
 extern gentity_t * SelectSpectatorSpawnPoint ( vec3_t origin , vec3_t angles ) ;
 extern gentity_t * SelectInitialSpawnPoint ( vec3_t origin , vec3_t angles , qboolean isbot ) ;
 extern gentity_t * SelectSpawnPoint ( vec3_t avoidPoint , vec3_t origin , vec3_t angles ) ;
-extern gentity_t * SelectSpawnPoint_AI ( gentity_t *player, vec3_t origin , vec3_t angles ) ;
+extern gentity_t * SelectSpawnPoint_AI ( gentity_t *player, gentity_t *ent, vec3_t origin , vec3_t angles ) ;
 extern gentity_t * SelectRandomDeathmatchSpawnPoint ( void ) ;
 extern gentity_t * SelectRandomDeathmatchSpawnPoint_AI ( gentity_t *player ) ;
 extern gentity_t * SelectNearestDeathmatchSpawnPoint ( vec3_t from ) ;

@@ -297,6 +297,9 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		case AICHAR_WARZOMBIE:
             score += svParams.scoreWarzBonus;
             break;
+		case AICHAR_PROTOSOLDIER:
+            score += svParams.scoreProtosBonus;
+            break;
         case AICHAR_BLACKGUARD:
             score += svParams.scoreBlackBonus;
             break;

@@ -416,6 +416,15 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 		}
 	}
 
+	// Protos
+	if (svParams.waveCount >= svParams.waveProtos)
+	{
+		svParams.maxActiveAI[AICHAR_PROTOSOLDIER] += svParams.protosIncrease;
+		if (svParams.maxActiveAI[AICHAR_PROTOSOLDIER] > svParams.maxProtos) {
+			svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.maxProtos;
+		}
+	}
+
 	// Ghost Zombies
 	if (svParams.waveCount >= svParams.waveGhosts)
 	{
@@ -548,6 +557,24 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				newHealth = svParams.warriorBaseHealth + health_increase;
 				if (newHealth > svParams.warriorHealthCap) {
 					newHealth = svParams.warriorHealthCap;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.75) {
+					crouchSpeedScale = 0.75;
+				}
+				break;
+			case AICHAR_PROTOSOLDIER:
+				newHealth = svParams.protosBaseHealth + health_increase;
+				if (newHealth > svParams.protosHealthCap) {
+					newHealth = svParams.protosHealthCap;
 				}
 				runSpeedScale = 0.8 + speed_increase;
 				if (runSpeedScale > 1.6) {
@@ -5426,6 +5453,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected initialWarriorsCount value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "initialProtosCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialProtosCount ) ) {
+				PC_SourceError( handle, "expected initialProtosCount value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "initialGhostsCount" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.initialGhostsCount ) ) {
 				PC_SourceError( handle, "expected initialGhostsCount value" );
@@ -5464,6 +5496,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "warriorsIncrease" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.warriorsIncrease ) ) {
 				PC_SourceError( handle, "expected warriorsIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "protosIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.protosIncrease ) ) {
+				PC_SourceError( handle, "expected protosIncrease value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "ghostsIncrease" ) ) {
@@ -5506,6 +5543,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected maxWarriors value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "maxProtos" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxProtos ) ) {
+				PC_SourceError( handle, "expected maxProtos value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "maxGhosts" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.maxGhosts ) ) {
 				PC_SourceError( handle, "expected maxGhosts value" );
@@ -5536,6 +5578,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected waveWarz value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "waveProtos" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.waveProtos ) ) {
+				PC_SourceError( handle, "expected waveProtos value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "waveGhosts" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.waveGhosts ) ) {
 				PC_SourceError( handle, "expected waveGhosts value" );
@@ -5554,6 +5601,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "warriorHealthCap" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.warriorHealthCap ) ) {
 				PC_SourceError( handle, "expected warriorHealthCap value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "protosHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.protosHealthCap ) ) {
+				PC_SourceError( handle, "expected protosHealthCap value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "ghostHealthCap" ) ) {
@@ -5614,6 +5666,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "warriorBaseHealth" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.warriorBaseHealth ) ) {
 				PC_SourceError( handle, "expected warriorBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "protosBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.protosBaseHealth ) ) {
+				PC_SourceError( handle, "expected protosBaseHealth value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "ghostBaseHealth" ) ) {
@@ -5689,6 +5746,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "scoreWarzBonus" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.scoreWarzBonus ) ) {
 				PC_SourceError( handle, "expected scoreWarzBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "scoreProtosBonus" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.scoreProtosBonus ) ) {
+				PC_SourceError( handle, "expected scoreProtosBonus value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "scoreBlackBonus" ) ) {

@@ -120,6 +120,7 @@ typedef struct svParams_s
 
 	int initialZombiesCount;
 	int initialWarriorsCount;
+int initialProtosCount;
 	int initialGhostsCount;
 	int initialPriestsCount;
 
@@ -132,6 +133,7 @@ typedef struct svParams_s
 	int venomsIncrease;
 	int zombiesIncrease;
 	int warriorsIncrease;
+int protosIncrease;
 	int ghostsIncrease;
 	int priestsIncrease;
 
@@ -142,6 +144,7 @@ typedef struct svParams_s
 
 	int maxZombies;
 	int maxWarriors;
+int maxProtos;
 	int maxGhosts;
 	int maxPriests;
 
@@ -150,11 +153,13 @@ typedef struct svParams_s
 	int waveV;
 
 	int waveWarz;
+int waveProtos;
 	int waveGhosts;
 	int wavePriests;
 
 	int zombieHealthCap;
 	int warriorHealthCap;
+int protosHealthCap;
 	int ghostHealthCap;
 	int priestHealthCap;
 
@@ -170,6 +175,7 @@ typedef struct svParams_s
 
 	int zombieBaseHealth;
 	int warriorBaseHealth;
+int protosBaseHealth;
 	int ghostBaseHealth;
 	int priestBaseHealth;
 
@@ -189,6 +195,7 @@ typedef struct svParams_s
 	int scoreZombieBonus;
 	int scoreEliteBonus;
 	int scoreWarzBonus;
+int scoreProtosBonus;
 	int scoreBlackBonus;
 	int scoreVenomBonus;
 	int scorePriestBonus;

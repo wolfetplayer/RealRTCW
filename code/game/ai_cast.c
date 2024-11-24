@@ -499,6 +499,7 @@ void AICast_Init( void ) {
 	    svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
 	    svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
 	    svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.initialProtosCount;
+	    svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.initialPartisansCount;
 	    svParams.maxActiveAI[AICHAR_PRIEST] = svParams.initialPriestsCount;
 	    svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.initialEliteGuardsCount;
 		svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;

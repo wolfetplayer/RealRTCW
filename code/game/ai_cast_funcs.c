@@ -443,6 +443,15 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 		}
 	}
 
+	// Partisans
+	if (svParams.waveCount >= svParams.wavePartisans)
+	{
+		svParams.maxActiveAI[AICHAR_PARTISAN] += svParams.partisansIncrease;
+		if (svParams.maxActiveAI[AICHAR_PARTISAN] > svParams.maxPartisans) {
+			svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.maxPartisans;
+		}
+	}
+
     }
 
 }
@@ -581,12 +590,18 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 					runSpeedScale = 1.6;
 				}
 				sprintSpeedScale = 1.2 + speed_increase;
-				if (runSpeedScale > 2.0) {
-					runSpeedScale = 2.0;
+				if (runSpeedScale > 1.5) {
+					runSpeedScale = 1.5;
 				}
 				crouchSpeedScale = 0.25 + speed_increase;
 				if (crouchSpeedScale > 0.75) {
 					crouchSpeedScale = 0.75;
+				}
+				break;
+			case AICHAR_PARTISAN:
+				newHealth = svParams.partisansBaseHealth + health_increase;
+				if (newHealth > svParams.partisansHealthCap) {
+					newHealth = svParams.partisansHealthCap;
 				}
 				break;
 			case AICHAR_PRIEST:
@@ -5458,6 +5473,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected initialProtosCount value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "initialPartisansCount" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.initialPartisansCount ) ) {
+				PC_SourceError( handle, "expected initialPartisansCount value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "initialGhostsCount" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.initialGhostsCount ) ) {
 				PC_SourceError( handle, "expected initialGhostsCount value" );
@@ -5501,6 +5521,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "protosIncrease" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.protosIncrease ) ) {
 				PC_SourceError( handle, "expected protosIncrease value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "partisansIncrease" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.partisansIncrease ) ) {
+				PC_SourceError( handle, "expected partisansIncrease value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "ghostsIncrease" ) ) {
@@ -5548,6 +5573,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected maxProtos value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "maxPartisans" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxPartisans ) ) {
+				PC_SourceError( handle, "expected maxPartisans value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "maxGhosts" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.maxGhosts ) ) {
 				PC_SourceError( handle, "expected maxGhosts value" );
@@ -5593,6 +5623,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected wavePriests value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "wavePartisans" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.wavePartisans ) ) {
+				PC_SourceError( handle, "expected wavePartisans value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "zombieHealthCap" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.zombieHealthCap ) ) {
 				PC_SourceError( handle, "expected zombieHealthCap value" );
@@ -5606,6 +5641,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "protosHealthCap" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.protosHealthCap ) ) {
 				PC_SourceError( handle, "expected protosHealthCap value" );
+				return qfalse;
+			}
+		}  else if ( !Q_stricmp( token.string, "partisansHealthCap" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.partisansHealthCap ) ) {
+				PC_SourceError( handle, "expected partisansHealthCap value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "ghostHealthCap" ) ) {
@@ -5641,6 +5681,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "soldierBaseHealth" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.soldierBaseHealth ) ) {
 				PC_SourceError( handle, "expected soldierBaseHealth value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "partisansBaseHealth" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.partisansBaseHealth ) ) {
+				PC_SourceError( handle, "expected partisansBaseHealth value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "eliteGuardBaseHealth" ) ) {

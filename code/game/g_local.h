@@ -123,6 +123,7 @@ typedef struct svParams_s
 	int initialProtosCount;
 	int initialGhostsCount;
 	int initialPriestsCount;
+	int initialPartisansCount;
 
 	float healthIncreaseMultiplier;
 	float speedIncreaseDivider;
@@ -134,6 +135,7 @@ typedef struct svParams_s
 	int zombiesIncrease;
 	int warriorsIncrease;
 	int protosIncrease;
+	int partisansIncrease;
 	int ghostsIncrease;
 	int priestsIncrease;
 
@@ -147,6 +149,7 @@ typedef struct svParams_s
 	int maxProtos;
 	int maxGhosts;
 	int maxPriests;
+	int maxPartisans;
 
 	int waveEg;
 	int waveBg;
@@ -157,11 +160,15 @@ typedef struct svParams_s
 	int waveGhosts;
 	int wavePriests;
 
+	int wavePartisans;
+
 	int zombieHealthCap;
 	int warriorHealthCap;
 	int protosHealthCap;
 	int ghostHealthCap;
 	int priestHealthCap;
+
+	int partisansHealthCap;
 
 	int soldierHealthCap;	
 	int eliteGuardHealthCap;
@@ -172,6 +179,8 @@ typedef struct svParams_s
 	int eliteGuardBaseHealth;
 	int blackGuardBaseHealth;
 	int venomBaseHealth;
+
+	int partisansBaseHealth;
 
 	int zombieBaseHealth;
 	int warriorBaseHealth;

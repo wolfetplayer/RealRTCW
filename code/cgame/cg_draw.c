@@ -1761,10 +1761,40 @@ for a few moments
 ==============
 */
 void CG_BuyPrint( const char *str, int y, int charWidth ) {
-	char   *s;
+	char   *s, *p, *c = cg.buyPrint;
+	char   token[64];
+	const char *trToken;
+	int    lenTrToken;
+	int    destSizeBuyPrint = sizeof( cg.buyPrint );
+
+	for ( s = p = str; *p; ++p) {
+		if ( !Q_isforfilename( *p ) || *p == '\r' || *p == '\n' || *p == '\0' ) {
+			// copy translation key
+			Q_strncpyz( token, s, p - s + 1 );
+
+			// get translation
+			trToken = CG_translateString( token );
+			lenTrToken = strlen( trToken );
+
+			// append translation
+			Q_strncpyz( c, trToken, destSizeBuyPrint );
+			destSizeBuyPrint -= lenTrToken;
+			c = ( char* )c + lenTrToken;
+
+			// copy separator
+			Q_strncpyz( token, p, 2 );
+
+			// append separator
+			Q_strncpyz( c, token, destSizeBuyPrint );
+			destSizeBuyPrint -= 1;
+			c = ( char* )c + 1;
+
+			s = p + 1;
+		}
+	}
 
 //----(SA)	added translation lookup
-	Q_strncpyz( cg.buyPrint, CG_translateString( (char*)str ), sizeof( cg.buyPrint ) );
+	//Q_strncpyz( cg.buyPrint, CG_translateString( (char*)str ), sizeof( cg.buyPrint ) );
 //----(SA)	end
 
 

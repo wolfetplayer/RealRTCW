@@ -1297,9 +1297,9 @@ void Touch_objective_info( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 
     if ( price && weaponName ) {
 		if (isWeapon) {
-        trap_SendServerCommand( other - g_entities, va( "cpbuy \"Weapon: %s\nPrice: %d\nAmmo Price: %d\"", weaponName, price, ammoPrice));
+        trap_SendServerCommand( other - g_entities, va( "cpbuy \"weapon: %s\nprice: %d\nammo_price: %d\"", weaponName, price, ammoPrice));
 		} else {
-		trap_SendServerCommand( other - g_entities, va( "cpbuy \"Item: %s\nPrice: %d\"", weaponName, price));
+		trap_SendServerCommand( other - g_entities, va( "cpbuy \"item: %s\nprice: %d\"", weaponName, price));
 		}
     } else if ( other->timestamp <= level.time ) {
         other->timestamp = level.time + 4500;

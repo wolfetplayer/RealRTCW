@@ -155,7 +155,11 @@ translateString_t translateStrings[] = {
 	{"months"},                  //
 	{"year"},                    //
 	{"years"},                   //
-	{"or"}           
+	{"or"},
+	{"item"},
+	{"weapon"},
+	{"price"},
+	{"ammo_price"},
 };
 
 bonusString_t bonusStrings[] = {

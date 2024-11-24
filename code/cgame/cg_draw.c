@@ -1767,7 +1767,8 @@ void CG_BuyPrint( const char *str, int y, int charWidth ) {
 	int    lenTrToken;
 	int    destSizeBuyPrint = sizeof( cg.buyPrint );
 
-	for ( s = p = str; *p; ++p) {
+	s = p = str;
+	while ( 1 ) {
 		if ( !Q_isforfilename( *p ) || *p == '\r' || *p == '\n' || *p == '\0' ) {
 			// copy translation key
 			Q_strncpyz( token, s, p - s + 1 );
@@ -1790,6 +1791,10 @@ void CG_BuyPrint( const char *str, int y, int charWidth ) {
 			c = ( char* )c + 1;
 
 			s = p + 1;
+		}
+
+		if ( !( *p++ ) ) {
+			break;
 		}
 	}
 

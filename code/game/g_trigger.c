@@ -1290,7 +1290,7 @@ void Touch_objective_info( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 	int isWeapon;
 
     price = ent->price;
-    weaponName = ent->buy_item;
+    weaponName = ent->translation;
 	ammoPrice = price /2;
 	isWeapon = ent->isWeapon;
 	

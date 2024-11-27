@@ -1769,28 +1769,37 @@ void CG_BuyPrint( const char *str, int y, int charWidth ) {
 
 	s = p = str;
 	while ( 1 ) {
-		if ( !Q_isforfilename( *p ) || *p == '\r' || *p == '\n' || *p == '\0' ) {
-			// copy translation key
-			Q_strncpyz( token, s, p - s + 1 );
+		if ( Q_isalphanumeric( *s ) ) {
+			if ( !Q_isforfilename( *p ) || *p == '\r' || *p == '\n' || *p == '\0' ) {
+				// copy translation key
+				Q_strncpyz( token, s, p - s + 1 );
 
-			// get translation
-			trToken = CG_translateString( token );
-			lenTrToken = strlen( trToken );
+				// get translation
+				trToken = CG_translateString( token );
 
-			// append translation
-			Q_strncpyz( c, trToken, destSizeBuyPrint );
-			destSizeBuyPrint -= lenTrToken;
-			c = ( char* )c + lenTrToken;
+				if ( Q_strncmp( trToken, token, 999999 ) == 0 ) {
+					trToken = CG_translateTextString( token );
+				}
 
-			// copy separator
-			Q_strncpyz( token, p, 2 );
+				lenTrToken = strlen( trToken );
 
-			// append separator
-			Q_strncpyz( c, token, destSizeBuyPrint );
-			destSizeBuyPrint -= 1;
-			c = ( char* )c + 1;
+				// append translation
+				Q_strncpyz( c, trToken, destSizeBuyPrint );
+				destSizeBuyPrint -= lenTrToken;
+				c += lenTrToken;
 
-			s = p + 1;
+				// copy separator
+				Q_strncpyz( token, p, 2 );
+
+				// append separator
+				Q_strncpyz( c, token, destSizeBuyPrint );
+				destSizeBuyPrint -= 1;
+				c += 1;
+
+				s = p + 1;
+			}
+		} else {
+			s = p;
 		}
 
 		if ( !( *p++ ) ) {

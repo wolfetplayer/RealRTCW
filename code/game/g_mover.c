@@ -2152,6 +2152,40 @@ G_TryDoor
 void G_TryDoor( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	qboolean walking = qfalse, locked = qfalse;
 
+	int price;
+	price = ent->price;
+
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+
+		if (!price)
+		{
+			price = 0;
+		}
+
+		// Ensure AI cannot activate the door
+		if (activator->aiCharacter)
+		{
+			return;
+		}
+
+		// Check if player has enough points
+		if (activator->client->ps.persistant[PERS_SCORE] < price)
+		{
+			trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+			return; // Player doesn't have enough points
+		}
+		else
+		{
+			if (ent->active == qfalse) // Only deduct points if the door is not already open
+			{
+				activator->client->ps.persistant[PERS_SCORE] -= price;
+				ent->key = 0;
+				locked = qfalse;
+			}
+		}
+	}
+
 	walking = (qboolean)( ent->flags & FL_SOFTACTIVATE );
 
 

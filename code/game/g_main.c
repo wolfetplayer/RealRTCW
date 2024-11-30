@@ -1306,7 +1306,10 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 		// DHM - Nerve :: Moved this down so that it only happens in SinglePlayer games
 
 		// Load survival parameters
-		AI_LoadSurvivalTable( g_mapname.string );
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
+			AI_LoadSurvivalTable(g_mapname.string);
+		}
 
 		AICast_Init();
 		// done.

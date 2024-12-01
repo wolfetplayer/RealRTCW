@@ -5431,6 +5431,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected speedIncreaseDivider value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "spawnTimeDecreaseDivider" ) ) {
+			if ( !PC_Float_Parse( handle, &svParams.spawnTimeDecreaseDivider ) ) {
+				PC_SourceError( handle, "expected spawnTimeDecreaseDivider value" );
+				return qfalse;
+			}
 
 		// int
 		} else if ( !Q_stricmp( token.string, "initialKillCountRequirement" ) ) {
@@ -5821,6 +5826,16 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "scoreKnifeBonus" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.scoreKnifeBonus ) ) {
 				PC_SourceError( handle, "expected scoreKnifeBonus value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "minSpawnTime" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.minSpawnTime ) ) {
+				PC_SourceError( handle, "expected minSpawnTime value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
+				PC_SourceError( handle, "expected startingSpawnTime value" );
 				return qfalse;
 			}
 		} else {

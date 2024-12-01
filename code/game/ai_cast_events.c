@@ -603,12 +603,12 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			}
 
 			if ( g_gametype.integer == GT_SURVIVAL ) {
-               int decrease = svParams.survivalKillCount / 15;  // Calculate decrease based on survivalKillCount
-               int rebirthTime = 20000 - decrease * 1000;  // Calculate rebirthTime
+               int decrease = svParams.waveCount / svParams.spawnTimeDecreaseDivider;  // Calculate decrease based on survivalKillCount
+               int rebirthTime = svParams.startingSpawnTime * 1000 - decrease * 1000;  // Calculate rebirthTime
 
-                // Clamp rebirthTime to a minimum of 10 seconds
-               if (rebirthTime < 5000) {
-                 rebirthTime = 5000;
+                // Clamp rebirthTime to a minimum of 5 seconds
+               if (rebirthTime < svParams.minSpawnTime * 1000) {
+                 rebirthTime = svParams.minSpawnTime * 1000;
                }
 
                 cs->rebirthTime = level.time + rebirthTime + rand() % 2000;

@@ -128,6 +128,10 @@ typedef struct svParams_s
 	float healthIncreaseMultiplier;
 	float speedIncreaseDivider;
 
+	float spawnTimeDecreaseDivider;
+	int   minSpawnTime;
+	int   startingSpawnTime;
+
 	int soldiersIncrease;
 	int eliteGuardsIncrease;
 	int blackGuardsIncrease;
@@ -210,6 +214,7 @@ typedef struct svParams_s
 	int scorePriestBonus;
 	int scoreGhostBonus;
 	int scoreKnifeBonus;
+
 } svParams_t;
 
 typedef enum {

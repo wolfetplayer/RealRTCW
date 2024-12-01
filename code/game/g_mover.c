@@ -2181,6 +2181,7 @@ void G_TryDoor( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
                 activator->client->ps.persistant[PERS_SCORE] -= price;
                 ent->key = 0;
                 locked = qfalse;
+				trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
             }
         }
     }

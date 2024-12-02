@@ -9,11 +9,10 @@ What chages:
 * And some other minor modifications to some functions to display localized content.
 
 Note:  
-* Default branch "master" is not the SE respository, please switch branch to view SE files.
+* Default branch "master" is not the RealRTCW-SE respository, please switch branch to view RealRTCW-SE files.
 * I am not a programmer, I only have a small understanding of C language during my university years, so some of the program code for implementing certain functions may appear somewhat bizarre and unusual. Additionally, I am new to using GitHub and therefore not very familiar with it. Please forgive me.
 
 Welcome to provide improvement suggestions for the code.
-
 
 # RealRTCW
 

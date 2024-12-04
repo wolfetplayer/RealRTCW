@@ -558,8 +558,7 @@ typedef enum {
 	WP_DUAL_TT33,     
 	WP_M7,
 	WP_M1941SCOPE,
-
-	WP_P38,                 
+            
 	WP_M30,                
 	WP_DELISLE,            
 	WP_DELISLESCOPE, 	   
@@ -1155,7 +1154,6 @@ typedef enum {
 	MOD_HOLYCROSS,
 	MOD_MP34,
 	MOD_TT33,
-	MOD_P38,
 	MOD_PPSH,
 	MOD_MOSIN,
 	MOD_G43,

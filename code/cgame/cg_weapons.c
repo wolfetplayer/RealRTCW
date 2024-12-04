@@ -58,7 +58,7 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0,            0            },  //	0 (empty)
 	{WP_KNIFE,              WP_DAGGER,              WP_HOLYCROSS, 0,               0,            0            },  //	1
-	{WP_LUGER,              WP_COLT,                WP_TT33,      WP_REVOLVER,     WP_HDM,    WP_P38       },  //	2
+	{WP_LUGER,              WP_SILENCER,            WP_COLT,      WP_TT33,         WP_REVOLVER,  WP_HDM,      WP_P38       },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     WP_DELISLE,      0,            0            },  //	4
     {WP_G43,                WP_M1GARAND,            WP_M1941,     0,               0,            0            },  //	5
@@ -4348,10 +4348,6 @@ void CG_PlaySwitchSound( int lastweap, int newweap ) {
 
 	if ( getAltWeapon( lastweap ) == newweap ) { // alt switch
 		switch ( newweap ) {
-		case WP_SILENCER:
-		case WP_LUGER:
-			switchsound = cg_weapons[newweap].switchSound[0];
-			break;
 		case WP_M7:
 			switchsound = cg_weapons[newweap].switchSound[0];
 			break;
@@ -4470,19 +4466,6 @@ void CG_AltWeapon_f( void ) {
 		//		just be a matter of resetting the banks to what's in the config.
 		
 		switch ( original ) {
-		case WP_LUGER:
-			if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {   // if you're holding a chair, you can't screw on the silencer
-				return;
-			}
-			weapBanks[2][0] = WP_SILENCER;
-			break;
-		case WP_SILENCER:
-			if ( cg.snap->ps.eFlags & EF_MELEE_ACTIVE ) {   // if you're holding a chair, you can't remove the silencer
-				return;
-			}
-			weapBanks[2][0] = WP_LUGER;
-			break;
-
 		case WP_AKIMBO:
 			weapBanks[2][1] = WP_COLT;
 			break;
@@ -4514,8 +4497,7 @@ void CG_AltWeapon_f( void ) {
 
 		// Arnout: don't allow another weapon switch when we're still swapping the gpg40, to prevent animation breaking
 	if ( ( cg.snap->ps.weaponstate == WEAPON_RAISING || cg.snap->ps.weaponstate == WEAPON_DROPPING ) &&
-		 ( ( original == WP_M7 || num == WP_M7 ) ||
-		   ( original == WP_SILENCER || num == WP_SILENCER  ) ) ) {
+		 ( ( original == WP_M7 || num == WP_M7 ) ) ) {
 		return;
 	}
 }
@@ -4537,9 +4519,6 @@ void CG_NextWeap( qboolean switchBanks ) {
 	CG_WeaponIndex( curweap, &bank, &cycle );     // get bank/cycle of current weapon
 
 	switch ( num ) {
-	case WP_SILENCER:
-		curweap = num = WP_LUGER;
-		break;
 	case WP_M7:
 		curweap = num = WP_M1GARAND;
 		break;
@@ -4683,9 +4662,6 @@ void CG_PrevWeap( qboolean switchBanks ) {
 	num = curweap = cg.weaponSelect;
 
 	switch ( num ) {
-	case WP_SILENCER:
-		curweap = num = WP_LUGER;
-		break;
 	case WP_M7:
 		curweap = num = WP_M1GARAND;
 		break;

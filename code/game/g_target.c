@@ -88,7 +88,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     weapon_t random_box_weapons[] = {                           
 	// One handed pistols
 	WP_LUGER,              
-	//WP_SILENCER,           
+	WP_SILENCER,           
     WP_COLT,               
 	WP_TT33,               
 	WP_REVOLVER,           
@@ -129,7 +129,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
     weapon_t random_box_weapons_dlc[] = { 	            
 	// One handed pistols
 	WP_LUGER,              
-	//WP_SILENCER,           
+	WP_SILENCER,           
     WP_COLT,               
 	WP_TT33,               
 	WP_REVOLVER,           

@@ -58,7 +58,7 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0,                     0,                      0,            0,               0,            0            },  //	0 (empty)
 	{WP_KNIFE,              WP_DAGGER,              WP_HOLYCROSS, 0,               0,            0            },  //	1
-	{WP_LUGER,              WP_SILENCER,            WP_COLT,      WP_TT33,         WP_REVOLVER,  WP_HDM,      },  //	2
+	{WP_LUGER,              WP_SILENCER,            WP_COLT,      WP_AKIMBO,       WP_TT33,      WP_DUAL_TT33,   WP_REVOLVER,  WP_HDM,      },  //	2
 	{WP_MP40,               WP_MP34,                WP_STEN,      WP_THOMPSON,     WP_PPSH,      0            },  //	3
 	{WP_MAUSER,             WP_GARAND,              WP_MOSIN,     WP_DELISLE,      0,            0            },  //	4
     {WP_G43,                WP_M1GARAND,            WP_M1941,     0,               0,            0            },  //	5
@@ -4466,18 +4466,6 @@ void CG_AltWeapon_f( void ) {
 		//		just be a matter of resetting the banks to what's in the config.
 		
 		switch ( original ) {
-		case WP_AKIMBO:
-			weapBanks[2][1] = WP_COLT;
-			break;
-		case WP_COLT:
-			weapBanks[2][1] = WP_AKIMBO;
-			break;
-		case WP_DUAL_TT33:
-			weapBanks[2][2] = WP_TT33;
-			break;
-		case WP_TT33:
-			weapBanks[2][2] = WP_DUAL_TT33;
-			break;
 		case WP_MAUSER:
 		case WP_GARAND:
 		case WP_FG42:
@@ -4530,12 +4518,6 @@ void CG_NextWeap( qboolean switchBanks ) {
 		break;
 	case WP_SNOOPERSCOPE:
 		curweap = num = WP_GARAND;
-		break;
-	case WP_AKIMBO:
-		curweap = num = WP_COLT;
-		break;
-	case WP_DUAL_TT33:
-		curweap = num = WP_TT33;
 		break;
 	}
 
@@ -4673,12 +4655,6 @@ void CG_PrevWeap( qboolean switchBanks ) {
 		break;
 	case WP_SNOOPERSCOPE:
 		curweap = num = WP_GARAND;
-		break;
-	case WP_AKIMBO:
-		curweap = num = WP_COLT;
-		break;
-	case WP_DUAL_TT33:
-		curweap = num = WP_TT33;
 		break;
 	}
 

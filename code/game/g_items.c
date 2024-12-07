@@ -739,8 +739,6 @@ weapon_t GetSimpleWeapon( weapon_t weapon ) {
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 	case WP_M7:
-	case WP_AKIMBO:
-	case WP_DUAL_TT33:
 	case WP_SNIPERRIFLE:
 	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
@@ -753,8 +751,6 @@ weapon_t GetSimpleWeapon( weapon_t weapon ) {
 qboolean IsWeaponComplex( weapon_t weapon ) {
 	switch ( weapon )
 	{
-	case WP_AKIMBO:
-	case WP_DUAL_TT33:
 	
 	case WP_GARAND:
 	case WP_FG42:

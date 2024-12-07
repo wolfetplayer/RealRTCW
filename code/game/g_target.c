@@ -91,7 +91,9 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	WP_SILENCER,           
     WP_COLT,               
 	WP_TT33,               
-	WP_REVOLVER,           
+	WP_REVOLVER,
+	WP_DUAL_TT33,
+	WP_AKIMBO,            
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         
@@ -132,7 +134,9 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	WP_SILENCER,           
     WP_COLT,               
 	WP_TT33,               
-	WP_REVOLVER,           
+	WP_REVOLVER,
+	WP_DUAL_TT33,
+	WP_AKIMBO,           
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         

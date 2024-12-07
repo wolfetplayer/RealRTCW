@@ -162,15 +162,6 @@ void TossClientWeapons( gentity_t *self )
 	{
 		weapon = WP_FG42;
 	}
-	if (weapon == WP_AKIMBO)
-	{ //----(SA)	added
-		weapon = WP_COLT;
-	}
-	if (weapon == WP_DUAL_TT33)
-	{ //----(SA)	added
-		weapon = WP_TT33;
-	}
-	//----(SA)	end
 
 	if (weapon > WP_NONE && weapon < WP_MONSTER_ATTACK1 && self->client->ps.ammo[BG_FindAmmoForWeapon(weapon)])
 	{

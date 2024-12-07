@@ -266,7 +266,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{   
 		WP_COLT,             
 		WEAPON_CLASS_PISTOL,
-		WP_AKIMBO,
+		WP_NONE,
 		WEAPON_TEAM_ALLIES,  
 	    0,         
 		0,                   
@@ -307,7 +307,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{   
 		WP_TT33,
 		WEAPON_CLASS_PISTOL,
-		WP_DUAL_TT33,
+		WP_NONE,
 		WEAPON_TEAM_SOVIET,             
 		0,     
 		0,       
@@ -1619,7 +1619,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{   
 		WP_AKIMBO,
 		WEAPON_CLASS_AKIMBO,
-		WP_COLT,
+		WP_NONE,
 		WEAPON_TEAM_ALLIES,           
 		0,         
 		0,       
@@ -1660,7 +1660,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	{   
 		WP_DUAL_TT33,
 		WEAPON_CLASS_AKIMBO,
-		WP_TT33,
+		WP_NONE,
 		WEAPON_TEAM_SOVIET,           
 		0,         
 		0,       

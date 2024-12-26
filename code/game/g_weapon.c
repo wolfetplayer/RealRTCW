@@ -1343,7 +1343,7 @@ void ThrowKnife( gentity_t *ent )
 	knife->r.svFlags            = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
 
 	// usage
-	knife->touch				= Touch_Item;	// no auto-pickup, only activate
+	knife->touch				= Touch_Item;
 	knife->use					= Use_Item;
 
 	// damage
@@ -1371,6 +1371,8 @@ void ThrowKnife( gentity_t *ent )
 	// NQ physics
 	knife->physicsSlide			= qfalse;
 	knife->physicsFlush			= qtrue;
+
+	knife->active = qtrue;
 
 	// bounding box
 	VectorSet( knife->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, 0 );

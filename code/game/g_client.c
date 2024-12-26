@@ -291,7 +291,7 @@ go to a random point that doesn't telefrag
 ================
 */
 #define MAX_SPAWN_POINTS_AI    128
-#define MAX_SPAWN_POINT_DISTANCE    2048
+#define MAX_SPAWN_POINT_DISTANCE    8196
 gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {
     gentity_t   *spot;
     vec3_t delta;

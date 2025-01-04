@@ -80,6 +80,8 @@ If you have questions concerning this license or the applicable additional terms
 #define FL_NODRAW               0x01000000
 #define FL_DOORNOISE            0x02000000  //----(SA)	added
 
+#define ANNOUNCE_SOUNDS_COUNT 32
+
 // movers are things like doors, plats, buttons, etc
 typedef enum {
 	MOVER_POS1,
@@ -214,6 +216,8 @@ typedef struct svParams_s
 	int scorePriestBonus;
 	int scoreGhostBonus;
 	int scoreKnifeBonus;
+
+	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
 
 } svParams_t;
 

@@ -355,6 +355,13 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 }
 
 void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
+	static char soundDeafultPath[MAX_QPATH] = "sound/announcer/hein.wav";
+	static char command[256];
+
+	int i = 0, j;
+	int indecies[ANNOUNCE_SOUNDS_COUNT];
+
+	Com_Memset( indecies, 0, sizeof( indecies ) );
 
     // Wave Change Event
     if (svParams.survivalKillCount == svParams.killCountRequirement) {
@@ -363,9 +370,18 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 		attacker->client->ps.persistant[PERS_WAVES]++;
 		svParams.waveKillCount = 0;
 
-		int randomIndex = rand() % 19 + 1;
-		static char command[256];
-		snprintf(command, sizeof(command), "mu_play sound/announcer/hein%d.wav 0\n", randomIndex);
+		for ( j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j ) {
+			if ( svParams.announcerSound[j][0] ) {
+				indecies[i++] = j;
+			}
+		}
+
+		if ( i == 0 ) {
+			snprintf( command, sizeof( command ), "mu_play %s 0\n", soundDeafultPath );
+		} else {
+			snprintf( command, sizeof( command ), "mu_play %s 0\n", svParams.announcerSound[ indecies[rand( ) % i] ] );
+		}
+		
 		trap_SendServerCommand(-1, command);
 
    // Normal soldiers
@@ -5406,6 +5422,9 @@ void AI_LoadSurvivalTable( const char* mapname )
 qboolean BG_ParseSurvivalTable( int handle )
 {
 	pc_token_t token;
+	int i;
+	char msg[64];
+	char soundPath[MAX_QPATH];
 
 	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
 		PC_SourceError( handle, "expected '{'" );
@@ -5837,6 +5856,26 @@ qboolean BG_ParseSurvivalTable( int handle )
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );
 				return qfalse;
+			}
+		// string
+		} else if ( !Q_stricmp( token.string, "announcerSound" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, &svParams.announcerSound[0], MAX_QPATH ) ) {
+				PC_SourceError( handle, "expected announcerSound value" );
+				return qfalse;
+			}
+		} else if ( Q_stristr( token.string, "announcerSound" ) == token.string ) {
+			sscanf( token.string, "announcerSound%d", &i );
+
+			if ( !PC_String_ParseNoAlloc( handle, &soundPath, MAX_QPATH ) ) {
+				PC_SourceError( handle, "expected announcerSound value" );
+				return qfalse;
+			}
+
+			if ( i - 1 >= ANNOUNCE_SOUNDS_COUNT ) {
+				sprintf_s(msg, 64, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1 );
+				PC_SourceError( handle, msg );
+			} else {
+				strcpy_s( svParams.announcerSound[i - 1], MAX_QPATH, soundPath );
 			}
 		} else {
 			PC_SourceError( handle, "unknown token '%s'", token.string );

@@ -502,8 +502,7 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			}
 
 		// regenerate health only if cvar is turned on
-if ((g_regen.integer == 1 || client->ps.perks[PERK_RESILIENCE]) && level.time >= client->healthRegenStartTime && 
-    (g_gametype.integer != GT_SURVIVAL || client->ps.perks[PERK_RESILIENCE])) {
+if ((g_regen.integer == 1 || g_gametype.integer == GT_SURVIVAL) && level.time >= client->healthRegenStartTime ) {
 
 		    if (ent->health < client->ps.stats[STAT_MAX_HEALTH])
 		    {

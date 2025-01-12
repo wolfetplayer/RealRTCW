@@ -489,6 +489,8 @@ player_die_secondchance
 */
 void player_die_secondchance( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {
 
+	int clientNum;
+	clientNum = level.sortedClients[0];
 
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		return;
@@ -515,6 +517,8 @@ void player_die_secondchance( gentity_t *self, gentity_t *inflictor, gentity_t *
 	 // Reset the player's state to prevent immediate death again
     self->client->ps.pm_type = PM_NORMAL;
     self->client->ps.stats[STAT_HEALTH] = self->health;
+
+	ClientUserinfoChanged( clientNum );
 
 }
 

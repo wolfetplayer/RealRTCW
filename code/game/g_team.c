@@ -100,7 +100,7 @@ qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 ) {
 		return qfalse;
 	}
 
-	if ( ent1->client->sess.sessionTeam == ent2->client->sess.sessionTeam ) {
+	if ( ent1->aiTeam == ent2->aiTeam ) {
 		return qtrue;
 	}
 

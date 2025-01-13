@@ -239,6 +239,8 @@ vmCvar_t cg_skybox;
 vmCvar_t cg_gameSkill;
 // done
 
+vmCvar_t cg_hitSounds;
+
 vmCvar_t cg_reloading;      //----(SA)	added
 
 // JPW NERVE
@@ -501,6 +503,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_norender, "cg_norender", "0", 0 },  // only used during single player, to suppress rendering until the server is ready
 
 	{ &cg_gameSkill, "g_gameskill", "2", 0 }, // communicated by systeminfo	// (SA) new default '2' (was '1')
+
+	{ &cg_hitSounds, "cg_hitSounds", "1", CVAR_ARCHIVE, 0 },
 
 	{ &cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
@@ -1171,6 +1175,10 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.gibBounce1Sound = trap_S_RegisterSound( "sound/player/gibimp1.wav" );
 	cgs.media.gibBounce2Sound = trap_S_RegisterSound( "sound/player/gibimp2.wav" );
 	cgs.media.gibBounce3Sound = trap_S_RegisterSound( "sound/player/gibimp3.wav" );
+
+	cgs.media.headShot = trap_S_RegisterSound( "sound/hitsounds/hithead.wav" );
+	cgs.media.bodyShot = trap_S_RegisterSound( "sound/hitsounds/hit.wav" );
+	cgs.media.teamShot = trap_S_RegisterSound( "sound/hitsounds/hitteam.wav" );
 
 	cgs.media.grenadebounce[GRENBOUNCE_DEFAULT][0]  = trap_S_RegisterSound( "sound/weapons/grenade/hgrenb1a.wav" );
 	cgs.media.grenadebounce[GRENBOUNCE_DEFAULT][1]  = trap_S_RegisterSound( "sound/weapons/grenade/hgrenb2a.wav" );

@@ -773,7 +773,7 @@ typedef enum {
 	EV_RAILTRAIL,
 	EV_VENOM,
 	EV_VENOMFULL,
-	EV_BULLET,              // otherEntity is the shooter
+	EV_HITSOUNDS,              // otherEntity is the shooter
 	EV_LOSE_HAT,            
 	EV_REATTACH_HAT,
 	EV_GIB_HEAD,            // only blow off the head
@@ -848,6 +848,7 @@ typedef enum {
 	EV_THROWKNIFE,
 	EV_COUGH,
 	EV_QUICKGRENS,
+	EV_PLAYER_HIT,  // hitsound event
 	EV_MAX_EVENTS   // just added as an 'endcap'
 } entity_event_t;
 
@@ -1015,6 +1016,13 @@ typedef enum {
 extern char *animStrings[];     // defined in bg_misc.c
 extern char *animStringsOld[];      // defined in bg_misc.c
 
+typedef enum
+{
+	HIT_NONE = 0,
+	HIT_TEAMSHOT,
+	HIT_HEADSHOT,
+	HIT_BODYSHOT
+} hitEvent_t;
 
 typedef enum {
 	WEAP_IDLE1,

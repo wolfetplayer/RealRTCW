@@ -7329,7 +7329,7 @@ char *eventnames[] = {
 	"EV_RAILTRAIL",
 	"EV_VENOM",
 	"EV_VENOMFULL",
-	"EV_BULLET",             // otherEntity is the shooter
+	"EV_HITSOUNDS",             // otherEntity is the shooter
 	"EV_LOSE_HAT",
 	"EV_REATTACH_HAT",
 	"EV_GIB_HEAD",           // only blow off the head
@@ -7402,6 +7402,8 @@ char *eventnames[] = {
 	"EV_THROWKNIFE",
 	"EV_COUGH",
 	"EV_QUICKGRENS",
+	"EV_PLAYER_HIT",
+
 	"EV_MAX_EVENTS"
 };
 

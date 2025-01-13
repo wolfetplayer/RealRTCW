@@ -1067,6 +1067,7 @@ If you have questions concerning this license or the applicable additional terms
 {"G_AdjustedDamageVec", (byte *)G_AdjustedDamageVec},
 {"CanDamage", (byte *)CanDamage},
 {"G_Damage", (byte *)G_Damage},
+{"G_DamageExt", (byte *)G_DamageExt},
 {"G_ArmorDamage", (byte *)G_ArmorDamage},
 {"IsHeadShot", (byte *)IsHeadShot},
 {"IsHeadShotWeapon", (byte *)IsHeadShotWeapon},

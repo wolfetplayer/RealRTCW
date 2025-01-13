@@ -1071,6 +1071,7 @@ extern qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t 
 extern void G_AdjustedDamageVec( gentity_t *ent, vec3_t origin, vec3_t vec );
 extern qboolean CanDamage ( gentity_t * targ , vec3_t origin ) ;
 extern void G_Damage ( gentity_t * targ , gentity_t * inflictor , gentity_t * attacker , vec3_t dir , vec3_t point , int damage , int dflags , int mod ) ;
+extern void G_DamageExt ( gentity_t * targ , gentity_t * inflictor , gentity_t * attacker , vec3_t dir , vec3_t point , int damage , int dflags , int mod, int *hitEventOut ) ;
 extern void G_ArmorDamage ( gentity_t * targ ) ;
 extern qboolean IsHeadShot ( gentity_t * targ , gentity_t * attacker , vec3_t dir , vec3_t point , int mod ) ;
 extern qboolean IsHeadShotWeapon ( int mod , gentity_t * targ , gentity_t * attacker ) ;

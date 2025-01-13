@@ -278,7 +278,18 @@ typedef struct {
 
 //=================================================
 
-
+// hitsounds flags
+/**
+ * @enum hitsooundFlags
+ * @brief
+ */
+typedef enum
+{
+	HITSOUNDS_ON         = 1,
+	HITSOUNDS_NOBODYSHOT = 2,
+	HITSOUNDS_NOHEADSHOT = 4,
+	HITSOUNDS_NOTEAMSHOT = 8,
+} hitsooundFlags;
 
 // centity_t have a direct corespondence with gentity_t in the game, but
 // only the entityState_t is directly communicated to the cgame
@@ -1468,6 +1479,11 @@ typedef struct {
 	sfxHandle_t debBounce3Sound;
 	//----(SA) end
 
+	// hitsounds
+	sfxHandle_t headShot;
+	sfxHandle_t bodyShot;
+	sfxHandle_t teamShot;
+
 	//----(SA)	added
 	sfxHandle_t grenadePulseSound4;
 	sfxHandle_t grenadePulseSound3;
@@ -1857,6 +1873,8 @@ extern vmCvar_t cg_skybox;
 // Rafael gameskill
 extern vmCvar_t cg_gameSkill;
 // done
+
+extern vmCvar_t cg_hitSounds;
 
 extern vmCvar_t cg_reloading;           //----(SA)	added
 

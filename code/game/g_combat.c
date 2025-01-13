@@ -1078,11 +1078,21 @@ dflags		these flags are used to control how T_Damage works
 */
 
 void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
-			   vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
+				vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
+	G_DamageExt( targ, inflictor, attacker, dir, point, damage, dflags, mod, NULL );
+}
+
+void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
+			   vec3_t dir, vec3_t point, int damage, int dflags, int mod, int *hitEventOut ) {
 	gclient_t   *client;
 	int take;
 	int asave;
 	int knockback;
+	int hitEventType = HIT_NONE;
+
+	if ( hitEventOut ) {
+		*hitEventOut = HIT_NONE;
+	}
 
 	if ( !targ->takedamage ) {
 		return;
@@ -1300,6 +1310,18 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	}
 
+	// add to the attacker's hit counter (but only if target is a client)
+	if ( attacker && attacker->client && targ->client  && targ != attacker && mod != MOD_SUICIDE ) {
+		if ( OnSameTeam( targ, attacker ) /*|| ( targ->client->ps.powerups[PW_OPS_DISGUISED]*/ && g_friendlyFire.integer & 1 && g_gametype.integer != GT_SURVIVAL ) {
+			hitEventType = HIT_TEAMSHOT;
+		}
+		else /*if ( !targ->client->ps.powerups[PW_OPS_DISGUISED] )*/ {
+			hitEventType = HIT_BODYSHOT;
+		}
+
+		//BG_UpdateConditionValue( targ->client->ps.clientNum, ANIM_COND_ENEMY_WEAPON, attacker->client->ps.weapon, qtrue );
+	}
+
 	// battlesuit protects from all radius damage (but takes knockback)
 	// and protects 50% against all damage
 	if ( client && client->ps.powerups[PW_BATTLESUIT] ) {
@@ -1387,6 +1409,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 
 	if ( IsHeadShot( targ, attacker, dir, point, mod ) ) {
+
+			// Upgrade the hit event to headshot if we have not yet classified it as a teamshot (covertops etc..)
+			if ( hitEventType != HIT_TEAMSHOT ) {
+				hitEventType = HIT_HEADSHOT;
+			}
 
 			// by default, a headshot means damage x2
 			take *= 2;
@@ -1488,6 +1515,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 	}
 
+	if ( hitEventType ) {
+		if ( !hitEventOut ) {
+			G_AddEvent( attacker, EV_PLAYER_HIT, hitEventType );
+		} else {
+			*hitEventOut = hitEventType;
+		}
+	}
 
 	if ( g_debugDamage.integer ) {
 		G_Printf( "client:%i health:%i damage:%i armor:%i\n", targ->s.number,

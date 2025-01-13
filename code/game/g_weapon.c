@@ -714,6 +714,7 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 	gentity_t   *traceEnt;
 	qboolean reflectBullet = qfalse;
 	qboolean hitClient = qfalse;
+	int hitType = HIT_NONE;
 
 	// RF, abort if too many recursions.. there must be a real solution for this, but for now this is the safest
 	// fix I can find
@@ -789,6 +790,7 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 	if ( traceEnt->takedamage && traceEnt->client && !reflectBullet ) {
 		tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_FLESH );
 		tent->s.eventParm = traceEnt->s.number;
+		//tent->s.modelindex = hitType;
 		if ( LogAccuracyHit( traceEnt, attacker ) ) {
 			hitClient = qtrue;
 			attacker->client->ps.persistant[PERS_ACCURACY_HITS]++;
@@ -887,7 +889,7 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 			}
 			// done.
 
-			G_Damage( traceEnt, attacker, attacker, forward, tr.endpos, damage, ( g_weaponfalloff.integer ? DAMAGE_DISTANCEFALLOFF : 0 ), ammoTable[attacker->s.weapon].mod );
+			G_DamageExt( traceEnt, attacker, attacker, forward, tr.endpos, damage, ( g_weaponfalloff.integer ? DAMAGE_DISTANCEFALLOFF : 0 ), ammoTable[attacker->s.weapon].mod, &hitType );
 
 			// allow bullets to "pass through" func_explosives if they break by taking another simultanious shot
 			// start new bullet at position this hit and continue to the end position (ignoring shot-through ent in next trace)
@@ -903,6 +905,14 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 			}
 		}
 	}
+
+	// send bullet impact
+	tent = G_TempEntity( tr.endpos, EV_HITSOUNDS );
+	tent->s.eventParm = traceEnt->s.number;
+	tent->s.weapon = traceEnt->s.weapon;
+	tent->s.otherEntityNum = attacker->s.number;
+	tent->s.modelindex = hitType;   // send the hit sound info in the flesh hit event
+
 	return hitClient;
 }
 

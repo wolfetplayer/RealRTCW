@@ -187,6 +187,52 @@ static void CG_UseItem( centity_t *cent ) {
 extern int CG_WeaponIndex( int weapnum, int *bank, int *cycle );
 
 
+static void CG_PlayHitSound( const int clientNum, const int hitSound )
+{
+	if ( hitSound == HIT_NONE ) {
+		return;
+	}
+
+	// Do we have hitsounds even enabled
+	if ( !( cg_hitSounds.integer & HITSOUNDS_ON )) {
+		return;
+	}
+
+	// Are we spectating someone?
+	if ( cg.snap->ps.clientNum != cg.clientNum && cgs.clientinfo[cg.clientNum].team != TEAM_SPECTATOR && !( cg.snap->ps.pm_flags & PMF_LIMBO ) ) {
+		return;
+	}
+
+	// Is the event for the current client (might be the player or a player being spectated)
+	if ( clientNum != cg.snap->ps.clientNum ) {
+		return;
+	}
+
+	switch ( hitSound ) {
+	case HIT_TEAMSHOT:
+		if ( !( cg_hitSounds.integer & HITSOUNDS_NOTEAMSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.teamShot, CHAN_LOCAL_SOUND );
+		}
+		break;
+	case HIT_HEADSHOT:
+		if ( !( cg_hitSounds.integer & HITSOUNDS_NOHEADSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.headShot, CHAN_LOCAL_SOUND );
+		}
+		else if ( !( cg_hitSounds.integer & HITSOUNDS_NOBODYSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.bodyShot, CHAN_LOCAL_SOUND );
+		}
+		break;
+	case HIT_BODYSHOT:
+		if ( !( cg_hitSounds.integer & HITSOUNDS_NOBODYSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.bodyShot, CHAN_LOCAL_SOUND );
+		}
+		break;
+	default:
+		CG_Printf( "Unknown hitsound: %i\n", hitSound );
+		break;
+	}
+}
+
 /*
 ================
 CG_ItemPickup
@@ -2063,7 +2109,16 @@ case EV_FILL_CLIP_FULL:
 
 	case EV_BULLET_HIT_FLESH:
 		DEBUGNAME( "EV_BULLET_HIT_FLESH" );
+		//CG_PlayHitSound( es->otherEntityNum, es->modelindex );
 		CG_Bullet( es->pos.trBase, es->otherEntityNum, dir, qtrue, es->eventParm, qfalse, es->otherEntityNum2 );
+		break;
+
+	case EV_HITSOUNDS:
+		CG_PlayHitSound( es->otherEntityNum, es->modelindex );
+		break;
+
+	case EV_PLAYER_HIT:
+		CG_PlayHitSound( es->clientNum, es->eventParm );
 		break;
 
 	case EV_WOLFKICK_HIT_WALL:

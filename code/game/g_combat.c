@@ -1515,11 +1515,13 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 	}
 
-	if ( hitEventType ) {
-		if ( !hitEventOut ) {
-			G_AddEvent( attacker, EV_PLAYER_HIT, hitEventType );
-		} else {
-			*hitEventOut = hitEventType;
+	if ( targ->client && targ->client->ps.stats[STAT_HEALTH] > 0 ) {
+		if ( hitEventType ) {
+			if ( !hitEventOut ) {
+				G_AddEvent( attacker, EV_PLAYER_HIT, hitEventType );
+			} else {
+				*hitEventOut = hitEventType;
+			}
 		}
 	}
 

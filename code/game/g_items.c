@@ -689,9 +689,25 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 int G_FindWeaponSlot( gentity_t *other, weapon_t weapon ) {
 	int i;
 
-	for ( i = 1; i < MAX_WEAPON_SLOTS; ++i ) {
-		if ( other->client->ps.weaponSlots[i] == weapon ) {
-			return i;
+	// REALRTCWCLASS
+	if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+	{
+		for (i = 1; i < MAX_WEAPON_SLOTS_SOLDIER; ++i)
+		{
+			if (other->client->ps.weaponSlotsSoldier[i] == weapon)
+			{
+				return i;
+			}
+		}
+	}
+	else
+	{
+		for (i = 1; i < MAX_WEAPON_SLOTS; ++i)
+		{
+			if (other->client->ps.weaponSlots[i] == weapon)
+			{
+				return i;
+			}
 		}
 	}
 
@@ -779,7 +795,14 @@ qboolean IsUpgradingWeapon( gentity_t *other, weapon_t weapon ) {
 		return qfalse;
 	}
 
-	return simpleWeaponSlotId > 0 && other->client->ps.weaponSlots[ simpleWeaponSlotId ] == simpleWeapon && weapon == complexWeapon;
+	if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+	{
+		return simpleWeaponSlotId > 0 && other->client->ps.weaponSlotsSoldier[simpleWeaponSlotId] == simpleWeapon && weapon == complexWeapon;
+	}
+	else
+	{
+		return simpleWeaponSlotId > 0 && other->client->ps.weaponSlots[simpleWeaponSlotId] == simpleWeapon && weapon == complexWeapon;
+	}
 }
 
 qboolean NeedAmmo(gentity_t *other, weapon_t weapon ) {
@@ -816,12 +839,25 @@ void G_RemoveWeapon( gentity_t *ent, weapon_t weapon ) {
 		int complexWeaponSlotId = G_FindWeaponSlot( ent, weapon );
 		COM_BitClear( ent->client->ps.weapons, weapon );
 		COM_BitClear( ent->client->ps.weapons, altWeapon );
-		ent->client->ps.weaponSlots[ complexWeaponSlotId ] = WP_NONE;
-		
+		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+			ent->client->ps.weaponSlotsSoldier[complexWeaponSlotId] = WP_NONE;
+		}
+		else
+		{
+			ent->client->ps.weaponSlots[complexWeaponSlotId] = WP_NONE;
+		}
 	} else {
 		int simpleSlotId = G_FindWeaponSlot( ent, weapon );
 		COM_BitClear( ent->client->ps.weapons, weapon );
+		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+			ent->client->ps.weaponSlotsSoldier[ simpleSlotId ] = WP_NONE;
+		}
+		else
+		{
 		ent->client->ps.weaponSlots[ simpleSlotId ] = WP_NONE;
+		}
 	}
 
 	// Clear out empty weapon, change to next best weapon
@@ -916,7 +952,12 @@ qboolean Give_Weapon_New_Inventory( gentity_t *other, weapon_t weapon, qboolean 
 				weapon_t simpleWeapon = GetSimpleWeapon( weapon );
 				int simpleWeaponSlotId = G_FindWeaponSlot( other, simpleWeapon );
 				COM_BitSet( other->client->ps.weapons, weapon );
-				other->client->ps.weaponSlots[ simpleWeaponSlotId ] = weapon;
+				if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER) {
+					other->client->ps.weaponSlotsSoldier[simpleWeaponSlotId] = weapon;
+				}
+				else {
+					other->client->ps.weaponSlots[simpleWeaponSlotId] = weapon;
+				}
 
 			} else {
 				int slotId;
@@ -937,21 +978,44 @@ qboolean Give_Weapon_New_Inventory( gentity_t *other, weapon_t weapon, qboolean 
 					}
 
 					if ( needThrowItem ) {
-						G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+						if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+						{
+							G_DropWeapon( other, other->client->ps.weaponSlotsSoldier[ slotId ] );
+						}
+						else
+						{
+							G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+						}
 					} else {
-						G_RemoveWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+						if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER) {
+							G_RemoveWeapon( other, other->client->ps.weaponSlotsSoldier[slotId] );
+						}
+						else {
+							G_RemoveWeapon( other, other->client->ps.weaponSlots[slotId] );
+						}
 					}
 				}
 
 				if ( IsWeaponComplex( weapon ) ) {
-					weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
-					COM_BitSet( other->client->ps.weapons, weapon );
-					COM_BitSet( other->client->ps.weapons, altWeapon );
-					other->client->ps.weaponSlots[ slotId ] = weapon;
-
+					weapon_t altWeapon = GetWeaponTableData(weapon)->weapAlts;
+					COM_BitSet(other->client->ps.weapons, weapon);
+					COM_BitSet(other->client->ps.weapons, altWeapon);
+					if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+					{
+						other->client->ps.weaponSlotsSoldier[slotId] = weapon;
+					}
+					else
+					{
+						other->client->ps.weaponSlots[slotId] = weapon;
+					}
 				} else {
 					COM_BitSet( other->client->ps.weapons, weapon );
-					other->client->ps.weaponSlots[ slotId ] = weapon;
+					if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER) {
+						other->client->ps.weaponSlotsSoldier[slotId] = weapon;
+					}
+					else {
+						other->client->ps.weaponSlots[slotId] = weapon;
+					}
 				}
 			}
 

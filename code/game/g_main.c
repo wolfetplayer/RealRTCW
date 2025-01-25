@@ -173,6 +173,8 @@ vmCvar_t g_dlc1;
 vmCvar_t g_class;
 vmCvar_t g_noobTube;
 
+vmCvar_t g_playerSurvivalClass; //REALRTCWCLASS
+
 vmCvar_t g_mapname;
 
 cvarTable_t gameCvarTable[] = {
@@ -209,6 +211,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse },
+
+	{ &g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse }, // REALRTCWCLASS
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 

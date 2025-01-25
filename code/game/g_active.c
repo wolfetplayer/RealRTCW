@@ -1026,11 +1026,11 @@ void ClientThink_real( gentity_t *ent ) {
 	                }
 		break;
 	}
-	if ( client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC ) {
-		if ( level.time > client->ps.powerups[PW_REGEN] + 5000 ) {
-			client->ps.powerups[PW_REGEN] = level.time;
-		}
-	}
+	//if ( client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC ) {
+		//if ( level.time > client->ps.powerups[PW_REGEN] + 5000 ) {
+		//	client->ps.powerups[PW_REGEN] = level.time;
+		//}
+	//}
 
 	// check for inactivity timer, but never drop the local client of a non-dedicated server
 	if ( !ClientInactivityTimer( client ) ) {

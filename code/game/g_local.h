@@ -619,6 +619,8 @@ typedef struct {
 	spectatorState_t spectatorState;
 	int spectatorClient;            // for chasecam and follow mode
 	int wins, losses;               // tournament stats
+	int playerType;                 // REALRTCWCLASS
+
 } clientSession_t;
 
 //
@@ -1269,6 +1271,8 @@ extern vmCvar_t g_midgame;
 extern vmCvar_t g_dlc1;
 extern vmCvar_t g_class;
 extern vmCvar_t g_noobTube;
+
+extern vmCvar_t g_playerSurvivalClass; //REALRTCWCLASS
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 

@@ -326,11 +326,12 @@ void PM_UpdateViewAngles( playerState_t * ps, usercmd_t * cmd, void( trace ) ( t
 int Pmove( pmove_t *pmove );
 
 //===================================================================================
-
-#define PC_SOLDIER              0   
-#define PC_MEDIC                1   
-#define PC_ENGINEER             2   
-#define PC_LT                   3   
+// REALRTCWCLASS
+#define PC_NONE                 0
+#define PC_SOLDIER              1   
+#define PC_MEDIC                2   
+#define PC_ENGINEER             3   
+#define PC_LT                   4   
 #define PC_MEDIC_CHARGETIME     30000 
 
 

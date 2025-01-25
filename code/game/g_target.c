@@ -330,10 +330,22 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		}
 
 		// If the player already has 3 perks, don't allow them to buy more
-		if (perkCount >= 3)
+		// REALRTCWCLASS
+		if (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER)
 		{
-			trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
-			return;
+			if (perkCount >= 4)
+			{
+				trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+				return;
+			}
+		}
+		else
+		{
+			if (perkCount >= 3)
+			{
+				trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+				return;
+			}
 		}
 
 		if (activator->client->ps.perks[item->giTag] > 0) {

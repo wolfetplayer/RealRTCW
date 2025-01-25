@@ -1121,6 +1121,12 @@ void ClientUserinfoChanged( int clientNum ) {
 	client->ps.legsAnim = 0;
 	client->ps.torsoAnim = 0;
 
+	// REALRTCWCLASS
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		// To communicate it to cgame
+		client->ps.stats[ STAT_PLAYER_CLASS ] = client->sess.playerType;
+	}
+
 	// strip the skin name
 	Q_strncpyz( modelname, model, sizeof( modelname ) );
 	if ( strstr( modelname, "/" ) ) {
@@ -1535,6 +1541,12 @@ void ClientSpawn( gentity_t *ent ) {
 	// spawn protection for player on initial spawn - might be useful on some custom maps
 	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {  
 	client->ps.powerups[PW_INVULNERABLE] = level.time + 5000;
+	}
+
+    // REALRTCWCLASS
+	if ( !( ent->r.svFlags & SVF_CASTAI ) && ( g_gametype.integer == GT_SURVIVAL ) ) {  
+         client->sess.playerType = g_playerSurvivalClass.integer;
+		 ClientUserinfoChanged( index );
 	}
 
 	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];

@@ -1487,34 +1487,40 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		}
 	}
 
-	if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
+	if (!ent->aiCharacter)
 	{
-		if (weapon != WP_KNIFE)
+		if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
 		{
-			if (slotId < 0)
+			if (weapon != WP_KNIFE)
 			{
-				return qfalse;
+				if (slotId < 0)
+				{
+					return qfalse;
+				}
 			}
-		}
-		else
-		{
-			slotId = 0;
+			else
+			{
+				slotId = 0;
+			}
 		}
 	}
 
 	if ( weapon != WP_NONE ) {
-		COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, weapon );
+		COM_BitSet(g_entities[cs->entityNum].client->ps.weapons, weapon);
 
-		// if ( weapon == WP_KNIFE ) {
-		// 	if ( ent->client->ps.weaponSlots[ 0 ] != WP_NONE ) {
-		// 		ent->client->ps.weaponSlots[ slotId ] = ent->client->ps.weaponSlots[ 0 ];
-		// 		ent->client->ps.weaponSlots[ 0 ] = weapon;
-		// 	}
-		// }
-
-		if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
+		if (!ent->aiCharacter)
 		{
-			ent->client->ps.weaponSlots[slotId] = weapon;
+			if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
+			{
+				if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+				{
+					ent->client->ps.weaponSlotsSoldier[slotId] = weapon;
+				}
+				else
+				{
+					ent->client->ps.weaponSlots[slotId] = weapon;
+				}
+			}
 		}
 
 //----(SA)	some weapons always go together (and they share a clip, so this is okay)
@@ -2063,6 +2069,9 @@ qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params ) {
 	int i;
 	gitem_t     *item = 0;
 
+	int clientNum;
+	clientNum = level.sortedClients[0];
+
 	for ( i = 1; bg_itemlist[i].classname; i++ ) {
 		if ( !Q_strcasecmp( params, bg_itemlist[i].classname ) ) {
 			item = &bg_itemlist[i];
@@ -2081,6 +2090,8 @@ qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params ) {
 		g_entities[cs->entityNum].client->ps.perks[item->giTag] += 1;   // add default of 1
 		g_entities[cs->entityNum].client->ps.stats[STAT_PERK] |= ( 1 << item->giTag );
 	}
+
+	ClientUserinfoChanged( clientNum );
 
 	return qtrue;
 }

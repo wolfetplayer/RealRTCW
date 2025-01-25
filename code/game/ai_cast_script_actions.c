@@ -1512,13 +1512,16 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		{
 			if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
 			{
-				if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+				if (weapon != WP_AIRSTRIKE) // Skip WP_AIRSTRIKE
 				{
-					ent->client->ps.weaponSlotsSoldier[slotId] = weapon;
-				}
-				else
-				{
-					ent->client->ps.weaponSlots[slotId] = weapon;
+					if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+					{
+						ent->client->ps.weaponSlotsSoldier[slotId] = weapon;
+					}
+					else
+					{
+						ent->client->ps.weaponSlots[slotId] = weapon;
+					}
 				}
 			}
 		}

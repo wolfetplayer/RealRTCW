@@ -1154,6 +1154,7 @@ void ClientThink_real( gentity_t *ent ) {
 	VectorCopy( client->ps.origin, client->oldOrigin );
 
 	pm.ltChargeTime = g_LTChargeTime.integer;
+	pm.gametype = g_gametype.integer;
 
 	// perform a pmove
 #ifdef MISSIONPACK

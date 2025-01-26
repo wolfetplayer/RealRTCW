@@ -1911,6 +1911,10 @@ case EV_FILL_CLIP_FULL:
 	case EV_FIRE_WEAPONB:
 		DEBUGNAME( "EV_FIRE_WEAPON" );
 
+		if ( cg.snap->ps.eFlags & EF_ZOOMING ) { // to stop airstrike sfx
+			break;
+		}
+
 		CG_FireWeapon( cent, event );
 		if ( event == EV_FIRE_WEAPONB ) {  // akimbo firing colt
 			cent->akimboFire = qtrue;

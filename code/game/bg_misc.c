@@ -1535,6 +1535,47 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	}, 
 
 	{   
+		WP_ARTY,
+		WEAPON_CLASS_NONE,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,        
+		0,                 
+		0,      
+		0,      
+		0,           
+		0,        
+		0,         
+		0,         
+		0,
+		0,      
+		0,      
+		0,      
+		0,        
+		0,        
+		0,        
+		0,          
+		0,                  
+		0.0f,            
+		0,               
+		{0, 0},          
+		{0,0},              
+		0,               
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},             
+		MOD_ARTY,           
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,                                   
+	}, 
+
+	{   
 		WP_POISONGAS,
 		WEAPON_CLASS_GRENADE,
 		WP_NONE, 
@@ -4225,6 +4266,56 @@ model="models/weapons2/p38/luger.md3"
 		WP_AIRSTRIKE,
 		"",                      
 		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",            
+		{0,0,0,0,0}
+	},
+
+/*
+weapon_arty (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+	{
+		"weapon_arty",
+		"sound/misc/w_pkup.wav",
+		{   
+		"models/multiplayer/syringe/syringe.md3",
+		"models/multiplayer/syringe/v_syringe.md3",
+		0
+		},
+
+		"icons/iconw_syringe_1",
+		"Artillery",             
+		50, // this should never be picked up
+		IT_WEAPON,
+		WP_ARTY,
+		WP_ARTY,
+		WP_ARTY,
+		WP_ARTY,
+		"",                     
+		"sound/multiplayer/allies/a-firing.wav sound/multiplayer/axis/g-firing.wav sound/multiplayer/allies/a-art_abort.wav sound/multiplayer/axis/g-art_abort.wav", 
+		{0,0,0,0,0}
+	},
+
+/* JPW NERVE
+weapon_smoketrail -- only used as a special effects emitter for smoke trails (artillery spotter etc)
+*/
+	{
+		"weapon_smoketrail",
+		"sound/misc/w_pkup.wav",
+		{   
+		"models/multiplayer/smokegrenade/smokegrenade.md3",
+		"models/multiplayer/smokegrenade/v_smokegrenade.md3",
+		0
+		},
+
+		"icons/iconw_smokegrenade_1",   
+		"smokeTrail",                
+		50,
+		IT_WEAPON,
+		WP_SMOKETRAIL,
+		WP_SMOKETRAIL,
+		WP_SMOKETRAIL,
+		WP_SMOKETRAIL,
+		"",                     
+		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",             
 		{0,0,0,0,0}
 	},
 
@@ -8155,6 +8246,8 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_DYNAMITE:          return "dynamite.weap";
 		case WP_BROWNING:          return "browning.weap";
 		case WP_AIRSTRIKE:         return "airstrike.weap";
+		case WP_ARTY:              return "arty.weap";
+		case WP_SMOKETRAIL:        return "smoketrail.weap";
 		case WP_POISONGAS:         return "poisongas.weap";
 		case WP_M30:               return "m30.weap";
 		case WP_HDM:               return "hdm.weap";

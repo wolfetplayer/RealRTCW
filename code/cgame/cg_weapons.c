@@ -1700,6 +1700,14 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			if ( !PC_Float_Parse( handle, &weaponInfo->missileDlight ) ) {
 				return CG_RW_ParseError( handle, "expected missileDlight value" );
 			}
+		} else if ( !Q_stricmp( token.string, "wiTrailTime" ) ) {
+			if ( !PC_Int_Parse( handle, &weaponInfo->wiTrailTime ) ) {
+				return CG_RW_ParseError( handle, "expected wiTrailTime value" );
+			}
+		} else if ( !Q_stricmp( token.string, "trailRadius" ) ) {
+			if ( !PC_Int_Parse( handle, &weaponInfo->trailRadius ) ) {
+				return CG_RW_ParseError( handle, "expected trailRadius value" );
+			}
 		} else if ( !Q_stricmp( token.string, "missileDlightColor" ) ) {
 			if ( !PC_Vec_Parse( handle, &weaponInfo->missileDlightColor ) ) {
 				return CG_RW_ParseError( handle, "expected missileDlightColor as r g b" );

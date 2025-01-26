@@ -314,6 +314,7 @@ typedef struct {
 	int pmove_msec;
 
 	int ltChargeTime;
+	int gametype;
 
 	// callbacks to test the world
 	// these will be different functions during game and cgame
@@ -551,7 +552,9 @@ typedef enum {
 	WP_GRENADE_LAUNCHER,
     WP_GRENADE_PINEAPPLE,
 	WP_DYNAMITE,
-	WP_AIRSTRIKE,          
+	WP_AIRSTRIKE,
+	WP_ARTY,
+	WP_SMOKETRAIL,          
 	WP_POISONGAS,
 	// Misc Alt modes
 	WP_FG42SCOPE,   
@@ -646,6 +649,7 @@ static const int autoReloadWeapons[] = {
 	WP_AIRSTRIKE,
 	WP_KNIFE,
 	WP_M7,
+	WP_ARTY,
 };
 
  // entityState_t->event values
@@ -1188,6 +1192,7 @@ typedef enum {
 	MOD_DYNAMITE,
 	MOD_DYNAMITE_SPLASH,
 	MOD_AIRSTRIKE,
+	MOD_ARTY,
 	MOD_WATER,
 	MOD_SLIME,
 	MOD_LAVA,

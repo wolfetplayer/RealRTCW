@@ -324,6 +324,206 @@ void weapon_callAirStrike( gentity_t *ent ) {
 	}
 }
 
+void artilleryThink_real( gentity_t *ent ) {
+	ent->freeAfterEvent = qtrue;
+	trap_LinkEntity( ent );
+	G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( "sound/misc/artillery_01.wav" ) );
+}
+
+void artilleryThink( gentity_t *ent ) {
+	ent->think = artilleryThink_real;
+	ent->nextthink = level.time + 100;
+
+	ent->r.svFlags = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
+}
+
+// JPW NERVE -- makes smoke disappear after a bit (just unregisters stuff)
+void artilleryGoAway( gentity_t *ent ) {
+	ent->freeAfterEvent = qtrue;
+	trap_LinkEntity( ent );
+}
+
+// JPW NERVE -- generates some smoke debris
+void artillerySpotterThink( gentity_t *ent ) {
+	gentity_t *bomb;
+	vec3_t tmpdir;
+	int i;
+	ent->think = G_ExplodeMissile;
+	ent->nextthink = level.time + 1;
+	SnapVector( ent->s.pos.trBase );
+
+	for ( i = 0; i < 7; i++ ) {
+		bomb = G_Spawn();
+		bomb->s.eType       = ET_MISSILE;
+		bomb->r.svFlags     = SVF_USE_CURRENT_ORIGIN;
+		bomb->r.ownerNum    = ent->s.number;
+		bomb->parent        = ent;
+		bomb->nextthink = level.time + 1000 + random() * 300;
+		bomb->classname = "WP"; // WP == White Phosphorous, so we can check for bounce noise in grenade bounce routine
+		bomb->damage        = 000; // maybe should un-hard-code these?
+		bomb->splashDamage  = 000;
+		bomb->splashRadius  = 000;
+		bomb->s.weapon  = WP_SMOKETRAIL;
+		bomb->think = artilleryGoAway;
+		bomb->s.eFlags |= EF_BOUNCE;
+		bomb->clipmask = MASK_MISSILESHOT;
+		bomb->s.pos.trType = TR_GRAVITY; // was TR_GRAVITY,  might wanna go back to this and drop from height
+		bomb->s.pos.trTime = level.time;        // move a bit on the very first frame
+		bomb->s.otherEntityNum2 = ent->s.otherEntityNum2;
+		VectorCopy( ent->s.pos.trBase,bomb->s.pos.trBase );
+		tmpdir[0] = crandom();
+		tmpdir[1] = crandom();
+		tmpdir[2] = 1;
+		VectorNormalize( tmpdir );
+		tmpdir[2] = 1; // extra up
+		VectorScale( tmpdir,500 + random() * 500,tmpdir );
+		VectorCopy( tmpdir,bomb->s.pos.trDelta );
+		SnapVector( bomb->s.pos.trDelta );          // save net bandwidth
+		VectorCopy( ent->s.pos.trBase,bomb->s.pos.trBase );
+		VectorCopy( ent->s.pos.trBase,bomb->r.currentOrigin );
+	}
+}
+
+
+/*
+==================
+Weapon_Artillery
+==================
+*/
+void Weapon_Artillery( gentity_t *ent ) {
+	trace_t trace;
+	int i = 0;
+	vec3_t muzzlePoint,end,bomboffset,pos,fallaxis;
+	float traceheight, bottomtraceheight;
+	gentity_t *bomb,*bomb2,*te;
+
+	if ( ent->client->ps.stats[STAT_PLAYER_CLASS] != PC_LT ) {
+		G_Printf( "not a lieutenant, you can't shoot this!\n" );
+		return;
+	}
+	if ( level.time - ent->client->ps.classWeaponTime > g_LTChargeTime.integer ) {
+
+		AngleVectors( ent->client->ps.viewangles, forward, right, up );
+
+		VectorCopy( ent->r.currentOrigin, muzzlePoint );
+		muzzlePoint[2] += ent->client->ps.viewheight;
+
+		VectorMA( muzzlePoint, 8192, forward, end );
+		trap_Trace( &trace, muzzlePoint, NULL, NULL, end, ent->s.number, MASK_SHOT );
+
+		if ( trace.surfaceFlags & SURF_NOIMPACT ) {
+			return;
+		}
+
+		VectorCopy( trace.endpos,pos );
+		VectorCopy( pos,bomboffset );
+		bomboffset[2] += 4096;
+
+		trap_Trace( &trace, pos, NULL, NULL, bomboffset, ent->s.number, MASK_SHOT );
+		if ( ( trace.fraction < 1.0 ) && ( !( trace.surfaceFlags & SURF_NOIMPACT ) ) ) { // JPW NERVE was SURF_SKY)) ) {
+
+				te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_SOUND );
+				te->s.eventParm = G_SoundIndex( "sound/misc/a-art_abort.wav" );
+				te->s.teamNum = ent->s.clientNum;
+
+			return;
+		}
+
+			te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_SOUND );
+			te->s.eventParm = G_SoundIndex( "sound/misc/a-firing.wav" );
+			te->s.teamNum = ent->s.clientNum;
+
+		VectorCopy( trace.endpos, bomboffset );
+		traceheight = bomboffset[2];
+		bottomtraceheight = traceheight - 8192;
+
+
+// "spotter" round (i == 0)
+// i == 1->4 is regular explosives
+		for ( i = 0; i < 10; i++ ) {
+			bomb = G_Spawn();
+			bomb->think = G_AirStrikeExplode;
+			bomb->s.eType       = ET_MISSILE;
+			bomb->r.svFlags     = SVF_USE_CURRENT_ORIGIN | SVF_NOCLIENT;
+			bomb->s.weapon      = WP_ARTY; // might wanna change this
+			bomb->r.ownerNum    = ent->s.number;
+			bomb->parent        = ent;
+
+			if ( i == 0 ) {
+				bomb->nextthink = level.time + 5000;
+				bomb->r.svFlags     = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
+				bomb->classname = "props_explosion"; // was "air strike"
+				bomb->damage        = 0; // maybe should un-hard-code these?
+				bomb->splashDamage  = 90;
+				bomb->splashRadius  = 50;
+				if ( ent->client != NULL ) { // set color on smoke
+						bomb->s.otherEntityNum2 = 0;
+				}
+				bomb->think = artillerySpotterThink;
+			} else {
+				bomb->nextthink = level.time + 8950 + 2000 * i + crandom() * 800;
+				bomb->classname = "air strike";
+				bomb->damage        = 0;
+				bomb->splashDamage  = 400;
+				bomb->splashRadius  = 400;
+			}
+			bomb->methodOfDeath         = MOD_AIRSTRIKE;
+			bomb->splashMethodOfDeath   = MOD_AIRSTRIKE;
+			bomb->clipmask = MASK_MISSILESHOT;
+			bomb->s.pos.trType = TR_STATIONARY; // was TR_GRAVITY,  might wanna go back to this and drop from height
+			bomb->s.pos.trTime = level.time;        // move a bit on the very first frame
+			if ( i ) { // spotter round is always dead on (OK, unrealistic but more fun)
+				bomboffset[0] = crandom() * 250;
+				bomboffset[1] = crandom() * 250;
+			} else {
+				bomboffset[0] = crandom() * 50; // was 0; changed per id request to prevent spotter round assassinations
+				bomboffset[1] = crandom() * 50; // was 0;
+			}
+			bomboffset[2] = 0;
+			VectorAdd( pos,bomboffset,bomb->s.pos.trBase );
+
+			VectorCopy( bomb->s.pos.trBase,bomboffset ); // make sure bombs fall "on top of" nonuniform scenery
+			bomboffset[2] = traceheight;
+
+			VectorCopy( bomboffset, fallaxis );
+			fallaxis[2] = bottomtraceheight;
+
+			trap_Trace( &trace, bomboffset, NULL, NULL, fallaxis, ent->s.number, MASK_SHOT );
+			if ( trace.fraction != 1.0 ) {
+				VectorCopy( trace.endpos,bomb->s.pos.trBase );
+			}
+
+			bomb->s.pos.trDelta[0] = 0; // might need to change this
+			bomb->s.pos.trDelta[1] = 0;
+			bomb->s.pos.trDelta[2] = 0;
+			SnapVector( bomb->s.pos.trDelta );          // save net bandwidth
+			VectorCopy( bomb->s.pos.trBase, bomb->r.currentOrigin );
+
+// build arty falling sound effect in front of bomb drop
+			bomb2 = G_Spawn();
+			bomb2->think = artilleryThink;
+			bomb2->s.eType  = ET_MISSILE;
+			bomb2->r.svFlags    = SVF_USE_CURRENT_ORIGIN | SVF_NOCLIENT;
+			bomb2->r.ownerNum   = ent->s.number;
+			bomb2->parent       = ent;
+			bomb2->damage       = 0;
+			bomb2->nextthink = bomb->nextthink - 600;
+			bomb2->classname = "air strike";
+			bomb2->clipmask = MASK_MISSILESHOT;
+			bomb2->s.pos.trType = TR_STATIONARY; // was TR_GRAVITY,  might wanna go back to this and drop from height
+			bomb2->s.pos.trTime = level.time;       // move a bit on the very first frame
+			VectorCopy( bomb->s.pos.trBase,bomb2->s.pos.trBase );
+			VectorCopy( bomb->s.pos.trDelta,bomb2->s.pos.trDelta );
+			VectorCopy( bomb->s.pos.trBase,bomb2->r.currentOrigin );
+		}
+		ent->client->ps.classWeaponTime = level.time;
+	} else {
+				te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_SOUND );
+				te->s.eventParm = G_SoundIndex( "sound/misc/a-negative.wav" );
+	}
+
+}
+
 gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity );
 
 /*
@@ -1719,6 +1919,19 @@ void FireWeapon( gentity_t *ent ) {
 		aimSpreadScale = 1.0;
 	}
 
+
+		if ( g_gametype.integer == GT_SURVIVAL) {
+		if ( ( ent->client->ps.eFlags & EF_ZOOMING ) && ( ent->client->ps.stats[STAT_KEYS] & ( 1 << INV_BINOCS ) ) &&
+			 ( ent->s.weapon != WP_SNIPERRIFLE ) ) {
+
+			if ( !( ent->client->ps.leanf ) ) {
+				Weapon_Artillery( ent );
+			}
+
+			return;
+		}
+	}
+
 	// fire the specific weapon
 	switch ( ent->s.weapon ) {
 	case WP_KNIFE:
@@ -1751,6 +1964,9 @@ void FireWeapon( gentity_t *ent ) {
 			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
 			weapon_grenadelauncher_fire( ent,WP_AIRSTRIKE );
 		}
+		break;
+	case WP_ARTY:
+	    G_Printf( "calling artilery\n" );
 		break;
 	case WP_SNIPERRIFLE:
 		Bullet_Fire( ent, SNIPER_SPREAD * aimSpreadScale, SNIPER_DAMAGE(isPlayer) );

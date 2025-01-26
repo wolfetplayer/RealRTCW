@@ -3591,9 +3591,20 @@ static void PM_Weapon( void ) {
 	}
 
 	// player is zooming - no fire
+	// JPW NERVE in MP, LT needs to zoom to call artillery
 	if ( pm->ps->eFlags & EF_ZOOMING ) {
+#ifdef GAMEDLL
+		if ( pm->gametype == GT_SURVIVAL ) {
+			pm->ps->weaponTime += 500;
+			PM_AddEvent( EV_FIRE_WEAPON );
+		}
+#endif
 		return;
 	}
+
+
+
+
 
 	// player is leaning - no fire
 	if ( pm->ps->leanf != 0 && pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE && pm->ps->weapon != WP_DYNAMITE && pm->ps->weapon != WP_KNIFE ) {

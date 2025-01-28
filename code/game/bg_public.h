@@ -314,6 +314,10 @@ typedef struct {
 	int pmove_msec;
 
 	int ltChargeTime;
+	int soldierChargeTime;
+	int engineerChargeTime;
+	int medicChargeTime;
+
 	int gametype;
 
 	// callbacks to test the world
@@ -553,6 +557,7 @@ typedef enum {
     WP_GRENADE_PINEAPPLE,
 	WP_DYNAMITE,
 	WP_AIRSTRIKE,
+	WP_POISONGAS_MEDIC,
 	WP_ARTY,
 	WP_SMOKETRAIL,          
 	WP_POISONGAS,
@@ -647,6 +652,7 @@ static const int autoReloadWeapons[] = {
 	WP_FLAMETHROWER,
 	WP_POISONGAS,
 	WP_AIRSTRIKE,
+	WP_POISONGAS_MEDIC,
 	WP_KNIFE,
 	WP_M7,
 	WP_ARTY,

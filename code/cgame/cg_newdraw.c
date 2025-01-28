@@ -531,6 +531,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 
 	switch ( weap ) {      // some weapons don't draw ammo count text
 	case WP_AIRSTRIKE:
+	case WP_POISONGAS_MEDIC:
 	case WP_DAGGER:
 		return;
 
@@ -2074,7 +2075,7 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 		weap = cg.snap->ps.weapon;
 
 		if ( !( cg.snap->ps.eFlags & EF_ZOOMING ) ) {
-			if ( weap != WP_AIRSTRIKE ) {
+			if ( weap != WP_AIRSTRIKE && weap !=WP_POISONGAS_MEDIC ) {
 				//fade = qtrue;
 				return;
 			}

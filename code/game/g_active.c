@@ -1154,6 +1154,9 @@ void ClientThink_real( gentity_t *ent ) {
 	VectorCopy( client->ps.origin, client->oldOrigin );
 
 	pm.ltChargeTime = g_LTChargeTime.integer;
+	pm.soldierChargeTime = g_soldierChargeTime.integer;
+	pm.engineerChargeTime = g_engineerChargeTime.integer;
+	pm.medicChargeTime = g_medicChargeTime.integer;
 	pm.gametype = g_gametype.integer;
 
 	// perform a pmove
@@ -1761,6 +1764,7 @@ void ClientEndFrame( gentity_t *ent ) {
 		case WP_GRENADE_PINEAPPLE:
 		case WP_GRENADE_LAUNCHER:   // if they are wearing down a grenade fuse, we should be very afraid
 		case WP_POISONGAS:
+		case WP_POISONGAS_MEDIC:
 			if ( ent->client->ps.grenadeTimeLeft && ent->client->ps.grenadeTimeLeft < 3000 ) {
 				AICast_CheckDangerousEntity( ent, DANGER_CLIENTAIM, 1000, 0.5, 0.9, qtrue );
 			}

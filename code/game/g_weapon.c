@@ -1200,6 +1200,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		case WP_POISONGAS:
 		case WP_DYNAMITE:
 		case WP_AIRSTRIKE:
+		case WP_POISONGAS_MEDIC:
 			upangle *= ammoTable[grenType].upAngle;
 			break;
 		default:
@@ -1234,6 +1235,16 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	m->splashDamage *= s_quadFactor;
 
 	if ( grenType == WP_POISONGAS ) 
+	{
+            m->s.effect1Time = 16;
+            m->think = G_PoisonGasExplode;
+            m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
+			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
+			m->poisonGasDamage        =  ammoTable[WP_POISONGAS].playerDamage;	
+		    
+	}
+
+	if ( grenType == WP_POISONGAS_MEDIC ) 
 	{
             m->s.effect1Time = 16;
             m->think = G_PoisonGasExplode;
@@ -1963,6 +1974,15 @@ void FireWeapon( gentity_t *ent ) {
 			}
 			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
 			weapon_grenadelauncher_fire( ent,WP_AIRSTRIKE );
+		}
+		break;
+	case WP_POISONGAS_MEDIC:
+		if ( level.time - ent->client->ps.classWeaponTime >= g_medicChargeTime.integer ) {
+			if ( level.time - ent->client->ps.classWeaponTime > g_medicChargeTime.integer ) {
+				ent->client->ps.classWeaponTime = level.time - g_medicChargeTime.integer;
+			}
+			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
+			weapon_grenadelauncher_fire( ent,WP_POISONGAS_MEDIC );
 		}
 		break;
 	case WP_ARTY:

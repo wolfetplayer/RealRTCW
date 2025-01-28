@@ -3127,7 +3127,8 @@ static qboolean PM_CheckGrenade() {
 		pm->ps->weapon != WP_DYNAMITE &&
 		pm->ps->weapon != WP_POISONGAS &&
 		pm->ps->weapon != WP_AIRSTRIKE &&
-		pm->ps->weapon != WP_KNIFE ) {
+		pm->ps->weapon != WP_KNIFE &&
+		pm->ps->weapon != WP_POISONGAS_MEDIC ) {
 			return qfalse;
 		}
 
@@ -3570,6 +3571,12 @@ static void PM_Weapon( void ) {
 				return;
 			}
 		}
+
+	if ( pm->ps->weapon == WP_POISONGAS_MEDIC ) {
+			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->medicChargeTime ) ) {
+				return;
+			}
+		}
 	// check for fire
 	if ( (!(pm->cmd.buttons & BUTTON_ATTACK) && !PM_AltFire() && !delayedFire) 
 	    || (pm->ps->leanf != 0 && !PM_AltFiring(delayedFire) && pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE && pm->ps->weapon != WP_POISONGAS) )
@@ -3617,6 +3624,7 @@ static void PM_Weapon( void ) {
 			 pm->ps->weapon != WP_GRENADE_LAUNCHER &&
 			 pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
 			 pm->ps->weapon != WP_POISONGAS &&
+			 pm->ps->weapon != WP_POISONGAS_MEDIC &&
 			 pm->ps->weapon != WP_DAGGER  ) {
 			PM_AddEvent( EV_NOFIRE_UNDERWATER );        // event for underwater 'click' for nofire
 			pm->ps->weaponTime  = 500;
@@ -3651,6 +3659,7 @@ static void PM_Weapon( void ) {
 	case WP_M97:
 	case WP_AUTO5:
 	case WP_AIRSTRIKE:
+	case WP_POISONGAS_MEDIC:
 	case WP_M30:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
@@ -3897,6 +3906,7 @@ static void PM_Weapon( void ) {
 	case WP_THOMPSON:
 	case WP_STEN:
 	case WP_AIRSTRIKE:
+	case WP_POISONGAS_MEDIC:
 		PM_ContinueWeaponAnim( weapattackanim );
 		break;
 
@@ -3914,7 +3924,7 @@ static void PM_Weapon( void ) {
 		break;
 	}
 
-		if ( pm->ps->weapon == WP_AIRSTRIKE )  {
+		if ( pm->ps->weapon == WP_AIRSTRIKE || pm->ps->weapon == WP_POISONGAS_MEDIC ) { 
 			PM_AddEvent( EV_NOAMMO );
 		}
 
@@ -4064,6 +4074,7 @@ static void PM_Weapon( void ) {
 		case WP_GRENADE_PINEAPPLE:
 		case WP_POISONGAS:
 		case WP_AIRSTRIKE:
+		case WP_POISONGAS_MEDIC:
 			pm->ps->weaponstate = WEAPON_DROPPING;
 			pm->ps->holdable[HI_KNIVES] = 0;
 			break;

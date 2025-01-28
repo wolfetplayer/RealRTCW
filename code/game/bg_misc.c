@@ -1615,6 +1615,47 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,
 		0,                                 
 	}, 
+
+		{   
+		WP_POISONGAS_MEDIC,
+		WEAPON_CLASS_GRENADE,
+		WP_NONE, 
+		WEAPON_TEAM_COMMON,       
+		0,                   
+		0,       
+		0,        
+		0,           
+		0,        
+		0,         
+		0,
+		0,         
+		0,      
+		0,      
+		0,      
+		0,        
+		0,        
+		0,        
+		0,          
+		0,                  
+		0.0f,            
+		0,               
+		{0, 0},         
+		{0,0},              
+		0,               
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},             
+		MOD_POISONGAS, 
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,                                 
+	}, 
 	// Misc alt modes
 	{   
 		WP_FG42SCOPE,
@@ -4264,6 +4305,29 @@ model="models/weapons2/p38/luger.md3"
 		WP_AIRSTRIKE,
 		WP_AIRSTRIKE,
 		WP_AIRSTRIKE,
+		"",                      
+		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",            
+		{0,0,0,0,0}
+	},
+
+
+	{
+		"weapon_poison_med",
+		"sound/misc/w_pkup.wav",
+		{  
+		"",
+		"",
+		""
+		},
+
+		"icons/iconw_smokegrenade_1",    
+		"poison_med",              
+		50,
+		IT_WEAPON,
+		WP_POISONGAS_MEDIC,
+		WP_POISONGAS_MEDIC,
+		WP_POISONGAS_MEDIC,
+		WP_POISONGAS_MEDIC,
 		"",                      
 		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",            
 		{0,0,0,0,0}
@@ -8246,6 +8310,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_DYNAMITE:          return "dynamite.weap";
 		case WP_BROWNING:          return "browning.weap";
 		case WP_AIRSTRIKE:         return "airstrike.weap";
+		case WP_POISONGAS_MEDIC:   return "poisongas_medic.weap";
 		case WP_ARTY:              return "arty.weap";
 		case WP_SMOKETRAIL:        return "smoketrail.weap";
 		case WP_POISONGAS:         return "poisongas.weap";

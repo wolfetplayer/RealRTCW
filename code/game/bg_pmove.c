@@ -3850,8 +3850,13 @@ static void PM_Weapon( void ) {
 	// fire weapon
 
 	// add weapon heat
-	if ( ammoTable[pm->ps->weapon].maxHeat ) {
-		pm->ps->weapHeat[pm->ps->weapon] += ammoTable[pm->ps->weapon].nextShotTime;
+	// except for engineers, they don't have to worry about it
+	if (pm->ps->stats[STAT_PLAYER_CLASS] != PC_ENGINEER)
+	{
+		if (ammoTable[pm->ps->weapon].maxHeat)
+		{
+			pm->ps->weapHeat[pm->ps->weapon] += ammoTable[pm->ps->weapon].nextShotTime;
+		}
 	}
 
 	// first person weapon animations
@@ -4031,21 +4036,21 @@ static void PM_Weapon( void ) {
 	// check for overheat
 
 	// the weapon can overheat, and it's hot
-	if ( ( pm->ps->aiChar != AICHAR_PROTOSOLDIER ) &&
-		 ( pm->ps->aiChar != AICHAR_SUPERSOLDIER ) &&
-		( pm->ps->aiChar != AICHAR_SUPERSOLDIER_LAB ) &&
-		 ( pm->ps->aiChar != AICHAR_XSHEPHERD ) &&
-		 ( ammoTable[pm->ps->weapon].maxHeat && pm->ps->weapHeat[pm->ps->weapon] ) ) {
+	if ((pm->ps->aiChar != AICHAR_PROTOSOLDIER) &&
+		(pm->ps->aiChar != AICHAR_SUPERSOLDIER) &&
+		(pm->ps->aiChar != AICHAR_SUPERSOLDIER_LAB) &&
+		(pm->ps->aiChar != AICHAR_XSHEPHERD) &&
+		(ammoTable[pm->ps->weapon].maxHeat && pm->ps->weapHeat[pm->ps->weapon]))
+	{
 		// it is overheating
-		if ( pm->ps->weapHeat[pm->ps->weapon] >= ammoTable[pm->ps->weapon].maxHeat ) {
-			pm->ps->weapHeat[pm->ps->weapon] = ammoTable[pm->ps->weapon].maxHeat;       // cap heat to max
-			PM_AddEvent( EV_WEAP_OVERHEAT );
-//			PM_StartWeaponAnim(WEAP_IDLE1);	// removed.  client handles anim in overheat event
-			addTime = 2000;         // force "heat recovery minimum" to 2 sec right now
+		if (pm->ps->weapHeat[pm->ps->weapon] >= ammoTable[pm->ps->weapon].maxHeat)
+		{
+			pm->ps->weapHeat[pm->ps->weapon] = ammoTable[pm->ps->weapon].maxHeat; // cap heat to max
+			PM_AddEvent(EV_WEAP_OVERHEAT);
+			addTime = 2000; // force "heat recovery minimum" to 2 sec right now
 		}
 	}
 
-    
 	if ( pm->ps->powerups[PW_HASTE_SURV] ) {
 		addTime /= 1.3;
 	}

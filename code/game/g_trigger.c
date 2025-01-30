@@ -842,10 +842,18 @@ void ammo_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 		if ( ammoAdded ) {
 			// add the cell event (to get sound, etc.)
 			G_AddPredictableEvent( touchClients[i], EV_ITEM_PICKUP, BG_FindItem( "Ammo Pack" ) - bg_itemlist );
-
+			
 			if (g_gametype.integer == GT_SURVIVAL)
 			{
-				other->client->ps.persistant[PERS_SCORE] -= svParams.ammoStandPrice;
+
+				if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT)
+				{
+					other->client->ps.persistant[PERS_SCORE] -= svParams.ammoStandPrice / 2;
+				}
+				else
+				{
+					other->client->ps.persistant[PERS_SCORE] -= svParams.ammoStandPrice;
+				}
 			}
 
 			if ( self->health != -9999 ) {

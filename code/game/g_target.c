@@ -281,8 +281,16 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
         // Set the ammo of the bought weapon to the "maxammo" from the ammo table
         Add_Ammo( activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue );
+		Add_Ammo( activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse );
 
-        // Select the bought weapon
+		// Give player GL and ammo if they buy the M1 Garand
+		if (item->giTag == WP_M1GARAND)
+		{
+			Give_Weapon_New_Inventory( activator, WP_M7, qfalse );
+			Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
+		}
+
+		// Select the bought weapon
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );
 
 		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
@@ -303,6 +311,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
         // Set the ammo of the bought weapon to the "maxammo" from the ammo table
         Add_Ammo( activator, item->giTag, ammoTable[ item->giTag ].maxammo, qtrue );
+		Add_Ammo( activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse );
 
         // Select the bought weapon
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, BG_FindItemForWeapon( item->giTag ) - bg_itemlist );

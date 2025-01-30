@@ -327,7 +327,15 @@ void weapon_callAirStrike( gentity_t *ent ) {
 void artilleryThink_real( gentity_t *ent ) {
 	ent->freeAfterEvent = qtrue;
 	trap_LinkEntity( ent );
-	G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( "sound/misc/artillery_01.wav" ) );
+	{
+		int sfx = rand() % 3;
+
+		switch ( sfx ) {
+		case 0: G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( "sound/weapons/artillery/artillery_fly_1.wav" ) ); break;
+		case 1: G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( "sound/weapons/artillery/artillery_fly_2.wav" ) ); break;
+		case 2: G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( "sound/weapons/artillery/artillery_fly_3.wav" ) ); break;
+		}
+	}
 }
 
 void artilleryThink( gentity_t *ent ) {

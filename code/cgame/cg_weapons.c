@@ -6104,6 +6104,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case VERYBIGEXPLOSION:
 	case WP_PANZERFAUST:
     case WP_AIRSTRIKE:
+	case WP_ARTY:
 		sfx = cgs.media.sfx_rockexp;
 		sfx2 = cgs.media.sfx_rockexpDist;
 		sfx2range = 800;

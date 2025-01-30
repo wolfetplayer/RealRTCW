@@ -1066,17 +1066,39 @@ void ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		// To communicate it to cgame
+		client->ps.stats[ STAT_PLAYER_CLASS ] = client->sess.playerType;
+	}
+
 	// Set max health based on user info
 	client->pers.maxHealth = atoi(Info_ValueForKey(userinfo, "handicap"));
 
-	// Check if the player has PERK_RESILIENCE
-	if (client->ps.perks[PERK_RESILIENCE])
+	if (g_gametype.integer == GT_SURVIVAL)
 	{
-		client->pers.maxHealth = 200;
+
+		if (client->ps.perks[PERK_RESILIENCE])
+		{
+			if (client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC)
+			{
+				client->pers.maxHealth = 250;
+			}
+			else
+			{
+				client->pers.maxHealth = 200;
+			}
+		} else {
+            if (client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC) {
+				client->pers.maxHealth = 150;
+			} else {
+				client->pers.maxHealth = 100;
+			}
+
+		}
 	}
-	else
-	{
+
 		// Set max health based on game skill level
+		if (g_gametype.integer != GT_SURVIVAL) {
 		switch (g_gameskill.integer)
 		{
 		case GSKILL_EASY:
@@ -1120,12 +1142,6 @@ void ClientUserinfoChanged( int clientNum ) {
 	// RF, reset anims so client's dont freak out
 	client->ps.legsAnim = 0;
 	client->ps.torsoAnim = 0;
-
-	// REALRTCWCLASS
-	if ( g_gametype.integer == GT_SURVIVAL ) {
-		// To communicate it to cgame
-		client->ps.stats[ STAT_PLAYER_CLASS ] = client->sess.playerType;
-	}
 
 	// strip the skin name
 	Q_strncpyz( modelname, model, sizeof( modelname ) );
@@ -1543,7 +1559,6 @@ void ClientSpawn( gentity_t *ent ) {
 	client->ps.powerups[PW_INVULNERABLE] = level.time + 5000;
 	}
 
-    // REALRTCWCLASS
 	if ( !( ent->r.svFlags & SVF_CASTAI ) && ( g_gametype.integer == GT_SURVIVAL ) ) {  
          client->sess.playerType = g_playerSurvivalClass.integer;
 		 ClientUserinfoChanged( index );

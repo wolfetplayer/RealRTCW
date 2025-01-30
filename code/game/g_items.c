@@ -689,7 +689,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 int G_FindWeaponSlot( gentity_t *other, weapon_t weapon ) {
 	int i;
 
-	// REALRTCWCLASS
 	if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
 	{
 		for (i = 1; i < MAX_WEAPON_SLOTS_SOLDIER; ++i)

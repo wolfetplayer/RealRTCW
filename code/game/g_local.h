@@ -225,6 +225,7 @@ typedef enum {
     RADIUS_SCOPE_ANY,
     RADIUS_SCOPE_CLIENTS,
     RADIUS_SCOPE_NOCLIENTS,
+	RADIUS_SCOPE_AI,
 } RadiusScope;
 
 // door AI sound ranges
@@ -619,7 +620,7 @@ typedef struct {
 	spectatorState_t spectatorState;
 	int spectatorClient;            // for chasecam and follow mode
 	int wins, losses;               // tournament stats
-	int playerType;                 // REALRTCWCLASS
+	int playerType;                
 
 } clientSession_t;
 
@@ -1272,7 +1273,7 @@ extern vmCvar_t g_dlc1;
 extern vmCvar_t g_class;
 extern vmCvar_t g_noobTube;
 
-extern vmCvar_t g_playerSurvivalClass; //REALRTCWCLASS
+extern vmCvar_t g_playerSurvivalClass;
 
 extern vmCvar_t g_reloading;        //----(SA)	added
 
@@ -1590,6 +1591,7 @@ void	*trap_Alloc( int size );
 
 gentity_t* G_FindSmokeBomb( gentity_t* start );
 void G_PoisonGasExplode  ( gentity_t* );
+void G_PoisonGas2Explode  ( gentity_t* );
 
 void G_SetTargetName( gentity_t* ent, char* targetname );
 

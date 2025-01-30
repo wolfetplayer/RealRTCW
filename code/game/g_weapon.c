@@ -664,6 +664,46 @@ void G_PoisonGasExplode(gentity_t* ent) {
     }
 }
 
+void G_PoisonGas2Explode(gentity_t* ent) {
+    int lived = 0;
+
+    if (!ent->grenadeExplodeTime)
+        ent->grenadeExplodeTime = level.time;
+
+    lived = level.time - ent->grenadeExplodeTime;
+    ent->nextthink = level.time + FRAMETIME;
+
+    if (lived < SMOKEBOMB_GROWTIME) {
+        // Just been thrown, increase radius
+		ent->s.effect1Time = 16 + lived * ( ( 640.f - 16.f ) / (float)SMOKEBOMB_GROWTIME );
+    }
+    else if (lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME) {
+        // Smoking
+        ent->s.effect1Time = 640;
+
+        if (level.time >= ent->poisonGasAlarm) {
+            ent->poisonGasAlarm = level.time + 1500;
+                G_RadiusDamage2(
+                ent->r.currentOrigin,
+                ent,
+                ent->parent,
+                ent->poisonGasDamage,
+                ent->poisonGasRadius,
+                ent,
+                MOD_POISONGAS,
+                RADIUS_SCOPE_AI );
+        }
+    }
+    else if (lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME + SMOKEBOMB_POSTSMOKETIME) {
+        // Dying out
+        ent->s.effect1Time = -1;
+    }
+    else {
+        // Poof and it's gone
+        G_FreeEntity( ent );
+    }
+}
+
 /*
 ======================================================================
 
@@ -1246,11 +1286,11 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 
 	if ( grenType == WP_POISONGAS_MEDIC ) 
 	{
-            m->s.effect1Time = 16;
-            m->think = G_PoisonGasExplode;
+            m->s.effect1Time = 24;
+            m->think = G_PoisonGas2Explode;
             m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
-			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
-			m->poisonGasDamage        =  ammoTable[WP_POISONGAS].playerDamage;	
+			m->poisonGasRadius          = ammoTable[WP_POISONGAS_MEDIC].playerSplashRadius;
+			m->poisonGasDamage        =  ammoTable[WP_POISONGAS_MEDIC].playerDamage;	
 		    
 	}
 

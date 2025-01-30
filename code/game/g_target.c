@@ -339,7 +339,6 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		}
 
 		// If the player already has 3 perks, don't allow them to buy more
-		// REALRTCWCLASS
 		if (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER)
 		{
 			if (perkCount >= 4)

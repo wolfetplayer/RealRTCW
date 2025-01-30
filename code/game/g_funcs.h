@@ -191,6 +191,7 @@ If you have questions concerning this license or the applicable additional terms
 {"CheckMeleeAttack", (byte *)CheckMeleeAttack},
 {"weapon_callAirStrike", (byte *)weapon_callAirStrike},
 {"G_PoisonGasExplode", (byte *)G_PoisonGasExplode},
+{"G_PoisonGas2Explode", (byte *)G_PoisonGas2Explode},
 {"Weapon_Knife", (byte *)Weapon_Knife},
 {"Weapon_Dagger", (byte *)Weapon_Dagger},
 {"DebugLine", (byte *)DebugLine},

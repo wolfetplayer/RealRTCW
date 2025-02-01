@@ -1584,6 +1584,27 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
 	int i;
 	gentity_t   *ent = &g_entities[cs->entityNum];
 
+	char localParams[256];
+    char *tokens[16];
+    int tCount = 0;
+    char *chosenParam;
+    char *token;
+
+	Q_strncpyz(localParams, params, sizeof(localParams));
+
+	token = strtok(localParams, " ");
+    while (token && tCount < 16)
+    {
+        tokens[tCount++] = token;
+        token = strtok(NULL, " ");
+    }
+
+    if (tCount > 1) {
+        chosenParam = tokens[rand() % tCount];
+	} else {
+        chosenParam = tokens[0];
+	}
+
 	int maxAmmo = sizeof(ammoTable) / sizeof(ammoTable[0]);
 	
 	weapon = WP_NONE;
@@ -1594,18 +1615,16 @@ qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params ) {
 	memset( g_entities[cs->entityNum].client->ps.ammoclip, 0, sizeof( g_entities[cs->entityNum].client->ps.ammoclip ) );
 	cs->weaponNum = WP_NONE;
 
-	for ( i = 1; bg_itemlist[i].classname; i++ )
-	{
-		//----(SA)	first try the name they see in the editor, then the pickup name
-		if ( !Q_strcasecmp( params, bg_itemlist[i].classname ) ) {
-			weapon = bg_itemlist[i].giTag;
-			break;
-		}
-
-		if ( !Q_strcasecmp( params, bg_itemlist[i].pickup_name ) ) {
-			weapon = bg_itemlist[i].giTag;
-		}
-	}
+    for ( i = 1; bg_itemlist[i].classname; i++ )
+    {
+        if ( !Q_strcasecmp( chosenParam, bg_itemlist[i].classname ) ) {
+            weapon = bg_itemlist[i].giTag;
+            break;
+        }
+        if ( !Q_strcasecmp( chosenParam, bg_itemlist[i].pickup_name ) ) {
+            weapon = bg_itemlist[i].giTag;
+        }
+    }
 
     // Weapon randomizer
 

@@ -599,7 +599,10 @@ void G_RunMissile( gentity_t *ent ) {
 	int impactDamage;
 
 	// Ridah, make AI aware of this danger
-	AICast_CheckDangerousEntity( ent, DANGER_MISSILE, ent->splashRadius, 0.1, 1.0, qtrue );
+	if (ent->s.weapon != WP_ARTY && ent->s.weapon != WP_AIRSTRIKE)
+	{
+		AICast_CheckDangerousEntity(ent, DANGER_MISSILE, ent->splashRadius, 0.1, 1.0, qtrue);
+	}
 
 	// get current position
 	BG_EvaluateTrajectory( &ent->s.pos, level.time, origin );

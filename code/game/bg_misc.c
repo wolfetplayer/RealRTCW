@@ -6521,8 +6521,6 @@ qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
 
                 if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33  ) {
                     weapNumOfClips = numOfClips * 2; // double clips babeh!
-                } else if (weapon == WP_BROWNING || weapon == WP_VENOM) {
-                    weapNumOfClips = numOfClips / 2; // cut clip size in half
                 } else {
                     weapNumOfClips = numOfClips;
                 }

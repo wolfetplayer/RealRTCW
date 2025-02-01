@@ -6493,66 +6493,49 @@ WARNING: when numOfClips is 0, DO NOT CHANGE ANYTHING under ps.
 */
 // Gordon: setting numOfClips = 0 allows you to check if the client needs ammo, but doesnt give any
 qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
-	int i, weapon;
-	int ammoAdded = qfalse;
-	int maxammo;
-	int clip;
-	int weapNumOfClips;
+    int i, weapon;
+    int ammoAdded = qfalse;
+    int maxammo;
+    int clip;
+    int weapNumOfClips;
 
-	// Gordon: now other weapons
-	for ( i = 0; reloadableWeapons[i] >= 0; i++ ) {
-		weapon = reloadableWeapons[i];
-		if ( COM_BitCheck( ps->weapons, weapon ) ) {
-			maxammo = ammoTable[weapon].maxammo;
+    // Gordon: now other weapons
+    for ( i = 0; reloadableWeapons[i] >= 0; i++ ) {
+        weapon = reloadableWeapons[i];
 
-			// Handle weapons that just use clip, and not ammo
-			if ( weapon == WP_FLAMETHROWER) {
-				clip = BG_FindAmmoForWeapon( weapon );
-				if ( ps->ammoclip[clip] < maxammo ) {
-					// early out
-					if ( !numOfClips ) {
-						return qtrue;
-					}
+        // Skip WP_PANZERFAUST, WP_TESLA, and WP_FLAMETHROWER
+        if (weapon == WP_PANZERFAUST || weapon == WP_TESLA || weapon == WP_FLAMETHROWER) {
+            continue;
+        }
 
-					ammoAdded = qtrue;
-					ps->ammoclip[clip] = maxammo;
-				}
-			} else if ( weapon == WP_TESLA) {
-				clip = BG_FindAmmoForWeapon( weapon );
-				if ( ps->ammoclip[clip] < maxammo ) {
-					// early out
-					if ( !numOfClips ) {
-						return qtrue;
-					}
+        if ( COM_BitCheck( ps->weapons, weapon ) ) {
+            maxammo = ammoTable[weapon].maxammo;
 
-					ammoAdded = qtrue;
-					ps->ammoclip[clip] = maxammo;
-				}
-			} else {
-				clip = BG_FindAmmoForWeapon( weapon );
-				if ( ps->ammo[clip] < maxammo ) {
-					// early out
-					if ( !numOfClips ) {
-						return qtrue;
-					}
-					ammoAdded = qtrue;
+            clip = BG_FindAmmoForWeapon( weapon );
+            if ( ps->ammo[clip] < maxammo ) {
+                // early out
+                if ( !numOfClips ) {
+                    return qtrue;
+                }
+                ammoAdded = qtrue;
 
-					if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33  ) {
-						weapNumOfClips = numOfClips * 2; // double clips babeh!
-					} else {
-						weapNumOfClips = numOfClips;
-					}
+                if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33  ) {
+                    weapNumOfClips = numOfClips * 2; // double clips babeh!
+                } else if (weapon == WP_BROWNING || weapon == WP_VENOM) {
+                    weapNumOfClips = numOfClips / 2; // cut clip size in half
+                } else {
+                    weapNumOfClips = numOfClips;
+                }
 
-					// add and limit check
-					ps->ammo[clip] += weapNumOfClips * ammoTable[weapon].maxclip;
-					if ( ps->ammo[clip] > maxammo ) {
-						ps->ammo[clip] = maxammo;
-					}
-				}
-			}
-		}
-	}
-	return ammoAdded;
+                // add and limit check
+                ps->ammo[clip] += weapNumOfClips * ammoTable[weapon].maxclip;
+                if ( ps->ammo[clip] > maxammo ) {
+                    ps->ammo[clip] = maxammo;
+                }
+            }
+        }
+    }
+    return ammoAdded;
 }
 
 

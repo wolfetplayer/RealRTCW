@@ -196,6 +196,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
+	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
 
     // ETSP Achievements stuff!
 	qboolean modGL = (meansOfDeath == MOD_M7 );
@@ -629,10 +630,19 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	trap_LinkEntity( self );
 
 	// Decrement the counter for active AI characters
-	if ( g_gametype.integer == GT_SURVIVAL && killerPlayer )  {
-	   svParams.survivalKillCount++;
-	   svParams.waveKillCount++;
-	   AICast_CheckSurvivalProgression( attacker );
+	if (g_gametype.integer == GT_SURVIVAL && (killerPlayer || killerFriendly))
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		if (killerPlayer)
+		{
+			AICast_CheckSurvivalProgression(attacker);
+		}
+		else
+		{
+			// If attacker is friendly AI, call progression with a player entity
+			AICast_CheckSurvivalProgression(&g_entities[0]);
+		}
 	}
 
 	// kill, instanly, any streaming sound the character had going

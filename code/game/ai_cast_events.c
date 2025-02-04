@@ -630,7 +630,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	trap_LinkEntity( self );
 
 	// Decrement the counter for active AI characters
-	if (g_gametype.integer == GT_SURVIVAL && (killerPlayer || killerFriendly))
+	if ( g_gametype.integer == GT_SURVIVAL && (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
 	{
 		svParams.survivalKillCount++;
 		svParams.waveKillCount++;

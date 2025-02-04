@@ -211,6 +211,11 @@ void TossClientItems( gentity_t *self, gentity_t *attacker )
 		return;
 	}
 
+	// If attacker is on same team, do not drop treasures
+    if ( attacker->aiTeam == self->aiTeam ) {
+        return;
+    }
+
     const char *treasure = "item_treasure"; // Correctly define the treasure item name
 
     AngleVectors(self->r.currentAngles, forward, NULL, NULL);
@@ -261,6 +266,11 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker)
 	{
 		return;
 	}
+
+	// If attacker is on same team, do not drop powerups
+    if ( attacker->aiTeam == self->aiTeam ) {
+        return;
+    }
 
 	AngleVectors(self->r.currentAngles, forward, NULL, NULL);
 

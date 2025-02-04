@@ -758,7 +758,7 @@ void AIChar_Death( gentity_t *ent, gentity_t *attacker, int damage, int mod ) { 
 	// need this check otherwise sound will overwrite gib message
 	if ( ent->health > GIB_HEALTH  ) {
 		if ( ent->client->ps.eFlags & EF_HEADSHOT ) {
-			if ( g_gametype.integer == GT_SURVIVAL )  {
+        if ( g_gametype.integer == GT_SURVIVAL && attacker && ( attacker->aiTeam != ent->aiTeam ) ) {
 			    attacker->client->ps.persistant[PERS_SCORE] += svParams.scoreHeadshotKill;
 			}
 			G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT] ) );

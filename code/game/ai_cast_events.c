@@ -125,7 +125,7 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 		return;
 	}
 
-	if (g_gametype.integer == GT_SURVIVAL && killerPlayer)
+	if (g_gametype.integer == GT_SURVIVAL && killerPlayer && (attacker->aiTeam != targ->aiTeam))
 	{
 
 		if (attacker->client->ps.powerups[PW_VAMPIRE])
@@ -279,13 +279,14 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		}
 	}
 
-    if (g_gametype.integer == GT_SURVIVAL && killerPlayer) {
+	if (g_gametype.integer == GT_SURVIVAL && killerPlayer && (attacker->aiTeam != self->aiTeam))
+	{
 
+		int score = svParams.scoreBaseKill; // Default score
 
-    int score = svParams.scoreBaseKill;  // Default score
-
-    // Add score based on aiCharacter type
-    switch (attacker->aiCharacter) {
+		// Add score based on aiCharacter type
+		switch (self->aiCharacter)
+		{
         case AICHAR_SOLDIER:
             score += svParams.scoreSoldierBonus;
             break;
@@ -325,8 +326,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
     attacker->client->ps.persistant[PERS_SCORE] += score;
 	attacker->client->ps.persistant[PERS_KILLS]++;
-    }
-
+	}
 
 	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modDagger ) // vampirism
 	{

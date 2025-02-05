@@ -194,6 +194,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
 	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
+	qboolean modFlamer = (meansOfDeath == MOD_FLAMETHROWER);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
 	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
@@ -654,6 +655,13 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		AICast_CheckSurvivalProgression(&g_entities[0]);
 	}
 
+	// That should cover flame traps case
+	if (g_gametype.integer == GT_SURVIVAL && modFlamer && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
 
 	// kill, instanly, any streaming sound the character had going
 	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );

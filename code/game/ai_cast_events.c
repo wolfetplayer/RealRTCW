@@ -613,8 +613,14 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
                if (rebirthTime < svParams.minSpawnTime * 1000) {
                  rebirthTime = svParams.minSpawnTime * 1000;
                }
+               
+			   // Friendlies has separate time. Might outsource it.
+			   if (self->aiTeam == 1) {
+                  cs->rebirthTime = level.time + 60000 + rand() % 2000;
+			   } else {
+				   cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+			   }
 
-                cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
            } else if ( g_gameskill.integer == GSKILL_EASY ) {
 				cs->rebirthTime = level.time + 25000 + rand() % 2000;
 			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {

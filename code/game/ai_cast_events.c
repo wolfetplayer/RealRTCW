@@ -197,6 +197,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
 	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
+	qboolean modMG = (meansOfDeath == MOD_MACHINEGUN);
 
     // ETSP Achievements stuff!
 	qboolean modGL = (meansOfDeath == MOD_M7 );
@@ -644,6 +645,15 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			AICast_CheckSurvivalProgression(&g_entities[0]);
 		}
 	}
+	
+	// That should cover mg42 static case
+	if (g_gametype.integer == GT_SURVIVAL && modMG && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
+
 
 	// kill, instanly, any streaming sound the character had going
 	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );

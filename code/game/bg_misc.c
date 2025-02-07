@@ -6499,33 +6499,36 @@ qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
     int clip;
     int weapNumOfClips;
 
-    // Gordon: now other weapons
     for ( i = 0; reloadableWeapons[i] >= 0; i++ ) {
         weapon = reloadableWeapons[i];
 
-        // Skip WP_PANZERFAUST, WP_TESLA, and WP_FLAMETHROWER
-        if (weapon == WP_PANZERFAUST || weapon == WP_TESLA || weapon == WP_FLAMETHROWER) {
+        // Only skip heavy weapons if player class isn't PC_SOLDIER
+        if ( ( weapon == WP_PANZERFAUST
+            || weapon == WP_TESLA
+            || weapon == WP_FLAMETHROWER
+            || weapon == WP_BROWNING
+            || weapon == WP_MG42M )
+            && ps->stats[STAT_PLAYER_CLASS] != PC_SOLDIER )
+        {
             continue;
         }
 
         if ( COM_BitCheck( ps->weapons, weapon ) ) {
             maxammo = ammoTable[weapon].maxammo;
-
             clip = BG_FindAmmoForWeapon( weapon );
             if ( ps->ammo[clip] < maxammo ) {
-                // early out
                 if ( !numOfClips ) {
                     return qtrue;
                 }
                 ammoAdded = qtrue;
 
-                if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33  ) {
-                    weapNumOfClips = numOfClips * 2; // double clips babeh!
+                // Akimbo case
+                if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33 ) {
+                    weapNumOfClips = numOfClips * 2;
                 } else {
                     weapNumOfClips = numOfClips;
                 }
 
-                // add and limit check
                 ps->ammo[clip] += weapNumOfClips * ammoTable[weapon].maxclip;
                 if ( ps->ammo[clip] > maxammo ) {
                     ps->ammo[clip] = maxammo;

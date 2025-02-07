@@ -892,7 +892,7 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 	// now check the damageQuota to see if we should play a pain animation
 	// first reduce the current damageQuota with time
 	if ( cs->damageQuotaTime && cs->damageQuota > 0 ) {
-		cs->damageQuota -= (int)( ( 1.0 + ( g_gameskill.value / GSKILL_REALISM ) ) * ( (float)( level.time - cs->damageQuotaTime ) / 1000 ) * ( 7.5 + cs->attributes[ATTACK_SKILL] * 10.0 ) );
+		cs->damageQuota -= (int)( ( 1.0 + ( g_gameskill.value / GSKILL_SURVIVAL ) ) * ( (float)( level.time - cs->damageQuotaTime ) / 1000 ) * ( 7.5 + cs->attributes[ATTACK_SKILL] * 10.0 ) );
 		if ( cs->damageQuota < 0 ) {
 			cs->damageQuota = 0;
 		}
@@ -905,13 +905,13 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 		if ( scale > 4.0 ) {
 			scale = 4.0;
 		}
-		damage = (int)( (float)damage * ( 1.0 + ( scale * ( 1.0 - 0.5 * g_gameskill.value / GSKILL_REALISM ) ) ) );
+		damage = (int)( (float)damage * ( 1.0 + ( scale * ( 1.0 - 0.5 * g_gameskill.value / GSKILL_SURVIVAL ) ) ) );
 	}
 
 	// adjust the new damage with distance, if they are really close, scale it down, to make it
 	// harder to get through the game by continually rushing the enemies
 	if ( ( attacker->s.weapon != WP_TESLA  && attacker->s.weapon != WP_HOLYCROSS ) && ( ( dist = VectorDistance( ent->r.currentOrigin, attacker->r.currentAngles ) ) < 384 ) ) {
-		damage -= (int)( (float)damage * ( 1.0 - ( dist / 384.0 ) ) * ( 0.5 + 0.5 * g_gameskill.value / GSKILL_REALISM ) );
+		damage -= (int)( (float)damage * ( 1.0 - ( dist / 384.0 ) ) * ( 0.5 + 0.5 * g_gameskill.value / GSKILL_SURVIVAL ) );
 	}
 
 	// add the new damage
@@ -976,7 +976,7 @@ void AIChar_Pain( gentity_t *ent, gentity_t *attacker, int damage, vec3_t point 
 		cs->damageQuota = 0;
 		cs->damageQuotaTime = 0;
 		//
-		cs->painSoundTime = cs->pauseTime + (int)( 1000 * ( g_gameskill.value / GSKILL_REALISM ) );     // add a bit more of a buffer before the next one
+		cs->painSoundTime = cs->pauseTime + (int)( 1000 * ( g_gameskill.value / GSKILL_SURVIVAL ) );     // add a bit more of a buffer before the next one
 	}
 
 }

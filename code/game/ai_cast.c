@@ -524,7 +524,7 @@ void AICast_Init( void ) {
 
 	aicast_maxclients = trap_Cvar_VariableIntegerValue( "sv_maxclients" );
 
-	aicast_skillscale = (float)trap_Cvar_VariableIntegerValue( "g_gameSkill" ) / (float)GSKILL_REALISM;
+	aicast_skillscale = (float)trap_Cvar_VariableIntegerValue( "g_gameSkill" ) / (float)GSKILL_SURVIVAL;
 
 	caststates = G_Alloc( aicast_maxclients * sizeof( cast_state_t ) );
 	memset( caststates, 0, sizeof( *caststates ) );

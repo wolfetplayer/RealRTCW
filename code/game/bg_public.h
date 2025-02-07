@@ -203,7 +203,8 @@ typedef enum {
 	GSKILL_MEDIUM,
 	GSKILL_HARD,
 	GSKILL_MAX,
-	GSKILL_REALISM,     // RealRTCW. Must always be last.
+	GSKILL_REALISM,
+	GSKILL_SURVIVAL,     // RealRTCW. Must always be last.
 	GSKILL_NUM_SKILLS
 } gameskill_t;
 
@@ -1301,7 +1302,7 @@ typedef struct gitem_s {
 	char        *precaches;     // string of all models and images this item will use
 	char        *sounds;        // string of all sounds this item will use
 
-	int gameskillnumber[5];
+	int gameskillnumber[6];
 } gitem_t;
 
 // included in both the game dll and the client

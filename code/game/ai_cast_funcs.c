@@ -660,8 +660,9 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				break;
 			}
 
-
-                ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH] = newHealth;
+				BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
+                
+				ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH] = newHealth;
 				ent->client->ps.runSpeedScale = runSpeedScale;
 				ent->client->ps.sprintSpeedScale = sprintSpeedScale;
 				ent->client->ps.crouchSpeedScale = crouchSpeedScale;				
@@ -681,6 +682,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				G_SetOrigin( ent, spawn_origin );
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );
+
+
 
 				// Activate respawn scripts for AI
 				AICast_ScriptEvent(cs, "respawn", "");

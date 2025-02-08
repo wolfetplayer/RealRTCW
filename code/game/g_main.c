@@ -1364,6 +1364,9 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	G_RemapTeamShaders();
 
+	// fretn
+	G_LoadArenas();
+
 	// Load ammo parameters for all weapons
 	for ( weapon_t weaponNum = WP_KNIFE; weaponNum < WP_NUM_WEAPONS; weaponNum++ ) {
 		G_LoadAmmoTable( weaponNum );

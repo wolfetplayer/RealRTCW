@@ -892,6 +892,9 @@ typedef struct {
 	// RF, record last time we loaded, so we can hack around sighting issues on reload
 	int lastLoadTime;
 
+	// fretn - maybe not the best place to add this
+	char *maplist[MAX_MAPS];
+
 } level_locals_t;
 
 //extern    qboolean	reloading;				// loading up a savegame
@@ -1192,6 +1195,7 @@ void G_CheckBotSpawn( void );
 void G_QueueBotBegin( int clientNum );
 qboolean G_BotConnect( int clientNum, qboolean restart );
 void Svcmd_AddBot_f( void );
+void G_LoadArenas( void );
 
 // ai_cast_characters.c
 void AI_LoadBehaviorTable( AICharacters_t characterNum );

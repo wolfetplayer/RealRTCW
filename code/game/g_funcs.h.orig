@@ -555,6 +555,7 @@ If you have questions concerning this license or the applicable additional terms
 {"G_RemoveRandomBot", (byte *)G_RemoveRandomBot},
 {"G_AddRandomBot", (byte *)G_AddRandomBot},
 {"G_GetArenaInfoByMap", (byte *)G_GetArenaInfoByMap},
+{"G_LoadArenas", (byte *)G_LoadArenas},
 {"G_WriteSessionData", (byte *)G_WriteSessionData},
 {"G_InitWorldSession", (byte *)G_InitWorldSession},
 {"G_InitSessionData", (byte *)G_InitSessionData},

@@ -4218,6 +4218,12 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 	// textscale is used to size the text, textalignx and textaligny are used to size image elements
 	// there is no clipping available so only the last completely visible item is painted
 	count = DC->feederCount( item->special );
+
+		// make sure the UI knows that the first element is selected after the initialisation
+	if ( ( item->special == FEEDER_ALLMAPS ) && !item->cursorPos && count > 0 ) {
+		DC->feederSelection( item->special, 0 );
+	}
+
 	// default is vertical if horizontal flag is not here
 	if ( item->window.flags & WINDOW_HORIZONTAL ) {
 		// draw scrollbar in bottom of the window

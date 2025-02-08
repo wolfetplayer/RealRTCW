@@ -3104,6 +3104,26 @@ static qboolean UI_GameType_HandleKey(int flags, float *special, int key, qboole
 }
 
 static qboolean UI_NetGameType_HandleKey(int flags, float *special, int key) {
+
+		int select = UI_SelectForKey(key);
+
+		if ( select != 0 ) {
+		ui_netGameType.integer += select;
+
+		if ( ui_netGameType.integer < 0 ) {
+			ui_netGameType.integer = uiInfo.numGameTypes - 1;
+		} else if ( ui_netGameType.integer >= uiInfo.numGameTypes ) {
+			ui_netGameType.integer = 0;
+		}
+
+		trap_Cvar_SetValue( "ui_netGameType", ui_netGameType.integer );
+		trap_Cvar_SetValue( "ui_actualnetGameType", uiInfo.gameTypes[ui_netGameType.integer].gtEnum );
+		trap_Cvar_SetValue( "ui_currentNetMap", 0 );
+		UI_MapCountByGameType( qfalse );
+		Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, NULL );
+		return qtrue;
+	}
+
 	return qfalse;
 }
 
@@ -4641,7 +4661,8 @@ static void UI_RunMenuScript( char **args ) {
 			Controls_GetConfig();
 		} else if ( Q_stricmp( name, "clearError" ) == 0 ) {
 			trap_Cvar_Set( "com_errorMessage", "" );
-			//#ifdef MISSIONPACK			// NERVE - SMF - enabled for multiplayer
+		} else if ( Q_stricmp( name, "skill_surv" ) == 0 ) {
+			trap_Cvar_Set( "g_gameskill", "5" );
 		} else if ( Q_stricmp( name, "loadGameInfo" ) == 0 ) {
 			UI_ParseGameInfo( "gameinfo.txt" );
 			UI_LoadBestScores( uiInfo.mapList[ui_currentMap.integer].mapLoadName, uiInfo.gameTypes[ui_gameType.integer].gtEnum );

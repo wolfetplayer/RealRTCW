@@ -70,6 +70,8 @@ If you have questions concerning this license or the applicable additional terms
 #define HEARTBEAT_FOR_MASTER		"DarkPlaces"
 #define FLATLINE_FOR_MASTER		"WolfFlatline-1"
 
+#define MAX_MAPS 128
+
 // When com_gamename is LEGACY_MASTER_GAMENAME, use wolfenstein master protocol.
 // You shouldn't change this unless you know what you're doing
 #define LEGACY_MASTER_GAMENAME		"wolfsp"

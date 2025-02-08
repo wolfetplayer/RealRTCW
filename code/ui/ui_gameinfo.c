@@ -179,6 +179,7 @@ UI_LoadArenasIntoMapList
 */
 void UI_LoadArenasIntoMapList( void ) {
 	int			n;
+	char		*type;
 
 	uiInfo.mapCount = 0;
 
@@ -192,7 +193,16 @@ void UI_LoadArenasIntoMapList( void ) {
 		uiInfo.mapList[uiInfo.mapCount].imageName = String_Alloc( va( "levelshots/%s", uiInfo.mapList[uiInfo.mapCount].mapLoadName ) );
 		uiInfo.mapList[uiInfo.mapCount].typeBits = 0;
 
-		// if no type specified, it will be treated as "ffa"
+		type = Info_ValueForKey( ui_arenaInfos[n], "type" );
+		// if no type specified, it will be treated as "single player"
+		if ( *type ) {
+			if ( strstr( type, "sv_normal" ) ) {
+				uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_SURVIVAL );
+			}
+		} else {
+			uiInfo.mapList[uiInfo.mapCount].typeBits |= ( 1 << GT_SINGLE_PLAYER );
+		}
+
 		uiInfo.mapCount++;
 		if ( uiInfo.mapCount >= MAX_MAPS ) {
 			break;

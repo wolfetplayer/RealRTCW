@@ -1175,6 +1175,7 @@ extern int G_CountHumanPlayers ( int team ) ;
 extern int G_RemoveRandomBot ( int team ) ;
 extern void G_AddRandomBot ( int team ) ;
 extern const char * G_GetArenaInfoByMap ( const char * map ) ;
+extern void G_LoadArenas ( void ) ;
 extern void SP_alarm_box ( gentity_t * ent ) ;
 extern void alarmbox_finishspawning ( gentity_t * ent ) ;
 extern void alarmbox_die ( gentity_t * ent , gentity_t * inflictor , gentity_t * attacker , int damage , int mod ) ;

@@ -557,6 +557,7 @@ extern int G_CountHumanPlayers ( int team ) ;
 extern int G_RemoveRandomBot ( int team ) ;
 extern void G_AddRandomBot ( int team ) ;
 extern const char * G_GetArenaInfoByMap ( const char * map ) ;
+extern void G_LoadArenas ( void ) ;
 extern void G_WriteSessionData ( void ) ;
 extern void G_InitWorldSession ( void ) ;
 extern void G_InitSessionData ( gclient_t * client , char * userinfo ) ;

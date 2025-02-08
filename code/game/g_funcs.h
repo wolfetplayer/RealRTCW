@@ -1171,6 +1171,7 @@ If you have questions concerning this license or the applicable additional terms
 {"G_RemoveRandomBot", (byte *)G_RemoveRandomBot},
 {"G_AddRandomBot", (byte *)G_AddRandomBot},
 {"G_GetArenaInfoByMap", (byte *)G_GetArenaInfoByMap},
+{"G_LoadArenas", (byte *)G_LoadArenas},
 {"SP_alarm_box", (byte *)SP_alarm_box},
 {"alarmbox_finishspawning", (byte *)alarmbox_finishspawning},
 {"alarmbox_die", (byte *)alarmbox_die},

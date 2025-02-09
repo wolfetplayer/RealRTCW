@@ -1364,9 +1364,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	G_RemapTeamShaders();
 
-	// fretn
-	G_LoadArenas();
-
 	// Load ammo parameters for all weapons
 	for ( weapon_t weaponNum = WP_KNIFE; weaponNum < WP_NUM_WEAPONS; weaponNum++ ) {
 		G_LoadAmmoTable( weaponNum );
@@ -1379,6 +1376,9 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	}
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );
+
+	// fretn
+	G_LoadArenas();
 
 	steamSetRichPresence( "Mapname", g_mapname.string );
 	steamSetRichPresence( "Skill", G_GameSkillIntToStr( g_gameskill.integer ) ) ;

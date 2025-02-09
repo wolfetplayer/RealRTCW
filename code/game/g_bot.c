@@ -37,7 +37,7 @@ static char g_botInfos[MAX_BOTS][MAX_INFO_STRING];
 
 
 int g_numArenas;
-static char g_arenaInfos[MAX_ARENAS][MAX_INFO_STRING];
+static char *g_arenaInfos[MAX_ARENAS];
 
 
 #define BOT_BEGIN_DELAY_BASE        2000
@@ -58,6 +58,7 @@ vmCvar_t bot_minplayers;
 extern gentity_t    *podium1;
 extern gentity_t    *podium2;
 extern gentity_t    *podium3;
+
 
 /*
 ===============
@@ -181,7 +182,7 @@ void G_LoadArenas( void ) {
 
         type = Info_ValueForKey( g_arenaInfos[n], "type" );
         if ( *type ) { 
-            if ( strstr( type, "sv_" ) && i < MAX_MAPS ) { 
+            if ( strstr( type, "sv_normal" ) && i < MAX_MAPS ) { 
 				char *map = Info_ValueForKey( g_arenaInfos[n], "map" );
 				level.maplist[i] = G_Alloc(strlen(map));
 				strcpy(level.maplist[i++], map);
@@ -189,7 +190,6 @@ void G_LoadArenas( void ) {
         }   
     }   
 }
-
 
 /*
 ===============

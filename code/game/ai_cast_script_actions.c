@@ -48,6 +48,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "../steam/steam.h"
 
+#include <stdlib.h> // for rand()
+
 /*
 Contains the code to handle the various commands available with an event script.
 
@@ -5938,19 +5940,35 @@ AICast_ScriptAction_MusicQueue
 ==================
 */
 qboolean AICast_ScriptAction_MusicQueue( cast_state_t *cs, char *params ) {
-	char    *pString, *token;
-	char cvarName[MAX_QPATH];
+    char *pString, *token;
+    char cvarNameArray[16][MAX_QPATH];
+    int fileCount = 0;
 
-	pString = params;
-	token = COM_ParseExt( &pString, qfalse );
-	if ( !token[0] ) {
-		G_Error( "AI_Scripting: syntax: mu_queue <musicfile>" );
-	}
-	Q_strncpyz( cvarName, token, sizeof( cvarName ) );
+    pString = params;
+    while (1) {
+        token = COM_ParseExt(&pString, qfalse);
+        if (!token[0]) {
+            break;
+        }
+        Q_strncpyz(cvarNameArray[fileCount], token, sizeof(cvarNameArray[fileCount]));
+        fileCount++;
+        if (fileCount >= 16) {
+            break;
+        }
+    }
 
-	trap_SetConfigstring( CS_MUSIC_QUEUE, cvarName );
+    if (fileCount == 0) {
+        G_Error("AI_Scripting: syntax: mu_queue <musicfile> [musicfile2] ...");
+    }
 
-	return qtrue;
+    if (fileCount == 1) {
+        trap_SetConfigstring(CS_MUSIC_QUEUE, cvarNameArray[0]);
+    } else {
+        int randomIndex = rand() % fileCount;
+        trap_SetConfigstring(CS_MUSIC_QUEUE, cvarNameArray[randomIndex]);
+    }
+
+    return qtrue;
 }
 
 

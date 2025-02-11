@@ -685,6 +685,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		// Send the message to the server
         trap_SendServerCommand(self - g_entities, va("egp \"%s\"", message));
 		trap_SendServerCommand(-1, "mu_play sound/music/l_finale.wav 0\n");
+		trap_SetConfigstring(CS_MUSIC_QUEUE, ""); // clear queue so it'll be quiet after hit
 	}
 	else
 	{

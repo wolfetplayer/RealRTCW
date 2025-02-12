@@ -658,6 +658,7 @@ void heal_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 
 		if (g_gametype.integer == GT_SURVIVAL)
 		{
+			other->client->hasPurchased = qtrue;
 			other->client->ps.persistant[PERS_SCORE] -= svParams.healthStandPrice;
 		}
 
@@ -848,10 +849,12 @@ void ammo_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 
 				if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT)
 				{
+					other->client->hasPurchased = qtrue;
 					other->client->ps.persistant[PERS_SCORE] -= svParams.ammoStandPrice / 2;
 				}
 				else
 				{
+					other->client->hasPurchased = qtrue;
 					other->client->ps.persistant[PERS_SCORE] -= svParams.ammoStandPrice;
 				}
 			}

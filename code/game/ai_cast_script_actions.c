@@ -5350,6 +5350,20 @@ qboolean AICast_ScriptAction_Achievement_ICE_EE( cast_state_t *cs, char *params 
 	return qtrue;
 }
 
+/*
+==================
+AICast_ScriptAction_Achievement_6PERKS
+==================
+*/
+qboolean AICast_ScriptAction_Achievement_6PERKS( cast_state_t *cs, char *params ) {
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_6PERKS");
+	}
+	return qtrue;
+}
+
+
 
 /*
 ==================

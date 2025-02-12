@@ -38,6 +38,8 @@ If you have questions concerning this license or the applicable additional terms
 #include <pthread.h>
 #include <unistd.h>
 
+#include "../steam/steam.h"
+
 extern vec3_t muzzleTrace; // used by falloff mechanic
 
 extern svParams_t svParams;
@@ -508,6 +510,11 @@ void player_die_secondchance( gentity_t *self, gentity_t *inflictor, gentity_t *
 
 	if ( level.intermissiontime ) {
 		return;
+	}
+
+	if ( !g_cheats.integer ) 
+	{
+    steamSetAchievement("ACH_SECOND_CHANCE");
 	}
 
 	// Grant the player 200 health points

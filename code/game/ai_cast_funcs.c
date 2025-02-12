@@ -48,6 +48,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ai_cast.h"
 
+#include "../steam/steam.h"
+
 /*
 This file contains the generic thinking states for the characters.
 
@@ -366,7 +368,18 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
     // Wave Change Event
     if (svParams.survivalKillCount == svParams.killCountRequirement) {
         svParams.waveCount++;
-        svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
+
+		if ((svParams.waveCount == 10) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
+		{
+			steamSetAchievement("ACH_NO_BUY");
+		}
+
+		if ((svParams.waveCount == 15) && (!g_cheats.integer) && (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
+		{
+			steamSetAchievement("ACH_NO_CLASS");
+		}
+
+		svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
 		attacker->client->ps.persistant[PERS_WAVES]++;
 		svParams.waveKillCount = 0;
 

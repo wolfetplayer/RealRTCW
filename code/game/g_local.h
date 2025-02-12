@@ -758,6 +758,8 @@ struct gclient_s {
 	pmoveExt_t pmext;
 
 	int healthRegenStartTime;
+
+	qboolean hasPurchased;
 };
 
 

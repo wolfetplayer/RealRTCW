@@ -133,6 +133,14 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
         pthread_create(&thread_id, NULL, remove_powerup_after_delay, (void *)other);
     }
 
+	if (!g_cheats.integer &&
+		(other->client->ps.powerups[PW_BATTLESUIT_SURV] > level.time) &&
+		(other->client->ps.powerups[PW_VAMPIRE] > level.time) &&
+		(other->client->ps.powerups[PW_QUAD] > level.time))
+	{
+		steamSetAchievement("ACH_UBER_PW");
+	}
+
 	if ( ent->s.density == 2 ) {   // multi-stage health first stage
 		return RESPAWN_PARTIAL;
 	} else if ( ent->s.density == 1 ) {    // last stage, leave the plate

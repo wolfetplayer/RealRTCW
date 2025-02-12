@@ -256,6 +256,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_Achievement_ICE_SECRET", (byte *)AICast_ScriptAction_Achievement_ICE_SECRET},
 {"AICast_ScriptAction_Achievement_ICE_DEFENSE", (byte *)AICast_ScriptAction_Achievement_ICE_DEFENSE},
 {"AICast_ScriptAction_Achievement_ICE_EE", (byte *)AICast_ScriptAction_Achievement_ICE_EE},
+
+{"AICast_ScriptAction_Achievement_6PERKS", (byte *)AICast_ScriptAction_Achievement_6PERKS},
 // end achievements
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
 {"AICast_ScriptAction_Announce", (byte *)AICast_ScriptAction_Announce},

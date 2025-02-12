@@ -124,10 +124,7 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	WP_FLAMETHROWER,
 	// Secret Weapons
 	WP_VENOM,
-	WP_TESLA   
-	//WP_AKIMBO,
-	//WP_DUAL_TT33,     
-	//WP_M7, 
+	WP_TESLA
 	};
 
 	// Define the list of random box weapons
@@ -170,11 +167,6 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	// Secret Weapons
 	WP_VENOM,
 	WP_TESLA,   
-	// Misc Alt modes
-	//WP_AKIMBO,
-	//WP_DUAL_TT33,     
-	//WP_M7,
-	WP_M1941SCOPE,
 	WP_DELISLE,               
 	WP_HDM };
 

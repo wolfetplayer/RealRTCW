@@ -4213,6 +4213,9 @@ void props_flamethrower_think( gentity_t *ent ) {
 	if ( level.time > ent->duration + ent->timestamp ) {
 		ent->nextthink = 0;
 		ent->s.eFlags &= ~EF_FIRING;
+
+		// Allow re-activation by clearing the “in use” flag
+		ent->spawnflags &= ~2;
 	} else {
 		ent->nextthink = level.time + 50;
 		ent->s.eFlags |= EF_FIRING;

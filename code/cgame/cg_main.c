@@ -504,7 +504,7 @@ cvarTable_t cvarTable[] = {
 
 	{ &cg_gameSkill, "g_gameskill", "2", 0 }, // communicated by systeminfo	// (SA) new default '2' (was '1')
 
-	{ &cg_hitSounds, "cg_hitSounds", "0", CVAR_ARCHIVE, 0 },
+	{ &cg_hitSounds, "cg_hitSounds", "0", CVAR_ARCHIVE },
 
 	{ &cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 

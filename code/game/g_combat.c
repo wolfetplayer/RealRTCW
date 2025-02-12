@@ -1341,6 +1341,12 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		damage *= 0.30;
 	}
 
+	if ( client && client->ps.powerups[PW_BATTLESUIT_SURV] ) {
+		G_AddEvent( targ, EV_POWERUP_BATTLESUIT_SURV, 0 );
+
+		damage *= 0.05;
+	}
+
 	// always give half damage if hurting self
 	// calculated after knockback, so rocket jumping works
 

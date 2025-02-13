@@ -785,7 +785,6 @@ extern void weapon_callAirStrike ( gentity_t * ent ) ;
 extern void G_PoisonGasExplode(gentity_t* ent) ;
 extern void G_PoisonGas2Explode(gentity_t* ent) ; 
 extern void Weapon_Knife ( gentity_t * ent ) ;
-extern void Weapon_Dagger ( gentity_t * ent ) ;
 extern qboolean AICast_ScriptRun ( cast_state_t * cs , qboolean force ) ;
 extern void AICast_ForceScriptEvent ( struct cast_state_s * cs , char * eventStr , char * params ) ;
 extern void AICast_ScriptEvent ( struct cast_state_s * cs , char * eventStr , char * params ) ;

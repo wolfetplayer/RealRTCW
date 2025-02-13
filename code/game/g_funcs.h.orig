@@ -782,7 +782,6 @@ If you have questions concerning this license or the applicable additional terms
 {"G_PoisonGasExplode", (byte *)G_PoisonGasExplode},
 {"G_PoisonGas2Explode", (byte *)G_PoisonGas2Explode},
 {"Weapon_Knife", (byte *)Weapon_Knife},
-{"Weapon_Dagger", (byte *)Weapon_Dagger},
 {"AICast_ScriptRun", (byte *)AICast_ScriptRun},
 {"AICast_ForceScriptEvent", (byte *)AICast_ForceScriptEvent},
 {"AICast_ScriptEvent", (byte *)AICast_ScriptEvent},

@@ -185,9 +185,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	char mapname[MAX_QPATH];
 	qboolean respawn = qfalse;
 
-	qboolean modDagger = (meansOfDeath == MOD_DAGGER );
-	qboolean modStealthDagger = (meansOfDeath == MOD_DAGGER_STEALTH );
-
 	// Achievements related stuff! 
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
 	qboolean modKicked = (meansOfDeath == MOD_KICKED);
@@ -328,32 +325,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
     attacker->client->ps.persistant[PERS_SCORE] += score;
 	attacker->client->ps.persistant[PERS_KILLS]++;
-	}
-
-	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modDagger ) // vampirism
-	{
-	
-			trap_SendServerCommand( -1, "mu_play sound/player/vampirism.wav 0\n" );
-			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
-		    attacker->health += 25;
-
-			
-			if ( attacker->health > attacker->client->ps.stats[STAT_MAX_HEALTH] ) 
-			{
-			attacker->health = attacker->client->ps.stats[STAT_MAX_HEALTH];
-		    }
-	}
-
-	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modStealthDagger ) // vampirism
-	{
-			trap_SendServerCommand( -1, "mu_play sound/player/vampirism.wav 0\n" );
-			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
-		    attacker->health += 50;
-		
-			if ( attacker->health > attacker->client->ps.stats[STAT_MAX_HEALTH] ) 
-			{
-			attacker->health = attacker->client->ps.stats[STAT_MAX_HEALTH];
-		    }
 	}
 
 	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {

@@ -513,9 +513,8 @@ typedef enum
 typedef enum {
 	WP_NONE,                
 	// Melee Weapons
-	WP_KNIFE,               
-	WP_DAGGER,              
-	// One handed pistols
+	WP_KNIFE,          
+	// Pistols
 	WP_LUGER,              
 	WP_SILENCER,           
     WP_COLT,               
@@ -531,22 +530,17 @@ typedef enum {
 	WP_PPSH,             
 	WP_MP34,             
 	// Rifles
-	WP_MAUSER,              
-	WP_SNIPERRIFLE,        
+	WP_MAUSER,                    
 	WP_GARAND,            
-	WP_SNOOPERSCOPE,
 	WP_MOSIN,
 	WP_DELISLE,
-	WP_DELISLESCOPE,
 	// Semi auto rifles
 	WP_M1GARAND,
 	WP_G43,
 	WP_M1941,
-    WP_M1941SCOPE,
 	// Assault Rifles
 	WP_MP44,
 	WP_FG42,
-	WP_FG42SCOPE,
 	WP_BAR,
 	// Shotguns
 	WP_M97,
@@ -562,14 +556,20 @@ typedef enum {
 	// Explosives
 	WP_GRENADE_LAUNCHER,
     WP_GRENADE_PINEAPPLE,
-	WP_M7,
 	WP_DYNAMITE,
 	WP_AIRSTRIKE,
-	WP_POISONGAS_MEDIC,
 	WP_ARTY,
-	WP_SMOKETRAIL,          
 	WP_POISONGAS,
-	WP_HOLYCROSS,    
+	WP_POISONGAS_MEDIC,
+	WP_SMOKETRAIL,          
+	WP_HOLYCROSS,
+	// Alt Modes
+	WP_SNIPERRIFLE, 
+    WP_SNOOPERSCOPE,
+	WP_DELISLESCOPE,
+    WP_M1941SCOPE,
+	WP_FG42SCOPE,
+	WP_M7,
     // Misc stuff, not actual weapons
 	WP_DUMMY_MG42,
 	WP_MONSTER_ATTACK1,     	
@@ -1138,8 +1138,6 @@ typedef enum {
 	MOD_BFG_SPLASH,
 	MOD_KNIFE,
 	MOD_THROWKNIFE,
-	MOD_DAGGER,
-	MOD_DAGGER_STEALTH,	
 	MOD_KNIFE2,
 	MOD_KNIFE_STEALTH,
 	MOD_LUGER,

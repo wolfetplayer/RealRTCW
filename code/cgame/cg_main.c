@@ -1661,7 +1661,7 @@ static void CG_RegisterGraphics( void ) {
 
 // code is almost complete for doing this correctly.  will remove when that is complete.
 	CG_LoadingString( " - weapons" );
-	for ( i = WP_KNIFE; i < WP_MONSTER_ATTACK3; i++ ) {
+	for ( i = WP_KNIFE; i < WP_DUMMY_MG42; i++ ) {
 			CG_RegisterWeapon( i, qfalse );
 	}
 

@@ -193,7 +193,6 @@ If you have questions concerning this license or the applicable additional terms
 {"G_PoisonGasExplode", (byte *)G_PoisonGasExplode},
 {"G_PoisonGas2Explode", (byte *)G_PoisonGas2Explode},
 {"Weapon_Knife", (byte *)Weapon_Knife},
-{"Weapon_Dagger", (byte *)Weapon_Dagger},
 {"DebugLine", (byte *)DebugLine},
 {"G_ProcessTagConnect", (byte *)G_ProcessTagConnect},
 {"infront", (byte *)infront},

@@ -56,7 +56,7 @@ static int maxWeapBanks = MAX_WEAP_BANKS, maxWeapsInBank = MAX_WEAPS_IN_BANK; //
 
 int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{0, 0, 0, 0, 0, 0},																						  //	0 (empty)
-	{WP_KNIFE, WP_DAGGER, WP_HOLYCROSS, 0, 0, 0},															  //	1
+	{WP_KNIFE, WP_HOLYCROSS, 0, 0, 0},															  //	1
 	{WP_LUGER, WP_SILENCER, WP_COLT, WP_AKIMBO, WP_TT33, WP_DUAL_TT33, WP_REVOLVER, WP_HDM},				  //	2
 	{WP_MP40, WP_MP34, WP_STEN, WP_THOMPSON, WP_PPSH, 0},													  //	3
 	{WP_MAUSER, WP_GARAND, WP_MOSIN, WP_DELISLE, 0, 0},														  //	4
@@ -2174,9 +2174,8 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 			leanscale = 2.0f;
 			break;
 
-			// never adjust
+		// never adjust
 		case WP_KNIFE:
-		case WP_DAGGER:
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 			break;
@@ -3471,8 +3470,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
 		 weaponNum == WP_DYNAMITE ||
-		 weaponNum == WP_M7 ||
-		 weaponNum == WP_DAGGER ) {
+		 weaponNum == WP_M7 ) {
 		return;
 	}
 
@@ -5081,7 +5079,7 @@ void CG_OutOfAmmoChange( void ) {
 
 	// if you're using an alt mode weapon, try switching back to the parent
 	// otherwise, switch to the equivalent if you've got it
-	if ( cg.weaponSelect >= WP_SILENCER && cg.weaponSelect <= WP_DELISLESCOPE ) {
+	if ( cg.weaponSelect >= WP_SNIPERRIFLE && cg.weaponSelect <= WP_M7 ) {
 		cg.weaponSelect = equiv = getAltWeapon( cg.weaponSelect );    // base any further changes on the parent
 		if ( CG_WeaponSelectable( equiv ) ) {    // the parent was selectable, drop back to that
 			CG_FinishWeaponChange( cg.predictedPlayerState.weapon, cg.weaponSelect ); //----(SA)
@@ -5768,7 +5766,6 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 
 	switch ( weapon ) {
 	case WP_KNIFE:
-	case WP_DAGGER:
 		sfx     = cgs.media.sfx_knifehit[4];    // different values for different types (stone/metal/wood/etc.)
 		mark    = cgs.media.bulletMarkShader;
 		radius  = 1 + rand() % 2;
@@ -6283,7 +6280,6 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 	switch ( weapon ) {
 		// knives just make the flesh hit sound.  no other effects
 	case WP_KNIFE:
-	case WP_DAGGER:
 		i = rand() % 4;
 		if ( cgs.media.sfx_knifehit[i] ) {
 			trap_S_StartSound( origin, cent->currentState.number, CHAN_WEAPON, cgs.media.sfx_knifehit[i] );

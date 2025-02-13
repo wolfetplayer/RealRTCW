@@ -165,7 +165,7 @@ void TossClientWeapons( gentity_t *self )
 		weapon = WP_FG42;
 	}
 
-	if (weapon > WP_NONE && weapon < WP_MONSTER_ATTACK1 && self->client->ps.ammo[BG_FindAmmoForWeapon(weapon)])
+	if (weapon > WP_NONE && weapon < WP_DUMMY_MG42 && self->client->ps.ammo[BG_FindAmmoForWeapon(weapon)])
 	{
 		// find the item type for this weapon
 		item = BG_FindItemForWeapon(weapon);

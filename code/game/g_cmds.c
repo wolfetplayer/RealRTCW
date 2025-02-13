@@ -291,7 +291,7 @@ void Cmd_Give_f( gentity_t *ent ) {
 	if ( give_all || Q_stricmp( name, "weapons" ) == 0 ) {
 
 		//(SA) we really don't want to give anything beyond WP_HOLYCROSS
-		for ( i = 0; i <= WP_HOLYCROSS; i++ )
+		for ( i = 0; i <= WP_M7; i++ )
 			COM_BitSet( ent->client->ps.weapons, i );
 
 		if ( !give_all ) {

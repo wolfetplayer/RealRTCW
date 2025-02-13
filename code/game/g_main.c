@@ -595,7 +595,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 	//
 	else if ( tr->entityNum < MAX_CLIENTS ) {
 
-		if ( ent->s.weapon == WP_KNIFE || ent->s.weapon == WP_DAGGER ) {
+		if ( ent->s.weapon == WP_KNIFE ) {
 			vec3_t pforward, eforward;
 			qboolean canKnife = qfalse;
 
@@ -831,7 +831,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 			// set up any forced max distances for specified hints
 			switch ( hintType ) {
 			case HINT_KNIFE:
-				if ( ent->s.weapon == WP_KNIFE || ent->s.weapon == WP_DAGGER ) {
+				if ( ent->s.weapon == WP_KNIFE ) {
 					hintDist = CH_KNIFE_DIST;
 				} else {
 					hintType = 0;       // no knife, clear it

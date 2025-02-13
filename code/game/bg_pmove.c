@@ -2655,7 +2655,6 @@ void PM_CheckForReload( int weapon ) {
 		case WP_DYNAMITE:
 		case WP_NONE:
 	    case WP_TESLA:
-	    case WP_DAGGER:
 	    case WP_HOLYCROSS:
 			return;
 		default:
@@ -3624,8 +3623,7 @@ static void PM_Weapon( void ) {
 			 pm->ps->weapon != WP_GRENADE_LAUNCHER &&
 			 pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
 			 pm->ps->weapon != WP_POISONGAS &&
-			 pm->ps->weapon != WP_POISONGAS_MEDIC &&
-			 pm->ps->weapon != WP_DAGGER  ) {
+			 pm->ps->weapon != WP_POISONGAS_MEDIC ) {
 			PM_AddEvent( EV_NOFIRE_UNDERWATER );        // event for underwater 'click' for nofire
 			pm->ps->weaponTime  = 500;
 			return;
@@ -3718,12 +3716,6 @@ static void PM_Weapon( void ) {
 				}
 			}
 			break;
-	case WP_DAGGER:
-		if ( !delayedFire ) {
-			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
-		}
-		break;
-	// throw
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:

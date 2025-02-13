@@ -513,9 +513,6 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 
 }
 
-int G_GetWeaponPrice( int weapon );
-int G_GetAmmoPrice( int weapon );
-
 /*
 ==============
 Pickup_Ammo

@@ -182,8 +182,8 @@ static int weapIconDrawSize( int weap ) {
 	case WP_AUTO5:
 	case WP_BROWNING:
 	case WP_M7:
-	case WP_M30:
 	case WP_M1941:
+	case WP_HDM:
 		return 2;
 	case WP_KNIFE:
 	     return 1;

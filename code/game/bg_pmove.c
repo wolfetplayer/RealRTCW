@@ -3660,7 +3660,6 @@ static void PM_Weapon( void ) {
 	case WP_AUTO5:
 	case WP_AIRSTRIKE:
 	case WP_POISONGAS_MEDIC:
-	case WP_M30:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
 				// AI get fast spin-up
@@ -3896,7 +3895,6 @@ static void PM_Weapon( void ) {
 	case WP_M97:
 	case WP_AUTO5:
     case WP_M7:
-	case WP_M30:
 		PM_StartWeaponAnim( weapattackanim );
 		break;
 	case WP_VENOM:

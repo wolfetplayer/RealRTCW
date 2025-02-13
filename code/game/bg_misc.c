@@ -1862,49 +1862,6 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                            
 	}, 
 
-    // Currently unused Gothicstein weapons
-
-	{   
-		WP_M30,
-		WEAPON_CLASS_UNUSED,
-		WP_NONE,
-		WEAPON_TEAM_COMMON,              
-		0,        
-		0,       
-		0, 
-		0,       
-		0,        
-		0,       
-		0,      
-		0,      
-		0,      
-		0,      
-		0,       
-		0,         
-		0,          
-		0,          
-		0,       
-		0,                 
-		0.0f,            
-		0,             
-		{.0f, .0f},     
-		{.0f, .0f},         
-		0,               
-		0.0,               
-		0,               
-		0,
-		{0.0, 0.0},               
-		MOD_M30,     
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,                                   
-	}, 
-
 	{   
 		WP_DELISLE,
 		WEAPON_CLASS_RIFLE | WEAPON_CLASS_SCOPABLE,
@@ -2238,16 +2195,14 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 // Skill-based ammo parameters
 ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 
-
 int reloadableWeapons[] = {
-	WP_MP40,        WP_THOMPSON,    WP_STEN,            WP_GARAND,              WP_PANZERFAUST,         WP_FLAMETHROWER,
-	WP_SILENCER,    WP_TT33,        WP_FG42,            WP_REVOLVER,            WP_MG42M,               WP_COLT,
-	WP_LUGER,       WP_MORTAR,      WP_AKIMBO,          WP_PPSH,                WP_M7,                  WP_MP34,
-	WP_MAUSER,      WP_SNIPERRIFLE, WP_SNOOPERSCOPE,    WP_MOSIN,               WP_M1GARAND,            WP_G43,
-	WP_MP44,        WP_BAR,         WP_M97,             WP_FG42SCOPE,           WP_BROWNING,            WP_VENOM,
-    WP_M30,         WP_DELISLE,     WP_DELISLESCOPE,    WP_TESLA,               WP_M1941,               WP_AUTO5,
-    WP_M1941SCOPE,  WP_DUAL_TT33,   WP_HDM, -1
-};
+	WP_MP40, WP_THOMPSON, WP_STEN, WP_GARAND, WP_PANZERFAUST, WP_FLAMETHROWER,
+	WP_SILENCER, WP_TT33, WP_FG42, WP_REVOLVER, WP_MG42M, WP_COLT,
+	WP_LUGER, WP_MORTAR, WP_AKIMBO, WP_PPSH, WP_M7, WP_MP34,
+	WP_MAUSER, WP_SNIPERRIFLE, WP_SNOOPERSCOPE, WP_MOSIN, WP_M1GARAND, WP_G43,
+	WP_MP44, WP_BAR, WP_M97, WP_FG42SCOPE, WP_BROWNING, WP_VENOM,
+	WP_DELISLE, WP_DELISLESCOPE, WP_TESLA, WP_M1941, WP_AUTO5,
+	WP_M1941SCOPE, WP_DUAL_TT33, WP_HDM, -1};
 
 // new (10/18/00)
 char *animStrings[] = {
@@ -4178,32 +4133,6 @@ model="models/weapons2/m97/m97_3rd.md3"
 			{ 0,0,0,0,0,0 }
 	},
 
-
-/*QUAKED weapon_m30 (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/weapons2/m30/m30_3rd.md3"
-*/
-	{
-		"weapon_m30",
-		"sound/misc/w_pkup.wav",
-		{ 
-		"",
-		"",
-		""
-		},
-
-			"icons/iconw_m30",   
-			"m30",           
-			700,
-			IT_WEAPON,
-			WP_M30,
-			WP_M30,
-			WP_M97,
-			WP_M30,
-			"",                    
-			"",                     
-			{ 0,0,0,0,0,0 }
-	},
 
 /*QUAKED weapon_hdm (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
 "stand" values:
@@ -8298,7 +8227,6 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_ARTY:              return "arty.weap";
 		case WP_SMOKETRAIL:        return "smoketrail.weap";
 		case WP_POISONGAS:         return "poisongas.weap";
-		case WP_M30:               return "m30.weap";
 		case WP_HDM:               return "hdm.weap";
 		case WP_HOLYCROSS:         return "cross.weap";
 		case WP_DELISLE:           return "delisle.weap";

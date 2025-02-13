@@ -96,7 +96,8 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	WP_TT33,               
 	WP_REVOLVER,
 	WP_DUAL_TT33,
-	WP_AKIMBO,            
+	WP_AKIMBO,
+	WP_HDM,            
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         
@@ -136,7 +137,8 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	WP_TT33,               
 	WP_REVOLVER,
 	WP_DUAL_TT33,
-	WP_AKIMBO,           
+	WP_AKIMBO,
+	WP_HDM,           
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         
@@ -167,8 +169,8 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	// Secret Weapons
 	WP_VENOM,
 	WP_TESLA,   
-	WP_DELISLE,               
-	WP_HDM };
+	WP_DELISLE
+	};
 
     char *random_perks[] = {"perk_resilience", "perk_scavenger", "perk_runner", "perk_weaponhandling", "perk_rifling", "perk_secondchance"}; 
 

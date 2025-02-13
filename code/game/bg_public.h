@@ -632,8 +632,6 @@ typedef struct ammoskill_s {
 	int maxclip;
 } ammoskill_t;
 
-//extern int weapAlts[]; 
-
 extern ammoTable_t ammoTable[WP_NUM_WEAPONS];
 extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 #define GetWeaponTableData(weaponIndex) ((ammoTable_t *)(&ammoTable[weaponIndex]))

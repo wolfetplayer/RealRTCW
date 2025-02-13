@@ -567,7 +567,6 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 			if ( ammoTable[weap].weapAlts ) {
 				value = ps->ammoclip[ammoTable[weap].weapAlts];
 			}
-//				value2 = ps->ammoclip[weapAlts[weap]];
 		}
 	}
 

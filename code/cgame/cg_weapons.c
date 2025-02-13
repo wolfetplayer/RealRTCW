@@ -4462,14 +4462,6 @@ void CG_AltWeapon_f( void ) {
 	num = getAltWeapon( original );
 
 	if ( CG_WeaponSelectable( num ) ) {   // new weapon is valid
-
-//----(SA)	testing mod functionality for the silencer on the luger
-		// (SA) this way, if you switch away from the silenced luger,
-		//		the silencer will still be attached when you switch back
-		//		(until you remove it)
-		// TODO: will need to make sure the table gets initialized properly on restart/death/whatever.
-		//		 I still think I'm going to make the weapon banks stored in the config, so this will
-		//		just be a matter of resetting the banks to what's in the config.
 		
 		switch ( original ) {
 		case WP_MAUSER:
@@ -4666,14 +4658,9 @@ void CG_PrevWeap( qboolean switchBanks ) {
 
 	CG_WeaponIndex( curweap, &bank, &cycle );     // get bank/cycle of current weapon
 
-	// initially, just try to find a lower weapon in the current bank
-//	if ( cg_cycleAllWeaps.integer || !switchBanks ) {
 	if ( 1 ) {
-//		if(cycle == 0) {		// already at bottom of list
-//			prevbank = qtrue;
-//		} else {
+
 		for ( i = cycle; i >= 0; i-- ) {
-//				num = getPrevWeapInBank(bank, i);
 			num = getPrevWeapInBankBynum( num );
 			CG_WeaponIndex( num, NULL, &newcycle );         // get cycle of new weapon.  if it's greater than the original, then it cycled around
 			if ( switchBanks ) {
@@ -4707,10 +4694,6 @@ void CG_PrevWeap( qboolean switchBanks ) {
 	} else {
 		prevbank = qtrue;
 	}
-	// cycle to previous bank.
-	//	if cycleAllWeaps: find highest weapon in bank
-	//		else: try to find weap in bank that matches cycle position
-	//			else: use base weap in bank
 
 	if ( prevbank ) {
 		for ( i = 0; i < MAX_WEAP_BANKS; i++ ) {

@@ -289,23 +289,11 @@ void Cmd_Give_f( gentity_t *ent ) {
 	}
 
 	if ( give_all || Q_stricmp( name, "weapons" ) == 0 ) {
-		//ent->client->ps.weapons[0] = (1 << (WP_MONSTER_ATTACK1)) - 1 - (1<<WP_NONE);	//----(SA)	gives the cross now as well
 
 		//(SA) we really don't want to give anything beyond WP_HOLYCROSS
 		for ( i = 0; i <= WP_HOLYCROSS; i++ )
 			COM_BitSet( ent->client->ps.weapons, i );
 
-//		for (i=0; i<WP_NUM_WEAPONS; i++) {
-//			switch (i) {
-//			case WP_MONSTER_ATTACK1:
-//			case WP_MONSTER_ATTACK2:
-//			case WP_MONSTER_ATTACK3:
-//			case WP_NONE:
-//				break;
-//			default:
-//				COM_BitSet( ent->client->ps.weapons, i );
-//			}
-//		}
 		if ( !give_all ) {
 			return;
 		}

@@ -5868,6 +5868,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected minSpawnTime value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "friendlySpawnTime" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.friendlySpawnTime ) ) {
+				PC_SourceError( handle, "expected friendlySpawnTime value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );

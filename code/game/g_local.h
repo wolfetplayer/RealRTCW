@@ -133,6 +133,7 @@ typedef struct svParams_s
 	float spawnTimeDecreaseDivider;
 	int   minSpawnTime;
 	int   startingSpawnTime;
+    int   friendlySpawnTime;
 
 	int soldiersIncrease;
 	int eliteGuardsIncrease;

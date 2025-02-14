@@ -60,11 +60,11 @@ If you have questions concerning this license or the applicable additional terms
   #define CLIENT_WINDOW_TITLE     	"RealRTCW"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" //iowolfsp
 #ifdef USE_XDG
-  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.0"
+  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.1"
 #else
   #define HOMEPATH_NAME_UNIX		".realrtcw"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.0"
+  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.1"
   #define STEAMPATH_NAME		"Return To Castle Wolfenstein"
   #define STEAMPATH_APPID		"9010"
 
@@ -89,7 +89,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "5.0" // iortcw 1.51
+  #define PRODUCT_VERSION "5.1" // iortcw 1.51
 #endif
 
 #ifndef PRODUCT_DATE

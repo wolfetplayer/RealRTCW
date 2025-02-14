@@ -116,7 +116,7 @@ endif
 export CROSS_COMPILING
 
 ifndef VERSION
-VERSION=5.0
+VERSION=5.1
 endif
 
 ifndef CLIENTBIN

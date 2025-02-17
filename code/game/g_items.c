@@ -119,13 +119,19 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
-    if (ent->item->giTag == PW_AMMO) {
-         Add_Ammo( other, other->client->ps.weapon, ammoTable[other->client->ps.weapon].maxammo, qtrue );
-    }
+	if (ent->item->giTag == PW_AMMO)
+	{
+		// Restore ammo for every weapon the player has
+		for (weapon_t w = WP_KNIFE; w < WP_NUM_WEAPONS; w++)
+		{
+			if (COM_BitCheck(other->client->ps.weapons, w))
+			{
+				Add_Ammo(other, w, ammoTable[w].maxammo, qtrue);
+			}
+		}
+	}
 
-   
-
-    // DIRTY HACK!!!!! If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
+	// DIRTY HACK!!!!! If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
     if (ent->item->giTag == PW_INVIS) {
         other->flags |= FL_NOTARGET;
 

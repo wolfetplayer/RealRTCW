@@ -2566,9 +2566,13 @@ static void PM_ReloadClip( int weapon ) {
 	ammomove = ammoTable[weapon].maxclip - ammoclip;
       // Jaymod
 	if ( !pm->ps->aiChar) { 
-	if( weapon == WP_M97 || weapon == WP_AUTO5 ) {
-		ammomove = 1;
-	}
+        if (weapon == WP_M97 || weapon == WP_AUTO5) {
+            if (pm->ps->perks[PERK_WEAPONHANDLING] > 0) {
+                ammomove = 2;
+            } else {
+                ammomove = 1;
+            }
+        }
 
 	if( weapon == WP_M1941 && pm->ps->ammoclip[WP_M1941] > 0 ) {
 		ammomove = 5;

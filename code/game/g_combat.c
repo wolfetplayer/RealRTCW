@@ -1567,7 +1567,7 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		client->damage_blood += take;
 		client->damage_knockback += knockback;
 
-		client->healthRegenStartTime = level.time + 5000; // This will reset health regen timer
+		client->healthRegenStartTime = level.time + 2500; // This will reset health regen timer
 
 		if ( dir ) {
 			VectorCopy( dir, client->damage_from );

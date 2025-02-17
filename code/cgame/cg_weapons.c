@@ -1700,11 +1700,11 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 				return CG_RW_ParseError( handle, "expected missileDlight value" );
 			}
 		} else if ( !Q_stricmp( token.string, "wiTrailTime" ) ) {
-			if ( !PC_Int_Parse( handle, &weaponInfo->wiTrailTime ) ) {
+			if ( !PC_Int_Parse( handle, (int *)&weaponInfo->wiTrailTime ) ) {
 				return CG_RW_ParseError( handle, "expected wiTrailTime value" );
 			}
 		} else if ( !Q_stricmp( token.string, "trailRadius" ) ) {
-			if ( !PC_Int_Parse( handle, &weaponInfo->trailRadius ) ) {
+			if ( !PC_Int_Parse( handle, (int *)&weaponInfo->trailRadius ) ) {
 				return CG_RW_ParseError( handle, "expected trailRadius value" );
 			}
 		} else if ( !Q_stricmp( token.string, "missileDlightColor" ) ) {

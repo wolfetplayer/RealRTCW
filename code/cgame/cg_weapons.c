@@ -2407,11 +2407,15 @@ CG_AddWeaponWithPowerups
 ========================
 */
 static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerState_t *ps, centity_t *cent ) {
-
-	    if ( !ps ) {
-        return;
+    // If ps is NULL, and the entity is the local client, use the predicted player state.
+    if ( !ps ) {
+        if ( cent->currentState.number == cg.snap->ps.clientNum ) {
+            ps = &cg.predictedPlayerState;
+        } else {
+            return;
+        }
     }
-
+    
     // add powerup effects
     if ( powerups & ( 1 << PW_INVIS ) ) {
         gun->customShader = cgs.media.invisShader;
@@ -2423,7 +2427,7 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
         if ( powerups & ( 1 << PW_BATTLESUIT_SURV ) ) {
             int timeLeft = ps->powerups[PW_BATTLESUIT_SURV] - cg.time;
             if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
-                // skip rendering the special shader to create a blink
+                // skip rendering to blink
             } else {
                 gun->customShader = cgs.media.battleWeaponShader;
                 trap_R_AddRefEntityToScene( gun );
@@ -2433,7 +2437,7 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
         if ( powerups & ( 1 << PW_QUAD ) ) {
             int timeLeft = ps->powerups[PW_QUAD] - cg.time;
             if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
-                // blink
+                // skip rendering to blink
             } else {
                 gun->customShader = cgs.media.quadWeaponShader;
                 trap_R_AddRefEntityToScene( gun );
@@ -2443,7 +2447,7 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
         if ( powerups & ( 1 << PW_VAMPIRE ) ) {
             int timeLeft = ps->powerups[PW_VAMPIRE] - cg.time;
             if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
-                // blink
+                // skip rendering to blink
             } else {
                 gun->customShader = cgs.media.redQuadShader;
                 trap_R_AddRefEntityToScene( gun );

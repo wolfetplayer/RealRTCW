@@ -5880,23 +5880,23 @@ qboolean BG_ParseSurvivalTable( int handle )
 			}
 		// string
 		} else if ( !Q_stricmp( token.string, "announcerSound" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, &svParams.announcerSound[0], MAX_QPATH ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, (char *)&svParams.announcerSound[0], MAX_QPATH ) ) {
 				PC_SourceError( handle, "expected announcerSound value" );
 				return qfalse;
 			}
 		} else if ( Q_stristr( token.string, "announcerSound" ) == token.string ) {
 			sscanf( token.string, "announcerSound%d", &i );
 
-			if ( !PC_String_ParseNoAlloc( handle, &soundPath, MAX_QPATH ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, (char *)&soundPath, MAX_QPATH ) ) {
 				PC_SourceError( handle, "expected announcerSound value" );
 				return qfalse;
 			}
 
 			if ( i - 1 >= ANNOUNCE_SOUNDS_COUNT ) {
-				sprintf_s(msg, 64, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1 );
+				sprintf(msg, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1 );
 				PC_SourceError( handle, msg );
 			} else {
-				strcpy_s( svParams.announcerSound[i - 1], MAX_QPATH, soundPath );
+				strcpy( svParams.announcerSound[i - 1], soundPath );
 			}
 		} else {
 			PC_SourceError( handle, "unknown token '%s'", token.string );

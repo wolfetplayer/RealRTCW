@@ -2407,12 +2407,14 @@ CG_AddWeaponWithPowerups
 ========================
 */
 static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerState_t *ps, centity_t *cent ) {
-    // If ps is NULL, and the entity is the local client, use the predicted player state.
+    // If ps is NULL, then:
+    // - For the local client, use the predicted player state.
+    // - For other entities (including AI), cast the entity state to a playerState_t.
     if ( !ps ) {
         if ( cent->currentState.number == cg.snap->ps.clientNum ) {
             ps = &cg.predictedPlayerState;
         } else {
-            return;
+            ps = (playerState_t *)&cent->currentState;
         }
     }
     
@@ -2423,7 +2425,7 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
     } else {
         trap_R_AddRefEntityToScene( gun );
 
-        // blink if time left < 5s, toggling every 200ms
+        // blink if time left < 5s, toggling every 200ms for battlesuit
         if ( powerups & ( 1 << PW_BATTLESUIT_SURV ) ) {
             int timeLeft = ps->powerups[PW_BATTLESUIT_SURV] - cg.time;
             if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
@@ -2434,6 +2436,7 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
             }
         }
 
+        // blink for quad powerup
         if ( powerups & ( 1 << PW_QUAD ) ) {
             int timeLeft = ps->powerups[PW_QUAD] - cg.time;
             if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
@@ -2444,6 +2447,7 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerStat
             }
         }
 
+        // blink for vampire powerup
         if ( powerups & ( 1 << PW_VAMPIRE ) ) {
             int timeLeft = ps->powerups[PW_VAMPIRE] - cg.time;
             if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {

@@ -2210,7 +2210,7 @@ static void PM_BeginWeaponReload( int weapon ) {
     int reloadTimeFull = ammoTable[weapon].reloadTimeFull;
 
 	// only allow reload if the weapon isn't already occupied (firing is okay)
-	if ( pm->ps->weaponstate != WEAPON_READY && pm->ps->weaponstate != WEAPON_FIRING ) {
+	if ( pm->ps->weaponstate != WEAPON_READY && pm->ps->weaponstate != WEAPON_FIRING && pm->ps->weaponstate != WEAPON_FIRINGALT ) {
 		return;
 	}
 
@@ -4793,10 +4793,11 @@ void PmoveSingle( pmove_t *pmove ) {
 		}
 	}
 
-
-	// clear the respawned flag if attack and use are cleared
-	if ( pm->ps->stats[STAT_HEALTH] > 0 &&
-		 !( pm->cmd.buttons & ( BUTTON_ATTACK | BUTTON_USE_HOLDABLE ) ) ) {
+	// clear the respawned flag if attack, attack2 and use are cleared
+	if (pm->ps->stats[STAT_HEALTH] > 0 &&
+		!(pm->cmd.buttons & (BUTTON_ATTACK | BUTTON_USE_HOLDABLE)) &&
+		!(pm->cmd.wbuttons & WBUTTON_ATTACK2))
+	{
 		pm->ps->pm_flags &= ~PMF_RESPAWNED;
 	}
 

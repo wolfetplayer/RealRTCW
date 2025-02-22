@@ -317,8 +317,8 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
             break;
     }
 
-    // Add additional score if killed with knife
-    if (modKnife) {
+    // Add additional score if killed with knife or foot
+    if (modKnife || modKicked) {
         score += svParams.scoreKnifeBonus;
     }
 

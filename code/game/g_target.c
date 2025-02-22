@@ -312,11 +312,11 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
 
     } else if ( item->giType == IT_ARMOR )  {
-       if (activator->client->ps.stats[STAT_ARMOR] >= 100) {
+       if (activator->client->ps.stats[STAT_ARMOR] >= 200) {
 		  trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
           return;
        }
-		activator->client->ps.stats[STAT_ARMOR] = 100;
+		activator->client->ps.stats[STAT_ARMOR] = 200;
         G_AddPredictableEvent( activator, EV_ITEM_PICKUP, item - bg_itemlist );
 		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
     } else if ( item->giType == IT_PERK ) {

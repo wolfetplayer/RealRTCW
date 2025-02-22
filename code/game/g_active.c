@@ -539,9 +539,13 @@ if ((g_regen.integer == 1 || g_gametype.integer == GT_SURVIVAL) && level.time >=
 		}
 
 
-		// count down armor when over max // RealRTCW if more than 100
-		if ( client->ps.stats[STAT_ARMOR] > 100 ) {
-			client->ps.stats[STAT_ARMOR]--;
+		// count down armor when over max
+		if (g_gametype.integer != GT_SURVIVAL)
+		{
+			if (client->ps.stats[STAT_ARMOR] > 100)
+			{
+				client->ps.stats[STAT_ARMOR]--;
+			}
 		}
 	}
 

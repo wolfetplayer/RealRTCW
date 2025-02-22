@@ -196,18 +196,29 @@ void P_WorldEffects( gentity_t *ent ) {
 	//
 	// check for burning from flamethrower
 	//
-	if ( ent->s.onFireEnd > level.time && ( AICast_AllowFlameDamage( ent->s.number ) ) ) {
-		gentity_t *attacker;
+	if (ent->s.onFireEnd > level.time && (AICast_AllowFlameDamage(ent->s.number)))
+	{
+		gentity_t *attacker = &g_entities[ent->flameBurnEnt];
 
-		if ( ent->health > 0 ) {
-			attacker = g_entities + ent->flameBurnEnt;
-				if ( ent->r.svFlags & SVF_CASTAI ) {
-					G_Damage( ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER );
-				} else if ( ( ent->s.onFireEnd - level.time ) > FIRE_FLASH_TIME / 2 && rand() % 5000 < ( ent->s.onFireEnd - level.time ) ) { // as it fades out, also fade out damage rate
-					G_Damage( ent, attacker, attacker, NULL, NULL, 1, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER );
-				}
-		} else if ( ent->s.onFireEnd > level.time + 4000 ) {  // dead, so sto pthe flames soon
-			ent->s.onFireEnd = level.time + 4000;   // stop burning soon
+		if (ent->health > 0)
+		{
+			int oldHealth = ent->health;
+
+			// Apply damage
+			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER);
+
+			// Calculate inflicted damage
+			int inflictedDmg = oldHealth - ent->health;
+
+			// If no damage was dealt, remove the flame effect
+			if (inflictedDmg <= 0)
+			{
+				ent->s.onFireEnd = 0;
+			}
+		}
+		else if (ent->s.onFireEnd > level.time + 4000)
+		{
+			ent->s.onFireEnd = level.time + 4000;
 		}
 	}
 }

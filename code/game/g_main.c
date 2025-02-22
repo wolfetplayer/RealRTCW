@@ -244,7 +244,7 @@ cvarTable_t gameCvarTable[] = {
 
 	{ &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse  },
 
-	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_ARCHIVE, 0, qtrue  },
+	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_CHEAT, 0, qtrue  },
 
 	{ &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE  },
 	{ &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE  },                            // NERVE - SMF - merge from team arena
@@ -1314,6 +1314,13 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 		if (g_gametype.integer == GT_SURVIVAL)
 		{
 			AI_LoadSurvivalTable(g_mapname.string);
+		}
+
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
+			trap_Cvar_Set( "g_friendlyFire", "0" );
+		} else {
+			trap_Cvar_Set( "g_friendlyFire", "1" );
 		}
 
 		AICast_Init();

@@ -1535,9 +1535,12 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		if ( weapon == WP_SNOOPERSCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_GARAND );
 		}
-		if ( weapon == WP_FG42 ) {
-			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_FG42SCOPE );
-		}
+        if ( weapon == WP_FG42 ) {
+         // Only grant FG42SCOPE if the entity is not an AI
+          if ( !ent->aiCharacter ) {
+            COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_FG42SCOPE );
+          }
+        }
 		if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
 		}
@@ -1822,9 +1825,12 @@ if ( !Q_strcasecmp (params, "soviet_random") )
 		if ( weapon == WP_SNOOPERSCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_GARAND );
 		}
-		if ( weapon == WP_FG42 ) {
-			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_FG42SCOPE );
-		}
+        if ( weapon == WP_FG42 ) {
+         // Only grant FG42SCOPE if the entity is not an AI
+          if ( !ent->aiCharacter ) {
+            COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_FG42SCOPE );
+          }
+        }
 		if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
 		}

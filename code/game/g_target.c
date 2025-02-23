@@ -239,6 +239,74 @@ void Use_Target_buy( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		}
     }
 
+
+	    //
+    // --------------------------------------------
+    // NEW: Handle "ammo" purchase
+    // --------------------------------------------
+    //
+    if (!Q_stricmp(itemName, "ammo")) {
+        // Figure out which weapon the player is currently holding
+        int heldWeap = activator->client->ps.weapon;
+
+        // If the held weapon is invalid or a no-ammo type, ignore
+        if ( heldWeap <= WP_NONE || heldWeap >= WP_NUM_WEAPONS ) {
+            trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
+            return;
+        }
+
+		// Check if weapon ammo is already at max
+		int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
+		if (activator->client->ps.ammo[ammoIndex] >= ammoTable[heldWeap].maxammo)
+		{
+			trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+			return;
+		}
+
+		// Weapons that only a Soldier can replenish
+        // also costs double for ANY class (but only a soldier can do it).
+        if ( heldWeap == WP_TESLA
+          || heldWeap == WP_MG42M
+          || heldWeap == WP_PANZERFAUST
+          || heldWeap == WP_VENOM
+          || heldWeap == WP_FLAMETHROWER
+		  || heldWeap == WP_BROWNING ) {
+
+            // Only a soldier can buy ammo for these
+            if ( activator->client->ps.stats[STAT_PLAYER_CLASS] != PC_SOLDIER ) {
+                trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
+                return;
+            }
+            // Double the price for these heavy weapons
+            price *= 2;
+        }
+
+        // If the player is a Lieutenant, halve the price
+        if ( activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT ) {
+            price /= 2;
+        }
+
+        // Check if player can afford it
+        if ( activator->client->ps.persistant[PERS_SCORE] < price ) {
+            trap_SendServerCommand( -1, "mu_play sound/items/use_nothing.wav 0\n" );
+            return;
+        }
+
+        // Refill ammo to max
+        Add_Ammo( activator, heldWeap, ammoTable[heldWeap].maxammo, qtrue );
+        Add_Ammo( activator, heldWeap, ammoTable[heldWeap].maxammo, qfalse );
+
+        // Deduct the points
+        activator->client->ps.persistant[PERS_SCORE] -= price;
+
+		trap_SendServerCommand( -1, "mu_play sound/misc/buy.wav 0\n" );
+
+        // Update userinfo
+        activator->client->hasPurchased = qtrue;
+        ClientUserinfoChanged( clientNum );
+        return;
+    }
+
 	// Find the item
 	if ( itemIndex <= 0 ) {
 		for ( i = 1; bg_itemlist[i].classname; i++ ) {

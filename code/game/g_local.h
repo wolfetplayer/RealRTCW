@@ -201,9 +201,6 @@ typedef struct svParams_s
 	int treasureDropChance;
 	int treasureDropChanceScavengerIncrease;
 
-	int ammoStandPrice;
-	int healthStandPrice;
-
 	int scoreHeadshotKill;
 	int scoreHit;
 	int scoreBaseKill;

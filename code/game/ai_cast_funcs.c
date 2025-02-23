@@ -5788,16 +5788,6 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected treasureDropChanceScavengerIncrease value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "ammoStandPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.ammoStandPrice ) ) {
-				PC_SourceError( handle, "expected ammoStandPrice value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "healthStandPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.healthStandPrice ) ) {
-				PC_SourceError( handle, "expected healthStandPrice value" );
-				return qfalse;
-			}
 		} else if ( !Q_stricmp( token.string, "scoreHeadshotKill" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.scoreHeadshotKill ) ) {
 				PC_SourceError( handle, "expected scoreHeadshotKill value" );

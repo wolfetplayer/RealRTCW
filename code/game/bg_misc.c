@@ -6400,50 +6400,66 @@ WARNING: when numOfClips is 0, DO NOT CHANGE ANYTHING under ps.
 */
 // Gordon: setting numOfClips = 0 allows you to check if the client needs ammo, but doesnt give any
 qboolean BG_AddMagicAmmo( playerState_t *ps, int numOfClips ) {
-    int i, weapon;
-    int ammoAdded = qfalse;
-    int maxammo;
-    int clip;
-    int weapNumOfClips;
+int i, weapon;
+	int ammoAdded = qfalse;
+	int maxammo;
+	int clip;
+	int weapNumOfClips;
 
-    for ( i = 0; reloadableWeapons[i] >= 0; i++ ) {
-        weapon = reloadableWeapons[i];
+	// Gordon: now other weapons
+	for ( i = 0; reloadableWeapons[i] >= 0; i++ ) {
+		weapon = reloadableWeapons[i];
+		if ( COM_BitCheck( ps->weapons, weapon ) ) {
+			maxammo = ammoTable[weapon].maxammo;
 
-        // Only skip heavy weapons if player class isn't PC_SOLDIER
-        if ( ( weapon == WP_PANZERFAUST
-            || weapon == WP_TESLA
-            || weapon == WP_FLAMETHROWER
-            || weapon == WP_BROWNING
-            || weapon == WP_MG42M )
-            && ps->stats[STAT_PLAYER_CLASS] != PC_SOLDIER )
-        {
-            continue;
-        }
+			// Handle weapons that just use clip, and not ammo
+			if ( weapon == WP_FLAMETHROWER) {
+				clip = BG_FindAmmoForWeapon( weapon );
+				if ( ps->ammoclip[clip] < maxammo ) {
+					// early out
+					if ( !numOfClips ) {
+						return qtrue;
+					}
 
-        if ( COM_BitCheck( ps->weapons, weapon ) ) {
-            maxammo = ammoTable[weapon].maxammo;
-            clip = BG_FindAmmoForWeapon( weapon );
-            if ( ps->ammo[clip] < maxammo ) {
-                if ( !numOfClips ) {
-                    return qtrue;
-                }
-                ammoAdded = qtrue;
+					ammoAdded = qtrue;
+					ps->ammoclip[clip] = maxammo;
+				}
+			} else if ( weapon == WP_TESLA) {
+				clip = BG_FindAmmoForWeapon( weapon );
+				if ( ps->ammoclip[clip] < maxammo ) {
+					// early out
+					if ( !numOfClips ) {
+						return qtrue;
+					}
 
-                // Akimbo case
-                if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33 ) {
-                    weapNumOfClips = numOfClips * 2;
-                } else {
-                    weapNumOfClips = numOfClips;
-                }
+					ammoAdded = qtrue;
+					ps->ammoclip[clip] = maxammo;
+				}
+			} else {
+				clip = BG_FindAmmoForWeapon( weapon );
+				if ( ps->ammo[clip] < maxammo ) {
+					// early out
+					if ( !numOfClips ) {
+						return qtrue;
+					}
+					ammoAdded = qtrue;
 
-                ps->ammo[clip] += weapNumOfClips * ammoTable[weapon].maxclip;
-                if ( ps->ammo[clip] > maxammo ) {
-                    ps->ammo[clip] = maxammo;
-                }
-            }
-        }
-    }
-    return ammoAdded;
+					if ( weapon == WP_AKIMBO || weapon == WP_DUAL_TT33  ) {
+						weapNumOfClips = numOfClips * 2; // double clips babeh!
+					} else {
+						weapNumOfClips = numOfClips;
+					}
+
+					// add and limit check
+					ps->ammo[clip] += weapNumOfClips * ammoTable[weapon].maxclip;
+					if ( ps->ammo[clip] > maxammo ) {
+						ps->ammo[clip] = maxammo;
+					}
+				}
+			}
+		}
+	}
+	return ammoAdded;
 }
 
 

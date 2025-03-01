@@ -886,73 +886,67 @@ Bullet_Fire_Extended
 ==============
 */
 qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t start, vec3_t end, float spread, int damage, int recursion ) {
-	trace_t tr;
-	gentity_t   *tent;
-	gentity_t   *traceEnt;
-	qboolean reflectBullet = qfalse;
-	qboolean hitClient = qfalse;
-	int hitType = HIT_NONE;
+    trace_t tr;
+    gentity_t   *tent;
+    gentity_t   *traceEnt;
+    qboolean reflectBullet = qfalse;
+    qboolean hitClient = qfalse;
+    int hitType = HIT_NONE;
+    int baseDamage = damage;
+    int effectiveDamage = ( recursion == 0 ? baseDamage * s_quadFactor : baseDamage );
 
-	// RF, abort if too many recursions.. there must be a real solution for this, but for now this is the safest
-	// fix I can find
-	if ( recursion > 12 ) {
-		return qfalse;
-	}
+    // RF, abort if too many recursions.. there must be a real solution for this, but for now this is the safest
+    // fix I can find
+    if ( recursion > 12 ) {
+        return qfalse;
+    }
 
-	damage *= s_quadFactor;
+    // perform trace with base values (the trace doesn't care about the damage multiplier)
+    trap_Trace( &tr, start, NULL, NULL, end, source->s.number, MASK_SHOT );
 
-	// (SA) changed so player could shoot his own dynamite.
-	// (SA) whoops, but that broke bullets going through explosives...
-	trap_Trace( &tr, start, NULL, NULL, end, source->s.number, MASK_SHOT );
-//	trap_Trace (&tr, start, NULL, NULL, end, ENTITYNUM_NONE, MASK_SHOT);
+    // DHM - Nerve :: only in single player
+    AICast_ProcessBullet( attacker, start, tr.endpos );
+    
+    // bullet debugging using Q3A's railtrail
+    if ( g_debugBullets.integer & 1 ) {
+        tent = G_TempEntity( start, EV_RAILTRAIL );
+        VectorCopy( tr.endpos, tent->s.origin2 );
+        tent->s.otherEntityNum2 = attacker->s.number;
+    }
 
-	// DHM - Nerve :: only in single player
-	AICast_ProcessBullet( attacker, start, tr.endpos );
-	
+    traceEnt = &g_entities[ tr.entityNum ];
 
-	// bullet debugging using Q3A's railtrail
-	if ( g_debugBullets.integer & 1 ) {
-		tent = G_TempEntity( start, EV_RAILTRAIL );
-		VectorCopy( tr.endpos, tent->s.origin2 );
-		tent->s.otherEntityNum2 = attacker->s.number;
-	}
+    EmitterCheck( traceEnt, attacker, &tr );
 
-	traceEnt = &g_entities[ tr.entityNum ];
+    // snap the endpos to integers, but nudged towards the line
+    SnapVectorTowards( tr.endpos, start );
 
-	EmitterCheck( traceEnt, attacker, &tr );
-
-	// snap the endpos to integers, but nudged towards the line
-	SnapVectorTowards( tr.endpos, start );
     if ( g_gametype.integer == GT_GOTHIC || g_weaponfalloff.integer == 1 ) {
-		vec_t dist;
-		vec3_t shotvec;
-		float scale;
+        vec_t dist;
+        vec3_t shotvec;
+        float scale;
 
-		VectorSubtract( tr.endpos, muzzleTrace, shotvec );
-		dist = VectorLengthSquared( shotvec );
+        VectorSubtract( tr.endpos, muzzleTrace, shotvec );
+        dist = VectorLengthSquared( shotvec );
 
-		// zinx - start at 100% at 1000 units (and before),
-		// and go to 50% at 2000 units (and after)
-
-		// Square(1500) to Square(2500) -> 0.0 to 1.0
+        // zinx - start at 100% at 1000 units (and before),
+        // and go to 50% at 2000 units (and after)
         scale = ( dist - Square ( ammoTable [attacker->s.weapon].falloffDistance[0] ) ) / ( Square( ammoTable [attacker->s.weapon].falloffDistance[1] ) - Square( ammoTable [attacker->s.weapon].falloffDistance[0] ) );
-		// 0.0 to 1.0 -> 0.0 to 0.5
-		scale *= 0.5f;
-		// 0.0 to 0.5 -> 1.0 to 0.5
-		scale = 1.0f - scale;
+        scale *= 0.5f;
+        scale = 1.0f - scale;
 
-		// And, finally, cap it.
-		if ( scale >= 1.0f ) {
-			scale = 1.0f;
-		} else if ( scale < 0.5f ) {
-			scale = 0.5f;
-		}
+        if ( scale >= 1.0f ) {
+            scale = 1.0f;
+        } else if ( scale < 0.5f ) {
+            scale = 0.5f;
+        }
 
-		damage *= scale;
-	
-	}
+        // Scale both effective and base damages so that falloff applies regardless of quad multiplier.
+        effectiveDamage = (int)( effectiveDamage * scale );
+        baseDamage = (int)( baseDamage * scale );
+    }
 
-    // should we reflect this bullet?
+    // decide if the bullet should be reflected
     if ( traceEnt->flags & FL_DEFENSE_GUARD ) {
         reflectBullet = qtrue;
     } else if ( traceEnt->flags & FL_DEFENSE_CROUCH ) {
@@ -963,134 +957,113 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
         reflectBullet = qtrue;
     }
 
-	// send bullet impact
-	if ( traceEnt->takedamage && traceEnt->client && !reflectBullet ) {
-		tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_FLESH );
-		tent->s.eventParm = traceEnt->s.number;
-		//tent->s.modelindex = hitType;
-		if ( LogAccuracyHit( traceEnt, attacker ) ) {
-			hitClient = qtrue;
-			attacker->client->ps.persistant[PERS_ACCURACY_HITS]++;
-		}
+    // send bullet impact for clients and bats
+    if ( traceEnt->takedamage && traceEnt->client && !reflectBullet ) {
+        tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_FLESH );
+        tent->s.eventParm = traceEnt->s.number;
+        if ( LogAccuracyHit( traceEnt, attacker ) ) {
+            hitClient = qtrue;
+            attacker->client->ps.persistant[PERS_ACCURACY_HITS]++;
+        }
 
-//----(SA)	added
-		if ( g_debugBullets.integer >= 2 ) {   // show hit player bb
-			gentity_t *bboxEnt;
-			vec3_t b1, b2;
-			VectorCopy( traceEnt->r.currentOrigin, b1 );
-			VectorCopy( traceEnt->r.currentOrigin, b2 );
-			VectorAdd( b1, traceEnt->r.mins, b1 );
-			VectorAdd( b2, traceEnt->r.maxs, b2 );
-			bboxEnt = G_TempEntity( b1, EV_RAILTRAIL );
-			VectorCopy( b2, bboxEnt->s.origin2 );
-			bboxEnt->s.dmgFlags = 1;    // ("type")
-		}
-//----(SA)	end
+        if ( g_debugBullets.integer >= 2 ) {
+            gentity_t *bboxEnt;
+            vec3_t b1, b2;
+            VectorCopy( traceEnt->r.currentOrigin, b1 );
+            VectorCopy( traceEnt->r.currentOrigin, b2 );
+            VectorAdd( b1, traceEnt->r.mins, b1 );
+            VectorAdd( b2, traceEnt->r.maxs, b2 );
+            bboxEnt = G_TempEntity( b1, EV_RAILTRAIL );
+            VectorCopy( b2, bboxEnt->s.origin2 );
+            bboxEnt->s.dmgFlags = 1;
+        }
+    } else if ( traceEnt->takedamage && traceEnt->s.eType == ET_BAT ) {
+        tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_FLESH );
+        tent->s.eventParm = traceEnt->s.number;
+    } else {
+        vec3_t reflect;
+        float dot;
 
-	} else if ( traceEnt->takedamage && traceEnt->s.eType == ET_BAT ) {
-		tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_FLESH );
-		tent->s.eventParm = traceEnt->s.number;
-	} else {
-		// Ridah, bullet impact should reflect off surface
-		vec3_t reflect;
-		float dot;
+        if ( g_debugBullets.integer <= -2 ) {
+            gentity_t *bboxEnt;
+            vec3_t b1, b2;
+            VectorCopy( traceEnt->r.currentOrigin, b1 );
+            VectorCopy( traceEnt->r.currentOrigin, b2 );
+            VectorAdd( b1, traceEnt->r.mins, b1 );
+            VectorAdd( b2, traceEnt->r.maxs, b2 );
+            bboxEnt = G_TempEntity( b1, EV_RAILTRAIL );
+            VectorCopy( b2, bboxEnt->s.origin2 );
+            bboxEnt->s.dmgFlags = 1;
+        }
 
-		if ( g_debugBullets.integer <= -2 ) {  // show hit thing bb
-			gentity_t *bboxEnt;
-			vec3_t b1, b2;
-			VectorCopy( traceEnt->r.currentOrigin, b1 );
-			VectorCopy( traceEnt->r.currentOrigin, b2 );
-			VectorAdd( b1, traceEnt->r.mins, b1 );
-			VectorAdd( b2, traceEnt->r.maxs, b2 );
-			bboxEnt = G_TempEntity( b1, EV_RAILTRAIL );
-			VectorCopy( b2, bboxEnt->s.origin2 );
-			bboxEnt->s.dmgFlags = 1;    // ("type")
-		}
+        if ( reflectBullet ) {
+            VectorSubtract( tr.endpos, traceEnt->r.currentOrigin, reflect );
+            VectorNormalize( reflect );
+            VectorMA( traceEnt->r.currentOrigin, 15, reflect, reflect );
+            tent = G_TempEntity( reflect, EV_BULLET_HIT_WALL );
+        } else {
+            tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_WALL );
+        }
 
-		if ( reflectBullet ) {
-			// reflect off sheild
-			VectorSubtract( tr.endpos, traceEnt->r.currentOrigin, reflect );
-			VectorNormalize( reflect );
-			VectorMA( traceEnt->r.currentOrigin, 15, reflect, reflect );
-			tent = G_TempEntity( reflect, EV_BULLET_HIT_WALL );
-		} else {
-			tent = G_TempEntity( tr.endpos, EV_BULLET_HIT_WALL );
-		}
+        dot = DotProduct( forward, tr.plane.normal );
+        VectorMA( forward, -2 * dot, tr.plane.normal, reflect );
+        VectorNormalize( reflect );
+        tent->s.eventParm = DirToByte( reflect );
 
-		dot = DotProduct( forward, tr.plane.normal );
-		VectorMA( forward, -2 * dot, tr.plane.normal, reflect );
-		VectorNormalize( reflect );
+        if ( reflectBullet ) {
+            tent->s.otherEntityNum2 = traceEnt->s.number;
+        } else {
+            tent->s.otherEntityNum2 = ENTITYNUM_NONE;
+        }
+    }
+    tent->s.otherEntityNum = attacker->s.number;
 
-		tent->s.eventParm = DirToByte( reflect );
+    if ( traceEnt->takedamage ) {
+        qboolean reflectBool = qfalse;
+        vec3_t trDir;
 
-		if ( reflectBullet ) {
-			tent->s.otherEntityNum2 = traceEnt->s.number;   // force sparks
-		} else {
-			tent->s.otherEntityNum2 = ENTITYNUM_NONE;
-		}
-		// done.
-	}
-	tent->s.otherEntityNum = attacker->s.number;
+        if ( reflectBullet ) {
+            AngleVectors( traceEnt->s.apos.trBase, trDir, NULL, NULL );
+            if ( DotProduct( forward, trDir ) < 0.6 ) {
+                reflectBool = qtrue;
+            }
+        }
 
-	if ( traceEnt->takedamage ) {
-		qboolean reflectBool = qfalse;
-		vec3_t trDir;
+        if ( reflectBool ) {
+            vec3_t reflect_end;
+            G_AddEvent( traceEnt, EV_GENERAL_SOUND, level.bulletRicochetSound );
+            CalcMuzzlePoints( traceEnt, traceEnt->s.weapon );
+            Bullet_Endpos( traceEnt, 2800, &reflect_end );
+            // use baseDamage for reflected bullet without quad damage
+            Bullet_Fire_Extended( traceEnt, attacker, muzzleTrace, reflect_end, spread, baseDamage, recursion + 1 );
+        } else {
+            // prevent team damage for AI in single player
+            if ( attacker->client && traceEnt->client && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
+                return qfalse;
+            }
 
-		if ( reflectBullet ) {
-			// if we are facing the direction the bullet came from, then reflect it
-			AngleVectors( traceEnt->s.apos.trBase, trDir, NULL, NULL );
-			if ( DotProduct( forward, trDir ) < 0.6 ) {
-				reflectBool = qtrue;
-			}
-		}
+            G_DamageExt( traceEnt, attacker, attacker, forward, tr.endpos, effectiveDamage, ( g_weaponfalloff.integer ? DAMAGE_DISTANCEFALLOFF : 0 ), ammoTable[attacker->s.weapon].mod, &hitType );
 
-		if ( reflectBool ) {
-			vec3_t reflect_end;
-			// reflect this bullet
-			G_AddEvent( traceEnt, EV_GENERAL_SOUND, level.bulletRicochetSound );
-			CalcMuzzlePoints( traceEnt, traceEnt->s.weapon );
+            // allow bullets to "pass through" func_explosives if they break by taking another simultaneous shot
+            if ( Q_stricmp( traceEnt->classname, "func_explosive" ) == 0 ) {
+                if ( traceEnt->health <= 0 ) {
+                    Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, effectiveDamage, recursion + 1 );
+                }
+            } else if ( traceEnt->client ) {
+                if ( traceEnt->health <= 0 ) {
+                    Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, effectiveDamage / 2, recursion + 1 );
+                }
+            }
+        }
+    }
 
-//----(SA)	modified to use extended version so attacker would pass through
-//			Bullet_Fire( traceEnt, 1000, damage );
-			Bullet_Endpos( traceEnt, 2800, &reflect_end );    // make it inaccurate
-			Bullet_Fire_Extended( traceEnt, attacker, muzzleTrace, reflect_end, spread, damage, recursion + 1 );
-//----(SA)	end
+    tent = G_TempEntity( tr.endpos, EV_HITSOUNDS );
+    tent->s.eventParm = traceEnt->s.number;
+    tent->s.weapon = traceEnt->s.weapon;
+    tent->s.otherEntityNum = attacker->s.number;
+    tent->s.modelindex = hitType;
 
-		} else {
-
-			// Ridah, don't hurt team-mates
-			// DHM - Nerve :: Only in single player
-			if ( attacker->client && traceEnt->client && ( traceEnt->r.svFlags & SVF_CASTAI ) && ( attacker->r.svFlags & SVF_CASTAI ) && AICast_SameTeam( AICast_GetCastState( attacker->s.number ), traceEnt->s.number ) ) {
-				// AI's don't hurt members of their own team
-				return qfalse;
-			}
-			// done.
-
-			G_DamageExt( traceEnt, attacker, attacker, forward, tr.endpos, damage, ( g_weaponfalloff.integer ? DAMAGE_DISTANCEFALLOFF : 0 ), ammoTable[attacker->s.weapon].mod, &hitType );
-
-			// allow bullets to "pass through" func_explosives if they break by taking another simultanious shot
-			// start new bullet at position this hit and continue to the end position (ignoring shot-through ent in next trace)
-			// spread = 0 as this is an extension of an already spread shot (so just go straight through)
-			if ( Q_stricmp( traceEnt->classname, "func_explosive" ) == 0 ) {
-				if ( traceEnt->health <= 0 ) {
-					Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, damage, recursion + 1 );
-				}
-			} else if ( traceEnt->client ) {
-				if ( traceEnt->health <= 0 ) {
-					Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, damage / 2, recursion + 1 ); // halve the damage each player it goes through
-				}
-			}
-		}
-	}
-
-	// send bullet impact
-	tent = G_TempEntity( tr.endpos, EV_HITSOUNDS );
-	tent->s.eventParm = traceEnt->s.number;
-	tent->s.weapon = traceEnt->s.weapon;
-	tent->s.otherEntityNum = attacker->s.number;
-	tent->s.modelindex = hitType;   // send the hit sound info in the flesh hit event
-
-	return hitClient;
+    return hitClient;
 }
 
 

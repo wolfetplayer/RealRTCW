@@ -1039,9 +1039,19 @@ void G_RegisterCvars( void ) {
 	}
 
 	// Rafael gameskill
-	if ( g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_SURVIVAL ) {
-		G_Printf( "g_gameskill %i is out of range, default to medium\n", g_gameskill.integer );
-		trap_Cvar_Set( "g_gameskill", va( "%d", GSKILL_MEDIUM ) ); // default to medium
+	if (g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_SURVIVAL)
+	{
+		G_Printf("g_gameskill %i is out of range, default to medium\n", g_gameskill.integer);
+		trap_Cvar_Set("g_gameskill", va("%d", GSKILL_MEDIUM)); // default to medium
+		trap_Cvar_Update(&g_gameskill);
+	}
+
+	// If gamemode is not survival and g_gameskill is set to 5, override it to 1.
+	if (g_gametype.integer != GT_SURVIVAL && g_gameskill.integer == 5)
+	{
+		G_Printf("g_gameskill set to 5 in non-survival mode, overriding to 1\n");
+		trap_Cvar_Set("g_gameskill", "1");
+		trap_Cvar_Update(&g_gameskill);
 	}
 
 	bg_pmove_gameskill_integer = g_gameskill.integer;

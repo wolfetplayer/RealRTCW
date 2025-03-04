@@ -170,26 +170,37 @@ Find the spot that we DON'T want to use
 */
 #define MAX_SPAWN_POINTS    128
 gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from ) {
-	gentity_t   *spot;
-	vec3_t delta;
-	float dist, nearestDist;
-	gentity_t   *nearestSpot;
+    gentity_t   *spot;
+    vec3_t delta;
+    float dist, nearestDist;
+    gentity_t   *nearestSpot;
 
-	nearestDist = 999999;
-	nearestSpot = NULL;
-	spot = NULL;
+    nearestDist = 999999;
+    nearestSpot = NULL;
+    spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
+    // Search for info_player_start
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
+        VectorSubtract( spot->s.origin, from, delta );
+        dist = VectorLength( delta );
+        if ( dist < nearestDist ) {
+            nearestDist = dist;
+            nearestSpot = spot;
+        }
+    }
 
-		VectorSubtract( spot->s.origin, from, delta );
-		dist = VectorLength( delta );
-		if ( dist < nearestDist ) {
-			nearestDist = dist;
-			nearestSpot = spot;
-		}
-	}
+    spot = NULL;
+    // Search for info_player_deathmatch
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+        VectorSubtract( spot->s.origin, from, delta );
+        dist = VectorLength( delta );
+        if ( dist < nearestDist ) {
+            nearestDist = dist;
+            nearestSpot = spot;
+        }
+    }
 
-	return nearestSpot;
+    return nearestSpot;
 }
 
 /*
@@ -201,28 +212,45 @@ go to a random point that doesn't telefrag
 */
 #define MAX_SPAWN_POINTS    128
 gentity_t *SelectRandomDeathmatchSpawnPoint( void ) {
-	gentity_t   *spot;
-	int count;
-	int selection;
-	gentity_t   *spots[MAX_SPAWN_POINTS];
+    gentity_t   *spot;
+    int count;
+    int selection;
+    gentity_t   *spots[MAX_SPAWN_POINTS];
 
-	count = 0;
-	spot = NULL;
+    count = 0;
+    spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
-		if ( SpotWouldTelefrag( spot ) ) {
-			continue;
-		}
-		spots[ count ] = spot;
-		count++;
-	}
+    // Search for info_player_start spawn points.
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
+        if ( SpotWouldTelefrag( spot ) ) {
+            continue;
+        }
+        spots[ count ] = spot;
+        count++;
+        if ( count >= MAX_SPAWN_POINTS ) {
+            break;
+        }
+    }
 
-	if ( !count ) { // no spots that won't telefrag
-		return G_Find( NULL, FOFS( classname ), "info_player_start" );
-	}
+    spot = NULL;
+    // Also search for info_player_deathmatch spawn points.
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+        if ( SpotWouldTelefrag( spot ) ) {
+            continue;
+        }
+        spots[ count ] = spot;
+        count++;
+        if ( count >= MAX_SPAWN_POINTS ) {
+            break;
+        }
+    }
 
-	selection = rand() % count;
-	return spots[ selection ];
+    if ( !count ) { // no spots that won't telefrag
+        return G_Find( NULL, FOFS( classname ), "info_player_start" );
+    }
+
+    selection = rand() % count;
+    return spots[ selection ];
 }
 
 gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {

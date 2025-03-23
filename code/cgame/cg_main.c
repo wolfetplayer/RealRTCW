@@ -313,6 +313,7 @@ vmCvar_t int_cl_timenudge;
 vmCvar_t cg_bodysink;
 vmCvar_t cg_gunPosLock;
 vmCvar_t cg_weaponBounceSound;
+vmCvar_t cg_showSocials;
 
 typedef struct {
 	vmCvar_t    *vmCvar;
@@ -566,6 +567,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_realism, "g_realism", "0", CVAR_ARCHIVE},
 
 	{ &cg_weaponBounceSound, "cg_weaponBounceSound", "1",CVAR_ARCHIVE	},
+
+	{ &cg_showSocials, "cg_showSocials", "1",CVAR_ARCHIVE	},
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );

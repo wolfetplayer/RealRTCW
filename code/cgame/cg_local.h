@@ -1938,6 +1938,8 @@ extern vmCvar_t cg_gunPosLock;
 extern vmCvar_t cg_hudStyle;
 extern vmCvar_t	cg_weaponBounceSound;
 
+extern vmCvar_t cg_showSocials;
+
 //
 // cg_main.c
 //

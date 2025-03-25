@@ -3515,18 +3515,10 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	qboolean silent = qfalse, endgame = qfalse, savepersist = qfalse;
 	int exitTime = 8000;
 
-	//ent = &g_entities[client];
 
 	if (g_decaychallenge.integer){
 	player->health = 999;
 	}
-	/*char mapname[MAX_QPATH];
-
-	if ( Q_stricmp( mapname, "escape2"))
-	{
-    steamSetAchievement("ACH_TRAINING");
-	}
-	*/
 
 	player = AICast_FindEntityForName( "player" );
 	// double check that they are still alive
@@ -3535,7 +3527,6 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 
 	}
 	// don't process if already changing
-//	if(reloading)
 	if ( g_reloading.integer ) {
 		return qtrue;
 	}
@@ -3595,6 +3586,15 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 		}
 	}
 
+	// Endmap bonuses for finding all secrets
+	if (g_endmapbonus.integer && level.numSecrets > 0) {
+	   if (player->numSecretsFound == level.numSecrets) 
+	   {
+          trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+		  AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "trigger", "endmap_bonus" );
+	   }
+	}
+
 
 	if ( !silent && !endgame ) {
 		trap_SendServerCommand( -1, "mu_play sound/music/l_complete_1.wav 0\n" );   // play mission success music
@@ -3616,11 +3616,6 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	}
 
 	Q_strncpyz( level.nextMap, newstr, sizeof( level.nextMap ) );
-
-	//if (g_cheats.integer)
-	//	trap_SendConsoleCommand( EXEC_APPEND, va("spdevmap %s\n", newstr) );
-	//else
-	//	trap_SendConsoleCommand( EXEC_APPEND, va("spmap %s\n", newstr ) );
 
 	return qtrue;
 }

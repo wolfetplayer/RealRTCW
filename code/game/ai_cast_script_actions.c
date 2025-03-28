@@ -2901,8 +2901,6 @@ qboolean AICast_ScriptAction_PrintBonus( cast_state_t *cs, char *params ) {
 
 	newstr = va( "%s", params );
 
-	trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-
 	if ( !Q_stricmp( newstr, "escape1" ) ) { 
 	    trap_SendServerCommand( -1, "bcp bonus_escape1" ); 
 	}

@@ -1,0 +1,118 @@
+
+HOW TO COMPILE REALRTCW WITH MSYS2 + VS CODE (NO CYGWIN)
+
+============================================
+PREREQUISITES
+- Windows 10 or newer
+- MSYS2 installed (e.g. C:\msys64)
+- Visual Studio Code installed
+
+============================================
+STEP 1: INSTALL + UPDATE MSYS2
+
+1. Download and install from https://www.msys2.org/
+2. Open "MSYS2 MSYS" from Start Menu
+3. Run:
+   pacman -Syu
+   (close shell if it tells you to)
+4. Reopen and run:
+   pacman -Su
+
+============================================
+STEP 2: INSTALL TOOLCHAIN
+
+Open "MSYS2 MinGW 64-bit" shell (IMPORTANT).
+
+Run:
+pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-gdb mingw-w64-x86_64-make
+
+This installs:
+- gcc
+- g++
+- gdb
+- mingw32-make (used instead of make)
+
+============================================
+STEP 3: PREPARE YOUR PROJECT
+
+Put RealRTCW project into something like:
+C:\Dev\RealRTCW
+
+(Don't put it inside MSYS2 folder.)
+
+============================================
+STEP 4: OPEN VS CODE
+
+Option 1 (Recommended):
+Open MSYS2 MinGW64 shell and run:
+cd /c/Dev/RealRTCW
+code .
+
+Option 2:
+Add this to ~/.bashrc:
+export PATH=$PATH:'/c/Users/<YourName>/AppData/Local/Programs/Microsoft VS Code/bin'
+Then run:
+source ~/.bashrc
+
+============================================
+STEP 5: CREATE .vscode/tasks.json
+
+Inside RealRTCW project folder, create .vscode directory.
+Create tasks.json with this content:
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-steam",
+      "type": "shell",
+      "command": "ARCH=x86_64 STEAM=1 mingw32-make",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"],
+      "options": {
+        "shell": {
+          "executable": "C:/msys64/usr/bin/bash.exe",
+          "args": ["-c"]
+        }
+      }
+    },
+    {
+      "label": "build-nonsteam",
+      "type": "shell",
+      "command": "ARCH=x86_64 mingw32-make",
+      "group": "build",
+      "problemMatcher": ["$gcc"],
+      "options": {
+        "shell": {
+          "executable": "C:/msys64/usr/bin/bash.exe",
+          "args": ["-c"]
+        }
+      }
+    }
+  ]
+}
+
+============================================
+COMMON ISSUES
+
+- make not found:
+  Use mingw32-make, not make
+
+- still using /usr/bin/make:
+  Add alias: alias make='mingw32-make' in ~/.bashrc
+
+- code command not found:
+  Add VS Code path to PATH in ~/.bashrc:
+  export PATH=$PATH:'/c/Users/<YourName>/AppData/Local/Programs/Microsoft VS Code/bin'
+
+- build folder name:
+  Folder may be called release-mingw32-x86_64 (normal)
+
+============================================
+DONE!
+
+- Ctrl+Shift+B to build
+- Or Ctrl+Shift+P > Tasks: Run Task > choose version

@@ -5953,7 +5953,7 @@ AICast_ScriptAction_MusicQueue
 */
 qboolean AICast_ScriptAction_MusicQueue( cast_state_t *cs, char *params ) {
     char *pString, *token;
-    char cvarNameArray[16][MAX_QPATH];
+    char cvarNameArray[16][MAX_INFO_STRING];
     int fileCount = 0;
 
     pString = params;

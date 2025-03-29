@@ -763,7 +763,7 @@ void AICast_ScriptParse( cast_state_t *cs ) {
 	int eventNum;
 	int numEventItems;
 	cast_script_event_t *curEvent;
-	char params[MAX_QPATH];
+	char params[MAX_INFO_STRING];
 	cast_script_stack_action_t  *action;
 	int i;
 	int bracketLevel;

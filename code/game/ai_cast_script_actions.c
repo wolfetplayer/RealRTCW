@@ -3513,9 +3513,18 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	qboolean silent = qfalse, endgame = qfalse, savepersist = qfalse;
 	int exitTime = 8000;
 
+	if (g_decaychallenge.integer)
+	{
+		player->health = 999;
+	}
 
-	if (g_decaychallenge.integer){
-	player->health = 999;
+	// Endmap bonuses for finding all secrets
+	if (g_endmapbonus.integer && level.numSecrets > 0) {
+	   if (player->numSecretsFound == level.numSecrets) 
+	   {
+          trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
+		  AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "trigger", "endmap_bonus" );
+	   }
 	}
 
 	player = AICast_FindEntityForName( "player" );
@@ -3582,15 +3591,6 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 			G_SavePersistant( newstr ); // save persistent data if required
 
 		}
-	}
-
-	// Endmap bonuses for finding all secrets
-	if (g_endmapbonus.integer && level.numSecrets > 0) {
-	   if (player->numSecretsFound == level.numSecrets) 
-	   {
-          trap_SendServerCommand( -1, "mu_play sound/misc/bonus.wav 0\n" );
-		  AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "trigger", "endmap_bonus" );
-	   }
 	}
 
 

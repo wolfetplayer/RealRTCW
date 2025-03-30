@@ -4432,10 +4432,6 @@ void CG_AltWeapon_f( void ) {
 		return; // force pause so holding it down won't go too fast
 
 	}
-	// Don't try to switch when in the middle of reloading.
-	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
-		return;
-	}
 
 	original = cg.weaponSelect;
 
@@ -4746,10 +4742,7 @@ void CG_LastWeaponUsed_f( void ) {
 		return; // force pause so holding it down won't go too fast
 	}
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
-	// don't switchback if reloading (it nullifies the reload)
-	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
-		return;
-	}
+
 	if ( !cg.switchbackWeapon ) {
 		cg.switchbackWeapon = cg.weaponSelect;
 		return;
@@ -4850,18 +4843,6 @@ void CG_NextWeapon_f( void ) {
 	}
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
 
-	// Don't try to switch when in the middle of reloading.
-	// cheatinfo:	The server actually would let you switch if this check were not
-	//				present, but would discard the reload.  So the when you switched
-	//				back you'd have to start the reload over.  This seems bad, however
-	//				the delay for the current reload is already in effect, so you'd lose
-	//				the reload time twice.  (the first pause for the current weapon reload,
-	//				and the pause when you have to reload again 'cause you canceled this one)
-
-	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
-		return;
-	}
-
 	CG_NextWeap( qtrue );
 }
 
@@ -4897,12 +4878,8 @@ void CG_PrevWeapon_f( void ) {
 	}
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
 
-	// Don't try to switch when in the middle of reloading.
-	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
-		return;
-	}
-
 	CG_PrevWeap( qtrue );
+
 }
 
 
@@ -4930,11 +4907,6 @@ void CG_WeaponBank_f( void ) {
 
 	}
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
-
-	// Don't try to switch when in the middle of reloading.
-	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
-		return;
-	}
 
 	bank = atoi( CG_Argv( 1 ) );
 
@@ -4994,11 +4966,6 @@ void CG_Weapon_f( void ) {
 	num = atoi( CG_Argv( 1 ) );
 
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
-
-	// Don't try to switch when in the middle of reloading.
-	if ( cg.snap->ps.weaponstate == WEAPON_RELOADING ) {
-		return;
-	}
 
 
 	if ( num <= WP_NONE || num > WP_NUM_WEAPONS ) {

@@ -2335,7 +2335,16 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		return;
 	}
 
-	     || pm->ps->weaponstate == WEAPON_HOLSTER_IN || pm->ps->weaponstate == WEAPON_SPRINT_IN ) {   //----(SA)	added
+	// Allow weapon switch even while reloading — interrupt the reload
+	if (pm->ps->weaponstate == WEAPON_RELOADING)
+	{
+		pm->ps->weaponstate = WEAPON_READY;
+		pm->ps->weaponTime = 0;
+	}
+
+	// Still block switching during drop/holster/sprint states
+	if (pm->ps->weaponstate == WEAPON_DROPPING || pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD || pm->ps->weaponstate == WEAPON_HOLSTER_IN || pm->ps->weaponstate == WEAPON_SPRINT_IN)
+	{
 		return;
 	}
 

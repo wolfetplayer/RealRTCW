@@ -1736,10 +1736,14 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
     if(S_AL_CheckInput(entnum, sfx))
       return;
 
-    if(S_AL_HearingThroughEntity(entnum))
+    // Only do the "local sound optimization" if no flags are used
+    if (S_AL_HearingThroughEntity(entnum))
     {
-      S_AL_StartLocalSound(sfx, entchannel);
-      return;
+      if (!(flags & (SND_CUTOFF | SND_CUTOFF_ALL | SND_OKTOCUT | SND_REQUESTCUT)))
+      {
+        S_AL_StartLocalSound(sfx, entchannel);
+        return;
+      }
     }
 
     VectorCopy(entityList[entnum].origin, sorigin);

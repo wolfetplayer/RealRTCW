@@ -4909,6 +4909,8 @@ CG_WeaponBank_f
 void CG_WeaponBank_f( void ) {
 	int num, i, curweap;
 	int curbank = 0, curcycle = 0, bank = 0, cycle = 0;
+	
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
 
 	if ( !cg.snap ) {
 		return;
@@ -4970,6 +4972,8 @@ void CG_Weapon_f( void ) {
 	int num, i, curweap;
 	int bank = 0, cycle = 0, newbank = 0, newcycle = 0;
 	qboolean banked = qfalse;
+
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
 
 	if ( !cg.snap ) {
 		return;

@@ -4417,6 +4417,8 @@ void CG_AltWeapon_f( void ) {
 	int original, num;
 	float spd = VectorLength( cg.snap->ps.velocity );
 
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
+
 	if ( !cg.snap ) {
 		return;
 	}
@@ -4741,6 +4743,9 @@ void CG_LastWeaponUsed_f( void ) {
 	if ( cg.time - cg.weaponSelectTime < cg_weaponCycleDelay.integer ) {
 		return; // force pause so holding it down won't go too fast
 	}
+
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
+
 	cg.weaponSelectTime = cg.time;  // flash the current weapon icon
 
 	if ( !cg.switchbackWeapon ) {
@@ -4765,6 +4770,10 @@ void CG_NextWeaponInBank_f( void ) {
 		return; // force pause so holding it down won't go too fast
 
 	}
+
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
+
+
 	// this cvar is an option that lets the player use his weapon switching keys (probably the mousewheel)
 	// for zooming (binocs/snooper/sniper/etc.)
 	if ( cg.zoomval ) {
@@ -4793,6 +4802,9 @@ void CG_PrevWeaponInBank_f( void ) {
 		return; // force pause so holding it down won't go too fast
 
 	}
+
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
+
 	// this cvar is an option that lets the player use his weapon switching keys (probably the mousewheel)
 	// for zooming (binocs/snooper/sniper/etc.)
 	if ( cg.zoomval ) {
@@ -4824,6 +4836,8 @@ void CG_NextWeapon_f( void ) {
 	if ( cg.snap->ps.pm_flags & PMF_FOLLOW ) {
 		return;
 	}
+
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
 
 	// this cvar is an option that lets the player use his weapon switching keys (probably the mousewheel)
 	// for zooming (binocs/snooper/sniper/etc.)
@@ -4859,6 +4873,8 @@ void CG_PrevWeapon_f( void ) {
 	if ( cg.snap->ps.pm_flags & PMF_FOLLOW ) {
 		return;
 	}
+
+	trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
 
 	// this cvar is an option that lets the player use his weapon switching keys (probably the mousewheel)
 	// for zooming (binocs/snooper/sniper/etc.)

@@ -1804,9 +1804,9 @@ case EV_FILL_CLIP:
     DEBUGNAME( "EV_FILL_CLIP" );
     if ( cg_weapons[es->weapon].reloadSound ) {
         if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] || cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast, SND_REQUESTCUT );
         } else {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound, SND_REQUESTCUT );
         }
     }
     break;
@@ -1814,16 +1814,16 @@ case EV_FILL_CLIP_FULL:
     DEBUGNAME( "EV_FILL_CLIP_FULL" );
     if ( cg_weapons[es->weapon].reloadFullSound ) {
         if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] || cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast, SND_REQUESTCUT );
         } else {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound, SND_REQUESTCUT );
         }
     }
     break;
 	case EV_FILL_CLIP_AI:
 		DEBUGNAME( "EV_FILL_CLIP_AI" );
 		if ( cg_weapons[es->weapon].reloadSound ) {
-			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundAi );
+			trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundAi, SND_REQUESTCUT );
 		}
 		break;
 
@@ -2407,8 +2407,12 @@ case EV_FILL_CLIP_FULL:
 		trap_S_StartSound( NULL, es->number, CHAN_WEAPON, 0 );  // kill weapon sound (could be reloading)
 
 		break;
-//----(SA)	end
+	case EV_STOP_RELOADING_SOUND:
+		DEBUGNAME( "EV_STOP_RELOADING_SOUND" );
 
+		trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
+
+		break;
 	case EV_STOPLOOPINGSOUND:
 		DEBUGNAME( "EV_STOPLOOPINGSOUND" );
 		trap_S_StopLoopingSound( es->number );

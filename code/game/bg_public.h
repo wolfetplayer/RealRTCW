@@ -855,6 +855,7 @@ typedef enum {
 	EV_COUGH,
 	EV_QUICKGRENS,
 	EV_PLAYER_HIT,  // hitsound event
+	EV_STOP_RELOADING_SOUND,
 	EV_MAX_EVENTS   // just added as an 'endcap'
 } entity_event_t;
 

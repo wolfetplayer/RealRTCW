@@ -1214,6 +1214,7 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.poisonGasCough = trap_S_RegisterSound( "sound/weapons/gasgrenade/cough.wav");
 	cgs.media.knifeThrow = trap_S_RegisterSound( "sound/weapons/knife/knife_throw.wav");
+	cgs.media.nullSound = trap_S_RegisterSound( "sound/misc/null.wav");
 
 	for ( i = 0 ; i < 4 ; i++ ) {
 		Com_sprintf( name, sizeof( name ), "sound/player/footsteps/step%i.wav", i + 1 );

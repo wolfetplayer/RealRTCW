@@ -2338,6 +2338,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	// Allow weapon switch even while reloading — interrupt the reload
 	if (pm->ps->weaponstate == WEAPON_RELOADING)
 	{
+		PM_AddEvent(EV_STOP_RELOADING_SOUND);
 		pm->ps->weaponstate = WEAPON_READY;
 		pm->ps->weaponTime = 0;
 	}

@@ -1554,7 +1554,8 @@ typedef struct {
 	qhandle_t sizeCursor;
 
 	sfxHandle_t poisonGasCough;
-	sfxHandle_t		knifeThrow;
+	sfxHandle_t knifeThrow;
+	sfxHandle_t nullSound;
 
 } cgMedia_t;
 

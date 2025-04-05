@@ -3462,7 +3462,7 @@ AICast_ScriptAction_EndGame
 ==============
 */
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params ) {
-	G_EndGame();
+	g_endgameTriggered = qtrue;
 	return qtrue;
 }
 
@@ -3573,8 +3573,11 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 		}
 	}
 
-	if ( !Q_stricmp( newstr, "gamefinished" ) ) { // 'gamefinished' is keyword for 'exit to credits'
-		endgame = qtrue;
+	if (!Q_stricmp(newstr, "gamefinished"))
+	{
+		trap_Cvar_Set("g_reloading", va("%d", RELOAD_ENDGAME));
+		level.reloadDelayTime = level.time + 100 + exitTime; // add a delay
+		return qtrue;
 	}
 
 	if ( !endgame ) {
@@ -3608,10 +3611,11 @@ qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params ) {
 	level.reloadDelayTime = level.time + 1000 + exitTime;
 	trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_NEXTMAP_WAITING ) );
 
-	if ( endgame ) {
-		trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_ENDGAME ) );
-		return qtrue;
-	}
+	// Commented this out, moved elsewhere
+	/*if ( endgame ) {
+		//trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_ENDGAME ) );
+		//return qtrue;
+	}*/
 
 	Q_strncpyz( level.nextMap, newstr, sizeof( level.nextMap ) );
 

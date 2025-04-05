@@ -1374,6 +1374,9 @@ extern vmCvar_t g_regen;
 extern vmCvar_t	g_flushItems;
 extern vmCvar_t g_vanilla_guns;
 
+// Safe endgame fix
+extern qboolean g_endgameTriggered;
+
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));
 void    trap_Endgame( void );   //----(SA)	added

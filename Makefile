@@ -698,12 +698,12 @@ ifdef MINGW
 
   ifeq ($(ARCH),x86_64)
     OPTIMIZEVM = -O3
-    OPTIMIZE = $(OPTIMIZEVM) -ffast-math
+    OPTIMIZE = $(OPTIMIZEVM) -ffast-math -fno-omit-frame-pointer
     FILE_ARCH=x64
   endif
   ifeq ($(ARCH),x86)
     OPTIMIZEVM = -O3 -march=i586
-    OPTIMIZE = $(OPTIMIZEVM) -ffast-math
+    OPTIMIZE = $(OPTIMIZEVM) -ffast-math -fno-omit-frame-pointer
   endif
 
   SHLIBEXT=dll

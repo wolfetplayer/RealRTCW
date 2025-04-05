@@ -49,6 +49,9 @@ gclient_t g_clients[MAX_CLIENTS];
 
 int g_scriptGlobalAccumBuffer[G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS];
 
+// Safe endgame fix
+qboolean g_endgameTriggered = qfalse;
+
 gentity_t       *g_camEnt = NULL;   //----(SA)	script camera
 
 // Rafael gameskill
@@ -2251,10 +2254,16 @@ void CheckReloadStatus( void ) {
 						trap_SendConsoleCommand( EXEC_APPEND, va( "svmap %s\n", level.nextMap ) );
 					} 
 				  }
-				} else if ( g_reloading.integer == RELOAD_ENDGAME ) {
-					G_EndGame();    // kick out to the menu and start the "endgame" menu (credits, etc)
-
-				} else {
+				}
+				else if (g_reloading.integer == RELOAD_ENDGAME)
+				{
+					// defer endgame until it's safe
+					g_endgameTriggered = qtrue;
+					level.reloadDelayTime = 0;
+					trap_Cvar_Set("g_reloading", "0"); // prevent it from looping
+				}
+				else
+				{
 					// set the loadgame flag, and restart the server
 					trap_Cvar_Set( "savegame_loading", "2" ); // 2 means it's a restart, so stop rendering until we are loaded
 					trap_SendConsoleCommand( EXEC_INSERT, "map_restart\n" );
@@ -2613,4 +2622,9 @@ void G_RunFrame( int levelTime ) {
 	// Ridah, check if we are reloading, and times have expired
 	CheckReloadStatus();
 
+	if (g_endgameTriggered)
+	{
+		g_endgameTriggered = qfalse;
+		G_EndGame(); // this will now call trap_Endgame() safely
+	}
 }

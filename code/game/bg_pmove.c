@@ -2260,8 +2260,8 @@ static void PM_BeginWeaponReload( int weapon ) {
 	// If PW_HASTE_SURV powerup or PERK_WEAPONHANDLING perk is active, reduce reloadTime by half
 	if (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING])
 	{
-		reloadTime *= 0.67;
-		reloadTimeFull *= 0.67;
+		reloadTime *= 0.5;
+		reloadTimeFull *= 0.5;
 	}
 
 	if (!pm->ps->aiChar)

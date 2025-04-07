@@ -555,6 +555,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				if (newHealth > svParams.soldierHealthCap) {
 					newHealth = svParams.soldierHealthCap;
 				}
+				break;
 			case AICHAR_ZOMBIE_SURV:
 				newHealth = svParams.zombieBaseHealth + health_increase;
 				if (newHealth > svParams.zombieHealthCap) {

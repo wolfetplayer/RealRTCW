@@ -5468,9 +5468,9 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected speedIncreaseDivider value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "spawnTimeDecreaseDivider" ) ) {
-			if ( !PC_Float_Parse( handle, &svParams.spawnTimeDecreaseDivider ) ) {
-				PC_SourceError( handle, "expected spawnTimeDecreaseDivider value" );
+		} else if ( !Q_stricmp( token.string, "spawnTimeFalloffMultiplier" ) ) {
+			if ( !PC_Float_Parse( handle, &svParams.spawnTimeFalloffMultiplier ) ) {
+				PC_SourceError( handle, "expected spawnTimeFalloffMultiplier value" );
 				return qfalse;
 			}
 

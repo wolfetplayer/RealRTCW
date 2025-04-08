@@ -130,7 +130,7 @@ typedef struct svParams_s
 	float healthIncreaseMultiplier;
 	float speedIncreaseDivider;
 
-	float spawnTimeDecreaseDivider;
+	float spawnTimeFalloffMultiplier;
 	int   minSpawnTime;
 	int   startingSpawnTime;
     int   friendlySpawnTime;

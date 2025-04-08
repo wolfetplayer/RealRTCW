@@ -523,13 +523,16 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			}
 
 			if ( g_gametype.integer == GT_SURVIVAL ) {
-               int decrease = svParams.survivalKillCount / svParams.spawnTimeDecreaseDivider;  // Calculate decrease based on survivalKillCount
-               int rebirthTime = svParams.startingSpawnTime * 1000 - decrease * 1000;  // Calculate rebirthTime
 
-                // Clamp rebirthTime to a minimum of 5 seconds
+			   float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
+			   int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
+
+			   // Clamp rebirthTime to a minimum
                if (rebirthTime < svParams.minSpawnTime * 1000) {
                  rebirthTime = svParams.minSpawnTime * 1000;
                }
+
+			   //G_Printf("AI Respawn [Wave %d] -> Time: %.2f sec (waveFactor %.3f)\n", svParams.waveCount, rebirthTime / 1000.0f, waveFactor);
                
 			   // Friendlies has separate time
 			   if (self->aiTeam == 1) {

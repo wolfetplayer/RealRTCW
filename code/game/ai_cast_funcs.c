@@ -538,6 +538,10 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				}
 			}
 
+			if (svParams.aiRespawnsThisFrame >= svParams.maxAIRespawnsPerFrame) {
+				return;
+			}
+
 			if ( numTouch == 0 ) {    // ok to spawn
 
 			int health_increase = svParams.waveCount * svParams.healthIncreaseMultiplier;
@@ -725,6 +729,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				ent->client->ps.maxs[2] = ent->r.maxs[2];
 			}
 			trap_LinkEntity( ent );
+			svParams.aiRespawnsThisFrame++;
 
 
 }

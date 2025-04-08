@@ -491,6 +491,7 @@ void AICast_Init( void ) {
 
     // Initial count of AIs for survival mode
     if ( g_gametype.integer == GT_SURVIVAL )  {
+		svParams.maxAIRespawnsPerFrame = 3;
 		svParams.killCountRequirement = svParams.initialKillCountRequirement;
 		svParams.waveCount = 1;
 

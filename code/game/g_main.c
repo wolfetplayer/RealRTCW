@@ -34,6 +34,8 @@ If you have questions concerning this license or the applicable additional terms
 
 level_locals_t level;
 
+extern svParams_t svParams;
+
 typedef struct {
 	vmCvar_t    *vmCvar;
 	char        *cvarName;
@@ -2587,6 +2589,11 @@ void G_RunFrame( int levelTime ) {
 
 	// Ridah, move the AI
 	AICast_StartServerFrame( level.time );
+
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		svParams.aiRespawnsThisFrame = 0;
+	}
 
 	// perform final fixups on the players
 	ent = &g_entities[0];

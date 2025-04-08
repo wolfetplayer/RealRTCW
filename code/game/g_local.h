@@ -111,6 +111,8 @@ typedef struct svParams_s
 	int waveKillCount;
 	int killCountRequirement;
 
+	int aiRespawnsThisFrame;
+    int maxAIRespawnsPerFrame;
 
 	// loaded from .surv file
 	int initialKillCountRequirement;

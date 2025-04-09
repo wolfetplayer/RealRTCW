@@ -320,70 +320,51 @@ go to a random point that doesn't telefrag
 */
 #define MAX_SPAWN_POINTS_AI    128
 #define MAX_SPAWN_POINT_DISTANCE    8196
-gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {
-    gentity_t   *spot;
-    vec3_t delta;
-    float dist;
-    gentity_t   *spots[MAX_SPAWN_POINTS_AI];
-    int numSpots = 0;
+gentity_t *SelectRandomDeathmatchSpawnPoint_AI(gentity_t *player, gentity_t *ent, gentity_t *exclude) {
+	gentity_t *spot;
+	vec3_t delta;
+	float dist;
+	gentity_t *spots[MAX_SPAWN_POINTS_AI];
+	int numSpots = 0;
 
-    spot = NULL;
+	spot = NULL;
+	while ((spot = G_Find(spot, FOFS(classname), "info_ai_respawn")) != NULL) {
+		if (spot->spawnflags & 1) continue;
 
-    while ( ( spot = G_Find( spot, FOFS( classname ), "info_ai_respawn" ) ) != NULL ) {
-
-		if ( spot->spawnflags & 1 ) {
+		if (ent) {
+			// AI type filtering
+			switch (ent->aiCharacter) {
+				case AICHAR_PROTOSOLDIER:
+				case AICHAR_SUPERSOLDIER:
+				case AICHAR_HELGA:
+				case AICHAR_HEINRICH:
+				case AICHAR_SUPERSOLDIER_LAB:
+					if (!(spot->spawnflags & 2)) continue;
+					break;
+				default:
+					if (spot->spawnflags & 2) continue;
+					break;
+			}
+			if (ent->aiTeam != spot->aiTeam) continue;
+		} else if (player->aiTeam != spot->aiTeam) {
 			continue;
 		}
 
-		if ( ent ) {
-			switch ( ent->aiCharacter ) {
-			case AICHAR_PROTOSOLDIER:
-			case AICHAR_SUPERSOLDIER:
-			case AICHAR_HELGA:
-			case AICHAR_HEINRICH:
-			case AICHAR_SUPERSOLDIER_LAB:
-				if ( !( spot->spawnflags & 2 ) ) {
-					continue;
-				}
-				break;
-			
-			default:
-				if ( spot->spawnflags & 2 ) {
-					continue;
-				}
-				break;
-			}
+		if (spot == exclude) continue; // exclude nearest spot
 
-			if ( ent->aiTeam != spot->aiTeam ) {
-				continue;
+		if (player) {
+			VectorSubtract(spot->s.origin, player->r.currentOrigin, delta);
+			dist = VectorLength(delta);
+			if (dist < MAX_SPAWN_POINT_DISTANCE && !SpotWouldTelefrag(spot)) {
+				spots[numSpots++] = spot;
 			}
-
 		} else {
-			// Remove me if the calling SelectSpawnPoint_AI from ClientSpawn (g_client.c) is the misstake
-			if ( player->aiTeam != spot->aiTeam ) {
-				continue;
-			}
+			spots[numSpots++] = spot;
 		}
+	}
 
-        if ( player ) {
-            VectorSubtract( spot->s.origin, player->r.currentOrigin, delta );
-            dist = VectorLength( delta );
-            if ( dist < MAX_SPAWN_POINT_DISTANCE ) {
-                // Check if the spawn point is occupied
-                if ( !SpotWouldTelefrag( spot ) ) {
-                    spots[numSpots++] = spot;
-                }
-            }
-        } else {
-            spots[numSpots++] = spot;
-        }
-    }
-
-    if ( numSpots == 0 ) {
-        return NULL;
-    }
-
-    return spots[rand() % numSpots];
+	if (numSpots == 0) return NULL;
+	return spots[rand() % numSpots];
 }
 
 
@@ -395,34 +376,27 @@ Chooses a player start, deathmatch start, etc
 ============
 */
 gentity_t *SelectSpawnPoint_AI( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) {
-    gentity_t   *spot;
-    gentity_t   *nearestSpot;
+    gentity_t *nearestSpot;
+    gentity_t *spot;
 
     nearestSpot = SelectNearestDeathmatchSpawnPoint_AI( player, ent );
 
-    spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent );
-    if ( spot == nearestSpot ) {
-        // roll again if it would be real close to point of death
-        spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent );
-        if ( spot == nearestSpot ) {
-            // last try
-            spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent );
-        }
+    // Pass nearestSpot as exclusion to avoid picking it again
+    spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent, nearestSpot );
+    
+    if (!spot) {
+        // Retry without exclusion if all were filtered out
+        spot = SelectRandomDeathmatchSpawnPoint_AI( player, ent, NULL );
     }
 
-    // If no nearby spawn point was found, select any spawn point
-    if ( !spot ) {
-        spot = SelectRandomDeathmatchSpawnPoint_AI( NULL, ent );
+    // Final fallback
+    if (!spot) {
+        G_Error("Couldn't find a spawn point");
     }
 
-    // If still no spawn point was found, report an error
-    if ( !spot ) {
-        G_Error( "Couldn't find a spawn point" );
-    }
-
-    VectorCopy( spot->s.origin, origin );
+    VectorCopy(spot->s.origin, origin);
     origin[2] += 9;
-    VectorCopy( spot->s.angles, angles );
+    VectorCopy(spot->s.angles, angles);
 
     return spot;
 }

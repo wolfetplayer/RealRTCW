@@ -325,6 +325,17 @@ void Cmd_Give_f( gentity_t *ent ) {
 		}
 	}
 
+	if (give_all || Q_stricmpn(name, "score", 5) == 0) {
+		if (amount > 0) {
+			ent->client->ps.persistant[PERS_SCORE] += amount;
+		} else {
+			ent->client->ps.persistant[PERS_SCORE] += 9999;
+		}
+		if (!give_all) {
+			return;
+		}
+	}
+
 	//	"give allammo <n>" allows you to give a specific amount of ammo to /all/ weapons while
 	//	allowing "give ammo <n>" to only give to the selected weap.
 	if ( Q_stricmpn( name, "allammo", 7 ) == 0 && amount ) {

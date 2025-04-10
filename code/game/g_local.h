@@ -110,6 +110,8 @@ typedef struct svParams_s
 	int waveCount;
 	int waveKillCount;
 	int killCountRequirement;
+	int waveSpawnedEnemies;
+	qboolean waveInProgress;
 
 	int aiRespawnsThisFrame;
     int maxAIRespawnsPerFrame;

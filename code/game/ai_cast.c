@@ -494,6 +494,7 @@ void AICast_Init( void ) {
 		svParams.maxAIRespawnsPerFrame = 3;
 		svParams.killCountRequirement = svParams.initialKillCountRequirement;
 		svParams.waveCount = 1;
+		svParams.waveInProgress = qtrue;
 
 		svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
 	    svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
@@ -657,6 +658,11 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 	   }
 	}
 
+	if (!svParams.waveInProgress || svParams.waveSpawnedEnemies >= svParams.killCountRequirement) {
+		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
+		return;
+	}
+
 	// Selecting the spawn point for the AI
     if ( g_gametype.integer == GT_SURVIVAL )  {
 				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
@@ -665,6 +671,8 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 				SetClientViewAngle( ent, spawn_angles );
 				// Increment the counter for active AI characters
                 svParams.activeAI[ent->aiCharacter]++;
+				svParams.waveSpawnedEnemies++;
+				//G_Printf("Spawning AI %s for wave %d (spawned %d / required %d)\n", ent->classname, svParams.waveCount, svParams.waveSpawnedEnemies, svParams.killCountRequirement);
 	}
 
 	// RF, has to disable this so I could test some maps which have erroneously placed alertentity calls

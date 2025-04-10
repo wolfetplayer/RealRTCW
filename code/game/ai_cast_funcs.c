@@ -356,6 +356,40 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 	}
 }
 
+/*
+============
+  CalculateKillRequirement
+  This function calculates the number of kills required for the next wave.
+  The formula is based on a polynomial function that increases the kill requirement
+  as the wave number increases. The function has different growth rates for different
+  ranges of wave numbers to create a more gradual increase in difficulty.
+============
+*/
+
+int CalculateKillRequirement(int waveF) {
+    int baseKills = svParams.initialKillCountRequirement;
+    float killReq;
+
+    if (waveF <= 4) {
+        killReq = baseKills * powf(waveF, 1.05f);  // very gentle
+    } else if (waveF <= 9) {
+        killReq = baseKills * powf(waveF, 1.2f);   // slightly faster
+    } else if (waveF <= 49) {
+        killReq = baseKills * powf(waveF, 1.45f);  // mid ramp
+    } else {
+        killReq = baseKills * powf(49, 1.45f) + (waveF - 49) * 2;  // softcap linear
+    }
+
+    return (int)killReq;
+}
+/*
+============
+  AICast_CheckSurvivalProgression()
+  This function checks the progression of the survival mode in the game.
+  It handles the wave changes, increases the number of enemies, and plays the appropriate sound.
+============
+*/
+
 void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 	static char soundDeafultPath[MAX_QPATH] = "sound/announcer/hein.wav";
 	static char command[256];
@@ -366,8 +400,13 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 	Com_Memset( indecies, 0, sizeof( indecies ) );
 
     // Wave Change Event
-    if (svParams.survivalKillCount == svParams.killCountRequirement) {
+    if (svParams.waveKillCount == svParams.killCountRequirement) {
+		svParams.waveInProgress = qfalse;
+		//G_Printf("Wave Ended: waveInProgress = %d -> false\n", svParams.waveInProgress);
         svParams.waveCount++;
+		svParams.waveInProgress = qtrue;
+		//G_Printf("Wave Started: waveInProgress = %d -> true\n", svParams.waveInProgress);
+		svParams.waveSpawnedEnemies = 0;
 
 		if ((svParams.waveCount == 10) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
 		{
@@ -379,7 +418,7 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 			steamSetAchievement("ACH_NO_CLASS");
 		}
 
-		svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
+		svParams.killCountRequirement = CalculateKillRequirement(svParams.waveCount);
 		attacker->client->ps.persistant[PERS_WAVES]++;
 		svParams.waveKillCount = 0;
 
@@ -488,7 +527,11 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 
 /*
 ============
-AICast_SurvivalRespawn
+AICast_SurvivalRespawn()
+  This function handles the respawn of AI characters in survival mode.
+  It checks if the area is clear and spawns the AI character with increased health and speed.
+  The respawn logic is based on the current wave count and other parameters.
+  It also ensures that the AI character does not spawn if there are too many active AI characters.
 ============
 */
 void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
@@ -539,6 +582,11 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 			}
 
 			if (svParams.aiRespawnsThisFrame >= svParams.maxAIRespawnsPerFrame) {
+				return;
+			}
+
+			if (!svParams.waveInProgress || svParams.waveSpawnedEnemies >= svParams.killCountRequirement) {
+				cs->aiFlags |= AIFL_WAITINGTOSPAWN;
 				return;
 			}
 
@@ -723,13 +771,16 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				AICast_StateChange( cs, AISTATE_RELAXED );
 				cs->enemyNum = -1;
 
+				svParams.waveSpawnedEnemies++;
+				svParams.aiRespawnsThisFrame++;
+				//G_Printf("Spawning AI %s for wave %d (spawned %d / required %d)\n", ent->classname, svParams.waveCount, svParams.waveSpawnedEnemies, svParams.killCountRequirement);
+
 			} else {
 				// can't spawn yet, so set bbox back, and wait
 				ent->r.maxs[2] = oldmaxZ;
 				ent->client->ps.maxs[2] = ent->r.maxs[2];
 			}
 			trap_LinkEntity( ent );
-			svParams.aiRespawnsThisFrame++;
 
 
 }

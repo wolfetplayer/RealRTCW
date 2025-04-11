@@ -84,4 +84,6 @@ int AICast_NumAttempts( int entnum );
 
 void AICast_RegisterPain( int entnum );
 
+void AICast_TickSurvivalWave( void );
+
 

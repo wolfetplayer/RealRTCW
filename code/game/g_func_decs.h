@@ -1586,8 +1586,13 @@ extern char * AIFunc_InspectFriendly ( cast_state_t * cs ) ;
 extern char * AIFunc_IdleStart ( cast_state_t * cs ) ;
 extern char * AIFunc_Idle ( cast_state_t * cs ) ;
 extern void AICast_SpecialFunc ( cast_state_t * cs ) ;
+
+// Survival functions
 extern void AICast_SurvivalRespawn (gentity_t *ent, cast_state_t * cs ) ;
 extern void AICast_CheckSurvivalProgression( gentity_t *attacker );
+extern void AICast_TickSurvivalWave( void );
+extern void AICast_UpdateWaveEnemyCounts( void );
+
 extern float AICast_SpeedScaleForDistance ( cast_state_t * cs , float startdist , float idealDist ) ;
 extern bot_moveresult_t * AICast_MoveToPos ( cast_state_t * cs , vec3_t pos , int entnum ) ;
 extern float AICast_GetRandomViewAngle ( cast_state_t * cs , float tracedist ) ;

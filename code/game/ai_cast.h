@@ -653,8 +653,12 @@ void    AICast_DebugFrame( cast_state_t *cs );
 //
 // ai_cast_funcs.c
 void AICast_SpecialFunc( cast_state_t *cs );
+
+// Survival mode functions
 void AICast_SurvivalRespawn (gentity_t *ent, cast_state_t * cs ) ;
 void AICast_CheckSurvivalProgression( gentity_t *attacker );
+void AICast_UpdateWaveEnemyCounts( void );
+
 bot_moveresult_t *AICast_MoveToPos( cast_state_t *cs, vec3_t pos, int entnum );
 float   AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float idealDist );
 char    *AIFunc_DefaultStart( cast_state_t *cs );

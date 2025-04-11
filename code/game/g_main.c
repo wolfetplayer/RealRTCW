@@ -2593,6 +2593,7 @@ void G_RunFrame( int levelTime ) {
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
 		svParams.aiRespawnsThisFrame = 0;
+		AICast_TickSurvivalWave();
 	}
 
 	// perform final fixups on the players

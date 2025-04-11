@@ -1579,6 +1579,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_SpecialFunc", (byte *)AICast_SpecialFunc},
 {"AICast_SurvivalRespawn", (byte *)AICast_SurvivalRespawn},
 {"AICast_CheckSurvivalProgression", (byte *)AICast_CheckSurvivalProgression},
+{"AICast_TickSurvivalWave", (byte *)AICast_TickSurvivalWave},
+{"AICast_UpdateWaveEnemyCounts", (byte *)AICast_UpdateWaveEnemyCounts},
 {"AICast_SpeedScaleForDistance", (byte *)AICast_SpeedScaleForDistance},
 {"AICast_MoveToPos", (byte *)AICast_MoveToPos},
 {"AICast_GetRandomViewAngle", (byte *)AICast_GetRandomViewAngle},

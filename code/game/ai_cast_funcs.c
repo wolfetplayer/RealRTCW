@@ -390,138 +390,144 @@ int CalculateKillRequirement(int waveF) {
 ============
 */
 
-void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
-	static char soundDeafultPath[MAX_QPATH] = "sound/announcer/hein.wav";
-	static char command[256];
+void AICast_CheckSurvivalProgression(gentity_t *attacker) {
+    if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
+        svParams.wavePending = qtrue;
+        svParams.waveChangeTime = level.time + 5000 + rand() % 5000; // 5–10 sec delay
 
-	int i = 0, j;
-	int indecies[ANNOUNCE_SOUNDS_COUNT];
+        //G_Printf("Wave %d complete. Intermission started...\n", svParams.waveCount);
 
-	Com_Memset( indecies, 0, sizeof( indecies ) );
+        // Optional: Trigger music/announcement here if you want it to play during intermission
+        // trap_SendServerCommand(-1, "mu_play sound/announcer/intermission.wav 0\n");
+    }
+}
 
-    // Wave Change Event
-    if (svParams.waveKillCount == svParams.killCountRequirement) {
-		svParams.waveInProgress = qfalse;
-		//G_Printf("Wave Ended: waveInProgress = %d -> false\n", svParams.waveInProgress);
-        svParams.waveCount++;
-		svParams.waveInProgress = qtrue;
-		//G_Printf("Wave Started: waveInProgress = %d -> true\n", svParams.waveInProgress);
-		svParams.waveSpawnedEnemies = 0;
+/*
+============
+  AICast_TickSurvivalWave()
+  This function is called every frame to check if the wave has changed.
+============
+*/
 
-		if ((svParams.waveCount == 10) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
-		{
-			steamSetAchievement("ACH_NO_BUY");
-		}
+void AICast_TickSurvivalWave(void) {
+    if (!svParams.wavePending) return;
+    if (level.time < svParams.waveChangeTime) return;
 
-		if ((svParams.waveCount == 15) && (!g_cheats.integer) && (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
-		{
-			steamSetAchievement("ACH_NO_CLASS");
-		}
+    svParams.wavePending = qfalse;
+    svParams.waveInProgress = qtrue;
+    svParams.waveCount++;
+    svParams.waveKillCount = 0;
+    svParams.waveSpawnedEnemies = 0;
 
-		svParams.killCountRequirement = CalculateKillRequirement(svParams.waveCount);
-		attacker->client->ps.persistant[PERS_WAVES]++;
-		svParams.waveKillCount = 0;
+    svParams.killCountRequirement = CalculateKillRequirement(svParams.waveCount);
 
-		for ( j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j ) {
-			if ( svParams.announcerSound[j][0] ) {
-				indecies[i++] = j;
-			}
-		}
+    // Track wave count per player
+    for (int i = 0; i < g_maxclients.integer; i++) {
+        gentity_t *cl = &g_entities[i];
+        if (!cl->inuse || !cl->client) continue;
 
-		if ( i == 0 ) {
-			snprintf( command, sizeof( command ), "mu_play %s 0\n", soundDeafultPath );
-		} else {
-			snprintf( command, sizeof( command ), "mu_play %s 0\n", svParams.announcerSound[ indecies[rand( ) % i] ] );
-		}
-		
-		trap_SendServerCommand(-1, command);
+        cl->client->ps.persistant[PERS_WAVES]++;
 
-   // Normal soldiers
+        // Achievements
+        if (svParams.waveCount == 10 && !g_cheats.integer && !cl->client->hasPurchased) {
+            steamSetAchievement("ACH_NO_BUY");
+        }
+
+        if (svParams.waveCount == 15 && !g_cheats.integer &&
+            cl->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE) {
+            steamSetAchievement("ACH_NO_CLASS");
+        }
+    }
+
+    G_Printf("Wave %d started! Kill requirement: %d\n", svParams.waveCount, svParams.killCountRequirement);
+
+    // Play announcer sound
+    static char soundDefaultPath[MAX_QPATH] = "sound/announcer/hein.wav";
+    static char command[256];
+    int i = 0, j, indices[ANNOUNCE_SOUNDS_COUNT];
+    Com_Memset(indices, 0, sizeof(indices));
+
+    for (j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j) {
+        if (svParams.announcerSound[j][0]) {
+            indices[i++] = j;
+        }
+    }
+
+    if (i == 0) {
+        snprintf(command, sizeof(command), "mu_play %s 0\n", soundDefaultPath);
+    } else {
+        snprintf(command, sizeof(command), "mu_play %s 0\n", svParams.announcerSound[indices[rand() % i]]);
+    }
+
+    trap_SendServerCommand(-1, command);
+
+    AICast_UpdateWaveEnemyCounts();
+}
+
+/*
+============
+  AICast_UpdateWaveEnemyCounts()
+  This function updates the maximum number of active AI characters based on the current wave count.
+============
+*/
+
+void AICast_UpdateWaveEnemyCounts(void) {
+    // Base class increments
     svParams.maxActiveAI[AICHAR_SOLDIER] += svParams.soldiersIncrease;
-    if (svParams.maxActiveAI[AICHAR_SOLDIER] > svParams.maxSoldiers) {
+    if (svParams.maxActiveAI[AICHAR_SOLDIER] > svParams.maxSoldiers)
         svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.maxSoldiers;
+
+    if (svParams.waveCount >= svParams.waveEg) {
+        svParams.maxActiveAI[AICHAR_ELITEGUARD] += svParams.eliteGuardsIncrease;
+        if (svParams.maxActiveAI[AICHAR_ELITEGUARD] > svParams.maxEliteGuards)
+            svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.maxEliteGuards;
     }
 
-	// Elite Guards
-	if (svParams.waveCount >= svParams.waveEg)
-	{
-		svParams.maxActiveAI[AICHAR_ELITEGUARD] += svParams.eliteGuardsIncrease;
-		if (svParams.maxActiveAI[AICHAR_ELITEGUARD] >  svParams.maxEliteGuards) {
-			svParams.maxActiveAI[AICHAR_ELITEGUARD] =  svParams.maxEliteGuards;
-		}
-	}
+    if (svParams.waveCount >= svParams.waveBg) {
+        svParams.maxActiveAI[AICHAR_BLACKGUARD] += svParams.blackGuardsIncrease;
+        if (svParams.maxActiveAI[AICHAR_BLACKGUARD] > svParams.maxBlackGuards)
+            svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.maxBlackGuards;
+    }
 
-	// Black Guards
-	if (svParams.waveCount >= svParams.waveBg)
-	{
-		svParams.maxActiveAI[AICHAR_BLACKGUARD] += svParams.blackGuardsIncrease;
-		if (svParams.maxActiveAI[AICHAR_BLACKGUARD] >  svParams.maxBlackGuards) {
-			svParams.maxActiveAI[AICHAR_BLACKGUARD] =  svParams.maxBlackGuards;
-		}
-	}
+    if (svParams.waveCount >= svParams.waveV) {
+        svParams.maxActiveAI[AICHAR_VENOM] += svParams.venomsIncrease;
+        if (svParams.maxActiveAI[AICHAR_VENOM] > svParams.maxVenoms)
+            svParams.maxActiveAI[AICHAR_VENOM] = svParams.maxVenoms;
+    }
 
-    // Venoms
-	if (svParams.waveCount >= svParams.waveV)
-	{
-		svParams.maxActiveAI[AICHAR_VENOM] += svParams.venomsIncrease;
-		if (svParams.maxActiveAI[AICHAR_VENOM] > svParams.maxVenoms){
-			svParams.maxActiveAI[AICHAR_VENOM] = svParams.maxVenoms;
-		}
-	}
-
-	// Default Zombies
-	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] += svParams.zombiesIncrease;
-    if (svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] > svParams.maxZombies) {
+    svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] += svParams.zombiesIncrease;
+    if (svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] > svParams.maxZombies)
         svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.maxZombies;
+
+    if (svParams.waveCount >= svParams.waveWarz) {
+        svParams.maxActiveAI[AICHAR_WARZOMBIE] += svParams.warriorsIncrease;
+        if (svParams.maxActiveAI[AICHAR_WARZOMBIE] > svParams.maxWarriors)
+            svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.maxWarriors;
     }
 
-	// Warriors
-	if (svParams.waveCount >= svParams.waveWarz)
-	{
-		svParams.maxActiveAI[AICHAR_WARZOMBIE] += svParams.warriorsIncrease;
-		if (svParams.maxActiveAI[AICHAR_WARZOMBIE] > svParams.maxWarriors) {
-			svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.maxWarriors;
-		}
-	}
-
-	// Protos
-	if (svParams.waveCount >= svParams.waveProtos)
-	{
-		svParams.maxActiveAI[AICHAR_PROTOSOLDIER] += svParams.protosIncrease;
-		if (svParams.maxActiveAI[AICHAR_PROTOSOLDIER] > svParams.maxProtos) {
-			svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.maxProtos;
-		}
-	}
-
-	// Ghost Zombies
-	if (svParams.waveCount >= svParams.waveGhosts)
-	{
-		svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] += svParams.ghostsIncrease;
-		if (svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] > svParams.maxGhosts) {
-			svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.maxGhosts;
-		}
-	}
-
-	// Priests
-	if (svParams.waveCount >= svParams.wavePriests)
-	{
-		svParams.maxActiveAI[AICHAR_PRIEST] += svParams.priestsIncrease;
-		if (svParams.maxActiveAI[AICHAR_PRIEST] > svParams.maxPriests) {
-			svParams.maxActiveAI[AICHAR_PRIEST] = svParams.maxPriests;
-		}
-	}
-
-	// Partisans
-	if (svParams.waveCount >= svParams.wavePartisans)
-	{
-		svParams.maxActiveAI[AICHAR_PARTISAN] += svParams.partisansIncrease;
-		if (svParams.maxActiveAI[AICHAR_PARTISAN] > svParams.maxPartisans) {
-			svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.maxPartisans;
-		}
-	}
-
+    if (svParams.waveCount >= svParams.waveProtos) {
+        svParams.maxActiveAI[AICHAR_PROTOSOLDIER] += svParams.protosIncrease;
+        if (svParams.maxActiveAI[AICHAR_PROTOSOLDIER] > svParams.maxProtos)
+            svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.maxProtos;
     }
 
+    if (svParams.waveCount >= svParams.waveGhosts) {
+        svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] += svParams.ghostsIncrease;
+        if (svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] > svParams.maxGhosts)
+            svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.maxGhosts;
+    }
+
+    if (svParams.waveCount >= svParams.wavePriests) {
+        svParams.maxActiveAI[AICHAR_PRIEST] += svParams.priestsIncrease;
+        if (svParams.maxActiveAI[AICHAR_PRIEST] > svParams.maxPriests)
+            svParams.maxActiveAI[AICHAR_PRIEST] = svParams.maxPriests;
+    }
+
+    if (svParams.waveCount >= svParams.wavePartisans) {
+        svParams.maxActiveAI[AICHAR_PARTISAN] += svParams.partisansIncrease;
+        if (svParams.maxActiveAI[AICHAR_PARTISAN] > svParams.maxPartisans)
+            svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.maxPartisans;
+    }
 }
 
 

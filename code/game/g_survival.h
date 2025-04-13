@@ -40,4 +40,8 @@ void Survival_AddPainScore(gentity_t *attacker, gentity_t *victim, int damage);
 void Survival_PickupTreasure(gentity_t *other);
 qboolean Survival_TrySpendMG42Points(gentity_t *player);
 
+// Misc stuff
+void TossClientItems(gentity_t *self, gentity_t *attacker);
+void TossClientPowerups(gentity_t *self, gentity_t *attacker);
+
 #endif // __G_SURVIVAL_H__

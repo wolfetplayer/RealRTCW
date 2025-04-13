@@ -1079,8 +1079,6 @@ If you have questions concerning this license or the applicable additional terms
 {"GibHead", (byte *)GibHead},
 {"LookAtKiller", (byte *)LookAtKiller},
 {"TossClientWeapons", (byte *)TossClientWeapons},
-{"TossClientItems", (byte *)TossClientItems},
-{"TossClientPowerups", (byte *)TossClientPowerups},
 {"AddScore", (byte *)AddScore},
 {"ClientCommand", (byte *)ClientCommand},
 {"Cmd_SetSpawnPoint_f", (byte *)Cmd_SetSpawnPoint_f},

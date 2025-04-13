@@ -42,6 +42,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
+#include "g_survival.h"
+
 #include "../steam/steam.h"
 
 
@@ -199,20 +201,15 @@ int Pickup_Treasure(gentity_t *ent, gentity_t *other) {
     gentity_t *player = AICast_FindEntityForName("player");
 
     if (g_gametype.integer == GT_SURVIVAL) {
-        if (other && other->client) {
-            // Generate a random score between 50 and 100
-            int randomScore = 50 + rand() % 51; // 50 to 100 inclusive
-
-            // Add the random score to the player's score
-            other->client->ps.persistant[PERS_SCORE] += randomScore;
-        }
+        Survival_PickupTreasure(other);
     } else {
         if (player) {
             player->numTreasureFound++;
             G_SendMissionStats();
         }
     }
-    return RESPAWN_SP; // no respawn
+
+    return RESPAWN_SP;
 }
 
 
@@ -1295,20 +1292,9 @@ void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 		{
 			respawn = Pickup_Weapon(ent, other);
 		}
-
-		if (g_gametype.integer == GT_SURVIVAL)
-		{
-			ent->wait = -1;
-		}
-
 		break;
 	case IT_AMMO:
 		respawn = Pickup_Ammo( ent, other );
-
-		if ( g_gametype.integer == GT_SURVIVAL) {
-			ent->wait = -1;
-		}
-
 		break;
 	case IT_ARMOR:
 		respawn = Pickup_Armor( ent, other );

@@ -35,6 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
+#include "g_survival.h"
 
 extern void AimAtTarget( gentity_t * self );
 
@@ -1998,13 +1999,10 @@ void mg42_track( gentity_t *self, gentity_t *other ) {
 
 				if (g_gametype.integer == GT_SURVIVAL)
 				{
-
-					if (other->client->ps.persistant[PERS_SCORE] < 1)
+					if (!Survival_TrySpendMG42Points(other))
 					{
 						return;
 					}
-					// Deduct points as cost
-					other->client->ps.persistant[PERS_SCORE] -= 1;
 				}
 
 				// Now proceed as usual for both survival (with enough points) and non-survival

@@ -44,8 +44,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
-
-extern svParams_t svParams;
+#include "g_survival.h"
 
 // Skill-based behavior parameters
 behaviorskill_t behaviorSkill[GSKILL_NUM_SKILLS][NUM_CHARACTERS];
@@ -754,26 +753,33 @@ void AIChar_SetBBox( gentity_t *ent, cast_state_t *cs, qboolean useHeadTag ) {
 AIChar_Death
 ============
 */
-void AIChar_Death( gentity_t *ent, gentity_t *attacker, int damage, int mod ) { //----(SA)	added mod
+void AIChar_Death(gentity_t *ent, gentity_t *attacker, int damage, int mod)
+{ //----(SA)	added mod
 	// need this check otherwise sound will overwrite gib message
-	if ( ent->health > GIB_HEALTH  ) {
-		if ( ent->client->ps.eFlags & EF_HEADSHOT ) {
-        if ( g_gametype.integer == GT_SURVIVAL && attacker && ( attacker->aiTeam != ent->aiTeam ) ) {
-			    attacker->client->ps.persistant[PERS_SCORE] += svParams.scoreHeadshotKill;
+	if (ent->health > GIB_HEALTH)
+	{
+		if (ent->client->ps.eFlags & EF_HEADSHOT)
+		{
+			if (g_gametype.integer == GT_SURVIVAL)
+			{
+				Survival_AddHeadshotBonus(attacker, ent);
 			}
-			G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT] ) );
-		} else {
-			switch ( mod ) {               //----(SA)	modified to add 'quiet' deaths
+			G_AddEvent(ent, EV_GENERAL_SOUND, G_SoundIndex(aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT]));
+		}
+		else
+		{
+			switch (mod)
+			{ //----(SA)	modified to add 'quiet' deaths
 			case MOD_KNIFE_STEALTH:
 			case MOD_SNIPERRIFLE:
 			case MOD_SNOOPERSCOPE:
-				G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT] ) );
+				G_AddEvent(ent, EV_GENERAL_SOUND, G_SoundIndex(aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT]));
 				break;
 			case MOD_FLAMETHROWER:
-				G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[FLAMEDEATHSOUNDSCRIPT] ) );      //----(SA)	added
+				G_AddEvent(ent, EV_GENERAL_SOUND, G_SoundIndex(aiDefaults[ent->aiCharacter].soundScripts[FLAMEDEATHSOUNDSCRIPT])); //----(SA)	added
 				break;
 			default:
-				G_AddEvent( ent, EV_GENERAL_SOUND, G_SoundIndex( aiDefaults[ent->aiCharacter].soundScripts[DEATHSOUNDSCRIPT] ) );
+				G_AddEvent(ent, EV_GENERAL_SOUND, G_SoundIndex(aiDefaults[ent->aiCharacter].soundScripts[DEATHSOUNDSCRIPT]));
 				break;
 			}
 		}

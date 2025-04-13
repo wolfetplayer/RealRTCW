@@ -47,6 +47,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
+#include "g_survival.h"
 
 #include "../steam/steam.h"
 
@@ -5802,51 +5803,6 @@ qboolean BG_ParseSurvivalTable( int handle )
 		} else if ( !Q_stricmp( token.string, "scoreBaseKill" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.scoreBaseKill ) ) {
 				PC_SourceError( handle, "expected scoreBaseKill value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreSoldierBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreSoldierBonus ) ) {
-				PC_SourceError( handle, "expected scoreSoldierBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreZombieBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreZombieBonus ) ) {
-				PC_SourceError( handle, "expected scoreZombieBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreEliteBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreEliteBonus ) ) {
-				PC_SourceError( handle, "expected scoreEliteBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreWarzBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreWarzBonus ) ) {
-				PC_SourceError( handle, "expected scoreWarzBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreProtosBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreProtosBonus ) ) {
-				PC_SourceError( handle, "expected scoreProtosBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreBlackBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreBlackBonus) ) {
-				PC_SourceError( handle, "expected scoreBlackBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreVenomBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreVenomBonus) ) {
-				PC_SourceError( handle, "expected scoreVenomBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scorePriestBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scorePriestBonus) ) {
-				PC_SourceError( handle, "expected scorePriestBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreGhostBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreGhostBonus) ) {
-				PC_SourceError( handle, "expected scoreGhostBonus value" );
 				return qfalse;
 			}
 		} else if ( !Q_stricmp( token.string, "scoreKnifeBonus" ) ) {

@@ -34,6 +34,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
+#include "g_survival.h"
 
 #include <pthread.h>
 #include <unistd.h>
@@ -60,17 +61,12 @@ void AddScore( gentity_t *ent, int score ) {
 		return;
 	}
 
-	// Ridah, no scoring during single player
-	// DHM - Nerve :: fix typo
 	if ( g_gametype.integer != GT_SURVIVAL ) {
 		return;
 	}
-	// done.
-
 
 	ent->client->ps.persistant[PERS_SCORE] += score;
 
-	//CalculateRanks();
 }
 
 

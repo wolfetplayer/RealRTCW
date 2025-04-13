@@ -45,6 +45,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
+#include "g_survival.h"
 
 #include "../steam/steam.h"
 
@@ -125,20 +126,9 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 		return;
 	}
 
-	if (g_gametype.integer == GT_SURVIVAL && killerPlayer && (attacker->aiTeam != targ->aiTeam))
+	if (g_gametype.integer == GT_SURVIVAL)
 	{
-
-		if (attacker->client->ps.powerups[PW_VAMPIRE])
-		{
-			attacker->health += 5;
-
-			if (attacker->health > 300)
-			{
-				attacker->health = 300;
-			}
-		}
-
-		attacker->client->ps.persistant[PERS_SCORE] += svParams.scoreHit;
+		Survival_AddPainScore(attacker, targ, damage);
 	}
 
 	// process the event (turn to face the attacking direction? go into hide/retreat state?)
@@ -280,51 +270,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	if (g_gametype.integer == GT_SURVIVAL && killerPlayer && (attacker->aiTeam != self->aiTeam))
 	{
-
-		int score = svParams.scoreBaseKill; // Default score
-
-		// Add score based on aiCharacter type
-		switch (self->aiCharacter)
-		{
-        case AICHAR_SOLDIER:
-            score += svParams.scoreSoldierBonus;
-            break;
-		case AICHAR_ZOMBIE:
-            score += svParams.scoreZombieBonus;
-            break;
-        case AICHAR_ELITEGUARD:
-            score += svParams.scoreEliteBonus;
-            break;
-		case AICHAR_WARZOMBIE:
-            score += svParams.scoreWarzBonus;
-            break;
-		case AICHAR_PROTOSOLDIER:
-            score += svParams.scoreProtosBonus;
-            break;
-        case AICHAR_BLACKGUARD:
-            score += svParams.scoreBlackBonus;
-            break;
-        case AICHAR_VENOM:
-            score += svParams.scoreVenomBonus;
-            break;
-		case AICHAR_PRIEST:
-            score += svParams.scorePriestBonus;
-            break;
-		case AICHAR_ZOMBIE_GHOST:
-            score += svParams.scoreGhostBonus;
-            break;
-        default:
-            break;
-    }
-
-    // Add additional score if killed with knife or foot
-    if (modKnife || modKicked) {
-        score += svParams.scoreKnifeBonus;
-    }
-
-
-    attacker->client->ps.persistant[PERS_SCORE] += score;
-	attacker->client->ps.persistant[PERS_KILLS]++;
+		Survival_AddKillScore(attacker, self, meansOfDeath);
 	}
 
 	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {

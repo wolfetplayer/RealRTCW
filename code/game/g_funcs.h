@@ -390,7 +390,6 @@ If you have questions concerning this license or the applicable additional terms
 {"SP_target_give", (byte *)SP_target_give},
 {"Use_Target_Give", (byte *)Use_Target_Give},
 {"SP_target_buy", (byte *)SP_target_buy},
-{"Use_Target_buy", (byte *)Use_Target_buy},
 {"trap_Alloc", (byte *)trap_Alloc},
 {"trap_GeneticParentsAndChildSelection", (byte *)trap_GeneticParentsAndChildSelection},
 {"trap_BotResetWeaponState", (byte *)trap_BotResetWeaponState},

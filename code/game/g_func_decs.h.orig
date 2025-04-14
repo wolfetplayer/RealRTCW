@@ -400,7 +400,6 @@ extern void Use_target_remove_powerups ( gentity_t * ent , gentity_t * other , g
 extern void SP_target_give ( gentity_t * ent ) ;
 extern void Use_Target_Give ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
 extern void SP_target_buy ( gentity_t * ent ) ;
-extern void Use_Target_buy ( gentity_t * ent , gentity_t * other, gentity_t *activator ) ;
 extern void PM_AdjustAimSpreadScale ( void ) ;
 extern qboolean PM_AltFire ( void ) ;
 extern qboolean PM_AltFiring ( qboolean delayedFire ) ;

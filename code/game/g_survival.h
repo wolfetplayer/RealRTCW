@@ -39,6 +39,7 @@ void Survival_AddHeadshotBonus(gentity_t *attacker, gentity_t *victim);
 void Survival_AddPainScore(gentity_t *attacker, gentity_t *victim, int damage);
 void Survival_PickupTreasure(gentity_t *other);
 qboolean Survival_TrySpendMG42Points(gentity_t *player);
+void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator);
 
 // Misc stuff
 void TossClientItems(gentity_t *self, gentity_t *attacker);

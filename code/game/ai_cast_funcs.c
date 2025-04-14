@@ -83,8 +83,6 @@ char *AIFunc_Battle( cast_state_t *cs );
 
 static bot_moveresult_t *moveresult;
 
-extern svParams_t svParams;
-
 
 /*
 ============

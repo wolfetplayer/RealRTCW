@@ -44,4 +44,116 @@ qboolean Survival_TrySpendMG42Points(gentity_t *player);
 void TossClientItems(gentity_t *self, gentity_t *attacker);
 void TossClientPowerups(gentity_t *self, gentity_t *attacker);
 
+
+// Survival parameters
+typedef struct svParams_s
+{
+	// not loaded
+	int activeAI[NUM_CHARACTERS];
+	int survivalKillCount;
+	int maxActiveAI[NUM_CHARACTERS];
+	int waveCount;
+	int waveKillCount;
+	int killCountRequirement;
+
+	// loaded from .surv file
+	int initialKillCountRequirement;
+
+	int initialSoldiersCount;
+	int initialEliteGuardsCount;
+	int initialBlackGuardsCount;
+	int initialVenomsCount;
+
+	int initialZombiesCount;
+	int initialWarriorsCount;
+	int initialProtosCount;
+	int initialGhostsCount;
+	int initialPriestsCount;
+	int initialPartisansCount;
+
+	float healthIncreaseMultiplier;
+	float speedIncreaseDivider;
+
+	float spawnTimeFalloffMultiplier;
+	int   minSpawnTime;
+	int   startingSpawnTime;
+    int   friendlySpawnTime;
+
+	int soldiersIncrease;
+	int eliteGuardsIncrease;
+	int blackGuardsIncrease;
+	int venomsIncrease;
+	int zombiesIncrease;
+	int warriorsIncrease;
+	int protosIncrease;
+	int partisansIncrease;
+	int ghostsIncrease;
+	int priestsIncrease;
+
+	int maxSoldiers;
+	int maxEliteGuards;
+	int maxBlackGuards;
+	int maxVenoms;
+
+	int maxZombies;
+	int maxWarriors;
+	int maxProtos;
+	int maxGhosts;
+	int maxPriests;
+	int maxPartisans;
+
+	int waveEg;
+	int waveBg;
+	int waveV;
+
+	int waveWarz;
+	int waveProtos;
+	int waveGhosts;
+	int wavePriests;
+
+	int wavePartisans;
+
+	int zombieHealthCap;
+	int warriorHealthCap;
+	int protosHealthCap;
+	int ghostHealthCap;
+	int priestHealthCap;
+
+	int partisansHealthCap;
+
+	int soldierHealthCap;	
+	int eliteGuardHealthCap;
+	int blackGuardHealthCap;
+	int venomHealthCap;
+
+	int soldierBaseHealth;
+	int eliteGuardBaseHealth;
+	int blackGuardBaseHealth;
+	int venomBaseHealth;
+
+	int partisansBaseHealth;
+
+	int zombieBaseHealth;
+	int warriorBaseHealth;
+	int protosBaseHealth;
+	int ghostBaseHealth;
+	int priestBaseHealth;
+
+	int powerupDropChance;
+	int powerupDropChanceScavengerIncrease;
+
+	int treasureDropChance;
+	int treasureDropChanceScavengerIncrease;
+
+	int scoreHeadshotKill;
+	int scoreHit;
+	int scoreBaseKill;
+	int scoreKnifeBonus;
+
+	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
+
+} svParams_t;
+
+extern svParams_t svParams;
+
 #endif // __G_SURVIVAL_H__

@@ -49,8 +49,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "../steam/steam.h"
 
-extern svParams_t svParams;
-
 /*
 Contains response functions for various events that require specific handling
 for Cast AI's.

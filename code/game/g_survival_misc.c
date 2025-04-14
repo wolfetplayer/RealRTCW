@@ -31,7 +31,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "g_local.h"
 #include "g_survival.h"
 
-extern svParams_t svParams;
+svParams_t svParams;
 
 /*
 ============

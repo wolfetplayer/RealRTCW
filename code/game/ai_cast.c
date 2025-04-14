@@ -45,6 +45,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
+#include "g_survival.h"
 
 /*
 The Wolfenstein AI uses the bot movement functions, and goal handling.
@@ -59,8 +60,6 @@ Currently, this seems to the the best approach, since if we're going to
 use the AAS for navigation, we want to avoid having to re-write the movement
 routines which are heavily associated with the AAS information.
 */
-
-svParams_t svParams;
 
 //cast states (allocated at run-time)
 cast_state_t    *caststates;

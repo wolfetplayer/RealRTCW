@@ -43,8 +43,6 @@ If you have questions concerning this license or the applicable additional terms
 
 extern vec3_t muzzleTrace; // used by falloff mechanic
 
-extern svParams_t svParams;
-
 /*
 ============
 AddScore

@@ -160,20 +160,25 @@ qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gi
 
 
 qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int price) {
-	if (!activator || activator->client->ps.stats[STAT_ARMOR] >= 200)
+	if (!activator || !item || !activator->client) return qfalse;
+
+	if (activator->client->ps.stats[STAT_ARMOR] >= 200)
 		return qfalse;
 
-	// Use hardcoded price if mapper didn't set one
-	if (price <= 0) {
-		price = 150; // default armor price
+	// Fallback price if not set by mapper
+	if (price <= 0)
+		price = 150;
+
+	// Check score
+	if (activator->client->ps.persistant[PERS_SCORE] < price) {
+		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+		return qfalse;
 	}
 
-	// Not enough score?
-	if (activator->client->ps.persistant[PERS_SCORE] < price)
-		return qfalse;
-
-	// Apply armor and mark pickup
+	// Deduct, apply, and notify
+	activator->client->ps.persistant[PERS_SCORE] -= price;
 	activator->client->ps.stats[STAT_ARMOR] = 200;
+
 	G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
 	trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
 
@@ -275,8 +280,8 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 			return;
 	}
 
-	if (success) {
-		activator->client->ps.persistant[PERS_SCORE] -= price;
+	if (success)
+	{
 		activator->client->hasPurchased = qtrue;
 		ClientUserinfoChanged(clientNum);
 	}

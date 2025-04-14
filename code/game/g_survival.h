@@ -39,7 +39,15 @@ void Survival_AddHeadshotBonus(gentity_t *attacker, gentity_t *victim);
 void Survival_AddPainScore(gentity_t *attacker, gentity_t *victim, int damage);
 void Survival_PickupTreasure(gentity_t *other);
 qboolean Survival_TrySpendMG42Points(gentity_t *player);
+
+// Purchase system
 void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator);
+qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, char *itemName, int *itemIndex);
+qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char **itemName, int *itemIndex);
+qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int price);
+qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gitem_t *item, int price);
+qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int price);
+qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price);
 
 // Misc stuff
 void TossClientItems(gentity_t *self, gentity_t *attacker);

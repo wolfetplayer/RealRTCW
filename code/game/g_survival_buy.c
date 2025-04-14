@@ -85,14 +85,33 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 		"perk_weaponhandling", "perk_rifling", "perk_secondchance"
 	};
 
-	int numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
-	int randomIndex = rand() % numPerks;
+	const int price = 200;
+	const int numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
 
+	int randomIndex = rand() % numPerks;
 	*itemName = random_perks[randomIndex];
 
+	// Find the item
 	for (int i = 1; bg_itemlist[i].classname; i++) {
 		if (!Q_strcasecmp(*itemName, bg_itemlist[i].classname)) {
 			*itemIndex = i;
+			gitem_t *perkItem = &bg_itemlist[i];
+
+			// Check already owned or not enough points
+			if (activator->client->ps.perks[perkItem->giTag] > 0 || 
+				activator->client->ps.persistant[PERS_SCORE] < price) {
+				G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+				return qfalse;
+			}
+
+			// Grant perk and deduct points
+			activator->client->ps.perks[perkItem->giTag]++;
+			activator->client->ps.stats[STAT_PERK] |= (1 << perkItem->giTag);
+			activator->client->ps.persistant[PERS_SCORE] -= price;
+
+			G_AddPredictableEvent(activator, EV_ITEM_PICKUP, perkItem - bg_itemlist);
+			trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
+
 			return qtrue;
 		}
 	}
@@ -158,7 +177,11 @@ qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gi
 	return qtrue;
 }
 
-
+/*
+============
+Survival_HandleArmorPurchase
+============
+*/
 qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int price) {
 	if (!activator || !item || !activator->client) return qfalse;
 

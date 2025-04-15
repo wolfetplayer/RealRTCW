@@ -88,37 +88,44 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 	const int price = 200;
 	const int numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
 
+	// Perk count limit
+	int perkCount = 0;
+	for (int i = 0; i < MAX_PERKS; i++) {
+		if (activator->client->ps.perks[i] > 0)
+			perkCount++;
+	}
+	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ? 4 : 3;
+	if (perkCount >= maxPerks) {
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		return qfalse;
+	}
+
 	int randomIndex = rand() % numPerks;
 	*itemName = random_perks[randomIndex];
 
-	// Find the item
 	for (int i = 1; bg_itemlist[i].classname; i++) {
 		if (!Q_strcasecmp(*itemName, bg_itemlist[i].classname)) {
 			*itemIndex = i;
 			gitem_t *perkItem = &bg_itemlist[i];
 
-			// Check already owned or not enough points
 			if (activator->client->ps.perks[perkItem->giTag] > 0 || 
 				activator->client->ps.persistant[PERS_SCORE] < price) {
 				G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 				return qfalse;
 			}
 
-			// Grant perk and deduct points
 			activator->client->ps.perks[perkItem->giTag]++;
 			activator->client->ps.stats[STAT_PERK] |= (1 << perkItem->giTag);
 			activator->client->ps.persistant[PERS_SCORE] -= price;
 
 			G_AddPredictableEvent(activator, EV_ITEM_PICKUP, perkItem - bg_itemlist);
 			trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
-
 			return qtrue;
 		}
 	}
 
 	return qfalse;
 }
-
 
 qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int price) {
 	if (!activator || !activator->client) return qfalse;
@@ -208,25 +215,58 @@ qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int p
 	return qtrue;
 }
 
+int Survival_GetDefaultPerkPrice(int perk) {
+	switch (perk) {
+		case PERK_SECONDCHANCE:    return 150;
+		case PERK_RUNNER:          return 200;
+		case PERK_SCAVENGER:       return 250;
+		case PERK_WEAPONHANDLING:  return 300;
+		case PERK_RIFLING:         return 350;
+		case PERK_RESILIENCE:      return 400;
+		default:                   return 200;
+	}
+}
+
 
 qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price) {
-	if (!activator) return qfalse;
+	if (!activator || !item || item->giType != IT_PERK)
+		return qfalse;
 
+	// Count how many perks player has
 	int perkCount = 0;
 	for (int i = 0; i < MAX_PERKS; i++) {
-		if (activator->client->ps.perks[i] > 0) {
+		if (activator->client->ps.perks[i] > 0)
 			perkCount++;
-		}
 	}
 
+	// Max perks check
 	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ? 4 : 3;
-	if (perkCount >= maxPerks || activator->client->ps.perks[item->giTag] > 0) return qfalse;
+	if (perkCount >= maxPerks)
+		return qfalse;
 
+	// Already owns this perk?
+	if (activator->client->ps.perks[item->giTag] > 0)
+		return qfalse;
+
+	// Fallback to default price if mapper didn't define it
+	if (price <= 0) {
+		price = Survival_GetDefaultPerkPrice(item->giTag);
+	}
+
+	// Not enough score?
+	if (activator->client->ps.persistant[PERS_SCORE] < price) {
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		return qfalse;
+	}
+
+	// Grant perk
 	activator->client->ps.perks[item->giTag]++;
 	activator->client->ps.stats[STAT_PERK] |= (1 << item->giTag);
+	activator->client->ps.persistant[PERS_SCORE] -= price;
 
 	G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
 	trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
+
 	return qtrue;
 }
 

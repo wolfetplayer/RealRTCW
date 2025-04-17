@@ -31,6 +31,61 @@ If you have questions concerning this license or the applicable additional terms
 #include "g_local.h"
 #include "g_survival.h"
 
+int Survival_GetDefaultWeaponPrice(int weapon) {
+	switch (weapon) {
+		// Pistols
+		case WP_LUGER:        return 30;
+		case WP_SILENCER:     return 30;
+		case WP_COLT:         return 30;
+		case WP_TT33:         return 30;
+		case WP_REVOLVER:     return 30;
+		case WP_DUAL_TT33:    return 50;
+		case WP_AKIMBO:       return 50;
+		case WP_HDM:          return 30;
+
+		// SMGs
+		case WP_STEN:         return 90;
+		case WP_MP40:         return 100;
+		case WP_MP34:         return 120;
+		case WP_THOMPSON:     return 120;
+		case WP_PPSH:         return 150;
+
+		// Rifles
+		case WP_MAUSER:       return 50;
+		case WP_MOSIN:        return 50;
+		case WP_DELISLE:      return 50;
+		case WP_SNIPERRIFLE:  return 100;
+		case WP_SNOOPERSCOPE: return 150;
+
+		// Auto Rifles
+		case WP_M1GARAND:     return 150;
+		case WP_G43:          return 120;
+		case WP_M1941:        return 120;
+
+		// Assault Rifles
+		case WP_MP44:         return 200;
+		case WP_FG42:         return 200;
+		case WP_BAR:          return 200;
+
+		// Shotguns
+		case WP_M97:          return 180;
+		case WP_AUTO5:        return 200;
+
+		// Heavy
+		case WP_MG42M:        return 300;
+		case WP_PANZERFAUST:  return 400;
+		case WP_BROWNING:     return 400;
+		case WP_FLAMETHROWER: return 500;
+		case WP_VENOM:        return 500;
+		case WP_TESLA:        return 500;
+
+		// Grenades
+		case WP_GRENADE_LAUNCHER:   return 150;
+		case WP_GRENADE_PINEAPPLE:  return 150;
+
+		default: return 100;
+	}
+}
 
 /*
 ============
@@ -40,18 +95,15 @@ Survival_HandleRandomWeaponBox
 qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, char *itemName, int *itemIndex) {
 	if (!activator || !activator->client) return qfalse;
 
-	weapon_t* selected_weapons;
-	int numWeapons, randomIndex;
-
-	weapon_t random_box_weapons[] = {
+	static const weapon_t random_box_weapons[] = {
 		WP_LUGER, WP_SILENCER, WP_COLT, WP_TT33, WP_REVOLVER, WP_DUAL_TT33,
 		WP_AKIMBO, WP_HDM, WP_MP40, WP_THOMPSON, WP_STEN, WP_PPSH, WP_MP34,
 		WP_MAUSER, WP_SNIPERRIFLE, WP_SNOOPERSCOPE, WP_MOSIN,
 		WP_M1GARAND, WP_G43, WP_MP44, WP_FG42, WP_BAR, WP_M97,
 		WP_BROWNING, WP_MG42M, WP_PANZERFAUST, WP_FLAMETHROWER, WP_VENOM, WP_TESLA
 	};
-	
-	weapon_t random_box_weapons_dlc[] = {
+
+	static const weapon_t random_box_weapons_dlc[] = {
 		WP_LUGER, WP_SILENCER, WP_COLT, WP_TT33, WP_REVOLVER, WP_DUAL_TT33,
 		WP_AKIMBO, WP_HDM, WP_MP40, WP_THOMPSON, WP_STEN, WP_PPSH, WP_MP34,
 		WP_MAUSER, WP_SNIPERRIFLE, WP_SNOOPERSCOPE, WP_MOSIN,
@@ -59,32 +111,62 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 		WP_BROWNING, WP_MG42M, WP_PANZERFAUST, WP_FLAMETHROWER, WP_VENOM, WP_TESLA, WP_DELISLE
 	};
 
-	if (g_dlc1.integer == 1) {
-		selected_weapons = random_box_weapons_dlc;
-		numWeapons = sizeof(random_box_weapons_dlc) / sizeof(random_box_weapons_dlc[0]);
-	} else {
-		selected_weapons = random_box_weapons;
-		numWeapons = sizeof(random_box_weapons) / sizeof(random_box_weapons[0]);
-	}
+	const weapon_t *selected_weapons = g_dlc1.integer ? random_box_weapons_dlc : random_box_weapons;
+	int numWeapons = g_dlc1.integer 
+		? sizeof(random_box_weapons_dlc) / sizeof(random_box_weapons_dlc[0]) 
+		: sizeof(random_box_weapons) / sizeof(random_box_weapons[0]);
 
-	// Use mapper-defined price or fallback to default
-	int price = (ent->price > 0) ? ent->price : 150;
+	int price = ent->price > 0 ? ent->price : 150;
 
-	// Not enough points?
 	if (activator->client->ps.persistant[PERS_SCORE] < price) {
-		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
 		return qfalse;
 	}
 
+	// Pick a random weapon the player doesn't have
+	weapon_t chosen;
+	int tries = 10;
 	do {
-		randomIndex = rand() % numWeapons;
-	} while (G_FindWeaponSlot(activator, selected_weapons[randomIndex]) >= 0);
+		chosen = selected_weapons[rand() % numWeapons];
+		tries--;
+	} while (G_FindWeaponSlot(activator, chosen) >= 0 && tries > 0);
 
+	if (tries <= 0) {
+		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+		return qfalse;
+	}
+
+	// Find the item
 	for (int i = 1; bg_itemlist[i].classname; i++) {
-		if (bg_itemlist[i].giWeapon == selected_weapons[randomIndex]) {
+		if (bg_itemlist[i].giWeapon == chosen) {
 			*itemIndex = i;
+			itemName = bg_itemlist[i].classname;
+			gitem_t *item = &bg_itemlist[i];
+
+			// Give weapon
+			Give_Weapon_New_Inventory(activator, chosen, qfalse);
+
+			// Give full ammo
+			Add_Ammo(activator, chosen, ammoTable[chosen].maxammo, qtrue);
+			Add_Ammo(activator, chosen, ammoTable[chosen].maxammo, qfalse);
+
+			// Bonus: give M7 for Garand
+			if (chosen == WP_M1GARAND) {
+				Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
+				Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
+			}
+
+			// Select weapon
+			activator->client->ps.weapon = chosen;
+			activator->client->ps.weaponstate = WEAPON_READY;
+
+			// Deduct points
 			activator->client->ps.persistant[PERS_SCORE] -= price;
-			trap_SendServerCommand(-1, "mu_play sound/pickup/holdable/get_stamina.wav 0\n");
+
+			// SFX & confirmation
+			G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+			trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+
 			return qtrue;
 		}
 	}
@@ -147,61 +229,96 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 	return qfalse;
 }
 
-
+/*
+============
+Survival_HandleAmmoPurchase
+============
+*/
 qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int price) {
-	if (!activator || !activator->client) return qfalse;
+	if (!activator || !activator->client)
+		return qfalse;
 
 	int heldWeap = activator->client->ps.weapon;
-	if (heldWeap <= WP_NONE || heldWeap >= WP_NUM_WEAPONS) return qfalse;
+	if (heldWeap <= WP_NONE || heldWeap >= WP_NUM_WEAPONS)
+		return qfalse;
 
 	int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
-	if (activator->client->ps.ammo[ammoIndex] >= ammoTable[heldWeap].maxammo) return qfalse;
+	if (ammoIndex < 0 || activator->client->ps.ammo[ammoIndex] >= ammoTable[heldWeap].maxammo)
+		return qfalse;
 
-	if (heldWeap == WP_TESLA || heldWeap == WP_MG42M || heldWeap == WP_PANZERFAUST ||
-		heldWeap == WP_VENOM || heldWeap == WP_FLAMETHROWER || heldWeap == WP_BROWNING) {
-		if (activator->client->ps.stats[STAT_PLAYER_CLASS] != PC_SOLDIER) return qfalse;
-		price *= 2;
+	// Use fallback price: half of weapon price
+	int basePrice = Survival_GetDefaultWeaponPrice(heldWeap);
+	int ammoPrice = basePrice / 2;
+
+	// Mapper override
+	if (price > 0) {
+		ammoPrice = price;
 	}
 
-	if (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT) {
-		price /= 2;
+	if (activator->client->ps.persistant[PERS_SCORE] < ammoPrice) {
+		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+		return qfalse;
 	}
 
-	if (activator->client->ps.persistant[PERS_SCORE] < price) return qfalse;
-
+	// Refill ammo
 	Add_Ammo(activator, heldWeap, ammoTable[heldWeap].maxammo, qtrue);
 	Add_Ammo(activator, heldWeap, ammoTable[heldWeap].maxammo, qfalse);
+
+	activator->client->ps.persistant[PERS_SCORE] -= ammoPrice;
 
 	trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
 	return qtrue;
 }
 
 
+/*
+============
+Survival_HandleWeaponOrGrenade
+============
+*/
 qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gitem_t *item, int price) {
 	if (!activator || !item) return qfalse;
 
+	// Use fallback price if mapper didn't define one
+	if (price <= 0) {
+		price = Survival_GetDefaultWeaponPrice(item->giTag);
+	}
+
+	// Halve price if already owned
 	if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
 		price /= 2;
 	} else {
 		Give_Weapon_New_Inventory(activator, item->giTag, qfalse);
 	}
 
+	// Check if ammo is already full
 	if (item->giType == IT_AMMO) {
 		if (activator->client->ps.ammoclip[item->giTag] >= ammoTable[item->giTag].maxammo) return qfalse;
 	} else if (activator->client->ps.ammo[item->giTag] >= ammoTable[item->giTag].maxammo) {
 		return qfalse;
 	}
 
+	// Check score
+	if (activator->client->ps.persistant[PERS_SCORE] < price) {
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		return qfalse;
+	}
+
+	// Grant ammo
 	Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
 	Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
 
+	// M1Garand bonus: give M7 with ammo
 	if (item->giTag == WP_M1GARAND) {
 		Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
 		Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
 	}
 
+	// Deduct score and notify
+	activator->client->ps.persistant[PERS_SCORE] -= price;
 	G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
 	trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+
 	return qtrue;
 }
 
@@ -312,8 +429,8 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 	char *itemName = ent->buy_item;
 	int price = (ent->price > 0) ? ent->price : 0;
 	int clientNum = activator->client->ps.clientNum;
-
 	gitem_t *item = NULL;
+	qboolean success = qfalse;
 
 	// Special case: ammo
 	if (!Q_stricmp(itemName, "ammo")) {
@@ -327,12 +444,22 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 
 	// Special case: random weapon
 	if (!Q_stricmp(itemName, "random_weapon")) {
-		if (!Survival_HandleRandomWeaponBox(ent, activator, itemName, &itemIndex)) return;
+		success = Survival_HandleRandomWeaponBox(ent, activator, itemName, &itemIndex);
+		if (success) {
+			activator->client->hasPurchased = qtrue;
+			ClientUserinfoChanged(clientNum);
+		}
+		return; // Don't flow into generic weapon handling
 	}
 
 	// Special case: random perk
-	else if (!Q_stricmp(itemName, "random_perk")) {
-		if (!Survival_HandleRandomPerkBox(ent, activator, &itemName, &itemIndex)) return;
+	if (!Q_stricmp(itemName, "random_perk")) {
+		success = Survival_HandleRandomPerkBox(ent, activator, &itemName, &itemIndex);
+		if (success) {
+			activator->client->hasPurchased = qtrue;
+			ClientUserinfoChanged(clientNum);
+		}
+		return;
 	}
 
 	// Fallback: find item by name
@@ -354,28 +481,23 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 		return;
 	}
 
-	qboolean success = qfalse;
-
 	switch (item->giType) {
 		case IT_WEAPON:
 		case IT_AMMO:
 			success = Survival_HandleWeaponOrGrenade(ent, activator, item, price);
 			break;
-
 		case IT_ARMOR:
 			success = Survival_HandleArmorPurchase(activator, item, price);
 			break;
-
 		case IT_PERK:
 			success = Survival_HandlePerkPurchase(activator, item, price);
 			break;
-
 		default:
 			return;
 	}
 
-	if (success)
-	{
+	if (success) {
+		activator->client->ps.persistant[PERS_SCORE] -= price;
 		activator->client->hasPurchased = qtrue;
 		ClientUserinfoChanged(clientNum);
 	}

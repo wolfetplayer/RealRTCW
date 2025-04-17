@@ -32,6 +32,11 @@ If you have questions concerning this license or the applicable additional terms
 #include "g_survival.h"
 
 
+/*
+============
+Survival_HandleRandomWeaponBox
+============
+*/
 qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, char *itemName, int *itemIndex) {
 	if (!activator || !activator->client) return qfalse;
 
@@ -62,6 +67,15 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 		numWeapons = sizeof(random_box_weapons) / sizeof(random_box_weapons[0]);
 	}
 
+	// Use mapper-defined price or fallback to default
+	int price = (ent->price > 0) ? ent->price : 150;
+
+	// Not enough points?
+	if (activator->client->ps.persistant[PERS_SCORE] < price) {
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		return qfalse;
+	}
+
 	do {
 		randomIndex = rand() % numWeapons;
 	} while (G_FindWeaponSlot(activator, selected_weapons[randomIndex]) >= 0);
@@ -69,6 +83,8 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 	for (int i = 1; bg_itemlist[i].classname; i++) {
 		if (bg_itemlist[i].giWeapon == selected_weapons[randomIndex]) {
 			*itemIndex = i;
+			activator->client->ps.persistant[PERS_SCORE] -= price;
+			trap_SendServerCommand(-1, "mu_play sound/pickup/holdable/get_stamina.wav 0\n");
 			return qtrue;
 		}
 	}
@@ -76,7 +92,11 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 	return qfalse;
 }
 
-
+/*
+============
+Survival_HandleRandomPerkBox
+============
+*/
 qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char **itemName, int *itemIndex) {
 	if (!activator || !activator->client) return qfalse;
 
@@ -126,6 +146,7 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 
 	return qfalse;
 }
+
 
 qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int price) {
 	if (!activator || !activator->client) return qfalse;
@@ -215,6 +236,11 @@ qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int p
 	return qtrue;
 }
 
+/*
+============
+Survival_GetDefaultPerkPrice
+============
+*/
 int Survival_GetDefaultPerkPrice(int perk) {
 	switch (perk) {
 		case PERK_SECONDCHANCE:    return 150;
@@ -228,6 +254,11 @@ int Survival_GetDefaultPerkPrice(int perk) {
 }
 
 
+/*
+============
+Survival_HandlePerkPurchase
+============
+*/
 qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price) {
 	if (!activator || !item || item->giType != IT_PERK)
 		return qfalse;

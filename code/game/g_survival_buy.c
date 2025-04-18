@@ -196,7 +196,7 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 		if (activator->client->ps.perks[i] > 0)
 			perkCount++;
 	}
-	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ? 4 : 3;
+	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ? svParams.maxPerksEng : svParams.maxPerks;
 	if (perkCount >= maxPerks) {
 		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
@@ -388,7 +388,7 @@ qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int pr
 	}
 
 	// Max perks check
-	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ? 4 : 3;
+	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ?  svParams.maxPerksEng : svParams.maxPerks;
 	if (perkCount >= maxPerks)
 		return qfalse;
 

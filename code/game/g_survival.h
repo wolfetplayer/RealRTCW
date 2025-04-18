@@ -161,6 +161,9 @@ typedef struct svParams_s
 	int scoreBaseKill;
 	int scoreKnifeBonus;
 
+	int maxPerks;
+	int maxPerksEng;
+
 	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
 
 } svParams_t;

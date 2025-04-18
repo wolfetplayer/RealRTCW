@@ -5818,7 +5818,17 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected friendlySpawnTime value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
+		} else if ( !Q_stricmp( token.string, "maxPerks" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxPerks ) ) {
+				PC_SourceError( handle, "expected maxPerks value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxPerksEng" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxPerksEng ) ) {
+				PC_SourceError( handle, "expected maxPerksEng value" );
+				return qfalse;
+			}
+		}else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );
 				return qfalse;

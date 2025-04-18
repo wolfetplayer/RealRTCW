@@ -116,7 +116,7 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 		? sizeof(random_box_weapons_dlc) / sizeof(random_box_weapons_dlc[0]) 
 		: sizeof(random_box_weapons) / sizeof(random_box_weapons[0]);
 
-	int price = ent->price > 0 ? ent->price : 150;
+	int price = ent->price > 0 ? ent->price : svParams.randomWeaponDefaultPrice;
 
 	if (activator->client->ps.persistant[PERS_SCORE] < price) {
 		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");

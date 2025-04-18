@@ -1,19 +1,3 @@
-# RealRTCW-SE
-
-RealRTCW-SE (Special Edition for Localization) is a fork version based on wolfetplayer's [RealRTCW](https://github.com/wolfetplayer/RealRTCW).
-
-What chages:
-* Subtitle can display images, thus showcasing translated content as RTCW cannot display characters from character sets other than ISO-8859-1.
-* Increased core shader limit, thus more images can be loaded.
-* Increased script stack item limit.
-* And some other minor modifications to some functions to display localized content.
-
-Note:  
-* Default branch "master" is not the RealRTCW-SE respository, please switch branch to view RealRTCW-SE files.
-* I am not a programmer, I only have a small understanding of C language during my university years, so some of the program code for implementing certain functions may appear somewhat bizarre and unusual. Additionally, I am new to using GitHub and therefore not very familiar with it. Thank you for your understanding.
-
-Welcome to provide improvement suggestions for the code.
-
 # RealRTCW
 
 RealRTCW is a community single-player overhaul project for Return to Castle Wolfenstein based on the iortcw and rtcw-sp source code.

@@ -5833,6 +5833,11 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected armorDefaultPrice value" );
 				return qfalse;
 			}
+		} else if ( !Q_stricmp( token.string, "randomPerkDefaultPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.randomPerkDefaultPrice ) ) {
+				PC_SourceError( handle, "expected randomPerkDefaultPrice value" );
+				return qfalse;
+			}
 		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );

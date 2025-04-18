@@ -187,7 +187,7 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 		"perk_weaponhandling", "perk_rifling", "perk_secondchance"
 	};
 
-	const int price = 200;
+	int price = (ent->price > 0) ? ent->price : svParams.randomPerkDefaultPrice;
 	const int numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
 
 	// Perk count limit

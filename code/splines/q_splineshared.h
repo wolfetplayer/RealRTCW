@@ -56,11 +56,11 @@ If you have questions concerning this license or the applicable additional terms
   #define CLIENT_WINDOW_TITLE     	"RealRTCW"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" // iowolfsp
 #ifdef USE_XDG
-  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.0"
+  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.1"
 #else
   #define HOMEPATH_NAME_UNIX		".wolf"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.0"
+  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.1"
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
   #define GAMENAME_FOR_MASTER		"wolfsp"
   #define LEGACY_PROTOCOL
@@ -70,13 +70,15 @@ If you have questions concerning this license or the applicable additional terms
 #define HEARTBEAT_FOR_MASTER		"DarkPlaces"
 #define FLATLINE_FOR_MASTER		"WolfFlatline-1"
 
+#define MAX_MAPS 128
+
 // When com_gamename is LEGACY_MASTER_GAMENAME, use wolfenstein master protocol.
 // You shouldn't change this unless you know what you're doing
 #define LEGACY_MASTER_GAMENAME		"wolfsp"
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "5.0"
+  #define PRODUCT_VERSION "5.1"
 #endif
 
 #define Q3_VERSION PRODUCT_NAME " " PRODUCT_VERSION

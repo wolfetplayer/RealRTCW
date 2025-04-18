@@ -203,7 +203,8 @@ typedef enum {
 	GSKILL_MEDIUM,
 	GSKILL_HARD,
 	GSKILL_MAX,
-	GSKILL_REALISM,     // RealRTCW. Must always be last.
+	GSKILL_REALISM,
+	GSKILL_SURVIVAL,     // RealRTCW. Must always be last.
 	GSKILL_NUM_SKILLS
 } gameskill_t;
 
@@ -314,6 +315,11 @@ typedef struct {
 	int pmove_msec;
 
 	int ltChargeTime;
+	int soldierChargeTime;
+	int engineerChargeTime;
+	int medicChargeTime;
+
+	int gametype;
 
 	// callbacks to test the world
 	// these will be different functions during game and cgame
@@ -326,11 +332,11 @@ void PM_UpdateViewAngles( playerState_t * ps, usercmd_t * cmd, void( trace ) ( t
 int Pmove( pmove_t *pmove );
 
 //===================================================================================
-
-#define PC_SOLDIER              0   
-#define PC_MEDIC                1   
-#define PC_ENGINEER             2   
-#define PC_LT                   3   
+#define PC_NONE                 0
+#define PC_SOLDIER              1   
+#define PC_MEDIC                2   
+#define PC_ENGINEER             3   
+#define PC_LT                   4   
 #define PC_MEDIC_CHARGETIME     30000 
 
 
@@ -507,14 +513,16 @@ typedef enum
 typedef enum {
 	WP_NONE,                
 	// Melee Weapons
-	WP_KNIFE,               
-	WP_DAGGER,              
-	// One handed pistols
+	WP_KNIFE,          
+	// Pistols
 	WP_LUGER,              
 	WP_SILENCER,           
     WP_COLT,               
 	WP_TT33,               
-	WP_REVOLVER,           
+	WP_REVOLVER,
+	WP_HDM,
+	WP_AKIMBO,
+	WP_DUAL_TT33,           
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         
@@ -522,11 +530,10 @@ typedef enum {
 	WP_PPSH,             
 	WP_MP34,             
 	// Rifles
-	WP_MAUSER,              
-	WP_SNIPERRIFLE,        
+	WP_MAUSER,                    
 	WP_GARAND,            
-	WP_SNOOPERSCOPE,
 	WP_MOSIN,
+	WP_DELISLE,
 	// Semi auto rifles
 	WP_M1GARAND,
 	WP_G43,
@@ -550,21 +557,19 @@ typedef enum {
 	WP_GRENADE_LAUNCHER,
     WP_GRENADE_PINEAPPLE,
 	WP_DYNAMITE,
-	WP_AIRSTRIKE,          
+	WP_AIRSTRIKE,
+	WP_ARTY,
 	WP_POISONGAS,
-	// Misc Alt modes
-	WP_FG42SCOPE,   
-	WP_AKIMBO,
-	WP_DUAL_TT33,     
+	WP_POISONGAS_MEDIC,
+	WP_SMOKETRAIL,          
+	WP_HOLYCROSS,
+	// Alt Modes
+	WP_SNIPERRIFLE, 
+    WP_SNOOPERSCOPE,
+	WP_DELISLESCOPE,
+    WP_M1941SCOPE,
+	WP_FG42SCOPE,
 	WP_M7,
-	WP_M1941SCOPE,
-
-	WP_P38,                 
-	WP_M30,                
-	WP_DELISLE,            
-	WP_DELISLESCOPE, 	   
-	WP_HDM,             	
-	WP_HOLYCROSS,           
     // Misc stuff, not actual weapons
 	WP_DUMMY_MG42,
 	WP_MONSTER_ATTACK1,     	
@@ -627,8 +632,6 @@ typedef struct ammoskill_s {
 	int maxclip;
 } ammoskill_t;
 
-//extern int weapAlts[]; 
-
 extern ammoTable_t ammoTable[WP_NUM_WEAPONS];
 extern ammoskill_t ammoSkill[GSKILL_NUM_SKILLS][WP_NUM_WEAPONS];
 #define GetWeaponTableData(weaponIndex) ((ammoTable_t *)(&ammoTable[weaponIndex]))
@@ -644,8 +647,10 @@ static const int autoReloadWeapons[] = {
 	WP_FLAMETHROWER,
 	WP_POISONGAS,
 	WP_AIRSTRIKE,
+	WP_POISONGAS_MEDIC,
 	WP_KNIFE,
 	WP_M7,
+	WP_ARTY,
 };
 
  // entityState_t->event values
@@ -774,7 +779,7 @@ typedef enum {
 	EV_RAILTRAIL,
 	EV_VENOM,
 	EV_VENOMFULL,
-	EV_BULLET,              // otherEntity is the shooter
+	EV_HITSOUNDS,              // otherEntity is the shooter
 	EV_LOSE_HAT,            
 	EV_REATTACH_HAT,
 	EV_GIB_HEAD,            // only blow off the head
@@ -849,6 +854,8 @@ typedef enum {
 	EV_THROWKNIFE,
 	EV_COUGH,
 	EV_QUICKGRENS,
+	EV_PLAYER_HIT,  // hitsound event
+	EV_STOP_RELOADING_SOUND,
 	EV_MAX_EVENTS   // just added as an 'endcap'
 } entity_event_t;
 
@@ -1016,6 +1023,13 @@ typedef enum {
 extern char *animStrings[];     // defined in bg_misc.c
 extern char *animStringsOld[];      // defined in bg_misc.c
 
+typedef enum
+{
+	HIT_NONE = 0,
+	HIT_TEAMSHOT,
+	HIT_HEADSHOT,
+	HIT_BODYSHOT
+} hitEvent_t;
 
 typedef enum {
 	WEAP_IDLE1,
@@ -1125,8 +1139,6 @@ typedef enum {
 	MOD_BFG_SPLASH,
 	MOD_KNIFE,
 	MOD_THROWKNIFE,
-	MOD_DAGGER,
-	MOD_DAGGER_STEALTH,	
 	MOD_KNIFE2,
 	MOD_KNIFE_STEALTH,
 	MOD_LUGER,
@@ -1155,7 +1167,6 @@ typedef enum {
 	MOD_HOLYCROSS,
 	MOD_MP34,
 	MOD_TT33,
-	MOD_P38,
 	MOD_PPSH,
 	MOD_MOSIN,
 	MOD_G43,
@@ -1169,7 +1180,6 @@ typedef enum {
 	MOD_BROWNING,
 	MOD_M97,
 	MOD_AUTO5,
-	MOD_M30,
 	MOD_HDM,
 	MOD_REVOLVER,
 	MOD_GRENADE_PINEAPPLE,
@@ -1181,6 +1191,7 @@ typedef enum {
 	MOD_DYNAMITE,
 	MOD_DYNAMITE_SPLASH,
 	MOD_AIRSTRIKE,
+	MOD_ARTY,
 	MOD_WATER,
 	MOD_SLIME,
 	MOD_LAVA,
@@ -1284,7 +1295,7 @@ typedef struct gitem_s {
 	char        *precaches;     // string of all models and images this item will use
 	char        *sounds;        // string of all sounds this item will use
 
-	int gameskillnumber[5];
+	int gameskillnumber[6];
 } gitem_t;
 
 // included in both the game dll and the client

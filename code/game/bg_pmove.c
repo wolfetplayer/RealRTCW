@@ -2210,7 +2210,7 @@ static void PM_BeginWeaponReload( int weapon ) {
     int reloadTimeFull = ammoTable[weapon].reloadTimeFull;
 
 	// only allow reload if the weapon isn't already occupied (firing is okay)
-	if ( pm->ps->weaponstate != WEAPON_READY && pm->ps->weaponstate != WEAPON_FIRING ) {
+	if ( pm->ps->weaponstate != WEAPON_READY && pm->ps->weaponstate != WEAPON_FIRING && pm->ps->weaponstate != WEAPON_FIRINGALT ) {
 		return;
 	}
 
@@ -2260,8 +2260,8 @@ static void PM_BeginWeaponReload( int weapon ) {
 	// If PW_HASTE_SURV powerup or PERK_WEAPONHANDLING perk is active, reduce reloadTime by half
 	if (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING])
 	{
-		reloadTime *= 0.67;
-		reloadTimeFull *= 0.67;
+		reloadTime *= 0.5;
+		reloadTimeFull *= 0.5;
 	}
 
 	if (!pm->ps->aiChar)
@@ -2335,8 +2335,17 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		return;
 	}
 
-	if ( pm->ps->weaponstate == WEAPON_DROPPING || pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD 
-	     || pm->ps->weaponstate == WEAPON_HOLSTER_IN || pm->ps->weaponstate == WEAPON_SPRINT_IN ) {   //----(SA)	added
+	// Allow weapon switch even while reloading — interrupt the reload
+	if (pm->ps->weaponstate == WEAPON_RELOADING)
+	{
+		PM_AddEvent(EV_STOP_RELOADING_SOUND);
+		pm->ps->weaponstate = WEAPON_READY;
+		pm->ps->weaponTime = 0;
+	}
+
+	// Still block switching during drop/holster/sprint states
+	if (pm->ps->weaponstate == WEAPON_DROPPING || pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD || pm->ps->weaponstate == WEAPON_HOLSTER_IN || pm->ps->weaponstate == WEAPON_SPRINT_IN)
+	{
 		return;
 	}
 
@@ -2427,17 +2436,6 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 			switchtime = 0;
 		}
 		break;
-	case WP_LUGER:
-		if ( altswitch ) {
-			switchtime = 50;
-		}
-		break;
-	case WP_SILENCER:
-		if ( altswitch ) {
-			switchtime = 1200;
-			altSwitchAnim = qtrue;
-		}
-		break;
 	case WP_FG42:
 	case WP_FG42SCOPE:
 		if ( altswitch ) {
@@ -2514,18 +2512,6 @@ static void PM_FinishWeaponChange( void ) {
 
 	// sometimes different switch times for alt weapons
 	switch ( newweapon ) {
-	case WP_LUGER:
-		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
-			switchtime = 50;
-	        altSwitchAnim = qtrue;
-		}
-		break;
-	case WP_SILENCER:
-		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
-			switchtime = 1190;
-			altSwitchAnim = qtrue;
-		}
-		break;
 	case WP_FG42:
 	case WP_FG42SCOPE:
 		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
@@ -2589,9 +2575,13 @@ static void PM_ReloadClip( int weapon ) {
 	ammomove = ammoTable[weapon].maxclip - ammoclip;
       // Jaymod
 	if ( !pm->ps->aiChar) { 
-	if( weapon == WP_M97 || weapon == WP_AUTO5 ) {
-		ammomove = 1;
-	}
+        if (weapon == WP_M97 || weapon == WP_AUTO5) {
+            if (pm->ps->perks[PERK_WEAPONHANDLING] > 0) {
+                ammomove = 2;
+            } else {
+                ammomove = 1;
+            }
+        }
 
 	if( weapon == WP_M1941 && pm->ps->ammoclip[WP_M1941] > 0 ) {
 		ammomove = 5;
@@ -2678,7 +2668,6 @@ void PM_CheckForReload( int weapon ) {
 		case WP_DYNAMITE:
 		case WP_NONE:
 	    case WP_TESLA:
-	    case WP_DAGGER:
 	    case WP_HOLYCROSS:
 			return;
 		default:
@@ -3150,7 +3139,8 @@ static qboolean PM_CheckGrenade() {
 		pm->ps->weapon != WP_DYNAMITE &&
 		pm->ps->weapon != WP_POISONGAS &&
 		pm->ps->weapon != WP_AIRSTRIKE &&
-		pm->ps->weapon != WP_KNIFE ) {
+		pm->ps->weapon != WP_KNIFE &&
+		pm->ps->weapon != WP_POISONGAS_MEDIC ) {
 			return qfalse;
 		}
 
@@ -3593,6 +3583,12 @@ static void PM_Weapon( void ) {
 				return;
 			}
 		}
+
+	if ( pm->ps->weapon == WP_POISONGAS_MEDIC ) {
+			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->medicChargeTime ) ) {
+				return;
+			}
+		}
 	// check for fire
 	if ( (!(pm->cmd.buttons & BUTTON_ATTACK) && !PM_AltFire() && !delayedFire) 
 	    || (pm->ps->leanf != 0 && !PM_AltFiring(delayedFire) && pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE && pm->ps->weapon != WP_POISONGAS) )
@@ -3614,9 +3610,20 @@ static void PM_Weapon( void ) {
 	}
 
 	// player is zooming - no fire
+	// JPW NERVE in MP, LT needs to zoom to call artillery
 	if ( pm->ps->eFlags & EF_ZOOMING ) {
+#ifdef GAMEDLL
+		if ( pm->gametype == GT_SURVIVAL ) {
+			pm->ps->weaponTime += 500;
+			PM_AddEvent( EV_FIRE_WEAPON );
+		}
+#endif
 		return;
 	}
+
+
+
+
 
 	// player is leaning - no fire
 	if ( pm->ps->leanf != 0 && pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE && pm->ps->weapon != WP_DYNAMITE && pm->ps->weapon != WP_KNIFE ) {
@@ -3629,7 +3636,7 @@ static void PM_Weapon( void ) {
 			 pm->ps->weapon != WP_GRENADE_LAUNCHER &&
 			 pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
 			 pm->ps->weapon != WP_POISONGAS &&
-			 pm->ps->weapon != WP_DAGGER  ) {
+			 pm->ps->weapon != WP_POISONGAS_MEDIC ) {
 			PM_AddEvent( EV_NOFIRE_UNDERWATER );        // event for underwater 'click' for nofire
 			pm->ps->weaponTime  = 500;
 			return;
@@ -3663,7 +3670,7 @@ static void PM_Weapon( void ) {
 	case WP_M97:
 	case WP_AUTO5:
 	case WP_AIRSTRIKE:
-	case WP_M30:
+	case WP_POISONGAS_MEDIC:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
 				// AI get fast spin-up
@@ -3681,7 +3688,6 @@ static void PM_Weapon( void ) {
 	case WP_LUGER:
 	case WP_TT33:
 	case WP_HDM:
-	case WP_P38:
 	case WP_REVOLVER:
 	case WP_COLT:
 	case WP_AKIMBO:
@@ -3723,12 +3729,6 @@ static void PM_Weapon( void ) {
 				}
 			}
 			break;
-	case WP_DAGGER:
-		if ( !delayedFire ) {
-			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qfalse );
-		}
-		break;
-	// throw
 	case WP_DYNAMITE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
@@ -3854,8 +3854,13 @@ static void PM_Weapon( void ) {
 	// fire weapon
 
 	// add weapon heat
-	if ( ammoTable[pm->ps->weapon].maxHeat ) {
-		pm->ps->weapHeat[pm->ps->weapon] += ammoTable[pm->ps->weapon].nextShotTime;
+	// except for engineers, they don't have to worry about it
+	if (pm->ps->stats[STAT_PLAYER_CLASS] != PC_ENGINEER)
+	{
+		if (ammoTable[pm->ps->weapon].maxHeat)
+		{
+			pm->ps->weapHeat[pm->ps->weapon] += ammoTable[pm->ps->weapon].nextShotTime;
+		}
 	}
 
 	// first person weapon animations
@@ -3895,7 +3900,6 @@ static void PM_Weapon( void ) {
 	case WP_M97:
 	case WP_AUTO5:
     case WP_M7:
-	case WP_M30:
 		PM_StartWeaponAnim( weapattackanim );
 		break;
 	case WP_VENOM:
@@ -3910,6 +3914,7 @@ static void PM_Weapon( void ) {
 	case WP_THOMPSON:
 	case WP_STEN:
 	case WP_AIRSTRIKE:
+	case WP_POISONGAS_MEDIC:
 		PM_ContinueWeaponAnim( weapattackanim );
 		break;
 
@@ -3927,7 +3932,7 @@ static void PM_Weapon( void ) {
 		break;
 	}
 
-		if ( pm->ps->weapon == WP_AIRSTRIKE )  {
+		if ( pm->ps->weapon == WP_AIRSTRIKE || pm->ps->weapon == WP_POISONGAS_MEDIC ) { 
 			PM_AddEvent( EV_NOAMMO );
 		}
 
@@ -4034,21 +4039,21 @@ static void PM_Weapon( void ) {
 	// check for overheat
 
 	// the weapon can overheat, and it's hot
-	if ( ( pm->ps->aiChar != AICHAR_PROTOSOLDIER ) &&
-		 ( pm->ps->aiChar != AICHAR_SUPERSOLDIER ) &&
-		( pm->ps->aiChar != AICHAR_SUPERSOLDIER_LAB ) &&
-		 ( pm->ps->aiChar != AICHAR_XSHEPHERD ) &&
-		 ( ammoTable[pm->ps->weapon].maxHeat && pm->ps->weapHeat[pm->ps->weapon] ) ) {
+	if ((pm->ps->aiChar != AICHAR_PROTOSOLDIER) &&
+		(pm->ps->aiChar != AICHAR_SUPERSOLDIER) &&
+		(pm->ps->aiChar != AICHAR_SUPERSOLDIER_LAB) &&
+		(pm->ps->aiChar != AICHAR_XSHEPHERD) &&
+		(ammoTable[pm->ps->weapon].maxHeat && pm->ps->weapHeat[pm->ps->weapon]))
+	{
 		// it is overheating
-		if ( pm->ps->weapHeat[pm->ps->weapon] >= ammoTable[pm->ps->weapon].maxHeat ) {
-			pm->ps->weapHeat[pm->ps->weapon] = ammoTable[pm->ps->weapon].maxHeat;       // cap heat to max
-			PM_AddEvent( EV_WEAP_OVERHEAT );
-//			PM_StartWeaponAnim(WEAP_IDLE1);	// removed.  client handles anim in overheat event
-			addTime = 2000;         // force "heat recovery minimum" to 2 sec right now
+		if (pm->ps->weapHeat[pm->ps->weapon] >= ammoTable[pm->ps->weapon].maxHeat)
+		{
+			pm->ps->weapHeat[pm->ps->weapon] = ammoTable[pm->ps->weapon].maxHeat; // cap heat to max
+			PM_AddEvent(EV_WEAP_OVERHEAT);
+			addTime = 2000; // force "heat recovery minimum" to 2 sec right now
 		}
 	}
 
-    
 	if ( pm->ps->powerups[PW_HASTE_SURV] ) {
 		addTime /= 1.3;
 	}
@@ -4077,6 +4082,7 @@ static void PM_Weapon( void ) {
 		case WP_GRENADE_PINEAPPLE:
 		case WP_POISONGAS:
 		case WP_AIRSTRIKE:
+		case WP_POISONGAS_MEDIC:
 			pm->ps->weaponstate = WEAPON_DROPPING;
 			pm->ps->holdable[HI_KNIVES] = 0;
 			break;
@@ -4796,10 +4802,11 @@ void PmoveSingle( pmove_t *pmove ) {
 		}
 	}
 
-
-	// clear the respawned flag if attack and use are cleared
-	if ( pm->ps->stats[STAT_HEALTH] > 0 &&
-		 !( pm->cmd.buttons & ( BUTTON_ATTACK | BUTTON_USE_HOLDABLE ) ) ) {
+	// clear the respawned flag if attack, attack2 and use are cleared
+	if (pm->ps->stats[STAT_HEALTH] > 0 &&
+		!(pm->cmd.buttons & (BUTTON_ATTACK | BUTTON_USE_HOLDABLE)) &&
+		!(pm->cmd.wbuttons & WBUTTON_ATTACK2))
+	{
 		pm->ps->pm_flags &= ~PMF_RESPAWNED;
 	}
 

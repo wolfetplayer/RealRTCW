@@ -2131,10 +2131,13 @@ void BG_AnimUpdatePlayerStateConditions( pmove_t *pmove ) {
 		ps->eFlags &= ~EF_CROUCHING;
 	}
 
-	if ( pmove->cmd.buttons & BUTTON_ATTACK ) {
-		BG_UpdateConditionValue( ps->clientNum, ANIM_COND_FIRING, qtrue, qtrue );
-	} else {
-		BG_UpdateConditionValue( ps->clientNum, ANIM_COND_FIRING, qfalse, qtrue );
+	if ((pmove->cmd.buttons & BUTTON_ATTACK) || (pmove->cmd.wbuttons & WBUTTON_ATTACK2))
+	{
+		BG_UpdateConditionValue(ps->clientNum, ANIM_COND_FIRING, qtrue, qtrue);
+	}
+	else
+	{
+		BG_UpdateConditionValue(ps->clientNum, ANIM_COND_FIRING, qfalse, qtrue);
 	}
 }
 

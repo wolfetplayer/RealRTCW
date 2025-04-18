@@ -148,10 +148,6 @@ weapIconDrawSize
 */
 static int weapIconDrawSize( int weap ) {
 	switch ( weap ) {
-
-	// weapons to not draw
-	case WP_DAGGER:
-	    return 0;
 	// weapons with 'wide' icons
 	case WP_THOMPSON:
 	case WP_MP40:
@@ -182,8 +178,8 @@ static int weapIconDrawSize( int weap ) {
 	case WP_AUTO5:
 	case WP_BROWNING:
 	case WP_M7:
-	case WP_M30:
 	case WP_M1941:
+	case WP_HDM:
 		return 2;
 	case WP_KNIFE:
 	     return 1;
@@ -531,7 +527,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 
 	switch ( weap ) {      // some weapons don't draw ammo count text
 	case WP_AIRSTRIKE:
-	case WP_DAGGER:
+	case WP_POISONGAS_MEDIC:
 		return;
 
 	case WP_AKIMBO:
@@ -566,7 +562,6 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 			if ( ammoTable[weap].weapAlts ) {
 				value = ps->ammoclip[ammoTable[weap].weapAlts];
 			}
-//				value2 = ps->ammoclip[weapAlts[weap]];
 		}
 	}
 
@@ -2074,7 +2069,7 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 		weap = cg.snap->ps.weapon;
 
 		if ( !( cg.snap->ps.eFlags & EF_ZOOMING ) ) {
-			if ( weap != WP_AIRSTRIKE ) {
+			if ( weap != WP_AIRSTRIKE && weap !=WP_POISONGAS_MEDIC ) {
 				//fade = qtrue;
 				return;
 			}

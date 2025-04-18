@@ -45,10 +45,9 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
+#include "g_survival.h"
 
 #include "../steam/steam.h"
-
-extern svParams_t svParams;
 
 /*
 Contains response functions for various events that require specific handling
@@ -125,20 +124,9 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 		return;
 	}
 
-	if (g_gametype.integer == GT_SURVIVAL && killerPlayer)
+	if (g_gametype.integer == GT_SURVIVAL)
 	{
-
-		if (attacker->client->ps.powerups[PW_VAMPIRE])
-		{
-			attacker->health += 5;
-
-			if (attacker->health > 300)
-			{
-				attacker->health = 300;
-			}
-		}
-
-		attacker->client->ps.persistant[PERS_SCORE] += svParams.scoreHit;
+		Survival_AddPainScore(attacker, targ, damage);
 	}
 
 	// process the event (turn to face the attacking direction? go into hide/retreat state?)
@@ -185,17 +173,17 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	char mapname[MAX_QPATH];
 	qboolean respawn = qfalse;
 
-	qboolean modDagger = (meansOfDeath == MOD_DAGGER );
-	qboolean modStealthDagger = (meansOfDeath == MOD_DAGGER_STEALTH );
-
 	// Achievements related stuff! 
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
 	qboolean modKicked = (meansOfDeath == MOD_KICKED);
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
 	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
+	qboolean modFlamer = (meansOfDeath == MOD_FLAMETHROWER);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
+	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
+	qboolean modMG = (meansOfDeath == MOD_MACHINEGUN);
 
     // ETSP Achievements stuff!
 	qboolean modGL = (meansOfDeath == MOD_M7 );
@@ -278,79 +266,9 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		}
 	}
 
-    if (g_gametype.integer == GT_SURVIVAL && killerPlayer) {
-
-
-    int score = svParams.scoreBaseKill;  // Default score
-
-    // Add score based on aiCharacter type
-    switch (attacker->aiCharacter) {
-        case AICHAR_SOLDIER:
-            score += svParams.scoreSoldierBonus;
-            break;
-		case AICHAR_ZOMBIE:
-            score += svParams.scoreZombieBonus;
-            break;
-        case AICHAR_ELITEGUARD:
-            score += svParams.scoreEliteBonus;
-            break;
-		case AICHAR_WARZOMBIE:
-            score += svParams.scoreWarzBonus;
-            break;
-		case AICHAR_PROTOSOLDIER:
-            score += svParams.scoreProtosBonus;
-            break;
-        case AICHAR_BLACKGUARD:
-            score += svParams.scoreBlackBonus;
-            break;
-        case AICHAR_VENOM:
-            score += svParams.scoreVenomBonus;
-            break;
-		case AICHAR_PRIEST:
-            score += svParams.scorePriestBonus;
-            break;
-		case AICHAR_ZOMBIE_GHOST:
-            score += svParams.scoreGhostBonus;
-            break;
-        default:
-            break;
-    }
-
-    // Add additional score if killed with knife
-    if (modKnife) {
-        score += svParams.scoreKnifeBonus;
-    }
-
-
-    attacker->client->ps.persistant[PERS_SCORE] += score;
-	attacker->client->ps.persistant[PERS_KILLS]++;
-    }
-
-
-	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modDagger ) // vampirism
+	if (g_gametype.integer == GT_SURVIVAL && killerPlayer && (attacker->aiTeam != self->aiTeam))
 	{
-	
-			trap_SendServerCommand( -1, "mu_play sound/player/vampirism.wav 0\n" );
-			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
-		    attacker->health += 25;
-
-			
-			if ( attacker->health > attacker->client->ps.stats[STAT_MAX_HEALTH] ) 
-			{
-			attacker->health = attacker->client->ps.stats[STAT_MAX_HEALTH];
-		    }
-	}
-
-	if (self->aiCharacter && !(self->aiCharacter == AICHAR_WARZOMBIE) && !(self->aiCharacter == AICHAR_ZOMBIE) && killerPlayer && modStealthDagger ) // vampirism
-	{
-			trap_SendServerCommand( -1, "mu_play sound/player/vampirism.wav 0\n" );
-			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
-		    attacker->health += 50;
-		
-			if ( attacker->health > attacker->client->ps.stats[STAT_MAX_HEALTH] ) 
-			{
-			attacker->health = attacker->client->ps.stats[STAT_MAX_HEALTH];
-		    }
+		Survival_AddKillScore(attacker, self, meansOfDeath);
 	}
 
 	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {
@@ -603,15 +521,24 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			}
 
 			if ( g_gametype.integer == GT_SURVIVAL ) {
-               int decrease = svParams.survivalKillCount / svParams.spawnTimeDecreaseDivider;  // Calculate decrease based on survivalKillCount
-               int rebirthTime = svParams.startingSpawnTime * 1000 - decrease * 1000;  // Calculate rebirthTime
 
-                // Clamp rebirthTime to a minimum of 5 seconds
+			   float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
+			   int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
+
+			   // Clamp rebirthTime to a minimum
                if (rebirthTime < svParams.minSpawnTime * 1000) {
                  rebirthTime = svParams.minSpawnTime * 1000;
                }
 
-                cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+			   //G_Printf("AI Respawn [Wave %d] -> Time: %.2f sec (waveFactor %.3f)\n", svParams.waveCount, rebirthTime / 1000.0f, waveFactor);
+               
+			   // Friendlies has separate time
+			   if (self->aiTeam == 1) {
+                  cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
+			   } else {
+				   cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+			   }
+
            } else if ( g_gameskill.integer == GSKILL_EASY ) {
 				cs->rebirthTime = level.time + 25000 + rand() % 2000;
 			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
@@ -629,10 +556,35 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	trap_LinkEntity( self );
 
 	// Decrement the counter for active AI characters
-	if ( g_gametype.integer == GT_SURVIVAL && killerPlayer )  {
-	   svParams.survivalKillCount++;
-	   svParams.waveKillCount++;
-	   AICast_CheckSurvivalProgression( attacker );
+	if ( g_gametype.integer == GT_SURVIVAL && (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		if (killerPlayer)
+		{
+			AICast_CheckSurvivalProgression(attacker);
+		}
+		else
+		{
+			// If attacker is friendly AI, call progression with a player entity
+			AICast_CheckSurvivalProgression(&g_entities[0]);
+		}
+	}
+	
+	// That should cover mg42 static case
+	if (g_gametype.integer == GT_SURVIVAL && modMG && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
+
+	// That should cover flame traps case
+	if (g_gametype.integer == GT_SURVIVAL && modFlamer && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
 	}
 
 	// kill, instanly, any streaming sound the character had going

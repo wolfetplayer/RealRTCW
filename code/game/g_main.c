@@ -49,6 +49,9 @@ gclient_t g_clients[MAX_CLIENTS];
 
 int g_scriptGlobalAccumBuffer[G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS];
 
+// Safe endgame fix
+qboolean g_endgameTriggered = qfalse;
+
 gentity_t       *g_camEnt = NULL;   //----(SA)	script camera
 
 // Rafael gameskill
@@ -173,6 +176,8 @@ vmCvar_t g_dlc1;
 vmCvar_t g_class;
 vmCvar_t g_noobTube;
 
+vmCvar_t g_playerSurvivalClass;
+
 vmCvar_t g_mapname;
 
 cvarTable_t gameCvarTable[] = {
@@ -210,6 +215,8 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse },
 
+	{ &g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
+
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 
 // JPW NERVE multiplayer stuffs
@@ -240,7 +247,7 @@ cvarTable_t gameCvarTable[] = {
 
 	{ &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse  },
 
-	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_ARCHIVE, 0, qtrue  },
+	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_CHEAT, 0, qtrue  },
 
 	{ &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE  },
 	{ &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE  },                            // NERVE - SMF - merge from team arena
@@ -591,7 +598,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 	//
 	else if ( tr->entityNum < MAX_CLIENTS ) {
 
-		if ( ent->s.weapon == WP_KNIFE || ent->s.weapon == WP_DAGGER ) {
+		if ( ent->s.weapon == WP_KNIFE ) {
 			vec3_t pforward, eforward;
 			qboolean canKnife = qfalse;
 
@@ -827,7 +834,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 			// set up any forced max distances for specified hints
 			switch ( hintType ) {
 			case HINT_KNIFE:
-				if ( ent->s.weapon == WP_KNIFE || ent->s.weapon == WP_DAGGER ) {
+				if ( ent->s.weapon == WP_KNIFE ) {
 					hintDist = CH_KNIFE_DIST;
 				} else {
 					hintType = 0;       // no knife, clear it
@@ -1035,9 +1042,19 @@ void G_RegisterCvars( void ) {
 	}
 
 	// Rafael gameskill
-	if ( g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_REALISM ) {
-		G_Printf( "g_gameskill %i is out of range, default to medium\n", g_gameskill.integer );
-		trap_Cvar_Set( "g_gameskill", va( "%d", GSKILL_MEDIUM ) ); // default to medium
+	if (g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_SURVIVAL)
+	{
+		G_Printf("g_gameskill %i is out of range, default to medium\n", g_gameskill.integer);
+		trap_Cvar_Set("g_gameskill", va("%d", GSKILL_MEDIUM)); // default to medium
+		trap_Cvar_Update(&g_gameskill);
+	}
+
+	// If gamemode is not survival and g_gameskill is set to 5, override it to 1.
+	if (g_gametype.integer != GT_SURVIVAL && g_gameskill.integer == 5)
+	{
+		G_Printf("g_gameskill set to 5 in non-survival mode, overriding to 1\n");
+		trap_Cvar_Set("g_gameskill", "1");
+		trap_Cvar_Update(&g_gameskill);
 	}
 
 	bg_pmove_gameskill_integer = g_gameskill.integer;
@@ -1224,6 +1241,7 @@ static inline const char* G_GameSkillIntToStr( int skill ) {
 		case GSKILL_HARD:		return "hard";
 		case GSKILL_MAX:		return "max";
 		case GSKILL_REALISM:	return "realism";
+		case GSKILL_SURVIVAL:	return "survival";
 		default:				return "";
 	}
 }
@@ -1311,6 +1329,13 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 			AI_LoadSurvivalTable(g_mapname.string);
 		}
 
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
+			trap_Cvar_Set( "g_friendlyFire", "0" );
+		} else {
+			trap_Cvar_Set( "g_friendlyFire", "1" );
+		}
+
 		AICast_Init();
 		// done.
 
@@ -1371,6 +1396,9 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	}
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );
+
+	// fretn
+	G_LoadArenas();
 
 	steamSetRichPresence( "Mapname", g_mapname.string );
 	steamSetRichPresence( "Skill", G_GameSkillIntToStr( g_gameskill.integer ) ) ;
@@ -2226,10 +2254,16 @@ void CheckReloadStatus( void ) {
 						trap_SendConsoleCommand( EXEC_APPEND, va( "svmap %s\n", level.nextMap ) );
 					} 
 				  }
-				} else if ( g_reloading.integer == RELOAD_ENDGAME ) {
-					G_EndGame();    // kick out to the menu and start the "endgame" menu (credits, etc)
-
-				} else {
+				}
+				else if (g_reloading.integer == RELOAD_ENDGAME)
+				{
+					// defer endgame until it's safe
+					g_endgameTriggered = qtrue;
+					level.reloadDelayTime = 0;
+					trap_Cvar_Set("g_reloading", "0"); // prevent it from looping
+				}
+				else
+				{
 					// set the loadgame flag, and restart the server
 					trap_Cvar_Set( "savegame_loading", "2" ); // 2 means it's a restart, so stop rendering until we are loaded
 					trap_SendConsoleCommand( EXEC_INSERT, "map_restart\n" );
@@ -2588,4 +2622,9 @@ void G_RunFrame( int levelTime ) {
 	// Ridah, check if we are reloading, and times have expired
 	CheckReloadStatus();
 
+	if (g_endgameTriggered)
+	{
+		g_endgameTriggered = qfalse;
+		G_EndGame(); // this will now call trap_Endgame() safely
+	}
 }

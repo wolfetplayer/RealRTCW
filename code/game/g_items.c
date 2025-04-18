@@ -42,6 +42,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "g_local.h"
 
+#include "g_survival.h"
+
 #include "../steam/steam.h"
 
 
@@ -119,19 +121,33 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
-    if (ent->item->giTag == PW_AMMO) {
-         Add_Ammo( other, other->client->ps.weapon, ammoTable[other->client->ps.weapon].maxammo, qtrue );
-    }
+	if (ent->item->giTag == PW_AMMO)
+	{
+		// Restore ammo for every weapon the player has
+		for (weapon_t w = WP_KNIFE; w < WP_NUM_WEAPONS; w++)
+		{
+			if (COM_BitCheck(other->client->ps.weapons, w))
+			{
+				Add_Ammo(other, w, ammoTable[w].maxammo, qtrue);
+			}
+		}
+	}
 
-   
-
-    // DIRTY HACK!!!!! If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
+	// DIRTY HACK!!!!! If the invisibility powerup is picked up, set FL_NOTARGET and start a timer to remove it
     if (ent->item->giTag == PW_INVIS) {
         other->flags |= FL_NOTARGET;
 
         pthread_t thread_id;
         pthread_create(&thread_id, NULL, remove_powerup_after_delay, (void *)other);
     }
+
+	if (!g_cheats.integer &&
+		(other->client->ps.powerups[PW_BATTLESUIT_SURV] > level.time) &&
+		(other->client->ps.powerups[PW_VAMPIRE] > level.time) &&
+		(other->client->ps.powerups[PW_QUAD] > level.time))
+	{
+		steamSetAchievement("ACH_UBER_PW");
+	}
 
 	if ( ent->s.density == 2 ) {   // multi-stage health first stage
 		return RESPAWN_PARTIAL;
@@ -185,20 +201,15 @@ int Pickup_Treasure(gentity_t *ent, gentity_t *other) {
     gentity_t *player = AICast_FindEntityForName("player");
 
     if (g_gametype.integer == GT_SURVIVAL) {
-        if (other && other->client) {
-            // Generate a random score between 50 and 100
-            int randomScore = 50 + rand() % 51; // 50 to 100 inclusive
-
-            // Add the random score to the player's score
-            other->client->ps.persistant[PERS_SCORE] += randomScore;
-        }
+        Survival_PickupTreasure(other);
     } else {
         if (player) {
             player->numTreasureFound++;
             G_SendMissionStats();
         }
     }
-    return RESPAWN_SP; // no respawn
+
+    return RESPAWN_SP;
 }
 
 
@@ -505,9 +516,6 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 
 }
 
-int G_GetWeaponPrice( int weapon );
-int G_GetAmmoPrice( int weapon );
-
 /*
 ==============
 Pickup_Ammo
@@ -664,8 +672,6 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_FG42SCOPE );
 	} else if ( weapon == WP_SNIPERRIFLE ) {
 		COM_BitSet( other->client->ps.weapons, WP_MAUSER );
-	} else if (weapon == WP_SILENCER) {
-		COM_BitSet( other->client->ps.weapons, WP_LUGER );
 	} else if ( weapon == WP_M1GARAND ) {
 		COM_BitSet( other->client->ps.weapons, WP_M7 );
 	} else if ( weapon == WP_M7 ) {
@@ -691,9 +697,24 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 int G_FindWeaponSlot( gentity_t *other, weapon_t weapon ) {
 	int i;
 
-	for ( i = 1; i < MAX_WEAPON_SLOTS; ++i ) {
-		if ( other->client->ps.weaponSlots[i] == weapon ) {
-			return i;
+	if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+	{
+		for (i = 1; i < MAX_WEAPON_SLOTS_SOLDIER; ++i)
+		{
+			if (other->client->ps.weaponSlotsSoldier[i] == weapon)
+			{
+				return i;
+			}
+		}
+	}
+	else
+	{
+		for (i = 1; i < MAX_WEAPON_SLOTS; ++i)
+		{
+			if (other->client->ps.weaponSlots[i] == weapon)
+			{
+				return i;
+			}
 		}
 	}
 
@@ -721,7 +742,6 @@ qboolean IsThereEmptySlot( gentity_t *other ) {
 weapon_t GetComplexWeapon( weapon_t weapon ) {
 	switch ( weapon )
 	{
-	case WP_LUGER:
 	case WP_GARAND:
 	case WP_FG42:
 	case WP_M1GARAND:
@@ -739,12 +759,9 @@ weapon_t GetComplexWeapon( weapon_t weapon ) {
 weapon_t GetSimpleWeapon( weapon_t weapon ) {
 	switch ( weapon )
 	{
-	case WP_SILENCER:
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 	case WP_M7:
-	case WP_AKIMBO:
-	case WP_DUAL_TT33:
 	case WP_SNIPERRIFLE:
 	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
@@ -757,15 +774,11 @@ weapon_t GetSimpleWeapon( weapon_t weapon ) {
 qboolean IsWeaponComplex( weapon_t weapon ) {
 	switch ( weapon )
 	{
-	case WP_AKIMBO:
-	case WP_DUAL_TT33:
 	
-	case WP_LUGER:
 	case WP_GARAND:
 	case WP_FG42:
 	case WP_M1GARAND:
 
-	case WP_SILENCER:
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 	case WP_M7:
@@ -789,7 +802,14 @@ qboolean IsUpgradingWeapon( gentity_t *other, weapon_t weapon ) {
 		return qfalse;
 	}
 
-	return simpleWeaponSlotId > 0 && other->client->ps.weaponSlots[ simpleWeaponSlotId ] == simpleWeapon && weapon == complexWeapon;
+	if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+	{
+		return simpleWeaponSlotId > 0 && other->client->ps.weaponSlotsSoldier[simpleWeaponSlotId] == simpleWeapon && weapon == complexWeapon;
+	}
+	else
+	{
+		return simpleWeaponSlotId > 0 && other->client->ps.weaponSlots[simpleWeaponSlotId] == simpleWeapon && weapon == complexWeapon;
+	}
 }
 
 qboolean NeedAmmo(gentity_t *other, weapon_t weapon ) {
@@ -826,12 +846,25 @@ void G_RemoveWeapon( gentity_t *ent, weapon_t weapon ) {
 		int complexWeaponSlotId = G_FindWeaponSlot( ent, weapon );
 		COM_BitClear( ent->client->ps.weapons, weapon );
 		COM_BitClear( ent->client->ps.weapons, altWeapon );
-		ent->client->ps.weaponSlots[ complexWeaponSlotId ] = WP_NONE;
-		
+		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+			ent->client->ps.weaponSlotsSoldier[complexWeaponSlotId] = WP_NONE;
+		}
+		else
+		{
+			ent->client->ps.weaponSlots[complexWeaponSlotId] = WP_NONE;
+		}
 	} else {
 		int simpleSlotId = G_FindWeaponSlot( ent, weapon );
 		COM_BitClear( ent->client->ps.weapons, weapon );
+		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+			ent->client->ps.weaponSlotsSoldier[ simpleSlotId ] = WP_NONE;
+		}
+		else
+		{
 		ent->client->ps.weaponSlots[ simpleSlotId ] = WP_NONE;
+		}
 	}
 
 	// Clear out empty weapon, change to next best weapon
@@ -926,7 +959,12 @@ qboolean Give_Weapon_New_Inventory( gentity_t *other, weapon_t weapon, qboolean 
 				weapon_t simpleWeapon = GetSimpleWeapon( weapon );
 				int simpleWeaponSlotId = G_FindWeaponSlot( other, simpleWeapon );
 				COM_BitSet( other->client->ps.weapons, weapon );
-				other->client->ps.weaponSlots[ simpleWeaponSlotId ] = weapon;
+				if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER) {
+					other->client->ps.weaponSlotsSoldier[simpleWeaponSlotId] = weapon;
+				}
+				else {
+					other->client->ps.weaponSlots[simpleWeaponSlotId] = weapon;
+				}
 
 			} else {
 				int slotId;
@@ -947,21 +985,44 @@ qboolean Give_Weapon_New_Inventory( gentity_t *other, weapon_t weapon, qboolean 
 					}
 
 					if ( needThrowItem ) {
-						G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+						if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+						{
+							G_DropWeapon( other, other->client->ps.weaponSlotsSoldier[ slotId ] );
+						}
+						else
+						{
+							G_DropWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+						}
 					} else {
-						G_RemoveWeapon( other, other->client->ps.weaponSlots[ slotId ] );
+						if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER) {
+							G_RemoveWeapon( other, other->client->ps.weaponSlotsSoldier[slotId] );
+						}
+						else {
+							G_RemoveWeapon( other, other->client->ps.weaponSlots[slotId] );
+						}
 					}
 				}
 
 				if ( IsWeaponComplex( weapon ) ) {
-					weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
-					COM_BitSet( other->client->ps.weapons, weapon );
-					COM_BitSet( other->client->ps.weapons, altWeapon );
-					other->client->ps.weaponSlots[ slotId ] = weapon;
-
+					weapon_t altWeapon = GetWeaponTableData(weapon)->weapAlts;
+					COM_BitSet(other->client->ps.weapons, weapon);
+					COM_BitSet(other->client->ps.weapons, altWeapon);
+					if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+					{
+						other->client->ps.weaponSlotsSoldier[slotId] = weapon;
+					}
+					else
+					{
+						other->client->ps.weaponSlots[slotId] = weapon;
+					}
 				} else {
 					COM_BitSet( other->client->ps.weapons, weapon );
-					other->client->ps.weaponSlots[ slotId ] = weapon;
+					if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER) {
+						other->client->ps.weaponSlotsSoldier[slotId] = weapon;
+					}
+					else {
+						other->client->ps.weaponSlots[slotId] = weapon;
+					}
 				}
 			}
 
@@ -1231,20 +1292,9 @@ void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace ) {
 		{
 			respawn = Pickup_Weapon(ent, other);
 		}
-
-		if (g_gametype.integer == GT_SURVIVAL)
-		{
-			ent->wait = -1;
-		}
-
 		break;
 	case IT_AMMO:
 		respawn = Pickup_Ammo( ent, other );
-
-		if ( g_gametype.integer == GT_SURVIVAL) {
-			ent->wait = -1;
-		}
-
 		break;
 	case IT_ARMOR:
 		respawn = Pickup_Armor( ent, other );

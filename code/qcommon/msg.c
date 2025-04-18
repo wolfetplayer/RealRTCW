@@ -1552,7 +1552,7 @@ void MSG_WriteDeltaPlayerstate( msg_t *msg, struct playerState_s *from, struct p
 			MSG_WriteBits( msg, persistantbits, MAX_PERSISTANT );
 			for ( i = 0 ; i < MAX_PERSISTANT ; i++ )
 				if ( persistantbits & ( 1 << i ) ) {
-					MSG_WriteShort( msg, to->persistant[i] );
+					MSG_WriteLong( msg, to->persistant[i] );
 				}
 		} else {
 			MSG_WriteBits( msg, 0, 1 ); // no change to persistant
@@ -1850,7 +1850,7 @@ void MSG_ReadDeltaPlayerstate( msg_t *msg, playerState_t *from, playerState_t *t
 			bits = MSG_ReadBits (msg, MAX_PERSISTANT);
 			for ( i = 0 ; i < MAX_PERSISTANT ; i++ ) {
 				if ( bits & ( 1 << i ) ) {
-					to->persistant[i] = MSG_ReadShort( msg );
+					to->persistant[i] = MSG_ReadLong( msg );
 				}
 			}
 		}

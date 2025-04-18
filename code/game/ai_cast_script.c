@@ -254,6 +254,8 @@ qboolean AICast_ScriptAction_Achievement_ICE_SECRET( cast_state_t *cs, char *par
 qboolean AICast_ScriptAction_Achievement_ICE_DEFENSE ( cast_state_t *cs, char *params ) ;
 qboolean AICast_ScriptAction_Achievement_ICE_EE( cast_state_t *cs, char *params ) ;
 
+qboolean AICast_ScriptAction_Achievement_6PERKS( cast_state_t *cs, char *params ) ;
+
 
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Announce( cast_state_t *cs, char *params );		
@@ -507,6 +509,8 @@ cast_script_stack_action_t scriptActions[] =
 	{"achievement_secretIce",       AICast_ScriptAction_Achievement_ICE_SECRET},
 	{"achievement_defenseIce",       AICast_ScriptAction_Achievement_ICE_DEFENSE},
 	{"achievement_easterIce",       AICast_ScriptAction_Achievement_ICE_EE},
+	
+	{"achievement_6perks",       AICast_ScriptAction_Achievement_6PERKS},
      // achievements end
 	{"endgame",          AICast_ScriptAction_EndGame},				//----(SA)	added
 	{"announce",     AICast_ScriptAction_Announce},
@@ -759,7 +763,7 @@ void AICast_ScriptParse( cast_state_t *cs ) {
 	int eventNum;
 	int numEventItems;
 	cast_script_event_t *curEvent;
-	char params[MAX_QPATH];
+	char params[MAX_INFO_STRING];
 	cast_script_stack_action_t  *action;
 	int i;
 	int bracketLevel;

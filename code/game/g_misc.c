@@ -35,6 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
+#include "g_survival.h"
 
 extern void AimAtTarget( gentity_t * self );
 
@@ -1996,28 +1997,42 @@ void mg42_track( gentity_t *self, gentity_t *other ) {
 				// snap to integer coordinates for more efficient network bandwidth usage
 				SnapVector( muzzle );
 
-				if ( validshot ) {
-					if ( !( other->r.svFlags & SVF_CASTAI ) ) {
-						if ( is_flak ) {
-							Fire_Lead( self, other, FLAK_SPREAD, FLAK_DAMAGE, muzzle, self->s.apos.trBase );
-						} else
-						{
-							Fire_Lead( self, other, ammoTable[WP_DUMMY_MG42].spread, ammoTable[WP_DUMMY_MG42].playerDamage, muzzle, self->s.apos.trBase );
-						}
-					} else
+				if (g_gametype.integer == GT_SURVIVAL)
+				{
+					if (!Survival_TrySpendMG42Points(other))
 					{
-						if ( self->damage ) {
-							Fire_Lead( self, other, ammoTable[WP_DUMMY_MG42].spread / self->accuracy, self->damage, muzzle, self->s.apos.trBase );
-						} else {
-							Fire_Lead( self, other, ammoTable[WP_DUMMY_MG42].spread / self->accuracy, ammoTable[WP_DUMMY_MG42].aiDamage, muzzle, self->s.apos.trBase );
-						}
+						return;
+					}
+				}
 
+				// Now proceed as usual for both survival (with enough points) and non-survival
+				if (validshot)
+				{
+					if (!(other->r.svFlags & SVF_CASTAI))
+					{
+						if (is_flak)
+						{
+							Fire_Lead(self, other, FLAK_SPREAD, FLAK_DAMAGE, muzzle, self->s.apos.trBase);
+						}
+						else
+						{
+							Fire_Lead(self, other, ammoTable[WP_DUMMY_MG42].spread, ammoTable[WP_DUMMY_MG42].playerDamage, muzzle, self->s.apos.trBase);
+						}
+					}
+					else
+					{
+						if (self->damage)
+						{
+							Fire_Lead(self, other, ammoTable[WP_DUMMY_MG42].spread / self->accuracy, self->damage, muzzle, self->s.apos.trBase);
+						}
+						else
+						{
+							Fire_Lead(self, other, ammoTable[WP_DUMMY_MG42].spread / self->accuracy, ammoTable[WP_DUMMY_MG42].aiDamage, muzzle, self->s.apos.trBase);
+						}
 					}
 
-					// play character anim
-					BG_AnimScriptEvent( &other->client->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue );
-
-					other->client->ps.viewlocked = 2; // this enable screen jitter when firing
+					BG_AnimScriptEvent(&other->client->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue);
+					other->client->ps.viewlocked = 2; // enable screen jitter
 				}
 			}
 		}

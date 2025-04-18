@@ -239,6 +239,8 @@ vmCvar_t cg_skybox;
 vmCvar_t cg_gameSkill;
 // done
 
+vmCvar_t cg_hitSounds;
+
 vmCvar_t cg_reloading;      //----(SA)	added
 
 // JPW NERVE
@@ -311,6 +313,7 @@ vmCvar_t int_cl_timenudge;
 vmCvar_t cg_bodysink;
 vmCvar_t cg_gunPosLock;
 vmCvar_t cg_weaponBounceSound;
+vmCvar_t cg_showSocials;
 
 typedef struct {
 	vmCvar_t    *vmCvar;
@@ -502,6 +505,8 @@ cvarTable_t cvarTable[] = {
 
 	{ &cg_gameSkill, "g_gameskill", "2", 0 }, // communicated by systeminfo	// (SA) new default '2' (was '1')
 
+	{ &cg_hitSounds, "cg_hitSounds", "0", CVAR_ARCHIVE },
+
 	{ &cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
 	{ &cg_nopickupChallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM }, 
@@ -515,7 +520,7 @@ cvarTable_t cvarTable[] = {
 	
 
 	// JPW NERVE
-	{ &cg_medicChargeTime,  "g_medicChargeTime", "10000", 0 }, // communicated by systeminfo
+	{ &cg_medicChargeTime,  "g_medicChargeTime", "20000", 0 }, // communicated by systeminfo
 	{ &cg_LTChargeTime, "g_LTChargeTime", "35000", 0 }, // communicated by systeminfo
 	{ &cg_engineerChargeTime,   "g_engineerChargeTime", "30000", 0 }, // communicated by systeminfo
 	{ &cg_soldierChargeTime,    "g_soldierChargeTime", "20000", 0 }, // communicated by systeminfo
@@ -562,6 +567,8 @@ cvarTable_t cvarTable[] = {
 	{ &cg_realism, "g_realism", "0", CVAR_ARCHIVE},
 
 	{ &cg_weaponBounceSound, "cg_weaponBounceSound", "1",CVAR_ARCHIVE	},
+
+	{ &cg_showSocials, "cg_showSocials", "1",CVAR_ARCHIVE	},
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );
@@ -1172,6 +1179,10 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.gibBounce2Sound = trap_S_RegisterSound( "sound/player/gibimp2.wav" );
 	cgs.media.gibBounce3Sound = trap_S_RegisterSound( "sound/player/gibimp3.wav" );
 
+	cgs.media.headShot = trap_S_RegisterSound( "sound/hitsounds/hithead.wav" );
+	cgs.media.bodyShot = trap_S_RegisterSound( "sound/hitsounds/hit.wav" );
+	cgs.media.teamShot = trap_S_RegisterSound( "sound/hitsounds/hitteam.wav" );
+
 	cgs.media.grenadebounce[GRENBOUNCE_DEFAULT][0]  = trap_S_RegisterSound( "sound/weapons/grenade/hgrenb1a.wav" );
 	cgs.media.grenadebounce[GRENBOUNCE_DEFAULT][1]  = trap_S_RegisterSound( "sound/weapons/grenade/hgrenb2a.wav" );
 	cgs.media.grenadebounce[GRENBOUNCE_DIRT][0]     = trap_S_RegisterSound( "sound/weapons/grenade/hg_dirt1a.wav" );
@@ -1203,6 +1214,7 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.poisonGasCough = trap_S_RegisterSound( "sound/weapons/gasgrenade/cough.wav");
 	cgs.media.knifeThrow = trap_S_RegisterSound( "sound/weapons/knife/knife_throw.wav");
+	cgs.media.nullSound = trap_S_RegisterSound( "sound/misc/null.wav");
 
 	for ( i = 0 ; i < 4 ; i++ ) {
 		Com_sprintf( name, sizeof( name ), "sound/player/footsteps/step%i.wav", i + 1 );
@@ -1653,7 +1665,7 @@ static void CG_RegisterGraphics( void ) {
 
 // code is almost complete for doing this correctly.  will remove when that is complete.
 	CG_LoadingString( " - weapons" );
-	for ( i = WP_KNIFE; i < WP_MONSTER_ATTACK3; i++ ) {
+	for ( i = WP_KNIFE; i < WP_DUMMY_MG42; i++ ) {
 			CG_RegisterWeapon( i, qfalse );
 	}
 

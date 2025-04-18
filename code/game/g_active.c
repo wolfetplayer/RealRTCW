@@ -196,18 +196,29 @@ void P_WorldEffects( gentity_t *ent ) {
 	//
 	// check for burning from flamethrower
 	//
-	if ( ent->s.onFireEnd > level.time && ( AICast_AllowFlameDamage( ent->s.number ) ) ) {
-		gentity_t *attacker;
+	if (ent->s.onFireEnd > level.time && (AICast_AllowFlameDamage(ent->s.number)))
+	{
+		gentity_t *attacker = &g_entities[ent->flameBurnEnt];
 
-		if ( ent->health > 0 ) {
-			attacker = g_entities + ent->flameBurnEnt;
-				if ( ent->r.svFlags & SVF_CASTAI ) {
-					G_Damage( ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER );
-				} else if ( ( ent->s.onFireEnd - level.time ) > FIRE_FLASH_TIME / 2 && rand() % 5000 < ( ent->s.onFireEnd - level.time ) ) { // as it fades out, also fade out damage rate
-					G_Damage( ent, attacker, attacker, NULL, NULL, 1, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER );
-				}
-		} else if ( ent->s.onFireEnd > level.time + 4000 ) {  // dead, so sto pthe flames soon
-			ent->s.onFireEnd = level.time + 4000;   // stop burning soon
+		if (ent->health > 0)
+		{
+			int oldHealth = ent->health;
+
+			// Apply damage
+			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER);
+
+			// Calculate inflicted damage
+			int inflictedDmg = oldHealth - ent->health;
+
+			// If no damage was dealt, remove the flame effect
+			if (inflictedDmg <= 0)
+			{
+				ent->s.onFireEnd = 0;
+			}
+		}
+		else if (ent->s.onFireEnd > level.time + 4000)
+		{
+			ent->s.onFireEnd = level.time + 4000;
 		}
 	}
 }
@@ -502,8 +513,7 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			}
 
 		// regenerate health only if cvar is turned on
-if ((g_regen.integer == 1 || client->ps.perks[PERK_RESILIENCE]) && level.time >= client->healthRegenStartTime && 
-    (g_gametype.integer != GT_SURVIVAL || client->ps.perks[PERK_RESILIENCE])) {
+if ((g_regen.integer == 1 || g_gametype.integer == GT_SURVIVAL) && level.time >= client->healthRegenStartTime ) {
 
 		    if (ent->health < client->ps.stats[STAT_MAX_HEALTH])
 		    {
@@ -540,9 +550,13 @@ if ((g_regen.integer == 1 || client->ps.perks[PERK_RESILIENCE]) && level.time >=
 		}
 
 
-		// count down armor when over max // RealRTCW if more than 100
-		if ( client->ps.stats[STAT_ARMOR] > 100 ) {
-			client->ps.stats[STAT_ARMOR]--;
+		// count down armor when over max
+		if (g_gametype.integer != GT_SURVIVAL)
+		{
+			if (client->ps.stats[STAT_ARMOR] > 100)
+			{
+				client->ps.stats[STAT_ARMOR]--;
+			}
 		}
 	}
 
@@ -1027,11 +1041,11 @@ void ClientThink_real( gentity_t *ent ) {
 	                }
 		break;
 	}
-	if ( client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC ) {
-		if ( level.time > client->ps.powerups[PW_REGEN] + 5000 ) {
-			client->ps.powerups[PW_REGEN] = level.time;
-		}
-	}
+	//if ( client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC ) {
+		//if ( level.time > client->ps.powerups[PW_REGEN] + 5000 ) {
+		//	client->ps.powerups[PW_REGEN] = level.time;
+		//}
+	//}
 
 	// check for inactivity timer, but never drop the local client of a non-dedicated server
 	if ( !ClientInactivityTimer( client ) ) {
@@ -1155,6 +1169,10 @@ void ClientThink_real( gentity_t *ent ) {
 	VectorCopy( client->ps.origin, client->oldOrigin );
 
 	pm.ltChargeTime = g_LTChargeTime.integer;
+	pm.soldierChargeTime = g_soldierChargeTime.integer;
+	pm.engineerChargeTime = g_engineerChargeTime.integer;
+	pm.medicChargeTime = g_medicChargeTime.integer;
+	pm.gametype = g_gametype.integer;
 
 	// perform a pmove
 #ifdef MISSIONPACK
@@ -1171,7 +1189,24 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 	}
 #endif
+
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		for ( i = 0; i < level.num_entities; ++i ) {
+			if ( g_entities[i].r.svFlags & SVF_CASTAI && g_entities[i].aiTeam == ent->aiTeam && &g_entities[i] != ent ) {
+				trap_UnlinkEntity( &g_entities[i] );
+			}
+		}
+	}
+
 	monsterslick = Pmove( &pm );
+
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		for ( i = 0; i < level.num_entities; ++i ) {
+			if ( g_entities[i].r.svFlags & SVF_CASTAI && g_entities[i].aiTeam == ent->aiTeam && &g_entities[i] != ent ) {
+				trap_LinkEntity( &g_entities[i] );
+			}
+		}
+	}
 
 	if ( monsterslick && !( ent->flags & FL_NO_MONSTERSLICK ) ) {
 		{
@@ -1761,6 +1796,7 @@ void ClientEndFrame( gentity_t *ent ) {
 		case WP_GRENADE_PINEAPPLE:
 		case WP_GRENADE_LAUNCHER:   // if they are wearing down a grenade fuse, we should be very afraid
 		case WP_POISONGAS:
+		case WP_POISONGAS_MEDIC:
 			if ( ent->client->ps.grenadeTimeLeft && ent->client->ps.grenadeTimeLeft < 3000 ) {
 				AICast_CheckDangerousEntity( ent, DANGER_CLIENTAIM, 1000, 0.5, 0.9, qtrue );
 			}

@@ -60,11 +60,11 @@ If you have questions concerning this license or the applicable additional terms
   #define CLIENT_WINDOW_TITLE     	"RealRTCW"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" //iowolfsp
 #ifdef USE_XDG
-  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.0"
+  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.1"
 #else
   #define HOMEPATH_NAME_UNIX		".realrtcw"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.0"
+  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.1"
   #define STEAMPATH_NAME		"Return To Castle Wolfenstein"
   #define STEAMPATH_APPID		"9010"
 
@@ -81,13 +81,15 @@ If you have questions concerning this license or the applicable additional terms
 #define HEARTBEAT_FOR_MASTER		"DarkPlaces"
 #define FLATLINE_FOR_MASTER		"WolfFlatline-1"
 
+#define MAX_MAPS 128
+
 // When com_gamename is LEGACY_MASTER_GAMENAME, use wolfenstein master protocol.
 // You shouldn't change this unless you know what you're doing
 #define LEGACY_MASTER_GAMENAME		"wolfsp"
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "5.0" // iortcw 1.51
+  #define PRODUCT_VERSION "5.1" // iortcw 1.51
 #endif
 
 #ifndef PRODUCT_DATE
@@ -102,6 +104,8 @@ If you have questions concerning this license or the applicable additional terms
 #define DEMOEXT	"dm_"			// standard demo extension
 
 #ifdef _MSC_VER
+
+
 
 #pragma warning(disable : 4018) // signed/unsigned mismatch
 #pragma warning(disable : 4032)
@@ -1329,7 +1333,7 @@ typedef struct accumPrintLabel_s {
 
 // weapon grouping
 #define MAX_WEAP_BANKS      11
-#define MAX_WEAPS_IN_BANK   6
+#define MAX_WEAPS_IN_BANK   8
 // JPW NERVE
 #define MAX_WEAPS_IN_BANK_MP    8
 #define MAX_WEAP_BANKS_MP   7
@@ -1340,7 +1344,8 @@ typedef struct accumPrintLabel_s {
 #define MAX_PERSISTANT          32
 #define MAX_POWERUPS            16
 #define MAX_WEAPONS             64  // (SA) and yet more!
-#define MAX_WEAPON_SLOTS        3 // knife, weapon1, weapon2, weapon3, grenade
+#define MAX_WEAPON_SLOTS         3 
+#define MAX_WEAPON_SLOTS_SOLDIER 4
 #define MAX_HOLDABLE            16
 #define MAX_PERKS 			    16
 
@@ -1441,6 +1446,7 @@ typedef struct playerState_s {
 	int holding;                        // the current item in holdable[] that is selected (held)
 	int weapons[MAX_WEAPONS / ( sizeof( int ) * 8 )];   // 64 bits for weapons held
 	int weaponSlots[MAX_WEAPON_SLOTS];
+	int weaponSlotsSoldier [MAX_WEAPON_SLOTS_SOLDIER]; 
 	int perks[MAX_PERKS];                // Perks
 
 	// Ridah, allow for individual bounding boxes

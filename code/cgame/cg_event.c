@@ -187,6 +187,52 @@ static void CG_UseItem( centity_t *cent ) {
 extern int CG_WeaponIndex( int weapnum, int *bank, int *cycle );
 
 
+static void CG_PlayHitSound( const int clientNum, const int hitSound )
+{
+	if ( hitSound == HIT_NONE ) {
+		return;
+	}
+
+	// Do we have hitsounds even enabled
+	if ( !( cg_hitSounds.integer & HITSOUNDS_ON )) {
+		return;
+	}
+
+	// Are we spectating someone?
+	if ( cg.snap->ps.clientNum != cg.clientNum && cgs.clientinfo[cg.clientNum].team != TEAM_SPECTATOR && !( cg.snap->ps.pm_flags & PMF_LIMBO ) ) {
+		return;
+	}
+
+	// Is the event for the current client (might be the player or a player being spectated)
+	if ( clientNum != cg.snap->ps.clientNum ) {
+		return;
+	}
+
+	switch ( hitSound ) {
+	case HIT_TEAMSHOT:
+		if ( !( cg_hitSounds.integer & HITSOUNDS_NOTEAMSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.teamShot, CHAN_LOCAL_SOUND );
+		}
+		break;
+	case HIT_HEADSHOT:
+		if ( !( cg_hitSounds.integer & HITSOUNDS_NOHEADSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.headShot, CHAN_LOCAL_SOUND );
+		}
+		else if ( !( cg_hitSounds.integer & HITSOUNDS_NOBODYSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.bodyShot, CHAN_LOCAL_SOUND );
+		}
+		break;
+	case HIT_BODYSHOT:
+		if ( !( cg_hitSounds.integer & HITSOUNDS_NOBODYSHOT ) ) {
+			trap_S_StartLocalSound( cgs.media.bodyShot, CHAN_LOCAL_SOUND );
+		}
+		break;
+	default:
+		CG_Printf( "Unknown hitsound: %i\n", hitSound );
+		break;
+	}
+}
+
 /*
 ================
 CG_ItemPickup
@@ -1758,9 +1804,9 @@ case EV_FILL_CLIP:
     DEBUGNAME( "EV_FILL_CLIP" );
     if ( cg_weapons[es->weapon].reloadSound ) {
         if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] || cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast, SND_REQUESTCUT );
         } else {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound, SND_REQUESTCUT );
         }
     }
     break;
@@ -1768,16 +1814,16 @@ case EV_FILL_CLIP_FULL:
     DEBUGNAME( "EV_FILL_CLIP_FULL" );
     if ( cg_weapons[es->weapon].reloadFullSound ) {
         if ( cg.predictedPlayerState.powerups[PW_HASTE_SURV] || cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast, SND_REQUESTCUT );
         } else {
-            trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound );
+            trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound, SND_REQUESTCUT );
         }
     }
     break;
 	case EV_FILL_CLIP_AI:
 		DEBUGNAME( "EV_FILL_CLIP_AI" );
 		if ( cg_weapons[es->weapon].reloadSound ) {
-			trap_S_StartSound( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundAi );
+			trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundAi, SND_REQUESTCUT );
 		}
 		break;
 
@@ -1796,7 +1842,7 @@ case EV_FILL_CLIP_FULL:
 
 	case EV_NOAMMO:
 		DEBUGNAME( "EV_NOAMMO" );
-		if ( ( es->weapon != WP_GRENADE_LAUNCHER ) && ( es->weapon != WP_GRENADE_PINEAPPLE ) && ( es->weapon != WP_DYNAMITE ) && ( es->weapon != WP_AIRSTRIKE ) && ( es->weapon != WP_POISONGAS )  ) {
+		if ( ( es->weapon != WP_GRENADE_LAUNCHER ) && ( es->weapon != WP_GRENADE_PINEAPPLE ) && ( es->weapon != WP_DYNAMITE ) && ( es->weapon != WP_AIRSTRIKE ) && ( es->weapon != WP_POISONGAS ) && ( es->weapon != WP_POISONGAS_MEDIC )  ) {
 			trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		}
 		if ( es->number == cg.snap->ps.clientNum && cg_autoReload.integer == 1 ) {
@@ -1864,6 +1910,10 @@ case EV_FILL_CLIP_FULL:
 	case EV_FIRE_WEAPON:
 	case EV_FIRE_WEAPONB:
 		DEBUGNAME( "EV_FIRE_WEAPON" );
+
+		if ( cg.snap->ps.eFlags & EF_ZOOMING ) { // to stop airstrike sfx
+			break;
+		}
 
 		CG_FireWeapon( cent, event );
 		if ( event == EV_FIRE_WEAPONB ) {  // akimbo firing colt
@@ -2063,7 +2113,16 @@ case EV_FILL_CLIP_FULL:
 
 	case EV_BULLET_HIT_FLESH:
 		DEBUGNAME( "EV_BULLET_HIT_FLESH" );
+		//CG_PlayHitSound( es->otherEntityNum, es->modelindex );
 		CG_Bullet( es->pos.trBase, es->otherEntityNum, dir, qtrue, es->eventParm, qfalse, es->otherEntityNum2 );
+		break;
+
+	case EV_HITSOUNDS:
+		CG_PlayHitSound( es->otherEntityNum, es->modelindex );
+		break;
+
+	case EV_PLAYER_HIT:
+		CG_PlayHitSound( es->clientNum, es->eventParm );
 		break;
 
 	case EV_WOLFKICK_HIT_WALL:
@@ -2348,8 +2407,12 @@ case EV_FILL_CLIP_FULL:
 		trap_S_StartSound( NULL, es->number, CHAN_WEAPON, 0 );  // kill weapon sound (could be reloading)
 
 		break;
-//----(SA)	end
+	case EV_STOP_RELOADING_SOUND:
+		DEBUGNAME( "EV_STOP_RELOADING_SOUND" );
 
+		trap_S_StartSoundEx(NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF);
+
+		break;
 	case EV_STOPLOOPINGSOUND:
 		DEBUGNAME( "EV_STOPLOOPINGSOUND" );
 		trap_S_StopLoopingSound( es->number );

@@ -192,8 +192,8 @@ extern void weapon_smokeBombExplode ( gentity_t * ent ) ;
 extern trace_t * CheckMeleeAttack ( gentity_t * ent , float dist , qboolean isTest ) ;
 extern void weapon_callAirStrike ( gentity_t * ent ) ;
 extern void G_PoisonGasExplode(gentity_t* ent) ;
+extern void G_PoisonGas2Explode(gentity_t* ent) ;
 extern void Weapon_Knife ( gentity_t * ent ) ;
-extern void Weapon_Dagger ( gentity_t * ent ) ;
 extern int DebugLine ( vec3_t start , vec3_t end , int color ) ;
 extern void G_ProcessTagConnect ( gentity_t * ent , qboolean clearAngles ) ;
 extern qboolean infront ( gentity_t * self , gentity_t * other ) ;
@@ -390,8 +390,8 @@ extern void SP_target_remove_powerups ( gentity_t * ent ) ;
 extern void Use_target_remove_powerups ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
 extern void SP_target_give ( gentity_t * ent ) ;
 extern void Use_Target_Give ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
+extern void Use_Target_buy ( gentity_t * ent , gentity_t * other , gentity_t * activator ) ;
 extern void SP_target_buy ( gentity_t * ent ) ;
-extern void Use_Target_buy ( gentity_t * ent , gentity_t * other, gentity_t *activator ) ;
 extern void * trap_Alloc ( int size ) ;
 extern int trap_GeneticParentsAndChildSelection ( int numranks , float * ranks , int * parent1 , int * parent2 , int * child ) ;
 extern void trap_BotResetWeaponState ( int weaponstate ) ;
@@ -1071,6 +1071,7 @@ extern qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t 
 extern void G_AdjustedDamageVec( gentity_t *ent, vec3_t origin, vec3_t vec );
 extern qboolean CanDamage ( gentity_t * targ , vec3_t origin ) ;
 extern void G_Damage ( gentity_t * targ , gentity_t * inflictor , gentity_t * attacker , vec3_t dir , vec3_t point , int damage , int dflags , int mod ) ;
+extern void G_DamageExt ( gentity_t * targ , gentity_t * inflictor , gentity_t * attacker , vec3_t dir , vec3_t point , int damage , int dflags , int mod, int *hitEventOut ) ;
 extern void G_ArmorDamage ( gentity_t * targ ) ;
 extern qboolean IsHeadShot ( gentity_t * targ , gentity_t * attacker , vec3_t dir , vec3_t point , int mod ) ;
 extern qboolean IsHeadShotWeapon ( int mod , gentity_t * targ , gentity_t * attacker ) ;
@@ -1116,9 +1117,6 @@ extern void Cmd_Notarget_f ( gentity_t * ent ) ;
 extern void Cmd_Nofatigue_f ( gentity_t * ent ) ;
 extern void Cmd_God_f ( gentity_t * ent ) ;
 extern void Cmd_Give_f ( gentity_t * ent ) ;
-extern void Cmd_Buy_f ( gentity_t * ent ) ;
-extern int G_GetWeaponPrice ( int weapon ) ;
-extern int G_GetAmmoPrice ( int weapon ) ;
 extern void Cmd_Fogswitch_f ( void ) ;
 extern void G_setfog ( char * fogstring ) ;
 extern int ClientNumberFromString ( gentity_t * to , char * s ) ;
@@ -1173,6 +1171,7 @@ extern int G_CountHumanPlayers ( int team ) ;
 extern int G_RemoveRandomBot ( int team ) ;
 extern void G_AddRandomBot ( int team ) ;
 extern const char * G_GetArenaInfoByMap ( const char * map ) ;
+extern void G_LoadArenas ( void ) ;
 extern void SP_alarm_box ( gentity_t * ent ) ;
 extern void alarmbox_finishspawning ( gentity_t * ent ) ;
 extern void alarmbox_die ( gentity_t * ent , gentity_t * inflictor , gentity_t * attacker , int damage , int mod ) ;
@@ -1479,6 +1478,10 @@ extern qboolean AICast_ScriptAction_Achievement_ICE_STEALTH( cast_state_t *cs, c
 extern qboolean AICast_ScriptAction_Achievement_ICE_SECRET( cast_state_t *cs, char *params ) ;
 extern qboolean AICast_ScriptAction_Achievement_ICE_DEFENSE ( cast_state_t *cs, char *params ) ;
 extern qboolean AICast_ScriptAction_Achievement_ICE_EE( cast_state_t *cs, char *params ) ;
+
+extern qboolean AICast_ScriptAction_Achievement_6PERKS( cast_state_t *cs, char *params ) ;
+
+
 
 
 // end achievements

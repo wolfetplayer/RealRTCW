@@ -2186,23 +2186,31 @@ CG_S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, w
 		if( !spritesNeeded )
 			return;
 
+		// Set smoke color according to weapon type.
+		switch (wtype)
+		{
+		case WP_POISONGAS:
+			smokeColor[0] = 0.20f;
+			smokeColor[1] = 0.15f;
+			smokeColor[2] = 0.05f;
+			smokeColor[3] = 0.40f;
+			break;
 
-        // Set smoke color according to weapon type.
-        switch (wtype) {
-            case WP_POISONGAS:
-                smokeColor[0] = 0.20f;
-                smokeColor[1] = 0.15f;
-                smokeColor[2] = 0.05f;
-                smokeColor[3] = 0.40f;
-                break;
+		case WP_POISONGAS_MEDIC:
+			// use a slightly less bright green for poison gas medic
+			smokeColor[0] = 0.0f;
+			smokeColor[1] = 0.5f;
+			smokeColor[2] = 0.0f;
+			smokeColor[3] = 0.40f;
+			break;
 
-            default:
-                smokeColor[0] = 0.35f;
-                smokeColor[1] = 0.35f;
-                smokeColor[2] = 0.35f;
-                smokeColor[3] = 0.80f;
-                break;
-        }
+		default:
+			smokeColor[0] = 0.35f;
+			smokeColor[1] = 0.35f;
+			smokeColor[2] = 0.35f;
+			smokeColor[3] = 0.80f;
+			break;
+		}
 
 		if( spritesNeeded == 1 ) {
 			// this is theoretically fine, till the smokegrenade ends up in a solid

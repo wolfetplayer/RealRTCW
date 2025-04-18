@@ -47,6 +47,9 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
+#include "g_survival.h"
+
+#include "../steam/steam.h"
 
 /*
 This file contains the generic thinking states for the characters.
@@ -79,8 +82,6 @@ char *AIFunc_BattleChase( cast_state_t *cs );
 char *AIFunc_Battle( cast_state_t *cs );
 
 static bot_moveresult_t *moveresult;
-
-extern svParams_t svParams;
 
 
 /*
@@ -355,17 +356,44 @@ float AICast_SpeedScaleForDistance( cast_state_t *cs, float startdist, float ide
 }
 
 void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
+	static char soundDeafultPath[MAX_QPATH] = "sound/announcer/hein.wav";
+	static char command[256];
+
+	int i = 0, j;
+	int indecies[ANNOUNCE_SOUNDS_COUNT];
+
+	Com_Memset( indecies, 0, sizeof( indecies ) );
 
     // Wave Change Event
     if (svParams.survivalKillCount == svParams.killCountRequirement) {
         svParams.waveCount++;
-        svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
+
+		if ((svParams.waveCount == 10) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
+		{
+			steamSetAchievement("ACH_NO_BUY");
+		}
+
+		if ((svParams.waveCount == 15) && (!g_cheats.integer) && (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
+		{
+			steamSetAchievement("ACH_NO_CLASS");
+		}
+
+		svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
 		attacker->client->ps.persistant[PERS_WAVES]++;
 		svParams.waveKillCount = 0;
 
-		int randomIndex = rand() % 19 + 1;
-		static char command[256];
-		snprintf(command, sizeof(command), "mu_play sound/announcer/hein%d.wav 0\n", randomIndex);
+		for ( j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j ) {
+			if ( svParams.announcerSound[j][0] ) {
+				indecies[i++] = j;
+			}
+		}
+
+		if ( i == 0 ) {
+			snprintf( command, sizeof( command ), "mu_play %s 0\n", soundDeafultPath );
+		} else {
+			snprintf( command, sizeof( command ), "mu_play %s 0\n", svParams.announcerSound[ indecies[rand( ) % i] ] );
+		}
+		
 		trap_SendServerCommand(-1, command);
 
    // Normal soldiers
@@ -526,6 +554,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				if (newHealth > svParams.soldierHealthCap) {
 					newHealth = svParams.soldierHealthCap;
 				}
+				break;
 			case AICHAR_ZOMBIE_SURV:
 				newHealth = svParams.zombieBaseHealth + health_increase;
 				if (newHealth > svParams.zombieHealthCap) {
@@ -644,8 +673,9 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				break;
 			}
 
-
-                ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH] = newHealth;
+				BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
+                
+				ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH] = newHealth;
 				ent->client->ps.runSpeedScale = runSpeedScale;
 				ent->client->ps.sprintSpeedScale = sprintSpeedScale;
 				ent->client->ps.crouchSpeedScale = crouchSpeedScale;				
@@ -665,6 +695,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				G_SetOrigin( ent, spawn_origin );
 				VectorCopy( spawn_origin, ent->client->ps.origin );
 				SetClientViewAngle( ent, spawn_angles );
+
+
 
 				// Activate respawn scripts for AI
 				AICast_ScriptEvent(cs, "respawn", "");
@@ -5406,6 +5438,9 @@ void AI_LoadSurvivalTable( const char* mapname )
 qboolean BG_ParseSurvivalTable( int handle )
 {
 	pc_token_t token;
+	int i;
+	char msg[64];
+	char soundPath[MAX_QPATH];
 
 	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
 		PC_SourceError( handle, "expected '{'" );
@@ -5431,9 +5466,9 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected speedIncreaseDivider value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "spawnTimeDecreaseDivider" ) ) {
-			if ( !PC_Float_Parse( handle, &svParams.spawnTimeDecreaseDivider ) ) {
-				PC_SourceError( handle, "expected spawnTimeDecreaseDivider value" );
+		} else if ( !Q_stricmp( token.string, "spawnTimeFalloffMultiplier" ) ) {
+			if ( !PC_Float_Parse( handle, &svParams.spawnTimeFalloffMultiplier ) ) {
+				PC_SourceError( handle, "expected spawnTimeFalloffMultiplier value" );
 				return qfalse;
 			}
 
@@ -5753,16 +5788,6 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected treasureDropChanceScavengerIncrease value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "ammoStandPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.ammoStandPrice ) ) {
-				PC_SourceError( handle, "expected ammoStandPrice value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "healthStandPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.healthStandPrice ) ) {
-				PC_SourceError( handle, "expected healthStandPrice value" );
-				return qfalse;
-			}
 		} else if ( !Q_stricmp( token.string, "scoreHeadshotKill" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.scoreHeadshotKill ) ) {
 				PC_SourceError( handle, "expected scoreHeadshotKill value" );
@@ -5778,51 +5803,6 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected scoreBaseKill value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "scoreSoldierBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreSoldierBonus ) ) {
-				PC_SourceError( handle, "expected scoreSoldierBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreZombieBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreZombieBonus ) ) {
-				PC_SourceError( handle, "expected scoreZombieBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreEliteBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreEliteBonus ) ) {
-				PC_SourceError( handle, "expected scoreEliteBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreWarzBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreWarzBonus ) ) {
-				PC_SourceError( handle, "expected scoreWarzBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreProtosBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreProtosBonus ) ) {
-				PC_SourceError( handle, "expected scoreProtosBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreBlackBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreBlackBonus) ) {
-				PC_SourceError( handle, "expected scoreBlackBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreVenomBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreVenomBonus) ) {
-				PC_SourceError( handle, "expected scoreVenomBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scorePriestBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scorePriestBonus) ) {
-				PC_SourceError( handle, "expected scorePriestBonus value" );
-				return qfalse;
-			}
-		} else if ( !Q_stricmp( token.string, "scoreGhostBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreGhostBonus) ) {
-				PC_SourceError( handle, "expected scoreGhostBonus value" );
-				return qfalse;
-			}
 		} else if ( !Q_stricmp( token.string, "scoreKnifeBonus" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.scoreKnifeBonus ) ) {
 				PC_SourceError( handle, "expected scoreKnifeBonus value" );
@@ -5833,10 +5813,60 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected minSpawnTime value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
+		} else if ( !Q_stricmp( token.string, "friendlySpawnTime" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.friendlySpawnTime ) ) {
+				PC_SourceError( handle, "expected friendlySpawnTime value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxPerks" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxPerks ) ) {
+				PC_SourceError( handle, "expected maxPerks value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "maxPerksEng" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.maxPerksEng ) ) {
+				PC_SourceError( handle, "expected maxPerksEng value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "armorDefaultPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.armorDefaultPrice ) ) {
+				PC_SourceError( handle, "expected armorDefaultPrice value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "randomPerkDefaultPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.randomPerkDefaultPrice ) ) {
+				PC_SourceError( handle, "expected randomPerkDefaultPrice value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "randomWeaponDefaultPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.randomWeaponDefaultPrice ) ) {
+				PC_SourceError( handle, "expected randomWeaponDefaultPrice value" );
+				return qfalse;
+			}
+		 else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );
 				return qfalse;
+			}
+		// string
+		} else if ( !Q_stricmp( token.string, "announcerSound" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, (char *)&svParams.announcerSound[0], MAX_QPATH ) ) {
+				PC_SourceError( handle, "expected announcerSound value" );
+				return qfalse;
+			}
+		} else if ( Q_stristr( token.string, "announcerSound" ) == token.string ) {
+			sscanf( token.string, "announcerSound%d", &i );
+
+			if ( !PC_String_ParseNoAlloc( handle, (char *)&soundPath, MAX_QPATH ) ) {
+				PC_SourceError( handle, "expected announcerSound value" );
+				return qfalse;
+			}
+
+			if ( i - 1 >= ANNOUNCE_SOUNDS_COUNT ) {
+				sprintf(msg, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1 );
+				PC_SourceError( handle, msg );
+			} else {
+				strcpy( svParams.announcerSound[i - 1], soundPath );
 			}
 		} else {
 			PC_SourceError( handle, "unknown token '%s'", token.string );

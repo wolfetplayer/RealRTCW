@@ -170,26 +170,37 @@ Find the spot that we DON'T want to use
 */
 #define MAX_SPAWN_POINTS    128
 gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from ) {
-	gentity_t   *spot;
-	vec3_t delta;
-	float dist, nearestDist;
-	gentity_t   *nearestSpot;
+    gentity_t   *spot;
+    vec3_t delta;
+    float dist, nearestDist;
+    gentity_t   *nearestSpot;
 
-	nearestDist = 999999;
-	nearestSpot = NULL;
-	spot = NULL;
+    nearestDist = 999999;
+    nearestSpot = NULL;
+    spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
+    // Search for info_player_start
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
+        VectorSubtract( spot->s.origin, from, delta );
+        dist = VectorLength( delta );
+        if ( dist < nearestDist ) {
+            nearestDist = dist;
+            nearestSpot = spot;
+        }
+    }
 
-		VectorSubtract( spot->s.origin, from, delta );
-		dist = VectorLength( delta );
-		if ( dist < nearestDist ) {
-			nearestDist = dist;
-			nearestSpot = spot;
-		}
-	}
+    spot = NULL;
+    // Search for info_player_deathmatch
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+        VectorSubtract( spot->s.origin, from, delta );
+        dist = VectorLength( delta );
+        if ( dist < nearestDist ) {
+            nearestDist = dist;
+            nearestSpot = spot;
+        }
+    }
 
-	return nearestSpot;
+    return nearestSpot;
 }
 
 /*
@@ -201,28 +212,45 @@ go to a random point that doesn't telefrag
 */
 #define MAX_SPAWN_POINTS    128
 gentity_t *SelectRandomDeathmatchSpawnPoint( void ) {
-	gentity_t   *spot;
-	int count;
-	int selection;
-	gentity_t   *spots[MAX_SPAWN_POINTS];
+    gentity_t   *spot;
+    int count;
+    int selection;
+    gentity_t   *spots[MAX_SPAWN_POINTS];
 
-	count = 0;
-	spot = NULL;
+    count = 0;
+    spot = NULL;
 
-	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
-		if ( SpotWouldTelefrag( spot ) ) {
-			continue;
-		}
-		spots[ count ] = spot;
-		count++;
-	}
+    // Search for info_player_start spawn points.
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_start" ) ) != NULL ) {
+        if ( SpotWouldTelefrag( spot ) ) {
+            continue;
+        }
+        spots[ count ] = spot;
+        count++;
+        if ( count >= MAX_SPAWN_POINTS ) {
+            break;
+        }
+    }
 
-	if ( !count ) { // no spots that won't telefrag
-		return G_Find( NULL, FOFS( classname ), "info_player_start" );
-	}
+    spot = NULL;
+    // Also search for info_player_deathmatch spawn points.
+    while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+        if ( SpotWouldTelefrag( spot ) ) {
+            continue;
+        }
+        spots[ count ] = spot;
+        count++;
+        if ( count >= MAX_SPAWN_POINTS ) {
+            break;
+        }
+    }
 
-	selection = rand() % count;
-	return spots[ selection ];
+    if ( !count ) { // no spots that won't telefrag
+        return G_Find( NULL, FOFS( classname ), "info_player_start" );
+    }
+
+    selection = rand() % count;
+    return spots[ selection ];
 }
 
 gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {
@@ -291,7 +319,7 @@ go to a random point that doesn't telefrag
 ================
 */
 #define MAX_SPAWN_POINTS_AI    128
-#define MAX_SPAWN_POINT_DISTANCE    2048
+#define MAX_SPAWN_POINT_DISTANCE    8196
 gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *ent ) {
     gentity_t   *spot;
     vec3_t delta;
@@ -1066,53 +1094,66 @@ void ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
-	// set max health // RealRTCW max health depends on difficulty level
-	client->pers.maxHealth = atoi( Info_ValueForKey( userinfo, "handicap" ) );
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		// To communicate it to cgame
+		client->ps.stats[ STAT_PLAYER_CLASS ] = client->sess.playerType;
+	}
 
-	if ( g_gametype.integer == GT_GOTHIC ) { // Gothicstein case
-	if ( g_gameskill.integer == GSKILL_EASY ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
-			client->pers.maxHealth = 100;
+	// Set max health based on user info
+	client->pers.maxHealth = atoi(Info_ValueForKey(userinfo, "handicap"));
+
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+
+		if (client->ps.perks[PERK_RESILIENCE])
+		{
+			if (client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC)
+			{
+				client->pers.maxHealth = 250;
+			}
+			else
+			{
+				client->pers.maxHealth = 200;
+			}
+		} else {
+            if (client->ps.stats[STAT_PLAYER_CLASS] == PC_MEDIC) {
+				client->pers.maxHealth = 150;
+			} else {
+				client->pers.maxHealth = 100;
+			}
+
+		}
 	}
-	else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
-			client->pers.maxHealth = 75;
+
+		// Set max health based on game skill level
+		if (g_gametype.integer != GT_SURVIVAL) {
+		switch (g_gameskill.integer)
+		{
+		case GSKILL_EASY:
+		case GSKILL_MEDIUM:
+		case GSKILL_HARD:
+			if (client->pers.maxHealth < 1 || client->pers.maxHealth > 100)
+			{
+				client->pers.maxHealth = 100;
+			}
+			break;
+		case GSKILL_MAX:
+			if (client->pers.maxHealth < 1 || client->pers.maxHealth > 50)
+			{
+				client->pers.maxHealth = 50;
+			}
+			break;
+		case GSKILL_REALISM:
+			if (client->pers.maxHealth < 1 || client->pers.maxHealth > 25)
+			{
+				client->pers.maxHealth = 25;
+			}
+			break;
+		default:
+			break;
+		}
 	}
-	else if ( g_gameskill.integer == GSKILL_HARD ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
-			client->pers.maxHealth = 100;
-	}
-	else if ( g_gameskill.integer == GSKILL_MAX ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 )
-			client->pers.maxHealth = 25;
-	}
-	else if ( g_gameskill.integer == GSKILL_REALISM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 )
-			client->pers.maxHealth = 25;
-	} // Gothicstein end
-	} else { // default case
-		if ( g_gameskill.integer == GSKILL_EASY ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
-			client->pers.maxHealth = 100;
-	}
-	else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
-			client->pers.maxHealth = 100;
-	}
-	else if ( g_gameskill.integer == GSKILL_HARD ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 100 )
-			client->pers.maxHealth = 100;
-	}
-	else if ( g_gameskill.integer == GSKILL_MAX ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 50 )
-			client->pers.maxHealth = 50;
-	}
-	else if ( g_gameskill.integer == GSKILL_REALISM ) {
-		if ( client->pers.maxHealth < 1 || client->pers.maxHealth > 25 )
-			client->pers.maxHealth = 25;
-	}
-	} // default case end
-	
+
 	for ( weapon_t weaponNum = 0; weaponNum < WP_NUM_WEAPONS; weaponNum++ )
 		BG_SetWeaponForSkill( weaponNum, g_gameskill.integer );
 
@@ -1544,6 +1585,11 @@ void ClientSpawn( gentity_t *ent ) {
 	// spawn protection for player on initial spawn - might be useful on some custom maps
 	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {  
 	client->ps.powerups[PW_INVULNERABLE] = level.time + 5000;
+	}
+
+	if ( !( ent->r.svFlags & SVF_CASTAI ) && ( g_gametype.integer == GT_SURVIVAL ) ) {  
+         client->sess.playerType = g_playerSurvivalClass.integer;
+		 ClientUserinfoChanged( index );
 	}
 
 	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];

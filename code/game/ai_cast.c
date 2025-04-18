@@ -45,6 +45,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../botlib/botai.h"          //bot ai interface
 
 #include "ai_cast.h"
+#include "g_survival.h"
 
 /*
 The Wolfenstein AI uses the bot movement functions, and goal handling.
@@ -59,8 +60,6 @@ Currently, this seems to the the best approach, since if we're going to
 use the AAS for navigation, we want to avoid having to re-write the movement
 routines which are heavily associated with the AAS information.
 */
-
-svParams_t svParams;
 
 //cast states (allocated at run-time)
 cast_state_t    *caststates;
@@ -524,7 +523,7 @@ void AICast_Init( void ) {
 
 	aicast_maxclients = trap_Cvar_VariableIntegerValue( "sv_maxclients" );
 
-	aicast_skillscale = (float)trap_Cvar_VariableIntegerValue( "g_gameSkill" ) / (float)GSKILL_REALISM;
+	aicast_skillscale = (float)trap_Cvar_VariableIntegerValue( "g_gameSkill" ) / (float)GSKILL_SURVIVAL;
 
 	caststates = G_Alloc( aicast_maxclients * sizeof( cast_state_t ) );
 	memset( caststates, 0, sizeof( *caststates ) );

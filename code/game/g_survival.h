@@ -164,6 +164,8 @@ typedef struct svParams_s
 	int maxPerks;
 	int maxPerksEng;
 
+	int armorDefaultPrice;
+
 	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
 
 } svParams_t;

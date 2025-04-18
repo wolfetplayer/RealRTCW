@@ -5828,7 +5828,12 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected maxPerksEng value" );
 				return qfalse;
 			}
-		}else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
+		} else if ( !Q_stricmp( token.string, "armorDefaultPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.armorDefaultPrice ) ) {
+				PC_SourceError( handle, "expected armorDefaultPrice value" );
+				return qfalse;
+			}
+		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );
 				return qfalse;

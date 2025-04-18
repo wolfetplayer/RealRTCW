@@ -335,7 +335,7 @@ qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int p
 
 	// Fallback price if not set by mapper
 	if (price <= 0)
-		price = 150;
+		price = svParams.armorDefaultPrice;
 
 	// Check score
 	if (activator->client->ps.persistant[PERS_SCORE] < price) {

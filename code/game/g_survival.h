@@ -176,6 +176,43 @@ typedef struct svParams_s
 	int resiliencePrice;
 	int defaultPerkPrice;
 
+	int knifePrice;
+	int lugerPrice;
+	int coltPrice;
+	int silencerPrice;
+	int tt33Price;
+	int revolverPrice;
+	int akimboPrice;
+	int hdmPrice;
+	int dualtt33Price;
+	int mp40Price;
+	int stenPrice;
+	int mp34Price;
+	int thompsonPrice;
+	int ppshPrice;
+	int mauserPrice;
+	int mosinPrice;
+	int delislePrice;
+	int sniperriflePrice;
+	int snooperScopePrice;
+	int m1garandPrice;
+	int g43Price;
+	int m1941Price;
+	int mp44Price;
+	int barPrice;
+	int fg42Price;
+	int shotgunPrice;
+	int auto5Price;
+	int mg42mPrice;
+	int browningPrice;
+	int panzerPrice;
+	int flamerPrice;
+	int teslaPrice;
+	int venomPrice;
+	int grenPrice;
+	int pineapplePrice;
+	int defaultWeaponPrice;
+
 	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
 
 } svParams_t;

@@ -33,57 +33,58 @@ If you have questions concerning this license or the applicable additional terms
 
 int Survival_GetDefaultWeaponPrice(int weapon) {
 	switch (weapon) {
+		case WP_KNIFE:        return svParams.knifePrice;
 		// Pistols
-		case WP_LUGER:        return 30;
-		case WP_SILENCER:     return 30;
-		case WP_COLT:         return 30;
-		case WP_TT33:         return 30;
-		case WP_REVOLVER:     return 30;
-		case WP_DUAL_TT33:    return 50;
-		case WP_AKIMBO:       return 50;
-		case WP_HDM:          return 30;
+		case WP_LUGER:        return svParams.lugerPrice;
+		case WP_SILENCER:     return svParams.silencerPrice;
+		case WP_COLT:         return svParams.coltPrice;
+		case WP_TT33:         return svParams.tt33Price;
+		case WP_REVOLVER:     return svParams.revolverPrice;
+		case WP_DUAL_TT33:    return svParams.dualtt33Price;
+		case WP_AKIMBO:       return svParams.akimboPrice;
+		case WP_HDM:          return svParams.hdmPrice;
 
 		// SMGs
-		case WP_STEN:         return 90;
-		case WP_MP40:         return 100;
-		case WP_MP34:         return 120;
-		case WP_THOMPSON:     return 120;
-		case WP_PPSH:         return 150;
+		case WP_STEN:         return svParams.stenPrice;
+		case WP_MP40:         return svParams.mp40Price;
+		case WP_MP34:         return svParams.mp34Price;
+		case WP_THOMPSON:     return svParams.thompsonPrice;
+		case WP_PPSH:         return svParams.ppshPrice;
 
 		// Rifles
-		case WP_MAUSER:       return 50;
-		case WP_MOSIN:        return 50;
-		case WP_DELISLE:      return 50;
-		case WP_SNIPERRIFLE:  return 100;
-		case WP_SNOOPERSCOPE: return 150;
+		case WP_MAUSER:       return svParams.mauserPrice;
+		case WP_MOSIN:        return svParams.mosinPrice;
+		case WP_DELISLE:      return svParams.delislePrice;
+		case WP_SNIPERRIFLE:  return svParams.sniperriflePrice;
+		case WP_SNOOPERSCOPE: return svParams.snooperScopePrice;
 
 		// Auto Rifles
-		case WP_M1GARAND:     return 150;
-		case WP_G43:          return 120;
-		case WP_M1941:        return 120;
+		case WP_M1GARAND:     return svParams.m1garandPrice;
+		case WP_G43:          return svParams.g43Price;
+		case WP_M1941:        return svParams.m1941Price;
 
 		// Assault Rifles
-		case WP_MP44:         return 200;
-		case WP_FG42:         return 200;
-		case WP_BAR:          return 200;
+		case WP_MP44:         return svParams.mp44Price;
+		case WP_FG42:         return svParams.fg42Price;
+		case WP_BAR:          return svParams.barPrice;
 
 		// Shotguns
-		case WP_M97:          return 180;
-		case WP_AUTO5:        return 200;
+		case WP_M97:          return svParams.shotgunPrice;
+		case WP_AUTO5:        return svParams.auto5Price;
 
 		// Heavy
-		case WP_MG42M:        return 300;
-		case WP_PANZERFAUST:  return 400;
-		case WP_BROWNING:     return 400;
-		case WP_FLAMETHROWER: return 500;
-		case WP_VENOM:        return 500;
-		case WP_TESLA:        return 500;
+		case WP_MG42M:        return svParams.mg42mPrice;
+		case WP_PANZERFAUST:  return svParams.panzerPrice;
+		case WP_BROWNING:     return svParams.browningPrice;
+		case WP_FLAMETHROWER: return svParams.flamerPrice;
+		case WP_VENOM:        return svParams.venomPrice;
+		case WP_TESLA:        return svParams.teslaPrice;
 
 		// Grenades
-		case WP_GRENADE_LAUNCHER:   return 150;
-		case WP_GRENADE_PINEAPPLE:  return 150;
+		case WP_GRENADE_LAUNCHER:   return svParams.grenPrice;
+		case WP_GRENADE_PINEAPPLE:  return svParams.pineapplePrice;
 
-		default: return 100;
+		default: return svParams.defaultWeaponPrice;
 	}
 }
 

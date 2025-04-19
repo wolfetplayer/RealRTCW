@@ -5435,441 +5435,1033 @@ void AI_LoadSurvivalTable( const char* mapname )
 
 // Read survival parameters into aiDefaults from given file handle
 // File handle position expected to be at opening brace of survival block
-qboolean BG_ParseSurvivalTable( int handle )
+qboolean BG_ParseSurvivalTable(int handle)
 {
 	pc_token_t token;
 	int i;
 	char msg[64];
 	char soundPath[MAX_QPATH];
 
-	if ( !trap_PC_ReadToken( handle, &token ) || Q_stricmp( token.string, "{" ) ) {
-		PC_SourceError( handle, "expected '{'" );
+	if (!trap_PC_ReadToken(handle, &token) || Q_stricmp(token.string, "{"))
+	{
+		PC_SourceError(handle, "expected '{'");
 		return qfalse;
 	}
 
-	while ( 1 ) {
-		if ( !trap_PC_ReadToken( handle, &token ) ) {
+	while (1)
+	{
+		if (!trap_PC_ReadToken(handle, &token))
+		{
 			break;
 		}
-		if ( token.string[0] == '}' ) {
+		if (token.string[0] == '}')
+		{
 			break;
 		}
 
 		// float
-		if ( !Q_stricmp( token.string, "healthIncreaseMultiplier" ) ) {
-			if ( !PC_Float_Parse( handle, &svParams.healthIncreaseMultiplier ) ) {
-				PC_SourceError( handle, "expected healthIncreaseMultiplier value" );
+		if (!Q_stricmp(token.string, "healthIncreaseMultiplier"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.healthIncreaseMultiplier))
+			{
+				PC_SourceError(handle, "expected healthIncreaseMultiplier value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "speedIncreaseDivider" ) ) {
-			if ( !PC_Float_Parse( handle, &svParams.speedIncreaseDivider ) ) {
-				PC_SourceError( handle, "expected speedIncreaseDivider value" );
+		}
+		else if (!Q_stricmp(token.string, "speedIncreaseDivider"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.speedIncreaseDivider))
+			{
+				PC_SourceError(handle, "expected speedIncreaseDivider value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "spawnTimeFalloffMultiplier" ) ) {
-			if ( !PC_Float_Parse( handle, &svParams.spawnTimeFalloffMultiplier ) ) {
-				PC_SourceError( handle, "expected spawnTimeFalloffMultiplier value" );
+		}
+		else if (!Q_stricmp(token.string, "spawnTimeFalloffMultiplier"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.spawnTimeFalloffMultiplier))
+			{
+				PC_SourceError(handle, "expected spawnTimeFalloffMultiplier value");
 				return qfalse;
 			}
 
-		// int
-		} else if ( !Q_stricmp( token.string, "initialKillCountRequirement" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialKillCountRequirement ) ) {
-				PC_SourceError( handle, "expected initialKillCountRequirement value" );
+			// int
+		}
+		else if (!Q_stricmp(token.string, "initialKillCountRequirement"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialKillCountRequirement))
+			{
+				PC_SourceError(handle, "expected initialKillCountRequirement value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialSoldiersCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialSoldiersCount))
+			{
+				PC_SourceError(handle, "expected initialSoldiersCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialEliteGuardsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialEliteGuardsCount))
+			{
+				PC_SourceError(handle, "expected initialEliteGuardsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialBlackGuardsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialBlackGuardsCount))
+			{
+				PC_SourceError(handle, "expected initialBlackGuardsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialVenomsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialVenomsCount))
+			{
+				PC_SourceError(handle, "expected initialVenomsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialZombiesCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialZombiesCount))
+			{
+				PC_SourceError(handle, "expected initialZombiesCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialWarriorsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialWarriorsCount))
+			{
+				PC_SourceError(handle, "expected initialWarriorsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialProtosCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialProtosCount))
+			{
+				PC_SourceError(handle, "expected initialProtosCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialPartisansCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialPartisansCount))
+			{
+				PC_SourceError(handle, "expected initialPartisansCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialGhostsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialGhostsCount))
+			{
+				PC_SourceError(handle, "expected initialGhostsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialPriestsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialPriestsCount))
+			{
+				PC_SourceError(handle, "expected initialPriestsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "soldiersIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.soldiersIncrease))
+			{
+				PC_SourceError(handle, "expected soldiersIncrease value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "eliteGuardsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.eliteGuardsIncrease))
+			{
+				PC_SourceError(handle, "expected eliteGuardsIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialSoldiersCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialSoldiersCount ) ) {
-				PC_SourceError( handle, "expected initialSoldiersCount value" );
+		}
+		else if (!Q_stricmp(token.string, "blackGuardsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.blackGuardsIncrease))
+			{
+				PC_SourceError(handle, "expected blackGuardsIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialEliteGuardsCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialEliteGuardsCount ) ) {
-				PC_SourceError( handle, "expected initialEliteGuardsCount value" );
+		}
+		else if (!Q_stricmp(token.string, "venomsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.venomsIncrease))
+			{
+				PC_SourceError(handle, "expected venomsIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialBlackGuardsCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialBlackGuardsCount ) ) {
-				PC_SourceError( handle, "expected initialBlackGuardsCount value" );
+		}
+		else if (!Q_stricmp(token.string, "zombiesIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.zombiesIncrease))
+			{
+				PC_SourceError(handle, "expected zombiesIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialVenomsCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialVenomsCount ) ) {
-				PC_SourceError( handle, "expected initialVenomsCount value" );
+		}
+		else if (!Q_stricmp(token.string, "warriorsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.warriorsIncrease))
+			{
+				PC_SourceError(handle, "expected warriorsIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialZombiesCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialZombiesCount ) ) {
-				PC_SourceError( handle, "expected initialZombiesCount value" );
+		}
+		else if (!Q_stricmp(token.string, "protosIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.protosIncrease))
+			{
+				PC_SourceError(handle, "expected protosIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialWarriorsCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialWarriorsCount ) ) {
-				PC_SourceError( handle, "expected initialWarriorsCount value" );
+		}
+		else if (!Q_stricmp(token.string, "partisansIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.partisansIncrease))
+			{
+				PC_SourceError(handle, "expected partisansIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialProtosCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialProtosCount ) ) {
-				PC_SourceError( handle, "expected initialProtosCount value" );
+		}
+		else if (!Q_stricmp(token.string, "ghostsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ghostsIncrease))
+			{
+				PC_SourceError(handle, "expected ghostsIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialPartisansCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialPartisansCount ) ) {
-				PC_SourceError( handle, "expected initialPartisansCount value" );
+		}
+		else if (!Q_stricmp(token.string, "priestsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.priestsIncrease))
+			{
+				PC_SourceError(handle, "expected priestsIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialGhostsCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialGhostsCount ) ) {
-				PC_SourceError( handle, "expected initialGhostsCount value" );
+		}
+		else if (!Q_stricmp(token.string, "maxSoldiers"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxSoldiers))
+			{
+				PC_SourceError(handle, "expected maxSoldiers value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "initialPriestsCount" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.initialPriestsCount ) ) {
-				PC_SourceError( handle, "expected initialPriestsCount value" );
+		}
+		else if (!Q_stricmp(token.string, "maxEliteGuards"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxEliteGuards))
+			{
+				PC_SourceError(handle, "expected maxEliteGuards value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "soldiersIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.soldiersIncrease ) ) {
-				PC_SourceError( handle, "expected soldiersIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxBlackGuards"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxBlackGuards))
+			{
+				PC_SourceError(handle, "expected maxBlackGuards value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "eliteGuardsIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.eliteGuardsIncrease ) ) {
-				PC_SourceError( handle, "expected eliteGuardsIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxVenoms"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxVenoms))
+			{
+				PC_SourceError(handle, "expected maxVenoms value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "blackGuardsIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.blackGuardsIncrease ) ) {
-				PC_SourceError( handle, "expected blackGuardsIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxZombies"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxZombies))
+			{
+				PC_SourceError(handle, "expected maxZombies value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "venomsIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.venomsIncrease ) ) {
-				PC_SourceError( handle, "expected venomsIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxWarriors"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxWarriors))
+			{
+				PC_SourceError(handle, "expected maxWarriors value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "zombiesIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.zombiesIncrease ) ) {
-				PC_SourceError( handle, "expected zombiesIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxProtos"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxProtos))
+			{
+				PC_SourceError(handle, "expected maxProtos value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "warriorsIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.warriorsIncrease ) ) {
-				PC_SourceError( handle, "expected warriorsIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxPartisans"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxPartisans))
+			{
+				PC_SourceError(handle, "expected maxPartisans value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "protosIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.protosIncrease ) ) {
-				PC_SourceError( handle, "expected protosIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxGhosts"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxGhosts))
+			{
+				PC_SourceError(handle, "expected maxGhosts value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "partisansIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.partisansIncrease ) ) {
-				PC_SourceError( handle, "expected partisansIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "maxPriests"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxPriests))
+			{
+				PC_SourceError(handle, "expected maxPriests value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "ghostsIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.ghostsIncrease ) ) {
-				PC_SourceError( handle, "expected ghostsIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "waveEg"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveEg))
+			{
+				PC_SourceError(handle, "expected waveEg value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "priestsIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.priestsIncrease ) ) {
-				PC_SourceError( handle, "expected priestsIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "waveBg"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveBg))
+			{
+				PC_SourceError(handle, "expected waveBg value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxSoldiers" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxSoldiers ) ) {
-				PC_SourceError( handle, "expected maxSoldiers value" );
+		}
+		else if (!Q_stricmp(token.string, "waveV"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveV))
+			{
+				PC_SourceError(handle, "expected waveV value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxEliteGuards" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxEliteGuards ) ) {
-				PC_SourceError( handle, "expected maxEliteGuards value" );
+		}
+		else if (!Q_stricmp(token.string, "waveWarz"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveWarz))
+			{
+				PC_SourceError(handle, "expected waveWarz value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxBlackGuards" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxBlackGuards ) ) {
-				PC_SourceError( handle, "expected maxBlackGuards value" );
+		}
+		else if (!Q_stricmp(token.string, "waveProtos"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveProtos))
+			{
+				PC_SourceError(handle, "expected waveProtos value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxVenoms" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxVenoms ) ) {
-				PC_SourceError( handle, "expected maxVenoms value" );
+		}
+		else if (!Q_stricmp(token.string, "waveGhosts"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveGhosts))
+			{
+				PC_SourceError(handle, "expected waveGhosts value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxZombies" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxZombies ) ) {
-				PC_SourceError( handle, "expected maxZombies value" );
+		}
+		else if (!Q_stricmp(token.string, "wavePriests"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.wavePriests))
+			{
+				PC_SourceError(handle, "expected wavePriests value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxWarriors" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxWarriors ) ) {
-				PC_SourceError( handle, "expected maxWarriors value" );
+		}
+		else if (!Q_stricmp(token.string, "wavePartisans"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.wavePartisans))
+			{
+				PC_SourceError(handle, "expected wavePartisans value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxProtos" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxProtos ) ) {
-				PC_SourceError( handle, "expected maxProtos value" );
+		}
+		else if (!Q_stricmp(token.string, "zombieHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.zombieHealthCap))
+			{
+				PC_SourceError(handle, "expected zombieHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxPartisans" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxPartisans ) ) {
-				PC_SourceError( handle, "expected maxPartisans value" );
+		}
+		else if (!Q_stricmp(token.string, "warriorHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.warriorHealthCap))
+			{
+				PC_SourceError(handle, "expected warriorHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxGhosts" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxGhosts ) ) {
-				PC_SourceError( handle, "expected maxGhosts value" );
+		}
+		else if (!Q_stricmp(token.string, "protosHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.protosHealthCap))
+			{
+				PC_SourceError(handle, "expected protosHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxPriests" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxPriests ) ) {
-				PC_SourceError( handle, "expected maxPriests value" );
+		}
+		else if (!Q_stricmp(token.string, "partisansHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.partisansHealthCap))
+			{
+				PC_SourceError(handle, "expected partisansHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "waveEg" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.waveEg ) ) {
-				PC_SourceError( handle, "expected waveEg value" );
+		}
+		else if (!Q_stricmp(token.string, "ghostHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ghostHealthCap))
+			{
+				PC_SourceError(handle, "expected ghostHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "waveBg" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.waveBg ) ) {
-				PC_SourceError( handle, "expected waveBg value" );
+		}
+		else if (!Q_stricmp(token.string, "priestHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.priestHealthCap))
+			{
+				PC_SourceError(handle, "expected priestHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "waveV" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.waveV ) ) {
-				PC_SourceError( handle, "expected waveV value" );
+		}
+		else if (!Q_stricmp(token.string, "soldierHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.soldierHealthCap))
+			{
+				PC_SourceError(handle, "expected soldierHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "waveWarz" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.waveWarz ) ) {
-				PC_SourceError( handle, "expected waveWarz value" );
+		}
+		else if (!Q_stricmp(token.string, "eliteGuardHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.eliteGuardHealthCap))
+			{
+				PC_SourceError(handle, "expected eliteGuardHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "waveProtos" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.waveProtos ) ) {
-				PC_SourceError( handle, "expected waveProtos value" );
+		}
+		else if (!Q_stricmp(token.string, "blackGuardHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.blackGuardHealthCap))
+			{
+				PC_SourceError(handle, "expected blackGuardHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "waveGhosts" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.waveGhosts ) ) {
-				PC_SourceError( handle, "expected waveGhosts value" );
+		}
+		else if (!Q_stricmp(token.string, "venomHealthCap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.venomHealthCap))
+			{
+				PC_SourceError(handle, "expected venomHealthCap value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "wavePriests" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.wavePriests ) ) {
-				PC_SourceError( handle, "expected wavePriests value" );
+		}
+		else if (!Q_stricmp(token.string, "soldierBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.soldierBaseHealth))
+			{
+				PC_SourceError(handle, "expected soldierBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "wavePartisans" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.wavePartisans ) ) {
-				PC_SourceError( handle, "expected wavePartisans value" );
+		}
+		else if (!Q_stricmp(token.string, "partisansBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.partisansBaseHealth))
+			{
+				PC_SourceError(handle, "expected partisansBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "zombieHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.zombieHealthCap ) ) {
-				PC_SourceError( handle, "expected zombieHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "eliteGuardBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.eliteGuardBaseHealth))
+			{
+				PC_SourceError(handle, "expected eliteGuardBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "warriorHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.warriorHealthCap ) ) {
-				PC_SourceError( handle, "expected warriorHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "blackGuardBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.blackGuardBaseHealth))
+			{
+				PC_SourceError(handle, "expected blackGuardBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "protosHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.protosHealthCap ) ) {
-				PC_SourceError( handle, "expected protosHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "venomBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.venomBaseHealth))
+			{
+				PC_SourceError(handle, "expected venomBaseHealth value");
 				return qfalse;
 			}
-		}  else if ( !Q_stricmp( token.string, "partisansHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.partisansHealthCap ) ) {
-				PC_SourceError( handle, "expected partisansHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "zombieBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.zombieBaseHealth))
+			{
+				PC_SourceError(handle, "expected zombieBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "ghostHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.ghostHealthCap ) ) {
-				PC_SourceError( handle, "expected ghostHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "warriorBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.warriorBaseHealth))
+			{
+				PC_SourceError(handle, "expected warriorBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "priestHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.priestHealthCap ) ) {
-				PC_SourceError( handle, "expected priestHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "protosBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.protosBaseHealth))
+			{
+				PC_SourceError(handle, "expected protosBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "soldierHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.soldierHealthCap ) ) {
-				PC_SourceError( handle, "expected soldierHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "ghostBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ghostBaseHealth))
+			{
+				PC_SourceError(handle, "expected ghostBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "eliteGuardHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.eliteGuardHealthCap ) ) {
-				PC_SourceError( handle, "expected eliteGuardHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "priestBaseHealth"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.priestBaseHealth))
+			{
+				PC_SourceError(handle, "expected priestBaseHealth value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "blackGuardHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.blackGuardHealthCap ) ) {
-				PC_SourceError( handle, "expected blackGuardHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "powerupDropChance"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.powerupDropChance))
+			{
+				PC_SourceError(handle, "expected powerupDropChance value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "venomHealthCap" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.venomHealthCap ) ) {
-				PC_SourceError( handle, "expected venomHealthCap value" );
+		}
+		else if (!Q_stricmp(token.string, "powerupDropChanceScavengerIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.powerupDropChanceScavengerIncrease))
+			{
+				PC_SourceError(handle, "expected powerupDropChanceScavengerIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "soldierBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.soldierBaseHealth ) ) {
-				PC_SourceError( handle, "expected soldierBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "treasureDropChance"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.treasureDropChance))
+			{
+				PC_SourceError(handle, "expected treasureDropChance value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "partisansBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.partisansBaseHealth ) ) {
-				PC_SourceError( handle, "expected partisansBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "treasureDropChanceScavengerIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.treasureDropChanceScavengerIncrease))
+			{
+				PC_SourceError(handle, "expected treasureDropChanceScavengerIncrease value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "eliteGuardBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.eliteGuardBaseHealth ) ) {
-				PC_SourceError( handle, "expected eliteGuardBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "scoreHeadshotKill"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.scoreHeadshotKill))
+			{
+				PC_SourceError(handle, "expected scoreHeadshotKill value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "blackGuardBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.blackGuardBaseHealth ) ) {
-				PC_SourceError( handle, "expected blackGuardBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "scoreHit"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.scoreHit))
+			{
+				PC_SourceError(handle, "expected scoreHit value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "venomBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.venomBaseHealth ) ) {
-				PC_SourceError( handle, "expected venomBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "scoreBaseKill"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.scoreBaseKill))
+			{
+				PC_SourceError(handle, "expected scoreBaseKill value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "zombieBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.zombieBaseHealth ) ) {
-				PC_SourceError( handle, "expected zombieBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "scoreKnifeBonus"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.scoreKnifeBonus))
+			{
+				PC_SourceError(handle, "expected scoreKnifeBonus value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "warriorBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.warriorBaseHealth ) ) {
-				PC_SourceError( handle, "expected warriorBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "minSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.minSpawnTime))
+			{
+				PC_SourceError(handle, "expected minSpawnTime value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "protosBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.protosBaseHealth ) ) {
-				PC_SourceError( handle, "expected protosBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "friendlySpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.friendlySpawnTime))
+			{
+				PC_SourceError(handle, "expected friendlySpawnTime value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "ghostBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.ghostBaseHealth ) ) {
-				PC_SourceError( handle, "expected ghostBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "maxPerks"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxPerks))
+			{
+				PC_SourceError(handle, "expected maxPerks value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "priestBaseHealth" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.priestBaseHealth ) ) {
-				PC_SourceError( handle, "expected priestBaseHealth value" );
+		}
+		else if (!Q_stricmp(token.string, "maxPerksEng"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxPerksEng))
+			{
+				PC_SourceError(handle, "expected maxPerksEng value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "powerupDropChance" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.powerupDropChance ) ) {
-				PC_SourceError( handle, "expected powerupDropChance value" );
+		}
+		else if (!Q_stricmp(token.string, "armorPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.armorPrice))
+			{
+				PC_SourceError(handle, "expected armorPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "powerupDropChanceScavengerIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.powerupDropChanceScavengerIncrease ) ) {
-				PC_SourceError( handle, "expected powerupDropChanceScavengerIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "randomPerkPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.randomPerkPrice))
+			{
+				PC_SourceError(handle, "expected randomPerkPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "treasureDropChance" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.treasureDropChance ) ) {
-				PC_SourceError( handle, "expected treasureDropChance value" );
+		}
+		else if (!Q_stricmp(token.string, "randomWeaponPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.randomWeaponPrice))
+			{
+				PC_SourceError(handle, "expected randomWeaponPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "treasureDropChanceScavengerIncrease" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.treasureDropChanceScavengerIncrease ) ) {
-				PC_SourceError( handle, "expected treasureDropChanceScavengerIncrease value" );
+		}
+		else if (!Q_stricmp(token.string, "secondchancePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.secondchancePrice))
+			{
+				PC_SourceError(handle, "expected secondchancePrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "scoreHeadshotKill" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreHeadshotKill ) ) {
-				PC_SourceError( handle, "expected scoreHeadshotKill value" );
+		}
+		else if (!Q_stricmp(token.string, "runnerPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.runnerPrice))
+			{
+				PC_SourceError(handle, "expected runnerPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "scoreHit" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreHit ) ) {
-				PC_SourceError( handle, "expected scoreHit value" );
+		}
+		else if (!Q_stricmp(token.string, "scavengerPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.scavengerPrice))
+			{
+				PC_SourceError(handle, "expected scavengerPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "scoreBaseKill" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreBaseKill ) ) {
-				PC_SourceError( handle, "expected scoreBaseKill value" );
+		}
+		else if (!Q_stricmp(token.string, "fasthandsPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.fasthandsPrice))
+			{
+				PC_SourceError(handle, "expected fasthandsPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "scoreKnifeBonus" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.scoreKnifeBonus ) ) {
-				PC_SourceError( handle, "expected scoreKnifeBonus value" );
+		}
+		else if (!Q_stricmp(token.string, "doubleshotPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.doubleshotPrice))
+			{
+				PC_SourceError(handle, "expected doubleshotPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "minSpawnTime" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.minSpawnTime ) ) {
-				PC_SourceError( handle, "expected minSpawnTime value" );
+		}
+		else if (!Q_stricmp(token.string, "resiliencePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.resiliencePrice))
+			{
+				PC_SourceError(handle, "expected resiliencePrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "friendlySpawnTime" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.friendlySpawnTime ) ) {
-				PC_SourceError( handle, "expected friendlySpawnTime value" );
+		}
+		else if (!Q_stricmp(token.string, "defaultPerkPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.defaultPerkPrice))
+			{
+				PC_SourceError(handle, "expected defaultPerkPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxPerks" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxPerks ) ) {
-				PC_SourceError( handle, "expected maxPerks value" );
+		}
+		else if (!Q_stricmp(token.string, "knifePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.knifePrice))
+			{
+				PC_SourceError(handle, "expected knifePrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "maxPerksEng" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.maxPerksEng ) ) {
-				PC_SourceError( handle, "expected maxPerksEng value" );
+		}
+		else if (!Q_stricmp(token.string, "lugerPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.lugerPrice))
+			{
+				PC_SourceError(handle, "expected lugerPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "armorPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.armorPrice ) ) {
-				PC_SourceError( handle, "expected armorPrice value" );
+		}
+		else if (!Q_stricmp(token.string, "coltPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.coltPrice))
+			{
+				PC_SourceError(handle, "expected coltPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "randomPerkPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.randomPerkPrice ) ) {
-				PC_SourceError( handle, "expected randomPerkPrice value" );
+		}
+		else if (!Q_stricmp(token.string, "silencerPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.silencerPrice))
+			{
+				PC_SourceError(handle, "expected silencerPrice value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "randomWeaponPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.randomWeaponPrice ) ) {
-				PC_SourceError( handle, "expected randomWeaponPrice value" );
+		}
+		else if (!Q_stricmp(token.string, "tt33Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.tt33Price))
+			{
+				PC_SourceError(handle, "expected tt33Price value");
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
-				PC_SourceError( handle, "expected startingSpawnTime value" );
+		}
+		else if (!Q_stricmp(token.string, "revolverPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.revolverPrice))
+			{
+				PC_SourceError(handle, "expected revolverPrice value");
 				return qfalse;
 			}
-		// string
-		} else if ( !Q_stricmp( token.string, "announcerSound" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, (char *)&svParams.announcerSound[0], MAX_QPATH ) ) {
-				PC_SourceError( handle, "expected announcerSound value" );
+		}
+		else if (!Q_stricmp(token.string, "akimboPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.akimboPrice))
+			{
+				PC_SourceError(handle, "expected akimboPrice value");
 				return qfalse;
 			}
-		} else if ( Q_stristr( token.string, "announcerSound" ) == token.string ) {
-			sscanf( token.string, "announcerSound%d", &i );
+		}
+		else if (!Q_stricmp(token.string, "hdmPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.hdmPrice))
+			{
+				PC_SourceError(handle, "expected hdmPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "dualtt33Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.dualtt33Price))
+			{
+				PC_SourceError(handle, "expected dualtt33Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "mp40Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mp40Price))
+			{
+				PC_SourceError(handle, "expected mp40Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "stenPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.stenPrice))
+			{
+				PC_SourceError(handle, "expected stenPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "mp34Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mp34Price))
+			{
+				PC_SourceError(handle, "expected mp34Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "thompsonPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.thompsonPrice))
+			{
+				PC_SourceError(handle, "expected thompsonPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "ppshPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ppshPrice))
+			{
+				PC_SourceError(handle, "expected ppshPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "mauserPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mauserPrice))
+			{
+				PC_SourceError(handle, "expected mauserPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "mosinPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mosinPrice))
+			{
+				PC_SourceError(handle, "expected mosinPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "delislePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.delislePrice))
+			{
+				PC_SourceError(handle, "expected delislePrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "sniperriflePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.sniperriflePrice))
+			{
+				PC_SourceError(handle, "expected sniperriflePrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "snooperScopePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.snooperScopePrice))
+			{
+				PC_SourceError(handle, "expected snooperScopePrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "m1garandPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.m1garandPrice))
+			{
+				PC_SourceError(handle, "expected m1garandPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "g43Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.g43Price))
+			{
+				PC_SourceError(handle, "expected g43Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "m1941Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.m1941Price))
+			{
+				PC_SourceError(handle, "expected m1941Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "mp44Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mp44Price))
+			{
+				PC_SourceError(handle, "expected mp44Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "barPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.barPrice))
+			{
+				PC_SourceError(handle, "expected barPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "fg42Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.fg42Price))
+			{
+				PC_SourceError(handle, "expected fg42Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "shotgunPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.shotgunPrice))
+			{
+				PC_SourceError(handle, "expected shotgunPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "auto5Price"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.auto5Price))
+			{
+				PC_SourceError(handle, "expected auto5Price value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "mg42mPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mg42mPrice))
+			{
+				PC_SourceError(handle, "expected mg42mPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "browningPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.browningPrice))
+			{
+				PC_SourceError(handle, "expected browningPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "panzerPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.panzerPrice))
+			{
+				PC_SourceError(handle, "expected panzerPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "flamerPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.flamerPrice))
+			{
+				PC_SourceError(handle, "expected flamerPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "teslaPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.teslaPrice))
+			{
+				PC_SourceError(handle, "expected teslaPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "venomPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.venomPrice))
+			{
+				PC_SourceError(handle, "expected venomPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "grenPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.grenPrice))
+			{
+				PC_SourceError(handle, "expected grenPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "pineapplePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.pineapplePrice))
+			{
+				PC_SourceError(handle, "expected pineapplePrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "defaultWeaponPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.defaultWeaponPrice))
+			{
+				PC_SourceError(handle, "expected defaultWeaponPrice value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "startingSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.startingSpawnTime))
+			{
+				PC_SourceError(handle, "expected startingSpawnTime value");
+				return qfalse;
+			}
+			// string
+		}
+		else if (!Q_stricmp(token.string, "announcerSound"))
+		{
+			if (!PC_String_ParseNoAlloc(handle, (char *)&svParams.announcerSound[0], MAX_QPATH))
+			{
+				PC_SourceError(handle, "expected announcerSound value");
+				return qfalse;
+			}
+		}
+		else if (Q_stristr(token.string, "announcerSound") == token.string)
+		{
+			sscanf(token.string, "announcerSound%d", &i);
 
-			if ( !PC_String_ParseNoAlloc( handle, (char *)&soundPath, MAX_QPATH ) ) {
-				PC_SourceError( handle, "expected announcerSound value" );
+			if (!PC_String_ParseNoAlloc(handle, (char *)&soundPath, MAX_QPATH))
+			{
+				PC_SourceError(handle, "expected announcerSound value");
 				return qfalse;
 			}
 
-			if ( i - 1 >= ANNOUNCE_SOUNDS_COUNT ) {
-				sprintf(msg, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1 );
-				PC_SourceError( handle, msg );
-			} else {
-				strcpy( svParams.announcerSound[i - 1], soundPath );
+			if (i - 1 >= ANNOUNCE_SOUNDS_COUNT)
+			{
+				sprintf(msg, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1);
+				PC_SourceError(handle, msg);
 			}
-		} else {
-			PC_SourceError( handle, "unknown token '%s'", token.string );
+			else
+			{
+				strcpy(svParams.announcerSound[i - 1], soundPath);
+			}
+		}
+		else
+		{
+			PC_SourceError(handle, "unknown token '%s'", token.string);
 			return qfalse;
 		}
 	}

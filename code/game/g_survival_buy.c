@@ -498,7 +498,6 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 	}
 
 	if (success) {
-		activator->client->ps.persistant[PERS_SCORE] -= price;
 		activator->client->hasPurchased = qtrue;
 		ClientUserinfoChanged(clientNum);
 	}

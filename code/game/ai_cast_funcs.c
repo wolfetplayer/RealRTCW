@@ -5843,7 +5843,7 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected randomWeaponPrice value" );
 				return qfalse;
 			}
-		 else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
+		} else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
 			if ( !PC_Int_Parse( handle, &svParams.startingSpawnTime ) ) {
 				PC_SourceError( handle, "expected startingSpawnTime value" );
 				return qfalse;
@@ -5872,9 +5872,6 @@ qboolean BG_ParseSurvivalTable( int handle )
 			PC_SourceError( handle, "unknown token '%s'", token.string );
 			return qfalse;
 		}
-	}
-
-	return qtrue;
 	}
 
 	return qtrue;

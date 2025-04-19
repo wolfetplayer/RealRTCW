@@ -5828,19 +5828,19 @@ qboolean BG_ParseSurvivalTable( int handle )
 				PC_SourceError( handle, "expected maxPerksEng value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "armorDefaultPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.armorDefaultPrice ) ) {
-				PC_SourceError( handle, "expected armorDefaultPrice value" );
+		} else if ( !Q_stricmp( token.string, "armorPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.armorPrice ) ) {
+				PC_SourceError( handle, "expected armorPrice value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "randomPerkDefaultPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.randomPerkDefaultPrice ) ) {
-				PC_SourceError( handle, "expected randomPerkDefaultPrice value" );
+		} else if ( !Q_stricmp( token.string, "randomPerkPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.randomPerkPrice ) ) {
+				PC_SourceError( handle, "expected randomPerkPrice value" );
 				return qfalse;
 			}
-		} else if ( !Q_stricmp( token.string, "randomWeaponDefaultPrice" ) ) {
-			if ( !PC_Int_Parse( handle, &svParams.randomWeaponDefaultPrice ) ) {
-				PC_SourceError( handle, "expected randomWeaponDefaultPrice value" );
+		} else if ( !Q_stricmp( token.string, "randomWeaponPrice" ) ) {
+			if ( !PC_Int_Parse( handle, &svParams.randomWeaponPrice ) ) {
+				PC_SourceError( handle, "expected randomWeaponPrice value" );
 				return qfalse;
 			}
 		 else if ( !Q_stricmp( token.string, "startingSpawnTime" ) ) {
@@ -5872,6 +5872,9 @@ qboolean BG_ParseSurvivalTable( int handle )
 			PC_SourceError( handle, "unknown token '%s'", token.string );
 			return qfalse;
 		}
+	}
+
+	return qtrue;
 	}
 
 	return qtrue;

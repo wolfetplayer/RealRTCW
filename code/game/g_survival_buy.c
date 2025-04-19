@@ -116,7 +116,7 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 		? sizeof(random_box_weapons_dlc) / sizeof(random_box_weapons_dlc[0]) 
 		: sizeof(random_box_weapons) / sizeof(random_box_weapons[0]);
 
-	int price = ent->price > 0 ? ent->price : svParams.randomWeaponDefaultPrice;
+	int price = ent->price > 0 ? ent->price : svParams.randomWeaponPrice;
 
 	if (activator->client->ps.persistant[PERS_SCORE] < price) {
 		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
@@ -187,7 +187,7 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 		"perk_weaponhandling", "perk_rifling", "perk_secondchance"
 	};
 
-	int price = (ent->price > 0) ? ent->price : svParams.randomPerkDefaultPrice;
+	int price = (ent->price > 0) ? ent->price : svParams.randomPerkPrice;
 	const int numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
 
 	// Perk count limit
@@ -335,7 +335,7 @@ qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int p
 
 	// Fallback price if not set by mapper
 	if (price <= 0)
-		price = svParams.armorDefaultPrice;
+		price = svParams.armorPrice;
 
 	// Check score
 	if (activator->client->ps.persistant[PERS_SCORE] < price) {
@@ -360,13 +360,13 @@ Survival_GetDefaultPerkPrice
 */
 int Survival_GetDefaultPerkPrice(int perk) {
 	switch (perk) {
-		case PERK_SECONDCHANCE:    return 150;
-		case PERK_RUNNER:          return 200;
-		case PERK_SCAVENGER:       return 250;
-		case PERK_WEAPONHANDLING:  return 300;
-		case PERK_RIFLING:         return 350;
-		case PERK_RESILIENCE:      return 400;
-		default:                   return 200;
+		case PERK_SECONDCHANCE:    return svParams.secondchancePrice;
+		case PERK_RUNNER:          return svParams.runnerPrice;
+		case PERK_SCAVENGER:       return svParams.scavengerPrice;
+		case PERK_WEAPONHANDLING:  return svParams.fasthandsPrice;
+		case PERK_RIFLING:         return svParams.doubleshotPrice;
+		case PERK_RESILIENCE:      return svParams.resiliencePrice;
+		default:                   return svParams.defaultPerkPrice;
 	}
 }
 

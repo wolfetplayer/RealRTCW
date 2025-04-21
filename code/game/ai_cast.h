@@ -735,6 +735,7 @@ float AICast_WeaponRange( cast_state_t *cs, int weaponnum );
 // ai_cast_events.c
 void    AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point );
 void    AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
+void    AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
 void    AICast_Sight( gentity_t *ent, gentity_t *other, int lastSight );
 void    AICast_EndChase( cast_state_t *cs );
 void    AICast_ProcessActivate( int entNum, int activatorNum );

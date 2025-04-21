@@ -1672,6 +1672,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_AIDoor_Touch", (byte *)AICast_AIDoor_Touch},
 {"AICast_EndChase", (byte *)AICast_EndChase},
 {"AICast_Die", (byte *)AICast_Die},
+{"AICast_Die_Survival", (byte *)AICast_Die_Survival},
 {"AICast_Pain", (byte *)AICast_Pain},
 {"AICast_Sight", (byte *)AICast_Sight},
 {"AICast_DBG_Cmd_f", (byte *)AICast_DBG_Cmd_f},

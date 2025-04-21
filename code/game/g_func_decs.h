@@ -1677,6 +1677,7 @@ extern void AICast_ProcessActivate ( int entNum , int activatorNum ) ;
 extern void AICast_AIDoor_Touch ( gentity_t * ent , gentity_t * aidoor_trigger , gentity_t * door ) ;
 extern void AICast_EndChase ( cast_state_t * cs ) ;
 extern void AICast_Die ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker , int damage , int meansOfDeath ) ;
+extern void AICast_Die_Survival ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker , int damage , int meansOfDeath ) ;
 extern void AICast_Pain ( gentity_t * targ , gentity_t * attacker , int damage , vec3_t point ) ;
 extern void AICast_Sight ( gentity_t * ent , gentity_t * other , int lastSight ) ;
 extern void AICast_DBG_Cmd_f ( int clientNum ) ;

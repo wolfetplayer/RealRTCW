@@ -51,6 +51,448 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "../steam/steam.h"
 
+
+
+/*
+============
+AICast_Die
+============
+*/
+void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {
+	int contents;
+	int killer = 0;
+	cast_state_t    *cs;
+	qboolean nogib = qtrue;
+	char mapname[MAX_QPATH];
+	qboolean respawn = qfalse;
+
+	// Achievements related stuff! 
+	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
+	qboolean modKicked = (meansOfDeath == MOD_KICKED);
+	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
+	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
+	qboolean modFalling = (meansOfDeath == MOD_FALLING);
+	qboolean modFlamer = (meansOfDeath == MOD_FLAMETHROWER);
+	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
+	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
+	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
+	qboolean modMG = (meansOfDeath == MOD_MACHINEGUN);
+
+    // ETSP Achievements stuff!
+	qboolean modGL = (meansOfDeath == MOD_M7 );
+	qboolean modBr = (meansOfDeath == MOD_BROWNING );
+	qboolean modAir = (meansOfDeath == MOD_AIRSTRIKE );
+	qboolean modGas = (meansOfDeath == MOD_POISONGAS );
+	
+	
+	if(self->aiCharacter == AICHAR_LOPER && killerPlayer && modPanzerfaust)
+	{
+		if ( !g_cheats.integer )
+		{
+		steamSetAchievement("ACH_LOPER_ROCKET");
+		}
+	}
+
+	if(self->aiCharacter == AICHAR_PROTOSOLDIER && killerEnv && modFalling)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_PROTO_FALL");
+		}
+	}
+
+		
+	if(self->aiCharacter == AICHAR_ELITEGUARD && killerPlayer && modKicked)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_ELITE_FOOT");
+		}
+	}
+
+	if(self->aiCharacter == AICHAR_PROTOSOLDIER && killerPlayer && modKnife)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_PROTO_KNIFE");
+		}
+	}
+
+		if(self->aiCharacter == AICHAR_HEINRICH && killerEnv && modCrush)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_HEIN_NOSHOT");
+		}
+	}
+
+		if(self->aiCharacter && killerPlayer && modGL)
+	{
+		if ( !g_cheats.integer )
+		{
+		steamSetAchievement("ACH_GL");
+		}
+	}
+
+		if(self->aiCharacter == AICHAR_VENOM && killerPlayer && modBr)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_BROWNING");
+		}
+	}
+
+		if(self->aiCharacter && killerPlayer && modAir)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_AIR");
+		}
+	}
+
+
+		if(self->aiCharacter && killerPlayer && modGas)
+	{
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_GAS");
+		}
+	}
+
+	if (killerPlayer && (attacker->aiTeam != self->aiTeam))
+	{
+		Survival_AddKillScore(attacker, self, meansOfDeath);
+	}
+
+	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {
+
+			trap_SendServerCommand( -1, "mu_play sound/Zombie/firstsight/firstsight3.wav 0\n" );
+			G_AddEvent( self, EV_GIB_VAMPIRISM, killer );
+		    attacker->health += 25;
+		
+			if ( attacker->health > 300 ) 
+			{
+			attacker->health = 300;
+		    }
+
+	  }
+
+	// print debugging message
+	if ( aicast_debug.integer == 2 && attacker->s.number == 0 ) {
+		G_Printf( "killed %s\n", self->aiName );
+	}
+
+	cs = AICast_GetCastState( self->s.number );
+
+	if ( attacker ) {
+		killer = attacker->s.number;
+	} else {
+		killer = ENTITYNUM_WORLD;
+	}
+
+	// record the sighting (FIXME: silent weapons shouldn't do this, but the AI should react in some way)
+	if ( attacker && attacker->client ) {
+		AICast_UpdateVisibility( self, attacker, qtrue, qtrue );
+	}
+
+	if ( self->aiCharacter == AICHAR_HEINRICH || self->aiCharacter == AICHAR_HELGA || self->aiCharacter == AICHAR_SUPERSOLDIER || self->aiCharacter == AICHAR_SUPERSOLDIER_LAB || self->aiCharacter == AICHAR_PROTOSOLDIER ) {
+		if ( self->health <= GIB_HEALTH ) {
+			self->health = -1;
+		}
+	}
+
+	// the zombie should show special effect instead of gibbing
+	if ( self->aiCharacter == AICHAR_ZOMBIE && cs->secondDeadTime ) {
+		if ( cs->secondDeadTime > 1 ) {
+			// we are already totally dead
+			self->health += damage; // don't drop below gib_health if we weren't already below it
+			return;
+		}
+
+		// always gib
+		self->health = -999;
+		damage = 999;
+	}
+
+	// Zombies are very fragile against highly explosives
+	if ( (self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) && damage > 20 && inflictor != attacker ) {
+		self->health = -999;
+		damage = 999;
+	}
+
+	// process the event
+	if ( self->client->ps.pm_type == PM_DEAD ) {
+		// already dead
+		if ( self->health < GIB_HEALTH ) {
+			if ( self->aiCharacter == AICHAR_ZOMBIE ) {
+				// RF, changed this so Zombies always gib now
+				GibEntity( self, killer );
+				nogib = qfalse;
+				self->takedamage = qfalse;
+				self->r.contents = 0;
+				cs->secondDeadTime = 2;
+				cs->rebirthTime = 0;
+				cs->revivingTime = 0;
+			} else {
+				body_die( self, inflictor, attacker, damage, meansOfDeath );
+				return;
+			}
+		}
+
+	} else {    // this is our first death, so set everything up
+
+		if ( level.intermissiontime ) {
+			return;
+		}
+
+		self->client->ps.pm_type = PM_DEAD;
+
+		self->enemy = attacker;
+
+		// drop a weapon?
+		// if client is in a nodrop area, don't drop anything
+		contents = trap_PointContents( self->r.currentOrigin, -1 );
+		if ( !( contents & CONTENTS_NODROP ) ) {
+			TossClientWeapons( self );
+			if (g_gametype.integer == GT_SURVIVAL) {
+			TossClientItems( self, attacker );
+			TossClientPowerups( self, attacker );
+			}
+		}
+
+		// make sure the client doesn't forget about this entity until it's set to "dead" frame
+		// otherwise it might replay it's death animation if it goes out and into client view
+		self->r.svFlags |= SVF_BROADCAST;
+
+		self->takedamage = qtrue;   // can still be gibbed
+
+		self->s.weapon = WP_NONE;
+		if ( cs->bs ) {
+			cs->weaponNum = WP_NONE;
+		}
+		self->client->ps.weapon = WP_NONE;
+
+		self->s.powerups = 0;
+		self->r.contents = CONTENTS_CORPSE;
+
+		self->s.angles[0] = 0;
+		self->s.angles[1] = self->client->ps.viewangles[1];
+		self->s.angles[2] = 0;
+
+		VectorCopy( self->s.angles, self->client->ps.viewangles );
+
+		self->s.loopSound = 0;
+
+		self->r.maxs[2] = -8;
+		self->client->ps.maxs[2] = self->r.maxs[2];
+
+		// remove powerups
+		memset( self->client->ps.powerups, 0, sizeof( self->client->ps.powerups ) );
+
+		//cs->rebirthTime = 0;
+
+		// never gib in a nodrop
+		if ( self->health <= GIB_HEALTH ) {
+			if ( self->aiCharacter == AICHAR_ZOMBIE ) {
+				// RF, changed this so Zombies always gib now
+				GibEntity( self, killer );
+				nogib = qfalse;
+			} else if ( !( contents & CONTENTS_NODROP ) ) {
+				body_die( self, inflictor, attacker, damage, meansOfDeath );
+				//GibEntity( self, killer );
+				nogib = qfalse;
+			}
+		}
+
+		// if we are a zombie, and lying down during our first death, then we should just die
+		if ( !( self->aiCharacter == AICHAR_ZOMBIE && cs->secondDeadTime && cs->rebirthTime ) ) {
+
+			// set enemy weapon
+			BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_WEAPON, 0, qfalse );
+			if ( attacker && attacker->client ) {
+				BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_WEAPON, inflictor->s.weapon, qtrue );
+			} else {
+				BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_WEAPON, 0, qfalse );
+			}
+
+			// set enemy location
+			BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_POSITION, 0, qfalse );
+			if ( infront( self, inflictor ) ) {
+				BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_POSITION, POSITION_INFRONT, qtrue );
+			} else {
+				BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_POSITION, POSITION_BEHIND, qtrue );
+			}
+
+			if ( self->takedamage ) { // only play the anim if we haven't gibbed
+				// play the animation
+				BG_AnimScriptEvent( &self->client->ps, ANIM_ET_DEATH, qfalse, qtrue );
+			}
+
+			// set gib delay
+			if ( cs->aiCharacter == AICHAR_HEINRICH || cs->aiCharacter == AICHAR_HELGA ) {
+				cs->lastLoadTime = level.time + self->client->ps.torsoTimer - 200;
+			}
+
+			// set this flag so no other anims override us
+			self->client->ps.eFlags |= EF_DEAD;
+			self->s.eFlags |= EF_DEAD;
+
+		}
+
+		//RealRTCW modified with bodysink integer
+		if ( !g_bodysink.integer ) 
+		{
+		cs->deadSinkStartTime = 0;
+		} 
+		else 
+		{
+		cs->deadSinkStartTime = level.time + 60000;
+		}
+         // if end map, sink into ground
+		if ( cs->aiCharacter == AICHAR_WARZOMBIE ) {
+			trap_Cvar_VariableStringBuffer( "mapname", mapname, sizeof( mapname ) );
+			if ( !Q_strncmp( mapname, "end", 3 ) ) {    // !! FIXME: post beta2, make this a spawnflag!
+				cs->deadSinkStartTime = level.time + 4000;
+			}
+		}
+	}
+
+	if ( nogib ) {
+		// set for rebirth
+		if ( self->aiCharacter == AICHAR_ZOMBIE ) {
+			if ( !cs->secondDeadTime ) {
+				cs->rebirthTime = level.time + 5000 + rand() % 2000;
+				// RF, only set for gib at next death, if NoRevive is not set
+				if ( !( self->spawnflags & 2 ) ) {
+					cs->secondDeadTime = qtrue;
+				}
+				cs->revivingTime = 0;
+			} else if ( cs->secondDeadTime > 1 ) {
+				cs->rebirthTime = 0;
+				cs->revivingTime = 0;
+				cs->deathTime = level.time;
+			}
+		} else {
+			// the body can still be gibbed
+			self->die = body_die;
+		}
+	}
+
+	if ( g_airespawn.integer == -1 ) {   // unlimited lives
+		respawn = qtrue;
+	} else if ( g_airespawn.integer == 0 ) {   // no ai respawning
+		respawn = qfalse;
+	} else if ( g_airespawn.integer > 0 ) {
+		respawn = qtrue;
+	}
+
+    // in Survival mode, we always respawn
+	if ( g_gametype.integer == GT_SURVIVAL )  {
+		respawn = qtrue;
+		nogib = qtrue;
+	}
+
+	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
+		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
+
+		if ( cs->respawnsleft != 0 ) {
+
+			if ( cs->respawnsleft > 0 ) {
+				cs->respawnsleft--;
+			}
+
+			   float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
+			   int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
+
+			   // Clamp rebirthTime to a minimum
+               if (rebirthTime < svParams.minSpawnTime * 1000) {
+                 rebirthTime = svParams.minSpawnTime * 1000;
+               }
+               
+			   // Friendlies has separate time
+			   if (self->aiTeam == 1) {
+                  cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
+			   } else {
+				   cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+			   }
+
+
+		}
+	}
+
+	trap_LinkEntity( self );
+
+	// Decrement the counter for active AI characters
+	if ( (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		if (killerPlayer)
+		{
+			AICast_CheckSurvivalProgression(attacker);
+		}
+		else
+		{
+			// If attacker is friendly AI, call progression with a player entity
+			AICast_CheckSurvivalProgression(&g_entities[0]);
+		}
+	}
+	
+	// That should cover mg42 static case
+	if (modMG && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
+
+	// That should cover flame traps case
+	if (modFlamer && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
+
+	// kill, instanly, any streaming sound the character had going
+	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );
+
+	// mark the time of death
+	cs->deathTime = level.time;
+
+	// dying ai's can trigger a target
+	if ( !cs->rebirthTime ) {
+		G_UseTargets( self, self );
+		// really dead now, so call the script
+		if ( attacker ) {
+			AICast_ScriptEvent( cs, "death", attacker->aiName ? attacker->aiName : "" );
+		} else {
+			AICast_ScriptEvent( cs, "death", "" );
+		}
+		// call the deathfunc for this cast, so we can play associated sounds, or do any character-specific things
+		if ( !( cs->aiFlags & AIFL_DENYACTION ) && cs->deathfunc ) {
+			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod
+		}
+	} else {
+		// really dead now, so call the script
+		if ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
+			 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) {
+
+			if ( !cs->died ) {
+				G_UseTargets( self, self );                 // testing
+				AICast_ScriptEvent( cs, "death", "" );
+				cs->died = qtrue;
+			}
+		} else {
+			AICast_ScriptEvent( cs, "fakedeath", "" );
+		}
+		// call the deathfunc for this cast, so we can play associated sounds, or do any character-specific things
+		if ( !( cs->aiFlags & AIFL_DENYACTION ) && cs->deathfunc ) {
+			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod
+		}
+	}
+}
+
 void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 	static char soundDeafultPath[MAX_QPATH] = "sound/announcer/hein.wav";
 	static char command[256];

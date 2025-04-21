@@ -166,6 +166,12 @@ AICast_Die
 ============
 */
 void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {
+
+	if (g_gametype.integer == GT_SURVIVAL) {
+		AICast_Die_Survival(self, inflictor, attacker, damage, meansOfDeath);
+		return;
+	}
+
 	int contents;
 	int killer = 0;
 	cast_state_t    *cs;
@@ -179,11 +185,8 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
 	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
-	qboolean modFlamer = (meansOfDeath == MOD_FLAMETHROWER);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
-	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
-	qboolean modMG = (meansOfDeath == MOD_MACHINEGUN);
 
     // ETSP Achievements stuff!
 	qboolean modGL = (meansOfDeath == MOD_M7 );
@@ -266,11 +269,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		}
 	}
 
-	if (g_gametype.integer == GT_SURVIVAL && killerPlayer && (attacker->aiTeam != self->aiTeam))
-	{
-		Survival_AddKillScore(attacker, self, meansOfDeath);
-	}
-
 	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {
 
 			trap_SendServerCommand( -1, "mu_play sound/Zombie/firstsight/firstsight3.wav 0\n" );
@@ -315,16 +313,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			self->health += damage; // don't drop below gib_health if we weren't already below it
 			return;
 		}
-/*
-		if (!cs->rebirthTime)
-		{
-			self->health = -999;
-			damage = 999;
-		} else if ( self->health >= GIB_HEALTH ) {
-			// while waiting for rebirth, we only "die" if we drop below gib health
-			return;
-		}
-*/
+
 		// always gib
 		self->health = -999;
 		damage = 999;
@@ -370,10 +359,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
-			if (g_gametype.integer == GT_SURVIVAL) {
-			TossClientItems( self, attacker );
-			TossClientPowerups( self, attacker );
-			}
 		}
 
 		// make sure the client doesn't forget about this entity until it's set to "dead" frame
@@ -453,9 +438,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			self->client->ps.eFlags |= EF_DEAD;
 			self->s.eFlags |= EF_DEAD;
 
-			// make sure we dont move around while on the ground
-			//self->flags |= FL_NO_HEADCHECK;
-
 		}
 
 		//RealRTCW modified with bodysink integer
@@ -505,12 +487,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		respawn = qtrue;
 	}
 
-    // in Survival mode, we always respawn
-	if ( g_gametype.integer == GT_SURVIVAL )  {
-		respawn = qtrue;
-		nogib = qtrue;
-	}
-
 	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
 		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
 
@@ -520,26 +496,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 				cs->respawnsleft--;
 			}
 
-			if ( g_gametype.integer == GT_SURVIVAL ) {
-
-			   float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
-			   int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
-
-			   // Clamp rebirthTime to a minimum
-               if (rebirthTime < svParams.minSpawnTime * 1000) {
-                 rebirthTime = svParams.minSpawnTime * 1000;
-               }
-
-			   //G_Printf("AI Respawn [Wave %d] -> Time: %.2f sec (waveFactor %.3f)\n", svParams.waveCount, rebirthTime / 1000.0f, waveFactor);
-               
-			   // Friendlies has separate time
-			   if (self->aiTeam == 1) {
-                  cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
-			   } else {
-				   cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
-			   }
-
-           } else if ( g_gameskill.integer == GSKILL_EASY ) {
+            if ( g_gameskill.integer == GSKILL_EASY ) {
 				cs->rebirthTime = level.time + 25000 + rand() % 2000;
 			} else if ( g_gameskill.integer == GSKILL_MEDIUM ) {
 				cs->rebirthTime = level.time + 20000 + rand() % 2000;
@@ -554,38 +511,6 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	trap_LinkEntity( self );
-
-	// Decrement the counter for active AI characters
-	if ( g_gametype.integer == GT_SURVIVAL && (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		if (killerPlayer)
-		{
-			AICast_CheckSurvivalProgression(attacker);
-		}
-		else
-		{
-			// If attacker is friendly AI, call progression with a player entity
-			AICast_CheckSurvivalProgression(&g_entities[0]);
-		}
-	}
-	
-	// That should cover mg42 static case
-	if (g_gametype.integer == GT_SURVIVAL && modMG && killerEnv )
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		AICast_CheckSurvivalProgression(&g_entities[0]);
-	}
-
-	// That should cover flame traps case
-	if (g_gametype.integer == GT_SURVIVAL && modFlamer && killerEnv )
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		AICast_CheckSurvivalProgression(&g_entities[0]);
-	}
 
 	// kill, instanly, any streaming sound the character had going
 	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );

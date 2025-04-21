@@ -75,6 +75,19 @@ void AICast_InitSurvival(void) {
 
 /*
 ============
+AICast_CreateCharacter_Survival
+
+Applies Survival mode overrides after character creation
+============
+*/
+void AICast_CreateCharacter_Survival(gentity_t *newent, cast_state_t *cs) {
+	// Unlimited respawn
+	cs->respawnsleft = -1;
+}
+
+
+/*
+============
 AIChar_AIScript_AlertEntity_Survival
 
   triggered spawning, called from AI scripting

@@ -436,7 +436,7 @@ gentity_t *AICast_CreateCharacter( gentity_t *ent, float *attributes, cast_weapo
     
 	// Unlimited respawn in Survival mode
 	if ( g_gametype.integer == GT_SURVIVAL )  {
-	    cs->respawnsleft = -1;
+	    AICast_CreateCharacter_Survival(newent, cs);
 	} else {
 		cs->respawnsleft = g_airespawn.integer;
 	}

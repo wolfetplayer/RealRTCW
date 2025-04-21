@@ -1736,6 +1736,7 @@ extern void AICast_CastScriptThink ( void ) ;
 extern void AICast_DelayedSpawnCast ( gentity_t * ent , int castType ) ;
 extern void AIChar_AIScript_AlertEntity ( gentity_t * ent ) ;
 extern void AIChar_AIScript_AlertEntity_Survival ( gentity_t * ent ) ;
+extern void AICast_CreateCharacter_Survival(gentity_t *newent, cast_state_t *cs);
 extern gentity_t * AICast_TravEntityForName ( gentity_t * startent , char * name ) ;
 extern gentity_t * AICast_FindEntityForName ( char * name ) ;
 extern void AICast_Init ( void ) ;

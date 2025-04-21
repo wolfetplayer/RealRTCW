@@ -1727,6 +1727,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_DelayedSpawnCast", (byte *)AICast_DelayedSpawnCast},
 {"AIChar_AIScript_AlertEntity", (byte *)AIChar_AIScript_AlertEntity},
 {"AIChar_AIScript_AlertEntity_Survival", (byte *)AIChar_AIScript_AlertEntity_Survival},
+{"AICast_CreateCharacter_Survival", (byte *)AICast_CreateCharacter_Survival},
 {"AICast_TravEntityForName", (byte *)AICast_TravEntityForName},
 {"AICast_FindEntityForName", (byte *)AICast_FindEntityForName},
 {"AICast_Init", (byte *)AICast_Init},

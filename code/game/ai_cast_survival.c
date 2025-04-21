@@ -75,7 +75,7 @@ void AICast_InitSurvival(void) {
 
 /*
 ============
-AIChar_AIScript_AlertEntity
+AIChar_AIScript_AlertEntity_Survival
 
   triggered spawning, called from AI scripting
 ============
@@ -154,7 +154,7 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 
 /*
 ============
-AICast_Die
+AICast_Die_Survival
 ============
 */
 void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {

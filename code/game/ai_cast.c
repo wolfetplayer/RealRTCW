@@ -487,33 +487,14 @@ void AICast_Init( void ) {
 	numcast = 0;
 	numSpawningCast = 0;
 	saveGamePending = qtrue;
-
-    // Initial count of AIs for survival mode
-    if ( g_gametype.integer == GT_SURVIVAL )  {
-		svParams.killCountRequirement = svParams.initialKillCountRequirement;
-		svParams.waveCount = 1;
-
-		svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
-	    svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
-	    svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
-	    svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
-	    svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.initialProtosCount;
-	    svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.initialPartisansCount;
-	    svParams.maxActiveAI[AICHAR_PRIEST] = svParams.initialPriestsCount;
-	    svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.initialEliteGuardsCount;
-		svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;
-		svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
+	
+	if (g_gametype.integer == GT_SURVIVAL) {
+		AICast_InitSurvival();
 	}
 
 	trap_Cvar_Register( &aicast_debug, "aicast_debug", "0", 0 );
 	trap_Cvar_Register( &aicast_debugname, "aicast_debugname", "", 0 );
 	trap_Cvar_Register( &aicast_scripts, "aicast_scripts", "1", 0 );
-
-	// (aicast_thinktime / sv_fps) * aicast_maxthink = number of cast's to think between each aicast frame
-	// so..
-	// (100 / 20) * 6 = 30
-	//
-	// so if the level has more than 30 AI cast's, they could start to bunch up, resulting in slower thinks
 
 	trap_Cvar_Register( &cvar, "aicast_thinktime", "50", 0 );
 	aicast_thinktime = trap_Cvar_VariableIntegerValue( "aicast_thinktime" );
@@ -530,15 +511,6 @@ void AICast_Init( void ) {
 	for ( i = 0; i < MAX_CLIENTS; i++ ) {
 		caststates[i].entityNum = i;
 	}
-
-/* RF, this is useless, since the AAS hasnt been loaded yet
-	// try and load in the AAS now, so we can interact with it during spawning of entities
-	i = 0;
-	trap_AAS_SetCurrentWorld( 0 );
-	while ( !trap_AAS_Initialized() && ( i++ < 10 ) ) {
-		trap_BotLibStartFrame( (float) level.time / 1000 );
-	}
-*/
 }
 
 /*

@@ -51,6 +51,26 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "../steam/steam.h"
 
+/*
+============
+AICast_InitSurvival
+============
+*/
+void AICast_InitSurvival(void) {
+	svParams.killCountRequirement = svParams.initialKillCountRequirement;
+	svParams.waveCount = 1;
+
+	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
+	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
+	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
+	svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
+	svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.initialProtosCount;
+	svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.initialPartisansCount;
+	svParams.maxActiveAI[AICHAR_PRIEST] = svParams.initialPriestsCount;
+	svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.initialEliteGuardsCount;
+	svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;
+	svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
+}
 
 
 /*
@@ -254,10 +274,8 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
-			if (g_gametype.integer == GT_SURVIVAL) {
 			TossClientItems( self, attacker );
 			TossClientPowerups( self, attacker );
-			}
 		}
 
 		// make sure the client doesn't forget about this entity until it's set to "dead" frame
@@ -386,11 +404,8 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		respawn = qtrue;
 	}
 
-    // in Survival mode, we always respawn
-	if ( g_gametype.integer == GT_SURVIVAL )  {
 		respawn = qtrue;
 		nogib = qtrue;
-	}
 
 	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
 		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {

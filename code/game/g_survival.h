@@ -51,9 +51,6 @@ qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int pr
 int Survival_GetDefaultWeaponPrice(int weapon);
 int Survival_GetDefaultPerkPrice(int perk);
 
-// Respawn system
-void AICast_CheckSurvivalProgression(gentity_t *attacker);
-
 // Misc stuff
 void TossClientItems(gentity_t *self, gentity_t *attacker);
 void TossClientPowerups(gentity_t *self, gentity_t *attacker);

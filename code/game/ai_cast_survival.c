@@ -75,6 +75,85 @@ void AICast_InitSurvival(void) {
 
 /*
 ============
+AIChar_AIScript_AlertEntity
+
+  triggered spawning, called from AI scripting
+============
+*/
+void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
+	
+	vec3_t mins, maxs;
+	int numTouch, touch[10], i;
+	cast_state_t    *cs;
+	vec3_t spawn_origin, spawn_angles;
+
+	gentity_t *player = AICast_FindEntityForName( "player" );
+
+	if ( !ent->aiInactive ) {
+		return;
+	}
+
+	cs = AICast_GetCastState( ent->s.number );
+
+	// if the current bounding box is invalid, then wait
+	VectorAdd( ent->r.currentOrigin, ent->r.mins, mins );
+	VectorAdd( ent->r.currentOrigin, ent->r.maxs, maxs );
+	trap_UnlinkEntity( ent );
+
+	numTouch = trap_EntitiesInBox( mins, maxs, touch, 10 );
+
+	// check that another client isn't inside us
+	if ( numTouch ) {
+		for ( i = 0; i < numTouch; i++ ) {
+			// RF, note we should only check against clients since zombies need to spawn inside func_explosive (so they dont clip into view after it explodes)
+			if ( g_entities[touch[i]].client && g_entities[touch[i]].r.contents == CONTENTS_BODY ) {
+				//if (g_entities[touch[i]].r.contents & MASK_PLAYERSOLID)
+				break;
+			}
+		}
+		if ( i == numTouch ) {
+			numTouch = 0;
+		}
+	}
+
+	if ( numTouch ) {
+		// invalid location
+		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
+		return;
+	}
+
+    
+	   if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter])  { 
+		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
+		return;
+	   }
+
+	// Selecting the spawn point for the AI
+				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
+				G_SetOrigin( ent, spawn_origin );
+				VectorCopy( spawn_origin, ent->client->ps.origin );
+				SetClientViewAngle( ent, spawn_angles );
+				// Increment the counter for active AI characters
+                svParams.activeAI[ent->aiCharacter]++;
+
+	// RF, has to disable this so I could test some maps which have erroneously placed alertentity calls
+	//ent->AIScript_AlertEntity = NULL;
+	cs->aiFlags &= ~AIFL_WAITINGTOSPAWN;
+	ent->aiInactive = qfalse;
+	trap_LinkEntity( ent );
+
+	// trigger a spawn script event
+	AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "respawn", "" );
+
+	// make it think so we update animations/angles
+	AICast_Think( ent->s.number, (float)FRAMETIME / 1000 );
+	cs->lastThink = level.time;
+	AICast_UpdateInput( cs, FRAMETIME );
+	trap_BotUserCommand( cs->bs->client, &( cs->lastucmd ) );
+}
+
+/*
+============
 AICast_Die
 ============
 */

@@ -580,12 +580,15 @@ AIChar_AIScript_AlertEntity
 ============
 */
 void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
+
+	if (g_gametype.integer == GT_SURVIVAL) {
+		AIChar_AIScript_AlertEntity_Survival(ent);
+		return;
+	}
+
 	vec3_t mins, maxs;
 	int numTouch, touch[10], i;
 	cast_state_t    *cs;
-	vec3_t spawn_origin, spawn_angles;
-
-	gentity_t *player = AICast_FindEntityForName( "player" );
 
 	if ( !ent->aiInactive ) {
 		return;
@@ -620,23 +623,6 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 		return;
 	}
 
-    if ( g_gametype.integer == GT_SURVIVAL )  {
-	   if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter])  { 
-		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
-		return;
-	   }
-	}
-
-	// Selecting the spawn point for the AI
-    if ( g_gametype.integer == GT_SURVIVAL )  {
-				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
-				G_SetOrigin( ent, spawn_origin );
-				VectorCopy( spawn_origin, ent->client->ps.origin );
-				SetClientViewAngle( ent, spawn_angles );
-				// Increment the counter for active AI characters
-                svParams.activeAI[ent->aiCharacter]++;
-	}
-
 	// RF, has to disable this so I could test some maps which have erroneously placed alertentity calls
 	//ent->AIScript_AlertEntity = NULL;
 	cs->aiFlags &= ~AIFL_WAITINGTOSPAWN;
@@ -644,11 +630,7 @@ void AIChar_AIScript_AlertEntity( gentity_t *ent ) {
 	trap_LinkEntity( ent );
 
 	// trigger a spawn script event
-	if ( g_gametype.integer == GT_SURVIVAL )  {
-	   AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "respawn", "" );
-	} else {
-	   AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "spawn", "" );
-	}
+	AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "spawn", "" );
 	// make it think so we update animations/angles
 	AICast_Think( ent->s.number, (float)FRAMETIME / 1000 );
 	cs->lastThink = level.time;

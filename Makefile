@@ -2527,6 +2527,7 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/ai_cast_script_actions.o \
   $(B)/$(BASEGAME)/game/ai_cast_script.o \
   $(B)/$(BASEGAME)/game/ai_cast_script_ents.o \
+  $(B)/$(BASEGAME)/game/ai_cast_survival.o \
   $(B)/$(BASEGAME)/game/ai_cast_sight.o \
   $(B)/$(BASEGAME)/game/ai_cast_think.o \
   $(B)/$(BASEGAME)/game/ai_chat.o \

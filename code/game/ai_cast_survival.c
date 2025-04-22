@@ -57,23 +57,21 @@ AICast_InitSurvival
 ============
 */
 void AICast_InitSurvival(void) {
-	// Initialize survival parameters
 	svParams.killCountRequirement = svParams.initialKillCountRequirement;
 	svParams.waveCount = 1;
 
-	// Initialize max active AI counts
-	int aiTypes[] = { AICHAR_SOLDIER, AICHAR_ZOMBIE_SURV, AICHAR_ZOMBIE_GHOST, AICHAR_WARZOMBIE, 
-					  AICHAR_PROTOSOLDIER, AICHAR_PARTISAN, AICHAR_PRIEST, AICHAR_ELITEGUARD, 
-					  AICHAR_BLACKGUARD, AICHAR_VENOM };
-	int initialCounts[] = { svParams.initialSoldiersCount, svParams.initialZombiesCount, svParams.initialGhostsCount, 
-							svParams.initialWarriorsCount, svParams.initialProtosCount, svParams.initialPartisansCount, 
-							svParams.initialPriestsCount, svParams.initialEliteGuardsCount, svParams.initialBlackGuardsCount, 
-							svParams.initialVenomsCount };
-
-	for (int i = 0; i < sizeof(aiTypes) / sizeof(aiTypes[0]); i++) {
-		svParams.maxActiveAI[aiTypes[i]] = initialCounts[i];
-	}
+	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
+	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
+	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
+	svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
+	svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.initialProtosCount;
+	svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.initialPartisansCount;
+	svParams.maxActiveAI[AICHAR_PRIEST] = svParams.initialPriestsCount;
+	svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.initialEliteGuardsCount;
+	svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;
+	svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
 }
+
 
 /*
 ============
@@ -87,6 +85,7 @@ void AICast_CreateCharacter_Survival(gentity_t *newent, cast_state_t *cs) {
 	cs->respawnsleft = -1;
 }
 
+
 /*
 ============
 AIChar_AIScript_AlertEntity_Survival
@@ -94,7 +93,7 @@ AIChar_AIScript_AlertEntity_Survival
   triggered spawning, called from AI scripting
 ============
 */
-void AIChar_AIScript_AlertEntity_Survival(gentity_t *ent) {
+void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 	
 	vec3_t mins, maxs;
 	int numTouch, touch[10], i;
@@ -136,18 +135,19 @@ void AIChar_AIScript_AlertEntity_Survival(gentity_t *ent) {
 		return;
 	}
 
-	if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter])  { 
+    
+	   if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter])  { 
 		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
 		return;
-	}
+	   }
 
 	// Selecting the spawn point for the AI
-	SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
-	G_SetOrigin( ent, spawn_origin );
-	VectorCopy( spawn_origin, ent->client->ps.origin );
-	SetClientViewAngle( ent, spawn_angles );
-	// Increment the counter for active AI characters
-	svParams.activeAI[ent->aiCharacter]++;
+				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
+				G_SetOrigin( ent, spawn_origin );
+				VectorCopy( spawn_origin, ent->client->ps.origin );
+				SetClientViewAngle( ent, spawn_angles );
+				// Increment the counter for active AI characters
+                svParams.activeAI[ent->aiCharacter]++;
 
 	// RF, has to disable this so I could test some maps which have erroneously placed alertentity calls
 	//ent->AIScript_AlertEntity = NULL;
@@ -170,7 +170,7 @@ void AIChar_AIScript_AlertEntity_Survival(gentity_t *ent) {
 AICast_Die_Survival
 ============
 */
-void AICast_Die_Survival(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath) {
+void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {
 	int contents;
 	int killer = 0;
 	cast_state_t    *cs;
@@ -496,8 +496,8 @@ void AICast_Die_Survival(gentity_t *self, gentity_t *inflictor, gentity_t *attac
 		respawn = qtrue;
 	}
 
-	respawn = qtrue;
-	nogib = qtrue;
+		respawn = qtrue;
+		nogib = qtrue;
 
 	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
 		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
@@ -508,8 +508,22 @@ void AICast_Die_Survival(gentity_t *self, gentity_t *inflictor, gentity_t *attac
 				cs->respawnsleft--;
 			}
 
-			int rebirthTime = CalculateRebirthTime(self->aiTeam);
-			cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+			   float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
+			   int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
+
+			   // Clamp rebirthTime to a minimum
+               if (rebirthTime < svParams.minSpawnTime * 1000) {
+                 rebirthTime = svParams.minSpawnTime * 1000;
+               }
+               
+			   // Friendlies has separate time
+			   if (self->aiTeam == 1) {
+                  cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
+			   } else {
+				   cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+			   }
+
+
 		}
 	}
 
@@ -584,29 +598,6 @@ void AICast_Die_Survival(gentity_t *self, gentity_t *inflictor, gentity_t *attac
 			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod
 		}
 	}
-}
-
-/*
-============
-CalculateRebirthTime
-Helper function to calculate rebirth time based on wave count and AI team
-============
-*/
-int CalculateRebirthTime(int aiTeam) {
-	float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
-	int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
-
-	// Clamp rebirthTime to a minimum
-	if (rebirthTime < svParams.minSpawnTime * 1000) {
-		rebirthTime = svParams.minSpawnTime * 1000;
-	}
-
-	// Separate time for friendlies
-	if (aiTeam == 1) {
-		return svParams.friendlySpawnTime * 1000;
-	}
-
-	return rebirthTime;
 }
 
 void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
@@ -738,6 +729,7 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 
 }
 
+
 /*
 ============
 AICast_SurvivalRespawn
@@ -792,35 +784,184 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 
 			if ( numTouch == 0 ) {    // ok to spawn
 
-			AdjustAIAttributes(cs, ent);
+			int health_increase = svParams.waveCount * svParams.healthIncreaseMultiplier;
+			float speed_increase = svParams.waveCount / svParams.speedIncreaseDivider;
+		    float crouchSpeedScale = 1;
+			float runSpeedScale = 1;
+			float sprintSpeedScale = 1;
+			int newHealth = 0; 
 
-			player = AICast_FindEntityForName( "player" );
 
-			// Selecting the spawn point for the AI
-			SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
-			G_SetOrigin( ent, spawn_origin );
-			VectorCopy( spawn_origin, ent->client->ps.origin );
-			SetClientViewAngle( ent, spawn_angles );
+			switch (cs->aiCharacter)
+			{
+			case AICHAR_SOLDIER:
+				newHealth = svParams.soldierBaseHealth + health_increase;
+				if (newHealth > svParams.soldierHealthCap) {
+					newHealth = svParams.soldierHealthCap;
+				}
+				break;
+			case AICHAR_ZOMBIE_SURV:
+				newHealth = svParams.zombieBaseHealth + health_increase;
+				if (newHealth > svParams.zombieHealthCap) {
+					newHealth = svParams.zombieHealthCap;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.2) {
+					runSpeedScale = 1.2;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.5) {
+					crouchSpeedScale = 0.5;
+				}
+				break;
+			case AICHAR_ZOMBIE_GHOST:
+				newHealth = svParams.ghostBaseHealth + health_increase;
+				if (newHealth > svParams.ghostHealthCap) {
+					newHealth = svParams.ghostHealthCap;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.75) {
+					crouchSpeedScale = 0.75;
+				}
+				break;
+			case AICHAR_WARZOMBIE:
+				newHealth = svParams.warriorBaseHealth + health_increase;
+				if (newHealth > svParams.warriorHealthCap) {
+					newHealth = svParams.warriorHealthCap;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.75) {
+					crouchSpeedScale = 0.75;
+				}
+				break;
+			case AICHAR_PROTOSOLDIER:
+				newHealth = svParams.protosBaseHealth + health_increase;
+				if (newHealth > svParams.protosHealthCap) {
+					newHealth = svParams.protosHealthCap;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.6) {
+					runSpeedScale = 1.6;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 1.5) {
+					runSpeedScale = 1.5;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.75) {
+					crouchSpeedScale = 0.75;
+				}
+				break;
+			case AICHAR_PARTISAN:
+				newHealth = svParams.partisansBaseHealth + health_increase;
+				if (newHealth > svParams.partisansHealthCap) {
+					newHealth = svParams.partisansHealthCap;
+				}
+				break;
+			case AICHAR_PRIEST:
+				newHealth = svParams.priestBaseHealth + health_increase;
+				if (newHealth > svParams.priestHealthCap) {
+					newHealth = svParams.priestHealthCap;
+				}
+				runSpeedScale = 0.8 + speed_increase;
+				if (runSpeedScale > 1.4) {
+					runSpeedScale = 1.4;
+				}
+				sprintSpeedScale = 1.2 + speed_increase;
+				if (runSpeedScale > 2.0) {
+					runSpeedScale = 2.0;
+				}
+				crouchSpeedScale = 0.25 + speed_increase;
+				if (crouchSpeedScale > 0.5) {
+					crouchSpeedScale = 0.5;
+				}
+				break;
+			case AICHAR_ELITEGUARD:
+				newHealth = svParams.eliteGuardBaseHealth + health_increase;
+				if (newHealth > svParams.eliteGuardHealthCap) {
+					newHealth = svParams.eliteGuardHealthCap;
+				}
+				break;
+			case AICHAR_BLACKGUARD:
+			    newHealth = svParams.blackGuardBaseHealth + health_increase;
+				if (newHealth > svParams.blackGuardHealthCap) {
+					newHealth = svParams.blackGuardHealthCap;
+				}
+				break;
+			case AICHAR_VENOM:
+			    newHealth = svParams.venomBaseHealth + health_increase;
+				if (newHealth > svParams.venomHealthCap) {
+					newHealth = svParams.venomHealthCap;
+				}
+				break;
+			default:
+				break;
+			}
 
-			// Activate respawn scripts for AI
-			AICast_ScriptEvent(cs, "respawn", "");
+				BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
                 
-			// Turn off Headshot flag and reattach hat
-			ent->client->ps.eFlags &= ~EF_HEADSHOT;
-			G_AddEvent( ent, EV_REATTACH_HAT, 0 );
+				ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] = cs->attributes[STARTING_HEALTH] = newHealth;
+				ent->client->ps.runSpeedScale = runSpeedScale;
+				ent->client->ps.sprintSpeedScale = sprintSpeedScale;
+				ent->client->ps.crouchSpeedScale = crouchSpeedScale;				
+				ent->r.contents = CONTENTS_BODY;
+				ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
+				ent->takedamage = qtrue;
+				ent->waterlevel = 0;
+				ent->watertype = 0;
+				ent->flags = 0;
+				ent->die = AICast_Die;
+				ent->client->ps.eFlags &= ~EF_DEAD;
+				ent->s.eFlags &= ~EF_DEAD;
+				player = AICast_FindEntityForName( "player" );
 
-			cs->rebirthTime = 0;
-			cs->deathTime = 0;
+                // Selecting the spawn point for the AI
+				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
+				G_SetOrigin( ent, spawn_origin );
+				VectorCopy( spawn_origin, ent->client->ps.origin );
+				SetClientViewAngle( ent, spawn_angles );
 
-			ent->client->ps.eFlags &= ~EF_DEATH_FRAME;
-			ent->client->ps.eFlags &= ~EF_FORCE_END_FRAME;
-			ent->client->ps.eFlags |= EF_NO_TURN_ANIM;
 
-			// play the revive animation
-			cs->revivingTime = level.time + BG_AnimScriptEvent( &ent->client->ps, ANIM_ET_REVIVE, qfalse, qtrue );
 
-			AICast_StateChange( cs, AISTATE_RELAXED );
-			cs->enemyNum = -1;
+				// Activate respawn scripts for AI
+				AICast_ScriptEvent(cs, "respawn", "");
+                
+				// Turn off Headshot flag and reattach hat
+				ent->client->ps.eFlags &= ~EF_HEADSHOT;
+				G_AddEvent( ent, EV_REATTACH_HAT, 0 );
+
+				cs->rebirthTime = 0;
+				cs->deathTime = 0;
+
+				ent->client->ps.eFlags &= ~EF_DEATH_FRAME;
+				ent->client->ps.eFlags &= ~EF_FORCE_END_FRAME;
+				ent->client->ps.eFlags |= EF_NO_TURN_ANIM;
+
+				// play the revive animation
+				cs->revivingTime = level.time + BG_AnimScriptEvent( &ent->client->ps, ANIM_ET_REVIVE, qfalse, qtrue );
+
+				AICast_StateChange( cs, AISTATE_RELAXED );
+				cs->enemyNum = -1;
 
 			} else {
 				// can't spawn yet, so set bbox back, and wait
@@ -828,78 +969,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				ent->client->ps.maxs[2] = ent->r.maxs[2];
 			}
 			trap_LinkEntity( ent );
-}
 
-/*
-============
-AdjustAIAttributes
-Helper function to adjust AI attributes based on wave count
-============
-*/
-void AdjustAIAttributes(cast_state_t *cs, gentity_t *ent) {
-	int health_increase = svParams.waveCount * svParams.healthIncreaseMultiplier;
-	float speed_increase = svParams.waveCount / svParams.speedIncreaseDivider;
 
-	// Set health and speed based on AI character type
-	switch (cs->aiCharacter) {
-		case AICHAR_SOLDIER:
-			ent->health = ClampValue(svParams.soldierBaseHealth + health_increase, svParams.soldierHealthCap);
-			break;
-		case AICHAR_ZOMBIE_SURV:
-			ent->health = ClampValue(svParams.zombieBaseHealth + health_increase, svParams.zombieHealthCap);
-			ent->client->ps.runSpeedScale = ClampValue(0.8 + speed_increase, 1.2);
-			ent->client->ps.sprintSpeedScale = ClampValue(1.2 + speed_increase, 1.6);
-			ent->client->ps.crouchSpeedScale = ClampValue(0.25 + speed_increase, 0.5);
-			break;
-		case AICHAR_ZOMBIE_GHOST:
-			ent->health = ClampValue(svParams.ghostBaseHealth + health_increase, svParams.ghostHealthCap);
-			ent->client->ps.runSpeedScale = ClampValue(0.8 + speed_increase, 1.6);
-			ent->client->ps.sprintSpeedScale = ClampValue(1.2 + speed_increase, 2.0);
-			ent->client->ps.crouchSpeedScale = ClampValue(0.25 + speed_increase, 0.75);
-			break;
-		case AICHAR_WARZOMBIE:
-			ent->health = ClampValue(svParams.warriorBaseHealth + health_increase, svParams.warriorHealthCap);
-			ent->client->ps.runSpeedScale = ClampValue(0.8 + speed_increase, 1.6);
-			ent->client->ps.sprintSpeedScale = ClampValue(1.2 + speed_increase, 2.0);
-			ent->client->ps.crouchSpeedScale = ClampValue(0.25 + speed_increase, 0.75);
-			break;
-		case AICHAR_PROTOSOLDIER:
-			ent->health = ClampValue(svParams.protosBaseHealth + health_increase, svParams.protosHealthCap);
-			ent->client->ps.runSpeedScale = ClampValue(0.8 + speed_increase, 1.6);
-			ent->client->ps.sprintSpeedScale = ClampValue(1.2 + speed_increase, 1.5);
-			ent->client->ps.crouchSpeedScale = ClampValue(0.25 + speed_increase, 0.75);
-			break;
-		case AICHAR_PARTISAN:
-			ent->health = ClampValue(svParams.partisansBaseHealth + health_increase, svParams.partisansHealthCap);
-			break;
-		case AICHAR_PRIEST:
-			ent->health = ClampValue(svParams.priestBaseHealth + health_increase, svParams.priestHealthCap);
-			ent->client->ps.runSpeedScale = ClampValue(0.8 + speed_increase, 1.4);
-			ent->client->ps.sprintSpeedScale = ClampValue(1.2 + speed_increase, 2.0);
-			ent->client->ps.crouchSpeedScale = ClampValue(0.25 + speed_increase, 0.5);
-			break;
-		case AICHAR_ELITEGUARD:
-			ent->health = ClampValue(svParams.eliteGuardBaseHealth + health_increase, svParams.eliteGuardHealthCap);
-			break;
-		case AICHAR_BLACKGUARD:
-			ent->health = ClampValue(svParams.blackGuardBaseHealth + health_increase, svParams.blackGuardHealthCap);
-			break;
-		case AICHAR_VENOM:
-			ent->health = ClampValue(svParams.venomBaseHealth + health_increase, svParams.venomHealthCap);
-			break;
-		default:
-			break;
-	}
-}
-
-/*
-============
-ClampValue
-Helper function to clamp a value between a minimum and maximum
-============
-*/
-int ClampValue(int value, int max) {
-	return (value > max) ? max : value;
 }
 
 // Load survival gamemode parameters from .surv file
@@ -1595,7 +1666,7 @@ qboolean BG_ParseSurvivalTable(int handle)
 			{
 				PC_SourceError(handle, "expected runnerPrice value");
 				return qfalse;
-				}
+			}
 		}
 		else if (!Q_stricmp(token.string, "scavengerPrice"))
 		{

@@ -54,6 +54,7 @@ int Survival_GetDefaultPerkPrice(int perk);
 // Misc stuff
 void TossClientItems(gentity_t *self, gentity_t *attacker);
 void TossClientPowerups(gentity_t *self, gentity_t *attacker);
+gentity_t *SelectSpawnPoint_AI ( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) ;
 
 
 // Survival parameters

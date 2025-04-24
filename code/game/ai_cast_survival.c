@@ -58,6 +58,7 @@ AICast_InitSurvival
 */
 void AICast_InitSurvival(void) {
 	svParams.killCountRequirement = svParams.initialKillCountRequirement;
+	svParams.spawnedThisWave = 0;
 	svParams.waveCount = 1;
 
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
@@ -157,6 +158,8 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 
 	// trigger a spawn script event
 	AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "respawn", "" );
+
+	svParams.spawnedThisWave++;
 
 	// make it think so we update animations/angles
 	AICast_Think( ent->s.number, (float)FRAMETIME / 1000 );
@@ -610,8 +613,9 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 	Com_Memset( indecies, 0, sizeof( indecies ) );
 
     // Wave Change Event
-    if (svParams.survivalKillCount == svParams.killCountRequirement) {
+    if (svParams.waveKillCount == svParams.killCountRequirement) {
         svParams.waveCount++;
+		svParams.spawnedThisWave = 0;
 
 		if ((svParams.waveCount == 10) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
 		{
@@ -962,6 +966,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 
 				AICast_StateChange( cs, AISTATE_RELAXED );
 				cs->enemyNum = -1;
+
+				svParams.spawnedThisWave++;
 
 			} else {
 				// can't spawn yet, so set bbox back, and wait

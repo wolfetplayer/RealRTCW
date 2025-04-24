@@ -68,6 +68,8 @@ typedef struct svParams_s
 	int waveKillCount;
 	int killCountRequirement;
 
+	int spawnedThisWave;
+
 	// loaded from .surv file
 	int initialKillCountRequirement;
 

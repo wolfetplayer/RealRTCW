@@ -627,7 +627,13 @@ void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
 			steamSetAchievement("ACH_NO_CLASS");
 		}
 
-		svParams.killCountRequirement += svParams.waveKillCount + rand() % 5;  
+		float growthFactor = 1.2f;		 // Adjust this factor to control the growth rate
+		int baseIncrement = 5;			 // Minimum increment per wave
+		int randomVariance = rand() % 5; // Add some randomness for variety
+
+		// Exponential growth formula
+		svParams.killCountRequirement += (int)(baseIncrement * powf(growthFactor, svParams.waveCount - 1)) + randomVariance;
+
 		attacker->client->ps.persistant[PERS_WAVES]++;
 		svParams.waveKillCount = 0;
 

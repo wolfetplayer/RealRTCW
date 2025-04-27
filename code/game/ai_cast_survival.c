@@ -158,8 +158,7 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 
 	// trigger a spawn script event
 	AICast_ScriptEvent( AICast_GetCastState( ent->s.number ), "respawn", "" );
-
-	svParams.spawnedThisWave++;
+	cs->rebirthTime = 0;
 
 	// make it think so we update animations/angles
 	AICast_Think( ent->s.number, (float)FRAMETIME / 1000 );

@@ -297,6 +297,38 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		G_Printf( "killed %s\n", self->aiName );
 	}
 
+		// Decrement the counter for active AI characters
+	if ( (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		if (killerPlayer)
+		{
+			AICast_CheckSurvivalProgression(attacker);
+		}
+		else
+		{
+			// If attacker is friendly AI, call progression with a player entity
+			AICast_CheckSurvivalProgression(&g_entities[0]);
+		}
+	}
+	
+	// That should cover mg42 static case
+	if (modMG && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
+
+	// That should cover flame traps case
+	if (modFlamer && killerEnv )
+	{
+		svParams.survivalKillCount++;
+		svParams.waveKillCount++;
+		AICast_CheckSurvivalProgression(&g_entities[0]);
+	}
+
 	cs = AICast_GetCastState( self->s.number );
 
 	if ( attacker ) {
@@ -532,38 +564,6 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 
 	trap_LinkEntity( self );
 
-	// Decrement the counter for active AI characters
-	if ( (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		if (killerPlayer)
-		{
-			AICast_CheckSurvivalProgression(attacker);
-		}
-		else
-		{
-			// If attacker is friendly AI, call progression with a player entity
-			AICast_CheckSurvivalProgression(&g_entities[0]);
-		}
-	}
-	
-	// That should cover mg42 static case
-	if (modMG && killerEnv )
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		AICast_CheckSurvivalProgression(&g_entities[0]);
-	}
-
-	// That should cover flame traps case
-	if (modFlamer && killerEnv )
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		AICast_CheckSurvivalProgression(&g_entities[0]);
-	}
-
 	// kill, instanly, any streaming sound the character had going
 	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );
 
@@ -753,6 +753,11 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
    int i;
    gentity_t *player;
    vec3_t spawn_origin, spawn_angles;
+
+   if (svParams.spawnedThisWave >= svParams.killCountRequirement)
+   {
+	   return;
+   }
 
 			if ( ent->aiCharacter != AICHAR_ZOMBIE && ent->aiCharacter != AICHAR_HELGA
 				 && ent->aiCharacter != AICHAR_HEINRICH ) {

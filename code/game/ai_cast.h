@@ -745,6 +745,8 @@ void AICast_SurvivalRespawn (gentity_t *ent, cast_state_t * cs ) ;
 void AICast_CheckSurvivalProgression( gentity_t *attacker );
 void AIChar_AIScript_AlertEntity_Survival(gentity_t *ent);
 void AICast_CreateCharacter_Survival(gentity_t *newent, cast_state_t *cs);
+void AICast_UpdateMaxActiveAI( void );
+void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs);
 //
 // ai_cast_think.c
 void AICast_Think( int client, float thinktime );

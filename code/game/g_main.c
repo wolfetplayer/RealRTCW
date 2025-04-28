@@ -30,6 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 #include "g_local.h"
+#include "g_survival.h"
 #include "../../steam/steam.h"
 
 level_locals_t level;
@@ -2587,6 +2588,10 @@ void G_RunFrame( int levelTime ) {
 
 	// Ridah, move the AI
 	AICast_StartServerFrame( level.time );
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		AICast_TickSurvivalWave();
+	}
 
 	// perform final fixups on the players
 	ent = &g_entities[0];

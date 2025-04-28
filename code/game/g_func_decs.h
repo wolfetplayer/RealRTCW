@@ -1588,6 +1588,7 @@ extern char * AIFunc_Idle ( cast_state_t * cs ) ;
 extern void AICast_SpecialFunc ( cast_state_t * cs ) ;
 extern void AICast_SurvivalRespawn (gentity_t *ent, cast_state_t * cs ) ;
 extern void AICast_CheckSurvivalProgression( gentity_t *attacker );
+extern void AICast_TickSurvivalWave( void );
 extern void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs);
 extern void AICast_UpdateMaxActiveAI( void );
 extern float AICast_SpeedScaleForDistance ( cast_state_t * cs , float startdist , float idealDist ) ;

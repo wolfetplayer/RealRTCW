@@ -55,6 +55,7 @@ int Survival_GetDefaultPerkPrice(int perk);
 void TossClientItems(gentity_t *self, gentity_t *attacker);
 void TossClientPowerups(gentity_t *self, gentity_t *attacker);
 gentity_t *SelectSpawnPoint_AI ( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) ;
+void AICast_TickSurvivalWave( void );
 
 
 // Survival parameters
@@ -69,6 +70,9 @@ typedef struct svParams_s
 	int killCountRequirement;
 
 	int spawnedThisWave;
+	qboolean wavePending;              
+    int waveChangeTime;
+	qboolean waveInProgress;
 
 	// loaded from .surv file
 	int initialKillCountRequirement;

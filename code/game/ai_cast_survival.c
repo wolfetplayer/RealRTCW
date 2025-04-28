@@ -60,6 +60,7 @@ void AICast_InitSurvival(void) {
 	svParams.killCountRequirement = svParams.initialKillCountRequirement;
 	svParams.spawnedThisWave = 0;
 	svParams.waveCount = 1;
+	svParams.waveInProgress = qtrue;
 
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
@@ -137,7 +138,7 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 	}
 
     
-	   if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter])  { 
+	   if ( svParams.activeAI[ent->aiCharacter] >= svParams.maxActiveAI[ent->aiCharacter] || !svParams.waveInProgress)  { 
 		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
 		return;
 	   }
@@ -839,58 +840,82 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
     ent->client->ps.crouchSpeedScale = crouchSpeedScale;
 }
 
-void AICast_CheckSurvivalProgression( gentity_t *attacker ) {
-	static char soundDeafultPath[MAX_QPATH] = "sound/announcer/hein.wav";
-	static char command[256];
+void AICast_CheckSurvivalProgression(gentity_t *attacker) {
+    if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
+        svParams.wavePending = qtrue;
+        svParams.waveChangeTime = level.time + 5000 + rand() % 5000; // 5–10 sec delay
 
-	int i = 0, j;
-	int indecies[ANNOUNCE_SOUNDS_COUNT];
+        //G_Printf("Wave %d complete. Intermission started...\n", svParams.waveCount);
 
-	Com_Memset( indecies, 0, sizeof( indecies ) );
 
-    // Wave Change Event
-    if (svParams.waveKillCount == svParams.killCountRequirement) {
-        svParams.waveCount++;
-		svParams.spawnedThisWave = 0;
+        // Optional: Trigger music/announcement here if you want it to play during intermission
+        // trap_SendServerCommand(-1, "mu_play sound/announcer/intermission.wav 0\n");
+    }
+}
 
-		if ((svParams.waveCount == 10) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
-		{
-			steamSetAchievement("ACH_NO_BUY");
-		}
+void AICast_TickSurvivalWave(void) {
 
-		if ((svParams.waveCount == 15) && (!g_cheats.integer) && (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
-		{
-			steamSetAchievement("ACH_NO_CLASS");
-		}
+	if (!svParams.wavePending)
+		return;
+	if (level.time < svParams.waveChangeTime)
+		return;
 
-		float growthFactor = 1.2f;		 // Adjust this factor to control the growth rate
-		int baseIncrement = 5;			 // Minimum increment per wave
-		int randomVariance = rand() % 5; // Add some randomness for variety
+	svParams.wavePending = qfalse;
+    svParams.waveInProgress = qtrue;
+    svParams.waveCount++;
+    svParams.waveKillCount = 0;
+    svParams.spawnedThisWave = 0;
 
-		// Exponential growth formula
-		svParams.killCountRequirement += (int)(baseIncrement * powf(growthFactor, svParams.waveCount - 1)) + randomVariance;
+	float growthFactor = 1.2f;		 // Adjust this factor to control the growth rate
+	int baseIncrement = 5;			 // Minimum increment per wave
+	int randomVariance = rand() % 5; // Add some randomness for variety
 
-		attacker->client->ps.persistant[PERS_WAVES]++;
-		svParams.waveKillCount = 0;
+	// Exponential growth formula
+	svParams.killCountRequirement += (int)(baseIncrement * powf(growthFactor, svParams.waveCount - 1)) + randomVariance;
 
-		for ( j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j ) {
-			if ( svParams.announcerSound[j][0] ) {
-				indecies[i++] = j;
-			}
-		}
 
-		if ( i == 0 ) {
-			snprintf( command, sizeof( command ), "mu_play %s 0\n", soundDeafultPath );
-		} else {
-			snprintf( command, sizeof( command ), "mu_play %s 0\n", svParams.announcerSound[ indecies[rand( ) % i] ] );
-		}
-		
-		trap_SendServerCommand(-1, command);
+    // Track wave count per player
+    for (int i = 0; i < g_maxclients.integer; i++) {
+        gentity_t *cl = &g_entities[i];
+        if (!cl->inuse || !cl->client) continue;
 
-		AICast_UpdateMaxActiveAI();
 
+        cl->client->ps.persistant[PERS_WAVES]++;
+
+        // Achievements
+        if (svParams.waveCount == 10 && !g_cheats.integer && !cl->client->hasPurchased) {
+            steamSetAchievement("ACH_NO_BUY");
+        }
+
+        if (svParams.waveCount == 15 && !g_cheats.integer &&
+            cl->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE) {
+            steamSetAchievement("ACH_NO_CLASS");
+        }
     }
 
+    //G_Printf("Wave %d started! Kill requirement: %d\n", svParams.waveCount, svParams.killCountRequirement);
+
+    // Play announcer sound
+    static char soundDefaultPath[MAX_QPATH] = "sound/announcer/hein.wav";
+    static char command[256];
+    int i = 0, j, indices[ANNOUNCE_SOUNDS_COUNT];
+    Com_Memset(indices, 0, sizeof(indices));
+
+    for (j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j) {
+        if (svParams.announcerSound[j][0]) {
+            indices[i++] = j;
+        }
+    }
+
+    if (i == 0) {
+        snprintf(command, sizeof(command), "mu_play %s 0\n", soundDefaultPath);
+    } else {
+        snprintf(command, sizeof(command), "mu_play %s 0\n", svParams.announcerSound[indices[rand() % i]]);
+    }
+
+    trap_SendServerCommand(-1, command);
+
+    AICast_UpdateMaxActiveAI();
 }
 
 
@@ -908,7 +933,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
    gentity_t *player;
    vec3_t spawn_origin, spawn_angles;
 
-   if (svParams.spawnedThisWave >= svParams.killCountRequirement)
+   if (svParams.spawnedThisWave >= svParams.killCountRequirement || !svParams.waveInProgress)
    {
 	   return;
    }

@@ -863,12 +863,13 @@ void AICast_TickSurvivalWave(void) {
     svParams.waveKillCount = 0;
     svParams.spawnedThisWave = 0;
 
-	float growthFactor = 1.2f;		 // Adjust this factor to control the growth rate
-	int baseIncrement = 5;			 // Minimum increment per wave
-	int randomVariance = rand() % 5; // Add some randomness for variety
+    // New linear growth formula for kill count requirement
+    int baseKillCount = svParams.initialKillCountRequirement;
+    int killIncrement = 5;       // additional kills per wave
+    int randomVariance = rand() % 4;   // random value 0..3 for variety
 
-	// Exponential growth formula
-	svParams.killCountRequirement += (int)(baseIncrement * powf(growthFactor, svParams.waveCount - 1)) + randomVariance;
+   // Reset requirement for the new wave (waveCount starts at 1)
+    svParams.killCountRequirement = baseKillCount + ((svParams.waveCount - 1) * killIncrement) + randomVariance;
 
 
     // Track wave count per player

@@ -50,6 +50,7 @@ qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int p
 qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price);
 int Survival_GetDefaultWeaponPrice(int weapon);
 int Survival_GetDefaultPerkPrice(int perk);
+void Touch_objective_info ( gentity_t * ent , gentity_t * other , trace_t * trace ) ;
 
 // Misc stuff
 void TossClientItems(gentity_t *self, gentity_t *attacker);

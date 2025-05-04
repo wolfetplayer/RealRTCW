@@ -502,3 +502,132 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 		ClientUserinfoChanged(clientNum);
 	}
 }
+
+#define AXIS_OBJECTIVE      1
+#define ALLIED_OBJECTIVE    2
+
+void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
+	gentity_t *buyEnt = NULL;
+	int price = 0;
+	int ammoPrice = 0;
+	int isWeapon = ent->isWeapon;
+	const char *weaponName = ent->translation;
+	const char *techName = NULL;
+	const gitem_t *item = NULL;
+
+	// Try to find the linked target_buy
+	for (int i = 0; i < level.num_entities; i++)
+	{
+		buyEnt = &g_entities[i];
+		if (!buyEnt->inuse)
+			continue;
+		if (Q_stricmp(buyEnt->classname, "target_buy") != 0)
+			continue;
+		if (ent->target && buyEnt->targetname && Q_stricmp(ent->target, buyEnt->targetname) == 0)
+		{
+			techName = buyEnt->buy_item;
+			price = buyEnt->price; // This can be 0, and fallback will trigger
+			break;
+		}
+	}
+
+	// If no target_buy was found but a target exists, try to find linked func_invisible_user
+	if (!techName && ent->target)
+	{
+		for (int i = 0; i < level.num_entities; i++)
+		{
+			gentity_t *funcUser = &g_entities[i];
+			if (!funcUser->inuse)
+				continue;
+			if (Q_stricmp(funcUser->classname, "func_invisible_user") != 0)
+				continue;
+			if (funcUser->targetname && Q_stricmp(ent->target, funcUser->targetname) == 0)
+			{
+				price = funcUser->price;
+				break;
+			}
+		}
+	}
+
+	// Handle special cases BEFORE item lookup
+	if (techName) {
+		if (!Q_stricmp(techName, "ammo")) {
+			price = (price > 0) ? price : Survival_GetDefaultWeaponPrice(other->client->ps.weapon) / 2;
+			if (weaponName && price > 0) {
+				trap_SendServerCommand(other - g_entities, va(
+					"cpbuy \"item: %s\nprice: %d\"",
+					weaponName, price));
+				return;
+			}
+		} else if (!Q_stricmp(techName, "random_weapon")) {
+			price = (price > 0) ? price : svParams.randomWeaponPrice;
+			if (weaponName && price > 0) {
+				trap_SendServerCommand(other - g_entities, va(
+					"cpbuy \"item: %s\nprice: %d\"",
+					weaponName, price));
+				return;
+			}
+		} else if (!Q_stricmp(techName, "random_perk")) {
+			price = (price > 0) ? price : svParams.randomPerkPrice;
+			if (weaponName && price > 0) {
+				trap_SendServerCommand(other - g_entities, va(
+					"cpbuy \"item: %s\nprice: %d\"",
+					weaponName, price));
+				return;
+			}
+		}
+	}
+
+	// Try to find the item definition
+	if (techName) {
+		item = BG_FindItem(techName);
+	}
+
+	if (!item && techName) {
+		for (int i = 1; bg_itemlist[i].classname; i++) {
+			if (!Q_stricmp(bg_itemlist[i].classname, techName)) {
+				item = &bg_itemlist[i];
+				break;
+			}
+		}
+	}
+
+	// If price not defined explicitly, fall back based on item type
+	if (price <= 0 && item) {
+		if (item->giType == IT_WEAPON || item->giType == IT_AMMO) {
+			price = Survival_GetDefaultWeaponPrice(item->giTag);
+		} else if (item->giType == IT_PERK) {
+			price = Survival_GetDefaultPerkPrice(item->giTag);
+		} else if (item->giType == IT_ARMOR) {
+			price = svParams.armorPrice;
+		}
+	}
+
+	// Ammo price only applies to weapons
+	ammoPrice = isWeapon ? price / 2 : 0;
+
+	// Display custom tip if price and name are known
+	if (price > 0 && weaponName) {
+		if (isWeapon) {
+			trap_SendServerCommand(other - g_entities, va(
+				"cpbuy \"weapon: %s\nprice: %d\nammo_price: %d\"",
+				weaponName, price, ammoPrice));
+		} else {
+			trap_SendServerCommand(other - g_entities, va(
+				"cpbuy \"item: %s\nprice: %d\"",
+				weaponName, price));
+		}
+		return;
+	}
+
+	// Otherwise fallback to standard objective info
+	if (other->timestamp <= level.time) {
+		other->timestamp = level.time + 4500;
+
+		const char *msg = ent->track ? ent->track : va("objective #%i", ent->count);
+		int teamFlag = (ent->spawnflags & AXIS_OBJECTIVE) ? 0 :
+		               (ent->spawnflags & ALLIED_OBJECTIVE) ? 1 : -1;
+
+		trap_SendServerCommand(other - g_entities, va("oid %d \"You are near %s\n\"", teamFlag, msg));
+	}
+}

@@ -843,13 +843,10 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 void AICast_CheckSurvivalProgression(gentity_t *attacker) {
     if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
         svParams.wavePending = qtrue;
-        svParams.waveChangeTime = level.time + 5000 + rand() % 5000; // 5–10 sec delay
-
-        //G_Printf("Wave %d complete. Intermission started...\n", svParams.waveCount);
-
+        svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;
 
         // Optional: Trigger music/announcement here if you want it to play during intermission
-        // trap_SendServerCommand(-1, "mu_play sound/announcer/intermission.wav 0\n");
+         trap_SendServerCommand(-1, "mu_play sound/misc/intermission.wav 0\n");
     }
 }
 
@@ -2057,6 +2054,15 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.startingSpawnTime))
 			{
 				PC_SourceError(handle, "expected startingSpawnTime value");
+				return qfalse;
+			}
+			// string
+		} 
+		else if (!Q_stricmp(token.string, "intermissionTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.intermissionTime))
+			{
+				PC_SourceError(handle, "expected intermissionTime value");
 				return qfalse;
 			}
 			// string

@@ -221,6 +221,8 @@ typedef struct svParams_s
 	int pineapplePrice;
 	int defaultWeaponPrice;
 
+	int intermissionTime;
+
 	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
 
 } svParams_t;

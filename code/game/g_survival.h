@@ -71,6 +71,7 @@ typedef struct svParams_s
 	int killCountRequirement;
 
 	int spawnedThisWave;
+	int spawnedThisWaveFriendly;
 	qboolean wavePending;              
     int waveChangeTime;
 	qboolean waveInProgress;

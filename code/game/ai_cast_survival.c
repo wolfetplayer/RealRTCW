@@ -84,8 +84,13 @@ Applies Survival mode overrides after character creation
 ============
 */
 void AICast_CreateCharacter_Survival(gentity_t *newent, cast_state_t *cs) {
-	// Unlimited respawn
-	cs->respawnsleft = -1;
+    // If the character is friendly AI (aiTeam == 1), set respawnsleft to 0
+    if (newent->aiTeam == 1) {
+        cs->respawnsleft = 0;
+    } else {
+        // Unlimited respawn for other AI
+        cs->respawnsleft = -1;
+    }
 }
 
 
@@ -143,6 +148,12 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
 		return;
 	   }
+
+	    // Prevent friendly AI from spawning if respawnsleft is 0
+		if (ent->aiTeam == 1 && cs->respawnsleft == 0) {
+			cs->aiFlags |= AIFL_WAITINGTOSPAWN; // Mark as waiting to spawn
+			return;
+		}
 
 	// Selecting the spawn point for the AI
 				SelectSpawnPoint_AI( player, ent, spawn_origin, spawn_angles );
@@ -544,29 +555,34 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
 		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
 
-		if ( cs->respawnsleft != 0 ) {
-
-			if ( cs->respawnsleft > 0 ) {
-				cs->respawnsleft--;
+			if (self->aiTeam == 1) {
+				// Friendly AI: Always set rebirthTime, even if respawnsleft is 0
+				if (cs->respawnsleft > 0) {
+					cs->respawnsleft--; // Decrement respawnsleft
+				}
+			
+				// Set rebirthTime for friendly AI
+				svParams.spawnedThisWaveFriendly--;
+				cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
+			
+			} else {
+				// Non-friendly AI: Only set rebirthTime if respawnsleft is not 0
+				if (cs->respawnsleft != 0) {
+					if (cs->respawnsleft > 0) {
+						cs->respawnsleft--; // Decrement respawnsleft
+					}
+			
+					float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
+					int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
+			
+					// Clamp rebirthTime to a minimum
+					if (rebirthTime < svParams.minSpawnTime * 1000) {
+						rebirthTime = svParams.minSpawnTime * 1000;
+					}
+			
+					cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+				}
 			}
-
-			   float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
-			   int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
-
-			   // Clamp rebirthTime to a minimum
-               if (rebirthTime < svParams.minSpawnTime * 1000) {
-                 rebirthTime = svParams.minSpawnTime * 1000;
-               }
-               
-			   // Friendlies has separate time
-			   if (self->aiTeam == 1) {
-                  cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
-			   } else {
-				   cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
-			   }
-
-
-		}
 	}
 
 	trap_LinkEntity( self );
@@ -686,14 +702,6 @@ void AICast_UpdateMaxActiveAI(void)
         svParams.maxActiveAI[AICHAR_PRIEST] += svParams.priestsIncrease;
         if (svParams.maxActiveAI[AICHAR_PRIEST] > svParams.maxPriests) {
             svParams.maxActiveAI[AICHAR_PRIEST] = svParams.maxPriests;
-        }
-    }
-
-    // Partisans
-    if (svParams.waveCount >= svParams.wavePartisans) {
-        svParams.maxActiveAI[AICHAR_PARTISAN] += svParams.partisansIncrease;
-        if (svParams.maxActiveAI[AICHAR_PARTISAN] > svParams.maxPartisans) {
-            svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.maxPartisans;
         }
     }
 }
@@ -941,6 +949,12 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
    {
 	   return;
    }
+
+    // Prevent friendly AI from respawning if respawnsleft is 0
+    if (ent->aiTeam == 1 && cs->respawnsleft == 0) {
+        return;
+    }
+
 
 			if ( ent->aiCharacter != AICHAR_ZOMBIE && ent->aiCharacter != AICHAR_HELGA
 				 && ent->aiCharacter != AICHAR_HEINRICH ) {
@@ -1268,14 +1282,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
-		else if (!Q_stricmp(token.string, "partisansIncrease"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.partisansIncrease))
-			{
-				PC_SourceError(handle, "expected partisansIncrease value");
-				return qfalse;
-			}
-		}
 		else if (!Q_stricmp(token.string, "ghostsIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.ghostsIncrease))
@@ -1345,14 +1351,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.maxProtos))
 			{
 				PC_SourceError(handle, "expected maxProtos value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "maxPartisans"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.maxPartisans))
-			{
-				PC_SourceError(handle, "expected maxPartisans value");
 				return qfalse;
 			}
 		}
@@ -1673,6 +1671,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.friendlySpawnTime))
 			{
 				PC_SourceError(handle, "expected friendlySpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "aliveFriendliestoCallReinforce"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.aliveFriendliestoCallReinforce))
+			{
+				PC_SourceError(handle, "expected aliveFriendliestoCallReinforce value");
 				return qfalse;
 			}
 		}

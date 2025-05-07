@@ -1410,6 +1410,66 @@ qboolean AICast_ScriptAction_GiveAmmo( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+
+/*
+==============
+AICast_ScriptAction_IncreaseRespawns
+
+  syntax: increaserespawns <ainame> <amount>
+
+  Increases the respawnsleft value for the specified AI entity by the specified amount.
+==============
+*/
+qboolean AICast_ScriptAction_IncreaseRespawns(cast_state_t *cs, char *params) {
+    char *pString, *token;
+    char aiName[MAX_QPATH];
+    int amount;
+    gentity_t *targetEnt;
+    cast_state_t *targetCs;
+
+    // Parse the AI name
+    pString = params;
+    token = COM_ParseExt(&pString, qfalse);
+    if (!token[0]) {
+        G_Error("AI Scripting: increaserespawns requires an AI name and an amount\n");
+    }
+    Q_strncpyz(aiName, token, sizeof(aiName));
+
+    // Parse the amount
+    token = COM_ParseExt(&pString, qfalse);
+    if (!token[0]) {
+        G_Error("AI Scripting: increaserespawns requires an amount\n");
+    }
+    amount = atoi(token);
+
+    // Find the target entity by AI name
+    targetEnt = AICast_FindEntityForName(aiName);
+    if (!targetEnt || !targetEnt->client) {
+        G_Error("AI Scripting: increaserespawns could not find AI with name '%s'\n", aiName);
+    }
+
+    // Get the cast state of the target entity
+    targetCs = AICast_GetCastState(targetEnt->s.clientNum);
+    if (!targetCs) {
+        G_Error("AI Scripting: increaserespawns could not get cast state for AI '%s'\n", aiName);
+    }
+
+    // Increase the respawnsleft value
+    targetCs->respawnsleft += amount;
+
+    // Ensure respawnsleft does not go below 0
+    if (targetCs->respawnsleft < 0) {
+        targetCs->respawnsleft = 0;
+    }
+
+    // Optional: Print debug information
+    G_Printf("AI '%s' respawnsleft increased by %d. New value: %d\n",
+             aiName, amount, targetCs->respawnsleft);
+
+    return qtrue;
+}
+
+
 /*
 ==============
 AICast_ScriptAction_GiveHealth

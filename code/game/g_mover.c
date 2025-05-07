@@ -4712,6 +4712,12 @@ void use_invisible_user( gentity_t *ent, gentity_t *other, gentity_t *activator 
 			trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
 			return; // Player doesn't have enough points
 		}
+
+		// Restrict usage if targetname is "reinforce_call" and no friendly AI are spawned
+		if (Q_stricmp(ent->targetname, "reinforce_call") == 0 && svParams.spawnedThisWaveFriendly != svParams.aliveFriendliestoCallReinforce) {
+			trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
+			return;
+		}
 	}
 
 	if ( ent->wait < level.time ) {

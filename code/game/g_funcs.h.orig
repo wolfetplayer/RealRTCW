@@ -296,6 +296,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_SetArmor", (byte *)AICast_ScriptAction_SetArmor},
 {"AICast_ScriptAction_GiveAmmo", (byte *)AICast_ScriptAction_GiveAmmo},
 {"AICast_ScriptAction_GiveHealth", (byte *)AICast_ScriptAction_GiveHealth},
+{"AICast_ScriptAction_IncreaseRespawns", (byte *)AICast_ScriptAction_IncreaseRespawns},
 {"AICast_ScriptAction_SelectWeapon", (byte *)AICast_ScriptAction_SelectWeapon},
 {"AICast_ScriptAction_SuggestWeapon", (byte *)AICast_ScriptAction_SuggestWeapon},
 {"AICast_ScriptAction_SetClip", (byte *)AICast_ScriptAction_SetClip},

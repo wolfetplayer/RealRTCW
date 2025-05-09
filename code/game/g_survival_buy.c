@@ -278,49 +278,65 @@ Survival_HandleWeaponOrGrenade
 ============
 */
 qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gitem_t *item, int price) {
-	if (!activator || !item) return qfalse;
+    if (!activator || !item) return qfalse;
 
-	// Use fallback price if mapper didn't define one
-	if (price <= 0) {
-		price = Survival_GetDefaultWeaponPrice(item->giTag);
-	}
+    // Use fallback price if mapper didn't define one
+    if (price <= 0) {
+        price = Survival_GetDefaultWeaponPrice(item->giTag);
+    }
 
-	// Halve price if already owned
-	if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
-		price /= 2;
-	} else {
-		Give_Weapon_New_Inventory(activator, item->giTag, qfalse);
-	}
+    // Check if the player already owns the weapon
+    if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
+        // Halve the price if the weapon is already owned
+        price /= 2;
 
-	// Check if ammo is already full
-	if (item->giType == IT_AMMO) {
-		if (activator->client->ps.ammoclip[item->giTag] >= ammoTable[item->giTag].maxammo) return qfalse;
-	} else if (activator->client->ps.ammo[item->giTag] >= ammoTable[item->giTag].maxammo) {
-		return qfalse;
-	}
+        // Check if the player has enough points to buy ammo
+        if (activator->client->ps.persistant[PERS_SCORE] < price) {
+            G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+            return qfalse;
+        }
 
-	// Check score
-	if (activator->client->ps.persistant[PERS_SCORE] < price) {
-		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
-		return qfalse;
-	}
+        // Deduct points for the ammo
+        activator->client->ps.persistant[PERS_SCORE] -= price;
 
-	// Grant ammo
-	Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
-	Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
+        // Grant ammo
+        Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
+        Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
 
-	// M1Garand bonus: give M7 with ammo
-	if (item->giTag == WP_M1GARAND) {
-		Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
-		Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
-	}
+        // Notify the player
+        G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+        trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
 
-	// Deduct score and notify
-	activator->client->ps.persistant[PERS_SCORE] -= price;
-	G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
-	trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+        return qtrue;
+    }
 
-	return qtrue;
+    // Check if the player has enough points to buy the weapon
+    if (activator->client->ps.persistant[PERS_SCORE] < price) {
+        G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+        return qfalse;
+    }
+
+    // Deduct points for the weapon
+    activator->client->ps.persistant[PERS_SCORE] -= price;
+
+    // Grant the weapon
+    Give_Weapon_New_Inventory(activator, item->giTag, qfalse);
+
+    // Grant ammo
+    Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
+    Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
+
+    // M1Garand bonus: give M7 with ammo
+    if (item->giTag == WP_M1GARAND) {
+        Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
+        Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
+    }
+
+    // Notify the player
+    G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+    trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+
+    return qtrue;
 }
 
 /*

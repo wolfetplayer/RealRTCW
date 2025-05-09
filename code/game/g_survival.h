@@ -130,8 +130,6 @@ typedef struct svParams_s
 	int waveGhosts;
 	int wavePriests;
 
-	int wavePartisans;
-
 	int zombieHealthCap;
 	int warriorHealthCap;
 	int protosHealthCap;
@@ -223,7 +221,8 @@ typedef struct svParams_s
 
 	int intermissionTime;
 
-	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
+	char waveStartSound[WAVESTART_SOUNDS_COUNT][MAX_QPATH];
+	char waveEndSound[WAVEEND_SOUNDS_COUNT][MAX_QPATH];
 
 } svParams_t;
 

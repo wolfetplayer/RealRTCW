@@ -859,8 +859,26 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
         svParams.wavePending = qtrue;
         svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;
 
-        // Optional: Trigger music/announcement here if you want it to play during intermission
-         trap_SendServerCommand(-1, "mu_play sound/misc/intermission.wav 0\n");
+        // Play a random wave end sound
+        static char soundDefaultPathEnd[MAX_QPATH] = "sound/misc/wave_end.wav";
+        static char command_end[256];
+        int i = 0, j, indices_end[WAVEEND_SOUNDS_COUNT];
+        Com_Memset(indices_end, 0, sizeof(indices_end));
+
+        // Collect available wave end sounds
+        for (j = 0; j < WAVEEND_SOUNDS_COUNT; ++j) {
+            if (svParams.waveEndSound[j][0]) {
+                indices_end[i++] = j;
+            }
+        }
+
+        // Play a random wave end sound or the default if none are available
+        if (i == 0) {
+            snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", soundDefaultPathEnd);
+        } else {
+            snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound[indices_end[rand() % i]]);
+        }
+        trap_SendServerCommand(-1, command_end);
     }
 }
 
@@ -907,25 +925,32 @@ void AICast_TickSurvivalWave(void) {
 
     //G_Printf("Wave %d started! Kill requirement: %d\n", svParams.waveCount, svParams.killCountRequirement);
 
-    // Play announcer sound
-    static char soundDefaultPath[MAX_QPATH] = "sound/announcer/hein.wav";
-    static char command[256];
-    int i = 0, j, indices[ANNOUNCE_SOUNDS_COUNT];
-    Com_Memset(indices, 0, sizeof(indices));
+	// Play wave start sound
+	static char soundDefaultPathStart[MAX_QPATH] = "sound/misc/wave_start.wav"; // Default wave start sound
+	static char command_start[256];
+	int i = 0, j, indices_start[WAVESTART_SOUNDS_COUNT];
+	Com_Memset(indices_start, 0, sizeof(indices_start));
 
-    for (j = 0; j < ANNOUNCE_SOUNDS_COUNT; ++j) {
-        if (svParams.announcerSound[j][0]) {
-            indices[i++] = j;
-        }
-    }
+	// Collect available wave start sounds
+	for (j = 0; j < WAVESTART_SOUNDS_COUNT; ++j)
+	{
+		if (svParams.waveStartSound[j][0])
+		{
+			indices_start[i++] = j;
+		}
+	}
 
-    if (i == 0) {
-        snprintf(command, sizeof(command), "mu_play %s 0\n", soundDefaultPath);
-    } else {
-        snprintf(command, sizeof(command), "mu_play %s 0\n", svParams.announcerSound[indices[rand() % i]]);
-    }
+	// Play a random wave start sound or the default if none are available
+	if (i == 0)
+	{
+		snprintf(command_start, sizeof(command_start), "mu_play %s 0\n", soundDefaultPathStart);
+	}
+	else
+	{
+		snprintf(command_start, sizeof(command_start), "mu_play %s 0\n", svParams.waveStartSound[indices_start[rand() % i]]);
+	}
 
-    trap_SendServerCommand(-1, command);
+	trap_SendServerCommand(-1, command_start);
 
     AICast_UpdateMaxActiveAI();
 }
@@ -1090,9 +1115,11 @@ void AI_LoadSurvivalTable( const char* mapname )
 qboolean BG_ParseSurvivalTable(int handle)
 {
 	pc_token_t token;
-	int i;
-	char msg[64];
-	char soundPath[MAX_QPATH];
+	int end;
+	int start;
+	char msg[128];
+	char soundPathStart[MAX_QPATH];
+	char soundPathEnd[MAX_QPATH];
 
 	if (!trap_PC_ReadToken(handle, &token) || Q_stricmp(token.string, "{"))
 	{
@@ -1423,14 +1450,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.wavePriests))
 			{
 				PC_SourceError(handle, "expected wavePriests value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "wavePartisans"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.wavePartisans))
-			{
-				PC_SourceError(handle, "expected wavePartisans value");
 				return qfalse;
 			}
 		}
@@ -2074,7 +2093,7 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 			// string
-		} 
+		}
 		else if (!Q_stricmp(token.string, "intermissionTime"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.intermissionTime))
@@ -2084,32 +2103,52 @@ qboolean BG_ParseSurvivalTable(int handle)
 			}
 			// string
 		}
-		else if (!Q_stricmp(token.string, "announcerSound"))
+		else if (!Q_stricmp(token.string, "waveStartSound"))
 		{
-			if (!PC_String_ParseNoAlloc(handle, (char *)&svParams.announcerSound[0], MAX_QPATH))
+			if (!PC_String_ParseNoAlloc(handle, (char *)&svParams.waveStartSound[0], MAX_QPATH))
 			{
-				PC_SourceError(handle, "expected announcerSound value");
+				PC_SourceError(handle, "expected waveStartSound value");
 				return qfalse;
 			}
 		}
-		else if (Q_stristr(token.string, "announcerSound") == token.string)
+		else if (Q_stristr(token.string, "waveStartSound") == token.string)
 		{
-			sscanf(token.string, "announcerSound%d", &i);
+			sscanf(token.string, "waveStartSound%d", &start);
 
-			if (!PC_String_ParseNoAlloc(handle, (char *)&soundPath, MAX_QPATH))
+			if (!PC_String_ParseNoAlloc(handle, (char *)&soundPathStart, MAX_QPATH))
 			{
-				PC_SourceError(handle, "expected announcerSound value");
+				PC_SourceError(handle, "expected waveStartSound value");
 				return qfalse;
 			}
 
-			if (i - 1 >= ANNOUNCE_SOUNDS_COUNT)
+			if (start - 1 >= WAVESTART_SOUNDS_COUNT)
 			{
-				sprintf(msg, "announcerSound[%d] out of range. Increase ANNOUNCE_SOUNDS_COUNT", i - 1);
+				sprintf(msg, "waveStartSound[%d] out of range. Increase WAVESTART_SOUNDS_COUNT", start - 1);
 				PC_SourceError(handle, msg);
 			}
 			else
 			{
-				strcpy(svParams.announcerSound[i - 1], soundPath);
+				strcpy(svParams.waveStartSound[start - 1], soundPathStart);
+			}
+		}
+		else if (Q_stristr(token.string, "waveEndSound") == token.string)
+		{
+			sscanf(token.string, "waveEndSound%d", &end);
+
+			if (!PC_String_ParseNoAlloc(handle, (char *)&soundPathEnd, MAX_QPATH))
+			{
+				PC_SourceError(handle, "expected waveEndSound value");
+				return qfalse;
+			}
+
+			if (end - 1 >= WAVEEND_SOUNDS_COUNT)
+			{
+				sprintf(msg, "waveEndSound[%d] out of range. Increase WAVEEND_SOUNDS_COUNT", end - 1);
+				PC_SourceError(handle, msg);
+			}
+			else
+			{
+				strcpy(svParams.waveEndSound[end - 1], soundPathEnd);
 			}
 		}
 		else

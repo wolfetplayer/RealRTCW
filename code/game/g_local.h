@@ -80,7 +80,8 @@ If you have questions concerning this license or the applicable additional terms
 #define FL_NODRAW               0x01000000
 #define FL_DOORNOISE            0x02000000  //----(SA)	added
 
-#define ANNOUNCE_SOUNDS_COUNT 32
+#define WAVEEND_SOUNDS_COUNT 4
+#define WAVESTART_SOUNDS_COUNT 4
 
 // movers are things like doors, plats, buttons, etc
 typedef enum {

@@ -221,8 +221,8 @@ typedef struct svParams_s
 
 	int intermissionTime;
 
-	char waveStartSound[WAVESTART_SOUNDS_COUNT][MAX_QPATH];
-	char waveEndSound[WAVEEND_SOUNDS_COUNT][MAX_QPATH];
+	char waveStartSound[MAX_QPATH];
+	char waveEndSound[MAX_QPATH];
 
 } svParams_t;
 

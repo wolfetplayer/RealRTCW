@@ -859,37 +859,23 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
         svParams.wavePending = qtrue;
         svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;
 
-        // Play a random wave end sound
-        static char soundDefaultPathEnd[MAX_QPATH] = "sound/misc/wave_end.wav";
+        // Play the wave end sound from the configuration file
         static char command_end[256];
-        int i = 0, j, indices_end[WAVEEND_SOUNDS_COUNT];
-        Com_Memset(indices_end, 0, sizeof(indices_end));
-
-        // Collect available wave end sounds
-        for (j = 0; j < WAVEEND_SOUNDS_COUNT; ++j) {
-            if (svParams.waveEndSound[j][0]) {
-                indices_end[i++] = j;
-            }
-        }
-
-        // Play a random wave end sound or the default if none are available
-        if (i == 0) {
-            snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", soundDefaultPathEnd);
-        } else {
-            snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound[indices_end[rand() % i]]);
-        }
+        snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound);
         trap_SendServerCommand(-1, command_end);
+
+        // Debug output
+        G_Printf("DEBUG: Wave end sound command sent: %s\n", command_end);
     }
 }
 
 void AICast_TickSurvivalWave(void) {
+    if (!svParams.wavePending)
+        return;
+    if (level.time < svParams.waveChangeTime)
+        return;
 
-	if (!svParams.wavePending)
-		return;
-	if (level.time < svParams.waveChangeTime)
-		return;
-
-	svParams.wavePending = qfalse;
+    svParams.wavePending = qfalse;
     svParams.waveInProgress = qtrue;
     svParams.waveCount++;
     svParams.waveKillCount = 0;
@@ -900,15 +886,13 @@ void AICast_TickSurvivalWave(void) {
     int killIncrement = 5;       // additional kills per wave
     int randomVariance = rand() % 4;   // random value 0..3 for variety
 
-   // Reset requirement for the new wave (waveCount starts at 1)
+    // Reset requirement for the new wave (waveCount starts at 1)
     svParams.killCountRequirement = baseKillCount + ((svParams.waveCount - 1) * killIncrement) + randomVariance;
-
 
     // Track wave count per player
     for (int i = 0; i < g_maxclients.integer; i++) {
         gentity_t *cl = &g_entities[i];
         if (!cl->inuse || !cl->client) continue;
-
 
         cl->client->ps.persistant[PERS_WAVES]++;
 
@@ -923,34 +907,10 @@ void AICast_TickSurvivalWave(void) {
         }
     }
 
-    //G_Printf("Wave %d started! Kill requirement: %d\n", svParams.waveCount, svParams.killCountRequirement);
-
-	// Play wave start sound
-	static char soundDefaultPathStart[MAX_QPATH] = "sound/misc/wave_start.wav"; // Default wave start sound
-	static char command_start[256];
-	int i = 0, j, indices_start[WAVESTART_SOUNDS_COUNT];
-	Com_Memset(indices_start, 0, sizeof(indices_start));
-
-	// Collect available wave start sounds
-	for (j = 0; j < WAVESTART_SOUNDS_COUNT; ++j)
-	{
-		if (svParams.waveStartSound[j][0])
-		{
-			indices_start[i++] = j;
-		}
-	}
-
-	// Play a random wave start sound or the default if none are available
-	if (i == 0)
-	{
-		snprintf(command_start, sizeof(command_start), "mu_play %s 0\n", soundDefaultPathStart);
-	}
-	else
-	{
-		snprintf(command_start, sizeof(command_start), "mu_play %s 0\n", svParams.waveStartSound[indices_start[rand() % i]]);
-	}
-
-	trap_SendServerCommand(-1, command_start);
+    // Play the wave start sound from the configuration file
+    static char command_start[256];
+    snprintf(command_start, sizeof(command_start), "mu_play %s 0\n", svParams.waveStartSound);
+    trap_SendServerCommand(-1, command_start);
 
     AICast_UpdateMaxActiveAI();
 }
@@ -2105,50 +2065,20 @@ qboolean BG_ParseSurvivalTable(int handle)
 		}
 		else if (!Q_stricmp(token.string, "waveStartSound"))
 		{
-			if (!PC_String_ParseNoAlloc(handle, (char *)&svParams.waveStartSound[0], MAX_QPATH))
+			// Parse the wave start sound path
+			if (!PC_String_ParseNoAlloc(handle, svParams.waveStartSound, MAX_QPATH))
 			{
 				PC_SourceError(handle, "expected waveStartSound value");
 				return qfalse;
 			}
 		}
-		else if (Q_stristr(token.string, "waveStartSound") == token.string)
+		else if (!Q_stricmp(token.string, "waveEndSound"))
 		{
-			sscanf(token.string, "waveStartSound%d", &start);
-
-			if (!PC_String_ParseNoAlloc(handle, (char *)&soundPathStart, MAX_QPATH))
-			{
-				PC_SourceError(handle, "expected waveStartSound value");
-				return qfalse;
-			}
-
-			if (start - 1 >= WAVESTART_SOUNDS_COUNT)
-			{
-				sprintf(msg, "waveStartSound[%d] out of range. Increase WAVESTART_SOUNDS_COUNT", start - 1);
-				PC_SourceError(handle, msg);
-			}
-			else
-			{
-				strcpy(svParams.waveStartSound[start - 1], soundPathStart);
-			}
-		}
-		else if (Q_stristr(token.string, "waveEndSound") == token.string)
-		{
-			sscanf(token.string, "waveEndSound%d", &end);
-
-			if (!PC_String_ParseNoAlloc(handle, (char *)&soundPathEnd, MAX_QPATH))
+			// Parse the wave end sound path
+			if (!PC_String_ParseNoAlloc(handle, svParams.waveEndSound, MAX_QPATH))
 			{
 				PC_SourceError(handle, "expected waveEndSound value");
 				return qfalse;
-			}
-
-			if (end - 1 >= WAVEEND_SOUNDS_COUNT)
-			{
-				sprintf(msg, "waveEndSound[%d] out of range. Increase WAVEEND_SOUNDS_COUNT", end - 1);
-				PC_SourceError(handle, msg);
-			}
-			else
-			{
-				strcpy(svParams.waveEndSound[end - 1], soundPathEnd);
 			}
 		}
 		else

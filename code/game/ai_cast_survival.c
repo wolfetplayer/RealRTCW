@@ -197,7 +197,6 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	cast_state_t    *cs;
 	qboolean nogib = qtrue;
 	char mapname[MAX_QPATH];
-	qboolean respawn = qfalse;
 
 	// Achievements related stuff! 
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
@@ -366,21 +365,8 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		}
 	}
 
-	// the zombie should show special effect instead of gibbing
-	if ( self->aiCharacter == AICHAR_ZOMBIE && cs->secondDeadTime ) {
-		if ( cs->secondDeadTime > 1 ) {
-			// we are already totally dead
-			self->health += damage; // don't drop below gib_health if we weren't already below it
-			return;
-		}
-
-		// always gib
-		self->health = -999;
-		damage = 999;
-	}
-
 	// Zombies are very fragile against highly explosives
-	if ( (self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) && damage > 20 && inflictor != attacker ) {
+	if ( ( self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) && damage > 20 && inflictor != attacker ) {
 		self->health = -999;
 		damage = 999;
 	}
@@ -389,19 +375,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		// already dead
 		if ( self->health < GIB_HEALTH ) {
-			if ( self->aiCharacter == AICHAR_ZOMBIE ) {
-				// RF, changed this so Zombies always gib now
-				GibEntity( self, killer );
-				nogib = qfalse;
-				self->takedamage = qfalse;
-				self->r.contents = 0;
-				cs->secondDeadTime = 2;
-				cs->rebirthTime = 0;
-				cs->revivingTime = 0;
-			} else {
-				body_die( self, inflictor, attacker, damage, meansOfDeath );
-				return;
-			}
+			body_die( self, inflictor, attacker, damage, meansOfDeath );
 		}
 
 	} else {    // this is our first death, so set everything up
@@ -456,19 +430,15 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 
 		// never gib in a nodrop
 		if ( self->health <= GIB_HEALTH ) {
-			if ( self->aiCharacter == AICHAR_ZOMBIE ) {
-				// RF, changed this so Zombies always gib now
-				GibEntity( self, killer );
-				nogib = qfalse;
-			} else if ( !( contents & CONTENTS_NODROP ) ) {
+		    if ( !( contents & CONTENTS_NODROP ) ) {
 				body_die( self, inflictor, attacker, damage, meansOfDeath );
 				//GibEntity( self, killer );
 				nogib = qfalse;
 			}
 		}
 
-		// if we are a zombie, and lying down during our first death, then we should just die
-		if ( !( self->aiCharacter == AICHAR_ZOMBIE && cs->secondDeadTime && cs->rebirthTime ) ) {
+
+		if ( !( cs->rebirthTime ) ) {
 
 			// set enemy weapon
 			BG_UpdateConditionValue( self->s.number, ANIM_COND_ENEMY_WEAPON, 0, qfalse );
@@ -501,59 +471,15 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 			self->s.eFlags |= EF_DEAD;
 
 		}
-
-		//RealRTCW modified with bodysink integer
-		if ( !g_bodysink.integer ) 
-		{
+		
 		cs->deadSinkStartTime = 0;
-		} 
-		else 
-		{
-		cs->deadSinkStartTime = level.time + 60000;
-		}
-         // if end map, sink into ground
-		if ( cs->aiCharacter == AICHAR_WARZOMBIE ) {
-			trap_Cvar_VariableStringBuffer( "mapname", mapname, sizeof( mapname ) );
-			if ( !Q_strncmp( mapname, "end", 3 ) ) {    // !! FIXME: post beta2, make this a spawnflag!
-				cs->deadSinkStartTime = level.time + 4000;
-			}
-		}
 	}
 
 	if ( nogib ) {
-		// set for rebirth
-		if ( self->aiCharacter == AICHAR_ZOMBIE ) {
-			if ( !cs->secondDeadTime ) {
-				cs->rebirthTime = level.time + 5000 + rand() % 2000;
-				// RF, only set for gib at next death, if NoRevive is not set
-				if ( !( self->spawnflags & 2 ) ) {
-					cs->secondDeadTime = qtrue;
-				}
-				cs->revivingTime = 0;
-			} else if ( cs->secondDeadTime > 1 ) {
-				cs->rebirthTime = 0;
-				cs->revivingTime = 0;
-				cs->deathTime = level.time;
-			}
-		} else {
-			// the body can still be gibbed
-			self->die = body_die;
-		}
+		self->die = body_die;
 	}
 
-	if ( g_airespawn.integer == -1 ) {   // unlimited lives
-		respawn = qtrue;
-	} else if ( g_airespawn.integer == 0 ) {   // no ai respawning
-		respawn = qfalse;
-	} else if ( g_airespawn.integer > 0 ) {
-		respawn = qtrue;
-	}
-
-		respawn = qtrue;
-		nogib = qtrue;
-
-	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
-		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
+	if ( !cs->norespawn ) {
 
 			if (self->aiTeam == 1) {
 				// Friendly AI: Always set rebirthTime, even if respawnsleft is 0
@@ -608,8 +534,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		}
 	} else {
 		// really dead now, so call the script
-		if ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
-			 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) {
+		if (!cs->norespawn ) {
 
 			if ( !cs->died ) {
 				G_UseTargets( self, self );                 // testing
@@ -930,32 +855,31 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
    gentity_t *player;
    vec3_t spawn_origin, spawn_angles;
 
-   if (svParams.spawnedThisWave >= svParams.killCountRequirement || !svParams.waveInProgress)
-   {
-	   return;
-   }
+   if (svParams.spawnedThisWave >= svParams.killCountRequirement || !svParams.waveInProgress) {
+    G_Printf("DEBUG: AICast_SurvivalRespawn skipped - spawnedThisWave: %d, killCountRequirement: %d, waveInProgress: %d\n",
+             svParams.spawnedThisWave, svParams.killCountRequirement, svParams.waveInProgress);
+    return;
+}
 
     // Prevent friendly AI from respawning if respawnsleft is 0
     if (ent->aiTeam == 1 && cs->respawnsleft == 0) {
         return;
     }
 
+	for (i = 0; i < g_maxclients.integer; i++)
+	{
+		player = &g_entities[i];
 
-			if ( ent->aiCharacter != AICHAR_ZOMBIE && ent->aiCharacter != AICHAR_HELGA
-				 && ent->aiCharacter != AICHAR_HEINRICH ) {
+		if (!player || !player->inuse)
+		{
+			continue;
+		}
 
-				for ( i = 0 ; i < g_maxclients.integer ; i++ ) {
-					player = &g_entities[i];
-
-					if ( !player || !player->inuse ) {
-						continue;
-					}
-
-					if ( player->r.svFlags & SVF_CASTAI ) {
-						continue;
-					}
-				}
-			}
+		if (player->r.svFlags & SVF_CASTAI)
+		{
+			continue;
+		}
+	}
 
 			oldmaxZ = ent->r.maxs[2];
 

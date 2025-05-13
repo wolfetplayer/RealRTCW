@@ -498,15 +498,8 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 						cs->respawnsleft--; // Decrement respawnsleft
 					}
 			
-					float waveFactor = powf(svParams.spawnTimeFalloffMultiplier, svParams.waveCount - 1);
-					int rebirthTime = (int)(svParams.startingSpawnTime * waveFactor * 1000);
-			
-					// Clamp rebirthTime to a minimum
-					if (rebirthTime < svParams.minSpawnTime * 1000) {
-						rebirthTime = svParams.minSpawnTime * 1000;
-					}
-			
-					cs->rebirthTime = level.time + rebirthTime + rand() % 2000;
+					int base = 5000 + rand() % 1000; // 1.0–1.75 seconds
+					cs->rebirthTime = level.time + base;
 				}
 			}
 	}
@@ -806,13 +799,18 @@ void AICast_TickSurvivalWave(void) {
     svParams.waveKillCount = 0;
     svParams.spawnedThisWave = 0;
 
-    // New linear growth formula for kill count requirement
-    int baseKillCount = svParams.initialKillCountRequirement;
-    int killIncrement = 5;       // additional kills per wave
-    int randomVariance = rand() % 4;   // random value 0..3 for variety
+	int wave = svParams.waveCount;
+	int killReq = 0;
 
-    // Reset requirement for the new wave (waveCount starts at 1)
-    svParams.killCountRequirement = baseKillCount + ((svParams.waveCount - 1) * killIncrement) + randomVariance;
+	if (wave == 1) {
+		// Explicitly use user-defined value for wave 1
+		killReq = svParams.initialKillCountRequirement;
+	} else {
+		// quadratic formula:
+		killReq = (int)(0.15f * wave * wave + 3.0f * wave + 10.0f);
+	}
+
+	svParams.killCountRequirement = killReq;
 
     // Track wave count per player
     for (int i = 0; i < g_maxclients.integer; i++) {
@@ -1038,16 +1036,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 				PC_SourceError(handle, "expected speedIncreaseDivider value");
 				return qfalse;
 			}
-		}
-		else if (!Q_stricmp(token.string, "spawnTimeFalloffMultiplier"))
-		{
-			if (!PC_Float_Parse(handle, &svParams.spawnTimeFalloffMultiplier))
-			{
-				PC_SourceError(handle, "expected spawnTimeFalloffMultiplier value");
-				return qfalse;
-			}
-
-			// int
 		}
 		else if (!Q_stricmp(token.string, "initialKillCountRequirement"))
 		{
@@ -1561,14 +1549,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
-		else if (!Q_stricmp(token.string, "minSpawnTime"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.minSpawnTime))
-			{
-				PC_SourceError(handle, "expected minSpawnTime value");
-				return qfalse;
-			}
-		}
 		else if (!Q_stricmp(token.string, "friendlySpawnTime"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.friendlySpawnTime))
@@ -1968,15 +1948,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 				PC_SourceError(handle, "expected defaultWeaponPrice value");
 				return qfalse;
 			}
-		}
-		else if (!Q_stricmp(token.string, "startingSpawnTime"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.startingSpawnTime))
-			{
-				PC_SourceError(handle, "expected startingSpawnTime value");
-				return qfalse;
-			}
-			// string
 		}
 		else if (!Q_stricmp(token.string, "intermissionTime"))
 		{

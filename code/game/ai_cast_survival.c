@@ -389,7 +389,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		// already dead
 		if ( self->health < GIB_HEALTH ) {
-			if ( self->aiCharacter == AICHAR_ZOMBIE ) {
+			if ( self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
 				// RF, changed this so Zombies always gib now
 				GibEntity( self, killer );
 				nogib = qfalse;
@@ -456,7 +456,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 
 		// never gib in a nodrop
 		if ( self->health <= GIB_HEALTH ) {
-			if ( self->aiCharacter == AICHAR_ZOMBIE ) {
+			if ( self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
 				// RF, changed this so Zombies always gib now
 				GibEntity( self, killer );
 				nogib = qfalse;
@@ -502,22 +502,8 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 
 		}
 
-		//RealRTCW modified with bodysink integer
-		if ( !g_bodysink.integer ) 
-		{
 		cs->deadSinkStartTime = 0;
-		} 
-		else 
-		{
-		cs->deadSinkStartTime = level.time + 60000;
-		}
-         // if end map, sink into ground
-		if ( cs->aiCharacter == AICHAR_WARZOMBIE ) {
-			trap_Cvar_VariableStringBuffer( "mapname", mapname, sizeof( mapname ) );
-			if ( !Q_strncmp( mapname, "end", 3 ) ) {    // !! FIXME: post beta2, make this a spawnflag!
-				cs->deadSinkStartTime = level.time + 4000;
-			}
-		}
+		
 	}
 
 	if ( nogib ) {
@@ -539,14 +525,6 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 			// the body can still be gibbed
 			self->die = body_die;
 		}
-	}
-
-	if ( g_airespawn.integer == -1 ) {   // unlimited lives
-		respawn = qtrue;
-	} else if ( g_airespawn.integer == 0 ) {   // no ai respawning
-		respawn = qfalse;
-	} else if ( g_airespawn.integer > 0 ) {
-		respawn = qtrue;
 	}
 
 		respawn = qtrue;
@@ -572,7 +550,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 						cs->respawnsleft--; // Decrement respawnsleft
 					}
 			
-					int base = 5000 + rand() % 1000; // 1.0–1.75 seconds
+					int base = 5000 + rand() % 1000; // 5-6 seconds
 					cs->rebirthTime = level.time + base;
 				}
 			}

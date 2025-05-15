@@ -680,139 +680,91 @@ void AICast_UpdateMaxActiveAI(void)
 /*
 ============
 AICast_ApplySurvivalAttributes
-  Applies survival attributes to the AI character based on the current wave count.
-  This includes health, speed, and other attributes that scale with the wave count.
-  The function ensures that the attributes do not exceed defined caps for each character type.
+  Applies survival mode attributes to the AI character based on the current wave count.
+  The function adjusts health, speed scales, and other attributes based on the character type and wave count.
+  This function is called when a new wave starts or when an AI character is spawned.
+  The adjustments are made to ensure that the AI characters become progressively stronger as the game progresses.
 ============
 */
 void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
-    int health_increase = svParams.waveCount * svParams.healthIncreaseMultiplier;
-    float speed_increase = svParams.waveCount / svParams.speedIncreaseDivider;
-    float crouchSpeedScale = 1;
-    float runSpeedScale = 1;
-    float sprintSpeedScale = 1;
+    int steps = svParams.waveCount / 3; // +1 step every 5 waves
+    if (steps < 0) steps = 0;
+
     int newHealth = 0;
+    float runSpeedScale = 1.0f;
+    float sprintSpeedScale = 1.0f;
+    float crouchSpeedScale = 1.0f;
 
     switch (cs->aiCharacter) {
         case AICHAR_SOLDIER:
-            newHealth = svParams.soldierBaseHealth + health_increase;
-            if (newHealth > svParams.soldierHealthCap) {
-                newHealth = svParams.soldierHealthCap;
-            }
-            break;
-        case AICHAR_ZOMBIE_SURV:
-            newHealth = svParams.zombieBaseHealth + health_increase;
-            if (newHealth > svParams.zombieHealthCap) {
-                newHealth = svParams.zombieHealthCap;
-            }
-            runSpeedScale = 0.8 + speed_increase;
-            if (runSpeedScale > 1.2) {
-                runSpeedScale = 1.2;
-            }
-            sprintSpeedScale = 1.2 + speed_increase;
-            if (sprintSpeedScale > 1.6) {
-                sprintSpeedScale = 1.6;
-            }
-            crouchSpeedScale = 0.25 + speed_increase;
-            if (crouchSpeedScale > 0.5) {
-                crouchSpeedScale = 0.5;
-            }
-            break;
-        case AICHAR_ZOMBIE_GHOST:
-            newHealth = svParams.ghostBaseHealth + health_increase;
-            if (newHealth > svParams.ghostHealthCap) {
-                newHealth = svParams.ghostHealthCap;
-            }
-            runSpeedScale = 0.8 + speed_increase;
-            if (runSpeedScale > 1.6) {
-                runSpeedScale = 1.6;
-            }
-            sprintSpeedScale = 1.2 + speed_increase;
-            if (sprintSpeedScale > 2.0) {
-                sprintSpeedScale = 2.0;
-            }
-            crouchSpeedScale = 0.25 + speed_increase;
-            if (crouchSpeedScale > 0.75) {
-                crouchSpeedScale = 0.75;
-            }
-            break;
-        case AICHAR_WARZOMBIE:
-            newHealth = svParams.warriorBaseHealth + health_increase;
-            if (newHealth > svParams.warriorHealthCap) {
-                newHealth = svParams.warriorHealthCap;
-            }
-            runSpeedScale = 0.8 + speed_increase;
-            if (runSpeedScale > 1.6) {
-                runSpeedScale = 1.6;
-            }
-            sprintSpeedScale = 1.2 + speed_increase;
-            if (sprintSpeedScale > 2.0) {
-                sprintSpeedScale = 2.0;
-            }
-            crouchSpeedScale = 0.25 + speed_increase;
-            if (crouchSpeedScale > 0.75) {
-                crouchSpeedScale = 0.75;
-            }
-            break;
-        case AICHAR_PROTOSOLDIER:
-            newHealth = svParams.protosBaseHealth + health_increase;
-            if (newHealth > svParams.protosHealthCap) {
-                newHealth = svParams.protosHealthCap;
-            }
-            runSpeedScale = 0.8 + speed_increase;
-            if (runSpeedScale > 1.6) {
-                runSpeedScale = 1.6;
-            }
-            sprintSpeedScale = 1.2 + speed_increase;
-            if (sprintSpeedScale > 1.5) {
-                sprintSpeedScale = 1.5;
-            }
-            crouchSpeedScale = 0.25 + speed_increase;
-            if (crouchSpeedScale > 0.75) {
-                crouchSpeedScale = 0.75;
-            }
-            break;
-        case AICHAR_PARTISAN:
-            newHealth = svParams.partisansBaseHealth + health_increase;
-            if (newHealth > svParams.partisansHealthCap) {
-                newHealth = svParams.partisansHealthCap;
-            }
-            break;
-        case AICHAR_PRIEST:
-            newHealth = svParams.priestBaseHealth + health_increase;
-            if (newHealth > svParams.priestHealthCap) {
-                newHealth = svParams.priestHealthCap;
-            }
-            runSpeedScale = 0.8 + speed_increase;
-            if (runSpeedScale > 1.4) {
-                runSpeedScale = 1.4;
-            }
-            sprintSpeedScale = 1.2 + speed_increase;
-            if (sprintSpeedScale > 2.0) {
-                sprintSpeedScale = 2.0;
-            }
-            crouchSpeedScale = 0.25 + speed_increase;
-            if (crouchSpeedScale > 0.5) {
-                crouchSpeedScale = 0.5;
-            }
+            newHealth = 20 + steps * 5;
+            if (newHealth > 50) newHealth = 50;
             break;
         case AICHAR_ELITEGUARD:
-            newHealth = svParams.eliteGuardBaseHealth + health_increase;
-            if (newHealth > svParams.eliteGuardHealthCap) {
-                newHealth = svParams.eliteGuardHealthCap;
-            }
+            newHealth = 30 + steps * 5;
+            if (newHealth > 60) newHealth = 60;
             break;
         case AICHAR_BLACKGUARD:
-            newHealth = svParams.blackGuardBaseHealth + health_increase;
-            if (newHealth > svParams.blackGuardHealthCap) {
-                newHealth = svParams.blackGuardHealthCap;
-            }
+            newHealth = 40 + steps * 5;
+            if (newHealth > 80) newHealth = 80;
             break;
         case AICHAR_VENOM:
-            newHealth = svParams.venomBaseHealth + health_increase;
-            if (newHealth > svParams.venomHealthCap) {
-                newHealth = svParams.venomHealthCap;
-            }
+            newHealth = 50 + steps * 5;
+            if (newHealth > 100) newHealth = 100;
+            break;
+        case AICHAR_ZOMBIE_SURV:
+            newHealth = 20 + steps * 5;
+            if (newHealth > 200) newHealth = 200;
+            runSpeedScale = 0.8f + steps * 0.1f;
+            if (runSpeedScale > 1.2f) runSpeedScale = 1.2f;
+            sprintSpeedScale = 1.2f + steps * 0.1f;
+            if (sprintSpeedScale > 1.6f) sprintSpeedScale = 1.6f;
+            crouchSpeedScale = 0.25f + steps * 0.1f;
+            if (crouchSpeedScale > 0.5f) crouchSpeedScale = 0.5f;
+            break;
+        case AICHAR_ZOMBIE_GHOST:
+            newHealth = 20 + steps * 5;
+            if (newHealth > 200) newHealth = 200;
+            runSpeedScale = 0.8f + steps * 0.1f;
+            if (runSpeedScale > 1.6f) runSpeedScale = 1.6f;
+            sprintSpeedScale = 1.2f + steps * 0.1f;
+            if (sprintSpeedScale > 2.0f) sprintSpeedScale = 2.0f;
+            crouchSpeedScale = 0.25f + steps * 0.1f;
+            if (crouchSpeedScale > 0.75f) crouchSpeedScale = 0.75f;
+            break;
+        case AICHAR_WARZOMBIE:
+            newHealth = 40 + steps * 5;
+            if (newHealth > 300) newHealth = 300;
+            runSpeedScale = 0.8f + steps * 0.1f;
+            if (runSpeedScale > 1.6f) runSpeedScale = 1.6f;
+            sprintSpeedScale = 1.2f + steps * 0.1f;
+            if (sprintSpeedScale > 2.0f) sprintSpeedScale = 2.0f;
+            crouchSpeedScale = 0.25f + steps * 0.1f;
+            if (crouchSpeedScale > 0.75f) crouchSpeedScale = 0.75f;
+            break;
+        case AICHAR_PROTOSOLDIER:
+            newHealth = 200 + steps * 5;
+            if (newHealth > 600) newHealth = 600;
+            runSpeedScale = 0.8f + steps * 0.1f;
+            if (runSpeedScale > 1.6f) runSpeedScale = 1.6f;
+            sprintSpeedScale = 1.2f + steps * 0.1f;
+            if (sprintSpeedScale > 1.5f) sprintSpeedScale = 1.5f;
+            crouchSpeedScale = 0.25f + steps * 0.1f;
+            if (crouchSpeedScale > 0.75f) crouchSpeedScale = 0.75f;
+            break;
+        case AICHAR_PARTISAN:
+            newHealth = 250 + steps * 5;
+            if (newHealth > 500) newHealth = 500;
+            break;
+        case AICHAR_PRIEST:
+            newHealth = 50 + steps * 5;
+            if (newHealth > 500) newHealth = 500;
+            runSpeedScale = 0.8f + steps * 0.1f;
+            if (runSpeedScale > 1.4f) runSpeedScale = 1.4f;
+            sprintSpeedScale = 1.2f + steps * 0.1f;
+            if (sprintSpeedScale > 2.0f) sprintSpeedScale = 2.0f;
+            crouchSpeedScale = 0.25f + steps * 0.1f;
+            if (crouchSpeedScale > 0.5f) crouchSpeedScale = 0.5f;
             break;
         default:
             break;
@@ -823,6 +775,85 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
     ent->client->ps.runSpeedScale = runSpeedScale;
     ent->client->ps.sprintSpeedScale = sprintSpeedScale;
     ent->client->ps.crouchSpeedScale = crouchSpeedScale;
+}
+
+/*
+============
+BG_SetBehaviorForSurvival
+  Sets the behavior attributes for AI characters in survival mode.
+  The function adjusts the aim skill, accuracy, attack skill, aggression, and reaction time
+  based on the current wave count. The values are capped to ensure they do not exceed defined limits.
+  This function is called at the start of each wave to adjust the AI behavior dynamically.
+============
+*/
+void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
+	// Calculate step count: +0.1 per 5 waves
+	int steps = svParams.waveCount / 3;
+	if (steps > 5) steps = 5; // Cap at +0.5 max change
+
+	float delta = 0.1f * steps;
+
+	float aimSkill     = 0.0f;
+	float aimAccuracy  = 0.0f;
+	float attackSkill  = 0.0f;
+	float aggression   = 0.0f;
+	float reactionTime = 1.0f;
+
+	switch (characterNum) {
+
+		case AICHAR_SOLDIER:
+			aimSkill     = fminf(0.1f + delta, 0.5f);
+			aimAccuracy  = fminf(0.1f + delta, 0.5f);
+			attackSkill  = fminf(0.1f + delta, 0.5f);
+			aggression   = fminf(0.1f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.5f);
+			break;
+
+		case AICHAR_ELITEGUARD:
+			aimSkill     = fminf(0.3f + delta, 0.6f);
+			aimAccuracy  = fminf(0.3f + delta, 0.6f);
+			attackSkill  = fminf(0.3f + delta, 0.6f);
+			aggression   = fminf(0.3f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.5f);
+			break;
+
+		case AICHAR_BLACKGUARD:
+		case AICHAR_VENOM:
+			aimSkill     = fminf(0.4f + delta, 0.7f);
+			aimAccuracy  = fminf(0.4f + delta, 0.7f);
+			attackSkill  = fminf(0.4f + delta, 0.7f);
+			aggression   = fminf(0.5f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.5f);
+			break;
+		case AICHAR_PARTISAN:
+			aimSkill     = 0.8f;
+			aimAccuracy  = 0.8f;
+			attackSkill  = 0.8f;
+			aggression   = 0.8f;
+			reactionTime = 0.5f;
+			break;
+		case AICHAR_ZOMBIE_SURV:
+		case AICHAR_WARZOMBIE:
+		case AICHAR_PRIEST:
+		case AICHAR_ZOMBIE_GHOST:
+			aimSkill     = 1.0f;
+			aimAccuracy  = 1.0f;
+			attackSkill  = 1.0f;
+			aggression   = 1.0f;
+			reactionTime = 0.5f;
+			break;
+
+		default:
+			// Other characters: do not modify
+			return;
+	}
+
+	// Apply the values
+	aiDefaults[characterNum].attributes[AIM_SKILL]     = aimSkill;
+	aiDefaults[characterNum].attributes[AIM_ACCURACY]  = aimAccuracy;
+	aiDefaults[characterNum].attributes[ATTACK_SKILL]  = attackSkill;
+	aiDefaults[characterNum].attributes[AGGRESSION]    = aggression;
+	aiDefaults[characterNum].attributes[REACTION_TIME] = reactionTime;
 }
 
 void AICast_CheckSurvivalProgression(gentity_t *attacker) {
@@ -957,8 +988,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 
 			if ( numTouch == 0 ) {    // ok to spawn
 
+				BG_SetBehaviorForSurvival(ent->aiCharacter);
 				AICast_ApplySurvivalAttributes(ent, cs);
-				BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
 				ent->r.contents = CONTENTS_BODY;
 				ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
 				ent->takedamage = qtrue;
@@ -1051,11 +1082,6 @@ void AI_LoadSurvivalTable( const char* mapname )
 qboolean BG_ParseSurvivalTable(int handle)
 {
 	pc_token_t token;
-	int end;
-	int start;
-	char msg[128];
-	char soundPathStart[MAX_QPATH];
-	char soundPathEnd[MAX_QPATH];
 
 	if (!trap_PC_ReadToken(handle, &token) || Q_stricmp(token.string, "{"))
 	{
@@ -1075,23 +1101,7 @@ qboolean BG_ParseSurvivalTable(int handle)
 		}
 
 		// float
-		if (!Q_stricmp(token.string, "healthIncreaseMultiplier"))
-		{
-			if (!PC_Float_Parse(handle, &svParams.healthIncreaseMultiplier))
-			{
-				PC_SourceError(handle, "expected healthIncreaseMultiplier value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "speedIncreaseDivider"))
-		{
-			if (!PC_Float_Parse(handle, &svParams.speedIncreaseDivider))
-			{
-				PC_SourceError(handle, "expected speedIncreaseDivider value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "initialKillCountRequirement"))
+		if (!Q_stricmp(token.string, "initialKillCountRequirement"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialKillCountRequirement))
 			{
@@ -1376,166 +1386,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.wavePriests))
 			{
 				PC_SourceError(handle, "expected wavePriests value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "zombieHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.zombieHealthCap))
-			{
-				PC_SourceError(handle, "expected zombieHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "warriorHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.warriorHealthCap))
-			{
-				PC_SourceError(handle, "expected warriorHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "protosHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.protosHealthCap))
-			{
-				PC_SourceError(handle, "expected protosHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "partisansHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.partisansHealthCap))
-			{
-				PC_SourceError(handle, "expected partisansHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "ghostHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.ghostHealthCap))
-			{
-				PC_SourceError(handle, "expected ghostHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "priestHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.priestHealthCap))
-			{
-				PC_SourceError(handle, "expected priestHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "soldierHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.soldierHealthCap))
-			{
-				PC_SourceError(handle, "expected soldierHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "eliteGuardHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.eliteGuardHealthCap))
-			{
-				PC_SourceError(handle, "expected eliteGuardHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "blackGuardHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.blackGuardHealthCap))
-			{
-				PC_SourceError(handle, "expected blackGuardHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "venomHealthCap"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.venomHealthCap))
-			{
-				PC_SourceError(handle, "expected venomHealthCap value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "soldierBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.soldierBaseHealth))
-			{
-				PC_SourceError(handle, "expected soldierBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "partisansBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.partisansBaseHealth))
-			{
-				PC_SourceError(handle, "expected partisansBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "eliteGuardBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.eliteGuardBaseHealth))
-			{
-				PC_SourceError(handle, "expected eliteGuardBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "blackGuardBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.blackGuardBaseHealth))
-			{
-				PC_SourceError(handle, "expected blackGuardBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "venomBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.venomBaseHealth))
-			{
-				PC_SourceError(handle, "expected venomBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "zombieBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.zombieBaseHealth))
-			{
-				PC_SourceError(handle, "expected zombieBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "warriorBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.warriorBaseHealth))
-			{
-				PC_SourceError(handle, "expected warriorBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "protosBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.protosBaseHealth))
-			{
-				PC_SourceError(handle, "expected protosBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "ghostBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.ghostBaseHealth))
-			{
-				PC_SourceError(handle, "expected ghostBaseHealth value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "priestBaseHealth"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.priestBaseHealth))
-			{
-				PC_SourceError(handle, "expected priestBaseHealth value");
 				return qfalse;
 			}
 		}

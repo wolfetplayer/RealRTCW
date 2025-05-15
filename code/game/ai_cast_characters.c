@@ -1141,9 +1141,15 @@ void AIChar_spawn( gentity_t *ent ) {
 	// create the character
 
 	// (there will always be an ent->aiSkin (SA)) AAAS
-	BG_SetBehaviorForSkill( ent->aiCharacter, g_gameskill.integer );
-	newent = AICast_CreateCharacter( ent, aiCharDefaults->attributes, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100" );
-
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		BG_SetBehaviorForSurvival(ent->aiCharacter);
+	}
+	else
+	{
+		BG_SetBehaviorForSkill(ent->aiCharacter, g_gameskill.integer);
+	}
+	newent = AICast_CreateCharacter(ent, aiCharDefaults->attributes, &weaponInfo, aiCharDefaults->name, ent->aiSkin, ent->aihSkin, "m", "7", "100");
 
 	if ( !newent ) {
 		G_FreeEntity( ent );

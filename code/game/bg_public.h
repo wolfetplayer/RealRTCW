@@ -1824,6 +1824,7 @@ void BG_SetWeaponForSkill( weapon_t weaponNum, gameskill_t skill );
 char *BG_GetCharacterFilename( AICharacters_t characterNum );
 qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum );
 void BG_SetBehaviorForSkill( AICharacters_t characterNum, gameskill_t skill );
+void BG_SetBehaviorForSurvival(AICharacters_t characterNum);
 
 // New ET vehicle path system
 #define MAX_PATH_CORNERS        512

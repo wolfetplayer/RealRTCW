@@ -91,9 +91,6 @@ typedef struct svParams_s
 	int initialPriestsCount;
 	int initialPartisansCount;
 
-	float healthIncreaseMultiplier;
-	float speedIncreaseDivider;
-
     int   friendlySpawnTime;
 	int   aliveFriendliestoCallReinforce;
 
@@ -126,32 +123,6 @@ typedef struct svParams_s
 	int waveProtos;
 	int waveGhosts;
 	int wavePriests;
-
-	int zombieHealthCap;
-	int warriorHealthCap;
-	int protosHealthCap;
-	int ghostHealthCap;
-	int priestHealthCap;
-
-	int partisansHealthCap;
-
-	int soldierHealthCap;	
-	int eliteGuardHealthCap;
-	int blackGuardHealthCap;
-	int venomHealthCap;
-
-	int soldierBaseHealth;
-	int eliteGuardBaseHealth;
-	int blackGuardBaseHealth;
-	int venomBaseHealth;
-
-	int partisansBaseHealth;
-
-	int zombieBaseHealth;
-	int warriorBaseHealth;
-	int protosBaseHealth;
-	int ghostBaseHealth;
-	int priestBaseHealth;
 
 	int powerupDropChance;
 	int powerupDropChanceScavengerIncrease;

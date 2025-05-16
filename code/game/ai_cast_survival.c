@@ -687,7 +687,7 @@ AICast_ApplySurvivalAttributes
 ============
 */
 void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
-    int steps = svParams.waveCount / 3; // +1 step every 5 waves
+    int steps = svParams.waveCount / 2; // +1 step every 5 waves
     if (steps < 0) steps = 0;
 
     int newHealth = 0;
@@ -788,7 +788,7 @@ BG_SetBehaviorForSurvival
 */
 void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 	// Calculate step count: +0.1 per 5 waves
-	int steps = svParams.waveCount / 3;
+	int steps = svParams.waveCount / 2;
 	if (steps > 5) steps = 5; // Cap at +0.5 max change
 
 	float delta = 0.1f * steps;

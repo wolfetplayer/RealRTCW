@@ -248,7 +248,7 @@ cvarTable_t gameCvarTable[] = {
 
 	{ &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse  },
 
-	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_CHEAT, 0, qtrue  },
+	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qtrue  },
 
 	{ &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE  },
 	{ &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE  },                            // NERVE - SMF - merge from team arena
@@ -1045,17 +1045,29 @@ void G_RegisterCvars( void ) {
 	// Rafael gameskill
 	if (g_gameskill.integer < GSKILL_EASY || g_gameskill.integer > GSKILL_SURVIVAL)
 	{
-		G_Printf("g_gameskill %i is out of range, default to medium\n", g_gameskill.integer);
 		trap_Cvar_Set("g_gameskill", va("%d", GSKILL_MEDIUM)); // default to medium
 		trap_Cvar_Update(&g_gameskill);
 	}
 
 	// If gamemode is not survival and g_gameskill is set to 5, override it to 1.
-	if (g_gametype.integer != GT_SURVIVAL && g_gameskill.integer == 5)
+	if (g_gametype.integer != GT_SURVIVAL && g_gameskill.integer == GSKILL_SURVIVAL)
 	{
-		G_Printf("g_gameskill set to 5 in non-survival mode, overriding to 1\n");
 		trap_Cvar_Set("g_gameskill", "1");
 		trap_Cvar_Update(&g_gameskill);
+	}
+
+	// Force survival mode rules
+	if (g_gametype.integer == GT_SURVIVAL) {
+
+			trap_Cvar_Set("g_gameskill", "5");
+			trap_Cvar_Update(&g_gameskill);
+
+			trap_Cvar_Set("g_friendlyFire", "0");
+			trap_Cvar_Update(&g_friendlyFire);
+	} else {
+		// Ensure friendly fire is enabled for non-survival modes
+			trap_Cvar_Set("g_friendlyFire", "1");
+			trap_Cvar_Update(&g_friendlyFire);
 	}
 
 	bg_pmove_gameskill_integer = g_gameskill.integer;
@@ -1328,13 +1340,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 		if (g_gametype.integer == GT_SURVIVAL)
 		{
 			AI_LoadSurvivalTable(g_mapname.string);
-		}
-
-		if (g_gametype.integer == GT_SURVIVAL)
-		{
-			trap_Cvar_Set( "g_friendlyFire", "0" );
-		} else {
-			trap_Cvar_Set( "g_friendlyFire", "1" );
 		}
 
 		AICast_Init();

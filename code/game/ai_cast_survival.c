@@ -881,9 +881,6 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
         static char command_end[256];
         snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound);
         trap_SendServerCommand(-1, command_end);
-
-        // Debug output
-        G_Printf("DEBUG: Wave end sound command sent: %s\n", command_end);
     }
 }
 

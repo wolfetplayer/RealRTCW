@@ -445,7 +445,8 @@ struct gentity_s {
 	int price;                 // item price, survival mode
     char  *buy_item;
 	int isWeapon;    
-	int wave;				   // wave number, survival mode           
+	int wave;				   // wave number, survival mode   
+	int lastPainMOD; // last meansOfDeath used in pain function        
 };
 
 // Ridah

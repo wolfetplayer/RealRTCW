@@ -196,19 +196,33 @@ void P_WorldEffects( gentity_t *ent ) {
 	//
 	// check for burning from flamethrower
 	//
-	if (ent->s.onFireEnd > level.time && (AICast_AllowFlameDamage(ent->s.number)))
+	if (ent->s.onFireEnd > level.time && AICast_AllowFlameDamage(ent->s.number))
 	{
 		gentity_t *attacker = &g_entities[ent->flameBurnEnt];
+		int damageMOD = MOD_FLAMETHROWER;
+
+		// In Survival mode, if flame source is a props_flamethrower, treat differently
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
+			if (!attacker || !attacker->client)
+			{
+				if (attacker && attacker->classname && !Q_stricmp(attacker->classname, "props_flamethrower"))
+				{
+					attacker = &g_entities[0]; // Force attacker to be player
+					damageMOD = MOD_FLAMETRAP; // Use specific mod
+				}
+			}
+		}
 
 		if (ent->health > 0)
 		{
 			int oldHealth = ent->health;
 
-			// Apply damage
-			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER);
 
 			// Calculate inflicted damage
 			int inflictedDmg = oldHealth - ent->health;
+			// Apply damage with selected MOD
+			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, damageMOD);
 
 			// If no damage was dealt, remove the flame effect
 			if (inflictedDmg <= 0)

@@ -776,6 +776,7 @@ void AIChar_Death(gentity_t *ent, gentity_t *attacker, int damage, int mod)
 				G_AddEvent(ent, EV_GENERAL_SOUND, G_SoundIndex(aiDefaults[ent->aiCharacter].soundScripts[QUIETDEATHSOUNDSCRIPT]));
 				break;
 			case MOD_FLAMETHROWER:
+			case MOD_FLAMETRAP:
 				G_AddEvent(ent, EV_GENERAL_SOUND, G_SoundIndex(aiDefaults[ent->aiCharacter].soundScripts[FLAMEDEATHSOUNDSCRIPT])); //----(SA)	added
 				break;
 			default:

@@ -186,6 +186,37 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 	trap_BotUserCommand( cs->bs->client, &( cs->lastucmd ) );
 }
 
+
+/*
+===============
+AICast_RegisterSurvivalKill
+
+Handles wave and survival kill counters + progression trigger.
+Call this from AICast_Die_Survival.
+===============
+*/
+void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int meansOfDeath) {
+	if (!self || !attacker || !svParams.waveInProgress)
+		return;
+
+	// Only count kills from players or friendly AI
+	qboolean killerPlayer   = attacker->client && !attacker->aiCharacter;
+	qboolean killerFriendly = attacker->aiCharacter && attacker->aiTeam == 1;
+
+	if (!killerPlayer && !killerFriendly)
+		return;
+
+	svParams.survivalKillCount++;
+	svParams.waveKillCount++;
+
+	if (killerPlayer) {
+		Survival_AddKillScore(attacker, self, meansOfDeath);
+	}
+
+	// Always use attacker to trigger progression check
+	AICast_CheckSurvivalProgression(attacker);
+}
+
 /*
 ============
 AICast_Die_Survival
@@ -196,7 +227,6 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	int killer = 0;
 	cast_state_t    *cs;
 	qboolean nogib = qtrue;
-	char mapname[MAX_QPATH];
 	qboolean respawn = qfalse;
 
 	// Achievements related stuff! 
@@ -205,11 +235,8 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
 	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
-	qboolean modFlamer = (meansOfDeath == MOD_FLAMETHROWER);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
 	qboolean killerEnv	 = attacker && !(attacker->client) && !( attacker->aiCharacter );
-	qboolean killerFriendly = attacker && attacker->aiCharacter && (attacker->aiTeam == 1);
-	qboolean modMG = (meansOfDeath == MOD_MACHINEGUN);
 
     // ETSP Achievements stuff!
 	qboolean modGL = (meansOfDeath == MOD_M7 );
@@ -292,11 +319,6 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		}
 	}
 
-	if (killerPlayer && (attacker->aiTeam != self->aiTeam))
-	{
-		Survival_AddKillScore(attacker, self, meansOfDeath);
-	}
-
 	  if (killerPlayer && attacker->client->ps.powerups[PW_VAMPIRE]) {
 
 			trap_SendServerCommand( -1, "mu_play sound/Zombie/firstsight/firstsight3.wav 0\n" );
@@ -315,37 +337,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		G_Printf( "killed %s\n", self->aiName );
 	}
 
-		// Decrement the counter for active AI characters
-	if ( (killerPlayer || killerFriendly) && (attacker->aiTeam != self->aiTeam))
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		if (killerPlayer)
-		{
-			AICast_CheckSurvivalProgression(attacker);
-		}
-		else
-		{
-			// If attacker is friendly AI, call progression with a player entity
-			AICast_CheckSurvivalProgression(&g_entities[0]);
-		}
-	}
-	
-	// That should cover mg42 static case
-	if (modMG && killerEnv )
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		AICast_CheckSurvivalProgression(&g_entities[0]);
-	}
-
-	// That should cover flame traps case
-	if (modFlamer && killerEnv )
-	{
-		svParams.survivalKillCount++;
-		svParams.waveKillCount++;
-		AICast_CheckSurvivalProgression(&g_entities[0]);
-	}
+    AICast_RegisterSurvivalKill(self, attacker, meansOfDeath);
 
 	cs = AICast_GetCastState( self->s.number );
 

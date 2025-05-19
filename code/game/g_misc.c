@@ -1711,8 +1711,7 @@ void Fire_Lead( gentity_t *ent, gentity_t *activator, float spread, int damage, 
 	}
 
 	if ( traceEnt->takedamage ) {
-		G_Damage( traceEnt, ent, ent, forward, tr.endpos,
-				  damage, 0, MOD_MACHINEGUN );
+    G_Damage(traceEnt, ent, activator, forward, tr.endpos, damage, 0, MOD_MACHINEGUN);
 	}
 
 	if ( !Q_stricmp( ent->classname, "misc_mg42" ) ) {

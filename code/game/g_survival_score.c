@@ -49,6 +49,10 @@ void Survival_AddKillScore(gentity_t *attacker, gentity_t *victim, int meansOfDe
 		score += svParams.scoreKnifeBonus;
 	}
 
+	if (meansOfDeath == MOD_MACHINEGUN || meansOfDeath == MOD_FLAMETRAP) {
+		score = 0;
+	}
+
 	attacker->client->ps.persistant[PERS_SCORE] += score;
 	attacker->client->ps.persistant[PERS_KILLS]++;
 }

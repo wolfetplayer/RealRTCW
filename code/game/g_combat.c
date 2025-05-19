@@ -309,6 +309,7 @@ char    *modNames[] = {
 	"MOD_VENOM",
 	"MOD_VENOM_FULL",
 	"MOD_FLAMETHROWER",
+	"MOD_FLAMETRAP",
 	"MOD_TESLA",
 	"MOD_GRENADE_PINEAPPLE",
 	"MOD_CROSS",
@@ -1496,6 +1497,8 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			}
 
 		} else if ( targ->pain ) {
+			targ->lastPainMOD = mod; // set mod for AICast_Pain to access
+			
 			if ( dir ) {  // Ridah, had to add this to fix NULL dir crash
 				VectorCopy( dir, targ->rotate );
 				VectorCopy( point, targ->pos3 ); // this will pass loc of hit
@@ -1504,7 +1507,9 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				VectorClear( targ->pos3 );
 			}
 
-			targ->pain( targ, attacker, take, point );
+			targ->pain(targ, attacker, take, point);
+
+			targ->lastPainMOD = 0; // optional: reset after use
 		}
 
 		G_ArmorDamage( targ );    //----(SA)	moved out to separate routine

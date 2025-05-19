@@ -740,6 +740,7 @@ void    AICast_ProcessActivate( int entNum, int activatorNum );
 //
 // ai_cast_survival.c
 void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
+void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int meansOfDeath);
 void AICast_InitSurvival(void);
 void AICast_SurvivalRespawn (gentity_t *ent, cast_state_t * cs ) ;
 void AICast_CheckSurvivalProgression( gentity_t *attacker );

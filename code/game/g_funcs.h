@@ -1677,6 +1677,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_EndChase", (byte *)AICast_EndChase},
 {"AICast_Die", (byte *)AICast_Die},
 {"AICast_Die_Survival", (byte *)AICast_Die_Survival},
+{"AICast_RegisterSurvivalKill}", (byte *)AICast_RegisterSurvivalKill},
 {"AICast_InitSurvival", (byte *)AICast_InitSurvival},
 {"AICast_Pain", (byte *)AICast_Pain},
 {"AICast_Sight", (byte *)AICast_Sight},

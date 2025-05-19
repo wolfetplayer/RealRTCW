@@ -126,7 +126,11 @@ void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point
 
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
-		Survival_AddPainScore(attacker, targ, damage);
+		// prevent scoring for fire damage
+		if (targ->lastPainMOD != MOD_FLAMETHROWER && targ->lastPainMOD != MOD_FLAMETRAP)
+		{
+			Survival_AddPainScore(attacker, targ, damage);
+		}
 	}
 
 	// process the event (turn to face the attacking direction? go into hide/retreat state?)

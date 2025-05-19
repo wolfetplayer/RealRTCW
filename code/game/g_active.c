@@ -218,14 +218,11 @@ void P_WorldEffects( gentity_t *ent ) {
 		{
 			int oldHealth = ent->health;
 
-
-			// Calculate inflicted damage
-			int inflictedDmg = oldHealth - ent->health;
 			// Apply damage with selected MOD
 			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, damageMOD);
 
-			// If no damage was dealt, remove the flame effect
-			if (inflictedDmg <= 0)
+			// Stop fire effect if no damage is dealt
+			if ((oldHealth - ent->health) <= 0)
 			{
 				ent->s.onFireEnd = 0;
 			}

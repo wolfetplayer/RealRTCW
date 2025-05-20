@@ -510,6 +510,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 		     scale *= 1.3;
 			 break;
 		case AICHAR_ZOMBIE_SURV:
+		case AICHAR_ZOMBIE_FLAME:
 		     scale *= 1.1;
 			 break;
 		case AICHAR_ZOMBIE_GHOST:

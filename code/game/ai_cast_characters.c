@@ -645,6 +645,35 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AISTATE_ALERT
 	},
 
+
+	//AICHAR_ZOMBIE_FLAME
+	{
+		"Zombie Flame",
+		{ // Default
+			0
+		},
+		{
+			"zombieSightPlayer",
+			"zombieAttackPlayer",
+			"zombieOrders",
+			"zombieDeath",
+			"zombieSilentDeath",				//----(SA)	added
+			"zombieFlameDeath",					//----(SA)	added
+			"zombiePain",
+			"sound/weapons/melee/fstatck.wav",	// stay - you're told to stay put
+			"sound/weapons/melee/fstmiss.wav",	// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"zombieOrdersDeny",					// deny - refuse orders (doing something else)
+		},
+		AITEAM_MONSTER,
+		"zombie/default",
+		{WP_MONSTER_ATTACK1},
+		BBOX_SMALL, {32,48},
+		/*AIFL_NOPAIN|AIFL_WALKFORWARD|*/ AIFL_NO_RELOAD,
+		AIFunc_ZombieFlameAttackStart, AIFunc_ZombieAttack2Start, AIFunc_ZombieMeleeStart,
+		NULL,
+		AISTATE_ALERT
+	},
+
 };
 //---------------------------------------------------------------------------
 
@@ -1624,6 +1653,15 @@ void SP_ai_zombie_surv( gentity_t *ent ) {
 	AICast_DelayedSpawnCast( ent, AICHAR_ZOMBIE_SURV );
 }
 
+/*
+============
+SP_ai_zombie_flame
+============
+*/
+void SP_ai_zombie_flame( gentity_t *ent ) {
+	ent->r.svFlags |= SVF_NOFOOTSTEPS;
+	AICast_DelayedSpawnCast( ent, AICHAR_ZOMBIE_FLAME );
+}
 
 /*
 ============
@@ -1676,6 +1714,7 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_AMERICAN:          return "american.aidefaults";
 		case AICHAR_ZOMBIE:            return "zombie.aidefaults";
 		case AICHAR_ZOMBIE_SURV:       return "zombie_surv.aidefaults";
+		case AICHAR_ZOMBIE_FLAME:      return "zombie_flame.aidefaults";
 		case AICHAR_ZOMBIE_GHOST:      return "zombie_ghost.aidefaults";
 		case AICHAR_WARZOMBIE:         return "warzombie.aidefaults";
 		case AICHAR_VENOM:             return "venom.aidefaults";

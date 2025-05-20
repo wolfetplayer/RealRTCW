@@ -66,6 +66,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
+	svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] = svParams.initialFlamersCount;
 	svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
 	svParams.maxActiveAI[AICHAR_PROTOSOLDIER] = svParams.initialProtosCount;
 	svParams.maxActiveAI[AICHAR_PARTISAN] = svParams.initialPartisansCount;
@@ -372,7 +373,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	}
 
 	// Zombies are very fragile against highly explosives
-	if ( (self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) && damage > 20 && inflictor != attacker ) {
+	if ( (self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST || self->aiCharacter == AICHAR_ZOMBIE_FLAME  ) && damage > 20 && inflictor != attacker ) {
 		self->health = -999;
 		damage = 999;
 	}
@@ -381,7 +382,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		// already dead
 		if ( self->health < GIB_HEALTH ) {
-			if ( self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
+			if ( self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST || self->aiCharacter == AICHAR_ZOMBIE_FLAME ) {
 				// RF, changed this so Zombies always gib now
 				GibEntity( self, killer );
 				nogib = qfalse;
@@ -448,7 +449,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 
 		// never gib in a nodrop
 		if ( self->health <= GIB_HEALTH ) {
-			if ( self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
+			if ( self->aiCharacter == AICHAR_ZOMBIE || self->aiCharacter == AICHAR_ZOMBIE_SURV || self->aiCharacter == AICHAR_ZOMBIE_GHOST || self->aiCharacter == AICHAR_ZOMBIE_FLAME  ) {
 				// RF, changed this so Zombies always gib now
 				GibEntity( self, killer );
 				nogib = qfalse;
@@ -667,6 +668,14 @@ void AICast_UpdateMaxActiveAI(void)
             svParams.maxActiveAI[AICHAR_PRIEST] = svParams.maxPriests;
         }
     }
+
+	// Flamers
+    if (svParams.waveCount >= svParams.waveFlamers) {
+        svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] += svParams.flamersIncrease;
+        if (svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] > svParams.maxFlamers) {
+            svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] = svParams.maxFlamers;
+        }
+    }
 }
 
 /*
@@ -765,6 +774,14 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
 			break;
 
+		case AICHAR_ZOMBIE_FLAME:
+			newHealth = 50 + steps * 5;
+			if (newHealth > 500) newHealth = 500;
+			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
+			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
+			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
+			break;
+
 		default:
 			break;
 	}
@@ -841,6 +858,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			break;
 
 		case AICHAR_ZOMBIE_SURV:
+		case AICHAR_ZOMBIE_FLAME:
 		case AICHAR_WARZOMBIE:
 		case AICHAR_PRIEST:
 		case AICHAR_ZOMBIE_GHOST:
@@ -1194,6 +1212,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialFlamersCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialFlamersCount))
+			{
+				PC_SourceError(handle, "expected initialFlamersCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "soldiersIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.soldiersIncrease))
@@ -1263,6 +1289,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.priestsIncrease))
 			{
 				PC_SourceError(handle, "expected priestsIncrease value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "flamersIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.flamersIncrease))
+			{
+				PC_SourceError(handle, "expected flamersIncrease value");
 				return qfalse;
 			}
 		}
@@ -1337,6 +1371,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				PC_SourceError(handle, "expected maxPriests value");
 				return qfalse;
 			}
+		}		
+		else if (!Q_stricmp(token.string, "maxFlamers"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxFlamers))
+			{
+				PC_SourceError(handle, "expected maxFlamers value");
+				return qfalse;
+			}
 		}
 		else if (!Q_stricmp(token.string, "waveEg"))
 		{
@@ -1391,6 +1433,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.wavePriests))
 			{
 				PC_SourceError(handle, "expected wavePriests value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "waveFlamers"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveFlamers))
+			{
+				PC_SourceError(handle, "expected waveFlamers value");
 				return qfalse;
 			}
 		}

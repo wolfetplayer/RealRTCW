@@ -218,6 +218,79 @@ void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int means
 	AICast_CheckSurvivalProgression(attacker);
 }
 
+
+/*
+====================
+AICast_SetRebirthTimeSurvival
+
+Centralized function for calculating AI rebirth time in Survival mode.
+Handles friendly AI, and special cases per AI character if needed.
+====================
+*/
+void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
+	if (!ent || !cs)
+		return;
+
+	// Skip characters that should never respawn
+	if (ent->aiCharacter == AICHAR_ZOMBIE || 
+		ent->aiCharacter == AICHAR_HELGA || 
+		ent->aiCharacter == AICHAR_HEINRICH || 
+		cs->norespawn)
+		return;
+
+	if (ent->aiTeam == AITEAM_ALLIES) { // Friendly AI
+		if (cs->respawnsleft > 0) {
+			cs->respawnsleft--;
+		}
+		svParams.spawnedThisWaveFriendly--;
+		cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
+		return;
+	}
+
+	// Non-friendly AI
+	if (cs->respawnsleft != 0) {
+		if (cs->respawnsleft > 0) {
+			cs->respawnsleft--;
+		}
+
+		int baseTime;
+
+		switch (ent->aiCharacter) {
+			case AICHAR_ELITEGUARD:
+				baseTime = svParams.egSpawnTime * 1000;
+				break;
+			case AICHAR_BLACKGUARD:
+				baseTime = svParams.bgSpawnTime * 1000;
+				break;
+			case AICHAR_VENOM:
+				baseTime = svParams.vSpawnTime * 1000;
+				break;
+			case AICHAR_PROTOSOLDIER:
+				baseTime = svParams.protoSpawnTime * 1000;
+				break;
+			case AICHAR_WARZOMBIE:
+				baseTime = svParams.warzSpawnTime * 1000;
+				break;
+			case AICHAR_ZOMBIE_GHOST:
+				baseTime = svParams.ghostSpawnTime * 1000;
+				break;
+			case AICHAR_PRIEST:
+				baseTime = svParams.priestSpawnTime * 1000;
+				break;
+			case AICHAR_ZOMBIE_FLAME:
+				baseTime = svParams.flamerSpawnTime * 1000;
+				break;
+			default: // Regular soldiers and zombies
+				baseTime = svParams.defaultSpawnTime * 1000;
+				break;
+		}
+
+		baseTime += rand() % 2000; // slight randomness
+
+		cs->rebirthTime = level.time + baseTime;
+	}
+}
+
 /*
 ============
 AICast_Die_Survival
@@ -523,31 +596,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		respawn = qtrue;
 		nogib = qtrue;
 
-	if ( ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
-		 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) ) {
-
-			if (self->aiTeam == 1) {
-				// Friendly AI: Always set rebirthTime, even if respawnsleft is 0
-				if (cs->respawnsleft > 0) {
-					cs->respawnsleft--; // Decrement respawnsleft
-				}
-			
-				// Set rebirthTime for friendly AI
-				svParams.spawnedThisWaveFriendly--;
-				cs->rebirthTime = level.time + (svParams.friendlySpawnTime * 1000) + rand() % 2000;
-			
-			} else {
-				// Non-friendly AI: Only set rebirthTime if respawnsleft is not 0
-				if (cs->respawnsleft != 0) {
-					if (cs->respawnsleft > 0) {
-						cs->respawnsleft--; // Decrement respawnsleft
-					}
-			
-					int base = 5000 + rand() % 1000; // 5-6 seconds
-					cs->rebirthTime = level.time + base;
-				}
-			}
-	}
+    AICast_SetRebirthTimeSurvival(self, cs);
 
 	trap_LinkEntity( self );
 
@@ -754,7 +803,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_PROTOSOLDIER:
-			newHealth = 200 + steps * 5;
+			newHealth = 250 + steps * 5;
 			if (newHealth > 600) newHealth = 600;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.5f);
@@ -767,7 +816,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_PRIEST:
-			newHealth = 50 + steps * 5;
+			newHealth = 250 + steps * 5;
 			if (newHealth > 500) newHealth = 500;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
@@ -842,6 +891,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 
 		case AICHAR_BLACKGUARD:
 		case AICHAR_VENOM:
+		case AICHAR_PROTOSOLDIER:
 			aimSkill     = fminf(0.4f + delta, 0.7f);
 			aimAccuracy  = fminf(0.4f + delta, 0.7f);
 			attackSkill  = fminf(0.4f + delta, 0.7f);
@@ -1513,6 +1563,78 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.friendlySpawnTime))
 			{
 				PC_SourceError(handle, "expected friendlySpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "defaultSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.defaultSpawnTime))
+			{
+				PC_SourceError(handle, "expected defaultSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "egSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.egSpawnTime))
+			{
+				PC_SourceError(handle, "expected egSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "bgSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.bgSpawnTime))
+			{
+				PC_SourceError(handle, "expected bgSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "vSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.vSpawnTime))
+			{
+				PC_SourceError(handle, "expected vSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "protoSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.protoSpawnTime))
+			{
+				PC_SourceError(handle, "expected protoSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "warzSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.warzSpawnTime))
+			{
+				PC_SourceError(handle, "expected warzSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "ghostSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ghostSpawnTime))
+			{
+				PC_SourceError(handle, "expected ghostSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "priestSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.priestSpawnTime))
+			{
+				PC_SourceError(handle, "expected priestSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "flamerSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.flamerSpawnTime))
+			{
+				PC_SourceError(handle, "expected flamerSpawnTime value");
 				return qfalse;
 			}
 		}

@@ -92,7 +92,18 @@ typedef struct svParams_s
 	int initialPartisansCount;
 	int initialFlamersCount;
 
-    int   friendlySpawnTime;
+    int   defaultSpawnTime;
+	int   egSpawnTime;
+	int   bgSpawnTime;
+	int   vSpawnTime;
+	int   protoSpawnTime;
+
+	int   warzSpawnTime;
+	int   ghostSpawnTime;
+	int   priestSpawnTime;
+	int   flamerSpawnTime;
+
+	int   friendlySpawnTime;
 	int   aliveFriendliestoCallReinforce;
 
 	int soldiersIncrease;

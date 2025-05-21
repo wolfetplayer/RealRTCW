@@ -1690,6 +1690,7 @@ extern void AICast_AIDoor_Touch ( gentity_t * ent , gentity_t * aidoor_trigger ,
 extern void AICast_EndChase ( cast_state_t * cs ) ;
 extern void AICast_Die ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker , int damage , int meansOfDeath ) ;
 extern void AICast_Die_Survival ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker , int damage , int meansOfDeath ) ;
+extern void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs);
 extern void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int meansOfDeath) ;
 extern void AICast_InitSurvival ( void ) ;
 extern void AICast_Pain ( gentity_t * targ , gentity_t * attacker , int damage , vec3_t point ) ;

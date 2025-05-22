@@ -3855,8 +3855,8 @@ static void PM_Weapon( void ) {
 	// fire weapon
 
 	// add weapon heat
-	// except for engineers, they don't have to worry about it
-	if (pm->ps->stats[STAT_PLAYER_CLASS] != PC_ENGINEER)
+	// except for rifling perk
+	if (!pm->ps->perks[PERK_RIFLING])
 	{
 		if (ammoTable[pm->ps->weapon].maxHeat)
 		{

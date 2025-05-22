@@ -491,7 +491,6 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 	if ( noPack ) {
 		ent->client->ps.ammo[ammoweap] = 0;
 	} else {
-		if ( ent->client->ps.ammo[ammoweap] > ammoTable[ammoweap].maxammo ) {
 			ent->client->ps.ammo[ammoweap] = ammoTable[ammoweap].maxammo;
 		}
 

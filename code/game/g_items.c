@@ -491,7 +491,17 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 	if ( noPack ) {
 		ent->client->ps.ammo[ammoweap] = 0;
 	} else {
-			ent->client->ps.ammo[ammoweap] = ammoTable[ammoweap].maxammo;
+		int maxAmmo = ammoTable[ammoweap].maxammo;
+
+		// If player is a soldier, increase maxammo cap
+		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+			maxAmmo *= 1.5;
+		}
+
+		if (ent->client->ps.ammo[ammoweap] > maxAmmo)
+		{
+			ent->client->ps.ammo[ammoweap] = maxAmmo;
 		}
 
 		if ( count >= 999 ) { // 'really, give /all/'

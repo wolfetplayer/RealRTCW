@@ -1151,6 +1151,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		case WP_DYNAMITE:
 		case WP_AIRSTRIKE:
 		case WP_POISONGAS_MEDIC:
+		case WP_DYNAMITE_ENG:
 			upangle *= ammoTable[grenType].upAngle;
 			break;
 		default:
@@ -1741,6 +1742,7 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 //			VectorMA( muzzlePoint, 14, right, muzzlePoint );	//----(SA)	new first person rl position
 //			break;
 	case WP_DYNAMITE:
+	case WP_DYNAMITE_ENG:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_POISONGAS:
@@ -1930,6 +1932,15 @@ void FireWeapon( gentity_t *ent ) {
 			}
 			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
 			weapon_grenadelauncher_fire( ent,WP_POISONGAS_MEDIC );
+		}
+		break;
+	case WP_DYNAMITE_ENG:
+		if ( level.time - ent->client->ps.classWeaponTime >= g_engineerChargeTime.integer ) {
+			if ( level.time - ent->client->ps.classWeaponTime > g_engineerChargeTime.integer ) {
+				ent->client->ps.classWeaponTime = level.time - g_engineerChargeTime.integer;
+			}
+			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
+			weapon_grenadelauncher_fire( ent,WP_DYNAMITE_ENG );
 		}
 		break;
 	case WP_ARTY:

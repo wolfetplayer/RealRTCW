@@ -963,6 +963,7 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 		// don't attempt to lob a grenade more than this often, since we will abort a grenade
 		// throw if it's not safe, we shouldn't keep switching back too quickly
 	case WP_DYNAMITE:
+	case WP_DYNAMITE_ENG:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 		if ( cs->enemyNum < 0 ) {

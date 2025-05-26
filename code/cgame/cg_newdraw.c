@@ -232,7 +232,7 @@ static void CG_DrawPlayerWeaponIcon( rectDef_t *rect, qboolean drawHighlighted, 
 			scale = (float)(cg.predictedPlayerState.grenadeTimeLeft/(KNIFECHARGETIME/7.f));
 			halfScale = scale * 0.5f;
 		}
-		else if ( realweap == WP_DYNAMITE ) {
+		else if ( realweap == WP_DYNAMITE || realweap == WP_DYNAMITE_ENG ) {
 			if ( ( ( cg.grenLastTime ) % 1000 ) > ( ( cg.predictedPlayerState.grenadeTimeLeft ) % 1000 ) ) {
 				trap_S_StartLocalSound( cgs.media.grenadePulseSound4, CHAN_LOCAL_SOUND );
 			}
@@ -528,6 +528,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	switch ( weap ) {      // some weapons don't draw ammo count text
 	case WP_AIRSTRIKE:
 	case WP_POISONGAS_MEDIC:
+	case WP_DYNAMITE_ENG:
 		return;
 
 	case WP_AKIMBO:
@@ -2069,7 +2070,7 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 		weap = cg.snap->ps.weapon;
 
 		if ( !( cg.snap->ps.eFlags & EF_ZOOMING ) ) {
-			if ( weap != WP_AIRSTRIKE && weap !=WP_POISONGAS_MEDIC ) {
+			if ( weap != WP_AIRSTRIKE && weap !=WP_POISONGAS_MEDIC && weap !=WP_DYNAMITE_ENG ) {
 				//fade = qtrue;
 				return;
 			}

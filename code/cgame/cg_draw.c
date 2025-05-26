@@ -740,7 +740,7 @@ static void CG_DrawStatusBar( void ) {
 
 			// pulsing grenade icon to help the player 'count' in their head
 			if ( ps->grenadeTimeLeft ) {
-				if ( ps->weapon == WP_DYNAMITE ) {
+				if ( ps->weapon == WP_DYNAMITE || ps->weapon == WP_DYNAMITE_ENG  ) {
 
 				} else {
 					if ( ( ( cg.grenLastTime ) % 1000 ) < ( ( ps->grenadeTimeLeft ) % 1000 ) ) {
@@ -3066,7 +3066,7 @@ static void CG_DrawDynamiteStatus( void ) {
 	int timeleft;
 	float w;
 
-	if ( cg.snap->ps.weapon != WP_DYNAMITE ) {
+	if ( cg.snap->ps.weapon != WP_DYNAMITE && cg.snap->ps.weapon != WP_DYNAMITE_ENG ) {
 		return;
 	}
 

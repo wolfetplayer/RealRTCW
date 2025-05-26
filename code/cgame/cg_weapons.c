@@ -63,7 +63,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_G43, WP_M1GARAND, WP_M1941, 0, 0, 0},																  //	5
 	{WP_FG42, WP_MP44, WP_BAR, 0, 0, 0},																	  //	6
 	{WP_M97, WP_AUTO5, 0, 0, 0},																	  //	7
-	{WP_GRENADE_LAUNCHER, WP_GRENADE_PINEAPPLE, WP_DYNAMITE, WP_AIRSTRIKE, WP_POISONGAS, WP_POISONGAS_MEDIC}, //	8
+	{WP_GRENADE_LAUNCHER, WP_GRENADE_PINEAPPLE, WP_DYNAMITE, WP_AIRSTRIKE, WP_POISONGAS, WP_POISONGAS_MEDIC, WP_DYNAMITE_ENG}, //	8
 	{WP_PANZERFAUST, WP_FLAMETHROWER, WP_MG42M, WP_BROWNING, 0, 0},											  //	9
 	{WP_VENOM, WP_TESLA, 0, 0, 0, 0}																		  //	10
 };
@@ -3453,6 +3453,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		 weaponNum == WP_GRENADE_PINEAPPLE ||
 		 weaponNum == WP_KNIFE ||
 		 weaponNum == WP_DYNAMITE ||
+		 weaponNum == WP_DYNAMITE_ENG ||
 		 weaponNum == WP_M7 ) {
 		return;
 	}
@@ -5381,7 +5382,8 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 				  ent->weapon == WP_DYNAMITE ||
 				  ent->weapon == WP_AIRSTRIKE ||
 				  ent->weapon == WP_POISONGAS || 
-				  ent->weapon == WP_POISONGAS_MEDIC ) { 
+				  ent->weapon == WP_POISONGAS_MEDIC ||
+				  ent->weapon == WP_DYNAMITE_ENG ) { 
 		if ( ent->apos.trBase[0] > 0 ) { // underhand
 			return;
 		}
@@ -5960,6 +5962,47 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 		break;
 
 	case WP_DYNAMITE:
+		shader = cgs.media.rocketExplosionShader;
+		sfx = cgs.media.sfx_dynamiteexp;
+		sfx2 = cgs.media.sfx_dynamiteexpDist;
+		sfx2range = 400;
+		mark = cgs.media.burnMarkShader;
+		radius = 64;
+		light = 300;
+		isSprite = qtrue;
+		duration = 1000;
+		lightColor[0] = 0.75;
+		lightColor[1] = 0.5;
+		lightColor[2] = 0.1;
+
+		shakeAmt = 0.25f;
+		shakeDur = 2800;
+		shakeRad = 8192;
+			for ( i = 0; i < 5; i++ ) {
+				for ( j = 0; j < 3; j++ )
+					sprOrg[j] = origin[j] + 64 * dir[j] + 24 * crandom();
+				sprVel[2] += rand() % 50;
+				CG_ParticleExplosion( "blacksmokeanimb", sprOrg, sprVel,
+									  3500 + rand() % 250,          // duration
+									  10,                           // startsize
+									  250 + rand() % 60 );     
+									       // endsize
+			}
+			VectorMA( origin, 16, dir, sprOrg );
+			VectorScale( dir, 100, sprVel );
+
+			// trying this one just for now just for variety
+			CG_ParticleExplosion( "explode1", sprOrg, sprVel,
+								  1200,         // duration
+								  9,            // startsize
+								  300 );        // endsize
+
+			CG_AddDebris( origin, dir,
+						  280,              // speed
+						  1400,             // duration
+						  7 + rand() % 2 ); // count
+		break;
+	case WP_DYNAMITE_ENG:
 		shader = cgs.media.rocketExplosionShader;
 		sfx = cgs.media.sfx_dynamiteexp;
 		sfx2 = cgs.media.sfx_dynamiteexpDist;

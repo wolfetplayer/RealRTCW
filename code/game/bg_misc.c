@@ -1701,6 +1701,47 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 	}, 
 
 		{   
+		WP_DYNAMITE_ENG,
+		WEAPON_CLASS_GRENADE,
+		WP_NONE, 
+		WEAPON_TEAM_COMMON,       
+		0,                   
+		0,       
+		0,        
+		0,           
+		0,        
+		0,         
+		0,
+		0,         
+		0,      
+		0,      
+		0,      
+		0,        
+		0,        
+		0,        
+		0,          
+		0,                  
+		0.0f,            
+		0,               
+		{0, 0},         
+		{0,0},              
+		0,               
+		0.0,               
+		0,               
+		0,
+		{0.0, 0.0},             
+		MOD_DYNAMITE, 
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,                                 
+	}, 
+
+		{   
 		WP_SMOKETRAIL,
 		WEAPON_CLASS_GRENADE,
 		WP_NONE, 
@@ -4240,6 +4281,31 @@ model="models/weapons2/p38/luger.md3"
 		{0,0,0,0,0,0}
 	},
 
+
+	//weapon_dynamite
+
+	{
+		"weapon_dynamite_eng",
+		"sound/misc/w_pkup.wav",
+		{   
+		"",
+		"",
+		""
+		},
+
+		"icons/iconw_dynamite_1",    
+		"Dynamite Weapon",       
+		7,
+		IT_WEAPON,
+		WP_DYNAMITE_ENG,
+		WP_DYNAMITE_ENG,
+		WP_DYNAMITE_ENG,
+		WP_DYNAMITE_ENG,
+		"",                      
+		"",                     
+		{0,0,0,0,0,0}
+	},
+
 /*
 weapon_arty (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
@@ -4338,6 +4404,7 @@ weapon_smoketrail -- only used as a special effects emitter for smoke trails (ar
 		"", 
 		{5,4,3,2,2,3}                
 	},
+
 
 /*QUAKED ammo_m7 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
@@ -8218,6 +8285,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_BROWNING:          return "browning.weap";
 		case WP_AIRSTRIKE:         return "airstrike.weap";
 		case WP_POISONGAS_MEDIC:   return "poisongas_medic.weap";
+		case WP_DYNAMITE_ENG:      return "dynamite_eng.weap";
 		case WP_ARTY:              return "arty.weap";
 		case WP_SMOKETRAIL:        return "smoketrail.weap";
 		case WP_POISONGAS:         return "poisongas.weap";

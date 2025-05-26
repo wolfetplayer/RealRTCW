@@ -1249,7 +1249,7 @@ static void CG_Missile( centity_t *cent ) {
 		CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, velocity, weapon->missileSound, 255 );
 	}
 
-		if ( cent->currentState.weapon == WP_DYNAMITE ) {
+		if ( cent->currentState.weapon == WP_DYNAMITE || cent->currentState.weapon == WP_DYNAMITE_ENG ) {
 			vec3_t velocity;
 			BG_EvaluateTrajectoryDelta( &cent->currentState.pos, cg.time, velocity, qfalse, -1 );
 			CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, velocity, weapon->spindownSound, 255 );

@@ -3743,29 +3743,28 @@ static void PM_Weapon( void ) {
 	case WP_DYNAMITE_ENG:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
-	case WP_POISONGAS:
-		if ( !delayedFire ) {
-			if ( pm->ps->aiChar ) {
-				// ai characters go into their regular animation setup
-				BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qtrue, qtrue );
-			} else {
-				// the player pulls the fuse and holds the hot potato
-				if ( PM_WeaponAmmoAvailable( pm->ps->weapon ) ) {
-					if ( pm->ps->weapon == WP_DYNAMITE || pm->ps->weapon == WP_DYNAMITE_ENG ) {
-						pm->ps->grenadeTimeLeft = 50;
-					} else {
-						// start at four seconds and count down
-						pm->ps->grenadeTimeLeft = 4000;
-					}
-					pm->ps->holdable[HI_KNIVES] = 0; // holding nade
-					PM_StartWeaponAnim( WEAP_ATTACK1 );
+case WP_POISONGAS:
+	if ( !delayedFire ) {
+		if ( pm->ps->aiChar ) {
+			// ai characters go into their regular animation setup
+			BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qtrue, qtrue );
+		} else {
+			// the player pulls the fuse and holds the hot potato
+			if ( pm->ps->weapon == WP_DYNAMITE_ENG || PM_WeaponAmmoAvailable( pm->ps->weapon ) ) {
+				if ( pm->ps->weapon == WP_DYNAMITE || pm->ps->weapon == WP_DYNAMITE_ENG ) {
+					pm->ps->grenadeTimeLeft = 50;
+				} else {
+					// start at four seconds and count down
+					pm->ps->grenadeTimeLeft = 4000;
 				}
+				pm->ps->holdable[HI_KNIVES] = 0; // holding nade
+				PM_StartWeaponAnim( WEAP_ATTACK1 );
 			}
-
-			pm->ps->weaponDelay = ammoTable[pm->ps->weapon].fireDelayTime;
-
 		}
-		break;
+
+		pm->ps->weaponDelay = ammoTable[pm->ps->weapon].fireDelayTime;
+	}
+	break;
 	}
 
 	if ( PM_AltFiring(delayedFire) || PM_AltFire() )

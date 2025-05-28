@@ -2076,7 +2076,23 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 			}
 		}
 
-		chargeTime = cg_LTChargeTime.value;
+		// Determine charge time based on class
+		switch (cg.snap->ps.stats[STAT_PLAYER_CLASS])
+		{
+		case PC_MEDIC:
+			chargeTime = cg_medicChargeTime.value;
+			break;
+		case PC_ENGINEER:
+			chargeTime = cg_engineerChargeTime.value;
+			break;
+		case PC_SOLDIER:
+			chargeTime = cg_soldierChargeTime.value;
+			break;
+		case PC_LT:
+		default:
+			chargeTime = cg_LTChargeTime.value;
+			break;
+		}
 
 		barFrac = (float)( cg.time - cg.snap->ps.classWeaponTime ) / chargeTime;
 

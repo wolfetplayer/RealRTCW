@@ -2089,8 +2089,10 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 			chargeTime = cg_soldierChargeTime.value;
 			break;
 		case PC_LT:
-		default:
 			chargeTime = cg_LTChargeTime.value;
+			break;
+		default:
+		    chargeTime = 30000;
 			break;
 		}
 

@@ -1366,9 +1366,20 @@ void ClientSpawn( gentity_t *ent ) {
 	ent->r.contents = CONTENTS_BODY;
 
 	// RF, AI should be clipped by monsterclip brushes
-	if ( ent->r.svFlags & SVF_CASTAI ) {
-		ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
-	} else {
+	if (ent->r.svFlags & SVF_CASTAI)
+	{
+		// Friendly AI (aiteam 1) should also respect PLAYERCLIP2
+		if (ent->aiTeam == 1)
+		{
+			ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP | CONTENTS_PLAYERCLIP2;
+		}
+		else
+		{
+			ent->clipmask = MASK_PLAYERSOLID | CONTENTS_MONSTERCLIP;
+		}
+	}
+	else
+	{
 		ent->clipmask = MASK_PLAYERSOLID | CONTENTS_PLAYERCLIP2;
 	}
 

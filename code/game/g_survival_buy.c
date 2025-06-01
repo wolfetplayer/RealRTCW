@@ -243,6 +243,11 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	if (heldWeap <= WP_NONE || heldWeap >= WP_NUM_WEAPONS)
 		return qfalse;
 
+	// 👇 Skip if holding engineer dynamite
+	if (heldWeap == WP_DYNAMITE_ENG || heldWeap == WP_AIRSTRIKE || heldWeap == WP_POISONGAS_MEDIC ) {
+		return qfalse;
+	}
+
 	int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
 	if (ammoIndex < 0 || activator->client->ps.ammo[ammoIndex] >= ammoTable[heldWeap].maxammo)
 		return qfalse;
@@ -593,6 +598,11 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	// Handle special cases BEFORE item lookup
 	if (techName) {
 		if (!Q_stricmp(techName, "ammo")) {
+
+		// Do not show price if holding dynamite
+		if (other->client->ps.weapon == WP_DYNAMITE_ENG || other->client->ps.weapon == WP_POISONGAS_MEDIC || other->client->ps.weapon == WP_AIRSTRIKE ) {
+			return;
+		}
 			price = (price > 0) ? price : Survival_GetDefaultWeaponPrice(other->client->ps.weapon) / 2;
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(

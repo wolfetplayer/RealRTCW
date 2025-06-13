@@ -803,8 +803,8 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_PROTOSOLDIER:
-			newHealth = 250 + steps * 5;
-			if (newHealth > 600) newHealth = 600;
+			newHealth = 500 + steps * 5;
+			if (newHealth > 800) newHealth = 800;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.5f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);

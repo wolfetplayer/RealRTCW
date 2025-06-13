@@ -937,6 +937,17 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
         svParams.wavePending = qtrue;
         svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;
 
+
+		if ((svParams.waveCount == 4) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
+		{
+			steamSetAchievement("ACH_NO_BUY");
+		}
+
+		if ((svParams.waveCount == 9) && (!g_cheats.integer) && (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
+		{
+			steamSetAchievement("ACH_NO_CLASS");
+		}
+
         // Play the wave end sound from the configuration file
         static char command_end[256];
         snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound);
@@ -975,16 +986,6 @@ void AICast_TickSurvivalWave(void) {
         if (!cl->inuse || !cl->client) continue;
 
         cl->client->ps.persistant[PERS_WAVES]++;
-
-        // Achievements
-        if (svParams.waveCount == 10 && !g_cheats.integer && !cl->client->hasPurchased) {
-            steamSetAchievement("ACH_NO_BUY");
-        }
-
-        if (svParams.waveCount == 15 && !g_cheats.integer &&
-            cl->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE) {
-            steamSetAchievement("ACH_NO_CLASS");
-        }
     }
 
     // Play the wave start sound from the configuration file

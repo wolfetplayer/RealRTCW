@@ -493,10 +493,10 @@ void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
 	} else {
 		int maxAmmo = ammoTable[ammoweap].maxammo;
 
-		// If player is a soldier, increase maxammo cap
-		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		// If player is a LT, increase maxammo cap
+		if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT)
 		{
-			maxAmmo *= 1.5;
+			maxAmmo *= svParams.ltAmmoBonus;
 		}
 
 		if (ent->client->ps.ammo[ammoweap] > maxAmmo)

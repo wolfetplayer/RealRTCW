@@ -204,6 +204,9 @@ typedef struct svParams_s
 
 	int intermissionTime;
 
+	float ltAmmoBonus;
+	float soldierExplosiveDmgBonus;
+
 	char waveStartSound[MAX_QPATH];
 	char waveEndSound[MAX_QPATH];
 

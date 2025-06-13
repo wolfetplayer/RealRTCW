@@ -2037,7 +2037,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 				PC_SourceError(handle, "expected intermissionTime value");
 				return qfalse;
 			}
-			// string
+		}
+		else if (!Q_stricmp(token.string, "soldierExplosiveDmgBonus"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.soldierExplosiveDmgBonus))
+			{
+				PC_SourceError(handle, "expected soldierExplosiveDmgBonus value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "ltAmmoBonus"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.ltAmmoBonus))
+			{
+				PC_SourceError(handle, "expected ltAmmoBonus value");
+				return qfalse;
+			}
 		}
 		else if (!Q_stricmp(token.string, "waveStartSound"))
 		{

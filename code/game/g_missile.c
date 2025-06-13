@@ -27,6 +27,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
+#include "g_survival.h"
 
 #define MISSILE_PRESTEP_TIME    50
 
@@ -945,13 +946,16 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 	bolt->damage = G_GetWeaponDamage( grenadeWPID, isPlayer ); // overridden for dynamite
 	bolt->splashDamage = G_GetWeaponDamage( grenadeWPID, isPlayer );
 
-	// Knightmare- G_GetWeaponDamage handles this now
-/*	if ( self->client && !self->aiCharacter ) {
-		bolt->damage *= 2;
-		bolt->splashDamage *= 2;
+	// Soldier explosive bonus (Survival mode only)
+	if (g_gametype.integer == GT_SURVIVAL &&
+		self->client &&
+		self->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+	{
+
+		// Increase damage and splash radius
+		bolt->damage *= svParams.soldierExplosiveDmgBonus;
+		bolt->splashDamage *= svParams.soldierExplosiveDmgBonus;
 	}
-*/
-// jpw
 
 	switch ( grenadeWPID ) {
 	case WP_GRENADE_LAUNCHER:
@@ -964,6 +968,16 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		bolt->methodOfDeath         = MOD_GRENADE;
 		bolt->splashMethodOfDeath   = MOD_GRENADE_SPLASH;
 		bolt->s.eFlags              = EF_BOUNCE_HALF;
+
+		// Soldier explosive bonus (Survival mode only)
+		if (g_gametype.integer == GT_SURVIVAL &&
+			self->client &&
+			self->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+
+			bolt->splashRadius *= svParams.soldierExplosiveDmgBonus;
+		}
+
 		break;
 	case WP_GRENADE_PINEAPPLE:
 		bolt->classname             = "grenade";
@@ -975,6 +989,16 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		bolt->methodOfDeath         = MOD_GRENADE;
 		bolt->splashMethodOfDeath   = MOD_GRENADE_SPLASH;
 		bolt->s.eFlags              = EF_BOUNCE_HALF;
+
+		// Soldier explosive bonus (Survival mode only)
+		if (g_gametype.integer == GT_SURVIVAL &&
+			self->client &&
+			self->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+
+			bolt->splashRadius *= svParams.soldierExplosiveDmgBonus;
+		}
+
 		break;
 	case WP_M7:
 		bolt->classname             = "m7_grenade";
@@ -987,6 +1011,16 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 		bolt->splashMethodOfDeath   = MOD_M7;
 		bolt->s.eFlags              = EF_BOUNCE_HALF | EF_BOUNCE;
 		bolt->nextthink             = level.time + 4000;
+
+		// Soldier explosive bonus (Survival mode only)
+		if (g_gametype.integer == GT_SURVIVAL &&
+			self->client &&
+			self->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+
+			bolt->splashRadius *= svParams.soldierExplosiveDmgBonus;
+		}
+
 		break;
 	case WP_AIRSTRIKE:
 		bolt->classname             = "grenade";
@@ -1103,7 +1137,17 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	} else {
 		bolt->damage = ammoTable[WP_PANZERFAUST].playerDamage;
 		bolt->splashDamage = ammoTable[WP_PANZERFAUST].playerDamage;
-		bolt->splashRadius = ammoTable[WP_PANZERFAUST].playerSplashRadius;	
+		bolt->splashRadius = ammoTable[WP_PANZERFAUST].playerSplashRadius;
+
+		// Soldier bonus
+		if (g_gametype.integer == GT_SURVIVAL &&
+			self->client &&
+			self->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
+		{
+			bolt->damage *= 1.50f;
+			bolt->splashDamage *= 1.50f;
+			bolt->splashRadius *= 1.50f;
+		}
 	}
 
 	bolt->methodOfDeath = MOD_ROCKET;

@@ -117,9 +117,13 @@ qboolean AICast_VisibleFromPos( vec3_t srcpos, int srcnum,
 
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
-		if (!(g_entities[destnum].flags & FL_NOTARGET))
+		// Check if the viewer is AI (has aiTeam) and not on friendly team
+		if (g_entities[srcnum].r.svFlags & SVF_CASTAI && g_entities[srcnum].aiTeam != 1)
 		{
-			return qtrue;
+			if (!(g_entities[destnum].flags & FL_NOTARGET))
+			{
+				return qtrue;
+			}
 		}
 	}
 
@@ -239,13 +243,18 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	cast_visibility_t   *vis;
 	orientation_t       or;
 
-    if (g_gametype.integer == GT_SURVIVAL) {
-        if (!(destent->flags & FL_NOTARGET)) {
-            return qtrue;
-        }
-    }
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		if ((srcent->r.svFlags & SVF_CASTAI) && srcent->aiTeam != 1)
+		{
+			if (!(destent->flags & FL_NOTARGET))
+			{
+				return qtrue;
+			}
+		}
+	}
 
-    if (destent->flags & FL_NOTARGET) {
+	if (destent->flags & FL_NOTARGET) {
         return qfalse;
     }
 	//

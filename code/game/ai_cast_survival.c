@@ -197,15 +197,32 @@ Call this from AICast_Die_Survival.
 ===============
 */
 void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int meansOfDeath) {
-	if (!self || !attacker || !svParams.waveInProgress)
-		return;
+    if (!self || !attacker || !svParams.waveInProgress) {
+        return;
+    }
 
-	// Only count kills from players or friendly AI
+	 // Skip counting if the dying entity is a friendly AI (aiTeam == 1)
+    if (self->aiCharacter && self->aiTeam == 1) {
+        Com_Printf("^3[AI_SURVIVE] INFO: Friendly AI death ignored. aiCharacter=%d, aiTeam=%d\n", self->aiCharacter, self->aiTeam);
+        return;
+    }
+
 	qboolean killerPlayer   = attacker->client && !attacker->aiCharacter;
 	qboolean killerFriendly = attacker->aiCharacter && attacker->aiTeam == 1;
 
-	if (!killerPlayer && !killerFriendly)
-		return;
+if (!killerPlayer && !killerFriendly) {
+    Com_Printf(
+        "^3[AI_SURVIVE] WARNING: uncounted kill. attacker->client=%d, aiCharacter=%d, aiTeam=%d, meansOfDeath=%d\n",
+        attacker->client != NULL,
+        attacker->aiCharacter,
+        attacker->aiTeam,
+        meansOfDeath
+    );
+
+	svParams.waveKillCount++;
+	AICast_CheckSurvivalProgression(&g_entities[0]);
+	return;
+}
 
 	svParams.survivalKillCount++;
 	svParams.waveKillCount++;
@@ -933,22 +950,26 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 }
 
 void AICast_CheckSurvivalProgression(gentity_t *attacker) {
+    // DEBUG: log current kill progress
+    Com_Printf("^2[AI_SURVIVE] waveKillCount = %d, killCountRequirement = %d, wavePending = %d^7\n",
+        svParams.waveKillCount, svParams.killCountRequirement, svParams.wavePending);
+
     if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
+        //  DEBUG: progression triggered
+        Com_Printf("^1[AI_SURVIVE] Wave %d complete! Triggering intermission and progression.^7\n", svParams.waveCount);
+
         svParams.wavePending = qtrue;
         svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;
 
+        if ((svParams.waveCount == 4) && (!g_cheats.integer) && (!attacker->client->hasPurchased)) {
+            steamSetAchievement("ACH_NO_BUY");
+        }
 
-		if ((svParams.waveCount == 4) && (!g_cheats.integer) && (!attacker->client->hasPurchased))
-		{
-			steamSetAchievement("ACH_NO_BUY");
-		}
+        if ((svParams.waveCount == 9) && (!g_cheats.integer) &&
+            (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE)) {
+            steamSetAchievement("ACH_NO_CLASS");
+        }
 
-		if ((svParams.waveCount == 9) && (!g_cheats.integer) && (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
-		{
-			steamSetAchievement("ACH_NO_CLASS");
-		}
-
-        // Play the wave end sound from the configuration file
         static char command_end[256];
         snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound);
         trap_SendServerCommand(-1, command_end);
@@ -1015,8 +1036,8 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
    {
 	   return;
    }
-
-    // Prevent friendly AI from respawning if respawnsleft is 0
+   
+	// Prevent friendly AI from respawning if respawnsleft is 0
     if (ent->aiTeam == 1 && cs->respawnsleft == 0) {
         return;
     }

@@ -2091,6 +2091,10 @@ void AICast_CheckDangerousEntity( gentity_t *ent, int dangerFlags, float dangerD
 	gentity_t *trav;
 	int i, endTime;
 	float dist;
+
+	if (g_gametype.integer == GT_SURVIVAL) {
+		return; // don't do this in survival mode
+	}
 	//
 	//
 	if ( dangerFlags & DANGER_MISSILE ) {

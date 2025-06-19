@@ -1821,15 +1821,16 @@ qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t *attack
 		        if (!ent->client) //&& ent->s.eType != ET_CORPSE )
                     continue;
                 break;
-
             case RADIUS_SCOPE_NOCLIENTS:
 		        if (ent->client)
                     continue;
                 break;
             case RADIUS_SCOPE_AI:
-		        if (!ent->aiCharacter)
-                    continue;
-                break;
+				if (!ent->aiCharacter)
+					continue; 
+				if (ent->health <= 0)
+					continue;
+				break;
 		}
 
 		if(	ent->waterlevel == 3 && mod == MOD_POISONGAS) {

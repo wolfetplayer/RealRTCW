@@ -60,8 +60,10 @@ void AICast_InitSurvival(void) {
 	svParams.killCountRequirement = svParams.initialKillCountRequirement;
 	svParams.spawnedThisWave = 0;
 	svParams.spawnedThisWaveFriendly = 0;
-	svParams.waveCount = 1;
-	svParams.waveInProgress = qtrue;
+	svParams.waveCount = 0;
+	svParams.waveInProgress = qfalse;
+	svParams.wavePending = qtrue;
+	svParams.waveChangeTime = level.time + svParams.prepareTime * 1000;
 
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
@@ -950,6 +952,9 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 }
 
 void AICast_CheckSurvivalProgression(gentity_t *attacker) {
+
+	gentity_t *player;
+	player = AICast_FindEntityForName("player");
     // DEBUG: log current kill progress
     Com_Printf("^2[AI_SURVIVE] waveKillCount = %d, killCountRequirement = %d, wavePending = %d^7\n",
         svParams.waveKillCount, svParams.killCountRequirement, svParams.wavePending);
@@ -970,14 +975,16 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
             steamSetAchievement("ACH_NO_CLASS");
         }
 
-        static char command_end[256];
-        snprintf(command_end, sizeof(command_end), "mu_play %s 0\n", svParams.waveEndSound);
-        trap_SendServerCommand(-1, command_end);
+		AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "wave_end", "" );
     }
 }
 
 void AICast_TickSurvivalWave(void) {
-    if (!svParams.wavePending)
+
+	gentity_t *player;
+	player = AICast_FindEntityForName("player");
+
+	if (!svParams.wavePending)
         return;
     if (level.time < svParams.waveChangeTime)
         return;
@@ -992,6 +999,7 @@ void AICast_TickSurvivalWave(void) {
 	int killReq = 0;
 
 	if (wave == 1) {
+		AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "start_survival", "" );
 		// Explicitly use user-defined value for wave 1
 		killReq = svParams.initialKillCountRequirement;
 	} else {
@@ -1009,10 +1017,7 @@ void AICast_TickSurvivalWave(void) {
         cl->client->ps.persistant[PERS_WAVES]++;
     }
 
-    // Play the wave start sound from the configuration file
-    static char command_start[256];
-    snprintf(command_start, sizeof(command_start), "mu_play %s 0\n", svParams.waveStartSound);
-    trap_SendServerCommand(-1, command_start);
+	AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "wave_start", "" );
 
     AICast_UpdateMaxActiveAI();
 }
@@ -2060,6 +2065,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "prepareTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.prepareTime))
+			{
+				PC_SourceError(handle, "expected prepareTime value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "soldierExplosiveDmgBonus"))
 		{
 			if (!PC_Float_Parse(handle, &svParams.soldierExplosiveDmgBonus))
@@ -2073,24 +2086,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Float_Parse(handle, &svParams.ltAmmoBonus))
 			{
 				PC_SourceError(handle, "expected ltAmmoBonus value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "waveStartSound"))
-		{
-			// Parse the wave start sound path
-			if (!PC_String_ParseNoAlloc(handle, svParams.waveStartSound, MAX_QPATH))
-			{
-				PC_SourceError(handle, "expected waveStartSound value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "waveEndSound"))
-		{
-			// Parse the wave end sound path
-			if (!PC_String_ParseNoAlloc(handle, svParams.waveEndSound, MAX_QPATH))
-			{
-				PC_SourceError(handle, "expected waveEndSound value");
 				return qfalse;
 			}
 		}

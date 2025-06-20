@@ -596,6 +596,9 @@ cast_script_event_define_t scriptEvents[] =
 	{"painenemy",        AICast_EventMatch_StringEqual},
 	{"forced_mg42_unmount",  0},
 	{"respawn",          0},
+	{"wave_start",          0},
+	{"wave_end",          0},
+	{"start_survival",          0},
 
 	{NULL,              0}
 };

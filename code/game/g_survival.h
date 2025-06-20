@@ -203,12 +203,10 @@ typedef struct svParams_s
 	int defaultWeaponPrice;
 
 	int intermissionTime;
+	int prepareTime;
 
 	float ltAmmoBonus;
 	float soldierExplosiveDmgBonus;
-
-	char waveStartSound[MAX_QPATH];
-	char waveEndSound[MAX_QPATH];
 
 } svParams_t;
 

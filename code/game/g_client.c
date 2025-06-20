@@ -1377,7 +1377,7 @@ void ClientSpawn( gentity_t *ent ) {
 	ent->watertype = 0;
 	ent->flags = 0;
 
-	client->ps.persistant[PERS_WAVES] = 1;
+	client->ps.persistant[PERS_WAVES] = 0;
 
 	VectorCopy( playerMins, ent->r.mins );
 	VectorCopy( playerMaxs, ent->r.maxs );

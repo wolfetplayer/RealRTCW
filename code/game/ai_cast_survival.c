@@ -1019,7 +1019,11 @@ void AICast_TickSurvivalWave(void) {
 
 	AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "wave_start", "" );
 
-    AICast_UpdateMaxActiveAI();
+	// Do not increase max active AI on the first wave
+	if (wave > 1)
+	{
+		AICast_UpdateMaxActiveAI();
+	}
 }
 
 

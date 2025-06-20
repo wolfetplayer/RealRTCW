@@ -50,6 +50,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include <stdlib.h> // for rand()
 
+#include "g_survival.h"
+
 /*
 Contains the code to handle the various commands available with an event script.
 
@@ -2712,6 +2714,79 @@ qboolean AICast_ScriptAction_Accum( cast_state_t *cs, char *params ) {
 	}
 
 	return qtrue;
+}
+
+
+/*
+=================
+AICast_ScriptAction_Wave
+
+  syntax: wave <command> <parameter>
+
+  Commands (similar to accum):
+    wave abort_if_less_than <n>
+    wave abort_if_greater_than <n>
+    wave abort_if_not_equal <n>
+    wave abort_if_equal <n>
+    wave bitset <n>
+    wave bitreset <n>
+    wave abort_if_bitset <n>
+    wave abort_if_not_bitset <n>
+=================
+*/
+qboolean AICast_ScriptAction_Wave(cast_state_t *cs, char *params) {
+    char *pString, *token, lastToken[MAX_QPATH];
+    int value;
+
+    pString = params;
+
+    token = COM_ParseExt(&pString, qfalse);
+    if (!token[0]) {
+        G_Error("AI Scripting: wave without a command\n");
+    }
+
+    Q_strncpyz(lastToken, token, sizeof(lastToken));
+    token = COM_ParseExt(&pString, qfalse);
+
+    if (!token[0]) {
+        G_Error("AI Scripting: wave %s requires a parameter\n", lastToken);
+    }
+
+    value = atoi(token);
+
+    if (!Q_stricmp(lastToken, "abort_if_less_than")) {
+        if (svParams.waveCount < value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_greater_than")) {
+        if (svParams.waveCount > value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_not_equal")) {
+        if (svParams.waveCount != value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_equal")) {
+        if (svParams.waveCount == value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "bitset")) {
+        svParams.waveCount |= (1 << value);
+    } else if (!Q_stricmp(lastToken, "bitreset")) {
+        svParams.waveCount &= ~(1 << value);
+    } else if (!Q_stricmp(lastToken, "abort_if_bitset")) {
+        if (svParams.waveCount & (1 << value)) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_not_bitset")) {
+        if (!(svParams.waveCount & (1 << value))) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else {
+        G_Error("AI Scripting: wave %s: unknown command\n", lastToken);
+    }
+
+    return qtrue;
 }
 
 /*

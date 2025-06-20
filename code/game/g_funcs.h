@@ -1493,6 +1493,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_MissionFailed", (byte *)AICast_ScriptAction_MissionFailed},
 {"AICast_ScriptAction_SpawnCast", (byte *)AICast_ScriptAction_SpawnCast},
 {"AICast_ScriptAction_Accum", (byte *)AICast_ScriptAction_Accum},
+{"AICast_ScriptAction_Wave", (byte *)AICast_ScriptAction_Wave},
 {"AICast_ScriptAction_GlobalAccum", (byte *)AICast_ScriptAction_GlobalAccum},
 {"AICast_ScriptAction_GodMode", (byte *)AICast_ScriptAction_GodMode},
 {"AICast_ScriptAction_FireAtTarget", (byte *)AICast_ScriptAction_FireAtTarget},

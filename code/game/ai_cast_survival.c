@@ -1041,11 +1041,11 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
    gentity_t *player;
    vec3_t spawn_origin, spawn_angles;
 
-   if (svParams.spawnedThisWave >= svParams.killCountRequirement || !svParams.waveInProgress)
+   if (ent->aiTeam != 1 && (svParams.spawnedThisWave >= svParams.killCountRequirement || !svParams.waveInProgress))
    {
 	   return;
    }
-   
+
 	// Prevent friendly AI from respawning if respawnsleft is 0
     if (ent->aiTeam == 1 && cs->respawnsleft == 0) {
         return;

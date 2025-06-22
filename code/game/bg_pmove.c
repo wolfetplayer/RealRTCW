@@ -2259,8 +2259,8 @@ static void PM_BeginWeaponReload( int weapon ) {
 		break;
 	}
 
-	// If PW_HASTE_SURV powerup or PERK_WEAPONHANDLING perk is active, reduce reloadTime by half
-	if (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING])
+	// If PERK_WEAPONHANDLING perk is active, reduce reloadTime by half
+	if (pm->ps->perks[PERK_WEAPONHANDLING])
 	{
 		reloadTime *= 0.5;
 		reloadTimeFull *= 0.5;
@@ -2270,7 +2270,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	{
 		if (pm->ps->ammoclip[BG_FindClipForWeapon(weapon)] == 0)
 		{
-			PM_ContinueWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
+			PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
 			if (pm->ps->weaponstate == WEAPON_READY)
 			{
 				pm->ps->weaponTime += reloadTimeFull;
@@ -2283,7 +2283,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 		}
 		else
 		{
-			PM_ContinueWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
+			PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
 			if (pm->ps->weaponstate == WEAPON_READY)
 			{
 				pm->ps->weaponTime += reloadTime;
@@ -2297,7 +2297,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	}
 	else
 	{
-		PM_ContinueWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
+		PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
 		if (pm->ps->weaponstate == WEAPON_READY)
 		{
 			pm->ps->weaponTime += reloadTime;
@@ -2578,12 +2578,9 @@ static void PM_ReloadClip( int weapon ) {
 	ammomove = ammoTable[weapon].maxclip - ammoclip;
       // Jaymod
 	if ( !pm->ps->aiChar) { 
-        if (weapon == WP_M97 || weapon == WP_AUTO5) {
-            if (pm->ps->perks[PERK_WEAPONHANDLING] > 0) {
-                ammomove = 2;
-            } else {
+
+    if (weapon == WP_M97 || weapon == WP_AUTO5) {
                 ammomove = 1;
-            }
         }
 
 	if( weapon == WP_M1941 && pm->ps->ammoclip[WP_M1941] > 0 ) {
@@ -5084,28 +5081,18 @@ int Pmove( pmove_t *pmove ) {
 PM_BeginM97Reload
 =================
 */
-void PM_BeginM97Reload( void )
-{
+void PM_BeginM97Reload(void) {
 	int anim;
-	
-	// Choose which first person animation to play 
-	if ( pm->ps->ammoclip[BG_FindClipForWeapon(WP_M97)] == 0 ) {
-		
-		anim = WEAP_ALTSWITCHFROM;
-		PM_AddEvent( EV_M97_PUMP );
-		pm->ps->weaponTime += ammoTable[WP_M97].shotgunPumpStart;
-		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN_PUMP;
+	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING]);
 
+	// Choose which first person animation to play
+	if (pm->ps->ammoclip[BG_FindClipForWeapon(WP_M97)] == 0) {
+		anim = fastReload ? WEAP_ALTSWITCHFROM_FAST : WEAP_ALTSWITCHFROM;
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunPumpStart / 2) : ammoTable[WP_M97].shotgunPumpStart;
+		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN_PUMP;
 	} else {
-		if (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING])
-		{
-			anim = WEAP_RELOAD1_FAST;
-		}
-		else
-		{
-			anim = WEAP_RELOAD1;
-		}
-		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadStart;
+		anim = fastReload ? WEAP_RELOAD1_FAST : WEAP_RELOAD1;
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunReloadStart / 2) : ammoTable[WP_M97].shotgunReloadStart;
 		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN;
 	}
 
@@ -5117,56 +5104,57 @@ void PM_BeginM97Reload( void )
 
 	// Set state to reloading
 	pm->ps->weaponstate = WEAPON_RELOADING;
-
 }
+
 // Jaymod
 void PM_M97Reload() {
-	
+	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING]);
+
 	// Transition from shell + pump
-	if( pm->ps->holdable[HI_M97] == M97_RELOADING_BEGIN_PUMP ) {
-		
+	if (pm->ps->holdable[HI_M97] == M97_RELOADING_BEGIN_PUMP) {
+
 		// Load a shell
-		PM_ReloadClip( WP_M97 );
+		PM_ReloadClip(WP_M97);
 
 		// Branch depending on if we need another shell or not
 		if (!pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] || pm->pmext->m97reloadInterrupt) {
-			
+
 			// Break back to ready position
-			PM_StartWeaponAnim(WEAP_DROP2);
-			pm->ps->weaponTime += ammoTable[WP_M97].shotgunPumpEnd;
+			PM_StartWeaponAnim(fastReload ? WEAP_DROP2_FAST : WEAP_DROP2);
+			pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunPumpEnd / 2) : ammoTable[WP_M97].shotgunPumpEnd;
 			pm->ps->weaponstate = WEAPON_READY;
 		} else {
-			
+
 			// Transition to load another shell
-			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
-			pm->ps->weaponTime += ammoTable[WP_M97].shotgunPumpLoop;
+			PM_StartWeaponAnim(fastReload ? WEAP_ALTSWITCHTO_FAST : WEAP_ALTSWITCHTO);
+			pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunPumpLoop / 2) : ammoTable[WP_M97].shotgunPumpLoop;
 			pm->ps->holdable[HI_M97] = M97_RELOADING_AFTER_PUMP;
 		}
 		return;
 	}
-	
+
 	// Load a shell on most states
 	if (pm->ps->holdable[HI_M97] != M97_RELOADING_AFTER_PUMP && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN) {
-		PM_ReloadClip( WP_M97 );
+		PM_ReloadClip(WP_M97);
 	}
 
 	// Override - but must load at least one shell!
-	if( pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN ) {
-        PM_StartWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
-		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadEnd;
+	if (pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_M97] != M97_RELOADING_BEGIN) {
+		PM_StartWeaponAnim(fastReload ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunReloadEnd / 2) : ammoTable[WP_M97].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
 	}
 
 	// If clip isn't full, load another shell
-	if( pm->ps->ammoclip[WP_M97] < ammoTable[WP_M97].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)] ) {
-		PM_AddEvent( EV_FILL_CLIP );
-        PM_StartWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
-		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadLoop;
+	if (pm->ps->ammoclip[WP_M97] < ammoTable[WP_M97].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_M97)]) {
+		PM_AddEvent(EV_FILL_CLIP);
+		PM_StartWeaponAnim(fastReload ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunReloadLoop / 2) : ammoTable[WP_M97].shotgunReloadLoop;
 		pm->ps->holdable[HI_M97] = M97_RELOADING_LOOP;
 	} else {
-        PM_StartWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
-		pm->ps->weaponTime += ammoTable[WP_M97].shotgunReloadEnd;
+		PM_StartWeaponAnim(fastReload ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunReloadEnd / 2) : ammoTable[WP_M97].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 	}
 }
@@ -5177,32 +5165,23 @@ void PM_M97Reload() {
 PM_BeginAuto5Reload
 =================
 */
-void PM_BeginAuto5Reload( void )
-{
+void PM_BeginAuto5Reload(void) {
 	int anim;
-	
-	// Choose which first person animation to play 
-	if ( pm->ps->ammoclip[BG_FindClipForWeapon(WP_AUTO5)] == 0 ) {
-		
-		anim = WEAP_ALTSWITCHFROM;
-		PM_AddEvent( EV_M97_PUMP );
-		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunPumpStart;
-		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN_PUMP;
+	qboolean fastReload = (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]);
 
+	// Choose which first person animation to play
+	if (pm->ps->ammoclip[BG_FindClipForWeapon(WP_AUTO5)] == 0) {
+		anim = fastReload ? WEAP_ALTSWITCHFROM_FAST : WEAP_ALTSWITCHFROM;
+		PM_AddEvent(EV_M97_PUMP);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunPumpStart / 2) : ammoTable[WP_AUTO5].shotgunPumpStart;
+		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN_PUMP;
 	} else {
-		if (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING])
-		{
-			anim = WEAP_RELOAD1_FAST;
-		}
-		else
-		{
-			anim = WEAP_RELOAD1;
-		}
-		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadStart;
+		anim = fastReload ? WEAP_RELOAD1_FAST : WEAP_RELOAD1;
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunReloadStart / 2) : ammoTable[WP_AUTO5].shotgunReloadStart;
 		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_BEGIN;
 	}
 
-	// Play it
+	// Play animation
 	PM_StartWeaponAnim(anim);
 
 	// Initialize override
@@ -5210,56 +5189,52 @@ void PM_BeginAuto5Reload( void )
 
 	// Set state to reloading
 	pm->ps->weaponstate = WEAPON_RELOADING;
-
 }
 
-void PM_Auto5Reload() {
-	
+void PM_Auto5Reload(void) {
+	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING]);
+
 	// Transition from shell + pump
-	if( pm->ps->holdable[HI_AUTO5] == AUTO5_RELOADING_BEGIN_PUMP ) {
-		
+	if (pm->ps->holdable[HI_AUTO5] == AUTO5_RELOADING_BEGIN_PUMP) {
+
 		// Load a shell
-		PM_ReloadClip( WP_AUTO5 );
+		PM_ReloadClip(WP_AUTO5);
 
 		// Branch depending on if we need another shell or not
 		if (!pm->ps->ammo[BG_FindAmmoForWeapon(WP_AUTO5)] || pm->pmext->m97reloadInterrupt) {
-			
-			// Break back to ready position
-			PM_StartWeaponAnim(WEAP_DROP2);
-			pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunPumpEnd;
+			PM_StartWeaponAnim(fastReload ? WEAP_DROP2_FAST : WEAP_DROP2);
+			pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunPumpEnd / 2) : ammoTable[WP_AUTO5].shotgunPumpEnd;
 			pm->ps->weaponstate = WEAPON_READY;
 		} else {
-			
-			// Transition to load another shell
-			PM_StartWeaponAnim(WEAP_ALTSWITCHTO);
-			pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunPumpLoop;
+			PM_StartWeaponAnim(fastReload ? WEAP_ALTSWITCHTO_FAST : WEAP_ALTSWITCHTO);
+			pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunPumpLoop / 2) : ammoTable[WP_AUTO5].shotgunPumpLoop;
 			pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_AFTER_PUMP;
 		}
 		return;
 	}
-	
+
 	// Load a shell on most states
 	if (pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_AFTER_PUMP && pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_BEGIN) {
-		PM_ReloadClip( WP_AUTO5 );
+		PM_ReloadClip(WP_AUTO5);
 	}
 
 	// Override - but must load at least one shell!
-	if( pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_BEGIN ) {
-		PM_StartWeaponAnim(WEAP_RELOAD3);
-		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadEnd;
+	if (pm->pmext->m97reloadInterrupt && pm->ps->holdable[HI_AUTO5] != AUTO5_RELOADING_BEGIN) {
+		PM_StartWeaponAnim(fastReload ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunReloadEnd / 2) : ammoTable[WP_AUTO5].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
 	}
 
 	// If clip isn't full, load another shell
-	if( pm->ps->ammoclip[WP_AUTO5] < ammoTable[WP_AUTO5].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_AUTO5)] ) {
-		PM_AddEvent( EV_FILL_CLIP );
-        PM_StartWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
-		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadLoop;
+	if (pm->ps->ammoclip[WP_AUTO5] < ammoTable[WP_AUTO5].maxclip && pm->ps->ammo[BG_FindAmmoForWeapon(WP_AUTO5)]) {
+		PM_AddEvent(EV_FILL_CLIP);
+		PM_StartWeaponAnim(fastReload ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunReloadLoop / 2) : ammoTable[WP_AUTO5].shotgunReloadLoop;
 		pm->ps->holdable[HI_AUTO5] = AUTO5_RELOADING_LOOP;
 	} else {
-        PM_StartWeaponAnim((pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
-		pm->ps->weaponTime += ammoTable[WP_AUTO5].shotgunReloadEnd;
+		PM_StartWeaponAnim(fastReload ? WEAP_RELOAD3_FAST : WEAP_RELOAD3);
+		pm->ps->weaponTime += fastReload ? (ammoTable[WP_AUTO5].shotgunReloadEnd / 2) : ammoTable[WP_AUTO5].shotgunReloadEnd;
 		pm->ps->weaponstate = WEAPON_READY;
 	}
 }

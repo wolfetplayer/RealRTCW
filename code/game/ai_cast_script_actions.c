@@ -2581,6 +2581,56 @@ qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params) {
 	return qtrue;
 }
 
+
+/*
+AICast_ScriptAction_ChangeAiSkin
+syntax: changeaiskin <skin path>
+*/
+qboolean AICast_ScriptAction_ChangeAiSkin(cast_state_t *cs, char *params)
+{
+	if (!params || !params[0]) {
+		G_Error("AI Scripting: changeaiskin requires a skin string for %s\n", g_entities[cs->entityNum].aiName);
+		return qtrue;
+	}
+
+	gentity_t *ent = &g_entities[cs->entityNum];
+
+	char userinfo[MAX_INFO_STRING];
+	trap_GetUserinfo(ent->s.number, userinfo, sizeof(userinfo));
+	Info_SetValueForKey(userinfo, "model", params);
+	trap_SetUserinfo(ent->s.number, userinfo);
+	ClientUserinfoChanged(ent->s.number);
+
+	G_Printf("AI Script: Changed skin of %s to '%s'\n", ent->aiName, params);
+
+	return qtrue;
+}
+
+/*
+AICast_ScriptAction_ChangeAiHead
+syntax: changeaihead <headID>
+*/
+qboolean AICast_ScriptAction_ChangeAiHead(cast_state_t* cs, char* params)
+{
+	if (!params || !params[0]) {
+		G_Error("AI Scripting: changeaihead requires a head string for %s\n", g_entities[cs->entityNum].aiName);
+		return qtrue;
+	}
+
+	gentity_t* ent = &g_entities[cs->entityNum];
+
+	// Update userinfo
+	char userinfo[MAX_INFO_STRING];
+	trap_GetUserinfo(ent->s.number, userinfo, sizeof(userinfo));
+	Info_SetValueForKey(userinfo, "head", params);
+	trap_SetUserinfo(ent->s.number, userinfo);
+	ClientUserinfoChanged(ent->s.number);
+
+	G_Printf("AI Script: Changed head of %s to '%s'\n", ent->aiName, params);
+
+	return qtrue;
+}
+
 /*
 =================
 AICast_ScriptAction_Accum

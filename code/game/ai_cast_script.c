@@ -304,6 +304,8 @@ qboolean AICast_ScriptAction_CatchFire( cast_state_t *cs, char *params );
 
 qboolean AICast_ScriptAction_ChangeAiTeam(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params);
+qboolean AICast_ScriptAction_ChangeAiSkin(cast_state_t* cs, char* params);
+qboolean AICast_ScriptAction_ChangeAiHead(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_DropWeapon(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_AccumPrint(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_GlobalAccumPrint(cast_state_t* cs, char* params);
@@ -315,6 +317,8 @@ cast_script_stack_action_t scriptActions[] =
 	{"drop_weapon", AICast_ScriptAction_DropWeapon},
 	{"changeaiteam", AICast_ScriptAction_ChangeAiTeam},
 	{"changeainame", AICast_ScriptAction_ChangeAiName},
+	{"changeaiskin", AICast_ScriptAction_ChangeAiSkin},
+	{"changeaihead", AICast_ScriptAction_ChangeAiHead},
 	{"burn", AICast_ScriptAction_Burned},
 	{"accumprint", AICast_ScriptAction_AccumPrint},
 	{"globalaccumprint", AICast_ScriptAction_GlobalAccumPrint},

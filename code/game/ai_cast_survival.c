@@ -755,21 +755,43 @@ AICast_ApplySurvivalAttributes
   The adjustments are made to ensure that the AI characters become progressively stronger as the game progresses.
 ============
 */
-void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
-	// Default: +1 step every wave after wave 1
-	int steps = (svParams.waveCount > 1) ? svParams.waveCount / 1 : 0;
-
-	// Disable scaling if the character hasn't "unlocked" yet
-	if ((cs->aiCharacter == AICHAR_ELITEGUARD && svParams.waveCount < svParams.waveEg) ||
-		(cs->aiCharacter == AICHAR_BLACKGUARD && svParams.waveCount < svParams.waveBg) ||
-		(cs->aiCharacter == AICHAR_VENOM       && svParams.waveCount < svParams.waveV)  ||
-		(cs->aiCharacter == AICHAR_ZOMBIE_GHOST && svParams.waveCount < svParams.waveGhosts) ||
-		(cs->aiCharacter == AICHAR_WARZOMBIE    && svParams.waveCount < svParams.waveWarz)   ||
-		(cs->aiCharacter == AICHAR_PROTOSOLDIER && svParams.waveCount < svParams.waveProtos) ||
-		(cs->aiCharacter == AICHAR_PRIEST       && svParams.waveCount < svParams.wavePriests))
+void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
+{
+	int waveAppeared = 0;
+	switch (cs->aiCharacter)
 	{
-		steps = 0;
+	case AICHAR_ELITEGUARD:
+		waveAppeared = svParams.waveEg;
+		break;
+	case AICHAR_BLACKGUARD:
+		waveAppeared = svParams.waveBg;
+		break;
+	case AICHAR_VENOM:
+		waveAppeared = svParams.waveV;
+		break;
+	case AICHAR_ZOMBIE_GHOST:
+		waveAppeared = svParams.waveGhosts;
+		break;
+	case AICHAR_WARZOMBIE:
+		waveAppeared = svParams.waveWarz;
+		break;
+	case AICHAR_PROTOSOLDIER:
+		waveAppeared = svParams.waveProtos;
+		break;
+	case AICHAR_PRIEST:
+		waveAppeared = svParams.wavePriests;
+		break;
+	default:
+		waveAppeared = 0;
+		break;
 	}
+
+	int rawSteps = (svParams.waveCount > 1) ? (svParams.waveCount - waveAppeared) : 0;
+	if (rawSteps < 0)
+		rawSteps = 0;
+
+	int stepMultiplier = (svParams.waveCount < 10) ? 3 : 6;
+	int steps = rawSteps * stepMultiplier;
 
 	int newHealth = 0;
 	float runSpeedScale = 1.0f;
@@ -778,27 +800,27 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 
 	switch (cs->aiCharacter) {
 		case AICHAR_SOLDIER:
-			newHealth = 20 + steps * 5;
-			if (newHealth > 50) newHealth = 50;
-			break;
-
-		case AICHAR_ELITEGUARD:
-			newHealth = 30 + steps * 5;
-			if (newHealth > 60) newHealth = 60;
-			break;
-
-		case AICHAR_BLACKGUARD:
-			newHealth = 40 + steps * 5;
-			if (newHealth > 80) newHealth = 80;
-			break;
-
-		case AICHAR_VENOM:
-			newHealth = 50 + steps * 5;
+			newHealth = 20 + steps * stepMultiplier;
 			if (newHealth > 100) newHealth = 100;
 			break;
 
+		case AICHAR_ELITEGUARD:
+			newHealth = 30 + steps * stepMultiplier;
+			if (newHealth > 140) newHealth = 140;
+			break;
+
+		case AICHAR_BLACKGUARD:
+			newHealth = 40 + steps * stepMultiplier;
+			if (newHealth > 180) newHealth = 180;
+			break;
+
+		case AICHAR_VENOM:
+			newHealth = 50 + steps * stepMultiplier;
+			if (newHealth > 250) newHealth = 250;
+			break;
+
 		case AICHAR_ZOMBIE_SURV:
-			newHealth = 20 + steps * 5;
+			newHealth = 20 + steps * stepMultiplier;
 			if (newHealth > 200) newHealth = 200;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.2f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.6f);
@@ -806,7 +828,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_ZOMBIE_GHOST:
-			newHealth = 20 + steps * 5;
+			newHealth = 20 + steps * stepMultiplier;
 			if (newHealth > 200) newHealth = 200;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
@@ -814,7 +836,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_WARZOMBIE:
-			newHealth = 40 + steps * 5;
+			newHealth = 40 + steps * stepMultiplier;
 			if (newHealth > 300) newHealth = 300;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
@@ -822,20 +844,20 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_PROTOSOLDIER:
-			newHealth = 500 + steps * 5;
-			if (newHealth > 800) newHealth = 800;
+			newHealth = 500 + steps * stepMultiplier;
+			if (newHealth > 1000) newHealth = 1000;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.5f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
 			break;
 
 		case AICHAR_PARTISAN:
-			newHealth = 250 + steps * 5;
-			if (newHealth > 500) newHealth = 500;
+			newHealth = 250 + steps * stepMultiplier;
+			if (newHealth > 800) newHealth = 800;
 			break;
 
 		case AICHAR_PRIEST:
-			newHealth = 250 + steps * 5;
+			newHealth = 250 + steps * stepMultiplier;
 			if (newHealth > 500) newHealth = 500;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
@@ -843,7 +865,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs) {
 			break;
 
 		case AICHAR_ZOMBIE_FLAME:
-			newHealth = 50 + steps * 5;
+			newHealth = 50 + steps * stepMultiplier;
 			if (newHealth > 500) newHealth = 500;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
@@ -871,19 +893,20 @@ BG_SetBehaviorForSurvival
 ============
 */
 void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
-	// Base scaling: +0.1 per wave after wave 1
-	int steps = (svParams.waveCount > 1) ? svParams.waveCount / 1 : 0;
-	if (steps > 5) steps = 5;
+	int waveAppeared = 1;
+	switch (characterNum) {
+		case AICHAR_ELITEGUARD:   waveAppeared = svParams.waveEg; break;
+		case AICHAR_BLACKGUARD:   waveAppeared = svParams.waveBg; break;
+		case AICHAR_VENOM:        waveAppeared = svParams.waveV; break;
+		case AICHAR_PROTOSOLDIER: waveAppeared = svParams.waveProtos; break;
+		default:  waveAppeared = 0; break;
+	}
 
-	float delta = 0.1f * steps;
+	int rawSteps = (svParams.waveCount > 1) ? (svParams.waveCount - waveAppeared) : 0;
+	if (rawSteps < 0) rawSteps = 0;
 
-	// Clamp delta to 0 for special enemies not yet eligible
-	if (characterNum == AICHAR_ELITEGUARD && svParams.waveCount < svParams.waveEg)
-		delta = 0.0f;
-	else if (characterNum == AICHAR_BLACKGUARD && svParams.waveCount < svParams.waveBg)
-		delta = 0.0f;
-	else if (characterNum == AICHAR_VENOM && svParams.waveCount < svParams.waveV)
-		delta = 0.0f;
+	int stepMultiplier = (svParams.waveCount < 10) ? 1 : 2;
+	float delta = rawSteps * 0.05f * stepMultiplier;  // max delta ~0.5-1.0 depending on how long they're alive
 
 	float aimSkill     = 0.0f;
 	float aimAccuracy  = 0.0f;
@@ -893,39 +916,47 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 
 	switch (characterNum) {
 		case AICHAR_SOLDIER:
-			aimSkill     = fminf(0.1f + delta, 0.5f);
-			aimAccuracy  = fminf(0.1f + delta, 0.5f);
-			attackSkill  = fminf(0.1f + delta, 0.5f);
+			aimSkill     = fminf(0.1f + delta, 0.6f);
+			aimAccuracy  = fminf(0.1f + delta, 0.6f);
+			attackSkill  = fminf(0.1f + delta, 0.6f);
 			aggression   = fminf(0.1f + delta, 1.0f);
 			reactionTime = fmaxf(1.0f - delta, 0.5f);
 			break;
-
 		case AICHAR_ELITEGUARD:
-			aimSkill     = fminf(0.3f + delta, 0.6f);
-			aimAccuracy  = fminf(0.3f + delta, 0.6f);
-			attackSkill  = fminf(0.3f + delta, 0.6f);
+			aimSkill     = fminf(0.3f + delta, 0.7f);
+			aimAccuracy  = fminf(0.3f + delta, 0.7f);
+			attackSkill  = fminf(0.3f + delta, 0.7f);
 			aggression   = fminf(0.3f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.5f);
+			reactionTime = fmaxf(1.0f - delta, 0.4f);
 			break;
-
 		case AICHAR_BLACKGUARD:
-		case AICHAR_VENOM:
-		case AICHAR_PROTOSOLDIER:
 			aimSkill     = fminf(0.4f + delta, 0.7f);
 			aimAccuracy  = fminf(0.4f + delta, 0.7f);
 			attackSkill  = fminf(0.4f + delta, 0.7f);
 			aggression   = fminf(0.5f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.5f);
+			reactionTime = fmaxf(1.0f - delta, 0.4f);
 			break;
-
+		case AICHAR_VENOM:
+			aimSkill     = fminf(0.4f + delta, 0.8f);
+			aimAccuracy  = fminf(0.4f + delta, 0.8f);
+			attackSkill  = fminf(0.4f + delta, 0.8f);
+			aggression   = fminf(0.5f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.4f);
+			break;
+		case AICHAR_PROTOSOLDIER:
+			aimSkill     = fminf(0.4f + delta, 0.8f);
+			aimAccuracy  = fminf(0.4f + delta, 0.8f);
+			attackSkill  = fminf(0.4f + delta, 0.8f);
+			aggression   = fminf(0.5f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			break;
 		case AICHAR_PARTISAN:
-			aimSkill     = 0.8f;
-			aimAccuracy  = 0.8f;
-			attackSkill  = 0.8f;
-			aggression   = 0.8f;
-			reactionTime = 0.5f;
+			aimSkill     = 0.9f;
+			aimAccuracy  = 0.9f;
+			attackSkill  = 0.9f;
+			aggression   = 0.9f;
+			reactionTime = 0.4f;
 			break;
-
 		case AICHAR_ZOMBIE_SURV:
 		case AICHAR_ZOMBIE_FLAME:
 		case AICHAR_WARZOMBIE:
@@ -937,13 +968,10 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			aggression   = 1.0f;
 			reactionTime = 0.5f;
 			break;
-
 		default:
-			// Unhandled characters
 			return;
 	}
 
-	// Apply the values
 	aiDefaults[characterNum].attributes[AIM_SKILL]     = aimSkill;
 	aiDefaults[characterNum].attributes[AIM_ACCURACY]  = aimAccuracy;
 	aiDefaults[characterNum].attributes[ATTACK_SKILL]  = attackSkill;

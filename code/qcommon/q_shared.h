@@ -1536,6 +1536,8 @@ typedef struct playerState_s {
 	// 1NTERRUPTOR
 	printLabel_t scriptAccumLabel;
 
+	qboolean weaponUpgraded [MAX_WEAPONS]; //  used to track if a weapon has been upgraded or not
+
 } playerState_t;
 
 

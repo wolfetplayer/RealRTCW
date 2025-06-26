@@ -46,6 +46,7 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char **itemName, int *itemIndex);
 qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int price);
 qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gitem_t *item, int price);
+qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int price) ;
 qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int price);
 qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price);
 int Survival_GetDefaultWeaponPrice(int weapon);

@@ -276,6 +276,27 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	return qtrue;
 }
 
+/*
+============
+Survival_HandleWeaponUpgrade
+============
+*/
+qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int price) {
+	playerState_t *ps = &activator->client->ps;
+	int weap = ps->weapon;
+
+	if (weap <= WP_NONE || weap >= WP_NUM_WEAPONS) return qfalse;
+
+	// Only allow one upgrade per weapon
+	if (ps->weaponUpgraded[weap]) {
+		trap_SendServerCommand(activator - g_entities, "cp \"Weapon already upgraded!\"\n");
+		return qfalse;
+	}
+
+	ps->weaponUpgraded[weap] = qtrue;
+	trap_SendServerCommand(activator - g_entities, "cp \"Weapon upgraded!\"\n");
+	return qtrue;
+}	
 
 /*
 ============
@@ -497,6 +518,18 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 			ClientUserinfoChanged(clientNum);
 		}
 		return; // Don't flow into generic weapon handling
+	}
+
+	// Special case: upgrade weapon
+	if (!Q_stricmp(itemName, "upgrade_weapon"))
+	{
+		if (Survival_HandleWeaponUpgrade(ent, activator, price))
+		{
+			activator->client->ps.persistant[PERS_SCORE] -= price;
+			activator->client->hasPurchased = qtrue;
+			ClientUserinfoChanged(clientNum);
+		}
+		return;
 	}
 
 	// Special case: random perk

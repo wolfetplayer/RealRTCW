@@ -783,7 +783,7 @@ extern void Bullet_Endpos ( gentity_t * ent , float spread , vec3_t * end ) ;
 extern void SniperSoundEFX ( vec3_t pos ) ;
 extern void EmitterCheck ( gentity_t * ent , gentity_t * attacker , trace_t * tr ) ;
 extern float G_GetWeaponSpread ( int weapon ) ;
-extern int G_GetWeaponDamage ( int weapon ) ;
+extern int G_GetWeaponDamage(int weapon, gentity_t *ent);
 extern void SnapVectorTowards ( vec3_t v , vec3_t to ) ;
 extern void weapon_smokeBombExplode ( gentity_t * ent ) ;
 extern trace_t * CheckMeleeAttack ( gentity_t * ent , float dist , qboolean isTest ) ;

@@ -881,7 +881,7 @@ void G_RunSpit( gentity_t *ent ) {
 }
 
 
-int G_GetWeaponDamage( int weapon, qboolean player ); // JPW NERVE
+int G_GetWeaponDamage( int weapon, gentity_t *ent ); // JPW NERVE
 
 /*
 =================
@@ -943,8 +943,8 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 
 // JPW NERVE -- commented out bolt->damage and bolt->splashdamage, override with G_GetWeaponDamage()
 // so it works with different netgame balance.  didn't uncomment bolt->damage on dynamite 'cause its so *special*
-	bolt->damage = G_GetWeaponDamage( grenadeWPID, isPlayer ); // overridden for dynamite
-	bolt->splashDamage = G_GetWeaponDamage( grenadeWPID, isPlayer );
+	bolt->damage = G_GetWeaponDamage(grenadeWPID, self);
+	bolt->splashDamage = G_GetWeaponDamage(grenadeWPID, self);
 
 	// Soldier explosive bonus (Survival mode only)
 	if (g_gametype.integer == GT_SURVIVAL &&

@@ -876,6 +876,9 @@ void G_RemoveWeapon( gentity_t *ent, weapon_t weapon ) {
 		}
 	}
 
+	// Clear out upgraded weapon
+	ent->client->ps.weaponUpgraded[weapon] = qfalse;
+
 	// Clear out empty weapon, change to next best weapon
 	// 																G_AddEvent( ent, EV_CHANGE_WEAPON, 0 );
 

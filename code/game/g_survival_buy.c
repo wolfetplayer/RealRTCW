@@ -286,6 +286,11 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 	playerState_t *ps = &activator->client->ps;
 	int weap = ps->weapon;
 
+    // Use fallback price if mapper didn't define one
+    if (price <= 0) {
+        price = svParams.weaponUpgradePrice;
+    }
+
 	if (weap <= WP_NONE || weap >= WP_NUM_WEAPONS)
 		return qfalse;
 

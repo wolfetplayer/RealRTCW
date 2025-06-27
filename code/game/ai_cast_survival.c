@@ -1745,6 +1745,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "weaponUpgradePrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.weaponUpgradePrice))
+			{
+				PC_SourceError(handle, "expected weaponUpgradePrice value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "secondchancePrice"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.secondchancePrice))

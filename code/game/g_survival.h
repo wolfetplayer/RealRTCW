@@ -157,6 +157,7 @@ typedef struct svParams_s
 	int armorPrice;
 	int randomPerkPrice;
 	int randomWeaponPrice;
+	int weaponUpgradePrice;
 
 	int secondchancePrice;
 	int runnerPrice;

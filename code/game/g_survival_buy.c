@@ -281,22 +281,30 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 Survival_HandleWeaponUpgrade
 ============
 */
-qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int price) {
+qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int price)
+{
 	playerState_t *ps = &activator->client->ps;
 	int weap = ps->weapon;
 
-	if (weap <= WP_NONE || weap >= WP_NUM_WEAPONS) return qfalse;
+	if (weap <= WP_NONE || weap >= WP_NUM_WEAPONS)
+		return qfalse;
 
 	// Only allow one upgrade per weapon
-	if (ps->weaponUpgraded[weap]) {
-		trap_SendServerCommand(activator - g_entities, "cp \"Weapon already upgraded!\"\n");
+	if (ps->weaponUpgraded[weap])
+	{
+		return qfalse;
+	}
+
+	// Not enough points
+	if (activator->client->ps.persistant[PERS_SCORE] < price)
+	{
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
 	}
 
 	ps->weaponUpgraded[weap] = qtrue;
-	trap_SendServerCommand(activator - g_entities, "cp \"Weapon upgraded!\"\n");
 	return qtrue;
-}	
+}
 
 /*
 ============

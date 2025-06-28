@@ -1753,6 +1753,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "upgradedAmmoPrice"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.upgradedAmmoPrice))
+			{
+				PC_SourceError(handle, "expected upgradedAmmoPrice value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "secondchancePrice"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.secondchancePrice))

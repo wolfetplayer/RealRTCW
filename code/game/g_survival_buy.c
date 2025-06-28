@@ -249,12 +249,27 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	}
 
 	int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
-	if (ammoIndex < 0 || activator->client->ps.ammo[ammoIndex] >= ammoTable[heldWeap].maxammo)
+	if (ammoIndex < 0)
+		return qfalse;
+
+	// Compute maxAmmo cap with possible LT bonus
+	int maxAmmo = ammoTable[heldWeap].maxammo;
+	if (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT) {
+		maxAmmo *= svParams.ltAmmoBonus;
+	}
+
+	// Check if already full
+	if (activator->client->ps.ammo[ammoIndex] >= maxAmmo)
 		return qfalse;
 
 	// Use fallback price: half of weapon price
 	int basePrice = Survival_GetDefaultWeaponPrice(heldWeap);
 	int ammoPrice = basePrice / 2;
+
+	// Apply 4x multiplier if weapon is upgraded and price is not overridden
+	if (price <= 0 && activator->client->ps.weaponUpgraded[heldWeap]) {
+		ammoPrice = svParams.upgradedAmmoPrice;
+	}
 
 	// Mapper override
 	if (price > 0) {
@@ -286,28 +301,47 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 	playerState_t *ps = &activator->client->ps;
 	int weap = ps->weapon;
 
-    // Use fallback price if mapper didn't define one
-    if (price <= 0) {
-        price = svParams.weaponUpgradePrice;
-    }
-
 	if (weap <= WP_NONE || weap >= WP_NUM_WEAPONS)
 		return qfalse;
+
+	// Weapons that cannot be upgraded
+	if (weap == WP_KNIFE || weap == WP_AIRSTRIKE || weap == WP_POISONGAS_MEDIC || weap == WP_DYNAMITE_ENG || weap == WP_TESLA || weap == WP_FLAMETHROWER || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE) 
+	{
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		return qfalse;
+	}
 
 	// Only allow one upgrade per weapon
 	if (ps->weaponUpgraded[weap])
 	{
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
 	}
 
-	// Not enough points
-	if (activator->client->ps.persistant[PERS_SCORE] < price)
+	// Use fallback price
+	int upgradePrice = svParams.weaponUpgradePrice;
+
+	// Mapper override
+	if (price > 0)
+	{
+		upgradePrice = price;
+	}
+
+	// FIXED: check actual value being subtracted
+	if (activator->client->ps.persistant[PERS_SCORE] < upgradePrice)
 	{
 		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
 	}
 
 	ps->weaponUpgraded[weap] = qtrue;
+	activator->client->ps.persistant[PERS_SCORE] -= upgradePrice;
+
+	// Refill ammo
+	Add_Ammo(activator, weap, ammoTable[weap].maxammo, qtrue);
+	Add_Ammo(activator, weap, ammoTable[weap].maxammo, qfalse);
+
+	trap_SendServerCommand(-1, "mu_play sound/misc/wpn_upgrade.wav 0\n");
 	return qtrue;
 }
 
@@ -538,7 +572,6 @@ void Use_Target_buy(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 	{
 		if (Survival_HandleWeaponUpgrade(ent, activator, price))
 		{
-			activator->client->ps.persistant[PERS_SCORE] -= price;
 			activator->client->hasPurchased = qtrue;
 			ClientUserinfoChanged(clientNum);
 		}
@@ -650,6 +683,10 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 			return;
 		}
 			price = (price > 0) ? price : Survival_GetDefaultWeaponPrice(other->client->ps.weapon) / 2;
+			if (other->client->ps.weaponUpgraded[other->client->ps.weapon])
+			{
+				price = svParams.upgradedAmmoPrice;
+			}
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(
 					"cpbuy \"item: %s\nprice: %d\"",
@@ -658,6 +695,14 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 			}
 		} else if (!Q_stricmp(techName, "random_weapon")) {
 			price = (price > 0) ? price : svParams.randomWeaponPrice;
+			if (weaponName && price > 0) {
+				trap_SendServerCommand(other - g_entities, va(
+					"cpbuy \"item: %s\nprice: %d\"",
+					weaponName, price));
+				return;
+			}
+		} else if (!Q_stricmp(techName, "upgrade_weapon")) {
+			price = (price > 0) ? price : svParams.weaponUpgradePrice;
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(
 					"cpbuy \"item: %s\nprice: %d\"",

@@ -1353,6 +1353,12 @@ static qboolean CG_RW_ParseWeaponLinkPart( int handle, weaponInfo_t *weaponInfo,
 			} else {
 				partModel->skin[0] = trap_R_RegisterSkin( filename );
 			}
+		} else if ( !Q_stricmp( token.string, "upgradedSkin" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
+				return CG_RW_ParseError( handle, "expected skin filename" );
+			} else {
+				partModel->skin[1] = trap_R_RegisterSkin( filename );
+			}
 		} else {
 			return CG_RW_ParseError( handle, "unknown token '%s'", token.string );
 		}
@@ -1418,7 +1424,13 @@ static qboolean CG_RW_ParseViewType( int handle, weaponInfo_t *weaponInfo, model
 			} else {
 				weaponInfo->weaponModel[viewType].skin[0] = trap_R_RegisterSkin( filename );
 			}
-		}  else if ( !Q_stricmp( token.string, "flashModel" ) ) {
+		} else if ( !Q_stricmp( token.string, "upgradedSkin" ) ) {
+			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
+				return CG_RW_ParseError( handle, "expected skin filename" );
+			} else {
+				weaponInfo->weaponModel[viewType].skin[1] = trap_R_RegisterSkin( filename );
+			}
+		} else if ( !Q_stricmp( token.string, "flashModel" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
 				return CG_RW_ParseError( handle, "expected flashModel filename" );
 			} else {
@@ -2998,6 +3010,7 @@ qboolean CG_MonsterUsingWeapon( centity_t *cent, int aiChar, int weaponNum ) {
 	return ( cent->currentState.aiChar == aiChar ) && ( cent->currentState.weapon == weaponNum );
 }
 
+/*
 ==============
 CG_WeaponIsUpgraded
 ==============

@@ -2998,6 +2998,17 @@ qboolean CG_MonsterUsingWeapon( centity_t *cent, int aiChar, int weaponNum ) {
 	return ( cent->currentState.aiChar == aiChar ) && ( cent->currentState.weapon == weaponNum );
 }
 
+==============
+CG_WeaponIsUpgraded
+==============
+*/
+qboolean CG_WeaponIsUpgraded(weapon_t weaponNum) {
+	if (cg.snap->ps.clientNum != cg.clientNum) {
+		return qfalse;
+	}
+	return (cg.snap->ps.weaponUpgraded[weaponNum] == qtrue); 
+}
+
 /*
 =============
 CG_AddPlayerWeapon
@@ -3089,10 +3100,27 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		gun.shaderRGBA[3] = 255;
 	}
 
-	if ( ps ) {
-		gun.hModel = weapon->weaponModel[W_FP_MODEL].model;
-	} else {
-		gun.hModel = weapon->weaponModel[W_TP_MODEL].model;
+	if (ps)
+	{
+		if (CG_WeaponIsUpgraded(weaponNum) && weapon->weaponModel[W_FP_MODEL].skin[1])
+		{
+			gun.customSkin = weapon->weaponModel[W_FP_MODEL].skin[1];
+		}
+		else
+		{
+			gun.customSkin = weapon->weaponModel[W_FP_MODEL].skin[0];
+		}
+	}
+	else
+	{
+		if (CG_WeaponIsUpgraded(weaponNum) && weapon->weaponModel[W_TP_MODEL].skin[1])
+		{
+			gun.customSkin = weapon->weaponModel[W_TP_MODEL].skin[1];
+		}
+		else
+		{
+			gun.customSkin = weapon->weaponModel[W_TP_MODEL].skin[0];
+		}
 	}
 
 	if ( !gun.hModel ) {
@@ -3211,6 +3239,15 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 			spunpart = qfalse;
 			barrel.hModel = weapon->partModels[W_FP_MODEL][i].model;
+
+			if (CG_WeaponIsUpgraded(weaponNum) && weapon->partModels[W_FP_MODEL][i].skin[1])
+			{
+				barrel.customSkin = weapon->partModels[W_FP_MODEL][i].skin[1];
+			}
+			else
+			{
+				barrel.customSkin = weapon->partModels[W_FP_MODEL][i].skin[0];
+			}
 
 			if ( isPlayer && weapon->handsSkin ) { // eugeny
 				barrel.customSkin = weapon->handsSkin;

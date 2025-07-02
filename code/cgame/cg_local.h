@@ -685,6 +685,7 @@ typedef struct weaponInfo_s {
 
 	qhandle_t handsSkin; // eugeny
     qhandle_t legskin;
+	qhandle_t upgradedSkin;
 //----(SA)	end
 
 	qboolean droppedAnglesHack;

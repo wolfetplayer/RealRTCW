@@ -1353,12 +1353,6 @@ static qboolean CG_RW_ParseWeaponLinkPart( int handle, weaponInfo_t *weaponInfo,
 			} else {
 				partModel->skin[0] = trap_R_RegisterSkin( filename );
 			}
-		} else if ( !Q_stricmp( token.string, "upgradedSkin" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
-				return CG_RW_ParseError( handle, "expected skin filename" );
-			} else {
-				partModel->skin[1] = trap_R_RegisterSkin( filename );
-			}
 		} else {
 			return CG_RW_ParseError( handle, "unknown token '%s'", token.string );
 		}
@@ -1423,12 +1417,6 @@ static qboolean CG_RW_ParseViewType( int handle, weaponInfo_t *weaponInfo, model
 				return CG_RW_ParseError( handle, "expected skin filename" );
 			} else {
 				weaponInfo->weaponModel[viewType].skin[0] = trap_R_RegisterSkin( filename );
-			}
-		} else if ( !Q_stricmp( token.string, "upgradedSkin" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
-				return CG_RW_ParseError( handle, "expected skin filename" );
-			} else {
-				weaponInfo->weaponModel[viewType].skin[1] = trap_R_RegisterSkin( filename );
 			}
 		} else if ( !Q_stricmp( token.string, "flashModel" ) ) {
 			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
@@ -1532,6 +1520,13 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			COM_StripExtension(filename, filename, sizeof (filename) );
 			Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", filename, map);
 			weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
+
+			char upgradedSkin[128];
+			memset(upgradedSkin, 0, sizeof(upgradedSkin));
+			COM_StripExtension(filename, filename, sizeof(filename));
+			Com_sprintf(upgradedSkin, sizeof(upgradedSkin), "%s_upgraded.skin", filename);
+			weaponInfo->upgradedSkin = trap_R_RegisterSkin(upgradedSkin);
+
 		} else if ( !Q_stricmp( token.string, "flashDlightColor" ) ) {
 			if ( !PC_Vec_Parse( handle, &weaponInfo->flashDlightColor ) ) {
 				return CG_RW_ParseError( handle, "expected flashDlightColor as r g b" );
@@ -3115,25 +3110,11 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 	if (ps)
 	{
-		if (CG_WeaponIsUpgraded(weaponNum) && weapon->weaponModel[W_FP_MODEL].skin[1])
-		{
-			gun.customSkin = weapon->weaponModel[W_FP_MODEL].skin[1];
-		}
-		else
-		{
-			gun.customSkin = weapon->weaponModel[W_FP_MODEL].skin[0];
-		}
+		gun.hModel = weapon->weaponModel[W_FP_MODEL].model;
 	}
 	else
 	{
-		if (CG_WeaponIsUpgraded(weaponNum) && weapon->weaponModel[W_TP_MODEL].skin[1])
-		{
-			gun.customSkin = weapon->weaponModel[W_TP_MODEL].skin[1];
-		}
-		else
-		{
-			gun.customSkin = weapon->weaponModel[W_TP_MODEL].skin[0];
-		}
+		gun.hModel = weapon->weaponModel[W_TP_MODEL].model;
 	}
 
 	if ( !gun.hModel ) {
@@ -3214,11 +3195,20 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		drawpart = qtrue;
 	}
 
-	if ( drawpart && drawrealweap ) {
-		if (isPlayer && weapon->handsSkin) { // Eugeny
-        gun.customSkin = weapon->handsSkin;
-        }
-		CG_AddWeaponWithPowerups( &gun, cent->currentState.powerups, ps, cent );
+	if (drawpart && drawrealweap)
+	{
+		if (isPlayer)
+		{
+			if (CG_WeaponIsUpgraded(weaponNum) && weapon->upgradedSkin)
+			{
+				gun.customSkin = weapon->upgradedSkin;
+			}
+			else if (weapon->handsSkin)
+			{
+				gun.customSkin = weapon->handsSkin;
+			}
+		}
+		CG_AddWeaponWithPowerups(&gun, cent->currentState.powerups, ps, cent);
 	}
 
 	if ( isPlayer && ps != NULL ) {
@@ -3253,17 +3243,16 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 			spunpart = qfalse;
 			barrel.hModel = weapon->partModels[W_FP_MODEL][i].model;
 
-			if (CG_WeaponIsUpgraded(weaponNum) && weapon->partModels[W_FP_MODEL][i].skin[1])
+			if (isPlayer)
 			{
-				barrel.customSkin = weapon->partModels[W_FP_MODEL][i].skin[1];
-			}
-			else
-			{
-				barrel.customSkin = weapon->partModels[W_FP_MODEL][i].skin[0];
-			}
-
-			if ( isPlayer && weapon->handsSkin ) { // eugeny
-				barrel.customSkin = weapon->handsSkin;
+				if (CG_WeaponIsUpgraded(weaponNum) && weapon->upgradedSkin)
+				{
+					barrel.customSkin = weapon->upgradedSkin;
+				}
+				else if (weapon->handsSkin)
+				{
+					barrel.customSkin = weapon->handsSkin;
+				}
 			}
 
 			// check for spinning

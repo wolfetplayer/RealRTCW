@@ -334,7 +334,7 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 		return qfalse;
 	}
 
-	ps->weaponUpgraded[weap] = qtrue;
+	ps->weaponUpgraded[weap] = 1;
 	activator->client->ps.persistant[PERS_SCORE] -= upgradePrice;
 
 	// Refill ammo

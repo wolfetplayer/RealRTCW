@@ -3014,7 +3014,7 @@ qboolean CG_WeaponIsUpgraded(weapon_t weaponNum) {
 	if (cg.snap->ps.clientNum != cg.clientNum) {
 		return qfalse;
 	}
-	return (cg.snap->ps.weaponUpgraded[weaponNum] == qtrue); 
+	return (cg.snap->ps.weaponUpgraded[weaponNum] != 0);
 }
 
 /*

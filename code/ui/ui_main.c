@@ -7096,7 +7096,7 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			return;
 
 		case UIMENU_NOTEBOOK:
-			//trap_Cvar_Set( "cl_paused", "1" );
+			trap_Cvar_Set( "cl_paused", "1" );
 			trap_Key_SetCatcher( KEYCATCH_UI );
 			Menus_CloseAll();
 			Menus_ActivateByName( "notebook" );

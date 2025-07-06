@@ -6163,9 +6163,11 @@ qboolean AICast_ScriptAction_MusicQueue( cast_state_t *cs, char *params ) {
     }
 
     if (fileCount == 1) {
+		trap_SetConfigstring(CS_MUSIC_QUEUE, ""); // force flush
         trap_SetConfigstring(CS_MUSIC_QUEUE, cvarNameArray[0]);
     } else {
         int randomIndex = rand() % fileCount;
+		trap_SetConfigstring(CS_MUSIC_QUEUE, ""); // force flush
         trap_SetConfigstring(CS_MUSIC_QUEUE, cvarNameArray[randomIndex]);
     }
 

@@ -1725,16 +1725,27 @@ qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float
 		points = damage * ( 1.0 - dist / radius );
 
 // JPW NERVE -- different radiusdmg behavior for MP -- big explosions should do less damage (over less distance) through failed traces
-		if ( CanDamage( ent, origin ) ) {
-			if ( LogAccuracyHit( ent, attacker ) ) {
+		if (CanDamage(ent, origin))
+		{
+			if (LogAccuracyHit(ent, attacker))
+			{
 				hitClient = qtrue;
 			}
-			VectorSubtract( ent->r.currentOrigin, origin, dir );
-			// push the center of mass higher than the origin so players
-			// get knocked into the air more
+			VectorSubtract(ent->r.currentOrigin, origin, dir);
 			dir[2] += 24;
 
-			G_Damage( ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod );
+			int finalDamage = (int)points;
+
+			// Reduce self-damage in Survival mode only
+			if (ent == attacker && attacker->client)
+			{
+				if (mod == MOD_ROCKET_SPLASH && g_gametype.integer == GT_SURVIVAL)
+				{
+					finalDamage *= 0.3f;
+				}
+			}
+
+			G_Damage(ent, NULL, attacker, dir, origin, finalDamage, DAMAGE_RADIUS, mod);
 		}
 	}
 	return hitClient;

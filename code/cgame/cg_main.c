@@ -1833,6 +1833,7 @@ void CG_QueueMusic( void ) {
 
 	// TODO: \/		the values stored in here will be made accessable so
 	//				it doesn't have to go through startbackgroundtrack() (which is stupid)
+	trap_S_StopBackgroundTrack();
 	trap_S_StartBackgroundTrack( parm, "", -2 );  // '-2' for 'queue looping track' (QUEUED_PLAY_LOOPED)
 }
 //----(SA)	end

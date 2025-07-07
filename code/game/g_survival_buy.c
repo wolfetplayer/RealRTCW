@@ -640,6 +640,11 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	const char *techName = NULL;
 	const gitem_t *item = NULL;
 
+	if (other->aiCharacter)
+	{
+		return;
+	}
+
 	// Try to find the linked target_buy
 	for (int i = 0; i < level.num_entities; i++)
 	{

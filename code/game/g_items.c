@@ -128,7 +128,15 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 		{
 			if (COM_BitCheck(other->client->ps.weapons, w))
 			{
-				Add_Ammo(other, w, ammoTable[w].maxammo, qtrue);
+				int ammo = ammoTable[w].maxammo;
+
+				// Apply LT bonus if applicable
+				if (other->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT)
+				{
+					ammo *= svParams.ltAmmoBonus;
+				}
+
+				Add_Ammo(other, w, ammo, qtrue);
 			}
 		}
 	}

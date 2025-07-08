@@ -1508,25 +1508,31 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 				}
 			}
 		} else if ( !Q_stricmp( token.string, "handsModel" ) ) {
-			if ( !PC_String_ParseNoAlloc( handle, filename, sizeof( filename ) ) ) {
-				return CG_RW_ParseError( handle, "expected handsModel filename" );
+			if (!PC_String_ParseNoAlloc(handle, filename, sizeof(filename)))
+			{
+				return CG_RW_ParseError(handle, "expected handsModel filename");
 			}
-			weaponInfo->handsModel = trap_R_RegisterModel( filename );
-			char handsskin[128]; //eugeny
-			char map[128];
-			memset(handsskin, 0, sizeof(handsskin));
+			weaponInfo->handsModel = trap_R_RegisterModel(filename);
+
+			char base[128], map[128];
+			char handsskin[128], upgradedSkin[128], upgradedMapSkin[128];
+
+			memset(base, 0, sizeof(base));
 			memset(map, 0, sizeof(map));
+			COM_StripExtension(filename, base, sizeof(base));
 			trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
-			COM_StripExtension(filename, filename, sizeof (filename) );
-			Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", filename, map);
+
+			// Map-specific hands skin
+			Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", base, map);
 			weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
 
-			char upgradedSkin[128];
-			memset(upgradedSkin, 0, sizeof(upgradedSkin));
-			COM_StripExtension(filename, filename, sizeof(filename));
-			Com_sprintf(upgradedSkin, sizeof(upgradedSkin), "%s_upgraded.skin", filename);
+			// Generic upgraded skin
+			Com_sprintf(upgradedSkin, sizeof(upgradedSkin), "%s_upgraded.skin", base);
 			weaponInfo->upgradedSkin = trap_R_RegisterSkin(upgradedSkin);
 
+			// Map-specific upgraded skin
+			Com_sprintf(upgradedMapSkin, sizeof(upgradedMapSkin), "%s_upgraded_%s.skin", base, map);
+			weaponInfo->upgradedMapSkin = trap_R_RegisterSkin(upgradedMapSkin);
 		} else if ( !Q_stricmp( token.string, "flashDlightColor" ) ) {
 			if ( !PC_Vec_Parse( handle, &weaponInfo->flashDlightColor ) ) {
 				return CG_RW_ParseError( handle, "expected flashDlightColor as r g b" );
@@ -3199,9 +3205,16 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	{
 		if (isPlayer)
 		{
-			if (CG_WeaponIsUpgraded(weaponNum) && weapon->upgradedSkin)
+			if (CG_WeaponIsUpgraded(weaponNum))
 			{
-				gun.customSkin = weapon->upgradedSkin;
+				if (weapon->upgradedMapSkin)
+				{
+					gun.customSkin = weapon->upgradedMapSkin;
+				}
+				else if (weapon->upgradedSkin)
+				{
+					gun.customSkin = weapon->upgradedSkin;
+				}
 			}
 			else if (weapon->handsSkin)
 			{
@@ -3245,9 +3258,16 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 			if (isPlayer)
 			{
-				if (CG_WeaponIsUpgraded(weaponNum) && weapon->upgradedSkin)
+				if (CG_WeaponIsUpgraded(weaponNum))
 				{
-					barrel.customSkin = weapon->upgradedSkin;
+					if (weapon->upgradedMapSkin)
+					{
+						barrel.customSkin = weapon->upgradedMapSkin;
+					}
+					else if (weapon->upgradedSkin)
+					{
+						barrel.customSkin = weapon->upgradedSkin;
+					}
 				}
 				else if (weapon->handsSkin)
 				{

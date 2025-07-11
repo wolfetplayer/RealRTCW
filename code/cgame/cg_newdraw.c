@@ -2069,24 +2069,6 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 
 		weap = cg.snap->ps.weapon;
 
-		// Always show in Survival mode
-		if (cgs.gametype == GT_SURVIVAL)
-		{
-			// proceed normally
-		}
-		// In Single Player, show only if using WP_AIRSTRIKE
-		else if (cgs.gametype == GT_SINGLE_PLAYER)
-		{
-			if (weap != WP_AIRSTRIKE)
-			{
-				return;
-			}
-		}
-		// In all other modes, hide
-		else
-		{
-			return;
-		}
 		
 		// Determine charge time based on class
 		switch (cg.snap->ps.stats[STAT_PLAYER_CLASS])

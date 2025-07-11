@@ -305,7 +305,7 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 		return qfalse;
 
 	// Weapons that cannot be upgraded
-	if (weap == WP_KNIFE || weap == WP_AIRSTRIKE || weap == WP_POISONGAS_MEDIC || weap == WP_DYNAMITE_ENG || weap == WP_TESLA || weap == WP_FLAMETHROWER || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE) 
+	if (weap == WP_KNIFE || weap == WP_AIRSTRIKE || weap == WP_POISONGAS_MEDIC || weap == WP_DYNAMITE_ENG || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE) 
 	{
 		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;

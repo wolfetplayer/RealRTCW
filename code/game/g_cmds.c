@@ -27,6 +27,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "g_local.h"
+#include "g_survival.h"
 
 /*
 ==================
@@ -1761,21 +1762,33 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 		break;
 	case CLDMG_TESLA:
 
-		if (    ( ent->aiCharacter == AICHAR_PROTOSOLDIER ) ||
-				( ent->aiCharacter == AICHAR_SUPERSOLDIER ) ||
-				( ent->aiCharacter == AICHAR_SUPERSOLDIER_LAB ) ||
-				( ent->aiCharacter == AICHAR_LOPER ) || 
-				( ent->aiCharacter == AICHAR_PRIEST ) ) {
+		if ((ent->aiCharacter == AICHAR_PROTOSOLDIER) ||
+			(ent->aiCharacter == AICHAR_SUPERSOLDIER) ||
+			(ent->aiCharacter == AICHAR_SUPERSOLDIER_LAB) ||
+			(ent->aiCharacter == AICHAR_LOPER) ||
+			(ent->aiCharacter == AICHAR_PRIEST))
+		{
 			break;
 		}
 
-		if ( ent->takedamage /*&& !AICast_NoFlameDamage(ent->s.number)*/ ) {
-			VectorSubtract( ent->r.currentOrigin, enemy->r.currentOrigin, vec );
-			VectorNormalize( vec );
-			if ( !( enemy->r.svFlags & SVF_CASTAI ) ) {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_TESLA].playerDamage, 0, MOD_LIGHTNING );
-			} else {
-				G_Damage( ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_TESLA].aiDamage, 0, MOD_LIGHTNING );
+		if (ent->takedamage /*&& !AICast_NoFlameDamage(ent->s.number)*/)
+		{
+			VectorSubtract(ent->r.currentOrigin, enemy->r.currentOrigin, vec);
+			VectorNormalize(vec);
+
+			if (!(enemy->r.svFlags & SVF_CASTAI))
+			{
+				// Player Tesla damage — apply upgrade multiplier if upgraded
+				int dmg = ammoTable[WP_TESLA].playerDamage;
+				if (enemy->client && enemy->client->ps.weaponUpgraded[WP_TESLA])
+				{
+					dmg *= svParams.upgradeDamageMultiplier;
+				}
+				G_Damage(ent, enemy, enemy, vec, ent->r.currentOrigin, dmg, 0, MOD_LIGHTNING);
+			}
+			else
+			{
+				G_Damage(ent, enemy, enemy, vec, ent->r.currentOrigin, ammoTable[WP_TESLA].aiDamage, 0, MOD_LIGHTNING);
 			}
 		}
 		break;
@@ -1833,12 +1846,23 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 		if ( ent->takedamage && !AICast_NoFlameDamage( ent->s.number ) ) {
 			#define FLAME_THRESHOLD 10
 
-			int damage = ammoTable[WP_FLAMETHROWER].playerDamage;	
+			int damage;
 
+			if (!(enemy->r.svFlags & SVF_CASTAI))
+			{
+				// Player attacker
+				damage = ammoTable[WP_FLAMETHROWER].playerDamage;
 
-			// RF, only do damage once they start burning
-			//if (ent->health > 0)	// don't explode from flamethrower
-			//	G_Damage( traceEnt, ent, ent, forward, tr.endpos, 1, 0, MOD_LIGHTNING);
+				if (enemy->client && enemy->client->ps.weaponUpgraded[WP_FLAMETHROWER])
+				{
+					damage *= svParams.upgradeDamageMultiplier;
+				}
+			}
+			else
+			{
+				// AI attacker
+				damage = ammoTable[WP_FLAMETHROWER].aiDamage;
+			}
 
 			// now check the damageQuota to see if we should play a pain animation
 			// first reduce the current damageQuota with time

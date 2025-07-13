@@ -1785,6 +1785,48 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 					dmg *= svParams.upgradeDamageMultiplier;
 				}
 				G_Damage(ent, enemy, enemy, vec, ent->r.currentOrigin, dmg, 0, MOD_LIGHTNING);
+					// If Tesla is upgraded, apply burn effect like flamethrower
+				if (enemy->client && enemy->client->ps.weaponUpgraded[WP_TESLA])
+				{
+#define TESLA_BURN_THRESHOLD 5 // minimal threshold to trigger burning
+
+					int flameQuota = ammoTable[WP_TESLA].playerDamage; // or some static flame damage
+
+					// reduce existing flameQuota over time
+					if (ent->flameQuotaTime && ent->flameQuota > 0)
+					{
+						ent->flameQuota -= (int)(((float)(level.time - ent->flameQuotaTime) / 1000.f) * (float)flameQuota / 2.0f);
+						if (ent->flameQuota < 0)
+						{
+							ent->flameQuota = 0;
+						}
+					}
+
+					// add new flame damage
+					ent->flameQuota += flameQuota;
+					ent->flameQuotaTime = level.time;
+
+					if (ent->client && (ent->health <= 0 || ent->flameQuota > TESLA_BURN_THRESHOLD))
+					{
+						if (ent->s.onFireEnd < level.time)
+						{
+							ent->s.onFireStart = level.time;
+						}
+
+						// Duration of burn (match flamethrower)
+						if (ent->r.svFlags & SVF_CASTAI)
+						{
+							ent->s.onFireEnd = level.time + 6000;
+						}
+						else
+						{
+							ent->s.onFireEnd = level.time + FIRE_FLASH_TIME;
+						}
+
+						ent->flameBurnEnt = enemy->s.number;
+						ent->client->ps.onFireStart = level.time;
+					}
+				}
 			}
 			else
 			{

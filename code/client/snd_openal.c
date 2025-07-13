@@ -2559,28 +2559,37 @@ static void S_AL_CloseMusicFiles(void)
    S_AL_StopBackgroundTrack
    =================
    */
-  static
-void S_AL_StopBackgroundTrack( void )
+static void S_AL_StopBackgroundTrack(void)
 {
-  if(!musicPlaying)
-    return;
+    ALint queued;
 
-  // Stop playing
-  qalSourceStop(musicSource);
+    if (!musicPlaying)
+        return;
 
-  // Detach any buffers
-  qalSourcei(musicSource, AL_BUFFER, 0);
+    // Stop playback
+    qalSourceStop(musicSource);
 
-  // Delete the buffers
-  qalDeleteBuffers(NUM_MUSIC_BUFFERS, musicBuffers);
+    // Unqueue ALL buffers before trying to delete or detach
+    qalGetSourcei(musicSource, AL_BUFFERS_QUEUED, &queued);
+    while (queued-- > 0)
+    {
+        ALuint buffer;
+        qalSourceUnqueueBuffers(musicSource, 1, &buffer);
+    }
 
-  // Free the musicSource
-  S_AL_MusicSourceFree();
+    // Detach any remaining buffer just in case
+    qalSourcei(musicSource, AL_BUFFER, 0);
 
-  // Unload the stream
-  S_AL_CloseMusicFiles();
+    // Now it's safe to delete
+    qalDeleteBuffers(NUM_MUSIC_BUFFERS, musicBuffers);
 
-  musicPlaying = qfalse;
+    // Free the music source handle (e.g. from pool)
+    S_AL_MusicSourceFree();
+
+    // Close streams
+    S_AL_CloseMusicFiles();
+
+    musicPlaying = qfalse;
 }
 
 /*

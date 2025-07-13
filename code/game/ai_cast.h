@@ -586,6 +586,9 @@ typedef struct cast_state_s
 	qboolean died;            // for g_airespawn
 	qboolean norespawn;
 	int respawnsleft;
+
+	qboolean registeredSurvivalKill;
+	
 } cast_state_t;
 //
 #define CSFOFS( x ) ( (size_t)&( ( (cast_state_t *)0 )->x ) )

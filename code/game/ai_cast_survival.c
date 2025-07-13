@@ -94,6 +94,7 @@ void AICast_CreateCharacter_Survival(gentity_t *newent, cast_state_t *cs) {
         // Unlimited respawn for other AI
         cs->respawnsleft = -1;
     }
+	cs->registeredSurvivalKill = qfalse;
 }
 
 
@@ -206,6 +207,15 @@ void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int means
 		return;
 	}
 
+	// ===== GUARD AGAINST DOUBLE REGISTRATION =====
+	cast_state_t* cs = AICast_GetCastState(self->s.number);
+	if (cs->registeredSurvivalKill) {
+		Com_Printf("^1[AI_SURVIVE] WARNING: Duplicate kill registration for %s (ent %d)\n",
+			self->aiName ? self->aiName : "UNKNOWN", self->s.number);
+		return;
+	}
+	cs->registeredSurvivalKill = qtrue;
+
 	 // Skip counting if the dying entity is a friendly AI (aiTeam == 1)
     if (self->aiCharacter && self->aiTeam == 1) {
         Com_Printf("^3[AI_SURVIVE] INFO: Friendly AI death ignored. aiCharacter=%d, aiTeam=%d\n", self->aiCharacter, self->aiTeam);
@@ -251,6 +261,7 @@ if (!killerPlayer && !killerFriendly) {
 
 	// Always use attacker to trigger progression check
 	AICast_CheckSurvivalProgression(attacker);
+
 }
 
 
@@ -1097,6 +1108,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				cs->rebirthTime = 0;
 				cs->deathTime = 0;
 				cs->died = qfalse;
+				cs->registeredSurvivalKill = qfalse;
 
 				ent->client->ps.eFlags &= ~EF_DEATH_FRAME;
 				ent->client->ps.eFlags &= ~EF_FORCE_END_FRAME;

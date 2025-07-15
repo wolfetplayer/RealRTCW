@@ -553,14 +553,23 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 		break;
 	}
 
+	if (type == 0)
+	{ // ammo
+		int ammoIndex = (cg_gameType.integer == GT_SURVIVAL)
+							? BG_FindAmmoForWeaponSurvival(weap)
+							: BG_FindAmmoForWeapon(weap);
 
-	if ( type == 0 ) { // ammo
-		value = cg.snap->ps.ammo[BG_FindAmmoForWeapon( weap )];
-	} else {        // clip
-		value = ps->ammoclip[BG_FindClipForWeapon( weap )];
-		if ( special ) {
+		value = cg.snap->ps.ammo[ammoIndex];
+	}
+	else
+	{ // clip
+		value = ps->ammoclip[BG_FindClipForWeapon(weap)];
+
+		if (special)
+		{
 			value2 = value;
-			if ( ammoTable[weap].weapAlts ) {
+			if (ammoTable[weap].weapAlts)
+			{
 				value = ps->ammoclip[ammoTable[weap].weapAlts];
 			}
 		}
@@ -1408,21 +1417,42 @@ float CG_GetValue( int ownerDraw, int type ) {
 		return ps->stats[STAT_ARMOR];
 		break;
 	case CG_PLAYER_AMMO_VALUE:
-		if ( cent->currentState.weapon ) {
-			if ( type == RANGETYPE_RELATIVE ) {
-				int weap = BG_FindAmmoForWeapon( cent->currentState.weapon );
-				return (float)ps->ammo[weap] / (float)ammoTable[weap].maxammo;
-			} else {
-				return ps->ammo[BG_FindAmmoForWeapon( cent->currentState.weapon )];
+		if (cent->currentState.weapon)
+		{
+			const playerState_t *ps = &cg.snap->ps;
+
+			int weap = (cg_gameType.integer == GT_SURVIVAL)
+						   ? BG_FindAmmoForWeaponSurvival(cent->currentState.weapon)
+						   : BG_FindAmmoForWeapon(cent->currentState.weapon);
+
+			if (type == RANGETYPE_RELATIVE)
+			{
+				int maxAmmo = BG_GetMaxAmmo(ps, weap, 1.5f);
+				return (float)ps->ammo[weap] / (float)maxAmmo;
+			}
+			else
+			{
+				return ps->ammo[weap];
 			}
 		}
 		break;
 	case CG_PLAYER_AMMOCLIP_VALUE:
-		if ( cent->currentState.weapon ) {
-			if ( type == RANGETYPE_RELATIVE ) {
-				return (float)ps->ammoclip[BG_FindClipForWeapon( cent->currentState.weapon )] / (float)ammoTable[cent->currentState.weapon].maxclip;
-			} else {
-				return ps->ammoclip[BG_FindClipForWeapon( cent->currentState.weapon )];
+		if (cent->currentState.weapon)
+		{
+			const playerState_t *ps = &cg.snap->ps;
+			int weapon = cent->currentState.weapon;
+
+			int clipIndex = BG_FindClipForWeapon(weapon);
+			int clipAmmo = ps->ammoclip[clipIndex];
+			int maxClip = BG_GetMaxClip(ps, weapon);
+
+			if (type == RANGETYPE_RELATIVE)
+			{
+				return (float)clipAmmo / (float)maxClip;
+			}
+			else
+			{
+				return clipAmmo;
 			}
 		}
 		break;

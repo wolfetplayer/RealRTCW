@@ -211,9 +211,6 @@ typedef struct svParams_s
 	float ltAmmoBonus;
 	float soldierExplosiveDmgBonus;
 
-	int upgradeDamageMultiplier;
-	float upgradeSpreadReduceMultiplier;
-
 } svParams_t;
 
 extern svParams_t svParams;

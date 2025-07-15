@@ -159,16 +159,22 @@ void TossClientWeapons( gentity_t *self )
 		weapon = WP_FG42;
 	}
 
-	if (weapon > WP_NONE && weapon < WP_DUMMY_MG42 && self->client->ps.ammo[BG_FindAmmoForWeapon(weapon)])
+	if (weapon > WP_NONE && weapon < WP_DUMMY_MG42)
 	{
-		// find the item type for this weapon
-		item = BG_FindItemForWeapon(weapon);
-		// spawn the item
+		int ammoIndex = (g_gametype.integer == GT_SURVIVAL && !self->aiCharacter)
+							? BG_FindAmmoForWeaponSurvival(weapon)
+							: BG_FindAmmoForWeapon(weapon);
 
-		// Rafael
-		if (!(self->client->ps.persistant[PERS_HWEAPON_USE]))
+		if (self->client->ps.ammo[ammoIndex])
 		{
-			drop = Drop_Item(self, item, 0, qfalse);
+			// find the item type for this weapon
+			item = BG_FindItemForWeapon(weapon);
+
+			// spawn the item
+			if (!(self->client->ps.persistant[PERS_HWEAPON_USE]))
+			{
+				drop = Drop_Item(self, item, 0, qfalse);
+			}
 		}
 	}
 

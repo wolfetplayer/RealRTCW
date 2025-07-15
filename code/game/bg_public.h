@@ -592,21 +592,28 @@ typedef struct ammoTable_s {
 	int weaponClass;
 	weapon_t weapAlts;
 	int weaponTeam;
-	int maxammo;            
-	int uses;               
-	int maxclip;            
+	int maxammo;
+	int maxammoUpgraded;            
+	int uses;
+	int usesUpgraded;               
+	int maxclip;
+	int maxclipUpgraded;            
 	int reloadTime;
 	int reloadTimeFull;         
 	int fireDelayTime;      
 	int nextShotTime;
-	int nextShotTime2;        
+	int nextShotTimeUpgraded;
+	int nextShotTime2;       
+	int nextShotTime2Upgraded; 
 	int maxHeat;            
 	int coolRate;    
 	int playerDamage;
+	int playerDamageUpgraded;
 	int aiDamage;
 	int playerSplashRadius;
 	int aiSplashRadius;
 	int spread;
+	int spreadUpgraded;
 	int aimSpreadScaleAdd;
     float spreadScale;  
 	int weapRecoilDuration;
@@ -631,7 +638,9 @@ typedef struct ammoTable_s {
 // Skill-based ammo parameters
 typedef struct ammoskill_s {
 	int maxammo;
+	int maxammoUpgraded;
 	int maxclip;
+	int maxclipUpgraded;
 } ammoskill_t;
 
 extern ammoTable_t ammoTable[WP_NUM_WEAPONS];
@@ -1297,6 +1306,7 @@ typedef struct gitem_s {
 	int giTag;
 
 	int giAmmoIndex;            // type of weapon ammo this uses.  (ex. WP_MP40 and WP_LUGER share 9mm ammo, so they both have WP_LUGER for giAmmoIndex)
+	int giAmmoIndexSurv;        // no ammo sharing in Survival
 	int giClipIndex;            // which clip this weapon uses.  this allows the sniper rifle to use the same clip as the garand, etc.
 
 	char        *precaches;     // string of all models and images this item will use
@@ -1318,6 +1328,7 @@ gitem_t *BG_FindItemForHoldable( holdable_t pw );
 gitem_t *BG_FindItemForAmmo( int ammo );       
 gitem_t *BG_FindItemForKey( wkey_t k, int *index );
 weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
+weapon_t BG_FindAmmoForWeaponSurvival( weapon_t weapon );
 weapon_t BG_FindClipForWeapon( weapon_t weapon );
 gitem_t *BG_FindItemForPerk( perk_t perk );
 
@@ -1827,6 +1838,9 @@ qboolean PC_Color_Parse( int handle, vec4_t *c );
 char *BG_GetWeaponFilename( weapon_t weaponNum );
 qboolean BG_ParseAmmoTable( int handle, weapon_t weaponNum );
 void BG_SetWeaponForSkill( weapon_t weaponNum, gameskill_t skill );
+int BG_GetMaxClip(const playerState_t *ps, int weapon);
+int BG_GetMaxAmmo(const playerState_t *ps, int weapon, float ltAmmoBonus);
+int BG_GetNextShotTime(const playerState_t *ps, weapon_t weapon, qboolean altFire);
 
 char *BG_GetCharacterFilename( AICharacters_t characterNum );
 qboolean BG_ParseBehaviorTable( int handle, AICharacters_t characterNum );

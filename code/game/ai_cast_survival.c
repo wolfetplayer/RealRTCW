@@ -2082,14 +2082,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
-		else if (!Q_stricmp(token.string, "upgradeDamageMultiplier"))
-		{
-			if (!PC_Int_Parse(handle, &svParams.upgradeDamageMultiplier))
-			{
-				PC_SourceError(handle, "expected upgradeDamageMultiplier value");
-				return qfalse;
-			}
-		}
 		else if (!Q_stricmp(token.string, "soldierExplosiveDmgBonus"))
 		{
 			if (!PC_Float_Parse(handle, &svParams.soldierExplosiveDmgBonus))
@@ -2103,14 +2095,6 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Float_Parse(handle, &svParams.ltAmmoBonus))
 			{
 				PC_SourceError(handle, "expected ltAmmoBonus value");
-				return qfalse;
-			}
-		}
-		else if (!Q_stricmp(token.string, "upgradeSpreadReduceMultiplier"))
-		{
-			if (!PC_Float_Parse(handle, &svParams.upgradeSpreadReduceMultiplier))
-			{
-				PC_SourceError(handle, "expected upgradeSpreadReduceMultiplier value");
 				return qfalse;
 			}
 		}

@@ -688,13 +688,16 @@ int G_GetWeaponDamage(int weapon, gentity_t *ent) {
 	qboolean isPlayer = ent->client && !ent->aiCharacter;
 
 	const ammoTable_t *wt = GetWeaponTableData(weapon);
-	int baseDamage = isPlayer ? wt->playerDamage : wt->aiDamage;
 
-	if (isPlayer && ent->client->ps.weaponUpgraded[weapon]) {
-		baseDamage *= svParams.upgradeDamageMultiplier; 
+	if (isPlayer) {
+		if (ent->client->ps.weaponUpgraded[weapon]) {
+			return wt->playerDamageUpgraded;
+		} else {
+			return wt->playerDamage;
+		}
+	} else {
+		return wt->aiDamage;
 	}
-
-	return baseDamage;
 }
 
 float G_GetWeaponSpread(int weapon, gentity_t *ent) {
@@ -702,13 +705,12 @@ float G_GetWeaponSpread(int weapon, gentity_t *ent) {
 		return 0.0f;
 
 	const ammoTable_t *wt = GetWeaponTableData(weapon);
-	float spread = wt->spread;
 
 	if (ent && ent->client && ent->client->ps.weaponUpgraded[weapon]) {
-		spread *= svParams.upgradeSpreadReduceMultiplier; 
+		return wt->spreadUpgraded;
 	}
 
-	return spread;
+	return wt->spread;
 }
 
 /*
@@ -873,7 +875,26 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
     int baseDamage = damage;
     int effectiveDamage = ( recursion == 0 ? baseDamage * s_quadFactor : baseDamage );
 
-    // RF, abort if too many recursions.. there must be a real solution for this, but for now this is the safest
+	qboolean explosiveRounds = qfalse;
+
+	switch (attacker->s.weapon)
+	{
+	case WP_REVOLVER:
+	case WP_MOSIN:
+	case WP_MAUSER:
+	case WP_SNIPERRIFLE:
+	case WP_DELISLE:
+	case WP_DELISLESCOPE:
+		if (attacker->client->ps.weaponUpgraded[attacker->s.weapon])
+		{
+			explosiveRounds = qtrue;
+		}
+		break;
+	default:
+		break;
+	}
+
+	// RF, abort if too many recursions.. there must be a real solution for this, but for now this is the safest
     // fix I can find
     if ( recursion > 12 ) {
         return qfalse;
@@ -1022,7 +1043,12 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
 
             G_DamageExt( traceEnt, attacker, attacker, forward, tr.endpos, effectiveDamage, ( g_weaponfalloff.integer ? DAMAGE_DISTANCEFALLOFF : 0 ), ammoTable[attacker->s.weapon].mod, &hitType );
 
-            // allow bullets to "pass through" func_explosives if they break by taking another simultaneous shot
+			if (explosiveRounds)
+			{
+				G_RadiusDamage(tr.endpos, attacker, 50, 100, NULL, MOD_MACHINEGUN);
+			}
+
+			// allow bullets to "pass through" func_explosives if they break by taking another simultaneous shot
             if ( Q_stricmp( traceEnt->classname, "func_explosive" ) == 0 ) {
                 if ( traceEnt->health <= 0 ) {
                     Bullet_Fire_Extended( traceEnt, attacker, tr.endpos, end, 0, effectiveDamage, recursion + 1 );
@@ -2005,13 +2031,43 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire(ent, G_GetWeaponSpread(WP_FG42, ent) * aimSpreadScale, G_GetWeaponDamage(WP_FG42, ent));
 		break;
 	case WP_STEN:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_STEN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_STEN, ent));
+		if (ent->client->ps.weaponUpgraded[WP_STEN])
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				Bullet_Fire(ent, G_GetWeaponSpread(WP_STEN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_STEN, ent));
+			}
+		}
+		else
+		{
+			Bullet_Fire(ent, G_GetWeaponSpread(WP_STEN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_STEN, ent));
+		}
 		break;
 	case WP_MP40:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_MP40, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP40, ent));
+		if (ent->client->ps.weaponUpgraded[WP_MP40])
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				Bullet_Fire(ent, G_GetWeaponSpread(WP_MP40, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP40, ent));
+			}
+		}
+		else
+		{
+			Bullet_Fire(ent, G_GetWeaponSpread(WP_MP40, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP40, ent));
+		}
 		break;
 	case WP_MP34: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_MP34, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP34, ent));
+		if (ent->client->ps.weaponUpgraded[WP_MP34])
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				Bullet_Fire(ent, G_GetWeaponSpread(WP_MP34, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP34, ent));
+			}
+		}
+		else
+		{
+			Bullet_Fire(ent, G_GetWeaponSpread(WP_MP34, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP34, ent));
+		}
 		break;
 	case WP_TT33:
 	case WP_DUAL_TT33:
@@ -2021,10 +2077,30 @@ void FireWeapon( gentity_t *ent ) {
 		Bullet_Fire(ent, G_GetWeaponSpread(WP_HDM, ent) * aimSpreadScale, G_GetWeaponDamage(WP_HDM, ent));
 		break;
 	case WP_REVOLVER:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_REVOLVER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_REVOLVER, ent));
+		if (ent->client->ps.weaponUpgraded[WP_REVOLVER])
+		{
+			for (int i = 0; i < 6; i++)
+			{
+				Bullet_Fire(ent, G_GetWeaponSpread(WP_REVOLVER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_REVOLVER, ent));
+			}
+		}
+		else
+		{
+			Bullet_Fire(ent, G_GetWeaponSpread(WP_REVOLVER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_REVOLVER, ent));
+		}
 		break;
 	case WP_PPSH: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_PPSH, ent) * aimSpreadScale, G_GetWeaponDamage(WP_PPSH, ent));
+		if (ent->client->ps.weaponUpgraded[WP_PPSH])
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				Bullet_Fire(ent, G_GetWeaponSpread(WP_PPSH, ent) * aimSpreadScale, G_GetWeaponDamage(WP_PPSH, ent));
+			}
+		}
+		else
+		{
+			Bullet_Fire(ent, G_GetWeaponSpread(WP_PPSH, ent) * aimSpreadScale, G_GetWeaponDamage(WP_PPSH, ent));
+		}
 		break;
 	case WP_MOSIN: 
 		Bullet_Fire(ent, G_GetWeaponSpread(WP_MOSIN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MOSIN, ent));
@@ -2135,10 +2211,30 @@ void FireWeapon( gentity_t *ent ) {
 	
 
 	case WP_THOMPSON:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_THOMPSON, ent) * aimSpreadScale, G_GetWeaponDamage(WP_THOMPSON, ent));
+		if (ent->client->ps.weaponUpgraded[WP_THOMPSON])
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				Bullet_Fire(ent, G_GetWeaponSpread(WP_THOMPSON, ent) * aimSpreadScale, G_GetWeaponDamage(WP_THOMPSON, ent));
+			}
+		}
+		else
+		{
+			Bullet_Fire(ent, G_GetWeaponSpread(WP_THOMPSON, ent) * aimSpreadScale, G_GetWeaponDamage(WP_THOMPSON, ent));
+		}
 		break;
 	case WP_PANZERFAUST:
-		Weapon_RocketLauncher_Fire( ent, aimSpreadScale );
+		if (ent->client->ps.weaponUpgraded[WP_PANZERFAUST])
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				Weapon_RocketLauncher_Fire(ent, aimSpreadScale);
+			}
+		}
+		else
+		{
+			Weapon_RocketLauncher_Fire(ent, aimSpreadScale);
+		}
 		break;
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:

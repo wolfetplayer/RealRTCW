@@ -138,38 +138,57 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 	}
 
 	// Find the item
-	for (int i = 1; bg_itemlist[i].classname; i++) {
-		if (bg_itemlist[i].giWeapon == chosen) {
-			*itemIndex = i;
-			itemName = bg_itemlist[i].classname;
-			gitem_t *item = &bg_itemlist[i];
+	for (int i = 1; bg_itemlist[i].classname; i++)
+	{
+		if (bg_itemlist[i].giWeapon != chosen)
+			continue;
 
-			// Give weapon
-			Give_Weapon_New_Inventory(activator, chosen, qfalse);
+		*itemIndex = i;
+		itemName = bg_itemlist[i].classname;
+		gitem_t *item = &bg_itemlist[i];
 
-			// Give full ammo
-			Add_Ammo(activator, chosen, ammoTable[chosen].maxammo, qtrue);
-			Add_Ammo(activator, chosen, ammoTable[chosen].maxammo, qfalse);
+		// Give weapon
+		Give_Weapon_New_Inventory(activator, chosen, qfalse);
 
-			// Bonus: give M7 for Garand
-			if (chosen == WP_M1GARAND) {
-				Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
-				Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
-			}
+		// Give full ammo (twice to fill both reserve and clip)
+		int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, chosen, svParams.ltAmmoBonus);
+		Add_Ammo(activator, chosen, maxAmmo, qtrue);  // fill clip
+		Add_Ammo(activator, chosen, maxAmmo, qfalse); // top off reserve
 
-			// Select weapon
-			activator->client->ps.weapon = chosen;
-			activator->client->ps.weaponstate = WEAPON_READY;
-
-			// Deduct points
-			activator->client->ps.persistant[PERS_SCORE] -= price;
-
-			// SFX & confirmation
-			G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
-			trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
-
-			return qtrue;
+		// Also refill base pistol ammo if akimbo weapon
+		if (chosen == WP_AKIMBO)
+		{
+			int coltMax = BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus);
+			Add_Ammo(activator, WP_COLT, coltMax, qtrue);
+			Add_Ammo(activator, WP_COLT, coltMax, qfalse);
 		}
+		else if (chosen == WP_DUAL_TT33)
+		{
+			int tt33Max = BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus);
+			Add_Ammo(activator, WP_TT33, tt33Max, qtrue);
+			Add_Ammo(activator, WP_TT33, tt33Max, qfalse);
+		}
+
+		// Bonus: give M7 for Garand
+		if (chosen == WP_M1GARAND)
+		{
+			Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
+			int m7MaxAmmo = BG_GetMaxAmmo(&activator->client->ps, WP_M7, svParams.ltAmmoBonus);
+			Add_Ammo(activator, WP_M7, m7MaxAmmo, qfalse);
+		}
+
+		// Select weapon
+		activator->client->ps.weapon = chosen;
+		activator->client->ps.weaponstate = WEAPON_READY;
+
+		// Deduct points
+		activator->client->ps.persistant[PERS_SCORE] -= price;
+
+		// SFX & confirmation
+		G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+		trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+
+		return qtrue;
 	}
 
 	return qfalse;
@@ -243,30 +262,26 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	if (heldWeap <= WP_NONE || heldWeap >= WP_NUM_WEAPONS)
 		return qfalse;
 
-	// 👇 Skip if holding engineer dynamite
-	if (heldWeap == WP_DYNAMITE_ENG || heldWeap == WP_AIRSTRIKE || heldWeap == WP_POISONGAS_MEDIC ) {
+	// Skip utility weapons
+	if (heldWeap == WP_DYNAMITE_ENG || heldWeap == WP_AIRSTRIKE || heldWeap == WP_POISONGAS_MEDIC)
 		return qfalse;
-	}
 
-	int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
+	int ammoIndex = BG_FindAmmoForWeaponSurvival(heldWeap);
 	if (ammoIndex < 0)
 		return qfalse;
 
-	// Compute maxAmmo cap with possible LT bonus
-	int maxAmmo = ammoTable[heldWeap].maxammo;
-	if (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_LT) {
-		maxAmmo *= svParams.ltAmmoBonus;
-	}
+	// Use upgrade-aware max ammo
+	int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, heldWeap, svParams.ltAmmoBonus);
 
 	// Check if already full
 	if (activator->client->ps.ammo[ammoIndex] >= maxAmmo)
 		return qfalse;
 
-	// Use fallback price: half of weapon price
+	// Base price fallback: half weapon price
 	int basePrice = Survival_GetDefaultWeaponPrice(heldWeap);
 	int ammoPrice = basePrice / 2;
 
-	// Apply 4x multiplier if weapon is upgraded and price is not overridden
+	// Upgrade modifier
 	if (price <= 0 && activator->client->ps.weaponUpgraded[heldWeap]) {
 		ammoPrice = svParams.upgradedAmmoPrice;
 	}
@@ -276,15 +291,17 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 		ammoPrice = price;
 	}
 
+	// Check score
 	if (activator->client->ps.persistant[PERS_SCORE] < ammoPrice) {
 		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");
 		return qfalse;
 	}
 
-	// Refill ammo
-	Add_Ammo(activator, heldWeap, ammoTable[heldWeap].maxammo, qtrue);
-	Add_Ammo(activator, heldWeap, ammoTable[heldWeap].maxammo, qfalse);
+	// Refill ammo and clip using upgrade-aware cap
+	Add_Ammo(activator, heldWeap, maxAmmo, qtrue);
+	Add_Ammo(activator, heldWeap, maxAmmo, qfalse);
 
+	// Deduct score
 	activator->client->ps.persistant[PERS_SCORE] -= ammoPrice;
 
 	trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
@@ -305,7 +322,7 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 		return qfalse;
 
 	// Weapons that cannot be upgraded
-	if (weap == WP_KNIFE || weap == WP_AIRSTRIKE || weap == WP_POISONGAS_MEDIC || weap == WP_DYNAMITE_ENG || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE) 
+	if (weap == WP_KNIFE || weap == WP_SNIPERRIFLE || weap == WP_M1941SCOPE || weap == WP_FG42SCOPE || weap== WP_SNOOPERSCOPE || weap == WP_DELISLESCOPE || weap == WP_DYNAMITE || weap == WP_M7 || weap == WP_AIRSTRIKE || weap == WP_POISONGAS_MEDIC || weap == WP_DYNAMITE_ENG || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE) 
 	{
 		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
@@ -335,11 +352,63 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 	}
 
 	ps->weaponUpgraded[weap] = 1;
+
+	// If main weapon is upgraded upgrade alt too
+	if (weap == WP_M1GARAND)
+		ps->weaponUpgraded[WP_M7] = 1;
+
+	if (weap == WP_MAUSER)
+		ps->weaponUpgraded[WP_SNIPERRIFLE] = 1;
+
+	if (weap == WP_DELISLE)
+		ps->weaponUpgraded[WP_DELISLESCOPE] = 1;
+
+    if (weap == WP_GARAND)
+		ps->weaponUpgraded[WP_SNOOPERSCOPE] = 1;
+	
+	if (weap == WP_FG42)
+		ps->weaponUpgraded[WP_FG42SCOPE] = 1;
+
+	if (weap == WP_M1941)
+		ps->weaponUpgraded[WP_M1941SCOPE] = 1;
+
+    // Handle akimbo dual weapon logic
+	if (weap == WP_AKIMBO)
+		ps->weaponUpgraded[WP_COLT] = 1;
+	else if (weap == WP_DUAL_TT33)
+		ps->weaponUpgraded[WP_TT33] = 1;
+	else if (weap == WP_COLT && ps->weaponUpgraded[WP_AKIMBO])
+		ps->weaponUpgraded[WP_COLT] = 1;
+	else if (weap == WP_TT33 && ps->weaponUpgraded[WP_DUAL_TT33])
+		ps->weaponUpgraded[WP_TT33] = 1;
+
 	activator->client->ps.persistant[PERS_SCORE] -= upgradePrice;
 
 	// Refill ammo
-	Add_Ammo(activator, weap, ammoTable[weap].maxammo, qtrue);
-	Add_Ammo(activator, weap, ammoTable[weap].maxammo, qfalse);
+	Add_Ammo(activator, weap, BG_GetMaxAmmo(&activator->client->ps, weap, svParams.ltAmmoBonus), qtrue);
+	Add_Ammo(activator, weap, BG_GetMaxAmmo(&activator->client->ps, weap, svParams.ltAmmoBonus), qfalse);
+
+	// Refill ammo for upgraded weapon
+	Add_Ammo(activator, weap, BG_GetMaxAmmo(&activator->client->ps, weap, svParams.ltAmmoBonus), qtrue);
+	Add_Ammo(activator, weap, BG_GetMaxAmmo(&activator->client->ps, weap, svParams.ltAmmoBonus), qfalse);
+
+	if (weap == WP_M1GARAND)
+	{
+		Add_Ammo(activator, WP_M7, BG_GetMaxAmmo(&activator->client->ps, WP_M7, svParams.ltAmmoBonus), qtrue);
+		Add_Ammo(activator, WP_M7, BG_GetMaxAmmo(&activator->client->ps, WP_M7, svParams.ltAmmoBonus), qfalse);
+	}
+
+	// Also refill ammo for base pistol if upgrading akimbo
+	if (weap == WP_AKIMBO)
+	{
+		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qtrue);
+		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qfalse);
+	}
+	else if (weap == WP_DUAL_TT33)
+	{
+		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qtrue);
+		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qfalse);
+	}
 
 	trap_SendServerCommand(-1, "mu_play sound/misc/wpn_upgrade.wav 0\n");
 	return qtrue;
@@ -351,90 +420,96 @@ Survival_HandleWeaponOrGrenade
 ============
 */
 qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gitem_t *item, int price) {
-    if (!activator || !item) return qfalse;
+	if (!activator || !item) return qfalse;
 
-    // Use fallback price if mapper didn't define one
-    if (price <= 0) {
-        price = Survival_GetDefaultWeaponPrice(item->giTag);
-    }
+	const int weapon = item->giTag;
+	const int ammoIndex = BG_FindAmmoForWeaponSurvival(weapon);
 
-    // Special handling for grenade-type ammo (don't give weapon or affect slot)
-    if (item->giType == IT_AMMO && (
-        item->giTag == WP_GRENADE_LAUNCHER ||
-        item->giTag == WP_GRENADE_PINEAPPLE ||
-        item->giTag == WP_M7
-    )) {
-        // If already full on this ammo type, skip
-        if (activator->client->ps.ammoclip[item->giTag] >= ammoTable[item->giTag].maxammo) {
-            return qfalse;
-        }
+	if (weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS || ammoIndex < 0)
+		return qfalse;
 
-        // Half price if the player already owns the grenade weapon
-        if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
-            price /= 2;
-        }
+	// Use fallback price if undefined
+	if (price <= 0) {
+		price = Survival_GetDefaultWeaponPrice(weapon);
+	}
 
-        // Not enough points
-        if (activator->client->ps.persistant[PERS_SCORE] < price) {
-            G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
-            return qfalse;
-        }
+	// Special handling: grenades (no new weapon granted)
+	if (item->giType == IT_AMMO && (
+		weapon == WP_GRENADE_LAUNCHER ||
+		weapon == WP_GRENADE_PINEAPPLE ||
+		weapon == WP_M7
+	)) {
+		int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, weapon, svParams.ltAmmoBonus);
 
-        // Deduct price and add ammo only
-        activator->client->ps.persistant[PERS_SCORE] -= price;
-        Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
-        Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
+		if (activator->client->ps.ammoclip[weapon] >= maxAmmo) {
+			return qfalse; // Already full
+		}
 
-        G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
-        trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+		if (COM_BitCheck(activator->client->ps.weapons, weapon)) {
+			price /= 2; // Discount if already owned
+		}
 
-        return qtrue;
-    }
+		if (activator->client->ps.persistant[PERS_SCORE] < price) {
+			G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+			return qfalse;
+		}
 
-    // Standard behavior: weapon purchase
-    if (COM_BitCheck(activator->client->ps.weapons, item->giTag)) {
-        // Already owns weapon — ammo purchase only
-        price /= 2;
+		activator->client->ps.persistant[PERS_SCORE] -= price;
+		Add_Ammo(activator, weapon, maxAmmo, qtrue);
+		Add_Ammo(activator, weapon, maxAmmo, qfalse);
 
-        if (activator->client->ps.persistant[PERS_SCORE] < price) {
-            G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
-            return qfalse;
-        }
+		G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+		trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
 
-        activator->client->ps.persistant[PERS_SCORE] -= price;
+		return qtrue;
+	}
 
-        Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
-        Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
+	// Already owns weapon — refill ammo only
+	if (COM_BitCheck(activator->client->ps.weapons, weapon)) {
+		price /= 2;
 
-        G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
-        trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+		if (activator->client->ps.persistant[PERS_SCORE] < price) {
+			G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+			return qfalse;
+		}
 
-        return qtrue;
-    }
+		activator->client->ps.persistant[PERS_SCORE] -= price;
 
-    // Buying a new weapon
-    if (activator->client->ps.persistant[PERS_SCORE] < price) {
-        G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
-        return qfalse;
-    }
+		int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, weapon, svParams.ltAmmoBonus);
+		Add_Ammo(activator, weapon, maxAmmo, qtrue);
+		Add_Ammo(activator, weapon, maxAmmo, qfalse);
 
-    activator->client->ps.persistant[PERS_SCORE] -= price;
+		G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+		trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
 
-    Give_Weapon_New_Inventory(activator, item->giTag, qfalse);
+		return qtrue;
+	}
 
-    Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qtrue);
-    Add_Ammo(activator, item->giTag, ammoTable[item->giTag].maxammo, qfalse);
+	// Buying a new weapon
+	if (activator->client->ps.persistant[PERS_SCORE] < price) {
+		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+		return qfalse;
+	}
 
-    // Bonus: M1 Garand comes with M7
-    if (item->giTag == WP_M1GARAND) {
-        Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
-        Add_Ammo(activator, WP_M7, ammoTable[WP_M7].maxammo, qfalse);
-    }
+	activator->client->ps.persistant[PERS_SCORE] -= price;
 
-    G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
-    trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+	Give_Weapon_New_Inventory(activator, weapon, qfalse);
 
-    return qtrue;
+	int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, weapon, svParams.ltAmmoBonus);
+	Add_Ammo(activator, weapon, maxAmmo, qtrue);
+	Add_Ammo(activator, weapon, maxAmmo, qfalse);
+
+	// Bonus: give M7 launcher with Garand
+	if (weapon == WP_M1GARAND) {
+		Give_Weapon_New_Inventory(activator, WP_M7, qfalse);
+		int m7MaxAmmo = BG_GetMaxAmmo(&activator->client->ps, WP_M7, svParams.ltAmmoBonus);
+		Add_Ammo(activator, WP_M7, m7MaxAmmo, qfalse);
+	}
+
+	G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+	trap_SendServerCommand(-1, "mu_play sound/misc/buy.wav 0\n");
+
+	return qtrue;
 }
 
 /*

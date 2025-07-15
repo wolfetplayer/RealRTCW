@@ -1130,16 +1130,22 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
 
-	if ( self->aiCharacter ) { // ai keep the values they've been using
-		bolt->damage = ammoTable[WP_PANZERFAUST].aiDamage;						
-		bolt->splashDamage = ammoTable[WP_PANZERFAUST].aiDamage;		
-		bolt->splashRadius = ammoTable[WP_PANZERFAUST].aiSplashRadius;		
-	} else {
-		bolt->damage = ammoTable[WP_PANZERFAUST].playerDamage;
-		bolt->splashDamage = ammoTable[WP_PANZERFAUST].playerDamage;
+	if (self->aiCharacter)
+	{
+		// AI keeps using fixed values
+		bolt->damage = ammoTable[WP_PANZERFAUST].aiDamage;
+		bolt->splashDamage = ammoTable[WP_PANZERFAUST].aiDamage;
+		bolt->splashRadius = ammoTable[WP_PANZERFAUST].aiSplashRadius;
+	}
+	else
+	{
+		qboolean upgraded = self->client && self->client->ps.weaponUpgraded[WP_PANZERFAUST];
+
+		bolt->damage = upgraded ? ammoTable[WP_PANZERFAUST].playerDamageUpgraded : ammoTable[WP_PANZERFAUST].playerDamage;
+		bolt->splashDamage = bolt->damage; // Same value
 		bolt->splashRadius = ammoTable[WP_PANZERFAUST].playerSplashRadius;
 
-		// Soldier bonus
+		// Soldier bonus (applied after base/upgraded damage is picked)
 		if (g_gametype.integer == GT_SURVIVAL &&
 			self->client &&
 			self->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)

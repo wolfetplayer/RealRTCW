@@ -1779,10 +1779,14 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 			if (!(enemy->r.svFlags & SVF_CASTAI))
 			{
 				// Player Tesla damage — apply upgrade multiplier if upgraded
-				int dmg = ammoTable[WP_TESLA].playerDamage;
+				int dmg;
 				if (enemy->client && enemy->client->ps.weaponUpgraded[WP_TESLA])
 				{
-					dmg *= svParams.upgradeDamageMultiplier;
+					dmg = ammoTable[WP_TESLA].playerDamageUpgraded;
+				}
+				else
+				{
+					dmg = ammoTable[WP_TESLA].playerDamage;
 				}
 				G_Damage(ent, enemy, enemy, vec, ent->r.currentOrigin, dmg, 0, MOD_LIGHTNING);
 					// If Tesla is upgraded, apply burn effect like flamethrower
@@ -1892,12 +1896,13 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 
 			if (!(enemy->r.svFlags & SVF_CASTAI))
 			{
-				// Player attacker
-				damage = ammoTable[WP_FLAMETHROWER].playerDamage;
-
 				if (enemy->client && enemy->client->ps.weaponUpgraded[WP_FLAMETHROWER])
 				{
-					damage *= svParams.upgradeDamageMultiplier;
+					damage = ammoTable[WP_FLAMETHROWER].playerDamageUpgraded;
+				}
+				else
+				{
+					damage = ammoTable[WP_FLAMETHROWER].playerDamage;
 				}
 			}
 			else

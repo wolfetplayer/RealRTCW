@@ -719,7 +719,11 @@ static void CG_DrawStatusBar( void ) {
 			CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 		}
 
-		value = ps->ammo[BG_FindAmmoForWeapon( cent->currentState.weapon )];
+		int ammoIndex = (cg_gameType.integer == GT_SURVIVAL)
+							? BG_FindAmmoForWeaponSurvival(cent->currentState.weapon)
+							: BG_FindAmmoForWeapon(cent->currentState.weapon);
+
+		value = ps->ammo[ammoIndex];
 		inclip = ps->ammoclip[BG_FindClipForWeapon( cent->currentState.weapon )];
 
 		if ( value > -1 ) {

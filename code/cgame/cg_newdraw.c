@@ -553,23 +553,13 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 		break;
 	}
 
-	if (type == 0)
-	{ // ammo
-		int ammoIndex = (cg_gameType.integer == GT_SURVIVAL)
-							? BG_FindAmmoForWeaponSurvival(weap)
-							: BG_FindAmmoForWeapon(weap);
-
-		value = cg.snap->ps.ammo[ammoIndex];
-	}
-	else
-	{ // clip
-		value = ps->ammoclip[BG_FindClipForWeapon(weap)];
-
-		if (special)
-		{
+	if ( type == 0 ) { // ammo
+		value = cg.snap->ps.ammo[BG_FindAmmoForWeapon( weap )];
+	} else {        // clip
+		value = ps->ammoclip[BG_FindClipForWeapon( weap )];
+		if ( special ) {
 			value2 = value;
-			if (ammoTable[weap].weapAlts)
-			{
+			if ( ammoTable[weap].weapAlts ) {
 				value = ps->ammoclip[ammoTable[weap].weapAlts];
 			}
 		}
@@ -1420,10 +1410,7 @@ float CG_GetValue( int ownerDraw, int type ) {
 		if (cent->currentState.weapon)
 		{
 			const playerState_t *ps = &cg.snap->ps;
-
-			int weap = (cg_gameType.integer == GT_SURVIVAL)
-						   ? BG_FindAmmoForWeaponSurvival(cent->currentState.weapon)
-						   : BG_FindAmmoForWeapon(cent->currentState.weapon);
+			int weap = BG_FindAmmoForWeapon(cent->currentState.weapon);
 
 			if (type == RANGETYPE_RELATIVE)
 			{

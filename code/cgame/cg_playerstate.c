@@ -47,10 +47,6 @@ void CG_CheckAmmo( void ) {
 	int total;
 	int weapons[MAX_WEAPONS / ( sizeof( int ) * 8 )];
 
-	int ammoIndex = (cg_gameType.integer == GT_SURVIVAL && !cg.snap->ps.aiChar)
-						? BG_FindAmmoForWeaponSurvival(i)
-						: BG_FindAmmoForWeapon(i);
-
 	// see about how many seconds of ammo we have remaining
 	memcpy( weapons, cg.snap->ps.weapons, sizeof( weapons ) );
 
@@ -66,11 +62,11 @@ void CG_CheckAmmo( void ) {
 		if ( !( weapons[0] & ( 1 << i ) ) ) {
 			continue;
 		}
-		if ( cg.snap->ps.ammo[ammoIndex] < 0 ) {
+		if ( cg.snap->ps.ammo[BG_FindAmmoForWeapon( i )] < 0 ) {
 			continue;
 		}
 
-		switch (i)
+		switch ( i )
 		{
 		case WP_PANZERFAUST:
 		case WP_GRENADE_LAUNCHER:
@@ -96,7 +92,7 @@ void CG_CheckAmmo( void ) {
 		case WP_HDM:
 		case WP_MOSIN:
 		case WP_G43:
-		case WP_M1GARAND:
+	    case WP_M1GARAND:
 		case WP_BAR:
 		case WP_MP44:
 		case WP_MG42M:
@@ -108,8 +104,7 @@ void CG_CheckAmmo( void ) {
 		case WP_DELISLE:
 		case WP_M1941:
 		default:
-			total += cg.snap->ps.ammo[ammoIndex] * 1000;
-			break;
+			total += cg.snap->ps.ammo[BG_FindAmmoForWeapon( i )] * 1000;
 		}
 
 		if ( total >= 5000 ) {

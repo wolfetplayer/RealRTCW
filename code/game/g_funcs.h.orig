@@ -1291,7 +1291,6 @@ If you have questions concerning this license or the applicable additional terms
 {"BG_FindItemForKey", (byte *)BG_FindItemForKey},
 {"BG_AkimboFireSequence", (byte *)BG_AkimboFireSequence},
 {"BG_FindAmmoForWeapon", (byte *)BG_FindAmmoForWeapon},
-{"BG_FindAmmoForWeaponSurvival", (byte *)BG_FindAmmoForWeaponSurvival},
 {"BG_FindClipForWeapon", (byte *)BG_FindClipForWeapon},
 {"BG_FindItemForWeapon", (byte *)BG_FindItemForWeapon},
 {"BG_FindItemForHoldable", (byte *)BG_FindItemForHoldable},

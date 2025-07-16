@@ -266,7 +266,7 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	if (heldWeap == WP_DYNAMITE_ENG || heldWeap == WP_AIRSTRIKE || heldWeap == WP_POISONGAS_MEDIC)
 		return qfalse;
 
-	int ammoIndex = BG_FindAmmoForWeaponSurvival(heldWeap);
+	int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
 	if (ammoIndex < 0)
 		return qfalse;
 
@@ -423,7 +423,7 @@ qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gi
 	if (!activator || !item) return qfalse;
 
 	const int weapon = item->giTag;
-	const int ammoIndex = BG_FindAmmoForWeaponSurvival(weapon);
+	const int ammoIndex = BG_FindAmmoForWeapon(weapon);
 
 	if (weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS || ammoIndex < 0)
 		return qfalse;

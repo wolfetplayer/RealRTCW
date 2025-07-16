@@ -1056,9 +1056,7 @@ qboolean AICast_ScriptAction_SetAmmo( cast_state_t *cs, char *params ) {
 	if (weapon != WP_NONE)
 	{
 		playerState_t *ps = &g_entities[cs->entityNum].client->ps;
-		int ammoIndex = (g_gametype.integer == GT_SURVIVAL && !cs->aiCharacter)
-							? BG_FindAmmoForWeaponSurvival(weapon)
-							: BG_FindAmmoForWeapon(weapon);
+        int ammoIndex = BG_FindAmmoForWeapon(weapon);
 		int maxAmmo = BG_GetMaxAmmo(ps, weapon, 1.5f);
 
 		if (Q_strcasecmp(token, "full") == 0)
@@ -1147,9 +1145,7 @@ qboolean AICast_ScriptAction_SetClip( cast_state_t *cs, char *params ) {
 		playerState_t *ps = &g_entities[cs->entityNum].client->ps;
 
 		int clipIndex = BG_FindClipForWeapon(weapon);
-		int ammoIndex = (g_gametype.integer == GT_SURVIVAL && !cs->aiCharacter)
-							? BG_FindAmmoForWeaponSurvival(weapon)
-							: BG_FindAmmoForWeapon(weapon);
+        int ammoIndex = BG_FindAmmoForWeapon(weapon);
 		int maxclip = BG_GetMaxClip(ps, weapon);
 
 		if (Q_strcasecmp(token, "full") == 0)
@@ -1946,11 +1942,7 @@ if ( !Q_strcasecmp (params, "soviet_random") )
 //----(SA)	end
 
 		// giveweaponfull gives you max ammo and fills your clip for all weapons
-		int ammoIndex = (g_gametype.integer == GT_SURVIVAL && !cs->aiCharacter)
-							? BG_FindAmmoForWeaponSurvival(weapon)
-							: BG_FindAmmoForWeapon(weapon);
-
-		g_entities[cs->entityNum].client->ps.ammo[ammoIndex] = 999;
+        g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
 		Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );
 		// and also selects this weapon
 		if ( cs->bs ) {
@@ -2045,23 +2037,11 @@ qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params ) {
 			// also remove the ammo for this weapon
 			// but first make sure we dont have any other weapons that use the same ammo
 			clear = qtrue;
-			for (i = 0; i < WP_NUM_WEAPONS; i++)
-			{
-				int ammoWeapon = (g_gametype.integer == GT_SURVIVAL && !cs->aiCharacter)
-									 ? BG_FindAmmoForWeaponSurvival(weapon)
-									 : BG_FindAmmoForWeapon(weapon);
-
-				int ammoI = (g_gametype.integer == GT_SURVIVAL && !cs->aiCharacter)
-								? BG_FindAmmoForWeaponSurvival(i)
-								: BG_FindAmmoForWeapon(i);
-
-				if (ammoWeapon != ammoI)
-				{
+			for ( i = 0; i < WP_NUM_WEAPONS; i++ ) {
+				if ( BG_FindAmmoForWeapon( weapon ) != BG_FindAmmoForWeapon( i ) ) {
 					continue;
 				}
-
-				if (COM_BitCheck(g_entities[cs->entityNum].client->ps.weapons, i))
-				{
+				if ( COM_BitCheck( g_entities[cs->entityNum].client->ps.weapons, i ) ) {
 					clear = qfalse;
 				}
 			}

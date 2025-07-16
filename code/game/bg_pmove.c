@@ -2527,22 +2527,14 @@ static void PM_FinishWeaponChange( void ) {
 		}
 		break;
 	case WP_M1GARAND:
-		if (newweapon == ammoTable[oldweapon].weapAlts)
-		{
-			int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-								? BG_FindAmmoForWeaponSurvival(oldweapon)
-								: BG_FindAmmoForWeapon(oldweapon);
-
-			if (pm->ps->ammoclip[ammoIndex])
-			{
+		if ( newweapon == ammoTable[oldweapon].weapAlts ) {
+			if ( pm->ps->ammoclip[ BG_FindAmmoForWeapon( oldweapon ) ] ) {
 				switchtime = 1347;
-			}
-			else
-			{
+			} else {
 				switchtime = 0;
 				doSwitchAnim = qfalse;
 			}
-			altSwitchAnim = qtrue;
+			altSwitchAnim = qtrue ;
 		}
 		break;
 	case WP_M7:
@@ -2583,18 +2575,16 @@ PM_ReloadClip
 ==============
 */
 static void PM_ReloadClip(int weapon) {
-	int clipIndex  = BG_FindClipForWeapon(weapon);
-	int ammoIndex  = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-		? BG_FindAmmoForWeaponSurvival(weapon)
-		: BG_FindAmmoForWeapon(weapon);
+	int clipIndex = BG_FindClipForWeapon(weapon);
+	int ammoIndex = BG_FindAmmoForWeapon(weapon);
 
 	int ammoreserve = pm->ps->ammo[ammoIndex];
 	int ammoclip    = pm->ps->ammoclip[clipIndex];
 
-	int maxclip  = BG_GetMaxClip(pm->ps, weapon);
+	int maxclip = BG_GetMaxClip(pm->ps, weapon);
 	int ammomove = maxclip - ammoclip;
 
-	// Jaymod logic overrides (player-only)
+	// Jaymod logic overrides
 	if (!pm->ps->aiChar) {
 		if (weapon == WP_M97 || weapon == WP_AUTO5) {
 			ammomove = 1;
@@ -2711,10 +2701,7 @@ void PM_CheckForReload(int weapon) {
 	}
 
 	int clipWeap = BG_FindClipForWeapon(weapon);
-
-	int ammoWeap = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-					   ? BG_FindAmmoForWeaponSurvival(weapon)
-					   : BG_FindAmmoForWeapon(weapon);
+	int ammoWeap = BG_FindAmmoForWeapon(weapon);
 
 	// Scoped weapons block reload and instead switch
 	if (!pm->ps->aiChar) {
@@ -2799,52 +2786,50 @@ void PM_CheckForReload(int weapon) {
 PM_SwitchIfEmpty
 ==============
 */
-static void PM_SwitchIfEmpty(void) {
+static void PM_SwitchIfEmpty( void ) {
 	// TODO: cvar for emptyswitch
-	// if (!cg_emptyswitch.integer) return;
+//	if(!cg_emptyswitch.integer)
+//		return;
 
-	// Only apply to thrown/explosive-type weapons
-	switch (pm->ps->weapon) {
-		case WP_GRENADE_LAUNCHER:
-		case WP_GRENADE_PINEAPPLE:
-		case WP_DYNAMITE:
-		case WP_PANZERFAUST:
-		case WP_POISONGAS:
-		case WP_KNIFE:
-			break;
-		default:
-			return;
-	}
-
-	// Check clip first
-	if (pm->ps->ammoclip[BG_FindClipForWeapon(pm->ps->weapon)]) {
+	// weapon from here down will be a thrown explosive
+	switch ( pm->ps->weapon ) {
+	case WP_GRENADE_LAUNCHER:
+	case WP_GRENADE_PINEAPPLE:
+	case WP_DYNAMITE:
+	case WP_PANZERFAUST:
+	case WP_POISONGAS:
+	case WP_KNIFE:
+		break;
+	default:
 		return;
 	}
 
-	// Use survival-aware ammo index for players only
-	int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-		? BG_FindAmmoForWeaponSurvival(pm->ps->weapon)
-		: BG_FindAmmoForWeapon(pm->ps->weapon);
 
-	// Still have ammo in reserve
-	if (pm->ps->ammo[ammoIndex]) {
+	if ( pm->ps->ammoclip[ BG_FindClipForWeapon( pm->ps->weapon )] ) { // still got ammo in clip
 		return;
 	}
 
-	// Out of clip and reserve — remove the weapon
-	switch (pm->ps->weapon) {
-		case WP_GRENADE_LAUNCHER:
-		case WP_GRENADE_PINEAPPLE:
-		case WP_DYNAMITE:
-		case WP_POISONGAS:
-		case WP_KNIFE:
-			COM_BitClear(pm->ps->weapons, pm->ps->weapon);
-			break;
-		default:
-			break;
+	if ( pm->ps->ammo[ BG_FindAmmoForWeapon( pm->ps->weapon )] ) { // still got ammo in reserve
+		return;
 	}
 
-	PM_AddEvent(EV_NOAMMO);
+	// If this was the last one, remove the weapon and switch away before the player tries to fire next
+
+	// NOTE: giving grenade ammo to a player will re-give him the weapon (if you do it through add_ammo())
+	switch ( pm->ps->weapon ) {
+	case WP_GRENADE_LAUNCHER:
+	case WP_GRENADE_PINEAPPLE:
+	case WP_DYNAMITE:
+	case WP_POISONGAS:
+	case WP_KNIFE:
+		// take the 'weapon' away from the player
+		COM_BitClear( pm->ps->weapons, pm->ps->weapon );
+		break;
+	default:
+		break;
+	}
+
+	PM_AddEvent( EV_NOAMMO );
 }
 
 
@@ -2854,24 +2839,19 @@ PM_WeaponUseAmmo
 	accounts for clips being used/not used
 ==============
 */
-void PM_WeaponUseAmmo(int wp, int amount) {
+void PM_WeaponUseAmmo( int wp, int amount ) {
 	int takeweapon;
 
-	if (pm->noWeapClips) {
-		int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-			? BG_FindAmmoForWeaponSurvival(wp)
-			: BG_FindAmmoForWeapon(wp);
-
-		pm->ps->ammo[ammoIndex] -= amount;
+	if ( pm->noWeapClips ) {
+		pm->ps->ammo[ BG_FindAmmoForWeapon( wp )] -= amount;
 	} else {
-		takeweapon = BG_FindClipForWeapon(wp);
-
-		if (wp == WP_AKIMBO) {
-			if (!BG_AkimboFireSequence(wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT])) {
+		takeweapon = BG_FindClipForWeapon( wp );
+		if ( wp == WP_AKIMBO ) {
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
 				takeweapon = WP_COLT;
 			}
-		} else if (wp == WP_DUAL_TT33) {
-			if (!BG_AkimboFireSequence(wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33])) {
+		} else if ( wp == WP_DUAL_TT33 ) {
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
 				takeweapon = WP_TT33;
 			}
 		}
@@ -2886,24 +2866,19 @@ PM_WeaponAmmoAvailable
 	accounts for clips being used/not used
 ==============
 */
-int PM_WeaponAmmoAvailable(int wp) {
+int PM_WeaponAmmoAvailable( int wp ) {
 	int takeweapon;
 
-	if (pm->noWeapClips) {
-		int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-			? BG_FindAmmoForWeaponSurvival(wp)
-			: BG_FindAmmoForWeapon(wp);
-
-		return pm->ps->ammo[ammoIndex];
+	if ( pm->noWeapClips ) {
+		return pm->ps->ammo[ BG_FindAmmoForWeapon( wp )];
 	} else {
-		takeweapon = BG_FindClipForWeapon(wp);
-
-		if (wp == WP_AKIMBO) {
-			if (!BG_AkimboFireSequence(pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT])) {
+		takeweapon = BG_FindClipForWeapon( wp );
+		if ( wp == WP_AKIMBO ) {
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
 				takeweapon = WP_COLT;
 			}
-		} else if (wp == WP_DUAL_TT33) {
-			if (!BG_AkimboFireSequence(pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33])) {
+		} else if ( wp == WP_DUAL_TT33 ) {
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
 				takeweapon = WP_TT33;
 			}
 		}
@@ -2918,24 +2893,19 @@ PM_WeaponClipEmpty
 	accounts for clips being used/not used
 ==============
 */
-int PM_WeaponClipEmpty(int wp) {
-	if (pm->noWeapClips) {
-		int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-			? BG_FindAmmoForWeaponSurvival(wp)
-			: BG_FindAmmoForWeapon(wp);
-
-		if (!pm->ps->ammo[ammoIndex]) {
+int PM_WeaponClipEmpty( int wp ) {
+	if ( pm->noWeapClips ) {
+		if ( !( pm->ps->ammo[ BG_FindAmmoForWeapon( wp )] ) ) {
 			return 1;
 		}
 	} else {
-		if (!pm->ps->ammoclip[BG_FindClipForWeapon(wp)]) {
+		if ( !( pm->ps->ammoclip[BG_FindClipForWeapon( wp )] ) ) {
 			return 1;
 		}
 	}
 
 	return 0;
 }
-
 
 /*
 ==============
@@ -3805,11 +3775,7 @@ case WP_POISONGAS:
 		if ( ammoNeeded > ammoAvailable ) {
 
 			// you have ammo for this, just not in the clip
-			int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-								? BG_FindAmmoForWeaponSurvival(pm->ps->weapon)
-								: BG_FindAmmoForWeapon(pm->ps->weapon);
-
-			reloadingW = (qboolean)(ammoNeeded <= pm->ps->ammo[ammoIndex]);
+			reloadingW = (qboolean)( ammoNeeded <= pm->ps->ammo[ BG_FindAmmoForWeapon( pm->ps->weapon )] );
 
 			// autoreload if not in auto-reload mode, and reload was not explicitely requested, just play the 'out of ammo' sound
 			if ( !pm->pmext->bAutoReload && !isAutoReloadWeapon( pm->ps->weapon ) && !( pm->cmd.wbuttons & WBUTTON_RELOAD ) ) {
@@ -3996,16 +3962,8 @@ case WP_POISONGAS:
 	pm->ps->releasedFire = qfalse;
 	pm->ps->lastFireTime = pm->cmd.serverTime;
 
-	if (pm->ps->weapon == WP_M7)
-	{
-		int ammoIndex = (pm->gametype == GT_SURVIVAL && !pm->ps->aiChar)
-							? BG_FindAmmoForWeaponSurvival(pm->ps->weapon)
-							: BG_FindAmmoForWeapon(pm->ps->weapon);
-
-		if (!pm->ps->ammo[ammoIndex])
-		{
-			PM_AddEvent(EV_NOAMMO);
-		}
+	if ( ( pm->ps->weapon == WP_M7 ) && !pm->ps->ammo[ BG_FindAmmoForWeapon( pm->ps->weapon )] ) {
+		PM_AddEvent( EV_NOAMMO );
 	}
 
 	// Alt firing mode
@@ -5144,9 +5102,7 @@ void PM_M97Reload() {
 		PM_ReloadClip(WP_M97);
 
 		// Branch depending on if we need another shell or not
-		int ammoIndex = (pm->gametype == GT_SURVIVAL)
-							? BG_FindAmmoForWeaponSurvival(WP_M97)
-							: BG_FindAmmoForWeapon(WP_M97);
+		int ammoIndex = BG_FindAmmoForWeapon(WP_M97);
 
 		if (!pm->ps->ammo[ammoIndex] || pm->pmext->m97reloadInterrupt)
 		{
@@ -5186,9 +5142,7 @@ void PM_M97Reload() {
 	// If clip isn't full, load another shell
 	int maxclip = BG_GetMaxClip(pm->ps, WP_M97);
 
-	int ammoIndex = (pm->gametype == GT_SURVIVAL)
-						? BG_FindAmmoForWeaponSurvival(WP_M97)
-						: BG_FindAmmoForWeapon(WP_M97);
+	int ammoIndex = BG_FindAmmoForWeapon(WP_M97);
 
 	if (pm->ps->ammoclip[WP_M97] < maxclip && pm->ps->ammo[ammoIndex])
 	{
@@ -5253,9 +5207,7 @@ void PM_Auto5Reload(void) {
 		PM_ReloadClip(WP_AUTO5);
 
 		// Branch depending on if we need another shell or not
-		int ammoIndex = (pm->gametype == GT_SURVIVAL)
-							? BG_FindAmmoForWeaponSurvival(WP_AUTO5)
-							: BG_FindAmmoForWeapon(WP_AUTO5);
+		int ammoIndex = BG_FindAmmoForWeapon(WP_AUTO5);
 
 		if (!pm->ps->ammo[ammoIndex] || pm->pmext->m97reloadInterrupt)
 		{
@@ -5291,11 +5243,7 @@ void PM_Auto5Reload(void) {
 
 	// If clip isn't full, load another shell
 	int maxclip = BG_GetMaxClip(pm->ps, WP_AUTO5);
-
-	// Use survival ammo index if in Survival mode
-	int ammoIndex = (pm->gametype == GT_SURVIVAL)
-						? BG_FindAmmoForWeaponSurvival(WP_AUTO5)
-						: BG_FindAmmoForWeapon(WP_AUTO5);
+	int ammoIndex = BG_FindAmmoForWeapon(WP_AUTO5);
 
 	if (pm->ps->ammoclip[WP_AUTO5] < maxclip && pm->ps->ammo[ammoIndex])
 	{

@@ -428,13 +428,7 @@ void Fill_Clip(playerState_t *ps, int weapon) {
 	}
 
 	int clipIndex = BG_FindClipForWeapon(weapon);
-
-	int ammoIndex;
-	if (g_gametype.integer == GT_SURVIVAL && !ps->aiChar) {
-		ammoIndex = BG_FindAmmoForWeaponSurvival(weapon);
-	} else {
-		ammoIndex = BG_FindAmmoForWeapon(weapon);
-	}
+	int ammoIndex = BG_FindAmmoForWeapon(weapon);
 
 	int inclip   = ps->ammoclip[clipIndex];
 	int maxclip  = BG_GetMaxClip(ps, weapon);
@@ -459,15 +453,7 @@ Add_Ammo
 ==============
 */
 void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
-	if (!ent || !ent->client) {
-		return;
-	}
-
-	// Use survival ammo index only for player in Survival mode
-	int ammoweap = (g_gametype.integer == GT_SURVIVAL && !ent->aiCharacter)
-		? BG_FindAmmoForWeaponSurvival(weapon)
-		: BG_FindAmmoForWeapon(weapon);
-
+	int ammoweap = BG_FindAmmoForWeapon(weapon);
 	qboolean noPack = qfalse; // no extra ammo in your 'pack'
 
 	ent->client->ps.ammo[ammoweap] += count;
@@ -490,7 +476,7 @@ void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
 	}
 
 	if (fillClip || noPack) {
-		Fill_Clip(&ent->client->ps, weapon); // already uses correct ammoIndex internally
+		Fill_Clip(&ent->client->ps, weapon);
 	}
 
 	if (ent->aiCharacter) {
@@ -514,11 +500,13 @@ void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
 	}
 
 	// Special case: knife throwing ammo in clip
-	if (ammoweap == WP_KNIFE) {
+	if (ammoweap == WP_KNIFE)
+	{
 		ent->client->ps.ammoclip[ammoweap] += count;
 
 		int maxclip = BG_GetMaxClip(&ent->client->ps, WP_KNIFE);
-		if (ent->client->ps.ammoclip[ammoweap] > maxclip) {
+		if (ent->client->ps.ammoclip[ammoweap] > maxclip)
+		{
 			ent->client->ps.ammoclip[ammoweap] = maxclip;
 		}
 	}
@@ -840,17 +828,17 @@ qboolean NeedAmmo(gentity_t *other, weapon_t weapon) {
 	if (G_FindWeaponSlot(other, weapon) < 0) {
 		weapon_t altWeapon = GetWeaponTableData(weapon)->weapAlts;
 
-		if (!altWeapon || G_FindWeaponSlot(other, altWeapon) < 0) {
+		if (!altWeapon) {
 			return qfalse;
 		}
 
-		ammoweap = (g_gametype.integer == GT_SURVIVAL && !other->aiCharacter)
-			? BG_FindAmmoForWeaponSurvival(altWeapon)
-			: BG_FindAmmoForWeapon(altWeapon);
+		if (G_FindWeaponSlot(other, altWeapon) < 0) {
+			return qfalse;
+		}
+
+		ammoweap = BG_FindAmmoForWeapon(altWeapon);
 	} else {
-		ammoweap = (g_gametype.integer == GT_SURVIVAL && !other->aiCharacter)
-			? BG_FindAmmoForWeaponSurvival(weapon)
-			: BG_FindAmmoForWeapon(weapon);
+		ammoweap = BG_FindAmmoForWeapon(weapon);
 	}
 
 	int maxAmmo = BG_GetMaxAmmo(&other->client->ps, ammoweap, svParams.ltAmmoBonus);

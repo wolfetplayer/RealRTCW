@@ -1328,7 +1328,6 @@ gitem_t *BG_FindItemForHoldable( holdable_t pw );
 gitem_t *BG_FindItemForAmmo( int ammo );       
 gitem_t *BG_FindItemForKey( wkey_t k, int *index );
 weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
-weapon_t BG_FindAmmoForWeaponSurvival( weapon_t weapon );
 weapon_t BG_FindClipForWeapon( weapon_t weapon );
 gitem_t *BG_FindItemForPerk( perk_t perk );
 

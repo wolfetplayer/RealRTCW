@@ -7247,7 +7247,30 @@ weapon_t BG_FindAmmoForWeapon( weapon_t weapon ) {
 	const int NUM_TABLE_ELEMENTS = WP_NUM_WEAPONS;
 	static weapon_t lookupTable[WP_NUM_WEAPONS];
 	static qboolean lookupTableInit = qtrue;
+	qboolean survival = qfalse;
 
+    #ifdef GAMEDLL
+	    if (g_gametype.integer == GT_SURVIVAL)
+    #endif
+    #ifdef CGAMEDLL
+		if (cg_gameType.integer == GT_SURVIVAL)
+    #endif
+			survival = qtrue;
+
+    if (survival) {
+	if ( lookupTableInit ) {
+		for ( i = 0; i < NUM_TABLE_ELEMENTS; i++ ) {
+			lookupTable[i] = 0; // default value for no match found
+			for ( it = bg_itemlist + 1 ; it->classname ; it++ ) {
+				if ( it->giType == IT_WEAPON && it->giTag == i ) {
+					lookupTable[i] = it->giAmmoIndexSurv;
+				}
+			}
+		}
+		// table is created
+		lookupTableInit = qfalse;
+	}
+	} else {
 	if ( lookupTableInit ) {
 		for ( i = 0; i < NUM_TABLE_ELEMENTS; i++ ) {
 			lookupTable[i] = 0; // default value for no match found
@@ -7260,38 +7283,6 @@ weapon_t BG_FindAmmoForWeapon( weapon_t weapon ) {
 		// table is created
 		lookupTableInit = qfalse;
 	}
-
-	if ( weapon > NUM_TABLE_ELEMENTS ) {
-		Com_Error( ERR_DROP, "BG_FindAmmoForWeapon: weapon out of range %i", weapon );
-	}
-
-	// get the weapon from the lookup table
-	return lookupTable[weapon];
-}
-
-/*
-==============
-BG_FindAmmoForWeaponSurvival
-==============
-*/
-weapon_t BG_FindAmmoForWeaponSurvival( weapon_t weapon ) {
-	gitem_t *it;
-	int i;
-	const int NUM_TABLE_ELEMENTS = WP_NUM_WEAPONS;
-	static weapon_t lookupTable[WP_NUM_WEAPONS];
-	static qboolean lookupTableInit = qtrue;
-
-	if ( lookupTableInit ) {
-		for ( i = 0; i < NUM_TABLE_ELEMENTS; i++ ) {
-			lookupTable[i] = 0; // default value for no match found
-			for ( it = bg_itemlist + 1 ; it->classname ; it++ ) {
-				if ( it->giType == IT_WEAPON && it->giTag == i ) {
-					lookupTable[i] = it->giAmmoIndexSurv;
-				}
-			}
-		}
-		// table is created
-		lookupTableInit = qfalse;
 	}
 
 	if ( weapon > NUM_TABLE_ELEMENTS ) {
@@ -7535,35 +7526,22 @@ WARNING: when numOfClips is 0, DO NOT CHANGE ANYTHING under ps.
 qboolean BG_AddMagicAmmo(playerState_t *ps, int numOfClips) {
 	int i, weapon;
 	qboolean ammoAdded = qfalse;
-	qboolean survival = qfalse;
-
-#ifdef GAMEDLL
-	if (g_gametype.integer == GT_SURVIVAL)
-#endif
-#ifdef CGAMEDLL
-		if (cg_gameType.integer == GT_SURVIVAL)
-#endif
-			survival = qtrue;
 
 	for (i = 0; reloadableWeapons[i] >= 0; i++) {
 		weapon = reloadableWeapons[i];
 		if (!COM_BitCheck(ps->weapons, weapon))
 			continue;
 
-		int ammoIndex = survival
-			? BG_FindAmmoForWeaponSurvival(weapon)
-			: BG_FindAmmoForWeapon(weapon);
-
-		int clipIndex = BG_FindClipForWeapon(weapon);
+		int ammoIndex = BG_FindAmmoForWeapon(weapon);
 		int maxammo   = BG_GetMaxAmmo(ps, weapon, 1.5f);
 		int maxclip   = BG_GetMaxClip(ps, weapon);
 
 		if (weapon == WP_FLAMETHROWER || weapon == WP_TESLA) {
-			if (ps->ammoclip[clipIndex] < maxammo) {
+			if (ps->ammoclip[ammoIndex] < maxammo) {
 				if (!numOfClips)
 					return qtrue;
 
-				ps->ammoclip[clipIndex] = maxammo;
+				ps->ammoclip[ammoIndex] = maxammo;
 				ammoAdded = qtrue;
 			}
 		} else {
@@ -7619,15 +7597,6 @@ qboolean    BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *
 	gitem_t *item;
 	int ammoweap;
 	qboolean multiplayer = qfalse;
-	qboolean survival = qfalse;
-
-#ifdef GAMEDLL
-	if (g_gametype.integer == GT_SURVIVAL)
-#endif
-#ifdef CGAMEDLL
-		if (cg_gameType.integer == GT_SURVIVAL)
-#endif
-		survival = qtrue;
 
 	if (ent->modelindex < 1 || ent->modelindex >= bg_numItems)
 	{
@@ -7676,9 +7645,7 @@ qboolean    BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *
 		return qtrue;
 
 	case IT_AMMO:
-		ammoweap = (survival && !ps->aiChar)
-					   ? BG_FindAmmoForWeaponSurvival(item->giTag)
-					   : BG_FindAmmoForWeapon(item->giTag);
+		ammoweap = BG_FindAmmoForWeapon(item->giTag);
 
 		if (isClipOnly(ammoweap))
 		{

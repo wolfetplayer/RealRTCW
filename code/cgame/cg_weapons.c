@@ -3381,25 +3381,17 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		}
 	}
 
-	if (isPlayer && !cg.renderingThirdPerson)
-	{ // (SA) for now just do it on the first person weapons
-		if (weaponNum == WP_M1GARAND || weaponNum == WP_M7)
-		{
-			int ammoIndex = (cg_gameType.integer == GT_SURVIVAL)
-								? BG_FindAmmoForWeaponSurvival(WP_M7)
-								: BG_FindAmmoForWeapon(WP_M7);
-
-			if (cg.snap->ps.ammo[ammoIndex] || cg.snap->ps.ammoclip[ammoIndex])
-			{
-				barrel.hModel = weapon->modModels[0];
-				if (barrel.hModel)
-				{
-					CG_PositionEntityOnTag(&barrel, parent, "tag_scope", 0, NULL);
-					CG_AddWeaponWithPowerups(&barrel, cent->currentState.powerups, ps, cent);
-				}
+		if ( isPlayer && !cg.renderingThirdPerson ) {        // (SA) for now just do it on the first person weapons
+		if ( weaponNum == WP_M1GARAND || weaponNum == WP_M7 ) {
+			if ( (  cg.snap->ps.ammo[BG_FindAmmoForWeapon( WP_M7 )] || cg.snap->ps.ammoclip[BG_FindAmmoForWeapon( WP_M7 )]  ) ) {
+					barrel.hModel = weapon->modModels[0];
+					if ( barrel.hModel ) {
+						CG_PositionEntityOnTag( &barrel, parent, "tag_scope", 0, NULL );
+						CG_AddWeaponWithPowerups( &barrel, cent->currentState.powerups, ps, cent );
+					}
 			}
 		}
-	}
+		}
 
 	// make sure we aren't looking at cg.predictedPlayerEntity for LG
 	nonPredictedCent = &cg_entities[cent->currentState.number];
@@ -3983,21 +3975,14 @@ CG_WeaponHasAmmo
 	check for ammo
 ==============
 */
-static qboolean CG_WeaponHasAmmo(int i) {
-	if (i == WP_KNIFE) {
+static qboolean CG_WeaponHasAmmo( int i ) {
+
+	if( i == WP_KNIFE ) {
 		return qtrue;
 	}
 
-	qboolean survival = (cg_gameType.integer == GT_SURVIVAL && !cg.predictedPlayerState.aiChar);
-
-	int ammoIndex = survival
-		? BG_FindAmmoForWeaponSurvival(i)
-		: BG_FindAmmoForWeapon(i);
-
-	int clipIndex = BG_FindClipForWeapon(i);
-
-	if (!cg.predictedPlayerState.ammo[ammoIndex] &&
-		!cg.predictedPlayerState.ammoclip[clipIndex]) {
+	if ( !( cg.predictedPlayerState.ammo[BG_FindAmmoForWeapon( i )] ) &&
+		 !( cg.predictedPlayerState.ammoclip[BG_FindClipForWeapon( i )] ) ) {
 		return qfalse;
 	}
 

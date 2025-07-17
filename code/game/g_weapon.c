@@ -786,63 +786,6 @@ void Bullet_Endpos( gentity_t *ent, float spread, vec3_t *end ) {
 		VectorMA( *end, u, up, *end );
 	}
 }
-/*
-==============
-RayIntersectsAABB
-	Check if a ray intersects an axis-aligned bounding box (AABB).
-	Returns qtrue if it does, qfalse otherwise.
-	Uses the ray start and direction, and the box's minimum and maximum coordinates.
-	This is useful for collision detection in 3D space.
-==============
-*/
-qboolean RayIntersectsAABB(vec3_t rayStart, vec3_t rayDir, vec3_t boxMins, vec3_t boxMaxs) {
-	float tmin = -INFINITY;
-	float tmax = INFINITY;
-
-	for (int i = 0; i < 3; i++) {
-		if (rayDir[i] != 0.0f) {
-			float t1 = (boxMins[i] - rayStart[i]) / rayDir[i];
-			float t2 = (boxMaxs[i] - rayStart[i]) / rayDir[i];
-
-			if (t1 > t2) {
-				float temp = t1;
-				t1 = t2;
-				t2 = temp;
-			}
-
-			if (t1 > tmin) tmin = t1;
-			if (t2 < tmax) tmax = t2;
-
-			if (tmin > tmax) {
-				return qfalse; // no intersection
-			}
-		} else if (rayStart[i] < boxMins[i] || rayStart[i] > boxMaxs[i]) {
-			return qfalse; // ray is parallel and outside the slab
-		}
-	}
-
-	return qtrue; // intersection occurs
-}
-
-/*
-==============
-RayIntersectsEntityBBox
-	Check if a ray intersects the bounding box of an entity.
-	Returns qtrue if it does, qfalse otherwise.
-	Uses the ray start and direction, and the entity's bounding box.
-	This is useful for checking if a bullet or other ray-based attack hits an entity.
-==============
-*/
-qboolean RayIntersectsEntityBBox(vec3_t rayStart, vec3_t rayDir, gentity_t *ent) {
-	vec3_t mins, maxs;
-	vec3_t origin;
-
-	VectorCopy(ent->r.currentOrigin, origin);
-	VectorAdd(origin, ent->r.mins, mins);
-	VectorAdd(origin, ent->r.maxs, maxs);
-
-	return RayIntersectsAABB(rayStart, rayDir, mins, maxs);
-}
 
 /*
 ==============
@@ -1061,34 +1004,7 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
         }
     }
 
-	// This allows bullets to hit multiple AI in Survival because we have collisions disabled there
-	if (g_gametype.integer == GT_SURVIVAL)
-	{
-		vec3_t shotDir;
-		VectorSubtract(end, start, shotDir);
-		VectorNormalize(shotDir);
-
-		for (int i = 0; i < level.num_entities; i++)
-		{
-			gentity_t *testEnt = &g_entities[i];
-
-			if (!testEnt->inuse || testEnt == traceEnt || testEnt == attacker)
-				continue;
-
-			if (!(testEnt->r.svFlags & SVF_CASTAI))
-				continue;
-
-			if (testEnt->health <= 0 || !testEnt->takedamage)
-				continue;
-
-			if (RayIntersectsEntityBBox(start, shotDir, testEnt))
-			{
-				G_DamageExt(testEnt, attacker, attacker, shotDir, testEnt->r.currentOrigin, effectiveDamage, 0, MOD_MACHINEGUN, NULL);
-			}
-		}
-	}
-
-	tent = G_TempEntity( tr.endpos, EV_HITSOUNDS );
+    tent = G_TempEntity( tr.endpos, EV_HITSOUNDS );
     tent->s.eventParm = traceEnt->s.number;
     tent->s.weapon = traceEnt->s.weapon;
     tent->s.otherEntityNum = attacker->s.number;

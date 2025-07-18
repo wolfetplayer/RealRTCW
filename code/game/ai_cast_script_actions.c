@@ -2638,8 +2638,6 @@ qboolean AICast_ScriptAction_ChangeAiSkin(cast_state_t *cs, char *params)
 	trap_SetUserinfo(ent->s.number, userinfo);
 	ClientUserinfoChanged(ent->s.number);
 
-	G_Printf("AI Script: Changed skin of %s to '%s'\n", ent->aiName, params);
-
 	return qtrue;
 }
 
@@ -2662,8 +2660,6 @@ qboolean AICast_ScriptAction_ChangeAiHead(cast_state_t* cs, char* params)
 	Info_SetValueForKey(userinfo, "head", params);
 	trap_SetUserinfo(ent->s.number, userinfo);
 	ClientUserinfoChanged(ent->s.number);
-
-	G_Printf("AI Script: Changed head of %s to '%s'\n", ent->aiName, params);
 
 	return qtrue;
 }

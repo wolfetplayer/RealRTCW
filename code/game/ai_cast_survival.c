@@ -946,7 +946,30 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
     Com_Printf("^2[AI_SURVIVE] waveKillCount = %d, killCountRequirement = %d, wavePending = %d^7\n",
         svParams.waveKillCount, svParams.killCountRequirement, svParams.wavePending);
 
-    if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
+	if (svParams.waveKillCount < svParams.killCountRequirement)
+	{
+		int enemiesAlive = 0;
+		for (int i = 0; i < level.num_entities; i++)
+		{
+			gentity_t *ent = &g_entities[i];
+			if (!ent->inuse || !ent->client || ent->aiTeam == 1)
+				continue;
+			if (!(ent->client->ps.eFlags & EF_DEAD))
+			{
+				enemiesAlive++;
+			}
+		}
+
+		if (enemiesAlive == 0)
+		{
+			Com_Printf("^1[AI_SURVIVE] ERROR: No enemies alive but wave not complete (%d/%d kills)\n",
+					   svParams.waveKillCount, svParams.killCountRequirement);
+			// Failsafe: push wave forward or increment kill count manually
+			svParams.waveKillCount = svParams.killCountRequirement;
+		}
+	}
+
+	if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
         //  DEBUG: progression triggered
         Com_Printf("^1[AI_SURVIVE] Wave %d complete! Triggering intermission and progression.^7\n", svParams.waveCount);
 

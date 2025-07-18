@@ -301,6 +301,19 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	Add_Ammo(activator, heldWeap, maxAmmo, qtrue);
 	Add_Ammo(activator, heldWeap, maxAmmo, qfalse);
 
+	// Also refill ammo for base pistol if akimbo
+	if (heldWeap== WP_AKIMBO)
+	{
+		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qtrue);
+		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qfalse);
+	}
+	else if (heldWeap == WP_DUAL_TT33)
+	{
+		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qtrue);
+		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qfalse);
+	}
+
+
 	// Deduct score
 	activator->client->ps.persistant[PERS_SCORE] -= ammoPrice;
 
@@ -476,6 +489,19 @@ qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gi
 		activator->client->ps.persistant[PERS_SCORE] -= price;
 
 		int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, weapon, svParams.ltAmmoBonus);
+
+	    // Also refill ammo for base pistol if akimbo
+		if (weapon == WP_AKIMBO)
+		{
+			Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qtrue);
+			Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qfalse);
+		}
+		else if (weapon == WP_DUAL_TT33)
+		{
+			Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qtrue);
+			Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qfalse);
+		}
+
 		Add_Ammo(activator, weapon, maxAmmo, qtrue);
 		Add_Ammo(activator, weapon, maxAmmo, qfalse);
 

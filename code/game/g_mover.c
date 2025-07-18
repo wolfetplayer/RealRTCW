@@ -4770,6 +4770,10 @@ void use_invisible_user( gentity_t *ent, gentity_t *other, gentity_t *activator 
 	{
 		activator->client->ps.persistant[PERS_SCORE] -= price;
 	}
+
+	if (ent->spawnflags & 16) {
+		G_FreeEntity(ent);
+	}
 }
 
 

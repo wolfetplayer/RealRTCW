@@ -2249,14 +2249,16 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 #endif
 
 	// idle drift
-    
-	if ((cg.snap->ps.weaponstate == WEAPON_FIRING) && ( cg.predictedPlayerState.weapon == WP_FLAMETHROWER ))
+
+	if (!cg_vanilla_guns.integer &&
+		(cg.snap->ps.weaponstate == WEAPON_FIRING) &&
+		(cg.predictedPlayerState.weapon == WP_FLAMETHROWER))
 	{
-	scale = 15;
-	} 
-	else 
+		scale = 15; // apply reduced idle sway for flamethrower
+	}
+	else
 	{
-	scale = 80;
+		scale = 80; // default sway
 	}
 	fracsin = sin( cg.time * 0.001 );
 	angles[ROLL] += scale * fracsin * 0.01;

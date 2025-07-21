@@ -1233,17 +1233,16 @@ void Cmd_StopCamera_f( gentity_t *ent ) {
 		ent->s.eFlags &= ~EF_VIEWING_CAMERA;
 		ent->client->ps.eFlags &= ~EF_VIEWING_CAMERA;
 
-// (SA) trying this in client to avoid 1 frame of player drawing
-//		ent->s.eFlags &= ~EF_NODRAW;
-//		ent->client->ps.eFlags &= ~EF_NODRAW;
-
-		// RF, if we are near the spawn point, save the "current" game, for reloading after death
 		sp = NULL;
-		// gcc: suggests () around assignment used as truth value
-		while ( ( sp = G_Find( sp, FOFS( classname ), "info_player_deathmatch" ) ) ) { // info_player_start becomes info_player_deathmatch in it's spawn functon
+		while ( ( sp = G_Find( sp, FOFS( classname ), "info_player_deathmatch" ) ) ) {
 			if ( Distance( ent->s.pos.trBase, sp->s.origin ) < 256 && trap_InPVS( ent->s.pos.trBase, sp->s.origin ) ) {
-				G_SaveGame( NULL );
-				G_SaveGame( "lastcheckpoint" );
+
+				// Don't save checkpoint in Survival mode
+				if ( g_gametype.integer != GT_SURVIVAL ) {
+					G_SaveGame( NULL );
+					G_SaveGame( "lastcheckpoint" );
+				}
+
 				break;
 			}
 		}

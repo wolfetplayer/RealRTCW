@@ -1131,11 +1131,14 @@ void G_UpdateCvars( void ) {
 						AICast_CastScriptThink();
 
 						// if we are not watching a cutscene, save the game
-						if ( !g_entities[0].client->cameraPortal ) {
-							G_SaveGame( NULL );
-							G_SaveGame( "lastcheckpoint" );
+						if (!g_entities[0].client->cameraPortal)
+						{
+							if (g_gametype.integer != GT_SURVIVAL)
+							{
+								G_SaveGame(NULL);
+								G_SaveGame("lastcheckpoint");
+							}
 						}
-
 						trap_Cvar_Set( "cg_norender", "0" );  // camera has started, render 'on'
 						trap_Cvar_Set( "g_playerstart", "0" ); // reset calling of "playerstart" from script
 					}

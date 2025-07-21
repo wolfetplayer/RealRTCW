@@ -518,7 +518,6 @@ ClientRespawn
 void ClientRespawn( gentity_t *ent ) {
 	// In Survival mode, just restart the map instead of reloading save
 	if ( g_gametype.integer == GT_SURVIVAL ) {
-		trap_SetConfigstring( CS_SCREENFADE, va( "1 %i 4000", level.time + 2000 ) );
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart 0\n" );
 		return;
 	}

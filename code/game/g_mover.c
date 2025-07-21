@@ -2151,9 +2151,6 @@ G_TryDoor
 void G_TryDoor( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	qboolean walking = qfalse, locked = qfalse;
 
-	int price;
-	price = ent->price;
-
 	walking = (qboolean)( ent->flags & FL_SOFTACTIVATE );
 
 

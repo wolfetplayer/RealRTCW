@@ -492,16 +492,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// Add team bonuses
 	Team_FragBonuses( self, inflictor, attacker );
 
-	// if client is in a nodrop area, don't drop anything
-// JPW NERVE new drop behavior
-
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
-			if (g_gametype.integer == GT_SURVIVAL) {
-			TossClientItems( self, attacker );
-			TossClientPowerups( self, attacker );
-			}
 		}
 
 	Cmd_Score_f( self );        // show scores

@@ -1167,7 +1167,7 @@ void AI_LoadSurvivalTable( const char* mapname )
 
 	handle = trap_PC_LoadSource( va( "maps/%s.surv", mapname ) );
 	if ( !handle ) {
-		G_Printf( S_COLOR_YELLOW "WARNING: Failed to load .surv file. Trying to load default.surv\n" );
+		//G_Printf( S_COLOR_YELLOW "WARNING: Failed to load .surv file. Trying to load default.surv\n" );
 
 		handle = trap_PC_LoadSource( "maps/default.surv" );
 

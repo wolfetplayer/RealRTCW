@@ -795,7 +795,7 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 			}
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(
-					"cpbuy \"item: %s\nprice: %d\"",
+					"cpbuy \"%s\nprice: %d\"",
 					weaponName, price));
 				return;
 			}
@@ -803,7 +803,7 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 			price = (price > 0) ? price : svParams.randomWeaponPrice;
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(
-					"cpbuy \"item: %s\nprice: %d\"",
+					"cpbuy \"%s\nprice: %d\"",
 					weaponName, price));
 				return;
 			}
@@ -811,7 +811,7 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 			price = (price > 0) ? price : svParams.weaponUpgradePrice;
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(
-					"cpbuy \"item: %s\nprice: %d\"",
+					"cpbuy \"%s\nprice: %d\"",
 					weaponName, price));
 				return;
 			}
@@ -819,7 +819,7 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 			price = (price > 0) ? price : svParams.randomPerkPrice;
 			if (weaponName && price > 0) {
 				trap_SendServerCommand(other - g_entities, va(
-					"cpbuy \"item: %s\nprice: %d\"",
+					"cpbuy \"%s\nprice: %d\"",
 					weaponName, price));
 				return;
 			}
@@ -858,11 +858,11 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	if (price > 0 && weaponName) {
 		if (isWeapon) {
 			trap_SendServerCommand(other - g_entities, va(
-				"cpbuy \"weapon: %s\nprice: %d\nammo_price: %d\"",
+				"cpbuy \"%s\nprice: %d\nammo_price: %d\"",
 				weaponName, price, ammoPrice));
 		} else {
 			trap_SendServerCommand(other - g_entities, va(
-				"cpbuy \"item: %s\nprice: %d\"",
+				"cpbuy \"%s\nprice: %d\"",
 				weaponName, price));
 		}
 		return;

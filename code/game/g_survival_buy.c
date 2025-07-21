@@ -479,16 +479,28 @@ qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gi
 
 	// Already owns weapon — refill ammo only
 	if (COM_BitCheck(activator->client->ps.weapons, weapon)) {
-		price /= 2;
+		// Adjust refill price
+		if (activator->client->ps.weaponUpgraded[weapon])
+		{
+			price = svParams.upgradedAmmoPrice;
+		}
+		else
+		{
+			price /= 2;
+		}
 
 		if (activator->client->ps.persistant[PERS_SCORE] < price) {
 			G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 			return qfalse;
 		}
 
-		activator->client->ps.persistant[PERS_SCORE] -= price;
-
 		int maxAmmo = BG_GetMaxAmmo(&activator->client->ps, weapon, svParams.ltAmmoBonus);
+		if (activator->client->ps.ammo[weapon] >= maxAmmo) {
+			G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+			return qfalse; // Already full
+		}
+
+		activator->client->ps.persistant[PERS_SCORE] -= price;
 
 	    // Also refill ammo for base pistol if akimbo
 		if (weapon == WP_AKIMBO)
@@ -853,6 +865,11 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 
 	// Ammo price only applies to weapons
 	ammoPrice = isWeapon ? price / 2 : 0;
+
+	if (other->client->ps.weaponUpgraded[other->client->ps.weapon])
+	{
+		ammoPrice = svParams.upgradedAmmoPrice;
+	}
 
 	// Display custom tip if price and name are known
 	if (price > 0 && weaponName) {

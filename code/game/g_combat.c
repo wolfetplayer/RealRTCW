@@ -437,10 +437,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		return;
 	}
 
-//----(SA) commented out as we have no hook
-//	if (self->client && self->client->hook)
-//		Weapon_HookFree(self->client->hook);
-
 	self->client->ps.pm_type = PM_DEAD;
 
 	if ( attacker ) {
@@ -547,7 +543,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// g_forcerespawn may force spawning at some later time
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
-		self->client->respawnTime = level.time + 7000; // 10 seconds
+		self->client->respawnTime = level.time + 12000; 
 
 		// Fetch the number of waves and enemies killed
 		int numberOfWaves = svParams.waveCount;
@@ -578,15 +574,8 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	contents = trap_PointContents( self->r.currentOrigin, -1 );
 
 	if ( self->health <= GIB_HEALTH && !( contents & CONTENTS_NODROP ) && g_blood.integer ) {
-//		if(self->client->ps.eFlags & EF_HEADSHOT)
-//		{
-//			GibHead(self, killer);
-//		}
-//		else	// gib death
-//		{
 		GibEntity( self, killer );
 		nogib = qfalse;
-//		}
 	}
 
 	if ( nogib ) {
@@ -612,9 +601,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			self->health = GIB_HEALTH + 1;
 		}
 
-// JPW NERVE for medic
 		self->client->medicHealAmt = 0;
-// jpw
 
 		self->client->ps.legsAnim =
 			( ( self->client->ps.legsAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT ) | anim;

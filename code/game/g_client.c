@@ -516,25 +516,30 @@ ClientRespawn
 ================
 */
 void ClientRespawn( gentity_t *ent ) {
+	// In Survival mode, just restart the map instead of reloading save
+	if ( g_gametype.integer == GT_SURVIVAL ) {
+		trap_SetConfigstring( CS_SCREENFADE, va( "1 %i 4000", level.time + 2000 ) );
+		trap_SendConsoleCommand( EXEC_APPEND, "map_restart 0\n" );
+		return;
+	}
 
 	// Ridah, if single player, reload the last saved game for this player
+	if ( g_reloading.integer || saveGamePending ) {
+		return;
+	}
 
-		if ( g_reloading.integer || saveGamePending ) {
-			return;
-		}
+	if ( !( ent->r.svFlags & SVF_CASTAI ) ) {
+		// Fast method, just do a map_restart, and then load in the savegame
+		// once everything is settled.
+		trap_SetConfigstring( CS_SCREENFADE, va( "1 %i 4000", level.time + 2000 ) );
+		trap_Cvar_Set( "g_reloading", "1" );
 
-		if ( !( ent->r.svFlags & SVF_CASTAI ) ) {
-			// Fast method, just do a map_restart, and then load in the savegame
-			// once everything is settled.
-			trap_SetConfigstring( CS_SCREENFADE, va( "1 %i 4000", level.time + 2000 ) );
-			trap_Cvar_Set( "g_reloading", "1" );
+		level.reloadDelayTime = level.time + 6000;
 
-			level.reloadDelayTime = level.time + 6000;
+		trap_SendServerCommand( -1, va( "snd_fade 0 %d", 6000 ) );  // fade sound out
 
-			trap_SendServerCommand( -1, va( "snd_fade 0 %d", 6000 ) );  // fade sound out
-
-			return;
-		}
+		return;
+	}
 	// done.
 
 	ent->client->ps.pm_flags &= ~PMF_LIMBO; // JPW NERVE turns off limbo

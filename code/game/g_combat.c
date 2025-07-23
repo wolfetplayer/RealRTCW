@@ -543,7 +543,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		int numberOfEnemiesKilled = svParams.survivalKillCount;
 
 		// Format the message
-		const char *messageTemplate = "Game Over \n You reached level %d and killed %d enemies";
+		const char *messageTemplate = "Game Over \n You reached wave %d and killed %d enemies";
 		char message[256];
 		snprintf(message, sizeof(message), messageTemplate, numberOfWaves, numberOfEnemiesKilled);
 

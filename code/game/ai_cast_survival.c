@@ -218,7 +218,7 @@ void AICast_RegisterSurvivalKill(gentity_t *self, gentity_t *attacker, int means
 
 	 // Skip counting if the dying entity is a friendly AI (aiTeam == 1)
     if (self->aiCharacter && self->aiTeam == 1) {
-        Com_Printf("^3[AI_SURVIVE] INFO: Friendly AI death ignored. aiCharacter=%d, aiTeam=%d\n", self->aiCharacter, self->aiTeam);
+        //Com_Printf("^3[AI_SURVIVE] INFO: Friendly AI death ignored. aiCharacter=%d, aiTeam=%d\n", self->aiCharacter, self->aiTeam);
         return;
     }
 
@@ -943,7 +943,7 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
 	gentity_t *player;
 	player = AICast_FindEntityForName("player");
     // DEBUG: log current kill progress
-    Com_Printf("^2[AI_SURVIVE] waveKillCount = %d, killCountRequirement = %d, wavePending = %d^7\n",
+   // Com_Printf("^2[AI_SURVIVE] waveKillCount = %d, killCountRequirement = %d, wavePending = %d^7\n",
         svParams.waveKillCount, svParams.killCountRequirement, svParams.wavePending);
 
 	if (svParams.waveKillCount < svParams.killCountRequirement)
@@ -971,7 +971,7 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
 
 	if (svParams.waveKillCount == svParams.killCountRequirement && !svParams.wavePending) {
         //  DEBUG: progression triggered
-        Com_Printf("^1[AI_SURVIVE] Wave %d complete! Triggering intermission and progression.^7\n", svParams.waveCount);
+        //Com_Printf("^1[AI_SURVIVE] Wave %d complete! Triggering intermission and progression.^7\n", svParams.waveCount);
 
         svParams.wavePending = qtrue;
         svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;

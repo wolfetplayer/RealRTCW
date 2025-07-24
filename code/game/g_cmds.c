@@ -1932,7 +1932,7 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 					if ( ent->r.svFlags & SVF_CASTAI ) {
 						ent->s.onFireEnd = level.time + 6000;
 					} else {
-						ent->s.onFireEnd = level.time + FIRE_FLASH_TIME;
+						ent->s.onFireEnd = level.time + 1000;
 					}
 				} else {
 					ent->s.onFireEnd = level.time + 99999;  // make sure it goes for longer than they need to die

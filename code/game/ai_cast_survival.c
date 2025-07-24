@@ -811,8 +811,8 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			break;
 
 		case AICHAR_PARTISAN:
-			newHealth = 250 + steps * stepMultiplier;
-			if (newHealth > 800) newHealth = 800;
+			newHealth = 500 + steps * stepMultiplier;
+			if (newHealth > 1000) newHealth = 1000;
 			break;
 
 		case AICHAR_PRIEST:

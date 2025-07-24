@@ -944,7 +944,7 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
 	player = AICast_FindEntityForName("player");
     // DEBUG: log current kill progress
    // Com_Printf("^2[AI_SURVIVE] waveKillCount = %d, killCountRequirement = %d, wavePending = %d^7\n",
-        svParams.waveKillCount, svParams.killCountRequirement, svParams.wavePending);
+      //  svParams.waveKillCount, svParams.killCountRequirement, svParams.wavePending);
 
 	if (svParams.waveKillCount < svParams.killCountRequirement)
 	{

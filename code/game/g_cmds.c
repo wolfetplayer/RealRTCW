@@ -1893,6 +1893,12 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 			break; // Don't apply flamethrower effects
 		}
 
+		// Skip flame effects for dead entities in Survival mode
+		if (g_gametype.integer == GT_SURVIVAL && ent->client && ent->health <= 0)
+		{
+			break;
+		}
+
 		if ( ent->takedamage && !AICast_NoFlameDamage( ent->s.number ) ) {
 			#define FLAME_THRESHOLD 10
 

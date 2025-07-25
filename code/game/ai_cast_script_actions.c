@@ -1490,8 +1490,8 @@ qboolean AICast_ScriptAction_IncreaseRespawns(cast_state_t *cs, char *params) {
     }
 
     // Optional: Print debug information
-    G_Printf("AI '%s' respawnsleft increased by %d. New value: %d\n",
-             aiName, amount, targetCs->respawnsleft);
+    //G_Printf("AI '%s' respawnsleft increased by %d. New value: %d\n",
+           //  aiName, amount, targetCs->respawnsleft);
 
     return qtrue;
 }

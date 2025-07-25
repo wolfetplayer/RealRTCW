@@ -1888,6 +1888,11 @@ void ClientDamage( gentity_t *clent, int entnum, int enemynum, int id ) {
 		break;
 	case CLDMG_FLAMETHROWER:
 
+		if (ent->client && ent->client->ps.powerups[PW_BATTLESUIT_SURV])
+		{
+			break; // Don't apply flamethrower effects
+		}
+
 		if ( ent->takedamage && !AICast_NoFlameDamage( ent->s.number ) ) {
 			#define FLAME_THRESHOLD 10
 

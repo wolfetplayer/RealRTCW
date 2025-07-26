@@ -765,17 +765,17 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 		case AICHAR_ELITEGUARD:
 			newHealth = 30 + steps * stepMultiplier;
-			if (newHealth > 140) newHealth = 140;
+			if (newHealth > 150) newHealth = 150;
 			break;
 
 		case AICHAR_BLACKGUARD:
 			newHealth = 40 + steps * stepMultiplier;
-			if (newHealth > 180) newHealth = 180;
+			if (newHealth > 200) newHealth = 200;
 			break;
 
 		case AICHAR_VENOM:
 			newHealth = 50 + steps * stepMultiplier;
-			if (newHealth > 250) newHealth = 250;
+			if (newHealth > 500) newHealth = 500;
 			break;
 
 		case AICHAR_ZOMBIE_SURV:
@@ -787,24 +787,24 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			break;
 
 		case AICHAR_ZOMBIE_GHOST:
-			newHealth = 20 + steps * stepMultiplier;
-			if (newHealth > 200) newHealth = 200;
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
-			break;
-
-		case AICHAR_WARZOMBIE:
-			newHealth = 40 + steps * stepMultiplier;
+			newHealth = 30 + steps * stepMultiplier;
 			if (newHealth > 300) newHealth = 300;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
 			break;
 
+		case AICHAR_WARZOMBIE:
+			newHealth = 50 + steps * stepMultiplier;
+			if (newHealth > 500) newHealth = 500;
+			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
+			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
+			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
+			break;
+
 		case AICHAR_PROTOSOLDIER:
-			newHealth = 500 + steps * stepMultiplier;
-			if (newHealth > 1000) newHealth = 1000;
+			newHealth = 1000 + steps * stepMultiplier;
+			if (newHealth > 1000) newHealth = 2000;
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.5f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
@@ -875,46 +875,46 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 
 	switch (characterNum) {
 		case AICHAR_SOLDIER:
-			aimSkill     = fminf(0.1f + delta, 0.6f);
-			aimAccuracy  = fminf(0.1f + delta, 0.6f);
-			attackSkill  = fminf(0.1f + delta, 0.6f);
+			aimSkill     = fminf(0.1f + delta, 0.7f);
+			aimAccuracy  = fminf(0.1f + delta, 0.7f);
+			attackSkill  = fminf(0.1f + delta, 0.7f);
 			aggression   = fminf(0.1f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.5f);
+			reactionTime = fmaxf(1.0f - delta, 0.4f);
 			break;
 		case AICHAR_ELITEGUARD:
-			aimSkill     = fminf(0.3f + delta, 0.7f);
-			aimAccuracy  = fminf(0.3f + delta, 0.7f);
-			attackSkill  = fminf(0.3f + delta, 0.7f);
+			aimSkill     = fminf(0.3f + delta, 0.8f);
+			aimAccuracy  = fminf(0.3f + delta, 0.8f);
+			attackSkill  = fminf(0.3f + delta, 0.8f);
 			aggression   = fminf(0.3f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.4f);
+			reactionTime = fmaxf(1.0f - delta, 0.3f);
 			break;
 		case AICHAR_BLACKGUARD:
-			aimSkill     = fminf(0.4f + delta, 0.7f);
-			aimAccuracy  = fminf(0.4f + delta, 0.7f);
-			attackSkill  = fminf(0.4f + delta, 0.7f);
-			aggression   = fminf(0.5f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.4f);
-			break;
-		case AICHAR_VENOM:
-			aimSkill     = fminf(0.4f + delta, 0.8f);
-			aimAccuracy  = fminf(0.4f + delta, 0.8f);
-			attackSkill  = fminf(0.4f + delta, 0.8f);
-			aggression   = fminf(0.5f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.4f);
-			break;
-		case AICHAR_PROTOSOLDIER:
-			aimSkill     = fminf(0.4f + delta, 0.8f);
-			aimAccuracy  = fminf(0.4f + delta, 0.8f);
-			attackSkill  = fminf(0.4f + delta, 0.8f);
+			aimSkill     = fminf(0.4f + delta, 0.9f);
+			aimAccuracy  = fminf(0.4f + delta, 0.9f);
+			attackSkill  = fminf(0.4f + delta, 0.9f);
 			aggression   = fminf(0.5f + delta, 1.0f);
 			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			break;
+		case AICHAR_VENOM:
+			aimSkill     = fminf(0.4f + delta, 0.9f);
+			aimAccuracy  = fminf(0.4f + delta, 0.9f);
+			attackSkill  = fminf(0.4f + delta, 0.9f);
+			aggression   = fminf(0.5f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			break;
+		case AICHAR_PROTOSOLDIER:
+			aimSkill     = fminf(0.4f + delta, 0.9f);
+			aimAccuracy  = fminf(0.4f + delta, 0.9f);
+			attackSkill  = fminf(0.4f + delta, 0.9f);
+			aggression   = fminf(0.5f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.2f);
 			break;
 		case AICHAR_PARTISAN:
 			aimSkill     = 0.9f;
 			aimAccuracy  = 0.9f;
 			attackSkill  = 0.9f;
 			aggression   = 0.9f;
-			reactionTime = 0.4f;
+			reactionTime = 0.2f;
 			break;
 		case AICHAR_ZOMBIE_SURV:
 		case AICHAR_ZOMBIE_FLAME:

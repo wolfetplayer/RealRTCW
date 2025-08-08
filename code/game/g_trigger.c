@@ -1252,51 +1252,6 @@ You specify which objective it is with a number in "count"
   "count"		The objective number
   "track"		If this is specified, it will override the default message
 */
-#define AXIS_OBJECTIVE      1
-#define ALLIED_OBJECTIVE    2
-
-void Touch_objective_info( gentity_t *ent, gentity_t *other, trace_t *trace ) {
-
-    int price;
-	int ammoPrice;
-    char *weaponName;
-	int isWeapon;
-
-    price = ent->price;
-    weaponName = ent->translation;
-	ammoPrice = price /2;
-	isWeapon = ent->isWeapon;
-	
-
-    if ( price && weaponName ) {
-		if (isWeapon) {
-        trap_SendServerCommand( other - g_entities, va( "cpbuy \"weapon: %s\nprice: %d\nammo_price: %d\"", weaponName, price, ammoPrice));
-		} else {
-		trap_SendServerCommand( other - g_entities, va( "cpbuy \"item: %s\nprice: %d\"", weaponName, price));
-		}
-    } else if ( other->timestamp <= level.time ) {
-        other->timestamp = level.time + 4500;
-
-        if ( ent->track ) {
-            if ( ent->spawnflags & AXIS_OBJECTIVE ) {
-                trap_SendServerCommand( other - g_entities, va( "oid 0 \"" S_COLOR_RED "You are near %s\n\"", ent->track ) );
-            } else if ( ent->spawnflags & ALLIED_OBJECTIVE ) {
-                trap_SendServerCommand( other - g_entities, va( "oid 1 \"" S_COLOR_BLUE "You are near %s\n\"", ent->track ) );
-            } else {
-                trap_SendServerCommand( other - g_entities, va( "oid -1 \"You are near %s\n\"", ent->track ) );
-            }
-        } else {
-            if ( ent->spawnflags & AXIS_OBJECTIVE ) {
-                trap_SendServerCommand( other - g_entities, va( "oid 0 \"" S_COLOR_RED "You are near objective #%i\n\"", ent->count ) );
-            } else if ( ent->spawnflags & ALLIED_OBJECTIVE ) {
-                trap_SendServerCommand( other - g_entities, va( "oid 1 \"" S_COLOR_BLUE "You are near objective #%i\n\"", ent->count ) );
-            } else {
-                trap_SendServerCommand( other - g_entities, va( "oid -1 \"You are near objective #%i\n\"", ent->count ) );
-            }
-        }
-    }
-}
-
 
 void SP_trigger_objective_info( gentity_t *ent ) {
 	ent->touch  = Touch_objective_info;

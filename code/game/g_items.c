@@ -128,7 +128,9 @@ int Pickup_Powerup( gentity_t *ent, gentity_t *other ) {
 		{
 			if (COM_BitCheck(other->client->ps.weapons, w))
 			{
-				Add_Ammo(other, w, ammoTable[w].maxammo, qtrue);
+				int ammo = BG_GetMaxAmmo(&other->client->ps, w, svParams.ltAmmoBonus);
+
+				Add_Ammo(other, w, ammo, qtrue);
 			}
 		}
 	}
@@ -416,104 +418,104 @@ Fill_Clip
 	push reserve ammo into available space in the clip
 ==============
 */
-void Fill_Clip( playerState_t *ps, int weapon ) {
-	int inclip, maxclip, ammomove;
-	int ammoweap = BG_FindAmmoForWeapon( weapon );
-
-	if ( weapon < WP_LUGER || weapon >= WP_NUM_WEAPONS ) {
+void Fill_Clip(playerState_t *ps, int weapon) {
+	if (weapon < WP_LUGER || weapon >= WP_NUM_WEAPONS) {
 		return;
 	}
 
-	if ( g_dmflags.integer & DF_NO_WEAPRELOAD ) {
+	if (g_dmflags.integer & DF_NO_WEAPRELOAD) {
 		return;
 	}
 
-	inclip  = ps->ammoclip[BG_FindClipForWeapon( weapon )];
-	maxclip = ammoTable[weapon].maxclip;
+	int clipIndex = BG_FindClipForWeapon(weapon);
+	int ammoIndex = BG_FindAmmoForWeapon(weapon);
 
-	ammomove = maxclip - inclip;    // max amount that can be moved into the clip
+	int inclip   = ps->ammoclip[clipIndex];
+	int maxclip  = BG_GetMaxClip(ps, weapon);
+	int ammomove = maxclip - inclip;
 
 	// cap move amount if it's more than you've got in reserve
-	if ( ammomove > ps->ammo[ammoweap] ) {
-		ammomove = ps->ammo[ammoweap];
+	if (ammomove > ps->ammo[ammoIndex]) {
+		ammomove = ps->ammo[ammoIndex];
 	}
 
-	if ( ammomove ) {
-		if ( !ps->aiChar || ps->ammo[ammoweap] < 999 ) {  // RF, dont take ammo away if they need unlimited supplies
-			ps->ammo[ammoweap] -= ammomove;
+	if (ammomove > 0) {
+		if (!ps->aiChar || ps->ammo[ammoIndex] < 999) { // RF: allow infinite ammo for AI
+			ps->ammo[ammoIndex] -= ammomove;
 		}
-		ps->ammoclip[BG_FindClipForWeapon( weapon )] += ammomove;
+		ps->ammoclip[clipIndex] += ammomove;
 	}
 }
 
 /*
 ==============
 Add_Ammo
-	Try to always add ammo here unless you have specific needs
-	(like the AI "infinite ammo" where they get below 900 and force back up to 999)
-
-	fillClip will push the ammo straight through into the clip and leave the rest in reserve
 ==============
 */
-void Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip ) {
-	int ammoweap = BG_FindAmmoForWeapon( weapon );
-	qboolean noPack = qfalse;       // no extra ammo in your 'pack'
+void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
+	int ammoweap = BG_FindAmmoForWeapon(weapon);
+	qboolean noPack = qfalse; // no extra ammo in your 'pack'
 
 	ent->client->ps.ammo[ammoweap] += count;
 
-	switch ( ammoweap ) {
-	// some weaps load straight into the 'clip' since they have no storage outside the clip
-
-	case WP_GRENADE_LAUNCHER:       // make sure if he picks up a grenade that he get's the "launcher" too
-	case WP_GRENADE_PINEAPPLE:
-	case WP_DYNAMITE:
-	case WP_POISONGAS:
-    case WP_KNIFE:
-		COM_BitSet( ent->client->ps.weapons, ammoweap );
-	case WP_TESLA:
-	case WP_FLAMETHROWER:
-	case WP_HOLYCROSS:
-		noPack = qtrue;
-		break;
-	default:
-		break;
+	switch (ammoweap) {
+		// Some weapons load straight into the 'clip'
+		case WP_GRENADE_LAUNCHER:
+		case WP_GRENADE_PINEAPPLE:
+		case WP_DYNAMITE:
+		case WP_POISONGAS:
+		case WP_KNIFE:
+			COM_BitSet(ent->client->ps.weapons, ammoweap);
+		case WP_TESLA:
+		case WP_FLAMETHROWER:
+		case WP_HOLYCROSS:
+			noPack = qtrue;
+			break;
+		default:
+			break;
 	}
 
-	if ( fillClip || noPack ) {
-		Fill_Clip( &ent->client->ps, weapon );
+	if (fillClip || noPack) {
+		Fill_Clip(&ent->client->ps, weapon);
 	}
 
-	if ( ent->aiCharacter ) {
-		noPack = qfalse;    // let AI's deal with their own clip/ammo handling
-
+	if (ent->aiCharacter) {
+		noPack = qfalse; // let AI handle its own logic
 	}
-	// cap to max ammo
-	if ( noPack ) {
+
+	// Cap to max ammo
+	if (noPack) {
 		ent->client->ps.ammo[ammoweap] = 0;
 	} else {
-		if ( ent->client->ps.ammo[ammoweap] > ammoTable[ammoweap].maxammo ) {
-			ent->client->ps.ammo[ammoweap] = ammoTable[ammoweap].maxammo;
+		int maxAmmo = BG_GetMaxAmmo(&ent->client->ps, weapon, svParams.ltAmmoBonus);
+
+		if (ent->client->ps.ammo[ammoweap] > maxAmmo) {
+			ent->client->ps.ammo[ammoweap] = maxAmmo;
 		}
 
-		if ( count >= 999 ) { // 'really, give /all/'
+		// Special case: "give all"
+		if (count >= 999) {
 			ent->client->ps.ammo[ammoweap] = count;
 		}
 	}
 
-		switch (ammoweap) {
-		case WP_KNIFE:
-			ent->client->ps.ammoclip[ammoweap] += count;
+	// Special case: knife throwing ammo in clip
+	if (ammoweap == WP_KNIFE)
+	{
+		ent->client->ps.ammoclip[ammoweap] += count;
 
-			if( ent->client->ps.ammoclip[ammoweap] > ammoTable[ammoweap].maxammo ) {
-				ent->client->ps.ammoclip[ammoweap] = ammoTable[ammoweap].maxammo;
-			}
-			break;
+		int maxclip = BG_GetMaxClip(&ent->client->ps, WP_KNIFE);
+		if (ent->client->ps.ammoclip[ammoweap] > maxclip)
+		{
+			ent->client->ps.ammoclip[ammoweap] = maxclip;
+		}
 	}
 
-	if ( ent->client->ps.ammoclip[ammoweap] > ammoTable[ammoweap].maxclip ) {
-		ent->client->ps.ammoclip[ammoweap] = ammoTable[ammoweap].maxclip;
+	// Final clip clamp using upgrade-aware maxclip
+	int maxclip = BG_GetMaxClip(&ent->client->ps, weapon);
+	if (ent->client->ps.ammoclip[ammoweap] > maxclip) {
+		ent->client->ps.ammoclip[ammoweap] = maxclip;
 	}
-
 }
 
 /*
@@ -583,20 +585,26 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 
 	weapon = ent->item->giTag;
 
-
-	if ( ent->count < 0 ) {
+	if (ent->count < 0)
+	{
 		quantity = 0; // None for you, sir!
-	} else {
-		if ( ent->count ) {
+	}
+	else
+	{
+		if (ent->count)
+		{
 			quantity = ent->count;
-		} else {
-			quantity = ( random() * ( ammoTable[weapon].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
+		}
+		else
+		{
+			int maxclip = BG_GetMaxClip(&other->client->ps, weapon);
+			quantity = (random() * (maxclip - 4)) + 4; // giving 4 to <maxclip>
 		}
 
-		if (g_decaychallenge.integer) {
+		if (g_decaychallenge.integer)
+		{
 			quantity = 999;
 		}
-
 	}
 
 	if (( weapon == WP_PPSH ) && strstr (level.scriptAI, "Factory"))
@@ -644,15 +652,17 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
+	if (ent->item->giTag == WP_KNIFE)
+	{
+		int maxclip = BG_GetMaxClip(&other->client->ps, WP_KNIFE);
 
-		if ( ent->item->giTag == WP_KNIFE ){
-		if ( other->client->ps.ammoclip[ent->item->giTag] < ammoTable[WP_KNIFE].maxammo  ){
-			Add_Ammo( other, ent->item->giTag, 1, qfalse );
+		if (other->client->ps.ammoclip[WP_KNIFE] < maxclip)
+		{
+			Add_Ammo(other, WP_KNIFE, 1, qfalse);
 			return -1;
 		}
 		return 0;
 	}
-
 	// check if player already had the weapon
 	alreadyHave = COM_BitCheck( other->client->ps.weapons, weapon );
 
@@ -812,27 +822,27 @@ qboolean IsUpgradingWeapon( gentity_t *other, weapon_t weapon ) {
 	}
 }
 
-qboolean NeedAmmo(gentity_t *other, weapon_t weapon ) {
+qboolean NeedAmmo(gentity_t *other, weapon_t weapon) {
 	int ammoweap;
 
-	if ( G_FindWeaponSlot( other, weapon ) < 0 ) {
-		weapon_t altWeapon = GetWeaponTableData( weapon )->weapAlts;
+	if (G_FindWeaponSlot(other, weapon) < 0) {
+		weapon_t altWeapon = GetWeaponTableData(weapon)->weapAlts;
 
-		if ( !altWeapon ) {
+		if (!altWeapon) {
 			return qfalse;
 		}
 
-		if ( G_FindWeaponSlot( other, altWeapon ) < 0 ) {
+		if (G_FindWeaponSlot(other, altWeapon) < 0) {
 			return qfalse;
 		}
 
-		ammoweap = BG_FindAmmoForWeapon( altWeapon );
-
+		ammoweap = BG_FindAmmoForWeapon(altWeapon);
 	} else {
-		ammoweap = BG_FindAmmoForWeapon( weapon );
+		ammoweap = BG_FindAmmoForWeapon(weapon);
 	}
 
-	return other->client->ps.ammo[ ammoweap ] < ammoTable[ ammoweap ].maxammo;
+	int maxAmmo = BG_GetMaxAmmo(&other->client->ps, ammoweap, svParams.ltAmmoBonus);
+	return other->client->ps.ammo[ammoweap] < maxAmmo;
 }
 
 /**
@@ -866,6 +876,9 @@ void G_RemoveWeapon( gentity_t *ent, weapon_t weapon ) {
 		ent->client->ps.weaponSlots[ simpleSlotId ] = WP_NONE;
 		}
 	}
+
+	// Clear out upgraded weapon
+	ent->client->ps.weaponUpgraded[weapon] = 0;
 
 	// Clear out empty weapon, change to next best weapon
 	// 																G_AddEvent( ent, EV_CHANGE_WEAPON, 0 );
@@ -1044,16 +1057,27 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		return 0;
 	}
 
-	if ( ent->count < 0 ) {
+	if (ent->count < 0)
+	{
 		quantity = 0; // None for you, sir!
-	} else {
-		if ( ent->count ) {
+	}
+	else
+	{
+		if (ent->count)
+		{
 			quantity = ent->count;
-		} else {
-			quantity = ( random() * ( ammoTable[ weapon ].maxclip - 4 ) ) + 4;    // giving 4-<item default count>
+		}
+		else
+		{
+			int maxclip = (other && other->client)
+							  ? BG_GetMaxClip(&other->client->ps, weapon)
+							  : ammoTable[weapon].maxclip;
+
+			quantity = (random() * (maxclip - 4)) + 4; // giving 4 to maxclip
 		}
 
-		if ( g_decaychallenge.integer ) {
+		if (g_decaychallenge.integer)
+		{
 			quantity = 999;
 		}
 	}
@@ -1071,12 +1095,17 @@ int Pickup_Weapon_New_Inventory( gentity_t *ent, gentity_t *other ) {
 		}
 	}
 
-	if ( weapon == WP_KNIFE ) {
-		if ( other->client->ps.ammoclip[ weapon ] < ammoTable[ WP_KNIFE ].maxammo ) {
-			Add_Ammo( other, weapon, 1, qfalse );
+	if (weapon == WP_KNIFE)
+	{
+		int maxAmmo = BG_GetMaxAmmo(&other->client->ps, weapon, svParams.ltAmmoBonus);
+
+		if (other->client->ps.ammoclip[weapon] < maxAmmo)
+		{
+			Add_Ammo(other, weapon, 1, qfalse);
 		}
 
-		if ( !( ent->spawnflags & 8 ) ) {
+		if (!(ent->spawnflags & 8))
+		{
 			return RESPAWN_SP;
 		}
 

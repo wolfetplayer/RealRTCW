@@ -309,6 +309,7 @@ char    *modNames[] = {
 	"MOD_VENOM",
 	"MOD_VENOM_FULL",
 	"MOD_FLAMETHROWER",
+	"MOD_FLAMETRAP",
 	"MOD_TESLA",
 	"MOD_GRENADE_PINEAPPLE",
 	"MOD_CROSS",
@@ -436,10 +437,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		return;
 	}
 
-//----(SA) commented out as we have no hook
-//	if (self->client && self->client->hook)
-//		Weapon_HookFree(self->client->hook);
-
 	self->client->ps.pm_type = PM_DEAD;
 
 	if ( attacker ) {
@@ -495,16 +492,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// Add team bonuses
 	Team_FragBonuses( self, inflictor, attacker );
 
-	// if client is in a nodrop area, don't drop anything
-// JPW NERVE new drop behavior
-
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
-			if (g_gametype.integer == GT_SURVIVAL) {
-			TossClientItems( self, attacker );
-			TossClientPowerups( self, attacker );
-			}
 		}
 
 	Cmd_Score_f( self );        // show scores
@@ -546,14 +536,14 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// g_forcerespawn may force spawning at some later time
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
-		self->client->respawnTime = level.time + 7000; // 10 seconds
+		self->client->respawnTime = level.time + 12000; 
 
 		// Fetch the number of waves and enemies killed
 		int numberOfWaves = svParams.waveCount;
 		int numberOfEnemiesKilled = svParams.survivalKillCount;
 
 		// Format the message
-		const char *messageTemplate = "Game Over \n You reached level %d and killed %d enemies";
+		const char *messageTemplate = "Game Over \n You reached wave %d and killed %d enemies";
 		char message[256];
 		snprintf(message, sizeof(message), messageTemplate, numberOfWaves, numberOfEnemiesKilled);
 
@@ -577,15 +567,8 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	contents = trap_PointContents( self->r.currentOrigin, -1 );
 
 	if ( self->health <= GIB_HEALTH && !( contents & CONTENTS_NODROP ) && g_blood.integer ) {
-//		if(self->client->ps.eFlags & EF_HEADSHOT)
-//		{
-//			GibHead(self, killer);
-//		}
-//		else	// gib death
-//		{
 		GibEntity( self, killer );
 		nogib = qfalse;
-//		}
 	}
 
 	if ( nogib ) {
@@ -611,9 +594,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			self->health = GIB_HEALTH + 1;
 		}
 
-// JPW NERVE for medic
 		self->client->medicHealAmt = 0;
-// jpw
 
 		self->client->ps.legsAnim =
 			( ( self->client->ps.legsAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT ) | anim;
@@ -712,6 +693,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	// get out quick for ai's that don't take headshots
 	case AICHAR_ZOMBIE:
 	case AICHAR_ZOMBIE_SURV:
+	case AICHAR_ZOMBIE_FLAME:
 	case AICHAR_ZOMBIE_GHOST:
 	case AICHAR_WARZOMBIE:
 	case AICHAR_HELGA:     
@@ -1496,6 +1478,8 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			}
 
 		} else if ( targ->pain ) {
+			targ->lastPainMOD = mod; // set mod for AICast_Pain to access
+			
 			if ( dir ) {  // Ridah, had to add this to fix NULL dir crash
 				VectorCopy( dir, targ->rotate );
 				VectorCopy( point, targ->pos3 ); // this will pass loc of hit
@@ -1504,7 +1488,9 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				VectorClear( targ->pos3 );
 			}
 
-			targ->pain( targ, attacker, take, point );
+			targ->pain(targ, attacker, take, point);
+
+			targ->lastPainMOD = 0; // optional: reset after use
 		}
 
 		G_ArmorDamage( targ );    //----(SA)	moved out to separate routine
@@ -1719,16 +1705,27 @@ qboolean G_RadiusDamage( vec3_t origin, gentity_t *attacker, float damage, float
 		points = damage * ( 1.0 - dist / radius );
 
 // JPW NERVE -- different radiusdmg behavior for MP -- big explosions should do less damage (over less distance) through failed traces
-		if ( CanDamage( ent, origin ) ) {
-			if ( LogAccuracyHit( ent, attacker ) ) {
+		if (CanDamage(ent, origin))
+		{
+			if (LogAccuracyHit(ent, attacker))
+			{
 				hitClient = qtrue;
 			}
-			VectorSubtract( ent->r.currentOrigin, origin, dir );
-			// push the center of mass higher than the origin so players
-			// get knocked into the air more
+			VectorSubtract(ent->r.currentOrigin, origin, dir);
 			dir[2] += 24;
 
-			G_Damage( ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod );
+			int finalDamage = (int)points;
+
+			// Reduce self-damage in Survival mode only
+			if (ent == attacker && attacker->client)
+			{
+				if (mod == MOD_ROCKET_SPLASH && g_gametype.integer == GT_SURVIVAL)
+				{
+					finalDamage *= 0.3f;
+				}
+			}
+
+			G_Damage(ent, NULL, attacker, dir, origin, finalDamage, DAMAGE_RADIUS, mod);
 		}
 	}
 	return hitClient;
@@ -1815,15 +1812,16 @@ qboolean G_RadiusDamage2( vec3_t origin, gentity_t *inflictor, gentity_t *attack
 		        if (!ent->client) //&& ent->s.eType != ET_CORPSE )
                     continue;
                 break;
-
             case RADIUS_SCOPE_NOCLIENTS:
 		        if (ent->client)
                     continue;
                 break;
             case RADIUS_SCOPE_AI:
-		        if (!ent->aiCharacter)
-                    continue;
-                break;
+				if (!ent->aiCharacter)
+					continue; 
+				if (ent->health <= 0)
+					continue;
+				break;
 		}
 
 		if(	ent->waterlevel == 3 && mod == MOD_POISONGAS) {

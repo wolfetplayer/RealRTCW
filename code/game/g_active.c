@@ -196,22 +196,33 @@ void P_WorldEffects( gentity_t *ent ) {
 	//
 	// check for burning from flamethrower
 	//
-	if (ent->s.onFireEnd > level.time && (AICast_AllowFlameDamage(ent->s.number)))
+	if (ent->s.onFireEnd > level.time && AICast_AllowFlameDamage(ent->s.number))
 	{
 		gentity_t *attacker = &g_entities[ent->flameBurnEnt];
+		int damageMOD = MOD_FLAMETHROWER;
+
+		// In Survival mode, if flame source is a props_flamethrower, treat differently
+		if (g_gametype.integer == GT_SURVIVAL)
+		{
+			if (!attacker || !attacker->client)
+			{
+				if (attacker && attacker->classname && !Q_stricmp(attacker->classname, "props_flamethrower"))
+				{
+					attacker = &g_entities[0]; // Force attacker to be player
+					damageMOD = MOD_FLAMETRAP; // Use specific mod
+				}
+			}
+		}
 
 		if (ent->health > 0)
 		{
 			int oldHealth = ent->health;
 
-			// Apply damage
-			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, MOD_FLAMETHROWER);
+			// Apply damage with selected MOD
+			G_Damage(ent, attacker, attacker, NULL, NULL, 2, DAMAGE_NO_KNOCKBACK, damageMOD);
 
-			// Calculate inflicted damage
-			int inflictedDmg = oldHealth - ent->health;
-
-			// If no damage was dealt, remove the flame effect
-			if (inflictedDmg <= 0)
+			// Stop fire effect if no damage is dealt
+			if ((oldHealth - ent->health) <= 0)
 			{
 				ent->s.onFireEnd = 0;
 			}
@@ -1768,12 +1779,12 @@ void ClientEndFrame( gentity_t *ent ) {
 			AICast_CheckDangerousEntity( ent, DANGER_CLIENTAIM, HOLYCROSS_RANGE + 150, 0.5, 0.6, ( ent->client->buttons & BUTTON_ATTACK ? qtrue : qfalse ) );
 			break;
 		case WP_MONSTER_ATTACK1:
-			if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
+			if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST | ent->aiCharacter == AICHAR_ZOMBIE_FLAME  ) {
 				AICast_CheckDangerousEntity( ent, DANGER_CLIENTAIM | DANGER_FLAMES, FLAMETHROWER_RANGE + 150, 0.5, 0.8, qtrue );
 			}
 			break;
 		case WP_MONSTER_ATTACK2:
-			if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST  ) {
+			if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST || ent->aiCharacter == AICHAR_ZOMBIE_FLAME   ) {
 				if ( ent->client->ps.eFlags & EF_MONSTER_EFFECT ) {
 					AICast_CheckDangerousEntity( ent, 0, 4000, 0.5, 0.8, qtrue );
 				}

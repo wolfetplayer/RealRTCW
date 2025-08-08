@@ -46,14 +46,18 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char **itemName, int *itemIndex);
 qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int price);
 qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gitem_t *item, int price);
+qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int price) ;
 qboolean Survival_HandleArmorPurchase(gentity_t *activator, gitem_t *item, int price);
 qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price);
 int Survival_GetDefaultWeaponPrice(int weapon);
 int Survival_GetDefaultPerkPrice(int perk);
+void Touch_objective_info ( gentity_t * ent , gentity_t * other , trace_t * trace ) ;
 
 // Misc stuff
 void TossClientItems(gentity_t *self, gentity_t *attacker);
 void TossClientPowerups(gentity_t *self, gentity_t *attacker);
+gentity_t *SelectSpawnPoint_AI ( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) ;
+void AICast_TickSurvivalWave( void );
 
 
 // Survival parameters
@@ -66,6 +70,12 @@ typedef struct svParams_s
 	int waveCount;
 	int waveKillCount;
 	int killCountRequirement;
+
+	int spawnedThisWave;
+	int spawnedThisWaveFriendly;
+	qboolean wavePending;              
+    int waveChangeTime;
+	qboolean waveInProgress;
 
 	// loaded from .surv file
 	int initialKillCountRequirement;
@@ -81,14 +91,21 @@ typedef struct svParams_s
 	int initialGhostsCount;
 	int initialPriestsCount;
 	int initialPartisansCount;
+	int initialFlamersCount;
 
-	float healthIncreaseMultiplier;
-	float speedIncreaseDivider;
+    int   defaultSpawnTime;
+	int   egSpawnTime;
+	int   bgSpawnTime;
+	int   vSpawnTime;
+	int   protoSpawnTime;
 
-	float spawnTimeFalloffMultiplier;
-	int   minSpawnTime;
-	int   startingSpawnTime;
-    int   friendlySpawnTime;
+	int   warzSpawnTime;
+	int   ghostSpawnTime;
+	int   priestSpawnTime;
+	int   flamerSpawnTime;
+
+	int   friendlySpawnTime;
+	int   aliveFriendliestoCallReinforce;
 
 	int soldiersIncrease;
 	int eliteGuardsIncrease;
@@ -97,9 +114,9 @@ typedef struct svParams_s
 	int zombiesIncrease;
 	int warriorsIncrease;
 	int protosIncrease;
-	int partisansIncrease;
 	int ghostsIncrease;
 	int priestsIncrease;
+	int flamersIncrease;
 
 	int maxSoldiers;
 	int maxEliteGuards;
@@ -111,7 +128,7 @@ typedef struct svParams_s
 	int maxProtos;
 	int maxGhosts;
 	int maxPriests;
-	int maxPartisans;
+	int maxFlamers;
 
 	int waveEg;
 	int waveBg;
@@ -121,34 +138,7 @@ typedef struct svParams_s
 	int waveProtos;
 	int waveGhosts;
 	int wavePriests;
-
-	int wavePartisans;
-
-	int zombieHealthCap;
-	int warriorHealthCap;
-	int protosHealthCap;
-	int ghostHealthCap;
-	int priestHealthCap;
-
-	int partisansHealthCap;
-
-	int soldierHealthCap;	
-	int eliteGuardHealthCap;
-	int blackGuardHealthCap;
-	int venomHealthCap;
-
-	int soldierBaseHealth;
-	int eliteGuardBaseHealth;
-	int blackGuardBaseHealth;
-	int venomBaseHealth;
-
-	int partisansBaseHealth;
-
-	int zombieBaseHealth;
-	int warriorBaseHealth;
-	int protosBaseHealth;
-	int ghostBaseHealth;
-	int priestBaseHealth;
+	int waveFlamers;
 
 	int powerupDropChance;
 	int powerupDropChanceScavengerIncrease;
@@ -164,11 +154,62 @@ typedef struct svParams_s
 	int maxPerks;
 	int maxPerksEng;
 
-	int armorDefaultPrice;
-	int randomPerkDefaultPrice;
-	int randomWeaponDefaultPrice;
+	int armorPrice;
+	int randomPerkPrice;
+	int randomWeaponPrice;
+	int weaponUpgradePrice;
+	int upgradedAmmoPrice;
 
-	char announcerSound[ANNOUNCE_SOUNDS_COUNT][MAX_QPATH];
+	int secondchancePrice;
+	int runnerPrice;
+	int scavengerPrice;
+	int fasthandsPrice;
+	int doubleshotPrice;
+	int resiliencePrice;
+	int defaultPerkPrice;
+
+	int knifePrice;
+	int lugerPrice;
+	int coltPrice;
+	int silencerPrice;
+	int tt33Price;
+	int revolverPrice;
+	int akimboPrice;
+	int hdmPrice;
+	int dualtt33Price;
+	int mp40Price;
+	int stenPrice;
+	int mp34Price;
+	int thompsonPrice;
+	int ppshPrice;
+	int mauserPrice;
+	int mosinPrice;
+	int delislePrice;
+	int sniperriflePrice;
+	int snooperScopePrice;
+	int m1garandPrice;
+	int g43Price;
+	int m1941Price;
+	int mp44Price;
+	int barPrice;
+	int fg42Price;
+	int shotgunPrice;
+	int auto5Price;
+	int mg42mPrice;
+	int browningPrice;
+	int panzerPrice;
+	int flamerPrice;
+	int teslaPrice;
+	int venomPrice;
+	int grenPrice;
+	int pineapplePrice;
+	int defaultWeaponPrice;
+
+	int intermissionTime;
+	int prepareTime;
+
+	float ltAmmoBonus;
+	float soldierExplosiveDmgBonus;
 
 } svParams_t;
 

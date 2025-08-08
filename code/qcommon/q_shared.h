@@ -89,7 +89,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LEGACY_HEARTBEAT_FOR_MASTER	"Wolfenstein-1"
 
 #ifndef PRODUCT_VERSION
-  #define PRODUCT_VERSION "5.1" // iortcw 1.51
+  #define PRODUCT_VERSION "5.2" // iortcw 1.51
 #endif
 
 #ifndef PRODUCT_DATE
@@ -1535,6 +1535,8 @@ typedef struct playerState_s {
 
 	// 1NTERRUPTOR
 	printLabel_t scriptAccumLabel;
+
+	int weaponUpgraded[MAX_WEAPONS]; // 0 = not upgraded, 1 = upgraded
 
 } playerState_t;
 

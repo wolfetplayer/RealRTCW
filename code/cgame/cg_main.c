@@ -520,9 +520,9 @@ cvarTable_t cvarTable[] = {
 	
 
 	// JPW NERVE
-	{ &cg_medicChargeTime,  "g_medicChargeTime", "20000", 0 }, // communicated by systeminfo
-	{ &cg_LTChargeTime, "g_LTChargeTime", "35000", 0 }, // communicated by systeminfo
-	{ &cg_engineerChargeTime,   "g_engineerChargeTime", "30000", 0 }, // communicated by systeminfo
+	{ &cg_medicChargeTime,  "g_medicChargeTime", "40000", 0 }, // communicated by systeminfo
+	{ &cg_LTChargeTime, "g_LTChargeTime", "40000", 0 }, // communicated by systeminfo
+	{ &cg_engineerChargeTime,   "g_engineerChargeTime", "40000", 0 }, // communicated by systeminfo
 	{ &cg_soldierChargeTime,    "g_soldierChargeTime", "20000", 0 }, // communicated by systeminfo
 	{ &cg_bluelimbotime,        "g_bluelimbotime", "30000", 0 }, // communicated by systeminfo
 	{ &cg_redlimbotime,         "g_redlimbotime", "30000", 0 }, // communicated by systeminfo

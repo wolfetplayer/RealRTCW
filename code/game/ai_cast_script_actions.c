@@ -50,6 +50,8 @@ If you have questions concerning this license or the applicable additional terms
 
 #include <stdlib.h> // for rand()
 
+#include "g_survival.h"
+
 /*
 Contains the code to handle the various commands available with an event script.
 
@@ -1051,34 +1053,47 @@ qboolean AICast_ScriptAction_SetAmmo( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: setammo without ammo count\n" );
 	}
 
-	if ( weapon != WP_NONE ) {
-		// give them the ammo
-		if (Q_strcasecmp(token, "full") == 0) {
-        // Set the ammo amount to the maximum ammo size for the weapon
-        int amt = ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo;
-        Add_Ammo( &g_entities[cs->entityNum], weapon, amt, qtrue );
-    } else if ( atoi( token ) ) {
-			int amt;
-			amt = atoi( token );
-			if ( amt > 50 + ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo ) {
-				if ( cs->aiCharacter ) { 
-				amt = 999;  // unlimited
-				} else {
-					amt = ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo;
+	if (weapon != WP_NONE)
+	{
+		playerState_t *ps = &g_entities[cs->entityNum].client->ps;
+        int ammoIndex = BG_FindAmmoForWeapon(weapon);
+		int maxAmmo = BG_GetMaxAmmo(ps, weapon, 1.5f);
+
+		if (Q_strcasecmp(token, "full") == 0)
+		{
+			// Set the ammo amount to the maximum ammo size for the weapon
+			Add_Ammo(&g_entities[cs->entityNum], weapon, maxAmmo, qtrue);
+		}
+		else if (atoi(token))
+		{
+			int amt = atoi(token);
+			if (amt > 50 + maxAmmo)
+			{
+				if (cs->aiCharacter)
+				{
+					amt = 999; // unlimited
+				}
+				else
+				{
+					amt = maxAmmo;
 				}
 			}
-			Add_Ammo( &g_entities[cs->entityNum], weapon, amt, qtrue );
-		} else {
+			Add_Ammo(&g_entities[cs->entityNum], weapon, amt, qtrue);
+		}
+		else
+		{
 			// remove ammo for this weapon
-			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 0;
-			g_entities[cs->entityNum].client->ps.ammoclip[BG_FindClipForWeapon( weapon )] = 0;
+			ps->ammo[ammoIndex] = 0;
+			ps->ammoclip[BG_FindClipForWeapon(weapon)] = 0;
 		}
-
-	} else {
-		if ( g_cheats.integer ) {
-			G_Printf( "--SCRIPTER WARNING-- AI Scripting: setammo: unknown ammo \"%s\"\n", params );
+	}
+	else
+	{
+		if (g_cheats.integer)
+		{
+			G_Printf("--SCRIPTER WARNING-- AI Scripting: setammo: unknown ammo \"%s\"\n", params);
 		}
-		return qfalse;  // (SA) temp as scripts transition to new names
+		return qfalse; // (SA) temp as scripts transition to new names
 	}
 
 	return qtrue;
@@ -1125,33 +1140,45 @@ qboolean AICast_ScriptAction_SetClip( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: setclip without ammo count\n" );
 	}
 
-	if ( weapon != WP_NONE ) {
-		if (Q_strcasecmp(token, "full") == 0) {
-        // Set the clip amount to the maximum clip size for the weapon
-        g_entities[cs->entityNum].client->ps.ammoclip[BG_FindClipForWeapon( weapon )] = ammoTable[weapon].maxclip;
-    } else {
+	if (weapon != WP_NONE)
+	{
+		playerState_t *ps = &g_entities[cs->entityNum].client->ps;
 
-		int spillover = atoi( token ) - ammoTable[weapon].maxclip;
+		int clipIndex = BG_FindClipForWeapon(weapon);
+        int ammoIndex = BG_FindAmmoForWeapon(weapon);
+		int maxclip = BG_GetMaxClip(ps, weapon);
 
-		if ( spillover > 0 ) {
-			// there was excess, put it in storage and fill the clip
-			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] += spillover;
-			g_entities[cs->entityNum].client->ps.ammoclip[BG_FindClipForWeapon( weapon )] = ammoTable[weapon].maxclip;
-		} else {
-			// set the clip amount to the exact specified value
-			g_entities[cs->entityNum].client->ps.ammoclip[weapon] = atoi( token );
+		if (Q_strcasecmp(token, "full") == 0)
+		{
+			// Set the clip amount to the maximum clip size for the weapon
+			ps->ammoclip[clipIndex] = maxclip;
+		}
+		else
+		{
+			int requested = atoi(token);
+			int spillover = requested - maxclip;
+
+			if (spillover > 0)
+			{
+				// There was excess, put it in storage and fill the clip
+				ps->ammo[ammoIndex] += spillover;
+				ps->ammoclip[clipIndex] = maxclip;
+			}
+			else
+			{
+				// Set the clip amount to the exact specified value
+				ps->ammoclip[clipIndex] = requested;
+			}
 		}
 	}
-
-	} else {
-//		G_Printf( "--SCRIPTER WARNING-- AI Scripting: setclip: unknown weapon \"%s\"\n", params );
-		return qfalse;  // (SA) temp as scripts transition to new names
+	else
+	{
+		//		G_Printf( "--SCRIPTER WARNING-- AI Scripting: setclip: unknown weapon \"%s\"\n", params );
+		return qfalse; // (SA) temp as scripts transition to new names
 	}
 
 	return qtrue;
 }
-
-
 
 /*
 ==============
@@ -1410,6 +1437,66 @@ qboolean AICast_ScriptAction_GiveAmmo( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+
+/*
+==============
+AICast_ScriptAction_IncreaseRespawns
+
+  syntax: increaserespawns <ainame> <amount>
+
+  Increases the respawnsleft value for the specified AI entity by the specified amount.
+==============
+*/
+qboolean AICast_ScriptAction_IncreaseRespawns(cast_state_t *cs, char *params) {
+    char *pString, *token;
+    char aiName[MAX_QPATH];
+    int amount;
+    gentity_t *targetEnt;
+    cast_state_t *targetCs;
+
+    // Parse the AI name
+    pString = params;
+    token = COM_ParseExt(&pString, qfalse);
+    if (!token[0]) {
+        G_Error("AI Scripting: increaserespawns requires an AI name and an amount\n");
+    }
+    Q_strncpyz(aiName, token, sizeof(aiName));
+
+    // Parse the amount
+    token = COM_ParseExt(&pString, qfalse);
+    if (!token[0]) {
+        G_Error("AI Scripting: increaserespawns requires an amount\n");
+    }
+    amount = atoi(token);
+
+    // Find the target entity by AI name
+    targetEnt = AICast_FindEntityForName(aiName);
+    if (!targetEnt || !targetEnt->client) {
+        G_Error("AI Scripting: increaserespawns could not find AI with name '%s'\n", aiName);
+    }
+
+    // Get the cast state of the target entity
+    targetCs = AICast_GetCastState(targetEnt->s.clientNum);
+    if (!targetCs) {
+        G_Error("AI Scripting: increaserespawns could not get cast state for AI '%s'\n", aiName);
+    }
+
+    // Increase the respawnsleft value
+    targetCs->respawnsleft += amount;
+
+    // Ensure respawnsleft does not go below 0
+    if (targetCs->respawnsleft < 0) {
+        targetCs->respawnsleft = 0;
+    }
+
+    // Optional: Print debug information
+    //G_Printf("AI '%s' respawnsleft increased by %d. New value: %d\n",
+           //  aiName, amount, targetCs->respawnsleft);
+
+    return qtrue;
+}
+
+
 /*
 ==============
 AICast_ScriptAction_GiveHealth
@@ -1514,7 +1601,7 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		{
 			if (g_newinventory.integer > 0 || g_gametype.integer == GT_SURVIVAL)
 			{
-				if (weapon != WP_AIRSTRIKE && weapon != WP_ARTY && weapon != WP_POISONGAS_MEDIC) // Skip WP_AIRSTRIKE and WP_ARTY	
+				if (weapon != WP_AIRSTRIKE && weapon != WP_ARTY && weapon != WP_POISONGAS_MEDIC & weapon != WP_DYNAMITE_ENG) // Skip WP_AIRSTRIKE and WP_ARTY	
 				{
 					if (ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_SOLDIER)
 					{
@@ -1544,6 +1631,12 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
 		}
+		if ( weapon == WP_M7 ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M1GARAND );
+		}
+		if ( weapon == WP_M1GARAND ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M7 );
+		}
 		if ( weapon == WP_DELISLESCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLE );
 		}
@@ -1563,7 +1656,7 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		}
 
 		// conditional flags
-		if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
+		if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST || ent->aiCharacter == AICHAR_ZOMBIE_FLAME ) {
 			if ( COM_BitCheck( ent->client->ps.weapons, WP_MONSTER_ATTACK1 ) ) {
 				cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
 				SET_FLAMING_ZOMBIE( ent->s, 1 );
@@ -1834,6 +1927,12 @@ if ( !Q_strcasecmp (params, "soviet_random") )
 		if ( weapon == WP_SNIPERRIFLE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_MAUSER );
 		}
+		if ( weapon == WP_M7 ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M1GARAND );
+		}
+		if ( weapon == WP_M1GARAND ) {
+			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M7 );
+		}
 		if ( weapon == WP_DELISLESCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLE );
 		}
@@ -1842,8 +1941,8 @@ if ( !Q_strcasecmp (params, "soviet_random") )
 		}
 //----(SA)	end
 
-        // giveweaponfull gives you max ammo and fills your clip for all weapons
-		g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
+		// giveweaponfull gives you max ammo and fills your clip for all weapons
+        g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 999;
 		Fill_Clip( &g_entities[cs->entityNum].client->ps, weapon );
 		// and also selects this weapon
 		if ( cs->bs ) {
@@ -1859,7 +1958,7 @@ if ( !Q_strcasecmp (params, "soviet_random") )
 		}    
 		
 		// conditional flags
-		if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST ) {
+		if ( ent->aiCharacter == AICHAR_ZOMBIE || ent->aiCharacter == AICHAR_ZOMBIE_SURV || ent->aiCharacter == AICHAR_ZOMBIE_GHOST || ent->aiCharacter == AICHAR_ZOMBIE_FLAME ) {
 			if ( COM_BitCheck( ent->client->ps.weapons, WP_MONSTER_ATTACK1 ) ) {
 				cs->aiFlags |= AIFL_NO_FLAME_DAMAGE;
 				SET_FLAMING_ZOMBIE( ent->s, 1 );
@@ -2519,6 +2618,52 @@ qboolean AICast_ScriptAction_ChangeAiName(cast_state_t* cs, char* params) {
 	return qtrue;
 }
 
+
+/*
+AICast_ScriptAction_ChangeAiSkin
+syntax: changeaiskin <skin path>
+*/
+qboolean AICast_ScriptAction_ChangeAiSkin(cast_state_t *cs, char *params)
+{
+	if (!params || !params[0]) {
+		G_Error("AI Scripting: changeaiskin requires a skin string for %s\n", g_entities[cs->entityNum].aiName);
+		return qtrue;
+	}
+
+	gentity_t *ent = &g_entities[cs->entityNum];
+
+	char userinfo[MAX_INFO_STRING];
+	trap_GetUserinfo(ent->s.number, userinfo, sizeof(userinfo));
+	Info_SetValueForKey(userinfo, "model", params);
+	trap_SetUserinfo(ent->s.number, userinfo);
+	ClientUserinfoChanged(ent->s.number);
+
+	return qtrue;
+}
+
+/*
+AICast_ScriptAction_ChangeAiHead
+syntax: changeaihead <headID>
+*/
+qboolean AICast_ScriptAction_ChangeAiHead(cast_state_t* cs, char* params)
+{
+	if (!params || !params[0]) {
+		G_Error("AI Scripting: changeaihead requires a head string for %s\n", g_entities[cs->entityNum].aiName);
+		return qtrue;
+	}
+
+	gentity_t* ent = &g_entities[cs->entityNum];
+
+	// Update userinfo
+	char userinfo[MAX_INFO_STRING];
+	trap_GetUserinfo(ent->s.number, userinfo, sizeof(userinfo));
+	Info_SetValueForKey(userinfo, "head", params);
+	trap_SetUserinfo(ent->s.number, userinfo);
+	ClientUserinfoChanged(ent->s.number);
+
+	return qtrue;
+}
+
 /*
 =================
 AICast_ScriptAction_Accum
@@ -2652,6 +2797,79 @@ qboolean AICast_ScriptAction_Accum( cast_state_t *cs, char *params ) {
 	}
 
 	return qtrue;
+}
+
+
+/*
+=================
+AICast_ScriptAction_Wave
+
+  syntax: wave <command> <parameter>
+
+  Commands (similar to accum):
+    wave abort_if_less_than <n>
+    wave abort_if_greater_than <n>
+    wave abort_if_not_equal <n>
+    wave abort_if_equal <n>
+    wave bitset <n>
+    wave bitreset <n>
+    wave abort_if_bitset <n>
+    wave abort_if_not_bitset <n>
+=================
+*/
+qboolean AICast_ScriptAction_Wave(cast_state_t *cs, char *params) {
+    char *pString, *token, lastToken[MAX_QPATH];
+    int value;
+
+    pString = params;
+
+    token = COM_ParseExt(&pString, qfalse);
+    if (!token[0]) {
+        G_Error("AI Scripting: wave without a command\n");
+    }
+
+    Q_strncpyz(lastToken, token, sizeof(lastToken));
+    token = COM_ParseExt(&pString, qfalse);
+
+    if (!token[0]) {
+        G_Error("AI Scripting: wave %s requires a parameter\n", lastToken);
+    }
+
+    value = atoi(token);
+
+    if (!Q_stricmp(lastToken, "abort_if_less_than")) {
+        if (svParams.waveCount < value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_greater_than")) {
+        if (svParams.waveCount > value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_not_equal")) {
+        if (svParams.waveCount != value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_equal")) {
+        if (svParams.waveCount == value) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "bitset")) {
+        svParams.waveCount |= (1 << value);
+    } else if (!Q_stricmp(lastToken, "bitreset")) {
+        svParams.waveCount &= ~(1 << value);
+    } else if (!Q_stricmp(lastToken, "abort_if_bitset")) {
+        if (svParams.waveCount & (1 << value)) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else if (!Q_stricmp(lastToken, "abort_if_not_bitset")) {
+        if (!(svParams.waveCount & (1 << value))) {
+            cs->castScriptStatus.castScriptStackHead = cs->castScriptEvents[cs->castScriptStatus.castScriptEventIndex].stack.numItems;
+        }
+    } else {
+        G_Error("AI Scripting: wave %s: unknown command\n", lastToken);
+    }
+
+    return qtrue;
 }
 
 /*

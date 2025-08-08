@@ -80,8 +80,6 @@ If you have questions concerning this license or the applicable additional terms
 #define FL_NODRAW               0x01000000
 #define FL_DOORNOISE            0x02000000  //----(SA)	added
 
-#define ANNOUNCE_SOUNDS_COUNT 32
-
 // movers are things like doors, plats, buttons, etc
 typedef enum {
 	MOVER_POS1,
@@ -447,7 +445,8 @@ struct gentity_s {
 	int price;                 // item price, survival mode
     char  *buy_item;
 	int isWeapon;    
-	int wave;				   // wave number, survival mode           
+	int wave;				   // wave number, survival mode   
+	int lastPainMOD; // last meansOfDeath used in pain function        
 };
 
 // Ridah
@@ -976,7 +975,6 @@ int TeamCount( int ignoreClientNum, team_t team );
 team_t PickTeam( int ignoreClientNum );
 void SetClientViewAngle( gentity_t *ent, vec3_t angle );
 gentity_t *SelectSpawnPoint( vec3_t avoidPoint, vec3_t origin, vec3_t angles );
-gentity_t *SelectSpawnPoint_AI ( gentity_t *player, gentity_t *ent, vec3_t origin, vec3_t angles ) ;
 void ClientRespawn(gentity_t *ent);
 void BeginIntermission( void );
 void InitBodyQue( void );

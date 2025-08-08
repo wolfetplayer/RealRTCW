@@ -2497,8 +2497,9 @@ static byte decode_buffer[MUSIC_BUFFER_SIZE];
    S_AL_MusicSourceGet
    =================
    */
-static void S_AL_MusicSourceGet( void )
-{
+//static void S_AL_MusicSourceGet( void )
+//{
+  /*
   // Allocate a musicSource at high priority
   musicSourceHandle = S_AL_SrcAlloc(-1, SRCPRI_STREAM, -2, 0, 0);
   if(musicSourceHandle == -1)
@@ -2518,21 +2519,24 @@ static void S_AL_MusicSourceGet( void )
   qalSource3f(musicSource, AL_DIRECTION,       0.0, 0.0, 0.0);
   qalSourcef (musicSource, AL_ROLLOFF_FACTOR,  0.0          );
   qalSourcei (musicSource, AL_SOURCE_RELATIVE, AL_TRUE      );
-}
+  */
+//}
 
 /*
    =================
    S_AL_MusicSourceFree
    =================
    */
-static void S_AL_MusicSourceFree( void )
-{
+//static void S_AL_MusicSourceFree( void )
+//{
+  /*
   // Release the output musicSource
   S_AL_SrcUnlock(musicSourceHandle);
   S_AL_SrcKill(musicSourceHandle);
   musicSource = 0;
   musicSourceHandle = -1;
-}
+  */
+//}
 
 /*
    =================
@@ -2559,28 +2563,37 @@ static void S_AL_CloseMusicFiles(void)
    S_AL_StopBackgroundTrack
    =================
    */
-  static
-void S_AL_StopBackgroundTrack( void )
+static void S_AL_StopBackgroundTrack(void)
 {
-  if(!musicPlaying)
-    return;
+    ALint queued;
 
-  // Stop playing
-  qalSourceStop(musicSource);
+    if (!musicPlaying)
+        return;
 
-  // Detach any buffers
-  qalSourcei(musicSource, AL_BUFFER, 0);
+    // Stop playback
+    qalSourceStop(musicSource);
 
-  // Delete the buffers
-  qalDeleteBuffers(NUM_MUSIC_BUFFERS, musicBuffers);
+    // Unqueue ALL buffers before trying to delete or detach
+    qalGetSourcei(musicSource, AL_BUFFERS_QUEUED, &queued);
+    while (queued-- > 0)
+    {
+        ALuint buffer;
+        qalSourceUnqueueBuffers(musicSource, 1, &buffer);
+    }
 
-  // Free the musicSource
-  S_AL_MusicSourceFree();
+    // Detach any remaining buffer just in case
+    qalSourcei(musicSource, AL_BUFFER, 0);
 
-  // Unload the stream
-  S_AL_CloseMusicFiles();
+    // Now it's safe to delete
+    qalDeleteBuffers(NUM_MUSIC_BUFFERS, musicBuffers);
 
-  musicPlaying = qfalse;
+    // Free the music source handle (e.g. from pool)
+   //S_AL_MusicSourceFree();
+
+    // Close streams
+    S_AL_CloseMusicFiles();
+
+    musicPlaying = qfalse;
 }
 
 /*
@@ -2657,78 +2670,75 @@ void S_AL_MusicProcess(ALuint b)
    S_AL_StartBackgroundTrack
    =================
    */
-  static
-void S_AL_StartBackgroundTrack( const char *intro, const char *loop )
+static void S_AL_StartBackgroundTrack(const char *intro, const char *loop)
 {
-  int i;
-  qboolean issame;
+    int i;
+    qboolean issame;
 
-  Com_DPrintf( "S_AL_StartBackgroundTrack( %s, %s )\n", intro, loop );
+    Com_DPrintf("S_AL_StartBackgroundTrack( %s, %s )\n", intro, loop);
 
-  // Stop any existing music that might be playing
-  S_AL_StopBackgroundTrack();
+    // Stop any existing music and clean state
+    S_AL_StopBackgroundTrack();
 
-  Cvar_Set( "s_currentMusic", "" ); //----(SA)	so the savegame will have the right music
+    Cvar_Set("s_currentMusic", "");
 
-  if((!intro || !*intro) && (!loop || !*loop))
-    return;
+    if ((!intro || !*intro) && (!loop || !*loop))
+        return;
 
-  // Allocate a musicSource
-  S_AL_MusicSourceGet();
-  if(musicSourceHandle == -1)
-    return;
+    // 🔥 Generate a new OpenAL source every time
+    qalGenSources(1, &musicSource);
+    if (!musicSource)
+    {
+        Com_Printf("^1[OpenAL] Failed to generate new music source!\n");
+        return;
+    }
 
-  if (!loop || !*loop)
-  {
-    loop = intro;
-    issame = qtrue;
-  }
-  else if(intro && *intro && !strcmp(intro, loop))
-    issame = qtrue;
-  else
-    issame = qfalse;
+    musicSourceHandle = 1; // Set to anything valid
 
-  // Copy the loop over
-  Q_strncpyz( s_backgroundLoop, loop, sizeof( s_backgroundLoop ) );
+    if (!loop || !*loop)
+    {
+        loop = intro;
+        issame = qtrue;
+    }
+    else if (intro && *intro && !strcmp(intro, loop))
+        issame = qtrue;
+    else
+        issame = qfalse;
 
-  if(!issame)
-  {
-    // Open the intro and don't mind whether it succeeds.
-    // The important part is the loop.
-    intro_stream = S_CodecOpenStream(intro);
-  }
-  else
-    intro_stream = NULL;
+    Q_strncpyz(s_backgroundLoop, loop, sizeof(s_backgroundLoop));
 
-  Cvar_Set( "s_currentMusic", s_backgroundLoop ); //----(SA)	so the savegame will have the right music
+    if (!issame)
+        intro_stream = S_CodecOpenStream(intro);
+    else
+        intro_stream = NULL;
 
-  mus_stream = S_CodecOpenStream(s_backgroundLoop);
-  if(!mus_stream)
-  {
-    S_AL_CloseMusicFiles();
-    S_AL_MusicSourceFree();
-    return;
-  }
+    Cvar_Set("s_currentMusic", s_backgroundLoop);
 
-  // Generate the musicBuffers
-  if (!S_AL_GenBuffers(NUM_MUSIC_BUFFERS, musicBuffers, "music"))
-    return;
+    mus_stream = S_CodecOpenStream(s_backgroundLoop);
+    if (!mus_stream)
+    {
+        S_AL_CloseMusicFiles();
+        qalDeleteSources(1, &musicSource);
+        musicSource = 0;
+        musicSourceHandle = -1;
+        return;
+    }
 
-  // Queue the musicBuffers up
-  for(i = 0; i < NUM_MUSIC_BUFFERS; i++)
-  {
-    S_AL_MusicProcess(musicBuffers[i]);
-  }
+    if (!S_AL_GenBuffers(NUM_MUSIC_BUFFERS, musicBuffers, "music"))
+        return;
 
-  qalSourceQueueBuffers(musicSource, NUM_MUSIC_BUFFERS, musicBuffers);
+    for (i = 0; i < NUM_MUSIC_BUFFERS; i++)
+    {
+        S_AL_MusicProcess(musicBuffers[i]);
+    }
 
-  // Set the initial gain property
-  S_AL_Gain(musicSource, s_alGain->value * s_musicVolume->value);
+    qalSourceQueueBuffers(musicSource, NUM_MUSIC_BUFFERS, musicBuffers);
 
-  // Start playing
-  qalSourcePlay(musicSource);
+    S_AL_Gain(musicSource, s_alGain->value * s_musicVolume->value);
 
-  musicPlaying = qtrue;
+    qalSourcePlay(musicSource);
+
+    musicPlaying = qtrue;
 }
 
 /*

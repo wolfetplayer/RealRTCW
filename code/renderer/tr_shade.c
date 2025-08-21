@@ -484,10 +484,10 @@ static void ProjectDlightTexture_scalar( void ) {
 	vec3_t	origin;
 	float	*texCoords;
 	byte	*colors;
-	byte	clipBits[SHADER_MAX_VERTEXES];
-	float	texCoordsArray[SHADER_MAX_VERTEXES][2];
-	byte	colorArray[SHADER_MAX_VERTEXES][4];
-	glIndex_t	hitIndexes[SHADER_MAX_INDEXES];
+	static  byte	clipBits[SHADER_MAX_VERTEXES];
+	static  float	texCoordsArray[SHADER_MAX_VERTEXES][2];
+	static  byte	colorArray[SHADER_MAX_VERTEXES][4];
+	static  glIndex_t	hitIndexes[SHADER_MAX_INDEXES];
 	int		numIndexes;
 	float	scale;
 	float	radius;

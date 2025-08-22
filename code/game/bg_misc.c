@@ -3788,7 +3788,7 @@ model="models/weapons2/sp5/sp5.md3"
 		WP_SILENCER,
 		WP_LUGER,
 		WP_SILENCER,
-		WP_LUGER,
+		WP_SILENCER,	// don't sync clips with luger since they are separated
 		"",                 
 		"",                  
 		{0,0,0,0,0,0}

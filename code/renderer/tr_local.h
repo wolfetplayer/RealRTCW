@@ -616,7 +616,7 @@ typedef enum {
 } surfaceType_t;
 
 typedef struct drawSurf_s {
-	unsigned sort;                      // bit combination for fast compares
+    uint64_t     sort;     // was unsigned / uint32_t; now 64-bit
 	surfaceType_t       *surface;       // any of surface*_t
 } drawSurf_t;
 
@@ -1033,15 +1033,25 @@ removed	: used to be clipped flag
 
 */
 
-#define	QSORT_FOGNUM_SHIFT	2
-#define	QSORT_REFENTITYNUM_SHIFT	11
-#define	QSORT_SHADERNUM_SHIFT	(QSORT_REFENTITYNUM_SHIFT+REFENTITYNUM_BITS)
-#if (QSORT_SHADERNUM_SHIFT+SHADERNUM_BITS) > 64
-	#error "Need to update sorting, too many bits."
+#define DLIGHTMAP_BITS         2
+#define FOG_BITS               5
+
+#define QSORT_DLIGHTMAP_SHIFT      0
+#define QSORT_FOGNUM_SHIFT         2
+#define QSORT_ATI_TESS_SHIFT       8
+#define QSORT_REFENTITYNUM_SHIFT   11
+#define QSORT_SHADERNUM_SHIFT      (QSORT_REFENTITYNUM_SHIFT + REFENTITYNUM_BITS)
+
+// Compile-time guard: total bits must fit in 64
+#if (QSORT_SHADERNUM_SHIFT + SHADERNUM_BITS) > 64
+#  error "Need to update sorting, too many bits for 64-bit key."
 #endif
 
-// GR - tessellation flag in bit 8
-#define QSORT_ATI_TESS_SHIFT    8
+// Helpful masks (64-bit)
+#define QSORT_DLIGHTMAP_MASK   ((uint64_t)((1u << DLIGHTMAP_BITS) - 1))
+#define QSORT_FOGNUM_MASK      ((uint64_t)((1u << FOG_BITS) - 1))
+#define QSORT_SHADERNUM_MASK   ((uint64_t)((1u << SHADERNUM_BITS) - 1))
+
 // GR - TruForm flags
 #define ATI_TESS_TRUFORM    1
 #define ATI_TESS_NONE       0
@@ -1163,7 +1173,7 @@ typedef struct {
 	trRefEntity_t           *currentEntity;
 	trRefEntity_t worldEntity;                  // point currentEntity at this when rendering world
 	int currentEntityNum;
-	int shiftedEntityNum;                       // currentEntityNum << QSORT_REFENTITYNUM_SHIFT
+    uint64_t shiftedEntityNum;                    // currentEntityNum << QSORT_REFENTITYNUM_SHIFT
 	model_t                 *currentModel;
 
 	viewParms_t viewParms;
@@ -1421,7 +1431,7 @@ void R_TagInfo_f( void );
 void R_AddPolygonSurfaces( void );
 
 // GR - add tessellation flag
-void R_DecomposeSort( unsigned sort, int *entityNum, shader_t **shader,
+void R_DecomposeSort( uint64_t sort, int *entityNum, shader_t **shader,
 					  int *fogNum, int *dlightMap, int *atiTess );
 
 // GR - add tessellation flag

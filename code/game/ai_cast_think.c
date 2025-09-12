@@ -1688,6 +1688,10 @@ void AICast_QueryThink( cast_state_t *cs ) {
 
 	ent = &g_entities[cs->entityNum];
 	ocs = AICast_GetCastState( cs->enemyNum );
+	if ( ocs == NULL )
+	{
+		return;
+	}
 
 	// never crouch while in this state (by choice anyway)
 	cs->attackcrouch_time = 0;

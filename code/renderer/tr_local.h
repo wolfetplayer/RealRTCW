@@ -991,8 +991,8 @@ void        R_Modellist_f( void );
 //====================================================
 extern refimport_t ri;
 
-#define MAX_DRAWIMAGES          2048
-#define MAX_SKINS               1024
+#define MAX_DRAWIMAGES          4096	// was 2048
+#define MAX_SKINS               2048	// was 1024
 
 
 #define MAX_DRAWSURFS           0x10000

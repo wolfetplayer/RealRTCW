@@ -1053,47 +1053,34 @@ qboolean AICast_ScriptAction_SetAmmo( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: setammo without ammo count\n" );
 	}
 
-	if (weapon != WP_NONE)
-	{
-		playerState_t *ps = &g_entities[cs->entityNum].client->ps;
-        int ammoIndex = BG_FindAmmoForWeapon(weapon);
-		int maxAmmo = BG_GetMaxAmmo(ps, weapon, 1.5f);
-
-		if (Q_strcasecmp(token, "full") == 0)
-		{
-			// Set the ammo amount to the maximum ammo size for the weapon
-			Add_Ammo(&g_entities[cs->entityNum], weapon, maxAmmo, qtrue);
-		}
-		else if (atoi(token))
-		{
-			int amt = atoi(token);
-			if (amt > 50 + maxAmmo)
-			{
-				if (cs->aiCharacter)
-				{
-					amt = 999; // unlimited
-				}
-				else
-				{
-					amt = maxAmmo;
+	if ( weapon != WP_NONE ) {
+		// give them the ammo
+		if (Q_strcasecmp(token, "full") == 0) {
+        // Set the ammo amount to the maximum ammo size for the weapon
+        int amt = ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo;
+        Add_Ammo( &g_entities[cs->entityNum], weapon, amt, qtrue );
+    } else if ( atoi( token ) ) {
+			int amt;
+			amt = atoi( token );
+			if ( amt > 50 + ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo ) {
+				if ( cs->aiCharacter ) { 
+				amt = 999;  // unlimited
+				} else {
+					amt = ammoTable[BG_FindAmmoForWeapon( weapon )].maxammo;
 				}
 			}
-			Add_Ammo(&g_entities[cs->entityNum], weapon, amt, qtrue);
-		}
-		else
-		{
+			Add_Ammo( &g_entities[cs->entityNum], weapon, amt, qtrue );
+		} else {
 			// remove ammo for this weapon
-			ps->ammo[ammoIndex] = 0;
-			ps->ammoclip[BG_FindClipForWeapon(weapon)] = 0;
+			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] = 0;
+			g_entities[cs->entityNum].client->ps.ammoclip[BG_FindClipForWeapon( weapon )] = 0;
 		}
-	}
-	else
-	{
-		if (g_cheats.integer)
-		{
-			G_Printf("--SCRIPTER WARNING-- AI Scripting: setammo: unknown ammo \"%s\"\n", params);
+
+	} else {
+		if ( g_cheats.integer ) {
+			G_Printf( "--SCRIPTER WARNING-- AI Scripting: setammo: unknown ammo \"%s\"\n", params );
 		}
-		return qfalse; // (SA) temp as scripts transition to new names
+		return qfalse;  // (SA) temp as scripts transition to new names
 	}
 
 	return qtrue;

@@ -2215,7 +2215,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 		return;
 	}
 
-	if ( weapon < WP_KNIFE || weapon > WP_HOLYCROSS ) {
+	if ( weapon < WP_KNIFE || weapon > WP_M7) {
 		return;
 	}
 

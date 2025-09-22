@@ -1140,41 +1140,27 @@ qboolean AICast_ScriptAction_SetClip( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: setclip without ammo count\n" );
 	}
 
-	if (weapon != WP_NONE)
-	{
-		playerState_t *ps = &g_entities[cs->entityNum].client->ps;
+	if ( weapon != WP_NONE ) {
+		if (Q_strcasecmp(token, "full") == 0) {
+        // Set the clip amount to the maximum clip size for the weapon
+        g_entities[cs->entityNum].client->ps.ammoclip[BG_FindClipForWeapon( weapon )] = ammoTable[weapon].maxclip;
+    } else {
 
-		int clipIndex = BG_FindClipForWeapon(weapon);
-        int ammoIndex = BG_FindAmmoForWeapon(weapon);
-		int maxclip = BG_GetMaxClip(ps, weapon);
+		int spillover = atoi( token ) - ammoTable[weapon].maxclip;
 
-		if (Q_strcasecmp(token, "full") == 0)
-		{
-			// Set the clip amount to the maximum clip size for the weapon
-			ps->ammoclip[clipIndex] = maxclip;
-		}
-		else
-		{
-			int requested = atoi(token);
-			int spillover = requested - maxclip;
-
-			if (spillover > 0)
-			{
-				// There was excess, put it in storage and fill the clip
-				ps->ammo[ammoIndex] += spillover;
-				ps->ammoclip[clipIndex] = maxclip;
-			}
-			else
-			{
-				// Set the clip amount to the exact specified value
-				ps->ammoclip[clipIndex] = requested;
-			}
+		if ( spillover > 0 ) {
+			// there was excess, put it in storage and fill the clip
+			g_entities[cs->entityNum].client->ps.ammo[BG_FindAmmoForWeapon( weapon )] += spillover;
+			g_entities[cs->entityNum].client->ps.ammoclip[BG_FindClipForWeapon( weapon )] = ammoTable[weapon].maxclip;
+		} else {
+			// set the clip amount to the exact specified value
+			g_entities[cs->entityNum].client->ps.ammoclip[weapon] = atoi( token );
 		}
 	}
-	else
-	{
-		//		G_Printf( "--SCRIPTER WARNING-- AI Scripting: setclip: unknown weapon \"%s\"\n", params );
-		return qfalse; // (SA) temp as scripts transition to new names
+
+	} else {
+//		G_Printf( "--SCRIPTER WARNING-- AI Scripting: setclip: unknown weapon \"%s\"\n", params );
+		return qfalse;  // (SA) temp as scripts transition to new names
 	}
 
 	return qtrue;

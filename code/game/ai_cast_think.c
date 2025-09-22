@@ -1778,23 +1778,16 @@ void AICast_DeadClipWalls( cast_state_t *cs ) {
 AICast_IdleReload
 ==================
 */
-void AICast_IdleReload(cast_state_t *cs) {
-	if (AICast_NoReload(cs->entityNum)) {
+void AICast_IdleReload( cast_state_t *cs ) {
+	if ( AICast_NoReload( cs->entityNum ) ) {
 		return;
 	}
-	if (cs->noReloadTime >= level.time) {
+	if ( cs->noReloadTime >= level.time ) {
 		return;
 	}
-
-	int weapon = cs->bs->cur_ps.weapon;
-	int clipIndex = BG_FindClipForWeapon(weapon);
-	int ammoIndex = BG_FindAmmoForWeapon(weapon);
-	int maxclip = BG_GetMaxClip(&cs->bs->cur_ps, weapon);
-
-	if (!(cs->bs->cur_ps.ammoclip[clipIndex] < (int)(0.75f * maxclip) &&
-	      cs->bs->cur_ps.ammo[ammoIndex])) {
+	if ( !( ( cs->bs->cur_ps.ammoclip[BG_FindClipForWeapon( cs->bs->cur_ps.weapon )] < (int)( 0.75 * ammoTable[cs->bs->cur_ps.weapon].maxclip ) ) && cs->bs->cur_ps.ammo[BG_FindAmmoForWeapon( cs->bs->cur_ps.weapon )] ) ) {
 		return;
 	}
-
-	trap_EA_Reload(cs->entityNum);
+	//
+	trap_EA_Reload( cs->entityNum );
 }

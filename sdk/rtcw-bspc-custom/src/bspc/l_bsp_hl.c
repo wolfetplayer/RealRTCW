@@ -260,8 +260,10 @@ FastChecksum
 int FastChecksum( void *buffer, int bytes ) {
 	int checksum = 0;
 
-	while ( bytes-- )
-		checksum = ( checksum << 4 ) ^ *( (char *)buffer )++;
+	while ( bytes-- ) {
+		checksum = ( checksum << 4 ) ^ *(char *)buffer;
+		buffer = (char *)buffer + 1;
+	}
 
 	return checksum;
 }
@@ -575,8 +577,8 @@ void    HL_LoadBSPFile( char *filename, int offset, int length ) {
 
 //============================================================================
 
-FILE        *wadfile;
-hl_dheader_t outheader;
+static FILE        *wadfile;
+static hl_dheader_t outheader;
 
 void HL_AddLump( int lumpnum, void *data, int len ) {
 	hl_lump_t *lump;

@@ -314,6 +314,66 @@ void R_ImageList_f( void ) {
 
 //=======================================================================
 
+
+/*
+================
+ResampleTexture
+
+Bilinear Interpolation
+================
+*/
+#define USE_ANOTHER_RESAMPLE	1
+#if USE_ANOTHER_RESAMPLE
+static void ResampleTexture(unsigned *in, int inwidth, int inheight, unsigned *out, int outwidth, int outheight) {
+    if (inwidth == outwidth && inheight == outheight) {
+        memcpy(out, in, inwidth * inheight * sizeof(unsigned));
+        return;
+    }
+
+    // fixed point calculation
+    int x_scale = (inwidth << 16) / outwidth;
+    int y_scale = (inheight << 16) / outheight;
+
+    for (int y = 0; y < outheight; y++) {
+        int y_fp = y * y_scale;
+        int y_int = y_fp >> 16;
+        int y_frac = (y_fp & 0xFFFF) >> 8;	// for weighted calculation
+        
+        int y0 = y_int;
+        int y1 = (y_int < inheight - 1) ? y_int + 1 : y_int;
+
+        for (int x = 0; x < outwidth; x++) {
+            int x_fp = x * x_scale;
+            int x_int = x_fp >> 16;
+            int x_frac = (x_fp & 0xFFFF) >> 8;
+            
+            int x0 = x_int;
+            int x1 = (x_int < inwidth - 1) ? x_int + 1 : x_int;
+
+            unsigned p00 = in[y0 * inwidth + x0];
+            unsigned p01 = in[y0 * inwidth + x1];
+            unsigned p10 = in[y1 * inwidth + x0];
+            unsigned p11 = in[y1 * inwidth + x1];
+
+            byte *c00 = (byte*) &p00;
+            byte *c01 = (byte*) &p01;
+            byte *c10 = (byte*) &p10;
+            byte *c11 = (byte*) &p11;
+            
+            byte result[4];
+            for (int i = 0; i < 4; i++) {
+                int p0_weighted = c00[i] * (256 - x_frac) + c01[i] * x_frac;
+                int p1_weighted = c10[i] * (256 - x_frac) + c11[i] * x_frac;
+                result[i] = (p0_weighted * (256 - y_frac) + p1_weighted * y_frac) >> 16;
+            }
+            
+            out[y * outwidth + x] = *(unsigned*) result;
+        }
+    }
+}
+
+#else
+
 /*
 ================
 ResampleTexture
@@ -363,6 +423,7 @@ static void ResampleTexture( unsigned *in, int inwidth, int inheight, unsigned *
 		}
 	}
 }
+#endif
 
 /*
 ================

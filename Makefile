@@ -33,7 +33,20 @@ ifndef BUILD_ARCHIVE
   BUILD_ARCHIVE = 0
 endif
 ifndef BUILD_BSPC
-  BUILD_BSPC = 1
+  BUILD_BSPC = 0
+endif
+ifndef ONLY_BSPC
+  ONLY_BSPC = 0
+endif
+
+ifneq ($(ONLY_BSPC),0)
+  BUILD_STANDALONE = 0
+  BUILD_CLIENT = 0
+  BUILD_SERVER = 0
+  BUILD_GAME_SO = 0
+  BUILD_GAME_QVM = 0
+  BUILD_BASEGAME = 0
+  BUILD_BSPC = 0
 endif
 
 #############################################################################
@@ -1160,6 +1173,11 @@ endif
 
 ifneq ($(BUILD_BSPC),0)
     TARGETS += $(B)/$(BSPCBIN)$(FULLBINEXT)
+    BSPC_CFLAGS += -DBSPC
+endif
+
+ifneq ($(ONLY_BSPC),0)
+    TARGETS = $(B)/$(BSPCBIN)$(FULLBINEXT)
     BSPC_CFLAGS += -DBSPC
 endif
 

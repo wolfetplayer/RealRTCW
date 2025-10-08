@@ -35,6 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 // Tab Size:		3
 //===========================================================================
 
+#include <stdbool.h>
 #include "l_cmd.h"
 #include "l_threads.h"
 #include "l_log.h"

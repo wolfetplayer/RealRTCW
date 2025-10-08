@@ -35,6 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 // Tab Size:		3
 //===========================================================================
 
+#include <stdbool.h>
 #if defined( WIN32 ) | defined( _WIN32 )
 #include <windows.h>
 #include <sys/types.h>

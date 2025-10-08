@@ -28,6 +28,7 @@ If you have questions concerning this license or the applicable additional terms
 
 // mathlib.c -- math primitives
 
+#include <stdbool.h>
 #include "l_cmd.h"
 #include "l_math.h"
 

@@ -35,6 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 // Tab Size:     3
 //===========================================================================
 
+#include <stdbool.h>
 #include "qbsp.h"
 
 extern int c_nodes;

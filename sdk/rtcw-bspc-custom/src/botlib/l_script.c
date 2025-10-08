@@ -39,7 +39,7 @@ If you have questions concerning this license or the applicable additional terms
 //#define BOTLIB
 //#define MEQCC
 //#define BSPC
-
+#include <stdbool.h>
 #ifdef SCREWUP
 #include <stdio.h>
 #include <stdlib.h>

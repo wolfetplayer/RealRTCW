@@ -30,6 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 //
 //  $Logfile:: /Wolf4/src/bspc/map_sin.c                                      $
 
+#include <stdbool.h>
 #include "qbsp.h"
 #include "l_bsp_sin.h"
 #include "aas_map.h"         //AAS_CreateMapBrushes

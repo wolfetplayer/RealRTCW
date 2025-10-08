@@ -37,6 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 //						creates bad brushes
 //===========================================================================
 
+#include <stdbool.h>
 #include "qbsp.h"
 #include "l_bsp_q1.h"
 #include "aas_map.h"         //AAS_CreateMapBrushes

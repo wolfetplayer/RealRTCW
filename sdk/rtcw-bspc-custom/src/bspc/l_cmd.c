@@ -29,6 +29,7 @@ If you have questions concerning this license or the applicable additional terms
 
 // cmdlib.c
 
+#include <stdbool.h>
 #include "l_cmd.h"
 #include "l_log.h"
 #include "l_mem.h"

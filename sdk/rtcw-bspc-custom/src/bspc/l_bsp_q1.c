@@ -27,6 +27,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 
+#include <stdbool.h>
 #include "l_cmd.h"
 #include "l_math.h"
 #include "l_mem.h"

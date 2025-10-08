@@ -38,6 +38,7 @@ If you have questions concerning this license or the applicable additional terms
 //						in micro brushes??
 //===========================================================================
 
+#include <stdbool.h>
 #include "qbsp.h"
 
 /*

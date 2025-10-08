@@ -40,6 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 // AAS,  Area Awareness System
 //===========================================================================
 
+#include <stdbool.h>
 #include "qbsp.h"
 #include "l_mem.h"
 #include "../botlib/aasfile.h"           //aas_bbox_t

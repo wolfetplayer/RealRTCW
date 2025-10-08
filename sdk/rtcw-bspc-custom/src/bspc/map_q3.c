@@ -35,6 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 // Tab Size:     3
 //===========================================================================
 
+#include <stdbool.h>
 #include "qbsp.h"
 #include "l_mem.h"
 #include "../botlib/aasfile.h"           //aas_bbox_t

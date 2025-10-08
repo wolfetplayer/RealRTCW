@@ -45,6 +45,8 @@ If you have questions concerning this license or the applicable additional terms
 //#define QUAKEC
 //#define MEQCC
 
+#include <stdbool.h>
+
 #ifdef SCREWUP
 #include <stdio.h>
 #include <stdlib.h>

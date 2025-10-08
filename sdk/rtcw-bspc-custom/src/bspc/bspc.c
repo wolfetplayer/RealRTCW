@@ -60,6 +60,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "aas_file.h"
 #include "aas_cfg.h"
 #include "be_aas_bspc.h"
+#include <stdbool.h>
 
 #define BSPC_VERSION        "2.1c-wolf"
 

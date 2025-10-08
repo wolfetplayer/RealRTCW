@@ -54,9 +54,28 @@ If you have questions concerning this license or the applicable additional terms
 
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
-typedef enum {false, true} qboolean;
-typedef unsigned char byte;
+
+/*
+ * C23 makes 'true'/'false' keywords. Under C23+ we use <stdbool.h>
+ * and map qtrue/qfalse to those keywords. Under older C standards,
+ * keep the classic enum with qfalse/qtrue.
+ */
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 202311L)
+  #include <stdbool.h>
+  typedef bool qboolean;
+  #ifndef qfalse
+    #define qfalse false
+  #endif
+  #ifndef qtrue
+    #define qtrue  true
+  #endif
+#else
+  typedef enum { qfalse = 0, qtrue = 1 } qboolean;
 #endif
+
+typedef unsigned char byte;
+
+#endif /* __BYTEBOOL__ */
 
 // the dec offsetof macro doesnt work very well...
 #define myoffsetof( type,identifier ) ( (size_t)&( (type *)0 )->identifier )

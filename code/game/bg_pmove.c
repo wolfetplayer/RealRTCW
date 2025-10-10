@@ -5073,6 +5073,7 @@ void PM_BeginM97Reload(void) {
 	// Choose which first person animation to play
 	if (pm->ps->ammoclip[BG_FindClipForWeapon(WP_M97)] == 0) {
 		anim = fastReload ? WEAP_ALTSWITCHFROM_FAST : WEAP_ALTSWITCHFROM;
+		PM_AddEvent(EV_M97_PUMP);
 		pm->ps->weaponTime += fastReload ? (ammoTable[WP_M97].shotgunPumpStart / 2) : ammoTable[WP_M97].shotgunPumpStart;
 		pm->ps->holdable[HI_M97] = M97_RELOADING_BEGIN_PUMP;
 	} else {

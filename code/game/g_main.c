@@ -176,6 +176,7 @@ vmCvar_t g_vanilla_guns;
 vmCvar_t g_dlc1;
 vmCvar_t g_class;
 vmCvar_t g_noobTube;
+vmCvar_t g_aiCollision;
 
 vmCvar_t g_playerSurvivalClass;
 
@@ -215,6 +216,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse },
+	{ &g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 
 	{ &g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
 

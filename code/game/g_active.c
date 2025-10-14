@@ -1201,7 +1201,7 @@ void ClientThink_real( gentity_t *ent ) {
 	}
 #endif
 
-	if ( g_gametype.integer == GT_SURVIVAL ) {
+	if ( g_gametype.integer == GT_SURVIVAL || g_aiCollision.integer == 0 ) {
 		for ( i = 0; i < level.num_entities; ++i ) {
 			if ( g_entities[i].r.svFlags & SVF_CASTAI && g_entities[i].aiTeam == ent->aiTeam && &g_entities[i] != ent ) {
 				trap_UnlinkEntity( &g_entities[i] );
@@ -1211,7 +1211,7 @@ void ClientThink_real( gentity_t *ent ) {
 
 	monsterslick = Pmove( &pm );
 
-	if ( g_gametype.integer == GT_SURVIVAL ) {
+	if ( g_gametype.integer == GT_SURVIVAL || g_aiCollision.integer == 0 ) {
 		for ( i = 0; i < level.num_entities; ++i ) {
 			if ( g_entities[i].r.svFlags & SVF_CASTAI && g_entities[i].aiTeam == ent->aiTeam && &g_entities[i] != ent ) {
 				trap_LinkEntity( &g_entities[i] );

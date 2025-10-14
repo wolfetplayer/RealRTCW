@@ -2737,7 +2737,7 @@ static void CG_PlayerPowerups( centity_t *cent ) {
 	int powerups;
 
 	if ( cent->pe.teslaDamagedTime > cg.time - 400 ) {
-		if ( cgs.gametype == GT_GOTHIC ) {
+		if ( cg_gothic.integer ) {
 		    trap_R_AddLightToScene( cent->lerpOrigin, 128 + 128 * sin( cg.time * cg.time ), 1, 0, 0, 0 ); // red tesla lights for gothicstein
 		    } else {
 		    trap_R_AddLightToScene( cent->lerpOrigin, 128 + 128 * sin( cg.time * cg.time ), 0.2, 0.6, 1, 0 ); // default case
@@ -3649,7 +3649,7 @@ void CG_AddLoperLightningEffect( centity_t *cent ) {
 	// show a dlight
 	// color
 	colTake = 0.8 - fabs( sin( cg.time ) ) * 0.3;
-	if ( cgs.gametype == GT_GOTHIC ) {
+	if ( cg_gothic.integer ) {
 	   c[0] = 1.0 - colTake;
 	   c[1] = 0.0 - 0.0 * colTake;
 	   c[2] = 0.0;
@@ -3800,7 +3800,7 @@ void CG_AddLoperGroundEffect( centity_t *cent ) {
 	// show a dlight
 	// color
 	colTake = 0.8 - fabs( sin( cg.time ) ) * 0.3;
-	if ( cgs.gametype == GT_GOTHIC ) {
+	if ( cg_gothic.integer ) {
 	   c[0] = 1.0 - colTake;
 	   c[1] = 0.0 - 0.0 * colTake;
 	   c[2] = 0.0;
@@ -3830,7 +3830,7 @@ void CG_AddLoperGroundEffect( centity_t *cent ) {
 		if ( cent->pe.loperGroundChargeToggle ^= 1 ) {
 			// random blue
 			colTake = 0.5 + random() * 0.5;
-			if ( cgs.gametype == GT_GOTHIC ) {
+			if ( cg_gothic.integer ) {
 			   c[0] = 1.0 - colTake;
 			   c[1] = 1.0 - colTake;
 			   c[2] = c[1] + 0.2;
@@ -4463,7 +4463,7 @@ void CG_AddRefEntityWithPowerups( refEntity_t *ent, int powerups, int team, enti
 		alpha = ( 400.0 - (float)( cg.time - cg_entities[es->number].pe.teslaDamagedTime ) ) / 400.0;
 
 
-        if ( cgs.gametype == GT_GOTHIC ) {
+        if ( cg_gothic.integer ) {
 		   ent->shaderRGBA[0] = ( unsigned char )( 10.0 * alpha );
 		   ent->shaderRGBA[1] = ( unsigned char )( 0.0 * alpha );
 		   ent->shaderRGBA[2] = ( unsigned char )( 0.0 * alpha );

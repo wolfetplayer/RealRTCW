@@ -78,7 +78,7 @@ void ProjectDlightTexture_altivec( void ) {
 		dlight_t	*dl;
 
 		if ( !( tess.dlightBits & ( 1 << l ) ) ) {
-			continue;	// this surface definately doesn't have any of this light
+			continue;	// this surface definitely doesn't have any of this light
 		}
 		texCoords = texCoordsArray[0];
 		colors = colorArray[0];
@@ -90,31 +90,61 @@ void ProjectDlightTexture_altivec( void ) {
 		radius = dl->radius;
 		scale = 1.0f / radius;
 
-		if(r_greyscale->integer)
+		// --- NOIR + RED handling for dlight color ---
 		{
-			float luminance;
-			
-			luminance = LUMA(dl->color[0], dl->color[1], dl->color[2]) * 255.0f;
-			floatColor[0] = floatColor[1] = floatColor[2] = luminance;
+			const qboolean gsInt   = r_greyscale->integer ? qtrue : qfalse;
+			const float    gsValue = r_greyscale->value;
+			const qboolean gsActive = ( gsInt || (gsValue > 0.0f) ) ? qtrue : qfalse;
+			const int      gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure, 2=original
+
+			// Source color in bytes (0..255) for "red-dominant" test
+			byte srcR = (byte)Com_Clamp( 0, 255, dl->color[0] * 255.0f );
+			byte srcG = (byte)Com_Clamp( 0, 255, dl->color[1] * 255.0f );
+			byte srcB = (byte)Com_Clamp( 0, 255, dl->color[2] * 255.0f );
+
+			if ( gsActive ) {
+				if ( gsInt ) {
+					// Full grayscale
+					float luminance = LUMA( srcR, srcG, srcB ) * 1.0f; // already in [0..255] scale
+					floatColor[0] = luminance;
+					floatColor[1] = luminance;
+					floatColor[2] = luminance;
+				} else {
+					// Partial grayscale
+					float luminance = LUMA( srcR, srcG, srcB ) * 1.0f;
+					float rIn = dl->color[0] * 255.0f;
+					float gIn = dl->color[1] * 255.0f;
+					float bIn = dl->color[2] * 255.0f;
+					floatColor[0] = LERP( rIn, luminance, gsValue );
+					floatColor[1] = LERP( gIn, luminance, gsValue );
+					floatColor[2] = LERP( bIn, luminance, gsValue );
+				}
+
+				// Gothic override: if original light color is clearly red, keep only red
+				if ( gothicMode && IsRedDominant( srcR, srcG, srcB ) ) {
+					if ( gothicMode == 2 ) {
+						// Original red intensity
+						floatColor[0] = (float)srcR;
+					} else {
+						// Pure red
+						floatColor[0] = 255.0f;
+					}
+					floatColor[1] = 0.0f;
+					floatColor[2] = 0.0f;
+				}
+			} else {
+				// Greyscale off → original dlight color
+				floatColor[0] = dl->color[0] * 255.0f;
+				floatColor[1] = dl->color[1] * 255.0f;
+				floatColor[2] = dl->color[2] * 255.0f;
+			}
 		}
-		else if(r_greyscale->value)
-		{
-			float luminance;
-			
-			luminance = LUMA(dl->color[0], dl->color[1], dl->color[2]) * 255.0f;
-			floatColor[0] = LERP(dl->color[0] * 255.0f, luminance, r_greyscale->value);
-			floatColor[1] = LERP(dl->color[1] * 255.0f, luminance, r_greyscale->value);
-			floatColor[2] = LERP(dl->color[2] * 255.0f, luminance, r_greyscale->value);
-		}
-		else
-		{
-			floatColor[0] = dl->color[0] * 255.0f;
-			floatColor[1] = dl->color[1] * 255.0f;
-			floatColor[2] = dl->color[2] * 255.0f;
-		}
+		// --- END NOIR + RED ---
+
 		floatColorVec0 = vec_ld(0, floatColor);
 		floatColorVec1 = vec_ld(11, floatColor);
 		floatColorVec0 = vec_perm(floatColorVec0,floatColorVec0,floatColorVecPerm);
+
 		for ( i = 0 ; i < tess.numVertexes ; i++, texCoords += 2, colors += 4 ) {
 			int		clip = 0;
 			vec_t dist0, dist1, dist2;

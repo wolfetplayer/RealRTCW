@@ -1124,6 +1124,45 @@ typedef struct {
 	trRefEntity_t entity2D;     // currentEntity will point at this when doing 2D rendering
 } backEndState_t;
 
+
+static ID_INLINE qboolean IsRedDominant(byte r, byte g, byte b) {
+    // R must be the dominant channel
+    int maxc = r; if (g > maxc) maxc = g; if (b > maxc) maxc = b;
+    if (r != maxc) return qfalse;
+
+    // Too dark? skip (prevents noisy low-light reds from triggering)
+    //if (maxc < 1) return qfalse; // was 72; higher == stricter
+
+    // Require decent saturation: (max - min) / max >= ~0.55
+    int minc = r; if (g < minc) minc = g; if (b < minc) minc = b;
+    //int chroma = maxc - minc;
+    //if (chroma * 256 < maxc * 140) return qfalse; // 140/256 ≈ 0.55
+
+    // Reject orange/yellow: g/r must be small enough (g/r <= ~0.38)
+    if ((int)g * 100 > (int)r * 38) return qfalse;
+
+    // Reject magenta/pink: b/r must be smallish too (b/r <= ~0.45)
+    //if ((int)b * 100 > (int)r * 45) return qfalse;
+
+    return qtrue;
+}
+
+// gothicMode: 1 = force pure red, 2 = keep original red intensity
+static ID_INLINE void ApplyNoirRed(byte *dstR, byte *dstG, byte *dstB,
+                                   byte srcR, byte srcG, byte srcB,
+                                   int gothicMode) {
+	(void)srcG; (void)srcB; // unused but kept for symmetry
+	if (gothicMode == 2) {
+		*dstR = srcR;
+		*dstG = 0;
+		*dstB = 0;
+	} else {
+		*dstR = 255;
+		*dstG = 0;
+		*dstB = 0;
+	}
+}
+
 /*
 ** trGlobals_t
 **
@@ -1385,6 +1424,7 @@ extern	cvar_t	*r_stereoEnabled;
 extern	cvar_t	*r_anaglyphMode;
 
 extern	cvar_t	*r_greyscale;
+extern  cvar_t  *r_gothic;
 
 extern cvar_t  *r_ignoreGLErrors;
 

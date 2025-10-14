@@ -920,46 +920,57 @@ static void Upload32(   unsigned *data,
     scan = ( (byte *)data );
     samples = 3;
 
-    // --- NOIR + RED ---
-    // We apply grayscale (full or partial), then if r_gothic != 0 we paint red-dominant
-    // source pixels back to red (pure or original intensity).
+    // --- GOTHIC & GREYSCALE (independent) -----------------------------------
     {
-        const qboolean greyscaleActive = ( r_greyscale->integer || ( r_greyscale->value > 0.0f ) );
-        const int gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure, 2=original
+        const int  gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure red, 2=original red
+        const qboolean gsInt  = r_greyscale->integer ? qtrue : qfalse;
+        const float gsVal     = r_greyscale->value;
+        const qboolean gsActive = ( gsInt || (gsVal > 0.0f) ) ? qtrue : qfalse;
 
-        if ( greyscaleActive ) {
-            if ( r_greyscale->integer ) {
-                for ( i = 0; i < c; i++ ) {
-                    byte *px = &scan[i*4];
-                    byte r0 = px[0], g0 = px[1], b0 = px[2];
+        if ( gothicMode ) {
+            // Noir baseline regardless of r_greyscale: make non-red pixels grayscale.
+            // If r_greyscale is set partially, use its amount for non-red pixels; otherwise full luma.
+            for ( i = 0; i < c; i++ ) {
+                byte *px = &scan[i*4];
+                byte r0 = px[0], g0 = px[1], b0 = px[2];
 
-                    byte luma = LUMA( r0, g0, b0 );
-                    px[0] = luma; px[1] = luma; px[2] = luma;
-
-                    if ( gothicMode && IsRedDominant( r0, g0, b0 ) ) {
-                        ApplyNoirRed( &px[0], &px[1], &px[2], r0, g0, b0, gothicMode );
-                    }
-                }
-            } else { // partial grayscale (desaturation)
-                const float amt = r_greyscale->value;
-                for ( i = 0; i < c; i++ ) {
-                    byte *px = &scan[i*4];
-                    byte r0 = px[0], g0 = px[1], b0 = px[2];
-
-                    float lumaF = LUMA( r0, g0, b0 );
-                    byte luma = (byte)lumaF;
-                    px[0] = LERP( px[0], luma, amt );
-                    px[1] = LERP( px[1], luma, amt );
-                    px[2] = LERP( px[2], luma, amt );
-
-                    if ( gothicMode && IsRedDominant( r0, g0, b0 ) ) {
-                        ApplyNoirRed( &px[0], &px[1], &px[2], r0, g0, b0, gothicMode );
+                if ( IsRedDominant( r0, g0, b0 ) ) {
+                    ApplyNoirRed( &px[0], &px[1], &px[2], r0, g0, b0, gothicMode );
+                } else {
+                    byte luma = (byte)LUMA( r0, g0, b0 );
+                    if ( gsInt ) {
+                        px[0] = luma; px[1] = luma; px[2] = luma;
+                    } else if ( gsVal > 0.0f ) {
+                        px[0] = LERP( r0, luma, gsVal );
+                        px[1] = LERP( g0, luma, gsVal );
+                        px[2] = LERP( b0, luma, gsVal );
+                    } else {
+                        // r_gothic alone: full grayscale baseline
+                        px[0] = luma; px[1] = luma; px[2] = luma;
                     }
                 }
             }
+        } else if ( gsActive ) {
+            // Greyscale only (original behavior)
+            if ( gsInt ) {
+                for ( i = 0; i < c; i++ ) {
+                    byte *px = &scan[i*4];
+                    byte luma = (byte)LUMA( px[0], px[1], px[2] );
+                    px[0] = luma; px[1] = luma; px[2] = luma;
+                }
+            } else {
+                for ( i = 0; i < c; i++ ) {
+                    byte *px = &scan[i*4];
+                    byte luma = (byte)LUMA( px[0], px[1], px[2] );
+                    px[0] = LERP( px[0], luma, gsVal );
+                    px[1] = LERP( px[1], luma, gsVal );
+                    px[2] = LERP( px[2], luma, gsVal );
+                }
+            }
         }
+        // else: neither gothic nor greyscale → leave colors as-is
     }
-    // --- END NOIR + RED ---
+    // --- END GOTHIC & GREYSCALE ---------------------------------------------
 
     if ( lightMap )
     {
@@ -1203,6 +1214,7 @@ done:
     if ( resampledBuffer != 0 )
         ri.Hunk_FreeTempMemory( resampledBuffer );
 }
+
 
 
 

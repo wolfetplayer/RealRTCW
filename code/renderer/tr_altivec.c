@@ -56,7 +56,7 @@ void ProjectDlightTexture_altivec( void ) {
 	int		numIndexes;
 	float	scale;
 	float	radius;
-	vec3_t	floatColor;
+	vec3_t	floatColor; // RGB in 0..255
 	float	modulate = 0.0f;
 
 	if ( !backEnd.refdef.num_dlights ) {
@@ -90,56 +90,71 @@ void ProjectDlightTexture_altivec( void ) {
 		radius = dl->radius;
 		scale = 1.0f / radius;
 
-		// --- NOIR + RED handling for dlight color ---
+		// --- GOTHIC & GREYSCALE (independent) ---
 		{
-			const qboolean gsInt   = r_greyscale->integer ? qtrue : qfalse;
-			const float    gsValue = r_greyscale->value;
-			const qboolean gsActive = ( gsInt || (gsValue > 0.0f) ) ? qtrue : qfalse;
-			const int      gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure, 2=original
+			const int      gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure red, 2=original red
+			const qboolean gsInt      = r_greyscale->integer ? qtrue : qfalse;
+			const float    gsValue    = r_greyscale->value;
+			const qboolean gsActive   = ( gsInt || (gsValue > 0.0f) ) ? qtrue : qfalse;
 
-			// Source color in bytes (0..255) for "red-dominant" test
+			// Source color as bytes (0..255) for dominance test and luma
 			byte srcR = (byte)Com_Clamp( 0, 255, dl->color[0] * 255.0f );
 			byte srcG = (byte)Com_Clamp( 0, 255, dl->color[1] * 255.0f );
 			byte srcB = (byte)Com_Clamp( 0, 255, dl->color[2] * 255.0f );
 
-			if ( gsActive ) {
-				if ( gsInt ) {
-					// Full grayscale
-					float luminance = LUMA( srcR, srcG, srcB ) * 1.0f; // already in [0..255] scale
-					floatColor[0] = luminance;
-					floatColor[1] = luminance;
-					floatColor[2] = luminance;
-				} else {
-					// Partial grayscale
-					float luminance = LUMA( srcR, srcG, srcB ) * 1.0f;
-					float rIn = dl->color[0] * 255.0f;
-					float gIn = dl->color[1] * 255.0f;
-					float bIn = dl->color[2] * 255.0f;
-					floatColor[0] = LERP( rIn, luminance, gsValue );
-					floatColor[1] = LERP( gIn, luminance, gsValue );
-					floatColor[2] = LERP( bIn, luminance, gsValue );
-				}
-
-				// Gothic override: if original light color is clearly red, keep only red
-				if ( gothicMode && IsRedDominant( srcR, srcG, srcB ) ) {
+			if ( gothicMode ) {
+				// Red override if the *original* light is red-dominant
+				if ( IsRedDominant( srcR, srcG, srcB ) ) {
 					if ( gothicMode == 2 ) {
-						// Original red intensity
+						// original red intensity
 						floatColor[0] = (float)srcR;
 					} else {
-						// Pure red
+						// pure red
 						floatColor[0] = 255.0f;
 					}
 					floatColor[1] = 0.0f;
 					floatColor[2] = 0.0f;
+				} else {
+					// Non-red light: grayscale baseline
+					float luma = (float)LUMA( srcR, srcG, srcB );
+					if ( gsInt ) {
+						floatColor[0] = luma;
+						floatColor[1] = luma;
+						floatColor[2] = luma;
+					} else if ( gsValue > 0.0f ) {
+						// partial desat if r_greyscale has a value
+						float rIn = (float)srcR, gIn = (float)srcG, bIn = (float)srcB;
+						floatColor[0] = LERP( rIn, luma, gsValue );
+						floatColor[1] = LERP( gIn, luma, gsValue );
+						floatColor[2] = LERP( bIn, luma, gsValue );
+					} else {
+						// gothic alone → full luma baseline
+						floatColor[0] = luma;
+						floatColor[1] = luma;
+						floatColor[2] = luma;
+					}
+				}
+			} else if ( gsActive ) {
+				// Greyscale only (original behavior)
+				float luma = (float)LUMA( srcR, srcG, srcB );
+				if ( gsInt ) {
+					floatColor[0] = luma;
+					floatColor[1] = luma;
+					floatColor[2] = luma;
+				} else {
+					float rIn = (float)srcR, gIn = (float)srcG, bIn = (float)srcB;
+					floatColor[0] = LERP( rIn, luma, gsValue );
+					floatColor[1] = LERP( gIn, luma, gsValue );
+					floatColor[2] = LERP( bIn, luma, gsValue );
 				}
 			} else {
-				// Greyscale off → original dlight color
+				// Neither gothic nor greyscale → original dlight color
 				floatColor[0] = dl->color[0] * 255.0f;
 				floatColor[1] = dl->color[1] * 255.0f;
 				floatColor[2] = dl->color[2] * 255.0f;
 			}
 		}
-		// --- END NOIR + RED ---
+		// --- END GOTHIC & GREYSCALE ---
 
 		floatColorVec0 = vec_ld(0, floatColor);
 		floatColorVec1 = vec_ld(11, floatColor);
@@ -237,8 +252,7 @@ void ProjectDlightTexture_altivec( void ) {
 		{
 			shader_t *dls = dl->dlshader;
 			if ( dls ) {
-				for ( i = 0; i < dls->numUnfoggedPasses; i++ )
-				{
+				for ( i = 0; i < dls->numUnfoggedPasses; i++ ) {
 					shaderStage_t *stage = dls->stages[i];
 					R_BindAnimatedImage( &dls->stages[i]->bundle[0] );
 					GL_State( stage->stateBits | GLS_DEPTHFUNC_EQUAL );
@@ -272,6 +286,7 @@ void ProjectDlightTexture_altivec( void ) {
 		}
 	}
 }
+
 
 void RB_CalcDiffuseColor_altivec( unsigned char *colors )
 {

@@ -1545,18 +1545,45 @@ static qboolean ParseShader( char **text ) {
 				return qfalse;
 			}
 
-			// --- NOIR + RED for fog color (float [0..1]) ---
+			// --- GOTHIC & GREYSCALE (independent) for fog color ---
 			{
-				// Keep original color for red-dominance test and mode 2 restore
 				vec3_t orig = { shader.fogParms.color[0], shader.fogParms.color[1], shader.fogParms.color[2] };
 
-				const qboolean gsInt    = r_greyscale->integer ? qtrue : qfalse;
-				const float    gsValue  = r_greyscale->value;
-				const qboolean gsActive = ( gsInt || (gsValue > 0.0f) ) ? qtrue : qfalse;
-				const int      gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure, 2=original
+				const int      gothicMode = ( r_gothic ) ? r_gothic->integer : 0; // 0=off, 1=pure red, 2=original red
+				const qboolean gsInt      = r_greyscale->integer ? qtrue : qfalse;
+				const float    gsValue    = r_greyscale->value;
+				const qboolean gsActive   = ( gsInt || (gsValue > 0.0f) ) ? qtrue : qfalse;
 
-				if ( gsActive ) {
-					// Greyscale on fog color
+				if ( gothicMode ) {
+					// If original fog is red-dominant → force red
+					byte srcR = (byte)Com_Clamp( 0, 255, orig[0] * 255.0f );
+					byte srcG = (byte)Com_Clamp( 0, 255, orig[1] * 255.0f );
+					byte srcB = (byte)Com_Clamp( 0, 255, orig[2] * 255.0f );
+
+					if ( IsRedDominant( srcR, srcG, srcB ) ) {
+						if ( gothicMode == 2 ) {
+							shader.fogParms.color[0] = orig[0];  // original red intensity (0..1)
+						} else {
+							shader.fogParms.color[0] = 1.0f;     // pure red
+						}
+						shader.fogParms.color[1] = 0.0f;
+						shader.fogParms.color[2] = 0.0f;
+					} else {
+						// Non-red fog → grayscale baseline
+						float luminance = LUMA( orig[0], orig[1], orig[2] ); // expects 0..1 components
+						if ( gsInt ) {
+							VectorSet( shader.fogParms.color, luminance, luminance, luminance );
+						} else if ( gsValue > 0.0f ) {
+							shader.fogParms.color[0] = LERP( orig[0], luminance, gsValue );
+							shader.fogParms.color[1] = LERP( orig[1], luminance, gsValue );
+							shader.fogParms.color[2] = LERP( orig[2], luminance, gsValue );
+						} else {
+							// gothic alone → full luma
+							VectorSet( shader.fogParms.color, luminance, luminance, luminance );
+						}
+					}
+				} else if ( gsActive ) {
+					// Greyscale only (original behavior)
 					float luminance = LUMA( shader.fogParms.color[0], shader.fogParms.color[1], shader.fogParms.color[2] );
 					if ( gsInt ) {
 						VectorSet( shader.fogParms.color, luminance, luminance, luminance );
@@ -1565,25 +1592,10 @@ static qboolean ParseShader( char **text ) {
 						shader.fogParms.color[1] = LERP( shader.fogParms.color[1], luminance, gsValue );
 						shader.fogParms.color[2] = LERP( shader.fogParms.color[2], luminance, gsValue );
 					}
-
-					// Gothic override: if original was clearly red, force red after grayscale
-					if ( gothicMode ) {
-						byte srcR = (byte)Com_Clamp( 0, 255, orig[0] * 255.0f );
-						byte srcG = (byte)Com_Clamp( 0, 255, orig[1] * 255.0f );
-						byte srcB = (byte)Com_Clamp( 0, 255, orig[2] * 255.0f );
-						if ( IsRedDominant( srcR, srcG, srcB ) ) {
-							if ( gothicMode == 2 ) {
-								shader.fogParms.color[0] = orig[0];  // original red intensity (0..1)
-							} else {
-								shader.fogParms.color[0] = 1.0f;     // pure red
-							}
-							shader.fogParms.color[1] = 0.0f;
-							shader.fogParms.color[2] = 0.0f;
-						}
-					}
 				}
+				// else: neither gothic nor greyscale → leave fog color as parsed
 			}
-			// --- END NOIR + RED ---
+			// --- END GOTHIC & GREYSCALE ---
 
 			token = COM_ParseExt( text, qfalse );
 			if ( !token[0] ) {
@@ -1808,6 +1820,7 @@ static qboolean ParseShader( char **text ) {
 
 	return qtrue;
 }
+
 
 
 /*

@@ -352,6 +352,26 @@ FILE*       missingFiles = NULL;
 #  endif
 #endif
 
+
+// Returns qtrue if this pak (basename without .pk3) should be skipped by cvar gates
+static qboolean FS_ShouldSkipPakByCvars( const char *pakBasenameNoExt ) {
+
+    // DLC0 - Supporter Pack
+	if ( !Cvar_VariableIntegerValue( "g_dlc0" ) ) {
+        if ( !Q_stricmp( pakBasenameNoExt, "z_zsupporterpack" ) ) {
+            return qtrue;
+        }
+    }
+	// DLC1 - Agency Weapon Pack
+    if ( !Cvar_VariableIntegerValue( "g_dlc1" ) ) {
+        if ( !Q_stricmp( pakBasenameNoExt, "z_zrealrtcw_dlc1" ) ) {
+            return qtrue;
+        }
+    }
+
+    return qfalse;
+}
+
 /*
 ==============
 FS_Initialized
@@ -3319,27 +3339,33 @@ void FS_AddGameDirectory( const char *path, const char *dir ) {
 
 	qsort( sorted, numfiles, sizeof(char *), paksort );
 
-	for ( i = 0 ; i < numfiles ; i++ ) {
-		if ( Q_strncmp( sorted[i],"mp_",3 ) ) { // (SA) SP mod -- exclude mp_*
-			// JPW NERVE KLUDGE: fix filenames broken in mp/sp/pak sort above
-			//----(SA)	mod for SP
-			if ( !Q_strncmp( sorted[i],"zz_",3 ) ) {
-				memcpy( sorted[i],"sp",2 );
-			}
-			// jpw
-			pakfile = FS_BuildOSPath( path, dir, sorted[i] );
-			if ( ( pak = FS_LoadZipFile( pakfile, sorted[i] ) ) == 0 ) {
-				continue;
-			}
-			// store the game name for downloading
-			strcpy( pak->pakGamename, dir );
+for ( i = 0 ; i < numfiles ; i++ ) {
+    if ( Q_strncmp( sorted[i],"mp_",3 ) ) {
+        if ( !Q_strncmp( sorted[i],"zz_",3 ) ) {
+            memcpy( sorted[i],"sp",2 ); // restore "sp_" name
+        }
 
-			search = Z_Malloc( sizeof( searchpath_t ) );
-			search->pack = pak;
-			search->next = fs_searchpaths;
-			fs_searchpaths = search;
-		}
-	}
+        // --- DLC gating begin ---
+        char baseNoExt[MAX_OSPATH];
+        Q_strncpyz( baseNoExt, sorted[i], sizeof( baseNoExt ) );
+        COM_StripExtension( baseNoExt, baseNoExt, sizeof( baseNoExt ) );
+
+        if ( FS_ShouldSkipPakByCvars( baseNoExt ) ) {
+            continue;
+        }
+        // --- DLC gating end ---
+
+        pakfile = FS_BuildOSPath( path, dir, sorted[i] );
+        if ( ( pak = FS_LoadZipFile( pakfile, sorted[i] ) ) == 0 ) {
+            continue;
+        }
+        strcpy( pak->pakGamename, dir );
+        search = Z_Malloc( sizeof( searchpath_t ) );
+        search->pack = pak;
+        search->next = fs_searchpaths;
+        fs_searchpaths = search;
+    }
+}
 
 	// done
 	Sys_FreeFileList( pakfiles );

@@ -173,13 +173,14 @@ vmCvar_t g_regen;
 vmCvar_t g_flushItems;	// items land depending on the slope thy're on
 vmCvar_t g_midgame;
 vmCvar_t g_vanilla_guns;
-vmCvar_t g_dlc0;
-vmCvar_t g_dlc0_purchased;
 vmCvar_t g_dlc1;
-vmCvar_t g_dlc1_purchased;
 vmCvar_t g_class;
 vmCvar_t g_noobTube;
 vmCvar_t g_aiCollision;
+vmCvar_t g_hd_characters;
+vmCvar_t g_hq_sounds;
+vmCvar_t g_hd_worldmodels;
+vmCvar_t g_hd_worldtextures;
 
 vmCvar_t g_playerSurvivalClass;
 
@@ -216,13 +217,14 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_regen, "g_regen", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_vanilla_guns, "g_vanilla_guns", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_dlc0, "g_dlc0", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_dlc0_purchased, "g_dlc0_purchased", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_dlc1_purchased, "g_dlc1_purchased", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 	{ &g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_hd_characters, "g_hd_characters", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_hq_sounds, "g_hq_sounds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_hd_worldmodels, "g_hd_worldmodels", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{ &g_hd_worldtextures, "g_hd_worldtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 
 	{ &g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
 

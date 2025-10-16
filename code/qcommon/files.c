@@ -356,15 +356,30 @@ FILE*       missingFiles = NULL;
 // Returns qtrue if this pak (basename without .pk3) should be skipped by cvar gates
 static qboolean FS_ShouldSkipPakByCvars( const char *pakBasenameNoExt ) {
 
-    // DLC0 - Supporter Pack
-	if ( !Cvar_VariableIntegerValue( "g_dlc0" ) ) {
-        if ( !Q_stricmp( pakBasenameNoExt, "z_zsupporterpack" ) ) {
+	// HD Characters
+    if ( !Cvar_VariableIntegerValue( "g_hd_characters" ) ) {
+        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_models_characters_hd" ) ) {
             return qtrue;
         }
     }
-	// DLC1 - Agency Weapon Pack
-    if ( !Cvar_VariableIntegerValue( "g_dlc1" ) ) {
-        if ( !Q_stricmp( pakBasenameNoExt, "z_zrealrtcw_dlc1" ) ) {
+
+	// HD World Models
+    if ( !Cvar_VariableIntegerValue( "g_hd_worldmodels" ) ) {
+        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_models_hd" ) ) {
+            return qtrue;
+        }
+    }
+
+	// HD World Textures
+    if ( !Cvar_VariableIntegerValue( "g_hd_worldtextures" ) ) {
+        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_textures_hd" ) ) {
+            return qtrue;
+        }
+    }
+
+	// HQ Sounds
+    if ( !Cvar_VariableIntegerValue( "g_hq_sounds" ) ) {
+        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_sounds_hd" ) ) {
             return qtrue;
         }
     }

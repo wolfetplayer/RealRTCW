@@ -1152,13 +1152,14 @@ extern vmCvar_t g_fullarsenal;
 extern vmCvar_t g_endmapbonus;
 extern vmCvar_t g_randomweapons;
 extern vmCvar_t g_midgame;
-extern vmCvar_t g_dlc0;
-extern vmCvar_t g_dlc0_purchased;
 extern vmCvar_t g_dlc1;
-extern vmCvar_t g_dlc1_purchased;
 extern vmCvar_t g_class;
 extern vmCvar_t g_noobTube;
 extern vmCvar_t g_aiCollision;
+extern vmCvar_t g_hd_characters;
+extern vmCvar_t g_hq_sounds;
+extern vmCvar_t g_hd_worldmodels;
+extern vmCvar_t g_hd_worldtextures;
 
 extern vmCvar_t g_playerSurvivalClass;
 

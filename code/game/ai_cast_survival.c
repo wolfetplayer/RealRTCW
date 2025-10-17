@@ -65,6 +65,10 @@ void AICast_InitSurvival(void) {
 	svParams.wavePending = qtrue;
 	svParams.waveChangeTime = level.time + svParams.prepareTime * 1000;
 
+    // Special wave defaults
+    svParams.specialWaveActive    = qfalse;
+    svParams.lastSpecialWave      = 0;
+
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
@@ -76,6 +80,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.initialEliteGuardsCount;
 	svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;
 	svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
+	svParams.maxActiveAI[AICHAR_LOPER] = svParams.initialLopersCount;
 }
 
 
@@ -119,6 +124,18 @@ void AIChar_AIScript_AlertEntity_Survival( gentity_t *ent ) {
 	}
 
 	cs = AICast_GetCastState( ent->s.number );
+
+	if (svParams.specialWaveActive && ent->aiTeam != 1 && ent->aiCharacter != AICHAR_LOPER_SPECIAL)
+	{
+		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
+		return;
+	}
+
+	if (!svParams.specialWaveActive && ent->aiTeam != 1 && ent->aiCharacter == AICHAR_LOPER_SPECIAL)
+	{
+		cs->aiFlags |= AIFL_WAITINGTOSPAWN;
+		return;
+	}
 
 	// if the current bounding box is invalid, then wait
 	VectorAdd( ent->r.currentOrigin, ent->r.mins, mins );
@@ -325,6 +342,9 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_ZOMBIE_FLAME:
 				baseTime = svParams.flamerSpawnTime * 1000;
+				break;
+			case AICHAR_LOPER:
+				baseTime = svParams.loperSpawnTime * 1000;
 				break;
 			default: // Regular soldiers and zombies
 				baseTime = svParams.defaultSpawnTime * 1000;
@@ -703,6 +723,13 @@ void AICast_UpdateMaxActiveAI(void)
             svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] = svParams.maxFlamers;
         }
     }
+
+	if (svParams.waveCount >= svParams.waveLopers) {
+        svParams.maxActiveAI[AICHAR_LOPER] += svParams.lopersIncrease;
+        if (svParams.maxActiveAI[AICHAR_LOPER] > svParams.maxLopers) {
+            svParams.maxActiveAI[AICHAR_LOPER] = svParams.maxLopers;
+        }
+    }
 }
 
 /*
@@ -830,6 +857,14 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
 			break;
+		case AICHAR_LOPER:
+			newHealth = 250 + steps * stepMultiplier;
+			if (newHealth > 500) newHealth = 500;
+			break;
+		case AICHAR_LOPER_SPECIAL:
+			newHealth = 250 + steps * stepMultiplier;
+			if (newHealth > 500) newHealth = 500;
+			break;
 
 		default:
 			break;
@@ -921,6 +956,8 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_WARZOMBIE:
 		case AICHAR_PRIEST:
 		case AICHAR_ZOMBIE_GHOST:
+		case AICHAR_LOPER:
+		case AICHAR_LOPER_SPECIAL:
 			aimSkill     = 1.0f;
 			aimAccuracy  = 1.0f;
 			attackSkill  = 1.0f;
@@ -936,6 +973,18 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 	aiDefaults[characterNum].attributes[ATTACK_SKILL]  = attackSkill;
 	aiDefaults[characterNum].attributes[AGGRESSION]    = aggression;
 	aiDefaults[characterNum].attributes[REACTION_TIME] = reactionTime;
+}
+
+static qboolean AICast_ShouldStartSpecialWave(void) {
+    // Use the wave we’re STARTING now (svParams.waveCount already incremented in Tick)
+    int wave = svParams.waveCount;
+
+    if (wave < svParams.specialWaveMinStart) return qfalse;           // too early
+    if (svParams.lastSpecialWave == wave - 1)  return qfalse;         // no back-to-back
+
+    // Randomized
+    int roll = rand() % 100; // 0..99
+    return (roll < svParams.specialWaveChance) ? qtrue : qfalse;
 }
 
 void AICast_CheckSurvivalProgression(gentity_t *attacker) {
@@ -1017,7 +1066,31 @@ void AICast_TickSurvivalWave(void) {
 		killReq = (int)(0.15f * wave * wave + 3.0f * wave + 10.0f);
 	}
 
-	svParams.killCountRequirement = killReq;
+    // special waves logic
+    svParams.specialWaveActive = qfalse;
+    if (AICast_ShouldStartSpecialWave()) {
+        svParams.specialWaveActive = qtrue;
+        svParams.lastSpecialWave   = wave;
+
+        // Scale LOPER count a bit with wave number, but keep it simple
+        int lopers = svParams.specialLopersInitialCount + svParams.specialLopersIncrease * (wave - svParams.specialWaveMinStart);
+        if (lopers < svParams.specialLopersInitialCount) lopers = svParams.specialLopersInitialCount;
+
+        // On special wave the kill requirement is exactly the number of LOPERs
+        svParams.killCountRequirement = lopers;
+
+        svParams.maxActiveAI[AICHAR_LOPER_SPECIAL] = (lopers < svParams.specialLopersMax) ? lopers : svParams.specialLopersMax;
+
+        // (Optional) You can mute growth of other classes this wave by skipping UpdateMaxActiveAI
+    } else {
+        // Normal wave
+        svParams.killCountRequirement = killReq;
+
+        if (wave > 1) {
+            AICast_UpdateMaxActiveAI();
+        }
+    }
+    // --- END SPECIAL WAVE DECISION ---
 
     // Track wave count per player
     for (int i = 0; i < g_maxclients.integer; i++) {
@@ -1029,11 +1102,6 @@ void AICast_TickSurvivalWave(void) {
 
 	AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "wave_start", "" );
 
-	// Do not increase max active AI on the first wave
-	if (wave > 1)
-	{
-		AICast_UpdateMaxActiveAI();
-	}
 }
 
 
@@ -1061,6 +1129,16 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
         return;
     }
 
+	// Same block for respawns
+	if (svParams.specialWaveActive && ent->aiTeam != 1 && ent->aiCharacter != AICHAR_LOPER_SPECIAL)
+	{
+		return;
+	}
+
+	if (!svParams.specialWaveActive && ent->aiTeam != 1 && ent->aiCharacter == AICHAR_LOPER_SPECIAL)
+	{
+		return;
+	}
 
 			if ( ent->aiCharacter != AICHAR_ZOMBIE && ent->aiCharacter != AICHAR_HELGA
 				 && ent->aiCharacter != AICHAR_HEINRICH ) {
@@ -1313,6 +1391,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialLopersCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialLopersCount))
+			{
+				PC_SourceError(handle, "expected initialLopersCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "soldiersIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.soldiersIncrease))
@@ -1393,6 +1479,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "lopersIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.lopersIncrease))
+			{
+				PC_SourceError(handle, "expected lopersIncrease value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "maxSoldiers"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.maxSoldiers))
@@ -1430,6 +1524,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.maxZombies))
 			{
 				PC_SourceError(handle, "expected maxZombies value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "maxLopers"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxLopers))
+			{
+				PC_SourceError(handle, "expected maxLopers value");
 				return qfalse;
 			}
 		}
@@ -1534,6 +1636,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.waveFlamers))
 			{
 				PC_SourceError(handle, "expected waveFlamers value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "waveLopers"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveLopers))
+			{
+				PC_SourceError(handle, "expected waveLopers value");
 				return qfalse;
 			}
 		}
@@ -1678,6 +1788,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.flamerSpawnTime))
 			{
 				PC_SourceError(handle, "expected flamerSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "loperSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.loperSpawnTime))
+			{
+				PC_SourceError(handle, "expected loperSpawnTime value");
 				return qfalse;
 			}
 		}
@@ -2102,6 +2220,46 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.prepareTime))
 			{
 				PC_SourceError(handle, "expected prepareTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialWaveMinStart"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialWaveMinStart))
+			{
+				PC_SourceError(handle, "expected specialWaveMinStart value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialWaveChance"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialWaveChance))
+			{
+				PC_SourceError(handle, "expected specialWaveChance value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialLopersInitialCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialLopersInitialCount))
+			{
+				PC_SourceError(handle, "expected specialLopersInitialCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialLopersIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialLopersIncrease))
+			{
+				PC_SourceError(handle, "expected specialLopersIncrease value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialLopersMax"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialLopersMax))
+			{
+				PC_SourceError(handle, "expected specialLopersMax value");
 				return qfalse;
 			}
 		}

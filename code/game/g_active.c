@@ -1791,7 +1791,7 @@ void ClientEndFrame( gentity_t *ent ) {
 			}
 			break;
 		case WP_MONSTER_ATTACK3:
-			if ( ent->aiCharacter == AICHAR_LOPER ) {
+			if ( ent->aiCharacter == AICHAR_LOPER || ent->aiCharacter == AICHAR_LOPER_SPECIAL ) {
 				AICast_CheckDangerousEntity( ent, 0, LOPER_GROUND_RANGE + 100, 0.5, 0.8, qtrue );
 			}
 			break;

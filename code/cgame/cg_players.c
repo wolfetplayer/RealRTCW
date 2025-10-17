@@ -3620,7 +3620,7 @@ void CG_AddLoperLightningEffect( centity_t *cent ) {
 	int numPoints;
 	float colTake;
 
-	if ( cent->currentState.aiChar != AICHAR_LOPER ) {
+	if ( cent->currentState.aiChar != AICHAR_LOPER && cent->currentState.aiChar != AICHAR_LOPER_SPECIAL) {
 		return;
 	}
 
@@ -3751,7 +3751,7 @@ void CG_AddLoperGroundEffect( centity_t *cent ) {
 	int duration;
 	float alpha, lightAlpha = 0.0f;   // TTimo: init
 
-	if ( cent->currentState.aiChar != AICHAR_LOPER ) {
+	if ( cent->currentState.aiChar != AICHAR_LOPER && cent->currentState.aiChar != AICHAR_LOPER_SPECIAL) {
 		return;
 	}
 
@@ -4807,13 +4807,13 @@ void CG_Player( centity_t *cent ) {
 	//----(SA)	also taking care of the Loper's interesting heirarchy (his upper body is effectively the same as a weapon_hand.md3.  it keeps things connected, but has no geometry)
 
 	if ( !ci->isSkeletal ) {
-		if ( ( cgsnap == cent && ( cg.snap->ps.pm_flags & PMF_LADDER ) ) || ( cent->currentState.aiChar == AICHAR_LOPER ) ) {
+		if ( ( cgsnap == cent && ( cg.snap->ps.pm_flags & PMF_LADDER ) ) || ( cent->currentState.aiChar == AICHAR_LOPER || cent->currentState.aiChar == AICHAR_LOPER_SPECIAL ) ) {
 			CG_PositionEntityOnTag( &torso, &legs, "tag_torso", 0, NULL );
 		} else {
 			CG_PositionRotatedEntityOnTag( &torso,  &legs, "tag_torso" );
 		}
 	} else {    // just clear out the angles
-		if ( ( cgsnap == cent && ( cg.snap->ps.pm_flags & PMF_LADDER ) ) || ( cent->currentState.aiChar == AICHAR_LOPER ) ) {
+		if ( ( cgsnap == cent && ( cg.snap->ps.pm_flags & PMF_LADDER ) ) || ( cent->currentState.aiChar == AICHAR_LOPER || cent->currentState.aiChar == AICHAR_LOPER_SPECIAL ) ) {
 			memcpy( torso.axis, legs.axis, sizeof( torso.axis ) );
 		}
 	}
@@ -4905,6 +4905,7 @@ void CG_Player( centity_t *cent ) {
 				case AICHAR_ZOMBIE_FLAME:
 				case AICHAR_ZOMBIE_GHOST:
 				case AICHAR_LOPER:
+				case AICHAR_LOPER_SPECIAL:
 				case AICHAR_DOG:
 				case AICHAR_XSHEPHERD:
 					talk_frame = (int)( (float)talk_frame * 1.2 );
@@ -5044,7 +5045,7 @@ void CG_Player( centity_t *cent ) {
 	// add player specific models
 	//
 
-	if ( cent->currentState.aiChar == AICHAR_LOPER ) {
+	if ( cent->currentState.aiChar == AICHAR_LOPER || cent->currentState.aiChar == AICHAR_LOPER_SPECIAL ) {
 		if ( ci->partModels[8] ) {
 			vec3_t angles;
 

@@ -100,6 +100,7 @@ void TossClientWeapons( gentity_t *self )
 		case AICHAR_ZOMBIE:
 		case AICHAR_WARZOMBIE:
 		case AICHAR_LOPER:
+		case AICHAR_LOPER_SPECIAL:
 		case AICHAR_PROTOSOLDIER:
 		case AICHAR_SUPERSOLDIER:
 		case AICHAR_SUPERSOLDIER_LAB:
@@ -118,6 +119,7 @@ void TossClientWeapons( gentity_t *self )
 		case AICHAR_ZOMBIE:
 		case AICHAR_WARZOMBIE:
 		case AICHAR_LOPER:
+		case AICHAR_LOPER_SPECIAL:
 		case AICHAR_DOG:
 		case AICHAR_PRIEST:
 		case AICHAR_XSHEPHERD:
@@ -698,6 +700,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case AICHAR_WARZOMBIE:
 	case AICHAR_HELGA:     
 	case AICHAR_LOPER:
+	case AICHAR_LOPER_SPECIAL:
 	case AICHAR_VENOM:      
 	return qfalse;
 	default:

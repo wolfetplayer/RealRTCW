@@ -2960,7 +2960,7 @@ char *AIFunc_BattleChase( cast_state_t *cs ) {
 				return AIFunc_BattleAmbushStart( cs );
 			}
 			// HACK, help lopers get out of bad spots
-			if ( cs->aiCharacter == AICHAR_LOPER ) {
+			if ( cs->aiCharacter == AICHAR_LOPER || cs->aiCharacter == AICHAR_LOPER_SPECIAL) {
 				cs->weaponFireTimes[WP_MONSTER_ATTACK2] = 0;
 			}
 			// couldn't find a spot, so just stay here?

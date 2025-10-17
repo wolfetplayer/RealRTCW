@@ -523,6 +523,7 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
             case AICHAR_WARZOMBIE:   return 90.0f;  // RealRTCW was 80
             case AICHAR_DOG:         return 45.0f;  // dog melee
             case AICHAR_LOPER:       return 60.0f;  // head-butt, fist
+            case AICHAR_LOPER_SPECIAL:       return 60.0f;  // head-butt, fist
             case AICHAR_BLACKGUARD:  return BLACKGUARD_MELEE_RANGE;
             case AICHAR_XSHEPHERD:   return XSHEPHERD_MELEE_RANGE;
             default:
@@ -538,6 +539,7 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
             case AICHAR_HEINRICH: return 8000.0f;
             case AICHAR_HELGA:    return 2000.0f; // RealRTCW was 1900
             case AICHAR_LOPER:    return 8000.0f; // leap: use it to gain on them also
+            case AICHAR_LOPER_SPECIAL:    return 8000.0f; // leap: use it to gain on them also
             default:
                 if (AI_IsZombie(cs->aiCharacter)) {
                     return 1000.0f; // zombie spirit attack
@@ -550,6 +552,7 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
         switch (cs->aiCharacter) {
             case AICHAR_HEINRICH:  return 50000.0f;         // spirits
             case AICHAR_LOPER:     return LOPER_GROUND_RANGE;
+			case AICHAR_LOPER_SPECIAL:     return LOPER_GROUND_RANGE;
             case AICHAR_WARZOMBIE: return 2000.0f;          // defense
             case AICHAR_DOG:       return 2000.0f;          // bark
             default:
@@ -1017,6 +1020,7 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 
 			// melee attacks are always available
 		case AICHAR_LOPER:
+		case AICHAR_LOPER_SPECIAL:
 		case AICHAR_WARZOMBIE:
 	    case AICHAR_DOG:
 			return qtrue;   // always usable
@@ -1081,6 +1085,7 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 			}
 			break;
 		case AICHAR_LOPER:  // loper leap attack
+		case AICHAR_LOPER_SPECIAL:
 			if ( cs->bs->areanum && VectorLength( cs->bs->velocity ) > 1 ) {    // if we are in a valid area, and are persuing, then leave a delay
 				// if there isn't a direct trace to our enemy, then fail
 				if ( cs->enemyNum >= 0 ) {
@@ -1112,6 +1117,7 @@ qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum ) {
 			delay = 7000;
 			break;
 		case AICHAR_LOPER:  // loper ground zap
+		case AICHAR_LOPER_SPECIAL:
 			delay = 3500;
 			if ( dist < 0 || dist > LOPER_GROUND_RANGE ) {
 				return qfalse;
@@ -1825,6 +1831,10 @@ qboolean AICast_AIDamageOK( cast_state_t *cs, cast_state_t *ocs ) {
 	} else {
 
 		if ( cs->aiCharacter == AICHAR_LOPER && ocs->aiCharacter == AICHAR_LOPER ) {
+			return qfalse;
+		}
+
+		if ( cs->aiCharacter == AICHAR_LOPER_SPECIAL && ocs->aiCharacter == AICHAR_LOPER_SPECIAL ) {
 			return qfalse;
 		}
 

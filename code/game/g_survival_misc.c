@@ -79,6 +79,18 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker) {
     gentity_t *drop = NULL;
     int powerup = 0;
 
+    if (svParams.specialWaveActive && self->aiCharacter == AICHAR_LOPER_SPECIAL) {
+        // Only the very last special Loper drops ammo
+        if (svParams.waveKillCount == svParams.killCountRequirement) {
+            item = BG_FindItemForPowerup(PW_AMMO);
+            if (item) {
+                drop = Drop_Item(self, item, 0, qfalse);
+                if (drop) drop->nextthink = level.time + 30000;
+            }
+        }
+        return; // All other special Lopers drop nothing
+    }
+
     if (!attacker || !attacker->client) return;
     if (attacker->aiTeam == self->aiTeam) return;
 

@@ -1034,8 +1034,13 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
             steamSetAchievement("ACH_NO_CLASS");
         }
 
-		AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "wave_end", "" );
-    }
+		char endEvtBuf[32];
+		Q_strncpyz(
+			endEvtBuf,
+			svParams.specialWaveActive ? "specialwave_end" : "wave_end",
+			sizeof(endEvtBuf));
+		AICast_ScriptEvent(AICast_GetCastState(player->s.number), endEvtBuf, "");
+	}
 }
 
 void AICast_TickSurvivalWave(void) {
@@ -1100,7 +1105,11 @@ void AICast_TickSurvivalWave(void) {
         cl->client->ps.persistant[PERS_WAVES]++;
     }
 
-	AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "wave_start", "" );
+    if (svParams.specialWaveActive) {
+        AICast_ScriptEvent(AICast_GetCastState(player->s.number), "specialwave_start", "");
+    } else {
+        AICast_ScriptEvent(AICast_GetCastState(player->s.number), "wave_start", "");
+    }
 
 }
 

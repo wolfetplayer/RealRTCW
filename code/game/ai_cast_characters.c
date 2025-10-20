@@ -694,9 +694,9 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			"loperHit2",			// misc1
 		},
 		AITEAM_MONSTER,
-		"loper/default",
+		"loper/default_survival",
 		{ /*WP_MONSTER_ATTACK1,*/ WP_MONSTER_ATTACK2,WP_MONSTER_ATTACK3},
-		BBOX_LARGE, {32,32},		// large is for wide characters
+		BBOX_SMALL, {32,32},		// large is for wide characters
 		AIFL_NO_RELOAD,
 		0 /*AIFunc_LoperAttack1Start*/, AIFunc_LoperAttack2Start, AIFunc_LoperAttack3Start,
 		"sound/world/electloop.wav",

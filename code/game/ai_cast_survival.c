@@ -862,7 +862,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			if (newHealth > 500) newHealth = 500;
 			break;
 		case AICHAR_LOPER_SPECIAL:
-			newHealth = 250 + steps * stepMultiplier;
+			newHealth = 75 + steps * stepMultiplier;
 			if (newHealth > 500) newHealth = 500;
 			break;
 

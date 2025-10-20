@@ -976,11 +976,14 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 }
 
 static qboolean AICast_ShouldStartSpecialWave(void) {
-    // Use the wave we’re STARTING now (svParams.waveCount already incremented in Tick)
+    // 0 = disabled → never start special waves
+    if (g_specialWaves.integer == 0)
+        return qfalse;
+
     int wave = svParams.waveCount;
 
-    if (wave < svParams.specialWaveMinStart) return qfalse;           // too early
-    if (svParams.lastSpecialWave == wave - 1)  return qfalse;         // no back-to-back
+    if (wave < svParams.specialWaveMinStart) return qfalse; // too early
+    if (svParams.lastSpecialWave == wave - 1)  return qfalse; // no back-to-back
 
     // Randomized
     int roll = rand() % 100; // 0..99

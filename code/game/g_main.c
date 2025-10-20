@@ -181,6 +181,7 @@ vmCvar_t g_hd_characters;
 vmCvar_t g_hq_sounds;
 vmCvar_t g_hd_worldmodels;
 vmCvar_t g_hd_worldtextures;
+vmCvar_t g_specialWaves;
 
 vmCvar_t g_playerSurvivalClass;
 
@@ -227,6 +228,7 @@ cvarTable_t gameCvarTable[] = {
 	{ &g_hd_worldtextures, "g_hd_worldtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
 
 	{ &g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
+	{ &g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
 
 	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
 

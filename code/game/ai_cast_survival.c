@@ -767,6 +767,9 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	case AICHAR_PRIEST:
 		waveAppeared = svParams.wavePriests;
 		break;
+	case AICHAR_LOPER:
+		waveAppeared = svParams.waveLopers;
+		break;
 	default:
 		waveAppeared = 0;
 		break;

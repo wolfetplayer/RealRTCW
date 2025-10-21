@@ -356,35 +356,136 @@ FILE*       missingFiles = NULL;
 // Returns qtrue if this pak (basename without .pk3) should be skipped by cvar gates
 static qboolean FS_ShouldSkipPakByCvars( const char *pakBasenameNoExt ) {
 
-	// HD Characters
-    if ( !Cvar_VariableIntegerValue( "g_hd_characters" ) ) {
-        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_models_characters_hd" ) ) {
-            return qtrue;
+    // --- define pak name lists (no .pk3) ---
+    static const char *pk3_european_style[] = {
+        "z_european_style",
+        "z_european_style_RealRTCW",
+        "z_european_style_RealRTCW_vanilla",
+        NULL
+    };
+
+    static const char *pk3_kemon_textures[] = { 
+        "z_kemon_textures",
+        "z_kemon_textures_etl",
+        "z_kemon_textures_wolfet",
+        "z_kemon_textures_wolfet_winter",
+        NULL
+    };
+
+    static const char *pk3_patreon[] = {
+        "z_z_patreon_glasses",
+        "z_z_patreon_models",
+        "z_z_patreon_models_glasses",
+        "z_z_patreon_weapons",
+        "z_z_patreon_weapons_RealRTCW",
+        "z_z_patreon_weapons_RealRTCW_vanilla",
+        "z_z_patreon_weapons_RealRTCW_vanilla_wolfet_ui",
+        NULL
+    };
+
+    static const char *pk3_ps2_ui_hud[] = {    
+        "z_ps2_ui_hud_RealRTCW",
+        NULL
+    };
+
+    static const char *pk3_ps2_xbox_sound[] = { 
+        "z_ps2_xbox_sound_weapons",
+        "z_ps2_xbox_sound_weapons_RealRTCW",
+        NULL
+    };
+
+    static const char *pk3_wolf2_sound[] = {  
+        "z_wolf2_sound",
+        "z_wolf2_sound_RealRTCW",
+        NULL
+    };
+
+    static const char *pk3_wolfet_sound[] = {  
+        "z_wolfet_sound",
+        "z_wolfet_sound_RealRTCW",
+        NULL
+    };
+
+    static const char *pk3_wolfet_weapons[] = {
+        "z_wolfet_weapons",
+        NULL
+    };
+
+    static const char *pk3_wolfet_ui[] = {
+        "z_wolfet_ui",
+        "z_wolfet_ui_RealRTCW",
+        "z_wolfet_ui_RealRTCW_vanilla",
+        "z_wolfet_ui_hud_RealRTCW",
+        "z_wolfet_ui_hud_RealRTCW_vanilla",
+        NULL
+    };
+
+    static const char *pk3_venom_models[] = {
+        "z_venom_models_players",
+        "z_venom_models_players_RealRTCW",
+        NULL
+    };
+
+    static const char *pk3_xbox_ui_hud[] = { 
+        "z_xbox_ui_hud_RealRTCW",
+        NULL
+    };
+
+    static const char *pk3_hd_characters[] = {
+        "z_realrtcw_models_characters_hd",
+        NULL
+    };
+    static const char *pk3_hd_worldmodels[] = {
+        "z_realrtcw_models_hd",
+        NULL
+    };
+    static const char *pk3_hd_worldtextures[] = {
+        "z_realrtcw_textures_hd",
+        NULL
+    };
+    static const char *pk3_hq_sounds[] = {
+        "z_realrtcw_sounds_hd",
+        NULL
+    };
+
+    // --- gate table: cvar -> list of pak basenames ---
+    typedef struct {
+        const char *cvarName;              // skip when this is 0
+        const char *const *pakList;        // NULL-terminated list
+    } pak_gate_t;
+
+    static const pak_gate_t gates[] = {
+        { "g_pk3_european_style",   pk3_european_style },
+        { "g_pk3_kemon_textures",   pk3_kemon_textures },   
+        { "g_pk3_patreon",          pk3_patreon },
+
+        { "g_pk3_ps2_ui_hud",       pk3_ps2_ui_hud },       
+        { "g_pk3_ps2_xbox_sound",   pk3_ps2_xbox_sound },   
+        { "g_pk3_wolf2_sound",      pk3_wolf2_sound },      
+        { "g_pk3_wolfet_sound",     pk3_wolfet_sound },     
+        { "g_pk3_wolfet_weapons",   pk3_wolfet_weapons },  
+        { "g_pk3_wolfet_ui",        pk3_wolfet_ui },       
+        { "g_pk3_venom_models",     pk3_venom_models },
+        { "g_pk3_xbox_ui_hud",      pk3_xbox_ui_hud },     
+
+        { "g_hd_characters",        pk3_hd_characters },
+        { "g_hd_worldmodels",       pk3_hd_worldmodels },
+        { "g_hd_worldtextures",     pk3_hd_worldtextures },
+        { "g_hq_sounds",            pk3_hq_sounds },
+    };
+
+    // --- evaluate current pak against gates ---
+    for (int i = 0; i < (int)(sizeof(gates)/sizeof(gates[0])); ++i) {
+        if (!Cvar_VariableIntegerValue(gates[i].cvarName)) {
+            for (const char *const *p = gates[i].pakList; *p; ++p) {
+                if (!Q_stricmp(pakBasenameNoExt, *p)) {
+                    return qtrue; // skip this pak
+                }
+            }
         }
     }
 
-	// HD World Models
-    if ( !Cvar_VariableIntegerValue( "g_hd_worldmodels" ) ) {
-        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_models_hd" ) ) {
-            return qtrue;
-        }
-    }
-
-	// HD World Textures
-    if ( !Cvar_VariableIntegerValue( "g_hd_worldtextures" ) ) {
-        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_textures_hd" ) ) {
-            return qtrue;
-        }
-    }
-
-	// HQ Sounds
-    if ( !Cvar_VariableIntegerValue( "g_hq_sounds" ) ) {
-        if ( !Q_stricmp( pakBasenameNoExt, "z_realrtcw_sounds_hd" ) ) {
-            return qtrue;
-        }
-    }
-
-    return qfalse;
+    return qfalse; // keep it
 }
 
 /*

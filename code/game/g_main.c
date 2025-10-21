@@ -185,139 +185,161 @@ vmCvar_t g_specialWaves;
 
 vmCvar_t g_playerSurvivalClass;
 
+vmCvar_t g_pk3_european_style;
+vmCvar_t g_pk3_kemon_textures;   
+vmCvar_t g_pk3_patreon;
+vmCvar_t g_pk3_ps2_ui_hud;      
+vmCvar_t g_pk3_ps2_xbox_sound;   
+vmCvar_t g_pk3_wolf2_sound;      
+vmCvar_t g_pk3_wolfet_sound;     
+vmCvar_t g_pk3_wolfet_weapons;   
+vmCvar_t g_pk3_wolfet_ui;        
+vmCvar_t g_pk3_venom_models;
+vmCvar_t g_pk3_xbox_ui_hud;      
+
 vmCvar_t g_mapname;
 
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
-	{ &g_cheats, "sv_cheats", "", 0, qfalse },
+	{&g_cheats, "sv_cheats", "", 0, qfalse},
 
 	// noset vars
-	{ NULL, "gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
-	{ NULL, "gamedate", PRODUCT_DATE, CVAR_ROM, 0, qfalse  },
-	{ &g_restarted, "g_restarted", "0", CVAR_ROM, 0, qfalse  },
+	{NULL, "gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_ROM, 0, qfalse},
+	{NULL, "gamedate", PRODUCT_DATE, CVAR_ROM, 0, qfalse},
+	{&g_restarted, "g_restarted", "0", CVAR_ROM, 0, qfalse},
 
 	// latched vars
-	{ &g_gametype, "g_gametype", "0", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse  },
+	{&g_gametype, "g_gametype", "0", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
 
-	{ &g_newinventory, "g_newinventory", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse  },
+	{&g_newinventory, "g_newinventory", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse},
 
 	// Rafael gameskill
-	{ &g_gameskill, "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse  },   // (SA) new default '2' (was '1')
+	{&g_gameskill, "g_gameskill", "2", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse}, // (SA) new default '2' (was '1')
 	// done
-	{ &g_ironchallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse }, 
-	{ &g_nohudchallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
-	{ &g_nopickupchallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
-	{ &g_decaychallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  }, 
+	{&g_ironchallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse},
+	{&g_nohudchallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse},
+	{&g_nopickupchallenge, "g_nopickupchallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse},
+	{&g_decaychallenge, "g_decaychallenge", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse},
 
-	{ &g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-    { &g_reinforce, "g_reinforce", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_fullarsenal, "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_endmapbonus, "g_endmapbonus", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_randomweapons, "g_randomweapons", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_realism, "g_realism", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_regen, "g_regen", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_vanilla_guns, "g_vanilla_guns", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse },
-	{ &g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse },
-	{ &g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_hd_characters, "g_hd_characters", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_hq_sounds, "g_hq_sounds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_hd_worldmodels, "g_hd_worldmodels", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_hd_worldtextures, "g_hd_worldtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
+	{&g_airespawn, "g_airespawn", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_reinforce, "g_reinforce", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_fullarsenal, "g_fullarsenal", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_endmapbonus, "g_endmapbonus", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_randomweapons, "g_randomweapons", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_realism, "g_realism", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_regen, "g_regen", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_vanilla_guns, "g_vanilla_guns", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_hd_characters, "g_hd_characters", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_hq_sounds, "g_hq_sounds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_hd_worldmodels, "g_hd_worldmodels", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_hd_worldtextures, "g_hd_worldtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
-	{ &g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
-	{ &g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH , 0, qfalse },
+	{&g_pk3_european_style, "g_pk3_european_style", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_kemon_textures, "g_pk3_kemon_textures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_patreon, "g_pk3_patreon", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_ps2_ui_hud, "g_pk3_ps2_ui_hud", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_ps2_xbox_sound, "g_pk3_ps2_xbox_sound", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_wolf2_sound, "g_pk3_wolf2_sound", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_wolfet_sound, "g_pk3_wolfet_sound", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_wolfet_weapons, "g_pk3_wolfet_weapons", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_wolfet_ui, "g_pk3_wolfet_ui", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_venom_models, "g_pk3_venom_models", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_pk3_xbox_ui_hud, "g_pk3_xbox_ui_hud", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
-	{ &g_reloading, "g_reloading", "0", CVAR_ROM },   //----(SA)	added
+	{&g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
-// JPW NERVE multiplayer stuffs
-	{ &g_redlimbotime, "g_redlimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_bluelimbotime, "g_bluelimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_medicChargeTime, "g_medicChargeTime", "45000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_fireonthemove, "g_fireonthemove", "0", CVAR_ARCHIVE, 0, qfalse },
-	{ &g_spawndogs, "g_spawndogs", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_spawnpriests, "g_spawnpriests", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_spawnxshepherds, "g_spawnxshepherds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse },
-	{ &g_aicanheadshot, "g_aicanheadshot", "1", CVAR_ARCHIVE, 0, qfalse },
-	{ &g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-	{ &g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
-// jpw
+	{&g_reloading, "g_reloading", "0", CVAR_ROM}, //----(SA)	added
 
-	{ &g_playerStart, "g_playerStart", "0", CVAR_ROM, 0, qfalse  },
+	// JPW NERVE multiplayer stuffs
+	{&g_redlimbotime, "g_redlimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_bluelimbotime, "g_bluelimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_medicChargeTime, "g_medicChargeTime", "45000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_fireonthemove, "g_fireonthemove", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_spawndogs, "g_spawndogs", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_spawnpriests, "g_spawnpriests", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_spawnxshepherds, "g_spawnxshepherds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_aicanheadshot, "g_aicanheadshot", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	// jpw
 
-	{ &g_maxclients, "sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse  },
-	{ &g_maxGameClients, "g_maxGameClients", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse  },
+	{&g_playerStart, "g_playerStart", "0", CVAR_ROM, 0, qfalse},
+
+	{&g_maxclients, "sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse},
+	{&g_maxGameClients, "g_maxGameClients", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse},
 
 	// change anytime vars
-	{ &g_dmflags, "dmflags", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue  },
-	{ &g_fraglimit, "fraglimit", "20", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue },
-	{ &g_timelimit, "timelimit", "0", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue },
-	{ &g_capturelimit, "capturelimit", "8", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue },
+	{&g_dmflags, "dmflags", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue},
+	{&g_fraglimit, "fraglimit", "20", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue},
+	{&g_timelimit, "timelimit", "0", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue},
+	{&g_capturelimit, "capturelimit", "8", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue},
 
-	{ &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse  },
+	{&g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse},
 
-	{ &g_friendlyFire, "g_friendlyFire", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qtrue  },
+	{&g_friendlyFire, "g_friendlyFire", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qtrue},
 
-	{ &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE  },
-	{ &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE  },                            // NERVE - SMF - merge from team arena
+	{&g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE},
+	{&g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE}, // NERVE - SMF - merge from team arena
 
-	{ &g_warmup, "g_warmup", "20", CVAR_ARCHIVE, 0, qtrue  },
-	{ &g_doWarmup, "g_doWarmup", "0", CVAR_ARCHIVE, 0, qtrue  },
-	{ &g_logfile, "g_log", "games.log", CVAR_ARCHIVE, 0, qfalse  },
-	{ &g_logfileSync, "g_logsync", "0", CVAR_ARCHIVE, 0, qfalse  },
+	{&g_warmup, "g_warmup", "20", CVAR_ARCHIVE, 0, qtrue},
+	{&g_doWarmup, "g_doWarmup", "0", CVAR_ARCHIVE, 0, qtrue},
+	{&g_logfile, "g_log", "games.log", CVAR_ARCHIVE, 0, qfalse},
+	{&g_logfileSync, "g_logsync", "0", CVAR_ARCHIVE, 0, qfalse},
 
-	{ &g_password, "g_password", "", CVAR_USERINFO, 0, qfalse  },
-	{ &g_banIPs, "g_banIPs", "", CVAR_ARCHIVE, 0, qfalse  },
+	{&g_password, "g_password", "", CVAR_USERINFO, 0, qfalse},
+	{&g_banIPs, "g_banIPs", "", CVAR_ARCHIVE, 0, qfalse},
 
-	{ &g_dedicated, "dedicated", "0", 0, 0, qfalse  },
+	{&g_dedicated, "dedicated", "0", 0, 0, qfalse},
 
-	{ &g_speed, "g_speed", "320", 0, 0, qtrue  },
-	{ &g_gravity, "g_gravity", "800", 0, 0, qtrue  },
-	{ &g_knockback, "g_knockback", "1000", 0, 0, qtrue  },
-	{ &g_quadfactor, "g_quadfactor", "3", 0, 0, qtrue  },
-	{ &g_weaponRespawn, "g_weaponrespawn", "5", 0, 0, qtrue  },
-	{ &g_weaponTeamRespawn, "g_weaponTeamRespawn", "30", 0, 0, qtrue },
-	{ &g_forcerespawn, "g_forcerespawn", "20", 0, 0, qtrue },
-	{ &g_inactivity, "g_inactivity", "0", 0, 0, qtrue },
-	{ &g_debugMove, "g_debugMove", "0", 0, 0, qfalse },
-	{ &g_debugDamage, "g_debugDamage", "0", 0, 0, qfalse },
-	{ &g_debugAlloc, "g_debugAlloc", "0", 0, 0, qfalse },
-	{ &g_debugBullets, "g_debugBullets", "0", CVAR_CHEAT, 0, qfalse}, //----(SA)	added
-	{ &g_debugAudibleEvents, "g_debugAudibleEvents", "0", CVAR_CHEAT, 0, qfalse}, //----(SA)	added
+	{&g_speed, "g_speed", "320", 0, 0, qtrue},
+	{&g_gravity, "g_gravity", "800", 0, 0, qtrue},
+	{&g_knockback, "g_knockback", "1000", 0, 0, qtrue},
+	{&g_quadfactor, "g_quadfactor", "3", 0, 0, qtrue},
+	{&g_weaponRespawn, "g_weaponrespawn", "5", 0, 0, qtrue},
+	{&g_weaponTeamRespawn, "g_weaponTeamRespawn", "30", 0, 0, qtrue},
+	{&g_forcerespawn, "g_forcerespawn", "20", 0, 0, qtrue},
+	{&g_inactivity, "g_inactivity", "0", 0, 0, qtrue},
+	{&g_debugMove, "g_debugMove", "0", 0, 0, qfalse},
+	{&g_debugDamage, "g_debugDamage", "0", 0, 0, qfalse},
+	{&g_debugAlloc, "g_debugAlloc", "0", 0, 0, qfalse},
+	{&g_debugBullets, "g_debugBullets", "0", CVAR_CHEAT, 0, qfalse},			 //----(SA)	added
+	{&g_debugAudibleEvents, "g_debugAudibleEvents", "0", CVAR_CHEAT, 0, qfalse}, //----(SA)	added
 
-	{ &g_headshotMaxDist, "g_headshotMaxDist", "1024", CVAR_CHEAT, 0, qfalse},    //----(SA)	added
+	{&g_headshotMaxDist, "g_headshotMaxDist", "1024", CVAR_CHEAT, 0, qfalse}, //----(SA)	added
 
+	{&g_motd, "g_motd", "", 0, 0, qfalse},
+	{&g_blood, "com_blood", "1", 0, 0, qfalse},
 
-	{ &g_motd, "g_motd", "", 0, 0, qfalse },
-	{ &g_blood, "com_blood", "1", 0, 0, qfalse },
+	{&g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse},
+	{&g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse},
 
-	{ &g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse },
-	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
+	{&g_allowVote, "g_allowVote", "1", 0, 0, qfalse},
+	{&g_listEntity, "g_listEntity", "0", 0, 0, qfalse},
 
-	{ &g_allowVote, "g_allowVote", "1", 0, 0, qfalse },
-	{ &g_listEntity, "g_listEntity", "0", 0, 0, qfalse },
+	{&g_enableBreath, "g_enableBreath", "1", CVAR_SERVERINFO, 0, qtrue},
 
-	{ &g_enableBreath, "g_enableBreath", "1", CVAR_SERVERINFO, 0, qtrue},
+	{&g_testPain, "g_testPain", "0", CVAR_CHEAT, 0, qfalse},
 
-	{ &g_testPain, "g_testPain", "0", CVAR_CHEAT, 0, qfalse },
+	{&g_missionStats, "g_missionStats", "0", CVAR_ROM, 0, qfalse},
 
-	{ &g_missionStats, "g_missionStats", "0", CVAR_ROM, 0, qfalse },
+	{&g_developer, "developer", "0", CVAR_TEMP, 0, qfalse},
 
-	{ &g_developer, "developer", "0", CVAR_TEMP, 0, qfalse },
+	{&g_rankings, "g_rankings", "0", 0, 0, qfalse},
 
-	{ &g_rankings, "g_rankings", "0", 0, 0, qfalse},
+	{&g_userAim, "g_userAim", "1", CVAR_CHEAT, 0, qfalse},
 
-	{ &g_userAim, "g_userAim", "1", CVAR_CHEAT, 0, qfalse },
-
-	{ &g_forceModel, "cg_forceModel", "0", CVAR_ARCHIVE, 0, qfalse},
-	{ &g_smoothClients, "g_smoothClients", "1", 0, 0, qfalse},
-	{ &pmove_fixed, "pmove_fixed", "0", CVAR_SYSTEMINFO, 0, qfalse},
-	{ &pmove_msec, "pmove_msec", "8", CVAR_SYSTEMINFO, 0, qfalse},
-
+	{&g_forceModel, "cg_forceModel", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_smoothClients, "g_smoothClients", "1", 0, 0, qfalse},
+	{&pmove_fixed, "pmove_fixed", "0", CVAR_SYSTEMINFO, 0, qfalse},
+	{&pmove_msec, "pmove_msec", "8", CVAR_SYSTEMINFO, 0, qfalse},
 
 	{&g_mg42arc, "g_mg42arc", "0", CVAR_TEMP, 0, qfalse},
 
@@ -329,13 +351,12 @@ cvarTable_t gameCvarTable[] = {
 	{&g_scriptName, "g_scriptName", "", CVAR_ROM, 0, qfalse},
 	{&ai_scriptName, "ai_scriptName", "", CVAR_ROM, 0, qfalse},
 
-	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse },
+	{&g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse},
 
-	{ &g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE },
-	{ &g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE },
-	{ &g_flushItems,	"g_flushItems",		"1",	0 },
-	{ &g_mapname, "mapname", "", CVAR_ARCHIVE }
-};
+	{&g_bodysink, "g_bodysink", "0", CVAR_ARCHIVE},
+	{&g_weaponfalloff, "g_weaponfalloff", "0", CVAR_ARCHIVE},
+	{&g_flushItems, "g_flushItems", "1", 0},
+	{&g_mapname, "mapname", "", CVAR_ARCHIVE}};
 
 static int gameCvarTableSize = ARRAY_LEN( gameCvarTable );
 

@@ -223,7 +223,9 @@ typedef struct svParams_s
 	int specialWaveChance;		
 	int specialLopersInitialCount;		
 	int specialLopersIncrease;
-	int specialLopersMax;	
+	int specialLopersMax;
+	int specialMinGap;
+	int specialMaxGap;
 
 } svParams_t;
 

@@ -983,12 +983,30 @@ static qboolean AICast_ShouldStartSpecialWave(void) {
     if (g_specialWaves.integer == 0)
         return qfalse;
 
-    int wave = svParams.waveCount;
+    int wave = svParams.waveCount; // wave we’re starting now
 
-    if (wave < svParams.specialWaveMinStart) return qfalse; // too early
-    if (svParams.lastSpecialWave == wave - 1)  return qfalse; // no back-to-back
+    // Too early
+    if (wave < svParams.specialWaveMinStart)
+        return qfalse;
 
-    // Randomized
+    // Enforce minimal gap after a special (cooldown)
+    if (svParams.lastSpecialWave > 0) {
+        int delta = wave - svParams.lastSpecialWave; // distance to previous special
+        if (delta <= svParams.specialMinGap)
+            return qfalse; // still cooling down
+    }
+
+    // How many full NON-special waves since last special?
+    // If none yet, count since first eligible (specialWaveMinStart).
+    int gapSince = (svParams.lastSpecialWave > 0)
+        ? (wave - svParams.lastSpecialWave - 1)
+        : (wave - svParams.specialWaveMinStart);
+
+    // Hard guarantee: if we waited long enough, force a special
+    if (gapSince >= svParams.specialMaxGap)
+        return qtrue;
+
+    // Otherwise randomized
     int roll = rand() % 100; // 0..99
     return (roll < svParams.specialWaveChance) ? qtrue : qfalse;
 }
@@ -2235,6 +2253,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.prepareTime))
 			{
 				PC_SourceError(handle, "expected prepareTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialMinGap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialMinGap))
+			{
+				PC_SourceError(handle, "expected specialMinGap value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "specialMaxGap"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.specialMaxGap))
+			{
+				PC_SourceError(handle, "expected specialMaxGap value");
 				return qfalse;
 			}
 		}

@@ -354,9 +354,10 @@ FILE*       missingFiles = NULL;
 
 
 typedef struct {
-    char    cvar[64];
-    int     numPatterns;
-    char  **patterns;        // heap of char*
+    char     cvar[64];
+    int      numPatterns;
+    char   **patterns;
+    qboolean defaultOn;   // NEW: default gate state if cvar is absent
 } fs_gate_rule_t;
 
 static fs_gate_rule_t *fs_gate_rules = NULL;
@@ -373,6 +374,118 @@ static char *FS_ltrim(char *s) {
     return s;
 }
 
+static qboolean FS_IsGateCvar(const char *name) {
+    for (int i = 0; i < fs_gate_rule_count; ++i) {
+        if (!Q_stricmp(name, fs_gate_rules[i].cvar)) return qtrue;
+    }
+    return qfalse;
+}
+
+static void FS_ParseAndApplyGateVarsFromText(const char *buf) {
+    const char *s = buf;
+    while (*s) {
+        // grab line
+        const char *lineStart = s;
+        const char *nl = strchr(s, '\n');
+        size_t linelen = nl ? (size_t)(nl - s) : strlen(s);
+        char line[1024];
+        if (linelen >= sizeof(line)) linelen = sizeof(line) - 1;
+        Com_Memcpy(line, lineStart, linelen);
+        line[linelen] = '\0';
+        s = nl ? nl + 1 : s + linelen;
+
+        // strip comments
+        char *p = line;
+        char *cc = strstr(p, "//"); if (cc) *cc = '\0';
+        cc = strchr(p, '#'); if (cc && (cc == p || *(cc - 1) != '\\')) *cc = '\0';
+
+        // tokenize: expect (set|seta) <name> <value>
+        p = FS_ltrim(FS_rtrim(p));
+        if (!*p) continue;
+
+        // first token
+        char cmd[16] = {0}, name[64] = {0}, val[256] = {0};
+        {
+            // cmd
+            const char *sp = p;
+            while (*p && *p > ' ') ++p;
+            size_t n = p - sp; if (n > sizeof(cmd) - 1) n = sizeof(cmd) - 1;
+            Com_Memcpy(cmd, sp, n); cmd[n] = 0;
+            p = FS_ltrim((char*)p);
+            if (!*p) continue;
+
+            // name
+            sp = p;
+            while (*p && *p > ' ') ++p;
+            n = p - sp; if (n > sizeof(name) - 1) n = sizeof(name) - 1;
+            Com_Memcpy(name, sp, n); name[n] = 0;
+            p = FS_ltrim((char*)p);
+            if (!*p) continue;
+
+            // value (possibly quoted)
+            if (*p == '\"') {
+                ++p;
+                sp = p;
+                while (*p && *p != '\"') ++p;
+                n = p - sp; if (n > sizeof(val) - 1) n = sizeof(val) - 1;
+                Com_Memcpy(val, sp, n); val[n] = 0;
+            } else {
+                sp = p;
+                while (*p && *p > ' ') ++p;
+                n = p - sp; if (n > sizeof(val) - 1) n = sizeof(val) - 1;
+                Com_Memcpy(val, sp, n); val[n] = 0;
+            }
+        }
+
+        if (Q_stricmp(cmd, "seta") && Q_stricmp(cmd, "set")) continue;
+        if (!FS_IsGateCvar(name)) continue; // ignore non-gate cvars
+
+        // Apply BEFORE mounting
+        Cvar_Set(name, val);
+        if (fs_debug && fs_debug->integer) {
+            Com_DPrintf("fs-gate: prime %s = %s from config\n", name, val);
+        }
+    }
+}
+
+static void FS_PrimeGateCvarsFromConfig(const char *gameDir) {
+    const char *roots[3];
+    int r = 0;
+    roots[r++] = (fs_basepath && fs_basepath->string[0]) ? fs_basepath->string : NULL;
+    roots[r++] = (fs_homepath && fs_homepath->string[0]) ? fs_homepath->string : NULL;
+    roots[r] = NULL;
+
+    // Add/adjust names as your game uses (keep q3config as a fallback)
+    const char *cfgNames[] = {
+        "realrtcwconfig.cfg",   // if you have a custom one
+        "wolfconfig_mp.cfg",
+        "wolfconfig.cfg",
+        "q3config.cfg",
+        NULL
+    };
+
+    for (int i = 0; roots[i]; ++i) {
+        for (int j = 0; cfgNames[j]; ++j) {
+            char *p = FS_BuildOSPath(roots[i], gameDir, cfgNames[j]);
+            FILE *f = Sys_FOpen(p, "rb");
+            if (!f) continue;
+
+            fseek(f, 0, SEEK_END);
+            long len = ftell(f);
+            fseek(f, 0, SEEK_SET);
+            if (len > 0 && len < 1024*1024) { // sanity
+                char *buf = (char*)Z_Malloc(len + 1);
+                if (fread(buf, 1, len, f) == (size_t)len) {
+                    buf[len] = 0;
+                    FS_ParseAndApplyGateVarsFromText(buf);
+                }
+                Z_Free(buf);
+            }
+            fclose(f);
+        }
+    }
+}
+
 // Pattern match helper: uses existing Com_FilterPath (supports * and ?), case-insensitive.
 static qboolean FS_MatchPattern( const char *pattern, const char *name ) {
     char filterBuf[MAX_QPATH];
@@ -385,117 +498,180 @@ static qboolean FS_MatchPattern( const char *pattern, const char *name ) {
     return Com_FilterPath(filterBuf, nameBuf, qfalse) ? qtrue : qfalse;
 }
 // Parse "fs_gates.cfg" lines:   <cvar> : <pattern> [pattern...]
-static void FS_LoadGateRules(void) {
-    void *fileBuf = NULL;
-    long len = FS_ReadFile("fs_gates.cfg", &fileBuf); // search path aware
-    if (len <= 0 || !fileBuf) { return; }
+static qboolean FS_LoadGateRulesEarly(const char *gameDir)
+{
+    // locate fs_gates.cfg on OS paths (not using pk3)
+    const char *roots[8]; int r = 0;
+    roots[r++] = (fs_homepath  && fs_homepath->string[0])  ? fs_homepath->string  : NULL;
+    roots[r++] = (fs_basepath  && fs_basepath->string[0])  ? fs_basepath->string  : NULL;
+#ifdef __APPLE__
+    roots[r++] = (fs_apppath   && fs_apppath->string[0])   ? fs_apppath->string   : NULL;
+#endif
+#ifdef STEAM
+    roots[r++] = (fs_steampath && fs_steampath->string[0]) ? fs_steampath->string : NULL;
+    roots[r++] = (fs_workshop  && fs_workshop->string[0])  ? fs_workshop->string  : NULL;
+#endif
+    roots[r] = NULL;
 
-    // Worst case: one rule per line
-    // We'll store pointers into a duplicated buffer.
-    char *text = Z_Malloc(len + 1);
-    Com_Memcpy(text, fileBuf, len);
-    text[len] = '\0';
-    FS_FreeFile(fileBuf);
+    FILE *f = NULL;
+    for (int i = 0; roots[i]; ++i) {
+        char *p = FS_BuildOSPath(roots[i], gameDir, "fs_gates.cfg");
+        f = Sys_FOpen(p, "rb");
+        if (f) {
+            if (fs_debug && fs_debug->integer) Com_DPrintf("fs-gate: using %s\n", p);
+            break;
+        }
+    }
+    if (!f) {  // nothing to load
+        if (fs_debug && fs_debug->integer) Com_DPrintf("fs-gate: no fs_gates.cfg\n");
+        // clear any previous rules
+        if (fs_gate_rules) {
+            for (int i=0;i<fs_gate_rule_count;i++){
+                if (fs_gate_rules[i].patterns){
+                    for (int j=0;j<fs_gate_rules[i].numPatterns;j++) Z_Free(fs_gate_rules[i].patterns[j]);
+                    Z_Free(fs_gate_rules[i].patterns);
+                }
+            }
+            Z_Free(fs_gate_rules);
+            fs_gate_rules = NULL;
+            fs_gate_rule_count = 0;
+        }
+        return qfalse;
+    }
 
-    // Two passes: count rules/patterns, then allocate & fill
-    // We'll collect temporaries first.
-    typedef struct { char *cvar; int n; char **pat; } _tmp_rule;
-    _tmp_rule *tmp = Z_Malloc(sizeof(_tmp_rule) * 128); // enough for typical use
-    int tmpCount = 0;
+    // read file
+    fseek(f, 0, SEEK_END); long len = ftell(f); fseek(f, 0, SEEK_SET);
+    if (len <= 0) { fclose(f); return qfalse; }
+    char *fileBuf = (char*)Z_Malloc(len+1);
+    if (fread(fileBuf,1,len,f) != (size_t)len){ fclose(f); Z_Free(fileBuf); return qfalse; }
+    fclose(f); fileBuf[len]=0;
 
+    // temp list
+    typedef struct { char *cvar; qboolean defOn; int n; char **pat; } _tmp_rule;
+    int tmpCap = 16, tmpCount = 0;
+    _tmp_rule *tmp = (_tmp_rule*)Z_Malloc(sizeof(_tmp_rule)*tmpCap);
+
+    // mutate a copy line-by-line
+    char *text = (char*)Z_Malloc(len+1); Com_Memcpy(text, fileBuf, len+1); Z_Free(fileBuf);
     char *line = text;
-    while (line && *line) {
-        char *next = strchr(line, '\n');
-        if (next) { *next++ = '\0'; }
-        // Strip inline comments
-        char *cc = strstr(line, "//"); if (cc) *cc = '\0';
-        cc = strchr(line, '#');       if (cc && (cc==line || *(cc-1)!='\\')) *cc = '\0';
+
+    while (line && *line){
+        char *next = strchr(line, '\n'); if (next) *next++ = '\0';
+
+        // strip comments
+        char *cc = strstr(line,"//"); if (cc) *cc = '\0';
+        cc = strchr(line,'#'); if (cc && (cc==line || *(cc-1)!='\\')) *cc = '\0';
 
         line = FS_ltrim(FS_rtrim(line));
         if (!*line) { line = next; continue; }
 
-        // Split on first ':'
-        char *colon = strchr(line, ':');
-        if (!colon) { line = next; continue; }
+        // require "<cvar>[=0|=1] : <patterns...>"
+        char *colon = strchr(line, ':'); if (!colon){ line = next; continue; }
         *colon = '\0';
-        char *cvar = FS_ltrim(FS_rtrim(line));
-        char *rest = FS_ltrim(FS_rtrim(colon + 1));
-        if (!*cvar || !*rest) { line = next; continue; }
 
-        // Normalize cvar name to start with "fs_"
-        char cvarNorm[64];
-		if (Q_stricmpn(cvar, "fs_", 3) != 0)
-			Com_sprintf(cvarNorm, sizeof(cvarNorm), "fs_%s", cvar);
-		else
-			Q_strncpyz(cvarNorm, cvar, sizeof(cvarNorm));
+        char *cvarTok = FS_ltrim(FS_rtrim(line));
+        char *rest    = FS_ltrim(FS_rtrim(colon+1));
+        if (!*cvarTok || !*rest) { line = next; continue; }
 
-		// Tokenize patterns (space-separated)
+        // parse "=0|=1" default
+        qboolean defaultOn = qtrue; // default is enabled unless "=0" is provided
+        char cvarName[64];
+        {
+            char buf[64]; Q_strncpyz(buf, cvarTok, sizeof(buf));
+            char *eq = strchr(buf, '=');
+            if (eq){
+                *eq++ = '\0';
+                defaultOn = (atoi(eq) != 0) ? qtrue : qfalse;
+            }
+            // ensure fs_ prefix
+            if (Q_stricmpn(buf, "fs_", 3) != 0) Com_sprintf(cvarName, sizeof(cvarName), "fs_%s", buf);
+            else Q_strncpyz(cvarName, buf, sizeof(cvarName));
+        }
+
+        // tokenize patterns (space separated)
+        int patCap = 8, patCnt = 0; char **pat = (char**)Z_Malloc(sizeof(char*)*patCap);
         char *pwalk = rest;
-        int  patCap = 8, patCnt = 0;
-        char **pat = Z_Malloc(sizeof(char*) * patCap);
-        while (*pwalk) {
+        while (*pwalk){
             while (*pwalk==' '||*pwalk=='\t') ++pwalk;
             if (!*pwalk) break;
             char *start = pwalk;
             while (*pwalk && *pwalk!=' ' && *pwalk!='\t') ++pwalk;
-            int plen = (int)(pwalk - start);
-            if (plen > 0) {
-                if (patCnt == patCap) {
-                    patCap *= 2;
-                    char **np = Z_Malloc(sizeof(char*) * patCap);
-                    Com_Memcpy(np, pat, sizeof(char*) * patCnt);
-                    Z_Free(pat);
-                    pat = np;
+            int plen = (int)(pwalk-start);
+            if (plen>0){
+                if (patCnt==patCap){
+                    patCap*=2; char **np=(char**)Z_Malloc(sizeof(char*)*patCap);
+                    Com_Memcpy(np, pat, sizeof(char*)*patCnt); Z_Free(pat); pat=np;
                 }
-                char *one = Z_Malloc(plen + 1);
-                Com_Memcpy(one, start, plen); one[plen] = '\0';
+                char *one=(char*)Z_Malloc(plen+1); Com_Memcpy(one,start,plen); one[plen]=0;
                 pat[patCnt++] = one;
             }
         }
+        if (patCnt==0){ Z_Free(pat); line = next; continue; }
 
-        // Store tmp rule
-        tmp[tmpCount].cvar = CopyString(cvarNorm);
-        tmp[tmpCount].n    = patCnt;
-        tmp[tmpCount].pat  = pat;
+        if (tmpCount==tmpCap){
+            tmpCap*=2; _tmp_rule *nt=(_tmp_rule*)Z_Malloc(sizeof(_tmp_rule)*tmpCap);
+            Com_Memcpy(nt,tmp,sizeof(_tmp_rule)*tmpCount); Z_Free(tmp); tmp=nt;
+        }
+        tmp[tmpCount].cvar  = CopyString(cvarName);
+        tmp[tmpCount].defOn = defaultOn;
+        tmp[tmpCount].n     = patCnt;
+        tmp[tmpCount].pat   = pat;
         tmpCount++;
 
         line = next;
     }
+    Z_Free(text);
 
-    // Allocate final rules
+    // clear previous globals
+    if (fs_gate_rules){
+        for (int i=0;i<fs_gate_rule_count;i++){
+            if (fs_gate_rules[i].patterns){
+                for (int j=0;j<fs_gate_rules[i].numPatterns;j++) Z_Free(fs_gate_rules[i].patterns[j]);
+                Z_Free(fs_gate_rules[i].patterns);
+            }
+        }
+        Z_Free(fs_gate_rules);
+        fs_gate_rules = NULL;
+        fs_gate_rule_count = 0;
+    }
+
+    // publish + create cvars with manifest default (DOES NOT override existing values)
     fs_gate_rule_count = tmpCount;
-    if (fs_gate_rule_count > 0) {
-        fs_gate_rules = Z_Malloc(sizeof(fs_gate_rule_t) * fs_gate_rule_count);
-        for (int i=0;i<fs_gate_rule_count;i++) {
+    if (fs_gate_rule_count>0){
+        fs_gate_rules = (fs_gate_rule_t*)Z_Malloc(sizeof(fs_gate_rule_t)*fs_gate_rule_count);
+        for (int i=0;i<fs_gate_rule_count;i++){
             Q_strncpyz(fs_gate_rules[i].cvar, tmp[i].cvar, sizeof(fs_gate_rules[i].cvar));
+            fs_gate_rules[i].defaultOn   = tmp[i].defOn;
             fs_gate_rules[i].numPatterns = tmp[i].n;
             fs_gate_rules[i].patterns    = tmp[i].pat;
 
-            // Ensure the control cvar exists and defaults to "1" (enabled)
-            (void)Cvar_Get(fs_gate_rules[i].cvar, "1", CVAR_ARCHIVE );
+            // Create the cvar so UI can bind to it. Existing archived user value is not overridden.
+            (void)Cvar_Get(fs_gate_rules[i].cvar, fs_gate_rules[i].defaultOn ? "1" : "0", CVAR_ARCHIVE);
         }
     }
 
-    // cleanup temps (but keep pattern arrays we moved)
     for (int i=0;i<tmpCount;i++) Z_Free(tmp[i].cvar);
     Z_Free(tmp);
-    Z_Free(text);
+
+    if (fs_debug && fs_debug->integer) Com_DPrintf("fs-gate: loaded %d rule(s)\n", fs_gate_rule_count);
+    return fs_gate_rule_count>0 ? qtrue : qfalse;
 }
 
 // Return qtrue to skip loading this pak if any disabled rule matches.
-static qboolean FS_ShouldSkipPakByRules(const char *pakBaseNoExt, const char *pakFilenameWithExt) {
+static qboolean FS_ShouldSkipPakByRules(const char *pakBaseNoExt, const char *pakFilenameWithExt)
+{
     for (int i=0; i<fs_gate_rule_count; i++) {
-        if (Cvar_VariableIntegerValue(fs_gate_rules[i].cvar) != 0)
-            continue; // enabled -> do not skip
-
-        for (int j=0;j<fs_gate_rules[i].numPatterns;j++) {
-            const char *pat = fs_gate_rules[i].patterns[j];
-            if (FS_MatchPattern(pat, pakFilenameWithExt) || FS_MatchPattern(pat, pakBaseNoExt)) {
-                if (fs_debug && fs_debug->integer) {
-                    Com_Printf("fs-gate: skipping '%s' due to %s=0 (pattern '%s')\n",
-                               pakFilenameWithExt, fs_gate_rules[i].cvar, pat);
+        int enabled = Cvar_VariableIntegerValue(fs_gate_rules[i].cvar); // cvar exists (created above)
+        if (!enabled) {
+            for (int j=0; j<fs_gate_rules[i].numPatterns; j++) {
+                const char *pat = fs_gate_rules[i].patterns[j];
+                if (FS_MatchPattern(pat, pakFilenameWithExt) || FS_MatchPattern(pat, pakBaseNoExt)) {
+                    if (fs_debug && fs_debug->integer) {
+                        Com_Printf("fs-gate: skipping '%s' due to %s=0 (pattern '%s')\n",
+                                   pakFilenameWithExt, fs_gate_rules[i].cvar, pat);
+                    }
+                    return qtrue;
                 }
-                return qtrue;
             }
         }
     }
@@ -3793,6 +3969,7 @@ static void FS_Startup( const char *gameName )
 
 	fs_packFiles = 0;
 
+
 	fs_debug = Cvar_Get( "fs_debug", "0", 0 );
 	fs_basepath = Cvar_Get ("fs_basepath", Sys_DefaultInstallPath(), CVAR_INIT|CVAR_PROTECTED );
 	fs_basegame = Cvar_Get( "fs_basegame", "", CVAR_INIT );
@@ -3823,6 +4000,11 @@ static void FS_Startup( const char *gameName )
 	if (FS_InvalidGameDir(fs_gamedirvar->string)) {
 		Com_Error( ERR_DROP, "Invalid fs_game '%s'", fs_gamedirvar->string );
 	}
+
+	FS_LoadGateRulesEarly(gameName);
+
+	FS_PrimeGateCvarsFromConfig(gameName);
+
 
 	// add search path elements in reverse priority order
 #ifdef STEAM
@@ -3911,7 +4093,6 @@ static void FS_Startup( const char *gameName )
 
 	// print the current search paths
 	FS_Path_f();
-	FS_LoadGateRules();	   // NEW: data-driven groups
 
 	fs_gamedirvar->modified = qfalse; // We just loaded, it's not modified
 

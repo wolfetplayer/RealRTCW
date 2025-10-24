@@ -353,139 +353,153 @@ FILE*       missingFiles = NULL;
 #endif
 
 
-// Returns qtrue if this pak (basename without .pk3) should be skipped by cvar gates
-static qboolean FS_ShouldSkipPakByCvars( const char *pakBasenameNoExt ) {
+typedef struct {
+    char    cvar[64];
+    int     numPatterns;
+    char  **patterns;        // heap of char*
+} fs_gate_rule_t;
 
-    // --- define pak name lists (no .pk3) ---
-    static const char *pk3_european_style[] = {
-        "z_european_style",
-        "z_european_style_RealRTCW",
-        "z_european_style_RealRTCW_vanilla",
-        NULL
-    };
+static fs_gate_rule_t *fs_gate_rules = NULL;
+static int             fs_gate_rule_count = 0;
 
-    static const char *pk3_kemon_textures[] = { 
-        "z_kemon_textures",
-        "z_kemon_textures_etl",
-        "z_kemon_textures_wolfet",
-        "z_kemon_textures_wolfet_winter",
-        NULL
-    };
+// Simple line helpers
+static char *FS_rtrim(char *s) {
+    int n = (int)strlen(s);
+    while (n>0 && (s[n-1]==' '||s[n-1]=='\t'||s[n-1]=='\r'||s[n-1]=='\n')) s[--n]=0;
+    return s;
+}
+static char *FS_ltrim(char *s) {
+    while (*s==' '||*s=='\t') ++s;
+    return s;
+}
 
-    static const char *pk3_patreon[] = {
-        "z_z_patreon_glasses",
-        "z_z_patreon_models",
-        "z_z_patreon_models_glasses",
-        "z_z_patreon_weapons",
-        "z_z_patreon_weapons_RealRTCW",
-        "z_z_patreon_weapons_RealRTCW_vanilla",
-        "z_z_patreon_weapons_RealRTCW_vanilla_wolfet_ui",
-        NULL
-    };
+// Pattern match helper: uses existing Com_FilterPath (supports * and ?), case-insensitive.
+static qboolean FS_MatchPattern( const char *pattern, const char *name ) {
+    char filterBuf[MAX_QPATH];
+    char nameBuf[MAX_QPATH];
 
-    static const char *pk3_ps2_ui_hud[] = {    
-        "z_ps2_ui_hud_RealRTCW",
-        NULL
-    };
+    Q_strncpyz(filterBuf, pattern, sizeof(filterBuf));
+    Q_strncpyz(nameBuf,  name,    sizeof(nameBuf));
 
-    static const char *pk3_ps2_xbox_sound[] = { 
-        "z_ps2_xbox_sound_weapons",
-        "z_ps2_xbox_sound_weapons_RealRTCW",
-        NULL
-    };
+    // Com_FilterPath returns non-zero on match
+    return Com_FilterPath(filterBuf, nameBuf, qfalse) ? qtrue : qfalse;
+}
+// Parse "fs_gates.cfg" lines:   <cvar> : <pattern> [pattern...]
+static void FS_LoadGateRules(void) {
+    void *fileBuf = NULL;
+    long len = FS_ReadFile("fs_gates.cfg", &fileBuf); // search path aware
+    if (len <= 0 || !fileBuf) { return; }
 
-    static const char *pk3_wolf2_sound[] = {  
-        "z_wolf2_sound",
-        "z_wolf2_sound_RealRTCW",
-        NULL
-    };
+    // Worst case: one rule per line
+    // We'll store pointers into a duplicated buffer.
+    char *text = Z_Malloc(len + 1);
+    Com_Memcpy(text, fileBuf, len);
+    text[len] = '\0';
+    FS_FreeFile(fileBuf);
 
-    static const char *pk3_wolfet_sound[] = {  
-        "z_wolfet_sound",
-        "z_wolfet_sound_RealRTCW",
-        NULL
-    };
+    // Two passes: count rules/patterns, then allocate & fill
+    // We'll collect temporaries first.
+    typedef struct { char *cvar; int n; char **pat; } _tmp_rule;
+    _tmp_rule *tmp = Z_Malloc(sizeof(_tmp_rule) * 128); // enough for typical use
+    int tmpCount = 0;
 
-    static const char *pk3_wolfet_weapons[] = {
-        "z_wolfet_weapons",
-        NULL
-    };
+    char *line = text;
+    while (line && *line) {
+        char *next = strchr(line, '\n');
+        if (next) { *next++ = '\0'; }
+        // Strip inline comments
+        char *cc = strstr(line, "//"); if (cc) *cc = '\0';
+        cc = strchr(line, '#');       if (cc && (cc==line || *(cc-1)!='\\')) *cc = '\0';
 
-    static const char *pk3_wolfet_ui[] = {
-        "z_wolfet_ui",
-        "z_wolfet_ui_RealRTCW",
-        "z_wolfet_ui_RealRTCW_vanilla",
-        "z_wolfet_ui_hud_RealRTCW",
-        "z_wolfet_ui_hud_RealRTCW_vanilla",
-        NULL
-    };
+        line = FS_ltrim(FS_rtrim(line));
+        if (!*line) { line = next; continue; }
 
-    static const char *pk3_venom_models[] = {
-        "z_venom_models_players",
-        "z_venom_models_players_RealRTCW",
-        NULL
-    };
+        // Split on first ':'
+        char *colon = strchr(line, ':');
+        if (!colon) { line = next; continue; }
+        *colon = '\0';
+        char *cvar = FS_ltrim(FS_rtrim(line));
+        char *rest = FS_ltrim(FS_rtrim(colon + 1));
+        if (!*cvar || !*rest) { line = next; continue; }
 
-    static const char *pk3_xbox_ui_hud[] = { 
-        "z_xbox_ui_hud_RealRTCW",
-        NULL
-    };
+        // Normalize cvar name to start with "fs_"
+        char cvarNorm[64];
+		if (Q_stricmpn(cvar, "fs_", 3) != 0)
+			Com_sprintf(cvarNorm, sizeof(cvarNorm), "fs_%s", cvar);
+		else
+			Q_strncpyz(cvarNorm, cvar, sizeof(cvarNorm));
 
-    static const char *pk3_hd_characters[] = {
-        "z_realrtcw_models_characters_hd",
-        NULL
-    };
-    static const char *pk3_hd_worldmodels[] = {
-        "z_realrtcw_models_hd",
-        NULL
-    };
-    static const char *pk3_hd_worldtextures[] = {
-        "z_realrtcw_textures_hd",
-        NULL
-    };
-    static const char *pk3_hq_sounds[] = {
-        "z_realrtcw_sounds_hd",
-        NULL
-    };
-
-    // --- gate table: cvar -> list of pak basenames ---
-    typedef struct {
-        const char *cvarName;              // skip when this is 0
-        const char *const *pakList;        // NULL-terminated list
-    } pak_gate_t;
-
-    static const pak_gate_t gates[] = {
-        { "g_pk3_european_style",   pk3_european_style },
-        { "g_pk3_kemon_textures",   pk3_kemon_textures },   
-        { "g_pk3_patreon",          pk3_patreon },
-
-        { "g_pk3_ps2_ui_hud",       pk3_ps2_ui_hud },       
-        { "g_pk3_ps2_xbox_sound",   pk3_ps2_xbox_sound },   
-        { "g_pk3_wolf2_sound",      pk3_wolf2_sound },      
-        { "g_pk3_wolfet_sound",     pk3_wolfet_sound },     
-        { "g_pk3_wolfet_weapons",   pk3_wolfet_weapons },  
-        { "g_pk3_wolfet_ui",        pk3_wolfet_ui },       
-        { "g_pk3_venom_models",     pk3_venom_models },
-        { "g_pk3_xbox_ui_hud",      pk3_xbox_ui_hud },     
-
-        { "g_hd_characters",        pk3_hd_characters },
-        { "g_hd_worldmodels",       pk3_hd_worldmodels },
-        { "g_hd_worldtextures",     pk3_hd_worldtextures },
-        { "g_hq_sounds",            pk3_hq_sounds },
-    };
-
-    // --- evaluate current pak against gates ---
-    for (int i = 0; i < (int)(sizeof(gates)/sizeof(gates[0])); ++i) {
-        if (!Cvar_VariableIntegerValue(gates[i].cvarName)) {
-            for (const char *const *p = gates[i].pakList; *p; ++p) {
-                if (!Q_stricmp(pakBasenameNoExt, *p)) {
-                    return qtrue; // skip this pak
+		// Tokenize patterns (space-separated)
+        char *pwalk = rest;
+        int  patCap = 8, patCnt = 0;
+        char **pat = Z_Malloc(sizeof(char*) * patCap);
+        while (*pwalk) {
+            while (*pwalk==' '||*pwalk=='\t') ++pwalk;
+            if (!*pwalk) break;
+            char *start = pwalk;
+            while (*pwalk && *pwalk!=' ' && *pwalk!='\t') ++pwalk;
+            int plen = (int)(pwalk - start);
+            if (plen > 0) {
+                if (patCnt == patCap) {
+                    patCap *= 2;
+                    char **np = Z_Malloc(sizeof(char*) * patCap);
+                    Com_Memcpy(np, pat, sizeof(char*) * patCnt);
+                    Z_Free(pat);
+                    pat = np;
                 }
+                char *one = Z_Malloc(plen + 1);
+                Com_Memcpy(one, start, plen); one[plen] = '\0';
+                pat[patCnt++] = one;
             }
+        }
+
+        // Store tmp rule
+        tmp[tmpCount].cvar = CopyString(cvarNorm);
+        tmp[tmpCount].n    = patCnt;
+        tmp[tmpCount].pat  = pat;
+        tmpCount++;
+
+        line = next;
+    }
+
+    // Allocate final rules
+    fs_gate_rule_count = tmpCount;
+    if (fs_gate_rule_count > 0) {
+        fs_gate_rules = Z_Malloc(sizeof(fs_gate_rule_t) * fs_gate_rule_count);
+        for (int i=0;i<fs_gate_rule_count;i++) {
+            Q_strncpyz(fs_gate_rules[i].cvar, tmp[i].cvar, sizeof(fs_gate_rules[i].cvar));
+            fs_gate_rules[i].numPatterns = tmp[i].n;
+            fs_gate_rules[i].patterns    = tmp[i].pat;
+
+            // Ensure the control cvar exists and defaults to "1" (enabled)
+            (void)Cvar_Get(fs_gate_rules[i].cvar, "1", CVAR_ARCHIVE );
         }
     }
 
-    return qfalse; // keep it
+    // cleanup temps (but keep pattern arrays we moved)
+    for (int i=0;i<tmpCount;i++) Z_Free(tmp[i].cvar);
+    Z_Free(tmp);
+    Z_Free(text);
+}
+
+// Return qtrue to skip loading this pak if any disabled rule matches.
+static qboolean FS_ShouldSkipPakByRules(const char *pakBaseNoExt, const char *pakFilenameWithExt) {
+    for (int i=0; i<fs_gate_rule_count; i++) {
+        if (Cvar_VariableIntegerValue(fs_gate_rules[i].cvar) != 0)
+            continue; // enabled -> do not skip
+
+        for (int j=0;j<fs_gate_rules[i].numPatterns;j++) {
+            const char *pat = fs_gate_rules[i].patterns[j];
+            if (FS_MatchPattern(pat, pakFilenameWithExt) || FS_MatchPattern(pat, pakBaseNoExt)) {
+                if (fs_debug && fs_debug->integer) {
+                    Com_Printf("fs-gate: skipping '%s' due to %s=0 (pattern '%s')\n",
+                               pakFilenameWithExt, fs_gate_rules[i].cvar, pat);
+                }
+                return qtrue;
+            }
+        }
+    }
+    return qfalse;
 }
 
 /*
@@ -3461,17 +3475,19 @@ for ( i = 0 ; i < numfiles ; i++ ) {
             memcpy( sorted[i],"sp",2 ); // restore "sp_" name
         }
 
-        // --- DLC gating begin ---
-        char baseNoExt[MAX_OSPATH];
-        Q_strncpyz( baseNoExt, sorted[i], sizeof( baseNoExt ) );
-        COM_StripExtension( baseNoExt, baseNoExt, sizeof( baseNoExt ) );
+		// --- DLC gating begin ---
+		char baseNoExt[MAX_OSPATH];
+		Q_strncpyz(baseNoExt, sorted[i], sizeof(baseNoExt));
+		COM_StripExtension(baseNoExt, baseNoExt, sizeof(baseNoExt));
 
-        if ( FS_ShouldSkipPakByCvars( baseNoExt ) ) {
-            continue;
-        }
-        // --- DLC gating end ---
+		// Replace the old hardcoded gate with the manifest-driven one:
+		if (FS_ShouldSkipPakByRules(baseNoExt, sorted[i]))
+		{
+			continue;
+		}
+		// --- DLC gating end ---
 
-        pakfile = FS_BuildOSPath( path, dir, sorted[i] );
+		pakfile = FS_BuildOSPath( path, dir, sorted[i] );
         if ( ( pak = FS_LoadZipFile( pakfile, sorted[i] ) ) == 0 ) {
             continue;
         }
@@ -3808,6 +3824,8 @@ static void FS_Startup( const char *gameName )
 		Com_Error( ERR_DROP, "Invalid fs_game '%s'", fs_gamedirvar->string );
 	}
 
+	  FS_LoadGateRules();
+
 	// add search path elements in reverse priority order
 #ifdef STEAM
 	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
@@ -3895,6 +3913,7 @@ static void FS_Startup( const char *gameName )
 
 	// print the current search paths
 	FS_Path_f();
+	FS_LoadGateRules();	   // NEW: data-driven groups
 
 	fs_gamedirvar->modified = qfalse; // We just loaded, it's not modified
 

@@ -1155,23 +1155,7 @@ extern vmCvar_t g_midgame;
 extern vmCvar_t g_dlc1;
 extern vmCvar_t g_class;
 extern vmCvar_t g_noobTube;
-extern vmCvar_t g_aiCollision;
-extern vmCvar_t g_hd_characters;
-extern vmCvar_t g_hq_sounds;
-extern vmCvar_t g_hd_worldmodels;
-extern vmCvar_t g_hd_worldtextures;
-
-extern vmCvar_t g_pk3_european_style;
-extern vmCvar_t g_pk3_kemon_textures;   
-extern vmCvar_t g_pk3_patreon;
-extern vmCvar_t g_pk3_ps2_ui_hud;       
-extern vmCvar_t g_pk3_ps2_xbox_sound;   
-extern vmCvar_t g_pk3_wolf2_sound;      
-extern vmCvar_t g_pk3_wolfet_sound;     
-extern vmCvar_t g_pk3_wolfet_weapons;   
-extern vmCvar_t g_pk3_wolfet_ui;        
-extern vmCvar_t g_pk3_venom_models;
-extern vmCvar_t g_pk3_xbox_ui_hud;        
+extern vmCvar_t g_aiCollision;      
 
 extern vmCvar_t g_playerSurvivalClass;
 

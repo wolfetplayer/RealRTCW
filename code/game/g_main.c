@@ -177,25 +177,9 @@ vmCvar_t g_dlc1;
 vmCvar_t g_class;
 vmCvar_t g_noobTube;
 vmCvar_t g_aiCollision;
-vmCvar_t g_hd_characters;
-vmCvar_t g_hq_sounds;
-vmCvar_t g_hd_worldmodels;
-vmCvar_t g_hd_worldtextures;
 vmCvar_t g_specialWaves;
 
-vmCvar_t g_playerSurvivalClass;
-
-vmCvar_t g_pk3_european_style;
-vmCvar_t g_pk3_kemon_textures;   
-vmCvar_t g_pk3_patreon;
-vmCvar_t g_pk3_ps2_ui_hud;      
-vmCvar_t g_pk3_ps2_xbox_sound;   
-vmCvar_t g_pk3_wolf2_sound;      
-vmCvar_t g_pk3_wolfet_sound;     
-vmCvar_t g_pk3_wolfet_weapons;   
-vmCvar_t g_pk3_wolfet_ui;        
-vmCvar_t g_pk3_venom_models;
-vmCvar_t g_pk3_xbox_ui_hud;      
+vmCvar_t g_playerSurvivalClass;    
 
 vmCvar_t g_mapname;
 
@@ -234,22 +218,6 @@ cvarTable_t gameCvarTable[] = {
 	{&g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_hd_characters, "g_hd_characters", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_hq_sounds, "g_hq_sounds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_hd_worldmodels, "g_hd_worldmodels", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_hd_worldtextures, "g_hd_worldtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-
-	{&g_pk3_european_style, "g_pk3_european_style", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_kemon_textures, "g_pk3_kemon_textures", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_patreon, "g_pk3_patreon", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_ps2_ui_hud, "g_pk3_ps2_ui_hud", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_ps2_xbox_sound, "g_pk3_ps2_xbox_sound", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_wolf2_sound, "g_pk3_wolf2_sound", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_wolfet_sound, "g_pk3_wolfet_sound", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_wolfet_weapons, "g_pk3_wolfet_weapons", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_wolfet_ui, "g_pk3_wolfet_ui", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_venom_models, "g_pk3_venom_models", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
-	{&g_pk3_xbox_ui_hud, "g_pk3_xbox_ui_hud", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
 	{&g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

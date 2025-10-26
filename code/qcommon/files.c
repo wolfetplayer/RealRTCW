@@ -448,42 +448,198 @@ static void FS_ParseAndApplyGateVarsFromText(const char *buf) {
     }
 }
 
-static void FS_PrimeGateCvarsFromConfig(const char *gameDir) {
-    const char *roots[3];
-    int r = 0;
-    roots[r++] = (fs_basepath && fs_basepath->string[0]) ? fs_basepath->string : NULL;
-    roots[r++] = (fs_homepath && fs_homepath->string[0]) ? fs_homepath->string : NULL;
-    roots[r] = NULL;
+static void FS_PrimeGateCvarsFromConfig(const char *dir)
+{
+    if (!fs_homepath || !fs_homepath->string[0]) return;
 
-    // Add/adjust names as your game uses (keep q3config as a fallback)
     const char *cfgNames[] = {
-        "realrtcwconfig.cfg",   // if you have a custom one
+        "realrtcwconfig.cfg",
         "wolfconfig_mp.cfg",
         "wolfconfig.cfg",
         "q3config.cfg",
         NULL
     };
 
-    for (int i = 0; roots[i]; ++i) {
-        for (int j = 0; cfgNames[j]; ++j) {
-            char *p = FS_BuildOSPath(roots[i], gameDir, cfgNames[j]);
-            FILE *f = Sys_FOpen(p, "rb");
-            if (!f) continue;
+    for (int j=0; cfgNames[j]; ++j) {
+        char *p = FS_BuildOSPath(fs_homepath->string, dir, cfgNames[j]);
+        FILE *f = Sys_FOpen(p, "rb");
+        if (!f) continue;
 
-            fseek(f, 0, SEEK_END);
-            long len = ftell(f);
-            fseek(f, 0, SEEK_SET);
-            if (len > 0 && len < 1024*1024) { // sanity
-                char *buf = (char*)Z_Malloc(len + 1);
-                if (fread(buf, 1, len, f) == (size_t)len) {
-                    buf[len] = 0;
-                    FS_ParseAndApplyGateVarsFromText(buf);
-                }
-                Z_Free(buf);
+        fseek(f, 0, SEEK_END); long len = ftell(f); fseek(f, 0, SEEK_SET);
+        if (len > 0 && len < 1024*1024) {
+            char *buf = (char*)Z_Malloc(len+1);
+            if (fread(buf,1,len,f) == (size_t)len) {
+                buf[len]=0;
+                FS_ParseAndApplyGateVarsFromText(buf); // your existing helper
             }
-            fclose(f);
+            Z_Free(buf);
+        }
+        fclose(f);
+        // first hit wins (homepath usually has only one)
+        break;
+    }
+}
+
+
+// -------- gate: seen-dir cache (avoid re-parsing same physical folder) --------
+static int  fs_gate_seen_dirs_count = 0;
+static char fs_gate_seen_dirs[32][MAX_OSPATH]; // bump if you mount many roots/mods
+
+static qboolean FS_GateDirSeen(const char *absdir) {
+    for (int i=0;i<fs_gate_seen_dirs_count;i++)
+        if (!Q_stricmp(fs_gate_seen_dirs[i], absdir)) return qtrue;
+    return qfalse;
+}
+static void FS_GateMarkDirSeen(const char *absdir) {
+    if (fs_gate_seen_dirs_count >= (int)ARRAY_LEN(fs_gate_seen_dirs)) return;
+    Q_strncpyz(fs_gate_seen_dirs[fs_gate_seen_dirs_count++], absdir, sizeof(fs_gate_seen_dirs[0]));
+}
+
+// -------- gate: small util to merge/append a single rule --------
+static void FS_AppendGateRule( const char *cvarName, qboolean defaultOn,
+                               char **newPats, int newCnt )
+{
+    // Find existing rule by cvar
+    for (int i=0;i<fs_gate_rule_count;i++) {
+        if (!Q_stricmp(fs_gate_rules[i].cvar, cvarName)) {
+            // Merge patterns (dedupe by string compare)
+            int oldCnt = fs_gate_rules[i].numPatterns;
+            int add = 0;
+            for (int n=0;n<newCnt;n++) {
+                qboolean dup = qfalse;
+                for (int o=0;o<oldCnt;o++) {
+                    if (!Q_stricmp(fs_gate_rules[i].patterns[o], newPats[n])) { dup = qtrue; break; }
+                }
+                if (!dup) add++;
+            }
+            if (add == 0) return;
+
+            char **merged = (char**)Z_Malloc( sizeof(char*) * (oldCnt + add) );
+            // keep old pointers
+            for (int o=0;o<oldCnt;o++) merged[o] = fs_gate_rules[i].patterns[o];
+            // append non-duplicates (copy strings so caller can free newPats)
+            int w = oldCnt;
+            for (int n=0;n<newCnt;n++) {
+                qboolean dup = qfalse;
+                for (int o=0;o<oldCnt;o++)
+                    if (!Q_stricmp(fs_gate_rules[i].patterns[o], newPats[n])) { dup = qtrue; break; }
+                if (!dup) {
+                    size_t L = strlen(newPats[n]);
+                    char *s = (char*)Z_Malloc(L+1);
+                    Com_Memcpy(s, newPats[n], L+1);
+                    merged[w++] = s;
+                }
+            }
+            Z_Free(fs_gate_rules[i].patterns);
+            fs_gate_rules[i].patterns = merged;
+            fs_gate_rules[i].numPatterns = w;
+
+            // Make sure the cvar exists (don’t override saved value)
+            (void)Cvar_Get(fs_gate_rules[i].cvar, defaultOn?"1":"0", CVAR_ARCHIVE);
+            return;
         }
     }
+
+    // New rule → grow array by 1
+    fs_gate_rule_t *nr = (fs_gate_rule_t*)Z_Malloc( sizeof(fs_gate_rule_t) * (fs_gate_rule_count + 1) );
+    if (fs_gate_rules && fs_gate_rule_count) {
+        Com_Memcpy(nr, fs_gate_rules, sizeof(fs_gate_rule_t) * fs_gate_rule_count);
+        Z_Free(fs_gate_rules);
+    }
+    fs_gate_rules = nr;
+
+    fs_gate_rule_t *dst = &fs_gate_rules[fs_gate_rule_count++];
+    Q_strncpyz(dst->cvar, cvarName, sizeof(dst->cvar));
+    dst->defaultOn   = defaultOn;
+    dst->numPatterns = newCnt;
+    dst->patterns    = (char**)Z_Malloc( sizeof(char*) * newCnt );
+    for (int n=0;n<newCnt;n++) {
+        size_t L = strlen(newPats[n]);
+        dst->patterns[n] = (char*)Z_Malloc(L+1);
+        Com_Memcpy(dst->patterns[n], newPats[n], L+1);
+    }
+
+    // Create cvar with manifest default, but don’t clobber archived value.
+    (void)Cvar_Get(dst->cvar, dst->defaultOn?"1":"0", CVAR_ARCHIVE);
+}
+
+// -------- gate: parse & append rules from <path>/<dir>/fs_gates_mod.cfg --------
+static void FS_LoadGateRulesAppendForDir( const char *path, const char *dir )
+{
+    // Absolute dir (no trailing slash)
+    char absdir[MAX_OSPATH];
+    Q_strncpyz(absdir, FS_BuildOSPath(path, dir, ""), sizeof(absdir));
+    if (absdir[0]) absdir[strlen(absdir)-1] = '\0';
+
+    if (FS_GateDirSeen(absdir)) return; // parsed already
+    FS_GateMarkDirSeen(absdir);
+
+    // cfg path
+    char cfgpath[MAX_OSPATH];
+    Q_strncpyz(cfgpath, FS_BuildOSPath(path, dir, "fs_gates_mod.cfg"), sizeof(cfgpath));
+
+    FILE *f = Sys_FOpen(cfgpath, "rb");
+    if (!f) return;
+
+    if (fs_debug && fs_debug->integer) Com_DPrintf("fs-gate: append rules from %s\n", cfgpath);
+
+    fseek(f, 0, SEEK_END); long len = ftell(f); fseek(f, 0, SEEK_SET);
+    if (len <= 0 || len > 1024*1024) { fclose(f); return; }
+
+    char *buf = (char*)Z_Malloc(len+1);
+    if (fread(buf,1,len,f) != (size_t)len) { fclose(f); Z_Free(buf); return; }
+    fclose(f); buf[len]=0;
+
+    // parse line-by-line:   <cvar>[=0|1] : <pat> [pat ...]
+    char *text = (char*)Z_Malloc(len+1); Com_Memcpy(text, buf, len+1); Z_Free(buf);
+    char *line = text;
+    while (line && *line) {
+        char *next = strchr(line, '\n'); if (next) *next++ = '\0';
+
+        char *p = line;
+        char *cc = strstr(p,"//"); if (cc) *cc = '\0';
+        cc = strchr(p,'#'); if (cc && (cc==p || *(cc-1)!='\\')) *cc = '\0';
+        p = FS_ltrim(FS_rtrim(p));
+        if (!*p) { line = next; continue; }
+
+        char *colon = strchr(p, ':'); if (!colon) { line = next; continue; }
+        *colon = '\0';
+        char *cvarTok = FS_ltrim(FS_rtrim(p));
+        char *rest    = FS_ltrim(FS_rtrim(colon+1));
+        if (!*cvarTok || !*rest) { line = next; continue; }
+
+        qboolean defaultOn = qtrue;
+        char cvarName[64];
+        {
+            char tmp[64]; Q_strncpyz(tmp, cvarTok, sizeof(tmp));
+            char *eq = strchr(tmp,'=');
+            if (eq) { *eq++ = '\0'; defaultOn = (atoi(eq)!=0) ? qtrue : qfalse; }
+            if (Q_stricmpn(tmp,"fs_",3)!=0) Com_sprintf(cvarName, sizeof(cvarName), "fs_%s", tmp);
+            else Q_strncpyz(cvarName, tmp, sizeof(cvarName));
+        }
+
+        // tokenize patterns
+        int cap=8, cnt=0; char **pats=(char**)Z_Malloc(sizeof(char*)*cap);
+        char *w = rest;
+        while (*w) {
+            while (*w==' '||*w=='\t') ++w;
+            if (!*w) break;
+            char *s = w; while (*w && *w!=' ' && *w!='\t') ++w;
+            int L = (int)(w-s);
+            if (L>0) {
+                if (cnt==cap){ cap*=2; char **np=(char**)Z_Malloc(sizeof(char*)*cap); Com_Memcpy(np,pats,sizeof(char*)*cnt); Z_Free(pats); pats=np; }
+                char *one=(char*)Z_Malloc(L+1); Com_Memcpy(one,s,L); one[L]=0; pats[cnt++]=one;
+            }
+        }
+        if (cnt>0) {
+            FS_AppendGateRule(cvarName, defaultOn, pats, cnt);
+        }
+        for (int i=0;i<cnt;i++) Z_Free(pats[i]); // we copied inside Append
+        Z_Free(pats);
+
+        line = next;
+    }
+    Z_Free(text);
 }
 
 // Pattern match helper: uses existing Com_FilterPath (supports * and ?), case-insensitive.
@@ -497,9 +653,18 @@ static qboolean FS_MatchPattern( const char *pattern, const char *name ) {
     // Com_FilterPath returns non-zero on match
     return Com_FilterPath(filterBuf, nameBuf, qfalse) ? qtrue : qfalse;
 }
+
+static void FS_GateResetSeenDirs(void) {
+    fs_gate_seen_dirs_count = 0;
+    for (int i = 0; i < (int)ARRAY_LEN(fs_gate_seen_dirs); ++i) {
+        fs_gate_seen_dirs[i][0] = '\0';
+    }
+}
+
 // Parse "fs_gates.cfg" lines:   <cvar> : <pattern> [pattern...]
 static qboolean FS_LoadGateRulesEarly(const char *gameDir)
 {
+	FS_GateResetSeenDirs();
     // locate fs_gates.cfg on OS paths (not using pk3)
     const char *roots[8]; int r = 0;
     roots[r++] = (fs_homepath  && fs_homepath->string[0])  ? fs_homepath->string  : NULL;
@@ -3605,6 +3770,12 @@ void FS_AddGameDirectory( const char *path, const char *dir ) {
 		}
 	}
 
+	// 1) Pull in any local gate rules from this folder (only once per physical dir)
+	FS_LoadGateRulesAppendForDir(path, dir);
+
+	// 2) Prime saved user values for this folder from homepath cfgs (so gating applies now)
+	FS_PrimeGateCvarsFromConfig(dir);
+
 	Q_strncpyz( fs_gamedir, dir, sizeof( fs_gamedir ) );
 
 	//
@@ -3882,6 +4053,8 @@ void FS_Shutdown( qboolean closemfp ) {
 		}
 	}
 
+	FS_GateResetSeenDirs(); // NEW: drop seen-dir cache on shutdown
+
 	// free everything
 	for(p = fs_searchpaths; p; p = next)
 	{
@@ -4002,8 +4175,6 @@ static void FS_Startup( const char *gameName )
 	}
 
 	FS_LoadGateRulesEarly(gameName);
-
-	FS_PrimeGateCvarsFromConfig(gameName);
 
 
 	// add search path elements in reverse priority order

@@ -4015,20 +4015,33 @@ case WP_POISONGAS:
 	}
 
 	// set weapon recoil (kickback)
-	pm->pmext->lastRecoilDeltaTime = 0;
-	pm->pmext->weapRecoilTime      = GetWeaponTableData(pm->ps->weapon)->weapRecoilDuration ? pm->cmd.serverTime : 0;
-	pm->pmext->weapRecoilDuration  = GetWeaponTableData(pm->ps->weapon)->weapRecoilDuration;
-	pm->pmext->weapRecoilYaw       = GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[0] * crandom() * GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[1];
-	pm->pmext->weapRecoilPitch     = GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[0] * random() * GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[1];
-
-
-	if ( ammoTable[pm->ps->weapon].weaponClass == WEAPON_CLASS_SMG)
+	// no recoil for AI
+	if (pm->ps->aiChar)
 	{
-		aimSpreadScaleAdd += rand() % 5;
+		pm->pmext->lastRecoilDeltaTime = 0;
+		pm->pmext->weapRecoilTime = 0;
+		pm->pmext->weapRecoilDuration = 0;
+		pm->pmext->weapRecoilYaw = 0;
+		pm->pmext->weapRecoilPitch = 0;
 	}
+	else
+	{
 
-    if ( ( pm->ps->eFlags & EF_CROUCHING ) && ( pm->ps->groundEntityNum != ENTITYNUM_NONE ) ) { 
-		pm->pmext->weapRecoilDuration *= 0.5;
+		pm->pmext->lastRecoilDeltaTime = 0;
+		pm->pmext->weapRecoilTime = GetWeaponTableData(pm->ps->weapon)->weapRecoilDuration ? pm->cmd.serverTime : 0;
+		pm->pmext->weapRecoilDuration = GetWeaponTableData(pm->ps->weapon)->weapRecoilDuration;
+		pm->pmext->weapRecoilYaw = GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[0] * crandom() * GetWeaponTableData(pm->ps->weapon)->weapRecoilYaw[1];
+		pm->pmext->weapRecoilPitch = GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[0] * random() * GetWeaponTableData(pm->ps->weapon)->weapRecoilPitch[1];
+
+		if (ammoTable[pm->ps->weapon].weaponClass == WEAPON_CLASS_SMG)
+		{
+			aimSpreadScaleAdd += rand() % 5;
+		}
+
+		if ((pm->ps->eFlags & EF_CROUCHING) && (pm->ps->groundEntityNum != ENTITYNUM_NONE))
+		{
+			pm->pmext->weapRecoilDuration *= 0.5;
+		}
 	}
 
 	// check for overheat

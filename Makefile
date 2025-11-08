@@ -2660,6 +2660,7 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/ai_cast_fight.o \
   $(B)/$(BASEGAME)/game/ai_cast_func_attack.o \
   $(B)/$(BASEGAME)/game/ai_cast_func_boss1.o \
+  $(B)/$(BASEGAME)/game/ai_cast_func_hein.o \
   $(B)/$(BASEGAME)/game/ai_cast_funcs.o \
   $(B)/$(BASEGAME)/game/ai_cast_script_actions.o \
   $(B)/$(BASEGAME)/game/ai_cast_script.o \

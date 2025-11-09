@@ -5516,7 +5516,7 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 				if ( gdist > SOUND_FAR_ECHO_DISTANCE && gdist < SOUND_MAX_WEAPON_DISTANCE ) {   // temp dist.  TODO: use numbers that are weapon specific // RealRTCW was 4096
 					// use gorg as the new sound origin
 					VectorMA( cg.refdef.vieworg, 64, norm, gorg );    // sound-on-a-stick
-					trap_S_StartSound( gorg, ent->number, CHAN_WEAPON, fireEchosound[c] );
+					trap_S_StartSoundEx( gorg, ent->number, CHAN_WEAPON, fireEchosound[c], SND_NOCUT );
 				}
 			}
 		}

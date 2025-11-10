@@ -406,53 +406,80 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 			}
 		}
 		break;
-	case AICHAR_HEINRICH:
-		if (    ( ent->health <= 0.25 * cs->attributes[STARTING_HEALTH] )
-				||  ( cs->weaponFireTimes[WP_MONSTER_ATTACK1] > level.time - 6000 ) // walk for period after attack
-				||  ( cs->weaponFireTimes[WP_MONSTER_ATTACK1] % 8000 < 3000 ) ) {   // dont run constantly
-			cs->actionFlags |= CASTACTION_WALK;
-		} else {    // charging
-			cs->actionFlags &= ~CASTACTION_WALK;
+case AICHAR_HEINRICH:
+{
+	/*=====================================================================
+	  MOVEMENT PHASES – SIMPLE HP STAGES
+	  >70% HP:  WALK (patient boss)
+	  10-70% HP: RUN (berserk fury)
+	  <10% HP:  WALK SLOWLY (wounded stagger)
+	  =====================================================================*/
+	const float BERSERK_START_HP    = 0.70f;  
+	const float FINAL_WOUNDED_HP   = 0.05f;  
+	const int   POST_ATTACK_WALK   = 1200; 
+
+	float healthRatio = (float)ent->health / cs->attributes[STARTING_HEALTH];
+
+	/* ---- 1. Recent melee → brief walk (ALL PHASES) ---- */
+	if (cs->weaponFireTimes[WP_MONSTER_ATTACK1] > level.time - POST_ATTACK_WALK)
+	{
+		cs->actionFlags |= CASTACTION_WALK;
+	}
+	/* ---- 2. PHASE 1: Walk patiently (>70%) ---- */
+	else if (healthRatio > BERSERK_START_HP)
+	{
+		cs->actionFlags |= CASTACTION_WALK;  // Patient boss
+	}
+	/* ---- 3. PHASE 2: Berserk run (5-70%) ---- */
+	else if (healthRatio > FINAL_WOUNDED_HP)
+	{
+		cs->actionFlags &= ~CASTACTION_WALK;  // FULL SPRINT
+	}
+	/* ---- 4. PHASE 3: Wounded stagger (<5%) ---- */
+	else
+	{
+		cs->actionFlags |= CASTACTION_WALK;  // Slow, limping
+	}
+
+	/* ---- 5. ALWAYS RUN during attacks (ALL PHASES) ---- */
+	if (ent->client->ps.torsoTimer > 0)
+	{
+		cs->actionFlags &= ~CASTACTION_WALK;
+	}
+
+	/*=====================================================================
+	  DEATH EXPLOSION + WARRIOR CLEAN-UP 
+	  =====================================================================*/
+	if (ent->health <= 0 && ent->takedamage)
+	{
+		if (ent->client->ps.torsoTimer < 300)
+		{
+			GibEntity(ent, 0);
+			ent->takedamage = qfalse;
+			ent->r.contents = 0;
+			ent->health = GIB_HEALTH - 1;
 		}
-		// allow running while attacking
-		if ( ent->client->ps.torsoTimer && !ent->client->ps.legsTimer ) {
-			cs->actionFlags &= ~CASTACTION_WALK;
-		}
-		//
-		if ( ent->health <= 0 && ent->takedamage ) {
-			if ( ent->client->ps.torsoTimer < 500 ) {
-				// blow up
-				GibEntity( ent, 0 );
-				ent->takedamage = qfalse;
-				ent->r.contents = 0;
-				ent->health = GIB_HEALTH - 1;
-			}
-			// blow up other warriors left around
-			if ( !ent->takedamage || ( ent->count2 < level.time && ent->client->ps.torsoTimer < 4000 ) ) {
-				int i;
-				gentity_t *trav;
-				for ( i = 0, trav = g_entities; i < level.maxclients; i++, trav++ ) {
-					if ( !trav->inuse ) {
-						continue;
-					}
-					if ( trav->aiCharacter != AICHAR_WARZOMBIE ) {
-						continue;
-					}
-					if ( trav->aiInactive ) {
-						continue;
-					}
-					if ( trav->health <= 0 ) {
-						continue;
-					}
-					// blow it up, set some delay
-					G_Damage( trav, ent, ent, NULL, NULL, 99999, 0, MOD_CRUSH );
-					if ( ent->takedamage ) {
-						ent->count2 = level.time + 200 + rand() % 1500;
-					}
+		if (!ent->takedamage || (ent->count2 < level.time && ent->client->ps.torsoTimer < 4000))
+		{
+			int i;
+			gentity_t *trav;
+			for (i = 0, trav = g_entities; i < level.maxclients; i++, trav++)
+			{
+				if (!trav->inuse || trav->aiCharacter != AICHAR_WARZOMBIE ||
+				    trav->aiInactive || trav->health <= 0)
+					continue;
+
+				G_Damage(trav, ent, ent, NULL, NULL, 99999, 0, MOD_CRUSH);
+				if (ent->takedamage)
+				{
+					ent->count2 = level.time + 200 + rand() % 1500;
 				}
+				break;
 			}
 		}
-		break;
+	}
+}
+break;
 	case AICHAR_ZOMBIE:
 	case AICHAR_ZOMBIE_SURV:
 	case AICHAR_ZOMBIE_FLAME:

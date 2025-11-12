@@ -371,35 +371,55 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 
 	switch ( cs->aiCharacter ) {
 	case AICHAR_WARZOMBIE:
-		trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
+    trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
 
-		if (!Q_strncmp(mapname, "end", 3))
-		{
-			cs->actionFlags &= ~CASTACTION_WALK;
-			ent->flags &= ~FL_DEFENSE_CROUCH;
+    if (!Q_strncmp(mapname, "end", 3))
+    {
+        // If below 30% HP → return to normal (non-end) behavior
+        if ((float)ent->health / (float)cs->attributes[STARTING_HEALTH] < 0.30f)
+        {
+            ent->flags &= ~FL_DEFENSE_CROUCH;
 
-			if (ent->client->ps.torsoTimer > 0)
-			{
-				cs->actionFlags &= ~CASTACTION_WALK;
-			}
-		}
-		else
-		{
-			ent->flags &= ~FL_DEFENSE_CROUCH;
+            if (enemy &&
+                cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 &&
+                Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
+                Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
+                cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
+                infront(enemy, ent))
+            {
+                trap_EA_Crouch(cs->entityNum);
+                ent->flags |= FL_DEFENSE_CROUCH;
+            }
+        }
+        else
+        {
+            // Aggressive end-map behavior
+            cs->actionFlags &= ~CASTACTION_WALK;
+            ent->flags &= ~FL_DEFENSE_CROUCH;
 
-			if (enemy &&
-				cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 &&
-				Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
-				Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
-				cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
-				infront(enemy, ent))
-			{
-				trap_EA_Crouch(cs->entityNum);
-				ent->flags |= FL_DEFENSE_CROUCH;
-			}
-		}
+            if (ent->client->ps.torsoTimer > 0)
+            {
+                cs->actionFlags &= ~CASTACTION_WALK;
+            }
+        }
+    }
+    else
+    {
+        ent->flags &= ~FL_DEFENSE_CROUCH;
 
-		break;
+        if (enemy &&
+            cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 &&
+            Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
+            Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
+            cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
+            infront(enemy, ent))
+        {
+            trap_EA_Crouch(cs->entityNum);
+            ent->flags |= FL_DEFENSE_CROUCH;
+        }
+    }
+
+    break;
 	case AICHAR_HELGA:
 		// if she has recently finished a spirit attack, go into charge mode
 		if ( ( cs->weaponFireTimes[WP_MONSTER_ATTACK2] && ( cs->weaponFireTimes[WP_MONSTER_ATTACK2] > level.time - 12000 ) ) ||

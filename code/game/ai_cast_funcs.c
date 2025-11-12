@@ -363,6 +363,7 @@ AICast_SpecialFunc
 void AICast_SpecialFunc( cast_state_t *cs ) {
 	gentity_t *ent = &g_entities[cs->entityNum];
 	gentity_t *enemy = NULL;
+	char mapname[MAX_QPATH];
 
 	if ( cs->enemyNum >= 0 ) {
 		enemy = &g_entities[cs->enemyNum];
@@ -370,21 +371,34 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 
 	switch ( cs->aiCharacter ) {
 	case AICHAR_WARZOMBIE:
-		// disable defense unless we want it
-		ent->flags &= ~FL_DEFENSE_CROUCH;
-		// if we are pursuing the player from a distance, use our "crouch moving defense"
-		if (    ( enemy )
-				&&  ( cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 )
-				&&  ( Distance( cs->bs->origin, enemy->s.pos.trBase ) > 200 )
-				&&  ( Distance( cs->bs->origin, enemy->s.pos.trBase ) < 600 )
-				&&  ( cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE )
-				//&&	(infront( ent, enemy ))
-				&&  ( infront( enemy, ent ) ) ) {
-			// crouch
-			trap_EA_Crouch( cs->entityNum );
-			// enable defense pose
-			ent->flags |= FL_DEFENSE_CROUCH;
+		trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
+
+		if (!Q_strncmp(mapname, "end", 3))
+		{
+			cs->actionFlags &= ~CASTACTION_WALK;
+			ent->flags &= ~FL_DEFENSE_CROUCH;
+
+			if (ent->client->ps.torsoTimer > 0)
+			{
+				cs->actionFlags &= ~CASTACTION_WALK;
+			}
 		}
+		else
+		{
+			ent->flags &= ~FL_DEFENSE_CROUCH;
+
+			if (enemy &&
+				cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 &&
+				Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
+				Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
+				cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
+				infront(enemy, ent))
+			{
+				trap_EA_Crouch(cs->entityNum);
+				ent->flags |= FL_DEFENSE_CROUCH;
+			}
+		}
+
 		break;
 	case AICHAR_HELGA:
 		// if she has recently finished a spirit attack, go into charge mode
@@ -408,48 +422,34 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 		break;
 case AICHAR_HEINRICH:
 {
-	/*=====================================================================
-	  MOVEMENT PHASES – SIMPLE HP STAGES
-	  >70% HP:  WALK (patient boss)
-	  10-70% HP: RUN (berserk fury)
-	  <10% HP:  WALK SLOWLY (wounded stagger)
-	  =====================================================================*/
 	const float BERSERK_START_HP    = 0.70f;  
 	const float FINAL_WOUNDED_HP   = 0.05f;  
 	const int   POST_ATTACK_WALK   = 1200; 
 
 	float healthRatio = (float)ent->health / cs->attributes[STARTING_HEALTH];
 
-	/* ---- 1. Recent melee → brief walk (ALL PHASES) ---- */
 	if (cs->weaponFireTimes[WP_MONSTER_ATTACK1] > level.time - POST_ATTACK_WALK)
 	{
 		cs->actionFlags |= CASTACTION_WALK;
 	}
-	/* ---- 2. PHASE 1: Walk patiently (>70%) ---- */
 	else if (healthRatio > BERSERK_START_HP)
 	{
-		cs->actionFlags |= CASTACTION_WALK;  // Patient boss
+		cs->actionFlags |= CASTACTION_WALK;  
 	}
-	/* ---- 3. PHASE 2: Berserk run (5-70%) ---- */
 	else if (healthRatio > FINAL_WOUNDED_HP)
 	{
-		cs->actionFlags &= ~CASTACTION_WALK;  // FULL SPRINT
+		cs->actionFlags &= ~CASTACTION_WALK;
 	}
-	/* ---- 4. PHASE 3: Wounded stagger (<5%) ---- */
 	else
 	{
-		cs->actionFlags |= CASTACTION_WALK;  // Slow, limping
+		cs->actionFlags |= CASTACTION_WALK; 
 	}
 
-	/* ---- 5. ALWAYS RUN during attacks (ALL PHASES) ---- */
 	if (ent->client->ps.torsoTimer > 0)
 	{
 		cs->actionFlags &= ~CASTACTION_WALK;
 	}
 
-	/*=====================================================================
-	  DEATH EXPLOSION + WARRIOR CLEAN-UP 
-	  =====================================================================*/
 	if (ent->health <= 0 && ent->takedamage)
 	{
 		if (ent->client->ps.torsoTimer < 300)

@@ -375,17 +375,17 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
         trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
 
         // Helper: safe check for vislist
-        qboolean enemyRecentlyVisible = qfalse;
-        if (enemy &&
-            cs->enemyNum >= 0 &&
-            cs->enemyNum < MAX_CLIENTS &&          // or whatever vislist size is
-            cs->vislist &&
-            cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000) {
+		qboolean enemyRecentlyVisible = qfalse;
+		if (enemy &&
+			cs->enemyNum >= 0 &&
+			cs->enemyNum < MAX_CLIENTS && // vislist[] is sized MAX_CLIENTS
+			cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000)
+		{
 
-            enemyRecentlyVisible = qtrue;
-        }
+			enemyRecentlyVisible = qtrue;
+		}
 
-        // Common crouch condition packed into one place
+		// Common crouch condition packed into one place
         qboolean shouldCrouch = qfalse;
         if (enemyRecentlyVisible &&
             Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&

@@ -370,67 +370,55 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 	}
 
 	switch ( cs->aiCharacter ) {
-    case AICHAR_WARZOMBIE:
+	case AICHAR_WARZOMBIE:
+    trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
+
+    if (!Q_strncmp(mapname, "end", 3))
     {
-        trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
-
-        // Helper: safe check for vislist
-        qboolean enemyRecentlyVisible = qfalse;
-        if (enemy &&
-            cs->enemyNum >= 0 &&
-            cs->enemyNum < MAX_CLIENTS &&          // or whatever vislist size is
-            cs->vislist &&
-            cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000) {
-
-            enemyRecentlyVisible = qtrue;
-        }
-
-        // Common crouch condition packed into one place
-        qboolean shouldCrouch = qfalse;
-        if (enemyRecentlyVisible &&
-            Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
-            Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
-            cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
-            infront(enemy, ent)) {
-
-            shouldCrouch = qtrue;
-        }
-
-        if (!Q_strncmp(mapname, "end", 3)) {
-            // "end" map behavior
-            float startingHealth = (float)cs->attributes[STARTING_HEALTH];
-            float healthRatio = 1.0f;
-            if (startingHealth > 1.0f) {
-                healthRatio = (float)ent->health / startingHealth;
-            }
-
-            if (healthRatio < 0.30f) {
-                // Below 30% HP → more defensive (original behavior)
-                ent->flags &= ~FL_DEFENSE_CROUCH;
-
-                if (shouldCrouch) {
-                    trap_EA_Crouch(cs->entityNum);
-                    ent->flags |= FL_DEFENSE_CROUCH;
-                }
-            } else {
-                // Aggressive end-map behavior
-                cs->actionFlags &= ~CASTACTION_WALK;
-                ent->flags &= ~FL_DEFENSE_CROUCH;
-
-                if (ent->client && ent->client->ps.torsoTimer > 0) {
-                    cs->actionFlags &= ~CASTACTION_WALK;
-                }
-            }
-        } else {
-            // Non-"end" map behavior (vanilla-like)
+        // If below 30% HP → return to normal (non-end) behavior
+        if ((float)ent->health / (float)cs->attributes[STARTING_HEALTH] < 0.30f)
+        {
             ent->flags &= ~FL_DEFENSE_CROUCH;
 
-            if (shouldCrouch) {
+            if (enemy &&
+                cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 &&
+                Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
+                Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
+                cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
+                infront(enemy, ent))
+            {
                 trap_EA_Crouch(cs->entityNum);
                 ent->flags |= FL_DEFENSE_CROUCH;
             }
         }
+        else
+        {
+            // Aggressive end-map behavior
+            cs->actionFlags &= ~CASTACTION_WALK;
+            ent->flags &= ~FL_DEFENSE_CROUCH;
+
+            if (ent->client->ps.torsoTimer > 0)
+            {
+                cs->actionFlags &= ~CASTACTION_WALK;
+            }
+        }
     }
+    else
+    {
+        ent->flags &= ~FL_DEFENSE_CROUCH;
+
+        if (enemy &&
+            cs->vislist[cs->enemyNum].real_visible_timestamp > level.time - 5000 &&
+            Distance(cs->bs->origin, enemy->s.pos.trBase) > 200 &&
+            Distance(cs->bs->origin, enemy->s.pos.trBase) < 600 &&
+            cs->bs->cur_ps.groundEntityNum != ENTITYNUM_NONE &&
+            infront(enemy, ent))
+        {
+            trap_EA_Crouch(cs->entityNum);
+            ent->flags |= FL_DEFENSE_CROUCH;
+        }
+    }
+
     break;
 	case AICHAR_HELGA:
 		// if she has recently finished a spirit attack, go into charge mode
@@ -452,73 +440,66 @@ void AICast_SpecialFunc( cast_state_t *cs ) {
 			}
 		}
 		break;
-    case AICHAR_HEINRICH:
-    {
-        const float BERSERK_START_HP  = 0.70f;
-        const float FINAL_WOUNDED_HP  = 0.05f;
-        const int   POST_ATTACK_WALK  = 1200;
+case AICHAR_HEINRICH:
+{
+	const float BERSERK_START_HP    = 0.70f;  
+	const float FINAL_WOUNDED_HP   = 0.05f;  
+	const int   POST_ATTACK_WALK   = 1200; 
 
-        float startingHealth = (float)cs->attributes[STARTING_HEALTH];
-        float healthRatio = 1.0f;
+	float healthRatio = (float)ent->health / cs->attributes[STARTING_HEALTH];
 
-        if (startingHealth > 1.0f) {
-            healthRatio = (float)ent->health / startingHealth;
-        }
+	if (cs->weaponFireTimes[WP_MONSTER_ATTACK1] > level.time - POST_ATTACK_WALK)
+	{
+		cs->actionFlags |= CASTACTION_WALK;
+	}
+	else if (healthRatio > BERSERK_START_HP)
+	{
+		cs->actionFlags |= CASTACTION_WALK;  
+	}
+	else if (healthRatio > FINAL_WOUNDED_HP)
+	{
+		cs->actionFlags &= ~CASTACTION_WALK;
+	}
+	else
+	{
+		cs->actionFlags |= CASTACTION_WALK; 
+	}
 
-        // Walk / run behavior based on health & recent attack
-        if (cs->weaponFireTimes[WP_MONSTER_ATTACK1] > level.time - POST_ATTACK_WALK) {
-            cs->actionFlags |= CASTACTION_WALK;
-        } else if (healthRatio > BERSERK_START_HP) {
-            cs->actionFlags |= CASTACTION_WALK;
-        } else if (healthRatio > FINAL_WOUNDED_HP) {
-            cs->actionFlags &= ~CASTACTION_WALK;
-        } else {
-            cs->actionFlags |= CASTACTION_WALK;
-        }
+	if (ent->client->ps.torsoTimer > 0)
+	{
+		cs->actionFlags &= ~CASTACTION_WALK;
+	}
 
-        // Torso anim in progress → force no walk
-        if (ent->client && ent->client->ps.torsoTimer > 0) {
-            cs->actionFlags &= ~CASTACTION_WALK;
-        }
+	if (ent->health <= 0 && ent->takedamage)
+	{
+		if (ent->client->ps.torsoTimer < 300)
+		{
+			GibEntity(ent, 0);
+			ent->takedamage = qfalse;
+			ent->r.contents = 0;
+			ent->health = GIB_HEALTH - 1;
+		}
+		if (!ent->takedamage || (ent->count2 < level.time && ent->client->ps.torsoTimer < 4000))
+		{
+			int i;
+			gentity_t *trav;
+			for (i = 0, trav = g_entities; i < level.maxclients; i++, trav++)
+			{
+				if (!trav->inuse || trav->aiCharacter != AICHAR_WARZOMBIE ||
+				    trav->aiInactive || trav->health <= 0)
+					continue;
 
-        // Death / gib logic
-        if (ent->health <= 0 && ent->takedamage) {
-            if (ent->client && ent->client->ps.torsoTimer < 300) {
-                GibEntity(ent, 0);
-                ent->takedamage = qfalse;
-                ent->r.contents = 0;
-                ent->health = GIB_HEALTH - 1;
-            }
-
-            // Spread damage to warzombies a little after death
-            if (!ent->takedamage || (ent->count2 < level.time &&
-                                     ent->client && ent->client->ps.torsoTimer < 4000)) {
-
-                int i;
-                gentity_t *trav;
-
-                // Only iterate over slots that should actually hold AI
-                for (i = 0, trav = g_entities; i < level.maxclients; i++, trav++) {
-                    if (!trav->inuse ||
-                        trav->aiCharacter != AICHAR_WARZOMBIE ||
-                        trav->aiInactive ||
-                        trav->health <= 0) {
-                        continue;
-                    }
-
-                    G_Damage(trav, ent, ent, NULL, NULL, 99999, 0, MOD_CRUSH);
-
-                    // NOTE: ent->takedamage is probably already false here,
-                    // but keep logic as-is, just guarded.
-                    if (ent->takedamage) {
-                        ent->count2 = level.time + 200 + rand() % 1500;
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    break;
+				G_Damage(trav, ent, ent, NULL, NULL, 99999, 0, MOD_CRUSH);
+				if (ent->takedamage)
+				{
+					ent->count2 = level.time + 200 + rand() % 1500;
+				}
+				break;
+			}
+		}
+	}
+}
+break;
 	case AICHAR_ZOMBIE:
 	case AICHAR_ZOMBIE_SURV:
 	case AICHAR_ZOMBIE_FLAME:

@@ -1017,7 +1017,7 @@ void CG_AddFlameToScene( flameChunk_t *fHead ) {
 
 #ifdef FLAMETHROW_LIGHTS
 	vec3_t lastLightPos = { 0 };
-	flameChunk_t *lastLightFlameChunk;
+	flameChunk_t *lastLightFlameChunk = nullptr;
 	float lastLightSize = 0, lightAlpha;
 #endif
 

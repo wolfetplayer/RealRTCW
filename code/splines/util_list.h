@@ -42,7 +42,7 @@ type        *m_list;
 
 public:
 idList( int granularity = 16 );
-~idList<type>();
+~idList();
 void        Clear( void );
 int         Num( void );
 void        SetNum( int num );

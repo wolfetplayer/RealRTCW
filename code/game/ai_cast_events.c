@@ -106,8 +106,6 @@ AICast_Pain
 void AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point ) {
 	cast_state_t    *cs;
 
-	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
-
 	cs = AICast_GetCastState( targ->s.number );
 
 	// print debugging message

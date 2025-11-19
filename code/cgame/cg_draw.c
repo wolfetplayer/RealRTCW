@@ -488,8 +488,8 @@ static void CG_DrawStatusBarHead( float x ) {
 
 		cg.headStartYaw = 180 + cg.viewDamage[cg.damageIndex].damageX * 45;
 
-		cg.headEndYaw = 180 + 20 * cosf( crandom() * M_PI );
-		cg.headEndPitch = 5 * cosf( crandom() * M_PI );
+		cg.headEndYaw = 180 + 20 * cos( crandom() * M_PI );
+		cg.headEndPitch = 5 * cos( crandom() * M_PI );
 
 		cg.headStartTime = cg.time;
 		cg.headEndTime = cg.time + 100 + random() * 2000;
@@ -501,8 +501,8 @@ static void CG_DrawStatusBarHead( float x ) {
 			cg.headStartTime = cg.headEndTime;
 			cg.headEndTime = cg.time + 100 + random() * 2000;
 
-			cg.headEndYaw = 180 + 20 * cosf( crandom() * M_PI );
-			cg.headEndPitch = 5 * cosf( crandom() * M_PI );
+			cg.headEndYaw = 180 + 20 * cos( crandom() * M_PI );
+			cg.headEndPitch = 5 * cos( crandom() * M_PI );
 		}
 
 		size = ICON_SIZE * 1.25;

@@ -1034,9 +1034,9 @@ void CG_AddClientCritter( localEntity_t *le ) {
 
 	// vary the enemyPos to create a psuedo-randomness
 	of = (float)cg.time + le->startTime;
-	enemyPos[0] += 12 * ( sinf( of / 100 ) * cosf( of / 78 ) );
-	enemyPos[1] += 12 * ( sinf( of / 70 ) * cosf( of / 82 ) );
-	enemyPos[2] += 12 * ( sinf( of / 67 ) * cosf( of / 98 ) );
+	enemyPos[0] += 12 * ( sin( of / 100 ) * cos( of / 78 ) );
+	enemyPos[1] += 12 * ( sin( of / 70 ) * cos( of / 82 ) );
+	enemyPos[2] += 12 * ( sin( of / 67 ) * cos( of / 98 ) );
 
 	time = le->lastTrailTime + step;
 

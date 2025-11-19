@@ -1097,7 +1097,7 @@ qboolean R_GetPortalOrientations( drawSurf_t *drawSurf, int entityNum,
 				CrossProduct( camera->axis[0], camera->axis[1], camera->axis[2] );
 			} else {
 				// bobbing rotate, with skinNum being the rotation offset
-				d = sinf( tr.refdef.time * 0.003f );
+				d = sin( tr.refdef.time * 0.003f );
 				d = e->e.skinNum + d * 4;
 				VectorCopy( camera->axis[1], transformed );
 				RotatePointAroundVector( camera->axis[1], camera->axis[0], transformed, d );

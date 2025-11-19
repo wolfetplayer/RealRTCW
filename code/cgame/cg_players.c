@@ -3265,8 +3265,8 @@ void CG_AddZombieSpiritEffect( centity_t *cent ) {
 				radius = ( minDist + sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( radiusCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % radiusCycleTime ) / (float)radiusCycleTime ) ) * ( maxDist - minDist ) );
 
 				// get the position
-				v[0] = ( 0.5 + 0.5 * fadeRatio ) * sinf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
-				v[1] = ( 0.5 + 0.5 * fadeRatio ) * cosf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[0] = ( 0.5 + 0.5 * fadeRatio ) * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[1] = ( 0.5 + 0.5 * fadeRatio ) * cos( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
 				v[2] = 12 + 36 * ( 0.5 + 0.5 * fadeRatio ) * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( zCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % zCycleTime ) / (float)zCycleTime ) );
 				v[2] -= ( 1.0 - fadeRatio ) * 32;
 
@@ -3279,8 +3279,8 @@ void CG_AddZombieSpiritEffect( centity_t *cent ) {
 				radius = pow( 1.0 - fadeRatio, 2 ) * fadeDist + ( 1.0 - pow( 1.0 - fadeRatio, 2 ) ) * ( minDist + sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( radiusCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % radiusCycleTime ) / (float)radiusCycleTime ) ) * ( maxDist - minDist ) );
 
 				// get the position
-				v[0] = sinf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
-				v[1] = cosf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[0] = sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[1] = cos( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
 				v[2] = 12 + 36 * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( zCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % zCycleTime ) / (float)zCycleTime ) );
 				v[2] -= ( 1.0 - fadeRatio ) * 32;
 
@@ -4015,8 +4015,8 @@ void CG_AddHelgaSpiritEffect( centity_t *cent ) {
 				radius = ( minDist + sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( radiusCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % radiusCycleTime ) / (float)radiusCycleTime ) ) * ( maxDist - minDist ) );
 
 				// get the position
-				v[0] = ( 0.5 + 0.5 * fadeRatio ) * sinf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
-				v[1] = ( 0.5 + 0.5 * fadeRatio ) * cosf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[0] = ( 0.5 + 0.5 * fadeRatio ) * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[1] = ( 0.5 + 0.5 * fadeRatio ) * cos( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
 				v[2] = 12 + 36 * ( 0.5 + 0.5 * fadeRatio ) * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( zCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % zCycleTime ) / (float)zCycleTime ) );
 				v[2] -= ( 1.0 - fadeRatio ) * 32;
 
@@ -4029,8 +4029,8 @@ void CG_AddHelgaSpiritEffect( centity_t *cent ) {
 				radius = pow( 1.0 - fadeRatio, 2 ) * fadeDist + ( 1.0 - pow( 1.0 - fadeRatio, 2 ) ) * ( minDist + sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( radiusCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % radiusCycleTime ) / (float)radiusCycleTime ) ) * ( maxDist - minDist ) );
 
 				// get the position
-				v[0] = sinf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
-				v[1] = cosf( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[0] = sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
+				v[1] = cos( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( rotationTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % rotationTime ) / (float)rotationTime ) ) * radius;
 				v[2] = 12 + 36 * sin( M_PI * 2 * (float)( (float)( (int)( t + ( (float)( zCycleTime * i ) / MAX_ZOMBIE_SPIRITS ) ) % zCycleTime ) / (float)zCycleTime ) );
 				v[2] -= ( 1.0 - fadeRatio ) * 32;
 

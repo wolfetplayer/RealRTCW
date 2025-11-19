@@ -1265,7 +1265,7 @@ void CG_AddFlameToScene( flameChunk_t *fHead ) {
 	if ( lightSize > 500 ) {
 		lightSize = 500;
 	}
-	lightSize *= 1.0 + 0.2 * ( sinf( 1.0 * cg.time / 50.0 ) * cosf( 1.0 * cg.time / 43.0 ) );
+	lightSize *= 1.0 + 0.2 * ( sin( 1.0 * cg.time / 50.0 ) * cos( 1.0 * cg.time / 43.0 ) );
 	// set the alpha
 	alpha = lightSize / 500.0;
 	if ( alpha > 1.0 ) {

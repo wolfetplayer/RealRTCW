@@ -90,8 +90,8 @@ void moveit( gentity_t *ent, float yaw, float dist ) {
 
 	yaw = yaw * M_PI * 2 / 360;
 
-	move[0] = cosf( yaw ) * dist;
-	move[1] = sinf( yaw ) * dist;
+	move[0] = cos( yaw ) * dist;
+	move[1] = sin( yaw ) * dist;
 	move[2] = 0;
 
 	VectorAdd( ent->r.currentOrigin, move, origin );

@@ -171,8 +171,10 @@ COM_StripFilename
 ============
 */
 void COM_StripFilename( char *in, char *out ) {
-	char *end;
-	Q_strncpyz( out, in, strlen( in ) );
+	char *end;	
+	// strcpy is safe here because we are manipulating the same string
+	// and we are sure that 'in' is a valid C-string.
+	strcpy( out, in );
 	end = COM_SkipPath( out );
 	*end = 0;
 }
@@ -1966,4 +1968,3 @@ char *Com_SkipTokens( char *s, int numTokens, char *sep )
 	else
 		return s;
 }
-

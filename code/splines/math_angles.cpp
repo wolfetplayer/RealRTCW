@@ -77,16 +77,16 @@ void angles_t::toVectors( idVec3 *forward, idVec3 *right, idVec3 *up ) {
 	static float sr, sp, sy, cr, cp, cy;    // static to help MS compiler fp bugs
 
 	angle = yaw * ( M_PI * 2 / 360 );
-	sy = sin( angle );
-	cy = cos( angle );
+	sy = sinf( angle );
+	cy = cosf( angle );
 
 	angle = pitch * ( M_PI * 2 / 360 );
-	sp = sin( angle );
-	cp = cos( angle );
+	sp = sinf( angle );
+	cp = cosf( angle );
 
 	angle = roll * ( M_PI * 2 / 360 );
-	sr = sin( angle );
-	cr = cos( angle );
+	sr = sinf( angle );
+	cr = cosf( angle );
 
 	if ( forward ) {
 		forward->set( cp * cy, cp * sy, -sp );

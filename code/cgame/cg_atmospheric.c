@@ -488,8 +488,8 @@ static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
 
   	VectorCopy( particle->pos, start );
 
-  	sinTumbling = sin( particle->pos[2] * 0.03125f );
-  	cosTumbling = cos( ( particle->pos[2] + particle->pos[1] )  * 0.03125f );
+  	sinTumbling = sinf( particle->pos[2] * 0.03125f );
+  	cosTumbling = cosf( ( particle->pos[2] + particle->pos[1] )  * 0.03125f );
 
   	start[0] += 24 * ( 1 - particle->deltaNormalized[2] ) * sinTumbling;
   	start[1] += 24 * ( 1 - particle->deltaNormalized[2] ) * cosTumbling;

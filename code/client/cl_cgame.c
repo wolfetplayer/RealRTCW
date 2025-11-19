@@ -692,9 +692,9 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		strncpy( VMA(1), VMA(2), args[3] );
 		return args[1];
 	case CG_SIN:
-		return FloatAsInt( sin( VMF( 1 ) ) );
+		return FloatAsInt( sinf( VMF( 1 ) ) );
 	case CG_COS:
-		return FloatAsInt( cos( VMF( 1 ) ) );
+		return FloatAsInt( cosf( VMF( 1 ) ) );
 	case CG_ATAN2:
 		return FloatAsInt( atan2( VMF( 1 ), VMF( 2 ) ) );
 	case CG_SQRT:

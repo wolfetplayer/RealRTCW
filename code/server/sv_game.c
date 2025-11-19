@@ -852,10 +852,10 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 		return args[1];
 
 	case TRAP_SIN:
-		return FloatAsInt( sin( VMF( 1 ) ) );
+		return FloatAsInt( sinf( VMF( 1 ) ) );
 
 	case TRAP_COS:
-		return FloatAsInt( cos( VMF( 1 ) ) );
+		return FloatAsInt( cosf( VMF( 1 ) ) );
 
 	case TRAP_ATAN2:
 		return FloatAsInt( atan2( VMF( 1 ), VMF( 2 ) ) );

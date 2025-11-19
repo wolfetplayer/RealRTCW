@@ -897,6 +897,7 @@ fire_grenade
 gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeWPID ) {
 	gentity_t   *bolt;
 	qboolean noExplode = qfalse;
+	qboolean isPlayer = (self->client && !self->aiCharacter);	// Knightmare added
 
 	bolt = G_Spawn();
 

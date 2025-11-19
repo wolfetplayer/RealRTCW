@@ -896,6 +896,7 @@ void G_RemoveWeapon( gentity_t *ent, weapon_t weapon ) {
 void G_DropWeapon( gentity_t *ent, weapon_t weapon ) {
 	vec3_t    angles, velocity, org, offset, mins, maxs;
 	gclient_t *client = ent->client;
+	gentity_t *ent2;
 	gitem_t   *item;
 	trace_t   tr;
 
@@ -932,6 +933,8 @@ void G_DropWeapon( gentity_t *ent, weapon_t weapon ) {
 
 	trap_Trace( &tr, client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID );
 	VectorCopy( tr.endpos, org );
+
+	ent2 = LaunchItem( item, org, velocity );
 
 	G_RemoveWeapon( ent, weapon );
 }

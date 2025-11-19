@@ -622,8 +622,8 @@ static void CG_DrawPlayerHead( rectDef_t *rect, qboolean draw2D ) {
 
 		cg.headStartYaw = 180 + cg.damageX * 45;
 
-		cg.headEndYaw = 180 + 20 * cos( crandom() * M_PI );
-		cg.headEndPitch = 5 * cos( crandom() * M_PI );
+		cg.headEndYaw = 180 + 20 * cosf( crandom() * M_PI );
+		cg.headEndPitch = 5 * cosf( crandom() * M_PI );
 
 		cg.headStartTime = cg.time;
 		cg.headEndTime = cg.time + 100 + random() * 2000;
@@ -635,8 +635,8 @@ static void CG_DrawPlayerHead( rectDef_t *rect, qboolean draw2D ) {
 			cg.headStartTime = cg.headEndTime;
 			cg.headEndTime = cg.time + 100 + random() * 2000;
 
-			cg.headEndYaw = 180 + 20 * cos( crandom() * M_PI );
-			cg.headEndPitch = 5 * cos( crandom() * M_PI );
+			cg.headEndYaw = 180 + 20 * cosf( crandom() * M_PI );
+			cg.headEndPitch = 5 * cosf( crandom() * M_PI );
 		}
 	}
 

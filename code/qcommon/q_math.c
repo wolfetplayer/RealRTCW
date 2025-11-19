@@ -339,10 +339,10 @@ void RotatePointAroundVector( vec3_t dst, const vec3_t dir, const vec3_t point,
 	zrot[0][0] = zrot[1][1] = zrot[2][2] = 1.0F;
 
 	rad = DEG2RAD( degrees );
-	zrot[0][0] = cos( rad );
-	zrot[0][1] = sin( rad );
-	zrot[1][0] = -sin( rad );
-	zrot[1][1] = cos( rad );
+	zrot[0][0] = cosf( rad );
+	zrot[0][1] = sinf( rad );
+	zrot[1][0] = -sinf( rad );
+	zrot[1][1] = cosf( rad );
 
 	MatrixMultiply( m, zrot, tmpmat );
 	MatrixMultiply( tmpmat, im, rot );
@@ -925,14 +925,14 @@ void AngleVectors( const vec3_t angles, vec3_t forward, vec3_t right, vec3_t up 
 	// static to help MS compiler fp bugs
 
 	angle = angles[YAW] * ( M_PI * 2 / 360 );
-	sy = sin( angle );
-	cy = cos( angle );
+	sy = sinf( angle );
+	cy = cosf( angle );
 	angle = angles[PITCH] * ( M_PI * 2 / 360 );
-	sp = sin( angle );
-	cp = cos( angle );
+	sp = sinf( angle );
+	cp = cosf( angle );
 	angle = angles[ROLL] * ( M_PI * 2 / 360 );
-	sr = sin( angle );
-	cr = cos( angle );
+	sr = sinf( angle );
+	cr = cosf( angle );
 
 	if ( forward ) {
 		forward[0] = cp * cy;

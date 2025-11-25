@@ -538,21 +538,18 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// g_forcerespawn may force spawning at some later time
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
-		self->client->respawnTime = level.time + 12000; 
+		self->client->respawnTime = level.time + 12000;
 
-		// Fetch the number of waves and enemies killed
-		int numberOfWaves = svParams.waveCount;
-		int numberOfEnemiesKilled = svParams.survivalKillCount;
+		int wave = svParams.waveCount;
+		int enemiesKilled = svParams.survivalKillCount;
 
-		// Format the message
-		const char *messageTemplate = "Game Over \n You reached wave %d and killed %d enemies";
-		char message[256];
-		snprintf(message, sizeof(message), messageTemplate, numberOfWaves, numberOfEnemiesKilled);
+		// This uses the exact same system as missionfail0, missionfail1, etc.
+		trap_SendServerCommand(self - g_entities,
+							   va("egp survival_gameover %d %d", wave, enemiesKilled));
 
-		// Send the message to the server
-        trap_SendServerCommand(self - g_entities, va("egp \"%s\"", message));
-		trap_SendServerCommand(-1, "mu_play sound/music/l_finale.wav 0\n");
-		trap_SetConfigstring(CS_MUSIC_QUEUE, ""); // clear queue so it'll be quiet after hit
+		trap_SendServerCommand(-1, "mu_play sound/music/l_finale.wav 0");
+		trap_SetConfigstring(CS_MUSIC_QUEUE, "");
+		trap_SetConfigstring(CS_MUSIC, ""); // extra safety
 	}
 	else
 	{

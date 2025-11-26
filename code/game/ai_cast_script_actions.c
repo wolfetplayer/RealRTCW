@@ -2239,24 +2239,32 @@ qboolean AICast_ScriptAction_Movetype( cast_state_t *cs, char *params ) {
 
 /*
 =================
-AICast_ScriptAction_AlertEntity
+AICAction_AlertEntity
 
   syntax: alertentity <targetname>
+  Now NON-FATAL — prints warning once and continues
 =================
 */
 qboolean AICast_ScriptAction_AlertEntity( cast_state_t *cs, char *params ) {
 	gentity_t   *ent;
 
 	if ( !params || !params[0] ) {
-		G_Error( "AI Scripting: alertentity without targetname\n" );
+		G_Printf( S_COLOR_YELLOW "AI Scripting: alertentity without targetname (entity %d)\n", cs->entityNum );
+		return qfalse;
 	}
 
 	// find this targetname
 	ent = G_Find( NULL, FOFS( targetname ), params );
 	if ( !ent ) {
-		ent = G_Find( NULL, FOFS( aiName ), params ); // look for an AI
-		if ( !ent || !ent->client ) { // accept only AI for aiName check
-			G_Error( "AI Scripting: alertentity cannot find targetname \"%s\"\n", params );
+		ent = G_Find( NULL, FOFS( aiName ), params );
+		if ( !ent || !ent->client ) {
+			// Only warn ONCE per map to prevent spam
+			static char lastMissing[64] = {0};
+			if ( Q_strncmp( lastMissing, params, sizeof(lastMissing)-1 ) ) {
+				Q_strncpyz( lastMissing, params, sizeof(lastMissing) );
+				G_Printf( S_COLOR_YELLOW "AI Scripting: alertentity cannot find \"%s\"\n", params );
+			}
+			return qfalse;  // don't break the script chain
 		}
 	}
 
@@ -2267,15 +2275,19 @@ qboolean AICast_ScriptAction_AlertEntity( cast_state_t *cs, char *params ) {
 			return qtrue;
 		}
 
-		if ( aicast_debug.integer ) {
-			G_Printf( "AI Scripting: alertentity \"%s\" (classname = %s) doesn't have an \"AIScript_AlertEntity\" function\n", params, ent->classname );
+		// Only warn once per entity type
+		static char lastBad[128] = {0};
+		char temp[128];
+		Com_sprintf( temp, sizeof(temp), "%s:%s", params, ent->classname );
+		if ( Q_strncmp( lastBad, temp, sizeof(lastBad)-1 ) ) {
+			Q_strncpyz( lastBad, temp, sizeof(lastBad) );
+			G_Printf( S_COLOR_YELLOW "AI Scripting: alertentity \"%s\" (classname = %s) has no AlertEntity function\n",
+			          params, ent->classname );
 		}
-		//G_Error( "AI Scripting: alertentity \"%s\" (classname = %s) doesn't have an \"AIScript_AlertEntity\" function\n", params, ent->classname );
 		return qtrue;
 	}
 
 	ent->AIScript_AlertEntity( ent );
-
 	return qtrue;
 }
 

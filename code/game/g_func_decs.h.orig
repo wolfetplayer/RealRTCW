@@ -1751,3 +1751,6 @@ extern void AIChar_Pain ( gentity_t * ent , gentity_t * attacker , int damage , 
 extern int AIChar_GetPainLocation ( gentity_t * ent , vec3_t point ) ;
 extern void AIChar_Death ( gentity_t * ent , gentity_t * attacker , int damage , int mod ) ;
 extern void AIChar_SetBBox ( gentity_t * ent , cast_state_t * cs , qboolean useHeadTag ) ;
+
+extern qboolean AICast_BotEntInvisibleBySmokeBomb( vec3_t start, vec3_t end );
+extern gentity_t * G_FindSmokeBomb ( gentity_t * start ) ;

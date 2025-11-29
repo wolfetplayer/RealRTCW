@@ -1756,4 +1756,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_ChangeAiTeam", (byte*)AICast_ScriptAction_ChangeAiTeam},
 {"AICast_ScriptAction_ChangeAiSkin", (byte*)AICast_ScriptAction_ChangeAiSkin},
 {"AICast_ScriptAction_ChangeAiHead", (byte*)AICast_ScriptAction_ChangeAiHead},
+
+{"AICast_BotEntInvisibleBySmokeBomb", (byte *)AICast_BotEntInvisibleBySmokeBomb},
+{"G_FindSmokeBomb", (byte *)G_FindSmokeBomb},
+{"G_FindMissile", (byte *)G_FindMissile},
 {0, 0}

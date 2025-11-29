@@ -2124,6 +2124,54 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,                            
 	}, 
 
+	{  
+		WP_SMOKE_BOMB,
+		WEAPON_CLASS_GRENADE,
+		WP_NONE,
+		WEAPON_TEAM_COMMON,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0.0f,
+		0,
+		{0, 0},
+		{0,0},
+		0,
+		0.0,
+		0,
+		0,
+		{0.0, 0.0},
+		MOD_SMOKEBOMB,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+	},
+
 	// Misc alt modes
 	{   
 		WP_SNIPERRIFLE,
@@ -3875,6 +3923,31 @@ weapon_grenadePineapple
 		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",            
 		{0,0,0,0,0,0}
 	},
+
+// weapon_grenadesmoke
+	{
+		"weapon_grenadesmoke",
+		"sound/misc/w_pkup.wav",
+		{
+		"",		// "models/multiplayer/smokebomb/smokebomb.md3",
+		"",		// "models/multiplayer/smokebomb/v_smokebomb.md3",
+		""
+		},
+
+		"icons/iconw_grenade_1",
+		"Smoke Bomb",
+		0,
+		IT_WEAPON,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		"",
+		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",
+		{0,0,0,0,0,0}
+	},
+
 
 //weapon_dynamite
 
@@ -5682,6 +5755,35 @@ model="models/powerups/ammo/amgrenus_bag.md3"
 		"",                      
 		"",                    
 		{4,3,2,2,2,2}
+	},
+
+/*QUAKED ammo_smoke_grenade (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
+used by: engineer
+
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/ammo/smoke_grenade/smoke_grenade.md3"
+*/
+	{
+		"ammo_smoke_grenade",
+		"sound/misc/am_pkup.wav",
+		{
+		"models/powerups/ammo/amgren_bag.md3",	// "models/ammo/smoke_grenade/smoke_grenade.md3"
+		0,
+		0
+		},
+
+		"",
+		"Smoke Grenades",
+		1,
+		IT_AMMO,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		"",
+		"",
+		{5,5,5,5,5,5}
 	},
 
 /*QUAKED ammo_dynamite (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -9392,6 +9494,7 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_ARTY:              return "arty.weap";
 		case WP_SMOKETRAIL:        return "smoketrail.weap";
 		case WP_POISONGAS:         return "poisongas.weap";
+		case WP_SMOKE_BOMB:        return "smokebomb.weap";
 		case WP_HDM:               return "hdm.weap";
 		case WP_HOLYCROSS:         return "cross.weap";
 		case WP_DELISLE:           return "delisle.weap";

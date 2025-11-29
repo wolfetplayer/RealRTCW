@@ -483,22 +483,20 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
     }
 
     switch (weaponnum) {
-    case WP_TESLA: {
-        const qboolean hasPanzer = COM_BitCheck(cs->bs->cur_ps.weapons, WP_PANZERFAUST);
-        switch (cs->aiCharacter) {
-            case AICHAR_SUPERSOLDIER:
-                // If they have a panzer, give this weapon a shorter range; otherwise use the Tesla range tuned for the supersoldier.
-                return hasPanzer ? 450.0f : (TESLA_SUPERSOLDIER_RANGE);
-            case AICHAR_SUPERSOLDIER_LAB:
-                return hasPanzer ? 450.0f : (TESLA_SUPERSOLDIER_LAB_RANGE);
-            case AICHAR_PRIEST:
-                return 450.0f;
-            default:
-                return (TESLA_RANGE * 0.9f) - BBOX_ALLOWANCE; // allow for bounding box
-        }
-    }
+	case WP_TESLA:
+		switch (cs->aiCharacter)
+		{
+		case AICHAR_SUPERSOLDIER:
+			return TESLA_SUPERSOLDIER_RANGE;
+		case AICHAR_SUPERSOLDIER_LAB:
+			return TESLA_SUPERSOLDIER_LAB_RANGE;
+		case AICHAR_PRIEST:
+			return 450.0f;
+		default:
+			return (TESLA_RANGE * 0.9f) - BBOX_ALLOWANCE;
+		}
 
-    case WP_FLAMETHROWER:
+	case WP_FLAMETHROWER:
         return (FLAMETHROWER_RANGE * 0.5f) - BBOX_ALLOWANCE;
 
     case WP_HOLYCROSS:

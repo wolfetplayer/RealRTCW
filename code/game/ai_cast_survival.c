@@ -980,7 +980,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 
 static qboolean AICast_ShouldStartSpecialWave(void) {
     // 0 = disabled → never start special waves
-    if (g_specialWaves.integer == 0)
+    if (g_specialWaves.integer == 0 || svParams.specialWaveChance <= 0) 
         return qfalse;
 
     int wave = svParams.waveCount; // wave we’re starting now

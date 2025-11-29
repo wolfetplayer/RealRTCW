@@ -1105,6 +1105,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 		case WP_POISONGAS:
+		case WP_SMOKE_BOMB:
 		case WP_DYNAMITE:
 		case WP_AIRSTRIKE:
 		case WP_POISONGAS_MEDIC:
@@ -1160,6 +1161,12 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 			m->poisonGasRadius          = ammoTable[WP_POISONGAS_MEDIC].playerSplashRadius;
 			m->poisonGasDamage        =  ammoTable[WP_POISONGAS_MEDIC].playerDamage;	
 		    
+	}
+
+	// Arnout: override for smoke gren
+	if ( grenType == WP_SMOKE_BOMB ) {
+		m->s.effect1Time = 16;
+		m->think = weapon_smokeBombExplode;
 	}
 
 	if ( grenType == WP_AIRSTRIKE ) {
@@ -1699,6 +1706,7 @@ void CalcMuzzlePoint( gentity_t *ent, int weapon, vec3_t forward, vec3_t right, 
 	case WP_GRENADE_PINEAPPLE:
 	case WP_GRENADE_LAUNCHER:
 	case WP_POISONGAS:
+	case WP_SMOKE_BOMB:
 		VectorMA( muzzlePoint, 20, right, muzzlePoint );
 		break;
 	case WP_AKIMBO:     // left side rather than right
@@ -2164,6 +2172,7 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
 	case WP_POISONGAS:
+	case WP_SMOKE_BOMB:
 		weapon_grenadelauncher_fire( ent, ent->s.weapon );
 		break;
 	case WP_FLAMETHROWER:

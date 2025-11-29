@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "../client/client.h"
 #include "../sys/sys_local.h"
+#include "../renderer/tr_local.h"
 
 #if !SDL_VERSION_ATLEAST(2, 0, 17)
 #define KMOD_SCROLL KMOD_RESERVED
@@ -58,6 +59,9 @@ static int vidRestartTime = 0;
 static int in_eventTime = 0;
 
 static SDL_Window *SDL_window = NULL;
+
+static Uint16 saved_gamma[3][256];
+static qboolean gamma_saved = qfalse;
 
 #define CTRL(a) ((a)-'a'+1)
 
@@ -1162,9 +1166,23 @@ static void IN_ProcessEvents( void )
 						}
 						break;
 
-					case SDL_WINDOWEVENT_MINIMIZED:    Cvar_SetValue( "com_minimized", 1 ); break;
+					case SDL_WINDOWEVENT_MINIMIZED:
+						Cvar_SetValue( "com_minimized", 1 );
+						if (glConfig.deviceSupportsGamma) {
+							if (SDL_GetWindowGammaRamp(SDL_window, saved_gamma[0], saved_gamma[1], saved_gamma[2]) == 0) {
+								gamma_saved = qtrue;
+								SDL_SetWindowBrightness(SDL_window, 1.0f);
+							}
+						}
+						break;
 					case SDL_WINDOWEVENT_RESTORED:
-					case SDL_WINDOWEVENT_MAXIMIZED:    Cvar_SetValue( "com_minimized", 0 ); break;
+					case SDL_WINDOWEVENT_MAXIMIZED:
+						Cvar_SetValue( "com_minimized", 0 );
+						if (glConfig.deviceSupportsGamma && gamma_saved) {
+							SDL_SetWindowGammaRamp(SDL_window, saved_gamma[0], saved_gamma[1], saved_gamma[2]);
+							gamma_saved = qfalse;
+						}
+						break;
 					case SDL_WINDOWEVENT_FOCUS_LOST:   Cvar_SetValue( "com_unfocused", 1 ); break;
 					case SDL_WINDOWEVENT_FOCUS_GAINED: Cvar_SetValue( "com_unfocused", 0 ); break;
 				}

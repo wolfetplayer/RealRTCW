@@ -254,10 +254,16 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	vis = &cs->vislist[ent];
 
 	// for smoke bomb
-	vec3_t start, end;
-	if ( vis > 0 && AICast_BotEntInvisibleBySmokeBomb( start, end ) ) 
-	{
-		vis = 0;
+	vec3_t start = {0};
+	vec3_t end = {0};
+
+	if ( srcent && destent && srcent->health > 0 && destent->health > 0 ) {
+		VectorCopy(srcent->client->ps.origin, start);
+		VectorCopy(destent->client->ps.origin, end);
+	}
+
+	if ( AICast_BotEntInvisibleBySmokeBomb(start, end) ) {
+		return qfalse;
 	}
 
 	//
@@ -368,10 +374,16 @@ void AICast_UpdateVisibility( gentity_t *srcent, gentity_t *destent, qboolean sh
 	vis->chase_marker_count = 0;
 
 	// for smoke bomb
-	vec3_t start, end;
-	if ( vis > 0 && AICast_BotEntInvisibleBySmokeBomb( start, end ) ) 
-	{
-		vis = 0;
+	vec3_t start = {0};
+	vec3_t end = {0};
+
+	if ( srcent && destent && srcent->health > 0 && destent->health > 0 ) {
+		VectorCopy(srcent->client->ps.origin, start);
+		VectorCopy(destent->client->ps.origin, end);
+	}
+
+	if ( AICast_BotEntInvisibleBySmokeBomb(start, end) ) {
+		return;
 	}
 
 	if ( aicast_debug.integer == 1 ) {

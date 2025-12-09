@@ -749,7 +749,8 @@ void AICast_ScriptLoad( void ) {
 		}
 	}
 
-	level.scriptAI = G_Alloc( len );
+	level.scriptAI = G_Alloc( len + 1 );
+	memset( level.scriptAI, 0 , len + 1 );
 	trap_FS_Read( level.scriptAI, len, f );
 
 	trap_FS_FCloseFile( f );

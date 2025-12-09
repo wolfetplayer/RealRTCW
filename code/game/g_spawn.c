@@ -1024,7 +1024,8 @@ qboolean G_LoadEntsFile( void ) {
 		}
 	}
 
-	level.extraEntsScript = G_Alloc( len );
+	level.extraEntsScript = G_Alloc( len + 1 );
+	memset( level.extraEntsScript, 0 , len + 1 );
 	trap_FS_Read( level.extraEntsScript, len, f );
 
 	trap_FS_FCloseFile( f );

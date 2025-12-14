@@ -244,6 +244,12 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
     if (destent->flags & FL_NOTARGET) {
         return qfalse;
     }
+
+	// for smoke bomb
+	if ( srcent && destent && srcent->client && destent->client && srcent->health > 0 && AICast_BotEntInvisibleBySmokeBomb( srcent->client->ps.origin, destent->client->ps.origin ) ) {
+		return qfalse;
+	}
+
 	//
 	viewer = srcent->s.number;
 	ent = destent->s.number;
@@ -252,12 +258,6 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	AICast_GetCastState( ent );
 	//
 	vis = &cs->vislist[ent];
-
-	// for smoke bomb
-	if ( srcent && destent && srcent->health > 0 && AICast_BotEntInvisibleBySmokeBomb( srcent->client->ps.origin, destent->client->ps.origin ) ) {
-		return qfalse;
-	}
-
 	//
 	// if the destent is the client, and they have just loaded a savegame, ignore them temporarily
 	if ( !destent->aiCharacter && level.lastLoadTime && ( level.lastLoadTime > level.time - 2000 ) && !vis->visible_timestamp ) {
@@ -352,6 +352,11 @@ void AICast_UpdateVisibility( gentity_t *srcent, gentity_t *destent, qboolean sh
 		return;
 	}
 
+	// for smoke bomb
+	if ( srcent && destent && srcent->client && destent->client && srcent->health > 0 && AICast_BotEntInvisibleBySmokeBomb( srcent->client->ps.origin, destent->client->ps.origin ) ) {
+		return;
+	}
+
 	cs = AICast_GetCastState( srcent->s.number );
 	ocs = AICast_GetCastState( destent->s.number );
 
@@ -364,11 +369,6 @@ void AICast_UpdateVisibility( gentity_t *srcent, gentity_t *destent, qboolean sh
 	vis = &cs->vislist[destent->s.number];
 
 	vis->chase_marker_count = 0;
-
-	// for smoke bomb
-	if ( srcent && destent && srcent->health > 0 && AICast_BotEntInvisibleBySmokeBomb( srcent->client->ps.origin, destent->client->ps.origin ) ) {
-		return;
-	}
 
 	if ( aicast_debug.integer == 1 ) {
 		if ( !vis->visible_timestamp || vis->visible_timestamp < level.time - 5000 ) {

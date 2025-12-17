@@ -3936,15 +3936,16 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		CG_DrawWeapReticle();   // (for scopes)
 		CG_DrawCrosshair();
 		CG_DrawHoldableSelect();
-	if ( cg.zoomedBinoc ) {
-		CG_DrawBinocReticle();  // (for binocs)
-		return;
-	}
+		if ( cg.zoomedBinoc ) {
+			CG_DrawBinocReticle();  // (for binocs)
+			return;
+		}
 		return;
 	}
 
 	if ( cg.zoomedBinoc ) {
 		CG_DrawBinocReticle();
+		CG_DrawSubtitleString();
 		return;
 	}
 

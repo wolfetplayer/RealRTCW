@@ -345,6 +345,7 @@ qboolean AICast_EntityVisible( cast_state_t *cs, int enemynum, qboolean directvi
 	}
 	vis = &cs->vislist[enemynum];
 
+
 	if ( !vis->visible_timestamp && !vis->real_visible_timestamp ) {
 		return qfalse;  // they are not visible at all
 
@@ -507,6 +508,7 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
 
     case WP_GRENADE_LAUNCHER:
     case WP_GRENADE_PINEAPPLE:
+	case WP_SMOKE_BOMB:
         return 800.0f;
 
     case WP_MONSTER_ATTACK1:

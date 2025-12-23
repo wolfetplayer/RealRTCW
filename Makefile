@@ -1262,6 +1262,11 @@ ifdef STEAM
   CLIENT_CFLAGS += -DSTEAM
 endif
 
+ifdef UTF8
+  CFLAGS += -DUTF8
+  CLIENT_CFLAGS += -DUTF8
+endif
+
 ifeq ($(USE_INTERNAL_ZLIB),1)
   ZLIB_CFLAGS = -DNO_GZIP -I$(ZDIR)
 else

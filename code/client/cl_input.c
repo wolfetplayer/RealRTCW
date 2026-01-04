@@ -432,6 +432,12 @@ void CL_MouseEvent( int dx, int dy, int time ) {
 	}
 }
 
+static float CL_NormalizeJoyAxis16(int v)
+{
+    // v is Sint16-ish in [-32768..32767]
+    return (v >= 0) ? (v / 32767.0f) : (v / 32768.0f);
+}
+
 /*
 =================
 CL_JoystickEvent
@@ -440,10 +446,10 @@ Joystick values stay set until changed
 =================
 */
 void CL_JoystickEvent( int axis, int value, int time ) {
-	if ( axis < 0 || axis >= MAX_JOYSTICK_AXIS ) {
-		Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
-	}
-	cl.joystickAxis[axis] = value;
+    if ( axis < 0 || axis >= MAX_JOYSTICK_AXIS ) {
+        Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
+    }
+    cl.joystickAxis[axis] = CL_NormalizeJoyAxis16(value);
 }
 
 /*

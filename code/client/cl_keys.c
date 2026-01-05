@@ -2334,6 +2334,12 @@ void CL_KeyDownEvent( int key, unsigned time )
 		return;
 	}
 
+	if ((Key_GetCatcher() & KEYCATCH_UI) && key == K_PAD0_A)
+	{
+		VM_Call(uivm, UI_KEY_EVENT, K_MOUSE1, qtrue);
+		return;
+	}
+
 	// send the bound action
 	CL_ParseBinding( key, qtrue, time );
 
@@ -2406,6 +2412,12 @@ void CL_KeyUpEvent( int key, unsigned time )
 	// don't process key-up events for the console key
 	if ( key == K_CONSOLE || ( key == K_ESCAPE && keys[K_SHIFT].down ) )
 		return;
+
+	if ((Key_GetCatcher() & KEYCATCH_UI) && key == K_PAD0_A)
+	{
+		VM_Call(uivm, UI_KEY_EVENT, K_MOUSE1, qfalse);
+		return;
+	}
 
 	//
 	// key up events only perform actions if the game key binding is

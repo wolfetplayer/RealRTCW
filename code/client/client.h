@@ -439,6 +439,10 @@ extern	cvar_t	*j_forward_axis;
 extern	cvar_t	*j_side_axis;
 extern	cvar_t	*j_up_axis;
 
+extern cvar_t   *j_uiSpeed;
+extern cvar_t   *j_uiExpo;
+extern cvar_t   *j_uiDeadzone;
+
 extern cvar_t  *cl_timedemo;
 extern	cvar_t	*cl_aviFrameRate;
 extern	cvar_t	*cl_aviMotionJpeg;
@@ -581,6 +585,7 @@ void CL_ShutdownInput( void );
 void CL_SendCmd( void );
 void CL_ClearState( void );
 void CL_ReadPackets( void );
+void CL_GamepadUIMouseMove(void);
 
 void CL_WritePacket( void );
 void IN_CenterView( void );

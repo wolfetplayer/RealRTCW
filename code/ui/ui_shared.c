@@ -2578,14 +2578,14 @@ qboolean Item_TextField_HandleKey( itemDef_t *item, int key ) {
 		}
 
 		// NERVE - SMF
-		if ( key == K_ENTER || key == K_KP_ENTER || key == K_PAD0_A  ) {
+		if ( key == K_ENTER || key == K_KP_ENTER ) {
 			if ( item->onAccept ) {
 				Item_RunScript( item, item->onAccept );
 			}
 		}
 		// -NERVE - SMF
 
-		if ( key == K_ENTER || key == K_KP_ENTER || key == K_ESCAPE || key == K_PAD0_A  ) {
+		if ( key == K_ENTER || key == K_KP_ENTER || key == K_ESCAPE ) {
 			return qfalse;
 		}
 

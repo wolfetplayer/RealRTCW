@@ -112,6 +112,10 @@ cvar_t	*j_forward_axis;
 cvar_t	*j_side_axis;
 cvar_t	*j_up_axis;
 
+cvar_t *j_uiSpeed;
+cvar_t *j_uiExpo;
+cvar_t *j_uiDeadzone;
+
 cvar_t  *cl_activeAction;
 
 cvar_t  *cl_motdString;
@@ -3041,6 +3045,8 @@ void CL_Frame( int msec ) {
 	// send intentions now
 	CL_SendCmd();
 
+	CL_GamepadUIMouseMove();
+
 	// resend a connection request if necessary
 	CL_CheckForResend();
 
@@ -3739,6 +3745,10 @@ void CL_Init( void ) {
 	j_forward_axis = Cvar_Get ("j_forward_axis", "1", CVAR_ARCHIVE);
 	j_side_axis =    Cvar_Get ("j_side_axis",    "0", CVAR_ARCHIVE);
 	j_up_axis =      Cvar_Get ("j_up_axis",      "4", CVAR_ARCHIVE);
+
+	j_uiSpeed =     Cvar_Get ("j_uiSpeed",      "700", CVAR_ARCHIVE);
+	j_uiExpo =	    Cvar_Get ("j_uiExpo",      "1.6", CVAR_ARCHIVE);
+	j_uiDeadzone =	Cvar_Get ("j_uiDeadzone",   "0.18", CVAR_ARCHIVE);
 
 	Cvar_CheckRange(j_pitch_axis, 0, MAX_JOYSTICK_AXIS-1, qtrue);
 	Cvar_CheckRange(j_yaw_axis, 0, MAX_JOYSTICK_AXIS-1, qtrue);

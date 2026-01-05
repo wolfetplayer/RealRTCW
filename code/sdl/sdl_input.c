@@ -686,19 +686,22 @@ static void IN_GamepadMove( void )
 		qboolean pressed = SDL_GameControllerGetButton(gamepad, SDL_CONTROLLER_BUTTON_A + i);
 		if (pressed != stick_state.buttons[i])
 		{
-			Com_QueueEvent(in_eventTime, SE_KEY, K_PAD0_A + i, pressed, 0, NULL);
-#if SDL_VERSION_ATLEAST( 2, 0, 14 )
-			if ( i >= SDL_CONTROLLER_BUTTON_MISC1 ) {
-				Com_QueueEvent(in_eventTime, SE_KEY, K_PAD0_MISC1 + i - SDL_CONTROLLER_BUTTON_MISC1, pressed, 0, NULL);
-			} else
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+			if (i >= SDL_CONTROLLER_BUTTON_MISC1)
+			{
+				Com_QueueEvent(in_eventTime, SE_KEY,
+							   K_PAD0_MISC1 + i - SDL_CONTROLLER_BUTTON_MISC1,
+							   pressed, 0, NULL);
+			}
+			else
 #endif
 			{
 				Com_QueueEvent(in_eventTime, SE_KEY, K_PAD0_A + i, pressed, 0, NULL);
 			}
+
 			stick_state.buttons[i] = pressed;
 		}
 	}
-
 	// must defer translated axes until all real axes are processed
 	// must be done this way to prevent a later mapped axis from zeroing out a previous one
 	if (in_joystickUseAnalog->integer)

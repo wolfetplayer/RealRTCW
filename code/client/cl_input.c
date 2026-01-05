@@ -452,6 +452,67 @@ void CL_JoystickEvent( int axis, int value, int time ) {
     cl.joystickAxis[axis] = CL_NormalizeJoyAxis16(value);
 }
 
+
+static float CL_DeadzoneRescale(float x, float dz)
+{
+    float ax = fabsf(x);
+    if (ax <= dz) return 0.0f;
+    float sign = (x < 0.0f) ? -1.0f : 1.0f;
+    return sign * ((ax - dz) / (1.0f - dz));
+}
+
+static float CL_ApplyExpo(float x, float expo)
+{
+    float ax = fabsf(x);
+    float sign = (x < 0.0f) ? -1.0f : 1.0f;
+    return sign * powf(ax, expo);
+}
+
+void CL_GamepadUIMouseMove( void ) {
+    if ( !(Key_GetCatcher() & KEYCATCH_UI) ) {
+        return;
+    }
+
+float lx = cl.joystickAxis[0];
+float ly = cl.joystickAxis[1];
+
+    float dt = cls.frametime * 0.001f;
+    if ( dt <= 0.0f ) dt = 1.0f / 60.0f;
+
+    // Tunables
+    float dz   = j_uiDeadzone->value; 
+    float expo = j_uiExpo->value;      
+    float speed = j_uiSpeed->value;    
+
+    // Deadzone + rescale
+    lx = CL_DeadzoneRescale(lx, dz);
+    ly = CL_DeadzoneRescale(ly, dz);
+
+    if ( lx == 0.0f && ly == 0.0f ) {
+        return;
+    }
+
+    // Expo for precision near center
+    lx = CL_ApplyExpo(lx, expo);
+    ly = CL_ApplyExpo(ly, expo);
+
+    static float fracX = 0.0f;
+    static float fracY = 0.0f;
+
+    float fx = lx * speed * dt + fracX;
+    float fy = ly * speed * dt + fracY;
+
+    int dx = (int)fx;
+    int dy = (int)fy;
+
+    fracX = fx - dx;
+    fracY = fy - dy;
+
+    if ( dx || dy ) {
+        CL_MouseEvent( dx, dy, cls.realtime );
+    }
+}
+
 /*
 =================
 CL_JoystickMove
@@ -492,6 +553,7 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 	}
 
 	cmd->upmove = ClampChar( cmd->upmove + (int)up );
+	CL_GamepadUIMouseMove ();
 }
 
 /*

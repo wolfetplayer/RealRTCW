@@ -2222,6 +2222,17 @@ void CL_KeyDownEvent( int key, unsigned time )
 	//int activeMenu = 0;
 	keys[key].down = qtrue;
 	keys[key].repeats++;
+
+	// Prevent DPAD from auto-repeating (fixes skipping in menus and item cycling).
+	if (key == K_PAD0_DPAD_UP || key == K_PAD0_DPAD_DOWN ||
+		key == K_PAD0_DPAD_LEFT || key == K_PAD0_DPAD_RIGHT)
+	{
+		if (keys[key].repeats > 1)
+		{
+			return;
+		}
+	}
+	
 	if( keys[key].repeats == 1 )
 		anykeydown++;
 

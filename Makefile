@@ -291,11 +291,18 @@ ifndef USE_AUTHORIZE_SERVER
 USE_AUTHORIZE_SERVER=0
 endif
 
+# Build flavor (steam / nosteam) affects output folder
+ifeq ($(STEAM),1)
+  BUILD_FLAVOR=steam
+else
+  BUILD_FLAVOR=nosteam
+endif
+
 
 #############################################################################
 
-BD=$(BUILD_DIR)/debug-$(PLATFORM)-$(ARCH)
-BR=$(BUILD_DIR)/release-$(PLATFORM)-$(ARCH)
+BD=$(BUILD_DIR)/debug-$(PLATFORM)-$(ARCH)-$(BUILD_FLAVOR)
+BR=$(BUILD_DIR)/release-$(PLATFORM)-$(ARCH)-$(BUILD_FLAVOR)
 STEAMDIR=$(MOUNT_DIR)/steam
 STEAMSHIMDIR=$(MOUNT_DIR)/steamshim
 CDIR=$(MOUNT_DIR)/client
@@ -1257,7 +1264,7 @@ ifeq ($(USE_MUMBLE),1)
   CLIENT_CFLAGS += -DUSE_MUMBLE
 endif
 
-ifdef STEAM
+ifeq ($(STEAM),1)
   CFLAGS += -DSTEAM
   CLIENT_CFLAGS += -DSTEAM
 endif

@@ -3540,6 +3540,7 @@ static void PM_Weapon( void ) {
 		if ( ( pm->ps->pm_flags & PMF_SPRINTING ) && ( pm->ps->sprintTime > 0 ) ){
 			if ( pm->ps->weaponstate != WEAPON_SPRINT_IN ) {
 				pm->ps->weaponstate = WEAPON_SPRINT_IN;
+				PM_AddEvent( EV_RESET_ZOOM );
 				PM_StartWeaponAnim(PM_SprintInAnimForWeapon(pm->ps->weapon));
 				pm->ps->weaponTime += 300;
 			}

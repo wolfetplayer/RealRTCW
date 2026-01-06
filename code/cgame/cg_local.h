@@ -1086,6 +1086,9 @@ typedef struct {
 	float rumbleScale;          //RUMBLE FX using new shakeCamera code
 	pmoveExt_t pmext;
 
+	qboolean simpleZoomed;
+	int simpleZoomTime;
+
 } cg_t;
 
 #define NUM_FUNNEL_SPRITES  21
@@ -1944,6 +1947,9 @@ extern vmCvar_t	cg_weaponBounceSound;
 extern vmCvar_t cg_showSocials;
 extern vmCvar_t cg_gothic;
 
+extern vmCvar_t cg_simpleZoomFov;
+extern vmCvar_t cg_simpleZoomTimeMs;
+
 //
 // cg_main.c
 //
@@ -2160,6 +2166,7 @@ void CG_PrevWeapon_f( void );
 void CG_Weapon_f( void );
 void CG_WeaponBank_f( void );
 void CG_WeaponSuggest( int weap );
+void CG_ResetSimpleZoom(void);
 
 void CG_FinishWeaponChange( int lastweap, int newweap );
 

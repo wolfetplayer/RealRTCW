@@ -1824,6 +1824,7 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_DOG:               return "dog.aidefaults";
 		case AICHAR_PRIEST:            return "priest.aidefaults";
 		case AICHAR_XSHEPHERD:         return "xshepherd.aidefaults";
+		case AICHAR_MERCENARY:         return "mercenary.aidefaults";
 		case AICHAR_NONE:              return "";
 		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
     }

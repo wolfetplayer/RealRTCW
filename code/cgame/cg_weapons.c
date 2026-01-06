@@ -4486,6 +4486,8 @@ qboolean CG_WeaponSupportsSimpleZoom( int weap ) {
         case WP_GRENADE_LAUNCHER:
         case WP_GRENADE_PINEAPPLE:
         case WP_SMOKE_BOMB:
+		case WP_POISONGAS_MEDIC:
+		case WP_AIRSTRIKE:
         case WP_DYNAMITE:
         case WP_DYNAMITE_ENG:
         case WP_POISONGAS:

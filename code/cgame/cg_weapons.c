@@ -4527,6 +4527,13 @@ void CG_AltWeapon_f( void ) {
 	int original, num;
 	float spd = VectorLength( cg.snap->ps.velocity );
 
+	if (cg.snap && cg.snap->ps.weapon == WP_KNIFE)
+	{
+		// Dirty hack
+		trap_SendConsoleCommand(" +attack2; -attack2\n");
+		return;
+	}
+
 	if ( !cg.snap ) {
 		return;
 	}

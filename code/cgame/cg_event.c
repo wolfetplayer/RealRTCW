@@ -128,6 +128,7 @@ static void CG_UseItem( centity_t *cent ) {
 				case HI_BOOK1:
 				case HI_BOOK2:
 				case HI_BOOK3:
+				case HI_BOOK4:
 					break;
 				case HI_ADRENALINE:
 					CG_CenterPrint( "usedadrenaline", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
@@ -164,6 +165,7 @@ static void CG_UseItem( centity_t *cent ) {
 	case HI_BOOK1:
 	case HI_BOOK2:
 	case HI_BOOK3:
+	case HI_BOOK4:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.bookSound );
 		break;
 
@@ -2011,6 +2013,14 @@ case EV_FILL_CLIP_FULL:
 		break;
 	case EV_USE_ITEM14:
 		DEBUGNAME( "EV_USE_ITEM14" );
+		CG_UseItem( cent );
+		break;
+	case EV_USE_ITEM15:
+		DEBUGNAME( "EV_USE_ITEM15" );
+		CG_UseItem( cent );
+		break;
+	case EV_USE_ITEM16:
+		DEBUGNAME( "EV_USE_ITEM16" );
 		CG_UseItem( cent );
 		break;
 

@@ -355,6 +355,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_BOOK1:
 	case HI_BOOK2:
 	case HI_BOOK3:
+	case HI_BOOK4:
 	if ( !g_cheats.integer ) 
 	{
 	    steamSetAchievement("ACH_READ_BOOK");
@@ -1695,7 +1696,7 @@ void FinishSpawningItem( gentity_t *ent ) {
 
 		ent->touch = Touch_Item;    // no auto-pickup, only activate
 	} else if ( ent->item->giType == IT_HOLDABLE )      {
-		if ( ent->item->giTag >= HI_BOOK1 && ent->item->giTag <= HI_BOOK3 ) {
+		if ( ent->item->giTag >= HI_BOOK1 && ent->item->giTag <= HI_BOOK4 ) {
 			G_FindConfigstringIndex( va( "hbook%d", ent->item->giTag - HI_BOOK1 ), CS_CLIPBOARDS, MAX_CLIPBOARD_CONFIGSTRINGS, qtrue );
 		}
 //		ent->touch = Touch_Item;	// no auto-pickup, only activate

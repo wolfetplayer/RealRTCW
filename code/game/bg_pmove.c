@@ -3353,7 +3353,7 @@ static void PM_Weapon( void ) {
 				if ( item && ( pm->ps->holdable[pm->cmd.holdable] >= item->quantity ) ) { // ->quantity being how much 'ammo' is taken per use
 					PM_AddEvent( EV_USE_ITEM0 + pm->cmd.holdable );
 					// don't take books away when used
-					if ( pm->cmd.holdable < HI_BOOK1 || pm->cmd.holdable > HI_BOOK3 ) {
+					if ( pm->cmd.holdable < HI_BOOK1 || pm->cmd.holdable > HI_BOOK4 ) {
 						pm->ps->holdable[ pm->cmd.holdable ] -= item->quantity;
 					}
 

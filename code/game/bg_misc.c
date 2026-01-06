@@ -6741,6 +6741,33 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0,0}
 	},
 
+/*QUAKED holdable_book4(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/zemphr_book.md3"
+*/
+	{
+		"holdable_book4",
+		"sound/pickup/holdable/get_book4.wav",
+		{
+		"models/powerups/holdable/book4.md3",
+		0, 
+		0
+		},
+
+		"icons/icon_book4",              
+		"Book4",      
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_BOOK4,
+		0,
+		0,
+		0,
+		"",                            
+		"sound/pickup/holdable/use_book.wav",    
+		{0,0,0,0,0,0}
+	},
+
 	//
 	// POWERUP ITEMS
 	//
@@ -8650,6 +8677,7 @@ char *eventnames[] = {
 	"EV_USE_ITEM13",
 	"EV_USE_ITEM14",
 	"EV_USE_ITEM15",
+	"EV_USE_ITEM16",
 	"EV_ITEM_RESPAWN",
 	"EV_ITEM_POP",
 	"EV_PLAYER_TELEPORT_IN",

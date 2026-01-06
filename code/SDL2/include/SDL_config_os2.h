@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2021 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -38,9 +38,16 @@
 #define SDL_VIDEO_DRIVER_DUMMY 1
 #define SDL_VIDEO_DRIVER_OS2 1
 #define SDL_JOYSTICK_OS2 1
+#ifndef HAVE_LIBUSB_H  /* see Makefile */
 #define SDL_HIDAPI_DISABLED 1
 /*#undef SDL_JOYSTICK_HIDAPI */
-/*#undef SDL_JOYSTICK_VIRTUAL */
+#else
+#define SDL_JOYSTICK_HIDAPI 1
+#define HAVE_LIBUSB 1
+/* dynamically loaded libusb-1.0 dll: */
+#define SDL_LIBUSB_DYNAMIC "usb100.dll"
+#endif
+#define SDL_JOYSTICK_VIRTUAL 1
 
 /* Enable OpenGL support */
 /* #undef SDL_VIDEO_OPENGL */
@@ -50,9 +57,6 @@
 #define SDL_TIMER_OS2 1
 #define SDL_FILESYSTEM_OS2 1
 
-/* Enable assembly routines */
-#define SDL_ASSEMBLY_ROUTINES 1
-
 /* use libsamplerate for audio rate conversion. */
 /*#define HAVE_LIBSAMPLERATE_H 1 */
 
@@ -61,24 +65,30 @@
 
 #define HAVE_LIBC 1
 
+#define HAVE_STDARG_H 1
+#define HAVE_STDDEF_H 1
+#define HAVE_STDINT_H 1
+
 #define HAVE_SYS_TYPES_H 1
 #define HAVE_STDIO_H 1
 #define STDC_HEADERS 1
 #define HAVE_STDLIB_H 1
-#define HAVE_STDARG_H 1
-#define HAVE_STDDEF_H 1
 #define HAVE_MALLOC_H 1
 #define HAVE_MEMORY_H 1
 #define HAVE_STRING_H 1
 #define HAVE_STRINGS_H 1
 #define HAVE_WCHAR_H 1
 #define HAVE_INTTYPES_H 1
-#define HAVE_STDINT_H 1
 #define HAVE_LIMITS_H 1
 #define HAVE_CTYPE_H 1
 #define HAVE_MATH_H 1
 #define HAVE_FLOAT_H 1
 #define HAVE_SIGNAL_H 1
+
+#if 0 /* see Makefile */
+#define HAVE_ICONV 1
+#define HAVE_ICONV_H 1
+#endif
 
 /* #undef HAVE_DLOPEN */
 #define HAVE_MALLOC 1
@@ -93,16 +103,17 @@
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
+/* OpenWatcom requires specific calling conventions for qsort and bsearch */
+#ifndef __WATCOMC__
 #define HAVE_QSORT 1
+#define HAVE_BSEARCH 1
+#endif
 #define HAVE_ABS 1
 #define HAVE_BCOPY 1
 #define HAVE_MEMSET 1
 #define HAVE_MEMCPY 1
 #define HAVE_MEMMOVE 1
 #define HAVE_MEMCMP 1
-#define HAVE_WCSLEN 1
-#define HAVE_WCSLCPY 1
-#define HAVE_WCSLCAT 1
 #define HAVE_WCSCMP 1
 #define HAVE__WCSICMP 1
 #define HAVE__WCSNICMP 1

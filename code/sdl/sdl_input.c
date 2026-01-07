@@ -544,7 +544,7 @@ static void IN_InitJoystick( void )
 	if( in_joystickNo->integer < 0 || in_joystickNo->integer >= total )
 		Cvar_Set( "in_joystickNo", "0" );
 
-	in_joystickUseAnalog = Cvar_Get( "in_joystickUseAnalog", "0", CVAR_ARCHIVE );
+	in_joystickUseAnalog = Cvar_Get( "in_joystickUseAnalog", "1", CVAR_ARCHIVE );
 
 	stick = SDL_JoystickOpen( in_joystickNo->integer );
 

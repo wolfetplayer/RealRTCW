@@ -439,6 +439,9 @@ extern	cvar_t	*j_forward_axis;
 extern	cvar_t	*j_side_axis;
 extern	cvar_t	*j_up_axis;
 
+extern cvar_t   *j_moveSens;
+extern cvar_t   *j_lookSens;
+
 extern cvar_t   *j_uiSpeed;
 extern cvar_t   *j_uiExpo;
 extern cvar_t   *j_uiDeadzone;

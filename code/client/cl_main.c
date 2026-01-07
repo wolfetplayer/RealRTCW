@@ -112,6 +112,9 @@ cvar_t	*j_forward_axis;
 cvar_t	*j_side_axis;
 cvar_t	*j_up_axis;
 
+cvar_t  *j_lookSens;
+cvar_t  *j_moveSens;
+
 cvar_t *j_uiSpeed;
 cvar_t *j_uiExpo;
 cvar_t *j_uiDeadzone;
@@ -3749,6 +3752,9 @@ void CL_Init( void ) {
 	j_uiSpeed =     Cvar_Get ("j_uiSpeed",      "700", CVAR_ARCHIVE);
 	j_uiExpo =	    Cvar_Get ("j_uiExpo",      "1.6", CVAR_ARCHIVE);
 	j_uiDeadzone =	Cvar_Get ("j_uiDeadzone",   "0.18", CVAR_ARCHIVE);
+
+	j_lookSens = Cvar_Get ("j_lookSens", "1.0", CVAR_ARCHIVE);
+	j_moveSens = Cvar_Get ("j_moveSens", "1.0", CVAR_ARCHIVE);
 
 	Cvar_CheckRange(j_pitch_axis, 0, MAX_JOYSTICK_AXIS-1, qtrue);
 	Cvar_CheckRange(j_yaw_axis, 0, MAX_JOYSTICK_AXIS-1, qtrue);

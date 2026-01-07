@@ -546,11 +546,12 @@ CL_JoystickMove
 void CL_JoystickMove( usercmd_t *cmd ) {
 	float anglespeed;
 
-	float yaw     = j_yaw->value     * cl.joystickAxis[j_yaw_axis->integer];
-	float right   = j_side->value    * cl.joystickAxis[j_side_axis->integer];
-	float forward = j_forward->value * cl.joystickAxis[j_forward_axis->integer];
-	float pitch   = j_pitch->value   * cl.joystickAxis[j_pitch_axis->integer];
-	float up      = j_up->value      * cl.joystickAxis[j_up_axis->integer];
+	float yaw = (j_yaw->value * j_lookSens->value) * cl.joystickAxis[j_yaw_axis->integer];
+	float pitch = (j_pitch->value * j_lookSens->value) * cl.joystickAxis[j_pitch_axis->integer];
+
+	float forward = (j_forward->value * j_moveSens->value) * cl.joystickAxis[j_forward_axis->integer];
+	float right = (j_side->value * j_moveSens->value) * cl.joystickAxis[j_side_axis->integer];
+	float up = (j_up->value * j_moveSens->value) * cl.joystickAxis[j_up_axis->integer];
 
 	if ( !( kb[KB_SPEED].active ^ cl_run->integer ) ) {
 		cmd->buttons |= BUTTON_WALKING;

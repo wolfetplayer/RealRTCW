@@ -203,9 +203,34 @@ float CL_KeyState( kbutton_t *key ) {
 }
 
 
+void IN_ClearKButton( kbutton_t *b ) {
+	b->down[0] = 0;
+	b->down[1] = 0;
+	b->active = 0;
+	b->wasPressed = 0;
+	b->downtime = 0;
+	b->msec = 0;
+}
+
+void IN_ForceUntoggleCrouch( void ) {
+	if ( !s_isToggledCrouch ) {
+		return;
+	}
+
+	IN_ClearKButton( &kb[KB_DOWN] );
+
+	s_isToggledCrouch = qfalse;
+}
+
 void IN_DownToggle( void ) {IN_KeyToggle( &kb[KB_DOWN] );}
 
-void IN_UpDown( void ) {IN_KeyDown( &kb[KB_UP] );}
+void IN_UpDown( void ) {
+    if ( s_isToggledCrouch ) {
+        IN_ForceUntoggleCrouch();
+        return;
+    }
+    IN_KeyDown( &kb[KB_UP] );
+}
 void IN_UpUp( void ) {IN_KeyUp( &kb[KB_UP] );}
 void IN_DownDown( void ) {IN_KeyDown( &kb[KB_DOWN] );}
 void IN_DownUp( void ) {IN_KeyUp( &kb[KB_DOWN] );}

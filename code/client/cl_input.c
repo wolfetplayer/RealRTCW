@@ -562,19 +562,26 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 		anglespeed = 0.001 * cls.frametime;
 	}
 
-	if ( !kb[KB_STRAFE].active ) {
-		cl.viewangles[YAW] += anglespeed * yaw;
-		cmd->rightmove = ClampChar( cmd->rightmove + (int)right );
-	} else {
-		cl.viewangles[YAW] += anglespeed * right;
-		cmd->rightmove = ClampChar( cmd->rightmove + (int)yaw );
+	if (!kb[KB_STRAFE].active)
+	{
+		cl.viewangles[YAW] += anglespeed * (yaw * cl.cgameSensitivity);
+		cmd->rightmove = ClampChar(cmd->rightmove + (int)right);
 	}
-	if ( kb[KB_MLOOK].active ) {
-		cl.viewangles[PITCH] += anglespeed * forward;
-		cmd->forwardmove = ClampChar( cmd->forwardmove + (int)pitch );
-	} else {
-		cl.viewangles[PITCH] += anglespeed * pitch;
-		cmd->forwardmove = ClampChar( cmd->forwardmove + (int)forward );
+	else
+	{
+		cl.viewangles[YAW] += anglespeed * (right * cl.cgameSensitivity);
+		cmd->rightmove = ClampChar(cmd->rightmove + (int)yaw);
+	}
+
+	if (kb[KB_MLOOK].active)
+	{
+		cl.viewangles[PITCH] += anglespeed * (forward * cl.cgameSensitivity);
+		cmd->forwardmove = ClampChar(cmd->forwardmove + (int)pitch);
+	}
+	else
+	{
+		cl.viewangles[PITCH] += anglespeed * (pitch * cl.cgameSensitivity);
+		cmd->forwardmove = ClampChar(cmd->forwardmove + (int)forward);
 	}
 
 	cmd->upmove = ClampChar( cmd->upmove + (int)up );

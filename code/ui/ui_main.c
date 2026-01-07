@@ -6917,6 +6917,28 @@ UI_KeyEvent
 */
 void _UI_KeyEvent( int key, qboolean down ) {
 
+    if ( down && Menu_Count() > 0 ) {
+        menuDef_t *menu = Menu_GetFocused();
+        if ( menu && menu->window.name[0] ) {
+
+            if ( !Q_stricmp( menu->window.name, "pregame" ) ) {
+
+                // Don’t re-trigger if already started
+                if ( trap_Cvar_VariableValue( "g_playerstart" ) == 0 ) {
+
+                    if ( key != K_ESCAPE ) {
+                        trap_Cmd_ExecuteText( EXEC_APPEND, "fade 0 0 0 0 3\n" );
+                        trap_Cvar_Set( "g_playerstart", "1" );
+                        Menus_CloseAll();
+                        return; // eat the key
+                    }
+                } else {
+                    return; // already started; eat keys
+                }
+            }
+        }
+    }
+
 	if ( Menu_Count() > 0 ) {
 		menuDef_t *menu = Menu_GetFocused();
 		if ( menu ) {

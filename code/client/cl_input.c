@@ -664,8 +664,21 @@ void CL_MouseMove(usercmd_t *cmd) {
 	}
 
 	// ingame FOV
-	mx *= cl.cgameSensitivity;
-	my *= cl.cgameSensitivity;
+	if (cl.cgameIsZoomed) {
+
+		if (cl_zoomSensitivityFovScaled->integer) {
+			mx *= cl.cgameSensitivity;
+			my *= cl.cgameSensitivity;
+		}
+
+		mx *= cl_zoomSensitivity->value;
+		my *= cl_zoomSensitivity->value;
+	}
+	else
+	{
+		mx *= cl.cgameSensitivity;
+		my *= cl.cgameSensitivity;
+	}
 
 	// add mouse X/Y movement to cmd
 	if ( kb[KB_STRAFE].active ) {

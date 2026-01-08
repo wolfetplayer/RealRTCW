@@ -135,6 +135,7 @@ typedef struct {
 	int cgameUserHoldableValue;         // current holdable item to add to usercmd_t	//----(SA)	added
 	float cgameSensitivity;
 	int cgameCld;                       // NERVE - SMF
+	qboolean cgameIsZoomed;
 
 	// cmds[cmdNumber] is the predicted command, [cmdNumber-1] is the last
 	// properly generated command
@@ -416,6 +417,9 @@ extern cvar_t  *cl_recoilPitch;     // RF
 
 extern cvar_t  *cl_sensitivity;
 extern cvar_t  *cl_freelook;
+
+extern cvar_t  *cl_zoomSensitivity;
+extern cvar_t  *cl_zoomSensitivityFovScaled;
 
 extern cvar_t  *cl_mouseAccel;
 extern	cvar_t	*cl_mouseAccelOffset;

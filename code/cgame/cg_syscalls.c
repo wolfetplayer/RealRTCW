@@ -390,8 +390,8 @@ qboolean    trap_GetUserCmd( int cmdNumber, usercmd_t *ucmd ) {
 	return syscall( CG_GETUSERCMD, cmdNumber, ucmd );
 }
 
-void        trap_SetUserCmdValue( int stateValue, int holdableValue, float sensitivityScale, int cld ) {    //----(SA)	// NERVE - SMF - added cld
-	syscall( CG_SETUSERCMDVALUE, stateValue, holdableValue, PASSFLOAT( sensitivityScale ), cld );
+void        trap_SetUserCmdValue( int stateValue, int holdableValue, float sensitivityScale, int cld, qboolean isZoomed ) {    //----(SA)	// NERVE - SMF - added cld
+	syscall( CG_SETUSERCMDVALUE, stateValue, holdableValue, PASSFLOAT( sensitivityScale ), cld, isZoomed );
 }
 
 void        testPrintInt( char *string, int i ) {

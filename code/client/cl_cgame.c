@@ -184,11 +184,12 @@ qboolean    CL_GetSnapshot( int snapshotNumber, snapshot_t *snapshot ) {
 CL_SetUserCmdValue
 ==============
 */
-void CL_SetUserCmdValue( int userCmdValue, int holdableValue, float sensitivityScale, int cld ) {
+void CL_SetUserCmdValue( int userCmdValue, int holdableValue, float sensitivityScale, int cld, qboolean isZoomed ) {
 	cl.cgameUserCmdValue        = userCmdValue;
 	cl.cgameUserHoldableValue   = holdableValue;
 	cl.cgameSensitivity         = sensitivityScale;
 	cl.cgameCld                 = cld;
+	cl.cgameIsZoomed            = isZoomed;
 }
 
 /*
@@ -665,7 +666,7 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 	case CG_GETUSERCMD:
 		return CL_GetUserCmd( args[1], VMA( 2 ) );
 	case CG_SETUSERCMDVALUE:
-		CL_SetUserCmdValue( args[1], args[2], VMF( 3 ), args[4] );    //----(SA)	modified	// NERVE - SMF - added fourth arg [cld]
+		CL_SetUserCmdValue( args[1], args[2], VMF( 3 ), args[4], args[5] );    //----(SA)	modified	// NERVE - SMF - added fourth arg [cld]
 		return 0;
 	case CG_MEMORY_REMAINING:
 		return Hunk_MemoryRemaining();

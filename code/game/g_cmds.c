@@ -1338,7 +1338,6 @@ qboolean G_ThrowChair( gentity_t *ent, vec3_t dir, qboolean force ) {
 	return ( isthrown || force );
 }
 
-
 // Rafael
 /*
 ==================

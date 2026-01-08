@@ -81,6 +81,7 @@ qboolean AICast_ScriptAction_IncreaseRespawns( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SuggestWeapon( cast_state_t *cs, char *params );	//----(SA)	added
 qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GiveWeaponFull( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_DropItem( cast_state_t *cs, char *params ) ;
 qboolean AICast_ScriptAction_GiveInventory( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params );
@@ -351,6 +352,7 @@ cast_script_stack_action_t scriptActions[] =
 	{"increaserespawns",        AICast_ScriptAction_IncreaseRespawns},					
 	{"giveinventory",    AICast_ScriptAction_GiveInventory},
 	{"giveperk",    AICast_ScriptAction_GivePerk},
+	{"dropitem",     AICast_ScriptAction_DropItem},
 	{"giveweapon",       AICast_ScriptAction_GiveWeapon},
 	{"giveweaponfull",   AICast_ScriptAction_GiveWeaponFull},
 	{"takeweapon",       AICast_ScriptAction_TakeWeapon},
@@ -607,6 +609,7 @@ cast_script_event_define_t scriptEvents[] =
 	{"start_survival",          0},
 	{"specialwave_start",            0},
 	{"specialwave_end",          0},
+	{"stealthkill",          AICast_EventMatch_StringEqual},
 	{NULL,              0}
 };
 

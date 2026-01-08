@@ -35,10 +35,10 @@ svParams_t svParams;
 
 /*
 ============
-TossClientItems
+TossClientItems_Survival
 ============
 */
-void TossClientItems(gentity_t *self, gentity_t *attacker) {
+void TossClientItems_Survival(gentity_t *self, gentity_t *attacker) {
     gitem_t *item;
     vec3_t forward;
     float angle;

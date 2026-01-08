@@ -512,7 +512,7 @@ void AICast_Die_Survival( gentity_t *self, gentity_t *inflictor, gentity_t *atta
 		contents = trap_PointContents( self->r.currentOrigin, -1 );
 		if ( !( contents & CONTENTS_NODROP ) ) {
 			TossClientWeapons( self );
-			TossClientItems( self, attacker );
+			TossClientItems_Survival( self, attacker );
 			TossClientPowerups( self, attacker );
 		}
 

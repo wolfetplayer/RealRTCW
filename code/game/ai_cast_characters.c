@@ -711,19 +711,19 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 			0
 		},
 		{
-			"mercenarySightPlayer",
-			"mercenaryAttackPlayer",
-			"mercenaryOrders",
-			"mercenaryDeath",
-			"mercenarySilentDeath",				//----(SA)	added
-			"mercenaryFlameDeath",				//----(SA)	added
-			"mercenaryPain",
-			"mercenaryStay",						// stay - you're told to stay put
-			"mercenaryFollow",					// follow - go with ordering player ("i'm with you" rather than "yes sir!")
-			"mercenaryOrdersDeny",				// deny - refuse orders (doing something else)
+			"mercSightPlayer",
+			"mercAttackPlayer",
+			"mercOrders",
+			"mercDeath",
+			"mercSilentDeath",				//----(SA)	added
+			"mercFlameDeath",				//----(SA)	added
+			"mercPain",
+			"mercStay",						// stay - you're told to stay put
+			"mercFollow",					// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"mercOrdersDeny",				// deny - refuse orders (doing something else)
 		},
 		AITEAM_NAZI,							// team
-		"mercenary/default",					// default model/skin
+		"merc/default",					// default model/skin
 		{WP_MP40,WP_GRENADE_LAUNCHER},			// starting weapons
 		BBOX_SMALL, {32,48},					// bbox, crouch/stand height
 		AIFL_CATCH_GRENADE | AIFL_STAND_IDLE2,	// flags
@@ -1824,7 +1824,7 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_DOG:               return "dog.aidefaults";
 		case AICHAR_PRIEST:            return "priest.aidefaults";
 		case AICHAR_XSHEPHERD:         return "xshepherd.aidefaults";
-		case AICHAR_MERCENARY:         return "mercenary.aidefaults";
+		case AICHAR_MERCENARY:         return "merc.aidefaults";
 		case AICHAR_NONE:              return "";
 		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
     }

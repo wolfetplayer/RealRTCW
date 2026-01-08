@@ -77,7 +77,7 @@ extern void GibEntity ( gentity_t * self , int killer ) ;
 extern void GibHead ( gentity_t * self , int killer ) ;
 extern void LookAtKiller ( gentity_t * self , gentity_t * inflictor , gentity_t * attacker ) ;
 extern void TossClientWeapons ( gentity_t * self ) ;
-extern void TossClientItems ( gentity_t * self, gentity_t *attacker ) ;
+extern void TossClientItems_Survival ( gentity_t * self, gentity_t *attacker ) ;
 extern void TossClientPowerups ( gentity_t * self, gentity_t *attacker ) ;
 extern void AddScore ( gentity_t * ent , int score ) ;
 extern qboolean AICast_ScriptAction_CatchFire ( cast_state_t * cs , char * params ) ;
@@ -292,6 +292,7 @@ extern qboolean AICast_ScriptAction_TakeWeapon ( cast_state_t * cs , char * para
 extern qboolean AICast_ScriptAction_NoRespawn ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_RandomRespawn ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GiveWeapon ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_DropItem( cast_state_t *cs, char *params ) ;
 extern qboolean AICast_ScriptAction_GiveWeaponFull ( cast_state_t * cs , char * params ) 
 extern qboolean AICast_ScriptAction_SetMoveSpeed ( cast_state_t * cs , char * params ) ;;
 extern qboolean AICast_ScriptAction_GiveArmor ( cast_state_t * cs , char * params ) ;
@@ -1245,6 +1246,7 @@ extern qboolean AICast_ScriptAction_ChangeAiSkin(cast_state_t* cs, char* params)
 extern qboolean AICast_ScriptAction_ChangeAiHead(cast_state_t* cs, char* params);
 extern void G_RunItem ( gentity_t * ent ) ;
 extern void G_RunItemProp ( gentity_t * ent , vec3_t origin ) ;
+extern gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs );
 extern void G_BounceItem ( gentity_t * ent , trace_t * trace ) ;
 extern void G_FlushItem ( gentity_t *ent, trace_t *trace);
 extern qboolean G_ItemStick( gentity_t *ent, trace_t *trace, vec3_t velocity );

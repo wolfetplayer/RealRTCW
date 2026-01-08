@@ -187,6 +187,7 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean modPanzerfaust = (meansOfDeath == MOD_ROCKET || meansOfDeath == MOD_ROCKET_SPLASH);
 	qboolean modKicked = (meansOfDeath == MOD_KICKED);
 	qboolean modKnife = (meansOfDeath == MOD_KNIFE);
+	qboolean modKnifeStealth = (meansOfDeath == MOD_KNIFE_STEALTH);
 	qboolean modCrush = (meansOfDeath == MOD_CRUSH);
 	qboolean modFalling = (meansOfDeath == MOD_FALLING);
 	qboolean killerPlayer	 = attacker && attacker->client && !( attacker->aiCharacter );
@@ -514,43 +515,66 @@ void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		}
 	}
 
-	trap_LinkEntity( self );
+	trap_LinkEntity(self);
 
 	// kill, instanly, any streaming sound the character had going
-	G_AddEvent( &g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0 );
+	G_AddEvent(&g_entities[self->s.number], EV_STOPSTREAMINGSOUND, 0);
 
 	// mark the time of death
 	cs->deathTime = level.time;
 
 	// dying ai's can trigger a target
-	if ( !cs->rebirthTime ) {
-		G_UseTargets( self, self );
+	if (!cs->rebirthTime)
+	{
+		G_UseTargets(self, self);
 		// really dead now, so call the script
-		if ( attacker ) {
-			AICast_ScriptEvent( cs, "death", attacker->aiName ? attacker->aiName : "" );
-		} else {
-			AICast_ScriptEvent( cs, "death", "" );
+		if (attacker)
+		{
+			if (modKnifeStealth)
+			{
+				AICast_ScriptEvent(cs, "stealthkill", attacker->aiName ? attacker->aiName : "");
+			}
+			AICast_ScriptEvent(cs, "death", attacker->aiName ? attacker->aiName : "");
+		}
+		else
+		{
+			if (modKnifeStealth)
+			{
+				AICast_ScriptEvent(cs, "stealthkill", "");
+			}
+			AICast_ScriptEvent(cs, "death", "");
 		}
 		// call the deathfunc for this cast, so we can play associated sounds, or do any character-specific things
-		if ( !( cs->aiFlags & AIFL_DENYACTION ) && cs->deathfunc ) {
-			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod
+		if (!(cs->aiFlags & AIFL_DENYACTION) && cs->deathfunc)
+		{
+			cs->deathfunc(self, attacker, damage, meansOfDeath); //----(SA)	added mod
 		}
-	} else {
+	}
+	else
+	{
 		// really dead now, so call the script
-		if ( respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA
-			 && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn ) {
+		if (respawn && self->aiCharacter != AICHAR_ZOMBIE && self->aiCharacter != AICHAR_HELGA && self->aiCharacter != AICHAR_HEINRICH && nogib && !cs->norespawn)
+		{
 
-			if ( !cs->died ) {
-				G_UseTargets( self, self );                 // testing
-				AICast_ScriptEvent( cs, "death", "" );
+			if (!cs->died)
+			{
+				G_UseTargets(self, self); // testing
+				if (modKnifeStealth)
+				{
+					AICast_ScriptEvent(cs, "stealthkill", "");
+				}
+				AICast_ScriptEvent(cs, "death", "");
 				cs->died = qtrue;
 			}
-		} else {
-			AICast_ScriptEvent( cs, "fakedeath", "" );
+		}
+		else
+		{
+			AICast_ScriptEvent(cs, "fakedeath", "");
 		}
 		// call the deathfunc for this cast, so we can play associated sounds, or do any character-specific things
-		if ( !( cs->aiFlags & AIFL_DENYACTION ) && cs->deathfunc ) {
-			cs->deathfunc( self, attacker, damage, meansOfDeath );   //----(SA)	added mod
+		if (!(cs->aiFlags & AIFL_DENYACTION) && cs->deathfunc)
+		{
+			cs->deathfunc(self, attacker, damage, meansOfDeath); //----(SA)	added mod
 		}
 	}
 }

@@ -90,6 +90,9 @@ cvar_t  *cl_forceavidemo;
 cvar_t  *cl_freelook;
 cvar_t  *cl_sensitivity;
 
+cvar_t  *cl_zoomSensitivity;
+cvar_t  *cl_zoomSensitivityFovScaled;
+
 cvar_t  *cl_mouseAccel;
 cvar_t	*cl_mouseAccelOffset;
 cvar_t	*cl_mouseAccelStyle;
@@ -3697,6 +3700,9 @@ void CL_Init( void ) {
 	cl_sensitivity = Cvar_Get( "sensitivity", "5", CVAR_ARCHIVE );
 	cl_mouseAccel = Cvar_Get( "cl_mouseAccel", "0", CVAR_ARCHIVE );
 	cl_freelook = Cvar_Get( "cl_freelook", "1", CVAR_ARCHIVE );
+
+	cl_zoomSensitivity = Cvar_Get( "cl_zoomSensitivity", "1", CVAR_ARCHIVE );
+	cl_zoomSensitivityFovScaled = Cvar_Get( "cl_zoomSensitivityFovScaled", "1", CVAR_ARCHIVE );
 
 	// 0: legacy mouse acceleration
 	// 1: new implementation

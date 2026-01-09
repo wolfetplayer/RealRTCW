@@ -998,7 +998,7 @@ static int CG_CalcFov( void ) {
 	cg.refdef.fov_x = fov_x;
 	cg.refdef.fov_y = fov_y;
 
-	// RealRTCW - sensitivity multiplier and scaling by fov
+	// RealRTCW - sensitivity scaling by fov
 	{
 		// Base FOV is the user's normal FOV (before any zoom/mg42/simple zoom)
 		// cg.fov is set earlier to that base horizontal fov.
@@ -1011,21 +1011,12 @@ static int CG_CalcFov( void ) {
 		xbase = cg.refdef.width / tan(baseFovX / 360.0f * M_PI);
 		baseFovY = atan2(cg.refdef.height, xbase) * 360.0f / M_PI;
 
-		float zoomSensFovScale = 1.0f;
-
-		if (cg_zoomSensitivityFovScaled.integer)
-		{
-			// Scale based on actual final vertical fov vs base vertical fov
-			zoomSensFovScale = CG_FovTanScale(cg.refdef.fov_y, baseFovY);
-		}
+		// Scale based on actual final vertical fov vs base vertical fov
+		cg.zoomSensitivity = CG_FovTanScale(cg.refdef.fov_y, baseFovY);
 
 		// Detect "zoomed state" by FOV actually being smaller than base
 		// (covers scoped zoom, simple zoom, mg42, any other future fov tweak)
-		qboolean fovReduced = (cg.refdef.fov_y < baseFovY - 0.01f);
-
-		float zoomSensMultiplier = fovReduced ? cg_zoomSensitivity.value : 1.0f;
-
-		cg.zoomSensitivity = zoomSensFovScale * zoomSensMultiplier;
+		cg.isZoomed = cg.refdef.fov_y < baseFovY - 0.01f;
 	}
 
 	return inwater;
@@ -1739,7 +1730,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	DEBUGTIME
 
 	// let the client system know what our weapon, holdable item and zoom settings are
-	trap_SetUserCmdValue( cg.weaponSelect, cg.holdableSelect, cg.zoomSensitivity, cg.cld );
+	trap_SetUserCmdValue( cg.weaponSelect, cg.holdableSelect, cg.zoomSensitivity, cg.cld, cg.isZoomed );
 
 	// actually issue the rendering calls
 	CG_DrawActive( stereoView );

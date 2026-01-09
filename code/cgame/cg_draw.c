@@ -3060,7 +3060,6 @@ static void CG_DrawCrosshair3D( void ) {
 CG_HitFeedback
 ==============
 */
-#define HIT_MARKER_DURATION	300	// msec
 void CG_HitFeedback( hitEvent_t hitType ) {
 	if ( hitType < HIT_NONE || hitType >= HIT_MAX_NUM ) {
 		return;
@@ -3079,6 +3078,7 @@ void CG_HitFeedback( hitEvent_t hitType ) {
 CG_DrawHitFeedback
 ==============
 */
+#define HIT_MARKER_DURATION	300	// msec
 static void CG_DrawHitFeedback( void ) {
 	float color[4];
 	float alpha, scale, progress;

@@ -3057,6 +3057,162 @@ static void CG_DrawCrosshair3D( void ) {
 
 /*
 ==============
+CG_HitFeedback
+==============
+*/
+#define HIT_MARKER_DURATION	300	// msec
+void CG_HitFeedback( hitEvent_t hitType ) {
+	if ( hitType < HIT_NONE || hitType >= HIT_MAX_NUM ) {
+		return;
+	}
+
+	// wait for last hit feedback fade out		// add: it weakened the feedback effect, drop it
+	// if ( cg_hitFeedback.integer && !cg.hitFeedback.active ) {
+		cg.hitFeedback.active = qtrue;
+		cg.hitFeedback.startTime = cg.time;
+		cg.hitFeedback.hitType = hitType;
+	// }
+}
+
+/*
+==============
+CG_DrawHitFeedback
+==============
+*/
+static void CG_DrawHitFeedback( void ) {
+	float color[4];
+	float alpha, scale, progress;
+	int currentTime = cg.time;
+	float x, y, w, h;
+	float size;
+	float baseSize;
+
+	if ( !cg_hitFeedback.integer ) {
+		return;
+	}
+
+	if ( !cg.hitFeedback.active ) {
+		return;
+	}
+
+	if ( !cgs.media.hitFeedbackShader ) {
+		return;
+	}
+
+	progress = (float)(currentTime - cg.hitFeedback.startTime) / (float)HIT_MARKER_DURATION;
+	if ( progress >= 1.0f ) {
+		cg.hitFeedback.active = qfalse;
+		return;
+	}
+
+	if ( cg_crosshairSize.value ) {
+		baseSize = 0.9f * cg_crosshairSize.value;
+	} else {
+		baseSize = 32.0f;
+	}
+
+	x = SCREEN_WIDTH * 0.5f;
+	y = SCREEN_HEIGHT * 0.5f;
+	CG_AdjustFrom640( &x, &y, &w, &h );
+
+	// fade-out (30%)
+	if ( progress < 0.7f ) {
+		alpha = 1.0f;
+	} else {
+		alpha = 1.0f - (progress - 0.7f) / 0.3f;
+	}
+	alpha *= cg_hitFeedbackAlpha.value;
+
+	// default color, white
+	color[0] = 1.0f;  // R
+	color[1] = 1.0f;  // G
+	color[2] = 1.0f;  // B
+	color[3] = alpha; // A
+
+	if ( progress < 0.2f ) {
+		// blowing up stage (0-20%)
+		scale = 1.0f + (progress * 2.0f);			// 1.0 -> 1.4
+	} else if ( progress < 0.4f ) {
+		// shrinking stage (20-40%)
+		scale = 1.4f - (progress - 0.2f) * 2.0f;	// 1.4 -> 1.0
+	} else {
+		// slowly shrinking stage (40-100%)
+		scale = 1.0f - (progress - 0.4f) * 1.0f;	// 1.0 -> 0.6
+	}
+
+	// adapt the size change of the crosshair during uninterrupted shooting, see CG_DrawCursorhint
+	if ( !cg_solidHitFeedback.integer ) {
+		float f = (float)cg.snap->ps.aimSpreadScale / 255.0f;
+		scale *= 1 + f * 0.75f;
+	}
+
+	// on mg42
+	if ( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) {
+		size *= 1.5f;
+	}
+
+	// set visual effect for specific hit type
+	if ( cg.hitFeedback.hitType == HIT_TEAMSHOT ) {
+		size = baseSize * scale;
+
+		// yellow
+		color[0] = 1.0f;  // R
+		color[1] = 1.0f;  // G
+		color[2] = 0.0f;  // B
+	} else if ( cg.hitFeedback.hitType == HIT_BODYSHOT ) {
+		size = baseSize * scale;
+	} else if ( cg.hitFeedback.hitType == HIT_HEADSHOT ) {
+		size = baseSize * scale * 1.15f; // larger
+
+		// shake effect
+		if ( progress < 0.3f ) {
+			float shake = sinf( progress * 20.0f ) * 3.0f;
+			x += shake;
+			y += shake;
+		}
+	} else if ( cg.hitFeedback.hitType == HIT_DEATHSHOT ) {
+		size = baseSize * scale * 1.25f;
+
+		// red
+		color[0] = 1.0f;  // R
+		color[1] = 0.1f;  // G
+		color[2] = 0.1f;  // B
+
+		// golden
+		// color[0] = 1.0f;  // R
+		// color[1] = 0.8f;  // G
+		// color[2] = 0.1f;  // B
+
+		// flash effect
+		if ( (int)(progress * 20.0f) % 2 == 0 ) {
+			color[3] = alpha * 0.75f;
+		}
+	} else {
+		return;
+	}
+
+	// start drawing
+	trap_R_SetColor( color );
+	trap_R_DrawStretchPic( x - size * 0.5f, y - size * 0.5f, size, size, 0, 0, 1, 1, cgs.media.hitFeedbackShader );
+	
+	// for special hit, add additional halo effects
+	if ( ( cg.hitFeedback.hitType == HIT_HEADSHOT || cg.hitFeedback.hitType == HIT_DEATHSHOT ) && progress < 0.6f ) {
+		float haloAlpha = alpha * 0.25f;
+		float haloSize = size * 1.5f;
+		float haloProgress = progress * 1.5f;
+		
+		if ( haloProgress < 1.0f ) {
+			color[3] = haloAlpha * (1.0f - haloProgress);
+			trap_R_SetColor( color );
+			trap_R_DrawStretchPic( x - haloSize * 0.5f, y - haloSize * 0.5f, haloSize, haloSize, 0, 0, 1, 1, cgs.media.hitFeedbackShader );
+		}
+	}
+	
+	trap_R_SetColor( NULL );
+}
+
+/*
+==============
 CG_DrawDynamiteStatus
 ==============
 */
@@ -3972,6 +4128,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			CG_DrawCrosshair();
 
 		CG_DrawCrosshairNames();
+		CG_DrawHitFeedback();
 	} else {
 		// don't draw any status if dead
 		if ( cg.snap->ps.stats[STAT_HEALTH] > 0 && !cg.cameraMode) {
@@ -3984,7 +4141,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 					CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 				}
 
-if ( !cg_oldWolfUI.integer ) {
+				if ( !cg_oldWolfUI.integer ) {
 					Menu_PaintAll();
 					CG_DrawTimedMenus();
 				}
@@ -4003,6 +4160,7 @@ if ( !cg_oldWolfUI.integer ) {
 			CG_DrawCheckpointString();
 			CG_DrawGameSavedString();
 			CG_DrawReward();
+			CG_DrawHitFeedback();
 		}
 	}
 

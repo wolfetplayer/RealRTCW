@@ -885,6 +885,14 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	if ( !strcmp( cmd, "hitFeedback" ) ) {
+		const char *key = CG_Argv( 1 );
+		int num = atoi(key);
+		hitEvent_t hitType = ( num >= HIT_NONE && num < HIT_MAX_NUM ) ? (hitEvent_t)num : HIT_NONE;
+		CG_HitFeedback( hitType );
+		return;
+	}
+
 	if ( !strcmp( cmd, "chat" ) ) {
 
 		trap_S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );

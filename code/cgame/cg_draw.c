@@ -3084,10 +3084,10 @@ static void CG_DrawHitFeedback( void ) {
 	float alpha, scale, progress;
 	int currentTime = cg.time;
 	float x, y, w, h;
-	float size;
-	float baseSize;
+	float baseSize, size;
+	qhandle_t drawShader;
 
-	if ( !cg_hitFeedback.integer ) {
+	if ( cg_hitFeedback.integer <= 0 || cg_hitFeedback.integer > NUM_HITFEEDBACKS ) {
 		return;
 	}
 
@@ -3095,7 +3095,8 @@ static void CG_DrawHitFeedback( void ) {
 		return;
 	}
 
-	if ( !cgs.media.hitFeedbackShader ) {
+	drawShader = cgs.media.hitFeedbackShader[cg_hitFeedback.integer - 1];
+	if ( !drawShader ) {
 		return;
 	}
 
@@ -3193,7 +3194,7 @@ static void CG_DrawHitFeedback( void ) {
 
 	// start drawing
 	trap_R_SetColor( color );
-	trap_R_DrawStretchPic( x - size * 0.5f, y - size * 0.5f, size, size, 0, 0, 1, 1, cgs.media.hitFeedbackShader );
+	trap_R_DrawStretchPic( x - size * 0.5f, y - size * 0.5f, size, size, 0, 0, 1, 1, drawShader );
 	
 	// for special hit, add additional halo effects
 	if ( ( cg.hitFeedback.hitType == HIT_HEADSHOT || cg.hitFeedback.hitType == HIT_DEATHSHOT ) && progress < 0.6f ) {
@@ -3204,7 +3205,7 @@ static void CG_DrawHitFeedback( void ) {
 		if ( haloProgress < 1.0f ) {
 			color[3] = haloAlpha * (1.0f - haloProgress);
 			trap_R_SetColor( color );
-			trap_R_DrawStretchPic( x - haloSize * 0.5f, y - haloSize * 0.5f, haloSize, haloSize, 0, 0, 1, 1, cgs.media.hitFeedbackShader );
+			trap_R_DrawStretchPic( x - haloSize * 0.5f, y - haloSize * 0.5f, haloSize, haloSize, 0, 0, 1, 1, drawShader );
 		}
 	}
 	

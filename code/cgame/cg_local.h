@@ -91,6 +91,7 @@ If you have questions concerning this license or the applicable additional terms
 #define GIANT_HEIGHT        48
 
 #define NUM_CROSSHAIRS      11
+#define NUM_HITFEEDBACKS    5
 
 // Ridah, trails
 #define STYPE_STRETCH   0
@@ -1177,7 +1178,7 @@ typedef struct {
 	qhandle_t backTileShader;
 	qhandle_t noammoShader;
 
-	qhandle_t hitFeedbackShader;
+	qhandle_t hitFeedbackShader[NUM_HITFEEDBACKS];
 
 	qhandle_t reticleShader;
 //	qhandle_t reticleShaderSimple;

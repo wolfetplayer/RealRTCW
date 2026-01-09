@@ -243,6 +243,7 @@ vmCvar_t cg_hitSounds;
 
 vmCvar_t cg_hitFeedback;
 vmCvar_t cg_hitFeedbackAlpha;
+vmCvar_t cg_solidHitFeedback;
 
 vmCvar_t cg_reloading;      //----(SA)	added
 
@@ -519,6 +520,7 @@ cvarTable_t cvarTable[] = {
 
 	{ &cg_hitFeedback, "cg_hitFeedback", "0", CVAR_ARCHIVE },
 	{ &cg_hitFeedbackAlpha, "cg_hitFeedbackAlpha", "0.75", CVAR_ARCHIVE },
+	{ &cg_solidHitFeedback, "cg_solidHitFeedback", "0", CVAR_ARCHIVE },
 
 	{&cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM},
 	{&cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM},

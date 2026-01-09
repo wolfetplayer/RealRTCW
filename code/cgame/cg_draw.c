@@ -3144,7 +3144,7 @@ static void CG_DrawHitFeedback( void ) {
 	// adapt the size change of the crosshair during uninterrupted shooting, see CG_DrawCursorhint
 	if ( !cg_solidHitFeedback.integer ) {
 		float f = (float)cg.snap->ps.aimSpreadScale / 255.0f;
-		scale *= 1 + f * 0.75f;
+		scale *= 1.0f + f * 0.75f;
 	}
 
 	// on mg42

@@ -1897,6 +1897,7 @@ extern vmCvar_t cg_hitSounds;
 
 // hit feedback
 extern vmCvar_t cg_hitFeedback;
+extern vmCvar_t cg_hitFeedbackSize;
 extern vmCvar_t cg_hitFeedbackAlpha;
 extern vmCvar_t cg_solidHitFeedback;
 

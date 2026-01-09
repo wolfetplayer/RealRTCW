@@ -3106,10 +3106,15 @@ static void CG_DrawHitFeedback( void ) {
 		return;
 	}
 
-	if ( cg_crosshairSize.value ) {
-		baseSize = 0.9f * cg_crosshairSize.value;
+	if ( cg_hitFeedbackSize.integer ) {
+		baseSize = (float)cg_hitFeedbackSize.integer;
 	} else {
-		baseSize = 32.0f;
+		// auto baseSize
+		if ( cg_crosshairSize.value ) {
+			baseSize = 0.9f * cg_crosshairSize.value;
+		} else {
+			baseSize = 32.0f;
+		}
 	}
 
 	x = SCREEN_WIDTH * 0.5f;

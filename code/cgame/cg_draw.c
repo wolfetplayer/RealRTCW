@@ -3162,7 +3162,7 @@ static void CG_DrawHitFeedback( void ) {
 	} else if ( cg.hitFeedback.hitType == HIT_BODYSHOT ) {
 		size = baseSize * scale;
 	} else if ( cg.hitFeedback.hitType == HIT_HEADSHOT ) {
-		size = baseSize * scale * 1.15f; // larger
+		size = baseSize * scale * 1.15f;  // larger
 
 		// shake effect
 		if ( progress < 0.3f ) {
@@ -3171,7 +3171,7 @@ static void CG_DrawHitFeedback( void ) {
 			y += shake;
 		}
 	} else if ( cg.hitFeedback.hitType == HIT_DEATHSHOT ) {
-		size = baseSize * scale * 1.25f;
+		size = baseSize * scale * 1.25f;  // larger
 
 		// red
 		color[0] = 1.0f;  // R
@@ -3197,8 +3197,8 @@ static void CG_DrawHitFeedback( void ) {
 	
 	// for special hit, add additional halo effects
 	if ( ( cg.hitFeedback.hitType == HIT_HEADSHOT || cg.hitFeedback.hitType == HIT_DEATHSHOT ) && progress < 0.6f ) {
-		float haloAlpha = alpha * 0.25f;
-		float haloSize = size * 1.5f;
+		float haloAlpha = alpha * 0.3f;
+		float haloSize = size * 1.55f;
 		float haloProgress = progress * 1.5f;
 		
 		if ( haloProgress < 1.0f ) {

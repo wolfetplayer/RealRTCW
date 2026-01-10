@@ -3776,18 +3776,18 @@ void CL_Init( void ) {
 	j_lookSens = Cvar_Get ("j_lookSens", "1.0", CVAR_ARCHIVE);
 	j_moveSens = Cvar_Get ("j_moveSens", "1.0", CVAR_ARCHIVE);
 
-	j_aimassist = Cvar_Get("j_aimassist", "1", CVAR_ARCHIVE);
+	j_aimassist = Cvar_Get("j_aimassist", "2", CVAR_ARCHIVE);
 
-	j_aimassist_slowdown = Cvar_Get("j_aimassist_slowdown", "0.45", CVAR_ARCHIVE);
-	j_aimassist_magnet = Cvar_Get("j_aimassist_magnet", "0.22", CVAR_ARCHIVE);
-	j_aimassist_minstick = Cvar_Get("j_aimassist_minstick", "0.12", CVAR_ARCHIVE);
+	j_aimassist_slowdown = Cvar_Get("j_aimassist_slowdown", "0.60", CVAR_ARCHIVE);
+	j_aimassist_magnet = Cvar_Get("j_aimassist_magnet", "0.42", CVAR_ARCHIVE);
+	j_aimassist_minstick = Cvar_Get("j_aimassist_minstick", "0.10", CVAR_ARCHIVE);
 	j_aimassist_maxangle = Cvar_Get("j_aimassist_maxangle", "6", CVAR_ARCHIVE); // mostly legacy now
 
-	j_aimassist_strafemagnet = Cvar_Get("j_aimassist_strafemagnet", "0.16", CVAR_ARCHIVE);
-	j_aimassist_minstrength = Cvar_Get("j_aimassist_minstrength", "0.45", CVAR_ARCHIVE);
+	j_aimassist_strafemagnet = Cvar_Get("j_aimassist_strafemagnet", "0.24", CVAR_ARCHIVE);
+	j_aimassist_minstrength = Cvar_Get("j_aimassist_minstrength", "0.40", CVAR_ARCHIVE);
 
-	j_aimassist_turnrate = Cvar_Get("j_aimassist_turnrate", "120", CVAR_ARCHIVE); // deg/sec
-	j_aimassist_turnrate_ads = Cvar_Get("j_aimassist_turnrate_ads", "80", CVAR_ARCHIVE);
+	j_aimassist_turnrate = Cvar_Get("j_aimassist_turnrate", "175", CVAR_ARCHIVE); // deg/sec
+	j_aimassist_turnrate_ads = Cvar_Get("j_aimassist_turnrate_ads", "125", CVAR_ARCHIVE);
 
 	j_aimassist_recoil = Cvar_Get("j_aimassist_recoil", "0.22", CVAR_ARCHIVE);
 

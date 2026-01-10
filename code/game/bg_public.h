@@ -1046,7 +1046,9 @@ typedef enum
 	HIT_NONE = 0,
 	HIT_TEAMSHOT,
 	HIT_HEADSHOT,
-	HIT_BODYSHOT
+	HIT_BODYSHOT,
+	HIT_DEATHSHOT,		// this shot killed the enemy
+	HIT_MAX_NUM
 } hitEvent_t;
 
 typedef enum {

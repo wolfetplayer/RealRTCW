@@ -217,6 +217,7 @@ static void CG_PlayHitSound( const int clientNum, const int hitSound )
 		}
 		break;
 	case HIT_HEADSHOT:
+	case HIT_DEATHSHOT:
 		if ( !( cg_hitSounds.integer & HITSOUNDS_NOHEADSHOT ) ) {
 			trap_S_StartLocalSound( cgs.media.headShot, CHAN_LOCAL_SOUND );
 		}

@@ -4566,7 +4566,6 @@ void CG_AltWeapon_f( void ) {
 			{
 				return;
 			}
-
 			CG_ToggleSimpleZoom();
 		}
 		return;
@@ -6964,10 +6963,14 @@ void CG_UpdateAimAssist( void ) {
         return;
     }
 
-    // to-do make a cvar?
-    const float coneDeg = 4.5f;
 
-    // Direction offset scalar for the cone
+	float coneDeg = 4.5f;
+	if (cg.zoomed)
+	{					
+		coneDeg = 6.0f; 
+	}
+
+	// Direction offset scalar for the cone
     const float cone = tanf( coneDeg * ( M_PI / 180.0f ) );
 
     vec3_t start;
@@ -7036,23 +7039,13 @@ void CG_UpdateAimAssist( void ) {
     // bestFrac: 0 (center) .. 1 (outer ring)
     // Convert to strength in [0..1], with a floor so it engages near the target.
     {
-        float s = 1.0f - bestFrac; // 1 at center, 0 at edge
-
-        // Make center noticeably stronger than edge
-        s = s * s;
-
-        // Add a floor so magnetism/slowdown can engage even when not perfectly centered.
-        // Tune floor 0.20–0.35 depending on taste.
-		// optional floor - keep it small or zero
-		s = (s * s);			 // keep your curve
-		s = 0.10f + (s * 0.90f); // or even 0.0f + (s * 1.0f)
-
-		// Clamp
-        if ( s < 0.0f ) s = 0.0f;
-        if ( s > 1.0f ) s = 1.0f;
-
-        cg.aaStrength = s;
-    }
+		float s = 1.0f - bestFrac; // 0..1
+		s = s * s;				   // keep a curve (optional)
+		s = 0.20f + (s * 0.80f);   // floor 0.20 (tune 0.15..0.30)
+		if (s > 1.0f)
+			s = 1.0f;
+		cg.aaStrength = s;
+	}
 
     cg.aaEntNum = bestEnt;
 

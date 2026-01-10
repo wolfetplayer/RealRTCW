@@ -460,7 +460,9 @@ extern cvar_t *j_aimassist_strafemagnet;
 extern cvar_t *j_aimassist_minstrength;   
 
 extern cvar_t *j_aimassist_turnrate;        
-extern cvar_t *j_aimassist_turnrate_ads;   
+extern cvar_t *j_aimassist_turnrate_ads;
+
+extern cvar_t *j_aimassist_recoil;   
 
 extern cvar_t   *j_uiSpeed;
 extern cvar_t   *j_uiExpo;

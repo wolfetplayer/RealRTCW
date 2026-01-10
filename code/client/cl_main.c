@@ -128,7 +128,9 @@ cvar_t *j_aimassist_strafemagnet;
 cvar_t *j_aimassist_minstrength;    
 
 cvar_t *j_aimassist_turnrate;        
-cvar_t *j_aimassist_turnrate_ads;   
+cvar_t *j_aimassist_turnrate_ads;
+
+cvar_t *j_aimassist_recoil;
 
 cvar_t *j_uiSpeed;
 cvar_t *j_uiExpo;
@@ -3786,6 +3788,8 @@ void CL_Init( void ) {
 
 	j_aimassist_turnrate = Cvar_Get("j_aimassist_turnrate", "120", CVAR_ARCHIVE); // deg/sec
 	j_aimassist_turnrate_ads = Cvar_Get("j_aimassist_turnrate_ads", "80", CVAR_ARCHIVE);
+
+	j_aimassist_recoil = Cvar_Get("j_aimassist_recoil", "0.22", CVAR_ARCHIVE);
 
 	Cvar_CheckRange(j_pitch_axis, 0, MAX_JOYSTICK_AXIS-1, qtrue);
 	Cvar_CheckRange(j_yaw_axis, 0, MAX_JOYSTICK_AXIS-1, qtrue);

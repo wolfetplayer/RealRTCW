@@ -552,36 +552,40 @@ static void CL_ApplyAimAssistPreset( int preset ) {
         Cvar_SetValue( "j_aimassist_minstick",       0.12f );
         Cvar_SetValue( "j_aimassist_turnrate",       0.0f );
         Cvar_SetValue( "j_aimassist_turnrate_ads",   0.0f );
+		Cvar_SetValue( "j_aimassist_recoil", 0.0f );
         break;
 
-    case 1: // LIGHT (slightly stronger)
-        Cvar_SetValue( "j_aimassist_slowdown",       0.34f );  // was 0.30
-        Cvar_SetValue( "j_aimassist_magnet",         0.16f );  // was 0.12
-        Cvar_SetValue( "j_aimassist_strafemagnet",   0.10f );  // was 0.08
-        Cvar_SetValue( "j_aimassist_minstrength",    0.55f );
-        Cvar_SetValue( "j_aimassist_minstick",       0.12f );
-        Cvar_SetValue( "j_aimassist_turnrate",       105.0f ); // was 90
-        Cvar_SetValue( "j_aimassist_turnrate_ads",   75.0f );  // was 60
+    case 1: // LIGHT (noticeably on, still subtle)
+        Cvar_SetValue( "j_aimassist_slowdown",       0.42f );   // was 0.34
+        Cvar_SetValue( "j_aimassist_magnet",         0.26f );   // was 0.16 (biggest bump)
+        Cvar_SetValue( "j_aimassist_strafemagnet",   0.14f );   // was 0.10
+        Cvar_SetValue( "j_aimassist_minstrength",    0.55f );   // keep
+        Cvar_SetValue( "j_aimassist_minstick",       0.11f );   // slightly easier engage
+        Cvar_SetValue( "j_aimassist_turnrate",       130.0f );  // was 105
+        Cvar_SetValue( "j_aimassist_turnrate_ads",   95.0f );   // was 75
+		Cvar_SetValue( "j_aimassist_recoil", 0.10f );
         break;
 
-    case 2: // MEDIUM (stronger, but still sane)
-        Cvar_SetValue( "j_aimassist_slowdown",       0.52f );  // was 0.45
-        Cvar_SetValue( "j_aimassist_magnet",         0.28f );  // was 0.22
-        Cvar_SetValue( "j_aimassist_strafemagnet",   0.20f );  // was 0.16
-        Cvar_SetValue( "j_aimassist_minstrength",    0.42f );  // was 0.45 (engage a bit more often)
-        Cvar_SetValue( "j_aimassist_minstick",       0.12f );
-        Cvar_SetValue( "j_aimassist_turnrate",       140.0f ); // was 120
-        Cvar_SetValue( "j_aimassist_turnrate_ads",   95.0f );  // was 80
+    case 2: // MEDIUM (strong, “modern shooter” feeling)
+        Cvar_SetValue( "j_aimassist_slowdown",       0.60f );   // was 0.52
+        Cvar_SetValue( "j_aimassist_magnet",         0.42f );   // was 0.28
+        Cvar_SetValue( "j_aimassist_strafemagnet",   0.24f );   // was 0.20
+        Cvar_SetValue( "j_aimassist_minstrength",    0.40f );   // engage a bit more often than 0.42
+        Cvar_SetValue( "j_aimassist_minstick",       0.10f );   // easier micro-corrections
+        Cvar_SetValue( "j_aimassist_turnrate",       175.0f );  // was 140
+        Cvar_SetValue( "j_aimassist_turnrate_ads",   125.0f );  // was 95
+		Cvar_SetValue( "j_aimassist_recoil", 0.22f );
         break;
 
-    case 3: // STRONG (boosted)
-        Cvar_SetValue( "j_aimassist_slowdown",       0.68f );  // was 0.60
-        Cvar_SetValue( "j_aimassist_magnet",         0.42f );  // was 0.35
-        Cvar_SetValue( "j_aimassist_strafemagnet",   0.30f );  // was 0.25
-        Cvar_SetValue( "j_aimassist_minstrength",    0.32f );  // was 0.35 (engage more often)
-        Cvar_SetValue( "j_aimassist_minstick",       0.12f );
-        Cvar_SetValue( "j_aimassist_turnrate",       175.0f ); // was 150
-        Cvar_SetValue( "j_aimassist_turnrate_ads",   120.0f ); // was 100
+    case 3: // STRONG (very noticeable, but breakout+escape still prevent glue)
+        Cvar_SetValue( "j_aimassist_slowdown",       0.78f );   // was 0.68
+        Cvar_SetValue( "j_aimassist_magnet",         0.60f );   // was 0.42
+        Cvar_SetValue( "j_aimassist_strafemagnet",   0.34f );   // was 0.30
+        Cvar_SetValue( "j_aimassist_minstrength",    0.30f );   // a bit more strafe follow engagement
+        Cvar_SetValue( "j_aimassist_minstick",       0.09f );   // allows “sticky” micro-aim
+        Cvar_SetValue( "j_aimassist_turnrate",       220.0f );  // was 175 (more correction bandwidth)
+        Cvar_SetValue( "j_aimassist_turnrate_ads",   160.0f );  // was 120
+		 Cvar_SetValue( "j_aimassist_recoil", 0.35f );
         break;
     }
 }
@@ -670,13 +674,14 @@ if ( j_aimassist && j_aimassist->integer ) {
         if ( dp >  maxStep ) dp =  maxStep;
         if ( dp < -maxStep ) dp = -maxStep;
 
+
         // ---------------------------------------------------------
         // HARD BREAKOUT:
         // If player pushes stick hard, aim assist must fully disengage.
         // This prevents any "glue / can't move away" behavior.
         // ---------------------------------------------------------
         {
-            const float breakout = 0.55f; // tune 0.45..0.70
+            const float breakout = 0.75f; // tune 0.45..0.70
             if ( stickMag >= breakout ) {
                 // Do not apply slowdown or any magnetism this frame.
                 goto aimassist_done;
@@ -689,22 +694,96 @@ if ( j_aimassist && j_aimassist->integer ) {
         // weaken or fully disable the assist.
         // (Use a SMALL threshold so it triggers earlier than minstick.)
         // ---------------------------------------------------------
-        float escape = 1.0f;
-        if ( stickMag >= 0.06f ) {
-            // If either axis is pushing against the correction direction
-            if ( (yawAxis * dy < 0.0f) || (pitchAxis * dp < 0.0f) ) {
-                escape = 0.0f; // full release feels best (prevents fighting)
-            }
-        }
+		float escape = 1.0f;
+		if (stickMag >= 0.06f)
+		{
+			// input vs correction alignment (-1 resisting, +1 helping)
+			float inLen = stickMag;
+			float corLen = sqrtf(dy * dy + dp * dp);
 
-        // ---------------------------------------------------------
+			if (corLen > 0.001f)
+			{
+				float nx = yawAxis / inLen;
+				float ny = pitchAxis / inLen;
+
+				float cx = dy / corLen;
+				float cy = dp / corLen;
+
+				float align = nx * cx + ny * cy; // -1..+1
+
+				// If resisting (align < 0), fade out smoothly instead of hard-off
+				if (align < 0.0f)
+				{
+					// tune 0.15..0.40 : bigger = more forgiving
+					float resist = (-align) / 0.25f;
+					if (resist > 1.0f)
+						resist = 1.0f;
+					escape = 1.0f - resist;
+				}
+			}
+		}
+
+		// ---------------------------------------------------------
+		// 0) Recoil compensation (pitch-only) while firing & locked
+		// ---------------------------------------------------------
+		if (j_aimassist_recoil && j_aimassist_recoil->value > 0.0f)
+		{
+
+			// Only when actually firing
+			if (cmd->buttons & BUTTON_ATTACK)
+			{
+
+				// Only when stick is mostly idle (prevents fighting player aim)
+				if (stickMag < 0.22f)
+				{
+
+					// Only when we have a confident lock
+					if (strength > 0.25f && escape > 0.0f)
+					{
+
+						// Cap recoil compensation independently (deg/sec)
+						// (Keep modest so it feels like stabilization, not auto-aim)
+						float recoilRate = 90.0f; // tune 60..140
+						if (cl.cgameIsZoomed)
+							recoilRate = 70.0f; // tune ADS separately
+						float maxRecoilStep = recoilRate * dt;
+
+						// Use dp as "how far target is from crosshair in pitch"
+						float rdp = dp;
+
+						if (rdp > maxRecoilStep)
+							rdp = maxRecoilStep;
+						if (rdp < -maxRecoilStep)
+							rdp = -maxRecoilStep;
+
+						// Scale by preset strength and escape
+						float rc = j_aimassist_recoil->value * strength * escape;
+
+						// Optional: fade out as stick approaches breakout
+						// (avoids weirdness if player starts aiming harder)
+						{
+							const float breakout = 0.75f;
+							float relief = 1.0f - (stickMag / breakout);
+							if (relief < 0.0f)
+								relief = 0.0f;
+							rc *= relief;
+						}
+
+						// Apply pitch-only stabilization
+						cl.viewangles[PITCH] += rdp * rc;
+					}
+				}
+			}
+		}
+
+		// ---------------------------------------------------------
         // 1) Slowdown (friction) when actively aiming
         // - fades out as stick approaches breakout
         // - never applies during escape
         // - clamp kept high to avoid "stuck" feeling
         // ---------------------------------------------------------
         if ( stickMag >= j_aimassist_minstick->value && j_aimassist_slowdown->value > 0.0f ) {
-            const float breakout = 0.55f;
+            const float breakout = 0.75f;
 
             // 1.0 when barely moving, 0.0 near breakout
             float inputRelief = 1.0f - (stickMag / breakout);
@@ -728,7 +807,7 @@ if ( j_aimassist && j_aimassist->integer ) {
         // Also respects escape.
         // ---------------------------------------------------------
         {
-            const float magnetMaxStick = 0.40f; // tune 0.25..0.45
+            const float magnetMaxStick = 0.65f; // tune 0.25..0.45
             if ( j_aimassist_magnet->value > 0.0f &&
                  stickMag >= j_aimassist_minstick->value &&
                  stickMag <= magnetMaxStick &&
@@ -736,13 +815,10 @@ if ( j_aimassist && j_aimassist->integer ) {
             {
                 float m = j_aimassist_magnet->value * strength * escape;
 
-				float stickW = stickMag / magnetMaxStick; // 0..1
-				if (stickW > 1.0f)
-					stickW = 1.0f;
-
-				// stronger near center, still bounded
-				stickW = 0.25f + 0.75f * stickW; // gives you some pull even for tiny stick moves
-
+				float stickW = 1.0f - (stickMag / magnetMaxStick); // 1 at tiny input, 0 at max band
+				if (stickW < 0.0f)
+					stickW = 0.0f;
+				stickW = stickW * stickW; // optional curve
 				cl.viewangles[YAW] += dy * m * stickW;
 				cl.viewangles[PITCH] += dp * m * stickW * 0.65f;
 			}

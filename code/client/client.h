@@ -168,6 +168,10 @@ typedef struct {
 
 	qboolean cameraMode;    //----(SA)	added for control of input while watching cinematics
 
+	float cgameAA_Strength;
+	float cgameAA_DYaw;
+	float cgameAA_DPitch;
+
 } clientActive_t;
 
 extern clientActive_t cl;
@@ -445,6 +449,18 @@ extern	cvar_t	*j_up_axis;
 
 extern cvar_t   *j_moveSens;
 extern cvar_t   *j_lookSens;
+
+extern cvar_t  *j_aimassist;            
+extern cvar_t  *j_aimassist_slowdown;   
+extern cvar_t  *j_aimassist_magnet;    
+extern cvar_t  *j_aimassist_minstick;   
+extern cvar_t  *j_aimassist_maxangle;
+
+extern cvar_t *j_aimassist_strafemagnet;   
+extern cvar_t *j_aimassist_minstrength;   
+
+extern cvar_t *j_aimassist_turnrate;        
+extern cvar_t *j_aimassist_turnrate_ads;   
 
 extern cvar_t   *j_uiSpeed;
 extern cvar_t   *j_uiExpo;

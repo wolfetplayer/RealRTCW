@@ -6897,3 +6897,207 @@ void CG_ClientDamage( int entnum, int enemynum, int id ) {
 	trap_SendClientCommand( va( "cld %i %i %i", entnum, enemynum, id ) );
 }
 
+
+static qboolean CG_AA_ValidateTarget( int entNum ) {
+    if ( entNum == ENTITYNUM_WORLD || entNum < 0 ) {
+        return qfalse;
+    }
+
+    // Only characters
+    if ( cg_entities[ entNum ].currentState.eType != ET_PLAYER ) {
+        return qfalse;
+    }
+
+    // Reject invis
+    if ( cg_entities[ entNum ].currentState.powerups & ( 1 << PW_INVIS ) ) {
+        return qfalse;
+    }
+
+	{
+		int myTeam = cg.snap->ps.persistant[PERS_TEAM];
+		int hisTeam = cg_entities[entNum].currentState.teamNum;
+
+		// If hisTeam is known and equals ours -> friendly, reject
+		if (hisTeam != 0 && hisTeam == myTeam)
+		{
+			return qfalse;
+		}
+	}
+
+	// LOS check (prevents through-walls)
+    {
+        trace_t los;
+        vec3_t target;
+
+        VectorCopy( cg_entities[ entNum ].lerpOrigin, target );
+        target[2] += 30.0f; // chest-ish
+
+        CG_Trace( &los,
+                  cg.refdef.vieworg,
+                  vec3_origin, vec3_origin,
+                  target,
+                  cg.snap->ps.clientNum,
+                  CONTENTS_SOLID );
+
+        if ( los.fraction < 0.999f ) {
+            return qfalse;
+        }
+    }
+
+    return qtrue;
+}
+
+
+void CG_UpdateAimAssist( void ) {
+    cg.aaStrength = 0.0f;
+    cg.aaDYaw     = 0.0f;
+    cg.aaDPitch   = 0.0f;
+    cg.aaEntNum   = -1;
+
+    if ( !cg.snap ) {
+        return;
+    }
+    if ( cg.renderingThirdPerson ) {
+        return;
+    }
+    if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
+        return;
+    }
+
+    // to-do make a cvar?
+    const float coneDeg = 4.5f;
+
+    // Direction offset scalar for the cone
+    const float cone = tanf( coneDeg * ( M_PI / 180.0f ) );
+
+    vec3_t start;
+    VectorCopy( cg.refdef.vieworg, start );
+
+    // 9-sample: center + 4 cardinals + 4 diagonals
+    static const float samples[9][2] = {
+        { 0,  0 },   // center
+        { 1,  0 },   // right
+        { -1, 0 },   // left
+        { 0,  1 },   // up
+        { 0, -1 },   // down
+        { 1,  1 },   // up-right
+        { 1, -1 },   // down-right
+        { -1, 1 },   // up-left
+        { -1, -1 }   // down-left
+    };
+
+    int   bestEnt  = -1;
+    float bestFrac = 999.0f; // 0=center, 1=edge (normalized)
+
+    for ( int i = 0; i < 9; i++ ) {
+        vec3_t dir, end;
+
+        // dir = forward + right*(x*cone) + up*(y*cone)
+        VectorCopy( cg.refdef.viewaxis[0], dir );
+        VectorMA( dir, samples[i][0] * cone, cg.refdef.viewaxis[1], dir );
+        VectorMA( dir, samples[i][1] * cone, cg.refdef.viewaxis[2], dir );
+        VectorNormalize( dir );
+
+        VectorMA( start, 4096.0f, dir, end );
+
+        trace_t tr;
+        CG_Trace( &tr, start, vec3_origin, vec3_origin, end,
+                  cg.snap->ps.clientNum, CONTENTS_BODY );
+
+        if ( tr.entityNum == ENTITYNUM_WORLD ) {
+            continue;
+        }
+
+        if ( !CG_AA_ValidateTarget( tr.entityNum ) ) {
+            continue;
+        }
+
+        // Normalized distance from center:
+        // samples are in {0,1,sqrt(2)} so normalize by sqrt(2)
+        {
+            const float sx = samples[i][0];
+            const float sy = samples[i][1];
+            const float mag = sqrtf( sx*sx + sy*sy );            // 0, 1, 1.414
+            const float frac = mag / 1.41421356f;               // 0..1
+
+            // Prefer the closest-to-center hit. If tie, keep the earlier (center wins).
+            if ( frac < bestFrac ) {
+                bestFrac = frac;
+                bestEnt  = tr.entityNum;
+            }
+        }
+    }
+
+    if ( bestEnt < 0 ) {
+        return;
+    }
+
+    // Strength mapping:
+    // bestFrac: 0 (center) .. 1 (outer ring)
+    // Convert to strength in [0..1], with a floor so it engages near the target.
+    {
+        float s = 1.0f - bestFrac; // 1 at center, 0 at edge
+
+        // Make center noticeably stronger than edge
+        s = s * s;
+
+        // Add a floor so magnetism/slowdown can engage even when not perfectly centered.
+        // Tune floor 0.20–0.35 depending on taste.
+		// optional floor - keep it small or zero
+		s = (s * s);			 // keep your curve
+		s = 0.10f + (s * 0.90f); // or even 0.0f + (s * 1.0f)
+
+		// Clamp
+        if ( s < 0.0f ) s = 0.0f;
+        if ( s > 1.0f ) s = 1.0f;
+
+        cg.aaStrength = s;
+    }
+
+    cg.aaEntNum = bestEnt;
+
+    // Compute dyaw/dpitch in DEGREES using viewaxis directly (robust; no refdefViewAngles needed)
+    {
+        vec3_t target, to, toN;
+        float  yawErr, pitchErr;
+
+        VectorCopy( cg_entities[ bestEnt ].lerpOrigin, target );
+        target[2] += 30.0f; // chest-ish; tune later if you want head
+
+        VectorSubtract( target, cg.refdef.vieworg, to );
+        VectorCopy( to, toN );
+        VectorNormalize( toN );
+
+        // Forward/right/up axes
+        // viewaxis[0] = forward, [1] = right, [2] = up
+        // Compute angular error around yaw and pitch from dot products.
+        // yaw error: angle in the plane (forward/right)
+        // pitch error: angle in the plane (forward/up)
+        {
+            float f = DotProduct( toN, cg.refdef.viewaxis[0] );
+            float r = DotProduct( toN, cg.refdef.viewaxis[1] );
+            float u = DotProduct( toN, cg.refdef.viewaxis[2] );
+
+            // atan2 gives signed angle in radians; convert to degrees
+            yawErr   = atan2f( r, f ) * ( 180.0f / M_PI );
+            pitchErr = -atan2f( u, f ) * ( 180.0f / M_PI ); // minus so positive pitch means look up (typical)
+        }
+
+        cg.aaDYaw   = yawErr;    // degrees, signed
+        cg.aaDPitch = pitchErr;  // degrees, signed
+    }
+
+    // Smooth strength (prevents flicker)
+    {
+        float targetS = cg.aaStrength;
+        float rateUp  = 0.35f;   // faster lock
+        float rateDn  = 0.20f;   // slower release
+
+        float rate = ( targetS > cg.aaStrengthSmoothed ) ? rateUp : rateDn;
+        cg.aaStrengthSmoothed = cg.aaStrengthSmoothed + ( targetS - cg.aaStrengthSmoothed ) * rate;
+
+        cg.aaStrength = cg.aaStrengthSmoothed;
+    }
+}
+
+

@@ -1259,6 +1259,7 @@ void AIChar_spawn( gentity_t *ent ) {
 	if ( newent->aiTeam < 0 ) {
 		newent->aiTeam = aiCharDefaults->aiTeam;
 	}
+	G_FixupEntityTeamNum( ent );
 	newent->client->ps.teamNum = newent->aiTeam;
 	//
 	// kill the old entity

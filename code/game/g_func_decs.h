@@ -337,6 +337,7 @@ extern gentity_t * Team_ResetFlag ( int team ) ;
 extern void Team_CheckHurtCarrier ( gentity_t * targ , gentity_t * attacker ) ;
 extern void Team_FragBonuses ( gentity_t * targ , gentity_t * inflictor , gentity_t * attacker ) ;
 extern qboolean OnSameTeam ( gentity_t * ent1 , gentity_t * ent2 ) ;
+extern void G_FixupEntityTeamNum( gentity_t *ent ) ;
 extern const char * TeamColorString ( int team ) ;
 extern const char * TeamName ( int team ) ;
 extern int OtherTeam ( int team ) ;

@@ -1642,6 +1642,8 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	// build cg.refdef
 	inwater = CG_CalcViewValues();
 
+	CG_UpdateAimAssist();
+	
 	CG_CalcShakeCamera();
 	CG_ApplyShakeCamera();
 
@@ -1730,7 +1732,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	DEBUGTIME
 
 	// let the client system know what our weapon, holdable item and zoom settings are
-	trap_SetUserCmdValue( cg.weaponSelect, cg.holdableSelect, cg.zoomSensitivity, cg.cld, cg.isZoomed );
+	trap_SetUserCmdValue( cg.weaponSelect, cg.holdableSelect, cg.zoomSensitivity, cg.cld, cg.isZoomed, cg.aaStrength, cg.aaDYaw, cg.aaDPitch );
 
 	// actually issue the rendering calls
 	CG_DrawActive( stereoView );

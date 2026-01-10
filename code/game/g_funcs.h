@@ -336,6 +336,7 @@ If you have questions concerning this license or the applicable additional terms
 {"Team_CheckHurtCarrier", (byte *)Team_CheckHurtCarrier},
 {"Team_FragBonuses", (byte *)Team_FragBonuses},
 {"OnSameTeam", (byte *)OnSameTeam},
+{"G_FixupEntityTeamNum", (byte *)G_FixupEntityTeamNum},
 {"TeamColorString", (byte *)TeamColorString},
 {"TeamName", (byte *)TeamName},
 {"OtherTeam", (byte *)OtherTeam},

@@ -1101,6 +1101,13 @@ typedef struct {
 	qboolean simpleZoomed;
 	int simpleZoomTime;
 
+	float aaStrength;
+    float aaDYaw;
+    float aaDPitch;
+    int   aaEntNum;
+
+	float aaStrengthSmoothed;
+
 } cg_t;
 
 #define NUM_FUNNEL_SPRITES  21
@@ -2235,6 +2242,8 @@ void CG_AddDebris( vec3_t origin, vec3_t dir, int speed, int duration, int count
 
 void CG_ClientDamage( int entnum, int enemynum, int id );
 
+void CG_UpdateAimAssist( void );
+
 void CG_AddBulletParticles( vec3_t origin, vec3_t dir, int speed, int duration, int count, float randScale );
 
 //
@@ -2615,7 +2624,7 @@ int         trap_GetCurrentCmdNumber( void );
 qboolean    trap_GetUserCmd( int cmdNumber, usercmd_t *ucmd );
 
 // used for the weapon/holdable select and zoom
-void        trap_SetUserCmdValue( int stateValue, int holdValue, float sensitivityScale, int cld, qboolean isZoomed );     // NERVE - SMF - added cld
+void trap_SetUserCmdValue( int weapon, int holdable, float sensitivityScale, int cld, qboolean isZoomed, float aaStrength, float aaDYaw, float aaDPitch );
 
 // aids for VM testing
 void        testPrintInt( char *string, int i );

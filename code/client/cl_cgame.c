@@ -184,12 +184,18 @@ qboolean    CL_GetSnapshot( int snapshotNumber, snapshot_t *snapshot ) {
 CL_SetUserCmdValue
 ==============
 */
-void CL_SetUserCmdValue( int userCmdValue, int holdableValue, float sensitivityScale, int cld, qboolean isZoomed ) {
-	cl.cgameUserCmdValue        = userCmdValue;
-	cl.cgameUserHoldableValue   = holdableValue;
-	cl.cgameSensitivity         = sensitivityScale;
-	cl.cgameCld                 = cld;
-	cl.cgameIsZoomed            = isZoomed;
+void CL_SetUserCmdValue( int userCmdValue, int holdableValue, float sensitivityScale, int cld, qboolean isZoomed,
+                         float aaStrength, float aaDYaw, float aaDPitch ) {
+    cl.cgameUserCmdValue        = userCmdValue;
+    cl.cgameUserHoldableValue   = holdableValue;
+    cl.cgameSensitivity         = sensitivityScale;
+    cl.cgameCld                 = cld;
+    cl.cgameIsZoomed            = isZoomed;
+
+    // Aim-assist hints from cgame (computed per-frame)
+    cl.cgameAA_Strength         = aaStrength;
+    cl.cgameAA_DYaw             = aaDYaw;
+    cl.cgameAA_DPitch           = aaDPitch;
 }
 
 /*
@@ -666,7 +672,8 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 	case CG_GETUSERCMD:
 		return CL_GetUserCmd( args[1], VMA( 2 ) );
 	case CG_SETUSERCMDVALUE:
-		CL_SetUserCmdValue( args[1], args[2], VMF( 3 ), args[4], args[5] );    //----(SA)	modified	// NERVE - SMF - added fourth arg [cld]
+		CL_SetUserCmdValue(args[1], args[2], VMF(3), args[4], args[5],
+						   VMF(6), VMF(7), VMF(8));
 		return 0;
 	case CG_MEMORY_REMAINING:
 		return Hunk_MemoryRemaining();

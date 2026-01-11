@@ -3926,7 +3926,7 @@ weapon_grenadePineapple
 
 // weapon_grenadesmoke
 	{
-		"weapon_grenadesmoke",
+		"weapon_grenadesmokereal",
 		"sound/misc/w_pkup.wav",
 		{
 		"",		// "models/multiplayer/smokebomb/smokebomb.md3",

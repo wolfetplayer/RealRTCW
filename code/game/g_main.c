@@ -475,6 +475,7 @@ void G_EndGame( void ) {
 #define CH_ACTIVATE_DIST    96
 #define CH_EXIT_DIST        256
 #define CH_FRIENDLY_DIST    1024    // distance at which you can identify if someone is a friend
+#define CH_ENEMY_DIST       4096    // distance at which you can identify if someone is an enemy
 
 #define CH_MAX_DIST         1024    // use the largest value from above
 #define CH_MAX_DIST_ZOOM    8192    // max dist for zooming hints
@@ -659,7 +660,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 		} else if ( traceEnt->aiTeam == AITEAM_NAZI || traceEnt->aiTeam == AITEAM_MONSTER )
 		{
    		        hintType = HINT_PLYR_ENEMY;
-			    hintDist = CH_FRIENDLY_DIST; 
+			    hintDist = CH_ENEMY_DIST; 
 		}
 
 	}

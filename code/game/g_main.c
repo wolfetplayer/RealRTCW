@@ -603,6 +603,23 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 	//
 	else if ( tr->entityNum < MAX_CLIENTS ) {
 
+		// Don't show player/AI hints for dead bodies
+		if (traceEnt->client)
+		{
+			if (traceEnt->health <= 0 || traceEnt->client->ps.pm_type == PM_DEAD)
+			{
+				return; // leaves hintType as HINT_NONE (already reset above)
+			}
+		}
+		else
+		{
+			// Just in case: if somehow we traced something "clientnum-like" without client struct
+			if (traceEnt->health <= 0)
+			{
+				return;
+			}
+		}
+
 		if ( ent->s.weapon == WP_KNIFE ) {
 			vec3_t pforward, eforward;
 			qboolean canKnife = qfalse;
@@ -639,6 +656,10 @@ void G_CheckForCursorHints( gentity_t *ent ) {
    		        hintType = HINT_PLYR_FRIEND;
 			    hintDist = CH_FRIENDLY_DIST; 
 			}
+		} else if ( traceEnt->aiTeam == AITEAM_NAZI || traceEnt->aiTeam == AITEAM_MONSTER )
+		{
+   		        hintType = HINT_PLYR_ENEMY;
+			    hintDist = CH_FRIENDLY_DIST; 
 		}
 
 	}

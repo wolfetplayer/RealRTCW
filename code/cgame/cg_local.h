@@ -1782,7 +1782,7 @@ extern vmCvar_t cg_crosshairX;
 extern vmCvar_t cg_crosshairY;
 extern vmCvar_t cg_crosshairSize;
 extern vmCvar_t cg_crosshairAlpha;          //----(SA)	added
-extern vmCvar_t cg_crosshairHealth;
+extern vmCvar_t cg_crosshairColoring;
 extern vmCvar_t cg_drawStatus;
 extern vmCvar_t cg_draw2D;
 extern vmCvar_t cg_drawSubtitles;

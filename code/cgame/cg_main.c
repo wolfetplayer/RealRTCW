@@ -132,7 +132,7 @@ vmCvar_t cg_crosshairSize;
 vmCvar_t cg_crosshairAlpha;     //----(SA)	added
 vmCvar_t cg_crosshairX;
 vmCvar_t cg_crosshairY;
-vmCvar_t cg_crosshairHealth;
+vmCvar_t cg_crosshairColoring;
 vmCvar_t cg_draw2D;
 vmCvar_t cg_drawSubtitles;
 vmCvar_t cg_subtitleSize;
@@ -388,7 +388,7 @@ cvarTable_t cvarTable[] = {
 	{&cg_drawAllWeaps, "cg_drawAllWeaps", "1", CVAR_ARCHIVE},
 	{&cg_crosshairSize, "cg_crosshairSize", "48", CVAR_ARCHIVE},
 	{&cg_crosshairAlpha, "cg_crosshairAlpha", "1.0", CVAR_ARCHIVE}, //----(SA)	added
-	{&cg_crosshairHealth, "cg_crosshairHealth", "1", CVAR_ARCHIVE},
+	{&cg_crosshairColoring, "cg_crosshairColoring", "1", CVAR_ARCHIVE},
 	{&cg_crosshairX, "cg_crosshairX", "0", CVAR_ARCHIVE},
 	{&cg_crosshairY, "cg_crosshairY", "0", CVAR_ARCHIVE},
 	{&cg_brassTime, "cg_brassTime", "2500", CVAR_ARCHIVE}, // was 1250

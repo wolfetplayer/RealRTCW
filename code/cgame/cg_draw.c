@@ -2674,6 +2674,7 @@ static void CG_DrawCrosshair( void ) {
 	int weapnum;                // DHM - Nerve
 	vec4_t hcolor = {1, 1, 1, 1};
 	qboolean friendInSights = qfalse;
+	qboolean enemyInSights = qfalse;
 
 	/*if ( cg.renderingThirdPerson ) {
 		return;
@@ -2702,6 +2703,7 @@ static void CG_DrawCrosshair( void ) {
 	}
 
 	friendInSights = (qboolean)( cg.snap->ps.serverCursorHint == HINT_PLYR_FRIEND );  //----(SA)	added
+	enemyInSights  = (qboolean)( cg.snap->ps.serverCursorHint == HINT_PLYR_ENEMY );
 
 	weapnum = cg.weaponSelect;
 
@@ -2812,12 +2814,36 @@ static void CG_DrawCrosshair( void ) {
 		return;
 	}
 
-	// set color based on health
-	if ( cg_crosshairHealth.integer ) {
-		CG_ColorForHealth( hcolor );
-		trap_R_SetColor( hcolor );
-	} else {
-		trap_R_SetColor( NULL );
+	// crosshair coloring mode:
+	// 0 = off (untinted)
+	// 1 = health color
+	// 2 = untinted, but turns red when enemy is in sights
+	switch (cg_crosshairColoring.integer)
+	{
+	default:
+	case 0:
+		trap_R_SetColor(NULL);
+		break;
+
+	case 1:
+		CG_ColorForHealth(hcolor);
+		trap_R_SetColor(hcolor);
+		break;
+
+	case 2:
+		if (enemyInSights)
+		{
+			hcolor[0] = 1.0f;
+			hcolor[1] = 0.0f;
+			hcolor[2] = 0.0f;
+			// alpha already set earlier: hcolor[3] = cg_crosshairAlpha.value;
+			trap_R_SetColor(hcolor);
+		}
+		else
+		{
+			trap_R_SetColor(NULL); // "colorless"
+		}
+		break;
 	}
 
 	w = h = cg_crosshairSize.value;

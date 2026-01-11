@@ -885,11 +885,11 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
-	if ( !strcmp( cmd, "hitFeedback" ) ) {
+	if ( !strcmp( cmd, "hitMarker" ) ) {
 		const char *key = CG_Argv( 1 );
 		int num = atoi(key);
 		hitEvent_t hitType = ( num >= HIT_NONE && num < HIT_MAX_NUM ) ? (hitEvent_t)num : HIT_NONE;
-		CG_HitFeedback( hitType );
+		CG_HitMarker( hitType );
 		return;
 	}
 

@@ -91,7 +91,7 @@ If you have questions concerning this license or the applicable additional terms
 #define GIANT_HEIGHT        48
 
 #define NUM_CROSSHAIRS      11
-#define NUM_HITFEEDBACKS    5
+#define NUM_HITMARKERS    5
 
 // Ridah, trails
 #define STYPE_STRETCH   0
@@ -292,12 +292,12 @@ typedef enum
 	HITSOUNDS_NOTEAMSHOT = 8,
 } hitsooundFlags;
 
-// hitFeedback
+// hitMarker
 typedef struct {
     qboolean	active;		// is drawing?
     int			startTime;
     hitEvent_t	hitType;
-} cg_hitFeedback_t;
+} cg_hitMarker_t;
 
 // centity_t have a direct corespondence with gentity_t in the game, but
 // only the entityState_t is directly communicated to the cgame
@@ -935,8 +935,8 @@ typedef struct {
 	char subtitlePrint[1024];
 	int subtitlePrintLines;
 
-	// hitFeedback
-	cg_hitFeedback_t hitFeedback;
+	// hitMarker
+	cg_hitMarker_t hitMarker;
 
 	// fade in/out
 	int fadeTime;
@@ -1186,7 +1186,7 @@ typedef struct {
 	qhandle_t backTileShader;
 	qhandle_t noammoShader;
 
-	qhandle_t hitFeedbackShader[NUM_HITFEEDBACKS];
+	qhandle_t hitMarkerShader[NUM_HITMARKERS];
 
 	qhandle_t reticleShader;
 //	qhandle_t reticleShaderSimple;
@@ -1901,11 +1901,11 @@ extern vmCvar_t cg_gameSkill;
 
 extern vmCvar_t cg_hitSounds;
 
-// hit feedback
-extern vmCvar_t cg_hitFeedback;
-extern vmCvar_t cg_hitFeedbackSize;
-extern vmCvar_t cg_hitFeedbackAlpha;
-extern vmCvar_t cg_solidHitFeedback;
+// hit marker
+extern vmCvar_t cg_hitMarker;
+extern vmCvar_t cg_hitMarkerSize;
+extern vmCvar_t cg_hitMarkerAlpha;
+extern vmCvar_t cg_solidHitMarker;
 
 extern vmCvar_t cg_reloading;           //----(SA)	added
 
@@ -2087,7 +2087,7 @@ void CG_BonusCenterPrint( const char *str, int y, int charWidth );
 void CG_SubtitlePrint( const char *str, int y, int charWidth );
 void CG_BuyPrint( const char *str, int y, int charWidth );
 void CG_EndGamePrint( const char *str, int y, int charWidth );
-void CG_HitFeedback( hitEvent_t hitType );
+void CG_HitMarker( hitEvent_t hitType );
 
 void CG_ObjectivePrint( const char *str, int charWidth, int team );     // NERVE - SMF
 void CG_DrawHead( float x, float y, float w, float h, int clientNum, vec3_t headAngles );

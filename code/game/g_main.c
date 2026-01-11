@@ -816,7 +816,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 						hintType = HINT_DOOR_ROTATING;
 
 						if ( checkEnt->key >= KEY_LOCKED_TARGET ) {    // locked
-							//						hintType = HINT_DOOR_ROTATING_LOCKED;
+									hintType = HINT_DOOR_ROTATING_LOCKED;
 						}
 					}
 				} else if ( !Q_stricmp( checkEnt->classname, "func_door" ) )         {
@@ -827,7 +827,7 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 						hintType = HINT_DOOR;
 
 						if ( checkEnt->key >= KEY_LOCKED_TARGET ) {    // locked
-							//						hintType = HINT_DOOR_LOCKED;
+									hintType = HINT_DOOR_LOCKED;
 						}
 					}
 				} else if ( !Q_stricmp( checkEnt->classname, "func_button" ) )         {

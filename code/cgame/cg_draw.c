@@ -3094,7 +3094,7 @@ void CG_HitFeedback( hitEvent_t hitType ) {
 	// wait for last hit feedback fade out		// add: it weakened the feedback effect, drop it
 	// if ( cg_hitFeedback.integer && !cg.hitFeedback.active ) {
 		cg.hitFeedback.active = qtrue;
-		cg.hitFeedback.startTime = cg.time;
+		cg.hitFeedback.startTime = trap_Milliseconds();
 		cg.hitFeedback.hitType = hitType;
 	// }
 }
@@ -3108,7 +3108,7 @@ CG_DrawHitFeedback
 static void CG_DrawHitFeedback( void ) {
 	float color[4];
 	float alpha, scale, progress;
-	int currentTime = cg.time;
+	int currentTime = trap_Milliseconds();
 	float x, y, w, h;
 	float baseSize, size;
 	qhandle_t drawShader;

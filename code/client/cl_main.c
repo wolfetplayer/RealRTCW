@@ -118,6 +118,9 @@ cvar_t	*j_up_axis;
 cvar_t  *j_lookSens;
 cvar_t  *j_moveSens;
 
+cvar_t  *j_walk_threshold;
+cvar_t  *j_walk_hysteresis;
+
 cvar_t  *j_aimassist;            
 cvar_t  *j_aimassist_slowdown;   
 cvar_t  *j_aimassist_magnet;    
@@ -3775,6 +3778,9 @@ void CL_Init( void ) {
 
 	j_lookSens = Cvar_Get ("j_lookSens", "1.0", CVAR_ARCHIVE);
 	j_moveSens = Cvar_Get ("j_moveSens", "1.0", CVAR_ARCHIVE);
+
+	j_walk_threshold = Cvar_Get("j_walk_threshold", "64", CVAR_ARCHIVE);
+	j_walk_hysteresis = Cvar_Get("j_walk_hysteresis", "8", CVAR_ARCHIVE);
 
 	j_aimassist = Cvar_Get("j_aimassist", "2", CVAR_ARCHIVE);
 

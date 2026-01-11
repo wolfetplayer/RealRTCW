@@ -628,6 +628,46 @@ void CL_JoystickMove( usercmd_t *cmd ) {
     float right   = (j_side->value    * j_moveSens->value) * cl.joystickAxis[j_side_axis->integer];
 	float up = (j_up->value * j_moveSens->value) * cl.joystickAxis[j_up_axis->integer];
 
+	// Analog-walk
+	if (j_walk_threshold && j_walk_threshold->value > 0.0f)
+	{
+		float moveMag = sqrtf(forward * forward + right * right);
+
+		// hysteresis band to prevent rapid toggling near the threshold.
+		float thresh = j_walk_threshold->value;
+		float hyst = (j_walk_hysteresis) ? j_walk_hysteresis->value : 0.0f;
+
+		static qboolean s_forcedWalk = qfalse;
+
+		if (!s_forcedWalk)
+		{
+			if (moveMag > 0.0f && moveMag < (thresh - hyst))
+			{
+				s_forcedWalk = qtrue;
+			}
+		}
+		else
+		{
+			if (moveMag >= (thresh + hyst) || moveMag <= 0.0f)
+			{
+				s_forcedWalk = qfalse;
+			}
+		}
+
+		if (s_forcedWalk)
+		{
+			cmd->buttons |= BUTTON_WALKING;
+		}
+		else
+		{
+			// IMPORTANT:
+			// Don't blindly clear BUTTON_WALKING here, because keyboard logic (speed/run)
+			// may have set it intentionally. We'll only clear it if joystick is the reason.
+			// If you want joystick to override completely, uncomment the clear below.
+			// cmd->buttons &= ~BUTTON_WALKING;
+		}
+	}
+
 	if (!(kb[KB_SPEED].active ^ cl_run->integer))
 	{
 		cmd->buttons |= BUTTON_WALKING;

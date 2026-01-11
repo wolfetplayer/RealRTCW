@@ -450,6 +450,9 @@ extern	cvar_t	*j_up_axis;
 extern cvar_t   *j_moveSens;
 extern cvar_t   *j_lookSens;
 
+extern cvar_t  *j_walk_threshold;
+extern cvar_t  *j_walk_hysteresis;
+
 extern cvar_t  *j_aimassist;            
 extern cvar_t  *j_aimassist_slowdown;   
 extern cvar_t  *j_aimassist_magnet;    

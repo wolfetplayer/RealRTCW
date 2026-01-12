@@ -3132,7 +3132,11 @@ static void CG_DrawHitMarker( void ) {
 		return;
 	}
 
-	if ( cg_hitMarkerSize.integer ) {
+	// base size
+	if ( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) {
+		// on mg42
+		baseSize = 48.0f;
+	} else if ( cg_hitMarkerSize.integer > 0 ) {
 		baseSize = (float)cg_hitMarkerSize.integer;
 	} else {
 		// auto baseSize
@@ -3176,11 +3180,6 @@ static void CG_DrawHitMarker( void ) {
 	if ( !cg_solidHitMarker.integer ) {
 		float f = (float)cg.snap->ps.aimSpreadScale / 255.0f;
 		scale *= 1.0f + f * 0.75f;
-	}
-
-	// on mg42
-	if ( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) {
-		size *= 1.5f;
 	}
 
 	// set visual effect for specific hit type

@@ -1044,9 +1044,9 @@ extern char *animStringsOld[];      // defined in bg_misc.c
 typedef enum
 {
 	HIT_NONE = 0,
-	HIT_TEAMSHOT,
-	HIT_HEADSHOT,
 	HIT_BODYSHOT,
+	HIT_HEADSHOT,
+	HIT_TEAMSHOT,
 	HIT_DEATHSHOT,		// this shot killed the enemy
 	HIT_MAX_NUM
 } hitEvent_t;

@@ -239,10 +239,10 @@ vmCvar_t cg_gameSkill;
 
 vmCvar_t cg_hitSounds;
 
-vmCvar_t cg_hitFeedback;
-vmCvar_t cg_hitFeedbackSize;
-vmCvar_t cg_hitFeedbackAlpha;
-vmCvar_t cg_solidHitFeedback;
+vmCvar_t cg_hitMarker;
+vmCvar_t cg_hitMarkerSize;
+vmCvar_t cg_hitMarkerAlpha;
+vmCvar_t cg_solidHitMarker;
 
 vmCvar_t cg_reloading;      //----(SA)	added
 
@@ -515,10 +515,10 @@ cvarTable_t cvarTable[] = {
 
 	{&cg_hitSounds, "cg_hitSounds", "0", CVAR_ARCHIVE},
 
-	{ &cg_hitFeedback, "cg_hitFeedback", "0", CVAR_ARCHIVE },
-	{ &cg_hitFeedbackSize, "cg_hitFeedbackSize", "0", CVAR_ARCHIVE },
-	{ &cg_hitFeedbackAlpha, "cg_hitFeedbackAlpha", "0.75", CVAR_ARCHIVE },
-	{ &cg_solidHitFeedback, "cg_solidHitFeedback", "0", CVAR_ARCHIVE },
+	{ &cg_hitMarker, "cg_hitMarker", "0", CVAR_ARCHIVE },
+	{ &cg_hitMarkerSize, "cg_hitMarkerSize", "0", CVAR_ARCHIVE },
+	{ &cg_hitMarkerAlpha, "cg_hitMarkerAlpha", "0.75", CVAR_ARCHIVE },
+	{ &cg_solidHitMarker, "cg_solidHitMarker", "0", CVAR_ARCHIVE },
 
 	{&cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM},
 	{&cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM},
@@ -1537,8 +1537,8 @@ static void CG_RegisterGraphics( void ) {
 		cgs.media.crosshairShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/crosshair%c", 'a' + i ) );
 	}
 
-	for ( i = 0 ; i < NUM_HITFEEDBACKS ; i++ ) {
-		cgs.media.hitFeedbackShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/hitfeedback%d", i + 1 ) );
+	for ( i = 0 ; i < NUM_HITMARKERS ; i++ ) {
+		cgs.media.hitMarkerShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/hitmarker%d", i + 1 ) );
 	}
 
 	cgs.media.backTileShader = trap_R_RegisterShader( "gfx/2d/backtile" );

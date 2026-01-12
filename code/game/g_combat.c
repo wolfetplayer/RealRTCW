@@ -1400,11 +1400,11 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			}
 		}
 
-		// hit feedback
+		// hit marker
 		if ( targ->client->ps.stats[STAT_HEALTH] <= take ) {
 			hitEventType = HIT_DEATHSHOT;
 		}
-		trap_SendServerCommand( attacker - g_entities, va("hitFeedback %d", hitEventType) );
+		trap_SendServerCommand( attacker - g_entities, va("hitMarker %d", hitEventType) );
 	}
 
 	if ( g_debugDamage.integer ) {

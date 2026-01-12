@@ -3081,6 +3081,23 @@ static void CG_DrawCrosshair3D( void ) {
 	trap_R_AddRefEntityToScene(&ent);
 }
 
+// hit marker
+#define HITMARKER_DURATION				300	// msec
+#define HITMARKER_HIGHPRI_MIN_DURATION	90
+static qboolean canDrawNextHitMarker( hitEvent_t old, hitEvent_t new ) {
+	// different hit event types have different priorities
+	if ( new >= old ) {
+		return qtrue;
+	}
+
+	// ensure high priority hit events are drawn for at least a short period
+	if ( new < old && trap_Milliseconds() - cg.hitMarker.startTime > HITMARKER_HIGHPRI_MIN_DURATION ) {
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
 /*
 ==============
 CG_HitMarker
@@ -3091,12 +3108,11 @@ void CG_HitMarker( hitEvent_t hitType ) {
 		return;
 	}
 
-	// wait for last hit marker fade out		// add: it weakened the marker effect, drop it
-	// if ( cg_hitMarker.integer && !cg.hitMarker.active ) {
+	if ( canDrawNextHitMarker( cg.hitMarker.hitType, hitType ) ) {
 		cg.hitMarker.active = qtrue;
 		cg.hitMarker.startTime = trap_Milliseconds();
 		cg.hitMarker.hitType = hitType;
-	// }
+	}
 }
 
 /*
@@ -3104,7 +3120,6 @@ void CG_HitMarker( hitEvent_t hitType ) {
 CG_DrawHitMarker
 ==============
 */
-#define HIT_MARKER_DURATION	300	// msec
 static void CG_DrawHitMarker( void ) {
 	float color[4];
 	float alpha, scale, progress;
@@ -3126,7 +3141,7 @@ static void CG_DrawHitMarker( void ) {
 		return;
 	}
 
-	progress = (float)(currentTime - cg.hitMarker.startTime) / (float)HIT_MARKER_DURATION;
+	progress = (float)(currentTime - cg.hitMarker.startTime) / (float)HITMARKER_DURATION;
 	if ( progress >= 1.0f ) {
 		cg.hitMarker.active = qfalse;
 		return;

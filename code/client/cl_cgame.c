@@ -816,6 +816,8 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_BOOK2 );
 			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "hbook3" ) )    { //----(SA)
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_BOOK3 );
+			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "hbook4" ) )    { //----(SA)
+				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_BOOK4 );
 			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "pregame" ) )    { //----(SA) added
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_PREGAME );
 			} else {

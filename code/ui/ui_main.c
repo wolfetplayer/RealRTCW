@@ -7134,6 +7134,7 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 		case UIMENU_BOOK1:
 		case UIMENU_BOOK2:
 		case UIMENU_BOOK3:
+		case UIMENU_BOOK4:
 			trap_Cvar_Set( "cl_paused", "1" );
 			trap_Key_SetCatcher( KEYCATCH_UI );
 			Menus_CloseAll();

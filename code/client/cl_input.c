@@ -463,6 +463,14 @@ static float CL_NormalizeJoyAxis16(int v)
     return (v >= 0) ? (v / 32767.0f) : (v / 32768.0f);
 }
 
+// Consider the gamepad "active" for aim assist for this long after stick movement
+#define AA_JOY_ACTIVE_MS 300
+static int s_lastJoyLookTime = 0;
+
+static qboolean CL_JoyLookActive( void ) {
+    return ( cls.realtime - s_lastJoyLookTime ) <= AA_JOY_ACTIVE_MS;
+}
+
 /*
 =================
 CL_JoystickEvent
@@ -475,6 +483,15 @@ void CL_JoystickEvent( int axis, int value, int time ) {
         Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
     }
     cl.joystickAxis[axis] = CL_NormalizeJoyAxis16(value);
+
+	// Mark "gamepad look is being used" only when look axes move past a small threshold.
+	if (axis == j_yaw_axis->integer || axis == j_pitch_axis->integer)
+	{
+		if (fabsf(cl.joystickAxis[axis]) > 0.08f)
+		{ // small noise filter
+			s_lastJoyLookTime = cls.realtime;
+		}
+	}
 }
 
 
@@ -537,7 +554,6 @@ float ly = cl.joystickAxis[1];
         CL_MouseEvent( dx, dy, cls.realtime );
     }
 }
-
 
 static int s_lastAimAssistPreset = -999;
 
@@ -686,7 +702,7 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 // Aim Assist (gamepad) - affects only look (yaw/pitch)
 // Drop-in replacement for your current aim assist block inside CL_JoystickMove()
 // ---------------------------------------------------------
-if ( j_aimassist && j_aimassist->integer ) {
+if ( j_aimassist && j_aimassist->integer && CL_JoyLookActive() ) {
     float strength = cl.cgameAA_Strength; // 0..1 from cgame
     if ( strength > 0.0f ) {
 

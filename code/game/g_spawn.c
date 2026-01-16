@@ -190,6 +190,7 @@ field_t fields[] = {
 	{"buy_item",         FOFS( buy_item ),           F_STRING},
 	{"isWeapon",         FOFS( isWeapon ),             F_INT},
 	{"wave",             FOFS( wave ),                F_INT},
+	{"oneshot",          FOFS( oneshot ),                F_INT},
 	{NULL}
 };
 

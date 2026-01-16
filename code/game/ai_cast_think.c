@@ -507,7 +507,7 @@ void AICast_Think( int client, float thinktime ) {
 		}
 		//
 
-        if ( g_gametype.integer == GT_SURVIVAL )  { // Survival Respawn
+        if ( g_gametype.integer == GT_SURVIVAL && !ent->oneshot )  { // Survival Respawn
 		if ( cs->rebirthTime && cs->rebirthTime < level.time ) {
            AICast_SurvivalRespawn(ent, cs);
 		}

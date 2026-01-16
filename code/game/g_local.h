@@ -447,6 +447,7 @@ struct gentity_s {
 	int isWeapon;    
 	int wave;				   // wave number, survival mode   
 	int lastPainMOD; // last meansOfDeath used in pain function        
+	int oneshot;
 };
 
 // Ridah

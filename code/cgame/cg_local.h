@@ -1913,6 +1913,7 @@ extern vmCvar_t cg_reloading;           //----(SA)	added
 extern vmCvar_t cg_medicChargeTime;
 extern vmCvar_t cg_engineerChargeTime;
 extern vmCvar_t cg_LTChargeTime;
+extern vmCvar_t cg_cvopsChargeTime;
 extern vmCvar_t cg_soldierChargeTime;
 extern vmCvar_t cg_redlimbotime;
 extern vmCvar_t cg_bluelimbotime;

@@ -2257,6 +2257,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_SMOKE_BOMB:
+	case WP_SMOKE_BOMB_CVOPS:
 		break;
 
 	default:
@@ -3123,6 +3124,7 @@ static qboolean PM_CheckGrenade() {
 		if (pm->ps->weapon != WP_GRENADE_LAUNCHER &&
 		pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
 		pm->ps->weapon != WP_SMOKE_BOMB &&
+		pm->ps->weapon != WP_SMOKE_BOMB_CVOPS &&
 		pm->ps->weapon != WP_DYNAMITE &&
 		pm->ps->weapon != WP_POISONGAS &&
 		pm->ps->weapon != WP_AIRSTRIKE &&
@@ -3584,6 +3586,12 @@ static void PM_Weapon( void ) {
 				return;
 			}
 		}
+
+	if ( pm->ps->weapon == WP_SMOKE_BOMB_CVOPS ) {
+			if ( pm->cmd.serverTime - pm->ps->classWeaponTime < ( pm->cvopsChargeTime ) ) {
+				return;
+			}
+		}
 	// check for fire
 	if ( (!(pm->cmd.buttons & BUTTON_ATTACK) && !PM_AltFire() && !delayedFire) 
 	    || (pm->ps->leanf != 0 && !PM_AltFiring(delayedFire) && pm->ps->weapon != WP_GRENADE_LAUNCHER && pm->ps->weapon != WP_GRENADE_PINEAPPLE && pm->ps->weapon != WP_SMOKE_BOMB && pm->ps->weapon != WP_POISONGAS) )
@@ -3631,6 +3639,7 @@ static void PM_Weapon( void ) {
 			 pm->ps->weapon != WP_GRENADE_LAUNCHER &&
 			 pm->ps->weapon != WP_GRENADE_PINEAPPLE &&
 			 pm->ps->weapon != WP_SMOKE_BOMB &&
+			 pm->ps->weapon != WP_SMOKE_BOMB_CVOPS &&
 			 pm->ps->weapon != WP_POISONGAS &&
 			 pm->ps->weapon != WP_POISONGAS_MEDIC ) {
 			PM_AddEvent( EV_NOFIRE_UNDERWATER );        // event for underwater 'click' for nofire
@@ -3730,6 +3739,7 @@ static void PM_Weapon( void ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_SMOKE_BOMB:
+	case WP_SMOKE_BOMB_CVOPS:
 case WP_POISONGAS:
 	if ( !delayedFire ) {
 		if ( pm->ps->aiChar ) {
@@ -3809,6 +3819,7 @@ case WP_POISONGAS:
 			case WP_GRENADE_PINEAPPLE:
 			case WP_POISONGAS:
 			case WP_SMOKE_BOMB:
+			case WP_SMOKE_BOMB_CVOPS:
 				playswitchsound = qfalse;
 				break;
 			// some weapons not allowed to reload.  must switch back to primary first
@@ -3925,6 +3936,7 @@ case WP_POISONGAS:
 	case WP_STEN:
 	case WP_AIRSTRIKE:
 	case WP_POISONGAS_MEDIC:
+	case WP_SMOKE_BOMB_CVOPS:
 		PM_ContinueWeaponAnim( weapattackanim );
 		break;
 
@@ -4099,6 +4111,7 @@ case WP_POISONGAS:
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 		case WP_SMOKE_BOMB:
+		case WP_SMOKE_BOMB_CVOPS:
 		case WP_POISONGAS:
 		case WP_AIRSTRIKE:
 		case WP_POISONGAS_MEDIC:
@@ -4800,7 +4813,7 @@ void PmoveSingle( pmove_t *pmove ) {
 			}
 
 			// don't allow binocs if in the middle of throwing grenade
-			if ( ( pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_SMOKE_BOMB || pm->ps->weapon == WP_DYNAMITE || pm->ps->weapon == WP_DYNAMITE_ENG || pm->ps->weapon == WP_POISONGAS ) && pm->ps->grenadeTimeLeft > 0 ) {
+			if ( ( pm->ps->weapon == WP_GRENADE_LAUNCHER || pm->ps->weapon == WP_GRENADE_PINEAPPLE || pm->ps->weapon == WP_SMOKE_BOMB || pm->ps->weapon == WP_SMOKE_BOMB_CVOPS || pm->ps->weapon == WP_DYNAMITE || pm->ps->weapon == WP_DYNAMITE_ENG || pm->ps->weapon == WP_POISONGAS ) && pm->ps->grenadeTimeLeft > 0 ) {
 				pm->ps->eFlags &= ~EF_ZOOMING;
 			}
 		}

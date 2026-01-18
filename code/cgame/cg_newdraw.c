@@ -530,6 +530,7 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	case WP_AIRSTRIKE:
 	case WP_POISONGAS_MEDIC:
 	case WP_DYNAMITE_ENG:
+	case WP_SMOKE_BOMB_CVOPS:
 		return;
 
 	case WP_AKIMBO:
@@ -2110,6 +2111,8 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 		case PC_LT:
 			chargeTime = cg_LTChargeTime.value;
 			break;
+	    case PC_CVOPS:
+		    chargeTime = cg_cvopsChargeTime.value;
 		default:
 		    chargeTime = 30000;
 			break;

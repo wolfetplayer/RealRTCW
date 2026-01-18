@@ -1038,6 +1038,7 @@ gentity_t *fire_grenade( gentity_t *self, vec3_t start, vec3_t dir, int grenadeW
 			bolt->methodOfDeath			= MOD_POISONGAS;
 			break;
 	case WP_SMOKE_BOMB:
+	case WP_SMOKE_BOMB_CVOPS:
 		// xkan 11/25/2002, fixed typo, classname used to be "somke_bomb"
 		bolt->classname             = "smoke_bomb";
 		bolt->s.eFlags              = EF_BOUNCE_HALF;

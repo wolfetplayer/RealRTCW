@@ -1981,7 +1981,11 @@ void CG_RumbleEfx( float pitch, float yaw ) {
 #define MAX_SMOKESPRITES 512
 #define SMOKEBOMB_DISTANCEBETWEENSPRITES 16.f
 #define SMOKEBOMB_SPAWNRATE 10
-#define SMOKEBOMB_SMOKEVELOCITY ((640.f - 16.f)/8)/1000.f	// units per msec
+#define SMOKEBOMB_MINRADIUS   16.f
+#define SMOKEBOMB_MAXRADIUS   1024.f
+
+// velocity so the smoke reaches max radius in ~8 seconds (same behavior as before)
+#define SMOKEBOMB_SMOKEVELOCITY (((SMOKEBOMB_MAXRADIUS - SMOKEBOMB_MINRADIUS) / 8.f) / 1000.f)
 
 typedef struct smokesprite_s {
 	struct smokesprite_s *next;
@@ -2144,7 +2148,7 @@ void CG_RenderSmokeGrenadeSmoke( centity_t *cent, const weaponInfo_t *weapon, we
 	}
 
 	if( cent->currentState.effect1Time > 16 ) {
-		int volume = 16 + (cent->currentState.effect1Time/640.f)*(100-16);
+		int volume = 16 + (cent->currentState.effect1Time / SMOKEBOMB_MAXRADIUS) * (100 - 16);
 
 		if( !cent->dl_atten ||
 			cent->currentState.pos.trType != TR_STATIONARY ||
@@ -2289,8 +2293,8 @@ void CG_AddSmokeSprites( void ) {
 		else
 			radius = -1.f;
 
-		if( radius < 0 )
-			radius = 640.f;	// max radius
+		if (radius < 0)
+			radius = SMOKEBOMB_MAXRADIUS; // was 640.f
 
 		// Expire sprites
 		if( smokesprite->dist > radius * .5f ) {

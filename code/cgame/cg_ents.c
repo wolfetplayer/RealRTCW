@@ -1217,7 +1217,7 @@ static void CG_Missile( centity_t *cent ) {
 	// calculate the axis
 	VectorCopy( s1->angles, cent->lerpAngles );
 
-	if (s1->weapon == WP_POISONGAS || s1->weapon == WP_POISONGAS_MEDIC || s1->weapon == WP_SMOKE_BOMB)
+	if (s1->weapon == WP_POISONGAS || s1->weapon == WP_POISONGAS_MEDIC || s1->weapon == WP_SMOKE_BOMB || s1->weapon == WP_SMOKE_BOMB_CVOPS )
 	{
 		// the smoke effect
 		CG_RenderSmokeGrenadeSmoke( cent, weapon, (weapon_t)s1->weapon );

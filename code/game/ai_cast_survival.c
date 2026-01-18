@@ -2320,6 +2320,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "cvopsmeleeDmgBonus"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.cvopsmeleeDmgBonus))
+			{
+				PC_SourceError(handle, "expected cvopsmeleeDmgBonus value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "cvopsthrowspeedBonus"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.cvopsthrowspeedBonus))
+			{
+				PC_SourceError(handle, "expected cvopsthrowspeedBonus value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "ltAmmoBonus"))
 		{
 			if (!PC_Float_Parse(handle, &svParams.ltAmmoBonus))

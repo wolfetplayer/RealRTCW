@@ -254,6 +254,7 @@ vmCvar_t cg_realism;
 
 vmCvar_t cg_LTChargeTime;
 vmCvar_t cg_soldierChargeTime;
+vmCvar_t cg_cvopsChargeTime;
 vmCvar_t cg_redlimbotime;
 vmCvar_t cg_bluelimbotime;
 // jpw
@@ -532,10 +533,11 @@ cvarTable_t cvarTable[] = {
 	{&cg_jumptime, "g_jumptime", "0", 0}, //----(SA)	added
 
 	// JPW NERVE
-	{&cg_medicChargeTime, "g_medicChargeTime", "40000", 0},		  // communicated by systeminfo
-	{&cg_LTChargeTime, "g_LTChargeTime", "40000", 0},			  // communicated by systeminfo
-	{&cg_engineerChargeTime, "g_engineerChargeTime", "40000", 0}, // communicated by systeminfo
-	{&cg_soldierChargeTime, "g_soldierChargeTime", "20000", 0},	  // communicated by systeminfo
+	{&cg_medicChargeTime, "g_medicChargeTime", "30000", 0},		  // communicated by systeminfo
+	{&cg_LTChargeTime, "g_LTChargeTime", "30000", 0},			  // communicated by systeminfo
+	{&cg_cvopsChargeTime, "g_cvopsChargeTime", "30000", 0},		   // communicated by systeminfo
+	{&cg_engineerChargeTime, "g_engineerChargeTime", "30000", 0}, // communicated by systeminfo
+	{&cg_soldierChargeTime, "g_soldierChargeTime", "30000", 0},	  // communicated by systeminfo
 	{&cg_bluelimbotime, "g_bluelimbotime", "30000", 0},			  // communicated by systeminfo
 	{&cg_redlimbotime, "g_redlimbotime", "30000", 0},			  // communicated by systeminfo
 	// jpw

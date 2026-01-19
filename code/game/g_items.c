@@ -464,7 +464,6 @@ void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 		case WP_DYNAMITE:
-		case WP_SMOKE_BOMB:
 		case WP_POISONGAS:
 		case WP_KNIFE:
 			COM_BitSet(ent->client->ps.weapons, ammoweap);

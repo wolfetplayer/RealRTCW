@@ -1624,5 +1624,5 @@ If you have questions concerning this license or the applicable additional terms
 
 {"AICast_BotEntInvisibleBySmokeBomb", (byte *)AICast_BotEntInvisibleBySmokeBomb},
 {"G_FindSmokeBomb", (byte *)G_FindSmokeBomb},
-{"G_FindMissile2", (byte *)G_FindMissile2},
+{"G_FindMissile", (byte *)G_FindMissile},
 {0, 0}

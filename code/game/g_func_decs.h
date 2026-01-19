@@ -1628,4 +1628,4 @@ extern qboolean AICast_ScriptAction_ChangeAiHead(cast_state_t* cs, char* params)
 
 extern qboolean AICast_BotEntInvisibleBySmokeBomb( vec3_t start, vec3_t end );
 extern gentity_t * G_FindSmokeBomb ( gentity_t * start ) ;
-extern gentity_t * G_FindMissile2( gentity_t* start, weapon_t w1, weapon_t w2 );
+extern gentity_t * G_FindMissile ( gentity_t * start , weapon_t weap ) ;

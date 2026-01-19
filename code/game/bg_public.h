@@ -571,7 +571,6 @@ typedef enum {
 	WP_SMOKETRAIL,          
 	WP_HOLYCROSS,
 	WP_SMOKE_BOMB,
-	WP_SMOKE_BOMB_CVOPS,
 	// Alt Modes
 	WP_SNIPERRIFLE, 
     WP_SNOOPERSCOPE,

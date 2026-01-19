@@ -63,7 +63,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_G43, WP_M1GARAND, WP_M1941, 0, 0, 0},																  //	5
 	{WP_FG42, WP_MP44, WP_BAR, 0, 0, 0},																	  //	6
 	{WP_M97, WP_AUTO5, 0, 0, 0},																	  //	7
-	{WP_GRENADE_LAUNCHER, WP_GRENADE_PINEAPPLE, WP_DYNAMITE, WP_AIRSTRIKE, WP_POISONGAS, WP_SMOKE_BOMB, WP_POISONGAS_MEDIC, WP_DYNAMITE_ENG ,WP_SMOKE_BOMB_CVOPS}, //	8
+	{WP_GRENADE_LAUNCHER, WP_GRENADE_PINEAPPLE, WP_DYNAMITE, WP_AIRSTRIKE, WP_POISONGAS, WP_SMOKE_BOMB, WP_POISONGAS_MEDIC, WP_DYNAMITE_ENG }, //	8
 	{WP_PANZERFAUST, WP_FLAMETHROWER, WP_MG42M, WP_BROWNING, 0, 0},											  //	9
 	{WP_VENOM, WP_TESLA, 0, 0, 0, 0}																		  //	10
 };
@@ -3517,7 +3517,6 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 		 weaponNum == WP_KNIFE ||
 		 weaponNum == WP_DYNAMITE ||
 		 weaponNum == WP_DYNAMITE_ENG ||
-		 weaponNum == WP_SMOKE_BOMB_CVOPS ||
 		 weaponNum == WP_M7 ) {
 		return;
 	}
@@ -4488,7 +4487,6 @@ qboolean CG_WeaponSupportsSimpleZoom( int weap ) {
         case WP_GRENADE_PINEAPPLE:
         case WP_SMOKE_BOMB:
 		case WP_POISONGAS_MEDIC:
-		case WP_SMOKE_BOMB_CVOPS:
 		case WP_AIRSTRIKE:
         case WP_DYNAMITE:
         case WP_DYNAMITE_ENG:

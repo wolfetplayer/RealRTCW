@@ -4694,7 +4694,7 @@ model="models/weapons2/p38/luger.md3"
 	},
 
 	{
-		"weapon_grenadesmoke_real",
+		"weapon_smokebomb",
 		"sound/misc/w_pkup.wav",
 		{  
 		"",
@@ -4703,7 +4703,7 @@ model="models/weapons2/p38/luger.md3"
 		},
 
 		"icons/iconw_smokebomb_1",    
-		"smokeGrenade_real",              
+		"smokebomb",              
 		50,
 		IT_WEAPON,
 		WP_SMOKE_BOMB,

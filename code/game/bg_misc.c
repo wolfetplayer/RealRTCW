@@ -4702,7 +4702,7 @@ model="models/weapons2/p38/luger.md3"
 		""
 		},
 
-		"icons/iconw_smokegrenade_real_1",    
+		"icons/iconw_smokebomb_1",    
 		"smokeGrenade_real",              
 		50,
 		IT_WEAPON,

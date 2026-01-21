@@ -2256,7 +2256,6 @@ static void PM_BeginWeaponReload( int weapon ) {
 	case WP_DYNAMITE_ENG:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
-	case WP_SMOKE_BOMB:
 		break;
 
 	default:
@@ -2394,8 +2393,6 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	case WP_DYNAMITE_ENG:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
-	case WP_SMOKE_BOMB:
-	case WP_POISONGAS:
 	case WP_KNIFE:
 		pm->ps->grenadeTimeLeft = 0;        // initialize the timer on the potato you're switching to
 
@@ -3665,6 +3662,7 @@ static void PM_Weapon( void ) {
 	case WP_AUTO5:
 	case WP_AIRSTRIKE:
 	case WP_POISONGAS:
+	case WP_SMOKE_BOMB:
 		if ( !weaponstateFiring ) {
 			if ( pm->ps->aiChar && pm->ps->weapon == WP_VENOM ) {
 				// AI get fast spin-up
@@ -3727,7 +3725,6 @@ static void PM_Weapon( void ) {
 	case WP_DYNAMITE_ENG:
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
-	case WP_SMOKE_BOMB:
 	if ( !delayedFire ) {
 		if ( pm->ps->aiChar ) {
 			// ai characters go into their regular animation setup

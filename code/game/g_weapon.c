@@ -543,7 +543,7 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 #define SMOKEBOMB_MINRADIUS   16.f
 #define SMOKEBOMB_MAXRADIUS   1024.f
 #define SMOKEBOMB_GROWTIME    1000
-#define SMOKEBOMB_SMOKETIME   25000
+#define SMOKEBOMB_SMOKETIME   15000
 #define SMOKEBOMB_POSTSMOKETIME 2000
 
 void weapon_smokeBombExplode( gentity_t *ent ) {

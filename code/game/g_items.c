@@ -410,7 +410,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		}
 		break;
 	case HI_CROSS:
-		const float radius = 768.0f; // tune
+		const float radius = 512.0f; // tune
 		int touch[MAX_GENTITIES];
 		int num, i;
 		vec3_t mins, maxs, delta;

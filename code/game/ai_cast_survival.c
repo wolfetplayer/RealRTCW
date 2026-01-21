@@ -324,6 +324,9 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 			case AICHAR_ELITEGUARD:
 				baseTime = svParams.egSpawnTime * 1000;
 				break;
+			case AICHAR_TRENCH:
+			    baseTime = svParams.trenchSpawnTime * 1000;
+				break;
 			case AICHAR_BLACKGUARD:
 				baseTime = svParams.bgSpawnTime * 1000;
 				break;
@@ -1894,6 +1897,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.egSpawnTime))
 			{
 				PC_SourceError(handle, "expected egSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "trenchSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.trenchSpawnTime))
+			{
+				PC_SourceError(handle, "expected trenchSpawnTime value");
 				return qfalse;
 			}
 		}

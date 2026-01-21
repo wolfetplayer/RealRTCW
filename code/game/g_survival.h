@@ -101,6 +101,7 @@ typedef struct svParams_s
 
     int   defaultSpawnTime;
 	int   egSpawnTime;
+	int   trenchSpawnTime;
 	int   bgSpawnTime;
 	int   vSpawnTime;
 	int   protoSpawnTime;

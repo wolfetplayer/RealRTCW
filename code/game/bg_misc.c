@@ -6556,6 +6556,39 @@ model="models/powerups/holdable/bandages.md3"
 	},
 
 
+/*QUAKED holdable_cross(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_cross.wav"
+use sound : "sound/pickup/holdable/use_cross.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/cross.md3"
+*/
+	{
+		"holdable_cross",
+		"sound/pickup/holdable/get_cross.wav",
+		{
+		"models/powerups/holdable/cross.md3",
+		0, 
+		0
+		},
+
+		"icons/cross",             
+		"Cross used",             
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_CROSS,
+		0,
+		0,
+		0,
+		"",                             
+		"sound/pickup/holdable/use_cross.wav",
+		{1,1,1,1,1,1}
+	},
+
+
 
 /*QUAKED holdable_book1(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------

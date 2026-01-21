@@ -145,6 +145,9 @@ static void CG_UseItem( centity_t *cent ) {
 				case HI_BANDAGES:
 					CG_CenterPrint( "usedbandages", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
+				case HI_CROSS:
+					CG_CenterPrint( "usedcross", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
 				case HI_WINE:
 					CG_CenterPrint( "drankwine", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
@@ -181,6 +184,9 @@ static void CG_UseItem( centity_t *cent ) {
 		break;
 	case HI_BANDAGES:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.bandagesSound );
+		break;
+	case HI_CROSS:
+		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.crossSound );
 		break;
 	}
 }

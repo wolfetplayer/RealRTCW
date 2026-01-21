@@ -1064,6 +1064,8 @@ extern void Fill_Clip ( playerState_t * ps , int weapon ) ;
 extern int Pickup_Holdable ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Perk ( gentity_t * ent , gentity_t * other ) ;
 extern void UseHoldableItem ( gentity_t * ent , int item ) ;
+extern void CrossThink( gentity_t *timer );
+extern void CrossBurn( gentity_t *owner, gentity_t *targ );
 extern int Pickup_Treasure ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Clipboard ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Key ( gentity_t * ent , gentity_t * other ) ;

@@ -1483,6 +1483,7 @@ typedef struct {
 	sfxHandle_t bookSound;      //----(SA)	added
 	sfxHandle_t adrenalineSound;   //----(SA)	added
 	sfxHandle_t bandagesSound;
+	sfxHandle_t crossSound;
 	sfxHandle_t elecSound;
 	sfxHandle_t fireSound;
 	sfxHandle_t waterSound;

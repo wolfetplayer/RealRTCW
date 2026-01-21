@@ -1135,6 +1135,8 @@ If you have questions concerning this license or the applicable additional terms
 {"Fill_Clip", (byte *)Fill_Clip},
 {"Pickup_Holdable", (byte *)Pickup_Holdable},
 {"UseHoldableItem", (byte *)UseHoldableItem},
+{"CrossThink", (byte *)CrossThink},
+{"CrossBurn", (byte *)CrossBurn},
 {"Pickup_Treasure", (byte *)Pickup_Treasure},
 {"Pickup_Clipboard", (byte *)Pickup_Clipboard},
 {"Pickup_Key", (byte *)Pickup_Key},

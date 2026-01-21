@@ -1035,7 +1035,7 @@ extern void QDECL G_DPrintf ( const char * fmt , ... ) ;
 extern void QDECL G_Printf ( const char * fmt , ... ) ;
 extern void G_RunItem ( gentity_t * ent ) ;
 extern void G_RunItemProp ( gentity_t * ent , vec3_t origin ) ;
-extern gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs );
+extern gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs, int dropChance );
 extern void G_BounceItem ( gentity_t * ent , trace_t * trace ) ;
 extern void G_FlushItem ( gentity_t *ent, trace_t *trace);
 extern qboolean G_ItemStick( gentity_t *ent, trace_t *trace, vec3_t velocity );

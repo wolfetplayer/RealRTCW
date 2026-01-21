@@ -4194,14 +4194,14 @@ qboolean AICast_ScriptAction_RestoreScript( cast_state_t *cs, char *params ) {
 =================
 AICast_ScriptAction_StateType
 
-    syntax: knockback <alert/relaxed>
+    syntax: statetype <alert/relaxed>
 
   set the current state for this character
 =================
 */
 qboolean AICast_ScriptAction_StateType( cast_state_t *cs, char *params ) {
 	if (!params || !params[0]) {
-		G_Error("AI Scripting: knockback requires a parameter, alert or relaxed\n");
+		G_Error("AI_Scripting: syntax: statetype <alert/relaxed>\n");
 	}
 
 	if ( !Q_stricmp( params, "alert" ) ) {

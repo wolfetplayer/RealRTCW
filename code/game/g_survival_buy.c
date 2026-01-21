@@ -263,7 +263,7 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 		return qfalse;
 
 	// Skip utility weapons
-	if (heldWeap == WP_DYNAMITE_ENG || heldWeap == WP_AIRSTRIKE || heldWeap == WP_POISONGAS_MEDIC)
+	if (heldWeap == WP_DYNAMITE_ENG || heldWeap == WP_AIRSTRIKE || heldWeap == WP_POISONGAS || heldWeap == WP_SMOKE_BOMB)
 		return qfalse;
 
 	int ammoIndex = BG_FindAmmoForWeapon(heldWeap);
@@ -335,7 +335,7 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 		return qfalse;
 
 	// Weapons that cannot be upgraded
-	if (weap == WP_KNIFE || weap == WP_SNIPERRIFLE || weap == WP_M1941SCOPE || weap == WP_FG42SCOPE || weap== WP_SNOOPERSCOPE || weap == WP_DELISLESCOPE || weap == WP_DYNAMITE || weap == WP_M7 || weap == WP_AIRSTRIKE || weap == WP_POISONGAS_MEDIC || weap == WP_DYNAMITE_ENG || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE) 
+	if (weap == WP_KNIFE || weap == WP_SNIPERRIFLE || weap == WP_M1941SCOPE || weap == WP_FG42SCOPE || weap== WP_SNOOPERSCOPE || weap == WP_DELISLESCOPE || weap == WP_DYNAMITE || weap == WP_M7 || weap == WP_AIRSTRIKE || weap == WP_POISONGAS || weap == WP_DYNAMITE_ENG || weap == WP_GRENADE_LAUNCHER || weap == WP_GRENADE_PINEAPPLE || weap == WP_SMOKE_BOMB) 
 	{
 		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
@@ -797,7 +797,7 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		if (!Q_stricmp(techName, "ammo")) {
 
 		// Do not show price if holding dynamite
-		if (other->client->ps.weapon == WP_DYNAMITE_ENG || other->client->ps.weapon == WP_POISONGAS_MEDIC || other->client->ps.weapon == WP_AIRSTRIKE ) {
+		if (other->client->ps.weapon == WP_DYNAMITE_ENG || other->client->ps.weapon == WP_POISONGAS || other->client->ps.weapon == WP_AIRSTRIKE ||  other->client->ps.weapon == WP_SMOKE_BOMB ) {
 			return;
 		}
 			price = (price > 0) ? price : Survival_GetDefaultWeaponPrice(other->client->ps.weapon) / 2;

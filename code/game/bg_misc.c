@@ -1930,55 +1930,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,
 		0,
 		0,                                 
-	}, 
-
-		{   
-		WP_POISONGAS_MEDIC,
-		WEAPON_CLASS_GRENADE,
-		WP_NONE, 
-		WEAPON_TEAM_COMMON,       
-		0,                   
-		0,       
-		0,  
-		0,      
-		0,           
-		0,        
-		0,         
-		0,
-		0,         
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,      
-		0, 
-		0,     
-		0,      
-		0,        
-		0,        
-		0,        
-		0,          
-		0,                  
-		0.0f,            
-		0,               
-		{0, 0},         
-		{0,0},              
-		0,               
-		0.0,               
-		0,               
-		0,
-		{0.0, 0.0},             
-		MOD_POISONGAS, 
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,                                 
-	}, 
+	},  
 
 		{   
 		WP_DYNAMITE_ENG,
@@ -2171,6 +2123,7 @@ ammoTable_t ammoTable[WP_NUM_WEAPONS] = {
 		0,
 		0,
 	},
+
 
 	// Misc alt modes
 	{   
@@ -4764,9 +4717,8 @@ model="models/weapons2/p38/luger.md3"
 		{0,0,0,0,0,0}
 	},
 
-
 	{
-		"weapon_poison_med",
+		"weapon_grenadesmoke_real",
 		"sound/misc/w_pkup.wav",
 		{  
 		"",
@@ -4774,20 +4726,19 @@ model="models/weapons2/p38/luger.md3"
 		""
 		},
 
-		"icons/iconw_smokegrenade_1",    
-		"poison_med",              
+		"icons/iconw_smokegrenade_real_1",    
+		"smokeGrenade_real",              
 		50,
 		IT_WEAPON,
-		WP_POISONGAS_MEDIC,
-		WP_POISONGAS_MEDIC,
-		WP_POISONGAS_MEDIC,
-		WP_POISONGAS_MEDIC,
-		WP_POISONGAS_MEDIC,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
+		WP_SMOKE_BOMB,
 		"",                      
 		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",            
 		{0,0,0,0,0,0}
 	},
-
 
 	//weapon_dynamite
 
@@ -4875,7 +4826,7 @@ weapon_smoketrail -- only used as a special effects emitter for smoke trails (ar
 		""
 		},
 		"icons/iconw_poisongrenade_1",    
-		"Poison Gas",
+		"ammo_poison_gas",
 		0,
 		IT_WEAPON,
 		WP_POISONGAS,		
@@ -4894,29 +4845,6 @@ weapon_smoketrail -- only used as a special effects emitter for smoke trails (ar
 	//
 
 // RealRTCW ammo
-
-	{
-		"ammo_poison_gas",
-		"sound/misc/am_pkup.wav",
-		{ 
-		"models/powerups/ammo/amgren_bag.md3",
-		0, 
-		0 
-		},
-		"",
-		"Poison Gas",
-		1,
-		IT_AMMO,
-		WP_NONE,
-		WP_POISONGAS,
-		WP_POISONGAS,
-		WP_POISONGAS,
-		WP_POISONGAS,
-		"",                  
-		"", 
-		{5,4,3,2,2,3}                
-	},
-
 
 /*QUAKED ammo_m7 (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
@@ -5755,35 +5683,6 @@ model="models/powerups/ammo/amgrenus_bag.md3"
 		"",                      
 		"",                    
 		{4,3,2,2,2,2}
-	},
-
-/*QUAKED ammo_smoke_grenade (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
-used by: engineer
-
--------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
-model="models/ammo/smoke_grenade/smoke_grenade.md3"
-*/
-	{
-		"ammo_smoke_grenade",
-		"sound/misc/am_pkup.wav",
-		{
-		"models/powerups/ammo/amgren_bag.md3",	// "models/ammo/smoke_grenade/smoke_grenade.md3"
-		0,
-		0
-		},
-
-		"",
-		"Smoke Grenades",
-		1,
-		IT_AMMO,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		"",
-		"",
-		{5,5,5,5,5,5}
 	},
 
 /*QUAKED ammo_dynamite (.3 .3 1) (-16 -16 -16) (16 16 16) SUSPENDED SPIN - RESPAWN
@@ -9518,7 +9417,6 @@ char *BG_GetWeaponFilename( weapon_t weaponNum )
 		case WP_DYNAMITE:          return "dynamite.weap";
 		case WP_BROWNING:          return "browning.weap";
 		case WP_AIRSTRIKE:         return "airstrike.weap";
-		case WP_POISONGAS_MEDIC:   return "poisongas_medic.weap";
 		case WP_DYNAMITE_ENG:      return "dynamite_eng.weap";
 		case WP_ARTY:              return "arty.weap";
 		case WP_SMOKETRAIL:        return "smoketrail.weap";

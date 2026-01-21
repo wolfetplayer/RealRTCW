@@ -171,7 +171,7 @@ AICast_Die
 */
 void AICast_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath ) {
 
-	if (g_gametype.integer == GT_SURVIVAL) {
+	if (g_gametype.integer == GT_SURVIVAL && !self->oneshot) {
 		AICast_Die_Survival(self, inflictor, attacker, damage, meansOfDeath);
 		return;
 	}

@@ -790,27 +790,39 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	switch (cs->aiCharacter) {
 		case AICHAR_SOLDIER:
 			newHealth = 20 + steps * stepMultiplier;
-			if (newHealth > 100) newHealth = 100;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+				if (newHealth > 100) newHealth = 100;
+			}
 			break;
-
 		case AICHAR_ELITEGUARD:
 			newHealth = 30 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 150) newHealth = 150;
+			}
 			break;
-
 		case AICHAR_BLACKGUARD:
 			newHealth = 40 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 200) newHealth = 200;
+			}
 			break;
-
 		case AICHAR_VENOM:
 			newHealth = 50 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 500) newHealth = 500;
+			}
 			break;
 
 		case AICHAR_ZOMBIE_SURV:
 			newHealth = 20 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 200) newHealth = 200;
+			}
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.2f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.6f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
@@ -818,7 +830,10 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 		case AICHAR_ZOMBIE_GHOST:
 			newHealth = 30 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 300) newHealth = 300;
+			}
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
@@ -826,7 +841,10 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 		case AICHAR_WARZOMBIE:
 			newHealth = 50 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 500) newHealth = 500;
+			}
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
@@ -834,7 +852,10 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 		case AICHAR_PROTOSOLDIER:
 			newHealth = 1000 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 2000) newHealth = 2000;
+			}
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.5f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
@@ -842,12 +863,18 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 		case AICHAR_PARTISAN:
 			newHealth = 500 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 1000) newHealth = 1000;
+			}
 			break;
 
 		case AICHAR_PRIEST:
 			newHealth = 250 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 500) newHealth = 500;
+			}
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
@@ -855,18 +882,27 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 		case AICHAR_ZOMBIE_FLAME:
 			newHealth = 50 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 500) newHealth = 500;
+			}
 			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
 			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
 			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
 			break;
 		case AICHAR_LOPER:
 			newHealth = 250 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 500) newHealth = 500;
+			}
 			break;
 		case AICHAR_LOPER_SPECIAL:
 			newHealth = 50 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
 			if (newHealth > 250) newHealth = 250;
+			}
 			break;
 
 		default:
@@ -2317,6 +2353,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Float_Parse(handle, &svParams.soldierExplosiveDmgBonus))
 			{
 				PC_SourceError(handle, "expected soldierExplosiveDmgBonus value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "cvopsmeleeDmgBonus"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.cvopsmeleeDmgBonus))
+			{
+				PC_SourceError(handle, "expected cvopsmeleeDmgBonus value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "cvopsthrowspeedBonus"))
+		{
+			if (!PC_Float_Parse(handle, &svParams.cvopsthrowspeedBonus))
+			{
+				PC_SourceError(handle, "expected cvopsthrowspeedBonus value");
 				return qfalse;
 			}
 		}

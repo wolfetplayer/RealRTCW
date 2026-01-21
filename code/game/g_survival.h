@@ -218,6 +218,8 @@ typedef struct svParams_s
 
 	float ltAmmoBonus;
 	float soldierExplosiveDmgBonus;
+	float cvopsmeleeDmgBonus;
+	float cvopsthrowspeedBonus;
 
 	int specialWaveMinStart;
 	int specialWaveChance;		

@@ -464,8 +464,6 @@ void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 		case WP_DYNAMITE:
-		case WP_SMOKE_BOMB:
-		case WP_POISONGAS:
 		case WP_KNIFE:
 			COM_BitSet(ent->client->ps.weapons, ammoweap);
 		case WP_TESLA:
@@ -2214,12 +2212,13 @@ G_DropSpecifiedItem
 
 Drops any item specified by gitem_t*.
 - lifetimeMs: 0 means "forever" (like SP weapon drops).
+- dropChance: the probability of dropping items (0 to 100).
 =================
 */
-gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs ) {
+gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs, int dropChance ) {
 	gentity_t *drop;
 
-	if ( !ent || !ent->client || !item ) {
+	if ( !ent || !ent->client || !item || rand() % 100 >= dropChance ) {
 		return NULL;
 	}
 

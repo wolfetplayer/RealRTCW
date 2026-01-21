@@ -318,6 +318,7 @@ typedef struct {
 	int soldierChargeTime;
 	int engineerChargeTime;
 	int medicChargeTime;
+	int cvopsChargeTime;
 
 	int gametype;
 
@@ -336,7 +337,8 @@ int Pmove( pmove_t *pmove );
 #define PC_SOLDIER              1   
 #define PC_MEDIC                2   
 #define PC_ENGINEER             3   
-#define PC_LT                   4   
+#define PC_LT                   4
+#define PC_CVOPS                5   
 #define PC_MEDIC_CHARGETIME     30000 
 
 
@@ -565,7 +567,6 @@ typedef enum {
 	WP_AIRSTRIKE,
 	WP_ARTY,
 	WP_POISONGAS,
-	WP_POISONGAS_MEDIC,
 	WP_SMOKETRAIL,          
 	WP_HOLYCROSS,
 	WP_SMOKE_BOMB,
@@ -662,7 +663,6 @@ static const int autoReloadWeapons[] = {
 	WP_FLAMETHROWER,
 	WP_POISONGAS,
 	WP_AIRSTRIKE,
-	WP_POISONGAS_MEDIC,
 	WP_DYNAMITE_ENG,
 	WP_KNIFE,
 	WP_M7,

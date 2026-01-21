@@ -1144,7 +1144,6 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		case WP_SMOKE_BOMB:
 		case WP_DYNAMITE:
 		case WP_AIRSTRIKE:
-		case WP_POISONGAS_MEDIC:
 		case WP_DYNAMITE_ENG:
 			upangle *= ammoTable[grenType].upAngle;
 			break;
@@ -1181,21 +1180,11 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 
 	if ( grenType == WP_POISONGAS ) 
 	{
-            m->s.effect1Time = 20;
-            m->think = G_PoisonGasExplode;
-            m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
-			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
-			m->poisonGasDamage        =  ammoTable[WP_POISONGAS].playerDamage;	
-		    
-	}
-
-	if ( grenType == WP_POISONGAS_MEDIC ) 
-	{
             m->s.effect1Time = 30;
             m->think = G_PoisonGas2Explode;
             m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
-			m->poisonGasRadius          = ammoTable[WP_POISONGAS_MEDIC].playerSplashRadius;
-			m->poisonGasDamage        =  ammoTable[WP_POISONGAS_MEDIC].playerDamage;	
+			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
+			m->poisonGasDamage        =  ammoTable[WP_POISONGAS].playerDamage;	
 		    
 	}
 
@@ -1970,13 +1959,13 @@ void FireWeapon( gentity_t *ent ) {
 			weapon_grenadelauncher_fire( ent,WP_SMOKE_BOMB );
 		}
 		break;
-	case WP_POISONGAS_MEDIC:
+	case WP_POISONGAS:
 		if ( level.time - ent->client->ps.classWeaponTime >= g_medicChargeTime.integer ) {
 			if ( level.time - ent->client->ps.classWeaponTime > g_medicChargeTime.integer ) {
 				ent->client->ps.classWeaponTime = level.time - g_medicChargeTime.integer;
 			}
 			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
-			weapon_grenadelauncher_fire( ent,WP_POISONGAS_MEDIC );
+			weapon_grenadelauncher_fire( ent,WP_POISONGAS );
 		}
 		break;
 	case WP_DYNAMITE_ENG:
@@ -2117,7 +2106,6 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
-	case WP_POISONGAS:
 		weapon_grenadelauncher_fire( ent, ent->s.weapon );
 		break;
 	case WP_FLAMETHROWER:

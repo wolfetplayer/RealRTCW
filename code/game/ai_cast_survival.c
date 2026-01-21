@@ -70,6 +70,8 @@ void AICast_InitSurvival(void) {
     svParams.lastSpecialWave      = 0;
 
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
+	svParams.maxActiveAI[AICHAR_MERCENARY] = svParams.initialMercsCount;
+	svParams.maxActiveAI[AICHAR_TRENCH] = svParams.initialTrenchCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] = svParams.initialFlamersCount;
@@ -654,12 +656,27 @@ void AICast_UpdateMaxActiveAI(void)
         svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.maxSoldiers;
     }
 
+    // Mercs
+    svParams.maxActiveAI[AICHAR_MERCENARY] += svParams.mercsIncrease;
+    if (svParams.maxActiveAI[AICHAR_MERCENARY] > svParams.maxMercs) {
+        svParams.maxActiveAI[AICHAR_MERCENARY] = svParams.maxMercs;
+    }
+
     // Elite Guards
     if (svParams.waveCount >= svParams.waveEg) {
         svParams.maxActiveAI[AICHAR_ELITEGUARD] += svParams.eliteGuardsIncrease;
         if (svParams.maxActiveAI[AICHAR_ELITEGUARD] > svParams.maxEliteGuards) {
             svParams.maxActiveAI[AICHAR_ELITEGUARD] = svParams.maxEliteGuards;
         }
+
+	}
+		
+    // Trench
+	 if (svParams.waveCount >= svParams.waveTrench) {
+    svParams.maxActiveAI[AICHAR_TRENCH] += svParams.trenchIncrease;
+    if (svParams.maxActiveAI[AICHAR_TRENCH] > svParams.maxTrench) {
+        svParams.maxActiveAI[AICHAR_TRENCH] = svParams.maxTrench;
+    }
     }
 
     // Black Guards
@@ -749,6 +766,9 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	case AICHAR_ELITEGUARD:
 		waveAppeared = svParams.waveEg;
 		break;
+	case AICHAR_TRENCH:
+		waveAppeared = svParams.waveTrench;
+		break;
 	case AICHAR_BLACKGUARD:
 		waveAppeared = svParams.waveBg;
 		break;
@@ -789,6 +809,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 
 	switch (cs->aiCharacter) {
 		case AICHAR_SOLDIER:
+		case AICHAR_MERCENARY:
 			newHealth = 20 + steps * stepMultiplier;
 			if (g_survivalAiHealthCap.integer == 1)
 			{
@@ -802,15 +823,22 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			if (newHealth > 150) newHealth = 150;
 			}
 			break;
+		case AICHAR_TRENCH:
+			newHealth = 50 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+			if (newHealth > 150) newHealth = 150;
+			}
+			break;
 		case AICHAR_BLACKGUARD:
-			newHealth = 40 + steps * stepMultiplier;
+			newHealth = 80 + steps * stepMultiplier;
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 200) newHealth = 200;
 			}
 			break;
 		case AICHAR_VENOM:
-			newHealth = 50 + steps * stepMultiplier;
+			newHealth = 100 + steps * stepMultiplier;
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 500) newHealth = 500;
@@ -929,6 +957,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 	int waveAppeared = 1;
 	switch (characterNum) {
 		case AICHAR_ELITEGUARD:   waveAppeared = svParams.waveEg; break;
+		case AICHAR_TRENCH:       waveAppeared = svParams.waveTrench; break;
 		case AICHAR_BLACKGUARD:   waveAppeared = svParams.waveBg; break;
 		case AICHAR_VENOM:        waveAppeared = svParams.waveV; break;
 		case AICHAR_PROTOSOLDIER: waveAppeared = svParams.waveProtos; break;
@@ -949,6 +978,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 
 	switch (characterNum) {
 		case AICHAR_SOLDIER:
+		case AICHAR_MERCENARY:
 			aimSkill     = fminf(0.1f + delta, 0.7f);
 			aimAccuracy  = fminf(0.1f + delta, 0.7f);
 			attackSkill  = fminf(0.1f + delta, 0.7f);
@@ -956,6 +986,13 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			reactionTime = fmaxf(1.0f - delta, 0.4f);
 			break;
 		case AICHAR_ELITEGUARD:
+			aimSkill     = fminf(0.3f + delta, 0.8f);
+			aimAccuracy  = fminf(0.3f + delta, 0.8f);
+			attackSkill  = fminf(0.3f + delta, 0.8f);
+			aggression   = fminf(0.3f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			break;
+		case AICHAR_TRENCH:
 			aimSkill     = fminf(0.3f + delta, 0.8f);
 			aimAccuracy  = fminf(0.3f + delta, 0.8f);
 			attackSkill  = fminf(0.3f + delta, 0.8f);
@@ -1380,6 +1417,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialMercsCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialMercsCount))
+			{
+				PC_SourceError(handle, "expected initialMercsCount value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "initialTrenchCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialTrenchCount))
+			{
+				PC_SourceError(handle, "expected initialTrenchCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "initialEliteGuardsCount"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialEliteGuardsCount))
@@ -1476,6 +1529,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "mercsIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.mercsIncrease))
+			{
+				PC_SourceError(handle, "expected mercsIncrease value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "trenchIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.trenchIncrease))
+			{
+				PC_SourceError(handle, "expected trenchIncrease value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "eliteGuardsIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.eliteGuardsIncrease))
@@ -1564,6 +1633,22 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "maxMercs"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxMercs))
+			{
+				PC_SourceError(handle, "expected maxMercs value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "maxTrench"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxTrench))
+			{
+				PC_SourceError(handle, "expected maxTrench value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "maxEliteGuards"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.maxEliteGuards))
@@ -1649,6 +1734,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.waveEg))
 			{
 				PC_SourceError(handle, "expected waveEg value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "waveTrench"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveTrench))
+			{
+				PC_SourceError(handle, "expected waveTrench value");
 				return qfalse;
 			}
 		}

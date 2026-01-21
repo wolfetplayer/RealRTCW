@@ -809,7 +809,7 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 //
 void G_RunItem( gentity_t *ent );
 void RespawnItem( gentity_t *ent );
-gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs );
+gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs, int dropChance );
 
 void UseHoldableItem( gentity_t *ent, int item );
 void PrecacheItem( gitem_t *it );

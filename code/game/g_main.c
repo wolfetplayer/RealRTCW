@@ -180,6 +180,7 @@ vmCvar_t g_noobTube;
 vmCvar_t g_aiCollision;
 vmCvar_t g_specialWaves;
 vmCvar_t g_level_was_selected;
+vmCvar_t g_survivalAiHealthCap;
 
 vmCvar_t g_playerSurvivalClass;    
 
@@ -224,6 +225,7 @@ cvarTable_t gameCvarTable[] = {
 
 	{&g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_survivalAiHealthCap, "g_survivalAiHealthCap", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
 	{&g_reloading, "g_reloading", "0", CVAR_ROM}, //----(SA)	added
 

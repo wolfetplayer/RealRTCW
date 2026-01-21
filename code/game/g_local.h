@@ -1258,6 +1258,7 @@ extern vmCvar_t g_regen;
 extern vmCvar_t	g_flushItems;
 extern vmCvar_t g_vanilla_guns;
 extern vmCvar_t g_specialWaves;
+extern vmCvar_t g_survivalAiHealthCap;
 
 // Safe endgame fix
 extern qboolean g_endgameTriggered;

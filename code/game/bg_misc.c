@@ -3877,30 +3877,6 @@ weapon_grenadePineapple
 		{0,0,0,0,0,0}
 	},
 
-// weapon_grenadesmoke
-	{
-		"weapon_grenadesmokereal",
-		"sound/misc/w_pkup.wav",
-		{
-		"",		// "models/multiplayer/smokebomb/smokebomb.md3",
-		"",		// "models/multiplayer/smokebomb/v_smokebomb.md3",
-		""
-		},
-
-		"icons/iconw_grenade_1",
-		"Smoke Bomb",
-		0,
-		IT_WEAPON,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		"",
-		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",
-		{0,0,0,0,0,0}
-	},
-
 
 //weapon_dynamite
 
@@ -6574,7 +6550,7 @@ model="models/powerups/holdable/cross.md3"
 		0
 		},
 
-		"icons/cross",             
+		"icons/holycross",             
 		"Cross used",             
 		1,
 		IT_HOLDABLE,

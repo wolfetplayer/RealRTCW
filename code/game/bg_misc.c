@@ -4802,7 +4802,7 @@ weapon_smoketrail -- only used as a special effects emitter for smoke trails (ar
 		""
 		},
 		"icons/iconw_poisongrenade_1",    
-		"ammo_poison_gas",
+		"poison gas",
 		0,
 		IT_WEAPON,
 		WP_POISONGAS,		
@@ -6543,7 +6543,7 @@ model="models/powerups/holdable/cross.md3"
 */
 	{
 		"holdable_cross",
-		"sound/pickup/holdable/get_cross.wav",
+		"sound/pickup/holdable/get_stamina.wav",
 		{
 		"models/powerups/holdable/cross.md3",
 		0, 

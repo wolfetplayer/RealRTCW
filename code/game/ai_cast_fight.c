@@ -580,6 +580,7 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
         switch (cs->aiCharacter) {
             case AICHAR_SOLDIER:
 			case AICHAR_MERCENARY:
+			case AICHAR_TRENCH:
             case AICHAR_VENOM:
             case AICHAR_SUPERSOLDIER_LAB:
                 return 1000.0f;

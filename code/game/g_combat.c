@@ -1347,6 +1347,7 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 						}
 					case AICHAR_SOLDIER:
 					case AICHAR_MERCENARY:
+					case AICHAR_TRENCH:
 					case AICHAR_AMERICAN:
 					case AICHAR_ELITEGUARD:
 					case AICHAR_PARTISAN:
@@ -1376,6 +1377,7 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				switch ( targ->aiCharacter ) {
 				case AICHAR_SOLDIER:
 				case AICHAR_MERCENARY:
+				case AICHAR_TRENCH:
 				case AICHAR_AMERICAN:
 				case AICHAR_ELITEGUARD:
 				case AICHAR_BLACKGUARD:

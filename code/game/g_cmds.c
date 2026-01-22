@@ -301,7 +301,10 @@ void Cmd_Give_f( gentity_t *ent ) {
 	}
 
 	if ( give_all || Q_stricmp( name, "holdable" ) == 0 ) {
-		ent->client->ps.stats[STAT_HOLDABLE_ITEM] = ( 1 << ( HI_CROSS - 1 ) ) - 1 - ( 1 << HI_NONE );
+		for ( int j = HI_WINE; j <= HI_CROSS; j++ ) {
+			ent->client->ps.stats[STAT_HOLDABLE_ITEM] |= (1 << j);
+		}
+
 		for ( i = 1 ; i <= HI_CROSS ; i++ ) {
 			ent->client->ps.holdable[i] = 10;
 		}

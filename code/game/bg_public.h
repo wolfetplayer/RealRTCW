@@ -457,6 +457,7 @@ typedef enum {
 
 typedef enum {
 	HI_NONE,
+	// draw in HUD
 	HI_WINE,
 	HI_ADRENALINE,
 	HI_BANDAGES,
@@ -468,6 +469,9 @@ typedef enum {
 	HI_BG_SYRINGE,
 	HI_LP_SYRINGE,
 	HI_CROSS,
+	// boundary marker
+	HI_HUD_VISIBLE_END,
+	// for special logic
 	HI_KNIVES,
 	HI_M97,
 	HI_AUTO5,

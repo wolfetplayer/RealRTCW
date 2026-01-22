@@ -301,11 +301,11 @@ void Cmd_Give_f( gentity_t *ent ) {
 	}
 
 	if ( give_all || Q_stricmp( name, "holdable" ) == 0 ) {
-		for ( int j = HI_WINE; j <= HI_CROSS; j++ ) {
+		for ( int j = HI_WINE; j < HI_HUD_VISIBLE_END; j++ ) {
 			ent->client->ps.stats[STAT_HOLDABLE_ITEM] |= (1 << j);
 		}
 
-		for ( i = 1 ; i <= HI_CROSS ; i++ ) {
+		for ( i = 1 ; i < HI_HUD_VISIBLE_END ; i++ ) {
 			ent->client->ps.holdable[i] = 10;
 		}
 

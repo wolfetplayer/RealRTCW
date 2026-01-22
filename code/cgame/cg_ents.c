@@ -705,10 +705,10 @@ void CG_DrawHoldableSelect( void ) {
 	cg.itemPickupTime = 0;
 
 	// count the number of holdables owned
-	bits = cg.snap->ps.stats[ STAT_HOLDABLE_ITEM ];
+	bits = cg.snap->ps.stats[STAT_HOLDABLE_ITEM];
 	count = 0;
 
-	for ( i = 1 ; i <= HI_CROSS; i++ ) {
+	for ( i = 1 ; i < HI_HUD_VISIBLE_END; i++ ) {
 		if ( bits & ( 1 << i ) ) {
 			if ( cg.predictedPlayerState.holdable[i] ) {	// don't show ones we're out of
 				count++;
@@ -724,7 +724,7 @@ void CG_DrawHoldableSelect( void ) {
 	y = 370;
 
 
-	for ( i = 1 ; i <= HI_CROSS ; i++ ) {
+	for ( i = 1 ; i < HI_HUD_VISIBLE_END ; i++ ) {
 		if ( !( bits & ( 1 << i ) ) ) {
 			continue;
 		}

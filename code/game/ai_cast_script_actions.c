@@ -714,16 +714,23 @@ qboolean AICast_ScriptAction_Trigger( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: trigger must have a name and an identifier\n" );
 	}
 
-	ent = AICast_FindEntityForName( token );
-	if ( !ent ) {
-		ent = G_Find( &g_entities[MAX_CLIENTS], FOFS( scriptName ), token );
+	// ---- self* support (minimal, safe, non-breaking)
+	// "self*" means: trigger this AI's own ainame
+	if ( !Q_stricmp( token, "self*" ) ) {
+		ent = &g_entities[ cs->entityNum ];
+	} else {
+		ent = AICast_FindEntityForName( token );
 		if ( !ent ) {
-			if ( trap_Cvar_VariableIntegerValue( "developer" ) ) {
-				G_Printf( "AI Scripting: trigger can't find AI cast with \"ainame\" = \"%s\"\n", params );
+			ent = G_Find( &g_entities[MAX_CLIENTS], FOFS( scriptName ), token );
+			if ( !ent ) {
+				if ( trap_Cvar_VariableIntegerValue( "developer" ) ) {
+					G_Printf( "AI Scripting: trigger can't find AI cast with \"ainame\" = \"%s\"\n", params );
+				}
+				return qtrue;
 			}
-			return qtrue;
 		}
 	}
+	// ---- end self* support
 
 	token = COM_ParseExt( &pString, qfalse );
 	if ( !token[0] ) {

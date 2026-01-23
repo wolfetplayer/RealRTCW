@@ -91,6 +91,33 @@ void AICast_NoAttackIfNotHurtSinceLastScriptAction( cast_state_t *cs ) {
 	}
 }
 
+// A few helpers for the prefix markers feature we're added for the gotomarker
+
+qboolean Q_StringStartsWith( const char *s, const char *prefix ) {
+    if ( !s || !prefix ) return qfalse;
+    while ( *prefix ) {
+        if ( tolower(*s) != tolower(*prefix) ) return qfalse;
+        s++; prefix++;
+    }
+    return qtrue;
+}
+
+int AICast_TravelTimeToPoint( cast_state_t *cs, const vec3_t goalOrg ) {
+    int fromArea = trap_AAS_PointAreaNum( cs->bs->origin );
+    int toArea   = trap_AAS_PointAreaNum( (float *)goalOrg );
+
+    if ( fromArea <= 0 || toArea <= 0 ) {
+        return 0;
+    }
+
+    return trap_AAS_AreaTravelTimeToGoalArea(
+        fromArea,
+        cs->bs->origin,
+        toArea,
+        cs->travelflags
+    );
+}
+
 /*
 ===============
 AICast_ScriptAction_GotoMarker
@@ -105,6 +132,9 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 	vec3_t vec, org;
 	int i, diff;
 	qboolean slowApproach;
+	qboolean groupMode = qfalse;
+	char prefix[64];
+	int prefixLen;
 
 	ent = NULL;
 
@@ -126,7 +156,9 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 	// if we already are going to the marker, just use that, and check if we're in range
 	if ( cs->castScriptStatus.scriptGotoEnt >= 0 && cs->castScriptStatus.scriptGotoId == cs->thinkFuncChangeTime ) {
 		ent = &g_entities[cs->castScriptStatus.scriptGotoEnt];
-		if ( ent->targetname && !Q_strcasecmp( ent->targetname, token ) ) {
+		if (cs->castScriptStatus.scriptGotoIsGroup ||
+			(ent->targetname && !Q_strcasecmp(ent->targetname, token)))
+		{
 			// if we're not slowing down, then check for passing the marker, otherwise check distance only
 			VectorSubtract( ent->r.currentOrigin, cs->bs->origin, vec );
 			//
@@ -188,24 +220,81 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 				cs->followTime = level.time + 500;
 				return qfalse;
 			}
-		} else
+		}
+		else
 		{
 			ent = NULL;
 		}
 	}
 
-	// find the ai_marker with the given "targetname"
+    Q_strncpyz( prefix, token, sizeof(prefix) );
 
-	while ( ( ent = G_Find( ent, FOFS( classname ), "ai_marker" ) ) )
-	{
-		if ( ent->targetname && !Q_strcasecmp( ent->targetname, token ) ) {
-			break;
-		}
-	}
+    prefixLen = strlen(prefix);
+    if ( prefixLen > 0 && prefix[prefixLen - 1] == '*' ) {
+        groupMode = qtrue;
+        prefix[prefixLen - 1] = '\0'; // strip '*'
+    }
 
-	if ( !ent ) {
-		G_Error( "AI Scripting: gotomarker can't find ai_marker with \"targetname\" = \"%s\"\n", token );
-	}
+    ent = NULL;
+
+    if ( !groupMode ) {
+        // original exact match behavior
+        while ( ( ent = G_Find( ent, FOFS( classname ), "ai_marker" ) ) ) {
+            if ( ent->targetname && !Q_strcasecmp( ent->targetname, prefix ) ) {
+                break;
+            }
+        }
+    } else {
+        // group/prefix mode: pick best marker at runtime
+        gentity_t *best = NULL;
+        int bestTT = 0x7fffffff;
+        float bestDistSq = 0.0f;
+        qboolean haveTT = qfalse;
+
+        while ( ( ent = G_Find( ent, FOFS( classname ), "ai_marker" ) ) ) {
+            vec3_t org;
+            vec3_t d;
+            float distSq;
+            int tt;
+
+            if ( !ent->targetname ) continue;
+            if ( !Q_StringStartsWith( ent->targetname, prefix ) ) continue;
+
+            // Evaluate marker origin for cost
+            VectorCopy( ent->r.currentOrigin, org );
+
+            tt = AICast_TravelTimeToPoint( cs, org );
+            if ( tt > 0 ) {
+                // Prefer travel time (AAS)
+                if ( tt < bestTT ) {
+                    bestTT = tt;
+                    best = ent;
+                    haveTT = qtrue;
+                }
+            } else if ( !haveTT ) {
+                // Fallback: distance only if we have no travel time candidates
+                VectorSubtract( org, cs->bs->origin, d );
+                distSq = VectorLengthSquared( d );
+                if ( !best || distSq < bestDistSq ) {
+                    bestDistSq = distSq;
+                    best = ent;
+                }
+            }
+        }
+
+        ent = best;
+    }
+
+    if ( !ent ) {
+        if ( !groupMode ) {
+            G_Error( "AI Scripting: gotomarker can't find ai_marker with \"targetname\" = \"%s\"\n", prefix );
+        } else {
+            G_Error( "AI Scripting: gotomarker can't find ai_marker with prefix \"%s*\"\n", prefix );
+        }
+    }
+
+    // Remember which mode we used, so the cached section doesn't compare exact name
+    cs->castScriptStatus.scriptGotoIsGroup = groupMode;
 
 	if ( Distance( cs->bs->origin, ent->r.currentOrigin ) < SCRIPT_REACHGOAL_DIST ) { // we made it
 		return qtrue;

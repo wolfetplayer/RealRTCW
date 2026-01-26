@@ -336,6 +336,7 @@ LIBSDIR=$(MOUNT_DIR)/libs
 BSPCDIR=$(MOUNT_DIR)/../sdk/rtcw-bspc-custom/src/bspc
 BSPCBLIBDIR=$(MOUNT_DIR)/../sdk/rtcw-bspc-custom/src/botlib
 BSPCCMDIR=$(MOUNT_DIR)/../sdk/rtcw-bspc-custom/src/qcommon
+FFMPEG=$(MOUNT_DIR)/ffmpeg-8.0
 
 bin_path=$(shell which $(1) 2> /dev/null)
 
@@ -775,6 +776,22 @@ ifdef MINGW
   LIBS= -lws2_32 -lwinmm -lpsapi
   CLIENT_LIBS = -lgdi32 -lole32
   RENDERER_LIBS = -lgdi32 -lole32
+
+  CLIENT_CFLAGS += -I$(FFMPEG)/include
+
+  ifeq ($(ARCH),x86_64)
+    CLIENT_LIBS += $(LIBSDIR)/win64/libavformat.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win64/libavcodec.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win64/libavutil.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win64/libswscale.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win64/libswresample.dll.a
+  else
+    CLIENT_LIBS += $(LIBSDIR)/win32/libavformat.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win32/libavcodec.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win32/libavutil.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win32/libswscale.dll.a
+    CLIENT_LIBS += $(LIBSDIR)/win64/libswresample.dll.a
+  endif
 
   ifeq ($(USE_FREETYPE),1)
     ifneq ($(USE_INTERNAL_FREETYPE),1)

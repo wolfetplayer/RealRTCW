@@ -47,6 +47,11 @@ If you have questions concerning this license or the applicable additional terms
 #include "client.h"
 #include "snd_local.h"
 
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
+#include "libswresample/swresample.h"
+
 #define MAXSIZE             8
 #define MINSIZE             4
 
@@ -73,6 +78,17 @@ extern int s_soundtime;
 
 static void RoQ_init( void );
 
+static int FFMPEG_Init( void );
+static void FFMPEG_Shutdown( void );
+static void FFMPEG_Free( void );
+static void FFMPEG_Reset( void );
+
+static int FFMPEG_Read( void *opaque, byte *buf, int bufSize );
+static long long FFMPEG_Seek( void *opaque, long long offset, int whence );
+
+static int FFMPEG_ReadFrame( qboolean onlyAudio );
+static int FFMPEG_DecodeVideo( );
+
 /******************************************************************************
 *
 * Class:		trFMV
@@ -93,6 +109,7 @@ static unsigned short vq8[256 * 256 * 4];
 
 
 typedef struct {
+	qboolean isRoq;
 	byte linbuf[DEFAULT_CIN_WIDTH * DEFAULT_CIN_HEIGHT * 4 * 2];
 	byte file[65536];
 	short sqrTable[256];
@@ -104,6 +121,14 @@ typedef struct {
 
 	int currentHandle;
 } cinematics_t;
+
+typedef struct {
+    short *pcm;          // PCM
+    int totalSamples;    // only channel
+    int playCursor;      // play pos
+    int sampleRate;      // 22050
+    int channels;        // 2
+} cin_audio_pcm_t;
 
 typedef struct {
 	char fileName[MAX_OSPATH];
@@ -143,12 +168,53 @@ typedef struct {
 	int playonwalls;
 	byte*               buf;
 	long drawX, drawY;
+
+	// ffmpeg
+	AVFormatContext *formatCtx;
+	AVPacket *packet;
+	AVCodec *vCodec;
+	AVCodecContext *vCodecCtx;
+	AVFrame *vFrame, *vRgbaFrame;
+	SwsContext *swsCtx;
+	qboolean eof;
+	qboolean demuxEOF;
+	AVIOContext *avioCtx;
+	byte *avioBuf;
+
+	int videoStream;
+	int audioStream;
+
+	AVCodec *aCodec;
+	AVCodecContext *aCodecCtx;
+	AVFrame *aFrame;
+	SwrContext *swrCtx;
+	qboolean firstAudioFrameFlag;
+
+	cin_audio_pcm_t audioPCM;
 } cin_cache;
 
 static cinematics_t cin;
 static cin_cache cinTable[MAX_VIDEO_HANDLES];
 static int currentHandle = -1;
 static int CL_handle = -1;
+
+static int FFMPEG_Read( void *opaque, byte *buf, int bufSize ) {
+	int r = FS_Read( buf, bufSize, cinTable[currentHandle].iFile );
+
+	return r > 0 ? r : AVERROR_EOF;
+}
+
+static long long FFMPEG_Seek( void *opaque, long long offset, int whence ) {
+    if ( whence == AVSEEK_SIZE ) {
+        return FS_filelength( cinTable[currentHandle].iFile );
+	}
+
+    if ( FS_Seek( cinTable[currentHandle].iFile, offset, whence ) < 0 ) {
+        return -1;
+	}
+
+    return FS_FTell( cinTable[currentHandle].iFile );
+}
 
 void CIN_CloseAllVideos( void ) {
 	int i;
@@ -1127,6 +1193,22 @@ static void RoQReset( void ) {
 	cinTable[currentHandle].status = FMV_LOOPED;
 }
 
+static void FFMPEG_Reset( void ) {
+	if ( currentHandle < 0 ) {
+		return;
+	}
+
+	FS_FCloseFile( cinTable[currentHandle].iFile );
+	cinTable[currentHandle].iFile = 0;
+
+	FFMPEG_Free( );
+
+	FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
+
+	FFMPEG_Init( );
+	cinTable[currentHandle].status = FMV_LOOPED;
+}
+
 /******************************************************************************
 *
 * Function:
@@ -1270,6 +1352,240 @@ redump:
 	cinTable[currentHandle].RoQPlayed   += cinTable[currentHandle].RoQFrameSize + 8;
 }
 
+static int FFMPEG_ReadFrame( qboolean onlyAudio ) {
+	int ret;
+    ret = av_read_frame(
+        cinTable[currentHandle].formatCtx,
+        cinTable[currentHandle].packet
+    );
+
+    if ( ret < 0 ) {
+        // eof
+        avcodec_send_packet( cinTable[currentHandle].vCodecCtx, NULL );
+		avcodec_send_packet( cinTable[currentHandle].aCodecCtx, NULL );
+        cinTable[currentHandle].eof = qtrue;
+	 	cinTable[currentHandle].status = FMV_EOF;
+    } else if ( cinTable[currentHandle].packet->stream_index ==
+         cinTable[currentHandle].videoStream && !onlyAudio ) {
+
+        avcodec_send_packet( 
+            cinTable[currentHandle].vCodecCtx, 
+            cinTable[currentHandle].packet 
+        );
+    } else if ( cinTable[currentHandle].packet->stream_index == 
+              cinTable[currentHandle].audioStream && 
+			  !cinTable[currentHandle].silent ) {
+		avcodec_send_packet( 
+			cinTable[currentHandle].aCodecCtx, 
+			cinTable[currentHandle].packet 
+		);
+
+		// Com_DPrintf( 
+		// 	"[DEMUX] stream=%d pts=%lld\n", 
+		// 	cinTable[currentHandle].packet->stream_index, 
+		// 	cinTable[currentHandle].packet->pts 
+		// );
+	}
+
+	return ret;
+}
+
+static void FFMPEG_PredecodeAudio( void ) {
+    int ret;
+    int outSamples;
+    short tmp[65536];
+    byte *outPlanes[1];
+	void *p;
+
+	int freq = 22050;
+    int capacity = freq * 60; // 60s start
+	int oldCap;
+    int size = 0;
+	int samples;
+
+    outPlanes[0] = (byte *)tmp;
+
+    cinTable[currentHandle].audioPCM.pcm = Z_Malloc( capacity * 2 * sizeof( short ) ); // stereo
+
+    while ( 1 ) {
+        ret = av_read_frame( 
+            cinTable[currentHandle].formatCtx, 
+            cinTable[currentHandle].packet 
+        );
+
+        if ( ret < 0 ) {
+            avcodec_send_packet( cinTable[currentHandle].aCodecCtx, NULL );
+            break;
+        }
+
+        if ( cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].audioStream ) {
+
+            avcodec_send_packet( 
+                cinTable[currentHandle].aCodecCtx, 
+                cinTable[currentHandle].packet 
+            );
+
+            while ( avcodec_receive_frame( cinTable[currentHandle].aCodecCtx, cinTable[currentHandle].aFrame ) == 0 ) {
+                outSamples = av_rescale_rnd( 
+                    swr_get_delay( 
+                        cinTable[currentHandle].swrCtx, 
+                        cinTable[currentHandle].aCodecCtx->sample_rate 
+                    ) + cinTable[currentHandle].aFrame->nb_samples, 
+                    freq, 
+                    cinTable[currentHandle].aCodecCtx->sample_rate, 
+                    AV_ROUND_UP 
+                );
+
+                samples = swr_convert( 
+                    cinTable[currentHandle].swrCtx, 
+                    outPlanes, 
+                    outSamples, 
+                    (const byte **)cinTable[currentHandle].aFrame->data, 
+                    cinTable[currentHandle].aFrame->nb_samples 
+                );
+
+                if ( samples > 0 ) {
+                    // extend buffer if need
+					if ( size + samples > capacity ) {
+						oldCap = capacity;
+						capacity *= 2;
+
+						p = Z_Malloc( capacity * 2 * sizeof( short ) );
+
+						if ( cinTable[currentHandle].audioPCM.pcm ) {
+							memcpy( p, cinTable[currentHandle].audioPCM.pcm, oldCap * 2 * sizeof( short ) );
+							Z_Free( cinTable[currentHandle].audioPCM.pcm );
+						}
+
+						cinTable[currentHandle].audioPCM.pcm = p;
+					}
+
+                    memcpy( 
+                        cinTable[currentHandle].audioPCM.pcm + size * 2, 
+                        tmp, 
+                        samples * 2 * sizeof( short ) 
+                    );
+
+                    size += samples;
+                }
+            }
+        }
+
+        av_packet_unref( cinTable[currentHandle].packet );
+    }
+
+    cinTable[currentHandle].audioPCM.totalSamples = size;
+    cinTable[currentHandle].audioPCM.playCursor = 0;
+    cinTable[currentHandle].audioPCM.sampleRate = freq;
+    cinTable[currentHandle].audioPCM.channels = 2;
+}
+
+static int FFMPEG_DecodeVideo( ) {
+	int ret;
+	ret = avcodec_receive_frame(
+        cinTable[currentHandle].vCodecCtx,
+        cinTable[currentHandle].vFrame
+    );
+
+    if ( ret == 0 ) {
+        // convert
+        if ( !cinTable[currentHandle].swsCtx ) {
+            cinTable[currentHandle].swsCtx = sws_getContext(
+                cinTable[currentHandle].vFrame->width,
+                cinTable[currentHandle].vFrame->height,
+                cinTable[currentHandle].vFrame->format,
+                cinTable[currentHandle].vFrame->width,
+                cinTable[currentHandle].vFrame->height,
+                AV_PIX_FMT_RGBA,
+                SWS_BICUBIC | SWS_ACCURATE_RND,
+                NULL, NULL, NULL
+            );
+        }
+
+        sws_scale(
+            cinTable[currentHandle].swsCtx,
+            ( const byte * const * )cinTable[currentHandle].vFrame->data,
+            cinTable[currentHandle].vFrame->linesize,
+            0,
+            cinTable[currentHandle].vFrame->height,
+            cinTable[currentHandle].vRgbaFrame->data,
+            cinTable[currentHandle].vRgbaFrame->linesize
+        );
+
+		cinTable[currentHandle].buf = cinTable[currentHandle].vRgbaFrame->data[0];
+        cinTable[currentHandle].dirty = qtrue;
+        cinTable[currentHandle].numQuads++;
+    }
+
+	return ret;
+}
+
+/******************************************************************************
+*
+* Function: FFMPEG_Interrupt
+*
+* Description:
+*
+******************************************************************************/
+static void FFMPEG_Interrupt( void ) {
+	int t0;
+	static int dbg_frame = 0;
+	dbg_frame++;
+
+	// Com_DPrintf( 
+	// 	"[AUDIO DBG] frame=%d soundtime=%d rawend=%d delta=%d\n", 
+	// 	dbg_frame, 
+	// 	s_soundtime, 
+	// 	s_rawend[CIN_STREAM], 
+	// 	s_rawend[CIN_STREAM] - s_soundtime 
+	// );
+
+    if ( currentHandle < 0 ) {
+        return;
+	}
+
+    // eof
+    if ( cinTable[currentHandle].eof ) {
+        cinTable[currentHandle].status = FMV_EOF;
+        return;
+    }
+
+	if ( !cinTable[currentHandle].firstAudioFrameFlag ) {
+		S_Update( );
+		Com_DPrintf( "S_Update: Setting rawend to %i\n", s_soundtime );
+		s_rawend[CIN_STREAM] = s_soundtime;
+		cinTable[currentHandle].firstAudioFrameFlag = qtrue;
+		S_RawSamples( 
+			CIN_STREAM, 
+			cinTable[currentHandle].audioPCM.totalSamples, 
+			cinTable[currentHandle].audioPCM.sampleRate, 
+			2, 
+			cinTable[currentHandle].audioPCM.channels, 
+			(byte *)cinTable[currentHandle].audioPCM.pcm, 
+			1.0f, 
+			-1 
+		);
+	}
+
+	t0 = Sys_Milliseconds( );
+
+	// read frame
+	FFMPEG_ReadFrame( qfalse );
+
+	if ( cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].videoStream ) {
+		// video
+		FFMPEG_DecodeVideo( );
+		// Com_Printf( "VIDEO decode+convert: %i ms\n", ( Sys_Milliseconds( ) - t0 ) );
+	}
+
+	// Com_DPrintf( "[%s_STREAM] video pts = %i; audio pts = %i; audio (seconds) by samples = %lf\n", 
+	// 	cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].audioStream ? "AUDIO" : "VIDEO", 
+	// 	cinTable[currentHandle].vFrame->pts * av_q2d( cinTable[currentHandle].formatCtx->streams[cinTable[currentHandle].videoStream]->time_base ), 
+	// 	cinTable[currentHandle].aFrame->pts * av_q2d( cinTable[currentHandle].formatCtx->streams[cinTable[currentHandle].audioStream]->time_base ), 
+	// 	(double)cinTable[currentHandle].audioQueuedSamples / 22050 
+	// );
+}
+
 /******************************************************************************
 *
 * Function:
@@ -1300,6 +1616,203 @@ static void RoQ_init( void ) {
 		return;
 	}
 
+}
+
+/******************************************************************************
+*
+* Function: FFMPEG_Init
+*
+* Description:
+*
+******************************************************************************/
+static int FFMPEG_Init( void ) {
+	int i;
+	int ret;
+
+	cinTable[currentHandle].startTime = cinTable[currentHandle].lastTime = CL_ScaledMilliseconds();
+
+	cinTable[currentHandle].avioBuf = av_malloc( 65536 );
+
+	FS_Seek( cinTable[currentHandle].iFile, 0, FS_SEEK_SET );
+
+	cinTable[currentHandle].avioCtx = avio_alloc_context( 
+		cinTable[currentHandle].avioBuf, 
+		65536, 
+		0, 
+		&cinTable[currentHandle], 
+		&FFMPEG_Read, 
+		NULL, 
+		&FFMPEG_Seek 
+	);
+
+	cinTable[currentHandle].formatCtx = avformat_alloc_context();
+	if ( !cinTable[currentHandle].formatCtx ) {
+		return -1;
+	}
+
+	cinTable[currentHandle].formatCtx->pb = cinTable[currentHandle].avioCtx;
+	cinTable[currentHandle].formatCtx->flags |= AVFMT_FLAG_CUSTOM_IO;
+
+	if ( ( ret = avformat_open_input( &cinTable[currentHandle].formatCtx, NULL, NULL, NULL ) ) < 0 ) {
+    	Com_Error( ERR_FATAL, "avformat_open_input failed %i\n", ret );
+		return -1;
+	}
+
+	if ( ( ret = avformat_find_stream_info( cinTable[currentHandle].formatCtx, NULL ) ) < 0 ) {
+		Com_Error( ERR_FATAL, "avformat_find_stream_info failed %i\n", ret );
+		return -1;
+	}
+
+	cinTable[currentHandle].videoStream = -1;
+
+	for ( i = 0; i < cinTable[currentHandle].formatCtx->nb_streams; ++i ) {
+		if ( cinTable[currentHandle].formatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ) {
+			cinTable[currentHandle].videoStream = i;
+			break;
+		}
+	}
+
+	if ( cinTable[currentHandle].videoStream < 0 ) {
+		Com_Error( ERR_FATAL, "No video stream\n" );
+	}
+
+    cinTable[currentHandle].packet = av_packet_alloc();
+    if ( !cinTable[currentHandle].packet ) {
+		return -1;
+	}
+
+	AVStream *vSt = cinTable[currentHandle].formatCtx->streams[cinTable[currentHandle].videoStream];
+
+	cinTable[currentHandle].roqFPS = (int)((float)vSt->avg_frame_rate.num / vSt->avg_frame_rate.den + 0.5f);
+
+	cinTable[currentHandle].vCodec = avcodec_find_decoder( vSt->codecpar->codec_id );
+	if ( !cinTable[currentHandle].vCodec ) {
+		Com_Error( ERR_FATAL, "Codec not found\n" );
+		return -1;
+	}
+
+	cinTable[currentHandle].vCodecCtx = avcodec_alloc_context3( cinTable[currentHandle].vCodec );
+	if ( !cinTable[currentHandle].vCodecCtx ) {
+		Com_Error( ERR_FATAL, "Could not allocate video codec context\n" );
+        return -1;
+    }
+
+	if ( ( ret = avcodec_parameters_to_context( cinTable[currentHandle].vCodecCtx, vSt->codecpar ) ) < 0 ) {
+		Com_Error( ERR_FATAL, "avcodec_parameters_to_context failed %i\n", ret );
+		return -1;
+	}
+
+	if ( avcodec_open2( cinTable[currentHandle].vCodecCtx, cinTable[currentHandle].vCodec, NULL ) < 0 ) {
+		Com_Error( ERR_FATAL, "Could not open codec\n" );
+		return -1;
+    }
+
+	cinTable[currentHandle].vFrame = av_frame_alloc();
+    if ( !cinTable[currentHandle].vFrame ) {
+		Com_Error( ERR_FATAL, "Could not allocate video frame\n" );
+		return -1;
+    }
+
+	cinTable[currentHandle].vRgbaFrame = av_frame_alloc();
+    if ( !cinTable[currentHandle].vRgbaFrame ) {
+		Com_Error( ERR_FATAL, "Could not allocate video rgbaFrame\n" );
+		return -1;
+    }
+
+	cinTable[currentHandle].vRgbaFrame->format = AV_PIX_FMT_RGBA;
+	cinTable[currentHandle].vRgbaFrame->width  = cinTable[currentHandle].vCodecCtx->width;
+	cinTable[currentHandle].vRgbaFrame->height = cinTable[currentHandle].vCodecCtx->height;
+
+	av_frame_get_buffer(cinTable[currentHandle].vRgbaFrame, 32);
+
+	cinTable[currentHandle].eof = qfalse;
+
+	cinTable[currentHandle].numQuads = -1;
+
+	// audio
+	cinTable[currentHandle].audioStream = -1;
+
+	for ( i = 0; i < cinTable[currentHandle].formatCtx->nb_streams; ++i ) {
+		if ( cinTable[currentHandle].formatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO ) {
+			cinTable[currentHandle].audioStream = i;
+			break;
+		}
+	}
+
+	AVStream *aSt = cinTable[currentHandle].formatCtx->streams[cinTable[currentHandle].audioStream];
+
+	cinTable[currentHandle].aCodec = avcodec_find_decoder( aSt->codecpar->codec_id );
+	if ( !cinTable[currentHandle].aCodec ) {
+		Com_Error( ERR_FATAL, "Codec not found\n" );
+		return -1;
+	}
+
+	cinTable[currentHandle].aCodecCtx = avcodec_alloc_context3( cinTable[currentHandle].aCodec );
+	if ( !cinTable[currentHandle].aCodecCtx ) {
+		Com_Error( ERR_FATAL, "Could not allocate audio codec context\n" );
+        return -1;
+    }
+
+	if ( ( ret = avcodec_parameters_to_context( cinTable[currentHandle].aCodecCtx, aSt->codecpar ) ) < 0 ) {
+		Com_Error( ERR_FATAL, "avcodec_parameters_to_context failed %i\n", ret );
+		return -1;
+	}
+
+	if ( avcodec_open2( cinTable[currentHandle].aCodecCtx, cinTable[currentHandle].aCodec, NULL ) < 0 ) {
+		Com_Error( ERR_FATAL, "Could not open codec\n" );
+		return -1;
+    }
+
+    cinTable[currentHandle].aFrame = av_frame_alloc();
+    if ( !cinTable[currentHandle].aFrame ) {
+		Com_Error( ERR_FATAL, "Could not allocate video aFrame\n" );
+		return -1;
+    }
+
+	AVChannelLayout in_layout;
+	AVChannelLayout out_layout;
+
+	// in layout from codec
+	av_channel_layout_copy( &in_layout, &cinTable[currentHandle].aCodecCtx->ch_layout );
+
+	// if codec not setted layout (often opus)
+	if ( in_layout.nb_channels == 0 ) {
+		av_channel_layout_default( &in_layout, cinTable[currentHandle].aCodecCtx->sample_rate > 1 ? 2 : 1 );
+	}
+
+	// always stereo
+	av_channel_layout_default( &out_layout, 2 );
+
+	ret = swr_alloc_set_opts2(
+		&cinTable[currentHandle].swrCtx, 
+		&out_layout, 
+		AV_SAMPLE_FMT_S16, 
+		22050, 
+		&in_layout, 
+		cinTable[currentHandle].aCodecCtx->sample_fmt, 
+		cinTable[currentHandle].aCodecCtx->sample_rate, 
+		0, 
+		NULL 
+	);
+
+	if ( ret < 0 ) {
+		Com_Error( ERR_FATAL, "swr_alloc_set_opts2 failed %i\n", ret );
+		return -1;
+	}
+
+	if ( ( ret = swr_init( cinTable[currentHandle].swrCtx ) ) < 0 ) {
+		Com_Error( ERR_FATAL, "swr_init failed %i\n", ret );
+		return -1;
+	}
+
+	av_channel_layout_uninit( &in_layout );
+	av_channel_layout_uninit( &out_layout );
+
+	cinTable[currentHandle].buf = NULL;
+
+	cinTable[currentHandle].firstAudioFrameFlag = qfalse;
+
+	return 0;
 }
 
 /******************************************************************************
@@ -1345,6 +1858,118 @@ static void RoQShutdown( void ) {
 	currentHandle = -1;
 }
 
+
+/******************************************************************************
+*
+* Function: FFMPEG_Free
+*
+* Description:
+*
+******************************************************************************/
+static void FFMPEG_Free( void ) {
+	if ( cinTable[currentHandle].packet ) {
+		av_packet_free( &cinTable[currentHandle].packet );
+		cinTable[currentHandle].packet = NULL;
+	}
+
+    if ( cinTable[currentHandle].swsCtx ) {
+        sws_freeContext( cinTable[currentHandle].swsCtx );
+        cinTable[currentHandle].swsCtx = NULL;
+    }
+
+    if ( cinTable[currentHandle].vRgbaFrame ) {
+        av_frame_free( &cinTable[currentHandle].vRgbaFrame );
+		cinTable[currentHandle].vRgbaFrame = NULL;
+    }
+
+	if ( cinTable[currentHandle].vCodecCtx ) {
+		avcodec_free_context( &cinTable[currentHandle].vCodecCtx );
+		cinTable[currentHandle].vCodecCtx = NULL;
+	}
+
+	if ( cinTable[currentHandle].vFrame ) {
+        av_frame_free( &cinTable[currentHandle].vFrame );
+		cinTable[currentHandle].vFrame = NULL;
+    }
+
+	if ( cinTable[currentHandle].formatCtx ) {
+		avformat_close_input( &cinTable[currentHandle].formatCtx );
+		cinTable[currentHandle].formatCtx = NULL;
+	}
+
+	// if ( cinTable[currentHandle].avioBuf ) {
+	// 	av_freep( &cinTable[currentHandle].avioBuf );
+	// }
+
+	if ( cinTable[currentHandle].avioCtx ) {
+		avio_context_free( &cinTable[currentHandle].avioCtx );
+		cinTable[currentHandle].avioCtx = NULL;
+	}
+
+	Com_DPrintf( "finished cinematic\n" );
+
+	cinTable[currentHandle].videoStream = -1;
+
+	// audio
+	if ( cinTable[currentHandle].swrCtx ) {
+		swr_free( &cinTable[currentHandle].swrCtx );
+		cinTable[currentHandle].swrCtx = NULL;
+	}
+
+	if ( cinTable[currentHandle].aFrame ) {
+		av_frame_free( &cinTable[currentHandle].aFrame );
+		cinTable[currentHandle].aFrame = NULL;
+	}
+
+	if ( cinTable[currentHandle].aCodecCtx ) {
+		avcodec_free_context( &cinTable[currentHandle].aCodecCtx );
+		cinTable[currentHandle].aCodecCtx = NULL;
+	}
+
+	cinTable[currentHandle].audioStream = -1;
+}
+
+/******************************************************************************
+*
+* Function: FFMPEG_Shutdown
+*
+* Description:
+*
+******************************************************************************/
+static void FFMPEG_Shutdown( void ) {
+	const char *s;
+
+	FFMPEG_Free( );
+
+	cinTable[currentHandle].status = FMV_IDLE;
+
+	if ( cinTable[currentHandle].iFile ) {
+		FS_FCloseFile( cinTable[currentHandle].iFile );
+		cinTable[currentHandle].iFile = 0;
+	}
+
+	if ( cinTable[currentHandle].alterGameState ) {
+		clc.state = CA_DISCONNECTED;
+		// we can't just do a vstr nextmap, because
+		// if we are aborting the intro cinematic with
+		// a devmap command, nextmap would be valid by
+		// the time it was referenced
+		s = Cvar_VariableString( "nextmap" );
+		if ( s[0] ) {
+			Cbuf_ExecuteText( EXEC_APPEND, va( "%s\n", s ) );
+			Cvar_Set( "nextmap", "" );
+		}
+		CL_handle = -1;
+	}
+
+	cinTable[currentHandle].fileName[0] = 0;
+	cinTable[currentHandle].eof = qtrue;
+	cinTable[currentHandle].buf = NULL;
+	cinTable[currentHandle].firstAudioFrameFlag = qfalse;
+
+	currentHandle = -1;
+}
+
 /*
 ==================
 CIN_StopCinematic
@@ -1369,7 +1994,11 @@ e_status CIN_StopCinematic( int handle ) {
 		}
 	}
 	cinTable[currentHandle].status = FMV_EOF;
-	RoQShutdown();
+	if ( cin.isRoq ) {
+		RoQShutdown();
+	} else {
+		FFMPEG_Shutdown();
+	}
 
 	return FMV_EOF;
 }
@@ -1396,7 +2025,11 @@ e_status CIN_RunCinematic( int handle ) {
 		currentHandle = handle;
 		cin.currentHandle = currentHandle;
 		cinTable[currentHandle].status = FMV_EOF;
-		RoQReset();
+		if ( cin.isRoq ) {
+			RoQReset();
+		} else {
+			FFMPEG_Reset();
+		}
 	}
 
 	if ( cinTable[handle].playonwalls < -1 ) {
@@ -1425,7 +2058,11 @@ e_status CIN_RunCinematic( int handle ) {
 	start = cinTable[currentHandle].startTime;
 	while ( ( cinTable[currentHandle].tfps != cinTable[currentHandle].numQuads ) && ( cinTable[currentHandle].status == FMV_PLAY ) )
 	{
-		RoQInterrupt();
+		if ( cin.isRoq ) {
+			RoQInterrupt();
+		} else {
+			FFMPEG_Interrupt();
+		}
 		if ( start != cinTable[currentHandle].startTime ) {
 			cinTable[currentHandle].tfps = ( ( ( CL_ScaledMilliseconds() - cinTable[currentHandle].startTime ) * cinTable[currentHandle].roqFPS ) / 1000 );
 
@@ -1439,7 +2076,11 @@ e_status CIN_RunCinematic( int handle ) {
 		if ( s_rawend[CIN_STREAM] < s_soundtime && ( s_soundtime - s_rawend[CIN_STREAM] ) < 100 ) {
 			cinTable[currentHandle].startTime -= ( s_soundtime - s_rawend[CIN_STREAM] );
 			do {
-				RoQInterrupt();
+				if ( cin.isRoq ) {
+					RoQInterrupt();
+				} else {
+					FFMPEG_Interrupt();
+				}
 			} while ( s_rawend[CIN_STREAM] < s_soundtime &&  cinTable[currentHandle].status == FMV_PLAY );
 		}
 	}
@@ -1455,9 +2096,17 @@ e_status CIN_RunCinematic( int handle ) {
 
 	if ( cinTable[currentHandle].status == FMV_EOF ) {
 		if ( cinTable[currentHandle].looping ) {
-			RoQReset();
+			if ( cin.isRoq ) {
+				RoQReset();
+			} else {
+				FFMPEG_Reset();
+			}
 		} else {
-			RoQShutdown();
+			if ( cin.isRoq ) {
+				RoQShutdown();
+			} else {
+				FFMPEG_Shutdown();
+			}
 			return FMV_EOF;
 		}
 	}
@@ -1474,6 +2123,8 @@ int CIN_PlayCinematic( const char *arg, int x, int y, int w, int h, int systemBi
 	unsigned short RoQID;
 	char name[MAX_OSPATH];
 	int i;
+	char* pDotExt;
+	char *ext;
 
 	if ( strstr( arg, "/" ) == NULL && strstr( arg, "\\" ) == NULL ) {
 		Com_sprintf( name, sizeof( name ), "video/%s", arg );
@@ -1492,19 +2143,35 @@ int CIN_PlayCinematic( const char *arg, int x, int y, int w, int h, int systemBi
 	Com_DPrintf( "CIN_PlayCinematic( %s )\n", arg );
 
 	Com_Memset( &cin, 0, sizeof( cinematics_t ) );
+
+	pDotExt = strrchr( arg, '.' );
+
+	if ( pDotExt != NULL ) {
+		ext = Z_Malloc( strlen( pDotExt ) );
+		if ( ext != NULL ) {
+			strcpy_s( ext, strlen( pDotExt ), pDotExt + 1 );
+			cin.isRoq = strcmpi( ext, "roq" ) == 0;
+			Z_Free( ext );
+		}
+	}
+
 	currentHandle = CIN_HandleForVideo();
 
 	cin.currentHandle = currentHandle;
 
 	strcpy( cinTable[currentHandle].fileName, name );
 
-	cinTable[currentHandle].ROQSize = 0;
-	cinTable[currentHandle].ROQSize = FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
+	if ( cin.isRoq ) {
+		cinTable[currentHandle].ROQSize = 0;
+		cinTable[currentHandle].ROQSize = FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
 
-	if ( cinTable[currentHandle].ROQSize <= 0 ) {
-		Com_DPrintf( "play(%s), ROQSize<=0\n", arg );
-		cinTable[currentHandle].fileName[0] = 0;
-		return -1;
+		if ( cinTable[currentHandle].ROQSize <= 0 ) {
+			Com_DPrintf( "play(%s), ROQSize<=0\n", arg );
+			cinTable[currentHandle].fileName[0] = 0;
+			return -1;
+		}
+	} else {
+		FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
 	}
 
 	CIN_SetExtents( currentHandle, x, y, w, h );
@@ -1529,36 +2196,73 @@ int CIN_PlayCinematic( const char *arg, int x, int y, int w, int h, int systemBi
 		cinTable[currentHandle].playonwalls = cl_inGameVideo->integer;
 	}
 
-	initRoQ();
+	if ( cin.isRoq ) {
+		initRoQ();
 
-	FS_Read( cin.file, 16, cinTable[currentHandle].iFile );
+		FS_Read( cin.file, 16, cinTable[currentHandle].iFile );
+		RoQID = ( unsigned short )( cin.file[0] ) + ( unsigned short )( cin.file[1] ) * 256;
+		if ( RoQID == 0x1084 ) {
+			RoQ_init();
+	//		FS_Read (cin.file, cinTable[currentHandle].RoQFrameSize+8, cinTable[currentHandle].iFile);
 
-	RoQID = ( unsigned short )( cin.file[0] ) + ( unsigned short )( cin.file[1] ) * 256;
-	if ( RoQID == 0x1084 ) {
-		RoQ_init();
-//		FS_Read (cin.file, cinTable[currentHandle].RoQFrameSize+8, cinTable[currentHandle].iFile);
+			cinTable[currentHandle].status = FMV_PLAY;
+			Com_DPrintf( "trFMV::play(), playing %s\n", arg );
 
-		cinTable[currentHandle].status = FMV_PLAY;
-		Com_DPrintf( "trFMV::play(), playing %s\n", arg );
+			if ( cinTable[currentHandle].alterGameState ) {
+				clc.state = CA_CINEMATIC;
+			}
 
-		if ( cinTable[currentHandle].alterGameState ) {
-			clc.state = CA_CINEMATIC;
+			Con_Close();
+
+			Com_DPrintf( "Setting rawend to %i\n", s_soundtime );
+
+			if (!cinTable[currentHandle].silent) {
+				s_rawend[0] = s_soundtime;
+			}
+
+			return currentHandle;
 		}
+		Com_DPrintf( "trFMV::play(), invalid RoQ ID\n" );
 
-		Con_Close();
+		RoQShutdown();
+		return -1;
+	} else {
+		if ( !FFMPEG_Init() ) {
+			FFMPEG_PredecodeAudio( );
+			// FFMPEG_PredecodeVideo( );
 
-		Com_DPrintf( "Setting rawend to %i\n", s_soundtime );
+			FFMPEG_Free( );
 
-		if (!cinTable[currentHandle].silent) {
-			s_rawend[0] = s_soundtime;
+			if ( cinTable[currentHandle].iFile ) {
+				FS_FCloseFile( cinTable[currentHandle].iFile );
+				cinTable[currentHandle].iFile = 0;
+			}
+
+			FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
+			// let the background thread start reading ahead
+			FFMPEG_Init( );
+
+			cinTable[currentHandle].status = FMV_PLAY;
+			Com_DPrintf( "trFMV::play(), playing %s\n", arg );
+
+			if ( cinTable[currentHandle].alterGameState ) {
+				clc.state = CA_CINEMATIC;
+			}
+
+			Con_Close();
+
+			Com_DPrintf( "Setting rawend to %i\n", s_soundtime );
+
+			if (!cinTable[currentHandle].silent) {
+				s_rawend[0] = s_soundtime;
+			}
+
+			return currentHandle;
+		} else {
+			FFMPEG_Shutdown();
+			return -1;
 		}
-
-		return currentHandle;
 	}
-	Com_DPrintf( "trFMV::play(), invalid RoQ ID\n" );
-
-	RoQShutdown();
-	return -1;
 }
 
 void CIN_SetExtents( int handle, int x, int y, int w, int h ) {
@@ -1663,6 +2367,10 @@ void CIN_DrawCinematic( int handle ) {
 	buf = cinTable[handle].buf;
 	SCR_AdjustFrom640( &x, &y, &w, &h );
 
+	if ( !cin.isRoq ) {
+		cinTable[handle].drawX = cinTable[handle].CIN_WIDTH = cinTable[handle].vFrame->width;
+		cinTable[handle].drawY = cinTable[handle].CIN_HEIGHT = cinTable[handle].vFrame->height;
+	}
 
 	if ( cinTable[handle].letterBox ) {
 		float barheight;

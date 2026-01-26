@@ -144,6 +144,7 @@ vmCvar_t g_medicChargeTime;
 vmCvar_t g_engineerChargeTime;
 vmCvar_t g_LTChargeTime;
 vmCvar_t g_soldierChargeTime;
+vmCvar_t g_cvopsChargeTime;
 // jpw
 
 vmCvar_t g_playerStart;         // set when the player enters the game
@@ -179,6 +180,7 @@ vmCvar_t g_noobTube;
 vmCvar_t g_aiCollision;
 vmCvar_t g_specialWaves;
 vmCvar_t g_level_was_selected;
+vmCvar_t g_survivalAiHealthCap;
 
 vmCvar_t g_playerSurvivalClass;    
 
@@ -223,22 +225,25 @@ cvarTable_t gameCvarTable[] = {
 
 	{&g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_survivalAiHealthCap, "g_survivalAiHealthCap", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
 	{&g_reloading, "g_reloading", "0", CVAR_ROM}, //----(SA)	added
 
 	// JPW NERVE multiplayer stuffs
 	{&g_redlimbotime, "g_redlimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
 	{&g_bluelimbotime, "g_bluelimbotime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
-	{&g_medicChargeTime, "g_medicChargeTime", "45000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
-	{&g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
 	{&g_jumptime, "g_jumptime", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
 	{&g_fireonthemove, "g_fireonthemove", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_spawndogs, "g_spawndogs", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_spawnpriests, "g_spawnpriests", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_spawnxshepherds, "g_spawnxshepherds", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_aicanheadshot, "g_aicanheadshot", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_LTChargeTime, "g_LTChargeTime", "35000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
-	{&g_soldierChargeTime, "g_soldierChargeTime", "20000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	
+	{&g_LTChargeTime, "g_LTChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_cvopsChargeTime, "g_cvopsChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_medicChargeTime, "g_medicChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_engineerChargeTime, "g_engineerChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
+	{&g_soldierChargeTime, "g_soldierChargeTime", "30000", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse},
 	// jpw
 
 	{&g_playerStart, "g_playerStart", "0", CVAR_ROM, 0, qfalse},
@@ -446,6 +451,7 @@ qboolean G_canStealthStab( int aiChar ) {
 	switch ( aiChar ) {
 	case AICHAR_SOLDIER:
 	case AICHAR_MERCENARY:
+	case AICHAR_TRENCH:
 	case AICHAR_AMERICAN:
 	case AICHAR_ELITEGUARD:
 	case AICHAR_BLACKGUARD:

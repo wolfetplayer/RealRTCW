@@ -160,7 +160,8 @@ translateString_t translateStrings[] = {
 	{"weapon"},
 	{"price"},
 	{"ammo_price"},
-    {"survival_gameover"},   
+    {"survival_gameover"},
+	{"usedcross"},
 };
 
 bonusString_t bonusStrings[] = {

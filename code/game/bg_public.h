@@ -318,6 +318,7 @@ typedef struct {
 	int soldierChargeTime;
 	int engineerChargeTime;
 	int medicChargeTime;
+	int cvopsChargeTime;
 
 	int gametype;
 
@@ -336,7 +337,8 @@ int Pmove( pmove_t *pmove );
 #define PC_SOLDIER              1   
 #define PC_MEDIC                2   
 #define PC_ENGINEER             3   
-#define PC_LT                   4   
+#define PC_LT                   4
+#define PC_CVOPS                5   
 #define PC_MEDIC_CHARGETIME     30000 
 
 
@@ -455,6 +457,7 @@ typedef enum {
 
 typedef enum {
 	HI_NONE,
+	// draw in HUD
 	HI_WINE,
 	HI_ADRENALINE,
 	HI_BANDAGES,
@@ -465,6 +468,10 @@ typedef enum {
 	HI_EG_SYRINGE,
 	HI_BG_SYRINGE,
 	HI_LP_SYRINGE,
+	HI_CROSS,
+	// boundary marker
+	HI_HUD_VISIBLE_END,
+	// for special logic
 	HI_KNIVES,
 	HI_M97,
 	HI_AUTO5,
@@ -509,6 +516,7 @@ typedef enum
 	AICHAR_ZOMBIE_FLAME,
 	AICHAR_LOPER_SPECIAL,
 	AICHAR_MERCENARY,
+	AICHAR_TRENCH,
 	NUM_CHARACTERS
 } AICharacters_t;
 
@@ -565,7 +573,6 @@ typedef enum {
 	WP_AIRSTRIKE,
 	WP_ARTY,
 	WP_POISONGAS,
-	WP_POISONGAS_MEDIC,
 	WP_SMOKETRAIL,          
 	WP_HOLYCROSS,
 	WP_SMOKE_BOMB,
@@ -662,7 +669,6 @@ static const int autoReloadWeapons[] = {
 	WP_FLAMETHROWER,
 	WP_POISONGAS,
 	WP_AIRSTRIKE,
-	WP_POISONGAS_MEDIC,
 	WP_DYNAMITE_ENG,
 	WP_KNIFE,
 	WP_M7,
@@ -1044,9 +1050,9 @@ extern char *animStringsOld[];      // defined in bg_misc.c
 typedef enum
 {
 	HIT_NONE = 0,
-	HIT_TEAMSHOT,
-	HIT_HEADSHOT,
 	HIT_BODYSHOT,
+	HIT_HEADSHOT,
+	HIT_TEAMSHOT,
 	HIT_DEATHSHOT,		// this shot killed the enemy
 	HIT_MAX_NUM
 } hitEvent_t;

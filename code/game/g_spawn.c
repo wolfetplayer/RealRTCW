@@ -190,6 +190,7 @@ field_t fields[] = {
 	{"buy_item",         FOFS( buy_item ),           F_STRING},
 	{"isWeapon",         FOFS( isWeapon ),             F_INT},
 	{"wave",             FOFS( wave ),                F_INT},
+	{"oneshot",          FOFS( oneshot ),                F_INT},
 	{NULL}
 };
 
@@ -338,6 +339,7 @@ void SP_ai_russian( gentity_t *ent );
 void SP_ai_civilian( gentity_t *ent );
 void SP_ai_loper_special( gentity_t *ent );
 void SP_ai_mercenary( gentity_t *ent );
+void SP_ai_trench( gentity_t *ent );
 // done.
 
 // Rafael particles
@@ -618,6 +620,7 @@ spawn_t spawns[] = {
 	{"ai_civilian", SP_ai_civilian},
 	{"ai_loper_special", SP_ai_loper_special},
 	{"ai_mercenary", SP_ai_mercenary},
+	{"ai_trench", SP_ai_trench},
 
 
 	{"ai_marker", SP_ai_marker},

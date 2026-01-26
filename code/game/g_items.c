@@ -214,6 +214,64 @@ int Pickup_Treasure(gentity_t *ent, gentity_t *other) {
     return RESPAWN_SP;
 }
 
+// Tides of War Cross
+void CrossThink( gentity_t *timer ) {
+	gentity_t *targ;
+	gentity_t *owner;
+
+	if ( !timer || !timer->inuse ) {
+		return;
+	}
+
+	targ  = timer->enemy;       // stored target
+	owner = timer->parent;      // stored owner (may be NULL)
+
+	if ( targ && targ->inuse && targ->health > 0 ) {
+		if ( !owner || !owner->inuse ) {
+			owner = &g_entities[ENTITYNUM_WORLD];
+		}
+
+		G_Damage( targ, owner, owner, vec3_origin, targ->r.currentOrigin,
+		          9999, DAMAGE_NO_PROTECTION, MOD_FLAMETHROWER );
+	}
+
+	G_FreeEntity( timer );
+}
+
+void CrossBurn( gentity_t *owner, gentity_t *targ ) {
+	gentity_t *timer;
+
+	if ( !targ || !targ->inuse ) return;
+	if ( targ->health <= 0 ) return;
+	if ( !targ->client ) return;
+
+	if ( targ->flameQuotaTime && targ->flameQuota > 0 ) {
+		int damage = 1;
+		targ->flameQuota -= (int)( (((float)(level.time - targ->flameQuotaTime)) / 1000.0f) * (float)damage / 2.0f );
+		if ( targ->flameQuota < 0 ) targ->flameQuota = 0;
+	}
+
+	targ->flameQuota += 999;
+	targ->flameQuotaTime = level.time;
+
+	if ( targ->s.onFireEnd < level.time ) {
+		targ->s.onFireStart = level.time;
+	}
+	targ->s.onFireEnd   = level.time + 4000;
+	targ->flameBurnEnt  = owner ? owner->s.number : ENTITYNUM_WORLD;
+	targ->client->ps.onFireStart = level.time;
+
+	// ---- schedule delayed kill without touching targ->think ----
+	timer = G_Spawn();
+	timer->classname = "cross_kill_timer";
+	timer->r.svFlags = SVF_NOCLIENT;
+
+	timer->enemy  = targ;     // target to kill later
+	timer->parent = owner;    // who caused it
+
+	timer->think = CrossThink;
+	timer->nextthink = level.time + 1500;  // 1.5s (use 1000..2000)
+}
 
 /*
 ==============
@@ -351,7 +409,45 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		}
 		}
 		break;
+	case HI_CROSS:
+		const float radius = 512.0f; // tune
+		int touch[MAX_GENTITIES];
+		int num, i;
+		vec3_t mins, maxs, delta;
+		gentity_t *targ;
 
+		VectorSet(mins, ent->r.currentOrigin[0] - radius, ent->r.currentOrigin[1] - radius, ent->r.currentOrigin[2] - radius);
+		VectorSet(maxs, ent->r.currentOrigin[0] + radius, ent->r.currentOrigin[1] + radius, ent->r.currentOrigin[2] + radius);
+
+		num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
+
+		for (i = 0; i < num; i++)
+		{
+			targ = &g_entities[touch[i]];
+
+			if (!targ->inuse || targ->health <= 0)
+				continue;
+			if (!targ->client)
+				continue;
+
+			if (targ->aiCharacter != AICHAR_ZOMBIE 
+				&& targ->aiCharacter != AICHAR_WARZOMBIE 
+				&& targ->aiCharacter != AICHAR_PRIEST 
+				&& targ->aiCharacter != AICHAR_ZOMBIE_SURV 
+				&& targ->aiCharacter != AICHAR_ZOMBIE_GHOST 
+				&& targ->aiCharacter != AICHAR_ZOMBIE_FLAME)
+			{
+				continue;
+			}
+
+			// real radius check
+			VectorSubtract(targ->r.currentOrigin, ent->r.currentOrigin, delta);
+			if (VectorLength(delta) > radius)
+				continue;
+
+			CrossBurn(ent, targ);
+		};
+		break;
 	case HI_BOOK1:
 	case HI_BOOK2:
 	case HI_BOOK3:
@@ -464,8 +560,6 @@ void Add_Ammo(gentity_t *ent, int weapon, int count, qboolean fillClip) {
 		case WP_GRENADE_LAUNCHER:
 		case WP_GRENADE_PINEAPPLE:
 		case WP_DYNAMITE:
-		case WP_SMOKE_BOMB:
-		case WP_POISONGAS:
 		case WP_KNIFE:
 			COM_BitSet(ent->client->ps.weapons, ammoweap);
 		case WP_TESLA:
@@ -2214,12 +2308,13 @@ G_DropSpecifiedItem
 
 Drops any item specified by gitem_t*.
 - lifetimeMs: 0 means "forever" (like SP weapon drops).
+- dropChance: the probability of dropping items (0 to 100).
 =================
 */
-gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs ) {
+gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs, int dropChance ) {
 	gentity_t *drop;
 
-	if ( !ent || !ent->client || !item ) {
+	if ( !ent || !ent->client || !item || rand() % 100 >= dropChance ) {
 		return NULL;
 	}
 

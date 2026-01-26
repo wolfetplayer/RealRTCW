@@ -145,6 +145,9 @@ static void CG_UseItem( centity_t *cent ) {
 				case HI_BANDAGES:
 					CG_CenterPrint( "usedbandages", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
+				case HI_CROSS:
+					CG_CenterPrint( "usedcross", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
 				case HI_WINE:
 					CG_CenterPrint( "drankwine", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
@@ -181,6 +184,9 @@ static void CG_UseItem( centity_t *cent ) {
 		break;
 	case HI_BANDAGES:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.bandagesSound );
+		break;
+	case HI_CROSS:
+		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.crossSound );
 		break;
 	}
 }
@@ -1857,7 +1863,7 @@ case EV_FILL_CLIP_FULL:
 	case EV_NOAMMO:
 		DEBUGNAME( "EV_NOAMMO" );
 		CG_ResetSimpleZoom();
-		if ( ( es->weapon != WP_GRENADE_LAUNCHER ) && ( es->weapon != WP_GRENADE_PINEAPPLE ) && ( es->weapon != WP_SMOKE_BOMB ) && ( es->weapon != WP_DYNAMITE )  && ( es->weapon != WP_DYNAMITE_ENG ) && ( es->weapon != WP_AIRSTRIKE ) && ( es->weapon != WP_POISONGAS ) && ( es->weapon != WP_POISONGAS_MEDIC )  ) {
+		if ( ( es->weapon != WP_GRENADE_LAUNCHER ) && ( es->weapon != WP_GRENADE_PINEAPPLE ) && ( es->weapon != WP_SMOKE_BOMB ) && ( es->weapon != WP_DYNAMITE )  && ( es->weapon != WP_DYNAMITE_ENG ) && ( es->weapon != WP_AIRSTRIKE ) && ( es->weapon != WP_POISONGAS )  ) {
 			trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		}
 		if ( es->number == cg.snap->ps.clientNum && cg_autoReload.integer == 1 ) {

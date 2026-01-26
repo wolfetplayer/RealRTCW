@@ -239,10 +239,10 @@ vmCvar_t cg_gameSkill;
 
 vmCvar_t cg_hitSounds;
 
-vmCvar_t cg_hitFeedback;
-vmCvar_t cg_hitFeedbackSize;
-vmCvar_t cg_hitFeedbackAlpha;
-vmCvar_t cg_solidHitFeedback;
+vmCvar_t cg_hitMarker;
+vmCvar_t cg_hitMarkerSize;
+vmCvar_t cg_hitMarkerAlpha;
+vmCvar_t cg_solidHitMarker;
 
 vmCvar_t cg_reloading;      //----(SA)	added
 
@@ -254,6 +254,7 @@ vmCvar_t cg_realism;
 
 vmCvar_t cg_LTChargeTime;
 vmCvar_t cg_soldierChargeTime;
+vmCvar_t cg_cvopsChargeTime;
 vmCvar_t cg_redlimbotime;
 vmCvar_t cg_bluelimbotime;
 // jpw
@@ -515,10 +516,10 @@ cvarTable_t cvarTable[] = {
 
 	{&cg_hitSounds, "cg_hitSounds", "0", CVAR_ARCHIVE},
 
-	{ &cg_hitFeedback, "cg_hitFeedback", "0", CVAR_ARCHIVE },
-	{ &cg_hitFeedbackSize, "cg_hitFeedbackSize", "0", CVAR_ARCHIVE },
-	{ &cg_hitFeedbackAlpha, "cg_hitFeedbackAlpha", "0.75", CVAR_ARCHIVE },
-	{ &cg_solidHitFeedback, "cg_solidHitFeedback", "0", CVAR_ARCHIVE },
+	{ &cg_hitMarker, "cg_hitMarker", "0", CVAR_ARCHIVE },
+	{ &cg_hitMarkerSize, "cg_hitMarkerSize", "0", CVAR_ARCHIVE },
+	{ &cg_hitMarkerAlpha, "cg_hitMarkerAlpha", "0.75", CVAR_ARCHIVE },
+	{ &cg_solidHitMarker, "cg_solidHitMarker", "0", CVAR_ARCHIVE },
 
 	{&cg_ironChallenge, "g_ironchallenge", "0", CVAR_SERVERINFO | CVAR_ROM},
 	{&cg_nohudChallenge, "g_nohudchallenge", "0", CVAR_SERVERINFO | CVAR_ROM},
@@ -532,10 +533,11 @@ cvarTable_t cvarTable[] = {
 	{&cg_jumptime, "g_jumptime", "0", 0}, //----(SA)	added
 
 	// JPW NERVE
-	{&cg_medicChargeTime, "g_medicChargeTime", "40000", 0},		  // communicated by systeminfo
-	{&cg_LTChargeTime, "g_LTChargeTime", "40000", 0},			  // communicated by systeminfo
-	{&cg_engineerChargeTime, "g_engineerChargeTime", "40000", 0}, // communicated by systeminfo
-	{&cg_soldierChargeTime, "g_soldierChargeTime", "20000", 0},	  // communicated by systeminfo
+	{&cg_medicChargeTime, "g_medicChargeTime", "30000", 0},		  // communicated by systeminfo
+	{&cg_LTChargeTime, "g_LTChargeTime", "30000", 0},			  // communicated by systeminfo
+	{&cg_cvopsChargeTime, "g_cvopsChargeTime", "30000", 0},		   // communicated by systeminfo
+	{&cg_engineerChargeTime, "g_engineerChargeTime", "30000", 0}, // communicated by systeminfo
+	{&cg_soldierChargeTime, "g_soldierChargeTime", "30000", 0},	  // communicated by systeminfo
 	{&cg_bluelimbotime, "g_bluelimbotime", "30000", 0},			  // communicated by systeminfo
 	{&cg_redlimbotime, "g_redlimbotime", "30000", 0},			  // communicated by systeminfo
 	// jpw
@@ -1344,6 +1346,7 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.bookSound = trap_S_RegisterSound( "sound/pickup/holdable/use_book.wav" );       
 	cgs.media.adrenalineSound = trap_S_RegisterSound( "sound/pickup/holdable/use_adrenaline.wav" ); 
 	cgs.media.bandagesSound = trap_S_RegisterSound( "sound/pickup/holdable/use_bandages.wav" ); 
+	cgs.media.crossSound = trap_S_RegisterSound( "sound/pickup/holdable/use_cross.wav" ); 
 	cgs.media.quadSound = trap_S_RegisterSound( "sound/items/damage3.wav" );
 	cgs.media.sfx_ric1 = trap_S_RegisterSound( "sound/weapons/machinegun/ric1.wav" );
 	cgs.media.sfx_ric2 = trap_S_RegisterSound( "sound/weapons/machinegun/ric2.wav" );
@@ -1537,8 +1540,8 @@ static void CG_RegisterGraphics( void ) {
 		cgs.media.crosshairShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/crosshair%c", 'a' + i ) );
 	}
 
-	for ( i = 0 ; i < NUM_HITFEEDBACKS ; i++ ) {
-		cgs.media.hitFeedbackShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/hitfeedback%d", i + 1 ) );
+	for ( i = 0 ; i < NUM_HITMARKERS ; i++ ) {
+		cgs.media.hitMarkerShader[i] = trap_R_RegisterShaderNoMip( va( "gfx/2d/hitmarker%d", i + 1 ) );
 	}
 
 	cgs.media.backTileShader = trap_R_RegisterShader( "gfx/2d/backtile" );

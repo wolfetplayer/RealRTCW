@@ -131,6 +131,9 @@ void Weapon_Knife( gentity_t *ent ) {
 	}
 	}
 
+	if ( ent->client && ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_CVOPS ) {
+		damage = (int)(damage * svParams.cvopsmeleeDmgBonus);
+	}
 
 	if ( traceEnt->client ) {
 		if (G_GetEnemyPosition(ent, traceEnt) == POSITION_BEHIND) 
@@ -530,9 +533,6 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 	return &tr;
 }
 
-#define SMOKEBOMB_GROWTIME 1000
-#define SMOKEBOMB_SMOKETIME 15000
-#define SMOKEBOMB_POSTSMOKETIME 2000
 // xkan, 11/25/2002 - increases postsmoke time from 2000->32000, this way, the entity
 // is still around while the smoke is around, so we can check if it blocks bot's vision
 // Arnout: eeeeeh this is wrong. 32 seconds is way too long. Also - we shouldn't be
@@ -540,29 +540,33 @@ trace_t *CheckMeleeAttack( gentity_t *ent, float dist, qboolean isTest ) {
 // xkan, 12/06/2002 - back to the old value 2000, now that it looks like smoke disappears more
 // quickly
 
+#define SMOKEBOMB_MINRADIUS   16.f
+#define SMOKEBOMB_MAXRADIUS   1024.f
+#define SMOKEBOMB_GROWTIME    1000
+#define SMOKEBOMB_SMOKETIME   15000
+#define SMOKEBOMB_POSTSMOKETIME 2000
+
 void weapon_smokeBombExplode( gentity_t *ent ) {
-	int lived = 0;
+    int lived = 0;
 
-	if ( !ent->grenadeExplodeTime ) {
-		ent->grenadeExplodeTime = level.time;
-	}
+    if ( !ent->grenadeExplodeTime ) {
+        ent->grenadeExplodeTime = level.time;
+    }
 
-	lived = level.time - ent->grenadeExplodeTime;
-	ent->nextthink = level.time + FRAMETIME;
+    lived = level.time - ent->grenadeExplodeTime;
+    ent->nextthink = level.time + FRAMETIME;
 
-	if ( lived < SMOKEBOMB_GROWTIME ) {
-		// Just been thrown, increase radius
-		ent->s.effect1Time = 16 + lived * ( ( 640.f - 16.f ) / (float)SMOKEBOMB_GROWTIME );
-	} else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME ) {
-		// Smoking
-		ent->s.effect1Time = 640;
-	} else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME + SMOKEBOMB_POSTSMOKETIME ) {
-		// Dying out
-		ent->s.effect1Time = -1;
-	} else {
-		// Poof and it's gone
-		G_FreeEntity( ent );
-	}
+    if ( lived < SMOKEBOMB_GROWTIME ) {
+        // increase radius
+        ent->s.effect1Time = SMOKEBOMB_MINRADIUS
+            + lived * ( ( SMOKEBOMB_MAXRADIUS - SMOKEBOMB_MINRADIUS ) / (float)SMOKEBOMB_GROWTIME );
+    } else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME ) {
+        ent->s.effect1Time = (int)SMOKEBOMB_MAXRADIUS;
+    } else if ( lived < SMOKEBOMB_SMOKETIME + SMOKEBOMB_GROWTIME + SMOKEBOMB_POSTSMOKETIME ) {
+        ent->s.effect1Time = -1;
+    } else {
+        G_FreeEntity( ent );
+    }
 }
 
 void G_PoisonGasExplode(gentity_t* ent) {
@@ -801,6 +805,38 @@ void Bullet_Fire( gentity_t *ent, float spread, int damage ) {
 
 /*
 ==============
+Bullet_Fire_Normal
+==============
+*/
+#define NUM_SHOTGUN_PELLETS 12
+static void Bullet_Fire_Normal( gentity_t *ent, float aimSpreadScale ) {
+	int numPellets;
+	weapon_t weapon = ent->s.weapon;
+	float spread = G_GetWeaponSpread(weapon, ent) * aimSpreadScale;
+	int damage = G_GetWeaponDamage(weapon, ent);
+
+	if (ammoTable[weapon].weaponClass & WEAPON_CLASS_SHOTGUN) {
+		numPellets = NUM_SHOTGUN_PELLETS;
+	} else {
+		numPellets = 1;
+	}
+
+	if (ent->client->ps.weaponUpgraded[weapon]) {
+		for (int i = 0; i < ammoTable[weapon].usesUpgraded * numPellets; i++)
+		{
+			Bullet_Fire(ent, spread, damage);
+		}
+	} else {
+		for (int i = 0; i < ammoTable[weapon].uses * numPellets; i++)
+		{
+			Bullet_Fire(ent, spread, damage);
+		}
+	}
+};
+
+
+/*
+==============
 Bullet_Fire_Extended
 	A modified Bullet_Fire with more parameters.
 	The original Bullet_Fire still passes through here and functions as it always has.
@@ -843,20 +879,10 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
         return qfalse;
     }
 
-	// perform trace with base values (the trace doesn't care about the damage multiplier)
-	if (g_gametype.integer == GT_SURVIVAL)
-	{
-		vec3_t mins = {-3, -3, -3};
-		vec3_t maxs = {3, 3, 3};
-		trap_Trace(&tr, start, mins, maxs, end, source->s.number, MASK_SHOT);
-	}
-	else
-	{
+    // perform trace with base values (the trace doesn't care about the damage multiplier)
+    trap_Trace( &tr, start, NULL, NULL, end, source->s.number, MASK_SHOT );
 
-		trap_Trace(&tr, start, NULL, NULL, end, source->s.number, MASK_SHOT);
-	}
-
-	// DHM - Nerve :: only in single player
+    // DHM - Nerve :: only in single player
     AICast_ProcessBullet( attacker, start, tr.endpos );
     
     // bullet debugging using Q3A's railtrail
@@ -1108,7 +1134,6 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 		case WP_SMOKE_BOMB:
 		case WP_DYNAMITE:
 		case WP_AIRSTRIKE:
-		case WP_POISONGAS_MEDIC:
 		case WP_DYNAMITE_ENG:
 			upangle *= ammoTable[grenType].upAngle;
 			break;
@@ -1145,27 +1170,18 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 
 	if ( grenType == WP_POISONGAS ) 
 	{
-            m->s.effect1Time = 16;
-            m->think = G_PoisonGasExplode;
+            m->s.effect1Time = 30;
+            m->think = G_PoisonGas2Explode;
             m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
 			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
 			m->poisonGasDamage        =  ammoTable[WP_POISONGAS].playerDamage;	
 		    
 	}
 
-	if ( grenType == WP_POISONGAS_MEDIC ) 
-	{
-            m->s.effect1Time = 24;
-            m->think = G_PoisonGas2Explode;
-            m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
-			m->poisonGasRadius          = ammoTable[WP_POISONGAS_MEDIC].playerSplashRadius;
-			m->poisonGasDamage        =  ammoTable[WP_POISONGAS_MEDIC].playerDamage;	
-		    
-	}
-
 	// Arnout: override for smoke gren
-	if ( grenType == WP_SMOKE_BOMB ) {
-		m->s.effect1Time = 16;
+
+	if ( grenType ==  WP_SMOKE_BOMB ) {
+		m->s.effect1Time = 30;
 		m->think = weapon_smokeBombExplode;
 	}
 
@@ -1481,7 +1497,12 @@ void ThrowKnife( gentity_t *ent )
 	knife->use					= Use_Item;
 
 	// damage
-	knife->damage 				= 50; 	// JPW NERVE
+	knife->damage = 50; // JPW NERVE
+	// Covert Ops bonus
+	if (ent->client && ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_CVOPS)
+	{
+		knife->damage = (int)(knife->damage * svParams.cvopsmeleeDmgBonus);
+	}
 	knife->splashDamage			= 0;
 	knife->splashRadius			= 0;
 	knife->methodOfDeath 		= MOD_THROWKNIFE;
@@ -1512,6 +1533,11 @@ void ThrowKnife( gentity_t *ent )
 
 	// speed / dir
 	speed = KNIFESPEED; //*ent->client->ps.grenadeTimeLeft/500;
+
+	// Covert Ops throw range bonus (speed multiplier)
+	if ( ent->client && ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_CVOPS ) {
+		speed *= svParams.cvopsthrowspeedBonus;   // 
+	}
 
 	// minimal toss speed
 	/*if ( speed < MIN_KNIFESPEED )
@@ -1843,7 +1869,7 @@ void FireWeapon( gentity_t *ent ) {
 	}
 
 
-		if ( g_gametype.integer == GT_SURVIVAL) {
+	if ( g_gametype.integer == GT_SURVIVAL) {
 		if ( ( ent->client->ps.eFlags & EF_ZOOMING ) && ( ent->client->ps.stats[STAT_KEYS] & ( 1 << INV_BINOCS ) ) &&
 			 ( ent->s.weapon != WP_SNIPERRIFLE ) ) {
 
@@ -1857,21 +1883,50 @@ void FireWeapon( gentity_t *ent ) {
 
 	// fire the specific weapon
 	switch ( ent->s.weapon ) {
+	// these weapons can be handled at the same way
+	case WP_LUGER:
+	case WP_SILENCER:
+	case WP_COLT:
+	case WP_AKIMBO: //----(SA)	added
+	case WP_TT33:
+	case WP_DUAL_TT33:
+	case WP_REVOLVER:
+	case WP_HDM:
+	case WP_MP40:
+	case WP_THOMPSON:
+	case WP_STEN:
+	case WP_PPSH:
+	case WP_MP34:
+	case WP_MAUSER:
+	case WP_GARAND:
+	case WP_MOSIN:
+	case WP_DELISLE:
+	case WP_M1GARAND:
+	case WP_G43:
+	case WP_M1941:
+	case WP_MP44:
+	case WP_FG42:
+	case WP_BAR:
+		Bullet_Fire_Normal( ent, aimSpreadScale );
+		break;
+	
+	// these weapons need to be handled separately
 	case WP_KNIFE:
 		Weapon_Knife( ent );
 		break;
-	case WP_LUGER:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_LUGER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_LUGER, ent));
-		break;
-	case WP_SILENCER:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_SILENCER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_SILENCER, ent));
-		break;
-	case WP_AKIMBO: //----(SA)	added
-	case WP_COLT:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_COLT, ent) * aimSpreadScale, G_GetWeaponDamage(WP_COLT, ent));
-		break;
 	case WP_VENOM:
-		weapon_venom_fire( ent, qfalse, aimSpreadScale );
+		if ( ent->client->ps.weaponUpgraded[WP_VENOM] )
+		{
+			for (int i = 0; i < ammoTable[WP_VENOM].usesUpgraded; i++)
+			{
+				weapon_venom_fire(ent, qfalse, aimSpreadScale);
+			}
+		} else {
+			for (int i = 0; i < ammoTable[WP_VENOM].uses; i++)
+			{
+				weapon_venom_fire(ent, qfalse, aimSpreadScale);
+			}
+		}
 		break;
 	case WP_M7:
 		weapon_gpg40_fire( ent, ent->s.weapon );
@@ -1885,13 +1940,22 @@ void FireWeapon( gentity_t *ent ) {
 			weapon_grenadelauncher_fire( ent,WP_AIRSTRIKE );
 		}
 		break;
-	case WP_POISONGAS_MEDIC:
+	case WP_SMOKE_BOMB:
+		if ( level.time - ent->client->ps.classWeaponTime >= g_cvopsChargeTime.integer ) {
+			if ( level.time - ent->client->ps.classWeaponTime > g_cvopsChargeTime.integer ) {
+				ent->client->ps.classWeaponTime = level.time - g_cvopsChargeTime.integer;
+			}
+			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
+			weapon_grenadelauncher_fire( ent,WP_SMOKE_BOMB );
+		}
+		break;
+	case WP_POISONGAS:
 		if ( level.time - ent->client->ps.classWeaponTime >= g_medicChargeTime.integer ) {
 			if ( level.time - ent->client->ps.classWeaponTime > g_medicChargeTime.integer ) {
 				ent->client->ps.classWeaponTime = level.time - g_medicChargeTime.integer;
 			}
 			ent->client->ps.classWeaponTime = level.time; //+= g_LTChargeTime.integer*0.5f; FIXME later
-			weapon_grenadelauncher_fire( ent,WP_POISONGAS_MEDIC );
+			weapon_grenadelauncher_fire( ent,WP_POISONGAS );
 		}
 		break;
 	case WP_DYNAMITE_ENG:
@@ -1907,7 +1971,7 @@ void FireWeapon( gentity_t *ent ) {
 	    G_Printf( "calling artilery\n" );
 		break;
 	case WP_SNIPERRIFLE:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_SNIPERRIFLE, ent) * aimSpreadScale, G_GetWeaponDamage(WP_SNIPERRIFLE, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter)
 		{
 			VectorCopy(ent->client->ps.viewangles, viewang);
@@ -1917,9 +1981,8 @@ void FireWeapon( gentity_t *ent ) {
 			SetClientViewAngle(ent, viewang);
 		}
 		break;
-
 	case WP_SNOOPERSCOPE:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_SNOOPERSCOPE, ent) * aimSpreadScale, G_GetWeaponDamage(WP_SNOOPERSCOPE, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_SNOOPERSCOPE].weapRecoilYaw[0]; // used in clientthink
@@ -1928,14 +1991,8 @@ void FireWeapon( gentity_t *ent ) {
 			SetClientViewAngle( ent,viewang );
 		}
 		break;
-	case WP_MAUSER:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_MAUSER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MAUSER, ent));
-		break;
-	case WP_DELISLE:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_DELISLE, ent) * aimSpreadScale, G_GetWeaponDamage(WP_DELISLE, ent));
-		break;
 	case WP_DELISLESCOPE:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_DELISLESCOPE, ent) * aimSpreadScale, G_GetWeaponDamage(WP_DELISLESCOPE, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter)
 		{
 			VectorCopy(ent->client->ps.viewangles, viewang);
@@ -1945,11 +2002,8 @@ void FireWeapon( gentity_t *ent ) {
 			SetClientViewAngle(ent, viewang);
 		}
 		break;
-	case WP_GARAND:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_GARAND, ent) * aimSpreadScale, G_GetWeaponDamage(WP_GARAND, ent));
-		break;
 	case WP_FG42SCOPE:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_FG42SCOPE, ent) * aimSpreadScale, G_GetWeaponDamage(WP_FG42SCOPE, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter)
 		{
 			VectorCopy(ent->client->ps.viewangles, viewang);
@@ -1959,92 +2013,8 @@ void FireWeapon( gentity_t *ent ) {
 			SetClientViewAngle(ent, viewang);
 		}
 		break;
-	case WP_FG42:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_FG42, ent) * aimSpreadScale, G_GetWeaponDamage(WP_FG42, ent));
-		break;
-	case WP_STEN:
-		if (ent->client->ps.weaponUpgraded[WP_STEN])
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				Bullet_Fire(ent, G_GetWeaponSpread(WP_STEN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_STEN, ent));
-			}
-		}
-		else
-		{
-			Bullet_Fire(ent, G_GetWeaponSpread(WP_STEN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_STEN, ent));
-		}
-		break;
-	case WP_MP40:
-		if (ent->client->ps.weaponUpgraded[WP_MP40])
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				Bullet_Fire(ent, G_GetWeaponSpread(WP_MP40, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP40, ent));
-			}
-		}
-		else
-		{
-			Bullet_Fire(ent, G_GetWeaponSpread(WP_MP40, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP40, ent));
-		}
-		break;
-	case WP_MP34: 
-		if (ent->client->ps.weaponUpgraded[WP_MP34])
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				Bullet_Fire(ent, G_GetWeaponSpread(WP_MP34, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP34, ent));
-			}
-		}
-		else
-		{
-			Bullet_Fire(ent, G_GetWeaponSpread(WP_MP34, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP34, ent));
-		}
-		break;
-	case WP_TT33:
-	case WP_DUAL_TT33:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_TT33, ent) * aimSpreadScale, G_GetWeaponDamage(WP_TT33, ent));
-		break;
-	case WP_HDM:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_HDM, ent) * aimSpreadScale, G_GetWeaponDamage(WP_HDM, ent));
-		break;
-	case WP_REVOLVER:
-		if (ent->client->ps.weaponUpgraded[WP_REVOLVER])
-		{
-			for (int i = 0; i < 6; i++)
-			{
-				Bullet_Fire(ent, G_GetWeaponSpread(WP_REVOLVER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_REVOLVER, ent));
-			}
-		}
-		else
-		{
-			Bullet_Fire(ent, G_GetWeaponSpread(WP_REVOLVER, ent) * aimSpreadScale, G_GetWeaponDamage(WP_REVOLVER, ent));
-		}
-		break;
-	case WP_PPSH: 
-		if (ent->client->ps.weaponUpgraded[WP_PPSH])
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				Bullet_Fire(ent, G_GetWeaponSpread(WP_PPSH, ent) * aimSpreadScale, G_GetWeaponDamage(WP_PPSH, ent));
-			}
-		}
-		else
-		{
-			Bullet_Fire(ent, G_GetWeaponSpread(WP_PPSH, ent) * aimSpreadScale, G_GetWeaponDamage(WP_PPSH, ent));
-		}
-		break;
-	case WP_MOSIN: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_MOSIN, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MOSIN, ent));
-		break;
-	case WP_G43: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_G43, ent) * aimSpreadScale, G_GetWeaponDamage(WP_G43, ent));
-		break;
-	case WP_M1941: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M1941, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M1941, ent));
-		break;
 	case WP_M1941SCOPE:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M1941SCOPE, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M1941SCOPE, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if ( !ent->aiCharacter ) {
 			VectorCopy( ent->client->ps.viewangles,viewang );
 			ent->client->sniperRifleMuzzleYaw = crandom() * ammoTable[WP_M1941SCOPE].weapRecoilYaw[0]; // used in clientthink
@@ -2053,17 +2023,8 @@ void FireWeapon( gentity_t *ent ) {
 			SetClientViewAngle( ent,viewang );
 		}
 		break;
-	case WP_M1GARAND: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M1GARAND, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M1GARAND, ent));
-		break;
-	case WP_BAR: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_BAR, ent) * aimSpreadScale, G_GetWeaponDamage(WP_BAR, ent));
-		break;
-	case WP_MP44: 
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_MP44, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MP44, ent));
-		break;
 	case WP_MG42M:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_MG42M, ent) * aimSpreadScale, G_GetWeaponDamage(WP_MG42M, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter) {
 		vec3_t vec_forward, vec_vangle;
 		VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -2076,7 +2037,7 @@ void FireWeapon( gentity_t *ent ) {
 		}
 		break; 
 	case WP_BROWNING:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_BROWNING, ent) * aimSpreadScale, G_GetWeaponDamage(WP_BROWNING, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter) {
 		vec3_t vec_forward, vec_vangle;
 		VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -2088,20 +2049,8 @@ void FireWeapon( gentity_t *ent ) {
 			VectorMA(ent->client->ps.velocity, -24, vec_forward, ent->client->ps.velocity);
 		}
 		break;
-
 	case WP_M97:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_M97, ent) * aimSpreadScale, G_GetWeaponDamage(WP_M97, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter) {
 			vec3_t vec_forward, vec_vangle;
 			VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -2114,20 +2063,8 @@ void FireWeapon( gentity_t *ent ) {
 				VectorMA(ent->client->ps.velocity, -24, vec_forward, ent->client->ps.velocity);
 		}
 		break;
-
 	case WP_AUTO5:
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
-		Bullet_Fire(ent, G_GetWeaponSpread(WP_AUTO5, ent) * aimSpreadScale, G_GetWeaponDamage(WP_AUTO5, ent));
+		Bullet_Fire_Normal( ent, aimSpreadScale );
 		if (!ent->aiCharacter) {
 			vec3_t vec_forward, vec_vangle;
 			VectorCopy(ent->client->ps.viewangles, vec_vangle);
@@ -2138,41 +2075,27 @@ void FireWeapon( gentity_t *ent ) {
 				VectorMA(ent->client->ps.velocity, -8, vec_forward, ent->client->ps.velocity);
 			else
 				VectorMA(ent->client->ps.velocity, -24, vec_forward, ent->client->ps.velocity);
-		}
-		break;
-	
-
-	case WP_THOMPSON:
-		if (ent->client->ps.weaponUpgraded[WP_THOMPSON])
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				Bullet_Fire(ent, G_GetWeaponSpread(WP_THOMPSON, ent) * aimSpreadScale, G_GetWeaponDamage(WP_THOMPSON, ent));
-			}
-		}
-		else
-		{
-			Bullet_Fire(ent, G_GetWeaponSpread(WP_THOMPSON, ent) * aimSpreadScale, G_GetWeaponDamage(WP_THOMPSON, ent));
 		}
 		break;
 	case WP_PANZERFAUST:
 		if (ent->client->ps.weaponUpgraded[WP_PANZERFAUST])
 		{
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < ammoTable[WP_PANZERFAUST].usesUpgraded; i++)
 			{
 				Weapon_RocketLauncher_Fire(ent, aimSpreadScale);
 			}
 		}
 		else
 		{
-			Weapon_RocketLauncher_Fire(ent, aimSpreadScale);
+			for (int i = 0; i < ammoTable[WP_PANZERFAUST].uses; i++)
+			{
+				Weapon_RocketLauncher_Fire(ent, aimSpreadScale);
+			}
 		}
 		break;
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
 	case WP_DYNAMITE:
-	case WP_POISONGAS:
-	case WP_SMOKE_BOMB:
 		weapon_grenadelauncher_fire( ent, ent->s.weapon );
 		break;
 	case WP_FLAMETHROWER:

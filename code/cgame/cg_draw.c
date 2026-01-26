@@ -3081,59 +3081,78 @@ static void CG_DrawCrosshair3D( void ) {
 	trap_R_AddRefEntityToScene(&ent);
 }
 
-/*
-==============
-CG_HitFeedback
-==============
-*/
-void CG_HitFeedback( hitEvent_t hitType ) {
-	if ( hitType < HIT_NONE || hitType >= HIT_MAX_NUM ) {
-		return;
+// hit marker
+#define HITMARKER_DURATION				300	// msec
+#define HITMARKER_HIGHPRI_MIN_DURATION	90
+static qboolean canDrawNextHitMarker( hitEvent_t old, hitEvent_t new ) {
+	// different hit event types have different priorities
+	if ( new >= old ) {
+		return qtrue;
 	}
 
-	// wait for last hit feedback fade out		// add: it weakened the feedback effect, drop it
-	// if ( cg_hitFeedback.integer && !cg.hitFeedback.active ) {
-		cg.hitFeedback.active = qtrue;
-		cg.hitFeedback.startTime = cg.time;
-		cg.hitFeedback.hitType = hitType;
-	// }
+	// ensure high priority hit events are drawn for at least a short period
+	if ( new < old && trap_Milliseconds() - cg.hitMarker.startTime > HITMARKER_HIGHPRI_MIN_DURATION ) {
+		return qtrue;
+	}
+
+	return qfalse;
 }
 
 /*
 ==============
-CG_DrawHitFeedback
+CG_HitMarker
 ==============
 */
-#define HIT_MARKER_DURATION	300	// msec
-static void CG_DrawHitFeedback( void ) {
+void CG_HitMarker( hitEvent_t hitType ) {
+	if ( hitType < HIT_NONE || hitType >= HIT_MAX_NUM ) {
+		return;
+	}
+
+	if ( canDrawNextHitMarker( cg.hitMarker.hitType, hitType ) ) {
+		cg.hitMarker.active = qtrue;
+		cg.hitMarker.startTime = trap_Milliseconds();
+		cg.hitMarker.hitType = hitType;
+	}
+}
+
+/*
+==============
+CG_DrawHitMarker
+==============
+*/
+static void CG_DrawHitMarker( void ) {
 	float color[4];
 	float alpha, scale, progress;
-	int currentTime = cg.time;
+	int currentTime = trap_Milliseconds();
 	float x, y, w, h;
 	float baseSize, size;
 	qhandle_t drawShader;
 
-	if ( cg_hitFeedback.integer <= 0 || cg_hitFeedback.integer > NUM_HITFEEDBACKS ) {
+	if ( cg_hitMarker.integer <= 0 || cg_hitMarker.integer > NUM_HITMARKERS ) {
 		return;
 	}
 
-	if ( !cg.hitFeedback.active ) {
+	if ( !cg.hitMarker.active ) {
 		return;
 	}
 
-	drawShader = cgs.media.hitFeedbackShader[cg_hitFeedback.integer - 1];
+	drawShader = cgs.media.hitMarkerShader[cg_hitMarker.integer - 1];
 	if ( !drawShader ) {
 		return;
 	}
 
-	progress = (float)(currentTime - cg.hitFeedback.startTime) / (float)HIT_MARKER_DURATION;
+	progress = (float)(currentTime - cg.hitMarker.startTime) / (float)HITMARKER_DURATION;
 	if ( progress >= 1.0f ) {
-		cg.hitFeedback.active = qfalse;
+		cg.hitMarker.active = qfalse;
 		return;
 	}
 
-	if ( cg_hitFeedbackSize.integer ) {
-		baseSize = (float)cg_hitFeedbackSize.integer;
+	// base size
+	if ( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) {
+		// on mg42
+		baseSize = 48.0f;
+	} else if ( cg_hitMarkerSize.integer > 0 ) {
+		baseSize = (float)cg_hitMarkerSize.integer;
 	} else {
 		// auto baseSize
 		if ( cg_crosshairSize.value ) {
@@ -3153,7 +3172,7 @@ static void CG_DrawHitFeedback( void ) {
 	} else {
 		alpha = 1.0f - (progress - 0.7f) / 0.3f;
 	}
-	alpha *= cg_hitFeedbackAlpha.value;
+	alpha *= cg_hitMarkerAlpha.value;
 
 	// default color, white
 	color[0] = 1.0f;  // R
@@ -3173,27 +3192,22 @@ static void CG_DrawHitFeedback( void ) {
 	}
 
 	// adapt the size change of the crosshair during uninterrupted shooting, see CG_DrawCursorhint
-	if ( !cg_solidHitFeedback.integer ) {
+	if ( !cg_solidHitMarker.integer ) {
 		float f = (float)cg.snap->ps.aimSpreadScale / 255.0f;
 		scale *= 1.0f + f * 0.75f;
 	}
 
-	// on mg42
-	if ( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) {
-		size *= 1.5f;
-	}
-
 	// set visual effect for specific hit type
-	if ( cg.hitFeedback.hitType == HIT_TEAMSHOT ) {
+	if ( cg.hitMarker.hitType == HIT_TEAMSHOT ) {
 		size = baseSize * scale;
 
 		// yellow
 		color[0] = 1.0f;  // R
 		color[1] = 1.0f;  // G
 		color[2] = 0.0f;  // B
-	} else if ( cg.hitFeedback.hitType == HIT_BODYSHOT ) {
+	} else if ( cg.hitMarker.hitType == HIT_BODYSHOT ) {
 		size = baseSize * scale;
-	} else if ( cg.hitFeedback.hitType == HIT_HEADSHOT ) {
+	} else if ( cg.hitMarker.hitType == HIT_HEADSHOT ) {
 		size = baseSize * scale * 1.15f;  // larger
 
 		// shake effect
@@ -3202,7 +3216,7 @@ static void CG_DrawHitFeedback( void ) {
 			x += shake;
 			y += shake;
 		}
-	} else if ( cg.hitFeedback.hitType == HIT_DEATHSHOT ) {
+	} else if ( cg.hitMarker.hitType == HIT_DEATHSHOT ) {
 		size = baseSize * scale * 1.25f;  // larger
 
 		// red
@@ -3228,7 +3242,7 @@ static void CG_DrawHitFeedback( void ) {
 	trap_R_DrawStretchPic( x - size * 0.5f, y - size * 0.5f, size, size, 0, 0, 1, 1, drawShader );
 	
 	// for special hit, add additional halo effects
-	if ( ( cg.hitFeedback.hitType == HIT_HEADSHOT || cg.hitFeedback.hitType == HIT_DEATHSHOT ) && progress < 0.6f ) {
+	if ( ( cg.hitMarker.hitType == HIT_HEADSHOT || cg.hitMarker.hitType == HIT_DEATHSHOT ) && progress < 0.6f ) {
 		float haloAlpha = alpha * 0.3f;
 		float haloSize = size * 1.55f;
 		float haloProgress = progress * 1.5f;
@@ -4160,7 +4174,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			CG_DrawCrosshair();
 
 		CG_DrawCrosshairNames();
-		CG_DrawHitFeedback();
+		CG_DrawHitMarker();
 	} else {
 		// don't draw any status if dead
 		if ( cg.snap->ps.stats[STAT_HEALTH] > 0 && !cg.cameraMode) {
@@ -4192,7 +4206,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			CG_DrawCheckpointString();
 			CG_DrawGameSavedString();
 			CG_DrawReward();
-			CG_DrawHitFeedback();
+			CG_DrawHitMarker();
 		}
 	}
 

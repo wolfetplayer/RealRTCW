@@ -19,7 +19,7 @@ STEP 1: INSTALL + UPDATE MSYS2
    pacman -Su
 
 ============================================
-STEP 2: INSTALL TOOLCHAIN
+STEP 2: INSTALL TOOLCHAIN and additional libraries
 
 Open "MSYS2 MinGW 64-bit" shell (IMPORTANT).
 
@@ -31,6 +31,9 @@ This installs:
 - g++
 - gdb
 - mingw32-make (used instead of make)
+
+After that run installation of additional ffmpeg libraries:
+pacman -S mingw-w64-x86_64-ffmpeg
 
 ============================================
 STEP 3: PREPARE YOUR PROJECT

@@ -1642,7 +1642,7 @@ static int FFMPEG_Init( void ) {
 		&cinTable[currentHandle], 
 		&FFMPEG_Read, 
 		NULL, 
-		&FFMPEG_Seek 
+		(int64_t (*)(void *, int64_t,  int))&FFMPEG_Seek 
 	);
 
 	cinTable[currentHandle].formatCtx = avformat_alloc_context();

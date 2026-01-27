@@ -191,6 +191,9 @@ typedef struct {
 	qboolean firstAudioFrameFlag;
 
 	cin_audio_pcm_t audioPCM;
+
+	int sar_num;
+	int sar_den;
 } cin_cache;
 
 static cinematics_t cin;
@@ -214,6 +217,28 @@ static long long FFMPEG_Seek( void *opaque, long long offset, int whence ) {
 	}
 
     return FS_FTell( cinTable[currentHandle].iFile );
+}
+
+void CIN_FitRectToAspect( float *x, float *y, float *w, float *h, float videoAspect ) {
+    float targetAspect;
+
+    if ( *h <= 0.0f || *w <= 0.0f || videoAspect <= 0.0f ) {
+        return;
+    }
+
+    targetAspect = ( *w / *h );
+
+    if ( targetAspect > videoAspect ) {
+        // target is wider than video -> pillarbox
+        float newW = ( *h * videoAspect );
+        *x += ( *w - newW ) * 0.5f;
+        *w = newW;
+    } else {
+        // target is taller than video -> letterbox
+        float newH = ( *w / videoAspect );
+        *y += ( *h - newH ) * 0.5f;
+        *h = newH;
+    }
 }
 
 void CIN_CloseAllVideos( void ) {
@@ -1683,6 +1708,24 @@ static int FFMPEG_Init( void ) {
 
 	AVStream *vSt = cinTable[currentHandle].formatCtx->streams[cinTable[currentHandle].videoStream];
 
+	// default: square pixels
+	cinTable[currentHandle].sar_num = 1;
+	cinTable[currentHandle].sar_den = 1;
+
+	{
+		AVRational sar = av_guess_sample_aspect_ratio(
+			cinTable[currentHandle].formatCtx,
+			vSt,
+			cinTable[currentHandle].vFrame /* can be NULL here, that's fine */
+		);
+
+		if (sar.num > 0 && sar.den > 0)
+		{
+			cinTable[currentHandle].sar_num = sar.num;
+			cinTable[currentHandle].sar_den = sar.den;
+		}
+	}
+
 	cinTable[currentHandle].roqFPS = (int)((float)vSt->avg_frame_rate.num / vSt->avg_frame_rate.den + 0.5f);
 
 	cinTable[currentHandle].vCodec = avcodec_find_decoder( vSt->codecpar->codec_id );
@@ -2350,7 +2393,8 @@ CIN_DrawCinematic
 */
 void CIN_DrawCinematic( int handle ) {
 	float x, y, w, h;
-	byte    *buf;
+	float ox, oy, ow, oh; // original dest rect
+	byte *buf;
 
 	if ( handle < 0 || handle >= MAX_VIDEO_HANDLES || cinTable[handle].status == FMV_EOF ) {
 		return;
@@ -2365,34 +2409,78 @@ void CIN_DrawCinematic( int handle ) {
 	w = cinTable[handle].width;
 	h = cinTable[handle].height;
 	buf = cinTable[handle].buf;
+
 	SCR_AdjustFrom640( &x, &y, &w, &h );
 
+	// Save original destination rect (usually fullscreen or whatever caller set).
+	ox = x; oy = y; ow = w; oh = h;
+
+	// Update source size for FFmpeg video (ROQ already has CIN_WIDTH/HEIGHT set via ROQ_QUAD_INFO).
 	if ( !cin.isRoq ) {
-		cinTable[handle].drawX = cinTable[handle].CIN_WIDTH = cinTable[handle].vFrame->width;
+		cinTable[handle].drawX = cinTable[handle].CIN_WIDTH  = cinTable[handle].vFrame->width;
 		cinTable[handle].drawY = cinTable[handle].CIN_HEIGHT = cinTable[handle].vFrame->height;
 	}
 
-	if ( cinTable[handle].letterBox ) {
-		float barheight;
-		float vh;
-		vh = (float)cls.glconfig.vidHeight;
+	// Fit video into destination rect while preserving aspect ratio.
+	{
+		float srcW = (float)cinTable[handle].drawX;
+		float srcH = (float)cinTable[handle].drawY;
 
-		barheight = ( (float)LETTERBOX_OFFSET / 480.0f ) * vh;  //----(SA)	added
+		if ( srcW > 0.0f && srcH > 0.0f ) {
+			float sar = 1.0f;
 
-		re.SetColor( &colorBlack[0] );
-//		re.DrawStretchPic( 0, 0, SCREEN_WIDTH, LETTERBOX_OFFSET, 0, 0, 0, 0, cls.whiteShader );
-//		re.DrawStretchPic( 0, SCREEN_HEIGHT-LETTERBOX_OFFSET, SCREEN_WIDTH, LETTERBOX_OFFSET, 0, 0, 0, 0, cls.whiteShader );
-		//----(SA)	adjust for 640x480
-		re.DrawStretchPic( 0, 0, w, barheight, 0, 0, 0, 0, cls.whiteShader );
-		re.DrawStretchPic( 0, vh - barheight - 1, w, barheight + 1, 0, 0, 0, 0, cls.whiteShader );
+			// By default, ignore SAR to avoid surprising sizing on some WebMs.
+			// If you want SAR support, enable this block (and keep the clamp).
+			/*
+			if ( !cin.isRoq ) {
+				int sn = cinTable[handle].sar_num;
+				int sd = cinTable[handle].sar_den;
+				if ( sn > 0 && sd > 0 ) {
+					sar = (float)sn / (float)sd;
+					// clamp insane SAR values
+					if ( sar < 0.5f || sar > 2.0f ) {
+						sar = 1.0f;
+					}
+				}
+			}
+			*/
+
+			// display aspect = (width * SAR) / height
+			CIN_FitRectToAspect( &x, &y, &w, &h, (srcW * sar) / srcH );
+		}
 	}
 
-	if ( cinTable[handle].dirty && ( cinTable[handle].CIN_WIDTH != cinTable[handle].drawX || cinTable[handle].CIN_HEIGHT != cinTable[handle].drawY ) ) {
+	// If letterBox flag is set, draw black bars around the fitted video rect.
+	// This replaces the old hardcoded LETTERBOX_OFFSET behavior.
+	if ( cinTable[handle].letterBox ) {
+		re.SetColor( &colorBlack[0] );
+
+		// top bar
+		if ( y > oy ) {
+			re.DrawStretchPic( ox, oy, ow, y - oy, 0, 0, 0, 0, cls.whiteShader );
+		}
+		// bottom bar
+		if ( (oy + oh) > (y + h) ) {
+			re.DrawStretchPic( ox, y + h, ow, (oy + oh) - (y + h), 0, 0, 0, 0, cls.whiteShader );
+		}
+		// left bar
+		if ( x > ox ) {
+			re.DrawStretchPic( ox, oy, x - ox, oh, 0, 0, 0, 0, cls.whiteShader );
+		}
+		// right bar
+		if ( (ox + ow) > (x + w) ) {
+			re.DrawStretchPic( x + w, oy, (ox + ow) - (x + w), oh, 0, 0, 0, 0, cls.whiteShader );
+		}
+	}
+
+	// Resample path (legacy 256x256) stays the same.
+	if ( cinTable[handle].dirty &&
+	     ( cinTable[handle].CIN_WIDTH != cinTable[handle].drawX || cinTable[handle].CIN_HEIGHT != cinTable[handle].drawY ) ) {
 		int *buf2;
 
 		buf2 = Hunk_AllocateTempMemory( 256 * 256 * 4 );
 
-		CIN_ResampleCinematic(handle, buf2);
+		CIN_ResampleCinematic( handle, buf2 );
 
 		re.DrawStretchRaw( x, y, w, h, 256, 256, (byte *)buf2, handle, qtrue );
 		cinTable[handle].dirty = qfalse;
@@ -2400,7 +2488,10 @@ void CIN_DrawCinematic( int handle ) {
 		return;
 	}
 
-	re.DrawStretchRaw( x, y, w, h, cinTable[handle].drawX, cinTable[handle].drawY, buf, handle, cinTable[handle].dirty );
+	re.DrawStretchRaw( x, y, w, h,
+	                   cinTable[handle].drawX, cinTable[handle].drawY,
+	                   buf, handle, cinTable[handle].dirty );
+
 	cinTable[handle].dirty = qfalse;
 }
 
@@ -2433,11 +2524,7 @@ void CL_PlayCinematic_f( void ) {
 
 	S_StopAllSounds();
 
-	if ( bits & CIN_letterBox ) {
-		CL_handle = CIN_PlayCinematic( arg, 0, LETTERBOX_OFFSET, SCREEN_WIDTH, SCREEN_HEIGHT - ( LETTERBOX_OFFSET * 2 ), bits );
-	} else {
-		CL_handle = CIN_PlayCinematic( arg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, bits );
-	}
+	CL_handle = CIN_PlayCinematic(arg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, bits);
 
 	if ( CL_handle >= 0 ) {
 		do {

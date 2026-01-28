@@ -1667,7 +1667,7 @@ static int FFMPEG_Init( void ) {
 		&cinTable[currentHandle], 
 		&FFMPEG_Read, 
 		NULL, 
-		&FFMPEG_Seek 
+		(int64_t (*)(void *, int64_t,  int))&FFMPEG_Seek 
 	);
 
 	cinTable[currentHandle].formatCtx = avformat_alloc_context();
@@ -2192,8 +2192,8 @@ int CIN_PlayCinematic( const char *arg, int x, int y, int w, int h, int systemBi
 	if ( pDotExt != NULL ) {
 		ext = Z_Malloc( strlen( pDotExt ) );
 		if ( ext != NULL ) {
-			strcpy_s( ext, strlen( pDotExt ), pDotExt + 1 );
-			cin.isRoq = strcmpi( ext, "roq" ) == 0;
+			strcpy( ext, pDotExt + 1 );
+			cin.isRoq = strcasecmp( ext, "roq" ) == 0;
 			Z_Free( ext );
 		}
 	}

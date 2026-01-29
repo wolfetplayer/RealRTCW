@@ -2232,6 +2232,18 @@ void CL_KeyDownEvent( int key, unsigned time )
 			return;
 		}
 	}
+
+	// In-level cinematic overlay: any key skips it, and we swallow input so UI/console can't open.
+	if ( SCR_LevelCinematicActive() ) {
+
+		if ( key == K_SHIFT || key == K_CTRL || key == K_ALT ) {
+			return;
+		}
+
+		CL_LevelCin_Stop();
+		Key_ClearStates();   // prevents stuck keys (+attack etc) if you skipped mid-hold
+		return;
+	}
 	
 	if( keys[key].repeats == 1 )
 		anykeydown++;

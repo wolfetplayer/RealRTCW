@@ -200,7 +200,6 @@ void CL_ShowIP_f( void );
 void CL_ServerStatus_f( void );
 void CL_ServerStatusResponse( netadr_t from, msg_t *msg );
 
-
 /*
 ==============
 CL_EndgameMenu
@@ -3075,6 +3074,8 @@ void CL_Frame( int msec ) {
 
 	// decide on the serverTime to render
 	CL_SetCGameTime();
+
+	SCR_RunLevelCinematic();
 
 	// update the screen
 	SCR_UpdateScreen();

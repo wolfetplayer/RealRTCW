@@ -4588,6 +4588,17 @@ qboolean AICast_ScriptAction_Cvar( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+
+qboolean AICast_ScriptAction_CinPlay( cast_state_t *cs, char *params ) {
+    trap_SendServerCommand( cs->entityNum, va( "cin_play %s", params ) );
+    return qtrue;
+}
+
+qboolean AICast_ScriptAction_CinStop( cast_state_t *cs, char *params ) {
+    trap_SendServerCommand( cs->entityNum, "cin_stop" );
+    return qtrue;
+}
+
 /*
 ==================
 AICast_ScriptAction_decoy

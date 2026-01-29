@@ -92,6 +92,8 @@ extern qboolean AICast_ScriptAction_MusicStop ( cast_state_t * cs , char * param
 extern qboolean AICast_ScriptAction_MusicPlay ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_MusicStart ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Cvar ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_CinPlay( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_CinStop( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_decoy ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_NoTarget ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_SetHealth ( cast_state_t * cs , char * params ) ;

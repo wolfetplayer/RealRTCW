@@ -201,6 +201,9 @@ static cin_cache cinTable[MAX_VIDEO_HANDLES];
 static int currentHandle = -1;
 static int CL_handle = -1;
 
+static int CL_levelCinHandle = -1;
+static qboolean CL_levelCinPaused = qfalse;
+
 static int FFMPEG_Read( void *opaque, byte *buf, int bufSize ) {
 	int r = FS_Read( buf, bufSize, cinTable[currentHandle].iFile );
 
@@ -2596,4 +2599,81 @@ void CIN_UploadCinematic( int handle ) {
 			cinTable[handle].playonwalls = 1;
 		}
 	}
+}
+
+void CL_LevelCin_Play( const char *name, int mode /*optional*/ ) {
+    int bits = 0; // IMPORTANT: not CIN_system
+
+	// Kill all current sounds (including level music)
+    S_StopAllSounds();
+
+    // mode: 1=hold, 2=loop, 3=letterbox (example)
+    if ( mode == 1 ) bits |= CIN_hold;
+    if ( mode == 2 ) bits |= CIN_loop;
+    if ( mode == 3 ) bits |= CIN_letterBox;
+
+    // Stop a previous level cinematic if playing
+    if ( CL_levelCinHandle >= 0 ) {
+        CIN_StopCinematic( CL_levelCinHandle );
+        CL_levelCinHandle = -1;
+    }
+
+    // Start fullscreen overlay during level
+    CL_levelCinHandle = CIN_PlayCinematic( name, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, bits );
+
+    if ( CL_levelCinHandle >= 0 ) {
+        // wait for first frame like your CL_PlayCinematic_f does
+        do {
+            CIN_RunCinematic( CL_levelCinHandle );
+        } while ( cinTable[CL_levelCinHandle].buf == NULL &&
+                  cinTable[CL_levelCinHandle].status == FMV_PLAY );
+
+        // Pause gameplay (SP)
+        Cvar_Set( "cl_paused", "1" );
+        if ( com_sv_running->integer ) {
+            Cvar_Set( "sv_paused", "1" );
+        }
+        CL_levelCinPaused = qtrue;
+    }
+}
+
+
+void CL_LevelCin_Stop( void ) {
+
+	S_StopAllSounds();
+
+    if ( CL_levelCinHandle >= 0 ) {
+        CIN_StopCinematic( CL_levelCinHandle );
+        CL_levelCinHandle = -1;
+    }
+
+    if ( CL_levelCinPaused ) {
+        Cvar_Set( "cl_paused", "0" );
+        if ( com_sv_running->integer ) {
+            Cvar_Set( "sv_paused", "0" );
+        }
+        CL_levelCinPaused = qfalse;
+    }
+
+}
+
+qboolean SCR_LevelCinematicActive( void ) {
+    return ( CL_levelCinHandle >= 0 ); 
+}
+
+void SCR_RunLevelCinematic( void ) {
+    if ( CL_levelCinHandle >= 0 && CL_levelCinHandle < MAX_VIDEO_HANDLES ) {
+        CIN_RunCinematic( CL_levelCinHandle );
+
+        if ( cinTable[CL_levelCinHandle].status == FMV_EOF ) {
+            // auto-stop and unpause when finished
+            CL_LevelCin_Stop();
+        }
+    }
+}
+
+void SCR_DrawLevelCinematic( void ) {
+    if ( CL_levelCinHandle >= 0 && CL_levelCinHandle < MAX_VIDEO_HANDLES ) {
+        CIN_DrawCinematic( CL_levelCinHandle );
+    }
 }

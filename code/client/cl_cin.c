@@ -2449,18 +2449,6 @@ h = cls.glconfig.vidHeight;
 		float srcW = (float)cinTable[handle].drawX;
 		float srcH = (float)cinTable[handle].drawY;
 
-		if ( srcW > 0.0f && srcH > 0.0f ) {
-			float sar = 1.0f;
-
-			// By default, ignore SAR to avoid surprising sizing on some WebMs.
-			// If you want SAR support, enable this block (and keep the clamp).
-			/*
-			if ( !cin.isRoq ) {
-				int sn = cinTable[handle].sar_num;
-				int sd = cinTable[handle].sar_den;
-				if ( sn > 0 && sd > 0 ) {
-					sar = (float)sn / (float)sd;
-					// clamp insane SAR values
 		float sar = 1.0f;
 
 		// Prefer SAR, but clamp insane values
@@ -2474,10 +2462,7 @@ h = cls.glconfig.vidHeight;
 				if (sar < 0.5f || sar > 2.0f)
 					sar = 1.0f;
 			}
-			*/
 
-			// display aspect = (width * SAR) / height
-			CIN_FitRectToAspect( &x, &y, &w, &h, (srcW * sar) / srcH );
 			// Heuristic: common “should be 4:3” resolutions — ignore bogus SAR
 			if ((cinTable[handle].drawX == 640 && cinTable[handle].drawY == 480) ||
 				(cinTable[handle].drawX == 320 && cinTable[handle].drawY == 240) ||

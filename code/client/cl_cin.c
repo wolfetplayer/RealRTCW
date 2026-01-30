@@ -2686,15 +2686,20 @@ qboolean SCR_LevelCinematicActive( void ) {
     return ( CL_levelCinHandle >= 0 ); 
 }
 
-void SCR_RunLevelCinematic( void ) {
-    if ( CL_levelCinHandle >= 0 && CL_levelCinHandle < MAX_VIDEO_HANDLES ) {
-        CIN_RunCinematic( CL_levelCinHandle );
+void SCR_RunLevelCinematic(void)
+{
 
-        if ( cinTable[CL_levelCinHandle].status == FMV_EOF ) {
-            // auto-stop and unpause when finished
-            CL_LevelCin_Stop();
-        }
-    }
+	if (CL_levelCinHandle < 0 || CL_levelCinHandle >= MAX_VIDEO_HANDLES)
+	{
+		return;
+	}
+
+	CIN_RunCinematic(CL_levelCinHandle);
+
+	if (cinTable[CL_levelCinHandle].status != FMV_PLAY)
+	{
+		CL_LevelCin_Stop();
+	}
 }
 
 void SCR_DrawLevelCinematic( void ) {

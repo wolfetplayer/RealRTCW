@@ -2605,7 +2605,7 @@ void CL_LevelCin_Play( const char *name, int mode /*optional*/ ) {
     int bits = 0; // IMPORTANT: not CIN_system
 
 	// Kill all current sounds (including level music)
-    S_StopAllSounds();
+    S_SetCinematicMute( qtrue );
 
     // mode: 1=hold, 2=loop, 3=letterbox (example)
     if ( mode == 1 ) bits |= CIN_hold;
@@ -2654,6 +2654,9 @@ void CL_LevelCin_Stop( void ) {
         }
         CL_levelCinPaused = qfalse;
     }
+
+	S_SetCinematicMute( qfalse );
+    S_RestartBackgroundTrack();
 
 }
 

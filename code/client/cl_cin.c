@@ -244,6 +244,26 @@ void CIN_FitRectToAspect( float *x, float *y, float *w, float *h, float videoAsp
     }
 }
 
+void CIN_FillRectToAspect( float *x, float *y, float *w, float *h, float videoAspect ) {
+    float targetAspect;
+
+    if ( *h <= 0.0f || *w <= 0.0f || videoAspect <= 0.0f ) return;
+
+    targetAspect = ( *w / *h );
+
+    if ( targetAspect > videoAspect ) {
+        // screen is wider than video -> expand height, crop top/bottom
+        float newH = ( *w / videoAspect );
+        *y -= ( newH - *h ) * 0.5f;
+        *h  = newH;
+    } else {
+        // screen is taller than video -> expand width, crop left/right
+        float newW = ( *h * videoAspect );
+        *x -= ( newW - *w ) * 0.5f;
+        *w  = newW;
+    }
+}
+
 void CIN_CloseAllVideos( void ) {
 	int i;
 
@@ -2406,14 +2426,14 @@ void CIN_DrawCinematic( int handle ) {
 	if ( !cinTable[handle].buf ) {
 		return;
 	}
+buf = cinTable[handle].buf;
 
-	x = cinTable[handle].xpos;
-	y = cinTable[handle].ypos;
-	w = cinTable[handle].width;
-	h = cinTable[handle].height;
-	buf = cinTable[handle].buf;
-
-	SCR_AdjustFrom640( &x, &y, &w, &h );
+// Force real fullscreen in *framebuffer pixels*.
+// This bypasses the "4:3 safe area" scaling.
+x = 0;
+y = 0;
+w = cls.glconfig.vidWidth;
+h = cls.glconfig.vidHeight;
 
 	// Save original destination rect (usually fullscreen or whatever caller set).
 	ox = x; oy = y; ow = w; oh = h;
@@ -2441,16 +2461,33 @@ void CIN_DrawCinematic( int handle ) {
 				if ( sn > 0 && sd > 0 ) {
 					sar = (float)sn / (float)sd;
 					// clamp insane SAR values
-					if ( sar < 0.5f || sar > 2.0f ) {
-						sar = 1.0f;
-					}
-				}
+		float sar = 1.0f;
+
+		// Prefer SAR, but clamp insane values
+		if (!cin.isRoq)
+		{
+			int sn = cinTable[handle].sar_num;
+			int sd = cinTable[handle].sar_den;
+			if (sn > 0 && sd > 0)
+			{
+				sar = (float)sn / (float)sd;
+				if (sar < 0.5f || sar > 2.0f)
+					sar = 1.0f;
 			}
 			*/
 
 			// display aspect = (width * SAR) / height
 			CIN_FitRectToAspect( &x, &y, &w, &h, (srcW * sar) / srcH );
+			// Heuristic: common “should be 4:3” resolutions — ignore bogus SAR
+			if ((cinTable[handle].drawX == 640 && cinTable[handle].drawY == 480) ||
+				(cinTable[handle].drawX == 320 && cinTable[handle].drawY == 240) ||
+				(cinTable[handle].drawX == 512 && cinTable[handle].drawY == 384))
+			{
+				sar = 1.0f;
+			}
 		}
+
+		CIN_FillRectToAspect(&x, &y, &w, &h, (srcW * sar) / srcH);
 	}
 
 	// If letterBox flag is set, draw black bars around the fitted video rect.

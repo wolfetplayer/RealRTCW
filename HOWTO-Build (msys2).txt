@@ -21,19 +21,27 @@ STEP 1: INSTALL + UPDATE MSYS2
 ============================================
 STEP 2: INSTALL TOOLCHAIN and additional libraries
 
-Open "MSYS2 MinGW 64-bit" shell (IMPORTANT).
+1. Open "MSYS2 MinGW 64-bit" shell (IMPORTANT).
 
-Run:
-pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-gdb mingw-w64-x86_64-make
+2. Run:
+   pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-gdb mingw-w64-x86_64-make
 
-This installs:
-- gcc
-- g++
-- gdb
-- mingw32-make (used instead of make)
+   This installs:
+   - gcc
+   - g++
+   - gdb
+   - mingw32-make (used instead of make)
 
-After that run installation of additional ffmpeg libraries:
-pacman -S mingw-w64-x86_64-ffmpeg
+3. After that run installation of additional ffmpeg libraries:
+   pacman -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-ffmpeg-8.0.1-3-any.pkg.tar.zst
+   pacman -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-ffmpeg-python-0.2.0-8-any.pkg.tar.zst
+
+   This install the specified version of ffmpeg libraries.
+
+ or run:
+   pacman -S mingw-w64-x86_64-ffmpeg
+
+   This install the lastest version of ffmpeg libraries.
 
 ============================================
 STEP 3: PREPARE YOUR PROJECT

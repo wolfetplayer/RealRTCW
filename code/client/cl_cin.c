@@ -1409,9 +1409,12 @@ static int FFMPEG_ReadFrame( qboolean onlyAudio ) {
 
     if ( ret < 0 ) {
         // eof
-        avcodec_send_packet( cinTable[currentHandle].vCodecCtx, NULL );
-		avcodec_send_packet( cinTable[currentHandle].aCodecCtx, NULL );
-        cinTable[currentHandle].eof = qtrue;
+		avcodec_send_packet(cinTable[currentHandle].vCodecCtx, NULL);
+		if (cinTable[currentHandle].aCodecCtx)
+		{
+			avcodec_send_packet(cinTable[currentHandle].aCodecCtx, NULL);
+		}
+		cinTable[currentHandle].eof = qtrue;
 	 	cinTable[currentHandle].status = FMV_EOF;
     } else if ( cinTable[currentHandle].packet->stream_index ==
          cinTable[currentHandle].videoStream && !onlyAudio ) {
@@ -1420,19 +1423,12 @@ static int FFMPEG_ReadFrame( qboolean onlyAudio ) {
             cinTable[currentHandle].vCodecCtx, 
             cinTable[currentHandle].packet 
         );
-    } else if ( cinTable[currentHandle].packet->stream_index == 
-              cinTable[currentHandle].audioStream && 
-			  !cinTable[currentHandle].silent ) {
-		avcodec_send_packet( 
-			cinTable[currentHandle].aCodecCtx, 
-			cinTable[currentHandle].packet 
-		);
-
-		// Com_DPrintf( 
-		// 	"[DEMUX] stream=%d pts=%lld\n", 
-		// 	cinTable[currentHandle].packet->stream_index, 
-		// 	cinTable[currentHandle].packet->pts 
-		// );
+	}
+	else if (cinTable[currentHandle].aCodecCtx &&
+			 cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].audioStream &&
+			 !cinTable[currentHandle].silent)
+	{
+		avcodec_send_packet(cinTable[currentHandle].aCodecCtx, cinTable[currentHandle].packet);
 	}
 
 	return ret;
@@ -1451,7 +1447,16 @@ static void FFMPEG_PredecodeAudio( void ) {
     int size = 0;
 	int samples;
 
-    outPlanes[0] = (byte *)tmp;
+	if (currentHandle < 0)
+		return;
+	if (cinTable[currentHandle].silent)
+		return;
+	if (cinTable[currentHandle].audioStream < 0)
+		return;
+	if (!cinTable[currentHandle].aCodecCtx || !cinTable[currentHandle].swrCtx)
+		return;
+
+	outPlanes[0] = (byte *)tmp;
 
     cinTable[currentHandle].audioPCM.pcm = Z_Malloc( capacity * 2 * sizeof( short ) ); // stereo
 
@@ -1598,21 +1603,25 @@ static void FFMPEG_Interrupt( void ) {
         return;
     }
 
-	if ( !cinTable[currentHandle].firstAudioFrameFlag ) {
-		S_Update( );
-		Com_DPrintf( "S_Update: Setting rawend to %i\n", s_soundtime );
+	if (!cinTable[currentHandle].silent &&
+		cinTable[currentHandle].audioPCM.pcm &&
+		cinTable[currentHandle].audioPCM.totalSamples > 0 &&
+		!cinTable[currentHandle].firstAudioFrameFlag)
+	{
+
+		S_Update();
 		s_rawend[CIN_STREAM] = s_soundtime;
 		cinTable[currentHandle].firstAudioFrameFlag = qtrue;
-		S_RawSamples( 
-			CIN_STREAM, 
-			cinTable[currentHandle].audioPCM.totalSamples, 
-			cinTable[currentHandle].audioPCM.sampleRate, 
-			2, 
-			cinTable[currentHandle].audioPCM.channels, 
-			(byte *)cinTable[currentHandle].audioPCM.pcm, 
-			1.0f, 
-			-1 
-		);
+
+		S_RawSamples(
+			CIN_STREAM,
+			cinTable[currentHandle].audioPCM.totalSamples,
+			cinTable[currentHandle].audioPCM.sampleRate,
+			2,
+			cinTable[currentHandle].audioPCM.channels,
+			(byte *)cinTable[currentHandle].audioPCM.pcm,
+			1.0f,
+			-1);
 	}
 
 	t0 = Sys_Milliseconds( );
@@ -1798,11 +1807,33 @@ static int FFMPEG_Init( void ) {
 	// audio
 	cinTable[currentHandle].audioStream = -1;
 
-	for ( i = 0; i < cinTable[currentHandle].formatCtx->nb_streams; ++i ) {
-		if ( cinTable[currentHandle].formatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO ) {
+	for (i = 0; i < cinTable[currentHandle].formatCtx->nb_streams; ++i)
+	{
+		if (cinTable[currentHandle].formatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
+		{
 			cinTable[currentHandle].audioStream = i;
 			break;
 		}
+	}
+
+	// No audio stream -> force silent mode and skip audio init
+	if (cinTable[currentHandle].audioStream < 0)
+	{
+		cinTable[currentHandle].silent = qtrue;
+
+		cinTable[currentHandle].aCodec = NULL;
+		cinTable[currentHandle].aCodecCtx = NULL;
+		cinTable[currentHandle].aFrame = NULL;
+		cinTable[currentHandle].swrCtx = NULL;
+
+		cinTable[currentHandle].audioPCM.pcm = NULL;
+		cinTable[currentHandle].audioPCM.totalSamples = 0;
+		cinTable[currentHandle].audioPCM.playCursor = 0;
+		cinTable[currentHandle].audioPCM.sampleRate = 0;
+		cinTable[currentHandle].audioPCM.channels = 0;
+
+		cinTable[currentHandle].firstAudioFrameFlag = qtrue; // prevents audio kick in Interrupt
+		return 0;											 // video-only is totally valid
 	}
 
 	AVStream *aSt = cinTable[currentHandle].formatCtx->streams[cinTable[currentHandle].audioStream];

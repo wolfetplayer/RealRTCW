@@ -4588,12 +4588,41 @@ qboolean AICast_ScriptAction_Cvar( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+/*
+==================
+AICast_ScriptAction_CinPlay
 
+  syntax: cin_play <videoFileName>
+==================
+*/
 qboolean AICast_ScriptAction_CinPlay( cast_state_t *cs, char *params ) {
-    trap_SendServerCommand( cs->entityNum, va( "cin_play %s", params ) );
+	char *pString, *filename;
+	fileHandle_t f;
+
+	pString = params;
+	filename = COM_Parse( &pString );
+	if ( !filename[0] ) {
+		G_Error( "AI_Scripting: syntax: cin_play <videoFileName>\n" );
+	}
+
+	trap_FS_FOpenFile( filename, &f, FS_READ );
+	if ( !f ) {
+		G_Error( "AI_Scripting: failed to open \"%s\"\n", filename );
+	} else {
+		trap_FS_FCloseFile( f );
+		trap_SendServerCommand( cs->entityNum, va( "cin_play %s", params ) );
+	}
+	
     return qtrue;
 }
 
+/*
+==================
+AICast_ScriptAction_CinStop
+
+  syntax: cin_stop
+==================
+*/
 qboolean AICast_ScriptAction_CinStop( cast_state_t *cs, char *params ) {
     trap_SendServerCommand( cs->entityNum, "cin_stop" );
     return qtrue;
@@ -4604,7 +4633,6 @@ qboolean AICast_ScriptAction_CinStop( cast_state_t *cs, char *params ) {
 AICast_ScriptAction_decoy
 ==================
 */
-
 qboolean AICast_ScriptAction_decoy( cast_state_t *cs, char *params ) {
     trap_SendServerCommand( -1, "mu_play sound/scenaric/general/decoy.wav 0\n" );
 	return qtrue;

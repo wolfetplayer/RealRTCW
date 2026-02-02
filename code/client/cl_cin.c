@@ -212,7 +212,7 @@ static int FFMPEG_Read( void *opaque, byte *buf, int bufSize ) {
 
 static long long FFMPEG_Seek( void *opaque, long long offset, int whence ) {
     if ( whence == AVSEEK_SIZE ) {
-        return FS_filelength( cinTable[currentHandle].iFile );
+        return FS_filelengthInPak( cinTable[currentHandle].iFile );	// read from pak file now
 	}
 
     if ( FS_Seek( cinTable[currentHandle].iFile, offset, whence ) < 0 ) {

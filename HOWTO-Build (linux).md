@@ -1,14 +1,16 @@
 # How to Build on Linux
 
-Requires FFmpeg 8 and at the time of writing only Arch Linux has it.
+Requires FFmpeg 8 to build and run.
+
+RealRTCW 5.3 is the last version that does not require FFmpeg.
 
 
 ## Prerequisites
 
 ### Arch Linux
 
-Install required packages:
 ```bash
+# Install required packages:
 sudo pacman -S git base-devel ffmpeg
 ```
 
@@ -18,20 +20,30 @@ sudo pacman -S git base-devel ffmpeg
 ```bash
 git clone https://github.com/wolfetplayer/RealRTCW
 cd RealRTCW
-# Switch to tag 5.3 to match 5.3 files found on moddb
+```
+
+The current main branch may be ahead of the released mod files. For compatibility, switch to the corresponding release tag (latest at the time of writing: 5.3). You can return using `git switch -`.
+
+```bash
+# Switch to tag 5.3 to match 5.3 mod files
 git checkout tags/5.3
 ```
 
 
 ## Build
 
-Run `make` from RealRTCW directory.
-
-Look within build directory structure for output files(x86_64 architecture as example):
+```bash
+# Run from RealRTCW directory
+make
 ```
-main\cgame.sp.x86_64.so
-main\qagame.sp.x86_64.so
-main\ui.sp.x86_64.so
+
+Output files are in a subdirectory under build directory.
+
+```bash
+# Output files (x86_64 architecture as example):
+main/cgame.sp.x86_64.so
+main/qagame.sp.x86_64.so
+main/ui.sp.x86_64.so
 RealRTCW.x86_64
 renderer_sp_opengl1_x86_64.so
 ```

@@ -94,6 +94,7 @@ void SP_info_ai_respawn( gentity_t *ent ) {
 
     G_SpawnInt( "nobots", "0", &i );    if ( i ) ent->flags |= FL_NO_BOTS;
     G_SpawnInt( "nohumans", "0", &i );  if ( i ) ent->flags |= FL_NO_HUMANS;
+	G_SpawnInt( "aiteam", "0", &ent->aiTeam );
 
     // Parse optional name filter into existing ent->aiName
     G_SpawnString( "ainame", "", &s );  // returns qtrue/false, but s is set either way

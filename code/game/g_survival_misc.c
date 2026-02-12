@@ -132,14 +132,19 @@ gentity_t *SelectNearestDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *e
 
         if (ent)
         {
-            // If mapper didn't set aiteam on the spot (0), allow any team
-            if (spot->aiTeam && ent->aiTeam != spot->aiTeam)
-                continue;
+            if (ent->aiTeam)
+            {
+                if (spot->aiTeam != ent->aiTeam)
+                    continue; // includes rejecting 0
+            }
         }
         else if (player)
         {
-            if (spot->aiTeam && player->aiTeam != spot->aiTeam)
-                continue;
+            if (player->aiTeam)
+            {
+                if (spot->aiTeam != player->aiTeam)
+                    continue;
+            }
         }
 
         // class/boss gate
@@ -197,14 +202,19 @@ gentity_t *SelectRandomDeathmatchSpawnPoint_AI( gentity_t *player, gentity_t *en
 
         if (ent)
         {
-            // If mapper didn't set aiteam on the spot (0), allow any team
-            if (spot->aiTeam && ent->aiTeam != spot->aiTeam)
-                continue;
+            if (ent->aiTeam)
+            {
+                if (spot->aiTeam != ent->aiTeam)
+                    continue; // includes rejecting 0
+            }
         }
         else if (player)
         {
-            if (spot->aiTeam && player->aiTeam != spot->aiTeam)
-                continue;
+            if (player->aiTeam)
+            {
+                if (spot->aiTeam != player->aiTeam)
+                    continue;
+            }
         }
 
         // class/boss gate

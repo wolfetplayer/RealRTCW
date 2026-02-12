@@ -28,6 +28,16 @@
 
 #include "ioapi.h"
 
+#if defined(UTF8) && defined(_WIN32)
+extern FILE *Sys_FOpen(const char* utf8_path, const char* mode);
+
+#ifdef FOPEN_FUNC
+    #undef FOPEN_FUNC
+#endif
+
+#define FOPEN_FUNC(filename, mode) Sys_FOpen(filename, mode)
+#endif
+
 voidpf call_zopen64 (const zlib_filefunc64_32_def* pfilefunc,const void*filename,int mode)
 {
     if (pfilefunc->zfile_func64.zopen64_file != NULL)

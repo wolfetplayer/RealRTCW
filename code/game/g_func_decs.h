@@ -1281,6 +1281,7 @@ extern void AICast_InputToUserCommand ( cast_state_t * cs , bot_input_t * bi , u
 extern void AICast_ChangeViewAngles ( cast_state_t * cs , float thinktime ) ;
 extern void AICast_ProcessAIFunctions ( cast_state_t * cs , float thinktime ) ;
 extern void AICast_SightUpdate ( int numchecks ) ;
+extern qboolean AICast_Defend_Update( cast_state_t *cs );
 extern void AICast_UpdateNonVisibility ( gentity_t * srcent , gentity_t * destent , qboolean directview ) ;
 extern void AICast_UpdateVisibility ( gentity_t * srcent , gentity_t * destent , qboolean shareVis , qboolean directview ) ;
 extern qboolean AICast_CheckVisibility ( gentity_t * srcent , gentity_t * destent ) ;
@@ -1407,6 +1408,8 @@ extern qboolean AICast_ScriptAction_GotoCast ( cast_state_t * cs , char * params
 extern qboolean AICast_ScriptAction_CrouchToMarker ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_WalkToMarker ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_GotoMarker ( cast_state_t * cs , char * params ) ;
+extern qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params );
+extern qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) ;
 extern qboolean G_ScriptAction_ShaderRemapFlush ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_ShaderRemap ( gentity_t * ent , char * params ) ;
 extern void AICast_NoAttackIfNotHurtSinceLastScriptAction ( cast_state_t * cs ) ;

@@ -90,18 +90,23 @@ If the start position is targeting an entity, the players camera will start out 
 void SP_info_ai_respawn( gentity_t *ent ) {
     int i;
     vec3_t dir;
-    char *s;  // <-- not const
+    char *s;
+
+    if ( !ent ) return;
 
     G_SpawnInt( "nobots", "0", &i );    if ( i ) ent->flags |= FL_NO_BOTS;
     G_SpawnInt( "nohumans", "0", &i );  if ( i ) ent->flags |= FL_NO_HUMANS;
-	G_SpawnInt( "aiteam", "0", &ent->aiTeam );
 
-    // Parse optional name filter into existing ent->aiName
-    G_SpawnString( "ainame", "", &s );  // returns qtrue/false, but s is set either way
+    // IMPORTANT: store team restriction on the SPAWN SPOT entity
+    // Default 0. With strict matching below, 0 means "team 0 only", not wildcard.
+    G_SpawnInt( "aiteam", "0", &ent->aiTeam );
+
+    // Optional name restriction
+    G_SpawnString( "ainame", "", &s );
     if ( s && s[0] ) {
         ent->aiName = G_NewString( s );
     } else {
-        ent->aiName = NULL;             // no restriction
+        ent->aiName = NULL;
     }
 
     ent->enemy = G_PickTarget( ent->target );

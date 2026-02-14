@@ -993,6 +993,54 @@ long FS_filelength(fileHandle_t f)
 }
 
 /*
+================
+FS_filelengthInPak
+
+Return the length of a file from a pak file (zip/pk3 commonly).
+================
+*/
+long FS_filelengthInPak(fileHandle_t f) {
+	unzFile	uz;
+	unz_file_info info;
+	
+	if (f <= 0 || f >= MAX_FILE_HANDLES) {
+		return -1;
+	}
+	
+	// Handle files in zip pack archives
+	if (fsh[f].zipFile == qtrue) {
+		uz = fsh[f].handleFiles.file.z;
+		if (!uz) {
+			return -1;
+		}
+		
+		if (unzGetCurrentFileInfo(uz, &info, NULL, 0, NULL, 0, NULL, 0) != UNZ_OK) {
+			return -1;
+		}
+		
+		return info.uncompressed_size;
+	}
+
+	return -1;
+}
+
+/*
+================
+FS_isFileHandleInPak
+
+Return qtrue if a file handle is from a pak file (zip/pk3 commonly).
+================
+*/
+qboolean FS_isFileHandleInPak(fileHandle_t f) {
+	if (f <= 0 || f >= MAX_FILE_HANDLES) {
+		return qfalse;
+	}
+
+	return fsh[f].zipFile;
+}
+
+
+/*
 ====================
 FS_ReplaceSeparators
 

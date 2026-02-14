@@ -729,7 +729,8 @@ long FS_filelength(fileHandle_t f);
 // doesn't work for files that are opened from a pack file
 
 long FS_filelengthInPak(fileHandle_t f);
-// added, for files that are opened from a pack file
+qboolean FS_isFileHandleInPak(fileHandle_t f);
+// added, for files that are from a pack file
 
 int     FS_FTell( fileHandle_t f );
 // where are we?

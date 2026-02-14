@@ -4761,23 +4761,10 @@ AICast_ScriptAction_CinPlay
 ==================
 */
 qboolean AICast_ScriptAction_CinPlay( cast_state_t *cs, char *params ) {
-	char *pString, *filename;
-	fileHandle_t f;
-
-	pString = params;
-	filename = COM_Parse( &pString );
-	if ( !filename[0] ) {
+	if ( !params || !params[0] ) {
 		G_Error( "AI_Scripting: syntax: cin_play <videoFileName>\n" );
 	}
-
-	trap_FS_FOpenFile( filename, &f, FS_READ );
-	if ( !f ) {
-		G_Error( "AI_Scripting: failed to open \"%s\"\n", filename );
-	} else {
-		trap_FS_FCloseFile( f );
-		trap_SendServerCommand( cs->entityNum, va( "cin_play %s", params ) );
-	}
-	
+	trap_SendServerCommand( cs->entityNum, va( "cin_play %s", params ) );
     return qtrue;
 }
 

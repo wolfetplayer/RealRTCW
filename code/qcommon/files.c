@@ -1025,6 +1025,22 @@ long FS_filelengthInPak(fileHandle_t f) {
 }
 
 /*
+================
+FS_isFileHandleInPak
+
+Return qtrue if a file handle is from a pak file (zip/pk3 commonly).
+================
+*/
+qboolean FS_isFileHandleInPak(fileHandle_t f) {
+	if (f <= 0 || f >= MAX_FILE_HANDLES) {
+		return qfalse;
+	}
+
+	return fsh[f].zipFile;
+}
+
+
+/*
 ====================
 FS_ReplaceSeparators
 

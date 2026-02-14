@@ -91,6 +91,33 @@ void AICast_NoAttackIfNotHurtSinceLastScriptAction( cast_state_t *cs ) {
 	}
 }
 
+// A few helpers for the prefix markers feature we're added for the gotomarker
+
+qboolean Q_StringStartsWith( const char *s, const char *prefix ) {
+    if ( !s || !prefix ) return qfalse;
+    while ( *prefix ) {
+        if ( tolower(*s) != tolower(*prefix) ) return qfalse;
+        s++; prefix++;
+    }
+    return qtrue;
+}
+
+int AICast_TravelTimeToPoint( cast_state_t *cs, const vec3_t goalOrg ) {
+    int fromArea = trap_AAS_PointAreaNum( cs->bs->origin );
+    int toArea   = trap_AAS_PointAreaNum( (float *)goalOrg );
+
+    if ( fromArea <= 0 || toArea <= 0 ) {
+        return 0;
+    }
+
+    return trap_AAS_AreaTravelTimeToGoalArea(
+        fromArea,
+        cs->bs->origin,
+        toArea,
+        cs->travelflags
+    );
+}
+
 /*
 ===============
 AICast_ScriptAction_GotoMarker
@@ -105,6 +132,9 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 	vec3_t vec, org;
 	int i, diff;
 	qboolean slowApproach;
+	qboolean groupMode = qfalse;
+	char prefix[64];
+	int prefixLen;
 
 	ent = NULL;
 
@@ -126,7 +156,9 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 	// if we already are going to the marker, just use that, and check if we're in range
 	if ( cs->castScriptStatus.scriptGotoEnt >= 0 && cs->castScriptStatus.scriptGotoId == cs->thinkFuncChangeTime ) {
 		ent = &g_entities[cs->castScriptStatus.scriptGotoEnt];
-		if ( ent->targetname && !Q_strcasecmp( ent->targetname, token ) ) {
+		if (cs->castScriptStatus.scriptGotoIsGroup ||
+			(ent->targetname && !Q_strcasecmp(ent->targetname, token)))
+		{
 			// if we're not slowing down, then check for passing the marker, otherwise check distance only
 			VectorSubtract( ent->r.currentOrigin, cs->bs->origin, vec );
 			//
@@ -188,24 +220,81 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 				cs->followTime = level.time + 500;
 				return qfalse;
 			}
-		} else
+		}
+		else
 		{
 			ent = NULL;
 		}
 	}
 
-	// find the ai_marker with the given "targetname"
+    Q_strncpyz( prefix, token, sizeof(prefix) );
 
-	while ( ( ent = G_Find( ent, FOFS( classname ), "ai_marker" ) ) )
-	{
-		if ( ent->targetname && !Q_strcasecmp( ent->targetname, token ) ) {
-			break;
-		}
-	}
+    prefixLen = strlen(prefix);
+    if ( prefixLen > 0 && prefix[prefixLen - 1] == '*' ) {
+        groupMode = qtrue;
+        prefix[prefixLen - 1] = '\0'; // strip '*'
+    }
 
-	if ( !ent ) {
-		G_Error( "AI Scripting: gotomarker can't find ai_marker with \"targetname\" = \"%s\"\n", token );
-	}
+    ent = NULL;
+
+    if ( !groupMode ) {
+        // original exact match behavior
+        while ( ( ent = G_Find( ent, FOFS( classname ), "ai_marker" ) ) ) {
+            if ( ent->targetname && !Q_strcasecmp( ent->targetname, prefix ) ) {
+                break;
+            }
+        }
+    } else {
+        // group/prefix mode: pick best marker at runtime
+        gentity_t *best = NULL;
+        int bestTT = 0x7fffffff;
+        float bestDistSq = 0.0f;
+        qboolean haveTT = qfalse;
+
+        while ( ( ent = G_Find( ent, FOFS( classname ), "ai_marker" ) ) ) {
+            vec3_t org;
+            vec3_t d;
+            float distSq;
+            int tt;
+
+            if ( !ent->targetname ) continue;
+            if ( !Q_StringStartsWith( ent->targetname, prefix ) ) continue;
+
+            // Evaluate marker origin for cost
+            VectorCopy( ent->r.currentOrigin, org );
+
+            tt = AICast_TravelTimeToPoint( cs, org );
+            if ( tt > 0 ) {
+                // Prefer travel time (AAS)
+                if ( tt < bestTT ) {
+                    bestTT = tt;
+                    best = ent;
+                    haveTT = qtrue;
+                }
+            } else if ( !haveTT ) {
+                // Fallback: distance only if we have no travel time candidates
+                VectorSubtract( org, cs->bs->origin, d );
+                distSq = VectorLengthSquared( d );
+                if ( !best || distSq < bestDistSq ) {
+                    bestDistSq = distSq;
+                    best = ent;
+                }
+            }
+        }
+
+        ent = best;
+    }
+
+    if ( !ent ) {
+        if ( !groupMode ) {
+            G_Error( "AI Scripting: gotomarker can't find ai_marker with \"targetname\" = \"%s\"\n", prefix );
+        } else {
+            G_Error( "AI Scripting: gotomarker can't find ai_marker with prefix \"%s*\"\n", prefix );
+        }
+    }
+
+    // Remember which mode we used, so the cached section doesn't compare exact name
+    cs->castScriptStatus.scriptGotoIsGroup = groupMode;
 
 	if ( Distance( cs->bs->origin, ent->r.currentOrigin ) < SCRIPT_REACHGOAL_DIST ) { // we made it
 		return qtrue;
@@ -457,6 +546,171 @@ qboolean AICast_ScriptAction_CrouchToCast( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+// DEFENSE ACTIONS //
+
+static void AICast_Defend_ClearCombat( cast_state_t *cs ) {
+    cs->enemyNum = -1;
+    cs->lastEnemy = -1;
+
+    // kill any “go chase” intentions
+    cs->combatGoalTime = 0;
+    cs->battleHuntPauseTime = 0;
+    VectorClear( cs->takeCoverPos );
+}
+
+
+qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params ) {
+    char *pString = params;
+    char *token;
+    gentity_t *marker = NULL;
+    float radius = 320.0f;
+    int timeout = 0;
+
+    if ( !params || !params[0] ) {
+        G_Error( "AI Scripting:defend without parameters\n" );
+    }
+
+    // markername
+    token = COM_ParseExt( &pString, qfalse );
+    if ( !token[0] ) {
+        G_Error( "AI Scripting: syntax: defend <markername> [radius] [timeout_ms]\n" );
+    }
+
+    marker = G_FindByTargetname( NULL, token );
+
+    if ( marker ) {
+        VectorCopy( marker->r.currentOrigin, cs->defendOrigin );
+    } else {
+        // fallback: current pos (still useful)
+        VectorCopy( cs->bs->origin, cs->defendOrigin );
+    }
+
+    // optional radius
+    token = COM_ParseExt( &pString, qfalse );
+    if ( token[0] ) radius = atof( token );
+
+    // optional timeout (ms)
+    token = COM_ParseExt( &pString, qfalse );
+    if ( token[0] ) timeout = atoi( token );
+
+    cs->defendActive = qtrue;
+    cs->defendRadius = radius;
+    cs->defendLeash  = radius + 128.0f; // slack so they can strafe/fight
+    cs->defendExpireTime = ( timeout > 0 ) ? ( level.time + timeout ) : 0;
+    cs->defendRepathTime = 0;
+
+	// if we're outside, explicitly enter return-to-defend mode
+	if (Distance(cs->bs->origin, cs->defendOrigin) > cs->defendRadius)
+	{
+		cs->defendReturning = qtrue;
+
+		// clear combat so he commits to returning smoothly
+		AICast_Defend_ClearCombat(cs);
+	}
+	else
+	{
+		cs->defendReturning = qfalse;
+	}
+
+	// IMPORTANT:
+    // Do NOT force some invented state. Just let the regular logic run.
+    AIFunc_DefaultStart( cs );
+
+    return qtrue;
+}
+
+qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) {
+    cs->defendActive = qfalse;
+	cs->defendReturning = qfalse;
+    cs->defendExpireTime = 0;
+    cs->defendRepathTime = 0;
+    return qtrue;
+}
+
+qboolean AICast_Defend_Update( cast_state_t *cs ) {
+    float distFromHome;
+
+    if ( !cs->defendActive ) return qfalse;
+
+    // timeout
+    if ( cs->defendExpireTime && level.time >= cs->defendExpireTime ) {
+        cs->defendActive = qfalse;
+        cs->defendReturning = qfalse;
+        cs->defendExpireTime = 0;
+        return qfalse;
+    }
+
+    distFromHome = Distance( cs->bs->origin, cs->defendOrigin );
+
+    //
+    // 1) RETURNING MODE: stable navigation back home
+    //
+    if ( cs->defendReturning ) {
+
+        // Arrived?
+        if ( distFromHome <= ( cs->defendRadius * 0.75f ) ) {
+            cs->defendReturning = qfalse;
+            cs->defendRepathTime = 0;
+            return qfalse; // allow normal logic now
+        }
+
+        // While returning, don't chase enemies
+        if ( cs->enemyNum >= 0 ) {
+            if ( !AICast_CheckAttack( cs, cs->enemyNum, qfalse ) ) {
+                AICast_Defend_ClearCombat( cs );
+            }
+        }
+
+        // Drive movement smoothly
+        if ( cs->defendRepathTime < level.time ) {
+            cs->defendRepathTime = level.time + 300; // little tighter helps smoothness
+            AICast_MoveToPos( cs, cs->defendOrigin, -1 );
+        } else {
+            // still keep moving along existing move plan
+            AICast_MoveToPos( cs, cs->defendOrigin, -1 );
+        }
+
+        return qtrue; // handled
+    }
+
+    //
+    // 2) HARD LEASH: if pulled way out during combat, enter returning mode
+    //
+    if ( distFromHome > cs->defendLeash ) {
+        cs->defendReturning = qtrue;
+        AICast_Defend_ClearCombat( cs );
+        cs->defendRepathTime = 0;
+        return qtrue;
+    }
+
+    //
+    // 3) Enemy leash rule: don't chase targets outside leash
+    //
+    if ( cs->enemyNum >= 0 ) {
+        float enemyDistFromHome = Distance( g_entities[cs->enemyNum].r.currentOrigin, cs->defendOrigin );
+
+        if ( enemyDistFromHome > cs->defendLeash ) {
+            // If can't attack from here, drop and return to home logic
+            if ( !AICast_CheckAttack( cs, cs->enemyNum, qfalse ) ) {
+                AICast_Defend_ClearCombat( cs );
+            }
+        }
+    }
+
+    //
+    // 4) Soft radius: if idle and drifted out, enter returning mode (smoothly)
+    //
+    if ( cs->enemyNum < 0 && distFromHome > cs->defendRadius ) {
+        cs->defendReturning = qtrue;
+        cs->defendRepathTime = 0;
+        return qtrue;
+    }
+
+    return qfalse;
+}
+
+
+// DEFENSE ACTIONS END //
 
 /*
 ==============
@@ -625,16 +879,23 @@ qboolean AICast_ScriptAction_Trigger( cast_state_t *cs, char *params ) {
 		G_Error( "AI Scripting: trigger must have a name and an identifier\n" );
 	}
 
-	ent = AICast_FindEntityForName( token );
-	if ( !ent ) {
-		ent = G_Find( &g_entities[MAX_CLIENTS], FOFS( scriptName ), token );
+	// ---- self* support (minimal, safe, non-breaking)
+	// "self*" means: trigger this AI's own ainame
+	if ( !Q_stricmp( token, "self*" ) ) {
+		ent = &g_entities[ cs->entityNum ];
+	} else {
+		ent = AICast_FindEntityForName( token );
 		if ( !ent ) {
-			if ( trap_Cvar_VariableIntegerValue( "developer" ) ) {
-				G_Printf( "AI Scripting: trigger can't find AI cast with \"ainame\" = \"%s\"\n", params );
+			ent = G_Find( &g_entities[MAX_CLIENTS], FOFS( scriptName ), token );
+			if ( !ent ) {
+				if ( trap_Cvar_VariableIntegerValue( "developer" ) ) {
+					G_Printf( "AI Scripting: trigger can't find AI cast with \"ainame\" = \"%s\"\n", params );
+				}
+				return qtrue;
 			}
-			return qtrue;
 		}
 	}
+	// ---- end self* support
 
 	token = COM_ParseExt( &pString, qfalse );
 	if ( !token[0] ) {
@@ -4490,6 +4751,17 @@ qboolean AICast_ScriptAction_Cvar( cast_state_t *cs, char *params ) {
 	// set it to make sure
 	trap_Cvar_Set( cvarName, token );
 	return qtrue;
+}
+
+
+qboolean AICast_ScriptAction_CinPlay( cast_state_t *cs, char *params ) {
+    trap_SendServerCommand( cs->entityNum, va( "cin_play %s", params ) );
+    return qtrue;
+}
+
+qboolean AICast_ScriptAction_CinStop( cast_state_t *cs, char *params ) {
+    trap_SendServerCommand( cs->entityNum, "cin_stop" );
+    return qtrue;
 }
 
 /*

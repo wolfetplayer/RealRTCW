@@ -5512,6 +5512,7 @@ void CG_FireWeapon( centity_t *cent, int event ) {
 				  ent->weapon == WP_DYNAMITE ||
 				  ent->weapon == WP_AIRSTRIKE ||
 				  ent->weapon == WP_POISONGAS ||
+				  ent->weapon == WP_SMOKE_BOMB ||
 				  ent->weapon == WP_DYNAMITE_ENG ) { 
 		if ( ent->apos.trBase[0] > 0 ) { // underhand
 			return;

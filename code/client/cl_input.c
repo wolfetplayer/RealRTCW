@@ -33,6 +33,9 @@ If you have questions concerning this license or the applicable additional terms
 unsigned frame_msec;
 int old_com_frameTime;
 
+static int s_lastMouseInputTime = 0;
+static int s_lastJoyInputTime   = 0;
+
 /*
 ===============================================================================
 
@@ -447,14 +450,19 @@ CL_MouseEvent
 =================
 */
 void CL_MouseEvent( int dx, int dy, int time ) {
-	if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
-		VM_Call( uivm, UI_MOUSE_EVENT, dx, dy );
-	} else if (Key_GetCatcher( ) & KEYCATCH_CGAME) {
-		VM_Call( cgvm, CG_MOUSE_EVENT, dx, dy );
-	} else {
-		cl.mouseDx[cl.mouseIndex] += dx;
-		cl.mouseDy[cl.mouseIndex] += dy;
-	}
+    // Any real mouse movement marks KBM as active input device
+    if ( dx || dy ) {
+        s_lastMouseInputTime = time;
+    }
+
+    if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
+        VM_Call( uivm, UI_MOUSE_EVENT, dx, dy );
+    } else if (Key_GetCatcher( ) & KEYCATCH_CGAME) {
+        VM_Call( cgvm, CG_MOUSE_EVENT, dx, dy );
+    } else {
+        cl.mouseDx[cl.mouseIndex] += dx;
+        cl.mouseDy[cl.mouseIndex] += dy;
+    }
 }
 
 static float CL_NormalizeJoyAxis16(int v)
@@ -474,7 +482,35 @@ void CL_JoystickEvent( int axis, int value, int time ) {
     if ( axis < 0 || axis >= MAX_JOYSTICK_AXIS ) {
         Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
     }
-    cl.joystickAxis[axis] = CL_NormalizeJoyAxis16(value);
+
+    float norm = CL_NormalizeJoyAxis16(value);
+    cl.joystickAxis[axis] = norm;
+
+    // Mark gamepad as active only if it exceeds a small noise floor.
+    // Use something close to your deadzone (or a little smaller).
+    if ( fabsf(norm) > 0.08f ) {
+        s_lastJoyInputTime = time;
+    }
+}
+
+static qboolean CL_UsingGamepadNow( void )
+{
+    // If the most recent meaningful input was joystick, we’re in gamepad mode.
+    // Also add a small “hold” so tiny mouse bumps don’t instantly kill AA.
+    const int HOLD_MS = 250;
+
+    if ( (cls.realtime - s_lastJoyInputTime) > 2000 ) {
+        // No joystick activity for a while -> definitely not using gamepad
+        return qfalse;
+    }
+
+    // If mouse input happened very recently after joystick, treat as KBM.
+    if ( (cls.realtime - s_lastMouseInputTime) < HOLD_MS &&
+         s_lastMouseInputTime > s_lastJoyInputTime ) {
+        return qfalse;
+    }
+
+    return (s_lastJoyInputTime >= s_lastMouseInputTime);
 }
 
 
@@ -686,7 +722,7 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 // Aim Assist (gamepad) - affects only look (yaw/pitch)
 // Drop-in replacement for your current aim assist block inside CL_JoystickMove()
 // ---------------------------------------------------------
-if ( j_aimassist && j_aimassist->integer ) {
+if ( j_aimassist && j_aimassist->integer && CL_UsingGamepadNow() ) {
     float strength = cl.cgameAA_Strength; // 0..1 from cgame
     if ( strength > 0.0f ) {
 

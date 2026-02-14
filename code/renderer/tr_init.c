@@ -258,6 +258,15 @@ MAX_PN_TRIANGLES_TESSELATION_LEVEL_ATI	GetIntegerv Z+		1											-
 */
 //----(SA)	end
 
+static qboolean R_SupportsNPOT( void ) {
+    const char *ext = (const char *)qglGetString( GL_EXTENSIONS );
+
+    if ( !ext ) {
+		return qfalse;
+	}
+
+    return strstr( ext, "GL_ARB_texture_non_power_of_two" ) || strstr( ext, "GL_OES_texture_npot" );
+}
 
 /*
 ** InitOpenGL
@@ -293,6 +302,8 @@ static void InitOpenGL( void ) {
 			glConfig.maxTextureSize = 0;
 		}
 	}
+
+	tr.supportsNPOT = R_SupportsNPOT();
 
 	// set default state
 	GL_SetDefaultState();

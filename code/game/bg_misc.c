@@ -3877,30 +3877,6 @@ weapon_grenadePineapple
 		{0,0,0,0,0,0}
 	},
 
-// weapon_grenadesmoke
-	{
-		"weapon_grenadesmokereal",
-		"sound/misc/w_pkup.wav",
-		{
-		"",		// "models/multiplayer/smokebomb/smokebomb.md3",
-		"",		// "models/multiplayer/smokebomb/v_smokebomb.md3",
-		""
-		},
-
-		"icons/iconw_grenade_1",
-		"Smoke Bomb",
-		0,
-		IT_WEAPON,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		WP_SMOKE_BOMB,
-		"",
-		"sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",
-		{0,0,0,0,0,0}
-	},
-
 
 //weapon_dynamite
 
@@ -4718,7 +4694,7 @@ model="models/weapons2/p38/luger.md3"
 	},
 
 	{
-		"weapon_grenadesmoke_real",
+		"weapon_smokebomb",
 		"sound/misc/w_pkup.wav",
 		{  
 		"",
@@ -4726,8 +4702,8 @@ model="models/weapons2/p38/luger.md3"
 		""
 		},
 
-		"icons/iconw_smokegrenade_real_1",    
-		"smokeGrenade_real",              
+		"icons/iconw_smokebomb_1",    
+		"smokebomb",              
 		50,
 		IT_WEAPON,
 		WP_SMOKE_BOMB,
@@ -4826,7 +4802,7 @@ weapon_smoketrail -- only used as a special effects emitter for smoke trails (ar
 		""
 		},
 		"icons/iconw_poisongrenade_1",    
-		"ammo_poison_gas",
+		"poison gas",
 		0,
 		IT_WEAPON,
 		WP_POISONGAS,		
@@ -6552,6 +6528,39 @@ model="models/powerups/holdable/bandages.md3"
 		0,
 		"",                             
 		"sound/pickup/holdable/use_bandages.wav",
+		{1,1,1,1,1,1}
+	},
+
+
+/*QUAKED holdable_cross(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_cross.wav"
+use sound : "sound/pickup/holdable/use_cross.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/cross.md3"
+*/
+	{
+		"holdable_cross",
+		"sound/pickup/holdable/get_stamina.wav",
+		{
+		"models/powerups/holdable/cross.md3",
+		0, 
+		0
+		},
+
+		"icons/holycross",             
+		"Cross used",             
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_CROSS,
+		0,
+		0,
+		0,
+		"",                             
+		"sound/pickup/holdable/use_cross.wav",
 		{1,1,1,1,1,1}
 	},
 

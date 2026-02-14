@@ -1270,6 +1270,8 @@ typedef struct {
 	// RF, temp var used while parsing shader only
 	int allowCompress;
 
+	qboolean supportsNPOT;
+
 } trGlobals_t;
 
 extern backEndState_t backEnd;

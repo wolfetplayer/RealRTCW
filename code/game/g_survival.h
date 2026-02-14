@@ -84,6 +84,8 @@ typedef struct svParams_s
 	int initialKillCountRequirement;
 
 	int initialSoldiersCount;
+	int initialMercsCount;
+	int initialTrenchCount;
 	int initialEliteGuardsCount;
 	int initialBlackGuardsCount;
 	int initialVenomsCount;
@@ -99,6 +101,7 @@ typedef struct svParams_s
 
     int   defaultSpawnTime;
 	int   egSpawnTime;
+	int   trenchSpawnTime;
 	int   bgSpawnTime;
 	int   vSpawnTime;
 	int   protoSpawnTime;
@@ -113,6 +116,8 @@ typedef struct svParams_s
 	int   aliveFriendliestoCallReinforce;
 
 	int soldiersIncrease;
+	int mercsIncrease;
+	int trenchIncrease;
 	int eliteGuardsIncrease;
 	int blackGuardsIncrease;
 	int venomsIncrease;
@@ -125,6 +130,8 @@ typedef struct svParams_s
 	int lopersIncrease;
 
 	int maxSoldiers;
+	int maxMercs;
+	int maxTrench;
 	int maxEliteGuards;
 	int maxBlackGuards;
 	int maxVenoms;
@@ -138,6 +145,7 @@ typedef struct svParams_s
 	int maxLopers;
 
 	int waveEg;
+	int waveTrench;
 	int waveBg;
 	int waveV;
 

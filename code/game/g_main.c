@@ -451,6 +451,7 @@ qboolean G_canStealthStab( int aiChar ) {
 	switch ( aiChar ) {
 	case AICHAR_SOLDIER:
 	case AICHAR_MERCENARY:
+	case AICHAR_TRENCH:
 	case AICHAR_AMERICAN:
 	case AICHAR_ELITEGUARD:
 	case AICHAR_BLACKGUARD:

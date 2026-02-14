@@ -73,7 +73,7 @@ If you have questions concerning this license or the applicable additional terms
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
   #define GAMENAME_FOR_MASTER		"wolfsp"
   #define CINEMATICS_LOGO		"gmlogo.RoQ"	// non-existent
-  #define CINEMATICS_INTRO		"wolfintro.RoQ"	// SP only
+  #define CINEMATICS_INTRO		"wolfintro.webm"	// SP only
   #define LEGACY_PROTOCOL
 #endif
 

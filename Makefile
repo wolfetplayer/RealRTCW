@@ -406,6 +406,12 @@ ifneq (,$(findstring "$(PLATFORM)", "linux" "gnu_kfreebsd" "kfreebsd-gnu" "gnu")
     -pipe -DUSE_ICON -DARCH_STRING=\\\"$(FILE_ARCH)\\\"
   CLIENT_CFLAGS += $(SDL_CFLAGS)
 
+  FFMPEG_CFLAGS := $(shell pkg-config --cflags libavcodec libavformat libavutil libswscale libswresample)
+  FFMPEG_LIBS   := $(shell pkg-config --libs   libavcodec libavformat libavutil libswscale libswresample)
+
+  CFLAGS  += $(FFMPEG_CFLAGS)
+  LDFLAGS += $(FFMPEG_LIBS)
+
   ifeq ($(ARCH),x86_64)
     OPTIMIZEVM = -O3
     OPTIMIZE = $(OPTIMIZEVM) -ffast-math
@@ -775,6 +781,20 @@ ifdef MINGW
   LIBS= -lws2_32 -lwinmm -lpsapi
   CLIENT_LIBS = -lgdi32 -lole32
   RENDERER_LIBS = -lgdi32 -lole32
+
+  ifeq ($(ARCH),x86_64)
+    CLIENT_LIBS += -lavformat.dll
+    CLIENT_LIBS += -lavcodec.dll
+    CLIENT_LIBS += -lavutil.dll
+    CLIENT_LIBS += -lswscale.dll
+    CLIENT_LIBS += -lswresample.dll
+  else
+    CLIENT_LIBS += -lavformat.dll
+    CLIENT_LIBS += -lavcodec.dll
+    CLIENT_LIBS += -lavutil.dll
+    CLIENT_LIBS += -lswscale.dll
+    CLIENT_LIBS += -lswresample.dll
+  endif
 
   ifeq ($(USE_FREETYPE),1)
     ifneq ($(USE_INTERNAL_FREETYPE),1)

@@ -560,6 +560,7 @@ qboolean CL_GetLimboString( int index, char *buf );         // NERVE - SMF
 
 void CL_OpenURL(const char *url);
 
+
 //
 // cl_input
 //
@@ -714,6 +715,11 @@ void CIN_SetExtents( int handle, int x, int y, int w, int h );
 void CIN_SetLooping( int handle, qboolean loop );
 void CIN_UploadCinematic( int handle );
 void CIN_CloseAllVideos( void );
+void CL_LevelCin_Play( const char *name, int mode );
+void CL_LevelCin_Stop( void );
+qboolean SCR_LevelCinematicActive( void );
+void SCR_RunLevelCinematic( void );
+void SCR_DrawLevelCinematic( void );
 
 //
 // cl_cgame.c

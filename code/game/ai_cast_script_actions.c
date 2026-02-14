@@ -546,6 +546,171 @@ qboolean AICast_ScriptAction_CrouchToCast( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+// DEFENSE ACTIONS //
+
+static void AICast_Defend_ClearCombat( cast_state_t *cs ) {
+    cs->enemyNum = -1;
+    cs->lastEnemy = -1;
+
+    // kill any “go chase” intentions
+    cs->combatGoalTime = 0;
+    cs->battleHuntPauseTime = 0;
+    VectorClear( cs->takeCoverPos );
+}
+
+
+qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params ) {
+    char *pString = params;
+    char *token;
+    gentity_t *marker = NULL;
+    float radius = 320.0f;
+    int timeout = 0;
+
+    if ( !params || !params[0] ) {
+        G_Error( "AI Scripting:defend without parameters\n" );
+    }
+
+    // markername
+    token = COM_ParseExt( &pString, qfalse );
+    if ( !token[0] ) {
+        G_Error( "AI Scripting: syntax: defend <markername> [radius] [timeout_ms]\n" );
+    }
+
+    marker = G_FindByTargetname( NULL, token );
+
+    if ( marker ) {
+        VectorCopy( marker->r.currentOrigin, cs->defendOrigin );
+    } else {
+        // fallback: current pos (still useful)
+        VectorCopy( cs->bs->origin, cs->defendOrigin );
+    }
+
+    // optional radius
+    token = COM_ParseExt( &pString, qfalse );
+    if ( token[0] ) radius = atof( token );
+
+    // optional timeout (ms)
+    token = COM_ParseExt( &pString, qfalse );
+    if ( token[0] ) timeout = atoi( token );
+
+    cs->defendActive = qtrue;
+    cs->defendRadius = radius;
+    cs->defendLeash  = radius + 128.0f; // slack so they can strafe/fight
+    cs->defendExpireTime = ( timeout > 0 ) ? ( level.time + timeout ) : 0;
+    cs->defendRepathTime = 0;
+
+	// if we're outside, explicitly enter return-to-defend mode
+	if (Distance(cs->bs->origin, cs->defendOrigin) > cs->defendRadius)
+	{
+		cs->defendReturning = qtrue;
+
+		// clear combat so he commits to returning smoothly
+		AICast_Defend_ClearCombat(cs);
+	}
+	else
+	{
+		cs->defendReturning = qfalse;
+	}
+
+	// IMPORTANT:
+    // Do NOT force some invented state. Just let the regular logic run.
+    AIFunc_DefaultStart( cs );
+
+    return qtrue;
+}
+
+qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) {
+    cs->defendActive = qfalse;
+	cs->defendReturning = qfalse;
+    cs->defendExpireTime = 0;
+    cs->defendRepathTime = 0;
+    return qtrue;
+}
+
+qboolean AICast_Defend_Update( cast_state_t *cs ) {
+    float distFromHome;
+
+    if ( !cs->defendActive ) return qfalse;
+
+    // timeout
+    if ( cs->defendExpireTime && level.time >= cs->defendExpireTime ) {
+        cs->defendActive = qfalse;
+        cs->defendReturning = qfalse;
+        cs->defendExpireTime = 0;
+        return qfalse;
+    }
+
+    distFromHome = Distance( cs->bs->origin, cs->defendOrigin );
+
+    //
+    // 1) RETURNING MODE: stable navigation back home
+    //
+    if ( cs->defendReturning ) {
+
+        // Arrived?
+        if ( distFromHome <= ( cs->defendRadius * 0.75f ) ) {
+            cs->defendReturning = qfalse;
+            cs->defendRepathTime = 0;
+            return qfalse; // allow normal logic now
+        }
+
+        // While returning, don't chase enemies
+        if ( cs->enemyNum >= 0 ) {
+            if ( !AICast_CheckAttack( cs, cs->enemyNum, qfalse ) ) {
+                AICast_Defend_ClearCombat( cs );
+            }
+        }
+
+        // Drive movement smoothly
+        if ( cs->defendRepathTime < level.time ) {
+            cs->defendRepathTime = level.time + 300; // little tighter helps smoothness
+            AICast_MoveToPos( cs, cs->defendOrigin, -1 );
+        } else {
+            // still keep moving along existing move plan
+            AICast_MoveToPos( cs, cs->defendOrigin, -1 );
+        }
+
+        return qtrue; // handled
+    }
+
+    //
+    // 2) HARD LEASH: if pulled way out during combat, enter returning mode
+    //
+    if ( distFromHome > cs->defendLeash ) {
+        cs->defendReturning = qtrue;
+        AICast_Defend_ClearCombat( cs );
+        cs->defendRepathTime = 0;
+        return qtrue;
+    }
+
+    //
+    // 3) Enemy leash rule: don't chase targets outside leash
+    //
+    if ( cs->enemyNum >= 0 ) {
+        float enemyDistFromHome = Distance( g_entities[cs->enemyNum].r.currentOrigin, cs->defendOrigin );
+
+        if ( enemyDistFromHome > cs->defendLeash ) {
+            // If can't attack from here, drop and return to home logic
+            if ( !AICast_CheckAttack( cs, cs->enemyNum, qfalse ) ) {
+                AICast_Defend_ClearCombat( cs );
+            }
+        }
+    }
+
+    //
+    // 4) Soft radius: if idle and drifted out, enter returning mode (smoothly)
+    //
+    if ( cs->enemyNum < 0 && distFromHome > cs->defendRadius ) {
+        cs->defendReturning = qtrue;
+        cs->defendRepathTime = 0;
+        return qtrue;
+    }
+
+    return qfalse;
+}
+
+
+// DEFENSE ACTIONS END //
 
 /*
 ==============

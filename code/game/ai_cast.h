@@ -591,7 +591,15 @@ typedef struct cast_state_s
 	int respawnsleft;
 
 	qboolean registeredSurvivalKill;
-	
+
+	qboolean defendActive;
+	qboolean defendReturning; 
+	vec3_t defendOrigin;
+	float defendRadius;	 
+	float defendLeash;	
+	int defendExpireTime; 
+	int defendRepathTime;
+
 } cast_state_t;
 //
 #define CSFOFS( x ) ( (size_t)&( ( (cast_state_t *)0 )->x ) )
@@ -735,6 +743,7 @@ void AICast_AudibleEvent( int srcnum, vec3_t pos, float range );
 qboolean AICast_WeaponUsable( cast_state_t *cs, int weaponNum );
 float AICast_WeaponRange( cast_state_t *cs, int weaponnum );
 
+qboolean AICast_Defend_Update( cast_state_t *cs );
 //
 // ai_cast_events.c
 void    AICast_Pain( gentity_t *targ, gentity_t *attacker, int damage, vec3_t point );

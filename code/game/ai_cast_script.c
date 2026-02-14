@@ -165,6 +165,9 @@ qboolean AICast_ScriptAction_AccumPrint(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_GlobalAccumPrint(cast_state_t* cs, char* params);
 qboolean AICast_ScriptAction_Burned(cast_state_t* cs, char* params);
 
+qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) ;
+
 
 // Achievement condition functions
 
@@ -438,6 +441,8 @@ cast_script_stack_action_t scriptActions[] =
 		{"givescore", AICast_ScriptAction_GiveScore, NULL},
 		{"setwave", AICast_ScriptAction_SetWave, NULL},
 
+		{"defend", AICast_ScriptAction_Defend, NULL},
+		{"defend_stop", AICast_ScriptAction_DefendStop, NULL},
 		// Achievements (core game)
 		{"achievement_map_w3d", AICast_ScriptAction_AchievementGeneric, &ACH_W3D_1},
 		{"achievement_map_w3dsec", AICast_ScriptAction_AchievementGeneric, &ACH_W3D_2},

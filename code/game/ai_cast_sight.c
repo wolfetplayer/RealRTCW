@@ -818,9 +818,11 @@ qboolean AICast_BotEntInvisibleBySmokeBomb( vec3_t start, vec3_t end ) {
 	float smokeRadius;
 
 	// if the target is close enough, vision is not affected by smoke bomb
+	if (g_gametype.integer != GT_SURVIVAL ) {
 	if ( DistanceSquared( start,end ) < UNAFFECTED_BY_SMOKE_DIST ) {
 		return qfalse;
 	}
+    }
 
 	while ( ( ent = G_FindSmokeBomb( ent ) ) ) {
 		if ( ent->s.effect1Time == 16 ) {

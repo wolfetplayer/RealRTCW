@@ -1718,106 +1718,57 @@ CG_AddLocalEntities
 ===================
 */
 void CG_AddLocalEntities( void ) {
-	localEntity_t   *le, *next;
-	delayedBrass_t *dlBrass, *nextDlBrass;
+    localEntity_t *le, *next;
+    delayedBrass_t *dlBrass, *nextDlBrass;
 
-	cg.viewFade = 0.0;
+    cg.viewFade = 0.0;
 
-	dlBrass = cg_delayedBrasses;
-	while ( dlBrass != NULL ) {
-		if ( cg.time < dlBrass->time ) {
-			return;
-		}
+    // Process delayed brass without breaking local entities rendering
+    for ( dlBrass = cg_delayedBrasses; dlBrass; dlBrass = nextDlBrass ) {
+        nextDlBrass = dlBrass->next;
 
-		dlBrass->ejectBrassFunc(dlBrass->centity);
-		dlBrass = dlBrass->next;
-	}
+        if ( cg.time >= dlBrass->time ) {
+            if ( dlBrass->ejectBrassFunc && dlBrass->centity ) {
+                dlBrass->ejectBrassFunc( dlBrass->centity );
+            }
+            CG_FreeDelayedBrass( dlBrass );
+        }
+    }
 
-	dlBrass = cg_delayedBrasses;
-	while ( dlBrass != NULL ) {
-		nextDlBrass = dlBrass->next;
-		CG_FreeDelayedBrass( dlBrass );
-		dlBrass = nextDlBrass;
-	}
+    // walk the list backwards, so any new local entities generated
+    // (trails, marks, etc) will be present this frame
+    le = cg_activeLocalEntities.prev;
+    for ( ; le != &cg_activeLocalEntities ; le = next ) {
+        next = le->prev;
 
-	// walk the list backwards, so any new local entities generated
-	// (trails, marks, etc) will be present this frame
-	le = cg_activeLocalEntities.prev;
-	for ( ; le != &cg_activeLocalEntities ; le = next ) {
-		// grab next now, so if the local entity is freed we
-		// still have it
-		next = le->prev;
+        if ( cg.time >= le->endTime ) {
+            CG_FreeLocalEntity( le );
+            continue;
+        }
 
-		if ( cg.time >= le->endTime ) {
-			CG_FreeLocalEntity( le );
-			continue;
-		}
-		switch ( le->leType ) {
-		default:
-			CG_Error( "Bad leType: %i", le->leType );
-			break;
-
-			// Ridah
-		case LE_MOVING_TRACER:
-			CG_AddMovingTracer( le );
-			break;
-		case LE_SPARK:
-			CG_AddSparkElements( le );
-			break;
-		case LE_FUSE_SPARK:
-			CG_AddFuseSparkElements( le );
-			break;
-		case LE_DEBRIS:
-			CG_AddDebrisElements( le );
-			break;
-		case LE_BLOOD:
-			CG_AddBloodElements( le );
-			break;
-		case LE_HELGA_SPIRIT:
-		case LE_ZOMBIE_SPIRIT:
-		case LE_ZOMBIE_BAT:
-			CG_AddClientCritter( le );
-			break;
-		case LE_SPIRIT_VIEWFLASH:
-			CG_AddSpiritViewflash( le );
-			// done.
-
-		case LE_MARK:
-			break;
-
-		case LE_SPRITE_EXPLOSION:
-			CG_AddSpriteExplosion( le );
-			break;
-
-		case LE_EXPLOSION:
-			CG_AddExplosion( le );
-			break;
-
-		case LE_FRAGMENT:           // gibs and brass
-			CG_AddFragment( le );
-			break;
-
-		case LE_MOVE_SCALE_FADE:        // water bubbles
-			CG_AddMoveScaleFade( le );
-			break;
-
-		case LE_FADE_RGB:               // teleporters, railtrails
-			CG_AddFadeRGB( le );
-			break;
-
-		case LE_FALL_SCALE_FADE: // gib blood trails
-			CG_AddFallScaleFade( le );
-			break;
-
-		case LE_SCALE_FADE:     // rocket trails
-			CG_AddScaleFade( le );
-			break;
-
-		case LE_EMITTER:
-			CG_AddEmitter( le );
-			break;
-
-		}
-	}
+        switch ( le->leType ) {
+        default:
+            CG_Error( "Bad leType: %i", le->leType );
+            break;
+        case LE_MOVING_TRACER:      CG_AddMovingTracer( le ); break;
+        case LE_SPARK:             CG_AddSparkElements( le ); break;
+        case LE_FUSE_SPARK:        CG_AddFuseSparkElements( le ); break;
+        case LE_DEBRIS:            CG_AddDebrisElements( le ); break;
+        case LE_BLOOD:             CG_AddBloodElements( le ); break;
+        case LE_HELGA_SPIRIT:
+        case LE_ZOMBIE_SPIRIT:
+        case LE_ZOMBIE_BAT:        CG_AddClientCritter( le ); break;
+        case LE_SPIRIT_VIEWFLASH:  CG_AddSpiritViewflash( le ); /* fallthrough */
+        case LE_MARK:              break;
+        case LE_SPRITE_EXPLOSION:  CG_AddSpriteExplosion( le ); break;
+        case LE_EXPLOSION:         CG_AddExplosion( le ); break;
+        case LE_FRAGMENT:          CG_AddFragment( le ); break;
+        case LE_MOVE_SCALE_FADE:   CG_AddMoveScaleFade( le ); break;
+        case LE_FADE_RGB:          CG_AddFadeRGB( le ); break;
+        case LE_FALL_SCALE_FADE:   CG_AddFallScaleFade( le ); break;
+        case LE_SCALE_FADE:        CG_AddScaleFade( le ); break;
+        case LE_EMITTER:           CG_AddEmitter( le ); break;
+        }
+    }
 }
 

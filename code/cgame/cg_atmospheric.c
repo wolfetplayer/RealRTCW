@@ -471,6 +471,9 @@ tr.endpos[2] = testpoint[2] + random() * (min(tr.endpos[2] - testpoint[2], SNOW_
   	return( qtrue );
 }
 
+#define SNOW_TRACE_NEAR_DIST	512.0f
+#define SNOW_TRACE_NEAR_DIST2	(SNOW_TRACE_NEAR_DIST * SNOW_TRACE_NEAR_DIST)
+
 static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
 {
   	// Draw a snowflake
@@ -479,6 +482,11 @@ static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
   	float  	  		len, sinTumbling, cosTumbling, particleWidth;
   	vec3_t  	  	start, finish;
 
+	// NEW: only trace for nearby flakes (CPU-friendly)
+	vec3_t			base, offset, toView;
+	float			toView2;
+	trace_t			tr;
+
 	if (!(particle->flags & FLAG_atmosphericParticle_ACTIVE))
   	  	return;
 
@@ -486,15 +494,40 @@ static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
 	if (cg_atmFx.effectshader < 0)
 		return;
 
-  	VectorCopy( particle->pos, start );
+	// original base position
+	VectorCopy( particle->pos, base );
+	VectorCopy( base, start );	// default: identical behavior if we skip tracing
 
   	sinTumbling = sin( particle->pos[2] * 0.03125f );
   	cosTumbling = cos( ( particle->pos[2] + particle->pos[1] )  * 0.03125f );
 
-  	start[0] += 24 * ( 1 - particle->deltaNormalized[2] ) * sinTumbling;
-  	start[1] += 24 * ( 1 - particle->deltaNormalized[2] ) * cosTumbling;
+	// compute the original render offset
+	VectorCopy( base, offset );
+  	offset[0] += 24 * ( 1 - particle->deltaNormalized[2] ) * sinTumbling;
+  	offset[1] += 24 * ( 1 - particle->deltaNormalized[2] ) * cosTumbling;
 
-  	len = particle->height;
+	// NEW: trace only if particle is close to camera
+	VectorSubtract( base, cg.refdef.vieworg, toView );
+	toView2 = toView[0] * toView[0] + toView[1] * toView[1] + toView[2] * toView[2];
+
+	if (!cg_atmFx.skyOverMe && toView2 < SNOW_TRACE_NEAR_DIST2)
+	{
+		CG_Trace( &tr, base, NULL, NULL, offset, ENTITYNUM_NONE, MASK_SOLID );
+		if ( tr.fraction < 1.0f ) {
+			VectorCopy( tr.endpos, start );
+			// tiny pullback to avoid z-fighting/flicker on the wall
+			VectorMA( start, -0.5f, particle->deltaNormalized, start );
+		} else {
+			VectorCopy( offset, start );
+		}
+	}
+	else
+	{
+		// far away: keep it fast, no trace
+		VectorCopy( offset, start );
+	}
+
+	len = particle->height;
   	if( start[2] <= particle->minz )
   	{
   	  	// Stop snow going through surfaces.
@@ -523,6 +556,7 @@ static void CG_SnowParticleRender( cg_atmosphericParticle_t *particle )
 
 	trap_R_AddPolyToScene(cg_atmFx.effectshader, 4, (void *)cg_atmFx.verts);
 }
+
 
 /*
 **  	Set up gust parameters.

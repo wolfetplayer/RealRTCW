@@ -453,7 +453,7 @@ static void FS_PrimeGateCvarsFromConfig(const char *dir)
     if (!fs_homepath || !fs_homepath->string[0]) return;
 
     const char *cfgNames[] = {
-        "realrtcwconfig.cfg",
+        RRTCW_VARIABLES,
         "wolfconfig_mp.cfg",
         "wolfconfig.cfg",
         "q3config.cfg",
@@ -2105,7 +2105,7 @@ long FS_FOpenFileRead(const char *filename, fileHandle_t *file, qboolean uniqueF
 	if(!fs_searchpaths)
 		Com_Error(ERR_FATAL, "Filesystem call made without initialization");
 
-	isLocalConfig = !strcmp(filename, "autoexec.cfg") || !strcmp(filename, Q3CONFIG_CFG);
+	isLocalConfig = !strcmp(filename, "autoexec.cfg") || !strcmp(filename, RRTCW_BINDINGS) || !strcmp(filename, RRTCW_VARIABLES);
 	for(search = fs_searchpaths; search; search = search->next)
 	{
 		// autoexec.cfg and wolfconfig.cfg can only be loaded outside of pk3 files.
@@ -4941,7 +4941,8 @@ void FS_Restart( int checksumFeed ) {
 
 		// skip the wolfconfig.cfg if "safe" is on the command line
 		if ( !Com_SafeMode() ) {
-			Cbuf_AddText ("exec " Q3CONFIG_CFG "\n");
+			Cbuf_AddText ("exec " RRTCW_VARIABLES "\n");
+			Cbuf_AddText ("exec " RRTCW_BINDINGS "\n");
 		}
 	}
 

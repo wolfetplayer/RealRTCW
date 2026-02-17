@@ -642,7 +642,8 @@ issues.
 #ifdef DEDICATED
 #	define Q3CONFIG_CFG "wolfconfig_server.cfg"
 #else
-#	define Q3CONFIG_CFG "realrtcwconfig.cfg"
+#   define RRTCW_VARIABLES "realrtcw_cvars.cfg"
+#   define RRTCW_BINDINGS  "realrtcw_binds.cfg"
 #endif
 
 qboolean FS_Initialized( void );

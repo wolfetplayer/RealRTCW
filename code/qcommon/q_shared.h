@@ -1010,11 +1010,12 @@ SAVE
 	16 - (SA) added fog
 	17 - (SA) rats, changed fog.
 	18 - TTimo targetdeath fix
+	19 - RealRTCW Save
 
 ==============================================================
 */
 
-#define SAVE_VERSION    18
+#define SAVE_VERSION    19
 #define SAVE_INFOSTRING_LENGTH  256
 
 

@@ -56,11 +56,11 @@ If you have questions concerning this license or the applicable additional terms
   #define CLIENT_WINDOW_TITLE     	"RealRTCW"
   #define CLIENT_WINDOW_MIN_TITLE 	"RealRTCW" // iowolfsp
 #ifdef USE_XDG
-  #define HOMEPATH_NAME_UNIX		"RealRTCW\\5.1"
+  #define HOMEPATH_NAME_UNIX		"RealRTCW"
 #else
   #define HOMEPATH_NAME_UNIX		".wolf"
 #endif
-  #define HOMEPATH_NAME_WIN		"RealRTCW\\5.1"
+  #define HOMEPATH_NAME_WIN		"RealRTCW"
   #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
   #define GAMENAME_FOR_MASTER		"wolfsp"
   #define LEGACY_PROTOCOL
@@ -1039,7 +1039,7 @@ SAVE
 ==============================================================
 */
 
-#define SAVE_VERSION    18
+#define SAVE_VERSION    19
 #define SAVE_INFOSTRING_LENGTH  256
 
 

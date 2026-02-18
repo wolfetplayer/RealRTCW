@@ -1423,21 +1423,13 @@ void G_LoadGame( char *filename ) {
 	}
 
 	// read the version
-	trap_FS_Read( &i, sizeof( i ), f );
-	// TTimo
-	// show_bug.cgi?id=434
-	// 17 is the only version actually out in the wild
-	if ( i != SAVE_VERSION && i != 17 && i != 13 && i != 14 && i != 15 ) {    // 13 is beta7, 14 is pre "SA_MOVEDSTUFF"
-		trap_FS_FCloseFile( f );
-		G_Error( "G_LoadGame: savegame '%s' is wrong version (%i, should be %i)\n", filename, i, SAVE_VERSION );
+	trap_FS_Read(&i, sizeof(i), f);
+	if (i != SAVE_VERSION)
+	{
+		trap_FS_FCloseFile(f);
+		G_Error("Savegame wrong version (%i, expected %i). Old saves are not compatible with this update.\n", i, SAVE_VERSION);
 	}
 	ver = i;
-
-	if ( ver == 17 ) {
-		// 17 saved games can be buggy (bug #434), let's just warn about it
-		G_Printf( "WARNING: backward compatibility, loading a version 17 saved game.\n"
-				  "some version 17 saved games may cause crashes during play.\n" );
-	}
 
 	// read the mapname (this is only used in the sever exe, so just discard it)
 	trap_FS_Read( mapname, MAX_QPATH, f );

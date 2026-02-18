@@ -2729,7 +2729,7 @@ qboolean AICast_ScriptAction_SaveCheckpoint ( cast_state_t *cs, char *params ) {
 	saveName = COM_ParseExt( &pString, qfalse );
 	if ( !saveName[0] ) {
 		G_SaveGame( "lastcheckpoint" );	// save the default "current" savegame  
-		G_SaveGame( "current" );	   // save the default "current" savegame
+		G_SaveGame( "current_realrtcw" );	   // save the default "current" savegame
 	} else {
 		G_SaveGame( saveName );
 	}

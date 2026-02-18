@@ -3829,7 +3829,7 @@ static void UI_LoadSavegames( char *dir )
 		len = strlen( sgname );
 
 		// skip special/internal files
-		if ( !Q_stricmp( sgname, "current.svg" ) ) {
+		if ( !Q_stricmp( sgname, "current_realrtcw.svg" ) ) {
 			sgname += len + 1;
 			continue;
 		}

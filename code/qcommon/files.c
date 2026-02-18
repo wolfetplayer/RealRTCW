@@ -1829,6 +1829,26 @@ qboolean FS_IsDemoExt(const char *filename, int namelen)
 	return qfalse;
 }
 
+
+static qboolean FS_IsSaveGameSvg( const char *filename ) {
+	int len;
+	if ( !filename ) return qfalse;
+
+	// qpaths are not supposed to have a leading slash
+	if ( filename[0] == '/' || filename[0] == '\\' ) {
+		filename++;
+	}
+
+	len = (int)strlen( filename );
+	return FS_IsExt( filename, ".svg", len );
+}
+
+// extension passed to FS_ListFilteredFiles is usually "svg" (no dot) in RTCW code paths
+static qboolean FS_IsSvgExtensionToken( const char *ext ) {
+	if ( !ext || !ext[0] ) return qfalse;
+	return ( !Q_stricmp( ext, "svg" ) || !Q_stricmp( ext, ".svg" ) ) ? qtrue : qfalse;
+}
+
 /*
 ===========
 FS_FOpenFileReadDir
@@ -2101,16 +2121,31 @@ long FS_FOpenFileRead(const char *filename, fileHandle_t *file, qboolean uniqueF
 	searchpath_t *search;
 	long len;
 	qboolean isLocalConfig;
+	qboolean isSaveSvg;
 
 	if(!fs_searchpaths)
 		Com_Error(ERR_FATAL, "Filesystem call made without initialization");
 
 	isLocalConfig = !strcmp(filename, "autoexec.cfg") || !strcmp(filename, RRTCW_BINDINGS) || !strcmp(filename, RRTCW_VARIABLES);
+
+	// NEW: savegames must be read only from the current fs_gamedir folder
+	isSaveSvg = FS_IsSaveGameSvg( filename );
+
 	for(search = fs_searchpaths; search; search = search->next)
 	{
 		// autoexec.cfg and wolfconfig.cfg can only be loaded outside of pk3 files.
 		if (isLocalConfig && search->pack)
 			continue;
+
+		// NEW: .svg saves are directory-only AND current-gamedir-only
+		if (isSaveSvg) {
+			if (search->pack)
+				continue;
+			if (!search->dir)
+				continue;
+			if (Q_stricmp(search->dir->gamedir, fs_gamedir))
+				continue;
+		}
 
 		len = FS_FOpenFileReadDir(filename, search, file, uniqueFILE, qfalse);
 
@@ -2124,9 +2159,8 @@ long FS_FOpenFileRead(const char *filename, fileHandle_t *file, qboolean uniqueF
 			if(len >= 0 && *file)
 				return len;
 		}
-
 	}
-	
+
 #ifdef FS_MISSING
 	if(missingFiles)
 		fprintf(missingFiles, "%s\n", filename);
@@ -2139,8 +2173,6 @@ long FS_FOpenFileRead(const char *filename, fileHandle_t *file, qboolean uniqueF
 	}
 	else
 	{
-		// When file is NULL, we're querying the existance of the file
-		// If we've got here, it doesn't exist
 		return 0;
 	}
 }
@@ -3007,6 +3039,8 @@ char **FS_ListFilteredFiles( const char *path, const char *extension, char *filt
 		extension = "";
 	}
 
+	qboolean wantSvg = FS_IsSvgExtensionToken(extension);
+
 	pathLength = strlen( path );
 	if ( path[pathLength - 1] == '\\' || path[pathLength - 1] == '/' ) {
 		pathLength--;
@@ -3076,6 +3110,12 @@ char **FS_ListFilteredFiles( const char *path, const char *extension, char *filt
 			int numSysFiles;
 			char    **sysFiles;
 			char    *name;
+
+
+			// NEW: only list .svg saves from the current gamedir
+			if (wantSvg && Q_stricmp(search->dir->gamedir, fs_gamedir)) {
+				continue;
+			}
 
 			// don't scan directories for files if we are pure or restricted
 			// allow listing of savegames for the demo menus

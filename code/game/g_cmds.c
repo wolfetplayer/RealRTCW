@@ -29,6 +29,8 @@ If you have questions concerning this license or the applicable additional terms
 #include "g_local.h"
 #include "g_survival.h"
 
+#include "../steam/steam.h"
+
 /*
 ==================
 DeathmatchScoreboardMessage
@@ -394,6 +396,18 @@ void Cmd_Give_f( gentity_t *ent ) {
 	}
 }
 
+
+/*
+==================
+Cmd_reset_stats
+
+Resets Steam Achievements
+==================
+*/
+void Cmd_reset_stats ( gentity_t *ent ) {
+
+	steamResetStats(1);
+}
 
 /*
 ==================
@@ -2140,6 +2154,8 @@ void ClientCommand( int clientNum ) {
 		Cmd_Give_f( ent );
 	} else if ( Q_stricmp( cmd, "god" ) == 0 )  {
 		Cmd_God_f( ent );
+	} else if ( Q_stricmp( cmd, "reset_stats" ) == 0 )  {
+		Cmd_reset_stats( ent );
 	} else if ( Q_stricmp( cmd, "nofatigue" ) == 0 )  {
 		Cmd_Nofatigue_f( ent );
 	} else if ( Q_stricmp( cmd, "notarget" ) == 0 )  {

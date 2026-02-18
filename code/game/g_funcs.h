@@ -1116,6 +1116,7 @@ If you have questions concerning this license or the applicable additional terms
 {"Cmd_Notarget_f", (byte *)Cmd_Notarget_f},
 {"Cmd_Nofatigue_f", (byte *)Cmd_Nofatigue_f},
 {"Cmd_God_f", (byte *)Cmd_God_f},
+{"Cmd_reset_stats", (byte *)Cmd_reset_stats},
 {"Cmd_Give_f", (byte *)Cmd_Give_f},
 {"Cmd_Fogswitch_f", (byte *)Cmd_Fogswitch_f},
 {"G_setfog", (byte *)G_setfog},

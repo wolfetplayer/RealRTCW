@@ -1120,6 +1120,7 @@ extern void Cmd_Noclip_f ( gentity_t * ent ) ;
 extern void Cmd_Notarget_f ( gentity_t * ent ) ;
 extern void Cmd_Nofatigue_f ( gentity_t * ent ) ;
 extern void Cmd_God_f ( gentity_t * ent ) ;
+extern void Cmd_reset_stats (gentity_t * ent);
 extern void Cmd_Give_f ( gentity_t * ent ) ;
 extern void Cmd_Fogswitch_f ( void ) ;
 extern void G_setfog ( char * fogstring ) ;

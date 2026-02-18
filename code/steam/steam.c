@@ -34,6 +34,13 @@ void steamSetAchievement(const char* id)
 	return;
 }
 
+void steamResetStats(const int bAlsoAchievements)
+{
+	STEAMSHIM_resetStats(bAlsoAchievements);
+
+	return;
+}
+
 int steamAlive()
 {
 	return STEAMSHIM_alive();

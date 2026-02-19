@@ -78,4 +78,9 @@ void steamSetRichPresence(const char* key, const char* value)
 	return;
 }
 
+void steamResetStats(const int bAlsoAchievements)
+{
+	return;
+}
+
 #endif

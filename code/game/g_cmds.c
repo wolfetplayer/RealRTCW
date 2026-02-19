@@ -404,9 +404,33 @@ Cmd_reset_stats
 Resets Steam Achievements
 ==================
 */
-void Cmd_reset_stats ( gentity_t *ent ) {
+void Cmd_reset_stats( gentity_t *ent ) {
+    int clientNum;
 
-	steamResetStats(1);
+    if ( !ent || !ent->client ) {
+        return;
+    }
+
+    clientNum = (int)( ent - g_entities );
+
+	if ( !CheatsOk( ent ) ) {
+		return;
+	}
+
+    // 10-second confirm window
+    if ( ent->client->pers.resetStatsConfirmTime < level.time ) {
+        ent->client->pers.resetStatsConfirmTime = level.time + 10000;
+        trap_SendServerCommand( clientNum,
+            "print \"WARNING: This will reset ALL Steam achievements/stats. Type reset_stats again within 10 seconds to confirm.\\n\"" );
+        return;
+    }
+
+    // confirmed
+    ent->client->pers.resetStatsConfirmTime = 0;
+
+    steamResetStats( 1 );
+
+    trap_SendServerCommand( clientNum, "print \"All Steam Achievements were successfully reset!\\n\"" );
 }
 
 /*

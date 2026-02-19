@@ -5355,7 +5355,9 @@ void CG_WeaponFireRecoil( int weapon ) {
 	case WP_COLT:
 	case WP_TT33:
 	case WP_AKIMBO:
+	case WP_AKIMBO_2:
 	case WP_DUAL_TT33:
+	case WP_DUAL_TT33_2:
 	   yawRandom = 0.5;
 	   pitchRecoilAdd = 2;
 	   pitchAdd = 1;
@@ -5881,7 +5883,9 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 
 	case WP_LUGER:
 	case WP_AKIMBO: 
+	case WP_AKIMBO_2:
 	case WP_DUAL_TT33:
+	case WP_DUAL_TT33_2:
 	case WP_COLT:
 	case WP_MAUSER:
 	case WP_DELISLE:

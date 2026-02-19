@@ -1227,11 +1227,14 @@ void G_UpdateCvars( void ) {
 						AICast_ScriptEvent( AICast_GetCastState( player->s.number ), "playerstart", "" );
 						saveGamePending = qfalse;   // set it back
 
-						// save the "autosave\\<mapname>" savegame, which is taken before any cameras have been played
-						trap_Cvar_VariableStringBuffer( "mapname", mapname, sizeof( mapname ) );
-						Q_strncpyz( filename, "autosave\\", sizeof( filename ) );
-						Q_strcat( filename, sizeof( filename ), mapname );
-						G_SaveGame( filename );
+						// save the "autosave\\<mapname>" savegame (disabled for Survival)
+						if (g_gametype.integer != GT_SURVIVAL)
+						{
+							trap_Cvar_VariableStringBuffer("mapname", mapname, sizeof(mapname));
+							Q_strncpyz(filename, "autosave\\", sizeof(filename));
+							Q_strcat(filename, sizeof(filename), mapname);
+							G_SaveGame(filename);
+						}
 
 						// now let it think
 						AICast_CastScriptThink();

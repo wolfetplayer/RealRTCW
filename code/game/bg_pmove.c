@@ -2753,19 +2753,7 @@ void PM_CheckForReload(int weapon) {
 					if (pm->ps->ammoclip[WP_AKIMBO_2] == 0) doReload = qtrue;
 					break;
 				case WP_DUAL_TT33:
-					if (pm->ps->ammoclip[WP_TT33] == 0) doReload = qtrue;
-					break;
-				case WP_COLT:
-					if (pm->ps->weapon == WP_AKIMBO && pm->ps->ammoclip[WP_AKIMBO] == 0)
-						doReload = qtrue;
-					else
-						doReload = qtrue;
-					break;
-				case WP_TT33:
-					if (pm->ps->weapon == WP_DUAL_TT33 && pm->ps->ammoclip[WP_DUAL_TT33] == 0)
-						doReload = qtrue;
-					else
-						doReload = qtrue;
+					if (pm->ps->ammoclip[WP_DUAL_TT33_2] == 0) doReload = qtrue;
 					break;
 				default:
 					doReload = qtrue;

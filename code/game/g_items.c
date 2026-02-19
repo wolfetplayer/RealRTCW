@@ -1764,7 +1764,34 @@ void FinishSpawningItem( gentity_t *ent ) {
 	}
        
     // No new ammo types too
-	if ( g_fullarsenal.integer == 0 && ent->item->giType == IT_AMMO && (ent->item->giAmmoIndex == WP_MP44 || ent->item->giAmmoIndex == WP_M97 || ent->item->giAmmoIndex == WP_BAR)) 
+	if ( g_fullarsenal.integer == 0 && ent->item->giType == IT_AMMO && (
+		ent->item->giAmmoIndex == WP_MP44 || 
+		ent->item->giAmmoIndex == WP_M97 || 
+		ent->item->giAmmoIndex == WP_BAR || 
+		ent->item->giAmmoIndex == WP_REVOLVER)) 
+	{
+	return;
+	} 
+
+    // Classic Tides of War arsenal
+	if ( g_fullarsenal.integer == 2 && (   ent->item->giWeapon == WP_MP34 
+	                                || ent->item->giWeapon == WP_REVOLVER 
+									|| ent->item->giWeapon == WP_G43 
+									|| ent->item->giWeapon == WP_M1GARAND 
+									|| ent->item->giWeapon == WP_BAR 
+									|| ent->item->giWeapon == WP_MG42M
+									|| ent->item->giWeapon == WP_MP44
+									|| ent->item->giWeapon == WP_M7
+									|| ent->item->giWeapon == WP_BROWNING ) )
+	{
+    return;
+	}
+
+    // No new ammo types too Classic Tides of War
+	if ( g_fullarsenal.integer == 0 && ent->item->giType == IT_AMMO && (
+		ent->item->giAmmoIndex == WP_MP44 || 
+		ent->item->giAmmoIndex == WP_BAR || 
+		ent->item->giAmmoIndex == WP_REVOLVER)) 
 	{
 	return;
 	} 

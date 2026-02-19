@@ -2843,12 +2843,12 @@ void PM_WeaponUseAmmo( int wp, int amount ) {
 	} else {
 		takeweapon = BG_FindClipForWeapon( wp );
 		if ( wp == WP_AKIMBO ) {
-			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
-				takeweapon = WP_COLT;
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_AKIMBO_2] ) ) {
+				takeweapon = WP_AKIMBO_2;
 			}
 		} else if ( wp == WP_DUAL_TT33 ) {
-			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
-				takeweapon = WP_TT33;
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_DUAL_TT33_2] ) ) {
+				takeweapon = WP_DUAL_TT33_2;
 			}
 		}
 
@@ -2870,12 +2870,12 @@ int PM_WeaponAmmoAvailable( int wp ) {
 	} else {
 		takeweapon = BG_FindClipForWeapon( wp );
 		if ( wp == WP_AKIMBO ) {
-			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
-				takeweapon = WP_COLT;
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_AKIMBO_2] ) ) {
+				takeweapon = WP_AKIMBO_2;
 			}
 		} else if ( wp == WP_DUAL_TT33 ) {
-			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
-				takeweapon = WP_TT33;
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_DUAL_TT33_2] ) ) {
+				takeweapon = WP_DUAL_TT33_2;
 			}
 		}
 
@@ -3278,8 +3278,8 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] );
-	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] );
+	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_AKIMBO_2] );
+	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_DUAL_TT33_2] );
 
 	if ( 0 ) {
 		switch ( pm->ps->weaponstate ) {

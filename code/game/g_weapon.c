@@ -1847,7 +1847,9 @@ void FireWeapon( gentity_t *ent ) {
 			case WP_SILENCER:
 			case WP_COLT:
 			case WP_AKIMBO:
+			case WP_AKIMBO_2:
 			case WP_DUAL_TT33:
+			case WP_DUAL_TT33_2:
 				aimSpreadScale += 0.4f;
 				break;
 
@@ -1888,8 +1890,10 @@ void FireWeapon( gentity_t *ent ) {
 	case WP_SILENCER:
 	case WP_COLT:
 	case WP_AKIMBO: //----(SA)	added
+	case WP_AKIMBO_2:
 	case WP_TT33:
 	case WP_DUAL_TT33:
+	case WP_DUAL_TT33_2:
 	case WP_REVOLVER:
 	case WP_HDM:
 	case WP_MP40:

@@ -2601,14 +2601,6 @@ static void PM_ReloadClip(int weapon) {
 		pm->ps->ammo[ammoIndex]     -= ammomove;
 		pm->ps->ammoclip[clipIndex] += ammomove;
 	}
-
-	// Reload secondary weapon if akimbo
-	if (weapon == WP_AKIMBO) {
-		PM_ReloadClip(WP_COLT);
-	}
-	if (weapon == WP_DUAL_TT33) {
-		PM_ReloadClip(WP_TT33);
-	}
 }
 
 /*
@@ -2732,45 +2724,10 @@ void PM_CheckForReload(int weapon) {
 			if (pm->ps->ammoclip[clipWeap] < BG_GetMaxClip(pm->ps, weapon)) {
 				doReload = qtrue;
 			}
-
-			// Dual weapon check (Colt or TT33)
-			if (weapon == WP_AKIMBO) {
-				int coltClip = BG_FindClipForWeapon(WP_COLT);
-				if (pm->ps->ammoclip[coltClip] < BG_GetMaxClip(pm->ps, WP_COLT)) {
-					doReload = qtrue;
-				}
-			} else if (weapon == WP_DUAL_TT33) {
-				int tt33Clip = BG_FindClipForWeapon(WP_TT33);
-				if (pm->ps->ammoclip[tt33Clip] < BG_GetMaxClip(pm->ps, WP_TT33)) {
-					doReload = qtrue;
-				}
-			}
 		}
 	} else if (autoreload) {
 		if (pm->ps->ammoclip[clipWeap] == 0 && pm->ps->ammo[ammoWeap]) {
-			switch (weapon) {
-				case WP_AKIMBO:
-					if (pm->ps->ammoclip[WP_COLT] == 0) doReload = qtrue;
-					break;
-				case WP_DUAL_TT33:
-					if (pm->ps->ammoclip[WP_TT33] == 0) doReload = qtrue;
-					break;
-				case WP_COLT:
-					if (pm->ps->weapon == WP_AKIMBO && pm->ps->ammoclip[WP_AKIMBO] == 0)
-						doReload = qtrue;
-					else
-						doReload = qtrue;
-					break;
-				case WP_TT33:
-					if (pm->ps->weapon == WP_DUAL_TT33 && pm->ps->ammoclip[WP_DUAL_TT33] == 0)
-						doReload = qtrue;
-					else
-						doReload = qtrue;
-					break;
-				default:
-					doReload = qtrue;
-					break;
-			}
+			doReload = qtrue;
 		}
 	}
 

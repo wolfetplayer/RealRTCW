@@ -7587,11 +7587,7 @@ qboolean BG_AddMagicAmmo(playerState_t *ps, int numOfClips) {
 				if (!numOfClips)
 					return qtrue;
 
-				int clipsToAdd = (weapon == WP_AKIMBO || weapon == WP_DUAL_TT33)
-					? numOfClips * 2
-					: numOfClips;
-
-				ps->ammo[ammoIndex] += clipsToAdd * maxclip;
+				ps->ammo[ammoIndex] += numOfClips * maxclip;
 
 				if (ps->ammo[ammoIndex] > maxammo) {
 					ps->ammo[ammoIndex] = maxammo;

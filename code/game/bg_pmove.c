@@ -2604,10 +2604,10 @@ static void PM_ReloadClip(int weapon) {
 
 	// Reload secondary weapon if akimbo
 	if (weapon == WP_AKIMBO) {
-		PM_ReloadClip(WP_COLT);
+		PM_ReloadClip(WP_AKIMBO_2);
 	}
 	if (weapon == WP_DUAL_TT33) {
-		PM_ReloadClip(WP_TT33);
+		PM_ReloadClip(WP_DUAL_TT33_2);
 	}
 }
 
@@ -2735,13 +2735,13 @@ void PM_CheckForReload(int weapon) {
 
 			// Dual weapon check (Colt or TT33)
 			if (weapon == WP_AKIMBO) {
-				int coltClip = BG_FindClipForWeapon(WP_COLT);
-				if (pm->ps->ammoclip[coltClip] < BG_GetMaxClip(pm->ps, WP_COLT)) {
+				int coltClip = BG_FindClipForWeapon(WP_AKIMBO_2);
+				if (pm->ps->ammoclip[coltClip] < BG_GetMaxClip(pm->ps, WP_AKIMBO_2)) {
 					doReload = qtrue;
 				}
 			} else if (weapon == WP_DUAL_TT33) {
-				int tt33Clip = BG_FindClipForWeapon(WP_TT33);
-				if (pm->ps->ammoclip[tt33Clip] < BG_GetMaxClip(pm->ps, WP_TT33)) {
+				int tt33Clip = BG_FindClipForWeapon(WP_DUAL_TT33_2);
+				if (pm->ps->ammoclip[tt33Clip] < BG_GetMaxClip(pm->ps, WP_DUAL_TT33_2)) {
 					doReload = qtrue;
 				}
 			}
@@ -2750,22 +2750,10 @@ void PM_CheckForReload(int weapon) {
 		if (pm->ps->ammoclip[clipWeap] == 0 && pm->ps->ammo[ammoWeap]) {
 			switch (weapon) {
 				case WP_AKIMBO:
-					if (pm->ps->ammoclip[WP_COLT] == 0) doReload = qtrue;
+					if (pm->ps->ammoclip[WP_AKIMBO_2] == 0) doReload = qtrue;
 					break;
 				case WP_DUAL_TT33:
-					if (pm->ps->ammoclip[WP_TT33] == 0) doReload = qtrue;
-					break;
-				case WP_COLT:
-					if (pm->ps->weapon == WP_AKIMBO && pm->ps->ammoclip[WP_AKIMBO] == 0)
-						doReload = qtrue;
-					else
-						doReload = qtrue;
-					break;
-				case WP_TT33:
-					if (pm->ps->weapon == WP_DUAL_TT33 && pm->ps->ammoclip[WP_DUAL_TT33] == 0)
-						doReload = qtrue;
-					else
-						doReload = qtrue;
+					if (pm->ps->ammoclip[WP_DUAL_TT33_2] == 0) doReload = qtrue;
 					break;
 				default:
 					doReload = qtrue;
@@ -2843,12 +2831,12 @@ void PM_WeaponUseAmmo( int wp, int amount ) {
 	} else {
 		takeweapon = BG_FindClipForWeapon( wp );
 		if ( wp == WP_AKIMBO ) {
-			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
-				takeweapon = WP_COLT;
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_AKIMBO_2] ) ) {
+				takeweapon = WP_AKIMBO_2;
 			}
 		} else if ( wp == WP_DUAL_TT33 ) {
-			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
-				takeweapon = WP_TT33;
+			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_DUAL_TT33_2] ) ) {
+				takeweapon = WP_DUAL_TT33_2;
 			}
 		}
 
@@ -2870,12 +2858,12 @@ int PM_WeaponAmmoAvailable( int wp ) {
 	} else {
 		takeweapon = BG_FindClipForWeapon( wp );
 		if ( wp == WP_AKIMBO ) {
-			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
-				takeweapon = WP_COLT;
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_AKIMBO_2] ) ) {
+				takeweapon = WP_AKIMBO_2;
 			}
 		} else if ( wp == WP_DUAL_TT33 ) {
-			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
-				takeweapon = WP_TT33;
+			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_DUAL_TT33_2] ) ) {
+				takeweapon = WP_DUAL_TT33_2;
 			}
 		}
 
@@ -3278,8 +3266,8 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] );
-	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] );
+	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_AKIMBO_2] );
+	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_DUAL_TT33_2] );
 
 	if ( 0 ) {
 		switch ( pm->ps->weaponstate ) {
@@ -3683,7 +3671,9 @@ static void PM_Weapon( void ) {
 	case WP_REVOLVER:
 	case WP_COLT:
 	case WP_AKIMBO:
+	case WP_AKIMBO_2:
 	case WP_DUAL_TT33:         
+	case WP_DUAL_TT33_2:         
 	case WP_SNIPERRIFLE:
 	case WP_SNOOPERSCOPE:
 	case WP_MAUSER:
@@ -4003,16 +3993,16 @@ static void PM_Weapon( void ) {
 	    break;
 	    case WP_AKIMBO:
 		    addTime = BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
-		       if ( !pm->ps->ammoclip[WP_AKIMBO] || !pm->ps->ammoclip[WP_COLT] ) {
-			       if ( ( !pm->ps->ammoclip[WP_AKIMBO] && !akimboFire_colt ) || ( !pm->ps->ammoclip[WP_COLT] && akimboFire_colt ) ) {
+		       if ( !pm->ps->ammoclip[WP_AKIMBO] || !pm->ps->ammoclip[WP_AKIMBO_2] ) {
+			       if ( ( !pm->ps->ammoclip[WP_AKIMBO] && !akimboFire_colt ) || ( !pm->ps->ammoclip[WP_AKIMBO_2] && akimboFire_colt ) ) {
 				        addTime = 2 * BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
 			       }
 		       }
 		break;
 	    case WP_DUAL_TT33:
 		    addTime = BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
-		       if ( !pm->ps->ammoclip[WP_DUAL_TT33] || !pm->ps->ammoclip[WP_TT33] ) {
-			       if ( ( !pm->ps->ammoclip[WP_DUAL_TT33] && !akimboFire_tt33 ) || ( !pm->ps->ammoclip[WP_TT33] && akimboFire_tt33 ) ) {
+		       if ( !pm->ps->ammoclip[WP_DUAL_TT33] || !pm->ps->ammoclip[WP_DUAL_TT33_2] ) {
+			       if ( ( !pm->ps->ammoclip[WP_DUAL_TT33] && !akimboFire_tt33 ) || ( !pm->ps->ammoclip[WP_DUAL_TT33_2] && akimboFire_tt33 ) ) {
 				        addTime = 2 * BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
 			       }
 		       }

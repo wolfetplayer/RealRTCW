@@ -534,7 +534,9 @@ typedef enum {
 	WP_REVOLVER,
 	WP_HDM,
 	WP_AKIMBO,
+	WP_AKIMBO_2, // For second magazine
 	WP_DUAL_TT33,           
+	WP_DUAL_TT33_2, // For second magazine
 	// SMGs
 	WP_MP40,             
 	WP_THOMPSON,         

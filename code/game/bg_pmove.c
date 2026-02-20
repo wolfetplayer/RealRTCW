@@ -3939,20 +3939,8 @@ static void PM_Weapon( void ) {
 	        }
 	    break;
 	    case WP_AKIMBO:
+		case WP_DUAL_TT33:
 		    addTime = BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
-		       if ( !pm->ps->ammoclip[WP_AKIMBO] || !pm->ps->ammoclip[WP_COLT] ) {
-			       if ( ( !pm->ps->ammoclip[WP_AKIMBO] && !akimboFire_colt ) || ( !pm->ps->ammoclip[WP_COLT] && akimboFire_colt ) ) {
-				        addTime = 2 * BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
-			       }
-		       }
-		break;
-	    case WP_DUAL_TT33:
-		    addTime = BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
-		       if ( !pm->ps->ammoclip[WP_DUAL_TT33] || !pm->ps->ammoclip[WP_TT33] ) {
-			       if ( ( !pm->ps->ammoclip[WP_DUAL_TT33] && !akimboFire_tt33 ) || ( !pm->ps->ammoclip[WP_TT33] && akimboFire_tt33 ) ) {
-				        addTime = 2 * BG_GetNextShotTime(pm->ps, pm->ps->weapon, qfalse);
-			       }
-		       }
 		break;
 	}
 

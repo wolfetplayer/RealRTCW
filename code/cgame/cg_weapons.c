@@ -3096,11 +3096,11 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 
 	if ( isPlayer ) {
-		akimboFire_colt = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_AKIMBO], cg.predictedPlayerState.ammoclip[WP_COLT] );
-        akimboFire_tt33 = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_DUAL_TT33], cg.predictedPlayerState.ammoclip[WP_TT33] );
+		akimboFire_colt = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_AKIMBO] );
+        akimboFire_tt33 = BG_AkimboFireSequence( weaponNum, cg.predictedPlayerState.ammoclip[WP_DUAL_TT33] );
 	} else if ( ps ) {
-		akimboFire_colt = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_AKIMBO], ps->ammoclip[WP_AKIMBO] );
-        akimboFire_tt33 = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_DUAL_TT33], ps->ammoclip[WP_DUAL_TT33] );
+		akimboFire_colt = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_AKIMBO] );
+        akimboFire_tt33 = BG_AkimboFireSequence( weaponNum, ps->ammoclip[WP_DUAL_TT33] );
 	}
 
 	// add the weapon

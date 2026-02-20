@@ -3278,8 +3278,8 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] );
-	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] );
+	akimboFire_colt = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO] );
+	akimboFire_tt33 = BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33] );
 
 	if ( 0 ) {
 		switch ( pm->ps->weaponstate ) {

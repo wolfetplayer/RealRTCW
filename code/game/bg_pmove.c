@@ -2799,16 +2799,6 @@ void PM_WeaponUseAmmo( int wp, int amount ) {
 		pm->ps->ammo[ BG_FindAmmoForWeapon( wp )] -= amount;
 	} else {
 		takeweapon = BG_FindClipForWeapon( wp );
-		if ( wp == WP_AKIMBO ) {
-			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
-				takeweapon = WP_COLT;
-			}
-		} else if ( wp == WP_DUAL_TT33 ) {
-			if ( !BG_AkimboFireSequence( wp, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
-				takeweapon = WP_TT33;
-			}
-		}
-
 		pm->ps->ammoclip[takeweapon] -= amount;
 	}
 }
@@ -2826,16 +2816,6 @@ int PM_WeaponAmmoAvailable( int wp ) {
 		return pm->ps->ammo[ BG_FindAmmoForWeapon( wp )];
 	} else {
 		takeweapon = BG_FindClipForWeapon( wp );
-		if ( wp == WP_AKIMBO ) {
-			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_AKIMBO], pm->ps->ammoclip[WP_COLT] ) ) {
-				takeweapon = WP_COLT;
-			}
-		} else if ( wp == WP_DUAL_TT33 ) {
-			if ( !BG_AkimboFireSequence( pm->ps->weapon, pm->ps->ammoclip[WP_DUAL_TT33], pm->ps->ammoclip[WP_TT33] ) ) {
-				takeweapon = WP_TT33;
-			}
-		}
-
 		return pm->ps->ammoclip[takeweapon];
 	}
 }

@@ -85,7 +85,7 @@ or
 ARCH=x86_64 make STEAM=1 (for 64bit binaries)
 
 For the Steam version you also need to compile Steamshim launcher. To compile it you need to download steamworks sdk as well.
-MSVC project and solution for launcher are included in code/steamshim/launcher
+MSVC project and solution for launcher are included in code/thirdparty/steamshim/launcher
 
 Wait for build to complete.
 

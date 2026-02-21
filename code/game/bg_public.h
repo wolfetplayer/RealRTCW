@@ -1346,7 +1346,7 @@ weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
 weapon_t BG_FindClipForWeapon( weapon_t weapon );
 gitem_t *BG_FindItemForPerk( perk_t perk );
 
-qboolean BG_AkimboFireSequence( int weapon, int akimboClip, int coltClip );
+qboolean BG_AkimboFireSequence( int weapon, int akimboClip );
 
 #define IS_VALID_WEAPON(w) ((w) > WP_NONE && (w) < WP_NUM_WEAPONS)
 #define ITEM_INDEX( x ) ( ( x ) - bg_itemlist )

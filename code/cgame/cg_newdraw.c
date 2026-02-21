@@ -533,13 +533,6 @@ static void CG_DrawPlayerAmmoValue( rectDef_t *rect, int font, float scale, vec4
 	case WP_SMOKE_BOMB:
 		return;
 
-	case WP_AKIMBO:
-		specialWeap = WP_COLT;
-		break;
-	case WP_DUAL_TT33:
-		specialWeap = WP_TT33;
-		break;
-
 	case WP_GRENADE_LAUNCHER:
 	case WP_KNIFE:
 	case WP_GRENADE_PINEAPPLE:

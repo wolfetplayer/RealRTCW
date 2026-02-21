@@ -1227,7 +1227,7 @@ extern gitem_t * BG_FindItem2 ( const char * name ) ;
 extern gitem_t * BG_FindItem ( const char * pickupName ) ;
 extern gitem_t * BG_FindItemForAmmo ( int ammo ) ;
 extern gitem_t * BG_FindItemForKey ( wkey_t k , int * indexreturn ) ;
-extern qboolean BG_AkimboFireSequence ( int weapon , int akimboClip , int coltClip ) ;
+extern qboolean BG_AkimboFireSequence ( int weapon , int akimboClip ) ;
 extern weapon_t BG_FindAmmoForWeapon ( weapon_t weapon ) ;
 extern weapon_t BG_FindClipForWeapon ( weapon_t weapon ) ;
 extern gitem_t * BG_FindItemForWeapon ( weapon_t weapon ) ;

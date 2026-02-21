@@ -155,19 +155,6 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 		Add_Ammo(activator, chosen, maxAmmo, qtrue);  // fill clip
 		Add_Ammo(activator, chosen, maxAmmo, qfalse); // top off reserve
 
-		// Also refill base pistol ammo if akimbo weapon
-		if (chosen == WP_AKIMBO)
-		{
-			int coltMax = BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus);
-			Add_Ammo(activator, WP_COLT, coltMax, qtrue);
-			Add_Ammo(activator, WP_COLT, coltMax, qfalse);
-		}
-		else if (chosen == WP_DUAL_TT33)
-		{
-			int tt33Max = BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus);
-			Add_Ammo(activator, WP_TT33, tt33Max, qtrue);
-			Add_Ammo(activator, WP_TT33, tt33Max, qfalse);
-		}
 
 		// Bonus: give M7 for Garand
 		if (chosen == WP_M1GARAND)
@@ -301,19 +288,6 @@ qboolean Survival_HandleAmmoPurchase(gentity_t *ent, gentity_t *activator, int p
 	Add_Ammo(activator, heldWeap, maxAmmo, qtrue);
 	Add_Ammo(activator, heldWeap, maxAmmo, qfalse);
 
-	// Also refill ammo for base pistol if akimbo
-	if (heldWeap== WP_AKIMBO)
-	{
-		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qtrue);
-		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qfalse);
-	}
-	else if (heldWeap == WP_DUAL_TT33)
-	{
-		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qtrue);
-		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qfalse);
-	}
-
-
 	// Deduct score
 	activator->client->ps.persistant[PERS_SCORE] -= ammoPrice;
 
@@ -385,16 +359,6 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 	if (weap == WP_M1941)
 		ps->weaponUpgraded[WP_M1941SCOPE] = 1;
 
-    // Handle akimbo dual weapon logic
-	if (weap == WP_AKIMBO)
-		ps->weaponUpgraded[WP_COLT] = 1;
-	else if (weap == WP_DUAL_TT33)
-		ps->weaponUpgraded[WP_TT33] = 1;
-	else if (weap == WP_COLT && ps->weaponUpgraded[WP_AKIMBO])
-		ps->weaponUpgraded[WP_COLT] = 1;
-	else if (weap == WP_TT33 && ps->weaponUpgraded[WP_DUAL_TT33])
-		ps->weaponUpgraded[WP_TT33] = 1;
-
 	activator->client->ps.persistant[PERS_SCORE] -= upgradePrice;
 
 	// Refill ammo
@@ -409,18 +373,6 @@ qboolean Survival_HandleWeaponUpgrade(gentity_t *ent, gentity_t *activator, int 
 	{
 		Add_Ammo(activator, WP_M7, BG_GetMaxAmmo(&activator->client->ps, WP_M7, svParams.ltAmmoBonus), qtrue);
 		Add_Ammo(activator, WP_M7, BG_GetMaxAmmo(&activator->client->ps, WP_M7, svParams.ltAmmoBonus), qfalse);
-	}
-
-	// Also refill ammo for base pistol if upgrading akimbo
-	if (weap == WP_AKIMBO)
-	{
-		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qtrue);
-		Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qfalse);
-	}
-	else if (weap == WP_DUAL_TT33)
-	{
-		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qtrue);
-		Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qfalse);
 	}
 
 	trap_SendServerCommand(-1, "mu_play sound/misc/wpn_upgrade.wav 0\n");
@@ -501,18 +453,6 @@ qboolean Survival_HandleWeaponOrGrenade(gentity_t *ent, gentity_t *activator, gi
 		}
 
 		activator->client->ps.persistant[PERS_SCORE] -= price;
-
-	    // Also refill ammo for base pistol if akimbo
-		if (weapon == WP_AKIMBO)
-		{
-			Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qtrue);
-			Add_Ammo(activator, WP_COLT, BG_GetMaxAmmo(&activator->client->ps, WP_COLT, svParams.ltAmmoBonus), qfalse);
-		}
-		else if (weapon == WP_DUAL_TT33)
-		{
-			Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qtrue);
-			Add_Ammo(activator, WP_TT33, BG_GetMaxAmmo(&activator->client->ps, WP_TT33, svParams.ltAmmoBonus), qfalse);
-		}
 
 		Add_Ammo(activator, weapon, maxAmmo, qtrue);
 		Add_Ammo(activator, weapon, maxAmmo, qfalse);

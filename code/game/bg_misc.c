@@ -7337,30 +7337,14 @@ BG_AkimboFireSequence
 ==============
 */
 //qboolean BG_AkimboFireSequence( playerState_t *ps ) {
-qboolean BG_AkimboFireSequence( int weapon, int akimboClip, int coltClip ) {
+qboolean BG_AkimboFireSequence( int weapon, int akimboClip ) {
 	// NOTE: this doesn't work when clips are turned off (dmflags 64)
 
 	if ( weapon != WP_AKIMBO && weapon != WP_DUAL_TT33 ) {
 		return qfalse;
 	}
 
-	if ( !akimboClip ) {
-		return qfalse;
-	}
-
-	// no ammo in colt, must be akimbo turn
-	if ( !coltClip ) {
-		return qtrue;
-	}
-
-	// at this point, both have ammo
-
-	// now check 'cycle'   // (removed old method 11/5/2001)
-	if ( ( akimboClip + coltClip ) & 1 ) {
-		return qfalse;
-	}
-
-	return qtrue;
+	return akimboClip & 1;
 }
 
 //----(SA) end
@@ -7603,11 +7587,7 @@ qboolean BG_AddMagicAmmo(playerState_t *ps, int numOfClips) {
 				if (!numOfClips)
 					return qtrue;
 
-				int clipsToAdd = (weapon == WP_AKIMBO || weapon == WP_DUAL_TT33)
-					? numOfClips * 2
-					: numOfClips;
-
-				ps->ammo[ammoIndex] += clipsToAdd * maxclip;
+				ps->ammo[ammoIndex] += numOfClips * maxclip;
 
 				if (ps->ammo[ammoIndex] > maxammo) {
 					ps->ammo[ammoIndex] = maxammo;

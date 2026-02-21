@@ -119,18 +119,7 @@ void Weapon_Knife( gentity_t *ent ) {
 	}
 
 	damage = G_GetWeaponDamage(ent->s.weapon, ent);
-
-	if ( g_gametype.integer == GT_GOTHIC ) { 
-	switch ( traceEnt->aiCharacter ) {
-	case AICHAR_ZOMBIE:
-	case AICHAR_WARZOMBIE:
-	case AICHAR_LOPER:
-		damage *= 0.3;
-	default:
-	    damage *= 1.0;
-	}
-	}
-
+	
 	if ( ent->client && ent->client->ps.stats[STAT_PLAYER_CLASS] == PC_CVOPS ) {
 		damage = (int)(damage * svParams.cvopsmeleeDmgBonus);
 	}

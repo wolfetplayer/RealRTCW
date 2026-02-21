@@ -91,6 +91,7 @@ typedef struct svParams_s
 	int initialVenomsCount;
 
 	int initialZombiesCount;
+	int initialFleshCount;
 	int initialWarriorsCount;
 	int initialProtosCount;
 	int initialGhostsCount;
@@ -122,6 +123,7 @@ typedef struct svParams_s
 	int blackGuardsIncrease;
 	int venomsIncrease;
 	int zombiesIncrease;
+	int fleshIncrease;
 	int warriorsIncrease;
 	int protosIncrease;
 	int ghostsIncrease;
@@ -137,6 +139,7 @@ typedef struct svParams_s
 	int maxVenoms;
 
 	int maxZombies;
+	int maxFlesh;
 	int maxWarriors;
 	int maxProtos;
 	int maxGhosts;

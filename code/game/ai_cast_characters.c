@@ -760,6 +760,34 @@ AICharacterDefaults_t aiDefaults[NUM_CHARACTERS] = {
 		AISTATE_RELAXED
 	},
 
+	//AICHAR_ZOMBIE_SURV
+	{
+		"Flesh",
+		{ // Default
+			0
+		},
+		{
+			"fleshSightPlayer",
+			"fleshAttackPlayer",
+			"flehOrders",
+			"fleshDeath",
+			"fleshSilentDeath",				//----(SA)	added
+			"fleshFlameDeath",					//----(SA)	added
+			"fleshPain",
+			"sound/weapons/melee/fstatck.wav",	// stay - you're told to stay put
+			"sound/weapons/melee/fstmiss.wav",	// follow - go with ordering player ("i'm with you" rather than "yes sir!")
+			"fleshOrdersDeny",					// deny - refuse orders (doing something else)
+		},
+		AITEAM_MONSTER,
+		"flesh/lab",
+		{WP_MONSTER_ATTACK3},
+		BBOX_SMALL, {32,48},
+		AIFL_NO_RELOAD,
+		AIFunc_ZombieFlameAttackStart, AIFunc_ZombieAttack2Start, AIFunc_ZombieMeleeStart,
+		NULL,
+		AISTATE_ALERT
+	},
+
 };
 
 
@@ -1816,6 +1844,15 @@ void SP_ai_trench( gentity_t *ent ) {
 	AICast_DelayedSpawnCast( ent, AICHAR_TRENCH );
 }
 
+/*
+============
+SP_ai_flesh
+============
+*/
+void SP_ai_flesh( gentity_t *ent ) {
+	AICast_DelayedSpawnCast( ent, AICHAR_FLESH );
+}
+
 // Load behavior parameters from .aidefaults file
 void AI_LoadBehaviorTable( AICharacters_t characterNum )
 {
@@ -1878,6 +1915,7 @@ char *BG_GetCharacterFilename( AICharacters_t characterNum )
 		case AICHAR_XSHEPHERD:         return "xshepherd.aidefaults";
 		case AICHAR_MERCENARY:         return "merc.aidefaults";
 		case AICHAR_TRENCH:            return "trench.aidefaults";
+		case AICHAR_FLESH:             return "flesh.aidefaults";
 		case AICHAR_NONE:              return "";
 		default:                       Com_Printf( "Missing filename entry for character id %d\n", characterNum );
     }

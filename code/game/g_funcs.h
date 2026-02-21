@@ -1585,6 +1585,7 @@ If you have questions concerning this license or the applicable additional terms
 {"SP_ai_soldier", (byte *)SP_ai_soldier},
 {"SP_ai_mercenary", (byte *)SP_ai_mercenary},
 {"SP_ai_trench", (byte *)SP_ai_trench},
+{"SP_ai_flesh", (byte *)SP_ai_flesh},
 {"SP_ai_dog", (byte*)SP_ai_dog},
 {"AIChar_spawn", (byte *)AIChar_spawn},
 {"AIChar_AttackSound", (byte *)AIChar_AttackSound},

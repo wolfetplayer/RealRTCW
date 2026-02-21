@@ -73,6 +73,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_MERCENARY] = svParams.initialMercsCount;
 	svParams.maxActiveAI[AICHAR_TRENCH] = svParams.initialTrenchCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
+	svParams.maxActiveAI[AICHAR_FLESH] = svParams.initialFleshCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_FLAME] = svParams.initialFlamersCount;
 	svParams.maxActiveAI[AICHAR_WARZOMBIE] = svParams.initialWarriorsCount;
@@ -704,6 +705,12 @@ void AICast_UpdateMaxActiveAI(void)
         svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.maxZombies;
     }
 
+    // Default Zombies (flesh variant)
+    svParams.maxActiveAI[AICHAR_FLESH] += svParams.fleshIncrease;
+    if (svParams.maxActiveAI[AICHAR_FLESH] > svParams.maxFlesh) {
+        svParams.maxActiveAI[AICHAR_FLESH] = svParams.maxFlesh;
+    }
+
     // Warriors
     if (svParams.waveCount >= svParams.waveWarz) {
         svParams.maxActiveAI[AICHAR_WARZOMBIE] += svParams.warriorsIncrease;
@@ -849,6 +856,17 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			break;
 
 		case AICHAR_ZOMBIE_SURV:
+			newHealth = 20 + steps * stepMultiplier;
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+			if (newHealth > 200) newHealth = 200;
+			}
+			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.2f);
+			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.6f);
+			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
+			break;
+
+		case AICHAR_FLESH:
 			newHealth = 20 + steps * stepMultiplier;
 			if (g_survivalAiHealthCap.integer == 1)
 			{
@@ -1033,6 +1051,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_ZOMBIE_SURV:
 		case AICHAR_ZOMBIE_FLAME:
 		case AICHAR_WARZOMBIE:
+		case AICHAR_FLESH:
 		case AICHAR_PRIEST:
 		case AICHAR_ZOMBIE_GHOST:
 		case AICHAR_LOPER:
@@ -1468,6 +1487,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialFleshCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialFleshCount))
+			{
+				PC_SourceError(handle, "expected initialFleshCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "initialWarriorsCount"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialWarriorsCount))
@@ -1580,6 +1607,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "fleshIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.fleshIncrease))
+			{
+				PC_SourceError(handle, "expected fleshIncrease value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "warriorsIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.warriorsIncrease))
@@ -1681,6 +1716,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.maxZombies))
 			{
 				PC_SourceError(handle, "expected maxZombies value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "maxFlesh"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxFlesh))
+			{
+				PC_SourceError(handle, "expected maxFlesh value");
 				return qfalse;
 			}
 		}

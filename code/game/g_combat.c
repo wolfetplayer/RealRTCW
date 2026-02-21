@@ -93,31 +93,11 @@ void TossClientWeapons( gentity_t *self )
 		return;
 	}
 
-	if (g_gametype.integer == GT_GOTHIC)
-	{ // Gothicstein. Robots never drop weapons.
 		switch (self->aiCharacter)
 		{
 		case AICHAR_ZOMBIE:
 		case AICHAR_WARZOMBIE:
-		case AICHAR_LOPER:
-		case AICHAR_LOPER_SPECIAL:
-		case AICHAR_PROTOSOLDIER:
-		case AICHAR_SUPERSOLDIER:
-		case AICHAR_SUPERSOLDIER_LAB:
-		case AICHAR_DOG:
-		case AICHAR_PRIEST:
-		case AICHAR_XSHEPHERD:
-			return;
-		default:
-			break;
-		}
-	}
-	else
-	{ // Default case. Robots do drop weapons.
-		switch (self->aiCharacter)
-		{
-		case AICHAR_ZOMBIE:
-		case AICHAR_WARZOMBIE:
+		case AICHAR_FLESH:
 		case AICHAR_LOPER:
 		case AICHAR_LOPER_SPECIAL:
 		case AICHAR_DOG:
@@ -127,7 +107,7 @@ void TossClientWeapons( gentity_t *self )
 		default:
 			break;
 		}
-	}
+	
 
 	AngleVectors(self->r.currentAngles, forward, NULL, NULL);
 

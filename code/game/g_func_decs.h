@@ -1589,6 +1589,7 @@ extern void SP_ai_american ( gentity_t * ent ) ;
 extern void SP_ai_soldier ( gentity_t * ent ) ;
 extern void SP_ai_mercenary ( gentity_t * ent ) ;
 extern void SP_ai_trench ( gentity_t * ent ) ;
+extern void SP_ai_flesh ( gentity_t * ent ) ;
 extern void SP_ai_dog( gentity_t* ent );
 extern void AIChar_spawn ( gentity_t * ent ) ;
 extern void AIChar_AttackSound ( cast_state_t * cs ) ;

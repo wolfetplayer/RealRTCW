@@ -1788,7 +1788,7 @@ void FinishSpawningItem( gentity_t *ent ) {
 	}
 
     // No new ammo types too Classic Tides of War
-	if ( g_fullarsenal.integer == 0 && ent->item->giType == IT_AMMO && (
+	if ( g_fullarsenal.integer == 2 && ent->item->giType == IT_AMMO && (
 		ent->item->giAmmoIndex == WP_MP44 || 
 		ent->item->giAmmoIndex == WP_BAR || 
 		ent->item->giAmmoIndex == WP_REVOLVER)) 

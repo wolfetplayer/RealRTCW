@@ -1405,37 +1405,30 @@ redump:
 }
 
 static int FFMPEG_ReadFrame( qboolean onlyAudio ) {
-	int ret;
-    ret = av_read_frame(
-        cinTable[currentHandle].formatCtx,
-        cinTable[currentHandle].packet
-    );
+    int ret = av_read_frame( cinTable[currentHandle].formatCtx,
+                             cinTable[currentHandle].packet );
 
     if ( ret < 0 ) {
-        // eof
-		avcodec_send_packet(cinTable[currentHandle].vCodecCtx, NULL);
-		if (cinTable[currentHandle].aCodecCtx)
-		{
-			avcodec_send_packet(cinTable[currentHandle].aCodecCtx, NULL);
-		}
-		cinTable[currentHandle].eof = qtrue;
-	 	cinTable[currentHandle].status = FMV_EOF;
-    } else if ( cinTable[currentHandle].packet->stream_index ==
-         cinTable[currentHandle].videoStream && !onlyAudio ) {
+        avcodec_send_packet( cinTable[currentHandle].vCodecCtx, NULL );
+        if ( cinTable[currentHandle].aCodecCtx ) {
+            avcodec_send_packet( cinTable[currentHandle].aCodecCtx, NULL );
+        }
+        cinTable[currentHandle].eof = qtrue;
+        cinTable[currentHandle].status = FMV_EOF;
+        return ret;
+    }
 
-        avcodec_send_packet( 
-            cinTable[currentHandle].vCodecCtx, 
-            cinTable[currentHandle].packet 
-        );
-	}
-	else if (cinTable[currentHandle].aCodecCtx &&
-			 cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].audioStream &&
-			 !cinTable[currentHandle].silent)
-	{
-		avcodec_send_packet(cinTable[currentHandle].aCodecCtx, cinTable[currentHandle].packet);
-	}
+    if ( cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].videoStream && !onlyAudio ) {
+        avcodec_send_packet( cinTable[currentHandle].vCodecCtx, cinTable[currentHandle].packet );
+    } else if ( cinTable[currentHandle].aCodecCtx &&
+                cinTable[currentHandle].packet->stream_index == cinTable[currentHandle].audioStream &&
+                !cinTable[currentHandle].silent ) {
+        avcodec_send_packet( cinTable[currentHandle].aCodecCtx, cinTable[currentHandle].packet );
+    }
 
-	return ret;
+    // IMPORTANT: release packet refs every time
+    av_packet_unref( cinTable[currentHandle].packet );
+    return ret;
 }
 
 static void FFMPEG_PredecodeAudio( void ) {

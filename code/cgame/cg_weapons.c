@@ -6929,7 +6929,7 @@ static qboolean CG_AA_ValidateTarget( int entNum ) {
         vec3_t target;
 
         VectorCopy( cg_entities[ entNum ].lerpOrigin, target );
-        target[2] += 30.0f; // chest-ish
+        target[2] += 35.0f; // chest-ish
 
         CG_Trace( &los,
                   cg.refdef.vieworg,
@@ -7055,7 +7055,7 @@ void CG_UpdateAimAssist( void ) {
         float  yawErr, pitchErr;
 
         VectorCopy( cg_entities[ bestEnt ].lerpOrigin, target );
-        target[2] += 30.0f; // chest-ish; tune later if you want head
+        target[2] += 35.0f; // chest-ish; tune later if you want head
 
         VectorSubtract( target, cg.refdef.vieworg, to );
         VectorCopy( to, toN );

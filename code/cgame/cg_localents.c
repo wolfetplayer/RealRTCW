@@ -134,25 +134,25 @@ localEntity_t   *CG_AllocLocalEntity( void ) {
 CG_FreeDelayedBrass
 ==================
 */
-void CG_FreeDelayedBrass( delayedBrass_t * delayedBrass ) {
-	if ( !delayedBrass ) {
-		CG_Error( "CG_FreeDelayedBrass: delayedBrass is NULL" );
+void CG_FreeDelayedBrass( delayedBrass_t *b ) {
+	if ( !b ) {
+		CG_Error( "CG_FreeDelayedBrass: b is NULL" );
+		return;
 	}
 
-	if ( delayedBrass->prev ) {
-		delayedBrass->prev->next = delayedBrass->next;
+	// unlink from list (handle head correctly)
+	if ( b->prev ) {
+		b->prev->next = b->next;
+	} else {
+		// b was head
+		cg_delayedBrasses = b->next;
 	}
 
-	if ( delayedBrass->next ) {
-		delayedBrass->next->prev = delayedBrass->prev;
+	if ( b->next ) {
+		b->next->prev = b->prev;
 	}
 
-	if ( delayedBrass->prev == NULL && delayedBrass->next == NULL ) {
-		cg_delayedBrasses = NULL;
-	}
-
-	free( delayedBrass );
-	delayedBrass = NULL;
+	free( b );
 }
 
 

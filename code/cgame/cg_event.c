@@ -1932,18 +1932,19 @@ case EV_FILL_CLIP_FULL:
 		break;
 	case EV_FIRE_WEAPON:
 	case EV_FIRE_WEAPONB:
-		DEBUGNAME( "EV_FIRE_WEAPON" );
+		DEBUGNAME("EV_FIRE_WEAPON");
 
-		if ( cg.snap->ps.eFlags & EF_ZOOMING ) { // to stop airstrike sfx
-			break;
+		// Only suppress weapon-fire events for the local player while zooming
+		if (cent->currentState.number == cg.snap->ps.clientNum)
+		{
+			if (cg.snap->ps.eFlags & EF_ZOOMING)
+			{
+				break;
+			}
 		}
 
-		CG_FireWeapon( cent, event );
-		if ( event == EV_FIRE_WEAPONB ) {  // akimbo firing colt
-			cent->akimboFire = qtrue;
-		} else {
-			cent->akimboFire = qfalse;
-		}
+		CG_FireWeapon(cent, event);
+		cent->akimboFire = (event == EV_FIRE_WEAPONB);
 		break;
 	case EV_FIRE_WEAPON_LASTSHOT:
 		DEBUGNAME( "EV_FIRE_WEAPON_LASTSHOT" );

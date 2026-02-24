@@ -184,6 +184,8 @@ extern qboolean AICast_ScriptAction_WalkToMarker ( cast_state_t * cs , char * pa
 extern qboolean AICast_ScriptAction_GotoMarker ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_ApplyLoadout( cast_state_t *cs, char *params );
+extern qboolean AICast_Loadouts_ApplyToEnt( cast_state_t *cs, gentity_t *target, const char *loadoutName );
 extern void AICast_NoAttackIfNotHurtSinceLastScriptAction ( cast_state_t * cs ) ;
 extern void SP_team_WOLF_checkpoint ( gentity_t * ent ) ;
 extern void checkpoint_spawntouch ( gentity_t * self , gentity_t * other , trace_t * trace ) ;

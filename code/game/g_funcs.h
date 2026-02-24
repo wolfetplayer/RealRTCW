@@ -1407,6 +1407,8 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_GotoMarker", (byte *)AICast_ScriptAction_GotoMarker},
 {"AICast_ScriptAction_Defend", (byte *)AICast_ScriptAction_Defend},
 {"AICast_ScriptAction_DefendStop", (byte *)AICast_ScriptAction_DefendStop},
+{"AICast_ScriptAction_ApplyLoadout", (byte *)AICast_ScriptAction_ApplyLoadout},
+{"AICast_Loadouts_ApplyToEnt", (byte *)AICast_Loadouts_ApplyToEnt},
 {"G_ScriptAction_ShaderRemapFlush", (byte *)G_ScriptAction_ShaderRemapFlush},
 {"G_ScriptAction_ShaderRemap", (byte *)G_ScriptAction_ShaderRemap},
 {"AICast_NoAttackIfNotHurtSinceLastScriptAction", (byte *)AICast_NoAttackIfNotHurtSinceLastScriptAction},

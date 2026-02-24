@@ -800,3 +800,6 @@ typedef struct
 	qboolean (*canAward)(cast_state_t *cs); // NULL = no extra conditions
 } cast_achievementDef_t;
 //
+
+qboolean AICast_Loadouts_ApplyToEnt( cast_state_t *cs, gentity_t *target, const char *loadoutName );
+

@@ -1411,6 +1411,8 @@ extern qboolean AICast_ScriptAction_WalkToMarker ( cast_state_t * cs , char * pa
 extern qboolean AICast_ScriptAction_GotoMarker ( cast_state_t * cs , char * params ) ;
 extern qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params );
 extern qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) ;
+extern qboolean AICast_ScriptAction_ApplyLoadout( cast_state_t *cs, char *params );
+extern qboolean AICast_Loadouts_ApplyToEnt( cast_state_t *cs, gentity_t *target, const char *loadoutName );
 extern qboolean G_ScriptAction_ShaderRemapFlush ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_ShaderRemap ( gentity_t * ent , char * params ) ;
 extern void AICast_NoAttackIfNotHurtSinceLastScriptAction ( cast_state_t * cs ) ;

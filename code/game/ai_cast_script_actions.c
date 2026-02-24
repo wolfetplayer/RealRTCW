@@ -1794,6 +1794,21 @@ qboolean AICast_ScriptAction_GiveHealth( cast_state_t *cs, char *params ) {
 
 }
 
+qboolean AICast_ScriptAction_ApplyLoadout( cast_state_t *cs, char *params ) {
+    gentity_t *player;
+
+    if ( !params || !params[0] ) {
+        G_Error( "AI Scripting: applyloadout requires loadout name\n" );
+    }
+
+    player = AICast_FindEntityForName( "player" );
+    if ( !player ) {
+        return qfalse;
+    }
+
+    return AICast_Loadouts_ApplyToEnt( cs, player, params );
+}
+
 /*
 =================
 AICast_ScriptAction_GiveWeapon

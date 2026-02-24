@@ -24,6 +24,7 @@ qboolean AICast_ScriptAction_SetClip( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SetArmor( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GiveInventory( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SelectWeapon( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params ) ;
 
 #define LOADOUT_MANIFEST "loadouts/loadouts.cfg"
 #define LOADOUT_MANIFEST_BUFSIZE ( 8 * 1024 )
@@ -69,6 +70,9 @@ static qboolean AICast_Loadouts_RunCommand( cast_state_t *pcs, const char *cmd, 
 
     if ( !Q_stricmp( cmd, "giveweapon" ) ) {
         return AICast_ScriptAction_GiveWeapon( pcs, args );
+    }
+    if ( !Q_stricmp( cmd, "takeweapon" ) ) {
+        return AICast_ScriptAction_TakeWeapon( pcs, args );
     }
     if ( !Q_stricmp( cmd, "setammo" ) ) {
         return AICast_ScriptAction_SetAmmo( pcs, args );

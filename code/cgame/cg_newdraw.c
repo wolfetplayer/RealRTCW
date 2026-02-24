@@ -884,7 +884,12 @@ static void CG_DrawPerks( rectDef_t *rect, int font, float scale, qboolean draw2
     gitem_t *item;
     float x, y = 20; // Top part of the screen
 
-    // Count the number of active perks
+	if (cg_gameType.integer != GT_SURVIVAL)
+	{
+		return;
+	}
+
+	// Count the number of active perks
     for ( i = 0; i < MAX_PERKS; i++ ) {
         if ( cg.snap->ps.perks[i] > 0 || (cg.snap->ps.stats[STAT_PERK] & (1 << i)) ) {
             numPerks++;

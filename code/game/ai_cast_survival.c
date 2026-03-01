@@ -259,13 +259,13 @@ if (!attacker) {
 }
 
 if (!killerPlayer && !killerFriendly) {
-    Com_Printf(
+   /* Com_Printf(
         "^3[AI_SURVIVE] WARNING: uncounted kill. attacker->client=%d, aiCharacter=%d, aiTeam=%d, meansOfDeath=%d\n",
         attacker->client != NULL,
         attacker->aiCharacter,
         attacker->aiTeam,
         meansOfDeath
-    );
+    );*/
 
 	svParams.waveKillCount++;
 	AICast_CheckSurvivalProgression(&g_entities[0]);

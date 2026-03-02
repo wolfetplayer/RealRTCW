@@ -48,6 +48,8 @@ void TossClientItems_Survival(gentity_t *self, gentity_t *attacker) {
     if (attacker->aiTeam == self->aiTeam) return;
 
     const char *treasure = "item_treasure";
+    const char *adrenaline = "holdable_bg_syringe";
+
     AngleVectors(self->r.currentAngles, forward, NULL, NULL);
     angle = 45;
 
@@ -62,6 +64,19 @@ void TossClientItems_Survival(gentity_t *self, gentity_t *attacker) {
             drop = Drop_Item(self, item, 0, qfalse);
             if (drop) {
                 drop->nextthink = level.time + 30000;
+            }
+        }
+    }
+
+    // Scavenger PRO: chance to drop adrenaline
+    if (attacker->client->ps.perks[PERK_SCAVENGER] >= 2) {
+        if (rand() % 100 < dropChance) {
+            item = BG_FindItemForClassName(adrenaline);
+            if (item) {
+                drop = Drop_Item(self, item, 0, qfalse);
+                if (drop) {
+                    drop->nextthink = level.time + 30000;
+                }
             }
         }
     }

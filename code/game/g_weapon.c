@@ -803,6 +803,8 @@ static void Bullet_Fire_Normal( gentity_t *ent, float aimSpreadScale ) {
 	weapon_t weapon = ent->s.weapon;
 	float spread = G_GetWeaponSpread(weapon, ent) * aimSpreadScale;
 	int damage = G_GetWeaponDamage(weapon, ent);
+	int pelletMultNum = 1;
+	int pelletMultDen = 1;
 
 	if (ammoTable[weapon].weaponClass & WEAPON_CLASS_SHOTGUN) {
 		numPellets = NUM_SHOTGUN_PELLETS;
@@ -810,13 +812,26 @@ static void Bullet_Fire_Normal( gentity_t *ent, float aimSpreadScale ) {
 		numPellets = 1;
 	}
 
+	// Rifling PRO: increase pellet/projectile count
+	// - Shotguns: x1.5
+	// - Others: x2
+	if ( ent->client && ent->client->ps.perks[PERK_RIFLING] >= 2 ) {
+		if (ammoTable[weapon].weaponClass & WEAPON_CLASS_SHOTGUN) {
+			pelletMultNum = 3;
+			pelletMultDen = 2;
+		} else {
+			pelletMultNum = 2;
+			pelletMultDen = 1;
+		}
+	}
+
 	if (ent->client->ps.weaponUpgraded[weapon]) {
-		for (int i = 0; i < ammoTable[weapon].usesUpgraded * numPellets; i++)
+		for (int i = 0; i < (ammoTable[weapon].usesUpgraded * numPellets * pelletMultNum) / pelletMultDen; i++)
 		{
 			Bullet_Fire(ent, spread, damage);
 		}
 	} else {
-		for (int i = 0; i < ammoTable[weapon].uses * numPellets; i++)
+		for (int i = 0; i < (ammoTable[weapon].uses * numPellets * pelletMultNum) / pelletMultDen; i++)
 		{
 			Bullet_Fire(ent, spread, damage);
 		}

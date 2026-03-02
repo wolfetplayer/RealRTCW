@@ -1152,6 +1152,14 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.speed *= 2.0;
 	}
 
+	if (g_gametype.integer == GT_SURVIVAL)
+	{
+		if (!ent->aiCharacter && client->ps.perks[PERK_RUNNER] >= 2)
+		{
+			client->ps.speed *= 1.25;
+		}
+	}
+
 	// set up for pmove
 	oldEventSequence = client->ps.eventSequence;
 

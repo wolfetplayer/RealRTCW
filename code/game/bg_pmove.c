@@ -3998,8 +3998,12 @@ static void PM_Weapon( void ) {
 	}
 
 
-	if ( pm->ps->perks[PERK_RIFLING] ) {
+	if ( pm->ps->perks[PERK_RIFLING] && pm->ps->weapon != WP_KNIFE ) {
 		addTime /= 1.25;
+	}
+
+	if ( pm->ps->perks[PERK_WEAPONHANDLING] >= 2 && pm->ps->weapon == WP_KNIFE ) {
+		addTime /= 1.5;
 	}
 
 	// add the recoil amount to the aimSpreadScale

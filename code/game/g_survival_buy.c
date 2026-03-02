@@ -197,45 +197,64 @@ qboolean Survival_HandleRandomPerkBox(gentity_t *ent, gentity_t *activator, char
 	int price = (ent->price > 0) ? ent->price : svParams.randomPerkPrice;
 	const int numPerks = sizeof(random_perks) / sizeof(random_perks[0]);
 
-	// Perk count limit
+	// Perk count limit (only matters for NEW perks, upgrades do not consume a slot)
 	int perkCount = 0;
 	for (int i = 0; i < MAX_PERKS; i++) {
 		if (activator->client->ps.perks[i] > 0)
 			perkCount++;
 	}
 	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ? svParams.maxPerksEng : svParams.maxPerks;
-	if (perkCount >= maxPerks) {
+
+	// Not enough score?
+	if (activator->client->ps.persistant[PERS_SCORE] < price) {
 		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 		return qfalse;
 	}
 
-	int randomIndex = rand() % numPerks;
-	*itemName = random_perks[randomIndex];
+	// Find a valid outcome (reroll a few times to avoid wasting money on PRO-owned perks)
+	for (int tries = 0; tries < 16; tries++) {
 
-	for (int i = 1; bg_itemlist[i].classname; i++) {
-		if (!Q_strcasecmp(*itemName, bg_itemlist[i].classname)) {
-			*itemIndex = i;
-			gitem_t *perkItem = &bg_itemlist[i];
+		int randomIndex = rand() % numPerks;
+		*itemName = random_perks[randomIndex];
 
-			if (activator->client->ps.perks[perkItem->giTag] > 0 || 
-				activator->client->ps.persistant[PERS_SCORE] < price) {
-				G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
-				return qfalse;
+		for (int i = 1; bg_itemlist[i].classname; i++) {
+			if (!Q_strcasecmp(*itemName, bg_itemlist[i].classname)) {
+				*itemIndex = i;
+				gitem_t *perkItem = &bg_itemlist[i];
+
+				int perk = perkItem->giTag;
+				int level = activator->client->ps.perks[perk];
+
+				// Already PRO? reroll
+				if (level >= 2) {
+					break;
+				}
+
+				// New perk but no free slots? reroll (upgrades are still allowed)
+				if (level <= 0 && perkCount >= maxPerks) {
+					break;
+				}
+
+				// Apply: base (0->1) or pro (1->2)
+				if (level <= 0) {
+					activator->client->ps.perks[perk] = 1;
+				} else {
+					activator->client->ps.perks[perk] = 2;
+				}
+
+				activator->client->ps.stats[STAT_PERK] |= (1 << perk);
+				activator->client->ps.persistant[PERS_SCORE] -= price;
+
+				G_AddPredictableEvent(activator, EV_ITEM_PICKUP, perkItem - bg_itemlist);
+				trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
+				return qtrue;
 			}
-
-			activator->client->ps.perks[perkItem->giTag]++;
-			activator->client->ps.stats[STAT_PERK] |= (1 << perkItem->giTag);
-			activator->client->ps.persistant[PERS_SCORE] -= price;
-
-			G_AddPredictableEvent(activator, EV_ITEM_PICKUP, perkItem - bg_itemlist);
-			trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
-			return qtrue;
 		}
 	}
 
+	G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
 	return qfalse;
 }
-
 /*
 ============
 Survival_HandleAmmoPurchase
@@ -829,6 +848,29 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	if (other->client->ps.weaponUpgraded[other->client->ps.weapon])
 	{
 		ammoPrice = svParams.upgradedAmmoPrice;
+	}
+
+	// Perk PRO tip override (dynamic string + dynamic price)
+	if (item && item->giType == IT_PERK && weaponName) {
+		int perkLevel = other->client->ps.perks[item->giTag];
+
+		if (perkLevel <= 0) {
+			if (price > 0) {
+				trap_SendServerCommand(other - g_entities, va(
+					"cpbuy \"%s\nprice: %d\"",
+					weaponName, price));
+				return;
+			}
+		} else if (perkLevel == 1) {
+			if (price > 0) {
+				trap_SendServerCommand(other - g_entities, va(
+					"cpbuy \"%s ^PRO\nprice: %d\"",
+					weaponName, price * 2));
+				return;
+			}
+		} else {
+			return;
+		}
 	}
 
 	// Display custom tip if price and name are known

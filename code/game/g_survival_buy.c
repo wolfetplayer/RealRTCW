@@ -538,6 +538,9 @@ int Survival_GetDefaultPerkPrice(int perk) {
 	}
 }
 
+#define PERK_LEVEL_NONE  0
+#define PERK_LEVEL_BASE  1
+#define PERK_LEVEL_PRO   2
 
 /*
 ============
@@ -545,45 +548,62 @@ Survival_HandlePerkPurchase
 ============
 */
 qboolean Survival_HandlePerkPurchase(gentity_t *activator, gitem_t *item, int price) {
-	if (!activator || !item || item->giType != IT_PERK)
-		return qfalse;
+    if (!activator || !item || item->giType != IT_PERK)
+        return qfalse;
 
-	// Count how many perks player has
-	int perkCount = 0;
-	for (int i = 0; i < MAX_PERKS; i++) {
-		if (activator->client->ps.perks[i] > 0)
-			perkCount++;
-	}
+    int perk = item->giTag;
+    int curLevel = activator->client->ps.perks[perk];
 
-	// Max perks check
-	int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ?  svParams.maxPerksEng : svParams.maxPerks;
-	if (perkCount >= maxPerks)
-		return qfalse;
+    // Determine what we're buying: base (0->1) or pro (1->2)
+    int targetLevel = 0;
+    if (curLevel <= 0) {
+        targetLevel = 1;          // buy base
+    } else if (curLevel == 1) {
+        targetLevel = 2;          // upgrade to pro
+    } else {
+        return qfalse;            // already pro (or higher)
+    }
 
-	// Already owns this perk?
-	if (activator->client->ps.perks[item->giTag] > 0)
-		return qfalse;
+    // Only enforce max perks when buying a NEW perk (0->1).
+    if (targetLevel == 1) {
+        int perkCount = 0;
+        for (int i = 0; i < MAX_PERKS; i++) {
+            if (activator->client->ps.perks[i] > 0)
+                perkCount++;
+        }
 
-	// Fallback to default price if mapper didn't define it
-	if (price <= 0) {
-		price = Survival_GetDefaultPerkPrice(item->giTag);
-	}
+        int maxPerks = (activator->client->ps.stats[STAT_PLAYER_CLASS] == PC_ENGINEER) ?
+            svParams.maxPerksEng : svParams.maxPerks;
 
-	// Not enough score?
-	if (activator->client->ps.persistant[PERS_SCORE] < price) {
-		G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
-		return qfalse;
-	}
+        if (perkCount >= maxPerks)
+            return qfalse;
+    }
 
-	// Grant perk
-	activator->client->ps.perks[item->giTag]++;
-	activator->client->ps.stats[STAT_PERK] |= (1 << item->giTag);
-	activator->client->ps.persistant[PERS_SCORE] -= price;
+    // Base price: entity override if >0, otherwise from .surv (svParams.*)
+    if (price <= 0) {
+        price = Survival_GetDefaultPerkPrice(perk);
+    }
 
-	G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
-	trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
+    // PRO costs double base price
+    if (targetLevel == 2) {
+        price *= 2;
+    }
 
-	return qtrue;
+    // Not enough score?
+    if (activator->client->ps.persistant[PERS_SCORE] < price) {
+        G_AddEvent(activator, EV_GENERAL_SOUND, G_SoundIndex("sound/items/use_nothing.wav"));
+        return qfalse;
+    }
+
+    // Grant / upgrade perk
+    activator->client->ps.perks[perk] = targetLevel;
+    activator->client->ps.stats[STAT_PERK] |= (1 << perk);
+    activator->client->ps.persistant[PERS_SCORE] -= price;
+
+    G_AddPredictableEvent(activator, EV_ITEM_PICKUP, item - bg_itemlist);
+    trap_SendServerCommand(-1, "mu_play sound/misc/buy_perk.wav 0\n");
+
+    return qtrue;
 }
 
 

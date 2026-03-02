@@ -558,6 +558,18 @@ if ((g_regen.integer == 1 || g_gametype.integer == GT_SURVIVAL) && level.time >=
 
 			}
 		    }
+
+			// resilience PRO: slight armor regen tied to healthRegenStartTime gate
+			if ( g_gametype.integer == GT_SURVIVAL ) {
+				if ( !ent->aiCharacter && client->ps.perks[PERK_RESILIENCE] >= 2 ) {
+					if ( client->ps.stats[STAT_ARMOR] < 100 ) {
+						client->ps.stats[STAT_ARMOR] += 2;
+						if ( client->ps.stats[STAT_ARMOR] > 100 ) {
+							client->ps.stats[STAT_ARMOR] = 100;
+						}
+					}
+				}
+			}
 		}
 
 

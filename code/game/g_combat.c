@@ -378,9 +378,19 @@ void player_die_secondchance( gentity_t *self, gentity_t *inflictor, gentity_t *
     pthread_t thread_id;
     pthread_create(&thread_id, NULL, remove_powerup_after_delay2, (void *)self);
 
-	// Remove all current perks from the player
-    memset(self->client->ps.perks, 0, sizeof(self->client->ps.perks));
-	self->client->ps.stats[STAT_PERK] = 0; // Clear all perk bits
+	// Remove perks depending on Second Chance level
+	if (self->client->ps.perks[PERK_SECONDCHANCE] >= 2)
+	{
+		// PRO: consume only Second Chance, keep all other perks
+		self->client->ps.perks[PERK_SECONDCHANCE] = 0;
+		self->client->ps.stats[STAT_PERK] &= ~(1 << PERK_SECONDCHANCE);
+	}
+	else
+	{
+		// BASE: lose everything
+		memset(self->client->ps.perks, 0, sizeof(self->client->ps.perks));
+		self->client->ps.stats[STAT_PERK] = 0;
+	}
 
 	 // Reset the player's state to prevent immediate death again
     self->client->ps.pm_type = PM_NORMAL;

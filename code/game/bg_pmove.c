@@ -2428,6 +2428,12 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	}
 
 	switchtime = 250;   // dropping/raising usually takes 1/4 sec.
+
+	// Fast Hands PRO: faster weapon switch
+	if ( pm->ps->perks[PERK_WEAPONHANDLING] >= 2 ) {
+		switchtime = 100;
+	}
+
 	// sometimes different switch times for alt weapons
 	switch ( oldweapon ) {
 	case WP_M1GARAND:
@@ -2516,6 +2522,11 @@ static void PM_FinishWeaponChange( void ) {
 
 	// dropping/raising usually takes 1/4 sec.
 	switchtime = 250;
+
+	// Fast Hands PRO: faster weapon switch
+	if ( pm->ps->perks[PERK_WEAPONHANDLING] >= 2 ) {
+		switchtime = 100;
+	}
 
 	// sometimes different switch times for alt weapons
 	switch ( newweapon ) {

@@ -70,7 +70,7 @@ void TossClientItems_Survival(gentity_t *self, gentity_t *attacker) {
 
     // Scavenger PRO: chance to drop adrenaline
     if (attacker->client->ps.perks[PERK_SCAVENGER] >= 2) {
-        if (rand() % 100 < dropChance) {
+        if (rand() % 100 < 3) {
             item = BG_FindItemForClassName(adrenaline);
             if (item) {
                 drop = Drop_Item(self, item, 0, qfalse);

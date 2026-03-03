@@ -1062,6 +1062,8 @@ If you have questions concerning this license or the applicable additional terms
 {"UseHoldableItem", (byte *)UseHoldableItem},
 {"CrossThink", (byte *)CrossThink},
 {"CrossBurn", (byte *)CrossBurn},
+{"EMP_Apply", (byte *)EMP_Apply},
+{"EMP_ClearFxThink", (byte *)EMP_ClearFxThink},
 {"Pickup_Treasure", (byte *)Pickup_Treasure},
 {"Pickup_Clipboard", (byte *)Pickup_Clipboard},
 {"Pickup_Key", (byte *)Pickup_Key},

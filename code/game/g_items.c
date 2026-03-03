@@ -273,6 +273,44 @@ void CrossBurn( gentity_t *owner, gentity_t *targ ) {
 	timer->nextthink = level.time + 1500;  // 1.5s (use 1000..2000)
 }
 
+void EMP_ClearFxThink(gentity_t *timer) {
+    gentity_t *targ;
+
+    if (!timer || !timer->inuse) return;
+
+    targ = timer->enemy;
+    if (targ && targ->inuse && targ->client) {
+        // Clear only if time really expired (in case it got refreshed)
+        if (targ->empFxUntil <= level.time) {
+            targ->s.powerups &= ~(1 << PW_QUAD); // blue overlay off
+        }
+    }
+
+    G_FreeEntity(timer);
+}
+
+void EMP_Apply(gentity_t *owner, gentity_t *targ, int durationMs) {
+    gentity_t *timer;
+
+    if (!targ || !targ->inuse || !targ->client) return;
+    if (targ->health <= 0) return;
+
+    // Extend/refresh EMP
+    targ->empDisabledUntil = level.time + durationMs;
+    targ->empFxUntil       = level.time + durationMs;
+
+    // Visual: reuse quad overlay on the VICTIM
+    targ->s.powerups |= (1 << PW_QUAD);
+
+    // Timer to clear FX later (don’t touch targ->think)
+    timer = G_Spawn();
+    timer->classname = "emp_clearfx_timer";
+    timer->r.svFlags = SVF_NOCLIENT;
+    timer->enemy = targ;
+    timer->think = EMP_ClearFxThink;
+    timer->nextthink = level.time + durationMs;
+}
+
 /*
 ==============
 UseHoldableItem
@@ -448,6 +486,45 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 			CrossBurn(ent, targ);
 		};
 		break;
+	case HI_EMP:
+	{
+		const float radius = 512.0f;
+		const int duration = 17000; // 15–20s, tune (ms)
+		int touch[MAX_GENTITIES];
+		int num, i;
+		vec3_t mins, maxs, delta;
+		gentity_t *targ;
+
+		VectorSet(mins, ent->r.currentOrigin[0] - radius, ent->r.currentOrigin[1] - radius, ent->r.currentOrigin[2] - radius);
+		VectorSet(maxs, ent->r.currentOrigin[0] + radius, ent->r.currentOrigin[1] + radius, ent->r.currentOrigin[2] + radius);
+
+		num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
+
+		for (i = 0; i < num; i++)
+		{
+			targ = &g_entities[touch[i]];
+
+			if (!targ->inuse || targ->health <= 0)
+				continue;
+			if (!targ->client)
+				continue;
+
+			// Only X-creatures
+			if (targ->aiCharacter != AICHAR_LOPER &&
+				targ->aiCharacter != AICHAR_PROTOSOLDIER &&
+			    targ->aiCharacter != AICHAR_XSHEPHERD )
+			{
+				continue;
+			}
+
+			VectorSubtract(targ->r.currentOrigin, ent->r.currentOrigin, delta);
+			if (VectorLength(delta) > radius)
+				continue;
+
+			EMP_Apply(ent, targ, duration);
+		}
+		break;
+	}
 	case HI_BOOK1:
 	case HI_BOOK2:
 	case HI_BOOK3:

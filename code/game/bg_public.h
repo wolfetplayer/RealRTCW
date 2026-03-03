@@ -469,6 +469,7 @@ typedef enum {
 	HI_BG_SYRINGE,
 	HI_LP_SYRINGE,
 	HI_CROSS,
+	HI_EMP,
 	// boundary marker
 	HI_HUD_VISIBLE_END,
 	// for special logic
@@ -790,6 +791,7 @@ typedef enum {
 	EV_USE_ITEM14,
 	EV_USE_ITEM15,
 	EV_USE_ITEM16,
+	EV_USE_ITEM17,
 	EV_ITEM_RESPAWN,
 	EV_ITEM_POP,
 	EV_PLAYER_TELEPORT_IN,

@@ -448,6 +448,9 @@ struct gentity_s {
 	int wave;				   // wave number, survival mode   
 	int lastPainMOD; // last meansOfDeath used in pain function        
 	int oneshot;
+
+	int empDisabledUntil;
+	int empFxUntil;
 };
 
 // Ridah
@@ -815,6 +818,9 @@ gentity_t *G_DropSpecifiedItem( gentity_t *ent, gitem_t *item, int lifetimeMs, i
 
 void CrossThink( gentity_t *timer );
 void CrossBurn( gentity_t *owner, gentity_t *targ );
+
+void EMP_Apply(gentity_t *owner, gentity_t *targ, int durationMs);
+void EMP_ClearFxThink(gentity_t *timer) ;
 
 void UseHoldableItem( gentity_t *ent, int item );
 void PrecacheItem( gitem_t *it );

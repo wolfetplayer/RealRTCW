@@ -1066,6 +1066,8 @@ extern int Pickup_Perk ( gentity_t * ent , gentity_t * other ) ;
 extern void UseHoldableItem ( gentity_t * ent , int item ) ;
 extern void CrossThink( gentity_t *timer );
 extern void CrossBurn( gentity_t *owner, gentity_t *targ );
+extern void EMP_Apply(gentity_t *owner, gentity_t *targ, int durationMs);
+extern void EMP_ClearFxThink(gentity_t *timer) ;
 extern int Pickup_Treasure ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Clipboard ( gentity_t * ent , gentity_t * other ) ;
 extern int Pickup_Key ( gentity_t * ent , gentity_t * other ) ;

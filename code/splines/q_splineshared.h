@@ -1347,7 +1347,7 @@ typedef enum
 #define MAX_PERSISTANT          32
 #define MAX_POWERUPS            16
 #define MAX_WEAPONS             64  // (SA) and yet more!
-#define MAX_HOLDABLE            16
+#define MAX_HOLDABLE            32
 #define MAX_PERKS 			    16
 
 

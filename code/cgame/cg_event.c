@@ -148,6 +148,9 @@ static void CG_UseItem( centity_t *cent ) {
 				case HI_CROSS:
 					CG_CenterPrint( "usedcross", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
+				case HI_EMP:
+					CG_CenterPrint( "usedemp", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
 				case HI_WINE:
 					CG_CenterPrint( "drankwine", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
@@ -187,6 +190,9 @@ static void CG_UseItem( centity_t *cent ) {
 		break;
 	case HI_CROSS:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.crossSound );
+		break;
+	case HI_EMP:
+		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.empSound );
 		break;
 	}
 }
@@ -2029,6 +2035,10 @@ case EV_FILL_CLIP_FULL:
 		break;
 	case EV_USE_ITEM16:
 		DEBUGNAME( "EV_USE_ITEM16" );
+		CG_UseItem( cent );
+		break;
+	case EV_USE_ITEM17:
+		DEBUGNAME( "EV_USE_ITEM17" );
 		CG_UseItem( cent );
 		break;
 

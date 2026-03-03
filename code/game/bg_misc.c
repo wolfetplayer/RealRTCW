@@ -6565,6 +6565,39 @@ model="models/powerups/holdable/cross.md3"
 	},
 
 
+/*QUAKED holdable_emp(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_cross.wav"
+use sound : "sound/pickup/holdable/use_cross.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/emp.md3"
+*/
+	{
+		"holdable_emp",
+		"sound/pickup/holdable/get_stamina.wav",
+		{
+		"models/powerups/holdable/emp.md3",
+		0, 
+		0
+		},
+
+		"icons/emp",             
+		"EMP activated",             
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_EMP,
+		0,
+		0,
+		0,
+		"",                             
+		"sound/pickup/holdable/use_emp.wav",
+		{1,1,1,1,1,1}
+	},
+
+
 
 /*QUAKED holdable_book1(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
@@ -8566,6 +8599,7 @@ char *eventnames[] = {
 	"EV_USE_ITEM14",
 	"EV_USE_ITEM15",
 	"EV_USE_ITEM16",
+	"EV_USE_ITEM17",
 	"EV_ITEM_RESPAWN",
 	"EV_ITEM_POP",
 	"EV_PLAYER_TELEPORT_IN",

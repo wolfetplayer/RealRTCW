@@ -643,6 +643,37 @@ void AICast_Think( int client, float thinktime ) {
 		// no more thinking required
 		return;
 	}
+
+    // EMP: temporarily disable certain NPCS
+    if ( ent->empDisabledUntil > level.time ) {
+
+        if ( ent->aiCharacter == AICHAR_LOPER || ent->aiCharacter == AICHAR_PROTOSOLDIER || ent->aiCharacter == AICHAR_XSHEPHERD ) {
+
+            // Stop any movement immediately
+            ent->client->ps.pm_flags |= PMF_TIME_KNOCKBACK; // optional: prevents some accel quirks
+            ent->client->ps.pm_time = 200;                 // keep small, we refresh each think
+            VectorClear( ent->client->ps.velocity );
+
+            // Prevent attacking / weapon usage
+            ent->client->ps.weaponTime = 200;              // keep them from firing
+            cs->weaponNum = WP_NONE;                       // avoid selecting a weapon while frozen
+            trap_EA_SelectWeapon( cs->bs->client, WP_NONE );
+
+            // Cancel “I am attacking” style state bits that can force actions
+            cs->aiFlags &= ~( AIFL_ATTACK_CROUCH | AIFL_SPECIAL_FUNC | AIFL_VIEWLOCKED );
+            cs->actionFlags = 0;
+            cs->attackcrouch_time = 0;
+            cs->lastWeaponFired = 0;
+
+            // Drop enemy so they don't immediately resume a melee/charge the same frame it ends
+            cs->enemyNum = -1;
+
+            // Optional: pause scripts while EMP'd (prevents scripted moves/attacks)
+            cs->pauseTime = level.time + 250;
+			
+            return;
+        }
+    }
 	//
 	// set some anim conditions
 	if ( cs->secondDeadTime ) {

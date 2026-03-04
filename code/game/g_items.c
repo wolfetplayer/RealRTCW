@@ -523,7 +523,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_EMP:
 	{
 		const float radius = 512.0f;
-		const int duration = 15000;
+		const int duration = 8500;
 		int touch[MAX_GENTITIES];
 		int num, i;
 		vec3_t mins, maxs, delta;

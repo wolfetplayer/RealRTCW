@@ -1307,7 +1307,7 @@ typedef enum {
 } itemType_t;
 
 #define MAX_ITEM_MODELS 3
-#define MAX_ITEM_ICONS 16
+#define MAX_ITEM_ICONS 32
 
 typedef struct gitem_s {
 	char        *classname; // spawning name

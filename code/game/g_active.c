@@ -796,20 +796,24 @@ void ClientEvents( gentity_t *ent, int oldEventSequence ) {
 				quickgren_fire( ent, WP_GRENADE_PINEAPPLE );
 			
 			break;
-
-		case EV_USE_ITEM1:      // ( HI_MEDKIT )	medkit
-		case EV_USE_ITEM2:      // ( HI_WINE )		wine
-		case EV_USE_ITEM3:      // ( HI_SKULL )		skull of invulnerable
-		case EV_USE_ITEM4:      // ( HI_WATER )		protection from drowning
-		case EV_USE_ITEM5:      // ( HI_ELECTRIC )	protection from electric attacks
-		case EV_USE_ITEM6:      // ( HI_FIRE )		protection from fire attacks
-		case EV_USE_ITEM7:      // ( HI_STAMINA )	restores fatigue bar and sets "nofatigue" for a time period
-		case EV_USE_ITEM8:      // ( HI_BOOK1 )
-		case EV_USE_ITEM9:      // ( HI_BOOK2 )
-		case EV_USE_ITEM10:     // ( HI_BOOK3 )
-		case EV_USE_ITEM11:     // ( HI_BOOK4 )
-		case EV_USE_ITEM12:     // ( HI_BOOK4 )
-			UseHoldableItem( ent, event - EV_USE_ITEM0 );
+		case EV_USE_ITEM1:
+		case EV_USE_ITEM2:
+		case EV_USE_ITEM3:
+		case EV_USE_ITEM4:
+		case EV_USE_ITEM5:
+		case EV_USE_ITEM6:
+		case EV_USE_ITEM7:
+		case EV_USE_ITEM8:
+		case EV_USE_ITEM9:
+		case EV_USE_ITEM10:
+		case EV_USE_ITEM11:
+		case EV_USE_ITEM12:
+		case EV_USE_ITEM13:
+		case EV_USE_ITEM14:
+		case EV_USE_ITEM15:
+		case EV_USE_ITEM16:
+		case EV_USE_ITEM17:
+			UseHoldableItem(ent, event - EV_USE_ITEM0);
 			break;
 		case EV_THROWKNIFE:
 			ThrowKnife( ent );

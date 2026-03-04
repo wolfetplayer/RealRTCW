@@ -2714,6 +2714,9 @@ case EV_FILL_CLIP_FULL:
 	case EV_SPAWN_SPIRIT:
 		CG_SpawnSpirit( cent );
 		break;
+	case EV_EMP_WAVE:
+		CG_SpawnEMPWave(cent);
+		break;
 
 	default:
 		DEBUGNAME( "UNKNOWN" );

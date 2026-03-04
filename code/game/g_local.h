@@ -451,6 +451,8 @@ struct gentity_s {
 
 	int empDisabledUntil;
 	int empFxUntil;
+	int empAnimState;
+	int empAnimToken; 
 };
 
 // Ridah

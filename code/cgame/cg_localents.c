@@ -1708,6 +1708,98 @@ static void CG_AddSpriteExplosion( localEntity_t *le ) {
 	}
 }
 
+#define EMP_WAVE_LIFE   600     // ms
+#define EMP_WAVE_RADIUS 512.0f  // match gameplay radius
+
+#define EMP_WAVE_LIFE_MS   650
+#define EMP_WAVE_RADIUS    512.0f
+#define EMP_SPARKS         16
+
+void CG_SpawnEMPWave( centity_t *cent ) {
+    localEntity_t *le = CG_AllocLocalEntity();
+    le->leType = LE_EMP_WAVE;
+    le->startTime = cg.time;
+    le->endTime   = cg.time + EMP_WAVE_LIFE_MS;
+    VectorCopy( cent->lerpOrigin, le->pos.trBase );
+    le->radius = EMP_WAVE_RADIUS;
+
+    le->leFlags = (cg.time & 1023);
+}
+
+static void CG_AddEMPWave( localEntity_t *le ) {
+    float frac = (cg.time - le->startTime) / (float)(le->endTime - le->startTime);
+    if ( frac < 0.0f || frac > 1.0f ) return;
+
+    float r = le->radius * frac;
+    float alpha = 1.0f - frac;
+
+    vec3_t org;
+    VectorCopy(le->pos.trBase, org);
+
+    // --- RING QUAD ON GROUND (XY plane) ---
+    polyVert_t v[4];
+    vec3_t right = {1,0,0};
+    vec3_t up    = {0,1,0};
+
+    // corners
+    VectorMA(org, -r, right, v[0].xyz); VectorMA(v[0].xyz, -r, up, v[0].xyz);
+    VectorMA(org,  r, right, v[1].xyz); VectorMA(v[1].xyz, -r, up, v[1].xyz);
+    VectorMA(org,  r, right, v[2].xyz); VectorMA(v[2].xyz,  r, up, v[2].xyz);
+    VectorMA(org, -r, right, v[3].xyz); VectorMA(v[3].xyz,  r, up, v[3].xyz);
+
+    // lift to avoid z-fighting
+    for (int i=0;i<4;i++) v[i].xyz[2] += 2.0f;
+
+    // uv
+    v[0].st[0]=0; v[0].st[1]=0;
+    v[1].st[0]=1; v[1].st[1]=0;
+    v[2].st[0]=1; v[2].st[1]=1;
+    v[3].st[0]=0; v[3].st[1]=1;
+
+    // color (additive blue)
+    byte a = (byte)(alpha * 255.0f);
+    for (int i=0;i<4;i++) {
+        v[i].modulate[0] = 40;
+        v[i].modulate[1] = 90;
+        v[i].modulate[2] = 255;
+        v[i].modulate[3] = a;
+    }
+
+    trap_R_AddPolyToScene(cgs.media.empRingShader, 4, v);
+
+    // --- SPARK SPRITES AROUND CIRCUMFERENCE ---
+    // place EMP_SPARKS sprites on the ring edge, slightly above ground
+    for (int i=0; i<EMP_SPARKS; i++) {
+        float ang = ( (float)i / (float)EMP_SPARKS ) * (2.0f * M_PI);
+        // tiny wobble so it doesn't look too perfect
+        float wob = 0.12f * sinf( (cg.time * 0.02f) + i );
+        float rr = r * (1.0f + wob);
+
+        vec3_t p;
+        p[0] = org[0] + cosf(ang) * rr;
+        p[1] = org[1] + sinf(ang) * rr;
+        p[2] = org[2] + 10.0f;
+
+        refEntity_t re;
+        memset(&re, 0, sizeof(re));
+        re.reType = RT_SPRITE;
+        VectorCopy(p, re.origin);
+        re.customShader = cgs.media.empSparkShader;
+
+        // size grows a bit with the wave
+        re.radius = 6.0f + 18.0f * frac;
+
+        re.shaderRGBA[0] = 40;
+        re.shaderRGBA[1] = 90;
+        re.shaderRGBA[2] = 255;
+        re.shaderRGBA[3] = a;
+
+        trap_R_AddRefEntityToScene(&re);
+    }
+
+    // optional: add a blue dlight that expands/fades
+    trap_R_AddLightToScene(org, 200.0f + 250.0f * frac, 0.2f, 0.3f, 1.0f, 0);
+}
 
 //==============================================================================
 
@@ -1768,6 +1860,7 @@ void CG_AddLocalEntities( void ) {
         case LE_FALL_SCALE_FADE:   CG_AddFallScaleFade( le ); break;
         case LE_SCALE_FADE:        CG_AddScaleFade( le ); break;
         case LE_EMITTER:           CG_AddEmitter( le ); break;
+		case LE_EMP_WAVE:          CG_AddEMPWave( le ); break;
         }
     }
 }

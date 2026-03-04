@@ -1558,6 +1558,9 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.hastePuffShader = trap_R_RegisterShader("hasteSmokePuff" );
 	cgs.media.redQuadShader = trap_R_RegisterShader("powerups/vampire" );
 
+	cgs.media.empRingShader = trap_R_RegisterShader("sprites/emp_ring1");
+	cgs.media.empSparkShader = trap_R_RegisterShader("sprites/emp_spark");
+
 	CG_LoadingString( " - models" );
 
 	cgs.media.machinegunBrassModel = trap_R_RegisterModel( "models/weapons/shells/m_shell.md3" );

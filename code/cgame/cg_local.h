@@ -437,7 +437,8 @@ typedef enum {
 	LE_ZOMBIE_BAT,
 	LE_MOVING_TRACER,
 	LE_EMITTER,
-	LE_SPIRIT_VIEWFLASH
+	LE_SPIRIT_VIEWFLASH,
+	LE_EMP_WAVE
 } leType_t;
 
 typedef enum {
@@ -1289,6 +1290,9 @@ typedef struct {
 	qhandle_t battleSuitShader;
 	qhandle_t battleWeaponShader;
 	qhandle_t hastePuffShader;
+
+	qhandle_t empRingShader;
+    qhandle_t empSparkShader;
 
 	// weapon effect models
 	qhandle_t spearModel;   //----(SA)
@@ -2284,6 +2288,9 @@ void CG_ParticleExplosion( char *animStr, vec3_t origin, vec3_t vel, int duratio
 // Rafael snow pvs check
 void    CG_SnowLink( centity_t *cent, qboolean particleOn );
 // done.
+
+
+void CG_SpawnEMPWave( centity_t *cent ) ;
 
 // Rafael bats
 void CG_ParticleBat( centity_t *cent );

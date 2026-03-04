@@ -275,14 +275,26 @@ void CrossBurn( gentity_t *owner, gentity_t *targ ) {
 
 void EMP_ClearFxThink(gentity_t *timer) {
     gentity_t *targ;
-
     if (!timer || !timer->inuse) return;
 
     targ = timer->enemy;
     if (targ && targ->inuse && targ->client) {
-        // Clear only if time really expired (in case it got refreshed)
+
+        // Clear FX when the latest EMP FX really ended
         if (targ->empFxUntil <= level.time) {
-            targ->s.powerups &= ~(1 << PW_QUAD); // blue overlay off
+            targ->client->ps.powerups[PW_QUAD] = 0;
+        }
+
+        // Wake-up anim when the latest EMP disable really ended
+        if (targ->empDisabledUntil <= level.time) {
+            if (targ->aiCharacter == AICHAR_PROTOSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER_LAB) {
+                if (targ->empAnimState == 1 || targ->empAnimState == 2) {
+                    BG_PlayAnimName(&targ->client->ps, "come_alive", ANIM_BP_TORSO, qtrue, qfalse, qtrue);
+					targ->client->ps.legsTimer = 0;
+					targ->client->ps.torsoTimer = 7400;
+                    targ->empAnimState = 3;
+                }
+            }
         }
     }
 
@@ -296,11 +308,33 @@ void EMP_Apply(gentity_t *owner, gentity_t *targ, int durationMs) {
     if (targ->health <= 0) return;
 
     // Extend/refresh EMP
-    targ->empDisabledUntil = level.time + durationMs;
-    targ->empFxUntil       = level.time + durationMs;
+	targ->empDisabledUntil = level.time + durationMs;
+	targ->empFxUntil = level.time + durationMs;
+	targ->client->ps.powerups[PW_QUAD] = level.time + durationMs;
 
-    // Visual: reuse quad overlay on the VICTIM
-    targ->s.powerups |= (1 << PW_QUAD);
+	// Start shutdown anim once per EMP "instance" (handles refresh)
+	if (targ->empAnimToken != targ->empDisabledUntil)
+	{
+		targ->empAnimToken = targ->empDisabledUntil;
+		targ->empAnimState = 0;
+	}
+
+	if (targ->aiCharacter == AICHAR_PROTOSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER_LAB )
+	{
+		// only start the shutdown once
+		if (targ->empAnimState == 0)
+		{
+			BG_PlayAnimName(&targ->client->ps, "power_down", ANIM_BP_LEGS, qtrue, qfalse, qtrue);
+			BG_PlayAnimName(&targ->client->ps, "power_down", ANIM_BP_TORSO, qtrue, qfalse, qtrue);
+
+			// hold long enough so it completes (77 frames @ 15 fps ≈ 5.1s)
+			// timer is ms; set a bit longer than needed
+			targ->client->ps.legsTimer = 5200;
+			targ->client->ps.torsoTimer = 5200;
+
+			targ->empAnimState = 1;
+		}
+	}
 
     // Timer to clear FX later (don’t touch targ->think)
     timer = G_Spawn();
@@ -489,7 +523,7 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 	case HI_EMP:
 	{
 		const float radius = 512.0f;
-		const int duration = 17000; // 15–20s, tune (ms)
+		const int duration = 15000;
 		int touch[MAX_GENTITIES];
 		int num, i;
 		vec3_t mins, maxs, delta;
@@ -499,6 +533,8 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		VectorSet(maxs, ent->r.currentOrigin[0] + radius, ent->r.currentOrigin[1] + radius, ent->r.currentOrigin[2] + radius);
 
 		num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
+
+		G_AddEvent( ent, EV_EMP_WAVE, 0 );
 
 		for (i = 0; i < num; i++)
 		{
@@ -512,10 +548,13 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 			// Only X-creatures
 			if (targ->aiCharacter != AICHAR_LOPER &&
 				targ->aiCharacter != AICHAR_PROTOSOLDIER &&
-			    targ->aiCharacter != AICHAR_XSHEPHERD )
+			    targ->aiCharacter != AICHAR_XSHEPHERD &&
+			    targ->aiCharacter != AICHAR_SUPERSOLDIER &&
+			    targ->aiCharacter != AICHAR_SUPERSOLDIER_LAB)
 			{
 				continue;
 			}
+
 
 			VectorSubtract(targ->r.currentOrigin, ent->r.currentOrigin, delta);
 			if (VectorLength(delta) > radius)

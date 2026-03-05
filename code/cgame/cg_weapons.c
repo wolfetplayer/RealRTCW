@@ -2424,58 +2424,95 @@ qboolean CG_DrawRealWeapons( centity_t *cent ) {
 CG_AddWeaponWithPowerups
 ========================
 */
+/*
+========================
+CG_AddWeaponWithPowerups
+========================
+*/
 static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups, playerState_t *ps, centity_t *cent ) {
-    // If ps is NULL, then:
-    // - For the local client, use the predicted player state.
-    // - For other entities (including AI), cast the entity state to a playerState_t.
-    if ( !ps ) {
-        if ( cent->currentState.number == cg.snap->ps.clientNum ) {
-            ps = &cg.predictedPlayerState;
-        } else {
-            ps = (playerState_t *)&cent->currentState;
-        }
-    }
-    
-    // add powerup effects
-    if ( powerups & ( 1 << PW_INVIS ) ) {
-        gun->customShader = cgs.media.invisShader;
-        trap_R_AddRefEntityToScene( gun );
-    } else {
-        trap_R_AddRefEntityToScene( gun );
+	qhandle_t savedCustomShader;
 
-        // blink if time left < 5s, toggling every 200ms for battlesuit
-        if ( powerups & ( 1 << PW_BATTLESUIT_SURV ) ) {
-            int timeLeft = ps->powerups[PW_BATTLESUIT_SURV] - cg.time;
-            if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
-                // skip rendering to blink
-            } else {
-                gun->customShader = cgs.media.battleWeaponShader;
-                trap_R_AddRefEntityToScene( gun );
-            }
-        }
+	// If ps is NULL, then:
+	// - For the local client, use the predicted player state.
+	// - For other entities (including AI), cast the entity state to a playerState_t.
+	if ( !ps ) {
+		if ( cent->currentState.number == cg.snap->ps.clientNum ) {
+			ps = &cg.predictedPlayerState;
+		} else {
+			ps = (playerState_t *)&cent->currentState;
+		}
+	}
 
-        // blink for quad powerup
-        if ( powerups & ( 1 << PW_QUAD ) ) {
-            int timeLeft = ps->powerups[PW_QUAD] - cg.time;
-            if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
-                // skip rendering to blink
-            } else {
-                gun->customShader = cgs.media.quadWeaponShader;
-                trap_R_AddRefEntityToScene( gun );
-            }
-        }
+	// IMPORTANT: this function is called for weapon sub-parts (barrels/bolts/hands/etc.)
+	// in RTCW. Those refEntity_t structs are often re-used in a loop, so if we set
+	// customShader and don't restore it, the next part will inherit it and "lose" its base skin.
+	savedCustomShader = gun->customShader;
 
-        // blink for vampire powerup
-        if ( powerups & ( 1 << PW_VAMPIRE ) ) {
-            int timeLeft = ps->powerups[PW_VAMPIRE] - cg.time;
-            if ((timeLeft < 5000) && ((cg.time / 200) % 2)) {
-                // skip rendering to blink
-            } else {
-                gun->customShader = cgs.media.redQuadShader;
-                trap_R_AddRefEntityToScene( gun );
-            }
-        }
-    }
+	// add powerup effects
+	if ( powerups & ( 1 << PW_INVIS ) ) {
+
+		gun->customShader = cgs.media.invisShader;
+		trap_R_AddRefEntityToScene( gun );
+
+		// restore and bail (invis usually replaces base draw)
+		gun->customShader = savedCustomShader;
+
+	} else {
+
+		// always draw base weapon normally (no shader override)
+		gun->customShader = 0;
+		trap_R_AddRefEntityToScene( gun );
+
+		// blink if time left < 5s, toggling every 200ms for battlesuit
+		if ( powerups & ( 1 << PW_BATTLESUIT_SURV ) ) {
+			int timeLeft = ps->powerups[PW_BATTLESUIT_SURV] - cg.time;
+			if ( ( timeLeft < 5000 ) && ( ( cg.time / 200 ) % 2 ) ) {
+				// skip rendering to blink
+			} else {
+				gun->customShader = cgs.media.battleWeaponShader;
+				trap_R_AddRefEntityToScene( gun );
+				gun->customShader = 0;
+			}
+		}
+
+		// blink for quad powerup
+		if ( powerups & ( 1 << PW_QUAD ) ) {
+			int timeLeft = ps->powerups[PW_QUAD] - cg.time;
+			if ( ( timeLeft < 5000 ) && ( ( cg.time / 200 ) % 2 ) ) {
+				// skip rendering to blink
+			} else {
+				gun->customShader = cgs.media.quadWeaponShader;
+				trap_R_AddRefEntityToScene( gun );
+				gun->customShader = 0;
+			}
+		}
+
+		if ( powerups & ( 1 << PW_XSHIELD ) ) {
+			int timeLeft = ps->powerups[PW_XSHIELD] - cg.time;
+			if ( ( timeLeft < 5000 ) && ( ( cg.time / 200 ) % 2 ) ) {
+				// skip rendering to blink
+			} else {
+				gun->customShader = cgs.media.quadWeaponShader;
+				trap_R_AddRefEntityToScene( gun );
+				gun->customShader = 0;
+			}
+		}
+
+		// blink for vampire powerup
+		if ( powerups & ( 1 << PW_VAMPIRE ) ) {
+			int timeLeft = ps->powerups[PW_VAMPIRE] - cg.time;
+			if ( ( timeLeft < 5000 ) && ( ( cg.time / 200 ) % 2 ) ) {
+				// skip rendering to blink
+			} else {
+				gun->customShader = cgs.media.redQuadShader;
+				trap_R_AddRefEntityToScene( gun );
+				gun->customShader = 0;
+			}
+		}
+
+		// restore original state for caller safety
+		gun->customShader = savedCustomShader;
+	}
 }
 
 /*

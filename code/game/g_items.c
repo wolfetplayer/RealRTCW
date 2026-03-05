@@ -564,6 +564,20 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		}
 		break;
 	}
+	case HI_XSHIELD:
+	{
+		const int duration = 10000;
+
+		// already active? ignore (optional)
+		if (ent->client->ps.powerups[PW_XSHIELD] > level.time)
+		{
+			break;
+		}
+
+		ent->client->ps.powerups[PW_XSHIELD] = level.time + duration;
+
+		break;
+	}
 	case HI_BOOK1:
 	case HI_BOOK2:
 	case HI_BOOK3:

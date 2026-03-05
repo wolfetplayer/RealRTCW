@@ -1337,6 +1337,8 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.crossZapScript = CG_SoundScriptPrecache( "crossZap" );
 	cgs.media.teslaLoopSound = trap_S_RegisterSound( "sound/weapons/tesla/loop.wav" );
 
+	cgs.media.xshieldLoopSound = trap_S_RegisterSound( "sound/pickup/holdable/shield_loop.wav" );
+
 	cgs.media.batsFlyingLoopSound = trap_S_RegisterSound( "sound/world/bats_flying.wav" );
 
 	cgs.media.elecSound = trap_S_RegisterSound( "sound/items/use_elec.wav" );
@@ -1348,6 +1350,7 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.bandagesSound = trap_S_RegisterSound( "sound/pickup/holdable/use_bandages.wav" ); 
 	cgs.media.crossSound = trap_S_RegisterSound( "sound/pickup/holdable/use_cross.wav" ); 
 	cgs.media.empSound = trap_S_RegisterSound( "sound/pickup/holdable/use_emp.wav" ); 
+	cgs.media.shieldSound = trap_S_RegisterSound( "sound/pickup/holdable/use_shield.wav" ); 
 	cgs.media.quadSound = trap_S_RegisterSound( "sound/items/damage3.wav" );
 	cgs.media.sfx_ric1 = trap_S_RegisterSound( "sound/weapons/machinegun/ric1.wav" );
 	cgs.media.sfx_ric2 = trap_S_RegisterSound( "sound/weapons/machinegun/ric2.wav" );
@@ -1422,6 +1425,7 @@ static void CG_RegisterSounds( void ) {
 
 	trap_S_RegisterSound( "sound/Loogie/spit.wav" );
 	trap_S_RegisterSound( "sound/Loogie/sizzle.wav" );
+
 }
 
 

@@ -6598,6 +6598,39 @@ model="models/powerups/holdable/emp.md3"
 	},
 
 
+/*QUAKED holdable_xshield(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Protection from fatigue
+Using the "sprint" key will not fatigue the character
+
+pickup sound : "sound/pickup/holdable/get_cross.wav"
+use sound : "sound/pickup/holdable/use_cross.wav"
+-------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
+model="models/powerups/holdable/emp.md3"
+*/
+	{
+		"holdable_xshield",
+		"sound/pickup/holdable/get_stamina.wav",
+		{
+		"models/powerups/holdable/shieldgen.md3",
+		0, 
+		0
+		},
+
+		"icons/xshield",             
+		"X Shield activated",             
+		1,
+		IT_HOLDABLE,
+		WP_NONE,
+		HI_XSHIELD,
+		0,
+		0,
+		0,
+		"",                             
+		"sound/pickup/holdable/use_shield.wav",
+		{1,1,1,1,1,1}
+	},
+
+
 
 /*QUAKED holdable_book1(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
 -------- MODEL FOR RADIANT ONLY - DO NOT SET THIS AS A KEY --------
@@ -6858,7 +6891,6 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0,0}
 	},
 
-
 		/*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
 		{
@@ -6883,7 +6915,29 @@ model="models/powerups/holdable/zemphr_book.md3"
 		{0,0,0,0,0,0}
 	},
 
-
+		/*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+		{
+		"item_xshield_dummy",
+		"sound/misc/powerup_shield.wav",
+		{
+		"models/powerups/survival/thule_g.md3",
+		0, 
+		0
+		},
+		"",                             
+		"Veil Shield",     
+		10,
+		IT_POWERUP,
+		WP_NONE,
+		PW_XSHIELD,
+		0,
+		0,
+		0,
+		"",                          
+		"sound/items/airout.wav sound/items/protect3.wav",   
+		{0,0,0,0,0,0}
+	},
 
 /*QUAKED item_invis (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
@@ -8628,6 +8682,7 @@ char *eventnames[] = {
 	"EV_POWERUP_QUAD",
 	"EV_POWERUP_BATTLESUIT",
 	"EV_POWERUP_BATTLESUIT_SURV",
+	"EV_POWERUP_XSHIELD",
 	"EV_POWERUP_REGEN",
 	"EV_GIB_PLAYER",         // gib a previously living player
 	"EV_GIB_VAMPIRISM",

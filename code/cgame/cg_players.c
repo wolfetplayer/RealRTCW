@@ -3082,6 +3082,27 @@ static void CG_PlayerSplash( centity_t *cent ) {
 	trap_R_AddPolyToScene( cgs.media.wakeMarkShader, 4, verts );
 }
 
+
+static void CG_AddXShieldLoopSound( centity_t *cent ) {
+	const playerState_t *ps;
+
+	if ( cent->currentState.clientNum == cg.snap->ps.clientNum ) {
+		ps = &cg.predictedPlayerState;
+	} else {
+		ps = NULL;
+	}
+
+	if ( ps && ps->powerups[PW_XSHIELD] > cg.time ) {
+		CG_S_AddLoopingSound(
+			cent->currentState.number,
+			cent->lerpOrigin,	
+			vec3_origin,
+			cgs.media.xshieldLoopSound,
+			255
+		);
+	}
+}
+
 //==========================================================================
 // Zombie Effects
 
@@ -4561,6 +4582,9 @@ void CG_Player( centity_t *cent ) {
 	// add dynamic lights, and other misc effects
 	//
 	CG_AddFireLight( cent );
+
+	// XShield loop (per-frame)
+	CG_AddXShieldLoopSound(cent);
 
 	//
 	// add the legs

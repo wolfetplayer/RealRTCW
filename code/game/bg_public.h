@@ -439,9 +439,9 @@ typedef enum {
 	PW_NOFATIGUE,
 	PW_REDFLAG,
 	PW_BLUEFLAG,
-	PW_BALL,
 	PW_VAMPIRE,
 	PW_AMMO,
+	PW_XSHIELD,
 	PW_NUM_POWERUPS
 } powerup_t;
 
@@ -470,6 +470,7 @@ typedef enum {
 	HI_LP_SYRINGE,
 	HI_CROSS,
 	HI_EMP,
+	HI_XSHIELD,
 	// boundary marker
 	HI_HUD_VISIBLE_END,
 	// for special logic
@@ -820,6 +821,7 @@ typedef enum {
 	EV_POWERUP_QUAD,
 	EV_POWERUP_BATTLESUIT,
 	EV_POWERUP_BATTLESUIT_SURV,
+	EV_POWERUP_XSHIELD,
 	EV_POWERUP_REGEN,
 	EV_GIB_PLAYER,          // gib a previously living player
 	EV_GIB_VAMPIRISM,

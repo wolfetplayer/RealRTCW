@@ -1489,6 +1489,7 @@ typedef struct {
 	sfxHandle_t bandagesSound;
 	sfxHandle_t crossSound;
 	sfxHandle_t empSound;
+	sfxHandle_t shieldSound;
 	sfxHandle_t elecSound;
 	sfxHandle_t fireSound;
 	sfxHandle_t waterSound;
@@ -1588,6 +1589,8 @@ typedef struct {
 	sfxHandle_t poisonGasCough;
 	sfxHandle_t knifeThrow;
 	sfxHandle_t nullSound;
+	
+	sfxHandle_t xshieldLoopSound;
 
 } cgMedia_t;
 

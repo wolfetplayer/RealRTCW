@@ -151,6 +151,9 @@ static void CG_UseItem( centity_t *cent ) {
 				case HI_EMP:
 					CG_CenterPrint( "usedemp", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
+				case HI_XSHIELD:
+					CG_CenterPrint( "usedshield", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
+					break;
 				case HI_WINE:
 					CG_CenterPrint( "drankwine", SCREEN_HEIGHT - ( SCREEN_HEIGHT * 0.25 ), SMALLCHAR_WIDTH );
 					break;
@@ -193,6 +196,9 @@ static void CG_UseItem( centity_t *cent ) {
 		break;
 	case HI_EMP:
 		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.empSound );
+		break;
+	case HI_XSHIELD:
+		trap_S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.shieldSound );
 		break;
 	}
 }
@@ -2383,6 +2389,13 @@ case EV_FILL_CLIP_FULL:
 			cg.powerupTime = cg.time;
 		}
 		trap_S_StartSound( NULL, es->number, CHAN_ITEM, trap_S_RegisterSound( "sound/items/protect3.wav" ) );
+		break;
+	case EV_POWERUP_XSHIELD:
+		DEBUGNAME( "EV_POWERUP_XSHIELD" );
+		if ( es->number == cg.snap->ps.clientNum ) {
+			cg.powerupActive = PW_XSHIELD;
+			cg.powerupTime = cg.time;
+		}
 		break;
 	case EV_POWERUP_REGEN:
 		DEBUGNAME( "EV_POWERUP_REGEN" );

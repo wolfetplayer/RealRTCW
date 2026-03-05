@@ -6576,7 +6576,7 @@ model="models/powerups/holdable/emp.md3"
 */
 	{
 		"holdable_emp",
-		"sound/pickup/holdable/get_stamina.wav",
+		"sound/pickup/holdable/get_adrenaline.wav",
 		{
 		"models/powerups/holdable/emp.md3",
 		0, 
@@ -6609,7 +6609,7 @@ model="models/powerups/holdable/emp.md3"
 */
 	{
 		"holdable_xshield",
-		"sound/pickup/holdable/get_stamina.wav",
+		"sound/pickup/holdable/get_adrenaline.wav",
 		{
 		"models/powerups/holdable/shieldgen.md3",
 		0, 

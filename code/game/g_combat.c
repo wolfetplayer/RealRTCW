@@ -1196,7 +1196,7 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	if ( client && client->ps.powerups[PW_XSHIELD] ) {
 		G_AddEvent( targ, EV_POWERUP_XSHIELD, 0 );
-		damage *= 0.01;
+		damage *= 0.00;
 	}
 
 	// always give half damage if hurting self

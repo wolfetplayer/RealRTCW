@@ -2598,6 +2598,12 @@ static void PM_ReloadClip(int weapon) {
 	if (!pm->ps->aiChar) {
 		if (weapon == WP_M97 || weapon == WP_AUTO5) {
 			ammomove = 1;
+
+			if (pm->ps->perks[PERK_WEAPONHANDLING]) {
+				if (maxclip - ammoclip >= 2) {
+					ammomove = 2;
+				}
+			}
 		}
 
 		if (weapon == WP_M1941 && ammoclip > 0) {

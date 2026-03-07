@@ -678,20 +678,25 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	    }
 	}
 
-	switch ( targ->aiCharacter ) {
+	switch (targ->aiCharacter)
+	{
 	// get out quick for ai's that don't take headshots
 	case AICHAR_ZOMBIE:
 	case AICHAR_ZOMBIE_SURV:
 	case AICHAR_ZOMBIE_FLAME:
 	case AICHAR_ZOMBIE_GHOST:
 	case AICHAR_WARZOMBIE:
-	case AICHAR_HELGA:     
+	case AICHAR_HELGA:
 	case AICHAR_LOPER:
 	case AICHAR_LOPER_SPECIAL:
-	case AICHAR_VENOM:      
-	return qfalse;
+	case AICHAR_VENOM:
+		if (g_gametype.integer != GT_SURVIVAL)
+		{
+			return qfalse;
+		}
+		break;
 	default:
-	break;
+		break;
 	}
 
 	switch ( mod ) {

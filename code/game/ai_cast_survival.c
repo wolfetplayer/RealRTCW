@@ -809,8 +809,19 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	if (rawSteps < 0)
 		rawSteps = 0;
 
-	int stepMultiplier = (svParams.waveCount < 10) ? 3 : 6;
-	int steps = rawSteps * stepMultiplier;
+	int stepsBefore10 = rawSteps;
+	if (svParams.waveCount >= 10)
+	{
+		stepsBefore10 = 9 - waveAppeared;
+		if (stepsBefore10 < 0)
+			stepsBefore10 = 0;
+		if (stepsBefore10 > rawSteps)
+			stepsBefore10 = rawSteps;
+	}
+
+	int stepsAfter10 = rawSteps - stepsBefore10;
+	if (stepsAfter10 < 0)
+		stepsAfter10 = 0;
 
 	int newHealth = 0;
 	float runSpeedScale = 1.0f;
@@ -820,35 +831,55 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	switch (cs->aiCharacter) {
 		case AICHAR_SOLDIER:
 		case AICHAR_MERCENARY:
-			newHealth = 20 + steps * stepMultiplier;
+			newHealth = 20 + stepsBefore10 * 8 + stepsAfter10 * 12;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 8;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 				if (newHealth > 100) newHealth = 100;
 			}
 			break;
 		case AICHAR_ELITEGUARD:
-			newHealth = 30 + steps * stepMultiplier;
+			newHealth = 30 + stepsBefore10 * 8 + stepsAfter10 * 12;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 10;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 150) newHealth = 150;
 			}
 			break;
 		case AICHAR_TRENCH:
-			newHealth = 50 + steps * stepMultiplier;
+			newHealth = 50 + stepsBefore10 * 8 + stepsAfter10 * 12;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 12;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 150) newHealth = 150;
 			}
 			break;
 		case AICHAR_BLACKGUARD:
-			newHealth = 80 + steps * stepMultiplier;
+			newHealth = 80 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 15;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 200) newHealth = 200;
 			}
 			break;
 		case AICHAR_VENOM:
-			newHealth = 100 + steps * stepMultiplier;
+			newHealth = 100 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 20;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 500) newHealth = 500;
@@ -856,62 +887,86 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			break;
 
 		case AICHAR_ZOMBIE_SURV:
-			newHealth = 20 + steps * stepMultiplier;
+			newHealth = 20 + stepsBefore10 * 8 + stepsAfter10 * 12;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 10;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 200) newHealth = 200;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.2f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.6f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.03f, 1.2f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.04f, 1.6f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.02f, 0.5f);
 			break;
 
 		case AICHAR_FLESH:
-			newHealth = 20 + steps * stepMultiplier;
+			newHealth = 20 + stepsBefore10 * 8 + stepsAfter10 * 12;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 10;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 200) newHealth = 200;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.2f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.6f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.03f, 1.2f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.04f, 1.6f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.02f, 0.5f);
 			break;
 
 		case AICHAR_ZOMBIE_GHOST:
-			newHealth = 30 + steps * stepMultiplier;
+			newHealth = 30 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 15;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 300) newHealth = 300;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.04f, 1.6f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.05f, 2.0f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.03f, 0.75f);
 			break;
 
 		case AICHAR_WARZOMBIE:
-			newHealth = 50 + steps * stepMultiplier;
+			newHealth = 50 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 20;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 500) newHealth = 500;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.04f, 1.6f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.05f, 2.0f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.03f, 0.75f);
 			break;
 
 		case AICHAR_PROTOSOLDIER:
-			newHealth = 1000 + steps * stepMultiplier;
+			newHealth = 1000 + stepsBefore10 * 8 + stepsAfter10 * 16;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 30;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 2000) newHealth = 2000;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.6f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 1.5f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.75f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.04f, 1.6f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.03f, 1.5f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.03f, 0.75f);
 			break;
 
 		case AICHAR_PARTISAN:
-			newHealth = 500 + steps * stepMultiplier;
+			newHealth = 500 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 20;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 1000) newHealth = 1000;
@@ -919,35 +974,51 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			break;
 
 		case AICHAR_PRIEST:
-			newHealth = 250 + steps * stepMultiplier;
+			newHealth = 250 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 15;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 500) newHealth = 500;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.03f, 1.4f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.05f, 2.0f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.02f, 0.5f);
 			break;
 
 		case AICHAR_ZOMBIE_FLAME:
-			newHealth = 50 + steps * stepMultiplier;
+			newHealth = 50 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 15;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 500) newHealth = 500;
 			}
-			runSpeedScale    = fminf(0.8f + steps * 0.1f, 1.4f);
-			sprintSpeedScale = fminf(1.2f + steps * 0.1f, 2.0f);
-			crouchSpeedScale = fminf(0.25f + steps * 0.1f, 0.5f);
+			runSpeedScale    = fminf(0.8f + rawSteps * 0.03f, 1.4f);
+			sprintSpeedScale = fminf(1.2f + rawSteps * 0.05f, 2.0f);
+			crouchSpeedScale = fminf(0.25f + rawSteps * 0.02f, 0.5f);
 			break;
 		case AICHAR_LOPER:
-			newHealth = 250 + steps * stepMultiplier;
+			newHealth = 250 + stepsBefore10 * 8 + stepsAfter10 * 14;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 15;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 500) newHealth = 500;
 			}
 			break;
 		case AICHAR_LOPER_SPECIAL:
-			newHealth = 50 + steps * stepMultiplier;
+			newHealth = 50 + stepsBefore10 * 8 + stepsAfter10 * 12;
+			if (svParams.waveCount >= 10)
+			{
+				newHealth += 10;
+			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 250) newHealth = 250;

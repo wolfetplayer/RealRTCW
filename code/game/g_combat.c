@@ -1083,6 +1083,12 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 	}
 
+	if ( client && client->ps.powerups[PW_XSHIELD] ) {
+		G_AddEvent( targ, EV_POWERUP_XSHIELD, 0 );
+		return;
+	}
+
+
 	if ( !dir ) {
 		dflags |= DAMAGE_NO_KNOCKBACK;
 	} else {
@@ -1197,11 +1203,6 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		G_AddEvent( targ, EV_POWERUP_BATTLESUIT_SURV, 0 );
 
 		damage *= 0.05;
-	}
-
-	if ( client && client->ps.powerups[PW_XSHIELD] ) {
-		G_AddEvent( targ, EV_POWERUP_XSHIELD, 0 );
-		damage *= 0.00;
 	}
 
 	// always give half damage if hurting self

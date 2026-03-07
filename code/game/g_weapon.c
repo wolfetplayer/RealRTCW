@@ -935,7 +935,7 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
         if ( rand() % 3 < 2 ) {
             reflectBullet = qtrue;
         }
-    } else if ( traceEnt->client && (traceEnt->client->ps.powerups[PW_BATTLESUIT_SURV] || traceEnt->client->ps.powerups[PW_XSHIELD])) {
+    } else if ( traceEnt->client && traceEnt->client->ps.powerups[PW_BATTLESUIT_SURV] ) {
         reflectBullet = qtrue;
     }
 

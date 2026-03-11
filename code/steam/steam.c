@@ -1,6 +1,6 @@
 #include "steam.h"
 
-#include "../steamshim/steamshim_child.h"
+#include "../thirdparty/steamshim/steamshim_child.h"
 
 #include <stdint.h>
 

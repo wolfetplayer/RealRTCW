@@ -508,6 +508,7 @@ float AICast_WeaponRange(cast_state_t *cs, int weaponnum) {
 
 	case WP_M97:
 	case WP_AUTO5:
+	case WP_M30:
 	    return 475.0f;
     case WP_GRENADE_LAUNCHER:
     case WP_GRENADE_PINEAPPLE:

@@ -62,7 +62,7 @@ int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK] = {
 	{WP_MAUSER, WP_GARAND, WP_MOSIN, WP_DELISLE, 0, 0},														  //	4
 	{WP_G43, WP_M1GARAND, WP_M1941, 0, 0, 0},																  //	5
 	{WP_FG42, WP_MP44, WP_BAR, 0, 0, 0},																	  //	6
-	{WP_M97, WP_AUTO5, 0, 0, 0},																	          //	7
+	{WP_M97, WP_AUTO5, WP_M30, 0, 0},																	          //	7
 	{WP_GRENADE_LAUNCHER, WP_GRENADE_PINEAPPLE, WP_DYNAMITE, WP_AIRSTRIKE, WP_POISONGAS, WP_SMOKE_BOMB, WP_DYNAMITE_ENG }, //	8
 	{WP_PANZERFAUST, WP_FLAMETHROWER, WP_MG42M, WP_BROWNING, 0, 0},											  //	9
 	{WP_VENOM, WP_TESLA, 0, 0, 0, 0}																		  //	10
@@ -3903,6 +3903,7 @@ void CG_DrawWeaponSelect( void ) {
 		case WP_G43:
 		case WP_M1GARAND:
 		case WP_BAR:
+		case WP_M30:
 		case WP_MP44:
 		case WP_MG42M:
 		case WP_M97:
@@ -5441,6 +5442,7 @@ void CG_WeaponFireRecoil( int weapon ) {
 	break;
 	case WP_M97:
 	case WP_AUTO5:
+	case WP_M30:
 		pitchRecoilAdd = 1;
 		pitchAdd = 8 + rand() % 3;
 		yawRandom = 2;
@@ -5937,6 +5939,7 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, in
 	case WP_G43:
 	case WP_M1GARAND:
 	case WP_BAR:
+	case WP_M30:
 	case WP_MP44:
 	case WP_MG42M:
 	case WP_BROWNING:

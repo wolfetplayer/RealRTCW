@@ -559,7 +559,8 @@ typedef enum {
 	WP_BAR,
 	// Shotguns
 	WP_M97,
-	WP_AUTO5, 
+	WP_AUTO5,
+	WP_M30, 
 	// Heavy Weapons
 	WP_BROWNING,
 	WP_MG42M,
@@ -1216,6 +1217,7 @@ typedef enum {
 	MOD_BROWNING,
 	MOD_M97,
 	MOD_AUTO5,
+	MOD_M30,
 	MOD_HDM,
 	MOD_REVOLVER,
 	MOD_GRENADE_PINEAPPLE,

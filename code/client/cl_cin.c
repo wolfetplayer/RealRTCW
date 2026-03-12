@@ -1685,9 +1685,17 @@ static int FFMPEG_Init( void ) {
 
 	cinTable[currentHandle].startTime = cinTable[currentHandle].lastTime = CL_ScaledMilliseconds();
 
+	if ( !cinTable[currentHandle].iFile ) {
+		Com_DPrintf( "FFMPEG_Init: no file handle for '%s'\n", cinTable[currentHandle].fileName );
+		return -1;
+	}
+
 	cinTable[currentHandle].avioBuf = av_malloc( 65536 );
 
-	FS_Seek( cinTable[currentHandle].iFile, 0, FS_SEEK_SET );
+	if ( FS_Seek( cinTable[currentHandle].iFile, 0, FS_SEEK_SET ) < 0 ) {
+		Com_DPrintf( "FFMPEG_Init: seek failed for '%s'\n", cinTable[currentHandle].fileName );
+		return -1;
+	}
 
 	cinTable[currentHandle].avioCtx = avio_alloc_context( 
 		cinTable[currentHandle].avioBuf, 
@@ -2265,7 +2273,13 @@ int CIN_PlayCinematic( const char *arg, int x, int y, int w, int h, int systemBi
 			return -1;
 		}
 	} else {
-		FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
+		cinTable[currentHandle].ROQSize = FS_FOpenFileRead( cinTable[currentHandle].fileName, &cinTable[currentHandle].iFile, qtrue );
+		if ( cinTable[currentHandle].ROQSize <= 0 || !cinTable[currentHandle].iFile ) {
+			Com_DPrintf( "play(%s), file not found or unreadable\n", arg );
+			cinTable[currentHandle].fileName[0] = 0;
+			cinTable[currentHandle].iFile = 0;
+			return -1;
+		}
 	}
 
 	CIN_SetExtents( currentHandle, x, y, w, h );

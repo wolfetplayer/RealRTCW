@@ -493,6 +493,11 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 
 		num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
 
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_ITEM_CROSS");
+		}
+
 		for (i = 0; i < num; i++)
 		{
 			targ = &g_entities[touch[i]];
@@ -536,6 +541,11 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 
 		G_AddEvent( ent, EV_EMP_WAVE, 0 );
 
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_ITEM_EMP");
+		}
+		
 		for (i = 0; i < num; i++)
 		{
 			targ = &g_entities[touch[i]];
@@ -572,6 +582,11 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 		if (ent->client->ps.powerups[PW_XSHIELD] > level.time)
 		{
 			break;
+		}
+
+		if ( !g_cheats.integer ) 
+		{
+		steamSetAchievement("ACH_ITEM_XSHIELD");
 		}
 
 		ent->client->ps.powerups[PW_XSHIELD] = level.time + duration;

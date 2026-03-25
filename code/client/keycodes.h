@@ -306,16 +306,6 @@ typedef enum {
 	// Pseudo-key that brings the console down
 	K_CONSOLE,
 
-	K_KP_1,
-	K_KP_2,
-	K_KP_3,
-	K_KP_4,
-	K_KP_6,
-	K_KP_7,
-	K_KP_8,
-	K_KP_9,
-	K_KP_0,
-
 	MAX_KEYS
 } keyNum_t;
 

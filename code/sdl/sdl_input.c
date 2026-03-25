@@ -217,25 +217,26 @@ static keyNum_t IN_TranslateSDLToQ3Key( SDL_Keysym *keysym, qboolean down )
 	}
 	else
 	{
-		if ( keysym->sym >= SDLK_KP_1 && keysym->sym <= SDLK_KP_0 )
+		if ( keysym->sym >= SDLK_KP_0 && keysym->sym <= SDLK_KP_9 )
 		{
 			if ( numLockOn ) {
 				switch ( keysym->sym )
 				{
-					case SDLK_KP_1:     key = K_KP_1;       break;
-					case SDLK_KP_2:     key = K_KP_2;       break;
-					case SDLK_KP_3:     key = K_KP_3;       break;
-					case SDLK_KP_4:     key = K_KP_4;       break;
-					case SDLK_KP_5:     key = K_KP_5;       break;
-					case SDLK_KP_6:     key = K_KP_6;       break;
-					case SDLK_KP_7:     key = K_KP_7;       break;
-					case SDLK_KP_8:     key = K_KP_8;       break;
-					case SDLK_KP_9:     key = K_KP_9;       break;
-					case SDLK_KP_0:     key = K_KP_0;       break;
+					case SDLK_KP_0:     key = SDLK_0;       break;
+					case SDLK_KP_1:     key = SDLK_1;       break;
+					case SDLK_KP_2:     key = SDLK_2;       break;
+					case SDLK_KP_3:     key = SDLK_3;       break;
+					case SDLK_KP_4:     key = SDLK_4;       break;
+					case SDLK_KP_5:     key = SDLK_5;       break;
+					case SDLK_KP_6:     key = SDLK_6;       break;
+					case SDLK_KP_7:     key = SDLK_7;       break;
+					case SDLK_KP_8:     key = SDLK_8;       break;
+					case SDLK_KP_9:     key = SDLK_9;       break;
 				}
 			} else {
 				switch ( keysym->sym )
 				{
+					case SDLK_KP_0:     key = K_KP_INS;         break;
 					case SDLK_KP_1:     key = K_KP_END;         break;
 					case SDLK_KP_2:     key = K_KP_DOWNARROW;   break;
 					case SDLK_KP_3:     key = K_KP_PGDN;        break;
@@ -245,7 +246,6 @@ static keyNum_t IN_TranslateSDLToQ3Key( SDL_Keysym *keysym, qboolean down )
 					case SDLK_KP_7:     key = K_KP_HOME;        break;
 					case SDLK_KP_8:     key = K_KP_UPARROW;     break;
 					case SDLK_KP_9:     key = K_KP_PGUP;        break;
-					case SDLK_KP_0:     key = K_KP_INS;         break;
 				}
 			}
 		} else {

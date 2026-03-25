@@ -182,16 +182,6 @@ keyname_t keynames[] =
 	{"KP_STAR",          K_KP_STAR },
 	{"KP_EQUALS",        K_KP_EQUALS },
 
-	{"KP_1",         K_KP_1 },
-	{"KP_2",         K_KP_2 },
-	{"KP_3",         K_KP_3 },
-	{"KP_4",         K_KP_4 },
-	{"KP_6",         K_KP_6 },
-	{"KP_7",         K_KP_7 },
-	{"KP_8",         K_KP_8 },
-	{"KP_9",         K_KP_9 },
-	{"KP_0",         K_KP_0 },
-
 	{"PAUSE", K_PAUSE},
 
 	{"SEMICOLON", ';'},   // because a raw semicolon seperates commands
@@ -464,16 +454,6 @@ keyname_t keynames_d[] =    //deutsch
 	{"ZB_*",         K_KP_STAR },
 	{"ZB_EQUALS",        K_KP_EQUALS },
 
-	{"ZB_1",         K_KP_1 },
-	{"ZB_2",         K_KP_2 },
-	{"ZB_3",         K_KP_3 },
-	{"ZB_4",         K_KP_4 },
-	{"ZB_6",         K_KP_6 },
-	{"ZB_7",         K_KP_7 },
-	{"ZB_8",         K_KP_8 },
-	{"ZB_9",         K_KP_9 },
-	{"ZB_0",         K_KP_0 },
-
 	{"PAUSE", K_PAUSE},
 
 	{"COMMAND", K_COMMAND},  //mac
@@ -711,16 +691,6 @@ keyname_t keynames_f[] =    //french
 	{"PN_VERRNUM",       K_KP_NUMLOCK },
 	{"PN_*",         K_KP_STAR },
 	{"PN_EQUALS",        K_KP_EQUALS },
-
-	{"PN_1",         K_KP_1 },
-	{"PN_2",         K_KP_2 },
-	{"PN_3",         K_KP_3 },
-	{"PN_4",         K_KP_4 },
-	{"PN_6",         K_KP_6 },
-	{"PN_7",         K_KP_7 },
-	{"PN_8",         K_KP_8 },
-	{"PN_9",         K_KP_9 },
-	{"PN_0",         K_KP_0 },
 
 	{"PAUSE", K_PAUSE},
 
@@ -960,16 +930,6 @@ keyname_t keynames_s[] =  //Spanish
 	{"*(NUM)",           K_KP_STAR },
 	{"INTRO(NUM)",       K_KP_EQUALS },
 
-	{"1(NUM)",         K_KP_1 },
-	{"2(NUM)",         K_KP_2 },
-	{"3(NUM)",         K_KP_3 },
-	{"4(NUM)",         K_KP_4 },
-	{"6(NUM)",         K_KP_6 },
-	{"7(NUM)",         K_KP_7 },
-	{"8(NUM)",         K_KP_8 },
-	{"9(NUM)",         K_KP_9 },
-	{"0(NUM)",         K_KP_0 },
-
 	{"PAUSA", K_PAUSE},
 
 	{"PUNTO_Y_COMA", ';'},    // because a raw semicolon seperates commands
@@ -1207,16 +1167,6 @@ keyname_t keynames_i[] =  //Italian
 	{"TN_BLOCNUM",       K_KP_NUMLOCK },
 	{"TN_*",         K_KP_STAR },
 	{"TN_=",     K_KP_EQUALS },
-
-	{"TN_1",         K_KP_1 },
-	{"TN_2",         K_KP_2 },
-	{"TN_3",         K_KP_3 },
-	{"TN_4",         K_KP_4 },
-	{"TN_6",         K_KP_6 },
-	{"TN_7",         K_KP_7 },
-	{"TN_8",         K_KP_8 },
-	{"TN_9",         K_KP_9 },
-	{"TN_0",         K_KP_0 },
 
 	{"PAUSA", K_PAUSE},
 

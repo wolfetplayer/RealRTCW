@@ -98,16 +98,6 @@ typedef enum {
 	K_KP_STAR,
 	K_KP_EQUALS,
 
-	K_KP_1,
-	K_KP_2,
-	K_KP_3,
-	K_KP_4,
-	K_KP_6,
-	K_KP_7,
-	K_KP_8,
-	K_KP_9,
-	K_KP_0,
-
 	K_MOUSE1,
 	K_MOUSE2,
 	K_MOUSE3,
@@ -167,8 +157,6 @@ typedef enum {
 	K_AUX15,
 	K_AUX16,
 
-	// It seems that after K_WORLD-0, if they are bound and restarts the game,
-	// although the function still exists, it will not be displayed in the keybind setting ui
 	K_WORLD_0,
 	K_WORLD_1,
 	K_WORLD_2,
@@ -317,6 +305,16 @@ typedef enum {
 
 	// Pseudo-key that brings the console down
 	K_CONSOLE,
+
+	K_KP_1,
+	K_KP_2,
+	K_KP_3,
+	K_KP_4,
+	K_KP_6,
+	K_KP_7,
+	K_KP_8,
+	K_KP_9,
+	K_KP_0,
 
 	MAX_KEYS
 } keyNum_t;

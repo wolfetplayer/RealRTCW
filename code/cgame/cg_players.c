@@ -4592,7 +4592,40 @@ void CG_Player( centity_t *cent ) {
 	legs.hModel = ci->legsModel;
 	legs.customSkin = ci->legsSkin;
 
-	VectorCopy( cent->lerpOrigin, legs.origin );
+	vec3_t modelOffset = {0, 0, 0};
+
+	switch (cent->currentState.aiChar)
+	{
+	case AICHAR_PRIEST:
+		modelOffset[0] = -20.0f;
+		break;
+
+	case AICHAR_XSHEPHERD:
+		modelOffset[0] = -35.0f;
+		break;
+	}
+
+	if (modelOffset[0] || modelOffset[1] || modelOffset[2])
+	{
+		vec3_t forward, right, up;
+
+		VectorCopy(legs.axis[0], forward);
+		VectorCopy(legs.axis[1], right);
+		VectorCopy(legs.axis[2], up);
+
+		vec3_t worldOffset;
+		VectorClear(worldOffset);
+
+		VectorMA(worldOffset, modelOffset[0], forward, worldOffset);
+		VectorMA(worldOffset, modelOffset[1], right, worldOffset);
+		VectorMA(worldOffset, modelOffset[2], up, worldOffset);
+
+		VectorAdd(cent->lerpOrigin, worldOffset, legs.origin);
+	}
+	else
+	{
+		VectorCopy(cent->lerpOrigin, legs.origin);
+	}
 
 	if ( ci->playermodelScale[0] != 0 ) {  // player scaled, adjust for the (-24) offset of player legs origin to ground
 		legs.origin[2] -= 24.0f * ( 1.0f - ci->playermodelScale[2] );

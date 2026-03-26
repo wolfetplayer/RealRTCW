@@ -921,16 +921,6 @@ static void CG_DrawPerks( rectDef_t *rect, int font, float scale, qboolean draw2
 
                 CG_DrawPic( x, y, rect->w, rect->h, icon );
 
-				// PRO overlay text
-				if (cg.snap->ps.perks[i] >= 2)
-				{
-					float ts = rect->w * 0.25f;		// compact size
-					float tx = x + rect->w * 0.12f; // move left from right edge
-					float ty = y - 10;				// small top padding
-
-					CG_DrawStringExt(tx, ty, "^3PRO", colorWhite, qfalse, qtrue, ts, ts, 0);
-				}
-
 				x += rect->w + 5; // 5 is the space between icons
             }
         }

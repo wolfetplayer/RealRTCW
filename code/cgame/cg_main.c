@@ -1672,6 +1672,13 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.shardCeramic2 = trap_R_RegisterModel( "models/shards/ceramic2.md3" );
 	// done
 
+	cgs.media.perkProIcons[PERK_RUNNER] = trap_R_RegisterShaderNoMip("icons/perk_runner_pro.tga");
+	cgs.media.perkProIcons[PERK_SCAVENGER] = trap_R_RegisterShaderNoMip("icons/perk_scavenger_pro.tga");
+	cgs.media.perkProIcons[PERK_RIFLING] = trap_R_RegisterShaderNoMip("icons/perk_rifling_pro.tga");
+	cgs.media.perkProIcons[PERK_RESILIENCE] = trap_R_RegisterShaderNoMip("icons/perk_regen_pro.tga");
+	cgs.media.perkProIcons[PERK_SECONDCHANCE] = trap_R_RegisterShaderNoMip("icons/perk_secondchance_pro.tga");
+	cgs.media.perkProIcons[PERK_WEAPONHANDLING] = trap_R_RegisterShaderNoMip("icons/perk_weaponhandling_pro.tga");
+
 	cgs.media.shardRubble1 = trap_R_RegisterModel( "models/mapobjects/debris/brick000.md3" );
 	cgs.media.shardRubble2 = trap_R_RegisterModel( "models/mapobjects/debris/brick001.md3" );
 	cgs.media.shardRubble3 = trap_R_RegisterModel( "models/mapobjects/debris/brick002.md3" );

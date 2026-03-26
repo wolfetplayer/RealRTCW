@@ -1592,6 +1592,8 @@ typedef struct {
 	
 	sfxHandle_t xshieldLoopSound;
 
+	qhandle_t perkProIcons[MAX_PERKS];
+
 } cgMedia_t;
 
 

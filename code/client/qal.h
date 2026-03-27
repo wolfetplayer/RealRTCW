@@ -34,8 +34,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 
 #ifdef USE_LOCAL_HEADERS
-#include "../AL/al.h"
-#include "../AL/alc.h"
+#include "../thirdparty/AL/al.h"
+#include "../thirdparty/AL/alc.h"
 #else
 #ifdef _MSC_VER
   // MSVC users must install the OpenAL SDK which doesn't use the AL/*.h scheme.

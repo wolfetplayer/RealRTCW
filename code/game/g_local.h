@@ -1176,6 +1176,10 @@ extern vmCvar_t g_level_was_selected;
 
 extern vmCvar_t g_playerSurvivalClass;
 
+extern vmCvar_t g_ee_skinEliteGuard;
+extern vmCvar_t g_ee_skinMercenary;
+extern vmCvar_t g_ee_skinZombie;
+
 extern vmCvar_t g_reloading;        //----(SA)	added
 
 extern vmCvar_t g_dedicated;

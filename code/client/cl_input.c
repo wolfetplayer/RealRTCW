@@ -1052,6 +1052,8 @@ void CL_MouseMove(usercmd_t *cmd) {
 	}
 
 	// add mouse X/Y movement to cmd
+if ( !cl_weaponWheelActive->integer ) {
+
 	if ( kb[KB_STRAFE].active ) {
 		cmd->rightmove = ClampChar( cmd->rightmove + m_side->value * mx );
 	} else {
@@ -1063,6 +1065,9 @@ void CL_MouseMove(usercmd_t *cmd) {
 	} else {
 		cmd->forwardmove = ClampChar( cmd->forwardmove - m_forward->value * my );
 	}
+
+}
+
 }
 
 

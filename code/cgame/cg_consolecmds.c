@@ -210,6 +210,7 @@ static void CG_InventoryUp_f( void ) {
 
 static void CG_WeaponWheelDown_f( void ) {
 	cg.weaponWheel.active = qtrue;
+	trap_Cvar_Set( "cg_weaponWheelActive", "1" );
 	cg.weaponWheel.hoveredBank = 0;
 	cg.weaponWheel.hoveredWeapon = 0;
 }
@@ -220,6 +221,7 @@ static void CG_WeaponWheelUp_f( void ) {
 	}
 
 	cg.weaponWheel.active = qfalse;
+	trap_Cvar_Set( "cg_weaponWheelActive", "0" );
 
 	if ( cg.weaponWheel.hoveredWeapon > 0 ) {
 		CG_FinishWeaponChange( cg.weaponSelect, cg.weaponWheel.hoveredWeapon );

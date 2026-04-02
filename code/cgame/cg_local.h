@@ -789,6 +789,12 @@ typedef struct {
 	vec3_t src;
 } cameraShake_t;
 
+typedef struct {
+    qboolean active;
+    int hoveredBank;
+    int hoveredWeapon;
+} weaponWheel_t;
+
 //======================================================================
 
 // all cg.stepTime, cg.duckTime, cg.landTime, etc are set to cg.time when the action
@@ -1108,6 +1114,8 @@ typedef struct {
     int   aaEntNum;
 
 	float aaStrengthSmoothed;
+
+	weaponWheel_t weaponWheel;
 
 } cg_t;
 
@@ -1747,6 +1755,8 @@ typedef struct {
 
 } cgs_t;
 
+
+
 //==============================================================================
 
 extern cgs_t cgs;
@@ -2106,6 +2116,8 @@ void CG_DrawHead( float x, float y, float w, float h, int clientNum, vec3_t head
 void CG_DrawActive( stereoFrame_t stereoView );
 void CG_DrawFlagModel( float x, float y, float w, float h, int team );
 
+void CG_DrawWeaponWheel( void ) ;
+
 void CG_DrawTeamBackground( int x, int y, int w, int h, float alpha, int team );
 void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, int font, float scale, vec4_t color, qhandle_t shader, int textStyle );
 void CG_Text_Paint( float x, float y, int font, float scale, vec4_t color, const char *text, float adjust, int limit, int style );    //----(SA)	modified
@@ -2206,6 +2218,8 @@ void CG_WeaponBank_f( void );
 void CG_WeaponSuggest( int weap );
 void CG_ResetSimpleZoom(void);
 
+extern int weapBanks[MAX_WEAP_BANKS][MAX_WEAPS_IN_BANK];
+
 void CG_FinishWeaponChange( int lastweap, int newweap );
 
 void CG_RegisterWeapon( int weaponNum, qboolean force );
@@ -2247,6 +2261,8 @@ void CG_DrawHoldableSelect( void );
 
 void CG_OutOfAmmoChange( void );
 void CG_HoldableUsedupChange( void ); //----(SA)	added
+
+void CG_UpdateWeaponWheelSelection( float cursorx, float cursory );
 
 //----(SA) added to header to access from outside cg_weapons.c
 void CG_AddDebris( vec3_t origin, vec3_t dir, int speed, int duration, int count );

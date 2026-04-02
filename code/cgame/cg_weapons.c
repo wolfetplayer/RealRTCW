@@ -5262,6 +5262,46 @@ void CG_OutOfAmmoChange( void ) {
 
 }
 
+
+
+void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
+    float cx = SCREEN_WIDTH * 0.5f;
+    float cy = SCREEN_HEIGHT * 0.5f;
+
+	float dx = cursorx - cx;
+	float dy = cursory - cy;
+
+	float angle = atan2f( dy, dx );
+
+    if ( angle < 0 ) {
+        angle += 2 * M_PI;
+    }
+
+    int bank = (int)( angle / ( 2 * M_PI ) * MAX_WEAP_BANKS );
+
+    if ( bank == 0 ) {
+        bank = 1;
+    }
+
+    int selected = 0;
+
+    for ( int i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
+        int w = weapBanks[bank][i];
+
+        if ( !w )
+            continue;
+
+        if ( !CG_WeaponSelectable( w ) )
+            continue;
+
+        selected = w;
+        break;
+    }
+
+    cg.weaponWheel.hoveredBank = bank;
+    cg.weaponWheel.hoveredWeapon = selected;
+}
+
 /*
 ===================================================================================================
 

@@ -4228,6 +4228,11 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		CG_DrawWarmup();
 	}
 
+	if (cg.weaponWheel.active)
+	{
+		CG_DrawWeaponWheel();
+	}
+
 	// don't draw center string if scoreboard is up
 	if ( !CG_DrawScoreboard() ) {
 		CG_DrawCenterString();
@@ -4353,6 +4358,12 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 		return;
 	}
 
+
+	if (cg.weaponWheel.active)
+	{
+		CG_UpdateWeaponWheelSelection(cgDC.cursorx, cgDC.cursory);
+	}
+
 	// if they are waiting at the mission stats screen, show the stats
 		if ( strlen( cg_missionStats.string ) > 1 ) {
 			trap_Cvar_Set( "com_expectedhunkusage", "-2" );
@@ -4386,3 +4397,55 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 	CG_Draw2D(stereoView);
 }
 
+void CG_DrawWeaponWheel( void ) {
+	int bank;
+	float cx, cy;
+	float radius;
+
+	if ( !cg.weaponWheel.active ) {
+		return;
+	}
+
+	// screen center
+	cx = SCREEN_WIDTH * 0.5f;
+	cy = SCREEN_HEIGHT * 0.5f;
+
+	// wheel size (tweak later)
+	radius = 120.0f;
+
+	for ( bank = 1; bank < MAX_WEAP_BANKS; bank++ ) {
+		int weap;
+		float angle;
+		float x, y;
+		qhandle_t icon;
+
+		// get representative weapon for this bank
+		weap = weapBanks[bank][0];
+
+		if ( !weap ) {
+			continue;
+		}
+
+		// make sure weapon data is loaded
+		CG_RegisterWeapon( weap, qfalse );
+
+		// distribute banks evenly around circle
+		angle = ( (float)( bank - 1 ) / (float)( MAX_WEAP_BANKS - 1 ) ) * 2.0f * M_PI;
+
+		// rotate so first bank is at top (optional but nicer)
+		angle -= M_PI * 0.5f;
+
+		x = cx + cosf( angle ) * radius;
+		y = cy + sinf( angle ) * radius;
+
+		// highlight hovered bank
+		if ( bank == cg.weaponWheel.hoveredBank ) {
+			icon = cg_weapons[weap].weaponIcon[1];
+		} else {
+			icon = cg_weapons[weap].weaponIcon[0];
+		}
+
+		// draw centered icon (48x48)
+		CG_DrawPic( x - 24.0f, y - 24.0f, 48.0f, 48.0f, icon );
+	}
+}

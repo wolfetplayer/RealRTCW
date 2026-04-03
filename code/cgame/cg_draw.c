@@ -4407,11 +4407,10 @@ void CG_DrawWeaponWheel( void ) {
 		return;
 	}
 
-	// screen center
-	cx = SCREEN_WIDTH * 0.5f;
-	cy = SCREEN_HEIGHT * 0.5f;
+	// center in 640x480 virtual space
+	cx = 320.0f;
+	cy = 240.0f;
 
-	// wheel size (tweak later)
 	radius = 120.0f;
 
 	for ( bank = 1; bank < MAX_WEAP_BANKS; bank++ ) {
@@ -4419,34 +4418,84 @@ void CG_DrawWeaponWheel( void ) {
 		float angle;
 		float x, y;
 		qhandle_t icon;
+		qboolean wideweap;
+		float w, h;
 
-		// get representative weapon for this bank
 		weap = weapBanks[bank][0];
 
 		if ( !weap ) {
 			continue;
 		}
 
-		// make sure weapon data is loaded
 		CG_RegisterWeapon( weap, qfalse );
 
-		// distribute banks evenly around circle
-		angle = ( (float)( bank - 1 ) / (float)( MAX_WEAP_BANKS - 1 ) ) * 2.0f * M_PI;
+		// --- wide weapon detection (same as your main UI) ---
+		switch ( weap ) {
+		case WP_THOMPSON:
+		case WP_MP40:
+		case WP_MP34:
+		case WP_PPSH:
+		case WP_MOSIN:
+		case WP_G43:
+		case WP_M1GARAND:
+		case WP_BAR:
+		case WP_M30:
+		case WP_MP44:
+		case WP_MG42M:
+		case WP_M97:
+		case WP_AUTO5:
+		case WP_BROWNING:
+		case WP_STEN:
+		case WP_MAUSER:
+		case WP_DELISLE:
+		case WP_GARAND:
+		case WP_VENOM:
+		case WP_TESLA:
+		case WP_PANZERFAUST:
+		case WP_FLAMETHROWER:
+		case WP_FG42:
+		case WP_FG42SCOPE:
+		case WP_M1941:
+			wideweap = qtrue;
+			break;
+		default:
+			wideweap = qfalse;
+			break;
+		}
 
-		// rotate so first bank is at top (optional but nicer)
+		// --- size setup (consistent height, scaled width) ---
+		h = 40.0f;
+
+		if ( wideweap ) {
+			w = h * 2.0f;
+		} else {
+			w = h;
+		}
+
+		// --- radial placement ---
+		angle = ( (float)( bank - 1 ) / (float)( MAX_WEAP_BANKS - 1 ) ) * 2.0f * M_PI;
 		angle -= M_PI * 0.5f;
 
 		x = cx + cosf( angle ) * radius;
 		y = cy + sinf( angle ) * radius;
 
-		// highlight hovered bank
+		// --- icon selection (highlight support) ---
 		if ( bank == cg.weaponWheel.hoveredBank ) {
 			icon = cg_weapons[weap].weaponIcon[1];
 		} else {
 			icon = cg_weapons[weap].weaponIcon[0];
 		}
 
-		// draw centered icon (48x48)
-		CG_DrawPic( x - 24.0f, y - 24.0f, 48.0f, 48.0f, icon );
+		// --- draw centered ---
+		CG_DrawPic( x - w * 0.5f, y - h * 0.5f, w, h, icon );
 	}
+
+	// --- draw cursor on top ---
+	CG_DrawPic(
+		cgs.cursorX - 8.0f,
+		cgs.cursorY - 8.0f,
+		16.0f,
+		16.0f,
+		cgs.media.selectCursor
+	);
 }

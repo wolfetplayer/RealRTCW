@@ -2389,24 +2389,37 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 void CG_MouseEvent( int x, int y ) {
 	int n;
 
+	if ( cg.weaponWheel.active ) {
 
-if ( cg.weaponWheel.active ) {
+		// 1. Apply mouse movement
+		cgs.cursorX += x;
+		cgs.cursorY += y;
 
-	// accumulate direction (like analog stick)
-	cg.weaponWheel.vecX += x;
-	cg.weaponWheel.vecY += y;
+		// 2. Clamp to screen (virtual 640x480 space)
+		if ( cgs.cursorX < 0 ) cgs.cursorX = 0;
+		if ( cgs.cursorX > 640 ) cgs.cursorX = 640;
 
-	// clamp so it doesn't grow infinitely
-	float len = sqrtf( cg.weaponWheel.vecX * cg.weaponWheel.vecX +
-	                   cg.weaponWheel.vecY * cg.weaponWheel.vecY );
+		if ( cgs.cursorY < 0 ) cgs.cursorY = 0;
+		if ( cgs.cursorY > 480 ) cgs.cursorY = 480;
 
-	if ( len > 200.0f ) {
-		cg.weaponWheel.vecX *= 200.0f / len;
-		cg.weaponWheel.vecY *= 200.0f / len;
+		// 3. Clamp to wheel radius (THIS is the important part)
+		float cx = 320.0f;
+		float cy = 240.0f;
+
+		float dx = cgs.cursorX - cx;
+		float dy = cgs.cursorY - cy;
+
+		float len = sqrtf( dx * dx + dy * dy );
+		float maxRadius = 120.0f;
+
+		if ( len > maxRadius ) {
+			float scale = maxRadius / len;
+			cgs.cursorX = cx + dx * scale;
+			cgs.cursorY = cy + dy * scale;
+		}
+
+		return;
 	}
-
-	return;
-}
 
 	if ( ( cg.predictedPlayerState.pm_type == PM_NORMAL || cg.predictedPlayerState.pm_type == PM_SPECTATOR ) && cg.showScores == qfalse ) {
 		trap_Key_SetCatcher( 0 );

@@ -5268,11 +5268,22 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 
 	CG_Printf("wheel update called\n");
 
-	float cx = SCREEN_WIDTH * 0.5f;
-	float cy = SCREEN_HEIGHT * 0.5f;
+	float cx = 320.0f;
+	float cy = 240.0f;
+	float dx = cx - cgs.cursorX;
+	float dy = cy - cgs.cursorY;
 
-	float dx = cg.weaponWheel.vecX;
-	float dy = cg.weaponWheel.vecY;
+	float len = sqrtf(dx * dx + dy * dy);
+
+	if (len < 30.0f)
+	{
+		cg.weaponWheel.hoveredBank = 0;
+		cg.weaponWheel.hoveredWeapon = 0;
+		return;
+	}
+
+	dx /= len;
+	dy /= len;
 
 	float angle = atan2f(dy, dx);
 
@@ -5284,7 +5295,7 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 	}
 
 	int numBanks = MAX_WEAP_BANKS - 1;
-	int bank = (int)(angle / (2 * M_PI) * numBanks) + 1;
+	int bank = (int)(angle / (2 * M_PI) * (MAX_WEAP_BANKS - 1)) + 1;
 
 	if ( bank <= 0 ) {
 		bank = 1;

@@ -209,16 +209,15 @@ static void CG_InventoryUp_f( void ) {
 //----(SA)	end
 
 static void CG_WeaponWheelDown_f( void ) {
+
+	cgs.cursorX = SCREEN_WIDTH * 0.5f;
+	cgs.cursorY = SCREEN_HEIGHT * 0.5f;
+
 	cg.weaponWheel.active = qtrue;
 	trap_Cvar_Set( "cg_weaponWheelActive", "1" );
 
 	cg.weaponWheel.hoveredBank = 0;
 	cg.weaponWheel.hoveredWeapon = 0;
-	cg.weaponWheel.vecX = 0;
-	cg.weaponWheel.vecY = 0;
-
-	cgs.cursorX = SCREEN_WIDTH * 0.5f;
-	cgs.cursorY = SCREEN_HEIGHT * 0.5f;
 }
 
 static void CG_WeaponWheelUp_f( void ) {

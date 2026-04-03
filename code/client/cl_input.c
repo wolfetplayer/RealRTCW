@@ -455,6 +455,11 @@ void CL_MouseEvent( int dx, int dy, int time ) {
         s_lastMouseInputTime = time;
     }
 
+	if ( cl_weaponWheelActive && cl_weaponWheelActive->integer ) {
+        VM_Call( cgvm, CG_MOUSE_EVENT, dx, dy );
+        return;
+    }
+
     if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
         VM_Call( uivm, UI_MOUSE_EVENT, dx, dy );
     } else if (Key_GetCatcher( ) & KEYCATCH_CGAME) {

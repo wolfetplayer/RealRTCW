@@ -5265,41 +5265,53 @@ void CG_OutOfAmmoChange( void ) {
 
 
 void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
-    float cx = SCREEN_WIDTH * 0.5f;
-    float cy = SCREEN_HEIGHT * 0.5f;
 
-	float dx = cursorx - cx;
-	float dy = cursory - cy;
+	CG_Printf("wheel update called\n");
 
-	float angle = atan2f( dy, dx );
+	float cx = SCREEN_WIDTH * 0.5f;
+	float cy = SCREEN_HEIGHT * 0.5f;
 
-    if ( angle < 0 ) {
-        angle += 2 * M_PI;
-    }
+	float dx = cg.weaponWheel.vecX;
+	float dy = cg.weaponWheel.vecY;
 
-    int bank = (int)( angle / ( 2 * M_PI ) * MAX_WEAP_BANKS );
+	float angle = atan2f(dy, dx);
 
-    if ( bank == 0 ) {
-        bank = 1;
-    }
+	angle -= M_PI * 0.5f;
 
-    int selected = 0;
+	if (angle < 0)
+	{
+		angle += 2 * M_PI;
+	}
 
-    for ( int i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
-        int w = weapBanks[bank][i];
+	int numBanks = MAX_WEAP_BANKS - 1;
+	int bank = (int)(angle / (2 * M_PI) * numBanks) + 1;
 
-        if ( !w )
-            continue;
+	if ( bank <= 0 ) {
+		bank = 1;
+	}
+	if ( bank >= MAX_WEAP_BANKS ) {
+		bank = MAX_WEAP_BANKS - 1;
+	}
 
-        if ( !CG_WeaponSelectable( w ) )
-            continue;
+	int selected = 0;
 
-        selected = w;
-        break;
-    }
+	for ( int i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
+		int w = weapBanks[bank][i];
 
-    cg.weaponWheel.hoveredBank = bank;
-    cg.weaponWheel.hoveredWeapon = selected;
+		if ( !w )
+			continue;
+
+		if ( !CG_WeaponSelectable( w ) )
+			continue;
+
+		selected = w;
+		break;
+	}
+
+	cg.weaponWheel.hoveredBank = bank;
+	cg.weaponWheel.hoveredWeapon = selected;
+
+	CG_Printf("cursor: %f %f\n", cursorx, cursory);
 }
 
 /*

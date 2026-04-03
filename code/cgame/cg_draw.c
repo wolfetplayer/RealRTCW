@@ -4230,6 +4230,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 
 	if (cg.weaponWheel.active)
 	{
+		CG_UpdateWeaponWheelSelection(cgs.cursorX, cgs.cursorY);
 		CG_DrawWeaponWheel();
 	}
 
@@ -4361,7 +4362,7 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 
 	if (cg.weaponWheel.active)
 	{
-		CG_UpdateWeaponWheelSelection(cgDC.cursorx, cgDC.cursory);
+		CG_UpdateWeaponWheelSelection( cgs.cursorX, cgs.cursorY );
 	}
 
 	// if they are waiting at the mission stats screen, show the stats

@@ -793,6 +793,8 @@ typedef struct {
     qboolean active;
     int hoveredBank;
     int hoveredWeapon;
+	float vecX;
+	float vecY;
 } weaponWheel_t;
 
 //======================================================================

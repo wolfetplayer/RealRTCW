@@ -2389,6 +2389,25 @@ void CG_OwnerDraw( float x, float y, float w, float h, float text_x, float text_
 void CG_MouseEvent( int x, int y ) {
 	int n;
 
+
+if ( cg.weaponWheel.active ) {
+
+	// accumulate direction (like analog stick)
+	cg.weaponWheel.vecX += x;
+	cg.weaponWheel.vecY += y;
+
+	// clamp so it doesn't grow infinitely
+	float len = sqrtf( cg.weaponWheel.vecX * cg.weaponWheel.vecX +
+	                   cg.weaponWheel.vecY * cg.weaponWheel.vecY );
+
+	if ( len > 200.0f ) {
+		cg.weaponWheel.vecX *= 200.0f / len;
+		cg.weaponWheel.vecY *= 200.0f / len;
+	}
+
+	return;
+}
+
 	if ( ( cg.predictedPlayerState.pm_type == PM_NORMAL || cg.predictedPlayerState.pm_type == PM_SPECTATOR ) && cg.showScores == qfalse ) {
 		trap_Key_SetCatcher( 0 );
 		return;

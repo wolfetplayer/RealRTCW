@@ -4413,15 +4413,57 @@ void CG_DrawWeaponWheel( void ) {
 
 	radius = 120.0f;
 
-	for ( bank = 1; bank < MAX_WEAP_BANKS; bank++ ) {
-		int weap;
-		float angle;
-		float x, y;
-		qhandle_t icon;
-		qboolean wideweap;
-		float w, h;
+	// --- collect visible banks (no helpers) ---
+	int visibleBanks[MAX_WEAP_BANKS];
+	int numVisible = 0;
 
-		weap = weapBanks[bank][0];
+	for ( bank = 1; bank < MAX_WEAP_BANKS; bank++ ) {
+
+		int i;
+		qboolean hasWeapon = qfalse;
+
+		for ( i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
+			int w = weapBanks[bank][i];
+
+			if ( !w )
+				continue;
+
+			if ( COM_BitCheck( cg.snap->ps.weapons, w ) ) {
+				hasWeapon = qtrue;
+				break;
+			}
+		}
+
+		if ( hasWeapon ) {
+			visibleBanks[numVisible++] = bank;
+		}
+	}
+
+	if ( numVisible <= 0 ) {
+		return;
+	}
+
+	// --- draw only visible banks ---
+	for ( int idx = 0; idx < numVisible; idx++ ) {
+
+		bank = visibleBanks[idx];
+
+		int weap = 0;
+		int i;
+
+		// pick first owned weapon in this bank
+		for ( i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
+			int w = weapBanks[bank][i];
+
+			if ( !w )
+				continue;
+
+			if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
+				continue;
+
+			weap = w;
+			break;
+		}
 
 		if ( !weap ) {
 			continue;
@@ -4429,7 +4471,9 @@ void CG_DrawWeaponWheel( void ) {
 
 		CG_RegisterWeapon( weap, qfalse );
 
-		// --- wide weapon detection (same as your main UI) ---
+		// --- wide weapon detection ---
+		qboolean wideweap;
+
 		switch ( weap ) {
 		case WP_THOMPSON:
 		case WP_MP40:
@@ -4463,23 +4507,20 @@ void CG_DrawWeaponWheel( void ) {
 			break;
 		}
 
-		// --- size setup (consistent height, scaled width) ---
-		h = 40.0f;
+		// --- size setup ---
+		float h = 40.0f;
+		float w = wideweap ? ( h * 2.0f ) : h;
 
-		if ( wideweap ) {
-			w = h * 2.0f;
-		} else {
-			w = h;
-		}
-
-		// --- radial placement ---
-		angle = ( (float)( bank - 1 ) / (float)( MAX_WEAP_BANKS - 1 ) ) * 2.0f * M_PI;
+		// --- radial placement based on visible count ---
+		float angle = ( (float)idx / (float)numVisible ) * 2.0f * M_PI;
 		angle -= M_PI * 0.5f;
 
-		x = cx + cosf( angle ) * radius;
-		y = cy + sinf( angle ) * radius;
+		float x = cx + cosf( angle ) * radius;
+		float y = cy + sinf( angle ) * radius;
 
-		// --- icon selection (highlight support) ---
+		// --- icon selection ---
+		qhandle_t icon;
+
 		if ( bank == cg.weaponWheel.hoveredBank ) {
 			icon = cg_weapons[weap].weaponIcon[1];
 		} else {
@@ -4490,7 +4531,7 @@ void CG_DrawWeaponWheel( void ) {
 		CG_DrawPic( x - w * 0.5f, y - h * 0.5f, w, h, icon );
 	}
 
-	// --- draw cursor on top ---
+	// --- draw cursor ---
 	CG_DrawPic(
 		cgs.cursorX - 8.0f,
 		cgs.cursorY - 8.0f,

@@ -5268,10 +5268,44 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 
 	CG_Printf("wheel update called\n");
 
+	int visibleBanks[MAX_WEAP_BANKS];
+	int numVisible = 0;
+
+	for (int bank = 1; bank < MAX_WEAP_BANKS; bank++)
+	{
+
+		int i;
+		qboolean hasWeapon = qfalse;
+
+		for (i = 0; i < MAX_WEAPS_IN_BANK; i++)
+		{
+			int w = weapBanks[bank][i];
+
+			if (!w)
+				continue;
+
+			if (COM_BitCheck(cg.snap->ps.weapons, w))
+			{
+				hasWeapon = qtrue;
+				break;
+			}
+		}
+
+		if (hasWeapon)
+		{
+			visibleBanks[numVisible++] = bank;
+		}
+	}
+
+	if (numVisible <= 0)
+	{
+		return;
+	}
+
 	float cx = 320.0f;
 	float cy = 240.0f;
-	float dx = cx - cgs.cursorX;
-	float dy = cy - cgs.cursorY;
+	float dx = cx - cursorx;
+	float dy = cy - cursory;
 
 	float len = sqrtf(dx * dx + dy * dy);
 
@@ -5294,15 +5328,19 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 		angle += 2 * M_PI;
 	}
 
-	int numBanks = MAX_WEAP_BANKS - 1;
-	int bank = (int)(angle / (2 * M_PI) * (MAX_WEAP_BANKS - 1)) + 1;
+	float sectorSize = (2 * M_PI) / numVisible;
+	int idx = (int)((angle + sectorSize * 0.5f) / (2 * M_PI) * numVisible);
 
-	if ( bank <= 0 ) {
-		bank = 1;
+	if (idx < 0)
+	{
+		idx = 0;
 	}
-	if ( bank >= MAX_WEAP_BANKS ) {
-		bank = MAX_WEAP_BANKS - 1;
+	if (idx >= numVisible)
+	{
+		idx = numVisible - 1;
 	}
+
+	int bank = visibleBanks[idx];
 
 	int selected = 0;
 

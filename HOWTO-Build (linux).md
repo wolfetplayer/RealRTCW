@@ -15,6 +15,29 @@ sudo pacman -S git base-devel ffmpeg
 ```
 
 
+### Fedora 44
+
+Required package `ffmpeg-devel` is available in RPM Fusion free repository.
+
+```bash
+# Add RPM Fusion free repository
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+```
+
+```bash
+# Install required packages:
+sudo dnf install git make gcc gcc-c++ sdl2-compat sdl2-compat-devel ffmpeg ffmpeg-devel --allowerasing
+```
+
+
+### Ubuntu 26.04
+
+```bash
+# Install required packages:
+sudo apt install git build-essential libsdl2-dev ffmpeg libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libswresample-dev
+```
+
+
 ## Pull Source
 
 ```bash

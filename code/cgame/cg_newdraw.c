@@ -2403,8 +2403,8 @@ void CG_MouseEvent( int x, int y ) {
 		if ( cgs.cursorY > 480 ) cgs.cursorY = 480;
 
 		// 3. Clamp to wheel radius (THIS is the important part)
-		float cx = 320.0f;
-		float cy = 240.0f;
+		float cx = SCREEN_WIDTH * 0.35f;
+		float cy = SCREEN_HEIGHT * 0.5f;
 
 		float dx = cgs.cursorX - cx;
 		float dy = cgs.cursorY - cy;

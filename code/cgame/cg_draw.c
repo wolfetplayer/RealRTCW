@@ -4399,7 +4399,6 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 }
 
 void CG_DrawWeaponWheel( void ) {
-	int bank;
 	float cx, cy;
 	float radius;
 
@@ -4407,71 +4406,101 @@ void CG_DrawWeaponWheel( void ) {
 		return;
 	}
 
-	// center in 640x480 virtual space
-	cx = 320.0f;
-	cy = 240.0f;
+	cx = SCREEN_WIDTH * 0.35f;
+	cy = SCREEN_HEIGHT * 0.5f;
 
-	radius = 120.0f;
-
-	// --- collect visible banks (no helpers) ---
-	int visibleBanks[MAX_WEAP_BANKS];
+	int visibleWeapons[MAX_WEAPONS];
 	int numVisible = 0;
 
-	for ( bank = 1; bank < MAX_WEAP_BANKS; bank++ ) {
+	for ( int w = 1; w < MAX_WEAPONS; w++ ) {
 
-		int i;
-		qboolean hasWeapon = qfalse;
+		if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
+			continue;
 
-		for ( i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
-			int w = weapBanks[bank][i];
+		// --- WHITELIST ---
+		switch ( w ) {
 
-			if ( !w )
-				continue;
+		case WP_KNIFE:
+		case WP_LUGER:
+		case WP_SILENCER:
+		case WP_COLT:
+		case WP_AKIMBO:
+		case WP_TT33:
+		case WP_DUAL_TT33:
+		case WP_REVOLVER:
+		case WP_HDM:
 
-			if ( COM_BitCheck( cg.snap->ps.weapons, w ) ) {
-				hasWeapon = qtrue;
-				break;
-			}
+		case WP_MP40:
+		case WP_MP34:
+		case WP_STEN:
+		case WP_THOMPSON:
+		case WP_PPSH:
+
+		case WP_MAUSER:
+		case WP_GARAND:
+		case WP_MOSIN:
+		case WP_DELISLE:
+
+		case WP_G43:
+		case WP_M1GARAND:
+		case WP_M1941:
+
+		case WP_FG42:
+		case WP_MP44:
+		case WP_BAR:
+
+		case WP_M97:
+		case WP_AUTO5:
+		case WP_M30:
+
+		case WP_PANZERFAUST:
+		case WP_FLAMETHROWER:
+		case WP_MG42M:
+		case WP_BROWNING:
+
+		case WP_VENOM:
+		case WP_TESLA:
+			break;
+
+		default:
+			continue;
 		}
 
-		if ( hasWeapon ) {
-			visibleBanks[numVisible++] = bank;
-		}
+		visibleWeapons[numVisible++] = w;
 	}
 
 	if ( numVisible <= 0 ) {
 		return;
 	}
 
-	// --- draw only visible banks ---
+	// --- dynamic radius ---
+	float baseRadius = 100.0f;
+	float extra = numVisible * 3.0f;
+	radius = baseRadius + extra;
+
+	if ( radius > 200.0f ) {
+		radius = 200.0f;
+	}
+
+	// --- adaptive scale ---
+	float scale = 1.0f;
+
+	if ( numVisible > 10 ) {
+		scale = 0.8f;
+	}
+	if ( numVisible > 16 ) {
+		scale = 0.65f;
+	}
+
+	// --- center slices properly ---
+	float angleOffset = ( 2.0f * M_PI ) / (float)numVisible * 0.5f;
+
 	for ( int idx = 0; idx < numVisible; idx++ ) {
 
-		bank = visibleBanks[idx];
-
-		int weap = 0;
-		int i;
-
-		// pick first owned weapon in this bank
-		for ( i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
-			int w = weapBanks[bank][i];
-
-			if ( !w )
-				continue;
-
-			if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
-				continue;
-
-			weap = w;
-			break;
-		}
-
-		if ( !weap ) {
-			continue;
-		}
+		int weap = visibleWeapons[idx];
 
 		CG_RegisterWeapon( weap, qfalse );
 
-		// --- wide weapon detection ---
 		qboolean wideweap;
 
 		switch ( weap ) {
@@ -4507,31 +4536,28 @@ void CG_DrawWeaponWheel( void ) {
 			break;
 		}
 
-		// --- size setup ---
-		float h = 40.0f;
+		float h = 40.0f * scale;
 		float w = wideweap ? ( h * 2.0f ) : h;
 
-		// --- radial placement based on visible count ---
 		float angle = ( (float)idx / (float)numVisible ) * 2.0f * M_PI;
+		angle += angleOffset;
 		angle -= M_PI * 0.5f;
 
 		float x = cx + cosf( angle ) * radius;
 		float y = cy + sinf( angle ) * radius;
 
-		// --- icon selection ---
 		qhandle_t icon;
 
-		if ( bank == cg.weaponWheel.hoveredBank ) {
+		if ( weap == cg.weaponWheel.hoveredWeapon ) {
 			icon = cg_weapons[weap].weaponIcon[1];
 		} else {
 			icon = cg_weapons[weap].weaponIcon[0];
 		}
 
-		// --- draw centered ---
 		CG_DrawPic( x - w * 0.5f, y - h * 0.5f, w, h, icon );
 	}
 
-	// --- draw cursor ---
+	// --- cursor ---
 	CG_DrawPic(
 		cgs.cursorX - 8.0f,
 		cgs.cursorY - 8.0f,

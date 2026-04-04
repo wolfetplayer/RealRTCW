@@ -5266,52 +5266,81 @@ void CG_OutOfAmmoChange( void ) {
 
 void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 
-	CG_Printf("wheel update called\n");
-
-	int visibleBanks[MAX_WEAP_BANKS];
+	int visibleWeapons[MAX_WEAPONS];
 	int numVisible = 0;
 
-	for (int bank = 1; bank < MAX_WEAP_BANKS; bank++)
-	{
+	for ( int w = 1; w < MAX_WEAPONS; w++ ) {
 
-		int i;
-		qboolean hasWeapon = qfalse;
+		if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
+			continue;
 
-		for (i = 0; i < MAX_WEAPS_IN_BANK; i++)
-		{
-			int w = weapBanks[bank][i];
+		// --- WHITELIST ---
+		switch ( w ) {
 
-			if (!w)
-				continue;
+		case WP_KNIFE:
+		case WP_LUGER:
+		case WP_SILENCER:
+		case WP_COLT:
+		case WP_AKIMBO:
+		case WP_TT33:
+		case WP_DUAL_TT33:
+		case WP_REVOLVER:
+		case WP_HDM:
 
-			if (COM_BitCheck(cg.snap->ps.weapons, w))
-			{
-				hasWeapon = qtrue;
-				break;
-			}
+		case WP_MP40:
+		case WP_MP34:
+		case WP_STEN:
+		case WP_THOMPSON:
+		case WP_PPSH:
+
+		case WP_MAUSER:
+		case WP_GARAND:
+		case WP_MOSIN:
+		case WP_DELISLE:
+
+		case WP_G43:
+		case WP_M1GARAND:
+		case WP_M1941:
+
+		case WP_FG42:
+		case WP_MP44:
+		case WP_BAR:
+
+		case WP_M97:
+		case WP_AUTO5:
+		case WP_M30:
+
+		case WP_PANZERFAUST:
+		case WP_FLAMETHROWER:
+		case WP_MG42M:
+		case WP_BROWNING:
+
+		case WP_VENOM:
+		case WP_TESLA:
+			break;
+
+		default:
+			continue;
 		}
 
-		if (hasWeapon)
-		{
-			visibleBanks[numVisible++] = bank;
-		}
+		visibleWeapons[numVisible++] = w;
 	}
 
-	if (numVisible <= 0)
-	{
+	if ( numVisible <= 0 ) {
+		cg.weaponWheel.hoveredWeapon = 0;
 		return;
 	}
 
-	float cx = 320.0f;
-	float cy = 240.0f;
+	float cx = SCREEN_WIDTH * 0.35f;
+	float cy = SCREEN_HEIGHT * 0.5f;
+
+	// --- FIXED DIRECTION (no inversion) ---
 	float dx = cx - cursorx;
 	float dy = cy - cursory;
 
-	float len = sqrtf(dx * dx + dy * dy);
+	float len = sqrtf( dx * dx + dy * dy );
 
-	if (len < 30.0f)
-	{
-		cg.weaponWheel.hoveredBank = 0;
+	if ( len < 30.0f ) {
 		cg.weaponWheel.hoveredWeapon = 0;
 		return;
 	}
@@ -5319,48 +5348,26 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 	dx /= len;
 	dy /= len;
 
-	float angle = atan2f(dy, dx);
+	float angle = atan2f( dy, dx );
 
 	angle -= M_PI * 0.5f;
 
-	if (angle < 0)
-	{
+	if ( angle < 0 ) {
 		angle += 2 * M_PI;
 	}
 
-	float sectorSize = (2 * M_PI) / numVisible;
-	int idx = (int)((angle + sectorSize * 0.5f) / (2 * M_PI) * numVisible);
+	float sectorSize = ( 2 * M_PI ) / numVisible;
 
-	if (idx < 0)
-	{
+	int idx = (int)( ( angle + sectorSize * 0.5f ) / ( 2 * M_PI ) * numVisible );
+
+	if ( idx < 0 ) {
 		idx = 0;
 	}
-	if (idx >= numVisible)
-	{
+	if ( idx >= numVisible ) {
 		idx = numVisible - 1;
 	}
 
-	int bank = visibleBanks[idx];
-
-	int selected = 0;
-
-	for ( int i = 0; i < MAX_WEAPS_IN_BANK; i++ ) {
-		int w = weapBanks[bank][i];
-
-		if ( !w )
-			continue;
-
-		if ( !CG_WeaponSelectable( w ) )
-			continue;
-
-		selected = w;
-		break;
-	}
-
-	cg.weaponWheel.hoveredBank = bank;
-	cg.weaponWheel.hoveredWeapon = selected;
-
-	CG_Printf("cursor: %f %f\n", cursorx, cursory);
+	cg.weaponWheel.hoveredWeapon = visibleWeapons[idx];
 }
 
 /*

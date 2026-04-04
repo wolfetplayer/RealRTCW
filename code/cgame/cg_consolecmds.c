@@ -210,7 +210,7 @@ static void CG_InventoryUp_f( void ) {
 
 static void CG_WeaponWheelDown_f( void ) {
 
-	cgs.cursorX = SCREEN_WIDTH * 0.5f;
+	cgs.cursorX = SCREEN_WIDTH * 0.35f;
 	cgs.cursorY = SCREEN_HEIGHT * 0.5f;
 
 	cg.weaponWheel.active = qtrue;

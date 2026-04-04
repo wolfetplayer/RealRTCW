@@ -3068,6 +3068,21 @@ void CL_Frame( int msec ) {
 	// send intentions now
 	CL_SendCmd();
 
+	if (cl_weaponWheelActive && cl_weaponWheelActive->integer)
+	{
+		if (com_timescale->value != 0.3f)
+		{
+			Cvar_Set("timescale", "0.4");
+		}
+	}
+	else
+	{
+		if (com_timescale->value != 1.0f)
+		{
+			Cvar_Set("timescale", "1.0");
+		}
+	}
+
 	CL_GamepadUIMouseMove();
 
 	// resend a connection request if necessary

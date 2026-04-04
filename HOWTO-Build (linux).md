@@ -22,11 +22,11 @@ git clone https://github.com/wolfetplayer/RealRTCW
 cd RealRTCW
 ```
 
-The current main branch may be ahead of the released mod files. For compatibility, switch to the corresponding release tag (latest at the time of writing: 5.3). You can return using `git switch -`.
+The current main branch may be ahead of the released mod files. For compatibility, switch to the corresponding release tag (latest at the time of writing: 5.4). You can return using `git switch -`.
 
 ```bash
-# Switch to tag 5.3 to match 5.3 mod files
-git checkout tags/5.3
+# Switch to tag 5.4 to match 5.4 mod files
+git checkout tags/5.4
 ```
 
 

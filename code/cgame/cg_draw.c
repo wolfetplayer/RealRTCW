@@ -4460,6 +4460,14 @@ void CG_DrawWeaponWheel( void ) {
 
 		case WP_VENOM:
 		case WP_TESLA:
+
+		case WP_GRENADE_LAUNCHER:
+		case WP_POISONGAS:
+		case WP_GRENADE_PINEAPPLE:
+		case WP_DYNAMITE:
+		case WP_DYNAMITE_ENG:
+		case WP_AIRSTRIKE:
+		case WP_SMOKE_BOMB:
 			break;
 
 		default:

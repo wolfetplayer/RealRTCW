@@ -406,12 +406,6 @@ ifneq (,$(findstring "$(PLATFORM)", "linux" "gnu_kfreebsd" "kfreebsd-gnu" "gnu")
     -pipe -DUSE_ICON -DARCH_STRING=\\\"$(FILE_ARCH)\\\"
   CLIENT_CFLAGS += $(SDL_CFLAGS)
 
-  FFMPEG_CFLAGS := $(shell pkg-config --cflags libavcodec libavformat libavutil libswscale libswresample)
-  FFMPEG_LIBS   := $(shell pkg-config --libs   libavcodec libavformat libavutil libswscale libswresample)
-
-  CFLAGS  += $(FFMPEG_CFLAGS)
-  LDFLAGS += $(FFMPEG_LIBS)
-
   ifeq ($(ARCH),x86_64)
     OPTIMIZEVM = -O3
     OPTIMIZE = $(OPTIMIZEVM) -ffast-math
@@ -452,6 +446,12 @@ ifneq (,$(findstring "$(PLATFORM)", "linux" "gnu_kfreebsd" "kfreebsd-gnu" "gnu")
 
   THREAD_LIBS=-lpthread
   LIBS=-ldl -lm
+
+  FFMPEG_CFLAGS := $(shell pkg-config --cflags libavcodec libavformat libavutil libswscale libswresample)
+  FFMPEG_LIBS   := $(shell pkg-config --libs   libavcodec libavformat libavutil libswscale libswresample)
+
+  CFLAGS = $(FFMPEG_CFLAGS)
+  LIBS  += $(FFMPEG_LIBS)
 
   ifeq ($(USE_LOCAL_HEADERS),1)
     CLIENT_CFLAGS += -I$(SDLHDIR)/include

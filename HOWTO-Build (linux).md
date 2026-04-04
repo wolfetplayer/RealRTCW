@@ -15,6 +15,29 @@ sudo pacman -S git base-devel ffmpeg
 ```
 
 
+### Fedora 44
+
+Required package `ffmpeg-devel` is available in RPM Fusion free repository.
+
+```bash
+# Add RPM Fusion free repository
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+```
+
+```bash
+# Install required packages:
+sudo dnf install git make gcc gcc-c++ sdl2-compat sdl2-compat-devel ffmpeg ffmpeg-devel --allowerasing
+```
+
+
+### Ubuntu 26.04
+
+```bash
+# Install required packages:
+sudo apt install git build-essential libsdl2-dev ffmpeg libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libswresample-dev
+```
+
+
 ## Pull Source
 
 ```bash
@@ -22,11 +45,11 @@ git clone https://github.com/wolfetplayer/RealRTCW
 cd RealRTCW
 ```
 
-The current main branch may be ahead of the released mod files. For compatibility, switch to the corresponding release tag (latest at the time of writing: 5.3). You can return using `git switch -`.
+The current main branch may be ahead of the released mod files. For compatibility, switch to the corresponding release tag (latest at the time of writing: 5.4). You can return using `git switch -`.
 
 ```bash
-# Switch to tag 5.3 to match 5.3 mod files
-git checkout tags/5.3
+# Switch to tag 5.4 to match 5.4 mod files
+git checkout tags/5.4
 ```
 
 

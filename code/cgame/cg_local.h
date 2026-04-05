@@ -796,6 +796,8 @@ typedef struct {
 	float stickX;
 	float stickY;
 	int latchedWeapon;
+	int lastWeapon;
+    int openTime;
 } weaponWheel_t;
 
 //======================================================================

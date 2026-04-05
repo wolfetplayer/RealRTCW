@@ -5410,10 +5410,24 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 
 	int newWeapon = visibleWeapons[idx];
 
-	// Only update latch if stick is actively used
 	if (usingStick)
 	{
+
+		// if switching too fast between neighbors, resist it
+		if (cg.weaponWheel.lastWeapon != 0 &&
+			newWeapon != cg.weaponWheel.lastWeapon)
+		{
+
+			float threshold = 0.15f; // tune
+
+			if (len < (0.4f + threshold))
+			{
+				newWeapon = cg.weaponWheel.lastWeapon;
+			}
+		}
+
 		cg.weaponWheel.latchedWeapon = newWeapon;
+		cg.weaponWheel.lastWeapon = newWeapon;
 	}
 
 	// Hover is always current frame

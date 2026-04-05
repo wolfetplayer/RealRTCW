@@ -209,6 +209,8 @@ static void CG_InventoryUp_f( void ) {
 //----(SA)	end
 
 static void CG_WeaponWheelDown_f( void ) {
+	
+	cg.weaponWheel.openTime = cg.time;
 
 	cgs.cursorX = SCREEN_WIDTH * 0.35f;
 	cgs.cursorY = SCREEN_HEIGHT * 0.5f;
@@ -222,6 +224,7 @@ static void CG_WeaponWheelDown_f( void ) {
 	cg.weaponWheel.hoveredBank = 0;
 	cg.weaponWheel.hoveredWeapon = 0;
 	cg.weaponWheel.latchedWeapon = 0;
+	cg.weaponWheel.lastWeapon = 0;
 }
 
 static void CG_WeaponWheelUp_f( void ) {

@@ -4482,9 +4482,15 @@ void CG_DrawWeaponWheel( void ) {
 	}
 
 	// --- dynamic radius ---
+	float t = (cg.time - cg.weaponWheel.openTime) / 50.0f;
+	if (t > 1.0f)
+		t = 1.0f;
+
 	float baseRadius = 100.0f;
 	float extra = numVisible * 3.0f;
+
 	radius = baseRadius + extra;
+	radius *= t;
 
 	if ( radius > 200.0f ) {
 		radius = 200.0f;
@@ -4544,8 +4550,10 @@ void CG_DrawWeaponWheel( void ) {
 			break;
 		}
 
-		float h = 40.0f * scale;
-		float w = wideweap ? ( h * 2.0f ) : h;
+		float selectedScale = (weap == cg.weaponWheel.hoveredWeapon) ? 1.3f : 1.0f;
+
+		float h = 40.0f * scale * selectedScale;
+		float w = wideweap ? (h * 2.0f) : h;
 
 		float angle = ( (float)idx / (float)numVisible ) * 2.0f * M_PI;
 		angle += angleOffset;

@@ -496,6 +496,13 @@ void CL_JoystickEvent( int axis, int value, int time ) {
     if ( fabsf(norm) > 0.08f ) {
         s_lastJoyInputTime = time;
     }
+
+	if (cl_weaponWheelActive && cl_weaponWheelActive->integer)
+	{
+		VM_Call(cgvm, CG_JOYSTICK_EVENT, axis, value);
+		return;
+	}
+	
 }
 
 static qboolean CL_UsingGamepadNow( void )
@@ -727,7 +734,7 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 // Aim Assist (gamepad) - affects only look (yaw/pitch)
 // Drop-in replacement for your current aim assist block inside CL_JoystickMove()
 // ---------------------------------------------------------
-if ( j_aimassist && j_aimassist->integer && CL_UsingGamepadNow() ) {
+if ( j_aimassist && j_aimassist->integer && CL_UsingGamepadNow() && !cl_weaponWheelActive->integer ) {
     float strength = cl.cgameAA_Strength; // 0..1 from cgame
     if ( strength > 0.0f ) {
 
@@ -944,23 +951,40 @@ if ( j_aimassist && j_aimassist->integer && CL_UsingGamepadNow() ) {
 
 aimassist_done:
 ;
-    if ( !kb[KB_STRAFE].active ) {
-        cl.viewangles[YAW] += anglespeed * ( yaw * cl.cgameSensitivity );
-        cmd->rightmove = ClampChar( cmd->rightmove + (int)right );
-    } else {
-        cl.viewangles[YAW] += anglespeed * ( right * cl.cgameSensitivity );
-        cmd->rightmove = ClampChar( cmd->rightmove + (int)yaw );
-    }
 
-    if ( kb[KB_MLOOK].active ) {
-        cl.viewangles[PITCH] += anglespeed * ( forward * cl.cgameSensitivity );
-        cmd->forwardmove = ClampChar( cmd->forwardmove + (int)pitch );
-    } else {
-        cl.viewangles[PITCH] += anglespeed * ( pitch * cl.cgameSensitivity );
-        cmd->forwardmove = ClampChar( cmd->forwardmove + (int)forward );
-    }
+	if (!cl_weaponWheelActive->integer)
+	{
 
-    cmd->upmove = ClampChar( cmd->upmove + (int)up );
+		if (!kb[KB_STRAFE].active)
+		{
+			cl.viewangles[YAW] += anglespeed * (yaw * cl.cgameSensitivity);
+			cmd->rightmove = ClampChar(cmd->rightmove + (int)right);
+		}
+		else
+		{
+			cl.viewangles[YAW] += anglespeed * (right * cl.cgameSensitivity);
+			cmd->rightmove = ClampChar(cmd->rightmove + (int)yaw);
+		}
+
+		if (kb[KB_MLOOK].active)
+		{
+			cl.viewangles[PITCH] += anglespeed * (forward * cl.cgameSensitivity);
+			cmd->forwardmove = ClampChar(cmd->forwardmove + (int)pitch);
+		}
+		else
+		{
+			cl.viewangles[PITCH] += anglespeed * (pitch * cl.cgameSensitivity);
+			cmd->forwardmove = ClampChar(cmd->forwardmove + (int)forward);
+		}
+	}
+	else
+	{
+		// still allow movement, but no camera
+		cmd->rightmove = ClampChar(cmd->rightmove + (int)right);
+		cmd->forwardmove = ClampChar(cmd->forwardmove + (int)forward);
+	}
+
+	cmd->upmove = ClampChar( cmd->upmove + (int)up );
     CL_GamepadUIMouseMove();
 }
 

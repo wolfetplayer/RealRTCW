@@ -2456,6 +2456,28 @@ void CG_MouseEvent( int x, int y ) {
 
 }
 
+#define JOY_AXIS_LOOK_X 2
+#define JOY_AXIS_LOOK_Y 3
+
+void CG_JoystickEvent( int axis, int value ) {
+
+    if ( !cg.weaponWheel.active ) {
+        return;
+    }
+
+    float norm = value / 32767.0f;
+
+    // right stick assumed
+	if (axis == JOY_AXIS_LOOK_X)
+	{
+		cg.weaponWheel.stickX = norm;
+	}
+	else if (axis == JOY_AXIS_LOOK_Y)
+	{
+		cg.weaponWheel.stickY = norm;
+	}
+}
+
 /*
 ==================
 CG_HideTeamMenus

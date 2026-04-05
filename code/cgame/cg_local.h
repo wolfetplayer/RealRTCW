@@ -793,6 +793,9 @@ typedef struct {
     qboolean active;
     int hoveredBank;
     int hoveredWeapon;
+	float stickX;
+	float stickY;
+	int latchedWeapon;
 } weaponWheel_t;
 
 //======================================================================
@@ -2016,6 +2019,7 @@ int CG_LastAttacker( void );
 void CG_LoadMenus( const char *menuFile );
 void CG_KeyEvent( int key, qboolean down );
 void CG_MouseEvent( int x, int y );
+void CG_JoystickEvent( int axis, int value );
 void CG_EventHandling( int type );
 
 qboolean CG_GetTag( int clientNum, char *tagname, orientation_t * or );

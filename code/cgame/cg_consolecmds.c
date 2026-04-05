@@ -213,11 +213,15 @@ static void CG_WeaponWheelDown_f( void ) {
 	cgs.cursorX = SCREEN_WIDTH * 0.35f;
 	cgs.cursorY = SCREEN_HEIGHT * 0.5f;
 
+	cg.weaponWheel.stickX = 0.0f;
+	cg.weaponWheel.stickY = 0.0f;
+
 	cg.weaponWheel.active = qtrue;
 	trap_Cvar_Set( "cg_weaponWheelActive", "1" );
 
 	cg.weaponWheel.hoveredBank = 0;
 	cg.weaponWheel.hoveredWeapon = 0;
+	cg.weaponWheel.latchedWeapon = 0;
 }
 
 static void CG_WeaponWheelUp_f( void ) {
@@ -225,11 +229,19 @@ static void CG_WeaponWheelUp_f( void ) {
 		return;
 	}
 
+	cg.weaponWheel.stickX = 0.0f;
+	cg.weaponWheel.stickY = 0.0f;
+
 	cg.weaponWheel.active = qfalse;
 	trap_Cvar_Set( "cg_weaponWheelActive", "0" );
 
-	if ( cg.weaponWheel.hoveredWeapon > 0 ) {
-		CG_FinishWeaponChange( cg.weaponSelect, cg.weaponWheel.hoveredWeapon );
+	int weapon = cg.weaponWheel.latchedWeapon > 0
+					 ? cg.weaponWheel.latchedWeapon
+					 : cg.weaponWheel.hoveredWeapon;
+
+	if (weapon > 0)
+	{
+		CG_FinishWeaponChange(cg.weaponSelect, weapon);
 	}
 }
 

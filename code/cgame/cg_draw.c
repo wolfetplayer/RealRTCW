@@ -4566,11 +4566,13 @@ void CG_DrawWeaponWheel( void ) {
 	}
 
 	// --- cursor ---
-	CG_DrawPic(
-		cgs.cursorX - 8.0f,
-		cgs.cursorY - 8.0f,
-		16.0f,
-		16.0f,
-		cgs.media.selectCursor
-	);
+	if (fabsf(cg.weaponWheel.stickX) <= 0.2f && fabsf(cg.weaponWheel.stickY) <= 0.2f)
+	{
+		CG_DrawPic(
+			cgs.cursorX - 8.0f,
+			cgs.cursorY - 8.0f,
+			16.0f,
+			16.0f,
+			cgs.media.selectCursor);
+	}
 }

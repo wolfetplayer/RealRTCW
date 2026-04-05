@@ -5274,7 +5274,6 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 		if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
 			continue;
 
-		// --- WHITELIST ---
 		switch ( w ) {
 
 		case WP_KNIFE:
@@ -5342,40 +5341,83 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 	float cx = SCREEN_WIDTH * 0.35f;
 	float cy = SCREEN_HEIGHT * 0.5f;
 
-	// --- FIXED DIRECTION (no inversion) ---
-	float dx = cx - cursorx;
-	float dy = cy - cursory;
+	float dx, dy;
+	float len;
 
-	float len = sqrtf( dx * dx + dy * dy );
+	qboolean usingStick = qfalse;
 
-	if ( len < 30.0f ) {
-		cg.weaponWheel.hoveredWeapon = 0;
-		return;
+	if ( fabsf( cg.weaponWheel.stickX ) > 0.2f || fabsf( cg.weaponWheel.stickY ) > 0.2f ) {
+		usingStick = qtrue;
 	}
 
-	dx /= len;
-	dy /= len;
+	if ( usingStick ) {
+		dx = cg.weaponWheel.stickX;
+		dy = cg.weaponWheel.stickY;
+
+		len = sqrtf( dx * dx + dy * dy );
+
+		if (len < 0.2f)
+		{
+
+			// Do NOT clear selection if we already latched one
+			if (cg.weaponWheel.latchedWeapon > 0)
+			{
+				cg.weaponWheel.hoveredWeapon = cg.weaponWheel.latchedWeapon;
+			}
+			else
+			{
+				cg.weaponWheel.hoveredWeapon = 0;
+			}
+
+			return;
+		}
+
+		dx /= len;
+		dy /= len;
+	} else {
+		dx = cursorx - cx;
+		dy = cursory - cy;
+
+		len = sqrtf( dx * dx + dy * dy );
+
+		if ( len < 30.0f ) {
+			cg.weaponWheel.hoveredWeapon = 0;
+			return;
+		}
+
+		dx /= len;
+		dy /= len;
+	}
 
 	float angle = atan2f( dy, dx );
-
-	angle -= M_PI * 0.5f;
+	angle += M_PI * 0.5f;
 
 	if ( angle < 0 ) {
-		angle += 2 * M_PI;
+		angle += 2.0f * M_PI;
+	}
+	if ( angle >= 2.0f * M_PI ) {
+		angle -= 2.0f * M_PI;
 	}
 
-	float sectorSize = ( 2 * M_PI ) / numVisible;
+	float sectorSize = ( 2.0f * M_PI ) / (float)numVisible;
+	float angleOffset = sectorSize * 0.5f;
 
-	int idx = (int)( ( angle + sectorSize * 0.5f ) / ( 2 * M_PI ) * numVisible );
+	int idx = (int)( ( angle + angleOffset ) / sectorSize );
 
-	if ( idx < 0 ) {
+	if ( idx >= numVisible ) {
 		idx = 0;
 	}
-	if ( idx >= numVisible ) {
-		idx = numVisible - 1;
+
+	int newWeapon = visibleWeapons[idx];
+
+	// Only update latch if stick is actively used
+	if (usingStick)
+	{
+		cg.weaponWheel.latchedWeapon = newWeapon;
 	}
 
-	cg.weaponWheel.hoveredWeapon = visibleWeapons[idx];
+	// Hover is always current frame
+	cg.weaponWheel.hoveredWeapon = newWeapon;
 }
 
 /*

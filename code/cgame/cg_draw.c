@@ -4359,12 +4359,6 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 		return;
 	}
 
-
-	if (cg.weaponWheel.active)
-	{
-		CG_UpdateWeaponWheelSelection( cgs.cursorX, cgs.cursorY );
-	}
-
 	// if they are waiting at the mission stats screen, show the stats
 		if ( strlen( cg_missionStats.string ) > 1 ) {
 			trap_Cvar_Set( "com_expectedhunkusage", "-2" );

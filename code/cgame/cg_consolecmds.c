@@ -209,7 +209,18 @@ static void CG_InventoryUp_f( void ) {
 //----(SA)	end
 
 static void CG_WeaponWheelDown_f( void ) {
-	
+
+	if (cg.snap->ps.eFlags & EF_MG42_ACTIVE)
+	{
+		return;
+	}
+
+	if (cg.snap->ps.eFlags & EF_DEAD)
+	{
+		return;
+	}
+
+
 	cg.weaponWheel.openTime = cg.time;
 
 	cgs.cursorX = SCREEN_WIDTH * 0.35f;

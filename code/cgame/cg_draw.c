@@ -4434,6 +4434,16 @@ void CG_DrawWeaponWheel( void ) {
 		if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
 			continue;
 
+		int ammoIndex = BG_FindAmmoForWeapon(w);
+		int clipIndex = BG_FindClipForWeapon(w);
+
+		if (ammoIndex < 0 && clipIndex < 0)
+			continue;
+
+		if ((ammoIndex < 0 || cg.snap->ps.ammo[ammoIndex] <= 0) &&
+			(clipIndex < 0 || cg.snap->ps.ammoclip[clipIndex] <= 0))
+			continue;
+
 		// --- WHITELIST ---
 		switch ( w ) {
 

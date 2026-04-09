@@ -220,6 +220,13 @@ static void CG_WeaponWheelDown_f( void ) {
 		return;
 	}
 
+	if ( cg.zoomedScope ) {
+		return;
+	}
+
+	if ( cg.zoomedBinoc ) {
+		return;
+	}
 
 	cg.weaponWheel.openTime = cg.time;
 

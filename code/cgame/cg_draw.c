@@ -4392,6 +4392,64 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 	CG_Draw2D(stereoView);
 }
 
+static qboolean isChargeBased( int weap ) {
+	switch ( weap ) {
+	case WP_AIRSTRIKE:
+	case WP_POISONGAS:
+	case WP_DYNAMITE_ENG:
+	case WP_SMOKE_BOMB:
+		return qtrue;
+	}
+	return qfalse;
+}
+
+static qboolean isClipOnly( int weap ) {
+	switch ( weap ) {
+	case WP_GRENADE_LAUNCHER:
+	case WP_GRENADE_PINEAPPLE:
+	case WP_DYNAMITE:
+	case WP_TESLA:
+	case WP_FLAMETHROWER:
+	case WP_KNIFE:
+		return qtrue;
+	}
+	return qfalse;
+}
+
+static void CG_WeaponWheelAmmoText( int weap, char *buffer, int bufferSize ) {
+	int ammoIndex;
+	int clipIndex;
+
+	buffer[0] = '\0';
+
+	if ( isChargeBased( weap ) ) {
+		return;
+	}
+
+	ammoIndex = BG_FindAmmoForWeapon( weap );
+	clipIndex = BG_FindClipForWeapon( weap );
+
+	if ( isClipOnly( weap ) ) {
+		if ( clipIndex >= 0 ) {
+			Com_sprintf( buffer, bufferSize, "%i",
+				cg.snap->ps.ammoclip[clipIndex] );
+		}
+		return;
+	}
+
+	if ( clipIndex >= 0 && ammoIndex >= 0 ) {
+		Com_sprintf( buffer, bufferSize, "%i/%i",
+			cg.snap->ps.ammoclip[clipIndex],
+			cg.snap->ps.ammo[ammoIndex] );
+	} else if ( ammoIndex >= 0 ) {
+		Com_sprintf( buffer, bufferSize, "%i",
+			cg.snap->ps.ammo[ammoIndex] );
+	} else if ( clipIndex >= 0 ) {
+		Com_sprintf( buffer, bufferSize, "%i",
+			cg.snap->ps.ammoclip[clipIndex] );
+	}
+}
+
 
 static const char *CG_WeaponWheelName( int weap ) {
 	gitem_t *item;
@@ -4600,18 +4658,20 @@ void CG_DrawWeaponWheel( void ) {
 		CG_DrawPic( x - w * 0.5f, y - h * 0.5f, w, h, icon );
 	}
 
-		if ( cg.weaponWheel.hoveredWeapon > 0 ) {
+	if ( cg.weaponWheel.hoveredWeapon > 0 ) {
 		const char *weaponName = CG_WeaponWheelName( cg.weaponWheel.hoveredWeapon );
+		char ammoText[32];
+		float color[4];
+		int w;
+
+		CG_WeaponWheelAmmoText( cg.weaponWheel.hoveredWeapon, ammoText, sizeof( ammoText ) );
+
+		color[0] = 1.0f;
+		color[1] = 1.0f;
+		color[2] = 1.0f;
+		color[3] = 1.0f;
 
 		if ( weaponName && weaponName[0] ) {
-			float color[4];
-			int w;
-
-			color[0] = 1.0f;
-			color[1] = 1.0f;
-			color[2] = 1.0f;
-			color[3] = 1.0f;
-
 			w = CG_DrawStrlen( weaponName ) * 10;
 
 #ifdef LOCALISATION
@@ -4639,6 +4699,22 @@ void CG_DrawWeaponWheel( void ) {
 				0
 			);
 #endif
+		}
+
+		if ( ammoText[0] ) {
+			w = CG_DrawStrlen( ammoText ) * 8;
+
+			CG_DrawStringExt2(
+				cx - ( w * 0.5f ),
+				cy + 34.0f,
+				ammoText,
+				color,
+				qfalse,
+				qtrue,
+				8,
+				8,
+				0
+			);
 		}
 	}
 

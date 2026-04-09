@@ -4408,7 +4408,7 @@ static const char *CG_WeaponWheelName( int weap ) {
 		return "";
 	}
 
-	if ( !cgs.itemPrintNames[itemNum] ) {
+	if ( !cgs.itemPrintNames[itemNum][0] ) {
 		return "";
 	}
 

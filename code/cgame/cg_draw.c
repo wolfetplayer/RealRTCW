@@ -4392,6 +4392,29 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 	CG_Draw2D(stereoView);
 }
 
+
+static const char *CG_WeaponWheelName( int weap ) {
+	gitem_t *item;
+	int itemNum;
+
+	item = BG_FindItemForWeapon( weap );
+	if ( !item ) {
+		return "";
+	}
+
+	itemNum = item - bg_itemlist;
+
+	if ( itemNum <= 0 ) {
+		return "";
+	}
+
+	if ( !cgs.itemPrintNames[itemNum] ) {
+		return "";
+	}
+
+	return cgs.itemPrintNames[itemNum];
+}
+
 void CG_DrawWeaponWheel( void ) {
 	float cx, cy;
 	float radius;
@@ -4476,7 +4499,7 @@ void CG_DrawWeaponWheel( void ) {
 	}
 
 	// --- dynamic radius ---
-	float t = (cg.time - cg.weaponWheel.openTime) / 50.0f;
+	float t = (cg.time - cg.weaponWheel.openTime) / 150.0f;
 	if (t > 1.0f)
 		t = 1.0f;
 
@@ -4565,6 +4588,48 @@ void CG_DrawWeaponWheel( void ) {
 		}
 
 		CG_DrawPic( x - w * 0.5f, y - h * 0.5f, w, h, icon );
+	}
+
+		if ( cg.weaponWheel.hoveredWeapon > 0 ) {
+		const char *weaponName = CG_WeaponWheelName( cg.weaponWheel.hoveredWeapon );
+
+		if ( weaponName && weaponName[0] ) {
+			float color[4];
+			int w;
+
+			color[0] = 1.0f;
+			color[1] = 1.0f;
+			color[2] = 1.0f;
+			color[3] = 1.0f;
+
+			w = CG_DrawStrlen( weaponName ) * 10;
+
+#ifdef LOCALISATION
+			CG_DrawStringExt2(
+				cx - ( w * 0.5f ),
+				cy + 20.0f,
+				CG_TranslateString( weaponName ),
+				color,
+				qfalse,
+				qtrue,
+				10,
+				10,
+				0
+			);
+#else
+			CG_DrawStringExt2(
+				cx - ( w * 0.5f ),
+				cy + 20.0f,
+				weaponName,
+				color,
+				qfalse,
+				qtrue,
+				10,
+				10,
+				0
+			);
+#endif
+		}
 	}
 
 	// --- cursor ---

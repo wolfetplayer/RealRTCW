@@ -673,6 +673,22 @@ void CL_JoystickMove( usercmd_t *cmd ) {
     float right   = (j_side->value    * j_moveSens->value) * cl.joystickAxis[j_side_axis->integer];
 	float up = (j_up->value * j_moveSens->value) * cl.joystickAxis[j_up_axis->integer];
 
+	if (cl_useKeyLean->integer && (cmd->buttons & BUTTON_ACTIVATE))
+	{
+		const float leanDeadzone = 0.25f;
+
+		if (right > leanDeadzone)
+		{
+			cmd->wbuttons |= WBUTTON_LEANRIGHT;
+			right = 0.0f;
+		}
+		else if (right < -leanDeadzone)
+		{
+			cmd->wbuttons |= WBUTTON_LEANLEFT;
+			right = 0.0f;
+		}
+	}
+
 	// Analog-walk
 	if (j_walk_threshold && j_walk_threshold->value > 0.0f)
 	{

@@ -161,6 +161,7 @@ cvar_t	*cl_guidServerUniq;
 
 cvar_t	*cl_consoleKeys;
 cvar_t  *cl_weaponWheelActive;
+cvar_t  *cl_useKeyLean;
 
 cvar_t	*cl_rate;
 
@@ -3817,6 +3818,8 @@ void CL_Init( void ) {
 	cl_consoleKeys = Cvar_Get( "cl_consoleKeys", "~ ` 0x7e 0x60", CVAR_ARCHIVE);
 
 	cl_weaponWheelActive = Cvar_Get( "cg_weaponWheelActive", "0", 0 );
+
+	cl_useKeyLean = Cvar_Get( "cl_useKeyLean", "1", CVAR_ARCHIVE );
 
 	// userinfo
 	Cvar_Get( "name", "WolfPlayer", CVAR_USERINFO | CVAR_ARCHIVE );

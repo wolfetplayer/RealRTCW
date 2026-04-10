@@ -409,18 +409,15 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	side += movespeed * CL_KeyState( &kb[KB_MOVERIGHT] );
 	side -= movespeed * CL_KeyState( &kb[KB_MOVELEFT] );
 
-// Why would anyone disable strafing when holding down use key?
-//----(SA)	added
-	// if ( cmd->buttons & BUTTON_ACTIVATE ) {
-	// 	if ( side > 0 ) {
-	// 		cmd->wbuttons |= WBUTTON_LEANRIGHT;
-	// 	} else if ( side < 0 ) {
-	// 		cmd->wbuttons |= WBUTTON_LEANLEFT;
-	// 	}
+	if ( cl_useKeyLean->integer && ( cmd->buttons & BUTTON_ACTIVATE ) ) {
+		if ( side > 0 ) {
+			cmd->wbuttons |= WBUTTON_LEANRIGHT;
+		} else if ( side < 0 ) {
+			cmd->wbuttons |= WBUTTON_LEANLEFT;
+		}
 
-	// 	side = 0;   // disallow the strafe when holding 'activate'
-	// }
-//----(SA)	end
+		side = 0;   // disallow strafe when holding activate
+	}
 
 	up += movespeed * CL_KeyState( &kb[KB_UP] );
 	up -= movespeed * CL_KeyState( &kb[KB_DOWN] );

@@ -810,7 +810,11 @@ float CG_ApplySimpleZoomFov( float currentFovX ) {
 		return currentFovX;
 	}
 
-	// Optional: don't allow while using heavy weapon
+	if ( cg.predictedPlayerState.eFlags & EF_DEAD  ) {
+		return currentFovX;
+	}
+
+	// don't allow while using heavy weapon
 	if ( cg.snap && cg.snap->ps.persistant[PERS_HWEAPON_USE] ) {
 		return currentFovX;
 	}

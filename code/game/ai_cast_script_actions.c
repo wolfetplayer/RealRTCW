@@ -150,7 +150,8 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 	pString = params;
 	token = COM_ParseExt( &pString, qfalse );
 	if ( !token[0] ) {
-		G_Error( "AI Scripting: gotomarker must have an targetname\n" );
+		G_Printf( "WARNING: AI Scripting: gotomarker must have an targetname\n" );
+		return qtrue;
 	}
 
 	// if we already are going to the marker, just use that, and check if we're in range
@@ -182,7 +183,9 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 					if ( !ent ) {
 						ent = AICast_FindEntityForName( token );
 						if ( !ent ) {
-							G_Error( "AI Scripting: gotomarker cannot find targetname \"%s\"\n", token );
+							G_Printf( "WARNING: AI Scripting: gotomarker cannot find targetname \"%s\"\n", token );
+							cs->followTime = level.time + 500;
+							return qfalse;
 						}
 					}
 					// set the view angle manually
@@ -287,10 +290,19 @@ qboolean AICast_ScriptAction_GotoMarker( cast_state_t *cs, char *params ) {
 
     if ( !ent ) {
         if ( !groupMode ) {
-            G_Error( "AI Scripting: gotomarker can't find ai_marker with \"targetname\" = \"%s\"\n", prefix );
+            G_Printf( "WARNING: AI Scripting: gotomarker can't find ai_marker with \"targetname\" = \"%s\"\n", prefix );
         } else {
-            G_Error( "AI Scripting: gotomarker can't find ai_marker with prefix \"%s*\"\n", prefix );
+            G_Printf( "WARNING: AI Scripting: gotomarker can't find ai_marker with prefix \"%s*\"\n", prefix );
         }
+
+        cs->castScriptStatus.scriptGotoEnt = -1;
+        cs->castScriptStatus.scriptGotoId = 0;
+        cs->castScriptStatus.scriptGotoIsGroup = qfalse;
+        cs->castScriptStatus.scriptNoMoveTime = 0;
+        cs->followTime = 0;
+        cs->followIsGoto = qfalse;
+        AIFunc_IdleStart( cs );
+        return qtrue;
     }
 
     // Remember which mode we used, so the cached section doesn't compare exact name

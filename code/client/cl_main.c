@@ -139,6 +139,8 @@ cvar_t *j_uiSpeed;
 cvar_t *j_uiExpo;
 cvar_t *j_uiDeadzone;
 
+cvar_t *j_invertLook;
+
 cvar_t  *cl_activeAction;
 
 cvar_t  *cl_motdString;
@@ -3778,6 +3780,8 @@ void CL_Init( void ) {
 	j_uiSpeed =     Cvar_Get ("j_uiSpeed",      "700", CVAR_ARCHIVE);
 	j_uiExpo =	    Cvar_Get ("j_uiExpo",      "1.6", CVAR_ARCHIVE);
 	j_uiDeadzone =	Cvar_Get ("j_uiDeadzone",   "0.18", CVAR_ARCHIVE);
+
+	j_invertLook = Cvar_Get( "j_invertLook", "0", CVAR_ARCHIVE );
 
 	j_lookSens = Cvar_Get ("j_lookSens", "1.0", CVAR_ARCHIVE);
 	j_moveSens = Cvar_Get ("j_moveSens", "1.0", CVAR_ARCHIVE);

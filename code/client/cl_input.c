@@ -669,7 +669,12 @@ void CL_JoystickMove( usercmd_t *cmd ) {
     float yaw   = (j_yaw->value   * j_lookSens->value) * yawAxis;
     float pitch = (j_pitch->value * j_lookSens->value) * pitchAxis;
 
-    float forward = (j_forward->value * j_moveSens->value) * cl.joystickAxis[j_forward_axis->integer];
+	if (j_invertLook && j_invertLook->integer)
+	{
+		pitch = -pitch;
+	}
+
+	float forward = (j_forward->value * j_moveSens->value) * cl.joystickAxis[j_forward_axis->integer];
     float right   = (j_side->value    * j_moveSens->value) * cl.joystickAxis[j_side_axis->integer];
 	float up = (j_up->value * j_moveSens->value) * cl.joystickAxis[j_up_axis->integer];
 

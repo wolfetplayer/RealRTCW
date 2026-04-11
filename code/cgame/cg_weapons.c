@@ -7187,7 +7187,7 @@ void CG_UpdateAimAssist( void ) {
 
 
 	float coneDeg = 4.5f;
-	if (cg.zoomed)
+	if (cg.zoomed || cg.zoomedScope || cg.simpleZoomed)
 	{					
 		coneDeg = 6.0f; 
 	}

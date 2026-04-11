@@ -709,6 +709,12 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 			}
 		}
 
+		// early check for enemy team hint, so it wouldn't overlay stealth knife hint
+		if ( traceEnt->aiTeam == AITEAM_NAZI || traceEnt->aiTeam == AITEAM_MONSTER ) {
+			hintType = HINT_PLYR_ENEMY;
+			hintDist = CH_ENEMY_DIST; 
+		}
+
 		if ( ent->s.weapon == WP_KNIFE ) {
 			vec3_t pforward, eforward;
 			qboolean canKnife = qfalse;
@@ -745,10 +751,6 @@ void G_CheckForCursorHints( gentity_t *ent ) {
    		        hintType = HINT_PLYR_FRIEND;
 			    hintDist = CH_FRIENDLY_DIST; 
 			}
-		} else if ( traceEnt->aiTeam == AITEAM_NAZI || traceEnt->aiTeam == AITEAM_MONSTER )
-		{
-   		        hintType = HINT_PLYR_ENEMY;
-			    hintDist = CH_ENEMY_DIST; 
 		}
 
 	}

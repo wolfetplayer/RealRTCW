@@ -227,9 +227,9 @@ cvarTable_t gameCvarTable[] = {
 	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_level_was_selected, "g_level_was_selected", "0", 0, 0, qfalse},
 
-	{&g_ee_skinEliteGuard, "g_ee_skinEliteGuard", "0", 0, 0, qfalse},
-	{&g_ee_skinMercenary, "g_ee_skinMercenary", "0", 0, 0, qfalse},
-	{&g_ee_skinZombie, "g_ee_skinZombie", "0", 0, 0, qfalse},
+	{&g_ee_skinEliteGuard, "g_ee_skinEliteGuard", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_ee_skinMercenary, "g_ee_skinMercenary", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_ee_skinZombie, "g_ee_skinZombie", "0", CVAR_ARCHIVE, 0, qfalse},
 
 	{&g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

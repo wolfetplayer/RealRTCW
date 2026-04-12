@@ -2270,6 +2270,8 @@ void CG_HoldableUsedupChange( void ); //----(SA)	added
 
 void CG_UpdateWeaponWheelSelection( float cursorx, float cursory );
 
+int CG_CollectWeaponWheelWeapons( int *visibleWeapons, int maxWeapons );
+
 //----(SA) added to header to access from outside cg_weapons.c
 void CG_AddDebris( vec3_t origin, vec3_t dir, int speed, int duration, int count );
 //----(SA) done

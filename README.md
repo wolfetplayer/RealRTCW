@@ -10,24 +10,31 @@ The project focuses on modernizing the engine, expanding gameplay systems, and i
 
 ### Engine & Platform
 - Full **iortcw feature set**, including proper widescreen support  
-- **Steam integration** via *Steamshim* (by Ryan C. Gordon)  
+- **Steam integration** via *Steamshim* (by Ryan C. Gordon)
+- Steam Achievements and Steam Stats support
+- Steam Workshop Integration
+- Steam Rich Presence support
 - **FFmpeg** video playback support  
 - Increased engine limits  
-- Custom **BSPC** and **BSPCUI** tools  
+- Custom **BSPC** and **BSPCUI** tools
+- Foliage rendering system
+- Atmospheric environmental effects
+- Extended scripting functionality
+- Automatic AI attribute system (`.aidefaults`)   
+- Expanded `.weap` file system    
 
 ### Gameplay & Content
 - Expanded weapon arsenal  
-- Survival game mode  
-- Atmospheric and environmental effects  
-- Foliage rendering support  
-- Automatic AI attribute system (`.aidefaults`)  
-- Extended scripting functionality  
-- Expanded `.weap` file system  
+- Survival game mode
+- Restored console ports content and features
+- Modular HUD system
 
 ### Usability & Quality of Life
-- Subtitles support  
+- Subtitles support
+- Weapon wheel
 - Improved localization system  
-- Enhanced controller/gamepad support  
+- Enhanced controller/gamepad support
+- Aim assist for gamepads
 - `.pk3` gating via CVARs  
 - Numerous bug fixes and general QoL improvements  
 

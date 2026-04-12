@@ -5274,14 +5274,14 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 		if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
 			continue;
 
-		int ammoIndex = BG_FindAmmoForWeapon(w);
-		int clipIndex = BG_FindClipForWeapon(w);
+		int ammoIndex = BG_FindAmmoForWeapon( w );
+		int clipIndex = BG_FindClipForWeapon( w );
 
-		if (ammoIndex < 0 && clipIndex < 0)
+		if ( ammoIndex < 0 && clipIndex < 0 )
 			continue;
 
-		if ((ammoIndex < 0 || cg.snap->ps.ammo[ammoIndex] <= 0) &&
-			(clipIndex < 0 || cg.snap->ps.ammoclip[clipIndex] <= 0))
+		if ( ( ammoIndex < 0 || cg.snap->ps.ammo[ammoIndex] <= 0 ) &&
+			( clipIndex < 0 || cg.snap->ps.ammoclip[clipIndex] <= 0 ) )
 			continue;
 
 		switch ( w ) {
@@ -5348,6 +5348,13 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 		return;
 	}
 
+	if ( numVisible == 1 ) {
+		cg.weaponWheel.hoveredWeapon = visibleWeapons[0];
+		cg.weaponWheel.latchedWeapon = visibleWeapons[0];
+		cg.weaponWheel.lastWeapon = visibleWeapons[0];
+		return;
+	}
+
 	float cx = SCREEN_WIDTH * 0.35f;
 	float cy = SCREEN_HEIGHT * 0.5f;
 
@@ -5366,11 +5373,11 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 
 		len = sqrtf( dx * dx + dy * dy );
 
-		if (len < 0.2f)
+		if ( len < 0.2f )
 		{
 
 			// Do NOT clear selection if we already latched one
-			if (cg.weaponWheel.latchedWeapon > 0)
+			if ( cg.weaponWheel.latchedWeapon > 0 )
 			{
 				cg.weaponWheel.hoveredWeapon = cg.weaponWheel.latchedWeapon;
 			}
@@ -5399,38 +5406,63 @@ void CG_UpdateWeaponWheelSelection( float cursorx, float cursory ) {
 		dy /= len;
 	}
 
-	float angle = atan2f( dy, dx );
-	angle += M_PI * 0.5f;
+	int idx = 0;
 
-	if ( angle < 0 ) {
-		angle += 2.0f * M_PI;
-	}
-	if ( angle >= 2.0f * M_PI ) {
-		angle -= 2.0f * M_PI;
-	}
+	if ( numVisible < 5 ) {
 
-	float sectorSize = ( 2.0f * M_PI ) / (float)numVisible;
-	float angleOffset = sectorSize * 0.5f;
+		if ( numVisible == 2 ) {
+			idx = ( dx >= 0.0f ) ? 1 : 0;
+		} else if ( numVisible == 3 ) {
+			if ( dy < -0.45f ) {
+				idx = 0;
+			} else if ( dx >= 0.0f ) {
+				idx = 1;
+			} else {
+				idx = 2;
+			}
+		} else if ( numVisible == 4 ) {
+			if ( fabsf( dx ) > fabsf( dy ) ) {
+				idx = ( dx >= 0.0f ) ? 1 : 3;
+			} else {
+				idx = ( dy >= 0.0f ) ? 2 : 0;
+			}
+		}
 
-	int idx = (int)( ( angle + angleOffset ) / sectorSize );
+	} else {
 
-	if ( idx >= numVisible ) {
-		idx = 0;
+		float angle = atan2f( dy, dx );
+		angle += M_PI * 0.5f;
+
+		if ( angle < 0 ) {
+			angle += 2.0f * M_PI;
+		}
+		if ( angle >= 2.0f * M_PI ) {
+			angle -= 2.0f * M_PI;
+		}
+
+		float sectorSize = ( 2.0f * M_PI ) / (float)numVisible;
+		float angleOffset = sectorSize * 0.5f;
+
+		idx = (int)( ( angle + angleOffset ) / sectorSize );
+
+		if ( idx >= numVisible ) {
+			idx = 0;
+		}
 	}
 
 	int newWeapon = visibleWeapons[idx];
 
-	if (usingStick)
+	if ( usingStick )
 	{
 
 		// if switching too fast between neighbors, resist it
-		if (cg.weaponWheel.lastWeapon != 0 &&
-			newWeapon != cg.weaponWheel.lastWeapon)
+		if ( cg.weaponWheel.lastWeapon != 0 &&
+			newWeapon != cg.weaponWheel.lastWeapon )
 		{
 
 			float threshold = 0.15f; // tune
 
-			if (len < (0.4f + threshold))
+			if ( len < ( 0.4f + threshold ) )
 			{
 				newWeapon = cg.weaponWheel.lastWeapon;
 			}

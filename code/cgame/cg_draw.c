@@ -4492,14 +4492,14 @@ void CG_DrawWeaponWheel( void ) {
 		if ( !COM_BitCheck( cg.snap->ps.weapons, w ) )
 			continue;
 
-		int ammoIndex = BG_FindAmmoForWeapon(w);
-		int clipIndex = BG_FindClipForWeapon(w);
+		int ammoIndex = BG_FindAmmoForWeapon( w );
+		int clipIndex = BG_FindClipForWeapon( w );
 
-		if (ammoIndex < 0 && clipIndex < 0)
+		if ( ammoIndex < 0 && clipIndex < 0 )
 			continue;
 
-		if ((ammoIndex < 0 || cg.snap->ps.ammo[ammoIndex] <= 0) &&
-			(clipIndex < 0 || cg.snap->ps.ammoclip[clipIndex] <= 0))
+		if ( ( ammoIndex < 0 || cg.snap->ps.ammo[ammoIndex] <= 0 ) &&
+			( clipIndex < 0 || cg.snap->ps.ammoclip[clipIndex] <= 0 ) )
 			continue;
 
 		// --- WHITELIST ---
@@ -4567,8 +4567,8 @@ void CG_DrawWeaponWheel( void ) {
 	}
 
 	// --- dynamic radius ---
-	float t = (cg.time - cg.weaponWheel.openTime) / 150.0f;
-	if (t > 1.0f)
+	float t = ( cg.time - cg.weaponWheel.openTime ) / 150.0f;
+	if ( t > 1.0f )
 		t = 1.0f;
 
 	float baseRadius = 100.0f;
@@ -4576,6 +4576,10 @@ void CG_DrawWeaponWheel( void ) {
 
 	radius = baseRadius + extra;
 	radius *= t;
+
+	if ( numVisible < 5 ) {
+		radius = 85.0f * t;
+	}
 
 	if ( radius > 200.0f ) {
 		radius = 200.0f;
@@ -4590,9 +4594,6 @@ void CG_DrawWeaponWheel( void ) {
 	if ( numVisible > 16 ) {
 		scale = 0.65f;
 	}
-
-	// --- center slices properly ---
-	float angleOffset = ( 2.0f * M_PI ) / (float)numVisible * 0.5f;
 
 	for ( int idx = 0; idx < numVisible; idx++ ) {
 
@@ -4635,17 +4636,59 @@ void CG_DrawWeaponWheel( void ) {
 			break;
 		}
 
-		float selectedScale = (weap == cg.weaponWheel.hoveredWeapon) ? 1.3f : 1.0f;
+		float selectedScale = ( weap == cg.weaponWheel.hoveredWeapon ) ? 1.3f : 1.0f;
 
 		float h = 40.0f * scale * selectedScale;
-		float w = wideweap ? (h * 2.0f) : h;
+		float w = wideweap ? ( h * 2.0f ) : h;
 
-		float angle = ( (float)idx / (float)numVisible ) * 2.0f * M_PI;
-		angle += angleOffset;
-		angle -= M_PI * 0.5f;
+		float x = cx;
+		float y = cy;
 
-		float x = cx + cosf( angle ) * radius;
-		float y = cy + sinf( angle ) * radius;
+		if ( numVisible == 1 ) {
+			x = cx;
+			y = cy - radius;
+		} else if ( numVisible == 2 ) {
+			if ( idx == 0 ) {
+				x = cx - radius;
+				y = cy;
+			} else {
+				x = cx + radius;
+				y = cy;
+			}
+		} else if ( numVisible == 3 ) {
+			if ( idx == 0 ) {
+				x = cx;
+				y = cy - radius;
+			} else if ( idx == 1 ) {
+				x = cx + radius * 0.85f;
+				y = cy + radius * 0.55f;
+			} else {
+				x = cx - radius * 0.85f;
+				y = cy + radius * 0.55f;
+			}
+		} else if ( numVisible == 4 ) {
+			if ( idx == 0 ) {
+				x = cx;
+				y = cy - radius;
+			} else if ( idx == 1 ) {
+				x = cx + radius;
+				y = cy;
+			} else if ( idx == 2 ) {
+				x = cx;
+				y = cy + radius;
+			} else {
+				x = cx - radius;
+				y = cy;
+			}
+		} else {
+			float angleOffset = ( 2.0f * M_PI ) / (float)numVisible * 0.5f;
+			float angle = ( (float)idx / (float)numVisible ) * 2.0f * M_PI;
+			angle += angleOffset;
+			angle -= M_PI * 0.5f;
+
+			x = cx + cosf( angle ) * radius;
+			y = cy + sinf( angle ) * radius;
+		}
 
 		qhandle_t icon;
 
@@ -4719,13 +4762,13 @@ void CG_DrawWeaponWheel( void ) {
 	}
 
 	// --- cursor ---
-	if (fabsf(cg.weaponWheel.stickX) <= 0.2f && fabsf(cg.weaponWheel.stickY) <= 0.2f)
+	if ( fabsf( cg.weaponWheel.stickX ) <= 0.2f && fabsf( cg.weaponWheel.stickY ) <= 0.2f )
 	{
 		CG_DrawPic(
 			cgs.cursorX - 8.0f,
 			cgs.cursorY - 8.0f,
 			16.0f,
 			16.0f,
-			cgs.media.selectCursor);
+			cgs.media.selectCursor );
 	}
 }

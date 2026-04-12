@@ -1474,6 +1474,8 @@ void CG_DrawSkyBoxPortal( void ) {
 			fov_x = 55;
 		}
 
+		fov_x = CG_ApplySimpleZoomFov(fov_x);
+
 		if ( cg_fixedAspect.integer ) {
 			// Based on LordHavoc's code for Darkplaces
 			// http://www.quakeworld.nu/forum/topic/53/what-does-your-qw-look-like/page/30

@@ -187,6 +187,10 @@ vmCvar_t g_playerSurvivalClass;
 vmCvar_t g_ee_skinEliteGuard;
 vmCvar_t g_ee_skinMercenary;
 vmCvar_t g_ee_skinZombie;
+vmCvar_t g_ee_earlyWeapons;
+vmCvar_t g_ee_endgameSwitch;
+vmCvar_t g_ee_progress;
+vmCvar_t g_ee_svAgent1;
 
 vmCvar_t g_mapname;
 
@@ -230,6 +234,10 @@ cvarTable_t gameCvarTable[] = {
 	{&g_ee_skinEliteGuard, "g_ee_skinEliteGuard", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_ee_skinMercenary, "g_ee_skinMercenary", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_ee_skinZombie, "g_ee_skinZombie", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_ee_earlyWeapons, "g_ee_earlyWeapons", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_ee_endgameSwitch, "g_ee_endgameSwitch", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_ee_progress, "g_ee_progress", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_ee_svAgent1, "g_ee_svAgent1", "1", CVAR_ARCHIVE, 0, qfalse},
 
 	{&g_playerSurvivalClass, "g_playersurvivalclass", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_specialWaves, "g_specialwaves", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

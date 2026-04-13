@@ -1180,6 +1180,11 @@ extern vmCvar_t g_ee_skinEliteGuard;
 extern vmCvar_t g_ee_skinMercenary;
 extern vmCvar_t g_ee_skinZombie;
 
+extern vmCvar_t g_ee_earlyWeapons;
+extern vmCvar_t g_ee_endgameSwitch;
+extern vmCvar_t g_ee_progress;
+extern vmCvar_t g_ee_svAgent1;
+
 extern vmCvar_t g_reloading;        //----(SA)	added
 
 extern vmCvar_t g_dedicated;

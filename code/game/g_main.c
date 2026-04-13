@@ -50,9 +50,6 @@ gclient_t g_clients[MAX_CLIENTS];
 
 int g_scriptGlobalAccumBuffer[G_MAX_SCRIPT_GLOBAL_ACCUM_BUFFERS];
 
-// Safe endgame fix
-qboolean g_endgameTriggered = qfalse;
-
 gentity_t       *g_camEnt = NULL;   //----(SA)	script camera
 
 // Rafael gameskill
@@ -478,16 +475,6 @@ qboolean G_canStealthStab( int aiChar ) {
 	}
 	return qfalse;
 }
-
-/*
-==============
-G_EndGame
-==============
-*/
-void G_EndGame( void ) {
-	trap_Endgame();
-}
-
 
 #define CH_KNIFE_DIST       48  // from g_weapon.c
 #define CH_LADDER_DIST      100
@@ -2391,12 +2378,15 @@ void CheckReloadStatus( void ) {
 					} 
 				  }
 				}
-				else if (g_reloading.integer == RELOAD_ENDGAME)
+				else if ( g_reloading.integer == RELOAD_ENDGAME )
 				{
-					// defer endgame until it's safe
-					g_endgameTriggered = qtrue;
-					level.reloadDelayTime = 0;
-					trap_Cvar_Set("g_reloading", "0"); // prevent it from looping
+					// clear any staged end-sequence effects from bare "changelevel"
+					trap_SetConfigstring( CS_SCREENFADE, "" );
+					trap_SetConfigstring( CS_MUSIC_QUEUE, "" );
+					trap_SendServerCommand( -1, "snd_fade 1 0" );
+
+					trap_Cvar_Set( "g_reloading", "0" );
+					trap_SendConsoleCommand( EXEC_APPEND, "disconnect\n" );
 				}
 				else
 				{
@@ -2761,10 +2751,22 @@ void G_RunFrame( int levelTime ) {
 
 	// Ridah, check if we are reloading, and times have expired
 	CheckReloadStatus();
+}
 
-	if (g_endgameTriggered)
-	{
-		g_endgameTriggered = qfalse;
-		G_EndGame(); // this will now call trap_Endgame() safely
+/*
+==============
+G_ScheduleEndgame
+==============
+*/
+void G_ScheduleEndgame( int delay ) {
+	if ( g_reloading.integer ) {
+		return;
 	}
+
+	if ( delay < 0 ) {
+		delay = 0;
+	}
+
+	trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_ENDGAME ) );
+	level.reloadDelayTime = level.time + delay;
 }

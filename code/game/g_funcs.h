@@ -1025,7 +1025,6 @@ If you have questions concerning this license or the applicable additional terms
 {"G_RemapTeamShaders", (byte *)G_RemapTeamShaders},
 {"G_FindTeams", (byte *)G_FindTeams},
 {"G_CheckForCursorHints", (byte *)G_CheckForCursorHints},
-{"G_EndGame", (byte *)G_EndGame},
 {"G_canStealthStab", (byte *)G_canStealthStab},
 {"G_Error", (byte *)G_Error},
 {"G_DPrintf", (byte *)G_DPrintf},

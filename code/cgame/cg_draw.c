@@ -1114,7 +1114,7 @@ static void CG_DrawScriptLabel() {
 		}
 	}
 	else {
-		s1 = va("");
+		s1 = "";
 	}
 	w1 = CG_DrawStrlen(s1) * BIGCHAR_WIDTH;
 
@@ -1122,7 +1122,7 @@ static void CG_DrawScriptLabel() {
 		s2 = va("%s", lbl->label);
 	}
 	else {
-		s2 = va("");
+		s2 = "";
 	}
 	w2 = CG_DrawStrlen(s2) * BIGCHAR_WIDTH;
 

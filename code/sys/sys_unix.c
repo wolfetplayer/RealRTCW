@@ -1091,7 +1091,7 @@ void Sys_StartProcess( char *cmdline, qboolean doexit ) {
 Sys_OpenURL
 =================
 */
-void Sys_OpenURL( char *url, qboolean doexit ) {
+void Sys_OpenURL( const char *url, qboolean doexit ) {
 	char *basepath, *homepath, *pwdpath;
 	char fname[20];
 	char fn[MAX_OSPATH];

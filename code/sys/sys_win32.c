@@ -972,7 +972,7 @@ void Sys_StartProcess( char *exeName, qboolean doexit ) {           // NERVE - S
 Sys_OpenURL
 ==================
 */
-void Sys_OpenURL( char *url, qboolean doexit ) {                // NERVE - SMF
+void Sys_OpenURL( const char *url, qboolean doexit ) {                // NERVE - SMF
 	HWND wnd;
 
 	if ( !ShellExecute( NULL, "open", url, NULL, NULL, SW_RESTORE ) ) {

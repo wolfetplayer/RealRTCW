@@ -1219,7 +1219,7 @@ void Sys_StartProcess( char *cmdline, qboolean doexit );            // NERVE - S
 // TTimo
 // show_bug.cgi?id=447
 //int Sys_ShellExecute(char *op, char *file, qboolean doexit, char *params, char *dir);	//----(SA) added
-void Sys_OpenURL( char *url, qboolean doexit );                     // NERVE - SMF
+void Sys_OpenURL( const char *url, qboolean doexit );
 int Sys_GetHighQualityCPU( void );
 
 /* This is based on the Adaptive Huffman algorithm described in Sayood's Data

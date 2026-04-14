@@ -172,7 +172,7 @@ typedef struct {
 	// ffmpeg
 	AVFormatContext *formatCtx;
 	AVPacket *packet;
-	AVCodec *vCodec;
+	const AVCodec *vCodec;
 	AVCodecContext *vCodecCtx;
 	AVFrame *vFrame, *vRgbaFrame;
 	SwsContext *swsCtx;
@@ -184,7 +184,7 @@ typedef struct {
 	int videoStream;
 	int audioStream;
 
-	AVCodec *aCodec;
+    const AVCodec *aCodec;
 	AVCodecContext *aCodecCtx;
 	AVFrame *aFrame;
 	SwrContext *swrCtx;

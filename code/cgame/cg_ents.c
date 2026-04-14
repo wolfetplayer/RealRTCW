@@ -1641,23 +1641,27 @@ static void CG_Efx( centity_t *cent ) {
 			}
 		}
 
-		for ( i = 0; i < MAX_TESLA_BOLTS; i++ ) {
+		for (i = 0; i < MAX_TESLA_BOLTS; i++)
+		{
 
-			if ( cent->boltCrawlDirs[0] || cent->boltCrawlDirs[1] || cent->boltCrawlDirs[2] ) {
-				VectorMA( cent->boltLocs[i], cent->boltTimes[i] - cg.time, cent->boltCrawlDirs[i], perpvec );
-			} else {
-				VectorCopy( cent->boltLocs[i], perpvec );
+			if (cent->boltCrawlDirs[i][0] || cent->boltCrawlDirs[i][1] || cent->boltCrawlDirs[i][2])
+			{
+				VectorMA(cent->boltLocs[i], cent->boltTimes[i] - cg.time, cent->boltCrawlDirs[i], perpvec);
+			}
+			else
+			{
+				VectorCopy(cent->boltLocs[i], perpvec);
 			}
 
-			CG_DynamicLightningBolt(    cgs.media.lightningBoltShader,  // shader
-										cent->currentState.origin,      // start
-										perpvec,                // end
-										cent->currentState.density,     // numBolts
-										cent->currentState.frame,       // maxWidth
-										qtrue,      // fade
-										1.0,        // startAlpha
-										0,          // recursion
-										i * i * 2 );     // randseed
+			CG_DynamicLightningBolt(cgs.media.lightningBoltShader, // shader
+									cent->currentState.origin,	   // start
+									perpvec,					   // end
+									cent->currentState.density,	   // numBolts
+									cent->currentState.frame,	   // maxWidth
+									qtrue,						   // fade
+									1.0,						   // startAlpha
+									0,							   // recursion
+									i * i * 2);					   // randseed
 		}
 
 		// add dlight

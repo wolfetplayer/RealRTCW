@@ -281,7 +281,7 @@ static void CG_DrawField( int x, int y, int width, int value ) {
 	if ( l > width ) {
 		l = width;
 	}
-	x += 2 + CHAR_WIDTH * ( width - l );
+	x += 2 + CHAR_WIDTH_CG * ( width - l );
 
 	ptr = num;
 	while ( *ptr && l )
@@ -292,8 +292,8 @@ static void CG_DrawField( int x, int y, int width, int value ) {
 			frame = *ptr - '0';
 		}
 
-		CG_DrawPic( x,y, CHAR_WIDTH, CHAR_HEIGHT, cgs.media.numberShaders[frame] );
-		x += CHAR_WIDTH;
+		CG_DrawPic( x,y, CHAR_WIDTH_CG, CHAR_HEIGHT_CG, cgs.media.numberShaders[frame] );
+		x += CHAR_WIDTH_CG;
 		ptr++;
 		l--;
 	}
@@ -682,15 +682,15 @@ static void CG_DrawStatusBar( void ) {
 
 	
 	if ( cg_drawStatusHead.integer ) {
-		CG_DrawStatusBarHead( 185 + CHAR_WIDTH*3 + TEXT_ICON_SPACE );
+		CG_DrawStatusBarHead( 185 + CHAR_WIDTH_CG*3 + TEXT_ICON_SPACE );
 	}
 
 	CG_DrawStatusBarKeys();
 
 	if ( cg.predictedPlayerState.powerups[PW_REDFLAG] ) {
-		CG_DrawStatusBarFlag( 185 + CHAR_WIDTH * 3 + TEXT_ICON_SPACE + ICON_SIZE, TEAM_RED );
+		CG_DrawStatusBarFlag( 185 + CHAR_WIDTH_CG * 3 + TEXT_ICON_SPACE + ICON_SIZE, TEAM_RED );
 	} else if ( cg.predictedPlayerState.powerups[PW_BLUEFLAG] ) {
-		CG_DrawStatusBarFlag( 185 + CHAR_WIDTH * 3 + TEXT_ICON_SPACE + ICON_SIZE, TEAM_BLUE );
+		CG_DrawStatusBarFlag( 185 + CHAR_WIDTH_CG * 3 + TEXT_ICON_SPACE + ICON_SIZE, TEAM_BLUE );
 	}
 
 	//----(SA) further change... we don't need to draw the armor do we?
@@ -810,7 +810,7 @@ static void CG_DrawStatusBar( void ) {
 
 				icon = cg_weapons[ cg.predictedPlayerState.weapon ].ammoIcon;
 				if ( icon ) {
-					CG_DrawPic( CHAR_WIDTH * 3 + TEXT_ICON_SPACE, STATUSBARHEIGHT, ICON_SIZE, ICON_SIZE, icon );
+					CG_DrawPic( CHAR_WIDTH_CG * 3 + TEXT_ICON_SPACE, STATUSBARHEIGHT, ICON_SIZE, ICON_SIZE, icon );
 				}
 			}
 			
@@ -1237,7 +1237,7 @@ static float CG_DrawPowerups( float y ) {
 	}
 
 	// draw the icons and timers
-	x = 640 - ICON_SIZE - CHAR_WIDTH * 2;
+	x = 640 - ICON_SIZE - CHAR_WIDTH_CG * 2;
 	for ( i = 0 ; i < active ; i++ ) {
 
 //		continue;   // (SA) FIXME: TEMP: as I'm getting powerup business going

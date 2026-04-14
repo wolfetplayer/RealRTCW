@@ -36,6 +36,11 @@ cvar_t *s_muteWhenUnfocused;
 
 static soundInterface_t si;
 
+static char s_bgIntro[MAX_QPATH];
+static char s_bgLoop[MAX_QPATH];
+
+static qboolean s_cinematicMute = qfalse;
+
 /*
 =================
 S_ValidateInterface

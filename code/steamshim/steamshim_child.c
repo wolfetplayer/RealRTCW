@@ -50,27 +50,31 @@ static void dbgpipe(const char *fmt, ...)
 
             continue;
         }
-
         switch (*(fmt++))
         {
-            case 'd':
-            case 'i':
-                fprintf(f, "%i", va_arg(args, int));
-                break;
-            case 'u':
-                fprintf(f, "%i", va_arg(args, unsigned int));
-                break;
-            case 'c':
-                fprintf(f, "%c", va_arg(args, char));
-                break;
-            case 'f':
-                fprintf(f, "%f", va_arg(args, float));
-                break;
-            case 's':
-                fprintf(f, "%s", va_arg(args, const char *));
-                break;
-            default:
-                break;
+        case 'd':
+        case 'i':
+            fprintf(f, "%i", va_arg(args, int));
+            break;
+
+        case 'u':
+            fprintf(f, "%u", va_arg(args, unsigned int));
+            break;
+
+        case 'c':
+            fprintf(f, "%c", (char)va_arg(args, int));
+            break;
+
+        case 'f':
+            fprintf(f, "%f", va_arg(args, double));
+            break;
+
+        case 's':
+            fprintf(f, "%s", va_arg(args, const char *));
+            break;
+
+        default:
+            break;
         }
     }
 

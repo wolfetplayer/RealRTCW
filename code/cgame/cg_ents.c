@@ -251,6 +251,7 @@ void CG_LoseArmor( centity_t *cent, int index ) {
 		return;
 	}
 
+	CG_GetOriginForTag( cent, &cent->pe.torsoRefEnt, tags[index], 0, origin, NULL );
 
 	// calculate direction vector based on player center->tag position
 	VectorSubtract( origin, cent->currentState.origin, dir );

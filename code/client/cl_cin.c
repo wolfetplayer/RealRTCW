@@ -1578,7 +1578,6 @@ static int FFMPEG_DecodeVideo( ) {
 *
 ******************************************************************************/
 static void FFMPEG_Interrupt( void ) {
-	int t0;
 	static int dbg_frame = 0;
 	dbg_frame++;
 
@@ -1620,8 +1619,6 @@ static void FFMPEG_Interrupt( void ) {
 			1.0f,
 			-1);
 	}
-
-	t0 = Sys_Milliseconds( );
 
 	// read frame
 	FFMPEG_ReadFrame( qfalse );

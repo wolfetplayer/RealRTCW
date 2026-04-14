@@ -41,7 +41,6 @@ TossClientItems_Survival
 void TossClientItems_Survival(gentity_t *self, gentity_t *attacker) {
     gitem_t *item;
     vec3_t forward;
-    float angle;
     gentity_t *drop = NULL;
 
     if (!attacker || !attacker->client) return;
@@ -51,7 +50,6 @@ void TossClientItems_Survival(gentity_t *self, gentity_t *attacker) {
     const char *adrenaline = "holdable_bg_syringe";
 
     AngleVectors(self->r.currentAngles, forward, NULL, NULL);
-    angle = 45;
 
     int dropChance = svParams.treasureDropChance;
     if (attacker->client->ps.perks[PERK_SCAVENGER] > 0) {
@@ -90,7 +88,6 @@ TossClientPowerups
 void TossClientPowerups(gentity_t *self, gentity_t *attacker) {
     gitem_t *item;
     vec3_t forward;
-    float angle;
     gentity_t *drop = NULL;
     int powerup = 0;
 
@@ -110,7 +107,6 @@ void TossClientPowerups(gentity_t *self, gentity_t *attacker) {
     if (attacker->aiTeam == self->aiTeam) return;
 
     AngleVectors(self->r.currentAngles, forward, NULL, NULL);
-    angle = 45;
 
     int dropChance = svParams.powerupDropChance;
     if (attacker->client->ps.perks[PERK_SCAVENGER] > 0) {

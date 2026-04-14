@@ -3450,11 +3450,10 @@ void Item_Text_Paint( itemDef_t *item ) {
 //----(SA)	added
 	if ( item->textSavegameInfo ) {
 		DC->getCVarString( "ui_savegameInfo", infostring, sizeof( infostring ) );    // grab the string the client set
-		item->text = &infostring[0];
+		textPtr = infostring;
 	}
 //----(SA)	end
-
-	if ( item->window.flags & WINDOW_WRAPPED ) {
+	else if ( item->window.flags & WINDOW_WRAPPED ) {
 		Item_Text_Wrapped_Paint( item );
 		return;
 	}
@@ -3463,15 +3462,17 @@ void Item_Text_Paint( itemDef_t *item ) {
 		return;
 	}
 
-	if ( item->text == NULL ) {
-		if ( item->cvar == NULL ) {
-			return;
+	if ( !item->textSavegameInfo ) {
+		if ( item->text == NULL ) {
+			if ( item->cvar == NULL ) {
+				return;
+			} else {
+				DC->getCVarString( item->cvar, text, sizeof( text ) );
+				textPtr = text;
+			}
 		} else {
-			DC->getCVarString( item->cvar, text, sizeof( text ) );
-			textPtr = text;
+			textPtr = item->text;
 		}
-	} else {
-		textPtr = item->text;
 	}
 
 	// this needs to go here as it sets extents for cvar types as well
@@ -3483,35 +3484,6 @@ void Item_Text_Paint( itemDef_t *item ) {
 
 
 	Item_TextColor( item, &color );
-
-	//FIXME: this is a fucking mess
-/*
-	adjust = 0;
-	if (item->textStyle == ITEM_TEXTSTYLE_OUTLINED || item->textStyle == ITEM_TEXTSTYLE_OUTLINESHADOWED) {
-		adjust = 0.5;
-	}
-
-	if (item->textStyle == ITEM_TEXTSTYLE_SHADOWED || item->textStyle == ITEM_TEXTSTYLE_OUTLINESHADOWED) {
-		Fade(&item->window.flags, &DC->Assets.shadowColor[3], DC->Assets.fadeClamp, &item->window.nextTime, DC->Assets.fadeCycle, qfalse);
-		DC->drawText(item->textRect.x + DC->Assets.shadowX, item->textRect.y + DC->Assets.shadowY, item->textscale, DC->Assets.shadowColor, textPtr, adjust);
-	}
-*/
-
-
-//	if (item->textStyle == ITEM_TEXTSTYLE_OUTLINED || item->textStyle == ITEM_TEXTSTYLE_OUTLINESHADOWED) {
-//		Fade(&item->window.flags, &item->window.outlineColor[3], DC->Assets.fadeClamp, &item->window.nextTime, DC->Assets.fadeCycle, qfalse);
-//		/*
-//		Text_Paint(item->textRect.x-1, item->textRect.y-1, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x, item->textRect.y-1, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x+1, item->textRect.y-1, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x-1, item->textRect.y, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x+1, item->textRect.y, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x-1, item->textRect.y+1, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x, item->textRect.y+1, item->textscale, item->window.foreColor, textPtr, adjust);
-//		Text_Paint(item->textRect.x+1, item->textRect.y+1, item->textscale, item->window.foreColor, textPtr, adjust);
-//		*/
-//		DC->drawText(item->textRect.x - 1, item->textRect.y + 1, item->textscale * 1.02, item->window.outlineColor, textPtr, adjust);
-//	}
 
 	DC->drawText( item->textRect.x, item->textRect.y, item->font, item->textscale, color, textPtr, 0, 0, item->textStyle );
 }

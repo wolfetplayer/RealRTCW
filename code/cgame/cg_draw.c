@@ -1759,7 +1759,8 @@ for a few moments
 ==============
 */
 void CG_BuyPrint( const char *str, int y, int charWidth ) {
-	char   *s, *p, *c = cg.buyPrint;
+	const char *s, *p;
+	char *c = cg.buyPrint;
 	char   token[64];
 	const char *trToken;
 	int    lenTrToken;

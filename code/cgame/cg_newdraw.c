@@ -2087,7 +2087,6 @@ static void CG_DrawFatigue( rectDef_t *rect, vec4_t color, int align ) {
 static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 	float barFrac;
 	float chargeTime;
-	int weap = 0;
 	int flags = 0;
 	//qboolean fade = qfalse;
 	vec4_t bgcolor = {1.0f, 1.0f, 1.0f, 0.25f};
@@ -2097,10 +2096,6 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
 	}
 	flags |= 16;
-
-// JPW NERVE -- added drawWeaponPercent in multiplayer
-
-		weap = cg.snap->ps.weapon;
 
 		
 		// Determine charge time based on class

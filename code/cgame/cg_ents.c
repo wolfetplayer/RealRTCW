@@ -1262,7 +1262,7 @@ static void CG_Missile( centity_t *cent ) {
 					int volume = flytime > 375 ? 255 : ( 75.f / ( (float)flytime - 300.f ) ) * 255;
 
 		    BG_EvaluateTrajectoryDelta( &cent->currentState.pos, cg.time, velocity, qfalse, -1 );
-		    CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, velocity, weapon->missileSound, 0 );
+		    CG_S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, velocity, weapon->missileSound, volume );
 				}
 			}
 			}

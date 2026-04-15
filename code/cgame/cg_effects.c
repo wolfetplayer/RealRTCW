@@ -447,7 +447,10 @@ void CG_LaunchGib( centity_t *cent, vec3_t origin, vec3_t angles, vec3_t velocit
 		break;
 	case AICHAR_HEINRICH:
 	case AICHAR_HELGA:
-		le->endTime = le->startTime + 999000;   // stay around for long enough to see the player off
+		if (cg_gameType.integer != GT_SURVIVAL)
+		{
+			le->endTime = le->startTime + 999000; // stay around for long enough to see the player off
+		}
 	default:
 		le->leBounceSoundType = LEBS_BLOOD;
 		le->leMarkType = LEMT_BLOOD;

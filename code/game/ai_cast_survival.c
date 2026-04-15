@@ -85,6 +85,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_BLACKGUARD] = svParams.initialBlackGuardsCount;
 	svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
 	svParams.maxActiveAI[AICHAR_LOPER] = svParams.initialLopersCount;
+	svParams.maxActiveAI[AICHAR_HELGA] = svParams.initialHelgaCount;
 }
 
 
@@ -299,9 +300,7 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 		return;
 
 	// Skip characters that should never respawn
-	if (ent->aiCharacter == AICHAR_ZOMBIE || 
-		ent->aiCharacter == AICHAR_HELGA || 
-		ent->aiCharacter == AICHAR_HEINRICH || 
+	if (ent->aiCharacter == AICHAR_ZOMBIE ||
 		cs->norespawn)
 		return;
 
@@ -328,6 +327,9 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_TRENCH:
 			    baseTime = svParams.trenchSpawnTime * 1000;
+				break;
+			case AICHAR_HELGA:
+			    baseTime = svParams.helgaSpawnTime * 1000;
 				break;
 			case AICHAR_XSHEPHERD:
 			    baseTime = svParams.XdogSpawnTime * 1000;
@@ -687,6 +689,13 @@ void AICast_UpdateMaxActiveAI(void)
     }
     }
 
+	if (svParams.waveCount >= svParams.waveHelga) {
+    svParams.maxActiveAI[AICHAR_HELGA] += svParams.helgaIncrease;
+    if (svParams.maxActiveAI[AICHAR_HELGA] > svParams.maxHelga) {
+        svParams.maxActiveAI[AICHAR_HELGA] = svParams.maxHelga;
+    }
+    }
+
     // Xdog
 	 if (svParams.waveCount >= svParams.waveXdog) {
     svParams.maxActiveAI[AICHAR_XSHEPHERD] += svParams.XdogIncrease;
@@ -791,6 +800,9 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	case AICHAR_TRENCH:
 		waveAppeared = svParams.waveTrench;
 		break;
+	case AICHAR_HELGA:
+		waveAppeared = svParams.waveHelga;
+		break;
 	case AICHAR_XSHEPHERD:
 		waveAppeared = svParams.waveXdog;
 		break;
@@ -876,6 +888,22 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 150) newHealth = 150;
+			}
+			break;
+
+		case AICHAR_HELGA:
+			if (svParams.waveCount < 10)
+			{
+				newHealth = 2500 + rawSteps * 14;
+			}
+			else
+			{
+				float growth = powf(1.13f, (float)(rawSteps - 9));
+				newHealth = (int)((50 + 9 * 14) * growth);
+			}
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+			if (newHealth > 5000) newHealth = 5000;
 			}
 			break;
 
@@ -1218,6 +1246,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_ZOMBIE_GHOST:
 		case AICHAR_LOPER:
 		case AICHAR_LOPER_SPECIAL:
+		case AICHAR_HELGA:
 			aimSkill     = 1.0f;
 			aimAccuracy  = 1.0f;
 			attackSkill  = 1.0f;
@@ -1618,6 +1647,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialHelgaCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialHelgaCount))
+			{
+				PC_SourceError(handle, "expected initialHelgaCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "initialXdogCount"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialXdogCount))
@@ -1746,6 +1783,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "helgaIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.helgaIncrease))
+			{
+				PC_SourceError(handle, "expected helgaIncrease value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "XdogIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.XdogIncrease))
@@ -1866,6 +1911,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "maxHelga"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxHelga))
+			{
+				PC_SourceError(handle, "expected maxHelga value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "maxXdog"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.maxXdog))
@@ -1975,6 +2028,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.waveTrench))
 			{
 				PC_SourceError(handle, "expected waveTrench value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "waveHelga"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveHelga))
+			{
+				PC_SourceError(handle, "expected waveHelga value");
 				return qfalse;
 			}
 		}
@@ -2151,6 +2212,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.XdogSpawnTime))
 			{
 				PC_SourceError(handle, "expected XdogSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "helgaSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.helgaSpawnTime))
+			{
+				PC_SourceError(handle, "expected helgaSpawnTime value");
 				return qfalse;
 			}
 		}

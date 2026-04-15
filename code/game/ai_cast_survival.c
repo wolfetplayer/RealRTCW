@@ -86,6 +86,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_VENOM] = svParams.initialVenomsCount;
 	svParams.maxActiveAI[AICHAR_LOPER] = svParams.initialLopersCount;
 	svParams.maxActiveAI[AICHAR_HELGA] = svParams.initialHelgaCount;
+	svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] = svParams.initialssCount;
 }
 
 
@@ -333,6 +334,9 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_XSHEPHERD:
 			    baseTime = svParams.XdogSpawnTime * 1000;
+				break;
+			case AICHAR_SUPERSOLDIER_LAB:
+			    baseTime = svParams.ssSpawnTime * 1000;
 				break;
 			case AICHAR_BLACKGUARD:
 				baseTime = svParams.bgSpawnTime * 1000;
@@ -696,6 +700,13 @@ void AICast_UpdateMaxActiveAI(void)
     }
     }
 
+	if (svParams.waveCount >= svParams.wavess) {
+    svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] += svParams.ssIncrease;
+    if (svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] > svParams.maxss) {
+        svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] = svParams.maxss;
+    }
+    }
+
     // Xdog
 	 if (svParams.waveCount >= svParams.waveXdog) {
     svParams.maxActiveAI[AICHAR_XSHEPHERD] += svParams.XdogIncrease;
@@ -803,6 +814,9 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	case AICHAR_HELGA:
 		waveAppeared = svParams.waveHelga;
 		break;
+	case AICHAR_SUPERSOLDIER_LAB:
+		waveAppeared = svParams.wavess;
+		break;
 	case AICHAR_XSHEPHERD:
 		waveAppeared = svParams.waveXdog;
 		break;
@@ -904,6 +918,22 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			if (g_survivalAiHealthCap.integer == 1)
 			{
 			if (newHealth > 5000) newHealth = 5000;
+			}
+			break;
+
+		case AICHAR_SUPERSOLDIER_LAB:
+			if (svParams.waveCount < 10)
+			{
+				newHealth = 3000 + rawSteps * 14;
+			}
+			else
+			{
+				float growth = powf(1.13f, (float)(rawSteps - 9));
+				newHealth = (int)((50 + 9 * 14) * growth);
+			}
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+			if (newHealth > 6000) newHealth = 6000;
 			}
 			break;
 
@@ -1165,6 +1195,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_BLACKGUARD:   waveAppeared = svParams.waveBg; break;
 		case AICHAR_VENOM:        waveAppeared = svParams.waveV; break;
 		case AICHAR_PROTOSOLDIER: waveAppeared = svParams.waveProtos; break;
+		case AICHAR_SUPERSOLDIER_LAB: waveAppeared = svParams.wavess; break;
 		default:  waveAppeared = 0; break;
 	}
 
@@ -1225,6 +1256,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			reactionTime = fmaxf(1.0f - delta, 0.3f);
 			break;
 		case AICHAR_PROTOSOLDIER:
+		case AICHAR_SUPERSOLDIER_LAB:
 			aimSkill     = fminf(0.4f + delta, 0.9f);
 			aimAccuracy  = fminf(0.4f + delta, 0.9f);
 			attackSkill  = fminf(0.4f + delta, 0.9f);
@@ -1719,6 +1751,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialssCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialssCount))
+			{
+				PC_SourceError(handle, "expected initialssCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "initialPartisansCount"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialPartisansCount))
@@ -1796,6 +1836,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.XdogIncrease))
 			{
 				PC_SourceError(handle, "expected XdogIncrease value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "ssIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ssIncrease))
+			{
+				PC_SourceError(handle, "expected ssIncrease value");
 				return qfalse;
 			}
 		}
@@ -1919,6 +1967,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "maxss"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxss))
+			{
+				PC_SourceError(handle, "expected maxss value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "maxXdog"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.maxXdog))
@@ -2028,6 +2084,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.waveTrench))
 			{
 				PC_SourceError(handle, "expected waveTrench value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "wavess"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.wavess))
+			{
+				PC_SourceError(handle, "expected wavess value");
 				return qfalse;
 			}
 		}
@@ -2196,6 +2260,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.egSpawnTime))
 			{
 				PC_SourceError(handle, "expected egSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "ssSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.ssSpawnTime))
+			{
+				PC_SourceError(handle, "expected ssSpawnTime value");
 				return qfalse;
 			}
 		}

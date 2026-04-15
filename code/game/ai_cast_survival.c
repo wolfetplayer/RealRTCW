@@ -72,6 +72,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_SOLDIER] = svParams.initialSoldiersCount;
 	svParams.maxActiveAI[AICHAR_MERCENARY] = svParams.initialMercsCount;
 	svParams.maxActiveAI[AICHAR_TRENCH] = svParams.initialTrenchCount;
+	svParams.maxActiveAI[AICHAR_XSHEPHERD] = svParams.initialXdogCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_SURV] = svParams.initialZombiesCount;
 	svParams.maxActiveAI[AICHAR_FLESH] = svParams.initialFleshCount;
 	svParams.maxActiveAI[AICHAR_ZOMBIE_GHOST] = svParams.initialGhostsCount;
@@ -327,6 +328,9 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_TRENCH:
 			    baseTime = svParams.trenchSpawnTime * 1000;
+				break;
+			case AICHAR_XSHEPHERD:
+			    baseTime = svParams.XdogSpawnTime * 1000;
 				break;
 			case AICHAR_BLACKGUARD:
 				baseTime = svParams.bgSpawnTime * 1000;
@@ -683,6 +687,14 @@ void AICast_UpdateMaxActiveAI(void)
     }
     }
 
+    // Xdog
+	 if (svParams.waveCount >= svParams.waveXdog) {
+    svParams.maxActiveAI[AICHAR_XSHEPHERD] += svParams.XdogIncrease;
+    if (svParams.maxActiveAI[AICHAR_XSHEPHERD] > svParams.maxXdog) {
+        svParams.maxActiveAI[AICHAR_XSHEPHERD] = svParams.maxXdog;
+    }
+    }
+
     // Black Guards
     if (svParams.waveCount >= svParams.waveBg) {
         svParams.maxActiveAI[AICHAR_BLACKGUARD] += svParams.blackGuardsIncrease;
@@ -779,6 +791,9 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	case AICHAR_TRENCH:
 		waveAppeared = svParams.waveTrench;
 		break;
+	case AICHAR_XSHEPHERD:
+		waveAppeared = svParams.waveXdog;
+		break;
 	case AICHAR_BLACKGUARD:
 		waveAppeared = svParams.waveBg;
 		break;
@@ -849,6 +864,22 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			break;
 
 		case AICHAR_TRENCH:
+			if (svParams.waveCount < 10)
+			{
+				newHealth = 50 + rawSteps * 14;
+			}
+			else
+			{
+				float growth = powf(1.13f, (float)(rawSteps - 9));
+				newHealth = (int)((50 + 9 * 14) * growth);
+			}
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+			if (newHealth > 150) newHealth = 150;
+			}
+			break;
+
+		case AICHAR_XSHEPHERD:
 			if (svParams.waveCount < 10)
 			{
 				newHealth = 50 + rawSteps * 14;
@@ -1102,6 +1133,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 	switch (characterNum) {
 		case AICHAR_ELITEGUARD:   waveAppeared = svParams.waveEg; break;
 		case AICHAR_TRENCH:       waveAppeared = svParams.waveTrench; break;
+		case AICHAR_XSHEPHERD:       waveAppeared = svParams.waveXdog; break;
 		case AICHAR_BLACKGUARD:   waveAppeared = svParams.waveBg; break;
 		case AICHAR_VENOM:        waveAppeared = svParams.waveV; break;
 		case AICHAR_PROTOSOLDIER: waveAppeared = svParams.waveProtos; break;
@@ -1137,6 +1169,13 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			reactionTime = fmaxf(1.0f - delta, 0.3f);
 			break;
 		case AICHAR_TRENCH:
+			aimSkill     = fminf(0.3f + delta, 0.8f);
+			aimAccuracy  = fminf(0.3f + delta, 0.8f);
+			attackSkill  = fminf(0.3f + delta, 0.8f);
+			aggression   = fminf(0.3f + delta, 1.0f);
+			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			break;
+		case AICHAR_XSHEPHERD:
 			aimSkill     = fminf(0.3f + delta, 0.8f);
 			aimAccuracy  = fminf(0.3f + delta, 0.8f);
 			attackSkill  = fminf(0.3f + delta, 0.8f);
@@ -1578,6 +1617,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialXdogCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialXdogCount))
+			{
+				PC_SourceError(handle, "expected initialXdogCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "initialEliteGuardsCount"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialEliteGuardsCount))
@@ -1698,6 +1745,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "XdogIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.XdogIncrease))
+			{
+				PC_SourceError(handle, "expected XdogIncrease value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "eliteGuardsIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.eliteGuardsIncrease))
@@ -1810,6 +1865,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "maxXdog"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxXdog))
+			{
+				PC_SourceError(handle, "expected maxXdog value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "maxEliteGuards"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.maxEliteGuards))
@@ -1911,6 +1974,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.waveTrench))
 			{
 				PC_SourceError(handle, "expected waveTrench value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "waveXdog"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.waveXdog))
+			{
+				PC_SourceError(handle, "expected waveXdog value");
 				return qfalse;
 			}
 		}
@@ -2071,6 +2142,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.trenchSpawnTime))
 			{
 				PC_SourceError(handle, "expected trenchSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "XdogSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.XdogSpawnTime))
+			{
+				PC_SourceError(handle, "expected XdogSpawnTime value");
 				return qfalse;
 			}
 		}

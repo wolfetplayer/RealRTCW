@@ -87,6 +87,7 @@ void AICast_InitSurvival(void) {
 	svParams.maxActiveAI[AICHAR_LOPER] = svParams.initialLopersCount;
 	svParams.maxActiveAI[AICHAR_HELGA] = svParams.initialHelgaCount;
 	svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] = svParams.initialssCount;
+	svParams.maxActiveAI[AICHAR_DOG] = svParams.initialdogCount;
 }
 
 
@@ -361,6 +362,9 @@ void AICast_SetRebirthTimeSurvival(gentity_t *ent, cast_state_t *cs) {
 				break;
 			case AICHAR_LOPER:
 				baseTime = svParams.loperSpawnTime * 1000;
+				break;
+			case AICHAR_DOG:
+				baseTime = svParams.dogSpawnTime * 1000;
 				break;
 			default: // Regular soldiers and zombies
 				baseTime = svParams.defaultSpawnTime * 1000;
@@ -707,6 +711,13 @@ void AICast_UpdateMaxActiveAI(void)
     }
     }
 
+	if (svParams.waveCount >= svParams.wavedog) {
+    svParams.maxActiveAI[AICHAR_DOG] += svParams.ssIncrease;
+    if (svParams.maxActiveAI[AICHAR_DOG] > svParams.maxdog) {
+        svParams.maxActiveAI[AICHAR_DOG] = svParams.maxdog;
+    }
+    }
+
     // Xdog
 	 if (svParams.waveCount >= svParams.waveXdog) {
     svParams.maxActiveAI[AICHAR_XSHEPHERD] += svParams.XdogIncrease;
@@ -807,6 +818,9 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	{
 	case AICHAR_ELITEGUARD:
 		waveAppeared = svParams.waveEg;
+		break;
+	case AICHAR_DOG:
+		waveAppeared = svParams.wavedog;
 		break;
 	case AICHAR_TRENCH:
 		waveAppeared = svParams.waveTrench;
@@ -1150,6 +1164,22 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			}
 			break;
 
+		case AICHAR_DOG:
+			if (svParams.waveCount < 10)
+			{
+				newHealth = 15 + rawSteps * 18;
+			}
+			else
+			{
+				float growth = powf(1.16f, (float)(rawSteps - 9));
+				newHealth = (int)((250 + 9 * 18) * growth);
+			}
+			if (g_survivalAiHealthCap.integer == 1)
+			{
+			if (newHealth > 100) newHealth = 100;
+			}
+			break;
+
 		case AICHAR_LOPER_SPECIAL:
 			if (svParams.waveCount < 10)
 			{
@@ -1279,6 +1309,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_LOPER:
 		case AICHAR_LOPER_SPECIAL:
 		case AICHAR_HELGA:
+		case AICHAR_DOG:
 			aimSkill     = 1.0f;
 			aimAccuracy  = 1.0f;
 			attackSkill  = 1.0f;
@@ -1663,6 +1694,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "initialdogCount"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.initialdogCount))
+			{
+				PC_SourceError(handle, "expected initialdogCount value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "initialMercsCount"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.initialMercsCount))
@@ -1807,6 +1846,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "dogIncrease"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.dogIncrease))
+			{
+				PC_SourceError(handle, "expected dogIncrease value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "mercsIncrease"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.mercsIncrease))
@@ -1943,6 +1990,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 				return qfalse;
 			}
 		}
+		else if (!Q_stricmp(token.string, "maxdog"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.maxdog))
+			{
+				PC_SourceError(handle, "expected maxdog value");
+				return qfalse;
+			}
+		}
 		else if (!Q_stricmp(token.string, "maxMercs"))
 		{
 			if (!PC_Int_Parse(handle, &svParams.maxMercs))
@@ -2076,6 +2131,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.waveEg))
 			{
 				PC_SourceError(handle, "expected waveEg value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "wavedog"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.wavedog))
+			{
+				PC_SourceError(handle, "expected wavedog value");
 				return qfalse;
 			}
 		}
@@ -2268,6 +2331,14 @@ qboolean BG_ParseSurvivalTable(int handle)
 			if (!PC_Int_Parse(handle, &svParams.ssSpawnTime))
 			{
 				PC_SourceError(handle, "expected ssSpawnTime value");
+				return qfalse;
+			}
+		}
+		else if (!Q_stricmp(token.string, "dogSpawnTime"))
+		{
+			if (!PC_Int_Parse(handle, &svParams.dogSpawnTime))
+			{
+				PC_SourceError(handle, "expected dogSpawnTime value");
 				return qfalse;
 			}
 		}

@@ -1110,6 +1110,12 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		knockback = 0;
 	}
 
+	// cant push big guys. too heavy.
+	if (targ->aiCharacter == AICHAR_HEINRICH || targ->aiCharacter == AICHAR_HELGA || targ->aiCharacter == AICHAR_PROTOSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER_LAB)
+	{
+		knockback = 0;
+	}
+
 	// figure momentum add, even if the damage won't be taken
 	if ( knockback && targ->client ) {
 		vec3_t kvel;

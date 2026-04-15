@@ -1478,6 +1478,7 @@ void AICast_SurvivalRespawn(gentity_t *ent, cast_state_t *cs) {
 				ent->waterlevel = 0;
 				ent->watertype = 0;
 				ent->flags = 0;
+				ent->s.dmgFlags = 0;
 				ent->die = AICast_Die;
 				ent->client->ps.eFlags &= ~EF_DEAD;
 				ent->s.eFlags &= ~EF_DEAD;

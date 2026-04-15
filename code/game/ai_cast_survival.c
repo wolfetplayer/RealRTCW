@@ -1658,33 +1658,53 @@ void AI_LoadSurvivalTable( const char* mapname )
 {
 	int handle;
 	pc_token_t token;
-
-	handle = trap_PC_LoadSource( va( "maps/%s.surv", mapname ) );
-	if ( !handle ) {
-		//G_Printf( S_COLOR_YELLOW "WARNING: Failed to load .surv file. Trying to load default.surv\n" );
-
-		handle = trap_PC_LoadSource( "maps/default.surv" );
-
-		if ( !handle ) {
-			G_Printf( S_COLOR_RED "ERROR: Failed to load default.surv file\n" );
-			return;
-		}
-	}
+	qboolean parsedDefault = qfalse;
 
 	memset( &svParams, 0, sizeof( svParams_t ) );
 
-	// Find and parse parameter
+	handle = trap_PC_LoadSource( "maps/default.surv" );
+	if ( !handle ) {
+		G_Printf( S_COLOR_RED "ERROR: Failed to load default.surv file\n" );
+		return;
+	}
+
+	// Find and parse default survival parameters
 	while ( 1 ) {
 		if ( !trap_PC_ReadToken( handle, &token ) ) {
 			break;
 		}
 		if ( !Q_stricmp( token.string, "survival" ) ) {
-			BG_ParseSurvivalTable( handle );
+			if ( BG_ParseSurvivalTable( handle ) ) {
+				parsedDefault = qtrue;
+			}
 			break;
 		}
 	}
 
 	trap_PC_FreeSource( handle );
+
+	if ( !parsedDefault ) {
+		G_Printf( S_COLOR_RED "ERROR: Failed to parse survival block in default.surv\n" );
+		return;
+	}
+
+	if ( Q_stricmp( mapname, "default" ) ) {
+		handle = trap_PC_LoadSource( va( "maps/%s.surv", mapname ) );
+		if ( handle ) {
+			// Find and parse map-specific override parameters
+			while ( 1 ) {
+				if ( !trap_PC_ReadToken( handle, &token ) ) {
+					break;
+				}
+				if ( !Q_stricmp( token.string, "survival" ) ) {
+					BG_ParseSurvivalTable( handle );
+					break;
+				}
+			}
+
+			trap_PC_FreeSource( handle );
+		}
+	}
 }
 
 // Read survival parameters into aiDefaults from given file handle

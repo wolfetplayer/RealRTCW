@@ -93,6 +93,7 @@ typedef struct svParams_s
 	int initialProtosCount;
 	int initialssCount;
 	int initialdogCount;
+	int initialheinCount;
 
 	int initialZombiesCount;
 	int initialFleshCount;
@@ -114,6 +115,8 @@ typedef struct svParams_s
 	int   protoSpawnTime;
 	int   ssSpawnTime;
 	int   dogSpawnTime;
+	int   heinSpawnTime;
+
 
 	int   warzSpawnTime;
 	int   ghostSpawnTime;
@@ -143,6 +146,7 @@ typedef struct svParams_s
 	int helgaIncrease;
 	int ssIncrease;
 	int dogIncrease;
+	int heinIncrease;
 
 	int maxSoldiers;
 	int maxMercs;
@@ -154,6 +158,7 @@ typedef struct svParams_s
 	int maxProtos;
 	int maxss;
 	int maxdog;
+	int maxhein;
 
 	int maxZombies;
 	int maxFlesh;
@@ -179,6 +184,7 @@ typedef struct svParams_s
 	int waveFlamers;
 	int waveLopers;
 	int waveHelga;
+	int wavehein;
 
 	int powerupDropChance;
 	int powerupDropChanceScavengerIncrease;

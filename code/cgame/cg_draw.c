@@ -4484,6 +4484,7 @@ int CG_CollectWeaponWheelWeapons( int *visibleWeapons, int maxWeapons ) {
 			continue;
 		}
 
+        if ( cgs.gametype != GT_SURVIVAL ) {
 		if ( !isChargeBased( w ) ) {
 			int ammoIndex = BG_FindAmmoForWeapon( w );
 			int clipIndex = BG_FindClipForWeapon( w );
@@ -4494,6 +4495,7 @@ int CG_CollectWeaponWheelWeapons( int *visibleWeapons, int maxWeapons ) {
 			if ( ( ammoIndex < 0 || cg.snap->ps.ammo[ammoIndex] <= 0 ) &&
 				( clipIndex < 0 || cg.snap->ps.ammoclip[clipIndex] <= 0 ) )
 				continue;
+		}
 		}
 
 		if ( numVisible >= maxWeapons ) {

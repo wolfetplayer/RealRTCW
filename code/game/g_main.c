@@ -2356,27 +2356,51 @@ void CheckReloadStatus( void ) {
 		if ( level.reloadDelayTime ) {
 			if ( level.reloadDelayTime < level.time ) {
 
-				if ( g_reloading.integer == RELOAD_NEXTMAP_WAITING ) {
-					trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_NEXTMAP ) ); // set so sv_map_f will know it's okay to start a map
-				  if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
-					if ( g_cheats.integer ) {
-						trap_SendConsoleCommand( EXEC_APPEND, va( "spdevmap %s\n", level.nextMap ) );
-					} else {
-						trap_SendConsoleCommand( EXEC_APPEND, va( "spmap %s\n", level.nextMap ) );
-					} 
-				  } else if ( g_gametype.integer == GT_GOTHIC ) {
-			        if ( g_cheats.integer ) {
-						trap_SendConsoleCommand( EXEC_APPEND, va( "gtdevmap %s\n", level.nextMap ) );
-					} else {
-						trap_SendConsoleCommand( EXEC_APPEND, va( "gtmap %s\n", level.nextMap ) );
-					} 
-				  } else if ( g_gametype.integer == GT_SURVIVAL ) {
-			        if ( g_cheats.integer ) {
-						trap_SendConsoleCommand( EXEC_APPEND, va( "svdevmap %s\n", level.nextMap ) );
-					} else {
-						trap_SendConsoleCommand( EXEC_APPEND, va( "svmap %s\n", level.nextMap ) );
-					} 
-				  }
+				if (g_reloading.integer == RELOAD_NEXTMAP_WAITING)
+				{
+					trap_Cvar_Set("g_reloading", va("%d", RELOAD_NEXTMAP)); // set so sv_map_f will know it's okay to start a map
+
+					if (level.pendingFSGameChange)
+					{
+						trap_Cvar_Set("fs_game", level.nextFSGame);
+					}
+
+					if (g_gametype.integer == GT_SINGLE_PLAYER)
+					{
+						if (g_cheats.integer)
+						{
+							trap_SendConsoleCommand(EXEC_APPEND, va("spdevmap %s\n", level.nextMap));
+						}
+						else
+						{
+							trap_SendConsoleCommand(EXEC_APPEND, va("spmap %s\n", level.nextMap));
+						}
+					}
+					else if (g_gametype.integer == GT_GOTHIC)
+					{
+						if (g_cheats.integer)
+						{
+							trap_SendConsoleCommand(EXEC_APPEND, va("gtdevmap %s\n", level.nextMap));
+						}
+						else
+						{
+							trap_SendConsoleCommand(EXEC_APPEND, va("gtmap %s\n", level.nextMap));
+						}
+					}
+					else if (g_gametype.integer == GT_SURVIVAL)
+					{
+						if (g_cheats.integer)
+						{
+							trap_SendConsoleCommand(EXEC_APPEND, va("svdevmap %s\n", level.nextMap));
+						}
+						else
+						{
+							trap_SendConsoleCommand(EXEC_APPEND, va("svmap %s\n", level.nextMap));
+						}
+					}
+
+					level.pendingFSGameChange = qfalse;
+					level.nextFSGame[0] = '\0';
 				}
 				else if ( g_reloading.integer == RELOAD_ENDGAME )
 				{

@@ -110,6 +110,7 @@ qboolean AICast_ScriptAction_Mount( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_Unmount( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SavePersistant( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_ChangeLevel( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_TransitiontoMod( cast_state_t *cs, char *params ) ;
 qboolean AICast_ScriptAction_AchievementGeneric( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_EndGame( cast_state_t *cs, char *params );			//----(SA)	added
 qboolean AICast_ScriptAction_Announce( cast_state_t *cs, char *params );		
@@ -396,6 +397,7 @@ cast_script_stack_action_t scriptActions[] =
 		{"unmount", AICast_ScriptAction_Unmount, NULL},
 		{"savepersistant", AICast_ScriptAction_SavePersistant, NULL},
 		{"changelevel", AICast_ScriptAction_ChangeLevel, NULL},
+	    {"transitiontomod", AICast_ScriptAction_TransitiontoMod },
 		{"endgame", AICast_ScriptAction_EndGame, NULL}, //----(SA)    added
 		{"announce", AICast_ScriptAction_Announce, NULL},
 		{"teleport", AICast_ScriptAction_Teleport, NULL}, //----(SA)    added

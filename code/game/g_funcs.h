@@ -1345,6 +1345,7 @@ If you have questions concerning this license or the applicable additional terms
 {"AICast_ScriptAction_NoSight", (byte *)AICast_ScriptAction_NoSight},
 {"AICast_ScriptAction_FoundSecret", (byte *)AICast_ScriptAction_FoundSecret},
 {"AICast_ScriptAction_ChangeLevel", (byte *)AICast_ScriptAction_ChangeLevel},
+{"AICast_ScriptAction_TransitiontoMod", (byte *)AICast_ScriptAction_TransitiontoMod},
 {"AICast_ScriptAction_AchievementGeneric", (byte *)AICast_ScriptAction_AchievementGeneric},
 {"AICast_ScriptAction_EndGame", (byte *)AICast_ScriptAction_EndGame},
 {"AICast_ScriptAction_Announce", (byte *)AICast_ScriptAction_Announce},

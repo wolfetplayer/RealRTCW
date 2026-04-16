@@ -4112,6 +4112,94 @@ qboolean AICast_ScriptAction_Announce( gentity_t *ent, char *params ) {
 	return qtrue;
 }
 
+static qboolean AICast_IsSafeTransitionToken( const char *s ) {
+	int i;
+	char c;
+
+	if ( !s || !s[0] ) {
+		return qfalse;
+	}
+
+	for ( i = 0; s[i]; i++ ) {
+		c = s[i];
+
+		if ( ( c >= 'a' && c <= 'z' ) ||
+			 ( c >= 'A' && c <= 'Z' ) ||
+			 ( c >= '0' && c <= '9' ) ||
+			 c == '_' || c == '-' || c == '/' ) {
+			continue;
+		}
+
+		return qfalse;
+	}
+
+	return qtrue;
+}
+
+qboolean AICast_ScriptAction_TransitiontoMod( cast_state_t *cs, char *params ) {
+	char *p1, *p2;
+	char fsGame[MAX_QPATH];
+	char mapName[MAX_QPATH];
+	gentity_t   *player;
+	int exitTime = 8000;
+
+	player = AICast_FindEntityForName( "player" );
+
+	p1 = params;
+	p2 = strchr( params, ' ' );
+
+	if ( !p2 ) {
+		G_Printf( "AI Scripting: transitiontomod requires <fs_game> <mapname>\n" );
+		return qfalse;
+	}
+
+	while ( *p2 == ' ' ) {
+		*p2++ = '\0';
+	}
+
+	if ( !*p1 || !*p2 ) {
+		G_Printf( "AI Scripting: transitiontomod requires <fs_game> <mapname>\n" );
+		return qfalse;
+	}
+
+	Q_strncpyz( fsGame, p1, sizeof( fsGame ) );
+	Q_strncpyz( mapName, p2, sizeof( mapName ) );
+
+	if ( !AICast_IsSafeTransitionToken( fsGame ) ) {
+		G_Printf( "AI Scripting: transitiontomod invalid fs_game '%s'\n", fsGame );
+		return qfalse;
+	}
+
+	if ( !AICast_IsSafeTransitionToken( mapName ) ) {
+		G_Printf( "AI Scripting: transitiontomod invalid map '%s'\n", mapName );
+		return qfalse;
+	}
+
+	// double check that player exists and is alive
+	if ( !player || player->health <= 0 ) {
+		return qtrue;
+	}
+
+	// don't process if already changing
+	if ( g_reloading.integer ) {
+		return qtrue;
+	}
+
+	trap_SendServerCommand( -1, "mu_play sound/music/l_complete_1.wav 0\n" );
+	trap_SetConfigstring( CS_MUSIC_QUEUE, "" );
+	trap_SetConfigstring( CS_SCREENFADE, va( "1 %i %i", level.time + 250, 750 + exitTime ) );
+	trap_SendServerCommand( -1, va( "snd_fade 0 %d", 1000 + exitTime ) );
+
+	level.reloadDelayTime = level.time + 1000 + exitTime;
+	trap_Cvar_Set( "g_reloading", va( "%d", RELOAD_NEXTMAP_WAITING ) );
+
+	Q_strncpyz( level.nextMap, mapName, sizeof( level.nextMap ) );
+	Q_strncpyz( level.nextFSGame, fsGame, sizeof( level.nextFSGame ) );
+	level.pendingFSGameChange = qtrue;
+
+	return qtrue;
+}
+
 
 /*
 ====================

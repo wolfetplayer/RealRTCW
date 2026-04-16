@@ -784,6 +784,9 @@ typedef struct {
 	// fretn - maybe not the best place to add this
 	char *maplist[MAX_MAPS];
 
+	qboolean pendingFSGameChange;
+	char nextFSGame[MAX_QPATH];
+
 } level_locals_t;
 
 //extern    qboolean	reloading;				// loading up a savegame

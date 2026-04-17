@@ -1431,14 +1431,20 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
         svParams.wavePending = qtrue;
         svParams.waveChangeTime = level.time + svParams.intermissionTime * 1000;
 
-        if ((svParams.waveCount == 4) && (!g_cheats.integer) && (!attacker->client->hasPurchased)) {
-            steamSetAchievement("ACH_NO_BUY");
-        }
+		if (player && player->client)
+		{
 
-        if ((svParams.waveCount == 9) && (!g_cheats.integer) &&
-            (attacker->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE)) {
-            steamSetAchievement("ACH_NO_CLASS");
-        }
+			if ((svParams.waveCount == 1) && (!g_cheats.integer) && (!player->client->hasPurchased))
+			{
+				steamSetAchievement("ACH_NO_BUY");
+			}
+
+			if ((svParams.waveCount == 1) && (!g_cheats.integer) &&
+				(player->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
+			{
+				steamSetAchievement("ACH_NO_CLASS");
+			}
+		}
 
 		char endEvtBuf[32];
 		Q_strncpyz(

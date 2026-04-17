@@ -1434,12 +1434,12 @@ void AICast_CheckSurvivalProgression(gentity_t *attacker) {
 		if (player && player->client)
 		{
 
-			if ((svParams.waveCount == 1) && (!g_cheats.integer) && (!player->client->hasPurchased))
+			if ((svParams.waveCount == 4) && (!g_cheats.integer) && (!player->client->hasPurchased))
 			{
 				steamSetAchievement("ACH_NO_BUY");
 			}
 
-			if ((svParams.waveCount == 1) && (!g_cheats.integer) &&
+			if ((svParams.waveCount == 9) && (!g_cheats.integer) &&
 				(player->client->ps.stats[STAT_PLAYER_CLASS] == PC_NONE))
 			{
 				steamSetAchievement("ACH_NO_CLASS");

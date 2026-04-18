@@ -1782,11 +1782,24 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
     }
   }
 
-  if(!origin)
-    curSource->isTracking = qtrue;
-
-  qalSourcefv(curSource->alSource, AL_POSITION, sorigin );
-  S_AL_ScaleGain(curSource, sorigin);
+  if ( !origin ) {
+    if ( S_AL_HearingThroughEntity( entnum ) && entchannel == CHAN_WEAPON ) {
+      curSource->isTracking = qfalse;
+      qalSourcei( curSource->alSource, AL_SOURCE_RELATIVE, AL_TRUE );
+      qalSource3f( curSource->alSource, AL_POSITION, 0.0f, 0.0f, 0.0f );
+      qalSourcef( curSource->alSource, AL_ROLLOFF_FACTOR, 0.0f );
+      S_AL_ScaleGain( curSource, lastListenerOrigin );
+    } else {
+      curSource->isTracking = qtrue;
+      qalSourcei( curSource->alSource, AL_SOURCE_RELATIVE, AL_FALSE );
+      qalSourcefv( curSource->alSource, AL_POSITION, sorigin );
+      S_AL_ScaleGain( curSource, sorigin );
+    }
+  } else {
+    qalSourcei( curSource->alSource, AL_SOURCE_RELATIVE, AL_FALSE );
+    qalSourcefv( curSource->alSource, AL_POSITION, sorigin );
+    S_AL_ScaleGain( curSource, sorigin );
+  }
 
   // Start it playing
   curSource->isPlaying = qtrue;

@@ -1168,27 +1168,38 @@ qboolean ParsePairs( int handle ) {
 	return qtrue;
 }
 
-static void UI_LoadTranslateTable( void ) {
+static void UI_LoadTranslateFile( const char *filename ) {
 	pc_token_t token;
 	int handle;
 
-	handle = trap_PC_LoadSource( "text/text.txt" );
+	handle = trap_PC_LoadSource( filename );
 
 	if ( !handle ) {
 		return;
 	}
 
 	if ( !trap_PC_ReadToken( handle, &token ) ) {
+		trap_PC_FreeSource( handle );
 		return;
 	}
 
 	if ( token.string[0] != '{' ) {
-		Com_Printf( S_COLOR_YELLOW "expected {: text/text.txt\n" );
+		Com_Printf( S_COLOR_YELLOW "expected {: %s\n", filename );
 	} else if ( !ParsePairs( handle ) ) {
-		Com_Printf( S_COLOR_YELLOW "translate parse error: text/text.txt\n" );
+		Com_Printf( S_COLOR_YELLOW "translate parse error: %s\n", filename );
 	}
 
 	trap_PC_FreeSource( handle );
+}
+
+static void UI_LoadTranslateTable( void ) {
+	UI_LoadTranslateFile( "text/text.txt" );
+
+	for ( int i = 1; i < 10; i++ ) {
+		char filename[MAX_QPATH];
+		Com_sprintf( filename, sizeof( filename ), "text/text_%d.txt", i );
+		UI_LoadTranslateFile( filename );
+	}
 }
 
 /*

@@ -53,6 +53,21 @@ void Survival_AddKillScore(gentity_t *attacker, gentity_t *victim, int meansOfDe
 		score = 0;
 	}
 
+	if (score > 0 &&
+		(victim->aiCharacter == AICHAR_HELGA ||
+		 victim->aiCharacter == AICHAR_SUPERSOLDIER_LAB ||
+		 victim->aiCharacter == AICHAR_HEINRICH))
+	{
+		if (svParams.waveCount > 15)
+		{
+			score += 300;
+		}
+		else
+		{
+			score += 150;
+		}
+	}
+
 	attacker->client->ps.persistant[PERS_SCORE] += score;
 	attacker->client->ps.persistant[PERS_KILLS]++;
 }

@@ -126,11 +126,18 @@ qboolean Survival_HandleRandomWeaponBox(gentity_t *ent, gentity_t *activator, ch
 
 	// Pick a random weapon the player doesn't have
 	weapon_t chosen;
-	int tries = 10;
+	int tries = 20;
 	do {
 		chosen = selected_weapons[rand() % numWeapons];
 		tries--;
-	} while (G_FindWeaponSlot(activator, chosen) >= 0 && tries > 0);
+
+		if ( svParams.waveCount < 5 &&
+			( chosen == WP_TESLA || chosen == WP_VENOM || chosen == WP_FLAMETHROWER ) ) {
+			continue;
+		}
+	} while ( ( G_FindWeaponSlot( activator, chosen ) >= 0 ||
+		( svParams.waveCount < 5 &&
+		( chosen == WP_TESLA || chosen == WP_VENOM || chosen == WP_FLAMETHROWER ) ) ) && tries > 0 );
 
 	if (tries <= 0) {
 		trap_SendServerCommand(-1, "mu_play sound/items/use_nothing.wav 0\n");

@@ -879,6 +879,20 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	if (rawSteps < 0)
 		rawSteps = 0;
 
+	if (g_survivalDifficulty.integer == 1)
+	{
+		if (svParams.waveCount < 10)
+		{
+			rawSteps += 2 + rawSteps / 2;
+		}
+		else
+		{
+			rawSteps += 4 + rawSteps / 3;
+		}
+
+	}
+	
+
 	int newHealth = 0;
 	float runSpeedScale = 1.0f;
 	float sprintSpeedScale = 1.0f;
@@ -1276,54 +1290,110 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 	switch (characterNum) {
 		case AICHAR_SOLDIER:
 		case AICHAR_MERCENARY:
-			aimSkill     = fminf(0.1f + delta, 0.7f);
-			aimAccuracy  = fminf(0.1f + delta, 0.7f);
-			attackSkill  = fminf(0.1f + delta, 0.7f);
-			aggression   = fminf(0.1f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.4f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.7f;
+				aimAccuracy  = 0.7f;
+				attackSkill  = 0.7f;
+				aggression   = 1.0f;
+				reactionTime = 0.4f;
+			} else {
+				aimSkill     = fminf(0.1f + delta, 0.7f);
+				aimAccuracy  = fminf(0.1f + delta, 0.7f);
+				attackSkill  = fminf(0.1f + delta, 0.7f);
+				aggression   = fminf(0.1f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.4f);
+			}
 			break;
 		case AICHAR_ELITEGUARD:
-			aimSkill     = fminf(0.3f + delta, 0.8f);
-			aimAccuracy  = fminf(0.3f + delta, 0.8f);
-			attackSkill  = fminf(0.3f + delta, 0.8f);
-			aggression   = fminf(0.3f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.8f;
+				aimAccuracy  = 0.8f;
+				attackSkill  = 0.8f;
+				aggression   = 1.0f;
+				reactionTime = 0.3f;
+			} else {
+				aimSkill     = fminf(0.3f + delta, 0.8f);
+				aimAccuracy  = fminf(0.3f + delta, 0.8f);
+				attackSkill  = fminf(0.3f + delta, 0.8f);
+				aggression   = fminf(0.3f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.3f);
+			}
 			break;
 		case AICHAR_TRENCH:
-			aimSkill     = fminf(0.3f + delta, 0.8f);
-			aimAccuracy  = fminf(0.3f + delta, 0.8f);
-			attackSkill  = fminf(0.3f + delta, 0.8f);
-			aggression   = fminf(0.3f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.8f;
+				aimAccuracy  = 0.8f;
+				attackSkill  = 0.8f;
+				aggression   = 1.0f;
+				reactionTime = 0.3f;
+			} else {
+				aimSkill     = fminf(0.3f + delta, 0.8f);
+				aimAccuracy  = fminf(0.3f + delta, 0.8f);
+				attackSkill  = fminf(0.3f + delta, 0.8f);
+				aggression   = fminf(0.3f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.3f);
+			}
 			break;
 		case AICHAR_XSHEPHERD:
-			aimSkill     = fminf(0.3f + delta, 0.8f);
-			aimAccuracy  = fminf(0.3f + delta, 0.8f);
-			attackSkill  = fminf(0.3f + delta, 0.8f);
-			aggression   = fminf(0.3f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.8f;
+				aimAccuracy  = 0.8f;
+				attackSkill  = 0.8f;
+				aggression   = 1.0f;
+				reactionTime = 0.3f;
+			} else {
+				aimSkill     = fminf(0.3f + delta, 0.8f);
+				aimAccuracy  = fminf(0.3f + delta, 0.8f);
+				attackSkill  = fminf(0.3f + delta, 0.8f);
+				aggression   = fminf(0.3f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.3f);
+			}
 			break;
 		case AICHAR_BLACKGUARD:
-			aimSkill     = fminf(0.4f + delta, 0.9f);
-			aimAccuracy  = fminf(0.4f + delta, 0.9f);
-			attackSkill  = fminf(0.4f + delta, 0.9f);
-			aggression   = fminf(0.5f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.9f;
+				aimAccuracy  = 0.9f;
+				attackSkill  = 0.9f;
+				aggression   = 1.0f;
+				reactionTime = 0.3f;
+			} else {
+				aimSkill     = fminf(0.4f + delta, 0.9f);
+				aimAccuracy  = fminf(0.4f + delta, 0.9f);
+				attackSkill  = fminf(0.4f + delta, 0.9f);
+				aggression   = fminf(0.5f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.3f);
+			}
 			break;
 		case AICHAR_VENOM:
-			aimSkill     = fminf(0.4f + delta, 0.9f);
-			aimAccuracy  = fminf(0.4f + delta, 0.9f);
-			attackSkill  = fminf(0.4f + delta, 0.9f);
-			aggression   = fminf(0.5f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.3f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.9f;
+				aimAccuracy  = 0.9f;
+				attackSkill  = 0.9f;
+				aggression   = 1.0f;
+				reactionTime = 0.3f;
+			} else {
+				aimSkill     = fminf(0.4f + delta, 0.9f);
+				aimAccuracy  = fminf(0.4f + delta, 0.9f);
+				attackSkill  = fminf(0.4f + delta, 0.9f);
+				aggression   = fminf(0.5f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.3f);
+			}
 			break;
 		case AICHAR_PROTOSOLDIER:
 		case AICHAR_SUPERSOLDIER_LAB:
-			aimSkill     = fminf(0.4f + delta, 0.9f);
-			aimAccuracy  = fminf(0.4f + delta, 0.9f);
-			attackSkill  = fminf(0.4f + delta, 0.9f);
-			aggression   = fminf(0.5f + delta, 1.0f);
-			reactionTime = fmaxf(1.0f - delta, 0.2f);
+			if (g_survivalDifficulty.integer == 1) {
+				aimSkill     = 0.9f;
+				aimAccuracy  = 0.9f;
+				attackSkill  = 0.9f;
+				aggression   = 1.0f;
+				reactionTime = 0.2f;
+			} else {
+				aimSkill     = fminf(0.4f + delta, 0.9f);
+				aimAccuracy  = fminf(0.4f + delta, 0.9f);
+				attackSkill  = fminf(0.4f + delta, 0.9f);
+				aggression   = fminf(0.5f + delta, 1.0f);
+				reactionTime = fmaxf(1.0f - delta, 0.2f);
+			}
 			break;
 		case AICHAR_PARTISAN:
 			aimSkill     = 0.9f;
@@ -1692,6 +1762,23 @@ void AI_LoadSurvivalTable( const char* mapname )
 	if ( !parsedDefault ) {
 		G_Printf( S_COLOR_RED "ERROR: Failed to parse survival block in default.surv\n" );
 		return;
+	}
+
+	if ( g_survivalDifficulty.integer == 1 ) {
+		handle = trap_PC_LoadSource( "maps/default_hardcore.surv" );
+		if ( handle ) {
+			while ( 1 ) {
+				if ( !trap_PC_ReadToken( handle, &token ) ) {
+					break;
+				}
+				if ( !Q_stricmp( token.string, "survival" ) ) {
+					BG_ParseSurvivalTable( handle );
+					break;
+				}
+			}
+
+			trap_PC_FreeSource( handle );
+		}
 	}
 
 	if ( Q_stricmp( mapname, "default" ) ) {

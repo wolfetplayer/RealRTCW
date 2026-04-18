@@ -1173,7 +1173,8 @@ extern vmCvar_t g_dlc1;
 extern vmCvar_t g_class;
 extern vmCvar_t g_noobTube;
 extern vmCvar_t g_aiCollision;    
-extern vmCvar_t g_level_was_selected;  
+extern vmCvar_t g_level_was_selected;
+extern vmCvar_t g_survivalDifficulty;
 
 extern vmCvar_t g_playerSurvivalClass;
 

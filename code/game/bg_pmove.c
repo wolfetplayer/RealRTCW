@@ -2220,11 +2220,15 @@ static void PM_BeginWeaponReload( int weapon ) {
 		return;
 	}
 
-	if((weapon == WP_M1GARAND) && pm->ps->ammoclip[WP_M1GARAND] != 0) {
-			return;	
+	if ((weapon == WP_M1GARAND) &&
+		pm->ps->weaponUpgraded[WP_M1GARAND] <= 0 &&
+		pm->ps->ammoclip[WP_M1GARAND] != 0)
+	{
+		return;
 	}
 
-	if (weapon == WP_M1941)
+	if (weapon == WP_M1941 &&
+		pm->ps->weaponUpgraded[WP_M1941] <= 0)
 	{
 		int maxclip = BG_GetMaxClip(pm->ps, WP_M1941);
 		if (pm->ps->ammoclip[WP_M1941] > (0.5f * maxclip))
@@ -2587,6 +2591,7 @@ PM_ReloadClip
 static void PM_ReloadClip(int weapon) {
 	int clipIndex = BG_FindClipForWeapon(weapon);
 	int ammoIndex = BG_FindAmmoForWeapon(weapon);
+	int upgradeLevel;
 
 	int ammoreserve = pm->ps->ammo[ammoIndex];
 	int ammoclip    = pm->ps->ammoclip[clipIndex];
@@ -2594,19 +2599,30 @@ static void PM_ReloadClip(int weapon) {
 	int maxclip = BG_GetMaxClip(pm->ps, weapon);
 	int ammomove = maxclip - ammoclip;
 
+	upgradeLevel = pm->ps->weaponUpgraded[weapon];
+	if (upgradeLevel < 0) {
+		upgradeLevel = 0;
+	}
+
 	// Jaymod logic overrides
 	if (!pm->ps->aiChar) {
 		if (weapon == WP_M97 || weapon == WP_AUTO5) {
 			ammomove = 1;
 
 			if (pm->ps->perks[PERK_WEAPONHANDLING]) {
-				if (maxclip - ammoclip >= 2) {
-					ammomove = 2;
-				}
+				ammomove++;
+			}
+
+			if (upgradeLevel > 0) {
+				ammomove++;
+			}
+
+			if (ammomove > (maxclip - ammoclip)) {
+				ammomove = maxclip - ammoclip;
 			}
 		}
 
-		if (weapon == WP_M1941 && ammoclip > 0) {
+		if (weapon == WP_M1941 && ammoclip > 0 && upgradeLevel <= 0) {
 			ammomove = 5;
 		}
 	}

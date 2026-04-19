@@ -701,27 +701,43 @@ void AICast_UpdateMaxActiveAI(void)
     }
     }
 
-	if (svParams.waveCount >= svParams.waveHelga) {
-    svParams.maxActiveAI[AICHAR_HELGA] += svParams.helgaIncrease;
-    if (svParams.maxActiveAI[AICHAR_HELGA] > svParams.maxHelga) {
-        svParams.maxActiveAI[AICHAR_HELGA] = svParams.maxHelga;
-    }
-    }
+	// disable bosses completely
+	if (!g_survivalBosses.integer)
+	{
+		svParams.maxActiveAI[AICHAR_HELGA] = 0;
+		svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] = 0;
+		svParams.maxActiveAI[AICHAR_HEINRICH] = 0;
+	}
+	else
+	{
 
-	if (svParams.waveCount >= svParams.wavess) {
-    svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] += svParams.ssIncrease;
-    if (svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] > svParams.maxss) {
-        svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] = svParams.maxss;
-    }
-    }
+		if (svParams.waveCount >= svParams.waveHelga)
+		{
+			svParams.maxActiveAI[AICHAR_HELGA] += svParams.helgaIncrease;
+			if (svParams.maxActiveAI[AICHAR_HELGA] > svParams.maxHelga)
+			{
+				svParams.maxActiveAI[AICHAR_HELGA] = svParams.maxHelga;
+			}
+		}
 
+		if (svParams.waveCount >= svParams.wavess)
+		{
+			svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] += svParams.ssIncrease;
+			if (svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] > svParams.maxss)
+			{
+				svParams.maxActiveAI[AICHAR_SUPERSOLDIER_LAB] = svParams.maxss;
+			}
+		}
 
-	if (svParams.waveCount >= svParams.wavehein) {
-    svParams.maxActiveAI[AICHAR_HEINRICH] += svParams.heinIncrease;
-    if (svParams.maxActiveAI[AICHAR_HEINRICH] > svParams.maxhein) {
-        svParams.maxActiveAI[AICHAR_HEINRICH] = svParams.maxhein;
-    }
-    }
+		if (svParams.waveCount >= svParams.wavehein)
+		{
+			svParams.maxActiveAI[AICHAR_HEINRICH] += svParams.heinIncrease;
+			if (svParams.maxActiveAI[AICHAR_HEINRICH] > svParams.maxhein)
+			{
+				svParams.maxActiveAI[AICHAR_HEINRICH] = svParams.maxhein;
+			}
+		}
+	}
 
 	if (svParams.waveCount >= svParams.wavedog) {
     svParams.maxActiveAI[AICHAR_DOG] += svParams.dogIncrease;

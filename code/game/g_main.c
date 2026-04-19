@@ -179,6 +179,7 @@ vmCvar_t g_specialWaves;
 vmCvar_t g_level_was_selected;
 vmCvar_t g_survivalAiHealthCap;
 vmCvar_t g_survivalDifficulty;
+vmCvar_t g_survivalBosses;
 
 vmCvar_t g_playerSurvivalClass;    
 
@@ -229,6 +230,7 @@ cvarTable_t gameCvarTable[] = {
 	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_level_was_selected, "g_level_was_selected", "0", 0, 0, qfalse},
 	{&g_survivalDifficulty, "g_survivalDifficulty", "0", CVAR_ARCHIVE, 0, qfalse},
+	{&g_survivalBosses, "g_survivalBosses", "1", CVAR_ARCHIVE, 0, qfalse},
 
 	{&g_ee_skinEliteGuard, "g_ee_skinEliteGuard", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_ee_skinMercenary, "g_ee_skinMercenary", "0", CVAR_ARCHIVE, 0, qfalse},

@@ -1321,15 +1321,15 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			break;
 		case AICHAR_TRENCH:
 			if (g_survivalDifficulty.integer == 1) {
-				aimSkill     = 0.8f;
-				aimAccuracy  = 0.8f;
-				attackSkill  = 0.8f;
+				aimSkill     = 0.6f;
+				aimAccuracy  = 0.6f;
+				attackSkill  = 0.6f;
 				aggression   = 1.0f;
 				reactionTime = 0.3f;
 			} else {
-				aimSkill     = fminf(0.3f + delta, 0.8f);
-				aimAccuracy  = fminf(0.3f + delta, 0.8f);
-				attackSkill  = fminf(0.3f + delta, 0.8f);
+				aimSkill     = fminf(0.3f + delta, 0.6f);
+				aimAccuracy  = fminf(0.3f + delta, 0.6f);
+				attackSkill  = fminf(0.3f + delta, 0.6f);
 				aggression   = fminf(0.3f + delta, 1.0f);
 				reactionTime = fmaxf(1.0f - delta, 0.3f);
 			}

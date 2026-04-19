@@ -9983,6 +9983,7 @@ taking into account the weapon upgrade level.
 */
 int BG_GetMaxClip(const playerState_t *ps, int weapon) {
 	int upgradeLevel;
+	int maxClip;
 
 	if (!ps || weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS) {
 		return 0;
@@ -9996,7 +9997,15 @@ int BG_GetMaxClip(const playerState_t *ps, int weapon) {
 	}
 
 	if (upgradeLevel >= 1) {
-		return wt->maxclipUpgraded * upgradeLevel;
+		maxClip = wt->maxclipUpgraded;
+
+		if (upgradeLevel == 2) {
+			maxClip *= 1.5f;
+		} else if (upgradeLevel >= 3) {
+			maxClip *= 2.0f;
+		}
+
+		return maxClip;
 	}
 
 	return wt->maxclip;

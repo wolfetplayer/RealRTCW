@@ -951,7 +951,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 		case AICHAR_HELGA:
 			if (svParams.waveCount < 10)
 			{
-				newHealth = 10000 + rawSteps * 14;
+				newHealth = 4000 + rawSteps * 14;
 			}
 			else
 			{
@@ -968,7 +968,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 		case AICHAR_HEINRICH:
 			if (svParams.waveCount < 10)
 			{
-				newHealth = 20000 + rawSteps * 14;
+				newHealth = 8000 + rawSteps * 14;
 			}
 			else
 			{
@@ -984,7 +984,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 		case AICHAR_SUPERSOLDIER_LAB:
 			if (svParams.waveCount < 10)
 			{
-				newHealth = 15000 + rawSteps * 14;
+				newHealth = 5000 + rawSteps * 14;
 			}
 			else
 			{
@@ -993,7 +993,7 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 			}
 			if (g_survivalAiHealthCap.integer == 1)
 			{
-			if (newHealth > 30000) newHealth = 30000;
+			if (newHealth > 20000) newHealth = 20000;
 			}
 			break;
 

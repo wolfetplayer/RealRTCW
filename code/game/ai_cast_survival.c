@@ -1445,24 +1445,6 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			return;
 	}
 
-		// ===== DEBUG ONLY FOR SOLDIERS =====
-	if (characterNum == AICHAR_SOLDIER || characterNum == AICHAR_MERCENARY) {
-
-		Com_Printf("^3[SOLDIER_DEBUG]^7 waveCount=%d rawSteps=%d delta=%.2f diff=%d\n",
-			svParams.waveCount,
-			rawSteps,
-			delta,
-			g_survivalDifficulty.integer);
-
-		Com_Printf("^5[SOLDIER_VALUES]^7 aimSkill=%.2f aimAccuracy=%.2f attackSkill=%.2f aggression=%.2f reactionTime=%.2f\n",
-			aimSkill,
-			aimAccuracy,
-			attackSkill,
-			aggression,
-			reactionTime);
-	}
-
-
 	aiDefaults[characterNum].attributes[AIM_SKILL]     = aimSkill;
 	aiDefaults[characterNum].attributes[AIM_ACCURACY]  = aimAccuracy;
 	aiDefaults[characterNum].attributes[ATTACK_SKILL]  = attackSkill;

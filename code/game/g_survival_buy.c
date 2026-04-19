@@ -827,23 +827,35 @@ void Touch_objective_info(gentity_t *ent, gentity_t *other, trace_t *trace) {
 					weaponName, price));
 				return;
 			}
-		} else if (!Q_stricmp(techName, "upgrade_weapon")) {
-			if (price <= 0) {
+		}
+		else if (!Q_stricmp(techName, "upgrade_weapon"))
+		{
+			if (upgradeLevel >= 3)
+			{
+				return;
+			}
+
+			if (price <= 0)
+			{
 				price = svParams.weaponUpgradePrice * (upgradeLevel + 1);
 			}
 
-			if (weaponName && price > 0) {
+			if (weaponName && price > 0)
+			{
 				trap_SendServerCommand(other - g_entities, va(
-					"cpbuy \"%s\nprice: %d\"",
-					weaponName, price));
+															   "cpbuy \"%s\nprice: %d\"",
+															   weaponName, price));
 				return;
 			}
-		} else if (!Q_stricmp(techName, "random_perk")) {
+		}
+		else if (!Q_stricmp(techName, "random_perk"))
+		{
 			price = (price > 0) ? price : svParams.randomPerkPrice;
-			if (weaponName && price > 0) {
+			if (weaponName && price > 0)
+			{
 				trap_SendServerCommand(other - g_entities, va(
-					"cpbuy \"%s\nprice: %d\"",
-					weaponName, price));
+															   "cpbuy \"%s\nprice: %d\"",
+															   weaponName, price));
 				return;
 			}
 		}

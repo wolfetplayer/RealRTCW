@@ -9959,6 +9959,7 @@ qboolean BG_ParseAmmoTable( int handle, weapon_t weaponNum )
 
 
 // Set weapon parameters for specified skill
+
 void BG_SetWeaponForSkill( weapon_t weaponNum, gameskill_t skill ) {
 	if ( ammoSkill[skill][weaponNum].maxammo > 0 )
 		ammoTable[weaponNum].maxammo = ammoSkill[skill][weaponNum].maxammo;
@@ -9972,27 +9973,33 @@ void BG_SetWeaponForSkill( weapon_t weaponNum, gameskill_t skill ) {
 	if ( ammoSkill[skill][weaponNum].maxammoUpgraded > 0 )
 		ammoTable[weaponNum].maxammoUpgraded = ammoSkill[skill][weaponNum].maxammoUpgraded;
 }
-
 /*
 ==========================
 BG_GetMaxClip
 
 Returns the correct clip size for the given weapon and player state,
-taking into account whether the weapon is upgraded.
+taking into account the weapon upgrade level.
 ==========================
 */
 int BG_GetMaxClip(const playerState_t *ps, int weapon) {
+	int upgradeLevel;
+
 	if (!ps || weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS) {
 		return 0;
 	}
 
 	const ammoTable_t *wt = &ammoTable[weapon];
 
-	if (ps->weaponUpgraded[weapon]) {
-		return wt->maxclipUpgraded;
-	} else {
-		return wt->maxclip;
+	upgradeLevel = ps->weaponUpgraded[weapon];
+	if (upgradeLevel < 0) {
+		upgradeLevel = 0;
 	}
+
+	if (upgradeLevel >= 1) {
+		return wt->maxclipUpgraded * upgradeLevel;
+	}
+
+	return wt->maxclip;
 }
 
 /*
@@ -10004,14 +10011,25 @@ taking into account whether the weapon is upgraded and any class-specific bonuse
 ==========================
 */
 int BG_GetMaxAmmo(const playerState_t *ps, int weapon, float ltAmmoBonus) {
+	int maxAmmo;
+	int upgradeLevel;
+
 	if (!ps || weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS) {
 		return 0;
 	}
 
 	const ammoTable_t *wt = &ammoTable[weapon];
-	int maxAmmo = ps->weaponUpgraded[weapon]
-		? wt->maxammoUpgraded
-		: wt->maxammo;
+
+	upgradeLevel = ps->weaponUpgraded[weapon];
+	if (upgradeLevel < 0) {
+		upgradeLevel = 0;
+	}
+
+	if (upgradeLevel >= 1) {
+		maxAmmo = wt->maxammoUpgraded * upgradeLevel;
+	} else {
+		maxAmmo = wt->maxammo;
+	}
 
 	if (ps->stats[STAT_PLAYER_CLASS] == PC_LT) {
 		maxAmmo *= ltAmmoBonus;

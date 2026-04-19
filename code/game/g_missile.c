@@ -1144,9 +1144,17 @@ gentity_t *fire_rocket( gentity_t *self, vec3_t start, vec3_t dir ) {
 	}
 	else
 	{
-		qboolean upgraded = self->client && self->client->ps.weaponUpgraded[WP_PANZERFAUST];
+		int upgradeLevel = self->client ? self->client->ps.weaponUpgraded[WP_PANZERFAUST] : 0;
 
-		bolt->damage = upgraded ? ammoTable[WP_PANZERFAUST].playerDamageUpgraded : ammoTable[WP_PANZERFAUST].playerDamage;
+		if (upgradeLevel >= 1)
+		{
+			bolt->damage = ammoTable[WP_PANZERFAUST].playerDamageUpgraded * upgradeLevel;
+		}
+		else
+		{
+			bolt->damage = ammoTable[WP_PANZERFAUST].playerDamage;
+		}
+
 		bolt->splashDamage = bolt->damage; // Same value
 		bolt->splashRadius = ammoTable[WP_PANZERFAUST].playerSplashRadius;
 

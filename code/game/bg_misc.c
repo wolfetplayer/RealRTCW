@@ -10026,13 +10026,21 @@ int BG_GetMaxAmmo(const playerState_t *ps, int weapon, float ltAmmoBonus) {
 	}
 
 	if (upgradeLevel >= 1) {
-		maxAmmo = wt->maxammoUpgraded * upgradeLevel;
+		float multiplier = 1.0f;
+
+		if (upgradeLevel == 2) {
+			multiplier = 1.5f;
+		} else if (upgradeLevel >= 3) {
+			multiplier = 2.0f;
+		}
+
+		maxAmmo = (int)(wt->maxammoUpgraded * multiplier);
 	} else {
 		maxAmmo = wt->maxammo;
 	}
 
 	if (ps->stats[STAT_PLAYER_CLASS] == PC_LT) {
-		maxAmmo *= ltAmmoBonus;
+		maxAmmo = (int)(maxAmmo * ltAmmoBonus);
 	}
 
 	return maxAmmo;

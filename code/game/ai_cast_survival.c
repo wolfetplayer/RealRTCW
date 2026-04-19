@@ -1294,8 +1294,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 	int rawSteps = (svParams.waveCount > 1) ? (svParams.waveCount - waveAppeared) : 0;
 	if (rawSteps < 0) rawSteps = 0;
 
-	int stepMultiplier = (svParams.waveCount < 10) ? 1 : 2;
-	float delta = rawSteps * 0.05f * stepMultiplier;  // max delta ~0.5-1.0 depending on how long they're alive
+	float delta = rawSteps * 0.05f;
 
 	float aimSkill     = 0.0f;
 	float aimAccuracy  = 0.0f;
@@ -1307,9 +1306,9 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_SOLDIER:
 		case AICHAR_MERCENARY:
 			if (g_survivalDifficulty.integer == 1) {
-				aimSkill     = fminf(0.3f + delta, 0.7f);
-				aimAccuracy  = fminf(0.3f + delta, 0.7f);
-				attackSkill  = fminf(0.3f + delta, 0.7f);
+				aimSkill     = fminf(0.3f + delta, 0.8f);
+				aimAccuracy  = fminf(0.3f + delta, 0.8f);
+				attackSkill  = fminf(0.3f + delta, 0.8f);
 				aggression   = fminf(0.3f + delta, 1.0f);
 				reactionTime = fmaxf(0.8f - delta, 0.4f);
 			} else {
@@ -1328,25 +1327,25 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 				aggression   = fminf(0.5f + delta, 1.0f);
 				reactionTime = fmaxf(0.6f - delta, 0.2f);
 			} else {
-				aimSkill     = fminf(0.3f + delta, 0.8f);
-				aimAccuracy  = fminf(0.3f + delta, 0.8f);
-				attackSkill  = fminf(0.3f + delta, 0.8f);
-				aggression   = fminf(0.3f + delta, 1.0f);
+				aimSkill     = fminf(0.4f + delta, 0.8f);
+				aimAccuracy  = fminf(0.4f + delta, 0.8f);
+				attackSkill  = fminf(0.4f + delta, 0.8f);
+				aggression   = fminf(0.4f + delta, 1.0f);
 				reactionTime = fmaxf(1.0f - delta, 0.3f);
 			}
 			break;
 		case AICHAR_TRENCH:
 			if (g_survivalDifficulty.integer == 1) {
-				aimSkill     = fminf(0.3f + delta, 0.6f);
-				aimAccuracy  = fminf(0.3f + delta, 0.6f);
-				attackSkill  = fminf(0.3f + delta, 0.6f);
+				aimSkill     = fminf(0.3f + delta, 0.7f);
+				aimAccuracy  = fminf(0.3f + delta, 0.7f);
+				attackSkill  = fminf(0.3f + delta, 0.7f);
 				aggression   = fminf(0.3f + delta, 1.0f);
 				reactionTime = fmaxf(0.8f - delta, 0.3f);
 			} else {
-				aimSkill     = fminf(0.3f + delta, 0.6f);
-				aimAccuracy  = fminf(0.3f + delta, 0.6f);
-				attackSkill  = fminf(0.3f + delta, 0.6f);
-				aggression   = fminf(0.3f + delta, 1.0f);
+				aimSkill     = fminf(0.2f + delta, 0.7f);
+				aimAccuracy  = fminf(0.2f + delta, 0.7f);
+				attackSkill  = fminf(0.2f + delta, 0.7f);
+				aggression   = fminf(0.2f + delta, 1.0f);
 				reactionTime = fmaxf(1.0f - delta, 0.3f);
 			}
 			break;
@@ -1382,15 +1381,15 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			break;
 		case AICHAR_VENOM:
 			if (g_survivalDifficulty.integer == 1) {
-				aimSkill     = fminf(0.5f + delta, 0.9f);
-				aimAccuracy  = fminf(0.5f + delta, 0.9f);
-				attackSkill  = fminf(0.5f + delta, 0.9f);
+				aimSkill     = fminf(0.5f + delta, 0.8f);
+				aimAccuracy  = fminf(0.5f + delta, 0.8f);
+				attackSkill  = fminf(0.5f + delta, 0.8f);
 				aggression   = fminf(0.6f + delta, 1.0f);
 				reactionTime = fmaxf(0.7f - delta, 0.3f);
 			} else {
-				aimSkill     = fminf(0.4f + delta, 0.9f);
-				aimAccuracy  = fminf(0.4f + delta, 0.9f);
-				attackSkill  = fminf(0.4f + delta, 0.9f);
+				aimSkill     = fminf(0.4f + delta, 0.8f);
+				aimAccuracy  = fminf(0.4f + delta, 0.8f);
+				attackSkill  = fminf(0.4f + delta, 0.8f);
 				aggression   = fminf(0.5f + delta, 1.0f);
 				reactionTime = fmaxf(1.0f - delta, 0.3f);
 			}
@@ -1416,7 +1415,7 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			aimAccuracy  = 0.9f;
 			attackSkill  = 0.9f;
 			aggression   = 0.9f;
-			reactionTime = 0.2f;
+			reactionTime = 0.1f;
 			break;
 		case AICHAR_ZOMBIE_SURV:
 		case AICHAR_ZOMBIE_FLAME:

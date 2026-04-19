@@ -886,6 +886,11 @@ void AICast_ApplySurvivalAttributes(gentity_t *ent, cast_state_t *cs)
 	case AICHAR_LOPER:
 		waveAppeared = svParams.waveLopers;
 		break;
+	case AICHAR_SOLDIER:
+	case AICHAR_MERCENARY:
+	case AICHAR_ZOMBIE_SURV:
+	case AICHAR_FLESH:
+	    waveAppeared = 1;
 	default:
 		waveAppeared = 0;
 		break;
@@ -1288,6 +1293,8 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_VENOM:        waveAppeared = svParams.waveV; break;
 		case AICHAR_PROTOSOLDIER: waveAppeared = svParams.waveProtos; break;
 		case AICHAR_SUPERSOLDIER_LAB: waveAppeared = svParams.wavess; break;
+		case AICHAR_SOLDIER: waveAppeared = 1; break;
+		case AICHAR_MERCENARY: waveAppeared = 1; break;
 		default:  waveAppeared = 0; break;
 	}
 
@@ -1306,10 +1313,10 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		case AICHAR_SOLDIER:
 		case AICHAR_MERCENARY:
 			if (g_survivalDifficulty.integer == 1) {
-				aimSkill     = fminf(0.3f + delta, 0.8f);
-				aimAccuracy  = fminf(0.3f + delta, 0.8f);
-				attackSkill  = fminf(0.3f + delta, 0.8f);
-				aggression   = fminf(0.3f + delta, 1.0f);
+				aimSkill     = fminf(0.4f + delta, 0.8f);
+				aimAccuracy  = fminf(0.4f + delta, 0.8f);
+				attackSkill  = fminf(0.4f + delta, 0.8f);
+				aggression   = fminf(0.4f + delta, 1.0f);
 				reactionTime = fmaxf(0.8f - delta, 0.4f);
 			} else {
 				aimSkill     = fminf(0.1f + delta, 0.7f);
@@ -1366,10 +1373,10 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 			break;
 		case AICHAR_BLACKGUARD:
 			if (g_survivalDifficulty.integer == 1) {
-				aimSkill     = fminf(0.5f + delta, 0.9f);
-				aimAccuracy  = fminf(0.5f + delta, 0.9f);
-				attackSkill  = fminf(0.5f + delta, 0.9f);
-				aggression   = fminf(0.6f + delta, 1.0f);
+				aimSkill     = fminf(0.55f + delta, 0.9f);
+				aimAccuracy  = fminf(0.55f + delta, 0.9f);
+				attackSkill  = fminf(0.55f + delta, 0.9f);
+				aggression   = fminf(0.55f + delta, 1.0f);
 				reactionTime = fmaxf(0.7f - delta, 0.3f);
 			} else {
 				aimSkill     = fminf(0.4f + delta, 0.9f);
@@ -1437,6 +1444,24 @@ void BG_SetBehaviorForSurvival(AICharacters_t characterNum) {
 		default:
 			return;
 	}
+
+		// ===== DEBUG ONLY FOR SOLDIERS =====
+	if (characterNum == AICHAR_SOLDIER || characterNum == AICHAR_MERCENARY) {
+
+		Com_Printf("^3[SOLDIER_DEBUG]^7 waveCount=%d rawSteps=%d delta=%.2f diff=%d\n",
+			svParams.waveCount,
+			rawSteps,
+			delta,
+			g_survivalDifficulty.integer);
+
+		Com_Printf("^5[SOLDIER_VALUES]^7 aimSkill=%.2f aimAccuracy=%.2f attackSkill=%.2f aggression=%.2f reactionTime=%.2f\n",
+			aimSkill,
+			aimAccuracy,
+			attackSkill,
+			aggression,
+			reactionTime);
+	}
+
 
 	aiDefaults[characterNum].attributes[AIM_SKILL]     = aimSkill;
 	aiDefaults[characterNum].attributes[AIM_ACCURACY]  = aimAccuracy;

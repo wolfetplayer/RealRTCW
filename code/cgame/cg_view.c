@@ -864,6 +864,15 @@ float CG_FovTanScale( float fovDeg, float baseFovDeg ) {
     return CG_FovToTan( fovDeg ) / b;
 }
 
+float CG_CalcWiderFOV(float fov) {
+	// Based on LordHavoc's code for Darkplaces
+	// http://www.quakeworld.nu/forum/topic/53/what-does-your-qw-look-like/page/30
+	const float baseAspect = 0.75f; // 3/4
+	const float aspect = (float)cg.refdef.width/(float)cg.refdef.height;
+
+	return atan2( tan( fov*M_PI / 360.0f ) * baseAspect*aspect, 1 )*360.0f / M_PI;
+}
+
 
 /*
 ====================

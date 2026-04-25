@@ -982,6 +982,25 @@ static int CG_CalcFov( void ) {
 	fov_y = atan2( cg.refdef.height, x );
 	fov_y = fov_y * 360 / M_PI;
 
+	// set it
+	cg.refdef.fov_x = fov_x;
+	cg.refdef.fov_y = fov_y;
+
+	float baseFovY;
+	float xbase;
+
+	// Convert base horizontal fov to base vertical fov using current refdef size
+	// (mirrors the same math used above for fov_y)
+	xbase = cg.refdef.width / tan(baseFovX / 360.0f * M_PI);
+	baseFovY = (atan2(cg.refdef.height, xbase) * 360.0f) / M_PI;
+
+	// Scale based on actual final vertical fov vs base vertical fov
+	cg.zoomSensitivity = CG_FovTanScale(cg.refdef.fov_y, baseFovY);
+
+	// Detect "zoomed state" by FOV actually being smaller than base
+	// (covers scoped zoom, simple zoom, mg42, any other future fov tweak)
+	cg.isZoomed = cg.refdef.fov_y < baseFovY - 0.01f;
+
 	// warp if underwater
 	contents = CG_PointContents( cg.refdef.vieworg, -1 );
 	if ( contents & ( CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA ) ) {
@@ -1001,31 +1020,6 @@ static int CG_CalcFov( void ) {
 		cg.refdef.rdflags |= RDF_UNDERWATER;
 	} else {
 		cg.refdef.rdflags &= ~RDF_UNDERWATER;
-	}
-
-	// set it
-	cg.refdef.fov_x = fov_x;
-	cg.refdef.fov_y = fov_y;
-
-	// RealRTCW - sensitivity scaling by fov
-	{
-		// Base FOV is the user's normal FOV (before any zoom/mg42/simple zoom)
-		// cg.fov is set earlier to that base horizontal fov.
-		float baseFovX = cg.fov;
-		float baseFovY;
-		float xbase;
-
-		// Convert base horizontal fov to base vertical fov using current refdef size
-		// (mirrors the same math used above for fov_y)
-		xbase = cg.refdef.width / tan(baseFovX / 360.0f * M_PI);
-		baseFovY = atan2(cg.refdef.height, xbase) * 360.0f / M_PI;
-
-		// Scale based on actual final vertical fov vs base vertical fov
-		cg.zoomSensitivity = CG_FovTanScale(cg.refdef.fov_y, baseFovY);
-
-		// Detect "zoomed state" by FOV actually being smaller than base
-		// (covers scoped zoom, simple zoom, mg42, any other future fov tweak)
-		cg.isZoomed = cg.refdef.fov_y < baseFovY - 0.01f;
 	}
 
 	return inwater;

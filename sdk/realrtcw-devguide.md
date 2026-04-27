@@ -149,3 +149,274 @@ You can see that all atributes values were removed, so it will fall back to `.ai
 Attributes like `aimSkill`, `aimAccuracy`, `attackSkill`, `reactionTime`, `aggression`, `startingHealth` can be randomized within defined values depending on the gameskill value. In the code above soldier health will randomized between 15 and 25 health points on easiest difficulty and between 25 and 35 on Death Incarnate difficulty. Last interval 20-30 is reserved for Survival mode, but it is not really used there, since Survival is using its own HP system for AIs.
 
 This system allows you to do massive balance changes without editing each .ai on every map. But it is still optional and you can do it like in original RTCW scripts.
+
+## Extended scripting
+
+### Old functions improvements
+
+`mu_queue` - can now randomize music tracks
+
+Example usage:
+
+"mu_queue sound/music/m_action sound/music/m_alarm"
+
+### New give functions
+
+`giveweaponfull ` – Takes away all AIs weapon, gives specified weapon, fills both reserve ammo and current clip to the max and selects the weapon itself. You can also randomize what weapon AI will get by simply typing multiple weapon after the command.
+
+Example usage where AI will receive one of three weapons on spawn:
+
+    trigger loadout_early
+    {
+    giveweaponfull weapon_mp40 weapon_luger weapon_mauserrifle
+    }
+
+`giveammo` – gives player an actual ammo item. 
+
+Example usage: "giveammo ammo_9mm"
+
+`givehealth` – gives player an actual health item. 
+
+Example usage: "givehealth item_health_large"
+
+`givearmor` – gives player an actual armor item. 
+
+Example usage: "givearmor item_armor_body"
+
+`giveinventory` – gives holdable item. 
+
+Example usage: "giveinventory holdable_adrenaline"
+
+`giveperk` - gives perk item.
+
+Example usage: "giveperk perk_runner"
+
+### Accum math operations
+
+`accumaction` - math operations with accum buffers.
+
+Examples:
+
+`accumaction 3 1 plus 0` - accum 3 equals accum 1 plus accum 0 
+
+`accumaction 3 1 minus 0` - accum 3 equals accum 1 minus accum 0 
+
+`accumaction 3 1 mul 0` - accum 3 equals accum 1 multiply on accum 0
+
+`accumaction 3 1 div 0` - accum 3 equals accum1 divided on accum 0
+
+`accumgametime` - store game time into accum buffer. 
+
+Example: "accumgametime 1" - will store game time in accum 1
+
+### Misc new functions
+
+`savecheckpoint` – saves the checkpoint by writing "lastcheckpoint" save game.
+
+`setmovespeed` - changes player movespeed through the triggers. Can also be applied to AI. 
+
+Values - veryslow, slow, default, fast, veryfast. 
+
+Example usage: "setmovespeed veryslow"
+
+`drop_weapon` – makes AI to toss his current weapon
+
+`changeaiteam` – change team of the AI on the fly
+
+`changeainame` – changes AI script name on the fly
+
+`burn` – make AI burn
+
+`screenfade` - fades player screen in/out with defined fadetime.
+
+Example usage: "screenfade 5000 in"
+
+`dropitem` - makes AI drop defined item.
+
+Example usage: "dropitem holdable_emp 0 22" 
+
+This will make AI drop holdable_emp item which will stay forever and there is 22% probability that this will happen. If you dont want to mess with drop chance and stay time just go with "dropitem holdable_emp"
+
+`defend` - makes AI defend area around defined ai_marker.
+
+Example usage: "defend friendly3_marker1 64 0"
+
+This will make AI defend friendly3_marker1 forever within 64 radius.
+
+`face_entity`  –  makes AI look at the target entity
+
+Example usage: "face_entity nazi1"
+ 
+### Print Label (used for training level best time print)
+
+`printlabel` - change parameters of displayed label
+
+Syntax:
+
+`printlabel txt`  - change text part of the label
+
+`printlabel param`  - change numeric part of the label and position it with x y coordinates
+
+`printlabel state` - show the label, if value of the accum is higher than 0, otherwise hide
+
+`printlabel on` - show the label
+
+`printlabel off` - hide the label
+
+`printlabel format` - label formatting. Assing them in any order and divide them with space.
+
+formatstring:
+
+`pulse` – pulsing string
+
+`string` – enable text part
+
+`accum` – enable numeric part
+
+`timer` – numeric part will be displayed in seconds
+
+`inline` – one string
+
+Example usage in malta_menu.script:
+
+    	trigger time_start
+    	{
+    	    printlabel format string accum timer inline
+    		printlabel on
+    		accumgametime 2
+    		trigger timer time_go
+    	}
+    	
+    	trigger time_go
+    	{
+    	   accumgametime 1
+    	   accumaction 1 1 minus 2
+    	   printlabel param 1 400 50
+    	   wait 5
+    	   trigger timer time_go
+    	}
+    	
+    	trigger time_stop
+    	{
+    	   printlabel format pulse string accum timer inline
+    	   wait 5000
+    	   printlabel off
+    	}
+    }
+
+### If and endif cvars support
+
+You can now rely on game cvars values in .ai scripts. Usage is plain simple:
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+		#endif
+	}
+
+You can use `>=` `<=` `==` `!=` `>` `<` while comparing the cvar value.
+
+### trigger self*
+
+If you are writing a script inside AI blocks you can just refer to AI as `*self` if you are planning to execute certain actions on himself. 
+
+Example usage where `self*` means nazi10:
+
+    nazi10
+    {
+    
+    	attributes
+    	{
+    	}
+    	
+    	respawn
+    	{
+    	resetscript
+    	statetype alert
+    	trigger self* loadout_early
+    	trigger self* loadout_late
+    	nosight 9999
+    	gotomarker surv_entry_*
+    	sight
+    	}
+    	
+    	trigger loadout_early
+    	{
+    	wave abort_if_greater_than 9
+    	giveweaponfull weapon_mp40 weapon_luger weapon_mauserrifle
+    	}
+    	
+    	trigger loadout_late
+    	{
+    	wave abort_if_less_than 10
+    	giveweaponfull weapon_mp44 weapon_g43
+    	}
+	}
+
+### Stack AI scripting
+
+If you have a bunch of AIs which are literally doing the same thing you can stack script them instead of copy pasting their script. I found a good use for it in Survival mode.
+
+Example usage where 5 elite guards are scripted in the same blocks:
+
+    eg1
+    eg2
+    eg3
+    eg4
+    {
+    
+    	attributes
+    	{
+    	}
+    	
+    	respawn
+    	{
+    	resetscript
+    	giveweaponfull weapon_mp34 weapon_sten weapon_silencer
+    	statetype alert
+    	nosight 9999
+    	gotomarker surv_entry_*
+    	sight
+    	}
+    	
+    	enemysight
+    	{
+    	}
+    	
+    	bulletimpact
+    	{
+    		deny
+    	}
+    
+    	inspectsoundstart
+    	{
+    		deny
+    	}
+    
+    	inspectsoundend
+    	{
+    		deny
+    	}
+    
+    	inspectbodystart
+    	{
+    		deny
+    	}
+    
+    	inspectbodyend
+    	{
+    		deny
+    	}
+    
+    	death
+    	{
+    	}
+    
+    }

@@ -2724,3 +2724,5 @@ qboolean    trap_GetModelInfo( int clientNum, char *modelName, animModelInfo_t *
 
 // New in IORTCW
 void		*trap_Alloc( int size );
+
+qhandle_t   trap_R_RegisterSmartSkin( const char *name, const char *mapName, qboolean upgraded );

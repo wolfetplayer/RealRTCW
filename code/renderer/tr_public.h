@@ -54,6 +54,7 @@ typedef struct {
 	void ( *BeginRegistration )( glconfig_t *config );
 	qhandle_t ( *RegisterModel )( const char *name );
 	qhandle_t ( *RegisterSkin )( const char *name );
+	qhandle_t (*RegisterSmartSkin)(const char *name, const char *mapName, qboolean upgraded);
 	qhandle_t ( *RegisterShader )( const char *name );
 	qhandle_t ( *RegisterShaderNoMip )( const char *name );
 	void ( *LoadWorld )( const char *name );

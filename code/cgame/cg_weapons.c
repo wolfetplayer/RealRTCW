@@ -1515,24 +1515,40 @@ static qboolean CG_RW_ParseClient( int handle, weaponInfo_t *weaponInfo, int wea
 			weaponInfo->handsModel = trap_R_RegisterModel(filename);
 
 			char base[128], map[128];
+			char smartSkin[128];
 			char handsskin[128], upgradedSkin[128], upgradedMapSkin[128];
 
 			memset(base, 0, sizeof(base));
 			memset(map, 0, sizeof(map));
+			memset(smartSkin, 0, sizeof(smartSkin));
+
 			COM_StripExtension(filename, base, sizeof(base));
 			trap_Cvar_VariableStringBuffer("mapname", map, sizeof(map));
 
-			// Map-specific hands skin
-			Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", base, map);
-			weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
+			Com_sprintf(smartSkin, sizeof(smartSkin), "%s.smartskin", base);
 
-			// Generic upgraded skin
-			Com_sprintf(upgradedSkin, sizeof(upgradedSkin), "%s_upgraded.skin", base);
-			weaponInfo->upgradedSkin = trap_R_RegisterSkin(upgradedSkin);
+			weaponInfo->handsSkin = trap_R_RegisterSmartSkin(smartSkin, map, qfalse);
+			weaponInfo->upgradedSkin = trap_R_RegisterSmartSkin(smartSkin, map, qtrue);
+			weaponInfo->upgradedMapSkin = 0;
 
-			// Map-specific upgraded skin
-			Com_sprintf(upgradedMapSkin, sizeof(upgradedMapSkin), "%s_upgraded_%s.skin", base, map);
-			weaponInfo->upgradedMapSkin = trap_R_RegisterSkin(upgradedMapSkin);
+			// Legacy fallback
+			if (!weaponInfo->handsSkin)
+			{
+				Com_sprintf(handsskin, sizeof(handsskin), "%s_%s.skin", base, map);
+				weaponInfo->handsSkin = trap_R_RegisterSkin(handsskin);
+			}
+
+			if (!weaponInfo->upgradedSkin)
+			{
+				Com_sprintf(upgradedMapSkin, sizeof(upgradedMapSkin), "%s_upgraded_%s.skin", base, map);
+				weaponInfo->upgradedSkin = trap_R_RegisterSkin(upgradedMapSkin);
+
+				if (!weaponInfo->upgradedSkin)
+				{
+					Com_sprintf(upgradedSkin, sizeof(upgradedSkin), "%s_upgraded.skin", base);
+					weaponInfo->upgradedSkin = trap_R_RegisterSkin(upgradedSkin);
+				}
+			}
 		} else if ( !Q_stricmp( token.string, "flashDlightColor" ) ) {
 			if ( !PC_Vec_Parse( handle, &weaponInfo->flashDlightColor ) ) {
 				return CG_RW_ParseError( handle, "expected flashDlightColor as r g b" );

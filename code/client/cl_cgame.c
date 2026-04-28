@@ -611,8 +611,6 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		return re.RegisterModel( VMA( 1 ) );
 	case CG_R_REGISTERSKIN:
 		return re.RegisterSkin( VMA( 1 ) );
-
-		//----(SA)	added
 	case CG_R_GETSKINMODEL:
 		return re.GetSkinModel( args[1], VMA( 2 ), VMA( 3 ) );
 	case CG_R_GETMODELSHADER:
@@ -875,7 +873,9 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 	// New in IORTCW
 	case CG_ALLOC:
 		return VM_Alloc( args[1] );
-
+	case CG_R_REGISTERSMARTSKIN:
+		return re.RegisterSmartSkin(VMA(1), VMA(2), args[3]);
+		//----(SA)	added
 	default:
 		Com_Error( ERR_DROP, "Bad cgame system trap: %ld", (long int) args[0] );
 	}

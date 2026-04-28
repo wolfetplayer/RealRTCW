@@ -2035,6 +2035,357 @@ qhandle_t RE_GetShaderFromModel( qhandle_t modelid, int surfnum, int withlightma
 	return 0;
 }
 
+
+// Smart Skin code //
+
+typedef struct {
+	char name[MAX_QPATH];
+	shader_t *shader;
+} smartSkinSurface_t;
+
+typedef struct {
+	char profile[MAX_QPATH];
+	qboolean active;
+	qboolean upgraded;
+	smartSkinSurface_t surfaces[MAX_SKIN_SURFACES];
+	int numSurfaces;
+} smartSkinBlock_t;
+
+static unsigned int R_SmartSkin_HashString( const char *str ) {
+	unsigned int hash = 2166136261u;
+
+	if ( !str ) {
+		return hash;
+	}
+
+	while ( *str ) {
+		hash ^= (unsigned char)*str++;
+		hash *= 16777619u;
+	}
+
+	return hash;
+}
+
+static void R_SmartSkin_ApplySurface( smartSkinSurface_t *surfaces, int *numSurfaces, const char *surfaceName, const char *shaderName ) {
+	int i;
+	char cleanSurface[MAX_QPATH];
+
+	if ( !surfaceName || !surfaceName[0] || !shaderName || !shaderName[0] ) {
+		return;
+	}
+
+	Q_strncpyz( cleanSurface, surfaceName, sizeof( cleanSurface ) );
+	Q_strlwr( cleanSurface );
+
+	for ( i = 0; i < *numSurfaces; i++ ) {
+		if ( !Q_stricmp( surfaces[i].name, cleanSurface ) ) {
+			surfaces[i].shader = R_FindShader( shaderName, LIGHTMAP_NONE, qtrue );
+			return;
+		}
+	}
+
+	if ( *numSurfaces >= MAX_SKIN_SURFACES ) {
+		ri.Printf( PRINT_WARNING, "WARNING: SmartSkin has too many surfaces, ignoring '%s'\n", cleanSurface );
+		return;
+	}
+
+	Q_strncpyz( surfaces[*numSurfaces].name, cleanSurface, sizeof( surfaces[*numSurfaces].name ) );
+	surfaces[*numSurfaces].shader = R_FindShader( shaderName, LIGHTMAP_NONE, qtrue );
+	(*numSurfaces)++;
+}
+
+static void R_SmartSkin_ParseBlockSurfaces( char **text_p, smartSkinSurface_t *surfaces, int *numSurfaces ) {
+	char *token;
+	char surfaceName[MAX_QPATH];
+
+	while ( *text_p && **text_p ) {
+		token = CommaParse( text_p );
+
+		if ( !token[0] ) {
+			break;
+		}
+
+		if ( !Q_stricmp( token, "}" ) ) {
+			break;
+		}
+
+		Q_strncpyz( surfaceName, token, sizeof( surfaceName ) );
+
+		if ( *text_p && **text_p == ',' ) {
+			(*text_p)++;
+		}
+
+		token = CommaParse( text_p );
+
+		if ( !token[0] ) {
+			break;
+		}
+
+		R_SmartSkin_ApplySurface( surfaces, numSurfaces, surfaceName, token );
+	}
+}
+
+static qboolean R_SmartSkin_ProfileMatches( const char *profile, const char *wantedProfile ) {
+	if ( !profile || !profile[0] || !wantedProfile || !wantedProfile[0] ) {
+		return qfalse;
+	}
+
+	return !Q_stricmp( profile, wantedProfile );
+}
+
+static qboolean R_SmartSkin_ReadProfileMaps( char **text_p, const char *mapName, char *outProfile, int outProfileSize ) {
+	char *token;
+	char profile[MAX_QPATH];
+	qboolean matches = qfalse;
+
+	token = CommaParse( text_p );
+
+	if ( !token[0] ) {
+		return qfalse;
+	}
+
+	Q_strncpyz( profile, token, sizeof( profile ) );
+
+	token = CommaParse( text_p );
+
+	if ( Q_stricmp( token, "maps" ) ) {
+		ri.Printf( PRINT_WARNING, "WARNING: smartskin profile '%s' missing maps keyword\n", profile );
+		return qfalse;
+	}
+
+	while ( 1 ) {
+		token = CommaParse( text_p );
+
+		if ( !token[0] ) {
+			break;
+		}
+
+		if ( !Q_stricmp( token, "{" ) ) {
+			break;
+		}
+
+		if ( mapName && mapName[0] && !Q_stricmp( token, mapName ) ) {
+			matches = qtrue;
+		}
+	}
+
+	if ( matches ) {
+		Q_strncpyz( outProfile, profile, outProfileSize );
+	}
+
+	return matches;
+}
+
+qhandle_t RE_RegisterSmartSkin( const char *name, const char *mapName, qboolean upgraded ) {
+	union {
+		char *c;
+		void *v;
+	} text;
+	char *text_p;
+	char *token;
+	char wantedProfile[MAX_QPATH];
+	char blockProfile[MAX_QPATH];
+	char virtualName[MAX_QPATH];
+	smartSkinSurface_t finalSurfaces[MAX_SKIN_SURFACES];
+	smartSkinSurface_t baseSurfaces[MAX_SKIN_SURFACES];
+	smartSkinSurface_t profileSurfaces[MAX_SKIN_SURFACES];
+	smartSkinSurface_t upgradedSurfaces[MAX_SKIN_SURFACES];
+	smartSkinSurface_t upgradedProfileSurfaces[MAX_SKIN_SURFACES];
+	int finalCount;
+	int baseCount;
+	int profileCount;
+	int upgradedCount;
+	int upgradedProfileCount;
+	int i;
+	qhandle_t hSkin;
+	skin_t *skin;
+
+	if ( !name || !name[0] ) {
+		return 0;
+	}
+
+char hashSource[256];
+
+Com_sprintf(
+	hashSource,
+	sizeof(hashSource),
+	"%s#%s#%i",
+	name,
+	mapName ? mapName : "",
+	upgraded ? 1 : 0
+);
+
+Com_sprintf(
+	virtualName,
+	sizeof(virtualName),
+	"smartskin_%08x",
+	R_SmartSkin_HashString(hashSource)
+);
+
+	for ( hSkin = 1; hSkin < tr.numSkins; hSkin++ ) {
+		skin = tr.skins[hSkin];
+
+		if ( !Q_stricmp( skin->name, virtualName ) ) {
+			if ( skin->numSurfaces == 0 ) {
+				return 0;
+			}
+
+			return hSkin;
+		}
+	}
+
+	if ( tr.numSkins == MAX_SKINS ) {
+		ri.Printf( PRINT_WARNING, "WARNING: RE_RegisterSmartSkin( '%s' ) MAX_SKINS hit\n", name );
+		return 0;
+	}
+
+	ri.FS_ReadFile( name, &text.v );
+
+	if ( !text.c ) {
+		return 0;
+	}
+
+	memset( wantedProfile, 0, sizeof( wantedProfile ) );
+	memset( finalSurfaces, 0, sizeof( finalSurfaces ) );
+	memset( baseSurfaces, 0, sizeof( baseSurfaces ) );
+	memset( profileSurfaces, 0, sizeof( profileSurfaces ) );
+	memset( upgradedSurfaces, 0, sizeof( upgradedSurfaces ) );
+	memset( upgradedProfileSurfaces, 0, sizeof( upgradedProfileSurfaces ) );
+
+	baseCount = 0;
+	profileCount = 0;
+	upgradedCount = 0;
+	upgradedProfileCount = 0;
+
+	text_p = text.c;
+
+	while ( text_p && *text_p ) {
+		token = CommaParse( &text_p );
+
+		if ( !token[0] ) {
+			break;
+		}
+
+		if ( !Q_stricmp( token, "base" ) ) {
+			token = CommaParse( &text_p );
+
+			if ( Q_stricmp( token, "{" ) ) {
+				ri.Printf( PRINT_WARNING, "WARNING: smartskin '%s' base block missing {\n", name );
+				break;
+			}
+
+			R_SmartSkin_ParseBlockSurfaces( &text_p, baseSurfaces, &baseCount );
+			continue;
+		}
+
+		if (!Q_stricmp(token, "profile"))
+		{
+			smartSkinSurface_t tempSurfaces[MAX_SKIN_SURFACES];
+			int tempCount = 0;
+
+			memset(tempSurfaces, 0, sizeof(tempSurfaces));
+
+			if (R_SmartSkin_ReadProfileMaps(&text_p, mapName, wantedProfile, sizeof(wantedProfile)))
+			{
+				R_SmartSkin_ParseBlockSurfaces(&text_p, profileSurfaces, &profileCount);
+			}
+			else
+			{
+				R_SmartSkin_ParseBlockSurfaces(&text_p, tempSurfaces, &tempCount);
+			}
+
+			continue;
+		}
+
+		if ( !Q_stricmp( token, "upgraded" ) ) {
+			token = CommaParse( &text_p );
+
+			if ( !Q_stricmp( token, "{" ) ) {
+				R_SmartSkin_ParseBlockSurfaces( &text_p, upgradedSurfaces, &upgradedCount );
+				continue;
+			}
+
+			if ( !Q_stricmp( token, "profile" ) ) {
+				token = CommaParse( &text_p );
+
+				Q_strncpyz( blockProfile, token, sizeof( blockProfile ) );
+
+				token = CommaParse( &text_p );
+
+				if ( Q_stricmp( token, "{" ) ) {
+					ri.Printf( PRINT_WARNING, "WARNING: smartskin '%s' upgraded profile '%s' block missing {\n", name, blockProfile );
+					break;
+				}
+
+				if (R_SmartSkin_ProfileMatches(blockProfile, wantedProfile))
+				{
+					R_SmartSkin_ParseBlockSurfaces(&text_p, upgradedProfileSurfaces, &upgradedProfileCount);
+				}
+				else
+				{
+					smartSkinSurface_t tempSurfaces[MAX_SKIN_SURFACES];
+					int tempCount = 0;
+
+					memset(tempSurfaces, 0, sizeof(tempSurfaces));
+					R_SmartSkin_ParseBlockSurfaces(&text_p, tempSurfaces, &tempCount);
+				}
+
+				continue;
+			}
+		}
+	}
+
+	ri.FS_FreeFile( text.v );
+
+	if ( baseCount <= 0 ) {
+		ri.Printf( PRINT_WARNING, "WARNING: smartskin '%s' has no base block or empty base block\n", name );
+		return 0;
+	}
+
+	finalCount = 0;
+
+	for ( i = 0; i < baseCount; i++ ) {
+		R_SmartSkin_ApplySurface( finalSurfaces, &finalCount, baseSurfaces[i].name, baseSurfaces[i].shader->name );
+	}
+
+	for ( i = 0; i < profileCount; i++ ) {
+		R_SmartSkin_ApplySurface( finalSurfaces, &finalCount, profileSurfaces[i].name, profileSurfaces[i].shader->name );
+	}
+
+	if ( upgraded ) {
+		for ( i = 0; i < upgradedCount; i++ ) {
+			R_SmartSkin_ApplySurface( finalSurfaces, &finalCount, upgradedSurfaces[i].name, upgradedSurfaces[i].shader->name );
+		}
+
+		for ( i = 0; i < upgradedProfileCount; i++ ) {
+			R_SmartSkin_ApplySurface( finalSurfaces, &finalCount, upgradedProfileSurfaces[i].name, upgradedProfileSurfaces[i].shader->name );
+		}
+	}
+
+	if ( finalCount <= 0 ) {
+		return 0;
+	}
+
+	R_IssuePendingRenderCommands();
+
+	hSkin = tr.numSkins++;
+	skin = ri.Hunk_Alloc( sizeof( skin_t ), h_low );
+	tr.skins[hSkin] = skin;
+
+	Q_strncpyz( skin->name, virtualName, sizeof( skin->name ) );
+	skin->numSurfaces = finalCount;
+	skin->numModels = 0;
+
+	skin->surfaces = ri.Hunk_Alloc( finalCount * sizeof( skinSurface_t ), h_low );
+
+	for ( i = 0; i < finalCount; i++ ) {
+		Q_strncpyz( skin->surfaces[i].name, finalSurfaces[i].name, sizeof( skin->surfaces[i].name ) );
+		skin->surfaces[i].shader = finalSurfaces[i].shader;
+	}
+
+	return hSkin;
+}
+
 //----(SA) end
 
 /*

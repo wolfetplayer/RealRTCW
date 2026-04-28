@@ -547,3 +547,7 @@ qboolean trap_GetModelInfo( int clientNum, char *modelName, animModelInfo_t **mo
 void *trap_Alloc( int size ) {
 	return (void*)syscall( CG_ALLOC, size );
 }
+
+qhandle_t trap_R_RegisterSmartSkin( const char *name, const char *mapName, qboolean upgraded ) {
+	return syscall( CG_R_REGISTERSMARTSKIN, name, mapName, upgraded );
+}

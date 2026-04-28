@@ -111,3 +111,4 @@ equ	ceil						-109
 ; New in iortcw
 equ trap_Alloc					-901
 
+equ trap_R_RegisterSmartSkin -902

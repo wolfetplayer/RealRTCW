@@ -464,3 +464,7 @@ void trap_openURL( const char *s ) {
 	syscall( UI_OPENURL, s );
 }
 
+qhandle_t trap_R_RegisterSmartSkin( const char *name, const char *mapName, qboolean upgraded ) {
+	return syscall( UI_R_REGISTERSMARTSKIN, name, mapName, upgraded );
+}
+

@@ -716,3 +716,93 @@ And then game translates it inside `text.txt` like this:
 Note. You can use Quake 3 color codes like `^1`, etc. in this text file too.
 
 Note. You can create multiple .txt files like `text_1`, `text_2`, etc. Each text file will overwrite previous one if matched lines will be found. This can be useful for mod localizations.
+
+
+
+## SmartSkin System
+
+SmartSkin is an optional replacement for multiple map-specific `.skin` files.
+
+Instead of creating many files like:
+
+v_mp40_hand_norway.skin  
+v_mp40_hand_xlabs.skin  
+v_mp40_hand_upgraded.skin  
+v_mp40_hand_upgraded_norway.skin  
+
+you can use one file:
+
+v_mp40_hand.smartskin
+
+### File Location
+
+The `.smartskin` file must use the same base path as the hands model.
+
+Example:
+
+handsModel models/weapons/smgs/mp40/v_mp40_hand.md3
+
+SmartSkin file:
+
+models/weapons/smgs/mp40/v_mp40_hand.smartskin
+
+### Basic Format
+
+    base
+    {
+    hqhand,models/weapons/hands/glove_default.jpg
+    hqarm,models/weapons/hands/sleeve_default.jpg
+    wpn,models/weapons/smgs/mp40/wpn_base.jpg
+    }
+    
+    profile green maps forest rocket baseout assault
+    {
+    hqhand,models/weapons/hands/glove_green.jpg
+    hqarm,models/weapons/hands/sleeve_green.jpg
+    }
+    
+    profile snow maps norway xlabs boss2
+    {
+    hqhand,models/weapons/hands/glove_snow.jpg
+    hqarm,models/weapons/hands/sleeve_snow.jpg
+    }
+    
+    upgraded
+    {
+    wpn,models/weapons/smgs/mp40/wpn_base_upgraded.jpg
+    }
+    
+    upgraded profile snow
+    {
+    wpn,models/weapons/smgs/mp40/wpn_base_upgraded_snow.jpg
+    }
+
+### Rules
+
+- `base` is required and must contain all required model surfaces.
+- `profile` blocks are map-specific overrides.
+
+### Priority
+
+Normal weapon:
+
+base -> profile
+
+Upgraded weapon:
+
+base -> profile -> upgraded -> upgraded profile
+
+### Compatibility
+
+Old `.skin` files are still supported.
+
+If no `.smartskin` file is found, the game falls back to the old system:
+
+v_weapon_hand_<map>.skin  
+v_weapon_hand_upgraded.skin  
+v_weapon_hand_upgraded_<map>.skin  
+
+### Notes
+
+- Only changed surfaces need to be listed in profile blocks.
+- No need to repeat unchanged surfaces like `wpn` unless you want to override them.

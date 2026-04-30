@@ -204,10 +204,9 @@ void    trap_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t
 	syscall( CG_S_ADDLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );     // volume was previously removed from CG_S_ADDLOOPINGSOUND.  I added 'range'
 }
 
-// not in use
-//void    trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume ) {
-//	syscall( CG_S_ADDREALLOOPINGSOUND, entityNum, origin, velocity, range, sfx, volume );	//----(SA)	modified
-//}
+void    trap_S_AddRealLoopingSound( const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range, int volume, int soundTime ) {
+	syscall( CG_S_ADDREALLOOPINGSOUND, origin, velocity, range, sfx, volume, soundTime );
+}
 
 void    trap_S_StopLoopingSound( int entityNum ) {
 	syscall( CG_S_STOPLOOPINGSOUND, entityNum );
@@ -550,4 +549,16 @@ void *trap_Alloc( int size ) {
 
 qhandle_t trap_R_RegisterSmartSkin( const char *name, const char *mapName, qboolean upgraded ) {
 	return syscall( CG_R_REGISTERSMARTSKIN, name, mapName, upgraded );
+}
+
+void    trap_S_StartSoundVControl( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int volume ) {
+	syscall( CG_S_STARTSOUND, origin, entityNum, entchannel, sfx, volume );
+}
+
+int trap_S_GetCurrentSoundTime( void ) {
+	return syscall( CG_S_GETCURRENTSOUNDTIME );
+}
+
+qboolean trap_R_inPVS( const vec3_t p1, const vec3_t p2 ) {
+	return syscall( CG_R_INPVS, p1, p2 );
 }

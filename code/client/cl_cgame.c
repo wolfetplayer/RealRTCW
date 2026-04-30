@@ -559,13 +559,6 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		// FIXME MrE: handling of looping sounds changed
 		S_AddLoopingSound( args[1], VMA( 2 ), VMA( 3 ), args[4], args[5], args[6] );
 		return 0;
-// not in use
-//	case CG_S_ADDREALLOOPINGSOUND:
-//		S_AddLoopingSound( args[1], VMA(2), VMA(3), args[4], args[5], args[6] );
-//		//S_AddRealLoopingSound( args[1], VMA(2), VMA(3), args[4], args[5] );
-//		return 0;
-
-//----(SA)	added
 	case CG_S_STOPSTREAMINGSOUND:
 		S_StopEntStreamingSound( args[1] );
 		return 0;
@@ -876,6 +869,13 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 	case CG_R_REGISTERSMARTSKIN:
 		return re.RegisterSmartSkin(VMA(1), VMA(2), args[3]);
 		//----(SA)	added
+	case CG_S_GETCURRENTSOUNDTIME:
+		return S_GetCurrentSoundTime();
+	case CG_S_ADDREALLOOPINGSOUND:
+		S_AddRealLoopingSound( VMA( 1 ), VMA( 2 ), args[3], args[4], args[5], args[6] );
+		return 0;
+	case CG_R_INPVS:
+		return re.inPVS( VMA( 1 ), VMA( 2 ) );
 	default:
 		Com_Error( ERR_DROP, "Bad cgame system trap: %ld", (long int) args[0] );
 	}

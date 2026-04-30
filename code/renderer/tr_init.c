@@ -1639,6 +1639,8 @@ refexport_t *GetRefAPI( int apiVersion, refimport_t *rimp ) {
 //----(SA)
 	re.RenderScene      = RE_RenderScene;
 
+	re.inPVS = R_inPVS;
+
 	re.SetColor         = RE_SetColor;
 	re.DrawStretchPic   = RE_StretchPic;
 	re.DrawStretchPicGradient   = RE_StretchPicGradient;

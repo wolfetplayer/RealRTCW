@@ -3608,7 +3608,7 @@ UI_LoadMods
 */
 static void UI_LoadMods( void ) {
 	int numdirs;
-	char dirlist[2048];
+	char dirlist[8192];
 	char    *dirptr;
 	char  *descptr;
 	int i;

@@ -1961,14 +1961,60 @@ static void S_AL_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_
   S_AL_SrcLoop(SRCPRI_ENTITY, sfx, origin, velocity, entityNum, volume);
 }
 
-/*
-   =================
-   S_AL_AddRealLoopingSound
-   =================
-   */
-static void S_AL_AddRealLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx)
-{
-  S_AL_SrcLoop(SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, 255);
+#define UNDERWATER_BIT  8
+
+static void S_AL_AddRealLoopingSoundForEntity(
+	int entityNum,
+	const vec3_t origin,
+	const vec3_t velocity,
+	const int range,
+	sfxHandle_t sfx,
+	int volume,
+	int soundTime
+) {
+	(void)range;
+	(void)soundTime;
+
+	if ( !volume ) {
+		return;
+	}
+
+	if ( volume & ( 1 << UNDERWATER_BIT ) ) {
+		volume &= ~( 1 << UNDERWATER_BIT );
+	}
+
+	if ( volume > 65535 ) {
+		volume = 65535;
+	} else if ( volume < 0 ) {
+		volume = 0;
+	}
+
+	volume = (int)( (float)volume * ( 255.0f / 65535.0f ) );
+
+	if ( volume < 1 ) {
+		volume = 1;
+	}
+
+	S_AL_SrcLoop( SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, volume );
+}
+
+static void S_AL_AddRealLoopingSound(
+	const vec3_t origin,
+	const vec3_t velocity,
+	const int range,
+	sfxHandle_t sfx,
+	int volume,
+	int soundTime
+) {
+	S_AL_AddRealLoopingSoundForEntity(
+		MAX_GENTITIES - 1,
+		origin,
+		velocity,
+		range,
+		sfx,
+		volume,
+		soundTime
+	);
 }
 
 /*
@@ -2861,6 +2907,16 @@ int S_AL_GetVoiceAmplitude( int entityNum ) {
   return (int)value;
 }
 
+
+/*
+======================
+S_AL_GetCurrentSoundTime
+======================
+*/
+static int S_AL_GetCurrentSoundTime( void ) {
+	return Sys_Milliseconds();
+}
+
 //===========================================================================
 
 
@@ -3415,6 +3471,7 @@ qboolean S_AL_Init( soundInterface_t *si )
       si->StopCapture = S_AL_StopCapture;
       si->MasterGain = S_AL_MasterGain;
 #endif
+      si->GetCurrentSoundTime = S_AL_GetCurrentSoundTime;
 
       return qtrue;
 #else

@@ -787,6 +787,8 @@ typedef struct {
 	qboolean pendingFSGameChange;
 	char nextFSGame[MAX_QPATH];
 
+	char rawmapname[MAX_QPATH];
+
 } level_locals_t;
 
 //extern    qboolean	reloading;				// loading up a savegame

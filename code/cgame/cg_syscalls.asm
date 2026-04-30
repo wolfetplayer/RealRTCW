@@ -100,8 +100,6 @@ equ trap_CIN_DrawCinematic				-94
 equ trap_CIN_SetExtents					-95
 equ trap_R_RemapShader					-96
 
-; trap_S_AddRealLoopingSound ; not currently used (sorry, trying to keep CG_MEMSET @ 100)
-
 equ trap_S_StopLoopingSound				-97
 equ trap_S_StopStreamingSound			-98
 equ trap_loadCamera						-99
@@ -131,4 +129,8 @@ equ trap_GetModelInfo			-126
 equ trap_Alloc					-901
 
 equ trap_R_RegisterSmartSkin    -902
+
+equ trap_S_StartSoundVControl   -903
+equ trap_S_GetCurrentSoundTime  -904
+equ trap_S_AddRealLoopingSound  -905
 

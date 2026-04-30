@@ -679,6 +679,49 @@ static const int autoReloadWeapons[] = {
 	WP_ARTY,
 };
 
+
+//
+// bg_sscript.c
+//
+typedef enum {
+	S_LT_NOT_LOOPED,
+	S_LT_LOOPED_ON,
+	S_LT_LOOPED_OFF
+} speakerLoopType_t;
+
+typedef enum {
+	S_BT_LOCAL,
+	S_BT_GLOBAL,
+	S_BT_NOPVS
+} speakerBroadcastType_t;
+
+typedef struct bg_speaker_s {
+	char filename[MAX_QPATH];
+	qhandle_t noise;
+	vec3_t origin;
+	char targetname[32];
+	long targetnamehash;
+
+	speakerLoopType_t loop;
+	speakerBroadcastType_t broadcast;
+	int wait;
+	int random;
+	int volume;
+	int range;
+
+	qboolean activated;
+	int nextActivateTime;
+	int soundTime;
+} bg_speaker_t;
+
+void BG_ClearScriptSpeakerPool( void );
+int BG_NumScriptSpeakers( void );
+int BG_GetIndexForSpeaker( bg_speaker_t *speaker );
+bg_speaker_t *BG_GetScriptSpeaker( int index );
+qboolean BG_SS_DeleteSpeaker( int index );
+qboolean BG_SS_StoreSpeaker( bg_speaker_t *speaker );
+qboolean BG_LoadSpeakerScript( const char *filename );
+
  // entityState_t->event values
 // entity events are for effects that take place reletive
 // to an existing entities origin.  Very network efficient.

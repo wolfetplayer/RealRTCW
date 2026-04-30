@@ -1183,10 +1183,21 @@ static void CG_RegisterSounds( void ) {
 	char items[MAX_ITEMS + 1];
 	char name[MAX_QPATH];
 	const char  *soundName;
+	bg_speaker_t *speaker;
 
 	// Ridah, init sound scripts
 	CG_SoundInit();
 	// done.
+
+	BG_ClearScriptSpeakerPool();
+
+	BG_LoadSpeakerScript( va( "sound/maps/%s.sps", cgs.rawmapname ) );
+
+	for ( i = 0; i < BG_NumScriptSpeakers(); i++ ) {
+		speaker = BG_GetScriptSpeaker( i );
+
+		speaker->noise = trap_S_RegisterSound( speaker->filename );
+	}
 
 	cgs.media.n_health = trap_S_RegisterSound( "sound/items/n_health.wav" );
 	cgs.media.noFireUnderwater = trap_S_RegisterSound( "sound/weapons/underwaterfire.wav" ); 
@@ -2963,6 +2974,6 @@ void CG_S_AddRangedLoopingSound( int entityNum, const vec3_t origin, const vec3_
 	trap_S_AddLoopingSound( entityNum, origin, velocity, range, sfx, 255 );		// RF, assume full volume, since thats how it worked before
 }
 
-void CG_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx ) {
-	//trap_S_AddRealLoopingSound( entityNum, origin, velocity, 1250, sfx, 255 );	//----(SA) modified
+void CG_S_AddRealLoopingSound ( const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range, int volume, int soundTime ){
+	trap_S_AddRealLoopingSound( origin, velocity, sfx, range, volume, soundTime );
 }

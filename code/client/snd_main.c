@@ -82,7 +82,7 @@ static qboolean S_ValidSoundInterface( soundInterface_t *si )
 	if( !si->StopCapture ) return qfalse;
 	if( !si->MasterGain ) return qfalse;
 #endif
-
+    if( !si->GetCurrentSoundTime ) return qfalse;
 	return qtrue;
 }
 
@@ -290,17 +290,15 @@ void S_AddLoopingSound( int entityNum, const vec3_t origin,
 S_AddRealLoopingSound
 =================
 */
-void S_AddRealLoopingSound( int entityNum, const vec3_t origin,
-		const vec3_t velocity, const int range, sfxHandle_t sfx )
+void S_AddRealLoopingSound( const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfxHandle, int volume, int soundTime )
 {
-
-	if (s_cinematicMute)
+	if ( s_cinematicMute )
 	{
 		return;
 	}
 
-	if( si.AddRealLoopingSound ) {
-		si.AddRealLoopingSound( entityNum, origin, velocity, range, sfx );
+	if ( si.AddRealLoopingSound ) {
+		si.AddRealLoopingSound( origin, velocity, range, sfxHandle, volume, soundTime );
 	}
 }
 
@@ -677,3 +675,11 @@ void S_Shutdown( void )
 	S_CodecShutdown( );
 }
 
+
+int S_GetCurrentSoundTime( void ) {
+	if ( si.GetCurrentSoundTime ) {
+		return si.GetCurrentSoundTime();
+	}
+
+	return Sys_Milliseconds();
+}

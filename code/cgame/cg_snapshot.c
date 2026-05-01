@@ -59,6 +59,8 @@ static void CG_ResetEntity( centity_t *cent ) {
 	cent->headJuncIndex2 = 0;
 	// done.
 
+	cent->soundTime = 0;
+
 	VectorCopy( cent->currentState.origin, cent->lerpOrigin );
 	VectorCopy( cent->currentState.angles, cent->lerpAngles );
 	if ( cent->currentState.eType == ET_PLAYER ) {

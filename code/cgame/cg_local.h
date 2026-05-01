@@ -315,6 +315,7 @@ typedef struct centity_s {
 
 	int trailTime;                  // so missile trails can handle dropped initial packets
 	int miscTime;
+	int soundTime;  
 
 	playerEntity_t pe;
 
@@ -2356,6 +2357,11 @@ qboolean CG_SoundPlaySoundScript( const char *name, vec3_t org, int entnum );
 void CG_SoundPlayIndexedScript( int index, vec3_t org, int entnum );
 void CG_SoundInit( void );
 // done.
+
+void CG_ToggleActiveOnScriptSpeaker( int index );
+void CG_UnsetActiveOnScriptSpeaker( int index );
+void CG_SetActiveOnScriptSpeaker( int index );
+void CG_AddScriptSpeakers( void );
 
 // Ridah, flamethrower
 void CG_FireFlameChunks( centity_t *cent, vec3_t origin, vec3_t angles, float speedScale, qboolean firing, int flags ); //----(SA)	added 'flags'

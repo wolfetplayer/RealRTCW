@@ -1679,6 +1679,10 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 
 		DEBUGTIME
 
+		CG_AddScriptSpeakers();
+
+		DEBUGTIME
+
 		// Rafael particles
 		CG_AddParticles();
 		// done.

@@ -1007,6 +1007,10 @@ typedef struct src_s
 
   int       updated;
 
+  int loopRange;
+  int loopVolume;
+  qboolean useLoopRange;
+
 } src_t;
 
 #ifdef __APPLE__
@@ -1242,6 +1246,10 @@ static void S_AL_SrcSetup(srcHandle_t src, sfxHandle_t sfx, alSrcPriority_t prio
   curSource->scaleGain = curSource->curGain;
   curSource->local = local;
   curSource->flags = flags;
+
+  curSource->loopRange = 0;
+  curSource->loopVolume = 255;
+  curSource->useLoopRange = qfalse;
 
   // Set up OpenAL source
   if(sfx >= 0)
@@ -1807,6 +1815,7 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
 
 }
 
+
 /*
    =================
    S_AL_StartSound
@@ -1849,13 +1858,65 @@ void S_AL_ClearLoopingSounds( qboolean killall )
   }
 }
 
+#define UNDERWATER_BIT  8
+
+
+static int S_AL_NormalizeLoopVolume( int volume ) {
+	if ( volume & ( 1 << UNDERWATER_BIT ) ) {
+		volume &= ~( 1 << UNDERWATER_BIT );
+	}
+
+	if ( volume > 255 ) {
+		volume = (int)( (float)volume * ( 255.0f / 65535.0f ) );
+	}
+
+	if ( volume > 255 ) {
+		volume = 255;
+	} else if ( volume < 0 ) {
+		volume = 0;
+	}
+
+	return volume;
+}
+
+
+static void S_AL_ScaleGainRanged( src_t *curSource, const vec3_t origin, int range, int volume ) {
+	float dist;
+	float gain;
+
+	if ( !curSource ) {
+		return;
+	}
+
+	volume = S_AL_NormalizeLoopVolume( volume );
+
+	if ( volume <= 0 ) {
+		gain = 0.0f;
+	} else if ( range <= 0 ) {
+		gain = curSource->curGain * ( volume / 255.0f );
+	} else {
+		dist = Distance( lastListenerOrigin, origin );
+
+		if ( dist >= range ) {
+			gain = 0.0f;
+		} else {
+			gain = 1.0f - ( dist / (float)range );
+			gain *= curSource->curGain * ( volume / 255.0f );
+		}
+	}
+
+	if ( curSource->scaleGain != gain ) {
+		curSource->scaleGain = gain;
+		S_AL_Gain( curSource->alSource, gain );
+	}
+}
 /*
    =================
    S_AL_SrcLoop
    =================
    */
 static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
-    const vec3_t origin, const vec3_t velocity, int entityNum, int volume )
+	const vec3_t origin, const vec3_t velocity, int entityNum, int volume, int range )
 {
   int				src;
   sentity_t	*sent = &entityList[ entityNum ];
@@ -1909,6 +1970,10 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
   curSource->entity = entityNum;
   curSource->isLooping = qtrue;
 
+  curSource->loopRange = range;
+  curSource->loopVolume = volume;
+  curSource->useLoopRange = (priority == SRCPRI_AMBIENT);
+
   if( S_AL_HearingThroughEntity( entityNum ) )
   {
     curSource->local = qtrue;
@@ -1923,7 +1988,7 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
 
     qalSourcefv(curSource->alSource, AL_POSITION, sorigin);
     qalSourcefv(curSource->alSource, AL_VELOCITY, vec3_origin);
-    S_AL_Gain(curSource->alSource, volume / 255.0f);
+    S_AL_Gain(curSource->alSource, S_AL_NormalizeLoopVolume(volume) / 255.0f);
   }
   else
   {
@@ -1948,6 +2013,15 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
 
     qalSourcefv(curSource->alSource, AL_POSITION, (ALfloat *) sorigin);
     qalSourcefv(curSource->alSource, AL_VELOCITY, (ALfloat *) svelocity);
+
+    if (curSource->useLoopRange)
+    {
+      S_AL_ScaleGainRanged(curSource, sorigin, range, volume);
+    }
+    else
+    {
+      S_AL_ScaleGain(curSource, sorigin);
+    }
   }
 }
 
@@ -1958,10 +2032,8 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
    */
 static void S_AL_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume)
 {
-  S_AL_SrcLoop(SRCPRI_ENTITY, sfx, origin, velocity, entityNum, volume);
+  S_AL_SrcLoop(SRCPRI_ENTITY, sfx, origin, velocity, entityNum, volume, range);
 }
-
-#define UNDERWATER_BIT  8
 
 static void S_AL_AddRealLoopingSoundForEntity(
 	int entityNum,
@@ -1972,30 +2044,13 @@ static void S_AL_AddRealLoopingSoundForEntity(
 	int volume,
 	int soundTime
 ) {
-	(void)range;
 	(void)soundTime;
 
 	if ( !volume ) {
 		return;
 	}
 
-	if ( volume & ( 1 << UNDERWATER_BIT ) ) {
-		volume &= ~( 1 << UNDERWATER_BIT );
-	}
-
-	if ( volume > 65535 ) {
-		volume = 65535;
-	} else if ( volume < 0 ) {
-		volume = 0;
-	}
-
-	volume = (int)( (float)volume * ( 255.0f / 65535.0f ) );
-
-	if ( volume < 1 ) {
-		volume = 1;
-	}
-
-	S_AL_SrcLoop( SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, volume );
+	S_AL_SrcLoop( SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, volume, range );
 }
 
 static void S_AL_AddRealLoopingSound(
@@ -2096,11 +2151,24 @@ void S_AL_SrcUpdate( void )
         }
 
         // The sound hasn't been started yet
-        if(sent->startLoopingSound)
+        if (sent->startLoopingSound)
         {
+          int loopRange;
+          int loopVolume;
+          qboolean useLoopRange;
+
+          loopRange = curSource->loopRange;
+          loopVolume = curSource->loopVolume;
+          useLoopRange = curSource->useLoopRange;
+
           S_AL_SrcSetup(i, sent->loopSfx, sent->loopPriority,
-              entityNum, -1, 0, curSource->local);
+                        entityNum, -1, 0, curSource->local);
+
           curSource->isLooping = qtrue;
+
+          curSource->loopRange = loopRange;
+          curSource->loopVolume = loopVolume;
+          curSource->useLoopRange = useLoopRange;
 
           knownSfx[curSource->sfx].loopCnt++;
           sent->startLoopingSound = qfalse;
@@ -2108,7 +2176,18 @@ void S_AL_SrcUpdate( void )
 
         curSfx = &knownSfx[curSource->sfx];
 
-        S_AL_ScaleGain(curSource, curSource->loopSpeakerPos);
+        if (curSource->useLoopRange)
+        {
+          S_AL_ScaleGainRanged(
+              curSource,
+              curSource->loopSpeakerPos,
+              curSource->loopRange,
+              curSource->loopVolume);
+        }
+        else
+        {
+          S_AL_ScaleGain(curSource, curSource->loopSpeakerPos);
+        }
         if(!curSource->scaleGain)
         {
           if(curSource->isPlaying)

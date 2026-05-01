@@ -1390,6 +1390,7 @@ extern void trap_Cvar_Reset( const char *var_name );
 
 void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	int i;
+	char cs[MAX_INFO_STRING];
 
 	steamInit();
 
@@ -1422,6 +1423,9 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// RF, init the anim scripting
 	level.animScriptData.soundIndex = G_SoundIndex;
 	level.animScriptData.playSound = G_AnimScriptSound;
+
+	trap_GetServerinfo( cs, sizeof( cs ) );
+	Q_strncpyz( level.rawmapname, Info_ValueForKey( cs, "mapname" ), sizeof( level.rawmapname ) );
 
 	G_InitWorldSession();
 

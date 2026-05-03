@@ -339,7 +339,7 @@ static const cast_achievementDef_t ACH_EE_MUMMY             = { "ACH_EE_MUMMY", 
 static const cast_achievementDef_t ACH_EE_MAD               = { "ACH_EE_MAD",         NULL };
 static const cast_achievementDef_t ACH_EE_INF               = { "ACH_EE_INF",         NULL };
 static const cast_achievementDef_t ACH_EE_SURV              = { "ACH_EE_SURV",         NULL };
-static const cast_achievementDef_t ACH_EE_SURV_SPECIAL      = { "ACH_EE_SURV_SPECIALV",         NULL };
+static const cast_achievementDef_t ACH_EE_SURV_SPECIAL      = { "ACH_EE_SURV_SPECIAL",         NULL };
 static const cast_achievementDef_t ACH_EE_SURV_PRIEST       = { "ACH_EE_SURV_PRIEST",         NULL };
 static const cast_achievementDef_t ACH_EE_SURV_DOG          = { "ACH_EE_SURV_DOG",         NULL };
 

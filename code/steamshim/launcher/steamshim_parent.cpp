@@ -634,9 +634,10 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd)
             return false;
 
         case SHIMCMD_REQUESTSTATS:
-            if ((!GSteamStats) || (!GSteamStats->RequestCurrentStats()))
-                writeStatsReceived(fd, false);
-            // callback later.
+            // Steamworks SDK 1.61 removed ISteamUserStats::RequestCurrentStats().
+            // Stats and achievements are now synchronized by the Steam client before launch.
+            // Keep the shim command for compatibility with existing game code.
+            writeStatsReceived(fd, GSteamStats != NULL);
             break;
 
         case SHIMCMD_STORESTATS:

@@ -46,9 +46,9 @@ If you have questions concerning this license or the applicable additional terms
 #endif
 #else
 #ifdef USE_LOCAL_HEADERS
-#	include "SDL_opengl.h"
+#	include "SDL3/SDL_opengl.h"
 #else
-#	include <SDL_opengl.h>
+#	include <SDL3/SDL_opengl.h>
 #endif
 #endif
 

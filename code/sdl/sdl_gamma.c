@@ -21,9 +21,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #ifdef USE_LOCAL_HEADERS
-#	include "SDL.h"
+#	include "SDL3/SDL.h"
 #else
-#	include <SDL.h>
+#	include <SDL3/SDL.h>
 #endif
 
 #include "../renderer/tr_local.h"
@@ -38,6 +38,7 @@ GLimp_SetGamma
 */
 void GLimp_SetGamma( unsigned char red[256], unsigned char green[256], unsigned char blue[256] )
 {
+	#if 0  // !!! FIXME: use a shader. Sorry.
 	Uint16 table[3][256];
 	int i, j;
 
@@ -92,5 +93,6 @@ void GLimp_SetGamma( unsigned char red[256], unsigned char green[256], unsigned 
 	{
 		ri.Printf( PRINT_DEVELOPER, "SDL_SetWindowGammaRamp() failed: %s\n", SDL_GetError() );
 	}
+		#endif
 }
 

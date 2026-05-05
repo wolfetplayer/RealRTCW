@@ -331,7 +331,7 @@ LBURGDIR=$(MOUNT_DIR)/tools/lcc/lburg
 Q3CPPDIR=$(MOUNT_DIR)/tools/lcc/cpp
 Q3LCCETCDIR=$(MOUNT_DIR)/tools/lcc/etc
 Q3LCCSRCDIR=$(MOUNT_DIR)/tools/lcc/src
-SDLHDIR=$(MOUNT_DIR)/SDL2
+SDLHDIR=$(MOUNT_DIR)/SDL3
 LIBSDIR=$(MOUNT_DIR)/libs
 BSPCDIR=$(MOUNT_DIR)/../sdk/rtcw-bspc-custom/src/bspc
 BSPCBLIBDIR=$(MOUNT_DIR)/../sdk/rtcw-bspc-custom/src/botlib
@@ -361,20 +361,14 @@ ifneq ($(BUILD_CLIENT),0)
     CURL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs libcurl)
     OPENAL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags openal)
     OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal)
-    SDL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags sdl2|sed 's/-Dmain=SDL_main//')
-    SDL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs sdl2)
+    SDL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags sdl3)
+    SDL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs sdl3)
   else
     # assume they're in the system default paths (no -I or -L needed)
     CURL_LIBS ?= -lcurl
     OPENAL_LIBS ?= -lopenal
   endif
-  # Use sdl2-config if all else fails
-  ifeq ($(SDL_CFLAGS),)
-    ifneq ($(call bin_path, sdl2-config),)
-      SDL_CFLAGS = $(shell sdl2-config --cflags)
-      SDL_LIBS = $(shell sdl2-config --libs)
-    endif
-  endif
+
 endif
 
 # Add git version info
@@ -819,32 +813,28 @@ ifdef MINGW
   endif
 
 
-  # libmingw32 must be linked before libSDLmain
   CLIENT_LIBS += -lmingw32
   RENDERER_LIBS += -lmingw32
 
   ifeq ($(USE_LOCAL_HEADERS),1)
     CLIENT_CFLAGS += -I$(SDLHDIR)/include
+
     ifeq ($(ARCH),x86)
-    CLIENT_LIBS += $(LIBSDIR)/win32/libSDL2main.a \
-                      $(LIBSDIR)/win32/libSDL2.dll.a
-    RENDERER_LIBS += $(LIBSDIR)/win32/libSDL2main.a \
-                      $(LIBSDIR)/win32/libSDL2.dll.a
-    SDLDLL=SDL2.dll
-    CLIENT_EXTRA_FILES += $(LIBSDIR)/win32/SDL2.dll $(LIBSDIR)/win32/OpenAL32.dll
+    CLIENT_LIBS += $(LIBSDIR)/win32/libSDL3.dll.a
+    RENDERER_LIBS += $(LIBSDIR)/win32/libSDL3.dll.a
+    SDLDLL=SDL3.dll
+    CLIENT_EXTRA_FILES += $(LIBSDIR)/win32/SDL3.dll $(LIBSDIR)/win32/OpenAL32.dll
     else
-    CLIENT_LIBS += $(LIBSDIR)/win64/libSDL264main.a \
-                      $(LIBSDIR)/win64/libSDL264.dll.a
-    RENDERER_LIBS += $(LIBSDIR)/win64/libSDL264main.a \
-                      $(LIBSDIR)/win64/libSDL264.dll.a
-    SDLDLL=SDL264.dll
-    CLIENT_EXTRA_FILES += $(LIBSDIR)/win64/SDL264.dll $(LIBSDIR)/win64/OpenAL64.dll
+    CLIENT_LIBS += $(LIBSDIR)/win64/libSDL3.dll.a
+    RENDERER_LIBS += $(LIBSDIR)/win64/libSDL3.dll.a
+    SDLDLL=SDL3.dll
+    CLIENT_EXTRA_FILES += $(LIBSDIR)/win64/SDL3.dll $(LIBSDIR)/win64/OpenAL64.dll
     endif
   else
     CLIENT_CFLAGS += $(SDL_CFLAGS)
     CLIENT_LIBS += $(SDL_LIBS)
     RENDERER_LIBS += $(SDL_LIBS)
-    SDLDLL=SDL2.dll
+    SDLDLL=SDL3.dll
   endif
 
 else # ifdef MINGW

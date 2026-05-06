@@ -488,7 +488,7 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
     Uint32 flags = SDL_WINDOW_OPENGL;
     const SDL_DisplayMode *pdesktopMode = NULL;
 	SDL_DisplayMode desktopMode;
-	int display = 0;
+	SDL_DisplayID display = 0;
 	int x = SDL_WINDOWPOS_UNDEFINED, y = SDL_WINDOWPOS_UNDEFINED;
 
 	ri.Printf( PRINT_ALL, "Initializing OpenGL display\n");
@@ -505,13 +505,22 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 				     CLIENT_WINDOW_ICON.bytes_per_pixel * CLIENT_WINDOW_ICON.width);
 #endif
 
-	// If a window exists, note its display index
-	if( SDL_window != NULL )
+	// If a window exists, use its display. Otherwise use primary display.
+	if (SDL_window != NULL)
 	{
-		display = SDL_GetDisplayForWindow( SDL_window );
-		if( display < 0 )
+		display = SDL_GetDisplayForWindow(SDL_window);
+		if (display == 0)
 		{
-			ri.Printf( PRINT_DEVELOPER, "SDL_GetWindowDisplayIndex() failed: %s\n", SDL_GetError() );
+			ri.Printf(PRINT_DEVELOPER, "SDL_GetDisplayForWindow() failed: %s\n", SDL_GetError());
+		}
+	}
+
+	if (display == 0)
+	{
+		display = SDL_GetPrimaryDisplay();
+		if (display == 0)
+		{
+			ri.Printf(PRINT_DEVELOPER, "SDL_GetPrimaryDisplay() failed: %s\n", SDL_GetError());
 		}
 	}
 
@@ -1150,6 +1159,10 @@ void GLimp_Init( qboolean fixedFunction )
 
 	ri.Sys_GLimpInit( );
 
+	ri.Cvar_Get("r_availableModes", "", CVAR_ROM);
+	ri.Cvar_Get("r_maxResolutionWidth", "0", 0);
+	ri.Cvar_Get("r_maxResolutionHeight", "0", 0);
+
 	// Create the window and set up the context
 	if(GLimp_StartDriverAndSetMode(r_mode->integer, r_fullscreen->integer, r_noborder->integer, fixedFunction))
 		goto success;
@@ -1228,10 +1241,6 @@ success:
 
 	// initialize extensions
 	GLimp_InitExtensions( fixedFunction );
-
-	ri.Cvar_Get( "r_availableModes", "", CVAR_ROM );
-	ri.Cvar_Get( "r_maxResolutionWidth", "", CVAR_ROM );
-	ri.Cvar_Get( "r_maxResolutionHeight", "", CVAR_ROM );
 
 	// This depends on SDL_INIT_VIDEO, hence having it here
 	ri.IN_Init( SDL_window );

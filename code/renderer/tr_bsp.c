@@ -128,9 +128,16 @@ static void R_ColorShiftLightingBytes( byte in[4], byte out[4] ) {
 		b = b * 255 / max;
 	}
 
-	out[0] = r;
-	out[1] = g;
-	out[2] = b;
+	if ( !glConfig.deviceSupportsGamma ) {
+		out[0] = s_gammatable[r];
+		out[1] = s_gammatable[g];
+		out[2] = s_gammatable[b];
+	} else {
+		out[0] = r;
+		out[1] = g;
+		out[2] = b;
+	}
+
 	out[3] = in[3];
 }
 

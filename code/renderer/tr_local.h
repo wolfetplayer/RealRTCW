@@ -1453,6 +1453,9 @@ extern cvar_t   *r_wolffog;
 // done
 
 extern cvar_t  *r_highQualityVideo;
+
+extern byte s_intensitytable[256];
+extern unsigned char s_gammatable[256];
 //====================================================================
 
 float R_NoiseGet4f( float x, float y, float z, double t );

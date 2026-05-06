@@ -459,13 +459,18 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 #endif
 
 	//
-	// gamma stuff
+	// gamma / intensity stuff
 	//
-	if ( r_gamma->modified ) {
+	if ( r_gamma->modified || r_intensity->modified ) {
 		r_gamma->modified = qfalse;
+		r_intensity->modified = qfalse;
 
 		R_IssuePendingRenderCommands();
 		R_SetColorMappings();
+
+		if ( !glConfig.deviceSupportsGamma ) {
+			ri.Printf( PRINT_ALL, "r_gamma/r_intensity changed: use vid_restart to apply software gamma\n" );
+		}
 	}
 
 	// check for errors

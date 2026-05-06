@@ -2854,7 +2854,7 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 	text = buffer;
 	token = COM_ParseExt(&text, qtrue);
 	if (token[0] != '{') {
-		Com_Printf("^1WARNING: expecting '{', found '%s' instead in cine subtitle file \"video/%s\"\n", token, name);
+		Com_Printf("^1WARNING: expecting '{', found '%s' instead in cine subtitle file \"%s\"\n", token, name);
 		return;
 	}
 
@@ -2864,7 +2864,7 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 	while ( cinTable[handle].subtitleCount < MAX_SUBTITLES) {
 		token = COM_ParseExt(&text, qtrue);
 		if (!token[0]) {
-			Com_Printf("^1WARNING: no concluding '}' in cine subtitle file \"video/%s\"\n", name);
+			Com_Printf("^1WARNING: no concluding '}' in cine subtitle file \"%s\"\n", name);
 			break;
 		}
 		// end of shader definition

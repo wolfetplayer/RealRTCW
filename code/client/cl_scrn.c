@@ -328,6 +328,89 @@ int SCR_GetBigStringWidth( const char *str ) {
 	return SCR_Strlen( str ) * BIGCHAR_WIDTH;
 }
 
+/*
+==================
+SCR_Text_AutoWrapped_Paint
+==================
+*/
+void SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType) {
+	const char *p, *textPtr, *newLinePtr;
+	char buff[1024];
+	int len, textWidth, newLine, newLineWidth;
+	float x2, y2, maxLineHeight;
+	float size;
+	vec4_t backColor;
+
+	newLinePtr = NULL;
+	if ( !text || !text[0] ) {
+		return;
+	} else {
+		textPtr = text;
+	}
+
+	if ( !color ) {
+		return;
+	}
+
+	re.SetColor( color );
+
+	backColor[0] = backColor[1] = backColor[2] = 0;
+	backColor[3] = 1.0;
+
+	size = BIGCHAR_HEIGHT * scale;
+	maxLineHeight = BIGCHAR_HEIGHT * scale;
+	textWidth = 0;
+
+	x2 = x;
+	y2 = y;
+	len = 0;
+	buff[0] = '\0';
+	newLine = 0;
+	newLineWidth = 0;
+	p = textPtr;
+	while ( p ) {
+		if ( *p == ' ' || *p == '\t' || *p == '\n' || *p == '\0' ) {
+			newLine = len;
+			newLinePtr = p + 1;
+			newLineWidth = textWidth;
+		}
+
+		textWidth = SCR_GetBigStringWidth(buff) * scale;
+		if ( ( newLine && textWidth > maxLineWidth ) || *p == '\n' || *p == '\0' ) {
+			if ( len ) {
+				if ( alignType == TEXT_ALIGN_LEFT ) {
+					x2 = x;
+				} else if ( alignType == TEXT_ALIGN_RIGHT ) {
+					x2 = x + maxLineWidth - newLineWidth;
+				} else if ( alignType == TEXT_ALIGN_CENTER ) {
+					x2 = x + (maxLineWidth - newLineWidth) * 0.5;
+				}
+				
+				buff[newLine] = '\0';
+				SCR_DrawStringExt( x2, y2, size, buff, color, qfalse, qfalse );
+			}
+
+			if ( *p == '\0' ) {
+				break;
+			}
+
+			y2 += maxLineHeight + 3.0f;
+			p = newLinePtr;
+			len = 0;
+			newLine = 0;
+			newLineWidth = 0;
+			continue;
+		}
+		buff[len++] = *p++;
+
+		if ( buff[len-1] == 13 ) {
+			buff[len-1] = ' ';
+		}
+
+		buff[len] = '\0';
+	}
+}
+
 
 //===============================================================================
 

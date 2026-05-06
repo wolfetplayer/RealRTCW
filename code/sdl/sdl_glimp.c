@@ -590,9 +590,8 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 		SDL_window = NULL;
 	}
 
-	if( fullscreen )
+	if (fullscreen)
 	{
-		flags |= SDL_WINDOW_FULLSCREEN;
 		glConfig.isFullscreen = qtrue;
 	}
 	else
@@ -728,28 +727,6 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 
 		 SDL_SetWindowPosition( SDL_window, x, y );
 
-		if( fullscreen )
-		{
-			SDL_DisplayMode mode;
-
-			switch( testColorBits )
-			{
-				case 16: mode.format = SDL_PIXELFORMAT_RGB565; break;
-				case 24: mode.format = SDL_PIXELFORMAT_RGB24;  break;
-				default: ri.Printf( PRINT_DEVELOPER, "testColorBits is %d, can't fullscreen\n", testColorBits ); continue;
-			}
-
-			mode.w = glConfig.vidWidth;
-			mode.h = glConfig.vidHeight;
-			mode.refresh_rate = glConfig.displayFrequency = ri.Cvar_VariableIntegerValue( "r_displayRefresh" );
-
-			if(!SDL_SetWindowFullscreenMode( SDL_window, &mode ))
-			{
-				ri.Printf( PRINT_DEVELOPER, "SDL_SetWindowDisplayMode failed: %s\n", SDL_GetError( ) );
-				continue;
-			}
-		}
-
 		SDL_SetWindowIcon( SDL_window, icon );
 
 #ifdef USE_OPENGLES
@@ -855,6 +832,26 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 
 		ri.Printf( PRINT_ALL, "Using %d color bits, %d depth, %d stencil display.\n",
 				glConfig.colorBits, glConfig.depthBits, glConfig.stencilBits );
+
+		if (fullscreen)
+		{
+			SDL_SetWindowFullscreenMode(SDL_window, NULL);
+
+			if (!SDL_SetWindowFullscreen(SDL_window, true))
+			{
+				ri.Printf(PRINT_DEVELOPER, "SDL_SetWindowFullscreen failed: %s\n", SDL_GetError());
+
+				GLimp_ClearProcAddresses();
+				SDL_GL_DestroyContext(SDL_glContext);
+				SDL_glContext = NULL;
+
+				SDL_DestroyWindow(SDL_window);
+				SDL_window = NULL;
+
+				return RSERR_INVALID_FULLSCREEN;
+			}
+		}
+
 		break;
 	}
 

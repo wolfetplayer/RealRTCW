@@ -186,16 +186,23 @@ static void GLimp_DetectAvailableModes(void)
 	}
 	
 	fsmodes = SDL_GetFullscreenDisplayModes( display, &numSDLModes );
-	pwindowMode = SDL_GetWindowFullscreenMode( SDL_window );
+	pwindowMode = SDL_GetDesktopDisplayMode(display);
 
-     if ( (pwindowMode == NULL) || numSDLModes <= 0 )
+	if (numSDLModes <= 0)
 	{
-		ri.Printf( PRINT_WARNING, "Couldn't get window display mode, no resolutions detected: %s\n", SDL_GetError() );
-		SDL_free( fsmodes );
+		ri.Printf(PRINT_WARNING, "No fullscreen display modes detected: %s\n", SDL_GetError());
+		SDL_free(fsmodes);
 		return;
 	}
 
-	SDL_copyp(&windowMode, pwindowMode);
+	if (pwindowMode)
+	{
+		SDL_copyp(&windowMode, pwindowMode);
+	}
+	else
+	{
+		SDL_zero(windowMode);
+	}
 
 	modes = SDL_calloc( (size_t)numSDLModes, sizeof( SDL_Rect ) );
 	if ( !modes )
@@ -219,7 +226,7 @@ static void GLimp_DetectAvailableModes(void)
 			return;
 		}
 
-		if( windowMode.format != mode.format )
+		if( windowMode.format && windowMode.format != mode.format )
 			continue;
 
 		// SDL can give the same resolution with different refresh rates.

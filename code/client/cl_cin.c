@@ -2797,7 +2797,8 @@ static int CIN_GetCurrentPlayingTime( int handle ) {
 ==================
 CIN_LoadCinematicSubtitle
 
-  startTime endTime text sizeScale x0, y0, width [x1 y1]
+syntax:
+  <startTime> <endTime> <text> <sizeScale> <x0> <y0> <width> [x1 y1]
   
     startTime endTime: millisecond
     sizeScale: font scale

@@ -2121,6 +2121,19 @@ void R_MDC_DecodeXyzCompressed( mdcXyzCompressed_t *xyzComp, vec3_t out, vec3_t 
 	VectorCopy( ( r_anormals )[( ofsVec >> 24 )], normal );
 #endif
 
+static ID_INLINE qboolean R_UseSoftwareGamma( void ) {
+	return !glConfig.deviceSupportsGamma;
+}
+
+static ID_INLINE byte R_GammaByte( byte c ) {
+	if ( !R_UseSoftwareGamma() ) {
+		return c;
+	}
+
+	return s_gammatable[c];
+}
+
+
 void R_AddMDCSurfaces( trRefEntity_t *ent );
 // done.
 //------------------------------------------------------------------------------

@@ -159,6 +159,66 @@ static int GLimp_CompareModes( const void *a, const void *b )
 		return areaA - areaB;
 }
 
+/*
+===============
+GLimp_SetFullscreenMode
+===============
+*/
+static qboolean GLimp_SetFullscreenMode( SDL_Window *window, SDL_DisplayID display, int width, int height )
+{
+	int i, numModes = 0;
+	SDL_DisplayMode **modes;
+	const SDL_DisplayMode *best = NULL;
+	qboolean result = qfalse;
+
+	modes = SDL_GetFullscreenDisplayModes( display, &numModes );
+	if ( !modes || numModes <= 0 )
+	{
+		ri.Printf( PRINT_DEVELOPER,
+			"SDL_GetFullscreenDisplayModes failed: %s\n", SDL_GetError() );
+
+		SDL_free( modes );
+		return qfalse;
+	}
+
+	for ( i = 0; i < numModes; i++ )
+	{
+		const SDL_DisplayMode *mode = modes[i];
+
+		if ( !mode )
+			continue;
+
+		if ( mode->w == width && mode->h == height )
+		{
+			best = mode;
+			break;
+		}
+	}
+
+	if ( !best )
+	{
+		ri.Printf( PRINT_DEVELOPER,
+			"No exclusive fullscreen mode found for %dx%d\n", width, height );
+
+		SDL_free( modes );
+		return qfalse;
+	}
+
+	if ( SDL_SetWindowFullscreenMode( window, best ) )
+	{
+		result = qtrue;
+	}
+	else
+	{
+		ri.Printf( PRINT_DEVELOPER,
+			"SDL_SetWindowFullscreenMode %dx%d failed: %s\n",
+			width, height, SDL_GetError() );
+	}
+
+	SDL_free( modes );
+	return result;
+}
+
 
 /*
 ===============
@@ -835,11 +895,19 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 
 		if (fullscreen)
 		{
-			SDL_SetWindowFullscreenMode(SDL_window, NULL);
+			if (!GLimp_SetFullscreenMode(SDL_window, display,
+										 glConfig.vidWidth, glConfig.vidHeight))
+			{
+				ri.Printf(PRINT_DEVELOPER,
+						  "Falling back to borderless fullscreen desktop mode\n");
+
+				SDL_SetWindowFullscreenMode(SDL_window, NULL);
+			}
 
 			if (!SDL_SetWindowFullscreen(SDL_window, true))
 			{
-				ri.Printf(PRINT_DEVELOPER, "SDL_SetWindowFullscreen failed: %s\n", SDL_GetError());
+				ri.Printf(PRINT_DEVELOPER,
+						  "SDL_SetWindowFullscreen failed: %s\n", SDL_GetError());
 
 				GLimp_ClearProcAddresses();
 				SDL_GL_DestroyContext(SDL_glContext);
@@ -850,6 +918,8 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 
 				return RSERR_INVALID_FULLSCREEN;
 			}
+
+			SDL_SyncWindow(SDL_window);
 		}
 
 		break;

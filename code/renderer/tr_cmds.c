@@ -461,15 +461,18 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	//
 	// gamma / intensity stuff
 	//
-	if ( r_gamma->modified || r_intensity->modified ) {
+	if (r_gamma->modified || r_intensity->modified || r_overBrightBits->modified)
+	{
 		r_gamma->modified = qfalse;
 		r_intensity->modified = qfalse;
+		r_overBrightBits->modified = qfalse;
 
 		R_IssuePendingRenderCommands();
 		R_SetColorMappings();
 
-		if ( !glConfig.deviceSupportsGamma ) {
-			ri.Printf( PRINT_ALL, "r_gamma/r_intensity changed: use vid_restart to apply software gamma\n" );
+		if (!glConfig.deviceSupportsGamma)
+		{
+			ri.Printf(PRINT_ALL, "Brightness changes require vid_restart with SDL3 OpenGL1 software gamma\n");
 		}
 	}
 

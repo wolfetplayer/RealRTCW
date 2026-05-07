@@ -102,7 +102,6 @@ typedef struct {
 	int x1, y1;
 } subtitle_t;
 
-extern cvar_t *cl_drawCineSubtitles;
 static int CIN_GetCurrentPlayingTime( int handle );
 static void CIN_LoadCinematicSubtitle( int handle );
 static void CIN_DrawCinematicSubtitle( int handle );

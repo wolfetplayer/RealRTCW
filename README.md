@@ -9,7 +9,8 @@ The project focuses on modernizing the engine, expanding gameplay systems, and i
 ## ✨ Features
 
 ### Engine & Platform
-- Full **iortcw feature set**, including proper widescreen support  
+- Full **iortcw feature set**, including proper widescreen support
+- SDL3 backend
 - **Steam integration** via *Steamshim* (by Ryan C. Gordon)
 - Steam Achievements and Steam Stats support
 - Steam Workshop Integration

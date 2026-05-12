@@ -450,6 +450,7 @@ static void FS_ParseAndApplyGateVarsFromText(const char *buf) {
 
 static void FS_PrimeGateCvarsFromConfig(const char *dir)
 {
+    if (!dir || !dir[0]) return;
     if (!fs_homepath || !fs_homepath->string[0]) return;
 
     const char *cfgNames[] = {
@@ -470,12 +471,11 @@ static void FS_PrimeGateCvarsFromConfig(const char *dir)
             char *buf = (char*)Z_Malloc(len+1);
             if (fread(buf,1,len,f) == (size_t)len) {
                 buf[len]=0;
-                FS_ParseAndApplyGateVarsFromText(buf); // your existing helper
+                FS_ParseAndApplyGateVarsFromText(buf);
             }
             Z_Free(buf);
         }
         fclose(f);
-        // first hit wins (homepath usually has only one)
         break;
     }
 }
@@ -658,6 +658,77 @@ static void FS_GateResetSeenDirs(void) {
     fs_gate_seen_dirs_count = 0;
     for (int i = 0; i < (int)ARRAY_LEN(fs_gate_seen_dirs); ++i) {
         fs_gate_seen_dirs[i][0] = '\0';
+    }
+}
+
+static void FS_LoadGateRulesAppendForAllRoots( const char *dir )
+{
+    if ( !dir || !dir[0] ) {
+        return;
+    }
+
+    if ( fs_homepath && fs_homepath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_homepath->string, dir );
+    }
+
+    if ( fs_basepath && fs_basepath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_basepath->string, dir );
+    }
+
+#ifdef __APPLE__
+    if ( fs_apppath && fs_apppath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_apppath->string, dir );
+    }
+#endif
+
+#ifdef STEAM
+    if ( fs_steampath && fs_steampath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_steampath->string, dir );
+    }
+
+    if ( fs_workshop && fs_workshop->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_workshop->string, dir );
+    }
+#endif
+}
+
+static void FS_LoadGateRulesAppendForStartupDirs( const char *gameName )
+{
+    FS_LoadGateRulesAppendForAllRoots( gameName );
+
+    if ( fs_basegame && fs_basegame->string[0] &&
+         Q_stricmp( fs_basegame->string, gameName ) ) {
+        FS_LoadGateRulesAppendForAllRoots( fs_basegame->string );
+    }
+
+    if ( fs_gamedirvar && fs_gamedirvar->string[0] &&
+         Q_stricmp( fs_gamedirvar->string, gameName ) ) {
+        FS_LoadGateRulesAppendForAllRoots( fs_gamedirvar->string );
+    }
+}
+
+static void FS_PrimeGateCvarsForStartupDirs( const char *gameName )
+{
+    /*
+    Order matters:
+    1) base game config acts as fallback
+    2) fs_basegame overrides it
+    3) active fs_game overrides everything
+
+    This makes disabled content packs stay disabled globally,
+    including copies that exist in BASEGAME/main.
+    */
+
+    FS_PrimeGateCvarsFromConfig( gameName );
+
+    if ( fs_basegame && fs_basegame->string[0] &&
+         Q_stricmp( fs_basegame->string, gameName ) ) {
+        FS_PrimeGateCvarsFromConfig( fs_basegame->string );
+    }
+
+    if ( fs_gamedirvar && fs_gamedirvar->string[0] &&
+         Q_stricmp( fs_gamedirvar->string, gameName ) ) {
+        FS_PrimeGateCvarsFromConfig( fs_gamedirvar->string );
     }
 }
 
@@ -3858,11 +3929,20 @@ void FS_AddGameDirectory( const char *path, const char *dir ) {
 		}
 	}
 
-	// 1) Pull in any local gate rules from this folder (only once per physical dir)
-	FS_LoadGateRulesAppendForDir(path, dir);
+    // Pull in any local gate rules from this folder, only once per physical dir.
+    FS_LoadGateRulesAppendForDir(path, dir);
 
-	// 2) Prime saved user values for this folder from homepath cfgs (so gating applies now)
-	FS_PrimeGateCvarsFromConfig(dir);
+    /*
+    Gate cvar values are session-global.
+
+    Do NOT prime from 'dir' here, because when BASEGAME/main is mounted before
+    the active fs_game, it would read BASEGAME/main config/defaults and allow
+    disabled content packs to load from main.
+
+    Instead, always re-prime from the startup config chain:
+    base game -> fs_basegame -> active fs_game.
+    */
+    FS_PrimeGateCvarsForStartupDirs(com_basegame->string);
 
 	Q_strncpyz( fs_gamedir, dir, sizeof( fs_gamedir ) );
 
@@ -4262,76 +4342,44 @@ static void FS_Startup( const char *gameName )
 		Com_Error( ERR_DROP, "Invalid fs_game '%s'", fs_gamedirvar->string );
 	}
 
-	FS_LoadGateRulesEarly(gameName);
+#ifdef STEAM
+	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
+	fs_workshop = Cvar_Get("fs_workshop", Sys_SteamWorkshopPath(), CVAR_INIT|CVAR_PROTECTED );
+#endif
 
+#ifdef __APPLE__
+	fs_apppath = Cvar_Get ("fs_apppath", Sys_DefaultAppPath(), CVAR_INIT|CVAR_PROTECTED );
+#endif
+
+	/*
+	Load all known gate rules before mounting any pk3s.
+	Then prime gate cvars from startup config dirs, with active fs_game last.
+	This prevents disabled content packs from leaking back in from BASEGAME/main.
+	*/
+	FS_LoadGateRulesEarly(gameName);
+	FS_LoadGateRulesAppendForStartupDirs(gameName);
+	FS_PrimeGateCvarsForStartupDirs(gameName);
 
 	// add search path elements in reverse priority order
 #ifdef STEAM
-	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_steampath->string[0]) {
 		FS_AddGameDirectory( fs_steampath->string, gameName );
 	}
-	fs_workshop = Cvar_Get("fs_workshop", Sys_SteamWorkshopPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_workshop->string[0]) {
 		FS_AddGameDirectory( fs_workshop->string, gameName );
 	}
 	FS_AddModDirectories();
 #endif
 
-
 	if ( fs_basepath->string[0] ) {
 		FS_AddGameDirectory( fs_basepath->string, gameName );
 	}
 
 #ifdef __APPLE__
-	fs_apppath = Cvar_Get ("fs_apppath", Sys_DefaultAppPath(), CVAR_INIT|CVAR_PROTECTED );
 	// Make MacOSX also include the base path included with the .app bundle
 	if (fs_apppath->string[0])
 		FS_AddGameDirectory(fs_apppath->string, gameName);
 #endif
-
-	// NOTE: same filtering below for mods and basegame
-	if (fs_homepath->string[0] && Q_stricmp(fs_homepath->string,fs_basepath->string)) {
-		FS_CreatePath ( fs_homepath->string );
-		FS_AddGameDirectory( fs_homepath->string, gameName );
-	}
-
-	// check for additional base game so mods can be based upon other mods
-	if ( fs_basegame->string[0] && Q_stricmp( fs_basegame->string, gameName ) ) {
-#ifdef STEAM
-
-		if ( fs_steampath->string[0] ) {
-			FS_AddGameDirectory( fs_steampath->string, fs_basegame->string );
-		}
-#endif
-
-		if ( fs_basepath->string[0] ) {
-			FS_AddGameDirectory( fs_basepath->string, fs_basegame->string );
-		}
-
-		if ( fs_homepath->string[0] && Q_stricmp( fs_homepath->string,fs_basepath->string ) ) {
-			FS_AddGameDirectory( fs_homepath->string, fs_basegame->string );
-		}
-	}
-
-	// check for additional game folder for mods
-	if ( fs_gamedirvar->string[0] && Q_stricmp( fs_gamedirvar->string, gameName ) ) {
-#ifdef STEAM
-		if ( fs_steampath->string[0] ) {
-			FS_AddGameDirectory( fs_steampath->string, fs_gamedirvar->string );
-		}
-		if ( fs_workshop->string[0] ) {
-			FS_AddGameDirectory( fs_workshop->string, fs_gamedirvar->string );
-		}
-
-#endif
-		if ( fs_basepath->string[0] ) {
-			FS_AddGameDirectory( fs_basepath->string, fs_gamedirvar->string );
-		}
-		if ( fs_homepath->string[0] && Q_stricmp( fs_homepath->string,fs_basepath->string ) ) {
-			FS_AddGameDirectory( fs_homepath->string, fs_gamedirvar->string );
-		}
-	}
 
 #ifndef STANDALONE
 

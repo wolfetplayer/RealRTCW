@@ -95,9 +95,6 @@ typedef struct loopSound_s {
 	float		dopplerScale;
 	float		oldDopplerScale;
 	int			framenum;
-
-	int soundTime;
-	qboolean realLooping;
 } loopSound_t;
 
 typedef struct

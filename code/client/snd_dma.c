@@ -41,8 +41,6 @@ snd_stream_t	*s_backgroundStream = NULL;
 static char		s_backgroundLoop[MAX_QPATH];
 //static char		s_backgroundMusic[MAX_QPATH]; //TTimo: unused
 
-snd_t snd;  // globals for sound
-
 // Ridah, streaming sounds
 // !! NOTE: the first streaming sound is always the music
 streamingSound_t streamingSounds[MAX_RAW_STREAMS];
@@ -1034,60 +1032,41 @@ Called during entity generation for a frame
 Include velocity in case I get around to doing doppler...
 ==================
 */
-void S_Base_AddRealLoopingSound( const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfxHandle, int volume, int soundTime ) {
+void S_Base_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfxHandle ) {
 	sfx_t *sfx;
 
-	if ( !snd.s_soundStarted || snd.s_soundMute ) {
+	if ( !s_soundStarted || s_soundMuted ) {
 		return;
 	}
 
-	if ( snd.numLoopSounds >= MAX_LOOP_SOUNDS ) {
-		return;
-	}
-
-	if ( !volume ) {
-		return;
-	}
-
-	if ( sfxHandle < 0 || sfxHandle >= snd.s_numSfx ) {
+	if ( sfxHandle < 0 || sfxHandle >= s_numSfx ) {
 		Com_Printf( S_COLOR_YELLOW "S_AddRealLoopingSound: handle %i out of range\n", sfxHandle );
 		return;
 	}
 
+	if ( entityNum < 0 || entityNum >= MAX_GENTITIES )
+		return;
+
 	sfx = &s_knownSfx[ sfxHandle ];
 
-	if ( sfx->inMemory == qfalse ) {
-		S_memoryLoad( sfx );
+	if (sfx->inMemory == qfalse) {
+		S_memoryLoad(sfx);
 	}
 
 	if ( !sfx->soundLength ) {
 		Com_Error( ERR_DROP, "%s has length 0", sfx->soundName );
 	}
-
-	VectorCopy( origin, snd.loopSounds[snd.numLoopSounds].origin );
-	VectorCopy( velocity, snd.loopSounds[snd.numLoopSounds].velocity );
-	snd.loopSounds[snd.numLoopSounds].sfx = sfx;
-	snd.loopSounds[snd.numLoopSounds].active = qtrue;
-	snd.loopSounds[snd.numLoopSounds].doppler = qfalse;
-
+	VectorCopy( origin, loopSounds[entityNum].origin );
+	VectorCopy( velocity, loopSounds[entityNum].velocity );
 	if ( range ) {
-		snd.loopSounds[snd.numLoopSounds].range = range;
+		loopSounds[entityNum].range = range;
 	} else {
-		snd.loopSounds[snd.numLoopSounds].range = SOUND_RANGE_DEFAULT;
+		loopSounds[entityNum].range = SOUND_RANGE_DEFAULT;
 	}
-
-	if ( volume & 1 << UNDERWATER_BIT ) {
-		snd.loopSounds[snd.numLoopSounds].loudUnderWater = qtrue;
-	}
-
-	if ( volume > 65535 ) {
-		volume = 65535;
-	} else if ( volume < 0 ) {
-		volume = 0;
-	}
-
-	snd.loopSounds[snd.numLoopSounds].vol = (int)( (float)volume * snd.volCurrent );  //----(SA)	modified
-	snd.numLoopSounds++;
+	loopSounds[entityNum].sfx = sfx;
+	loopSounds[entityNum].active = qtrue;
+	loopSounds[entityNum].kill = qfalse;
+	loopSounds[entityNum].doppler = qfalse;
 }
 
 
@@ -1844,11 +1823,6 @@ void S_FreeOldestSound( void ) {
 	sfx->soundData = NULL;
 }
 
-int S_Base_GetCurrentSoundTime( void ) {
-	return s_soundtime + dma.speed;
-//	 return s_paintedtime;
-}
-
 // =======================================================================
 // Shutdown sound engine
 // =======================================================================
@@ -1935,8 +1909,6 @@ qboolean S_Base_Init( soundInterface_t *si ) {
 	si->StopCapture = S_Base_StopCapture;
 	si->MasterGain = S_Base_MasterGain;
 #endif
-
-	si->GetCurrentSoundTime = S_Base_GetCurrentSoundTime;
 
 	return qtrue;
 }

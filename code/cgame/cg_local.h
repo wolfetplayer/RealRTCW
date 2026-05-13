@@ -1695,7 +1695,6 @@ typedef struct {
 	int timelimit;
 	int maxclients;
 	char mapname[MAX_QPATH];
-	char rawmapname[MAX_QPATH];
 	char redTeam[MAX_QPATH];                // A team
 	char blueTeam[MAX_QPATH];               // B team
 
@@ -2570,7 +2569,7 @@ void        trap_S_StopStreamingSound( int entnum );  // usually AI.  character 
 void        trap_S_StartLocalSound( sfxHandle_t sfx, int channelNum );
 void        trap_S_ClearLoopingSounds( qboolean killall );
 void        trap_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume );
-void        trap_S_AddRealLoopingSound( const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range, int volume, int soundTime );
+//void        trap_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, int range, sfxHandle_t sfx, int volume );
 void        trap_S_UpdateEntityPosition( int entityNum, const vec3_t origin );
 
 // Ridah, talking animations
@@ -2679,7 +2678,7 @@ int         trap_Key_GetKey( const char *binding );
 
 void CG_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int volume );
 void CG_S_AddRangedLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range );
-void CG_S_AddRealLoopingSound ( const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int range, int volume, int soundTime );
+void CG_S_AddRealLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx );
 
 // RF
 void trap_SendMoveSpeedsToGame( int entnum, char *movespeeds );
@@ -2727,6 +2726,3 @@ qboolean    trap_GetModelInfo( int clientNum, char *modelName, animModelInfo_t *
 void		*trap_Alloc( int size );
 
 qhandle_t   trap_R_RegisterSmartSkin( const char *name, const char *mapName, qboolean upgraded );
-
-void        trap_S_StartSoundVControl( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx, int volume );
-int         trap_S_GetCurrentSoundTime( void );

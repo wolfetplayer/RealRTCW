@@ -1495,11 +1495,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// create the camera entity that will communicate with the scripts
 	G_SpawnScriptCamera();
 
-	// Script sounds
-
-	BG_ClearScriptSpeakerPool();
-	BG_LoadSpeakerScript( va( "sound/maps/%s.sps", level.rawmapname ) );
-
 	// general initialization
 	G_FindTeams();
 

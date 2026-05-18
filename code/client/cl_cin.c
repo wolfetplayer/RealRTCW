@@ -2828,6 +2828,9 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 	int len, i;
 	char *token;
 
+	// initial clear
+	memset( cinTable[handle].subtitles, 0, sizeof(cinTable[handle].subtitles) );
+
 	// cine subtitle filename
 	Q_strncpyz( name, cinTable[handle].fileName, sizeof(name) );
 	char *dot = strrchr( name, '.' );
@@ -2838,11 +2841,11 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 
 	// read file content
 	len = FS_FOpenFileByMode(name, &f, FS_READ);
-	if (len <= 0 && com_developer->integer) {
-		Com_Printf(S_COLOR_YELLOW "cine subtitle file \"%s\" not found or unreadable\n", name);
+	if (len <= 0) {
+		Com_DPrintf(S_COLOR_YELLOW "cine subtitle file \"%s\" not found or unreadable\n", name);
 		return;
 	}
-	if (len > MAX_BUFFER) {
+	if (len >= MAX_BUFFER) {
 		Com_Printf(S_COLOR_YELLOW "\"%s\" is too big, make it smaller (max = %i bytes)\n", name, MAX_BUFFER);
 	}
 
@@ -2857,8 +2860,6 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 		Com_Printf("^1WARNING: expecting '{', found '%s' instead in cine subtitle file \"%s\"\n", token, name);
 		return;
 	}
-
-	memset( cinTable[handle].subtitles, 0, sizeof(cinTable[handle].subtitles) );
 
 	i = 0;
 	while ( cinTable[handle].subtitleCount < MAX_SUBTITLES) {

@@ -1177,7 +1177,7 @@ const char *CG_translateTextString2(const char *str) {
 const char *CG_translateTextString3(const char *str) {
 	int i, numStrings;
 
-	numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
+	numStrings = sizeof(translateTextStrings) / sizeof(translateTextStrings[0]) - 1;
 
 	for ( i = 0; i < numStrings; i++ ) {
 		if (!translateTextStrings[i].stringname || !strlen(translateTextStrings[i].stringname)) {

@@ -1777,7 +1777,7 @@ void CG_BuyPrint( const char *str, int y, int charWidth ) {
 				trToken = CG_translateString( token );
 
 				if ( Q_strncmp( trToken, token, 999999 ) == 0 ) {
-					trToken = CG_translateTextString( token );
+					trToken = CG_translateTextString3( token );
 				}
 
 				lenTrToken = strlen( trToken );
@@ -1918,16 +1918,16 @@ void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
 
 
     // Translate the input string
-    const char* translated = CG_translateTextString(str);
+    const translateSubtitle_t translated = CG_translateTextStringExt(str);
 
     // Check if the translated string is "IGNORED_SUBTITLE", indicating an ignored subtitle
-    if (strcmp(translated, "IGNORED_SUBTITLE") == 0) {
+    if (strcmp(translated.translateString, "IGNORED_SUBTITLE") == 0) {
         // If it is, return immediately to prevent the subtitle from being displayed
         return;
     }
 
     // Copy the translated string to cg.subtitlePrint
-    Q_strncpyz(cg.subtitlePrint, translated, sizeof(cg.subtitlePrint));
+    Q_strncpyz(cg.subtitlePrint, translated.translateString, sizeof(cg.subtitlePrint));
 
 
 	
@@ -1947,10 +1947,16 @@ void CG_SubtitlePrint( const char *str, int y, int charWidth ) {
 		}
 		s++;
 	}
-    // Calculate the number of characters in the message
-    len = CG_DrawStrlen(cg.subtitlePrint);
+
 	// Calculate the display time based on an average reading speed of 17 characters per second
-    int displayTime = (len / 17.0) * 1000; // Convert to milliseconds
+	int displayTime = 0;
+	if ( translated.time > 0 ) {
+		displayTime = translated.time;
+	} else {
+		// Calculate the number of characters in the message
+		len = CG_DrawStrlen(cg.subtitlePrint);	
+		displayTime = (len / 17.0) * 1000; // Convert to milliseconds
+	}
 
 	// Ensure the display time is at least a certain minimum value to prevent very short messages from disappearing too quickly
     int minDisplayTime = 2000; // 2 seconds

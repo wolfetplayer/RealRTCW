@@ -1054,11 +1054,14 @@ static void CG_LoadTranslationTextStrings(const char *file) {
 		if (token[0] == '}') {
 			break;
 		}
-		translateTextStrings[i].stringname = malloc(strlen(token) + 1);
+		translateTextStrings[i].stringname = (char*)malloc(strlen(token) + 1);
 		strcpy(translateTextStrings[i].stringname, token);
 		token = COM_ParseExt(&text, qfalse);
-		translateTextStrings[i].stringtext = malloc(strlen(token) + 1);
+		translateTextStrings[i].stringtext = (char*)malloc(strlen(token) + 1);
 		strcpy(translateTextStrings[i].stringtext, token);
+		token = COM_ParseExt(&text, qfalse);
+		translateTextStrings[i].time = (int*)malloc(sizeof(int));
+		*translateTextStrings[i].time = token[0] ? atoi(token): 0;
 		i++;
 	}
 }
@@ -1167,6 +1170,81 @@ const char *CG_translateTextString2(const char *str) {
 		}
 	}
 	return str;
+}
+
+// this won't check into ignored subtitles list
+// for some string translation also specified in "text/EnglishUSA/maps/<mapname>.txt", but should be different with subtitle
+const char *CG_translateTextString3(const char *str) {
+	int i, numStrings;
+
+	numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
+
+	for ( i = 0; i < numStrings; i++ ) {
+		if (!translateTextStrings[i].stringname || !strlen(translateTextStrings[i].stringname)) {
+			return str;
+		}
+		if (!strcasecmp(str, translateTextStrings[i].stringname)) {
+			if (translateTextStrings[i].stringtext && strlen(translateTextStrings[i].stringtext)) {
+				return translateTextStrings[i].stringtext;
+			}
+			break;
+		}
+	}
+	return str;
+}
+
+// used to support subtitle time control
+const translateSubtitle_t CG_translateTextStringExt(const char *str) {
+	int i, numStrings;
+	translateSubtitle_t translateSubtitle;
+
+    numStrings = sizeof(cgs.ignoredSubtitles) / sizeof(cgs.ignoredSubtitles[0]) - 1;
+    for (i = 0; i < numStrings; i++) {
+        if (!strcmp(str, cgs.ignoredSubtitles[i])) {
+            // Return a special string to indicate an ignored subtitle
+			translateSubtitle.translateString = "IGNORED_SUBTITLE";
+			translateSubtitle.time = 0;
+            return translateSubtitle;
+        }
+    }
+	numStrings = sizeof(translateTextStrings) / sizeof(translateTextStrings[0]) - 1;
+	i = 0;
+	
+	for (i = 0; i < numStrings; i++) {
+		if (!translateTextStrings[i].stringname || !strlen(translateTextStrings[i].stringname)) {
+			translateSubtitle.translateString = str;
+			translateSubtitle.time = 0;
+			return translateSubtitle;
+		}
+		if (!strcmp(str, translateTextStrings[i].stringname)) {
+			if (translateTextStrings[i].stringtext && strlen(translateTextStrings[i].stringtext)) {
+				translateSubtitle.translateString = translateTextStrings[i].stringtext;
+				translateSubtitle.time = *translateTextStrings[i].time;
+				return translateSubtitle;
+			}
+			break;
+		}
+	}
+	return translateSubtitle;
+}
+
+void CG_freeTranslateTextStringsTable( void ) {
+	for ( int i = 0; i < MAX_TRANSLATETEXTSTRINGS; i++ ) {
+		if (translateTextStrings[i].time != NULL) {
+			free(translateTextStrings[i].time);
+			translateTextStrings[i].time = NULL;
+		}
+
+		if (translateTextStrings[i].stringname != NULL) {
+			free(translateTextStrings[i].stringname);
+			translateTextStrings[i].stringname = NULL;
+		}
+
+		if (translateTextStrings[i].stringtext != NULL) {
+			free(translateTextStrings[i].stringtext);
+			translateTextStrings[i].stringtext = NULL;
+		}
+	}
 }
 //----(SA)	end
 
@@ -2953,6 +3031,8 @@ Called before every level change or subsystem restart
 void CG_Shutdown( void ) {
 	// some mods may need to do cleanup work here,
 	// like closing files or archiving session data
+
+	CG_freeTranslateTextStringsTable();
 }
 
 void CG_S_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx, int volume ) {

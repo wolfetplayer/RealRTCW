@@ -388,6 +388,9 @@ typedef struct {
 	qhandle_t whiteShader;
 	qhandle_t consoleShader;
 	qhandle_t consoleShader2;   //----(SA)	added
+
+	// cine subtitle
+	qhandle_t subtitleCharSetShader;
 } clientStatic_t;
 
 extern clientStatic_t cls;
@@ -711,7 +714,8 @@ void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, 
 void    SCR_DrawSmallChar( int x, int y, int ch );
 
 void    SCR_DrawStringExt( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
-void    SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType);
+void    SCR_DrawStringExt2( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape, int font );
+void    SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType, int font );
 
 
 //

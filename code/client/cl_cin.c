@@ -2964,7 +2964,8 @@ static void CIN_DrawCinematicSubtitle( int handle ) {
 			}
 
 			SCR_Text_AutoWrapped_Paint( x, y, subs[i].sizeScale, subs[i].lineText,
-										subs[i].width, color, TEXT_ALIGN_CENTER );
+										subs[i].width, color, TEXT_ALIGN_CENTER,
+										cls.subtitleCharSetShader );
 		}
 	}
 

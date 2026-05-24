@@ -160,6 +160,40 @@ static void SCR_DrawChar( int x, int y, float size, int ch ) {
 					   cls.charSetShader );
 }
 
+static void SCR_DrawCharExt( int x, int y, float size, int ch, int font ) {
+	int row, col;
+	float frow, fcol;
+	float ax, ay, aw, ah;
+
+	ch &= 255;
+
+	if ( ch == ' ' ) {
+		return;
+	}
+
+	if ( y < -size ) {
+		return;
+	}
+
+	ax = x;
+	ay = y;
+	aw = size;
+	ah = size;
+	SCR_AdjustFrom640( &ax, &ay, &aw, &ah );
+
+	row = ch >> 4;
+	col = ch & 15;
+
+	frow = row * 0.0625;
+	fcol = col * 0.0625;
+	size = 0.0625;
+
+	re.DrawStretchPic( ax, ay, aw, ah,
+					   fcol, frow,
+					   fcol + size, frow + size,
+					   font );
+}
+
 /*
 ** SCR_DrawSmallChar
 ** small chars are drawn at native screen resolution
@@ -243,6 +277,50 @@ void SCR_DrawStringExt( int x, int y, float size, const char *string, float *set
 			}
 		}
 		SCR_DrawChar( xx, y, size, *s );
+		xx += size;
+		s++;
+	}
+	re.SetColor( NULL );
+}
+
+void SCR_DrawStringExt2( int x, int y, float size, const char *string, float *setColor, qboolean forceColor,
+		qboolean noColorEscape, int font ) {
+	vec4_t color;
+	const char  *s;
+	int xx;
+
+	// draw the drop shadow
+	color[0] = color[1] = color[2] = 0;
+	color[3] = setColor[3];
+	re.SetColor( color );
+	s = string;
+	xx = x;
+	while ( *s ) {
+		if ( !noColorEscape && Q_IsColorString( s ) ) {
+			s += 2;
+			continue;
+		}
+		SCR_DrawCharExt( xx + 2, y + 2, size, *s, font );
+		xx += size;
+		s++;
+	}
+
+	s = string;
+	xx = x;
+	re.SetColor( setColor );
+	while ( *s ) {
+		if ( Q_IsColorString( s ) ) {
+			if ( !forceColor ) {
+				memcpy( color, g_color_table[ColorIndex( *( s + 1 ) )], sizeof( color ) );
+				color[3] = setColor[3];
+				re.SetColor( color );
+			}
+			if ( !noColorEscape ) {
+				s += 2;
+				continue;
+			}
+		}
+		SCR_DrawCharExt( xx, y, size, *s, font );
 		xx += size;
 		s++;
 	}
@@ -333,13 +411,19 @@ int SCR_GetBigStringWidth( const char *str ) {
 SCR_Text_AutoWrapped_Paint
 ==================
 */
-void SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType) {
+void SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color,
+								int alignType, int font ) {
 	const char *p, *textPtr, *newLinePtr;
 	char buff[1024];
 	int len, textWidth, newLine, newLineWidth;
 	float x2, y2, maxLineHeight;
 	float size;
 	vec4_t backColor;
+
+	if ( !font ) {
+		Com_DPrintf(S_COLOR_YELLOW "SCR_Text_AutoWrapped_Paint: switch to the default charSetShader\n");
+		font = cls.charSetShader;
+	}
 
 	newLinePtr = NULL;
 	if ( !text || !text[0] ) {
@@ -387,7 +471,7 @@ void SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text
 				}
 				
 				buff[newLine] = '\0';
-				SCR_DrawStringExt( x2, y2, size, buff, color, qfalse, qfalse );
+				SCR_DrawStringExt2( x2, y2, size, buff, color, qfalse, qfalse, font );
 			}
 
 			if ( *p == '\0' ) {

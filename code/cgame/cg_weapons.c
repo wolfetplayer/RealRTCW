@@ -1895,6 +1895,7 @@ void CG_RegisterWeapon( int weaponNum, qboolean force ) {
 	}
 
 }
+
 /*
 =================
 CG_RegisterItemVisuals

@@ -505,6 +505,12 @@ ifeq ($(PLATFORM),darwin)
   RENDERER_LIBS=
   OPTIMIZEVM = -O3
 
+  # ffmpeg via Homebrew pkg-config (upstream Makefile only wires this up for Linux)
+  FFMPEG_CFLAGS := $(shell $(PKG_CONFIG) --silence-errors --cflags libavcodec libavformat libavutil libswscale libswresample)
+  FFMPEG_LIBS   := $(shell $(PKG_CONFIG) --silence-errors --libs   libavcodec libavformat libavutil libswscale libswresample)
+  BASE_CFLAGS += $(FFMPEG_CFLAGS)
+  LIBS        += $(FFMPEG_LIBS)
+
   # Default minimum Mac OS X version
   ifeq ($(MACOSX_VERSION_MIN),)
     MACOSX_VERSION_MIN=10.5
@@ -637,9 +643,15 @@ ifeq ($(PLATFORM),darwin)
     RENDERER_LIBS += $(LIBSDIR)/macosx/libSDL2-2.0.0.dylib
     CLIENT_EXTRA_FILES += $(LIBSDIR)/macosx/libSDL2-2.0.0.dylib
   else
-    BASE_CFLAGS += -I/Library/Frameworks/SDL2.framework/Headers
-    CLIENT_LIBS += -framework SDL2
-    RENDERER_LIBS += -framework SDL2
+    # macOS: link SDL3 from Homebrew (RealRTCW upstream migrated to SDL3 API;
+    # the bundled libSDL2-2.0.0.dylib in code/libs/macosx is stale and predates
+    # the migration, so the old -framework SDL2 fallback no longer satisfies
+    # symbols like SDL_PutAudioStreamData, SDL_UpdateGamepads, etc.).
+    SDL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags sdl3)
+    SDL_LIBS   ?= $(shell $(PKG_CONFIG) --silence-errors --libs   sdl3)
+    BASE_CFLAGS    += $(SDL_CFLAGS)
+    CLIENT_LIBS    += $(SDL_LIBS)
+    RENDERER_LIBS  += $(SDL_LIBS)
   endif
 
   OPTIMIZE = $(OPTIMIZEVM) -ffast-math

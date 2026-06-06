@@ -601,12 +601,24 @@ ifeq ($(PLATFORM),darwin)
   BASE_CFLAGS += -fno-strict-aliasing -fno-common -pipe
 
   ifeq ($(USE_OPENAL),1)
+    # Modern macOS no longer ships OpenAL.framework headers in the SDK.
+    # Use Homebrew's openal-soft. It's a keg-only formula (Apple's frozen
+    # OpenAL.framework dylib still lives in /System, so brew refuses to
+    # symlink the replacement into /opt/homebrew); naked pkg-config won't
+    # find it. Probe brew for the prefix and re-run pkg-config with the
+    # keg's pkgconfig dir on PKG_CONFIG_PATH when OPENAL_CFLAGS is empty.
+    ifeq ($(strip $(OPENAL_CFLAGS)),)
+      BREW_OPENAL_PREFIX := $(shell brew --prefix openal-soft 2>/dev/null)
+      ifneq ($(BREW_OPENAL_PREFIX),)
+        OPENAL_CFLAGS := $(shell PKG_CONFIG_PATH=$(BREW_OPENAL_PREFIX)/lib/pkgconfig $(PKG_CONFIG) --silence-errors --cflags openal)
+        OPENAL_LIBS := $(shell PKG_CONFIG_PATH=$(BREW_OPENAL_PREFIX)/lib/pkgconfig $(PKG_CONFIG) --silence-errors --libs openal)
+      endif
+    endif
     ifneq ($(USE_LOCAL_HEADERS),1)
-      CLIENT_CFLAGS += -I/System/Library/Frameworks/OpenAL.framework/Headers
+      CLIENT_CFLAGS += $(OPENAL_CFLAGS)
     endif
     ifneq ($(USE_OPENAL_DLOPEN),1)
       ifneq ($(USE_INTERNAL_LIBS),1)
-        CLIENT_CFLAGS += $(OPENAL_CFLAGS)
         CLIENT_LIBS += $(THREAD_LIBS) $(OPENAL_LIBS)
         CLIENT_EXTRA_FILES += $(LIBSDIR)/macosx/libopenal.dylib
       else

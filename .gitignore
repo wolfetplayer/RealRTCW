@@ -44,3 +44,6 @@ profile
 # vscode
 .vscode/
 /.vs
+
+# Claude Code session/agent state (local only)
+.claude/

@@ -1417,8 +1417,13 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.sfx_brassSound_wood[0] = trap_S_RegisterSound("sound/weapons/misc/shell_wood1.wav" );
 	cgs.media.sfx_brassSound_wood[1] = trap_S_RegisterSound("sound/weapons/misc/shell_wood2.wav" );
 	cgs.media.sfx_brassSound_wood[2] = trap_S_RegisterSound("sound/weapons/misc/shell_wood3.wav" );
-	
-	cgs.media.sfx_rubbleBounce[i]                    = trap_S_RegisterSound("sound/world/debris%i.wav" );
+
+	{
+		int j;
+		for ( j = 0; j < 3; j++ ) {
+			cgs.media.sfx_rubbleBounce[j] = trap_S_RegisterSound( va( "sound/world/debris%i.wav", j + 1 ) );
+		}
+	}
 
 	cgs.media.sparkSounds[0] = trap_S_RegisterSound( "sound/world/saarc2.wav" );
 	cgs.media.sparkSounds[1] = trap_S_RegisterSound( "sound/world/arc2.wav" );

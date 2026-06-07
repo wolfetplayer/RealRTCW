@@ -194,7 +194,7 @@ qboolean COM_BitCheck( const int array[], int bitNum ) {
 		bitNum -= 32;
 	}
 
-	return ( ( array[i] & ( 1 << bitNum ) ) != 0 );  // (SA) heh, whoops. :)
+	return ( ( array[i] & ( 1u << bitNum ) ) != 0 );  // (SA) heh, whoops. :)
 }
 
 /*
@@ -213,7 +213,7 @@ void COM_BitSet( int array[], int bitNum ) {
 		bitNum -= 32;
 	}
 
-	array[i] |= ( 1 << bitNum );
+	array[i] |= ( 1u << bitNum );
 }
 
 /*
@@ -232,7 +232,7 @@ void COM_BitClear( int array[], int bitNum ) {
 		bitNum -= 32;
 	}
 
-	array[i] &= ~( 1 << bitNum );
+	array[i] &= ~( 1u << bitNum );
 }
 //============================================================================
 

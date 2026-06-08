@@ -59,7 +59,7 @@ void CG_CheckAmmo( void ) {
 	// first weap now WP_LUGER
 	for ( i = WP_KNIFE ; i < WP_NUM_WEAPONS ; i++ )
 	{
-		if ( !( weapons[0] & ( 1 << i ) ) ) {
+		if ( !COM_BitCheck( weapons, i ) ) {
 			continue;
 		}
 		if ( cg.snap->ps.ammo[BG_FindAmmoForWeapon( i )] < 0 ) {

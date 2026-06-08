@@ -3445,27 +3445,34 @@ void Item_Text_Paint( itemDef_t *item ) {
 	const char *textPtr;
 	int height, width;
 	vec4_t color;
+	const char *savedText = NULL;
+	qboolean savedTextValid = qfalse;
 
 
 //----(SA)	added
 	if ( item->textSavegameInfo ) {
 		DC->getCVarString( "ui_savegameInfo", infostring, sizeof( infostring ) );    // grab the string the client set
+		// infostring is on this function's stack; stash the original
+		// item->text so the temporary override does not leak past return
+		// and produce a dangling pointer for the next frame.
+		savedText = item->text;
+		savedTextValid = qtrue;
 		item->text = &infostring[0];
 	}
 //----(SA)	end
 
 	if ( item->window.flags & WINDOW_WRAPPED ) {
 		Item_Text_Wrapped_Paint( item );
-		return;
+		goto cleanup;
 	}
 	if ( item->window.flags & WINDOW_AUTOWRAPPED ) {
 		Item_Text_AutoWrapped_Paint( item );
-		return;
+		goto cleanup;
 	}
 
 	if ( item->text == NULL ) {
 		if ( item->cvar == NULL ) {
-			return;
+			goto cleanup;
 		} else {
 			DC->getCVarString( item->cvar, text, sizeof( text ) );
 			textPtr = text;
@@ -3478,7 +3485,7 @@ void Item_Text_Paint( itemDef_t *item ) {
 	Item_SetTextExtents( item, &width, &height, textPtr );
 
 	if ( *textPtr == '\0' ) {
-		return;
+		goto cleanup;
 	}
 
 
@@ -3514,6 +3521,11 @@ void Item_Text_Paint( itemDef_t *item ) {
 //	}
 
 	DC->drawText( item->textRect.x, item->textRect.y, item->font, item->textscale, color, textPtr, 0, 0, item->textStyle );
+
+cleanup:
+	if ( savedTextValid ) {
+		item->text = savedText;
+	}
 }
 
 

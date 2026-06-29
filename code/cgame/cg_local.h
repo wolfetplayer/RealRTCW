@@ -1760,6 +1760,10 @@ typedef struct {
 
 } cgs_t;
 
+typedef struct {
+	const char *translateString;
+	int time;
+} translateSubtitle_t;
 
 
 //==============================================================================
@@ -2441,6 +2445,9 @@ const char *CG_translateString( const char *str );
 const char *CG_bonusString( const char *str );
 const char *CG_translateTextString( const char *str );
 const char *CG_translateTextString2( const char *str );
+const char *CG_translateTextString3( const char *str );
+const translateSubtitle_t CG_translateTextStringExt( const char *str );
+void CG_freeTranslateTextStringsTable( void );
 
 
 //

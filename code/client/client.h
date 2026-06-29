@@ -60,6 +60,11 @@ If you have questions concerning this license or the applicable additional terms
 #define LIMBOCHAT_WIDTH		140     // NERVE - SMF
 #define LIMBOCHAT_HEIGHT	7       // NERVE - SMF
 
+// cl_scrn
+#define TEXT_ALIGN_LEFT     0       // left alignment
+#define TEXT_ALIGN_CENTER   1       // center alignment
+#define TEXT_ALIGN_RIGHT    2       // right alignment
+
 // snapshots are a view of the server at a given time
 typedef struct {
 	qboolean valid;                 // cleared if delta parsing was invalid
@@ -383,6 +388,9 @@ typedef struct {
 	qhandle_t whiteShader;
 	qhandle_t consoleShader;
 	qhandle_t consoleShader2;   //----(SA)	added
+
+	// cine subtitle
+	qhandle_t subtitleCharSetShader;
 } clientStatic_t;
 
 extern clientStatic_t cls;
@@ -524,6 +532,7 @@ extern cvar_t  *cl_waitForFire;
 
 // NERVE - SMF - localization
 extern cvar_t  *cl_language;
+extern cvar_t  *cl_drawCineSubtitles;
 // -NERVE - SMF
 
 //=================================================
@@ -703,6 +712,10 @@ void	SCR_DrawBigString( int x, int y, const char *s, float alpha, qboolean noCol
 void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape );	// ignores embedded color control characters
 void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
 void    SCR_DrawSmallChar( int x, int y, int ch );
+
+void    SCR_DrawStringExt( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
+void    SCR_DrawStringExt2( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape, int font );
+void    SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType, int font );
 
 
 //

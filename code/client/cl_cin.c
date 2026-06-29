@@ -89,6 +89,23 @@ static long long FFMPEG_Seek( void *opaque, long long offset, int whence );
 static int FFMPEG_ReadFrame( qboolean onlyAudio );
 static int FFMPEG_DecodeVideo( );
 
+#define MAX_SUBTITLES       256
+#define MAX_SUBTITLE_CHARS  1024
+#define MAX_BUFFER          32000
+
+typedef struct {
+    int startTime, endTime;	// ms
+	char lineText[MAX_SUBTITLE_CHARS];
+	float sizeScale;
+    int x0, y0;
+	int width;	// max width per line
+	int x1, y1;
+} subtitle_t;
+
+static int CIN_GetCurrentPlayingTime( int handle );
+static void CIN_LoadCinematicSubtitle( int handle );
+static void CIN_DrawCinematicSubtitle( int handle );
+
 /******************************************************************************
 *
 * Class:		trFMV
@@ -194,6 +211,10 @@ typedef struct {
 
 	int sar_num;
 	int sar_den;
+
+	// subtitle
+	int subtitleCount;
+	subtitle_t subtitles[MAX_SUBTITLES];
 } cin_cache;
 
 static cinematics_t cin;
@@ -2279,6 +2300,9 @@ int CIN_PlayCinematic( const char *arg, int x, int y, int w, int h, int systemBi
 		}
 	}
 
+	// load .sub cine subtitle file
+	CIN_LoadCinematicSubtitle( currentHandle );
+
 	CIN_SetExtents( currentHandle, x, y, w, h );
 	CIN_SetLooping( currentHandle, ( systemBits & CIN_loop ) != 0 );
 
@@ -2557,6 +2581,9 @@ h = cls.glconfig.vidHeight;
 	                   buf, handle, cinTable[handle].dirty );
 
 	cinTable[handle].dirty = qfalse;
+
+	// draw cine subtitles
+	CIN_DrawCinematicSubtitle( handle );
 }
 
 /*
@@ -2745,4 +2772,201 @@ void SCR_DrawLevelCinematic( void ) {
     if ( CL_levelCinHandle >= 0 && CL_levelCinHandle < MAX_VIDEO_HANDLES ) {
         CIN_DrawCinematic( CL_levelCinHandle );
     }
+}
+
+
+/*
+==================
+CIN_GetCurrentPlayingTime
+==================
+*/
+static int CIN_GetCurrentPlayingTime( int handle ) {
+	if ( handle < 0 || handle >= MAX_VIDEO_HANDLES ) {
+		return -1;
+	}
+
+	if ( cinTable[handle].roqFPS <= 0 ) {
+		return -1;
+	}
+
+	return (cinTable[handle].tfps * 1000) / cinTable[handle].roqFPS;
+}
+
+/*
+==================
+CIN_LoadCinematicSubtitle
+
+syntax:
+  <startTime> <endTime> <text> <sizeScale> <x0> <y0> <width> [x1 y1]
+  
+    startTime endTime: millisecond
+    sizeScale: font scale
+    x0, y0, width: set the rectangle size, position adjust from 640x480
+    x1 y1: the end position of the rectangle (Optional parameters, set these if subtitles need move)
+
+	-----------------------------
+	|                           |
+	| x0         x0 + width     |
+	|  \            \           |
+	|  *------------*           |  <- y0
+	|  |    text    |           |
+	|  |    text    |           |
+	|  |    ...     |           |
+	|                           |
+	-----------------------------
+==================
+*/
+static void CIN_LoadCinematicSubtitle( int handle ) {
+	if ( handle < 0 || handle >= MAX_VIDEO_HANDLES || cinTable[handle].status == FMV_EOF ) {
+		return;
+	}
+
+	char name[MAX_OSPATH];
+	char buffer[MAX_BUFFER];
+	char *text;
+	fileHandle_t f;
+	int len, i;
+	char *token;
+
+	// initial clear
+	memset( cinTable[handle].subtitles, 0, sizeof(cinTable[handle].subtitles) );
+
+	// cine subtitle filename
+	Q_strncpyz( name, cinTable[handle].fileName, sizeof(name) );
+	char *dot = strrchr( name, '.' );
+    if ( dot ) {
+        *dot = '\0';
+    }
+	Com_sprintf( name, sizeof(name), "%s.sub", name );
+
+	// read file content
+	len = FS_FOpenFileByMode(name, &f, FS_READ);
+	if (len <= 0) {
+		Com_DPrintf(S_COLOR_YELLOW "cine subtitle file \"%s\" not found or unreadable\n", name);
+		return;
+	}
+	if (len >= MAX_BUFFER) {
+		Com_Printf(S_COLOR_YELLOW "\"%s\" is too big, make it smaller (max = %i bytes)\n", name, MAX_BUFFER);
+	}
+
+	FS_Read(buffer, len, f);
+	buffer[len] = 0;
+	FS_FCloseFile(f);
+
+	// parse the lines
+	text = buffer;
+	token = COM_ParseExt(&text, qtrue);
+	if (token[0] != '{') {
+		Com_Printf("^1WARNING: expecting '{', found '%s' instead in cine subtitle file \"%s\"\n", token, name);
+		return;
+	}
+
+	i = 0;
+	while ( cinTable[handle].subtitleCount < MAX_SUBTITLES) {
+		token = COM_ParseExt(&text, qtrue);
+		if (!token[0]) {
+			Com_Printf("^1WARNING: no concluding '}' in cine subtitle file \"%s\"\n", name);
+			break;
+		}
+		// end of shader definition
+		if (token[0] == '}') {
+			break;
+		}
+
+		cinTable[handle].subtitles[i].startTime = atoi(token);
+
+		token = COM_ParseExt(&text, qfalse);
+		cinTable[handle].subtitles[i].endTime = atoi(token);
+
+		token = COM_ParseExt(&text, qfalse);
+		Q_strncpyz( cinTable[handle].subtitles[i].lineText, token, sizeof(cinTable[handle].subtitles[i].lineText) );
+
+		token = COM_ParseExt(&text, qfalse);
+		cinTable[handle].subtitles[i].sizeScale = (float)atof(token);
+
+		token = COM_ParseExt(&text, qfalse);
+		cinTable[handle].subtitles[i].x0 = atoi(token);
+
+		token = COM_ParseExt(&text, qfalse);
+		cinTable[handle].subtitles[i].y0 = atoi(token);
+
+		token = COM_ParseExt(&text, qfalse);
+		cinTable[handle].subtitles[i].width = atoi(token);
+
+		// optional parameters
+		token = COM_ParseExt(&text, qfalse);
+		if ( !token[0] ) {
+			cinTable[handle].subtitles[i].x1 = cinTable[handle].subtitles[i].x0;
+			cinTable[handle].subtitles[i].y1 = cinTable[handle].subtitles[i].y0;
+		} else {
+			cinTable[handle].subtitles[i].x1 = atoi(token);
+			token = COM_ParseExt(&text, qfalse);
+			cinTable[handle].subtitles[i].y1 = token[0] ? atoi(token) : cinTable[handle].subtitles[i].y0;
+		}
+
+		cinTable[handle].subtitleCount++;
+		i++;
+	}
+
+}
+
+/*
+==================
+CIN_DrawCinematicSubtitle
+==================
+*/
+static void CIN_DrawCinematicSubtitle( int handle ) {
+	qboolean isCinPlaying = (CL_handle >= 0 && CL_handle < MAX_VIDEO_HANDLES) ||
+							(CL_levelCinHandle >= 0 && CL_levelCinHandle < MAX_VIDEO_HANDLES);
+	
+	if ( !isCinPlaying ) {
+		return;
+	}
+	
+	if ( handle < 0 || handle >= MAX_VIDEO_HANDLES || cinTable[handle].status == FMV_EOF ) {
+		return;
+	}
+
+	if ( !cinTable[handle].buf ) {
+		return;
+	}
+
+	if ( !cl_drawCineSubtitles->value ) {
+		return;
+	}
+
+	// 
+	subtitle_t *subs = cinTable[handle].subtitles;
+	float color[4], backColor[4];
+	color[0] = color[1] = color[2] = color[3] = 1.0;
+	backColor[0] = backColor[1] = backColor[2] = 0;
+	backColor[3] = 1.0;
+
+	int time = CIN_GetCurrentPlayingTime(handle);
+	if ( time <= 0 ) return;
+
+	float x, y, t;
+	for ( int i = 0; i < cinTable[handle].subtitleCount; i++ ) {
+		if ( !subs[i].lineText[0] ) {
+			continue;
+		}
+
+		if ( subs[i].startTime < subs[i].endTime && time >= subs[i].startTime && time <= subs[i].endTime) {
+			if ( subs[i].x1 != subs[i].x0 || subs[i].y1 != subs[i].y0 ) {
+				// if a smoother move effect is needed
+				// then CIN_GetCurrentPlayingTime needs to be modified to get a more accurate timestamp
+				t = (float)(time - subs[i].startTime) / (float)(subs[i].endTime - subs[i].startTime);
+				x = (float)subs[i].x0 + (float)(subs[i].x1 - subs[i].x0) * t;
+				y = (float)subs[i].y0 + (float)(subs[i].y1 - subs[i].y0) * t;
+			} else {
+				x = subs[i].x0;
+				y = subs[i].y0;
+			}
+
+			SCR_Text_AutoWrapped_Paint( x, y, subs[i].sizeScale, subs[i].lineText,
+										subs[i].width, color, TEXT_ALIGN_CENTER,
+										cls.subtitleCharSetShader );
+		}
+	}
+
 }

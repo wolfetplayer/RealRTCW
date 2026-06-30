@@ -169,7 +169,7 @@ static char *getEnvVar(const char *key, char *buf, const size_t buflen)
     const char *envr = getenv(key);
     if (!envr || (strlen(envr) >= buflen))
         return NULL;
-    strcpy(buf, envr);
+    memcpy(buf, envr, strlen(envr) + 1);
     return buf;
 } /* getEnvVar */
 
@@ -337,7 +337,7 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
             if (buflen < 3) return NULL;
             event.ivalue = *(buf++) ? 1 : 0;
             event.okay = *(buf++) ? 1 : 0;
-            strcpy(event.name, (const char *) buf);
+            snprintf(event.name, sizeof(event.name), "%s", (const char *) buf);
             break;
 
         case SHIMEVENT_GETACHIEVEMENT:
@@ -347,7 +347,7 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
                 event.ivalue = event.okay = 0;
             event.epochsecs = (long long unsigned) *((uint64 *) buf);
             buf += sizeof (uint64);
-            strcpy(event.name, (const char *) buf);
+            snprintf(event.name, sizeof(event.name), "%s", (const char *) buf);
             break;
 
         case SHIMEVENT_RESETSTATS:
@@ -361,7 +361,7 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
             event.okay = *(buf++) ? 1 : 0;
             event.ivalue = (int) *((int32 *) buf);
             buf += sizeof (int32);
-            strcpy(event.name, (const char *) buf);
+            snprintf(event.name, sizeof(event.name), "%s", (const char *) buf);
             break;
 
         case SHIMEVENT_SETSTATF:
@@ -369,7 +369,7 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
             event.okay = *(buf++) ? 1 : 0;
             event.fvalue = (int) *((float *) buf);
             buf += sizeof (float);
-            strcpy(event.name, (const char *) buf);
+            snprintf(event.name, sizeof(event.name), "%s", (const char *) buf);
             break;
 
         case SHIMEVENT_APPRESTARTED:
@@ -379,7 +379,7 @@ static const STEAMSHIM_Event *processEvent(const uint8 *buf, size_t buflen)
         case SHIMEVENT_SETRICHPRESENCE:
             if (buflen < 2) return NULL;
             event.okay = *(buf++) ? 1 : 0;
-            strcpy(event.name, (const char *) buf);
+            snprintf(event.name, sizeof(event.name), "%s", (const char *) buf);
             break;
 
         default:  /* uh oh */
@@ -454,7 +454,7 @@ void STEAMSHIM_setAchievement(const char *name, const int enable)
     dbgpipe("Child sending SHIMCMD_SETACHIEVEMENT('%s', %senable).\n", name, enable ? "" : "!");
     *(ptr++) = (uint8) SHIMCMD_SETACHIEVEMENT;
     *(ptr++) = enable ? 1 : 0;
-    strcpy((char *) ptr, name);
+    snprintf((char *) ptr, (size_t)(buf + sizeof(buf) - ptr), "%s", name);
     ptr += strlen(name) + 1;
     buf[0] = (uint8) ((ptr-1) - buf);
     writePipe(GPipeWrite, buf, buf[0] + 1);
@@ -467,7 +467,7 @@ void STEAMSHIM_getAchievement(const char *name)
     if (isDead()) return;
     dbgpipe("Child sending SHIMCMD_GETACHIEVEMENT('%s').\n", name);
     *(ptr++) = (uint8) SHIMCMD_GETACHIEVEMENT;
-    strcpy((char *) ptr, name);
+    snprintf((char *) ptr, (size_t)(buf + sizeof(buf) - ptr), "%s", name);
     ptr += strlen(name) + 1;
     buf[0] = (uint8) ((ptr-1) - buf);
     writePipe(GPipeWrite, buf, buf[0] + 1);
@@ -504,7 +504,7 @@ static void writeStatThing(const ShimCmd cmd, const char *name, const void *val,
         memcpy(ptr, val, vallen);
         ptr += vallen;
     } /* if */
-    strcpy((char *) ptr, name);
+    snprintf((char *) ptr, (size_t)(buf + sizeof(buf) - ptr), "%s", name);
     ptr += strlen(name) + 1;
     buf[0] = (uint8) ((ptr-1) - buf);
     writePipe(GPipeWrite, buf, buf[0] + 1);
@@ -542,9 +542,9 @@ void STEAMSHIM_setRichPresence(const char* key, const char* value)
     if (isDead()) return;
     dbgpipe("Child sending SHIMCMD_SETRICHPRESENCE('%s', '%s').\n", key, value);
     *(ptr++) = (uint8) SHIMCMD_SETRICHPRESENCE;
-    strcpy((char *) ptr, key);
+    snprintf((char *) ptr, (size_t)(buf + sizeof(buf) - ptr), "%s", key);
     ptr += strlen(key) + 1;
-    strcpy((char *) ptr, value);
+    snprintf((char *) ptr, (size_t)(buf + sizeof(buf) - ptr), "%s", value);
     ptr += strlen(value) + 1;
     buf[0] = (uint8) ((ptr-1) - buf);
     writePipe(GPipeWrite, buf, buf[0] + 1);

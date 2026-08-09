@@ -1691,6 +1691,8 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 
 		CG_AddAtmosphericEffects(); // RealRTCW
 
+		CG_AddScriptSpeakers();
+
 		DEBUGTIME
 
 		CG_AddSmokeSprites();

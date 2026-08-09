@@ -218,6 +218,9 @@ typedef enum {
 
 	CG_GETMODELINFO,
 
+	CG_S_STARTSOUNDVCONTROL,
+	CG_R_INPVS,
+
 	// New in IORTCW
 	CG_ALLOC = 900,
 

@@ -81,6 +81,11 @@ extern unsigned char s_entityTalkAmplitude[MAX_CLIENTS];
 
 #define THIRD_PERSON_THRESHOLD_SQ (48.0f*48.0f)
 
+// extra loop slots past MAX_GENTITIES for non-entity ambient sources (e.g. .sps speakers).
+// AddLoopingSound treats a negative entityNum as ambient slot -(entityNum)-1 -> MAX_GENTITIES+slot.
+// Slot 0 is reserved for pre-existing -1 callers (cg_localents.c/cg_players.c); others use distinct slots.
+#define MAX_AMBIENT_LOOPS 257
+
 typedef struct loopSound_s {
 	vec3_t		origin;
 	vec3_t		velocity;
@@ -136,6 +141,7 @@ typedef struct
 	void (*Shutdown)(void);
 	void (*StartSound)( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx );
 	void (*StartSoundEx)( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int flags );
+	void (*StartSoundVControl)( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int volume );
 	void (*StartLocalSound)( sfxHandle_t sfx, int channelNum );
 	void (*StartBackgroundTrack)( const char *intro, const char *loop );
 	void (*StopBackgroundTrack)( void );

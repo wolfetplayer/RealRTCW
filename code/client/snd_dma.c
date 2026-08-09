@@ -90,7 +90,7 @@ cvar_t		*s_mixPreStep;
 cvar_t      *s_mute;        // (SA) for DM so he can 'toggle' sound on/off without disturbing volume levels
 cvar_t      *s_wavonly;
 
-static loopSound_t		loopSounds[MAX_GENTITIES];
+static loopSound_t		loopSounds[MAX_GENTITIES + MAX_AMBIENT_LOOPS];
 static	channel_t		*freelist = NULL;
 
 int	s_rawend[MAX_RAW_STREAMS];
@@ -562,7 +562,7 @@ Entchannel 0 will never override a playing sound
 	SND_CUTOFF_ALL		0x008	- cut off all sounds on this channel
 ====================
 */
-static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags );
+static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags, int volume );
 
 void S_Base_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, int flags ) {
 	if ( !s_soundStarted || s_soundMuted || ( clc.state != CA_ACTIVE && clc.state != CA_DISCONNECTED ) ) {
@@ -575,7 +575,7 @@ void S_Base_StartSoundEx( vec3_t origin, int entityNum, int entchannel, sfxHandl
 	}
 
 	// RF, make the call now, or else we could override following streaming sounds in the same frame, due to the delay
-	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, flags );
+	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, flags, 127 );
 /*
 	if ( tart < MAX_PUSHSTACK ) {
 		sfx_t       *sfx;
@@ -609,7 +609,7 @@ if origin is NULL, the sound will be dynamically sourced from the entity
 Entchannel 0 will never override a playing sound
 ====================
 */
-static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags ) {
+static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, qboolean localSound, int flags, int volume ) {
 	channel_t	*ch;
 	sfx_t		*sfx;
 	int		i, oldest, chosen, time;
@@ -797,7 +797,7 @@ static void S_Base_MainStartSound( vec3_t origin, int entityNum, int entchannel,
 	}
 
 	ch->flags = flags;  //----(SA)	added
-	ch->master_vol = 127;
+	ch->master_vol = volume;
 	ch->entnum = entityNum;
 	ch->thesfx = sfx;
 	ch->entchannel = entchannel;
@@ -824,7 +824,18 @@ if origin is NULL, the sound will be dynamically sourced from the entity
 ====================
 */
 void S_Base_StartSound( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle ) {
-	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, 0 );
+	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, 0, 127 );
+}
+
+/*
+====================
+S_Base_StartSoundVControl
+
+Same as S_Base_StartSound, but with an explicit volume instead of the default full volume
+====================
+*/
+void S_Base_StartSoundVControl( vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfxHandle, int volume ) {
+	S_Base_MainStartSound( origin, entityNum, entchannel, sfxHandle, qfalse, 0, volume );
 }
 
 /*
@@ -842,7 +853,7 @@ void S_Base_StartLocalSound( sfxHandle_t sfxHandle, int channelNum ) {
 		return;
 	}
 
-	S_Base_MainStartSound( NULL, listener_number, channelNum, sfxHandle, qtrue, 0 );
+	S_Base_MainStartSound( NULL, listener_number, channelNum, sfxHandle, qtrue, 0, 127 );
 }
 
 
@@ -927,7 +938,7 @@ S_ClearLoopingSounds
 */
 void S_Base_ClearLoopingSounds( qboolean killall ) {
 	int i;
-	for ( i = 0 ; i < MAX_GENTITIES ; i++) {
+	for ( i = 0 ; i < MAX_GENTITIES + MAX_AMBIENT_LOOPS ; i++) {
 		if (killall || loopSounds[i].kill == qtrue || (loopSounds[i].sfx && loopSounds[i].sfx->soundLength == 0)) {
 			S_Base_StopLoopingSound(i);
 		}
@@ -946,8 +957,27 @@ Include velocity in case I get around to doing doppler...
 
 #define UNDERWATER_BIT  8
 
+/*
+==================
+S_Base_LoopIndex
+
+Resolves entityNum to a real loopSounds[] index. Negative entityNum is an
+ambient slot -(entityNum)-1 (see MAX_AMBIENT_LOOPS). Returns -1 if out of range.
+==================
+*/
+static int S_Base_LoopIndex( int entityNum ) {
+	if ( entityNum >= 0 ) {
+		return ( entityNum < MAX_GENTITIES ) ? entityNum : -1;
+	}
+	if ( ( -entityNum - 1 ) < MAX_AMBIENT_LOOPS ) {
+		return MAX_GENTITIES + ( -entityNum - 1 );
+	}
+	return -1;
+}
+
 void S_Base_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfxHandle, int volume ) {
 	sfx_t *sfx;
+	int idx;
 
 	if ( !s_soundStarted || s_soundMuted || clc.state != CA_ACTIVE ) {
 		return;
@@ -962,8 +992,10 @@ void S_Base_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t ve
 		return;
 	}
 
-	if ( entityNum < 0 || entityNum >= MAX_GENTITIES )
+	idx = S_Base_LoopIndex( entityNum );
+	if ( idx < 0 ) {
 		return;
+	}
 
 	sfx = &s_knownSfx[ sfxHandle ];
 
@@ -975,42 +1007,42 @@ void S_Base_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t ve
 		Com_Error( ERR_DROP, "%s has length 0", sfx->soundName );
 	}
 
-	VectorCopy( origin, loopSounds[entityNum].origin );
-	VectorCopy( velocity, loopSounds[entityNum].velocity );
-	loopSounds[entityNum].active = qtrue;
-	loopSounds[entityNum].kill = qtrue;
-	loopSounds[entityNum].doppler = qfalse;
-	loopSounds[entityNum].oldDopplerScale = 1.0;
-	loopSounds[entityNum].dopplerScale = 1.0;
-	loopSounds[entityNum].sfx = sfx;
+	VectorCopy( origin, loopSounds[idx].origin );
+	VectorCopy( velocity, loopSounds[idx].velocity );
+	loopSounds[idx].active = qtrue;
+	loopSounds[idx].kill = qtrue;
+	loopSounds[idx].doppler = qfalse;
+	loopSounds[idx].oldDopplerScale = 1.0;
+	loopSounds[idx].dopplerScale = 1.0;
+	loopSounds[idx].sfx = sfx;
 	if ( range ) {
-		loopSounds[entityNum].range = range;
+		loopSounds[idx].range = range;
 	} else {
-		loopSounds[entityNum].range = SOUND_RANGE_DEFAULT;
+		loopSounds[idx].range = SOUND_RANGE_DEFAULT;
 	}
 
 	if ( volume & 1 << UNDERWATER_BIT ) {
-		loopSounds[entityNum].loudUnderWater = qtrue;
+		loopSounds[idx].loudUnderWater = qtrue;
 	}
 
-	if (s_doppler->integer && VectorLengthSquared(velocity)>0.0) {
+	if (s_doppler->integer && VectorLengthSquared(velocity)>0.0 && entityNum >= 0) {
 		vec3_t	out;
 		float	lena, lenb;
 
-		loopSounds[entityNum].doppler = qtrue;
-		lena = DistanceSquared(loopSounds[listener_number].origin, loopSounds[entityNum].origin);
-		VectorAdd(loopSounds[entityNum].origin, loopSounds[entityNum].velocity, out);
+		loopSounds[idx].doppler = qtrue;
+		lena = DistanceSquared(loopSounds[listener_number].origin, loopSounds[idx].origin);
+		VectorAdd(loopSounds[idx].origin, loopSounds[idx].velocity, out);
 		lenb = DistanceSquared(loopSounds[listener_number].origin, out);
-		if ((loopSounds[entityNum].framenum+1) != cls.framecount) {
-			loopSounds[entityNum].oldDopplerScale = 1.0;
+		if ((loopSounds[idx].framenum+1) != cls.framecount) {
+			loopSounds[idx].oldDopplerScale = 1.0;
 		} else {
-			loopSounds[entityNum].oldDopplerScale = loopSounds[entityNum].dopplerScale;
+			loopSounds[idx].oldDopplerScale = loopSounds[idx].dopplerScale;
 		}
-		loopSounds[entityNum].dopplerScale = lenb/(lena*100);
-		if (loopSounds[entityNum].dopplerScale<=1.0) {
-			loopSounds[entityNum].doppler = qfalse;			// don't bother doing the math
-		} else if (loopSounds[entityNum].dopplerScale>MAX_DOPPLER_SCALE) {
-			loopSounds[entityNum].dopplerScale = MAX_DOPPLER_SCALE;
+		loopSounds[idx].dopplerScale = lenb/(lena*100);
+		if (loopSounds[idx].dopplerScale<=1.0) {
+			loopSounds[idx].doppler = qfalse;			// don't bother doing the math
+		} else if (loopSounds[idx].dopplerScale>MAX_DOPPLER_SCALE) {
+			loopSounds[idx].dopplerScale = MAX_DOPPLER_SCALE;
 		}
 	}
 
@@ -1019,9 +1051,9 @@ void S_Base_AddLoopingSound( int entityNum, const vec3_t origin, const vec3_t ve
 	} else if ( volume < 0 ) {
 		volume = 0;
 	}
-	loopSounds[entityNum].vol = volume;
+	loopSounds[idx].vol = volume;
 
-	loopSounds[entityNum].framenum = cls.framecount;
+	loopSounds[idx].framenum = cls.framecount;
 }
 
 /*
@@ -1093,7 +1125,7 @@ void S_AddLoopSounds (void) {
 	time = Com_Milliseconds();
 
 	loopFrame++;
-	for ( i = 0 ; i < MAX_GENTITIES ; i++) {
+	for ( i = 0 ; i < MAX_GENTITIES + MAX_AMBIENT_LOOPS ; i++) {
 		loop = &loopSounds[i];
 		if ( !loop->active || loop->mergeFrame == loopFrame ) {
 			continue;	// already merged into an earlier sound
@@ -1111,7 +1143,7 @@ void S_AddLoopSounds (void) {
 
 		loop->sfx->lastTimeUsed = time;
 
-		for (j=(i+1); j< MAX_GENTITIES ; j++) {
+		for (j=(i+1); j< MAX_GENTITIES + MAX_AMBIENT_LOOPS ; j++) {
 			loop2 = &loopSounds[j];
 			if ( !loop2->active || loop2->doppler || loop2->sfx != loop->sfx) {
 				continue;
@@ -1878,6 +1910,7 @@ qboolean S_Base_Init( soundInterface_t *si ) {
 	si->Shutdown = S_Base_Shutdown;
 	si->StartSound = S_Base_StartSound;
 	si->StartSoundEx = S_Base_StartSoundEx;
+	si->StartSoundVControl = S_Base_StartSoundVControl;
 	si->StartLocalSound = S_Base_StartLocalSound;
 	si->StartBackgroundTrack = S_Base_StartBackgroundTrack;
 	si->StopBackgroundTrack = S_Base_StopBackgroundTrack;

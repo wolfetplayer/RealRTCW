@@ -446,6 +446,37 @@ static int  FloatAsInt( float f ) {
 }
 
 /*
+==================
+CL_CM_inPVS
+
+Client-side equivalent of SV_inPVS (server/sv_game.c), using the CM_*
+functions already available on the client for local collision/rendering.
+==================
+*/
+static qboolean CL_CM_inPVS( const vec3_t p1, const vec3_t p2 ) {
+	int leafnum;
+	int cluster;
+	int area1, area2;
+	byte *mask;
+
+	leafnum = CM_PointLeafnum( p1 );
+	cluster = CM_LeafCluster( leafnum );
+	area1 = CM_LeafArea( leafnum );
+	mask = CM_ClusterPVS( cluster );
+
+	leafnum = CM_PointLeafnum( p2 );
+	cluster = CM_LeafCluster( leafnum );
+	area2 = CM_LeafArea( leafnum );
+	if ( mask && ( !( mask[cluster >> 3] & ( 1 << ( cluster & 7 ) ) ) ) ) {
+		return qfalse;
+	}
+	if ( !CM_AreasConnected( area1, area2 ) ) {
+		return qfalse;      // a door blocks sight
+	}
+	return qtrue;
+}
+
+/*
 ====================
 CL_CgameSystemCalls
 
@@ -549,6 +580,11 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		S_StartSoundEx( VMA( 1 ), args[2], args[3], args[4], args[5] );
 		return 0;
 //----(SA)	end
+	case CG_S_STARTSOUNDVCONTROL:
+		S_StartSoundVControl( VMA( 1 ), args[2], args[3], args[4], args[5] );
+		return 0;
+	case CG_R_INPVS:
+		return CL_CM_inPVS( VMA( 1 ), VMA( 2 ) );
 	case CG_S_STARTLOCALSOUND:
 		S_StartLocalSound( args[1], args[2] );
 		return 0;

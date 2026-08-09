@@ -1188,6 +1188,10 @@ static void CG_RegisterSounds( void ) {
 	CG_SoundInit();
 	// done.
 
+	// map speaker scripts (sound/maps/<mapname>.sps)
+	CG_ClearScriptSpeakers();
+	CG_LoadSpeakerScript();
+
 	cgs.media.n_health = trap_S_RegisterSound( "sound/items/n_health.wav" );
 	cgs.media.noFireUnderwater = trap_S_RegisterSound( "sound/weapons/underwaterfire.wav" ); 
 

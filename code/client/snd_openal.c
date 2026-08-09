@@ -1032,9 +1032,28 @@ typedef struct sentity_s
   alSrcPriority_t	loopPriority;
   sfxHandle_t			loopSfx;
   qboolean				startLoopingSound;
+  int             loopVolume;   // 0-255, per-loop volume (AddLoopingSound's volume arg)
+  float           loopRange;    // per-loop attenuation reference distance
 } sentity_t;
 
-static sentity_t entityList[MAX_GENTITIES];
+static sentity_t entityList[MAX_GENTITIES + MAX_AMBIENT_LOOPS];
+
+/*
+   =================
+   S_AL_LoopIndex
+
+   Resolves entityNum to a real entityList[] index. Negative entityNum is an
+   ambient slot -(entityNum)-1 (see MAX_AMBIENT_LOOPS). Returns -1 if out of range.
+   =================
+   */
+static int S_AL_LoopIndex( int entityNum )
+{
+  if ( entityNum >= 0 )
+    return ( entityNum < MAX_GENTITIES ) ? entityNum : -1;
+  if ( ( -entityNum - 1 ) < MAX_AMBIENT_LOOPS )
+    return MAX_GENTITIES + ( -entityNum - 1 );
+  return -1;
+}
 
 /*
    =================
@@ -1716,7 +1735,7 @@ void S_AL_StartLocalSound(sfxHandle_t sfx, int channel)
    Play a one-shot sound effect
    =================
    */
-static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int flags )
+static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int flags, int volume )
 {
   vec3_t sorigin;
   srcHandle_t src;
@@ -1772,6 +1791,12 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
 
   curSource = &srcList[src];
 
+  if ( volume != 255 )
+  {
+    // leave scaleGain untouched so S_AL_ScaleGain() below sees curGain changed and re-applies AL_GAIN
+    curSource->curGain *= volume / 255.0f;
+  }
+
   if ( (entnum >= 0 && entnum < MAX_CLIENTS) && (entchannel == CHAN_VOICE) )
   {
     if(offset_ext && knownSfx[sfx].voice){
@@ -1814,7 +1839,7 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
    */
 static void S_AL_StartSound( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx )
 {
-  S_AL_MainStartSound( origin, entnum, entchannel, sfx, 0 );
+  S_AL_MainStartSound( origin, entnum, entchannel, sfx, 0, 255 );
 }
 
 /*
@@ -1830,7 +1855,19 @@ static void S_AL_StartSoundEx( vec3_t origin, int entnum, int entchannel, sfxHan
   }
 
   // RF, make the call now, or else we could override following streaming sounds in the same frame, due to the delay
-  S_AL_MainStartSound( origin, entnum, entchannel, sfx, flags );
+  S_AL_MainStartSound( origin, entnum, entchannel, sfx, flags, 255 );
+}
+
+/*
+   =================
+   S_AL_StartSoundVControl
+
+   Same as S_AL_StartSound, but with an explicit volume instead of the default full volume
+   =================
+   */
+static void S_AL_StartSoundVControl( vec3_t origin, int entnum, int entchannel, sfxHandle_t sfx, int volume )
+{
+  S_AL_MainStartSound( origin, entnum, entchannel, sfx, 0, volume );
 }
 
 /*
@@ -1855,24 +1892,42 @@ void S_AL_ClearLoopingSounds( qboolean killall )
    =================
    */
 static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
-    const vec3_t origin, const vec3_t velocity, int entityNum, int volume )
+    const vec3_t origin, const vec3_t velocity, int entityNum, int volume, int range )
 {
   int				src;
-  sentity_t	*sent = &entityList[ entityNum ];
+  int       idx;
+  sentity_t	*sent;
   src_t		*curSource;
   vec3_t		sorigin, svelocity;
 
-  if( entityNum < 0 || entityNum >= MAX_GENTITIES )
+  idx = S_AL_LoopIndex( entityNum );
+  if ( idx < 0 )
     return;
 
-  if(S_AL_CheckInput(entityNum, sfx))
-    return;
+  if ( volume > 255 ) {
+    volume = 255;
+  } else if ( volume < 0 ) {
+    volume = 0;
+  }
+
+  if ( entityNum >= 0 )
+  {
+    if ( S_AL_CheckInput( entityNum, sfx ) )    // real entity: use the shared bounds/sfx check
+      return;
+  }
+  else
+  {
+    if ( sfx < 0 || sfx >= numSfx )    // ambient slot: CheckInput's entity bound doesn't apply, just check sfx
+      return;
+  }
+
+  sent = &entityList[ idx ];
 
   // Do we need to allocate a new source for this entity
   if( !sent->srcAllocated )
   {
     // Try to get a channel
-    src = S_AL_SrcAlloc( sfx, priority, entityNum, -1, 0 );
+    src = S_AL_SrcAlloc( sfx, priority, idx, -1, 0 );
     if( src == -1 )
     {
       Com_DPrintf( S_COLOR_YELLOW "WARNING: Failed to allocate source "
@@ -1898,6 +1953,8 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
 
   sent->loopPriority = priority;
   sent->loopSfx = sfx;
+  sent->loopVolume = volume;
+  sent->loopRange = ( range > 0 ) ? (float)range : s_alMinDistance->value;
 
   // If this is not set then the looping sound is stopped.
   sent->loopAddedThisFrame = qtrue;
@@ -1906,7 +1963,7 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
   // These lines should be called via S_AL_SrcSetup, but we
   // can't call that yet as it buffers sfxes that may change
   // with subsequent calls to S_AL_SrcLoop
-  curSource->entity = entityNum;
+  curSource->entity = idx;
   curSource->isLooping = qtrue;
 
   if( S_AL_HearingThroughEntity( entityNum ) )
@@ -1948,6 +2005,9 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
 
     qalSourcefv(curSource->alSource, AL_POSITION, (ALfloat *) sorigin);
     qalSourcefv(curSource->alSource, AL_VELOCITY, (ALfloat *) svelocity);
+
+    // refreshed every frame so per-loop volume applies even when S_AL_SrcUpdate doesn't reset curGain
+    curSource->curGain = s_alGain->value * s_volume->value * ( volume / 255.0f );
   }
 }
 
@@ -1958,7 +2018,7 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
    */
 static void S_AL_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx, int volume)
 {
-  S_AL_SrcLoop(SRCPRI_ENTITY, sfx, origin, velocity, entityNum, volume);
+  S_AL_SrcLoop(SRCPRI_ENTITY, sfx, origin, velocity, entityNum, volume, range);
 }
 
 /*
@@ -1968,7 +2028,7 @@ static void S_AL_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_
    */
 static void S_AL_AddRealLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, const int range, sfxHandle_t sfx)
 {
-  S_AL_SrcLoop(SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, 255);
+  S_AL_SrcLoop(SRCPRI_AMBIENT, sfx, origin, velocity, entityNum, 255, range);
 }
 
 /*
@@ -2022,10 +2082,14 @@ void S_AL_SrcUpdate( void )
 
     // Update source parameters
     if((s_alGain->modified) || (s_volume->modified))
+    {
       curSource->curGain = s_alGain->value * s_volume->value;
+      if ( curSource->isLooping )
+        curSource->curGain *= entityList[curSource->entity].loopVolume / 255.0f;
+    }
     if((s_alRolloff->modified) && (!curSource->local))
       qalSourcef(curSource->alSource, AL_ROLLOFF_FACTOR, s_alRolloff->value);
-    if(s_alMinDistance->modified)
+    if(s_alMinDistance->modified && !curSource->isLooping)
       qalSourcef(curSource->alSource, AL_REFERENCE_DISTANCE, s_alMinDistance->value);
 
     if(curSource->isLooping)
@@ -2055,6 +2119,11 @@ void S_AL_SrcUpdate( void )
           S_AL_SrcSetup(i, sent->loopSfx, sent->loopPriority,
               entityNum, -1, 0, curSource->local);
           curSource->isLooping = qtrue;
+
+          // apply this loop's own volume/range on top of S_AL_SrcSetup's global defaults
+          curSource->curGain *= sent->loopVolume / 255.0f;
+          if ( !curSource->local )
+            qalSourcef(curSource->alSource, AL_REFERENCE_DISTANCE, sent->loopRange);
 
           knownSfx[curSource->sfx].loopCnt++;
           sent->startLoopingSound = qfalse;
@@ -3389,6 +3458,7 @@ qboolean S_AL_Init( soundInterface_t *si )
       si->Shutdown = S_AL_Shutdown;
       si->StartSound = S_AL_StartSound;
       si->StartSoundEx = S_AL_StartSoundEx;
+      si->StartSoundVControl = S_AL_StartSoundVControl;
       si->StartLocalSound = S_AL_StartLocalSound;
       si->StartBackgroundTrack = S_AL_StartBackgroundTrack;
       si->StopBackgroundTrack = S_AL_StopBackgroundTrack;

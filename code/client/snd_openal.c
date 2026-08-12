@@ -1236,6 +1236,35 @@ void S_AL_SrcShutdown( void )
 
 /*
    =================
+   S_AL_DilationPitch
+
+   Playback-rate multiplier for world time dilation (weapon wheel slow-mo).
+   UI/meta channels aren't part of the game world and stay at normal speed;
+   everything else follows cl.timeDilation. Guards against cl.timeDilation
+   still being zero-initialised before the first CL_ClearState().
+   =================
+   */
+static float S_AL_DilationPitch( int channel )
+{
+  float dilation;
+
+  switch( channel )
+  {
+    case CHAN_LOCAL:
+    case CHAN_LOCAL_SOUND:
+    case CHAN_ANNOUNCER:
+      return 1.0f;
+  }
+
+  dilation = cl.timeDilation;
+  if ( dilation <= 0.0f ) {
+    dilation = 1.0f;
+  }
+  return dilation;
+}
+
+/*
+   =================
    S_AL_SrcSetup
    =================
    */
@@ -1274,7 +1303,7 @@ static void S_AL_SrcSetup(srcHandle_t src, sfxHandle_t sfx, alSrcPriority_t prio
     qalSourcei(curSource->alSource, AL_BUFFER, S_AL_BufferGet(sfx));
   }
 
-  qalSourcef(curSource->alSource, AL_PITCH, 1.0f);
+  qalSourcef(curSource->alSource, AL_PITCH, S_AL_DilationPitch(channel));
   S_AL_Gain(curSource->alSource, curSource->curGain);
   qalSourcefv(curSource->alSource, AL_POSITION, vec3_origin);
   qalSourcefv(curSource->alSource, AL_VELOCITY, vec3_origin);
@@ -2079,6 +2108,10 @@ void S_AL_SrcUpdate( void )
 
     if(!curSource->isActive)
       continue;
+
+    // Keep already-playing sources in sync with world time dilation; S_AL_SrcSetup
+    // only applies AL_PITCH once, at (re)start, which wouldn't track the ramp.
+    qalSourcef(curSource->alSource, AL_PITCH, S_AL_DilationPitch(curSource->channel));
 
     // Update source parameters
     if((s_alGain->modified) || (s_volume->modified))

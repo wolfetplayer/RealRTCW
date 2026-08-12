@@ -1377,6 +1377,8 @@ void CL_ClearState( void ) {
 	S_StopAllSounds();
 
 	memset( &cl, 0, sizeof( cl ) );
+	cl.timeDilation = 1.0f;
+	cl.timeDilationCarry = 0.0f;
 }
 
 /*

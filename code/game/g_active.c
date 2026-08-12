@@ -1125,6 +1125,13 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.pm_type = PM_NORMAL;
 	}
 
+	// defense-in-depth: don't let a stuck/spoofed weapon wheel flag keep dilation active while dead, in a cutscene, on mg42, or at intermission
+	if ( client->pers.weaponWheelOpen &&
+		 ( client->ps.stats[STAT_HEALTH] <= 0 || client->cameraPortal ||
+		   ( client->ps.eFlags & EF_MG42_ACTIVE ) || level.intermissiontime ) ) {
+		client->pers.weaponWheelOpen = qfalse;
+	}
+
 	// set parachute anim condition flag
 	BG_UpdateConditionValue( ent->s.number, ANIM_COND_PARACHUTE, ( ent->flags & FL_PARACHUTE ) != 0, qfalse );
 

@@ -193,6 +193,9 @@ vmCvar_t g_ee_svAgent1;
 
 vmCvar_t g_mapname;
 
+vmCvar_t g_weaponWheelDilation;
+vmCvar_t g_weaponWheelDilationRamp;
+
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
 	{&g_cheats, "sv_cheats", "", 0, qfalse},
@@ -231,6 +234,9 @@ cvarTable_t gameCvarTable[] = {
 	{&g_level_was_selected, "g_level_was_selected", "0", 0, 0, qfalse},
 	{&g_survivalDifficulty, "g_survivalDifficulty", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_survivalBosses, "g_survivalBosses", "1", CVAR_ARCHIVE, 0, qfalse},
+
+	{&g_weaponWheelDilation, "g_weaponWheelDilation", "0.35", CVAR_ARCHIVE, 0, qfalse},
+	{&g_weaponWheelDilationRamp, "g_weaponWheelDilationRamp", "150", CVAR_ARCHIVE, 0, qfalse},
 
 	{&g_ee_skinEliteGuard, "g_ee_skinEliteGuard", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_ee_skinMercenary, "g_ee_skinMercenary", "0", CVAR_ARCHIVE, 0, qfalse},
@@ -1405,6 +1411,10 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	memset( &level, 0, sizeof( level ) );
 	level.time = levelTime;
 	level.startTime = levelTime;
+
+	level.timeDilation = 1.0f;
+	level.timeDilationTarget = 1.0f;
+	trap_SetConfigstring( CS_TIMEDILATION, "1.000000" );
 
 	level.numSecrets = 0;   //----(SA)	added
 
@@ -2586,6 +2596,66 @@ void G_RunEntity( gentity_t* ent, int msec ) {
 
 /*
 ================
+G_UpdateWorldDilation
+
+SP-only: while any connected client has its weapon wheel open, ease the
+world time dilation factor down so the server tick loop (SV_Frame) throttles
+how often ticks fire in real time. Each individual tick is untouched (still
+the normal frameMsec-sized game-time step), so nothing about per-tick entity
+math (e.g. mg42_think's hardcoded windows) is affected -- only tick frequency
+in real time changes.
+================
+*/
+static void G_UpdateWorldDilation( void ) {
+	int i;
+	qboolean anyWheelOpen = qfalse;
+	float target, rampMsec, msec, step;
+
+	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
+		return; // feature fully inert outside SP
+	}
+
+	for ( i = 0; i < level.maxclients; i++ ) {
+		if ( level.clients[i].pers.connected == CON_CONNECTED &&
+			 g_entities[i].client && g_entities[i].client->pers.weaponWheelOpen ) {
+			anyWheelOpen = qtrue;
+			break;
+		}
+	}
+
+	target = anyWheelOpen ? g_weaponWheelDilation.value : 1.0f;
+	level.timeDilationTarget = target;
+
+	rampMsec = g_weaponWheelDilationRamp.value;
+	if ( rampMsec < 1.0f ) {
+		rampMsec = 1.0f;
+	}
+
+	// linear ease over ~rampMsec of game time toward target
+	msec = (float)( level.time - level.previousTime );
+	step = ( msec / rampMsec ) * fabs( 1.0f - g_weaponWheelDilation.value );
+
+	if ( level.timeDilation < target ) {
+		level.timeDilation += step;
+		if ( level.timeDilation > target ) {
+			level.timeDilation = target;
+		}
+	} else if ( level.timeDilation > target ) {
+		level.timeDilation -= step;
+		if ( level.timeDilation < target ) {
+			level.timeDilation = target;
+		}
+	}
+
+	{
+		char cs[32];
+		Com_sprintf( cs, sizeof( cs ), "%f", level.timeDilation );
+		trap_SetConfigstring( CS_TIMEDILATION, cs ); // no-op if unchanged, SV_SetConfigstring dedups
+	}
+}
+
+/*
+================
 G_RunFrame
 
 Advances the non-player objects in the world
@@ -2618,6 +2688,8 @@ void G_RunFrame( int levelTime ) {
 
 	// get any cvar changes
 	G_UpdateCvars();
+
+	G_UpdateWorldDilation();
 
 	for ( i = 0; i < level.num_entities; i++ ) {
 		g_entities[i].runthisframe = qfalse;

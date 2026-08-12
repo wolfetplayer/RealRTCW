@@ -126,6 +126,9 @@ typedef struct {
 	// cleared when CL_AdjustTimeDelta looks at it
 	qboolean newSnapshots;          // set on parse of any valid packet
 
+	float timeDilation;             // world time dilation factor from CS_TIMEDILATION, 1.0 = normal speed
+	float timeDilationCarry;        // fractional-ms carry for the per-frame serverTimeDelta bleed, avoids truncation drift
+
 	gameState_t gameState;          // configstrings
 	char mapname[MAX_QPATH];        // extracted from CS_SERVERINFO
 

@@ -228,6 +228,11 @@ static void CG_WeaponWheelDown_f( void ) {
 		return;
 	}
 
+	// don't let a buffered/mashed keypress open the wheel during a cutscene or at intermission
+	if ( cg.snap->ps.pm_type == PM_FREEZE || cg.snap->ps.pm_type == PM_INTERMISSION ) {
+		return;
+	}
+
 	cg.weaponWheel.openTime = cg.time;
 
 	cgs.cursorX = SCREEN_WIDTH * 0.35f;
@@ -243,6 +248,8 @@ static void CG_WeaponWheelDown_f( void ) {
 	cg.weaponWheel.hoveredWeapon = 0;
 	cg.weaponWheel.latchedWeapon = 0;
 	cg.weaponWheel.lastWeapon = 0;
+
+	trap_SendClientCommand( "wwheel 1" );
 }
 
 static void CG_WeaponWheelUp_f( void ) {
@@ -255,6 +262,8 @@ static void CG_WeaponWheelUp_f( void ) {
 
 	cg.weaponWheel.active = qfalse;
 	trap_Cvar_Set( "cg_weaponWheelActive", "0" );
+
+	trap_SendClientCommand( "wwheel 0" );
 
 	int weapon = cg.weaponWheel.latchedWeapon > 0
 					 ? cg.weaponWheel.latchedWeapon

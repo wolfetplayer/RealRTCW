@@ -267,6 +267,13 @@ CL_SetUserCmdValue
 			CL_SystemInfoChanged();
 		}
 
+		if ( index == CS_TIMEDILATION ) {
+			cl.timeDilation = (float)atof( s );
+			if ( cl.timeDilation <= 0.0f ) {
+				cl.timeDilation = 1.0f;
+			}
+		}
+
 	}
 
 
@@ -1147,6 +1154,29 @@ void CL_AdjustTimeDelta( void ) {
 	newDelta = cl.snap.serverTime - cls.realtime;
 	deltaDelta = abs( newDelta - cl.serverTimeDelta );
 
+	// world time dilation: rate-matching happens continuously in CL_SetCGameTime, this just trims residual error gently, independent of com_timescale
+	if ( fabs( cl.timeDilation - 1.0f ) > 0.001f ) {
+		if ( deltaDelta > RESET_TIME * 4 ) {
+			// only a truly pathological gap warrants a hard reset
+			cl.serverTimeDelta = newDelta;
+			cl.oldServerTime = cl.snap.serverTime;
+			cl.serverTime = cl.snap.serverTime;
+			if ( cl_showTimeDelta->integer ) {
+				Com_Printf( "<DILATION RESET> " );
+			}
+		} else {
+			cl.serverTimeDelta += (int)( ( newDelta - cl.serverTimeDelta ) * 0.15f );
+			if ( cl_showTimeDelta->integer ) {
+				Com_Printf( "<DILATION> " );
+			}
+		}
+
+		if ( cl_showTimeDelta->integer ) {
+			Com_Printf( "%i ", cl.serverTimeDelta );
+		}
+		return;
+	}
+
 	if ( deltaDelta > RESET_TIME ) {
 		cl.serverTimeDelta = newDelta;
 		cl.oldServerTime = cl.snap.serverTime;  // FIXME: is this a problem for cgame?
@@ -1315,6 +1345,17 @@ void CL_SetCGameTime( void ) {
 			tn = -30;
 		} else if ( tn > 30 ) {
 			tn = 30;
+		}
+
+		// world time dilation: continuously bleed serverTimeDelta every frame (not just reactively on snapshot arrival) so cl.serverTime's rate stays smoothly dilated instead of racing then snapping back
+		if ( !clc.demoplaying && fabs( cl.timeDilation - 1.0f ) > 0.001f ) {
+			// carry the fractional ms remainder to avoid truncation drift, same fix as sv.timeDilationCarry
+			float bleed = ( 1.0f - cl.timeDilation ) * (float)cls.frametime + cl.timeDilationCarry;
+			int whole = (int)bleed;
+			cl.timeDilationCarry = bleed - whole;
+			cl.serverTimeDelta -= whole;
+		} else {
+			cl.timeDilationCarry = 0.0f;
 		}
 
 		cl.serverTime = cls.realtime + cl.serverTimeDelta - tn;

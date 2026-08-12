@@ -1792,6 +1792,9 @@ typedef struct {
 	// player/AI model scripting (client repository)
 	animScriptData_t animScriptData;
 
+	// world time dilation (weapon wheel slow-mo), mirrors CS_TIMEDILATION, 1.0 = normal speed
+	float timeDilation;
+
 } cgs_t;
 
 

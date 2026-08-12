@@ -2881,6 +2881,12 @@ void CG_Init( int serverMessageNum, int serverCommandSequence ) {
 	s = CG_ConfigString( CS_LEVEL_START_TIME );
 	cgs.levelStartTime = atoi( s );
 
+	s = CG_ConfigString( CS_TIMEDILATION );
+	cgs.timeDilation = s[0] ? (float)atof( s ) : 1.0f;
+	if ( cgs.timeDilation <= 0.0f ) {
+		cgs.timeDilation = 1.0f;
+	}
+
 	cg.refdef_current = &cg.refdef;
 
 	CG_ParseServerinfo();

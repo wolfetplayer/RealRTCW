@@ -162,7 +162,8 @@ typedef enum {
 #define CS_FOGVARS          29      //----(SA)	(hoping 29-31 are available) used for saving the current state/settings of the fog
 #define CS_SKYBOXORG        30      // this is where we should view the skybox from
 #define CS_TARGETEFFECT     31  //----(SA)
-#define CS_MODELS           32
+#define CS_TIMEDILATION     32      // world time dilation factor (weapon wheel slow-mo), SP only
+#define CS_MODELS           33
 #define CS_SOUNDS           ( CS_MODELS + MAX_MODELS )
 #define CS_PLAYERS          ( CS_SOUNDS + MAX_SOUNDS )
 #define CS_LOCATIONS        ( CS_PLAYERS + MAX_CLIENTS )

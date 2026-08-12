@@ -3624,9 +3624,42 @@ static void CG_DrawFlashFade( void ) {
 			CG_SetScreenPlacement(PLACE_STRETCH, PLACE_STRETCH);
 		 	CG_FillRect( 0, 0, 640, 480, col );
 			CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
-		} else {	
+		} else {
 			CG_FillRect( 0, 0, 640, 480, col );
 		}
+	}
+}
+
+/*
+=================
+CG_DrawTimeDilationEffect
+
+Cosmetic desaturating/dark vignette overlay, sells the world-slow-motion
+effect while the weapon wheel is open. Purely presentational -- driven by
+cgs.timeDilation, which mirrors the authoritative CS_TIMEDILATION value.
+=================
+*/
+static void CG_DrawTimeDilationEffect( void ) {
+	vec4_t col;
+	float amount;
+
+	amount = 1.0f - cgs.timeDilation;
+	if ( amount <= 0.0f ) {
+		return;
+	}
+	if ( amount > 1.0f ) {
+		amount = 1.0f;
+	}
+
+	VectorClear( col );
+	col[3] = amount * 0.35f;
+
+	if ( cg_fixedAspect.integer ) {
+		CG_SetScreenPlacement( PLACE_STRETCH, PLACE_STRETCH );
+		CG_FillRect( 0, 0, 640, 480, col );
+		CG_SetScreenPlacement( PLACE_CENTER, PLACE_CENTER );
+	} else {
+		CG_FillRect( 0, 0, 640, 480, col );
 	}
 }
 
@@ -3857,6 +3890,7 @@ static void CG_DrawFlashBlend( void ) {
 	CG_DrawFlashFire();
 	CG_DrawFlashDamage();
 	CG_DrawFlashFade();
+	CG_DrawTimeDilationEffect();
 }
 
 // NERVE - SMF

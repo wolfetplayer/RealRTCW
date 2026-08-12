@@ -1800,6 +1800,9 @@ static int FFMPEG_Init( void ) {
 		return -1;
 	}
 
+	// default is single-threaded; 0 lets libavcodec use all CPUs
+	cinTable[currentHandle].vCodecCtx->thread_count = 0;
+
 	if ( avcodec_open2( cinTable[currentHandle].vCodecCtx, cinTable[currentHandle].vCodec, NULL ) < 0 ) {
 		Com_Error( ERR_FATAL, "Could not open codec\n" );
 		return -1;

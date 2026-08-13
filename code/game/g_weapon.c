@@ -1497,7 +1497,7 @@ void ThrowKnife( gentity_t *ent )
 	knife->r.svFlags            = SVF_USE_CURRENT_ORIGIN | SVF_BROADCAST;
 
 	// usage
-	knife->touch				= Touch_Item;	// no auto-pickup, only activate
+	knife->touch				= Touch_Item_Auto;
 	knife->use					= Use_Item;
 
 	// damage

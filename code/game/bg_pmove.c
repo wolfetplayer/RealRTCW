@@ -3681,7 +3681,7 @@ static void PM_Weapon( void ) {
 	case WP_KNIFE:
 				if(!delayedFire) {
 				// throw
-				if ( pm->cmd.wbuttons & WBUTTON_ATTACK2 && PM_WeaponAmmoAvailable(pm->ps->weapon) ) {
+				if ( pm->cmd.wbuttons & WBUTTON_ATTACK2 && PM_WeaponAmmoAvailable(pm->ps->weapon) > 1 ) {
 					BG_AnimScriptEvent( pm->ps, ANIM_ET_FIREWEAPON, qfalse, qtrue );
 					pm->ps->grenadeTimeLeft = 50;
 					pm->ps->holdable[HI_KNIVES] = 0;
@@ -3747,7 +3747,9 @@ static void PM_Weapon( void ) {
 			ammoNeeded = 1;
 		}
 
-		if ( ammoNeeded > ammoAvailable ) {
+		// never let a throw drop the player below their last knife
+		if ( ammoNeeded > ammoAvailable ||
+			( pm->ps->weapon == WP_KNIFE && pm->ps->weaponstate == WEAPON_FIRINGALT && ammoAvailable < 2 ) ) {
 
 			// you have ammo for this, just not in the clip
 			reloadingW = (qboolean)( ammoNeeded <= pm->ps->ammo[ BG_FindAmmoForWeapon( pm->ps->weapon )] );

@@ -35,6 +35,14 @@ You can define as many `speakerDef` blocks as you need, up to 256 per map.
 - `volume` — 0-255, default 127
 - `range` — attenuation distance in units, default 1250
 
+### Choosing a `range`
+
+- Small/near ambient details (drips, machinery): `~300-600`
+- Room/area-fill ambience: `~1000-1500` (matches the `1250` default)
+- Large outdoor/environmental sources (wind, distant explosions loop): keep it under the hard cutoff below — chain multiple speakers instead of one huge-range one
+
+Don't push `range` past **~1500**. On the OpenAL backend, every source — including script speakers — gets force-faded to silence once the actual listener distance exceeds `s_alMaxDistance + s_alGraceDistance` (defaults `1024 + 512 = 1536` units), regardless of `range`. That cutoff is a plain client cvar, not something a map or script can set, so raising `range` beyond it does nothing for players on default settings. `range` only controls how quickly the sound attenuates *within* that bubble, not how far it ultimately reaches.
+
 ### Notes
 
 - For a `looped "no"` speaker to ever make sound, `wait` and/or `random` must be non-zero. With both at `0` the speaker is loaded but silent — there's no separate "fire once" trigger yet.

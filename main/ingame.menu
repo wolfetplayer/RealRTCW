@@ -1,0 +1,239 @@
+#include "ui/menudef.h"
+{
+
+  assetGlobalDef {
+	font "fonts/font" 16				// font
+	smallFont "fonts/smallfont" 12				// font
+	bigFont "fonts/bigfont" 24				// font
+	handwritingFont "fonts/handfont" 17				// font (pt size needs to be diff than the others)
+	cursor "ui/assets/3_cursor3"			// cursor	
+	gradientBar "ui/assets/gradientbar2.tga"	// gradient bar
+	itemFocusSound "sound/misc/menu2.wav"		// sound for item getting focus (via keyboard or mouse )
+
+	fadeClamp 1.0					// sets the fadeup alpha
+	fadeCycle 1					// how often fade happens in milliseconds
+	fadeAmount 0.1					// amount to adjust alpha per cycle
+
+	shadowColor 0.1 0.1 0.1 0.25			// shadow color
+  	}
+
+// INGAME MENU //
+
+menuDef
+{
+	name "ingame"
+	visible 0
+	fullScreen 0
+	outOfBoundsClick			// this closes the window if it gets a click out of the rectangle
+	rect 0 0 640 480
+	focusColor 1 .75 0 1
+	disableColor .5 .5 .5 1
+	
+	onOpen
+	{ 
+		hide realrtcw_ingame_save;
+		hide realrtcw_ingame_load;
+		hide realrtcw_ingame_controls;
+		hide realrtcw_ingame_system;
+		hide realrtcw_ingame_game;
+		hide realrtcw_ingame_main;
+		hide realrtcw_ingame_quit;
+		
+		show realrtcw_ingame
+	}
+	
+	itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame
+		
+		cvarTest "g_gameType"
+		hideCvar { "3" }
+		
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame
+		
+		cvarTest "g_gameType"
+		showCvar { "3" }
+		
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_sv.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_save
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_save.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_load.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_controls
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_controls.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_game
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_game.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_system
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_system.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_main
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_main.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		name realrtcw_ingame_quit
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ingame_quit.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+	name save
+	
+	cvarTest "g_gameType"
+	hideCvar { "3" }
+	
+	type 1
+	rect 10 144 178 26
+	visible 1
+	action { open ingame_save }
+	mouseEnter { show "realrtcw_ingame_save" } 
+	mouseExit { hide "realrtcw_ingame_save" } 
+	}
+
+	itemDef
+	{
+	name load
+	
+	cvarTest "g_gameType"
+	hideCvar { "3" }
+	
+	type 1
+	rect 10 177 178 26 
+	visible 1
+	action { open ingame_load }
+	mouseEnter { show "realrtcw_ingame_load" } 
+	mouseExit { hide "realrtcw_ingame_load" } 
+	}
+
+	itemDef
+	{
+	name controls
+	type 1
+	rect 10 210 178 26
+	visible 1
+	action { open ingame_controls }
+	mouseEnter { show "realrtcw_ingame_controls" } 
+	mouseExit { hide "realrtcw_ingame_controls" } 
+	}
+
+	itemDef
+	{
+	name options
+	type 1
+	rect 10 243 178 26
+	visible 1
+	action { open ingame_options }
+	mouseEnter { show "realrtcw_ingame_game" } 
+	mouseExit { hide "realrtcw_ingame_game" } 
+	}
+
+	itemDef
+	{
+	name system
+	type 1
+	rect 10 276 178 26
+	visible 1 
+	action { open ingame_system }
+	mouseEnter { show "realrtcw_ingame_system" } 
+	mouseExit { hide "realrtcw_ingame_system" } 
+	}
+	
+	itemDef
+	{
+	name leave
+	type 1
+	rect 10 309 178 26
+	visible 1
+	action { uiscript leave }
+	mouseEnter { show "realrtcw_ingame_main" } 
+	mouseExit { hide "realrtcw_ingame_main" } 
+	}
+	
+	itemDef
+	{
+	name quit
+	type 1
+	rect 10 342 178 26
+	visible 1
+	action { uiscript quit }
+	mouseEnter { show "realrtcw_ingame_quit" }
+	mouseExit { hide "realrtcw_ingame_quit" }
+	}
+}
+
+}

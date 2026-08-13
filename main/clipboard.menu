@@ -1,0 +1,4427 @@
+#include "ui/menudef.h"
+
+{
+
+
+menuDef {
+	name "clipboard"
+	visible 0
+	fullscreen 0
+	rect 172 18 320 440
+	focusColor 1 .75 0 1
+	style 1
+	outOfBoundsClick			// this closes the window if it gets a click out of the rectangle
+	border 1
+	onOpen { play "sound/clipboard/pickup.wav"; hide "clip_*"; clipboard }
+
+
+// to use this script with a clipboard entity, use the key/value "popup/clip_alertstatus" in the ent
+
+
+
+/////////////////    default clip that lets you know you need to make a sript for a clipboard entity	//////////////////
+
+
+itemDef {
+	group clip_test
+	name test1_clipboard
+	rect -80 -20 480 480
+	style 3
+	background "document1"
+	visible 0
+	decoration
+	}
+
+
+
+itemDef {
+	name test1_clipboard
+	rect 18 108 280 322
+	group clip_test
+	text "no 'popup' or bad 'popup' specified in the entity"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	decoration
+	}
+
+itemDef {
+	group clip_test
+	name test1_clipboard
+	rect 20 95 245 360
+	text "there is no script set for this clipboard"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	decoration
+	}
+
+
+
+
+
+
+
+
+////////////////////////////////    cl_1_watch    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_watch
+	name clip_watch
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_watch
+	name clip_watch
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_watch
+	rect 18 108 280 322
+	group clip_watch
+	textfile "text/EnglishUSA/cl_1_watch.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	decoration
+	autowrapped
+}
+
+itemDef {
+	name clip_watch
+	rect 18 108 280 322
+	group clip_watch
+	textfile "text/EnglishUSA/cl_1_watch.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	decoration
+	autowrapped
+}
+
+////////////////////////////////    cl_2_interrogate    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_interrogate
+	name clip_interrogate
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_interrogate
+	name clip_interrogate
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_interrogate
+	rect 18 108 280 322
+	group clip_interrogate
+	textfile "text/EnglishUSA/cl_2_interrogate.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_interrogate
+	rect 18 108 280 322
+	group clip_interrogate
+	textfile "text/EnglishUSA/cl_2_interrogate.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_3_bulow_blav    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_bulow_blav
+	name clip_bulow_blav
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_bulow_blav
+	name clip_bulow_blav
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_bulow_blav
+	rect 18 108 280 322
+	group clip_bulow_blav
+	textfile "text/EnglishUSA/cl_3_bulow_blav.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_bulow_blav
+	rect 18 108 280 322
+	group clip_bulow_blav
+	textfile "text/EnglishUSA/cl_3_bulow_blav.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_4_tram    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_tram
+	name clip_tram
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_tram
+	name clip_tram
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_tram
+	rect 18 108 280 322
+	group clip_tram
+	textfile "text/EnglishUSA/cl_4_tram.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+itemDef {
+	name clip_tram
+	rect 18 108 280 322
+	group clip_tram
+	textfile "text/EnglishUSA/cl_4_tram.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_5_zemph_blav    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_zemph_blav
+	name clip_zemph_blav
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_zemph_blav
+	name clip_zemph_blav
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_zemph_blav
+	rect 18 108 280 322
+	group clip_zemph_blav
+	textfile "text/EnglishUSA/cl_5_zemph_blav.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_zemph_blav
+	rect 18 108 280 322
+	group clip_zemph_blav
+	textfile "text/EnglishUSA/cl_5_zemph_blav.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_6_rocket    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_rocket
+	name clip_rocket
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_rocket
+	name clip_rocket
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_rocket
+	rect 18 108 280 322
+	group clip_rocket
+	textfile "text/EnglishUSA/cl_6_rocket.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_rocket
+	rect 18 108 280 322
+	group clip_rocket
+	textfile "text/EnglishUSA/cl_6_rocket.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_7_germs    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_germs
+	name clip_germs
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_germs
+	name clip_germs
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_germs
+	rect 18 108 280 322
+	group clip_germs
+	textfile "text/EnglishUSA/cl_7_germs.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_germs
+	rect 18 108 280 322
+	group clip_germs
+	textfile "text/EnglishUSA/cl_7_germs.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_8_himm_death    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_himm_death
+	name clip_himm_death
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_himm_death
+	name clip_himm_death
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_himm_death
+	rect 18 108 280 322
+	group clip_himm_death
+	textfile "text/EnglishUSA/cl_8_himm_death.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+itemDef {
+	name clip_himm_death
+	rect 18 108 280 322
+	group clip_himm_death
+	textfile "text/EnglishUSA/cl_8_himm_death.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_9_radar    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_radar
+	name clip_radar
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_radar
+	name clip_radar
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_radar
+	rect 18 108 280 322
+	group clip_radar
+	textfile "text/EnglishUSA/cl_9_radar.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_radar
+	rect 18 108 280 322
+	group clip_radar
+	textfile "text/EnglishUSA/cl_9_radar.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_10_backup   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_backup
+	name clip_backup
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_backup
+	name clip_backup
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_backup
+	rect 18 108 280 322
+	group clip_backup
+	textfile "text/EnglishUSA/cl_10_backup.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_backup
+	rect 18 108 280 322
+	group clip_backup
+	textfile "text/EnglishUSA/cl_10_backup.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_11_coffee   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_coffee
+	name clip_coffee
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_coffee
+	name clip_coffee
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_coffee
+	rect 18 108 280 322
+	group clip_coffee
+	textfile "text/EnglishUSA/cl_11_coffee.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_coffee
+	rect 18 108 280 322
+	group clip_coffee
+	textfile "text/EnglishUSA/cl_11_coffee.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_12_kobra_check    /////////////////////////////////// 
+
+itemDef {
+	group clip_kobra_check
+	name clip_kobra_check
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_kobra_check
+	name clip_kobra_check
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+
+itemDef {
+	group clip_kobra_check
+	name icon1
+	rect 30 150 40 50
+	style 3
+	background "gfx/clipboard/icon1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	group clip_kobra_check
+	name icon2
+	rect 30 200 40 50
+	style 3
+	background "gfx/clipboard/icon2.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	group clip_kobra_check
+	name icon3
+	rect 30 250 40 50
+	style 3
+	background "gfx/clipboard/icon3.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_kobra_check
+	rect 18 108 280 322
+	textfile "text/EnglishUSA/cl_12_kobra_checka.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_kobra_check
+	rect 90 160 175 360
+	textfile "text/EnglishUSA/cl_12_kobra_checkb.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_kobra_check
+	rect 18 108 280 322
+	textfile "text/EnglishUSA/cl_12_kobra_checka.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_kobra_check
+	rect 90 160 175 360
+	textfile "text/EnglishUSA/cl_12_kobra_checkb.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_13_ladder   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_ladder
+	name clip_ladder
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_ladder
+	name clip_ladder
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_ladder
+	rect 18 108 280 322
+	group clip_ladder
+	textfile "text/EnglishUSA/cl_13_ladder.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_ladder
+	rect 18 108 280 322
+	group clip_ladder
+	textfile "text/EnglishUSA/cl_13_ladder.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_14_chocolate   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_chocolate
+	name clip_chocolate
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_chocolate
+	name clip_chocolate
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_chocolate
+	rect 18 108 280 322
+	group clip_chocolate
+	textfile "text/EnglishUSA/cl_14_chocolate.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_chocolate
+	rect 18 108 280 322
+	group clip_chocolate
+	textfile "text/EnglishUSA/cl_14_chocolate.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_15_waste   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_waste
+	name clip_waste
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_waste
+	name clip_waste
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_waste
+	rect 18 108 280 322
+	group clip_waste
+	textfile "text/EnglishUSA/cl_15_waste.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_waste
+	rect 18 108 280 322
+	group clip_waste
+	textfile "text/EnglishUSA/cl_15_waste.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_16_village_doctor   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_village_doctor
+	name clip_village_doctor
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_village_doctor
+	name clip_village_doctor
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_village_doctor
+	rect 18 108 280 322
+	group clip_village_doctor
+	textfile "text/EnglishUSA/cl_16_village_doctor.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_village_doctor
+	rect 18 108 280 322
+	group clip_village_doctor
+	textfile "text/EnglishUSA/cl_16_village_doctor.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_17_blav_himm   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_blav_himm
+	name clip_blav_himm
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_blav_himm
+	name clip_blav_himm
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_blav_himm 
+	rect 18 108 280 322
+	group clip_blav_himm 
+	textfile "text/EnglishUSA/cl_17_blav_himm.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_blav_himm 
+	rect 18 108 280 322
+	group clip_blav_himm 
+	textfile "text/EnglishUSA/cl_17_blav_himm.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_18_elec_display   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_elec_display
+	name clip_elec_display
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_elec_display
+	name clip_elec_display
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_elec_display 
+	rect 18 108 280 322
+	group clip_elec_display
+	textfile "text/EnglishUSA/cl_18_elec_display.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_elec_display 
+	rect 18 108 280 322
+	group clip_elec_display
+	textfile "text/EnglishUSA/cl_18_elec_display.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_19_gold1   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_gold1
+	name clip_gold1
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_gold1
+	name clip_gold1
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_gold1
+	rect 18 108 280 322
+	group clip_gold1
+	textfile "text/EnglishUSA/cl_19_gold1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_gold1
+	rect 18 108 280 322
+	group clip_gold1
+	textfile "text/EnglishUSA/cl_19_gold1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_20_gold2   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_gold2
+	name clip_gold2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_gold2
+	name clip_gold2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_gold2
+	rect 18 108 280 322
+	group clip_gold2
+	textfile "text/EnglishUSA/cl_20_gold2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_gold2
+	rect 18 108 280 322
+	group clip_gold2
+	textfile "text/EnglishUSA/cl_20_gold2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_21_traffic   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_traffic
+	name clip_traffic
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_traffic
+	name clip_traffic
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_traffic
+	rect 18 108 280 322
+	group clip_traffic
+	textfile "text/EnglishUSA/cl_21_traffic.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_traffic
+	rect 18 108 280 322
+	group clip_traffic
+	textfile "text/EnglishUSA/cl_21_traffic.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_22_radio   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_radio
+	name clip_radio
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_radio
+	name clip_radio
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_radio
+	rect 18 108 280 322
+	group clip_radio
+	textfile "text/EnglishUSA/cl_22_radio.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_radio
+	rect 18 108 280 322
+	group clip_radio
+	textfile "text/EnglishUSA/cl_22_radio.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_23_dagger1   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_dagger
+	name clip_dagger
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_dagger
+	name clip_dagger
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_dagger
+	rect 18 108 280 322
+	group clip_dagger
+	textfile "text/EnglishUSA/cl_23_dagger1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_dagger
+	rect 18 108 280 322
+	group clip_dagger
+	textfile "text/EnglishUSA/cl_23_dagger1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_24_himm_death2   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_himm_death2
+	name clip_himm_death2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_himm_death2
+	name clip_himm_death2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_himm_death2
+	rect 18 108 280 322
+	group clip_himm_death2
+	textfile "text/EnglishUSA/cl_24_himm_death2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_himm_death2
+	rect 18 108 280 322
+	group clip_himm_death2
+	textfile "text/EnglishUSA/cl_24_himm_death2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_25_death_haupf   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_death_haupf
+	name clip_death_haupf
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_death_haupf
+	name clip_death_haupf
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_death_haupf
+	rect 18 108 280 322
+	group clip_death_haupf
+	textfile "text/EnglishUSA/cl_25_death_haupf.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_death_haupf
+	rect 18 108 280 322
+	group clip_death_haupf
+	textfile "text/EnglishUSA/cl_25_death_haupf.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_26_blav_stauff   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_blav_stauff
+	name clip_blav_stauff
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_blav_stauff
+	name clip_blav_stauff
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_blav_stauff
+	rect 18 108 280 322
+	group clip_blav_stauff
+	textfile "text/EnglishUSA/cl_26_blav_stauff.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_blav_stauff
+	rect 18 108 280 322
+	group clip_blav_stauff
+	textfile "text/EnglishUSA/cl_26_blav_stauff.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    cl_27_himm_burk   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_himm_burk
+	name clip_himm_burk
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_himm_burk
+	name clip_himm_burk
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/letter1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_himm_burk
+	rect 18 108 280 322
+	group clip_himm_burk
+	textfile "text/EnglishUSA/cl_27_himm_burk.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_himm_burk
+	rect 18 108 280 322
+	group clip_himm_burk
+	textfile "text/EnglishUSA/cl_27_himm_burk.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training1   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training1
+	name clip_training1
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training1
+	name clip_training1
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training1 
+	rect 18 108 280 322
+	group clip_training1 
+	textfile "text/EnglishUSA/training1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_training1 
+	rect 18 108 280 322
+	group clip_training1 
+	textfile "text/EnglishUSA/training1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training2   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training2
+	name clip_training2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training2
+	name clip_training2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training2 
+	rect 18 108 280 322
+	group clip_training2 
+	textfile "text/EnglishUSA/training2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_training2 
+	rect 18 108 280 322
+	group clip_training2 
+	textfile "text/EnglishUSA/training2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training3   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training3
+	name clip_training3
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training3
+	name clip_training3
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training3 
+	rect 18 108 280 322
+	group clip_training3 
+	textfile "text/EnglishUSA/training3.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_training3 
+	rect 18 108 280 322
+	group clip_training3 
+	textfile "text/EnglishUSA/training3.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training4   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training4
+	name clip_training4
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training4
+	name clip_training4
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training4 
+	rect 20 76 260 360
+	group clip_training4 
+	textfile "text/EnglishUSA/training4.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training5   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training5
+	name clip_training5
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training5
+	name clip_training5
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training5 
+	rect 20 76 260 360
+	group clip_training5 
+	textfile "text/EnglishUSA/training5.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training6   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training6
+	name clip_training6
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training6
+	name clip_training6
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training6 
+	rect 20 76 260 360
+	group clip_training6 
+	textfile "text/EnglishUSA/training6.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training7   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training7
+	name clip_training7
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training7
+	name clip_training7
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training7 
+	rect 20 76 260 360
+	group clip_training7 
+	textfile "text/EnglishUSA/training7.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training8   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training8
+	name clip_training8
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training8
+	name clip_training8
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training8 
+	rect 20 76 260 360
+	group clip_training8 
+	textfile "text/EnglishUSA/training8.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training9   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training9
+	name clip_training9
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training9
+	name clip_training9
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training9 
+	rect 20 76 260 360
+	group clip_training9 
+	textfile "text/EnglishUSA/training9.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training10   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training10
+	name clip_training10
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training10
+	name clip_training10
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training10 
+	rect 20 76 260 360
+	group clip_training10 
+	textfile "text/EnglishUSA/training10.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training11   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training11
+	name clip_training11
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training11
+	name clip_training11
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training11 
+	rect 20 76 260 360
+	group clip_training11 
+	textfile "text/EnglishUSA/training11.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training12   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training12
+	name clip_training12
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training12
+	name clip_training12
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training12 
+	rect 20 76 260 360
+	group clip_training12 
+	textfile "text/EnglishUSA/training12.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training13   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training13
+	name clip_training13
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training13
+	name clip_training13
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training13 
+	rect 20 76 260 360
+	group clip_training13 
+	textfile "text/EnglishUSA/training13.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training14   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training14
+	name clip_training14
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training14
+	name clip_training14
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training14 
+	rect 20 76 260 360
+	group clip_training14 
+	textfile "text/EnglishUSA/training14.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training15   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training15
+	name clip_training15
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training15
+	name clip_training15
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_training15 
+	rect 20 76 260 360
+	group clip_training15 
+	textfile "text/EnglishUSA/training15.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training16   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training16
+	name clip_training16
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training16
+	name clip_training16
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training16 
+	rect 20 76 260 360
+	group clip_training16 
+	textfile "text/EnglishUSA/training16.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training17   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training17
+	name clip_training17
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training17
+	name clip_training17
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training17 
+	rect 20 76 260 360
+	group clip_training17 
+	textfile "text/EnglishUSA/training17.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training18   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training18
+	name clip_training18
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training18
+	name clip_training18
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training18 
+	rect 20 76 260 360
+	group clip_training18 
+	textfile "text/EnglishUSA/training18.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training19   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training19
+	name clip_training19
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training19
+	name clip_training19
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training19 
+	rect 20 76 260 360
+	group clip_training19 
+	textfile "text/EnglishUSA/training19.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training20   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training20
+	name clip_training20
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training20
+	name clip_training20
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_training20 
+	rect 20 76 260 360
+	group clip_training20 
+	textfile "text/EnglishUSA/training20.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+////////////////////////////////    training21   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_training21
+	name clip_training21
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_training21
+	name clip_training21
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_training21 
+	rect 20 76 260 360
+	group clip_training21 
+	textfile "text/EnglishUSA/training21.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+//MALTA MISC//
+
+itemDef {
+	group clip_welcometothemalta
+	name clip_welcometothemalta
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_welcometothemalta
+	name clip_welcometothemalta
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_welcometothemalta
+	rect 18 78 280 322
+	group clip_welcometothemalta
+	textfile "text/EnglishUSA/cl_malta_range_welcome.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_firefly
+	name clip_firefly
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_firefly
+	name clip_firefly
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_firefly
+	rect 18 78 280 322
+	group clip_firefly
+	textfile "text/EnglishUSA/cl_malta_firefly.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_gateclosed
+	name clip_malta_gateclosed
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_gateclosed
+	name clip_malta_gateclosed
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_gateclosed
+	rect 18 78 280 322
+	group clip_malta_gateclosed
+	textfile "text/EnglishUSA/cl_malta_gateclosed.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    cl_2_interrogate    /////////////////////////////////// 
+
+
+itemDef {
+	group clip_interrogate_cursed
+	name clip_interrogate_cursed
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_interrogate_cursed
+	name clip_interrogate_cursed
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_interrogate_cursed
+	rect 18 108 280 322
+	group clip_interrogate_cursed
+	textfile "text/EnglishUSA/cl_2_interrogate_cursed.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_interrogate_cursed
+	rect 18 108 280 322
+	group clip_interrogate_cursed
+	textfile "text/EnglishUSA/cl_2_interrogate_cursed.txt"
+	textscale .18
+	forecolor .1 .1 .1 .6
+	visible 0
+	autowrapped
+	decoration
+}
+
+// Malta Adrenaline //
+
+itemDef {
+	group clip_malta_adrenaline
+	name clip_malta_adrenaline
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_adrenaline
+	name clip_malta_adrenaline
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_adrenaline
+	rect 18 78 280 322
+	group clip_malta_adrenaline
+	textfile "text/EnglishUSA/cl_malta_adrenaline.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_adrenaline2
+	name clip_malta_adrenaline2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_adrenaline2
+	name clip_malta_adrenaline2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_adrenaline2
+	rect 18 78 280 322
+	group clip_malta_adrenaline2
+	textfile "text/EnglishUSA/cl_malta_adrenaline2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+itemDef {
+	group clip_malta_adrenaline3
+	name clip_malta_adrenaline3
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_adrenaline3
+	name clip_malta_adrenaline3
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_adrenaline3
+	rect 18 78 280 322
+	group clip_malta_adrenaline3
+	textfile "text/EnglishUSA/cl_malta_adrenaline3.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_adrenaline4
+	name clip_malta_adrenaline4
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_adrenaline4
+	name clip_malta_adrenaline4
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_adrenaline4
+	rect 18 78 280 322
+	group clip_malta_adrenaline4
+	textfile "text/EnglishUSA/cl_malta_adrenaline4.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+//Malta Letters//
+
+itemDef {
+	group clip_maltahqwife
+	name clip_maltahqwife
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_maltahqwife
+	rect 18 78 280 322
+	group clip_maltahqwife
+	textfile "text/EnglishUSA/cl_malta_wife.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_thanks
+	name clip_malta_thanks
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_malta_thanks
+	rect 18 78 280 322
+	group clip_malta_thanks
+	textfile "text/EnglishUSA/cl_malta_thanks.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_maltawelcome
+	name clip_maltawelcome
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_maltawelcome
+	rect 18 78 280 322
+	group clip_maltawelcome
+	textfile "text/EnglishUSA/cl_malta_welcome.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_maltaac
+	name clip_maltaac
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_maltaac
+	rect 18 78 280 322
+	group clip_maltaac
+	textfile "text/EnglishUSA/cl_maltaac.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+	
+	itemDef {
+	group clip_malta_smugglers
+	name clip_malta_smugglers
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_malta_smugglers
+	rect 18 78 280 322
+	group clip_malta_smugglers
+	textfile "text/EnglishUSA/cl_malta_smugglers.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_kovlov_letter
+	name clip_kovlov_letter
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_kovlov_letter
+	rect 18 78 280 322
+	group clip_kovlov_letter
+	textfile "text/EnglishUSA/cl_malta_doc1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_jack_msg
+	name clip_malta_jack_msg
+	rect 0 0 340 440
+	style 3
+	background "gfx/clipboard/wolf09/letter_empty.tga"
+	visible 0
+	decoration
+	}
+
+
+itemDef {
+	name clip_malta_jack_msg
+	rect 18 78 280 322
+	group clip_malta_jack_msg
+	textfile "text/EnglishUSA/cl_malta_jack_msg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+// MALTA MUSEUM //
+
+itemDef {
+	group clip_malta_dagger
+	name clip_malta_dagger
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_dagger
+	name clip_malta_dagger
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_dagger
+	rect 18 78 280 322
+	group clip_malta_dagger
+	textfile "text/EnglishUSA/cl_malta_dagger.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_kobra
+	name clip_malta_kobra
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_kobra
+	name clip_malta_kobra
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_kobra
+	rect 18 78 280 322
+	group clip_malta_kobra
+	textfile "text/EnglishUSA/cl_malta_kobra.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_loper
+	name clip_malta_loper
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_loper
+	name clip_malta_loper
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_loper
+	rect 18 78 280 322
+	group clip_malta_loper
+	textfile "text/EnglishUSA/cl_malta_loper.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_uber
+	name clip_malta_uber
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_uber
+	name clip_malta_uber
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_uber
+	rect 18 78 280 322
+	group clip_malta_uber
+	textfile "text/EnglishUSA/cl_malta_uber.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta_hein_bust
+	name clip_malta_hein_bust
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta_hein_bust
+	name clip_malta_hein_bust
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta_hein_bust
+	rect 18 78 280 322
+	group clip_malta_hein_bust
+	textfile "text/EnglishUSA/cl_malta_henrybust.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+// Malta Loadouts //
+
+//Malta_1 loadouts
+
+itemDef {
+	group clip_malta1_loadout_1
+	name clip_malta1_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta1_loadout_1
+	name clip_malta1_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta1_loadout_1
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta1_loadout_1
+	textfile "text/EnglishUSA/cl_malta1_loadout1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta1_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta1_loadout_1
+	textfile "text/EnglishUSA/cl_malta1_loadout1_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta1_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta1_loadout_1
+	textfile "text/EnglishUSA/cl_malta1_loadout1_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_malta1_loadout_2
+	name clip_malta1_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta1_loadout_2
+	name clip_malta1_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta1_loadout_2
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta1_loadout_2
+	textfile "text/EnglishUSA/cl_malta1_loadout2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta1_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta1_loadout_2
+	textfile "text/EnglishUSA/cl_malta1_loadout2_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta1_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta1_loadout_2
+	textfile "text/EnglishUSA/cl_malta1_loadout2_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+//Malta_2 loadouts
+
+itemDef {
+	group clip_malta2_loadout_1
+	name clip_malta2_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta2_loadout_1
+	name clip_malta2_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta2_loadout_1
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta2_loadout_1
+	textfile "text/EnglishUSA/cl_malta2_loadout1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta2_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta2_loadout_1
+	textfile "text/EnglishUSA/cl_malta2_loadout1_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta2_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta2_loadout_1
+	textfile "text/EnglishUSA/cl_malta2_loadout1_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+itemDef {
+	group clip_malta2_loadout_2
+	name clip_malta2_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta2_loadout_2
+	name clip_malta2_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta2_loadout_2
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta2_loadout_2
+	textfile "text/EnglishUSA/cl_malta2_loadout2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta2_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta2_loadout_2
+	textfile "text/EnglishUSA/cl_malta2_loadout2_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta2_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta2_loadout_2
+	textfile "text/EnglishUSA/cl_malta2_loadout2_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+//Malta 3 loadouts
+
+itemDef {
+	group clip_malta3_loadout_1
+	name clip_malta3_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta3_loadout_1
+	name clip_malta3_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta3_loadout_1
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta3_loadout_1
+	textfile "text/EnglishUSA/cl_malta3_loadout1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta3_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta3_loadout_1
+	textfile "text/EnglishUSA/cl_malta3_loadout1_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta3_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta3_loadout_1
+	textfile "text/EnglishUSA/cl_malta3_loadout1_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+itemDef {
+	group clip_malta3_loadout_2
+	name clip_malta3_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta3_loadout_2
+	name clip_malta3_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta3_loadout_2
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta3_loadout_2
+	textfile "text/EnglishUSA/cl_malta3_loadout2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta3_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta3_loadout_2
+	textfile "text/EnglishUSA/cl_malta3_loadout2_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta3_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta3_loadout_2
+	textfile "text/EnglishUSA/cl_malta3_loadout2_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+//Malta 4 loadouts
+
+itemDef {
+	group clip_malta4_loadout_1
+	name clip_malta4_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta4_loadout_1
+	name clip_malta4_loadout_1
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta4_loadout_1
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta4_loadout_1
+	textfile "text/EnglishUSA/cl_malta4_loadout1.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta4_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta4_loadout_1
+	textfile "text/EnglishUSA/cl_malta4_loadout1_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta4_loadout_1
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta4_loadout_1
+	textfile "text/EnglishUSA/cl_malta4_loadout1_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+itemDef {
+	group clip_malta4_loadout_2
+	name clip_malta4_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	showCvar { "1" }
+	
+	rect -80 -20 480 480
+	style 3
+	background "gfx/clipboard/wolf09/document1.tga"
+	visible 0
+	decoration
+	}
+	
+itemDef {
+	group clip_malta4_loadout_2
+	name clip_malta4_loadout_2
+	
+	cvarTest "cg_hudStyle"
+	hideCvar { "1" }
+	
+	rect 0 0 320 440
+	style 3
+	background "gfx/clipboard/document1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_malta4_loadout_2
+	
+    cvarTest "g_fullarsenal"
+	showCvar { "1" }
+	
+	rect 18 78 280 322
+	group clip_malta4_loadout_2
+	textfile "text/EnglishUSA/cl_malta4_loadout2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta4_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "0" }
+	
+	rect 18 78 280 322
+	group clip_malta4_loadout_2
+	textfile "text/EnglishUSA/cl_malta4_loadout2_vanilla.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_malta4_loadout_2
+	
+	cvarTest "g_fullarsenal"
+	showCvar { "2" }
+	
+	rect 18 78 280 322
+	group clip_malta4_loadout_2
+	textfile "text/EnglishUSA/cl_malta4_loadout2_vanilla_sg.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+////////////////////////////////    Malta-dossiers   /////////////////////////////////// 
+
+
+itemDef {
+	group clip_bj_dossier
+	name clip_bj_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_bj_dossier
+	rect -80 108 240 322
+	group clip_bj_dossier
+	textfile "text/EnglishUSA/cl_malta_bj_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_bj_dossier
+	rect 220 260 240 322
+	group clip_bj_dossier
+	textfile "text/EnglishUSA/cl_malta_bj_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_bj_dossier
+	group clip_bj_dossier
+	style WINDOW_STYLE_SHADER
+	background "bj_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+	}
+	
+itemDef {
+	group clip_webley_dossier
+	name clip_webley_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_webley_dossier
+	rect -80 108 240 322
+	group clip_webley_dossier
+	textfile "text/EnglishUSA/cl_malta_webley_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_webley_dossier
+	rect 220 240 240 322
+	group clip_webley_dossier
+	textfile "text/EnglishUSA/cl_malta_webley_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_webley_dossier
+	group clip_webley_dossier
+	style WINDOW_STYLE_SHADER
+	background "agent1_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_agent2_dossier
+	name clip_agent2_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_agent2_dossier
+	rect -80 108 240 322
+	group clip_agent2_dossier
+	textfile "text/EnglishUSA/cl_malta_agent2_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_agent2_dossier
+	rect 220 240 240 322
+	group clip_agent2_dossier
+	textfile "text/EnglishUSA/cl_malta_agent2_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+
+itemDef {
+	name clip_agent2_dossier
+	group clip_agent2_dossier
+	style WINDOW_STYLE_SHADER
+	background "agent2_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_kessler_dossier
+	name clip_kessler_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_kessler_dossier
+	rect -80 108 240 322
+	group clip_kessler_dossier
+	textfile "text/EnglishUSA/cl_malta_kessler_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_kessler_dossier
+	rect 220 260 240 322
+	group clip_kessler_dossier
+	textfile "text/EnglishUSA/cl_malta_kessler_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_kessler_dossier
+	group clip_kessler_dossier
+	style WINDOW_STYLE_SHADER
+	background "kessler_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_dermott_dossier
+	name clip_dermott_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_dermott_dossier
+	rect -80 108 240 322
+	group clip_dermott_dossier
+	textfile "text/EnglishUSA/cl_malta_dermott_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_dermott_dossier
+	rect 220 240 240 322
+	group clip_dermott_dossier
+	textfile "text/EnglishUSA/cl_malta_dermott_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_dermott_dossier
+	group clip_dermott_dossier
+	style WINDOW_STYLE_SHADER
+	background "mcdermott_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_waters_dossier
+	name clip_waters_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_waters_dossier
+	rect -80 108 240 322
+	group clip_waters_dossier
+	textfile "text/EnglishUSA/cl_malta_waters_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_waters_dossier
+	rect 220 240 240 322
+	group clip_waters_dossier
+	textfile "text/EnglishUSA/cl_malta_waters_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_waters_dossier
+	group clip_waters_dossier
+	style WINDOW_STYLE_SHADER
+	background "waters_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_hein_dossier
+	name clip_hein_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_hein_dossier
+	rect -80 108 240 322
+	group clip_hein_dossier
+	textfile "text/EnglishUSA/cl_malta_hein_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_hein_dossier
+	rect 220 150 240 322
+	group clip_hein_dossier
+	textfile "text/EnglishUSA/cl_malta_hein_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_simon_dossier
+	name clip_simon_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_simon_dossier
+	rect -80 108 240 322
+	group clip_simon_dossier
+	textfile "text/EnglishUSA/cl_malta_simon_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_simon_dossier
+	rect 220 150 240 322
+	group clip_simon_dossier
+	textfile "text/EnglishUSA/cl_malta_simon_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	group clip_madame_dossier
+	name clip_madame_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_madame_dossier
+	rect -80 108 240 322
+	group clip_madame_dossier
+	textfile "text/EnglishUSA/cl_malta_madame_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_madame_dossier
+	rect 220 260 240 322
+	group clip_madame_dossier
+	textfile "text/EnglishUSA/cl_malta_madame_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_madame_dossier
+	group clip_madame_dossier
+	style WINDOW_STYLE_SHADER
+	background "blavatsky_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_helga_dossier
+	name clip_helga_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_helga_dossier
+	rect -80 108 240 322
+	group clip_helga_dossier
+	textfile "text/EnglishUSA/cl_malta_helga_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_helga_dossier
+	rect 220 260 240 322
+	group clip_helga_dossier
+	textfile "text/EnglishUSA/cl_malta_helga_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_helga_dossier
+	group clip_helga_dossier
+	style WINDOW_STYLE_SHADER
+	background "helga_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_strasse_dossier
+	name clip_strasse_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_strasse_dossier
+	rect -80 108 240 322
+	group clip_strasse_dossier
+	textfile "text/EnglishUSA/cl_malta_strasse_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_strasse_dossier
+	rect 220 240 240 322
+	group clip_strasse_dossier
+	textfile "text/EnglishUSA/cl_malta_strasse_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_strasse_dossier
+	group clip_strasse_dossier
+	style WINDOW_STYLE_SHADER
+	background "death_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+itemDef {
+	group clip_redford_dossier
+	name clip_redford_dossier
+	rect -150 23 674 433
+	style 3
+	background "ui/assets/wolf09/notebook1.tga"
+	visible 0
+	decoration
+	}
+
+itemDef {
+	name clip_redford_dossier
+	rect -80 108 240 322
+	group clip_redford_dossier
+	textfile "text/EnglishUSA/cl_malta_redford_dossier.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_redford_dossier
+	rect 220 240 240 322
+	group clip_redford_dossier
+	textfile "text/EnglishUSA/cl_malta_redford_dossier_2.txt"
+	textscale .18
+	forecolor .1 .1 .1 .9
+	visible 0
+	autowrapped
+	decoration
+}
+
+itemDef {
+	name clip_redford_dossier
+	group clip_redford_dossier
+	style WINDOW_STYLE_SHADER
+	background "colonel_dossier"
+	rect 265 100 110 120
+	textalign 1
+	textalignx 32
+	textaligny 30
+	forecolor 1 1 1 .7
+	backcolor .3 .3 .3 1
+	visible 0
+}
+
+}

@@ -1,0 +1,230 @@
+#include "ui/menudef.h"
+
+{
+\\ DEFAULT MENU \\
+
+menuDef {
+    	name "default_menu"
+    	visible 0
+    	fullscreen 0
+	rect 100 125 443 340
+    	focusColor 1 .75 0 1
+    	style 1
+    	border 1
+	onOpen { setitemcolor fadebox backcolor 0 0 0 1 ; 
+		fadeout fadebox ; 
+		show grpdefault ; 
+		hide grpfinish }
+	onEsc { close default_menu ; close setup_menu ; open main }
+
+
+
+
+
+	itemDef 
+	{
+		name window
+		group grpControlbutton
+		rect 0 2 443 300	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .25
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name default
+		text "@DEFAULT_DEFAULTS"
+ 		type 1
+	textfont UI_FONT_NORMAL
+		style 0	
+		textstyle 6
+		rect 221 -12 64 14 
+		textalign ITEM_ALIGN_CENTER
+		textscale .23		
+		textalignx 2
+		textaligny 12
+		forecolor .9 .9 .9 1
+		visible 1 
+		decoration
+	}
+
+	itemDef {
+      	name default
+		group grpdefault
+      	style 0
+		text "@DEFAULT_CONTROLS"
+		rect 0 45 443 12
+      	textalign ITEM_ALIGN_CENTER
+      	textalignx 221
+      	textaligny 10
+		textscale .23        
+     		forecolor 1 1 1 1
+     		visible 1 
+		decoration
+    		}
+
+
+	itemDef {
+     		name default
+		group grpdefault
+     		style 0
+		text "@DEFAULT_GAMEOPTIONS"
+		rect 0 60 443 12
+     		textalign ITEM_ALIGN_CENTER
+     		textalignx 221
+     		textaligny 10
+		textscale .23       
+     		forecolor 1 1 1 1
+     		visible 1
+		decoration 
+    		}
+
+	itemDef {
+     		name default
+		group grpdefault
+     		style 0
+		text "@DEFAULT_ORIGINAL "
+		rect 0 75 443 12
+     		textalign ITEM_ALIGN_CENTER
+     		textalignx 221
+     		textaligny 10
+		textscale .23        
+     		forecolor 1 1 1 1
+     		visible 1 
+		decoration
+    		}
+
+	itemDef {
+      	name default
+		group grpdefault
+      	style 0
+		text "@DEFAULT_AREUSURE"
+		rect 0 90 443 12
+      	textalign ITEM_ALIGN_CENTER
+      	textalignx 221
+      	textaligny 10
+		textscale .23       
+      	forecolor 1 1 1 1
+      	visible 1 
+		decoration
+    		}
+
+
+
+
+itemDef {
+	name yes
+	text "@DEFAULT_YES"
+	group grpdefault
+	type 1
+	textfont UI_FONT_NORMAL
+	textscale .3
+	style WINDOW_STYLE_FILLED
+	rect 135 105 70 26
+	textalign 1
+	textalignx 35
+	textaligny 20
+	forecolor 1 1 1 1
+	backcolor .1 .1 .1 .1 
+	visible 1
+		border 1
+		bordercolor .5 .5 .5 .5 
+//////////////////////////////////////////////////  disabled not working /// maxx ////////////
+
+//----(SA)	re-enabled
+
+	action { play "sound/misc/nomenu.wav" ; 
+		hide grpdefault ; 
+		show grpfinish ; 
+		uiScript resetDefaults }
+
+//	action { play "sound/misc/nomenu.wav" ; 
+//	close default_menu ; open control_menu }
+
+
+	mouseEnter { setitemcolor yes backcolor .2 .3 .2 .6 } 
+	mouseExit { setitemcolor yes backcolor .1 .1 .1 .1 } 	
+	}
+
+
+itemDef {
+	name no
+	text "@DEFAULT_NO"
+	group grpdefault
+	type 1
+	textfont UI_FONT_NORMAL
+	textscale .3
+	style WINDOW_STYLE_FILLED
+	rect 235 105 70 26
+	textalign 1
+	textalignx 35
+	textaligny 20
+	forecolor 1 1 1 1
+	backcolor .1 .1 .1 .1
+		border 1
+		bordercolor .5 .5 .5 .5 
+	visible 1
+	action { play "sound/misc/nomenu.wav" ; 
+	close default_menu ; open control_menu }
+	mouseEnter { setitemcolor no backcolor .2 .3 .2 .6 } 
+	mouseExit { setitemcolor no backcolor .1 .1 .1 .1 } 	
+	}
+
+
+itemDef {
+      	name finish_message 
+		group grpfinish
+      	style 0
+		text "@DEFAULT_COMPLETE1"
+		rect 0 160 443 20
+      	textalign ITEM_ALIGN_CENTER
+     		textalignx 221
+     		textaligny 20
+		textscale .333        
+     		forecolor 1 1 1 1
+     		visible 0 
+		decoration
+    		}
+	itemDef {
+     		name finish_message 
+		group grpfinish
+     		style 0
+		text "@DEFAULT_COMPLETE2"
+		rect 0 180 443 20
+     		textalign ITEM_ALIGN_CENTER
+     		textalignx 221
+     		textaligny 20
+		textscale .333        
+     		forecolor 1 1 1 1
+     		visible 0 
+		decoration
+    		}
+
+
+itemDef {
+      	name fadebox
+      	style WINDOW_STYLE_FILLED
+	 	background "ui/assets/fadebox.tga"
+		forecolor 0 0 0 1
+		backcolor 0 0 0 1
+		rect 0 0 640 480
+      	visible 1 
+		decoration
+    	}
+
+
+
+
+
+
+
+
+	
+
+
+
+}

@@ -1,0 +1,539 @@
+#include "ui/menudef.h"
+
+{
+// MAIN WINDOW
+
+  menuDef {
+    	name "survival_menu"
+    	visible MENU_FALSE
+    	fullscreen 1
+    	rect 0 0 640 480
+		focusColor .9 .9 .9 1
+    	style 1
+    	border 1
+      	style WINDOW_STYLE_FILLED
+		forecolor 0 0 0 0
+		backcolor 0 0 0 0
+
+	onOpen {
+		uiScript loadArenas ;
+		setitemcolor fadebox backcolor 0 0 0 1 ; 
+		fadeout fadebox ;
+		setitemcolor easy backcolor .7 .7 .0 .25 ;
+		show back ;
+		show srvCreate ;
+		uiScript skill_surv ;
+	}
+
+	onEsc {
+		close survival_menu;
+		open main
+	}
+
+itemDef
+	{
+		name realrtcw_background
+		style WINDOW_STYLE_SHADER
+		rect -120 -9.25 917 500
+		background "realrtcw_background"
+		visible 1
+		decoration
+	}
+	
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo_sv.tga"
+		visible 1
+		decoration
+	}
+			
+				
+	//  MAP PREVIEW  //
+
+				itemDef {
+					name				mappreview
+					group				srvCreate
+					ownerdraw		     UI_CREATEMAPPREVIEW	
+					rect				29 146 151 114
+					visible				1 
+					}
+				
+				itemDef {
+					name				mappreview
+					group				srvCreate
+					style				WINDOW_STYLE_FILLED	
+					rect				28 145 152 115
+					border				1
+					bordercolor			.5 .5 .5 .5
+					visible				1 
+					}
+				
+						itemDef {
+							name			mappreview
+							group			srvCreate
+							ownerdraw		UI_CREATEMAPPREVIEW_SMALL1
+							rect			186 146 72 54
+							visible			1 
+							}
+							
+						itemDef {
+							name			mappreview
+							group			srvCreate
+							style			WINDOW_STYLE_FILLED	
+							rect			185 145 73 55
+							border			1
+							bordercolor		.5 .5 .5 .5
+							visible			1 
+							}
+
+						itemDef {
+							name			mappreview
+							group			srvCreate
+							ownerdraw		UI_CREATEMAPPREVIEW_SMALL2
+							rect			186 206 72 54
+							visible			1 
+							}
+							
+						itemDef {
+							name			mappreview
+							group			srvCreate
+							style			WINDOW_STYLE_FILLED	
+							rect			185 205 73 55
+							border			1
+							bordercolor		.5 .5 .5 .5
+							visible			1 
+							}
+
+				 itemDef {
+					name			maplist
+					group			srvCreate
+					rect			28 280 230 144
+					type			ITEM_TYPE_LISTBOX
+					style			WINDOW_STYLE_FILLED
+					elementwidth	240
+					elementheight	15
+					textfont		UI_FONT_NORMAL
+					textscale		.23
+					elementtype		LISTBOX_TEXT
+					feeder			FEEDER_ALLMAPS
+					textstyle		6
+					textaligny		0
+					border			1
+					bordercolor		.5 .5 .5 .5
+					forecolor		1 1 1 1
+					backcolor		0 0 0 0
+					outlinecolor	.7 .7 .0 .25
+					visible			1
+					columns			1 2 190 35
+					mouseEnter {
+							
+						}
+					mouseExit {
+						
+						setitemcolor maplist bordercolor .5 .5 .5 .5 } 
+					}
+					
+		itemDef {
+		name enemies_type
+		group srvCreate
+		text "@SURV_ENEMIES"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "ui_sv_enemies"
+		cvarFloatList { "@SURV_ENEMIES_ALL" 0 "@SURV_ENEMIES_HUMAN" 1 "@SURV_ENEMIES_UNDEAD" 2 }
+		rect  -15 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .26
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .0
+		forecolor 1 1 1 1
+		visible 0 
+    }
+  
+  
+  
+  		itemDef {
+	    name srvwindow1
+	    group srvCreate
+	    rect 288 140 300 280	
+	    style WINDOW_STYLE_FILLED
+	    border 1
+	    bordercolor .5 .5 .5 .5
+	    forecolor 1 1 1 1
+	    backcolor 0 0 0 .8
+	    visible 0
+	    decoration
+	}
+
+	
+				// End of bottom left map selection border image
+					
+			// Settings
+			
+				itemDef {
+					name			window
+					group			srvCreate
+					text			"@SURV_OPTIONS"
+					textfont		UI_FONT_NORMAL
+					textalign		ITEM_ALIGN_CENTER
+					textalignx		145
+					textaligny		14
+					textscale		.25
+					rect			294 145 290 20	
+					style			WINDOW_STYLE_FILLED
+					border			1
+					bordercolor		.5 .5 .5 .5
+					forecolor		1 1 1 1
+					backcolor		.3 0.5 0.2 .25
+					visible			1
+					decoration
+					}
+					
+					
+		itemDef {
+		name player_class
+		group srvCreate
+		text "@SURV_CLASS"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_playerSurvivalClass"
+		cvarFloatList { "@SURV_CLASS_NONE" 0 "@SURV_CLASS_SOLDIER" 1 "@SURV_CLASS_MEDIC" 2 "@SURV_CLASS_ENGINEER" 3 "@SURV_CLASS_LT" 4 "@SURV_CLASS_CVOPS" 5 }
+		rect			295 170 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+	name soldier_desc
+	group srvCreate
+	cvarTest "g_playerSurvivalClass"
+	showCvar		{ "1" }
+	rect 300 185 500 500 
+	textfile "text/EnglishUSA/survival_soldier.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name soldier_desc
+	group srvCreate
+	cvarTest "g_playerSurvivalClass"
+	showCvar		{ "2" }
+	rect 300 185 500 500 
+	textfile "text/EnglishUSA/survival_medic.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name soldier_desc
+	group srvCreate
+	cvarTest "g_playerSurvivalClass"
+	showCvar		{ "3" }
+	rect 300 185 500 500 
+	textfile "text/EnglishUSA/survival_eng.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name soldier_desc
+	group srvCreate
+	cvarTest "g_playerSurvivalClass"
+	showCvar		{ "4" }
+	rect 300 185 500 500 
+	textfile "text/EnglishUSA/survival_lt.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name soldier_desc
+	group srvCreate
+	cvarTest "g_playerSurvivalClass"
+	showCvar		{ "5" }
+	rect 300 185 500 500 
+	textfile "text/EnglishUSA/survival_cvops.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name soldier_desc
+	group srvCreate
+	cvarTest "g_playerSurvivalClass"
+	showCvar		{ "0" }
+	rect 300 185 500 500 
+	textfile "text/EnglishUSA/survival_none.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+	
+	
+		itemDef {
+		name gameplay
+		group srvCreate
+		text "@GM_REALISMM"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_realism"
+		rect 295 250 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group srvCreate
+		text "@SPECIALWAVES"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_specialWaves"
+		rect 295 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group srvCreate
+		text "@SURVHEALTHCAP"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_survivalAiHealthCap"
+		rect 295 280 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group srvCreate
+		text "@SURV_DIFFICULTY"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_survivalDifficulty"
+		cvarFloatList { "@SURV_DIFFICULTY_NORMAL" 0 "@SURV_DIFFICULTY_HARDCORE" 1 }
+		rect			295 295 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group srvCreate
+		text "@SURV_BOSSES"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_survivalBosses"
+		rect 295 310 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+										
+
+					
+				itemDef {
+					name				start
+					group				srvCreate
+					text				"@SURV_BEGIN"
+					type				1
+					textfont			UI_FONT_NORMAL
+					style				0	
+					textstyle			6
+					rect				510 450 120 14 
+					textalign			0
+					textscale			.25		
+					textalignx			5
+					textaligny			12
+					forecolor			.9 .9 .9 .9
+					visible				1
+					//border			1
+					//bordercolor		1 1 1 1
+					mouseEnter {
+						show message_start ;
+						show start_alt ;
+						hide start }
+					action {
+						close survival_menu ;
+						uiScript StartSurvival
+					}	
+					}
+					
+					itemDef {
+					name				start_alt
+					group				srvCreate
+					textfont			UI_FONT_NORMAL
+					text				"@SURV_BEGIN"
+					type				1
+					style				0	
+					textstyle			6
+					rect				510 450 120 14 
+					textalign			0
+					textscale			.25		
+					textalignx			5
+					textaligny			12
+					forecolor			.6 .6 .6 .6
+					visible				1 
+					type				ITEM_TYPE_BUTTON
+					//border 1
+					//bordercolor 1 1 1 1
+					mouseExit {
+						hide message_start ;
+						hide start_alt ;
+						show start }
+					action {
+						close survival_menu ;
+						uiScript StartSurvival
+					}  	  
+					}
+
+// End of Create Server
+
+// Start of BACK Button
+
+
+		itemDef {
+			name gotobar
+			style 2
+			rect 0 445 640 20 
+			textscale 0.4
+			textalign 0		// center
+			textalignx 60        	// x alignment point for text
+			 // use it to offset left/right text from the edge 
+			 // or to center the text on a different point
+			textaligny 21        
+			style 2
+			border 4
+			bordercolor 0.5 0.5 0.5 0.0
+			bordersize 2
+			backcolor 0.5 0.5 .5 0.0
+			visible 1 
+			mouseEnter { setcolor backcolor .5 0.5 0.5 .5 }
+			mouseExit { setcolor backcolor .5 .5 .5 .0 }
+			decoration 
+			}
+
+		itemDef {
+			name back
+			text "@SURV_MAINMENU"
+			type 1
+			style 0	
+			textstyle 6
+			rect 30 450 90 14 
+			textalign 0
+			textfont UI_FONT_NORMAL
+			textscale .255		
+			textalignx 6
+			textaligny 12
+			forecolor .9 .9 .9 .9
+			visible 1
+			action {
+			close survival_menu ;
+			open main }
+
+			mouseEnter { 
+			hide back ;
+			show back_alt ;
+			show message_back
+			}
+			}
+			
+		itemDef {
+			name back_alt
+			text "@SURV_MAINMENU"
+			type 1
+			style 0	
+			textstyle 6
+			rect 30 450 90 14 
+			textalign 0
+			textfont UI_FONT_NORMAL
+			textscale .255	
+			textalignx 6
+			textaligny 12
+			forecolor .6 .6 .6 .6
+			visible 1 
+			type ITEM_TYPE_BUTTON
+			action {
+			hide grpControls ;
+			close survival_menu ;
+			open main }
+	  
+			mouseExit {
+			hide back_alt ;
+			show back ;
+			hide message_back }	  
+			}
+
+					
+
+
+}
+}

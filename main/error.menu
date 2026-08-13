@@ -1,0 +1,314 @@
+#include "ui/menudef.h"
+
+{
+\\ END OF GAME \\
+
+menuDef {
+	name "error_popmenu"
+   	visible 0
+   	fullscreen 0
+   	rect 158 80 320 320
+	focusColor 1 .75 0 1
+   	style 1
+   	border 1
+	popup
+	onClose { uiScript clearError }
+	onOpen { }
+	onESC { close error_popmenu ; open main }
+
+
+
+
+itemDef {
+	name window
+	rect 10 15 300 320
+	style 1
+	backcolor .8 .66 .15 1
+	forecolor 0 0 0 1
+	visible 1
+	decoration
+	}
+
+itemDef {
+	name window
+	rect 10 15 300 320
+	style 3
+	background "warning"
+	forecolor 0 0 0 1
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 10 15 300 10
+	style 1
+	backcolor 0 0 0 .25
+	forecolor 0 0 0 1
+	visible 1
+	decoration
+	}
+
+
+itemDef {
+	name window
+	rect 30 35 250 270
+	style 1
+	backcolor .5 .41 .09 1
+	forecolor 0 0 0 1
+	border 1
+	bordercolor 0 0 0 1
+	bordersize 5
+	visible 1
+	decoration
+	}
+
+// FRAME	//
+
+/*
+itemDef {
+	name window
+	rect 0 10 64 64
+	style 3
+	background "ui/assets/ingameleftcorner.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 64 10 64 8
+	style 3
+	background "ui/assets/ingametop.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 184 10 96 8
+	style 3
+	background "ui/assets/ingametop.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 256 10 64 64
+	style 3
+	background "ui/assets/ingamerightcorner.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 128 10 64 8
+	style 3
+	background "ui/assets/ingametop.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 0 274 64 64
+	style 3
+	background "ui/assets/ingameleftcornerb.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 256 274 64 64
+	style 3
+	background "ui/assets/ingamerightcornerb.tga"
+	visible 1
+	decoration
+	}
+
+itemDef {
+	name window
+	rect 0 64 16 64
+	style 3
+	background "ui/assets/ingameleft.tga"
+	visible 1
+	decoration
+	}
+
+
+itemDef {
+	name window
+	rect 0 128 16 64
+	style 3
+	background "ui/assets/ingameleft.tga"
+	visible 1
+	decoration
+	}
+
+itemDef {
+	name window
+	rect 0 192 16 96
+	style 3
+	background "ui/assets/ingameleft.tga"
+	visible 1
+	decoration
+	}
+
+itemDef {
+	name window
+	rect 304 64 16 64
+	style 3
+	background "ui/assets/ingameright.tga"
+	visible 1
+	decoration
+	}
+
+
+itemDef {
+	name window
+	rect 304 128 16 64
+	style 3
+	background "ui/assets/ingameright.tga"
+	visible 1
+	decoration
+	}
+
+itemDef {
+	name window
+	rect 304 192 16 96
+	style 3
+	background "ui/assets/ingameright.tga"
+	visible 1
+	decoration
+	}
+
+
+
+itemDef {
+	name window
+	rect 64 330 64 8
+	style 3
+	background "ui/assets/ingamebottom.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 128 330 98 8
+	style 3
+	background "ui/assets/ingamebottom.tga"
+	visible 1
+	decoration
+	}
+itemDef {
+	name window
+	rect 172 330 98 8
+	style 3
+	background "ui/assets/ingamebottom.tga"
+	visible 1
+	decoration
+	}
+
+*/
+   
+
+	itemDef {
+		name errorinfo
+		rect 0 50 320 20	
+		text "@ERROR"
+		textalign 1
+		textstyle 6
+		textscale .333
+		textalignx 160
+		textaligny 23
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+	
+	itemDef {
+		name errorinfo
+		rect 60 80 200 270
+		type ITEM_TYPE_TEXT
+		style 1
+		textstyle 3
+		autowrapped
+		cvar "com_errorMessage"
+		textalign ITEM_ALIGN_CENTER
+		textalignx 100
+		textaligny 23
+		textscale .25
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+ 
+
+
+
+
+
+
+
+
+//	BUTTON	//
+
+
+	itemDef {
+		name exit
+		text "@ERROR_EXIT"
+		type 1
+		textscale .25
+		group grpControlbutton
+		type ITEM_TYPE_BUTTON
+		style WINDOW_STYLE_FILLED
+		background "ui/assets/button_back.tga"
+		rect 138 295 45 26
+		textalign 1
+		textalignx 22
+		textaligny 20
+		forecolor 1 1 1 1
+		backcolor .37 .1 .1 1
+		visible 1
+		action {	play "sound/misc/nomenu.wav";
+					close error_popmenu;
+					open main }
+		mouseEnter { setitemcolor exit backcolor .1 .37 .1 1 } 
+		mouseExit { setitemcolor exit backcolor .37 .1 .1 1 } 
+	}
+
+	itemDef {
+		name exit
+		group grpControlbutton
+		style WINDOW_STYLE_SHADER
+		background "ui/assets/framebutton.tga"
+		rect 138 295 45 26
+		visible 1 
+		forecolor 1 1 1 1
+		decoration  	  
+	}
+
+	itemDef {
+		name exit
+		group grpControlbutton
+		style WINDOW_STYLE_SHADER
+		background "ui/assets/leftbutton.tga"
+		rect 126 295 13 26
+		visible 1
+		forecolor 1 1 1 1
+		decoration  	  
+   	}
+
+	itemDef {
+		name exit
+		group grpControlbutton
+		style WINDOW_STYLE_SHADER
+		background "ui/assets/rightbutton.tga"
+		rect 182 295 13 26
+		visible 1 
+		forecolor 1 1 1 1
+		decoration  	  
+    }
+	
+}
+
+
+}
+
+

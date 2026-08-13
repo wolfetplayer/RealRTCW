@@ -1,0 +1,2528 @@
+#include "ui/menudef.h"
+
+{
+\\ play MENU \\
+
+menuDef {
+    name "play_menu"
+    visible MENU_FALSE
+    fullscreen 1
+    rect 0 0 640 480
+	 //background "menu_load"
+    soundloop ""
+    focusColor .9 .9 .9 1
+    style 1
+    border 0
+
+	onEsc 
+	{
+		close play_menu;
+		open main
+	}
+
+	onOpen {
+		setitemcolor fadebox backcolor 0 0 0 1 ;
+		//close load_menu;		
+		play "sound/misc/kcswish.wav";
+
+		fadeout fadebox;
+		
+		// 5.1 //
+		show realrtcw_main_play;
+		hide select;
+		//
+		
+		hide realrtcw_play;
+		hide realrtcw_play_2;
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		
+		hide realrtcw_play_bonus; 
+		hide realrtcw_skills_bonus;
+		hide realrtcw_walkpark;
+		hide realrtcw_ironman;
+		hide realrtcw_hardcore;
+		hide realrtcw_999;
+		hide realrtcw_nightmare;
+		hide realrtcw_bonus_back;
+		
+		hide realrtcw_chapters; // 5.1 //
+		// 5.1 // show realrtcw_chapters;
+		hide realrtcw_chapter1;
+		hide realrtcw_chapter2;
+		hide realrtcw_chapter3;
+		hide realrtcw_chapter4;
+		hide realrtcw_chapter5;
+		hide realrtcw_chapter6;
+		hide realrtcw_chapter7;
+		hide realrtcw_chapters_back;
+		
+		hide chapter1_play;
+		hide chapter2_play;
+		hide chapter3_play;
+		hide chapter4_play;
+		hide chapter5_play;
+		hide chapter6_play;
+		hide chapter7_play;
+		
+		hide chapter1_bonus;
+		hide chapter2_bonus;
+		hide chapter3_bonus;
+		hide chapter4_bonus;
+		hide chapter5_bonus;
+		hide chapter6_bonus;
+		hide chapter7_bonus;
+		hide realrtcw_campaign_customize
+	}
+////////////////////////////////////////////////ASSETS////////////////////////////////////////////////
+
+itemDef
+	{
+		name realrtcw_background
+		style WINDOW_STYLE_SHADER
+		rect -120 -9.25 917 500
+		background "realrtcw_background"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+	
+	// 5.1 //
+	
+	itemDef
+	{
+		name realrtcw_main_play
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play.tga"
+		visible 1
+		decoration
+	}
+	
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_campaign
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_campaign.tga"
+		visible 0
+		decoration
+	}
+	
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_survival
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_survival.tga"
+		visible 0
+		decoration
+	}
+	
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_training
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_training.tga"
+		visible 0
+		decoration
+	}
+	
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_back.tga"
+		visible 0
+		decoration
+	}
+	
+	//
+
+itemDef
+	{
+		name realrtcw_play
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_play_2
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_2.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_play_skill0
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_skill0.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_play_skill1
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_skill1.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_play_skill2
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_skill2.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_play_skill3
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_skill3.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_play_skill4
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_skill4.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_play_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_back.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_play_bonus
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_play_bonus.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_skills_bonus
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_skills_bonus.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_walkpark
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_walkpark.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_ironman
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_ironman.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_hardcore
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_hardcore.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_999
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_999.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_nightmare
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_nightmare.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_bonus_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_bonus_back.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_chapters
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapters.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_chapter1
+		style WINDOW_STYLE_SHADER
+		rect-107 0 480 480
+		background "ui/assets/realrtcw_chapter1.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_chapter2
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapter2.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_chapter3
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapter3.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_chapter4
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapter4.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_chapter5
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapter5.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_chapter6
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapter6.tga"
+		visible 1
+		decoration
+	}	
+	
+itemDef
+	{
+		name realrtcw_chapter7
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapter7.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_chapters_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_chapters_back.tga"
+		visible 1
+		decoration
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 5.1 //
+
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action
+		{
+			hide "realrtcw_main_play";
+			hide "select";
+			show "realrtcw_chapters";
+			show "realrtcw_campaign_customize";
+		}
+		
+		mouseEnter { show "realrtcw_main_play_campaign" } 
+		mouseExit { hide "realrtcw_main_play_campaign" } 	
+	}
+
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { close play_menu; open survival_menu ; uiScript loadArenas  }
+		
+		mouseEnter { show "realrtcw_main_play_survival" } 
+		mouseExit { hide "realrtcw_main_play_survival" } 	
+	}
+			
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action
+		{ 
+		setCvar g_gameskill "0";
+		setCvar g_nohudchallenge "0";
+		setCvar g_ironchallenge "0";
+		setcvar g_nopickupchallenge "0";
+		setCvar g_decaychallenge "0";
+		exec "spmap malta_menu"
+		}
+		
+		mouseEnter { show "realrtcw_main_play_training" } 
+		mouseExit { hide "realrtcw_main_play_training" } 	
+	}
+			
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { close play_menu; open main }
+		
+		mouseEnter { show "realrtcw_main_play_back" } 
+		mouseExit { hide "realrtcw_main_play_back" } 	
+	}
+	
+	
+	itemDef {
+	    name gowindow
+	    group realrtcw_campaign_customize
+	    rect 320 102 350 330	
+	    style WINDOW_STYLE_FILLED
+	    border 1
+	    bordercolor .5 .5 .5 .5
+	    forecolor 1 1 1 1
+	    backcolor 0 0 0 .8
+	    visible 0
+	    decoration
+	}
+	
+	itemDef {
+		name gowindow2
+		group realrtcw_campaign_customize
+		rect 322 104 346 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25  
+		visible 0
+		decoration
+	}
+	
+	itemDef {
+		name gowindow3
+		group realrtcw_campaign_customize
+		rect 322 298 346 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25  
+		visible 0
+		decoration
+	}
+		
+		itemDef {
+	    name gameplay
+		group realrtcw_campaign_customize
+	    text "@GM_CUSTOMIZE_EXP"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 475 105 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_MIDGAME"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_midgame"
+		cvarFloatList { "@GM_MIDGAME_CLASSIC" 0 "@GM_MIDGAME_HUBANDCUTSCENE" 1 }
+		rect 350 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+        }
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_ARSENAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_fullarsenal"
+		cvarFloatList { "@GM_ARSENAL_CLASSIC" 0 "@GM_ARSENAL_REALRTCW" 1 "@GM_ARSENAL_TOW" 2 }
+		rect 350 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_REWARDS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_endmapbonus"
+		rect 350 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_VANILLA_GUNS"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_vanilla_guns"
+		cvarFloatList { "@GM_GUNS_HD" 0 "@GM_GUNS_VANILLA" 1 }
+		rect 350 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_ADDENEMIES"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_reinforce"
+		cvarFloatList { "@GM_ADDENEMIES_NO" 0 "@GM_ADDENEMIES_MORE" 1 "@GM_ADDENEMIES_EVENMORE" 2 }
+		rect 350 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_DOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawndogs"
+		rect 350 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_PRIESTS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnpriests"
+		rect 350 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_XDOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnxshepherds"
+		rect 350 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_REALISMM"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_realism"
+		rect 350 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_REGEN"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_regen"
+		rect 350 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group realrtcw_campaign_customize
+		type ITEM_TYPE_MULTI
+		text "@HUD_STYLE"
+		cvar "cg_hudstyle"
+		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
+		rect 350 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+	    name content_packs
+		group realrtcw_campaign_customize
+	    text "@CONTENTPACKS_APPLY"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 475 297 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_WORLDTEXTURES"
+		cvar "fs_hd_worldtextures"
+		rect 350 320 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_WORLDMODELS"
+		cvar "fs_hd_worldmodels"
+		rect 350 335 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_CHARACTERS"
+		cvar "fs_hd_characters"
+		rect 350 350 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_SOUNDS"
+		cvar "fs_hd_sounds"
+		rect 350 365 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_ICONS"
+		cvar "fs_hd_icons"
+		rect 350 380 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	
+		itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_MAPS"
+		cvar "fs_re_maps"
+		rect 350 395 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+		itemDef {
+   		name content_packs
+		group realrtcw_campaign_customize
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_DEPACK"
+		cvar "fs_de_pack"
+		rect 350 410 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+		itemDef {
+		name content_packs
+		textfont UI_FONT_BIG
+		text "@SYSTEM_APPLY"
+		type 1	
+		textscale .25
+		style WINDOW_STYLE_FILLED
+        group realrtcw_campaign_customize
+		rect 440 440 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { exec "game_restart"  }
+		mouseEnter { setitemcolor graphicsapply backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor graphicsapply backcolor .1 .1 .1 .1 }
+	}
+
+	
+	//
+
+	itemDef {
+		group realrtcw_chapters
+	    name chapter1
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter1_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter1" } 
+	mouseExit { hide "realrtcw_chapter1" } 	
+			}
+
+	itemDef {
+		group realrtcw_chapters
+	    name chapter2
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter2_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter2" } 
+	mouseExit { hide "realrtcw_chapter2" } 	
+			}
+			
+	itemDef {
+		group realrtcw_chapters
+	    name chapter3
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter3_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter3" } 
+	mouseExit { hide "realrtcw_chapter3" } 	
+			}
+			
+	itemDef {
+		group realrtcw_chapters
+	    name chapter4
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter4_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter4" } 
+	mouseExit { hide "realrtcw_chapter4" } 	
+			}
+			
+	itemDef {
+		group realrtcw_chapters
+	    name chapter5
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter5_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter5" } 
+	mouseExit { hide "realrtcw_chapter5" } 	
+			}
+	
+
+	itemDef {
+		group realrtcw_chapters
+	    name chapter6
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter6_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter6" } 
+	mouseExit { hide "realrtcw_chapter6" } 	
+			}
+			
+	itemDef {
+		group realrtcw_chapters
+	    name chapter7
+	    type 1
+	    rect 10 345 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		show "realrtcw_play";
+		show "realrtcw_play_2";
+		show "chapter7_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapter7" } 
+	mouseExit { hide "realrtcw_chapter7" } 	
+			}
+			
+			
+	itemDef {
+		group realrtcw_chapters
+	    name back
+	    type 1
+	    rect 10 375 178 26
+	    visible 1 
+		
+	    action {
+		hide "realrtcw_chapters";
+		hide "realrtcw_chapter1";
+		hide "realrtcw_chapter2";
+		hide "realrtcw_chapter3";
+		hide "realrtcw_chapter4";
+		hide "realrtcw_chapter5";
+		hide "realrtcw_chapter6";
+		hide "realrtcw_chapter7";
+		hide "realrtcw_chapters_back";
+		hide "realrtcw_chapters";
+		hide "realrtcw_campaign_customize";
+		show "realrtcw_main_play"
+		}
+		
+	mouseEnter { show "realrtcw_chapters_back" } 
+	mouseExit { hide "realrtcw_chapters_back" } 	
+			}
+	
+	
+	
+
+//////// Chapter 1
+
+	itemDef {
+		group chapter1_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0"; exec "spmap cutscene1" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter1_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1"; exec "spmap cutscene1" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter1_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2"; exec "spmap cutscene1" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter1_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3"; exec "spmap cutscene1" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter1_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4"; exec "spmap cutscene1" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+			
+	
+	itemDef {
+		group chapter1_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	    action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		hide realrtcw_play_bonus;
+		show "realrtcw_chapters"
+		}
+		
+	mouseEnter { show "realrtcw_play_back" } 
+	mouseExit { hide "realrtcw_play_back" } 	
+			}
+			
+		itemDef 
+		{ 
+		group chapter1_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter1_play; show realrtcw_skills_bonus; show chapter1_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter1_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4"; setCvar g_nohudchallenge "1"; exec "spmap cutscene1" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter1_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_ironchallenge "1"; exec "spmap cutscene1" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter1_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_nopickupchallenge "1"; exec "spmap cutscene1" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter1_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_decaychallenge "1"; exec "spmap cutscene1" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter1_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ; setCvar g_nohudchallenge "1" ; setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap cutscene1" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+			
+		itemDef 
+		{
+		group chapter1_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter1_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter1_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+
+//////// Chapter 2
+
+	itemDef {
+		group chapter2_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0"; setCvar g_level_was_selected "1"; exec "spmap village1" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter2_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1"; setCvar g_level_was_selected "1"; exec "spmap village1" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter2_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2"; setCvar g_level_was_selected "1"; exec "spmap village1" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter2_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; exec "spmap village1" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter2_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4"; setCvar g_level_was_selected "1"; exec "spmap village1" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+	
+	itemDef {
+		group chapter2_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	   action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		hide realrtcw_play_bonus;
+		show "realrtcw_chapters"
+		}
+		
+	mouseEnter { show "realrtcw_play_back" } 
+	mouseExit { hide "realrtcw_play_back" } 	
+			}
+			
+	itemDef 
+		{ 
+		group chapter2_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter2_play; show realrtcw_skills_bonus; show chapter2_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+
+	itemDef 
+		{
+		group chapter2_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4"; setCvar g_level_was_selected "1"; setCvar g_nohudchallenge "1"; exec "spmap village1" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+		
+		
+		itemDef 
+		{
+		group chapter2_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; setCvar g_ironchallenge "1"; exec "spmap village1" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter2_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; setCvar g_nopickupchallenge "1"; exec "spmap village1" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter2_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; setCvar g_decaychallenge "1"; exec "spmap village1" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter2_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ; setCvar g_level_was_selected "1"; setCvar g_nohudchallenge "1" ; setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap village1" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+		
+		itemDef 
+		{
+		group chapter2_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter2_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter2_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+		
+//////// Chapter 3
+
+	itemDef {
+		group chapter3_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0"; exec "spmap cutscene6" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter3_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1";   exec "spmap cutscene6" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter3_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2";   exec "spmap cutscene6" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter3_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3";   exec "spmap cutscene6" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter3_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4";   exec "spmap cutscene6" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+	
+	itemDef {
+		group chapter3_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	    action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		show "realrtcw_chapters"
+		}
+		
+	mouseEnter { show "realrtcw_play_back" } 
+	mouseExit { hide "realrtcw_play_back" } 	
+			}
+			
+		itemDef 
+		{ 
+		group chapter3_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter3_play; show realrtcw_skills_bonus; show chapter3_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+
+	itemDef 
+		{
+		group chapter3_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4"; setCvar g_nohudchallenge "1";   exec "spmap cutscene6" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+		
+		
+		itemDef 
+		{
+		group chapter3_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_ironchallenge "1";   exec "spmap cutscene6" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter3_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_nopickupchallenge "1";   exec "spmap cutscene6" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter3_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_decaychallenge "1";   exec "spmap cutscene6" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter3_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ; setCvar g_nohudchallenge "1" ;   setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap cutscene6" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+		
+		itemDef 
+		{
+		group chapter3_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter3_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter3_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+			
+			
+			
+//////// Chapter 4
+
+	itemDef {
+		group chapter4_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0";   exec "spmap cutscene9" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter4_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1";   exec "spmap cutscene9" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter4_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2";   exec "spmap cutscene9" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter4_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3";   exec "spmap cutscene9" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter4_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4";   exec "spmap cutscene9" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+	
+	itemDef {
+		group chapter4_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	   action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		show "realrtcw_chapters"
+		}
+		
+	mouseEnter { show "realrtcw_play_back" } 
+	mouseExit { hide "realrtcw_play_back" } 	
+			}
+			
+		itemDef 
+		{ 
+		group chapter4_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter4_play; show realrtcw_skills_bonus; show chapter4_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+
+	itemDef 
+		{
+		group chapter4_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4";   setCvar g_nohudchallenge "1"; exec "spmap cutscene9" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+		
+		
+		itemDef 
+		{
+		group chapter4_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_ironchallenge "1"; exec "spmap cutscene9" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter4_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";    setCvar g_nopickupchallenge "1"; exec "spmap cutscene9" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter4_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_decaychallenge "1"; exec "spmap cutscene9" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter4_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ;   setCvar g_nohudchallenge "1" ; setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap cutscene9" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+		
+		itemDef 
+		{
+		group chapter4_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter4_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter4_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+			
+//////// Chapter 5
+
+	itemDef {
+		group chapter5_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0";   exec "spmap cutscene11" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter5_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1";   exec "spmap cutscene11" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter5_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2";   exec "spmap cutscene11" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter5_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3";   exec "spmap cutscene11" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter5_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4";   exec "spmap cutscene11" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+	
+	itemDef {
+		group chapter5_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	   action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		show "realrtcw_chapters"
+		}
+		
+	mouseEnter { show "realrtcw_play_back" } 
+	mouseExit { hide "realrtcw_play_back" } 	
+			}
+			
+		itemDef 
+		{ 
+		group chapter5_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter5_play; show realrtcw_skills_bonus; show chapter5_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+
+	itemDef 
+		{
+		group chapter5_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4";   setCvar g_nohudchallenge "1"; exec "spmap cutscene11" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+		
+		
+		itemDef 
+		{
+		group chapter5_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_ironchallenge "1"; exec "spmap cutscene11" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter5_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_nopickupchallenge "1"; exec "spmap cutscene11" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter5_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_decaychallenge "1"; exec "spmap cutscene11" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter5_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ;   setCvar g_nohudchallenge "1" ; setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap cutscene11" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+		
+		itemDef 
+		{
+		group chapter5_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter5_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter5_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+			
+//////// Chapter 6
+
+	itemDef {
+		group chapter6_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0";   exec "spmap cutscene14" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter6_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1";   exec "spmap cutscene14" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter6_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2";   exec "spmap cutscene14" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter6_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3";   exec "spmap cutscene14" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter6_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4";   exec "spmap cutscene14" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+	
+	itemDef {
+		group chapter6_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	   action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		show "realrtcw_chapters"
+		}
+		
+	mouseEnter { show "realrtcw_play_back" } 
+	mouseExit { hide "realrtcw_play_back" } 	
+			}
+			
+		itemDef 
+		{ 
+		group chapter6_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter6_play; show realrtcw_skills_bonus; show chapter6_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+
+	itemDef 
+		{
+		group chapter6_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4";   setCvar g_nohudchallenge "1"; exec "spmap cutscene14" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+		
+		
+		itemDef 
+		{
+		group chapter6_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_ironchallenge "1"; exec "spmap cutscene14" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter6_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_nopickupchallenge "1"; exec "spmap cutscene14" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter6_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3";   setCvar g_decaychallenge "1"; exec "spmap cutscene14" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter6_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ;   setCvar g_nohudchallenge "1" ; setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap cutscene14" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+		
+		itemDef 
+		{
+		group chapter6_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter6_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter6_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+
+
+//////// Chapter 7
+
+	itemDef {
+		group chapter7_play
+	    name skill0
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "0"; setCvar g_level_was_selected "1"; exec "spmap dig" }
+		
+	mouseEnter { show "realrtcw_play_skill0" } 
+	mouseExit { hide "realrtcw_play_skill0" } 	
+			}
+			
+	itemDef {
+		group chapter7_play
+	    name skill1
+	    type 1
+	    rect 10 177 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "1"; setCvar g_level_was_selected "1"; exec "spmap dig" }
+		
+	mouseEnter { show "realrtcw_play_skill1" } 
+	mouseExit { hide "realrtcw_play_skill1" } 	
+			}
+
+	itemDef {
+		group chapter7_play
+	    name skill2
+	    type 1
+	    rect 10 210 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "2"; setCvar g_level_was_selected "1"; exec "spmap dig" }
+		
+	mouseEnter { show "realrtcw_play_skill2" } 
+	mouseExit { hide "realrtcw_play_skill2" } 	
+			}
+			
+	itemDef {
+		group chapter7_play
+	    name skill3
+	    type 1
+	    rect 10 243 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; exec "spmap dig" }
+		
+	mouseEnter { show "realrtcw_play_skill3" } 
+	mouseExit { hide "realrtcw_play_skill3" } 	
+			}	
+		
+	itemDef {
+		group chapter7_play
+	    name skill4
+	    type 1
+	    rect 10 276 178 26
+	    visible 1 
+		
+	    action { setCvar g_gameskill "4"; setCvar g_level_was_selected "1"; exec "spmap dig" }
+		
+	mouseEnter { show "realrtcw_play_skill4" } 
+	mouseExit { hide "realrtcw_play_skill4" } 	
+			}
+	
+	itemDef {
+		group chapter7_play
+	    name back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1 
+		
+	   action {
+		hide "chapter1_play";
+		hide "chapter2_play";
+		hide "chapter3_play";
+		hide "chapter4_play";
+		hide "chapter5_play";
+		hide "chapter6_play";
+		hide "chapter7_play";
+		hide "realrtcw_play";
+		hide "realrtcw_play_2";
+		hide realrtcw_play_skill0;
+		hide realrtcw_play_skill1;
+		hide realrtcw_play_skill2;
+		hide realrtcw_play_skill3;
+		hide realrtcw_play_skill4;
+		hide realrtcw_play_back;
+		show "realrtcw_chapters"
+		}
+	    mouseEnter { show "realrtcw_play_back" } 
+	    mouseExit { hide "realrtcw_play_back" } 	
+		}
+		
+		itemDef 
+		{ 
+		group chapter7_play
+	    name bonus // THIS IS A BUTTON TO ENTER BONUS MODES MENU
+	    type 1
+	    rect 10 360 178 26
+	    visible 1 
+	    action { hide realrtcw_play; hide realrtcw_play_2; hide realrtcw_play_bonus; hide chapter7_play; show realrtcw_skills_bonus; show chapter7_bonus }
+	    mouseEnter { show "realrtcw_play_bonus" } 
+	    mouseExit { hide "realrtcw_play_bonus" } 	
+		}
+
+	itemDef 
+		{
+		group chapter7_bonus
+	    name skill_park
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+	    action { setCvar g_gameskill "4"; setCvar g_level_was_selected "1"; setCvar g_nohudchallenge "1"; exec "spmap dig" }
+	    mouseEnter { show "realrtcw_walkpark" } 
+	    mouseExit { hide "realrtcw_walkpark" } 	
+		}
+		
+		
+		itemDef 
+		{
+		group chapter7_bonus
+	    name skill_ironman
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; setCvar g_ironchallenge "1"; exec "spmap dig" }
+	    mouseEnter { show "realrtcw_ironman" } 
+	    mouseExit { hide "realrtcw_ironman" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter7_bonus
+	    name skill_hardcore
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; setCvar g_nopickupchallenge "1"; exec "spmap dig" }
+	    mouseEnter { show "realrtcw_hardcore" } 
+	    mouseExit { hide "realrtcw_hardcore" } 	
+		}
+			
+		itemDef 
+		{
+		group chapter7_bonus
+	    name skill_999
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3"; setCvar g_level_was_selected "1"; setCvar g_decaychallenge "1"; exec "spmap dig" }
+	    mouseEnter { show "realrtcw_999" } 
+	    mouseExit { hide "realrtcw_999" } 
+		}
+			
+		itemDef 
+		{
+		group chapter7_bonus
+	    name skill_nightmare
+	    type 1
+	    rect 10 276 178 26
+	    visible 1
+	    action { setCvar g_gameskill "3" ; setCvar g_level_was_selected "1"; setCvar g_nohudchallenge "1" ; setCvar g_nopickupchallenge "1" ; setCvar g_ironchallenge "1" ; exec "spmap dig" }
+	    mouseEnter { show "realrtcw_nightmare" } 
+	    mouseExit { hide "realrtcw_nightmare" }
+		}
+		
+		itemDef 
+		{
+		group chapter7_bonus
+	    name skill_back
+	    type 1
+	    rect 10 309 178 26
+	    visible 1
+	    action 
+		{ 
+		hide realrtcw_nightmare ;
+		hide realrtcw_999 ;
+		hide realrtcw_bonus_back ;
+		hide realrtcw_hardcore ;
+		hide realrtcw_ironman ;
+		hide realrtcw_walkpark ;
+		hide chapter7_bonus ;
+		hide realrtcw_skills_bonus ;
+		show chapter7_play ;
+		show realrtcw_play ;
+		show realrtcw_play_2 ;
+		show realrtcw_play_bonus
+		}
+		
+	    mouseEnter { show "realrtcw_bonus_back" } 
+	    mouseExit { hide "realrtcw_bonus_back" }
+	   	}
+
+}
+
+
+}
+
+
+

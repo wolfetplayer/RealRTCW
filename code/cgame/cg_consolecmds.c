@@ -208,6 +208,14 @@ static void CG_WeaponWheelDown_f( void ) {
 		return;
 	}
 
+	// don't open the wheel (and its slowmo/vignette side effects) if there's nothing to select
+	{
+		int visibleWeapons[MAX_WEAPONS];
+		if ( CG_CollectWeaponWheelWeapons( visibleWeapons, MAX_WEAPONS ) <= 0 ) {
+			return;
+		}
+	}
+
 	cg.weaponWheel.openTime = cg.time;
 
 	cgs.cursorX = SCREEN_WIDTH * 0.35f;

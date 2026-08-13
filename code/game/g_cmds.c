@@ -2168,6 +2168,13 @@ void ClientCommand( int clientNum ) {
 	}
 //----(SA)	end
 
+	if ( Q_stricmp( cmd, "simplezoom" ) == 0 ) {
+		char arg[8];
+		trap_Argv( 1, arg, sizeof( arg ) );
+		ent->client->ps.simpleZoomed = atoi( arg ) ? qtrue : qfalse;
+		return;
+	}
+
 	// ignore all other commands when at intermission
 	if ( level.intermissiontime ) {
 		Cmd_Say_f( ent, qfalse, qtrue );

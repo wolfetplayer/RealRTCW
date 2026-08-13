@@ -799,6 +799,8 @@ void CG_Zoom( void ) {
 
 float CG_ApplySimpleZoomFov( float currentFovX ) {
 	float baseFovX, targetFovX, f, out;
+	qboolean zoomed;
+	qboolean following = (qboolean)( cg.snap && ( cg.snap->ps.pm_flags & PMF_FOLLOW ) );
 
 	// feature disabled / not set up
 	if ( cg_simpleZoomFov.value <= 0 ) {
@@ -819,8 +821,25 @@ float CG_ApplySimpleZoomFov( float currentFovX ) {
 		return currentFovX;
 	}
 
+	if ( following ) {
+		// mirror the followed player's networked zoom state instead of our own (disabled) toggle
+		zoomed = (qboolean)cg.predictedPlayerState.simpleZoomed;
+		if ( zoomed != cg.simpleZoomedFollow ) {
+			cg.simpleZoomedFollow = zoomed;
+			cg.simpleZoomTime = cg.time;
+		}
+	} else {
+		zoomed = cg.simpleZoomed;
+		cg.simpleZoomedFollow = qfalse;
+	}
+
 	baseFovX = currentFovX;
-	targetFovX = cg.simpleZoomed ? cg_simpleZoomFov.value : baseFovX;
+	targetFovX = zoomed ? cg_simpleZoomFov.value : baseFovX;
+
+	// WP_VENOM: spread is too wide for zoom to meaningfully help, so soften the zoom-in
+	if ( zoomed && cg.predictedPlayerState.weapon == WP_VENOM ) {
+		targetFovX = baseFovX + ( targetFovX - baseFovX ) * cg_simpleZoomVenomScale.value;
+	}
 
 	// clamp target
 	if ( targetFovX < 1 ) targetFovX = 1;
@@ -840,7 +859,7 @@ float CG_ApplySimpleZoomFov( float currentFovX ) {
 		if ( f > 1.0f ) f = 1.0f;
 	}
 
-	if ( cg.simpleZoomed ) {
+	if ( zoomed ) {
 		// zooming in: base -> target
 		out = baseFovX + f * ( targetFovX - baseFovX );
 	} else {

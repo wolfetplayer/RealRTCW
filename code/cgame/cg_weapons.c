@@ -2366,7 +2366,8 @@ static float CG_VenomSpinAngle( centity_t *cent ) {
 
 	firing = (qboolean)( cent->currentState.eFlags & EF_FIRING );
 
-	if ( cg.snap->ps.weaponstate != WEAPON_FIRING ) { // (SA) this seems better
+	// WEAPON_VENOM_REST: barrels pre-spun via simple zoom, holding at speed without firing
+	if ( cg.snap->ps.weaponstate != WEAPON_FIRING && cg.snap->ps.weaponstate != WEAPON_VENOM_REST ) { // (SA) this seems better
 		firing = qfalse;
 	}
 
@@ -4564,6 +4565,8 @@ qboolean CG_WeaponSupportsSimpleZoom( int weap ) {
 void CG_ToggleSimpleZoom( void ) {
     cg.simpleZoomed = !cg.simpleZoomed;
     cg.simpleZoomTime = cg.time;
+    // let the server know so spectators/followers see the same zoom
+    trap_SendClientCommand( va( "simplezoom %i", cg.simpleZoomed ) );
 }
 
 
@@ -4571,6 +4574,7 @@ void CG_ResetSimpleZoom( void ) {
     if ( cg.simpleZoomed ) {
         cg.simpleZoomed = qfalse;
         cg.simpleZoomTime = cg.time;
+        trap_SendClientCommand( "simplezoom 0" );
     }
 }
 

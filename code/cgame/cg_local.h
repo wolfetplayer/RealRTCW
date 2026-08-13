@@ -1112,6 +1112,7 @@ typedef struct {
 
 	qboolean simpleZoomed;
 	int simpleZoomTime;
+	qboolean simpleZoomedFollow;        // last known networked zoom state of the player we're following/watching
 
 	float aaStrength;
     float aaDYaw;
@@ -2038,6 +2039,7 @@ extern vmCvar_t cg_gothic;
 
 extern vmCvar_t cg_simpleZoomFov;
 extern vmCvar_t cg_simpleZoomTimeMs;
+extern vmCvar_t cg_simpleZoomVenomScale;
 
 //
 // cg_main.c

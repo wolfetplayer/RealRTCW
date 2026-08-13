@@ -397,11 +397,11 @@ static void IN_DeactivateMouse( qboolean isFullscreen )
 	{
 		IN_GobbleMotionEvents( );
 
-		SDL_SetWindowRelativeMouseMode( SDL_window, false );
-
-		// Don't warp the mouse unless the cursor is within the window
+		// Don't warp the mouse unless the cursor is within the window; must warp before disabling relative mode or SDL3 leaves the OS cursor parked at screen center
 		if( SDL_GetWindowFlags( SDL_window ) & SDL_WINDOW_MOUSE_FOCUS )
 			SDL_WarpMouseInWindow( SDL_window, cls.glconfig.vidWidth / 2, cls.glconfig.vidHeight / 2 );
+
+		SDL_SetWindowRelativeMouseMode( SDL_window, false );
 
 		mouseActive = qfalse;
 	}

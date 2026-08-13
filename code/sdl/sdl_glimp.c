@@ -954,6 +954,9 @@ static qboolean GLimp_StartDriverAndSetMode(int mode, qboolean fullscreen, qbool
 	{
 		const char *driverName;
 
+		// Default "auto" minimizes exclusive fullscreen on focus loss and restores desktop mode, which yanks the OS cursor to screen center; keep the window up instead
+		SDL_SetHint( SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0" );
+
 		if (!SDL_Init(SDL_INIT_VIDEO))
 		{
 			ri.Printf( PRINT_ALL, "SDL_Init( SDL_INIT_VIDEO ) FAILED (%s)\n", SDL_GetError());

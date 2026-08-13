@@ -42,9 +42,6 @@ If you have questions concerning this license or the applicable additional terms
 
 uiInfo_t uiInfo;
 
-// Tracks which input device drove the menus most recently, so the cursor sprite can hide for controllers.
-qboolean uiLastInputWasMouse = qtrue;
-
 static const char *MonthAbbrev[] = {
 	"Jan","Feb","Mar",
 	"Apr","May","Jun",
@@ -715,16 +712,11 @@ void _UI_Refresh( int realtime ) {
 		UI_BuildServerStatus( qfalse );
 		// refresh find player list
 		UI_BuildFindPlayerList( qfalse );
-		// re-fire a held D-pad/stick direction (gamepad buttons have no OS auto-repeat)
-		UI_RunNavRepeat( uiInfo.uiDC.realTime );
-	} else {
-		// no menu to receive the matching key-up, so drop any held nav state before it goes stale
-		UI_ClearNavRepeat();
 	}
 
-	// draw cursor (hidden while the controller is the active input device)
+	// draw cursor
 	UI_SetColor( NULL );
-	if (Menu_Count() > 0 && (trap_Key_GetCatcher() & KEYCATCH_UI) && uiLastInputWasMouse) {
+	if (Menu_Count() > 0 && (trap_Key_GetCatcher() & KEYCATCH_UI)) {
 		uiMenuCommand_t mymenu = _UI_GetActiveMenu();
 		if ( mymenu != UIMENU_BRIEFING ) {
 			UI_DrawHandlePic( uiInfo.uiDC.cursorx - 16, uiInfo.uiDC.cursory - 16, 32, 32, uiInfo.uiDC.Assets.cursor );
@@ -7111,10 +7103,6 @@ UI_KeyEvent
 */
 void _UI_KeyEvent( int key, qboolean down ) {
 
-    if ( down && key >= K_PAD0_A && key <= K_PAD0_TOUCHPAD ) {
-        uiLastInputWasMouse = qfalse;
-    }
-
     if ( down && Menu_Count() > 0 ) {
         menuDef_t *menu = Menu_GetFocused();
         if ( menu && menu->window.name[0] ) {
@@ -7163,10 +7151,6 @@ UI_MouseEvent
 =================
 */
 void _UI_MouseEvent( int dx, int dy ) {
-	if ( dx || dy ) {
-		uiLastInputWasMouse = qtrue;
-	}
-
 	// update mouse screen position
 	uiInfo.uiDC.cursorx += dx;
 	if ( uiInfo.uiDC.cursorx < 0 ) {

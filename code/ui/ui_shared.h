@@ -464,8 +464,6 @@ void Menu_PostParse( menuDef_t *menu );
 menuDef_t *Menu_GetFocused( void );
 void Menu_HandleKey( menuDef_t *menu, int key, qboolean down );
 void Menu_HandleMouseMove( menuDef_t *menu, float x, float y );
-void UI_RunNavRepeat( int realtime );
-void UI_ClearNavRepeat( void );
 void Menu_ScrollFeeder( menuDef_t *menu, int feeder, qboolean down );
 qboolean Float_Parse( char **p, float *f );
 qboolean Color_Parse( char **p, vec4_t *c );

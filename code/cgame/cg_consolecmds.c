@@ -124,32 +124,7 @@ extern menuDef_t *menuScoreboard;
 void Menu_Reset( void );          // FIXME: add to right include file
 
 static void CG_LoadHud_f( void ) {
-
-	String_Init();
-	Menu_Reset();
-
-    if (cg_hudStyle.integer == 1) {
-	CG_LoadMenus( "ui/hud/wolf09.txt");
-	} else if (cg_hudStyle.integer == 2) {
-	CG_LoadMenus( "ui/hud/ps2.txt");
-	} else if (cg_hudStyle.integer == 3) {
-	CG_LoadMenus( "ui/hud/xbox.txt");
-	} else if (cg_hudStyle.integer == 4) {
-	CG_LoadMenus( "ui/hud/et.txt");
-	} else if (cg_hudStyle.integer == 5) {
-	CG_LoadMenus( "ui/hud/vanilla.txt");
-	} else if (cg_hudStyle.integer == 6) {
-	CG_LoadMenus( "ui/hud/custom_hud1.txt");
-	} else if (cg_hudStyle.integer == 7) {
-	CG_LoadMenus( "ui/hud/custom_hud2.txt");
-	} else if (cg_hudStyle.integer == 8) {
-	CG_LoadMenus( "ui/hud/custom_hud3.txt");
-	} else if (cg_hudStyle.integer == 9) {
-	CG_LoadMenus( "ui/hud/custom_hud4.txt");
-	} else if (cg_hudStyle.integer == 10) {
-	CG_LoadMenus( "ui/hud/custom_hud5.txt");
-	}
-
+	CG_LoadHudMenu();
 	menuScoreboard = NULL;
 }
 

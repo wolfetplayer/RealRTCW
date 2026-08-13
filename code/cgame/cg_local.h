@@ -2056,6 +2056,7 @@ void CG_UpdateCvars( void );
 int CG_CrosshairPlayer( void );
 int CG_LastAttacker( void );
 void CG_LoadMenus( const char *menuFile );
+void CG_LoadHudMenu( void );
 void CG_KeyEvent( int key, qboolean down );
 void CG_MouseEvent( int x, int y );
 void CG_JoystickEvent( int axis, int value );

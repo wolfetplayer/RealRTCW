@@ -40,6 +40,8 @@ If you have questions concerning this license or the applicable additional terms
 displayContextDef_t cgDC;
 
 int forceModelModificationCount = -1;
+int hudStyleModificationCount = -1;
+extern menuDef_t *menuScoreboard;
 
 void CG_Init( int serverMessageNum, int serverCommandSequence );
 void CG_Shutdown( void );
@@ -617,6 +619,7 @@ void CG_RegisterCvars( void ) {
 	cgs.localServer = atoi( var );
 
 	forceModelModificationCount = cg_forceModel.modificationCount;
+	hudStyleModificationCount = cg_hudStyle.modificationCount;
 
 	trap_Cvar_Register( NULL, "model", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
 	trap_Cvar_Register( NULL, "head", DEFAULT_HEAD, CVAR_USERINFO | CVAR_ARCHIVE );
@@ -673,6 +676,13 @@ void CG_UpdateCvars( void ) {
 	// Send any relevent updates
 	if ( fSetFlags ) {
 		CG_setClientFlags();
+	}
+
+	// reload the hud in place if cg_hudStyle changed, no vid_restart needed
+	if ( hudStyleModificationCount != cg_hudStyle.modificationCount ) {
+		hudStyleModificationCount = cg_hudStyle.modificationCount;
+		CG_LoadHudMenu();
+		menuScoreboard = NULL;
 	}
 }
 
@@ -2747,6 +2757,7 @@ void CG_LoadHudMenu( void ) {
 
 	Init_Display( &cgDC );
 
+	String_Init();
 	Menu_Reset();
 
     if (cg_hudStyle.integer == 1) {

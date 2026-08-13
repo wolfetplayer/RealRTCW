@@ -2598,7 +2598,7 @@ void G_RunEntity( gentity_t* ent, int msec ) {
 ================
 G_UpdateWorldDilation
 
-SP-only: while any connected client has its weapon wheel open, ease the
+Single-player and Survival only: while any connected client has its weapon wheel open, ease the
 world time dilation factor down so the server tick loop (SV_Frame) throttles
 how often ticks fire in real time. Each individual tick is untouched (still
 the normal frameMsec-sized game-time step), so nothing about per-tick entity
@@ -2611,8 +2611,8 @@ static void G_UpdateWorldDilation( void ) {
 	qboolean anyWheelOpen = qfalse;
 	float target, rampMsec, msec, step;
 
-	if ( g_gametype.integer != GT_SINGLE_PLAYER ) {
-		return; // feature fully inert outside SP
+	if ( g_gametype.integer != GT_SINGLE_PLAYER && g_gametype.integer != GT_SURVIVAL ) {
+		return;
 	}
 
 	for ( i = 0; i < level.maxclients; i++ ) {

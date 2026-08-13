@@ -150,6 +150,22 @@ itemDef {
 		action { uiScript glCustom }
 	}
 	
+	itemDef {
+		name graphics
+		group grpSystem
+		text "@SYSTEM_APPLYWARNING"
+		textfont UI_FONT_NORMAL
+		decoration
+		style WINDOW_STYLE_EMPTY
+		rect 82 95 341 12
+		textalign ITEM_ALIGN_CENTER
+		textalignx 170
+		textaligny 10
+		textscale .16
+		forecolor 1 1 1 1
+		visible 0
+	}
+
 		itemDef {
  		cvarTest "r_ignorehwgamma"
 		textfont UI_FONT_BIG
@@ -159,7 +175,7 @@ itemDef {
       	type ITEM_TYPE_SLIDER
 		text "@SYSTEM_BRIGHTNESS"
 		cvarfloat "r_gamma" 1.3 0.5 3
-		rect 82 95 290 12
+		rect 82 110 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142 
       	textaligny 10
@@ -181,7 +197,7 @@ itemDef {
 		textfont UI_FONT_BIG
 		text "@SYSTEM_BRIGHTNESS"
 		cvarfloat "r_gamma" 1 0.5 2
-		rect 82 95 290 12
+		rect 82 110 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142 
       	textaligny 10
@@ -200,7 +216,7 @@ itemDef {
 	    textscale .25
 		decoration
 	    style WINDOW_STYLE_FILLED
-	    rect 190 110 290 12
+	    rect 190 125 290 12
 	    textalign 1
 		textfont UI_FONT_BIG
 	    textalignx 22
@@ -219,7 +235,7 @@ itemDef {
 		textfont UI_FONT_BIG
 		text "@SYSTEM_VSYNC"
 		cvar "r_swapinterval"
-		rect 82 135 290 12
+		rect 82 150 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -238,7 +254,7 @@ itemDef {
         textfont UI_FONT_BIG		
 		text "@SYSTEM_SHOWFPS"
 		cvar "cg_drawfps"
-		rect 82 150 290 12
+		rect 82 165 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -258,7 +274,7 @@ itemDef {
 		cvar "com_maxfps"
 		cvarFloatList { "30 FPS" 30 "60 FPS" 60 "76 FPS" 76 "90 FPS" 90 "100 FPS" 100 "144 FPS" 144 "240 FPS" 240 }
 		textalign ITEM_ALIGN_RIGHT
-		rect 82 165 290 12
+		rect 82 180 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142
 		textaligny 10

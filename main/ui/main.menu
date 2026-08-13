@@ -2384,7 +2384,23 @@ itemDef
       	visible 0 
 		action { uiScript glCustom }
 	}
-	
+
+	itemDef {
+		name graphics
+		group system
+		text "@SYSTEM_APPLYWARNING"
+		textfont UI_FONT_NORMAL
+		decoration
+		style WINDOW_STYLE_EMPTY
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_CENTER
+		textalignx 145
+		textaligny 10
+		textscale .16
+		forecolor 1 1 1 1
+		visible 0
+	}
+
 		itemDef {
  		cvarTest "r_ignorehwgamma"
 		textfont UI_FONT_BIG
@@ -2394,7 +2410,7 @@ itemDef
       	type ITEM_TYPE_SLIDER
 		text "@SYSTEM_BRIGHTNESS"
 		cvarfloat "r_gamma" 1.3 0.5 3
-		rect 300 195 290 12
+		rect 300 210 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142 
       	textaligny 10
@@ -2416,7 +2432,7 @@ itemDef
 		textfont UI_FONT_BIG
 		text "@SYSTEM_BRIGHTNESS"
 		cvarfloat "r_gamma" 1 0.5 2
-		rect 300 195 290 12
+		rect 300 210 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142 
       	textaligny 10
@@ -2436,7 +2452,7 @@ itemDef
 		textfont UI_FONT_BIG
 		text "@COLOR_BLACKWHITE"
 		cvar "r_greyscale"
-		rect 300 210 290 12
+		rect 300 225 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -2457,7 +2473,7 @@ itemDef
 		cvar "r_gothic"
 		cvarFloatList { "@GENERAL_YES" 2 "@GENERAL_NO" 0 }
 		textalign ITEM_ALIGN_RIGHT
-		rect 300 225 290 12
+		rect 300 240 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142
 		textaligny 10
@@ -2476,7 +2492,7 @@ itemDef
 	    textscale .25
 		decoration
 	    style WINDOW_STYLE_FILLED
-	    rect 410 245 290 12
+	    rect 410 260 290 12
 	    textalign 1
 		textfont UI_FONT_BIG
 	    textalignx 22
@@ -2494,7 +2510,7 @@ itemDef
 		textfont UI_FONT_BIG
 		text "@SYSTEM_VSYNC"
 		cvar "r_swapinterval"
-		rect 300 265 290 12
+		rect 300 280 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -2513,7 +2529,7 @@ itemDef
         textfont UI_FONT_BIG		
 		text "@SYSTEM_SHOWFPS"
 		cvar "cg_drawfps"
-		rect 300 280 290 12
+		rect 300 295 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -2533,7 +2549,7 @@ itemDef
 		cvar "com_maxfps"
 		cvarFloatList { "30 FPS" 30 "60 FPS" 60 "76 FPS" 76 "90 FPS" 90 "100 FPS" 100 "144 FPS" 144 "240 FPS" 240 }
 		textalign ITEM_ALIGN_RIGHT
-		rect 300 295 290 12
+		rect 300 310 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142
 		textaligny 10
@@ -2551,7 +2567,7 @@ itemDef
         textfont UI_FONT_BIG		
 		text "@SYSTEM_SOCIALS"
 		cvar "cg_showSocials"
-		rect 300 310 290 12
+		rect 300 325 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10

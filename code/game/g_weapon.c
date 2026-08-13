@@ -886,6 +886,44 @@ qboolean Bullet_Fire_Extended( gentity_t *source, gentity_t *attacker, vec3_t st
     // perform trace with base values (the trace doesn't care about the damage multiplier)
     trap_Trace( &tr, start, NULL, NULL, end, source->s.number, MASK_SHOT );
 
+    if ( ( g_gametype.integer == GT_SURVIVAL || g_aiCollision.integer == 0 ) && tr.startsolid && !g_entities[ tr.entityNum ].takedamage ) {
+        int touch[ MAX_GENTITIES ];
+        int numTouch;
+        int i;
+        vec3_t mins, maxs;
+        gentity_t *best = NULL;
+        float bestDist, dist;
+
+        VectorSet( mins, start[0] - 24, start[1] - 24, start[2] - 24 );
+        VectorSet( maxs, start[0] + 24, start[1] + 24, start[2] + 24 );
+
+        numTouch = trap_EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
+        bestDist = 999999.0f;
+
+        for ( i = 0; i < numTouch; i++ ) {
+            gentity_t *cand = &g_entities[ touch[i] ];
+
+            if ( cand == source || cand == attacker ) {
+                continue;
+            }
+            if ( !( cand->r.svFlags & SVF_CASTAI ) || !cand->takedamage || cand->health <= 0 ) {
+                continue;
+            }
+
+            dist = VectorDistance( start, cand->r.currentOrigin );
+            if ( dist < bestDist ) {
+                bestDist = dist;
+                best = cand;
+            }
+        }
+
+        if ( best ) {
+            tr.entityNum = best->s.number;
+            tr.fraction = 0.0f;
+            VectorCopy( start, tr.endpos );
+        }
+    }
+
     // DHM - Nerve :: only in single player
     AICast_ProcessBullet( attacker, start, tr.endpos );
     

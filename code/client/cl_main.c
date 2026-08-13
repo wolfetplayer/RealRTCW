@@ -135,8 +135,6 @@ cvar_t *j_aimassist_turnrate_ads;
 
 cvar_t *j_aimassist_recoil;
 
-cvar_t *j_uiSpeed;
-cvar_t *j_uiExpo;
 cvar_t *j_uiDeadzone;
 
 cvar_t *j_invertLook;
@@ -3075,7 +3073,7 @@ void CL_Frame( int msec ) {
 	// send intentions now
 	CL_SendCmd();
 
-	CL_GamepadUIMouseMove();
+	CL_GamepadUINavigate();
 
 	// resend a connection request if necessary
 	CL_CheckForResend();
@@ -3782,9 +3780,10 @@ void CL_Init( void ) {
 	j_side_axis =    Cvar_Get ("j_side_axis",    "0", CVAR_ARCHIVE);
 	j_up_axis =      Cvar_Get ("j_up_axis",      "4", CVAR_ARCHIVE);
 
-	j_uiSpeed =     Cvar_Get ("j_uiSpeed",      "700", CVAR_ARCHIVE);
-	j_uiExpo =	    Cvar_Get ("j_uiExpo",      "1.6", CVAR_ARCHIVE);
 	j_uiDeadzone =	Cvar_Get ("j_uiDeadzone",   "0.18", CVAR_ARCHIVE);
+
+	Cvar_Get ("in_navRepeatDelay",    "400", CVAR_ARCHIVE);
+	Cvar_Get ("in_navRepeatInterval", "110", CVAR_ARCHIVE);
 
 	j_invertLook = Cvar_Get( "j_invertLook", "0", CVAR_ARCHIVE );
 

@@ -77,6 +77,26 @@ static qboolean debugMode = qfalse;
 #define DOUBLE_CLICK_DELAY 300
 static int lastListBoxClickTime = 0;
 
+// D-pad / stick held-direction repeat-on-hold state (see UI_RunNavRepeat)
+static int navHeldKey = 0;
+static int navNextRepeatTime = 0;
+
+static qboolean UI_IsNavKey( int key ) {
+	switch ( key ) {
+	case K_PAD0_DPAD_UP:
+	case K_PAD0_DPAD_DOWN:
+	case K_PAD0_DPAD_LEFT:
+	case K_PAD0_DPAD_RIGHT:
+	case K_PAD0_LEFTSTICK_UP:
+	case K_PAD0_LEFTSTICK_DOWN:
+	case K_PAD0_LEFTSTICK_LEFT:
+	case K_PAD0_LEFTSTICK_RIGHT:
+		return qtrue;
+	default:
+		return qfalse;
+	}
+}
+
 void Item_RunScript( itemDef_t *item, const char *s );
 void Item_SetupKeywordHash( void );
 void Menu_SetupKeywordHash( void );
@@ -2884,6 +2904,12 @@ void Item_Action( itemDef_t *item ) {
 	}
 }
 
+// Warps the logical cursor to the focused item so mouse-position-gated handlers (listbox/slider) still work.
+static void UI_SyncCursorToItem( itemDef_t *item ) {
+	DC->cursorx = item->window.rect.x + item->window.rect.w / 2;
+	DC->cursory = item->window.rect.y + item->window.rect.h / 2;
+}
+
 itemDef_t *Menu_SetPrevCursorItem( menuDef_t *menu ) {
 	qboolean wrapped = qfalse;
 	int oldCursor = menu->cursorItem;
@@ -2902,6 +2928,7 @@ itemDef_t *Menu_SetPrevCursorItem( menuDef_t *menu ) {
 		}
 
 		if ( Item_SetFocus( menu->items[menu->cursorItem], DC->cursorx, DC->cursory ) ) {
+			UI_SyncCursorToItem( menu->items[menu->cursorItem] );
 			Menu_HandleMouseMove( menu, menu->items[menu->cursorItem]->window.rect.x + 1, menu->items[menu->cursorItem]->window.rect.y + 1 );
 			return menu->items[menu->cursorItem];
 		}
@@ -2935,6 +2962,7 @@ itemDef_t *Menu_SetNextCursorItem( menuDef_t *menu ) {
 		}
 
 		if ( Item_SetFocus( menu->items[menu->cursorItem], DC->cursorx, DC->cursory ) ) {
+			UI_SyncCursorToItem( menu->items[menu->cursorItem] );
 			Menu_HandleMouseMove( menu, menu->items[menu->cursorItem]->window.rect.x + 1, menu->items[menu->cursorItem]->window.rect.y + 1 );
 			return menu->items[menu->cursorItem];
 		}
@@ -2974,6 +3002,23 @@ static void Display_CloseCinematics( void ) {
 
 void  Menus_Activate( menuDef_t *menu ) {
 	menu->window.flags |= ( WINDOW_HASFOCUS | WINDOW_VISIBLE );
+
+	// make sure something is always highlighted the instant a menu opens
+	{
+		int i;
+		qboolean hasFocus = qfalse;
+		for ( i = 0; i < menu->itemCount; i++ ) {
+			if ( menu->items[i]->window.flags & WINDOW_HASFOCUS ) {
+				hasFocus = qtrue;
+				break;
+			}
+		}
+		if ( !hasFocus ) {
+			menu->cursorItem = -1;
+			Menu_SetNextCursorItem( menu );
+		}
+	}
+
 	if ( menu->onOpen ) {
 		itemDef_t item;
 		item.parent = menu;
@@ -3054,6 +3099,8 @@ int UI_SelectForKey(int key)
         case K_PAD0_A:
 		case K_RIGHTARROW:
 		case K_KP_RIGHTARROW:
+		case K_PAD0_DPAD_RIGHT:
+		case K_PAD0_LEFTSTICK_RIGHT:
 		case K_JOY1:
 		case K_JOY2:
 		case K_JOY3:
@@ -3063,6 +3110,8 @@ int UI_SelectForKey(int key)
 		case K_MOUSE2:
 		case K_LEFTARROW:
 		case K_KP_LEFTARROW:
+		case K_PAD0_DPAD_LEFT:
+		case K_PAD0_LEFTSTICK_LEFT:
 			return -1; // previous
 	}
 
@@ -3096,6 +3145,16 @@ void Menu_HandleKey( menuDef_t *menu, int key, qboolean down ) {
 
 	if ( menu == NULL ) {
 		return;
+	}
+
+	// track the currently held D-pad/stick direction for repeat-on-hold (see UI_RunNavRepeat)
+	if ( UI_IsNavKey( key ) ) {
+		if ( down ) {
+			navHeldKey = key;
+			navNextRepeatTime = DC->realTime + (int)DC->getCVarValue( "in_navRepeatDelay" );
+		} else if ( key == navHeldKey ) {
+			navHeldKey = 0;
+		}
 	}
 
 	// see if the mouse is within the window bounds and if so is this a mouse click
@@ -3252,6 +3311,25 @@ void Menu_HandleKey( menuDef_t *menu, int key, qboolean down ) {
 		}
 		break;
 	}
+}
+
+// Re-fires the held D-pad/stick direction while pressed, since gamepad buttons have no OS auto-repeat.
+void UI_RunNavRepeat( int realtime ) {
+	if ( !navHeldKey ) {
+		return;
+	}
+
+	if ( realtime < navNextRepeatTime ) {
+		return;
+	}
+
+	Menu_HandleKey( Menu_GetFocused(), navHeldKey, qtrue );
+	navNextRepeatTime = realtime + (int)DC->getCVarValue( "in_navRepeatInterval" );
+}
+
+// Drops any held-nav-key state; needed when menus close while a direction is still held.
+void UI_ClearNavRepeat( void ) {
+	navHeldKey = 0;
 }
 
 void ToWindowCoords( float *x, float *y, windowDef_t *window ) {

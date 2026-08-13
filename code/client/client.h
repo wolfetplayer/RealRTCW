@@ -482,8 +482,6 @@ extern cvar_t *j_aimassist_recoil;
 
 extern cvar_t *j_invertLook; 
 
-extern cvar_t   *j_uiSpeed;
-extern cvar_t   *j_uiExpo;
 extern cvar_t   *j_uiDeadzone;
 
 extern cvar_t  *cl_timedemo;
@@ -634,7 +632,7 @@ void CL_ShutdownInput( void );
 void CL_SendCmd( void );
 void CL_ClearState( void );
 void CL_ReadPackets( void );
-void CL_GamepadUIMouseMove(void);
+void CL_GamepadUINavigate(void);
 
 void CL_WritePacket( void );
 void IN_CenterView( void );

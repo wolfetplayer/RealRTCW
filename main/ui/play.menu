@@ -720,9 +720,10 @@ itemDef
 		name gameplay
 		group realrtcw_campaign_customize
 		text "@GM_REGEN"
-		type ITEM_TYPE_YESNO
-        textfont UI_FONT_BIG		
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
 		cvar "g_regen"
+		cvarFloatList { "@GM_REGEN_OFF" 0 "@GM_REGEN_FULL" 1 "@GM_REGEN_PARTIAL" 2 }
 		rect 350 270 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142

@@ -1880,7 +1880,7 @@ void FinishSpawningItem( gentity_t *ent ) {
     return;
 	}
 
-	if ( g_regen.integer && ent->item->giType == IT_HEALTH )
+	if ( g_regen.integer == 1 && ent->item->giType == IT_HEALTH )
 	{
     return;
 	}

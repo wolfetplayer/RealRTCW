@@ -166,7 +166,8 @@ translateString_t translateStrings[] = {
 	{"usedshield"}
 };
 
-bonusString_t bonusStrings[] = {
+// sized to MAX_BONUSSTRINGS so trailing slots are free for custom campaign keys to append into
+bonusString_t bonusStrings[MAX_BONUSSTRINGS] = {
 	{"bonus_escape1"},   
 	{"bonus_escape1_alt"},                   
 	{"bonus_escape2"},   

@@ -1,52 +1,80 @@
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7" 						                // escape1
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"
-"\nYou found all the secrets!\nReceived: ^3M1911 Colt^7"                                          // escape2
-"\nYou found all the secrets!\nReceived: ^3M1911 Colt^7"
-"\nbonus_tram"                            															// tram
-"\nbonus_tram_alt"
-"\nYou found all the secrets!\nReceived: ^3Holy Cross^7"										// village1
-"\nYou found all the secrets!\nReceived: ^3Holy Cross^7"
-"\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Panzerfaust^7"					 // crypt1
-"\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Panzerfaust^7"					 
-"\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Holy Cross^7"	                        // crypt 2
-"\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Holy Cross^7"
-"\nYou found all the secrets!\nReceived: ^3Dynamite^7 and ^3Holy Cross^7"				                // church
-"\nYou found all the secrets!\nReceived: ^3Dynamite^7 and ^3Holy Cross^7"
-"\nbonus_boss1"																						// boss1
-"\nbonus_boss1_alt" 
-"\nYou found all the secrets!\nReceived: ^31938 Latour^7 and ^3Snooper Ammo^7"					// forest
-"\nYou found all the secrets!\nReceived: ^31938 Latour^7 and ^3Snooper Ammo^7"					
-"\nYou found all the secrets!\nReceived: ^3.45 Cal Ammo^7"			                                // rocket
-"\nYou found all the secrets!\nReceived: ^3.45 Cal Ammo^7"			                                
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7 and ^3.45 Cal Ammo^7"						// baseout
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7 and ^3.45 Cal Ammo^7"						
-"\nbonus_assault"																					// assault
-"\nbonus_assault_alt"
-"\nYou found all the secrets!\nReceived: ^31938 Latour^7 and ^3.45 Cal Ammo^7"						// sfm
-"\nYou found all the secrets!\nReceived: ^3BAR/Garand Ammo^7 and ^3.45 Cal Ammo^7"
-"\nYou found all the secrets!\nReceived: ^3Health^7, ^3Armored Helmet^7"		                   // factory
-"\nYou found all the secrets!\nReceived: ^3MP44^7"
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7, ^3Panzerfaust^7"	                           // trainyard
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7, ^3Panzerfaust^7"
-"\nYou found all the secrets!"																		// swf
-"\nYou found all the secrets!"
-"\nYou found all the secrets!\nReceived: ^3X-Shield^7"									            // norway
-"\nYou found all the secrets!\nReceived: ^3X-Shield^7"
-"\nYou found all the secrets!\nReceived: ^3EMP Device^7"				                               // xlabs
-"\nYou found all the secrets!\nReceived: ^3EMP Device^7"
-"\nbonus_boss2"																						// boss2
-"\nbonus_boss2_alt"
-"\nYou found all the secrets!\nReceived: ^3.30cal^7"								               // dam
-"\nYou found all the secrets!\nReceived: ^3HDM Pistol^7"
-"\nYou found all the secrets!\nReceived: ^3Flamethrower^7"		                                   // village2
-"\nYou found all the secrets!\nReceived: ^3Flamethrower^7"
-"\nYou found all the secrets!\nReceived: ^3.30cal^7"												// chateau
-"\nYou found all the secrets!\nReceived: ^3.30cal^7"	
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"								        // dark
-"\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"
-"\nYou found all the secrets!\nReceived: ^3Holy Cross^7"                                           // dig
-"\nYou found all the secrets!\nReceived: ^3Holy Cross^7"				                            
-"\nYou found all the secrets!\nReceived: ^3Adrenaline-M4^7"                                         // castle
-"\nYou found all the secrets!\nReceived: ^3Adrenaline-M4^7"
-"\nbonus_end"																						// end
-"\nbonus_end_alt"
+// base game bonus strings - custom campaigns should use bonus_strings_1.txt.._9.txt instead
+{
+	"bonus_escape1"       "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"
+	"bonus_escape1_alt"   "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"
+
+	"bonus_escape2"       "\nYou found all the secrets!\nReceived: ^3M1911 Colt^7"
+	"bonus_escape2_alt"   "\nYou found all the secrets!\nReceived: ^3M1911 Colt^7"
+
+	"bonus_tram"          "\nbonus_tram"
+	"bonus_tram_alt"      "\nbonus_tram_alt"
+
+	"bonus_village1"      "\nYou found all the secrets!\nReceived: ^3Holy Cross^7"
+	"bonus_village1_alt"  "\nYou found all the secrets!\nReceived: ^3Holy Cross^7"
+
+	"bonus_crypt1"        "\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Panzerfaust^7"
+	"bonus_crypt1_alt"    "\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Panzerfaust^7"
+
+	"bonus_crypt2"        "\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Holy Cross^7"
+	"bonus_crypt2_alt"    "\nYou found all the secrets!\nReceived: ^3Medium Health^7 and ^3Holy Cross^7"
+
+	"bonus_church"        "\nYou found all the secrets!\nReceived: ^3Dynamite^7 and ^3Holy Cross^7"
+	"bonus_church_alt"    "\nYou found all the secrets!\nReceived: ^3Dynamite^7 and ^3Holy Cross^7"
+
+	"bonus_boss1"         "\nbonus_boss1"
+	"bonus_boss1_alt"     "\nbonus_boss1_alt"
+
+	"bonus_forest"        "\nYou found all the secrets!\nReceived: ^31938 Latour^7 and ^3Snooper Ammo^7"
+	"bonus_forest_alt"    "\nYou found all the secrets!\nReceived: ^31938 Latour^7 and ^3Snooper Ammo^7"
+
+	"bonus_rocket"        "\nYou found all the secrets!\nReceived: ^3.45 Cal Ammo^7"
+	"bonus_rocket_alt"    "\nYou found all the secrets!\nReceived: ^3.45 Cal Ammo^7"
+
+	"bonus_baseout"       "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7 and ^3.45 Cal Ammo^7"
+	"bonus_baseout_alt"   "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7 and ^3.45 Cal Ammo^7"
+
+	"bonus_assault"       "\nbonus_assault"
+	"bonus_assault_alt"   "\nbonus_assault_alt"
+
+	"bonus_sfm"           "\nYou found all the secrets!\nReceived: ^31938 Latour^7 and ^3.45 Cal Ammo^7"
+	"bonus_sfm_alt"       "\nYou found all the secrets!\nReceived: ^3BAR/Garand Ammo^7 and ^3.45 Cal Ammo^7"
+
+	"bonus_factory"       "\nYou found all the secrets!\nReceived: ^3Health^7, ^3Armored Helmet^7"
+	"bonus_factory_alt"   "\nYou found all the secrets!\nReceived: ^3MP44^7"
+
+	"bonus_trainyard"     "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7, ^3Panzerfaust^7"
+	"bonus_trainyard_alt" "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7, ^3Panzerfaust^7"
+
+	"bonus_swf"           "\nYou found all the secrets!"
+	"bonus_swf_alt"       "\nYou found all the secrets!"
+
+	"bonus_norway"        "\nYou found all the secrets!\nReceived: ^3X-Shield^7"
+	"bonus_norway_alt"    "\nYou found all the secrets!\nReceived: ^3X-Shield^7"
+
+	"bonus_xlabs"         "\nYou found all the secrets!\nReceived: ^3EMP Device^7"
+	"bonus_xlabs_alt"     "\nYou found all the secrets!\nReceived: ^3EMP Device^7"
+
+	"bonus_boss2"         "\nbonus_boss2"
+	"bonus_boss2_alt"     "\nbonus_boss2_alt"
+
+	"bonus_dam"           "\nYou found all the secrets!\nReceived: ^3.30cal^7"
+	"bonus_dam_alt"       "\nYou found all the secrets!\nReceived: ^3HDM Pistol^7"
+
+	"bonus_village2"      "\nYou found all the secrets!\nReceived: ^3Flamethrower^7"
+	"bonus_village2_alt"  "\nYou found all the secrets!\nReceived: ^3Flamethrower^7"
+
+	"bonus_chateau"       "\nYou found all the secrets!\nReceived: ^3.30cal^7"
+	"bonus_chateau_alt"   "\nYou found all the secrets!\nReceived: ^3.30cal^7"
+
+	"bonus_dark"          "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"
+	"bonus_dark_alt"      "\nYou found all the secrets!\nReceived: ^3Flak Jacket^7"
+
+	"bonus_dig"           "\nYou found all the secrets!\nReceived: ^3Holy Cross^7"
+	"bonus_dig_alt"       "\nYou found all the secrets!\nReceived: ^3Holy Cross^7"
+
+	"bonus_castle"        "\nYou found all the secrets!\nReceived: ^3Adrenaline-M4^7"
+	"bonus_castle_alt"    "\nYou found all the secrets!\nReceived: ^3Adrenaline-M4^7"
+
+	"bonus_end"           "\nbonus_end"
+	"bonus_end_alt"       "\nbonus_end_alt"
+}

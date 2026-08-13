@@ -983,23 +983,25 @@ static void CG_LoadTranslationStrings( void ) {
 	}
 }
 
-// a straight dupe right now so I don't mess anything up while adding this
-static void CG_LoadbonusStrings( void ) {
+// key/value format, matched by name instead of position, so multiple files can extend the table
+static void CG_ParseBonusStringsFile( const char *filename, qboolean warnIfMissing ) {
 	char buffer[MAX_BUFFER];
 	char *text;
-	char filename[MAX_QPATH];
 	fileHandle_t f;
 	int len, i, numStrings;
-	char *token;
+	char *token, *value;
+	char key[MAX_QPATH]; // COM_ParseExt reuses one buffer, so copy the key out before parsing the value
 
-	Com_sprintf( filename, MAX_QPATH, "text/bonus_strings.txt" );
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
 	if ( len <= 0 ) {
-		CG_Printf( S_COLOR_RED "WARNING: string translation file (bonus_strings.txt not found in main/text)\n" );
+		if ( warnIfMissing ) {
+			CG_Printf( S_COLOR_RED "WARNING: string translation file (%s not found in main/text)\n", filename );
+		}
 		return;
 	}
 	if ( len > MAX_BUFFER ) {
-		CG_Error( "%s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER );
+		CG_Printf( S_COLOR_RED "WARNING: %s is too big, make it smaller (max = %i bytes)\n", filename, MAX_BUFFER );
+		return;
 	}
 
 	// load the file into memory
@@ -1009,19 +1011,67 @@ static void CG_LoadbonusStrings( void ) {
 	// parse the list
 	text = buffer;
 
+	token = COM_ParseExt( &text, qtrue );
+	if ( token[0] != '{' ) {
+		CG_Printf( S_COLOR_RED "WARNING: expecting '{', found '%s' instead in bonus string file \"%s\"\n", token, filename );
+		return;
+	}
+
 	numStrings = sizeof( bonusStrings ) / sizeof( bonusStrings[0] ) - 1;
 
-	for ( i = 0; i < numStrings; i++ ) {
+	while ( 1 ) {
 		token = COM_ParseExt( &text, qtrue );
 		if ( !token[0] ) {
+			CG_Printf( S_COLOR_RED "WARNING: no concluding '}' in bonus string file \"%s\"\n", filename );
 			break;
 		}
+		if ( token[0] == '}' ) {
+			break;
+		}
+		Q_strncpyz( key, token, sizeof( key ) );
+
+		// existing entry by key, or first free slot
+		for ( i = 0; i < numStrings; i++ ) {
+			if ( !bonusStrings[i].name || !strlen( bonusStrings[i].name ) || !strcmp( bonusStrings[i].name, key ) ) {
+				break;
+			}
+		}
+
+		value = COM_ParseExt( &text, qfalse );
+
+		if ( i >= numStrings ) {
+			CG_Printf( S_COLOR_RED "WARNING: too many bonus strings, ignoring \"%s\" (increase MAX_BONUSSTRINGS)\n", key );
+			continue;
+		}
+
+		if ( !bonusStrings[i].name || !strlen( bonusStrings[i].name ) ) {
 #ifdef Q3_VM // new IORTCW syscall (works for qvms and dlls), but have dlls use vanilla rtcw compatible code
-		bonusStrings[i].localname = (char *)trap_Alloc( strlen( token ) + 1 );
+			bonusStrings[i].name = (char *)trap_Alloc( strlen( key ) + 1 );
 #else
-		bonusStrings[i].localname = (char *)malloc( strlen( token ) + 1 );
+			bonusStrings[i].name = (char *)malloc( strlen( key ) + 1 );
 #endif
-		strcpy( bonusStrings[i].localname, token );
+			strcpy( bonusStrings[i].name, key );
+		}
+
+#ifdef Q3_VM
+		bonusStrings[i].localname = (char *)trap_Alloc( strlen( value ) + 1 );
+#else
+		bonusStrings[i].localname = (char *)malloc( strlen( value ) + 1 );
+#endif
+		strcpy( bonusStrings[i].localname, value );
+	}
+}
+
+// also loads bonus_strings_1.txt.._9.txt, so custom campaigns can add keys without editing the base file
+static void CG_LoadbonusStrings( void ) {
+	char filename[MAX_QPATH];
+	int i;
+
+	CG_ParseBonusStringsFile( "text/bonus_strings.txt", qtrue );
+
+	for ( i = 1; i < 10; i++ ) {
+		Com_sprintf( filename, sizeof( filename ), "text/bonus_strings_%d.txt", i );
+		CG_ParseBonusStringsFile( filename, qfalse );
 	}
 }
 

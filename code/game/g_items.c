@@ -929,6 +929,8 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
 	} else if ( weapon == WP_DELISLESCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_DELISLE );
+	} else if ( weapon == WP_DELISLE ) {
+		COM_BitSet( other->client->ps.weapons, WP_DELISLESCOPE );
 	} else if ( weapon == WP_M1941SCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_M1941 );
 	}
@@ -1029,14 +1031,15 @@ qboolean IsWeaponComplex( weapon_t weapon ) {
 	case WP_GARAND:
 	case WP_FG42:
 	case WP_M1GARAND:
+	case WP_DELISLE:
 
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 	case WP_M7:
+	case WP_DELISLESCOPE:
 
 	// semi complex
 	case WP_SNIPERRIFLE:
-	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
 		return qtrue;
 	default:

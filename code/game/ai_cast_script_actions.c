@@ -1931,6 +1931,12 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params ) {
 		if ( weapon == WP_DELISLESCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLE );
 		}
+        if ( weapon == WP_DELISLE ) {
+         // Only grant DELISLESCOPE if the entity is not an AI
+          if ( !ent->aiCharacter ) {
+            COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLESCOPE );
+          }
+        }
 		if ( weapon == WP_M1941SCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M1941 );
 		}
@@ -2231,6 +2237,12 @@ if ( !Q_strcasecmp (params, "soviet_random") )
 		if ( weapon == WP_DELISLESCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLE );
 		}
+        if ( weapon == WP_DELISLE ) {
+         // Only grant DELISLESCOPE if the entity is not an AI
+          if ( !ent->aiCharacter ) {
+            COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_DELISLESCOPE );
+          }
+        }
 		if ( weapon == WP_M1941SCOPE ) {
 			COM_BitSet( g_entities[cs->entityNum].client->ps.weapons, WP_M1941 );
 		}

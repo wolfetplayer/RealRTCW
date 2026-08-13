@@ -390,6 +390,8 @@ CG_TouchItem
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_MAUSER );
 		} else if ( weapon == WP_M1GARAND ) {
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_M7 );
+		} else if ( weapon == WP_DELISLE ) {
+			COM_BitSet( cg.predictedPlayerState.weapons, WP_DELISLESCOPE );
 		} else if ( weapon == WP_DELISLESCOPE ) {
 			COM_BitSet( cg.predictedPlayerState.weapons, WP_DELISLE );
 		}

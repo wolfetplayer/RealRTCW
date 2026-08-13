@@ -353,15 +353,16 @@ UseHoldableItem
 */
 void UseHoldableItem( gentity_t *ent, int item ) {
 	switch ( item ) {
-	case HI_WINE:           // 1921 Chateu Lafite - gives 25 pts health up to max health
+	case HI_WINE:           // 1921 Chateu Lafite - gives 25 pts health, overheals up to 200% max health in modern mode
 		ent->health += 25;
-		if ( !g_cheats.integer ) 
+		if ( !g_cheats.integer )
 		{
 		steamSetAchievement("ACH_WINE");
 		}
 		if (!g_decaychallenge.integer){
-		if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+		int wineCap = ( g_overheal.integer == 1 ) ? ent->client->ps.stats[STAT_MAX_HEALTH] * 2 : ent->client->ps.stats[STAT_MAX_HEALTH];
+		if ( ent->health > wineCap ) {
+			ent->health = wineCap;
 		}
 		}
 		break;
@@ -468,16 +469,17 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 
 		break;
 
-	case HI_BANDAGES:       
+	case HI_BANDAGES:
 		ent->health += 20;
-		if ( !g_cheats.integer ) 
+		if ( !g_cheats.integer )
 		{
 		steamSetAchievement("ACH_BANDAGES");
 		}
 
 		if (!g_decaychallenge.integer){
-		if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-		ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+		int bandageCap = ( g_overheal.integer == 1 ) ? ent->client->ps.stats[STAT_MAX_HEALTH] * 2 : ent->client->ps.stats[STAT_MAX_HEALTH];
+		if ( ent->health > bandageCap ) {
+		ent->health = bandageCap;
 		}
 		}
 		break;
@@ -1382,11 +1384,16 @@ int Pickup_Health( gentity_t *ent, gentity_t *other ) {
 	int max;
 	int quantity = 0;
 
-	// small and mega healths will go over the max
-	if ( ent->item->quantity != 5 && ent->item->quantity != 100  ) {
-		max = other->client->ps.stats[STAT_MAX_HEALTH];
-	} else {
+	if ( g_overheal.integer == 1 ) {
+		// modern: any health pickup can overheal up to 200% max health
 		max = other->client->ps.stats[STAT_MAX_HEALTH] * 2;
+	} else {
+		// classic: only small and mega healths go over the max
+		if ( ent->item->quantity != 5 && ent->item->quantity != 100 ) {
+			max = other->client->ps.stats[STAT_MAX_HEALTH];
+		} else {
+			max = other->client->ps.stats[STAT_MAX_HEALTH] * 2;
+		}
 	}
 
 	if ( ent->count ) {

@@ -1288,6 +1288,7 @@ extern vmCvar_t g_spawnxshepherds;
 extern vmCvar_t g_aicanheadshot;
 extern vmCvar_t g_realism;
 extern vmCvar_t g_regen;
+extern vmCvar_t g_overheal;
 extern vmCvar_t	g_flushItems;
 extern vmCvar_t g_vanilla_guns;
 extern vmCvar_t g_specialWaves;

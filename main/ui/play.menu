@@ -493,7 +493,7 @@ itemDef
 	itemDef {
 	    name gowindow
 	    group realrtcw_campaign_customize
-	    rect 320 102 350 330	
+	    rect 320 102 350 345
 	    style WINDOW_STYLE_FILLED
 	    border 1
 	    bordercolor .5 .5 .5 .5
@@ -519,7 +519,7 @@ itemDef
 	itemDef {
 		name gowindow3
 		group realrtcw_campaign_customize
-		rect 322 298 346 20	
+		rect 322 313 346 20
 		style WINDOW_STYLE_FILLED
 		border 1
 		bordercolor .1 .1 .1 .2
@@ -732,7 +732,26 @@ itemDef
 		style WINDOW_STYLE_FILLED
 		backcolor 1 1 1 .07
 		forecolor 1 1 1 1
-		visible 0 
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group realrtcw_campaign_customize
+		text "@GM_OVERHEAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_overheal"
+		cvarFloatList { "@GM_OVERHEAL_CLASSIC" 0 "@GM_OVERHEAL_MODERN" 1 }
+		rect 350 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
     }
 	
 		itemDef {
@@ -742,7 +761,7 @@ itemDef
 		text "@HUD_STYLE"
 		cvar "cg_hudstyle"
 		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
-		rect 350 285 290 12
+		rect 350 300 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textfont UI_FONT_BIG
 		textalignx 142
@@ -761,7 +780,7 @@ itemDef
 	    textscale .25
 		decoration
 	    style WINDOW_STYLE_FILLED
-	    rect 475 297 290 12
+	    rect 475 312 290 12
 	    textalign 1
 		textfont UI_FONT_BIG
 	    textalignx 22
@@ -778,7 +797,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_WORLDTEXTURES"
 		cvar "fs_hd_worldtextures"
-		rect 350 320 290 12
+		rect 350 335 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -796,7 +815,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_WORLDMODELS"
 		cvar "fs_hd_worldmodels"
-		rect 350 335 290 12
+		rect 350 350 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -814,7 +833,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_CHARACTERS"
 		cvar "fs_hd_characters"
-		rect 350 350 290 12
+		rect 350 365 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -832,7 +851,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_SOUNDS"
 		cvar "fs_hd_sounds"
-		rect 350 365 290 12
+		rect 350 380 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -850,7 +869,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_ICONS"
 		cvar "fs_hd_icons"
-		rect 350 380 290 12
+		rect 350 395 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -869,7 +888,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_MAPS"
 		cvar "fs_re_maps"
-		rect 350 395 290 12
+		rect 350 410 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -887,7 +906,7 @@ itemDef
       	type ITEM_TYPE_YESNO
 		text "@HDASSETS_DEPACK"
 		cvar "fs_de_pack"
-		rect 350 410 290 12
+		rect 350 425 290 12
       	textalign ITEM_ALIGN_RIGHT
       	textalignx 142
       	textaligny 10
@@ -903,11 +922,11 @@ itemDef
 		name content_packs
 		textfont UI_FONT_BIG
 		text "@SYSTEM_APPLY"
-		type 1	
+		type 1
 		textscale .25
 		style WINDOW_STYLE_FILLED
         group realrtcw_campaign_customize
-		rect 440 440 100 20
+		rect 440 455 100 20
 		textalign 1
 		textalignx 50
 		textaligny 15

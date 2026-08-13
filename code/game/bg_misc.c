@@ -39,9 +39,11 @@ If you have questions concerning this license or the applicable additional terms
 
 #ifdef CGAMEDLL
 extern vmCvar_t cg_gameType;
+extern vmCvar_t cg_overheal;
 #endif
 #ifdef GAMEDLL
 extern vmCvar_t g_gametype;
+extern vmCvar_t g_overheal;
 #endif
 
 // New ET vehicle path system
@@ -7920,8 +7922,22 @@ qboolean    BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *
 			return qfalse;
 		}
 
-		if ( ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH] ) {
-			return qfalse;
+		{
+			int overhealCap = ps->stats[STAT_MAX_HEALTH];
+			#ifdef GAMEDLL
+				if ( g_overheal.integer == 1 ) {
+			#endif
+			#ifdef CGAMEDLL
+				if ( cg_overheal.integer == 1 ) {
+			#endif
+					overhealCap = ps->stats[STAT_MAX_HEALTH] * 2;
+			#if defined( GAMEDLL ) || defined( CGAMEDLL )
+				}
+			#endif
+
+			if ( ps->stats[STAT_HEALTH] >= overhealCap ) {
+				return qfalse;
+			}
 		}
 		return qtrue;
 

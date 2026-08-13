@@ -168,6 +168,7 @@ vmCvar_t g_endmapbonus;
 vmCvar_t g_randomweapons;
 vmCvar_t g_realism;
 vmCvar_t g_regen;
+vmCvar_t g_overheal;
 vmCvar_t g_flushItems;	// items land depending on the slope thy're on
 vmCvar_t g_midgame;
 vmCvar_t g_vanilla_guns;
@@ -225,6 +226,7 @@ cvarTable_t gameCvarTable[] = {
 	{&g_randomweapons, "g_randomweapons", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_realism, "g_realism", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_regen, "g_regen", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+	{&g_overheal, "g_overheal", "0", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_vanilla_guns, "g_vanilla_guns", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

@@ -469,11 +469,6 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 
 		R_IssuePendingRenderCommands();
 		R_SetColorMappings();
-
-		if (!glConfig.deviceSupportsGamma)
-		{
-			ri.Printf(PRINT_ALL, "Brightness changes require vid_restart with SDL3 OpenGL1 software gamma\n");
-		}
 	}
 
 	// check for errors

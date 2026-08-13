@@ -1172,9 +1172,9 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	m->damage = 0;  // Ridah, grenade's don't explode on contact
 	m->splashDamage *= s_quadFactor;
 
-	if ( grenType == WP_POISONGAS ) 
+	if ( grenType == WP_POISONGAS )
 	{
-            m->s.effect1Time = 30;
+            m->s.effect1Time = 16;
             m->think = G_PoisonGas2Explode;
             m->poisonGasAlarm  = level.time + SMOKEBOMB_GROWTIME;
 			m->poisonGasRadius          = ammoTable[WP_POISONGAS].playerSplashRadius;
@@ -1185,7 +1185,7 @@ gentity_t *weapon_grenadelauncher_fire( gentity_t *ent, int grenType ) {
 	// Arnout: override for smoke gren
 
 	if ( grenType ==  WP_SMOKE_BOMB ) {
-		m->s.effect1Time = 30;
+		m->s.effect1Time = 16;
 		m->think = weapon_smokeBombExplode;
 	}
 

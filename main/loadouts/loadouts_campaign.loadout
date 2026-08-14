@@ -29,6 +29,32 @@ loadout village1
 		giveinventory key_binocs
 }
 
+loadout boss1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		
+		setammo ammo_9mm 300
+		setammo ammo_792mm 100
+		
+		setammo ammo_grenades 10
+		
+		setclip weapon_mp40 full
+		setclip weapon_luger full
+		setclip weapon_mauserrifle full
+		
+		setarmor 50
+		
+		selectweapon weapon_mp40
+		
+		giveinventory key_binocs
+}
+
 // Forest + Malta_1
 loadout forest_vanilla_1
 {

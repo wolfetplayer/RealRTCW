@@ -2756,6 +2756,8 @@ $(B)/$(BASEGAME)/vm/qagame.sp.qvm: $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm $(Q3ASM)
 #############################################################################
 
 Q3UIOBJ_ = \
+  $(B)/$(BASEGAME)/ui/steam.o \
+  $(B)/$(BASEGAME)/ui/steamshim_child.o \
   $(B)/$(BASEGAME)/ui/ui_main.o \
   $(B)/$(BASEGAME)/ui/ui_atoms.o \
   $(B)/$(BASEGAME)/ui/ui_gameinfo.o \
@@ -2807,6 +2809,12 @@ $(B)/$(BASEGAME)/game/%.o: $(STEAMSHIMDIR)/%.c
 
 $(B)/$(BASEGAME)/game/%.o: $(STEAMDIR)/%.c
 	$(DO_GAME_CC)
+
+$(B)/$(BASEGAME)/ui/%.o: $(STEAMSHIMDIR)/%.c
+	$(DO_UI_CC)
+
+$(B)/$(BASEGAME)/ui/%.o: $(STEAMDIR)/%.c
+	$(DO_UI_CC)
 
 #############################################################################
 ## CLIENT/SERVER RULES

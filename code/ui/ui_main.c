@@ -39,6 +39,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "ui_local.h"
+#include "../steam/steam.h"
 
 uiInfo_t uiInfo;
 
@@ -4792,6 +4793,8 @@ static void UI_RunMenuScript( char **args ) {
 			trap_Cvar_Set( "com_recommendedSet", "1" );                   // NERVE - SMF
 			trap_Cmd_ExecuteText( EXEC_APPEND, "vid_restart\n" );
 // end from MP
+		} else if ( Q_stricmp( name, "ResetSteamStats" ) == 0 ) {
+			steamResetStats( 1 );
 		} else if ( Q_stricmp( name, "getCDKey" ) == 0 ) {
 			char out[17];
 			trap_GetCDKey( buff, 17 );
@@ -7031,6 +7034,8 @@ void _UI_Init( qboolean inGameLoad ) {
 	const char *menuSet;
 
 	//uiInfo.inGameLoad = inGameLoad;
+
+	steamInit();
 
 	UI_RegisterCvars();
 	UI_InitMemory();

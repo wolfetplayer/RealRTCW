@@ -365,12 +365,30 @@ itemDef
 		itemDef {
 		name gameplay
 		group campOptions
+		text "@GM_FALLOFF"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG
+		cvar "g_weaponfalloff"
+		rect			295 335 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
 		text "@GM_REGEN"
 		type ITEM_TYPE_MULTI
         textfont UI_FONT_BIG
 		cvar "g_regen"
 		cvarFloatList { "@GM_REGEN_OFF" 0 "@GM_REGEN_FULL" 1 "@GM_REGEN_PARTIAL" 2 }
-		rect			295 335 290 12
+		rect			295 350 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142
 		textaligny 10
@@ -389,7 +407,7 @@ itemDef
         textfont UI_FONT_BIG
 		cvar "g_overheal"
 		cvarFloatList { "@GM_OVERHEAL_CLASSIC" 0 "@GM_OVERHEAL_MODERN" 1 }
-		rect			295 350 290 12
+		rect			295 365 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142
 		textaligny 10
@@ -407,7 +425,7 @@ itemDef
 		text "@HUD_STYLE"
 		cvar "cg_hudstyle"
 		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
-		rect			295 365 290 12
+		rect			295 380 290 12
 		textalign ITEM_ALIGN_RIGHT
 		textfont UI_FONT_BIG
 		textalignx 142
@@ -426,7 +444,7 @@ itemDef
 		type 1
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
-		rect			295 382 290 16
+		rect			295 397 290 16
 		textalignx 145
 		textaligny 12
 		textscale .24

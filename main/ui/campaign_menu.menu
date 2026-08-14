@@ -16,6 +16,7 @@
 		backcolor 0 0 0 0
 
 	onOpen {
+		setcvar g_gameskill 2 ;
 		uiScript loadCampaignArenas ;
 		setitemcolor fadebox backcolor 0 0 0 1 ;
 		fadeout fadebox ;

@@ -1,0 +1,524 @@
+//
+//AI scripting
+//cutscene 19 end bj
+//09/11/01
+//last edited by jeremy
+//
+
+player
+{
+	spawn
+	{
+//		mu_fade 0 1000
+//		mu_queue sound/music/l_theme
+//		trigger counter1 cinematic1
+//		trigger player cine19_cam6
+//		trigger director talk1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/l_briefing_2
+		trigger counter1 cinematic1
+		trigger player cine19_cam1a
+//		trigger player cine19_cam6		
+	}
+
+	trigger cine19_cam1a
+	{
+		startcamblack cs19_05
+	}
+
+	trigger cine19_cam1
+	{
+		startcam cs_01
+	}
+
+	trigger cine19_cam2
+	{
+		startcam cs_02
+	}
+
+	trigger cine19_cam3
+	{
+		startcam cs_03
+	}
+
+	trigger cine19_cam4
+	{
+		startcam cs_04
+	}
+
+	trigger cine19_cam5
+	{
+		startcam cs_05
+	}
+
+	trigger cine19_cam6
+	{
+		startcam cs_06
+	}
+
+	trigger cine19_cam6d
+	{
+		startcam cs_06d
+	}
+
+	trigger cine19_cam7
+	{
+		startcam cs_07
+	}
+
+	trigger cine19_cam8
+	{
+		startcam cs_08
+	}
+
+	trigger cine19_cam9
+	{
+		startcam cs_09
+	}
+
+	trigger cine19_cam9d
+	{
+		startcam cs_09d
+	}
+
+	trigger cine19_cam10
+	{
+		startcam cs_10
+	}
+
+	trigger cine19_cam11
+	{
+		startcam cs_11
+	}
+
+	trigger cine19_cam12
+	{
+		startcam cs_12
+	}
+
+	trigger cine19_cam13
+	{
+		startcam cs_13
+	}
+
+	trigger cine19_cam14
+	{
+		startcam cs_14
+	}
+
+	trigger cine19_cam15
+	{
+		startcam cs_15
+	}
+
+	trigger cine19_cam16
+	{
+		startcam cs_16
+	}
+
+	trigger cine19_cam17
+	{
+		startcam cs_17
+	}
+
+	trigger cine19_cam17d
+	{
+		startcam cs_17d
+	}
+
+	trigger cine19_cam18
+	{
+		startcam cs_18
+	}
+
+	trigger cine19_cam19
+	{
+		startcam cs_19
+	}
+
+	trigger cine19_cam20
+	{
+		startcam cs_20
+	}
+
+	trigger cine19_cam21
+	{
+		startcam cs_21
+	}
+
+	trigger cine19_cam22
+	{
+		startcam cs_22
+	}
+
+	trigger cine19_cam24
+	{
+		startcam cs_24
+	}
+
+	trigger cine19_cam25
+	{
+		startcam cs_25
+	}
+
+	trigger cine19_bjcam1
+	{
+		startcamblack cs19_01
+	}
+
+	trigger cine19_bjcam2
+	{
+		startcam cs19_02
+	}
+
+	trigger cine19_bjcam2d
+	{
+		startcam cs19_02d
+	}
+
+	trigger endmap
+	{
+		#if g_midgame == 0
+        changelevel gamefinished 4000
+		#endif
+		
+		#if g_midgame == 1
+		changelevel malta_5 silent 4000 persistent
+		#endif
+	}
+
+	trigger camerainterrupt
+	{
+//		trigger checker1 end_cine1
+//		trigger bj go1		
+	}
+}
+
+director
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+		// wait forever 0 target1
+//		wait 2000
+//		trigger director talk1
+	}
+
+	trigger talk1
+	{
+		playsound cs19_director_1	// 
+//		wait 1300 
+//		trigger jack go
+//		wait 5000
+//		trigger jack anim_loop2
+//		wait 5 
+//		trigger jack talk1
+	}
+
+	trigger talk2
+	{
+		playsound cs19_director_2	// 
+//		wait 7200
+//		clearanim
+//		trigger jack anim_loop2
+//		wait 5
+//		trigger jack talk2
+	}
+
+	trigger talk3
+	{
+		playsound cs19_director_3	// 
+		wait 13550
+		clearanim
+	}
+
+	trigger talk4
+	{
+		playsound cs19_director_4	// 
+	}
+
+	trigger talk5
+	{
+		playsound cs19_director_5	// 
+	}
+
+	trigger talk6
+	{
+		playsound cs19_director_6	// 
+	}
+
+	trigger reset	// This is used so that this AI does not jerk in the last camera (fade to black).
+	{
+		playanim seated both forever
+	}
+
+	trigger anim_loop2
+	{
+		playanim seated_2 both
+	}
+}
+
+jack
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		nosight 999999
+		noavoid
+		wait 5
+		explicit_routing on
+		clearanim
+		resetscript
+		headlook off
+	}
+
+	trigger go
+	{
+		clearanim
+		resetscript
+		walktomarker jspot1 nostop
+		walktomarker jspot2
+	}
+
+	trigger talk1
+	{
+		playsound cs19_jack_1	// 
+//		wait 1300
+//		clearanim
+//		trigger director talk2
+	}
+
+	trigger talk2
+	{
+		playsound cs19_jack_2	// 
+		wait 800
+		clearanim
+//		trigger director talk3
+	}
+
+	trigger talk3
+	{
+		playsound cs19_jack_3	//
+	}
+
+	trigger talk4
+	{
+		playsound cs19_jack_4	//
+	}
+
+	trigger anim_loop1
+	{
+		playanim talking_1 torso 
+//		trigger jack anim_loop1
+	}
+
+	trigger anim_loop2
+	{
+		playanim talking_2 torso
+//		trigger jack anim_loop2
+	}
+
+	trigger anim_loop3
+	{
+		playanim talking_3 both
+	}
+
+	trigger anim_loop4
+	{
+		playanim talking_4 both
+	}
+
+}
+
+bj
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+//		trigger bj go1
+	}
+
+	trigger go1
+	{
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar 50
+		selectweapon weapon_bar
+		wait 500
+		alertentity dust1 
+		wait 500
+		alertentity dust1 
+		wait 500
+		alertentity dust2
+		trigger nazi1 talk1
+		trigger nazi2 talk2
+		alertentity dust2
+		wait 500
+		trigger nazi1 talk1
+		wait 500
+		alertentity dust2
+		wait 500	
+		wait 1700
+//		trigger nazi1 talk1
+//		wait 4700 		// og 4700
+//		runtomarker bj_spot1
+//		alertentity tr_func
+//		wait 700
+//		alertentity tl_func
+//		trigger player cine19_bjcam2
+//		wait 600
+//		alertentity br_func
+//		alertentity bl_func
+		trigger player cine19_bjcam2
+		wait 250
+		runtomarker bj_spot1
+		alertentity tr_func
+//		wait 700
+		alertentity tl_func
+//		alertentity dust4
+//		trigger player cine19_bjcam2
+//		wait 600
+		alertentity br_func
+		alertentity bl_func
+		trigger counter1 bj_anim_and_sound
+	}
+
+	trigger fire_anim
+	{
+		playanim firing both holdframe
+	}
+
+	trigger fire1
+	{
+		fireattarget top_left 3000
+		fireattarget top_right 1000		// og time 3000
+		clearanim
+		trigger bj jump_anim
+	}
+
+	trigger fire2
+	{
+//		alertentity kill_bj		moved further down the event so Bj is killed at the right time
+		fireattarget top_left 1800		// og time 1000
+		alertentity left_death
+//		fireattarget top_left 1200		// og time 500
+		alertentity right_death
+		alertentity right_pain
+		clearanim
+		trigger bj jump_anim
+	}
+
+	trigger fire3
+	{
+		fireattarget top_left 3000
+		wait 3000
+		fireattarget top_right
+		wait 3000
+	}
+
+	trigger jump_anim
+	{
+		playanim jumping both
+//		wait 2200
+//		alertentity kill_bj1a		// newly added 10 29 2001
+//		trigger player endmap
+	}
+}
+
+nazi1
+{
+	attributes
+	{
+		alertness 0
+		hearing_scale 0
+	}
+
+	spawn
+	{
+//		wait 5000		// for debug
+		nosight 99999
+		statetype alert
+		facetargetangles n1_spot1
+		trigger nazi1 go1
+	}
+
+	trigger go1
+	{
+		wait 1500 0 
+		explicit_routing on
+		runtomarker n1_spot1 nostop
+		runtomarker n2_spot2 nostop
+		runtomarker n2_spot3 nostop
+		runtomarker nazi2_spot5
+		alertentity kill_nazi1
+	}
+
+	trigger talk1
+	{
+		playsound Miscschnell
+	}
+
+	death
+	{
+	}
+}
+
+nazi2
+{
+	attributes
+	{
+		alertness 0
+		hearing_scale 0
+	}
+
+	spawn
+	{
+//		wait 5000 		// for debug
+		wait 200
+		nosight 99999
+		statetype alert
+		facetargetangles n2_spot2
+		trigger nazi2 go1
+	}
+
+	trigger go1
+	{
+//		runtomarker n2_spot1
+		explicit_routing on
+		runtomarker n2_spot2 nostop
+		runtomarker n2_spot3 nostop
+		runtomarker nazi2_spot4
+		alertentity kill_nazi2
+
+	}
+
+	trigger talk1
+	{
+		playsound Miscschnell
+	}
+
+	trigger talk2
+	{
+		playsound cs19_soldiers_running
+	}
+
+	death
+	{
+	}
+}

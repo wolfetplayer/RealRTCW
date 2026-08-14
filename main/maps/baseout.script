@@ -1,0 +1,682 @@
+//
+//Brush Scripting
+//Map: Base Out
+//Last edited by: Mike (110501)
+//
+
+counter1
+{
+	spawn
+	{
+		accum 0 set 1	// Used so that AI_CHECK does not get used more than once.
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		accum 5 set 0
+		accum 6 set 0
+		accum 7 set 1	// Used to see whether the player blew up the radar or not.
+	}
+
+	trigger player_on_mg42_1
+	{
+		trigger nazi6 callpanzer
+		wait 5
+		trigger nazi7 callpanzer
+		wait 5
+		trigger nazi8 callpanzer
+		wait 5
+		trigger nazi9 callpanzer
+		wait 5
+		trigger nazi10 callpanzer
+		wait 5
+		trigger nazi11 callpanzer
+		wait 5
+		trigger nazi12 callpanzer
+		wait 5
+		trigger nazi13 callpanzer
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+
+	trigger ai_check
+	{
+		accum 0 abort_if_equal 0
+		accum 0 set 0
+		wait 5
+		trigger counter1 player_on_mg42_1		
+	}
+
+	trigger checkmg42
+	{
+		alertentity mg42_1_checker
+		wait 1000
+		alertentity kill_mg42_1_checker
+	}
+
+	trigger nazi_died	// If Nazi6-13 die, they will trigger this so that everyone else in the group evades.
+	{
+		accum 6 abort_if_equal 1
+		accum 6 set 1
+		trigger nazi6 choose_evade_tunnel
+		trigger nazi7 choose_evade_tunnel
+		trigger nazi8 choose_evade_tunnel
+		trigger nazi9 choose_evade_tunnel
+		trigger nazi10 choose_evade_tunnel
+		trigger nazi11 choose_evade_tunnel
+		trigger nazi12 choose_evade_tunnel
+		trigger nazi13 choose_evade_tunnel
+	}
+
+	trigger inc1by1
+	{
+		accum 1 inc 1
+	}
+
+	trigger inc2by1
+	{
+		accum 2 inc 1
+	}
+
+	trigger inc3by1
+	{
+		accum 3 inc 1
+	}
+
+	trigger inc4by1
+	{
+		accum 4 inc 1
+	}
+
+	trigger go_way_before_tunnel
+	{
+		accum 5 abort_if_equal 1
+		accum 5 set 1
+		wait 7000
+		trigger counter1 n13_go_way_before_tunnel
+		wait 5
+		trigger counter1 n9_go_way_before_tunnel
+		wait 5
+		trigger counter1 n8_go_way_before_tunnel
+		wait 5
+		trigger counter1 n6_go_way_before_tunnel
+		resetscript
+	}
+
+	trigger n13_go_way_before_tunnel
+	{
+		accum 1 abort_if_equal 1
+		resetscript
+		trigger nazi13 go_way_before_tunnel
+		wait 7000
+		trigger counter1 n9_go_way_before_tunnel
+		wait 5
+		trigger counter1 n8_go_way_before_tunnel
+		wait 5
+		trigger counter1 n6_go_way_before_tunnel
+		resetscript
+	}
+
+	trigger n9_go_way_before_tunnel
+	{
+		accum 2 abort_if_equal 2
+		resetscript
+		trigger nazi9 go_way_before_tunnel
+		trigger nazi12 go_way_before_tunnel
+		wait 7000
+		trigger counter1 n8_go_way_before_tunnel
+		wait 5
+		trigger counter1 n6_go_way_before_tunnel
+		resetscript
+	}
+
+	trigger n8_go_way_before_tunnel
+	{
+		accum 3 abort_if_equal 2
+		resetscript
+		trigger nazi8 go_way_before_tunnel
+		trigger nazi11 go_way_before_tunnel
+		wait 7000
+		trigger counter1 n6_go_way_before_tunnel
+	}
+
+	trigger n6_go_way_before_tunnel
+	{
+		accum 4 abort_if_equal 3
+		resetscript
+		trigger nazi6 go_way_before_tunnel
+		trigger nazi10 go_way_before_tunnel
+		trigger nazi7 go_way_before_tunnel
+		resetscript
+	}
+
+	trigger go_before_tunnel
+	{
+		accum 5 abort_if_equal 1
+		accum 5 set 1
+		wait 7000
+		trigger counter1 n13_go_before_tunnel
+		wait 5
+		trigger counter1 n9_go_before_tunnel
+		wait 5
+		trigger counter1 n8_go_before_tunnel
+		wait 5
+		trigger counter1 n6_go_before_tunnel
+		resetscript
+	}
+
+	trigger n13_go_before_tunnel
+	{
+		accum 1 abort_if_equal 1
+		resetscript
+		trigger nazi13 go_before_tunnel
+		wait 7000
+		trigger counter1 n9_go_before_tunnel
+		wait 5
+		trigger counter1 n8_go_before_tunnel
+		wait 5
+		trigger counter1 n6_go_before_tunnel
+		resetscript
+	}
+
+	trigger n9_go_before_tunnel
+	{
+		accum 2 abort_if_equal 2
+		resetscript
+		trigger nazi9 go_before_tunnel
+		trigger nazi12 go_before_tunnel
+		wait 7000
+		trigger counter1 n8_go_before_tunnel
+		wait 5
+		trigger counter1 n6_go_before_tunnel
+		resetscript
+	}
+
+	trigger n8_go_before_tunnel
+	{
+		accum 3 abort_if_equal 2
+		resetscript
+		trigger nazi8 go_before_tunnel
+		trigger nazi11 go_before_tunnel
+		wait 7000
+		trigger counter1 n6_go_before_tunnel
+	}
+
+	trigger n6_go_before_tunnel
+	{
+		accum 4 abort_if_equal 3
+		resetscript
+		trigger nazi6 go_before_tunnel
+		trigger nazi10 go_before_tunnel
+		trigger nazi7 go_before_tunnel
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		accum 5 abort_if_equal 1
+		accum 5 set 1
+		wait 7000
+		trigger counter1 n13_go_in_tunnel
+		wait 5
+		trigger counter1 n9_go_in_tunnel
+		wait 5
+		trigger counter1 n8_go_in_tunnel
+		wait 5
+		trigger counter1 n6_go_in_tunnel
+		resetscript
+	}
+
+	trigger n13_go_in_tunnel
+	{
+		accum 1 abort_if_equal 1
+		resetscript
+		trigger nazi13 go_in_tunnel
+		wait 7000
+		trigger counter1 n9_go_in_tunnel
+		wait 5
+		trigger counter1 n8_go_in_tunnel
+		wait 5
+		trigger counter1 n6_go_in_tunnel
+		resetscript
+	}
+
+	trigger n9_go_in_tunnel
+	{
+		accum 2 abort_if_equal 2
+		resetscript
+		trigger nazi9 go_in_tunnel
+		trigger nazi12 go_in_tunnel
+		wait 7000
+		trigger counter1 n8_go_in_tunnel
+		wait 5
+		trigger counter1 n6_go_in_tunnel
+		resetscript
+	}
+
+	trigger n8_go_in_tunnel
+	{
+		accum 3 abort_if_equal 2
+		resetscript
+		trigger nazi8 go_in_tunnel
+		trigger nazi11 go_in_tunnel
+		wait 7000
+		trigger counter1 n6_go_in_tunnel
+	}
+
+	trigger n6_go_in_tunnel
+	{
+		accum 4 abort_if_equal 3
+		resetscript
+		trigger nazi6 go_in_tunnel
+		trigger nazi10 go_in_tunnel
+		trigger nazi7 go_in_tunnel
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		wait 7000
+		trigger counter1 n13_go_after_tunnel
+		wait 5
+		trigger counter1 n9_go_after_tunnel
+		wait 5
+		trigger counter1 n8_go_after_tunnel
+		wait 5
+		trigger counter1 n6_go_after_tunnel
+		resetscript
+	}
+
+	trigger n13_go_after_tunnel
+	{
+		accum 1 abort_if_equal 1
+		resetscript
+		trigger nazi13 go_after_tunnel
+		wait 7000
+		trigger counter1 n9_go_after_tunnel
+		wait 5
+		trigger counter1 n8_go_after_tunnel
+		wait 5
+		trigger counter1 n6_go_after_tunnel
+		resetscript
+	}
+
+	trigger n9_go_after_tunnel
+	{
+		accum 2 abort_if_equal 2
+		resetscript
+		trigger nazi9 go_after_tunnel
+		trigger nazi12 go_after_tunnel
+		wait 7000
+		trigger counter1 n8_go_after_tunnel
+		wait 5
+		trigger counter1 n6_go_after_tunnel
+		resetscript
+	}
+
+	trigger n8_go_after_tunnel
+	{
+		accum 3 abort_if_equal 2
+		resetscript
+		trigger nazi8 go_after_tunnel
+		trigger nazi11 go_after_tunnel
+		wait 7000
+		trigger counter1 n6_go_after_tunnel
+	}
+
+	trigger n6_go_after_tunnel
+	{
+		accum 4 abort_if_equal 3
+		resetscript
+		trigger nazi6 go_after_tunnel
+		trigger nazi10 go_after_tunnel
+		trigger nazi7 go_after_tunnel
+		resetscript
+	}
+
+	trigger action9
+	{
+		wait 2000
+		trigger nazi31 go1
+		trigger nazi32 go1
+	}
+
+	trigger action9a
+	{
+		wait 2000
+		trigger nazi31 go2
+		trigger nazi32 go2
+	}
+
+	trigger set7to0
+	{
+		accum 7 set 0
+	}
+
+	trigger check_radar
+	{
+		trigger counter1 radar_gone
+		wait 5
+		trigger counter1 radar_alive
+	}
+
+	trigger radar_gone
+	{
+		accum 7 abort_if_equal 1
+	}
+
+	trigger radar_alive
+	{
+		accum 7 abort_if_equal 0
+	}
+}
+
+radar
+{
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		trigger radar rotateloop 
+	}
+
+	trigger rotateloop
+	{
+		faceangles 0 90 0 1000
+		accum 1 set 2
+		trigger radar choosefall
+		faceangles 0 180 0 1000
+		accum 1 set 3
+		trigger radar choosefall
+		faceangles 0 270 0 1000
+		accum 1 set 4
+		trigger radar choosefall
+		faceangles 0 360 0 1000
+		accum 1 set 1
+		trigger radar choosefall
+		trigger radar rotateloop
+	}
+
+	trigger blow
+	{
+		accum 0 bitset 0
+	}
+
+	trigger choosefall
+	{
+		accum 0 abort_if_not_bitset 0
+		trigger counter1 set7to0
+		alertentity nazi34
+		alertentity nazi35
+		alertentity nazi36
+		alertentity nazi37
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_33 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_34 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_35 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_36 #endif
+		alertentity radarsmoke1
+		resetscript
+		trigger radar fall1
+		wait 5
+		trigger radar fall2
+		wait 5
+		trigger radar fall3
+		wait 5
+		trigger radar fall4
+	}
+	
+	trigger fall1
+	{
+		accum 1 abort_if_not_equal 1
+		faceangles 0 0 20 400
+		faceangles 0 0 40 300
+		faceangles 0 0 60 200
+		faceangles 0 0 80 100
+		gotomarker radarspot2 300 accel
+		faceangles 0 0 96 gototime
+		gotomarker radarspot3 300
+		faceangles 0 0 108 gototime
+		gotomarker radarspot4 300
+		faceangles 0 0 122 gototime
+		gotomarker radarspot5 300
+		faceangles 0 0 132 gototime
+		gotomarker radarspot6 300
+		faceangles 0 0 144 gototime
+		trigger radardebris1 go
+		trigger radardebris2 go
+		trigger radardebris3 go
+		trigger radardebris4 go
+		trigger radardebris5 go
+		trigger radardebris6 go
+		trigger radardebris7 go
+		trigger radardebris8 go
+		trigger radardebris9 go
+		alertentity blowfence
+		alertentity radarexplode1
+		gotomarker radarspot7 400
+		faceangles 0 0 152 gototime
+		gotomarker radarspot8 450
+		faceangles 0 0 156 gototime
+		gotomarker radarspot9 500
+		faceangles 0 0 159 gototime
+		gotomarker radarspot10 600
+		faceangles 0 0 162 gototime
+		gotomarker radarspot11 700
+		faceangles 0 0 164 gototime
+		gotomarker radarspot12 800
+		faceangles 0 0 166 gototime
+		trigger radar fall1b
+	}
+
+	trigger fall1b
+	{
+		gotomarker radarspot13 900
+		faceangles 0 0 168 gototime
+		gotomarker radarspot14 1000
+		faceangles 0 0 170 gototime
+		gotomarker radarspot15 1100
+		faceangles 0 0 174 gototime
+		gotomarker radarspot16 1200
+		faceangles 0 0 178 gototime
+		gotomarker radarspot17 1200
+		faceangles 0 0 182 gototime
+		gotomarker radarspot18 1200
+		faceangles 0 0 186 gototime
+		gotomarker radarspot19 1200
+		faceangles 0 0 188 gototime
+		gotomarker radarspot20 500
+		faceangles 0 0 190 gototime
+		gotomarker radarspot21 300
+		faceangles 0 0 200 gototime
+		gotomarker radarspot22 400
+		faceangles 0 0 210 gototime
+		gotomarker radarspot23 500
+		faceangles 0 0 220 gototime
+		gotomarker radarspot24 700
+		faceangles 0 0 230 gototime
+		gotomarker radarspot25 900
+		faceangles 0 0 240 gototime
+		alertentity radarwall1
+		gotomarker radarspot26 1100
+		faceangles 0 0 250 gototime
+		alertentity nazi34
+		alertentity nazi35
+	}
+
+	trigger fall2
+	{
+		accum 1 abort_if_not_equal 2
+		resetscript
+		alertentity radarexplode1
+		faceangles 0 90 -20 400
+		faceangles 0 90 -40 300
+		faceangles 0 90 -60 200
+		faceangles 0 90 -80 100		
+		alertentity nazi34
+		alertentity nazi35
+	}
+
+	trigger fall3
+	{
+		accum 1 abort_if_not_equal 3
+		resetscript
+		alertentity radarexplode1
+		faceangles 0 180 20 400
+		faceangles 0 180 40 300
+		faceangles 0 180 60 200
+		faceangles 0 180 80 100		
+		alertentity nazi34
+		alertentity nazi35
+	}
+
+	trigger fall4
+	{
+		accum 1 abort_if_not_equal 4
+		resetscript
+		alertentity radarexplode1
+		faceangles 0 270 20 400
+		faceangles 0 270 40 300
+		faceangles 0 270 60 200
+		faceangles 0 270 80 100
+		alertentity nazi34
+		alertentity nazi35
+	}
+}
+
+radardebris1
+{
+	trigger go
+	{
+		faceangles 0 -20 7 100
+	}
+}
+
+radardebris2
+{
+	trigger go
+	{
+		gotomarker d2spot1 200
+		faceangles 0 -41 7 gototime
+	}
+}
+
+radardebris3
+{
+	trigger go
+	{
+		gotomarker d3spot1 400
+		faceangles 0 -53 7 gototime
+	}
+}
+
+radardebris4
+{
+	trigger go
+	{
+		faceangles 0 0 80 300
+		gotomarker debris5spot1 500
+		faceangles 0 2 100 gototime
+		gotomarker debris5spot2 600
+		faceangles 0 4 120 gototime
+		gotomarker debris5spot3 700
+		faceangles 0 6 160 gototime
+		gotomarker debris5spot4 800
+		faceangles 0 8 200 gototime
+		gotomarker debris5spot5 900
+		faceangles 0 10 230 gototime
+		gotomarker debris5spot6 1000
+		faceangles 1 12 265 gototime
+	}
+}
+
+radardebris5
+{
+	trigger go
+	{
+		faceangles 0 0 80 300
+		gotomarker debris5spot1 500
+		faceangles 0 -2 100 gototime
+		gotomarker debris5spot2 600
+		faceangles 0 -4 120 gototime
+		gotomarker debris5spot3 700
+		faceangles 0 -10 160 gototime
+		gotomarker debris5spot4 800
+		faceangles 0 -20 200 gototime
+		gotomarker debris5spot5 900
+		faceangles 0 -30 230 gototime
+		gotomarker debris5spot6 1000
+		faceangles 1 -40 265 gototime
+	}
+}
+
+radardebris6
+{
+	trigger go
+	{
+		faceangles 0 0 80 300
+		gotomarker debris5spot1 500
+		faceangles 0 -2 100 gototime
+		gotomarker debris5spot2 600
+		faceangles 0 -4 120 gototime
+		gotomarker debris5spot3 700
+		faceangles 0 -6 160 gototime
+		gotomarker debris5spot4 800
+		faceangles 0 -8 200 gototime
+		gotomarker debris5spot5 900
+		faceangles 0 -10 230 gototime
+		gotomarker debris5spot6 1000
+		faceangles -2 -17 265 gototime
+	}
+}
+
+radardebris7
+{
+	trigger go
+	{
+		wait 100
+		gotomarker debris7spot1 500
+		faceangles -25 98 -4 100
+	}
+}
+
+radardebris8
+{
+	trigger go
+	{
+		wait 100
+		gotomarker debris8spot1 500
+		faceangles -23 62 8 100
+	}
+}
+
+radardebris9
+{
+	trigger go
+	{
+		wait 100
+		faceangles -15 34 16 100
+	}
+}
+
+water_valve
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger rotate
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		faceangles 0 90 0 250
+		faceangles 0 180 0 250
+		faceangles 0 270 0 250
+		faceangles 0 360 0 250
+		faceangles 0 30 0 250
+		alertentity blow_trans
+	}
+}

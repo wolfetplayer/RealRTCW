@@ -1,0 +1,470 @@
+//
+//AI Scripting
+//Map: Cutscene1
+//Last edited by: Mike 082501
+//
+
+player
+{
+	spawn
+	{
+
+//		mu_fade 0 1000
+//		mu_queue sound/music/l_theme
+//		trigger counter1 cinematic1
+//		trigger player cine1_cam1
+
+
+// (SA) new
+
+		abort_if_loadgame
+
+		mu_start sound/music/l_briefing_1.wav 1000	// play briefing music
+	}
+
+
+	playerstart {
+		trigger counter1 cinematic1
+		trigger player cine1_cam0
+
+		mu_fade 0 2000						// fade out briefing music
+		mu_queue sound/music/l_theme.wav	// queue level music	
+	}
+
+	trigger cine1_cam0
+	{
+		startcamblack cs_26
+	}
+
+	trigger cine1_cam1
+	{
+		startcam cs1_01
+	}
+
+	trigger cine1_cam2
+	{
+		startcam cs1_02
+	}
+
+	trigger cine1_cam3
+	{
+		startcam cs1_03
+	}
+
+	trigger cine1_cam4
+	{
+		startcam cs1_04
+	}
+
+	trigger cine1_cam5
+	{
+		startcam cs1_05
+	}
+
+	trigger cine1_cam6
+	{
+		startcam cs1_06
+	}
+
+	trigger cine1_cam7
+	{
+		startcam cs1_07
+	}
+
+	trigger cine1_cam8
+	{
+		startcam cs1_08
+	}
+
+	trigger cine1_cam9
+	{
+		startcam cs1_09
+	}
+
+	trigger cine1_cam9d
+	{
+		startcam cs1_09d
+	}
+
+	trigger cine1_cam10
+	{
+		startcam cs1_10
+	}
+
+	trigger cine1_cam11
+	{
+		startcam cs1_11
+	}
+
+	trigger cine1_cam12
+	{
+		startcam cs1_12
+	}
+
+	trigger cine1_cam13
+	{
+		startcam cs1_13
+	}
+
+	trigger cine1_cam14
+	{
+		startcam cs1_14
+	}
+
+	trigger cine1_cam15
+	{
+		startcam cs1_15
+	}
+
+	trigger cine1_cam16
+	{
+		startcam cs1_16
+	}
+
+	trigger cine1_cam17
+	{
+		startcam cs1_17
+	}
+
+	trigger cine1_cam17d
+	{
+		startcam cs1_17d
+	}
+
+	trigger cine1_cam18
+	{
+		startcam cs1_18
+	}
+
+	trigger cine1_cam19
+	{
+		startcam cs1_19
+	}
+
+	trigger cine1_cam20
+	{
+		startcam cs1_20
+	}
+
+	trigger cine1_cam21
+	{
+		startcam cs1_21
+	}
+
+	trigger cine1_cam22
+	{
+		startcam cs1_22
+	}
+
+	trigger camerainterrupt
+	{
+		changelevel escape1 4000 silent
+	}
+
+	trigger endmap
+	{
+		changelevel escape1 silent
+		//print CHANGE LEVEL <TEMP!>
+	}
+}
+
+director
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_1	// print Come in...
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_2	// print Well jack? Have we heard anything?
+	}
+
+	trigger talk3
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_3	// print And?...
+	}
+
+	trigger talk4
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_4	// print Damn! Call a meeting.
+	}
+
+	trigger stop
+	{
+		accum 0 bitset 0
+		playsound blank
+	}
+}
+
+director2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		headlook off
+		noavoid
+		// wait forever 0 target1
+	}
+
+	trigger talk6
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_6	// Alright, gentlemen...
+	}
+
+	trigger talk7
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_7	// So, advanced weapons, rocketry, chemical...
+	}
+
+	trigger talk8
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_8	// That's why we sent our boys in there...
+	}
+
+	trigger talk9
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_9	// Jack, what are our options here?
+	}
+
+	trigger talk10
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_10	// Or?
+	}
+
+	trigger talk11
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_director_11	// Looks like we play the waiting game...
+	}
+
+	trigger reset	// This is used so that this AI does not jerk in the last camera (fade to black).
+	{
+		playanim seated both forever
+	}
+
+	trigger stop
+	{
+		accum 0 bitset 0
+		playsound blank
+	}
+}
+
+jack
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		nosight 999999
+		noavoid
+		wait 5
+		explicit_routing on
+		headlook off
+		wait forever jspot1
+	}
+
+	trigger go
+	{
+		clearanim
+		resetscript
+		walktomarker jspot1 nostop
+		walktomarker jspot2
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_1	// print Yes sir... We've just received a coded transmission from Kessler, our contact in the Kreisau Circle.
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_2	// print Both agents have been captured and are being held in Castle Wolfenstein.
+	}
+
+	trigger talk3
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_3	// Yes sir.
+		walktomarker jspot1 
+	}
+
+	trigger stop
+	{
+		accum 0 bitset 0
+		playsound blank
+	}
+}
+
+jack2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		headlook off
+		noavoid
+	}
+
+	trigger talk4
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_4	// Here's what we know..
+	}
+
+	trigger talk5
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_5	// This is Castle Wolfenstein...
+	}
+
+	trigger talk6
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_6	// Now, we've known of the existance of Castle Wolfenstein for sometime, but we've only recently...
+	}
+
+	trigger talk7
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_7	// These characters are part of Himmler's newly formed SS...
+	}
+
+	trigger talk8
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_8	// ...Helga von Bulow. Our Kreisau contact in one of the villages...
+	}
+
+	trigger talk9
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_9	// The Kraut with the monocle is one Wilhelm Strasse...
+	}
+
+	trigger talk10
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_10	// We know it encompasses all manner of advanced weapons...
+	}
+
+	trigger talk11
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_11	// But, at the moment we don't know how it ties in with this...
+	}
+
+	trigger talk12
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_12	// We could send a backup team in behind them...
+	}
+
+	trigger talk13
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_jack_13	// Or we sit back.
+	}
+
+	trigger stop
+	{
+		accum 0 bitset 0
+		playsound blank
+	}
+}
+
+higgs
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_hig_01	// print Special Project? That's marvelously vague.
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_hig_02	// print Charming...
+	}
+
+	trigger stop
+	{
+		accum 0 bitset 0
+		playsound blank
+	}
+}
+
+murphy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_mur_01	// print It still doesn't add up.
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 0
+		playsound cs1_mur_02	// print It's your call sir.
+	}
+
+	trigger stop
+	{
+		accum 0 bitset 0
+		playsound blank
+	}
+}

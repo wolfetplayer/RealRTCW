@@ -1,0 +1,351 @@
+//
+//AI Scripting
+//Map: Director cutscene #6
+//Last edited by: Jeremy 092001
+//
+
+player
+{
+	spawn
+	{
+//		mu_fade 0 1000
+//		mu_queue sound/music/l_theme
+//		trigger counter1 cinematic1
+//		trigger player cine6_cam8
+	}
+	
+	playerstart
+	{
+		trigger counter1 cinematic1
+		trigger player cine6_cam8
+		mu_fade 0 2000						// fade out briefing music
+		mu_queue sound/music/l_theme		// queue level music	
+	}
+
+	trigger cine6_cam1
+	{
+		startcam cs_01
+	}
+
+	trigger cine6_cam2
+	{
+		startcam cs_02
+	}
+
+	trigger cine6_cam3
+	{
+		startcam cs_03
+	}
+
+	trigger cine6_cam4
+	{
+		startcam cs_04
+	}
+
+	trigger cine6_cam5
+	{
+		startcam cs_05
+	}
+
+	trigger cine6_cam6
+	{
+		startcam cs_06
+	}
+
+	trigger cine6_cam7
+	{
+		startcam cs_07
+	}
+
+	trigger cine6_cam8
+	{
+		startcam cs_08
+	}
+
+	trigger cine6_cam9
+	{
+		startcam cs_09
+	}
+
+	trigger cine6_cam9d
+	{
+		startcam cs6_09d
+	}
+
+	trigger cine6_cam10
+	{
+		startcam cs_10
+	}
+
+	trigger cine6_cam11
+	{
+		startcam cs_11
+	}
+
+	trigger cine6_cam12
+	{
+		startcam cs_12
+	}
+
+	trigger cine6_cam13
+	{
+		startcam cs_13
+	}
+
+	trigger cine6_cam14
+	{
+		startcam cs_14
+	}
+
+	trigger cine6_cam15
+	{
+		startcam cs_15
+	}
+
+	trigger cine6_cam16
+	{
+		startcam cs_16
+	}
+
+	trigger cine6_cam17
+	{
+		startcam cs_17
+	}
+
+	trigger cine6_cam17d
+	{
+		startcam cs6_17d
+	}
+
+	trigger cine6_cam18
+	{
+		startcam cs_18
+	}
+
+	trigger cine6_cam19
+	{
+		startcam cs_19
+	}
+
+	trigger cine6_cam20
+	{
+		startcam cs_20
+	}
+
+	trigger cine6_cam21
+	{
+		startcam cs_21
+	}
+
+	trigger cine6_cam22
+	{
+		startcam cs_22
+	}
+
+	trigger cine6_cam23
+	{
+		startcam cs_23
+	}
+
+	trigger endmap
+	{
+		#if g_midgame == 0
+		changelevel forest silent 4000
+		#endif
+
+		#if g_midgame == 1
+		changelevel malta_1 silent 4000 persistent
+		#endif			
+	}
+
+	trigger camerainterrupt
+	{
+		#if g_midgame == 0
+		changelevel forest silent 4
+		#endif
+		
+		#if g_midgame == 1
+		changelevel malta_1 silent 4000 persistent
+		#endif		
+	}
+}
+
+director2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+		// wait forever 0 target1
+	}
+
+	trigger talk1
+	{
+		playsound cs6_director_1	// Well gentlemen, it's been 48 hours since our last man Blazk returned...
+	}
+
+	trigger talk2
+	{
+		playsound cs6_director_2	// The question I'm putting to you all now is: what are the Nazis really up to?
+	}
+
+	trigger talk3
+	{
+		playsound cs6_director_3	// Yes jack.
+	}
+
+	trigger talk4
+	{
+		playsound cs6_director_4	// What did our research come up with. 
+	}
+
+	trigger talk5
+	{
+		playsound cs6_director_5	// What's the second thing Jack.
+	}
+
+	trigger talk6
+	{
+		playsound cs6_director_6	// That's correct. In fact as luck would have it our man blazkowics is headed there now.
+	}
+
+	trigger talk7
+	{
+		playsound cs6_director_7	// Yes his orders are to infiltrate and sabotouge
+	}
+
+	trigger talk8
+	{
+		playsound cs6_director_8	// the very one
+	}
+
+	trigger talk9
+	{
+		playsound cs6_director_9	// So what would you say...
+	}
+
+	trigger reset	// This is used so that this AI does not jerk in the last camera (fade to black).
+	{
+		playanim seated both forever
+	}
+}
+
+jack2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		playsound cs6_jack_1	// Well sir to put it bluntly...
+	}
+
+	trigger talk2
+	{
+		playsound cs6_jack_2	// Don't get me wrong
+	}
+
+	trigger talk3
+	{
+		playsound cs6_jack_3	// but
+	}
+
+	trigger talk4
+	{
+		playsound cs6_jack_4	// Well there are two things that still bother me
+	}
+
+	trigger talk5
+	{
+		playsound cs6_jack_5	// Nothing a complete blank
+	}
+
+	trigger talk6
+	{
+		playsound cs6_jack_6	// The second thing is deathshead... 
+	}
+
+	trigger talk7
+	{
+		playsound cs6_jack_7	// I would say that was an excellent idea sir
+	}
+
+}
+
+higgs
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		playsound cs6_higgs_1		//
+	}
+
+	trigger talk2
+	{
+		playsound cs6_higgs_2		// here here
+	}
+
+	trigger talk3
+	{
+		playsound cs6_higgs_3		// The cobra rocket plane
+	}
+}
+
+murphy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		playsound cs6_murphy_1	// thas an understatement sir
+	}
+
+	trigger talk2
+	{
+		playsound cs6_murphy_2	// Really?
+	}
+
+	trigger talk3
+	{
+		playsound cs6_murphy_3	//Deathshead
+	}
+
+	trigger talk4
+	{
+		playsound cs6_murphy_4	// He is
+	}
+
+	trigger talk5
+	{
+		playsound cs6_murphy_5		// THATS EXCITING NEWS SIR
+	}
+}
+

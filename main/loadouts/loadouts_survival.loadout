@@ -1,0 +1,199 @@
+loadout survival_default
+{
+        // No class	
+		#if g_playersurvivalclass == 0
+		givescore 50
+		giveweapon weapon_knife
+		giveweapon weapon_akimbo
+		setammo weapon_akimbo 128
+		setclip weapon_akimbo full
+		selectweapon weapon_akimbo
+
+		giveweapon weapon_grenadepineapple
+		setammo weapon_grenadepineapple full
+		#endif
+		
+        // Soldier Inventory
+		#if g_playersurvivalclass == 1
+		givescore 50
+		giveweapon weapon_knife
+		giveweapon weapon_m1garand
+		setammo weapon_m1garand 72
+		setclip weapon_m1garand full
+		selectweapon weapon_m1garand
+		
+		giveweapon weapon_m7
+		setammo weapon_m7 full
+		setclip weapon_m7 full
+		#endif
+		
+        // Medic Inventory
+		#if g_playersurvivalclass == 2
+		givescore 50
+		giveweapon weapon_knife
+		giveweapon weapon_revolver
+		setammo weapon_revolver 36
+		setclip weapon_revolver full
+		selectweapon weapon_revolver
+
+		giveweapon weapon_poisongas
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		#endif
+		
+        // Engineer Inventory
+		#if g_playersurvivalclass == 3
+		givescore 50
+		giveweapon weapon_knife
+		giveweapon weapon_thompson
+		setammo weapon_thompson 60
+		setclip weapon_thompson full
+		selectweapon weapon_thompson
+		giveweapon weapon_dynamite_eng
+        setarmor 200
+		#endif
+		
+        // LT Inventory
+		#if g_playersurvivalclass == 4
+		givescore 200
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		setammo weapon_colt 77
+		setclip weapon_colt full
+		selectweapon weapon_colt
+		
+		giveweapon weapon_grenadesmoke
+		giveweapon weapon_arty
+		setclip weapon_arty 1
+		giveinventory key_binocs
+		#endif
+		
+        // Covert Ops Inventory
+		#if g_playersurvivalclass == 5
+		givescore 50
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_sten
+		setammo weapon_sten 96
+		setclip weapon_sten full
+		selectweapon weapon_sten
+		
+		giveweapon weapon_smokebomb
+		#endif
+}
+
+loadout survival_hardcore
+{
+        // No class	
+		#if g_playersurvivalclass == 0
+		givescore 100
+		giveweapon weapon_knife
+		giveweapon weapon_bar
+		setammo weapon_bar 128
+		setclip weapon_bar full
+		selectweapon weapon_bar
+		
+		giveweapon weapon_grenadepineapple
+		setammo weapon_grenadepineapple full
+		#endif
+		
+        // Soldier Inventory
+		#if g_playersurvivalclass == 1
+		givescore 100
+		giveweapon weapon_knife
+		giveweapon weapon_m1garand
+		setammo weapon_m1garand 128
+		setclip weapon_m1garand full
+		selectweapon weapon_m1garand
+		
+		giveweapon weapon_m7
+		setammo weapon_m7 full
+		setclip weapon_m7 full
+		#endif
+		
+        // Medic Inventory
+		#if g_playersurvivalclass == 2
+		givescore 100
+		giveweapon weapon_knife
+		giveweapon weapon_thompson
+		setammo weapon_thompson 90
+		setclip weapon_thompson full
+		selectweapon weapon_thompson
+
+		giveweapon weapon_poisongas
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		giveinventory holdable_lp_syringe
+		#endif
+		
+        // Engineer Inventory
+		#if g_playersurvivalclass == 3
+		givescore 100
+		giveweapon weapon_knife
+		giveweapon weapon_m97
+		setammo weapon_m97 30
+		setclip weapon_m97 full
+		selectweapon weapon_m97
+		giveweapon weapon_dynamite_eng
+        setarmor 200
+		#endif
+		
+        // LT Inventory
+		#if g_playersurvivalclass == 4
+		givescore 300
+		giveweapon weapon_knife
+		giveweapon weapon_thompson
+		setammo weapon_thompson 150
+		setclip weapon_thompson full
+		selectweapon weapon_thompson
+		
+		giveweapon weapon_grenadesmoke
+		giveweapon weapon_arty
+		setclip weapon_arty 1
+		giveinventory key_binocs
+		#endif
+		
+        // Covert Ops Inventory
+		#if g_playersurvivalclass == 5
+		givescore 100
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_fg42
+		setammo weapon_fg42 128
+		setclip weapon_fg42 full
+		selectweapon weapon_fg42
+		
+		giveweapon weapon_smokebomb
+		#endif
+}

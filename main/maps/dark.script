@@ -1,0 +1,696 @@
+//Brush scripting
+//Map Dark_57
+// 10/31/01
+//last edited by jeremy
+
+checker1	// Remember you still beed to put physical checker in
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Save this for bitset or resetbitset
+		accum 0 bitreset 1
+		accum 0 bitreset 10	// So the end lighting does not occur with player on it
+		accum 0 bitreset 20
+		accum 1 set 0			
+		accum 2 set 0			
+		accum 3 set 0			
+		accum 4 set 0	// Ss death check in 
+		accum 5 set 0	// Used for zones
+		accum 6 set 0			
+		accum 7 set 0	// Used for nazi alive count
+	}
+
+	trigger in_zone1
+	{
+		accum 5 set 1		
+	}
+
+	trigger in_zone2
+	{
+		accum 5 set 2
+		alertentity house_light
+		alertentity house_light_sound
+		wait 500
+//		alertentity smoke_control
+		alertentity house_light_explosion
+		alertentity house_light_sound
+		alertentity house_light
+		wait 2000
+//		alertentity smoke_control
+	}
+
+	trigger in_zone3
+	{
+		accum 5 set 2		
+	}
+
+	trigger house1	// This lets eg4 know she can rush window now...
+	{
+		accum 0 bitset 1  
+	}
+
+	trigger If_in_house1
+	{
+		trigger checker1 in_house_response
+		wait 5
+		trigger checker1 not_in_house
+	}
+
+	trigger in_house_response
+	{
+		accum 0 abort_if_not_bitset 1
+		wait 5
+		trigger eg2 in_house_response
+	}
+
+	trigger not_in_house
+	{
+		accum 0 abort_if_bitset 1
+		wait 5
+		trigger eg2 not_in_house_response
+	}
+
+	trigger truck_nazis_activated
+	{
+		accum 0 set 1
+	}
+
+	trigger check_if_truck_nazis_spawned
+	{
+		trigger checker1 if_nazis_spawned
+		wait 5
+		trigger checker1 if_nazis_not_spawned
+	}
+
+	trigger if_nazis_spawned
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		alertentity truck_nazi1
+		alertentity truck_nazi2
+		trigger truck_nazi1 run_for_mg42
+		wait 5
+		trigger truck_nazi2 run_for_mg42
+		
+	}
+
+	trigger if_nazis_not_spawned
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript
+		alertentity truck_nazi1a
+//		alertentity truck_nazi1b
+		alertentity truck_nazi2a
+	}
+
+	trigger lightning_start
+	{
+		alertentity dlights_on
+		wait 100
+		alertentity dlights_off
+		wait 5
+		alertentity dlights_on
+		wait 700
+		alertentity first_light_off	//new entity
+		alertentity dlights_off
+//		wait 500
+//		alertentity dlights_on
+//		wait 50
+//		alertentity dlights_off
+	}
+
+	trigger ss_death_check_in
+	{
+		accum 4 inc 1
+	}
+
+	trigger deny_endmap
+	{
+		accum 0 bitset 10
+	}
+
+	trigger open_endmap
+	{
+		accum 0 bitreset 10		
+	}
+
+	trigger checker_for_last_explosion
+	{
+	}
+
+	trigger last_explosion
+	{
+//		accum 0 abort_if_bitset 20	// This is so that event last explosion is not called twice...
+		wait 3000
+		accum 0 abort_if_bitset 10
+		#if g_reinforce == 0 accum 4 abort_if_not_equal 2 #endif
+		#if g_reinforce == 1 accum 4 abort_if_not_equal 3 #endif
+		#if g_reinforce == 2 accum 4 abort_if_not_equal 4 #endif
+		resetscript
+		alertentity lastlight1 
+		wait 50
+		alertentity lastlight2 
+		wait 100
+		alertentity lastlight3
+		alertentity second_light_on	//new entity
+		wait 10 
+		alertentity lastlight4
+		alertentity thunder 
+		alertentity lastlight4
+		alertentity thunder
+		alertentity lastlight3
+		alertentity lastlight2
+		alertentity lastlight1
+		alertentity lastfunk
+		wait 1000
+		alertentity second_light_on	//new entity 
+		alertentity thunder
+		alertentity turn_objectives_on
+		alertentity thunder
+		trigger checker2 light_explosion_occured
+	}
+
+//-------------Cinematic----------------
+	trigger cinematic1
+	{
+		trigger cs_p1 go1
+		wait 2000
+		trigger cs_p1 talk1
+		wait 10550	// minus 1 seco off og time
+		trigger cs_nazi1 watch_eg1
+		trigger cs_nazi2 watch_eg1
+		wait 2250
+		trigger player cam3
+		wait 200
+//----------------------------------------
+		trigger cs_eg1 anim1
+		wait 5
+		trigger cs_eg1 sound1
+//		wait 900
+//		trigger cs_nazi1 watch_eg1
+//		trigger cs_nazi2 watch_eg1
+		wait 3800
+		trigger player cam2
+		wait 3450
+		trigger player cam5
+		wait 1550
+		trigger cs_nazi1 sound1
+		wait 2900
+		trigger player cam2
+		wait 100
+		trigger cs_eg1 sound2
+		wait 9400
+		trigger cs_eg1 anim1
+		wait 5
+		trigger player cam2
+		wait 100
+		trigger cs_eg1 sound3
+		wait 1000
+		trigger player cam4
+		wait 3200
+		trigger cs_nazi2 sound1
+		wait 200
+		trigger cs_nazi1 sound2
+		trigger cs_eg1 walk_back
+		wait 2300
+		trigger player cam6
+		wait 1000
+		trigger player cam6d
+//		trigger cs_eg1 walk_back
+		trigger cs_nazi1 go1
+		trigger cs_nazi2 go1
+		wait 5500
+		trigger checker1 cine1_cleanup
+	}
+//------------------End-----------------
+	trigger cine1_cleanup
+	{
+		resetscript
+		alertentity kill_eg1
+		alertentity kill_eg2
+		alertentity kill_eg3
+		alertentity kill_n1
+		alertentity kill_n2
+		alertentity kill_cs_ss1
+		alertentity kill_cs_ss2
+		alertentity kill_cs_ss3
+		alertentity kill_cs_ss4
+		alertentity kill_cs_ss5
+	}
+
+	trigger blow_last_light
+	{
+	}
+}
+
+leftside	// Boss fight
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		gotomarker l1 300	//wait
+		faceangles 0 0 -20 gototime
+		gotomarker l1a 300	//wait
+		faceangles 0 0 -25 gototime
+//		gotomarker l1b 300	//wait
+//		faceangles 0 0 -30 gototime
+//		gotomarker l1c 300	//wait
+//		faceangles 0 0 -35 gototime
+		trigger rightside fall1
+		trigger rightsideb fall1
+//		gotomarker l1d 300	//wait
+//		faceangles 0 0 -40 gototime		
+//		gotomarker l2 500	//wait
+//		faceangles 0 0 -41 gototime
+//		gotomarker l3 500	//wait
+//		faceangles 0 0 -42 gototime
+//		gotomarker l4 500	//wait
+//		faceangles 60 0 -43 gototime
+		gotomarker l5 500 accel
+		faceangles 70 0 -43 gototime
+	}
+}
+
+leftsideb	// Boss fight
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		gotomarker l1 300 //wait
+		faceangles 0 0 -20 gototime
+		gotomarker l1a 300 //wait
+		faceangles 0 0 -25 gototime
+//		gotomarker l1b 300 //wait
+//		faceangles 0 0 -30 gototime
+//		gotomarker l1c 300 //wait
+//		faceangles 0 0 -35 gototime
+		trigger rightside fall1
+//		gotomarker l1d 300 //wait
+//		faceangles 0 0 -40 gototime		
+//		gotomarker l2 500 //wait
+//		faceangles 0 0 -41 gototime
+//		gotomarker l3 500 //wait
+//		faceangles 0 0 -42 gototime
+//		gotomarker l4 500 //wait
+//		faceangles 60 0 -43 gototime
+//		gotomarker l5 500	
+//		faceangles 30 0 -40 gototime
+		gotomarker l6 500 accel
+		faceangles 30 0 -40 gototime
+	}
+}
+
+rightside	//boss fight
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+//		gotomarker r1spot1 500 wait
+		faceangles 0 0 33 gototime
+//		gotomarker r1spot1a 500 wait
+		faceangles 0 0 35 gototime 
+//		gotomarker r1spot1c 500 wait
+//		faceangles 0 0 37 5 
+//		gotomarker r1spot2 500 wait
+//		faceangles 0 0 40 5
+//		gotomarker r1spot2 500 wait
+//		faceangles 0 0 45 5
+//		gotomarker r1spot3 600 wait
+//		faceangles 0 0 47 gototime
+		gotomarker r1spot4 600 accel
+		faceangles 20 0 50 gototime
+//		gotomarker r1spot5 600 accel
+	}
+}
+
+rightsideb	//boss fight
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		gotomarker r1spot1 500 wait
+		faceangles 0 0 33 gototime 
+		gotomarker r1spot1a 500 wait
+		faceangles 0 0 35 gototime 
+//		gotomarker r1spot1c 500 wait
+//		faceangles 0 0 37 5 
+//		gotomarker r1spot2 500 wait
+//		faceangles 0 0 40 5
+//		gotomarker r1spot2 500 wait
+//		faceangles 0 0 45 5
+//		gotomarker r1spot3 600 wait
+//		faceangles 0 0 47 5
+		gotomarker r1spot4 600 accel
+		faceangles 0 0 75 gototime
+//		gotomarker r1spot5 600 accel
+	}
+}
+
+bridge
+{
+	spawn
+	{
+	}
+	
+	trigger start_fall
+	{
+		alertentity crackhelper
+		playsound dk_earth_rumble
+		alertentity crackastart	// This for the cracks in the ground...
+		wait 200
+		alertentity crackb2
+		wait 300
+		faceangles -1 0 0 300
+		faceangles -2 0 0 275
+		faceangles -3 0 0 225
+		faceangles -4 0 0 150
+		faceangles -5 0 0 50
+		gotomarker b1spot1 600 wait	// Og 300
+		faceangles -45 0 0 gototime
+		alertentity debris1
+		wait 400
+		alertentity crackc2
+		wait 100
+		alertentity crackd2
+		wait 50
+		alertentity cracke2
+		wait 400
+		trigger bridge2 fall1
+		wait 5
+		trigger bridge fall1
+		wait 5
+//		alertentity crackc
+		wait 100
+		alertentity crackd
+		wait 50
+		alertentity cracke
+		wait 400
+		alertentity crack1a
+	//	trigger bridge2 fall1
+		wait 600
+		alertentity crack2
+		wait 500
+		alertentity crack3
+		wait 400
+		alertentity crack4
+		wait 200
+		alertentity crack5
+	//	trigger bridge fall1
+	}
+
+	trigger fall1
+	{
+	//	gotomarker b1 300
+		alertentity debris2 
+		wait 100
+		gotomarker b1spot2 900 wait
+		gotomarker b1spot3 200 wait	
+		trigger bridge2 cracks_continued
+		gotomarker b1spot4 500 wait
+		gotomarker b1spot5 1200 wait 
+		gotomarker b1spot6 600 wait
+		gotomarker b1spot7 300 
+	}
+
+	trigger sound_stop
+	{
+		stopsound
+	}
+}
+
+bridge2
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		playsound sound/scenaric/crypt1/squish.wav
+		gotomarker b2spot1a 10 wait
+		faceangles -2 0 0 200
+		gotomarker b2spot1 2 wait
+	}
+
+	trigger cracks_continued
+	{
+		alertentity crackc2
+		wait 100
+		alertentity crackd2
+		wait 50
+		alertentity cracke2
+		wait 400
+		alertentity crack1
+	//	trigger bridge2 fall1
+		wait 600
+		alertentity crack2
+		wait 500
+		alertentity crack3
+		wait 400
+		alertentity crack4
+		wait 200
+		alertentity crack5
+		trigger bridge sound_stop
+		mu_fade 0 3000
+		mu_queue sound/music/c_atmos
+//		alertentity crackhelper
+//		alertentity debris1
+	//	trigger bridge fall1
+	}
+}
+
+truck1
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 180 0 2
+	}
+}
+
+boss_fall1
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	pain 70
+	{
+		sethealth 100
+	}
+
+	trigger
+	{
+	}
+}
+
+boss_fall2
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	pain 250
+	{
+//		print 250
+		sethealth 500
+//		accum 0 abort_if_bitset 0
+//		accum 0 bitset 0
+//		trigger boss_fall2 fall2_spot1 
+//		sethealth 500
+	}
+
+	pain 30
+	{
+		trigger boss_fall2 health
+	}
+
+	trigger fall2_spot1
+	{
+//		print should go
+		gotomarker fall2_spot1 20 accel
+	}
+}
+
+truckdoor
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 180 0 2
+	}
+
+	trigger
+	{
+	}
+}
+
+checker2
+{
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 7	// used for counter for last light explosion
+		accum 0 bitreset 15
+		accum 0 bitreset 16
+		accum 0 bitreset 17
+		accum 1 bitreset 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		accum 5 set 0
+		accum 6 set 0
+		accum 7 set 0
+		trigger checker2 thunder	
+	}
+
+	trigger sight_check_in
+	{
+//		accum 4 inc 1
+//		trigger checker2 inter_music_in
+//		wait 5
+//		trigger checker2 inter_music_in2
+//		wait 5
+//		trigger checker2 high_music
+	}
+
+	trigger inter_music_in
+	{
+		accum 4 abort_if_not_equal 2
+		accum 0 abort_if_bitset 16
+		accum 0 bitset 16
+		accum 0 bitreset 15
+		accum 0 bitreset 17
+//		print play medium inter
+		mu_fade 0 3000
+		mu_queue sound/music/c_military
+	}
+
+	trigger inter_music_in2
+	{
+		accum 4 abort_if_not_equal 1
+		accum 0 abort_if_bitset 16
+		accum 0 bitset 16
+		accum 0 bitreset 15
+		accum 0 bitreset 17
+//		print play medium inter
+		mu_fade 0 3000
+		mu_queue sound/music/c_military
+	}
+
+	trigger high_music
+	{
+		accum 4 abort_if_less_than 3
+		accum 0 abort_if_bitset 17
+		accum 0 bitset 17
+		accum 0 bitreset 16
+		accum 0 bitreset 15		
+//		print PLay high music
+		mu_fade 0 3000
+		mu_queue sound/music/m_moving
+	}
+
+
+	trigger sight_check_out
+	{
+//		accum 4 inc -1
+//		trigger checker2 low_music
+//		wait 5
+//		trigger checker2 inter_music_out
+	}
+
+	trigger low_music
+	{
+		accum 4 abort_if_greater_than 0
+		accum 0 abort_if_bitset 15
+		accum 0 bitset 15
+		accum 0 bitreset 16
+		accum 0 bitreset 17
+//		print play low music
+		mu_fade 0 3000
+		mu_queue sound/music/c_atmos 
+	}
+	
+	trigger inter_music
+	{
+		accum 4 abort_if_not_equal 1
+		accum 0 abort_if_bitset 16
+		accum 0 bitset 16
+		accum 0 bitreset 15
+		accum 0 bitreset 17
+		mu_fade 0 3000
+		mu_queue sound/music/c_military
+	}
+
+	trigger thunder
+	{
+		accum 7 random 4
+		trigger checker2 thunder1
+		wait 5
+		trigger checker2 thunder2
+		wait 5
+		trigger checker2 thunder3
+		wait 5
+		trigger checker2 thunder4
+	}
+
+
+	trigger thunder1
+	{
+		accum 7 abort_if_not_equal 0
+		wait 15000
+		alertentity thunder
+		trigger checker2 thunder
+	}
+
+	trigger thunder2
+	{
+		accum 7 abort_if_not_equal 1
+		wait 30000
+		alertentity thunder
+		trigger checker2 thunder
+	}
+
+	trigger thunder3
+	{
+		accum 7 abort_if_not_equal 2
+		wait 60000
+		alertentity thunder
+		trigger checker2 thunder
+	}
+
+	trigger thunder3
+	{
+		accum 7 abort_if_not_equal 3
+		wait 90000
+		alertentity thunder
+		trigger checker2 thunder
+	}
+
+	trigger light_explosion_occured
+	{
+		accum 0 bitset 7
+	}
+
+	trigger endmap_loop	// this is only called if the player is standing inside of the end trigger
+	{
+		accum 0 abort_if_bitset 7
+		trigger checker1 last_explosion
+		wait 13000
+		trigger checker2 endmap_loop
+	}
+}

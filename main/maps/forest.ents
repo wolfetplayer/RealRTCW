@@ -1,0 +1,778 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "ammo_30cal_small"
+"origin" "4584 -5745 413"
+"angle" "150"
+}
+
+{
+"classname" "ammo_45cal"
+"origin" "-5753 4748 598"
+"angle" "180"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5216 -5920 432"
+"angle" "90"
+"model" "models/mapobjects/shs/groundcover01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5136 -5976 424"
+"model" "models/mapobjects/shs/groundcover01.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "-5160 -5896 424"
+"angle" "270"
+"model" "models/mapobjects/shs/groundcover01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4424 -6280 456"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4328 -6264 456"
+"angle" "270"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4320 -6360 456"
+"angle" "180"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4416 -6368 456"
+"angle" "180"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4408 -5280 408"
+"angle" "90"
+"model" "models/mapobjects/shs/groundcover03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4256 -5328 416"
+"angle" "45"
+"model" "models/mapobjects/shs/groundcover03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4288 -5488 400"
+"angle" "180"
+"model" "models/mapobjects/shs/groundcover03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3510 -5432 392"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3166 -5222 382"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3430 -5586 382"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3422 -5432 384"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3414 -5352 386"
+"model" "models/mapobjects/shs/fern03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3246 -5406 380"
+"model" "models/mapobjects/shs/fern06.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3302 -5304 378"
+"model" "models/mapobjects/shs/fern04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3302 -5406 374"
+"model" "models/mapobjects/shs/fern05.md3"
+}
+
+
+{
+"classname" "misc_gamemodel"
+"origin" "-2314 -5226 408"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-2258 -5314 428"
+"angle" "135"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-2058 -5304 424"
+"angle" "270"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-1976 -5272 412"
+"angle" "90"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-1958 -5336 426"
+"angle" "90"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-1328 -5452 450"
+"angle" "180"
+"model" "models/mapobjects/shs/groundcover03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-646 -5944 264"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-486 -5920 248"
+"angle" "180"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-374 -5968 266"
+"model" "models/mapobjects/shs/fern03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-494 -6048 264"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-422 -5784 242"
+"model" "models/mapobjects/shs/fern04.md3"
+}
+
+
+{
+"classname" "misc_gamemodel"
+"origin" "752 -5520 240"
+"angle" "180"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "768 -5400 240"
+"angle" "180"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "736 -5304 240"
+"angle" "180"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "592 -5272 272"
+"angle" "90"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "928 -5608 296"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "888 -5792 280"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "856 -5696 280"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2432 -5008 256"
+"angle" "360"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2504 -5072 256"
+"angle" "180"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2696 -5328 256"
+"angle" "180"
+"modelscale" "1.4"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "3960 -5464 256"
+"angle" "360"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4160 -5112 256"
+"angle" "270"
+"modelscale" "1.5"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2304 -5608 248"
+"angle" "360"
+"modelscale" "0.5"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2448 -4576 256"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2728 -5760 232"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2592 -5752 232"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4128 -5744 256"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4056 -5840 256"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4512 -5216 256"
+"angle" "180"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2576 -4576 256"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2712 -4568 256"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2648 -4688 224"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2504 -4680 224"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2672 -5648 232"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2520 -5648 232"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2464 -5776 256"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4416 -5288 248"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4392 -5168 240"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "3992 -5728 232"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "4008 -5288 256"
+"modelscale" "2"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2584 -5240 256"
+"modelscale" "2"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2448 -5328 256"
+"angle" "135"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "2392 -4736 224"
+"angle" "360"
+"modelscale" "0.6"
+"model" "models/mapobjects/shs/cattail04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "3336 -5080 256"
+"modelscale" "2"
+"angle" "135"
+"model" "models/mapobjects/shs/shrubivy.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1328 -6064 352"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4630 -6050 390"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4918 -5530 382"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1002 -4594 382"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+
+{
+"classname" "misc_gamemodel"
+"origin" "1040 -2408 368"
+"model" "models/mapobjects/shs/tigerlily.md3"
+"modelscale" "0.6"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1040 -2408 368"
+"model" "models/mapobjects/shs/tigerlily.md3"
+"modelscale" "0.6"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "424 -1640 360"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "256 -1672 368"
+"model" "models/mapobjects/shs/fern03.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "536 -2120 368"
+"model" "models/mapobjects/shs/fern04.md3"
+}
+
+
+{
+"classname" "misc_gamemodel"
+"origin" "1536 -2088 368"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1912 -1520 360"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1800 -1648 368"
+"angle" "180"
+"modelscale" "0.8"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1712 -1904 368"
+"model" "models/mapobjects/shs/fern04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "1928 -2176 368"
+"model" "models/mapobjects/shs/fern04.md3"
+}
+
+
+{
+"classname" "misc_gamemodel"
+"origin" "1408 -3592 406"
+"angle" "90"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "5376 -584 196"
+"model" "models/mapobjects/shs/tigerlily.md3"
+"modelscale" "0.6"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "5360 -408 196"
+"model" "models/mapobjects/shs/tigerlily.md3"
+"modelscale" "0.6"
+"angle" "225"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "5312 -476 200"
+"model" "models/mapobjects/shs/tigerlily.md3"
+"modelscale" "0.5"
+"angle" "135"
+}
+
+
+{
+"classname" "misc_gamemodel"
+"origin" "5728 1856 472"
+"modelscale" "1.2"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "6096 1192 480"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "6048 1080 472"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "6104 1032 472"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "6232 1144 472"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "6152 1088 464"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/fern01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3464 4784 512"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3216 4800 512"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-3352 4712 512"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4904 4120 520"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4456 3576 512"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-6064 4776 568"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-6008 4176 536"
+"angle" "180"
+"model" "models/mapobjects/shs/grasse.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5888 3688 504"
+"angle" "90"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5888 3856 504"
+"angle" "90"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5888 4032 504"
+"angle" "90"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5712 3784 520"
+"angle" "90"
+"model" "models/mapobjects/shs/grass.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "-5904 4488 544"
+"angle" "90"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/groundcover01.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "-5816 4544 544"
+"angle" "270"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/groundcover01.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4896 3600 496"
+"model" "models/mapobjects/shs/fern04.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-4632 4016 512"
+"model" "models/mapobjects/shs/fern06.md3"
+}
+
+{
+"classname" "misc_gamemodel"
+"origin" "-5256 3448 496"
+"model" "models/mapobjects/shs/fern02.md3"
+}
+
+
+{
+"classname" "misc_model"
+"origin" "-1256 5464 592"
+"model" "models/mapobjects/shs/groundcover03.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "-1592 5568 624"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "-1472 5544 624"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "5928 2144 472"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/groundcover01.md3"
+}
+
+{
+"classname" "misc_model"
+"origin" "-1560 5448 624"
+"angle" "45"
+"modelscale" "1.3"
+"model" "models/mapobjects/shs/groundcover02.md3"
+}
+

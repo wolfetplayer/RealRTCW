@@ -1,0 +1,31 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "weapon_mosin"
+"origin" "-433 -178 48"
+"angle" "155"
+}
+
+{
+"classname" "ammo_mosina"
+"origin" "-435 -216 48"
+"angle" "155"
+}
+
+{
+"classname" "ammo_mosina"
+"origin" "-405 -219 48"
+"angle" "155"
+}
+
+
+
+
+
+
+
+
+
+
+
+

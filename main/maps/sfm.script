@@ -1,0 +1,673 @@
+//
+//Brush Scripting
+//Map: Street Fighting Man
+//Last edited by: Dan
+//
+
+counter
+{
+	spawn
+	{
+		accum 0 set 0		
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+	}
+
+	trigger zone1enemy
+	{
+		accum 0 inc 1
+		#if g_reinforce == 0 accum 0 abort_if_less_than 5 #endif
+		#if g_reinforce == 1 accum 0 abort_if_less_than 9 #endif
+		#if g_reinforce == 2 accum 0 abort_if_less_than 14 #endif
+		accum 0 set 0
+		trigger player mission
+		trigger panzer section1
+		alertentity awaken4
+		wait 2500
+		playsound TankCom3
+		trigger ast talk3
+		trigger player got_objective1
+	}
+
+	trigger startzone2
+	{
+		wait 2000
+		playsound TankCom7
+		trigger ast talk7
+		wait 4000
+		alertentity nazi13
+		wait 6600
+		playsound TankCom4
+		trigger ast talk4
+		trigger player action
+	}
+
+	trigger zone2enemy
+	{
+		accum 1 inc 1
+		#if g_reinforce == 0 accum 1 abort_if_less_than 8 #endif
+		#if g_reinforce == 1 accum 1 abort_if_less_than 13 #endif
+		#if g_reinforce == 2 accum 1 abort_if_less_than 18 #endif
+		accum 1 set 0
+		trigger player mission
+		alertentity scientist_safe
+		trigger ast talk5
+		trigger charley resethealth
+		trigger joe resethealth
+		trigger sagewycke resethealth
+		alertentity awaken6
+		trigger player got_objective3
+		wait 8000
+		trigger charley help5
+		wait 12000
+		trigger counter zone2end
+	}
+
+	trigger zone2end
+	{
+		accum 2 abort_if_not_equal 0
+		accum 2 set 1
+		trigger charley help7
+		trigger panzer complete2
+	}
+
+	trigger zone3tank
+	{
+		trigger player action
+		accum 3 abort_if_not_equal 0
+		wait 2000
+		alertentity tank_help1
+		trigger ast talk8
+		wait 5000
+		trigger charley help8
+		wait 3000
+		alertentity tank_help2
+		trigger ast talk9
+		wait 9000
+		trigger panzer reset
+		trigger panzerturret reset
+		wait 400
+		accum 3 set 1
+		alertentity tank_help3
+		trigger ast talk10
+		alertentity cannonhit
+		wait 200
+		alertentity deadtank
+		wait 800
+		missionfailed 6 8
+	}
+
+	trigger zone3reset
+	{
+		accum 3 abort_if_not_equal 0
+		accum 3 set 1
+		trigger player got_objective2
+		resetscript
+	}
+
+	trigger venom
+	{
+		trigger player situation
+		wait 200
+		alertentity nazi24
+		alertentity nazi25
+	}
+}
+
+panzerturret
+{
+	spawn
+	{
+		wait 100		
+		gotomarker tankspot1 100
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start1	
+	{
+		gotomarker tankspot2 70
+		faceangles 0 0 0 gototime
+		gotomarker tankspot3 80
+		faceangles 0 0 0 gototime
+		gotomarker tankspot4 90
+		faceangles 0 25 0 gototime
+		trigger nazi3 start3
+		wait 1000
+		wait 1000
+		gotomarker tankspot5 50
+		faceangles 0 25 0 gototime
+	}
+
+	trigger section1
+	{
+		gotomarker tankspot7 70
+		faceangles 0 45 0 gototime
+		wait 100
+		faceangles 0 65 0 1500
+		wait 100
+		gotomarker tankspot8 50
+		faceangles 0 65 0 gototime
+		wait 100
+		faceangles 0 85 0 1500
+		wait 100
+		gotomarker tankspot9 70
+		faceangles 0 75 0 gototime
+		gotomarker tankspot10 80
+		faceangles 0 85 0 gototime
+		gotomarker tankspot11 90
+		faceangles 0 125 0 gototime
+		gotomarker tankspot12 70
+		faceangles 0 95 0 gototime
+		wait 100
+		faceangles 0 115 0 1500
+		wait 100
+		gotomarker tankspot13 60
+		faceangles 0 115 0 gototime
+		wait 100
+		faceangles 0 95 0 1500
+		wait 100
+	}
+
+	trigger section2
+	{
+		gotomarker tankspot14 70
+		faceangles 0 100 0 gototime
+		gotomarker tankspot15 80
+		faceangles 0 145 0 gototime
+		wait 100
+		faceangles 0 165 0 1500
+		wait 100
+		gotomarker tankspot16 50
+		faceangles 0 165 0 gototime
+		wait 100
+		faceangles 0 185 0 1500
+		wait 100
+		gotomarker tankspot17 70
+		faceangles 0 180 0 gototime
+		wait 200
+		trigger panzergun aimup
+	}
+
+	trigger fire1
+	{
+		gotomarker tankspot17a 1000
+		faceangles -2 180 0 gototime
+		gotomarker tankspot17 900
+		faceangles 0 180 0 gototime
+	}
+
+	trigger complete2
+	{
+		gotomarker tankspot18 70
+		faceangles 4 180 0 gototime
+		gotomarker tankspot19 90
+		faceangles 4 180 0 gototime
+		gotomarker tankspot20 70
+		faceangles 0 180 0 gototime
+		gotomarker tankspot21 50
+		faceangles 0 180 0 gototime
+		gotomarker tankspot22 50
+		faceangles 0 180 0 gototime
+		gotomarker tankspot23 70
+		faceangles 0 180 0 gototime
+		gotomarker tankspot24 90
+		faceangles 0 180 0 gototime
+		gotomarker tankspot25 70
+		faceangles 0 180 0 gototime
+		wait 100
+		faceangles 0 135 0 1500
+		wait 100
+		gotomarker tankspot26 50
+		faceangles 0 135 0 gototime
+		wait 100
+		faceangles 0 90 0 1500
+		wait 100
+		gotomarker tankspot27 70
+		faceangles 0 90 0 gototime
+	}
+
+	trigger area3
+	{
+		gotomarker tankspot28 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot29 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot30 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot31 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot32 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot33 50
+		faceangles 0 90 0 gototime
+		gotomarker tankspot34 50
+		faceangles 0 90 0 gototime
+		gotomarker tankspot35 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot36 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot37 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot38 60
+		faceangles 0 90 0 gototime
+	}
+
+	trigger fire2
+	{
+		gotomarker tankspot38a 1000
+		faceangles -2 90 0 gototime
+		gotomarker tankspot38 900
+		faceangles 0 90 0 gototime
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+}
+
+panzer
+{
+	spawn
+	{
+		wait 100
+		gotomarker tankspot1 100
+		faceangles 0 0 0 gototime
+		wait 2000
+		playsound TankCom1
+		trigger ast talk1
+		trigger panzerturret start1
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		gotomarker tankspot2 70
+		faceangles 0 0 0 gototime
+		gotomarker tankspot3 80
+		faceangles 0 0 0 gototime
+		alertentity panzercheck
+		alertentity firerocket
+		trigger ast talk2
+		trigger panzertrackl forwardstop
+		trigger panzertrackr forwardstop
+		gotomarker tankspot4 90
+		faceangles 0 0 0 gototime
+		wait 1000
+		trigger panzertrackl reversestop
+		trigger panzertrackr reversestop
+		wait 1000
+		gotomarker tankspot5 50
+		faceangles 0 0 0 gototime
+	}
+
+	trigger section1
+	{
+		wait 700
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		trigger panzerturret section1
+		gotomarker tankspot7 70
+		faceangles 0 0 0 gototime
+		trigger panzertrackl reverse
+		trigger panzertrackr forward
+		wait 100
+		faceangles 0 45 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		gotomarker tankspot8 50
+		faceangles 0 45 0 gototime
+		trigger panzertrackl reverse
+		trigger panzertrackr forward
+		wait 100
+		faceangles 0 90 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		gotomarker tankspot9 70
+		faceangles 0 90 0 gototime
+		gotomarker tankspot10 80
+		faceangles 0 90 0 gototime
+		gotomarker tankspot11 90
+		faceangles 0 90 0 gototime
+		gotomarker tankspot12 70
+		faceangles 0 90 0 gototime
+		trigger panzertrackl reverse
+		trigger panzertrackr forward
+		wait 100
+		faceangles 0 135 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		gotomarker tankspot13 60
+		faceangles 0 135 0 gototime
+		trigger panzertrackl forward
+		trigger panzertrackr reverse
+		wait 100
+		faceangles 0 90 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		trigger panzer section2
+	}
+
+	trigger section2
+	{
+		trigger panzerturret section2
+		gotomarker tankspot14 70
+		faceangles 0 90 0 gototime
+		trigger counter startzone2
+		gotomarker tankspot15 80
+		faceangles 0 90 0 gototime
+		trigger panzertrackl reverse
+		trigger panzertrackr forward
+		wait 100
+		faceangles 0 135 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		gotomarker tankspot16 50
+		faceangles 0 135 0 gototime
+		trigger panzertrackl reverse
+		trigger panzertrackr forward
+		wait 100
+		faceangles 0 180 0 1500
+		trigger panzertrackl forwardshort
+		trigger panzertrackr forwardshort
+		wait 100
+		gotomarker tankspot17 70
+		faceangles 0 180 0 gototime
+	}
+
+	trigger fire1
+	{
+		gotomarker tankspot17a 1000
+		faceangles -2 180 0 gototime
+		gotomarker tankspot17 900
+		faceangles 0 180 0 gototime
+	}
+
+	trigger complete2
+	{
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		trigger panzerturret complete2
+		gotomarker tankspot18 70
+		faceangles 4 180 0 gototime
+		gotomarker tankspot19 90
+		faceangles 4 180 0 gototime
+		trigger baracade1 break1
+		gotomarker tankspot20 70
+		faceangles 0 180 0 gototime
+		alertentity nazi23
+		gotomarker tankspot21 50
+		faceangles 0 180 0 gototime
+		gotomarker tankspot22 50
+		faceangles 0 180 0 gototime
+		gotomarker tankspot23 70
+		faceangles 0 180 0 gototime
+		gotomarker tankspot24 90
+		faceangles 0 180 0 gototime
+		gotomarker tankspot25 70
+		faceangles 0 180 0 gototime
+		trigger panzertrackl forward
+		trigger panzertrackr reverse
+		wait 100
+		faceangles 0 135 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		gotomarker tankspot26 50
+		faceangles 0 135 0 gototime
+		trigger panzertrackl forward
+		trigger panzertrackr reverse
+		wait 100
+		faceangles 0 90 0 1500
+		trigger panzertrackl forward
+		trigger panzertrackr forward
+		wait 100
+		gotomarker tankspot27 70
+		faceangles 0 90 0 gototime
+		trigger panzer area3
+	}
+
+	trigger area3
+	{
+		trigger panzerturret area3
+		gotomarker tankspot28 60
+		faceangles 0 90 0 gototime
+		trigger counter zone3tank
+		gotomarker tankspot29 60
+		faceangles 0 90 0 gototime
+		alertentity cannonmiss
+		trigger nazi16 attacktank16
+		gotomarker tankspot30 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot31 60
+		faceangles 0 90 0 gototime
+		trigger nazi23 attacktank23
+		gotomarker tankspot32 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot33 50
+		faceangles 0 90 0 gototime
+		gotomarker tankspot34 50
+		faceangles 0 90 0 gototime
+		gotomarker tankspot35 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot36 60
+		faceangles 0 90 0 gototime
+		gotomarker tankspot37 60
+		faceangles 0 90 0 gototime
+		trigger panzertrackl forwardstop
+		trigger panzertrackr forwardstop
+		gotomarker tankspot38 60
+		faceangles 0 90 0 gototime
+		trigger panzergun shoot2
+	}
+
+	trigger fire2
+	{
+		gotomarker tankspot38a 1000
+		faceangles -2 90 0 gototime
+		gotomarker tankspot38 900
+		faceangles 0 90 0 gototime
+		wait 100
+		playsound TankCom6
+		trigger ast talk6
+		trigger counter venom
+		trigger player got_objective4
+	}
+
+	trigger reset
+	{
+		trigger panzertrackl forwardshort
+		trigger panzertrackr forwardshort
+		resetscript
+	}
+
+}
+
+panzergun
+{
+	spawn
+	{
+		wait 100
+		attachtotag panzerturret tag_gun
+	}
+
+	trigger aimup
+	{
+		faceangles -6 0 0 1000
+		wait 200
+		alertentity tankfire1
+		trigger panzer fire1
+		trigger panzerturret fire1
+		wait 600
+		alertentity destroytower
+	}
+
+	trigger shoot2
+	{
+		wait 100
+		alertentity tankfire2
+		trigger panzer fire2
+		trigger panzerturret fire2
+		wait 100
+		alertentity blowdoor
+	}
+
+}
+
+panzertrackl
+{
+	spawn
+	{
+		wait 100
+		attachtotag panzer tag_raild
+	}
+
+	trigger forward
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 0 65 looping forever
+	}
+
+	trigger forwardstop
+	{
+		wait 1000
+		playanim 0 65 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger forwardshort
+	{
+		wait 1000
+		playanim 0 5 50
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger reverse
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 66 130 looping forever
+	}
+
+	trigger reversestop
+	{
+		wait 1000
+		playanim 66 130 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+}
+
+panzertrackr
+{
+	spawn
+	{
+		wait 100
+		attachtotag panzer tag_railp
+	}
+
+	trigger forward
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 0 65 looping forever
+	}
+
+	trigger forwardstop
+	{
+		wait 1000
+		playanim 0 65 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger forwardshort
+	{
+		wait 1000
+		playanim 0 5 50
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger reverse
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 66 130 looping forever
+	}
+
+	trigger reversestop
+	{
+		wait 1000
+		playanim 66 130 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+}
+
+baracade1
+{
+	spawn
+	{
+		wait 500
+		faceangles 0 90 0 500
+	}
+
+	trigger break1
+	{
+		wait 1200
+		trigger baracade2 break2
+		trigger baracade3 break3
+		alertentity removeblock
+		playsound sound/scenaric/sfm/barrier_smash.wav
+		playanim 0 29 500
+	}
+
+	trigger countdown
+	{
+		wait 2500
+		trigger charley help1
+		wait 3500
+		trigger joe help2
+		wait 3500
+		trigger charley help3
+		wait 3500
+		trigger joe help4
+		wait 1000
+		trigger nazi14 timesup
+		trigger nazi15 timesup
+		wait 2000
+		trigger dummy1 timesup
+		trigger dummy2 timesup
+	}
+}
+
+baracade2
+{
+	spawn
+	{
+		wait 500
+		gotomarker bara2spot1 50
+	}
+
+	trigger break2
+	{
+		gotomarker bara2spot2 50
+	}
+}
+
+baracade3
+{
+	spawn
+	{
+		wait 500
+		gotomarker bara3spot1 50
+	}
+
+	trigger break3
+	{
+		gotomarker bara3spot2 50
+	}
+}

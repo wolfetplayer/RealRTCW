@@ -1,0 +1,4541 @@
+//AI scripting
+//Dark_57
+// 10/31/01
+//last edited by WolfETPlayer & William Faure
+
+player
+{
+	spawn
+	{
+		cvar g_episode 5
+		objectivesneeded 2
+		abort_if_loadgame
+		mu_fade 0 3000
+		mu_queue sound/music/c_atmos	
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/c_chant
+		trigger cs_p1 go1
+		trigger cs_eg1 go1
+		trigger cs_nazi1 go1
+		trigger cs_nazi2 go1
+		trigger player cam_darktemp
+		trigger checker1 cinematic1
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_2 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_3 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_4 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_5 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_6 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_9 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_10 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_13 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_14 #endif	// Originally these guys spawn when the lightning strikes, smack-dab in the player's FOV. This isn't Quake III Arena! --BreakinBenny
+	}
+
+	trigger cam_darktemp
+	{
+		startcam cs15_01
+	}
+
+	trigger cam2
+	{
+		startcam cs15_02
+	}
+
+	trigger cam3
+	{
+		startcam cs15_03
+	}
+
+	trigger cam4
+	{
+		startcam cs15_04
+	}
+
+	trigger cam5
+	{
+		startcam cs15_05
+	}
+
+	trigger cam6
+	{
+		startcam cs15_06
+	}
+
+	trigger cam6d
+	{
+		startcam cs15_06d
+	}
+
+	trigger camerainterrupt
+	{
+		trigger checker1 cine1_cleanup
+		stopcam			
+	}
+
+	trigger light_in_court_yard
+	{
+		trigger checker2 thunder
+		alertentity courtyard_light
+		alertentity chiminey_light_sound
+		wait 500
+		alertentity courtyard_light
+		wait 1000
+		alertentity thunder
+	}
+
+	trigger tunnel_nazi_blow
+	{
+		trigger tunnel_nazi1 become_alert
+		trigger tunnel_nazi2 become_alert
+	}
+
+	trigger tunnel
+	{
+		alertentity tunnel_nazi1
+		alertentity tunnel_nazi2
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_11 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_12 #endif
+		
+		wait 1000
+		savecheckpoint
+	}
+
+	trigger encounter1
+	{
+		alertentity thunder
+		alertentity step1
+		alertentity step2
+		trigger checker1 in_zone1
+		alertentity eg1
+		alertentity eg1a
+		alertentity eg1b
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_15 #endif		
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_16 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_17 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_18 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_19 #endif
+		
+		wait 1000
+		savecheckpoint
+	}
+
+	trigger encounter2	// Sniper and camper at first house
+	{
+		alertentity eg2	// camper
+		alertentity eg3	// sniper
+		trigger checker1 in_zone2
+		wait 5
+		trigger eg1 ambush
+		#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_20 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_21 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_22 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_23 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_24 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_25 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_26 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_27 #endif
+		
+		wait 1000
+		savecheckpoint
+	}
+
+	trigger inside_house1	// eg behind house will check this to see if player is inside of it...
+	{
+		alertentity thunder
+		trigger eg2 in_house_response
+	}
+
+	trigger encounter3	// Eg hiding in second house...
+	{
+		alertentity eg4
+		alertentity eg4a
+		#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_28 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_29 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_30 #endif
+		
+		wait 1000
+		savecheckpoint
+	}
+
+	trigger encounter4	// Mg42 at bridge...
+	{
+		alertentity eg5
+		alertentity eg6
+		alertentity chiminey_light
+		alertentity chiminey_break_explosion
+		alertentity chiminey_break
+		alertentity chiminey_light_sound
+		wait 500
+		alertentity chiminey_light
+		wait 2000
+		alertentity thunder
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_31 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_32 #endif
+	}
+
+	trigger bridge_fallover
+	{
+		mu_start sound/music/s_highramp
+		trigger bridge start_fall
+	}
+		
+	trigger mg42_attack
+	{
+		trigger checker1 check_if_truck_nazis_spawned
+	}
+
+	trigger truck
+	{
+		accum 1 abort_if_equal 1 
+		alertentity truck_nazi1
+		alertentity truck_nazi2
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_35 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_36 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_37 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_38 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_39 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_40 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_41 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_42 #endif
+		
+		wait 1000
+		savecheckpoint
+	}
+
+	trigger zap
+	{
+		objectivemet 1
+		
+		mu_fade 0 3000
+		mu_queue sound/music/c_chant.wav
+		missionsuccess 1	// mission objective complete
+		alertentity first_light_off	//new entity				 
+		alertentity zap_in_effect
+		alertentity ss1
+		trigger checker1 lightning_start
+		wait 5
+		trigger leftside fall1
+		trigger leftsideb fall1
+	// You also need to make it so that the two elite guards dissapear when this trigger happens.
+		#if g_reinforce >= 2 alertentity reinforce_ai_supersoldier_43 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_supersoldier_44 #endif
+		
+		wait 3000
+		savecheckpoint
+	}
+
+	trigger backups
+	{
+		alertentity eg7
+		alertentity eg8
+	}
+
+	trigger boss_fall1_debris
+	{
+		alertentity fall1_debris1
+		wait 1000
+		alertentity fall1_debris2
+		wait 1000
+		alertentity fall1_debris3
+		wait 2000
+		alertentity fall1_debris4
+	}
+
+	trigger inside1
+	{
+		trigger ss1 shortrange_weapon
+		wait 5
+		trigger ss2 shortrange_weapon
+	}
+
+	trigger inside2
+	{
+		trigger ss1 shortrange_weapon
+		wait 5
+		trigger ss2 shortrange_weapon
+	}
+
+	trigger inside3
+	{
+		trigger ss1 shortrange_weapon
+		wait 5
+		trigger ss2 shortrange_weapon
+	}
+
+	trigger inside4
+	{
+		trigger ss1 shortrange_weapon
+		wait 5
+		trigger ss2 shortrange_weapon
+	}
+
+	trigger outside1
+	{
+		trigger ss1 longrange_weapon
+		wait 5
+		trigger ss2 longrange_weapon
+	}
+
+	trigger outside2
+	{
+		trigger ss1 longrange_weapon
+		wait 5
+		trigger ss2 longrange_weapon
+	}
+
+	trigger outside3
+	{
+		trigger ss1 longrange_weapon
+		wait 5
+		trigger ss2 longrange_weapon
+	}
+
+	trigger outside4
+	{
+		trigger ss1 longrange_weapon
+		wait 5
+		trigger ss2 longrange_weapon
+	}
+
+	trigger boss_fall2_debris
+	{
+		alertentity fall2_debris1
+		wait 1000
+		alertentity fall2_debris2
+		wait 2500
+		alertentity fall2_debris3
+	}
+
+	trigger no_light
+	{
+		trigger checker1 deny_endmap
+	}
+
+	trigger light_yes1
+	{
+		trigger checker1 open_endmap	
+	}
+
+	trigger light_yes2
+	{
+		trigger checker1 open_endmap	
+	}
+
+	trigger light_yes3
+	{
+		trigger checker1 open_endmap	
+	}
+
+	trigger light_yes4
+	{
+		trigger checker1 open_endmap	
+	}
+
+	trigger secret1
+	{
+		foundsecret
+		wait 2000
+		savecheckpoint
+	}
+
+	trigger objecitves
+	{
+	}
+
+	trigger endmap	// level transition
+	{
+		achievement_chapter6
+		#if g_gameskill >= 3
+		achievement_chapter6_hard
+		#endif
+	// Bonus modes achievements
+		achievement_ironman
+		achievement_hardcore
+		achievement_999
+		achievement_nightmare
+		achievement_walkinthepark
+	// Next level
+		changelevel dig persistent 
+	}
+
+	trigger endmap_bonus										
+	{															
+		#if g_fullarsenal == 0	// Vanilla Bonus
+		printbonus dark	
+		givearmor Flak Jacket
+		#endif
+		
+		#if g_fullarsenal == 1	// RealRTCW Bonus
+		printbonus dark_alt
+		givearmor Flak Jacket
+		#endif	
+
+		#if g_fullarsenal == 2	// Vanilla Bonus
+		printbonus dark	
+        givearmor Flak Jacket
+		#endif		
+	}
+}
+
+nazi1 // first guys you met
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+		trigger nazi1 go1	
+	}
+
+	trigger go1
+	{
+		runtomarker n1spot1
+		wait 500 nazi1a
+		trigger nazi1 marchloop1
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n1spot1
+		wait 3000
+		walktomarker n1spot2
+		facetargetangles n1spot2
+		wait 4000
+		walktomarker n1spot3
+		facetargetangles n1spot3
+		wait 4000
+		trigger nazi1 marchloop1
+	}
+	
+	trigger go1			
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		playsound MiscKillHim
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_checkin
+		playsound MiscAmerican
+		clearanim
+		trigger nazi1 choose_tactic
+	}
+	
+	trigger choose_tactic
+	{
+		accum 2 random 3
+		wait 5
+		trigger nazi1 tactic1
+		wait 5
+		trigger nazi1 tactic2
+		wait 5
+		trigger nazi1 tactic3
+	}
+
+	trigger tactic1	// total camper
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		attrib aim_accuracy 0.5
+		attrib reaction_time 0.9
+		runtomarker n1attack1 
+		wait 3000 player
+	}
+
+	trigger tactic2	// Super aggressive
+	{
+		accum 2 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+		attrib aim_accuracy 0.3
+		runtomarker n1attack2 
+	}
+
+	trigger tactic3	// medium
+	{
+		accum 2 abort_if_not_equal 2
+		resetscript
+		attrib reaction_time 0.9
+		attrib camper 0.6
+		attrib aggression 0.7
+		attrib aim_accuracy 0.9
+		runtomarker n1attack3
+		wait 4000 player
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+nazi1a // first guys you met	
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{	
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+		trigger nazi1a marchloop1	
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n1aspot1
+		wait 3000
+		walktomarker n1aspot2
+		facetargetangles n1spot2
+		wait 4000
+		trigger nazi1a marchloop1
+	}
+	
+	trigger go1			
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		playsound MiscKillHim
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		playsound MiscKillHim
+		trigger nazi1a choose_tactic
+	}
+
+	trigger choose_tactic
+	{
+		accum 2 set 1
+		wait 5
+		trigger nazi1a tactic1
+		wait 5
+		trigger nazi1a tactic2
+		wait 5
+		trigger nazi1a tactic3
+	}
+
+	trigger tactic1	// total camper
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		attrib aim_accuracy 0.7
+		attrib reaction_time 0.9
+		runtomarker n1aattack2
+	}
+
+	trigger tactic2	// Super aggressive
+	{
+		accum 2 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+		attrib aim_accuracy 0.7
+		runtomarker n1aattack3
+		wait 3000
+	}
+
+	trigger tactic3	// medium
+	{
+		accum 2 abort_if_not_equal 2
+		resetscript
+		attrib reaction_time 0.9
+		attrib camper 0.6
+		attrib aggression 0.7
+		attrib aim_accuracy 0.7
+		runtomarker n1aattack1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+nazi1b // first guys you met		
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		attrib camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{	
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+		trigger nazi1a marchloop1	
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n1aspot1
+		wait 3000
+		walktomarker n1aspot2
+		facetargetangles n1spot2
+		wait 4000
+		trigger nazi1a marchloop1
+	}
+	
+	trigger go1			
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		playsound MiscKillHim
+	}
+
+	trigger choose_tactic
+	{
+		accum 2 set 1
+		wait 5
+		trigger nazi1a tactic1
+		wait 5
+		trigger nazi1a tactic2
+		wait 5
+		trigger nazi1a tactic3
+	}
+
+	trigger tactic1	// total camper
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		attrib aim_accuracy 0.5
+		attrib reaction_time 0.9
+		runtomarker n1aattack2
+	}
+
+	trigger tactic2	// Super aggressive
+	{
+		accum 2 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+		attrib aim_accuracy 0.3
+		runtomarker n1aattack3
+		wait 3000
+	}
+
+	trigger tactic3	// medium
+	{
+		accum 2 abort_if_not_equal 2
+		resetscript
+		attrib reaction_time 0.9
+		attrib camper 0.6
+		attrib aggression 0.7
+		attrib aim_accuracy 0.1
+		runtomarker n1aattack1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+
+tunnel_nazi1				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		trigger tunnel_nazi1 go1	
+	}
+
+	trigger become_alert
+	{
+		statetype alert
+		wait 1000 0 player
+	}
+	
+	trigger go1			
+	{
+		walktomarker tn1spot1
+		wait 2000 tunnel_nazi2
+		walktomarker tn1spot2
+		wait 2000 tunnel_nazi2
+		trigger tunnel_nazi1 go1
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		playsound MiscStopHim
+		trigger tunnel_nazi1 choose_tactic
+	}
+
+	trigger choose_tactic
+	{
+		accum 2 set 1
+		accum 2 random 3
+		wait 5
+		trigger tunnel_nazi1 tactic1
+		wait 5
+		trigger tunnel_nazi1 tactic2
+		wait 5
+		trigger tunnel_nazi1 tactic3
+	}
+
+	trigger tactic1	// total camper
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		attrib aim_accuracy 0.5
+		attrib reaction_time 0.9
+		runtomarker tn1attack1
+		wait 1000 player
+	}
+
+	trigger tactic2	// Super aggressive
+	{
+		accum 2 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+		attrib aim_accuracy 0.3
+		runtomarker tn1attack2
+		wait 500 player
+	}
+
+	trigger tactic3	// medium
+	{
+		accum 2 abort_if_not_equal 2
+		resetscript
+		attrib reaction_time 0.9
+		attrib camper 0.6
+		attrib aggression 0.7
+		attrib aim_accuracy 0.1
+		runtomarker tn1attack3
+		wait 1000 player
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	// Only use this if you don't want ai to return to script
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+tunnel_nazi2				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		giveweaponfull weapon_mauserrifle
+		trigger tunnel_nazi2 go1	
+	}
+
+	trigger become_alert
+	{
+		statetype alert
+		wait 1000 0 player
+	}
+	
+	trigger go1			
+	{
+		walktomarker tn2spot1
+		wait 4000 tunnel_nazi1
+		walktomarker tn2spot2
+		wait 4000 tunnel_nazi1
+		trigger tunnel_nazi2 go1
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		playsound male_ze_american
+		trigger tunnel_nazi2 choose_tactic
+	}
+
+	trigger choose_tactic
+	{
+		accum 2 random 3
+		wait 5
+		trigger tunnel_nazi2 tactic1
+		wait 5
+		trigger tunnel_nazi2 tactic3
+	}
+
+	trigger tactic1	// total camper
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		attrib aim_accuracy 0.5
+		attrib reaction_time 0.9
+		runtomarker tn2attack1
+		facetargetangles tn2attack1
+		wait 4000 player
+	}
+
+	trigger tactic2	// Super aggressive
+	{
+		accum 2 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+		attrib aim_accuracy 0.3
+		takeweapon all
+		setammo ammo_grenades 5
+		runtomarker tn2attack1
+		facetargetangles tn2attack2
+		wait 2000 player
+	}
+
+	trigger tactic3	// medium
+	{
+		accum 2 abort_if_not_equal 2
+		resetscript
+		attrib reaction_time 0.9
+		attrib camper 0.6
+		attrib aggression 0.7
+		attrib aim_accuracy 0.1
+		runtomarker tn2attack3
+		facetargetangles tn2attack3
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	// Only use this if you don't want ai to return to script
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg1	// First cat sniper on top of hill	
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2300
+		fov 240		
+	}
+
+	spawn
+	{
+		statetype alert
+		accum 0 bitreset 20
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		giveweaponfull weapon_sniperscope
+		trigger eg1 go1	
+	}
+	
+	trigger go1			
+	{
+		runtomarker eg1spot1
+		facetargetangles eg1spot1
+		wait forever player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		playsound fem_halt
+		clearanim
+		trigger eg1 tactic1
+	}
+
+	trigger tactic1
+	{
+		trigger eg1 tactic2
+		accum 1 inc 1
+		accum 1 abort_if_greater_than 2
+		resetscript
+		runtomarker eg1attack2
+		wait 2000
+		runtomarker eg1spot1
+		wait 1000
+		trigger eg1 tactic1
+	}
+
+	trigger tactic2
+	{
+		accum 1 abort_if_less_than 2
+		resetscript
+		runtomarker eg1attack2 nostop
+		runtomarker eg1attack3
+		giveweaponfull weapon_sniperscope
+		wait 500
+		runtomarker eg1attack3
+		resetscript 
+	}
+
+	trigger ambush
+	{
+		runtomarker eg1spot2 nostop
+		runtomarker eg1spot3 nostop
+		runtomarker eg1spot4 
+		facetargetangles eg1spot4
+		wait 2500 0 
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg1a				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500
+		hearing_scale 6.0
+		fov 240		
+	}
+
+	spawn
+	{
+		statetype alert
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		trigger eg1a go1	
+	}
+	
+	trigger go1			
+	{
+		runtomarker eg1aspot1
+		runtomarker eg1aspot2
+		runtomarker eg1aspot3
+		runtomarker eg1aspot4
+		runtomarker eg1aspot5
+		runtomarker eg1aspot6
+		facetargetangles eg1aspot6
+		movetype crouch
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg1b	// cat near the buidling
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500	
+		hearing_scale 6.0
+		fov 240	
+	}
+
+	spawn
+	{
+		statetype alert
+		accum 0 bitreset 0
+		accum 0 bitreset 20
+		giveweaponfull weapon_mauserrifle
+	}
+	
+	trigger go1			
+	{
+		runtomarker eg1bspot1
+		runtomarker eg1bspot2
+		runtomarker eg1bspot3
+		runtomarker eg1bspot4
+		runtomarker eg1bspot5
+		runtomarker eg1bspot6
+		facetargetangles eg1bspot6
+		movetype crouch
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		resetscript
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		trigger eg2 help
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg2	// Hiding behind first house..
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.1
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 set 0
+		accum 1 set 0
+		giveweaponfull weapon_silencer
+		trigger eg2 move
+	}
+	
+	trigger go1			
+	{
+		walktomarker eg2spot1
+		facetargetangles eg2spot1
+		wait forever 0 player
+	}
+
+	trigger move
+	{
+		runtomarker eg2spot1 
+		facetargetangles eg2spot1
+		movetype crouch
+		wait forever 0
+	}
+
+	trigger help	// this has her turn opposite 
+	{
+		facetargetangles cseg1_spot4
+	}
+
+	trigger check_ambush
+	{
+	}
+
+	trigger in_house_response
+	{
+		runtomarker eg2spot1 nostop
+		runtomarker eg2spot2 nostop
+		runtomarker eg2spot2a nostop
+		runtomarker eg2spot2b nostop
+		runtomarker eg2spot3
+		facetargetangles eg2spot3
+		wait 1500 player
+		resetscript		
+	}
+
+	trigger not_in_house_response 
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		resetscript
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg3	// sniper which is a ss. its not even an eg
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		giveweaponfull weapon_mauserrifle
+		trigger eg3 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker eg3spot1
+		facetargetangles eg3spot1
+	}
+
+	trigger move
+	{
+		runtomarker eg3spot1
+		wait 3000
+		runtomarker eg3spot2 nostop
+		runtomarker eg3spot3 nostop
+		runtomarker eg3spot4
+		wait 4000 player
+		trigger eg3 move
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		trigger eg3 runaway
+	}
+	
+	trigger runaway
+	{
+		runtomarker eg3spot4 nostop
+		runtomarker eg3spot5 nostop
+		runtomarker eg3spot6 nostop
+		runtomarker eg3spot7 nostop
+		runtomarker eg3spot8 nostop
+		runtomarker eg3spot9
+		facetargetangles eg3spot9
+		wait 3000
+		runtomarker eg3spot10 nostop
+		runtomarker eg3spot11 nostop
+		runtomarker eg3spot12
+		facetargetangles eg3spot12
+		wait forever player
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		trigger eg3 move
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg4	// This is eg who hides behind wall in second house				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		statetype alert
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		trigger eg4 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker eg4spot1
+		facetargetangles eg4spot1
+		wait forever 0 
+	}
+
+	pain 10
+	{
+		attrib aggression 0.3
+		attrib camper 1.0
+		trigger eg4 runaway
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		playsound fem_you_are_dead_american
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg4a	// This is eg who is in tree...				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.1
+		inner_detection_radius 200
+		alertness 2000		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0 
+		giveweaponfull weapon_sniperscope
+		trigger eg4a go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker eg4a_spot1
+		facetargetangles eg4a_spot1
+		movetype crouch
+		wait forever 0 
+	}
+
+	pain 10
+	{
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		movetype crouch
+		clearanim
+		attrib alertness 2400
+		trigger nazi4a go1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg5	// This is eg who helps eg6 with mg42			
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_silencer
+		trigger eg5 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker eg5spot1
+		facetargetangles eg5spot1
+		wait forever 0 player
+	}
+
+	trigger move
+	{
+		accum 1 inc 1
+		trigger eg5 move2
+		accum 1 abort_if_greater_than 2
+		resetscript
+		giveweaponfull weapon_silencer
+		runtomarker eg5spot1 
+		facetargetangles eg5spot1
+		movetype crouch
+		wait 4000
+		runtomarker eg5spot2
+		facetargetangles eg5spot2
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 2
+		selectweapon weapon_panzerfaust
+		wait 8000
+		trigger eg5 move
+	}
+
+	trigger move2
+	{
+		accum 1 abort_if_less_than 2
+		resetscript
+		giveweaponfull weapon_silencer
+	} 
+
+	trigger check_ambush
+	{
+		trigger checker1 if_in_house1 
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+		trigger eg5 move
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg6	// This is eg who mounts new mg42				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		accum 0 bitreset 0 
+		trigger eg6 go1	
+	}
+	
+	trigger go1			
+	{
+		runtomarker eg6spot1
+		mount mg42_1
+		wait 60000 0
+	}
+
+	forced_mg42_unmount
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg7	// THIS IS GUZRD WHO COMES FROM BEHIND SECRET...				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500
+		fov 240		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		playsound fem_get_ready_he_is_coming
+		trigger eg7 go1	
+	}
+	
+	trigger go1			
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+eg8	// THIS IS GUZRD WHO COMES FROM BEHIND SECRET...				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500
+		fov 240			
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		trigger eg8 go1	
+	}
+	
+	trigger go1			
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_equal 20
+		trigger checker2 sight_check_out
+	}
+}
+
+truck_nazi1	// This guard near last truck				
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.2
+		inner_detection_radius 200
+		alertness 2500
+		fov 240		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		trigger checker1 truck_nazis_activated
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		trigger truck_nazi1 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker k1spot1
+		wait 2000 truck_nazi2
+	}
+
+	trigger run_for_mg42
+	{
+		runtomarker k1spot2 nostop
+		runtomarker k1spot3 nostop
+		runtomarker k1spot4 nostop
+		runtomarker k1spot5 nostop
+		runtomarker k1spot6 nostop
+		runtomarker k1spot7 nostop
+		runtomarker k1spot8 nostop
+		runtomarker k1spot9 nostop
+		runtomarker k1spot10 nostop
+		runtomarker k1spot11 nostop
+		runtomarker k1spot12 nostop
+		runtomarker k1spot13 nostop
+		runtomarker k1spot14
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_equal 20
+		trigger checker2 sight_check_out
+	}
+}
+
+truck_nazi2	// eg near the truck		
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500	
+		fov 240	
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		trigger truck_nazi2 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker k1spot1
+		wait 2000 truck_nazi1
+	}
+
+	trigger run_to_mg42
+	{
+		runtomarker k2spot2 nostop
+		runtomarker k2spot3 nostop
+		runtomarker k2spot4 nostop
+		runtomarker k2spot5 nostop
+		runtomarker k2spot6 nostop
+		runtomarker k2spot7 nostop
+		runtomarker k2spot8 nostop
+		runtomarker k2spot9 nostop
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_equal 20
+		trigger checker2 sight_check_out
+	}
+}
+
+truck_nazi1a	// This guard near last truck				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500	
+		fov 240	
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		trigger truck_nazi1a run_to_mg42	
+	}
+	
+	trigger go1			
+	{
+		walktomarker k1spot1
+		wait 2000 truck_nazi2
+	}
+
+	trigger run_to_mg42
+	{
+		runtomarker k1spot9 nostop
+		runtomarker k1spot10 nostop
+		runtomarker k1spot11 nostop
+		runtomarker k1spot12 nostop
+		runtomarker k1spot13 nostop
+		runtomarker k1spot14
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_equal 20
+		trigger checker2 sight_check_out
+	}
+}
+
+truck_nazi2a	// near the truck		
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		trigger truck_nazi2a run_to_mg42	
+	}
+	
+	trigger go1			
+	{
+		walktomarker k1spot1
+		wait 2000 truck_nazi1
+	}
+
+	trigger run_to_mg42
+	{
+		runtomarker k2spot6 nostop
+		runtomarker k2spot7 nostop
+		runtomarker k2spot8 nostop
+		runtomarker k2spot9 nostop
+		runtomarker k2spot11 nostop
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker2 sight_check_in
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker1 death_check_out
+		accum 0 abort_if_not_bitset 20
+		trigger checker2 sight_check_out
+	}
+}
+
+ss1    // first super soldier						
+{
+	attributes
+	{
+		starting_health 1000
+		aim_accuracy 0.7
+		tactical 1.0
+		aggression 1.0
+		hearing_scale 5.0
+		inner_detection_radius 500
+		alertness 2500		
+	}
+
+	spawn
+	{
+		knockback off
+		trigger ss1 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker ss1spot1
+		wait 10000 0 
+		walktomarker ss1spot2
+		walktomarker ss1spot3
+		walktomarker ss1spot4
+		walktomarker ss1spot5
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 999
+		selectweapon weapon_panzerfaust
+		setclip weapon_panzerfaust 999
+		walktomarker ss1spot6
+	}
+
+	trigger shortrange_weapon
+	{
+		takeweapon all
+		giveweapon weapon_venom
+		setammo ammo_127mm 999
+		selectweapon weapon_venom
+	}
+
+	trigger shortrange_weapon1
+	{
+		takeweapon all
+		giveweapon weapon_flamethrower
+		setammo ammo_fuel 999
+		giveweapon weapon_flamethrower
+	}
+
+	trigger longrange_weapon
+	{
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 999
+		selectweapon weapon_panzerfaust
+		setclip weapon_panzerfaust 999
+	}
+
+	trigger choose_cover
+	{
+		accum 6 random 3
+		wait 5
+		trigger ss1 cover1
+		wait 5
+		trigger ss1 cover2
+		wait 5
+		trigger ss1 cover3
+	}
+
+	trigger cover1
+	{
+		accum 6 abort_if_not_equal 0
+		runtomarker ps1_spot1
+		wait 20000 0 player
+	}
+
+	trigger cover2
+	{
+		accum 6 abort_if_not_equal 1
+		runtomarker ps1_spot2
+		wait 20000 0 player
+	}
+
+	trigger cover3
+	{
+		accum 6 abort_if_not_equal 2
+		runtomarker ss1spot6
+		wait 20000 0 player
+	}
+
+	pain 400
+	{
+		alertentity ss2
+		takeweapon all
+		giveweapon weapon_venom
+		setammo ammo_127mm 999
+		selectweapon weapon_venom
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	pain 300
+	{
+		alertentity ss2
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 999
+		selectweapon weapon_panzerfaust
+		setclip weapon_panzerfaust 999
+		wait 3000
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+	
+	pain 200
+	{
+		alertentity ss2
+		attrib aggression 1.0
+		attrib camper 1.0
+	}	
+
+	pain 50
+	{
+		alertentity ss2
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity thunder
+		alertentity ss2blowup 
+		trigger checker1 ss_death_check_in
+		trigger checker1 last_explosion
+	}
+}
+
+ss2		// 2nd super soldier						
+{
+	attributes
+	{
+		starting_health 1000
+		aim_accuracy 0.6
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 6 set 0
+		knockback off
+		takeweapon all
+		giveweapon weapon_tesla
+		setammo ammo_cell 999
+		selectweapon weapon_tesla
+		alertentity ss2blowup 
+		trigger ss2 go1	
+	}
+	
+	trigger go1			
+	{
+		walktomarker ss2spot1
+		wait 3000 0
+		alertentity ss2blowup 
+		walktomarker ss2spot2
+		walktomarker ss2spot3
+		walktomarker ss2spot4
+	}
+
+	trigger shortrange_weapon
+	{
+		accum 1 random 2
+		trigger ss2 shortrange_weapon1
+		wait 10
+		trigger ss2 shortrange_weapon2
+	}
+
+	trigger shortrange_weapon1
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript
+		takeweapon all
+		giveweapon weapon_venom
+		setammo ammo_127mm 999
+		selectweapon weapon_venom
+	}
+
+	trigger shortrange_weapon2
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		takeweapon all
+		giveweapon weapon_tesla
+		setammo ammo_cell 999
+		selectweapon weapon_tesla
+	}
+
+	trigger longrange_weapon
+	{
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 999
+		selectweapon weapon_panzerfaust
+		setclip weapon_panzerfaust 999
+		trigger ss2 choose_cover
+	}
+
+	trigger choose_cover
+	{
+		accum 6 random 3
+		wait 5
+		trigger ss2 cover1
+		wait 5
+		trigger ss2 cover2
+		wait 5
+		trigger ss2 cover3
+	}
+
+	trigger cover1
+	{
+		accum 6 abort_if_not_equal 0
+		runtomarker ps1_spot1
+		wait 20000 -1 player
+	}
+
+	trigger cover2
+	{
+		accum 6 abort_if_not_equal 1
+		runtomarker ps1_spot2
+		wait 20000 -1 player
+	}
+
+	trigger cover3
+	{
+		accum 6 abort_if_not_equal 2
+		runtomarker ss1spot6
+		wait 20000 0 player
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		objectivemet 2
+		alertentity thunder
+		trigger checker1 ss_death_check_in
+		trigger checker2 endmap_loop
+	}
+}
+
+cs_eg1	// This is eg who is the cutscene and talks to the officers				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		statetype relax
+		headlook off
+		nosight 99999
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		nosight 99999
+		wait 2000
+		explicit_routing on
+		walktomarker cseg1_spot1 nostop
+		walktomarker cseg1_spot2 nostop
+		walktomarker cseg1_spot3 nostop
+		walktomarker cseg1_spot4
+		facetargetangles cseg1_spot4
+	}
+
+	trigger sound1				
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+		wait 8700
+		clearanim
+	}
+
+	trigger sound2
+	{
+		playsound dk_cs15_eli_02_2	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+		wait 4000
+		clearanim
+	}
+
+	trigger anim1
+	{
+		playanim talking both
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		clearanim
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_nazi1	// This is eg who hides behind wall in second house				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		headlook off
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		nosight 99999
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		walktomarker csn1_spot1
+		facetargetangles csn1_spot1
+		trigger cs_nazi1 anim1
+	}
+
+	trigger watch_eg1
+	{
+		clearanim
+		walktomarker csn1_spot2
+		facetargetangles csn1_spot2
+	}
+
+	trigger sound1
+	{
+		playsound dk_cs15_sol_01_3	// what happens if we look into it...
+	}
+
+	trigger sound2
+	{
+		playsound dk_cs15_sol2_01	// javowl
+	}
+
+	trigger anim1
+	{
+		playanim tools torso forever
+	}
+
+	trigger anim2
+	{
+		playanim talking_1h both
+	}
+
+	trigger sound4
+	{
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_nazi2	// This is eg who hides behind wall in second house				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+	
+	trigger go1			
+	{
+		walktomarker csn2_spot1
+		facetargetangles csn1_spot1
+		trigger cs_nazi2 anim2	
+	}
+
+	trigger watch_eg1
+	{
+		clearanim
+		walktomarker csn2_spot2
+		facetargetangles csn2_spot2
+	}
+
+	trigger sound1
+	{
+		playsound dk_cs15_sol_02
+	}
+
+	trigger anim1
+	{
+		playanim talking_1h both
+	}
+
+	trigger anim2
+	{
+		playanim tools both forever
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_p1	// Priestess				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		trigger cs_p1 anim1
+	}
+
+	trigger talk1
+	{
+		playsound end_eg_solo_loop
+	}
+
+	trigger anim1
+	{
+		playanim arrival both forever
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_ss1								
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		trigger cs_ss1 anim1
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1				
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2				
+	{
+		playsound dk_cs15_eli_02_2	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+		playanim powered_down both forever
+	}
+
+	trigger anim2
+	{
+		playanim powered_down both forever
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_ss2							
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		trigger cs_ss2 anim1
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1				
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2				
+	{
+		playsound dk_cs15_eli_02_2 	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+		playanim powered_down both forever
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_ss3							
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		trigger cs_ss3 anim1
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1				
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2				
+	{
+		playsound dk_cs15_eli_02_2 	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+		playanim powered_down both forever
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_ss4							
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		trigger cs_ss4 anim1
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1				
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2				
+	{
+		playsound dk_cs15_eli_02_2 	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+		playanim powered_down both forever
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_ss5								
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+		trigger cs_ss5 anim1
+		takeweapon all
+	}
+	
+	trigger go1			
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1				
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2
+	{
+		playsound dk_cs15_eli_02_2	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+		playanim powered_down both forever
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1 
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_eg2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+	}
+	
+	trigger go1
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2
+	{
+		playsound dk_cs15_eli_02_2 	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+cs_eg3
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		nosight 99999
+	}
+	
+	trigger go1
+	{
+		walktomarker ps1_spot1 nostop
+		walktomarker ps1_spot2 
+	}
+
+	trigger sound1
+	{
+		playsound dk_cs15_eli_01_3	// Don't loose power to the genreator
+	}
+
+	trigger sound2
+	{
+		playsound dk_cs15_eli_02_2 	// what happens if you look
+	}
+
+	trigger sound3
+	{
+		playsound dk_cs15_eli_03	// Stand at your posts
+	}
+
+	trigger anim1
+	{
+		playanim talking both
+	}
+
+	trigger anim2
+	{
+	}
+
+	trigger anim3
+	{
+	}
+
+	trigger sound4
+	{
+	}
+
+	trigger walk_back
+	{
+		walktomarker cseg1_spot1
+	}
+
+	pain 50
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+reinforce_ai_soldier_1	// right of door 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_2	// right of door 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_3	// left of door 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_4	// left of door 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_5	// boxes
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_6	// terrace right
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_9	// Lion Right
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_10	// Lion Left
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_11	// Tunnel 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_12	// Tunnel 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_13	// Trees
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+	}
+}
+
+reinforce_ai_soldier_14	// Sniper behind the wall
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+	}
+}
+
+reinforce_ai_soldier_15	// wall 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_16	// wall 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_eliteguard_17	// after corner 1
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_18	// after corner 2
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_soldier_19	// sniper secret door
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_eliteguard_20	// house 1
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_21	// house 2
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_22	// behind house 1
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_23	// behind house 2
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_24	// behind house wall 1
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_25	// behind house wall 2
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_soldier_26	// sniper wall2
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_27	// wall2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_eliteguard_28	// house2 1
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_29	// house2 2
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_30	// house2 3
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_soldier_31	// sniper bridge 1
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_32	// sniper bridge 2
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_35	// behind truck2 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_36	// behind truck2 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_37	// behind truck2 3
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_38	// behind truck2 4
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_39	// behind truck2 5
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_40	// behind truck2 6
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_41	// behind truck2 7
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_42	// behind truck2 8
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_supersoldier_43
+{
+	attributes
+	{
+		starting_health 1300
+		aim_accuracy 0.8
+		tactical 1.0
+		aggression 1.0
+		hearing_scale 5.0
+		inner_detection_radius 500
+		alertness 2500		
+	}
+
+	spawn
+	{
+		knockback off
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 999
+		selectweapon weapon_panzerfaust
+		setclip weapon_panzerfaust 999
+	}
+	
+	death
+	{
+		alertentity thunder
+		trigger checker1 ss_death_check_in
+		trigger checker1 objective2
+	}
+}
+
+reinforce_ai_supersoldier_44
+{
+	attributes
+	{
+		starting_health 1300
+		aim_accuracy 0.8
+		tactical 1.0
+		aggression 1.0
+		hearing_scale 5.0
+		inner_detection_radius 500
+		alertness 2500		
+	}
+
+	spawn
+	{
+		knockback off
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 999
+		selectweapon weapon_panzerfaust
+		setclip weapon_panzerfaust 999
+	}
+	
+	death
+	{
+		alertentity thunder
+		trigger checker1 ss_death_check_in
+		trigger checker1 objective2
+	}
+}

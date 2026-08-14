@@ -1,0 +1,487 @@
+//AI Scripting
+//Map: Director cutscene #14
+//Last edited by: Jeremy 092101
+
+player
+{
+	spawn
+	{
+	//	mu_fade 0 1000
+	//	mu_queue sound/music/l_theme
+//		trigger counter1 cinematic2
+	//	trigger counter1 cinematic1
+	//	trigger player cine14_cam3
+	}
+	
+	playerstart
+	{
+		trigger counter1 cinematic1
+		trigger player cine14_cam3
+		mu_fade 0 2000	// fade out briefing music
+		mu_queue sound/music/l_theme	// queue level music	
+	}
+
+	trigger cine14_cam1
+	{
+		startcam cs_01
+	}
+
+	trigger cine14_cam2
+	{
+		startcam cs_02
+	}
+
+	trigger cine14_cam3
+	{
+		startcam cs_03
+	}
+
+	trigger cine14_cam4
+	{
+		startcam cs_04
+	}
+
+	trigger cine14_cam5
+	{
+		startcam cs_05
+	}
+
+	trigger cine14_cam6
+	{
+		startcam cs_06
+	}
+
+	trigger cine14_cam7
+	{
+		startcam cs_07
+	}
+
+	trigger cine14_cam7d
+	{
+		startcam cs_07d
+	}
+
+	trigger cine14_cam8
+	{
+		startcam cs_08
+	}
+
+	trigger cine14_cam9
+	{
+		startcam cs_09
+	}
+
+	trigger cine14_cam9d
+	{
+		startcam cs_09d
+	}
+
+	trigger cine14_cam10
+	{
+		startcam cs_10
+	}
+
+	trigger cine14_cam11
+	{
+		startcam cs_11
+	}
+
+	trigger cine14_cam12
+	{
+		startcam cs_12
+	}
+
+	trigger cine14_cam13
+	{
+		startcam cs_13
+	}
+
+	trigger cine14_cam14
+	{
+		startcam cs_14
+	}
+
+	trigger cine14_cam15
+	{
+		startcam cs_15
+	}
+
+	trigger cine14_cam16
+	{
+		startcam cs_16
+	}
+
+	trigger cine14_cam17
+	{
+		startcam cs_17
+	}
+
+	trigger cine14_cam17d
+	{
+		startcam cs_17d
+	}
+
+	trigger cine14_cam18
+	{
+		startcam cs_18
+	}
+
+	trigger cine14_cam19
+	{
+		startcam cs_19
+	}
+
+	trigger cine14_cam20
+	{
+		startcam cs_20
+	}
+
+	trigger cine14_cam21
+	{
+		startcam cs_21
+	}
+
+	trigger cine14_cam22
+	{
+		startcam cs_22
+	}
+
+	trigger cine11_cam22d
+	{
+		startcam cs_22d
+	}
+
+	trigger cine14_cam23
+	{
+		startcam cs_23
+	}
+
+	trigger cine14_cam24
+	{
+		startcam cs_24
+	}
+
+	trigger endmap
+	{
+		#if g_midgame == 0
+		changelevel dam silent 4000
+		#endif
+
+		#if g_midgame == 1
+		changelevel malta_4 silent 4000 persistent
+		#endif	
+	}
+
+	trigger camerainterrupt
+	{
+		#if g_midgame == 0
+		changelevel dam silent 4
+		#endif
+		
+		#if g_midgame == 1
+		changelevel malta_4 silent 4000 persistent
+		#endif
+	}
+}
+
+director
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+		// wait forever 0 target1
+	}
+
+	trigger talk1a
+	{
+		playsound cs14_director_1
+	}
+
+	trigger talk1
+	{
+		playsound cs14_director_1	// 
+	}
+
+	trigger talk2
+	{
+		playsound cs14_director_2	// 
+	}
+
+	trigger talk3
+	{
+		playsound cs14_director_3	// 
+		wait 13550
+		clearanim
+	}
+
+	trigger talk4
+	{
+		playsound cs14_director_4	// 
+	}
+
+	trigger reset	// This is used so that this AI does not jerk in the last camera (fade to black).
+	{
+		playanim seated both forever
+	}
+
+	trigger anim_loop2
+	{
+		playanim seated_2 both
+	}
+}
+
+director2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+		// wait forever 0 target1
+	}
+
+	trigger talk5
+	{
+		playsound cs14_director_5	// 
+	}
+
+	trigger talk6
+	{
+		playsound cs14_director_6	// 
+	}
+
+	trigger talk7
+	{
+		playsound cs14_director_7	// 
+	}
+
+	trigger talk8
+	{
+		playsound cs14_director_8	// 
+	}
+
+	trigger talk9
+	{
+		playsound cs14_director_9	// 
+	}
+
+	trigger talk10
+	{
+		playsound cs14_director_10	// 
+	}
+
+	trigger talk11
+	{
+		playsound cs14_director_11	// 
+	}
+
+	trigger reset	// This is used so that this AI does not jerk in the last camera (fade to black).
+	{
+		playanim seated both forever
+	}
+}
+
+jack
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		nosight 999999
+		noavoid
+		wait 5
+		explicit_routing on
+		headlook off
+	}
+
+	trigger go
+	{
+		walktomarker jspot2
+	}
+
+	trigger go2
+	{
+		walktomarker jspot1
+	}
+
+	trigger talk1
+	{
+		playsound cs14_jack_1	// 
+	}
+
+	trigger talk2
+	{
+		playsound cs14_jack_2	// 
+	}
+
+	trigger talk3
+	{
+		playsound cs14_jack_3	//
+		wait 500
+		clearanim
+	}
+
+	trigger anim_loop1
+	{
+		playanim talking_1 torso
+	}
+
+	trigger anim_loop2
+	{
+		playanim talking_2 torso
+	}
+
+	trigger anim_loop3
+	{
+		playanim talking_3 torso
+	}
+
+	trigger anim_loop4
+	{
+		playanim talking_4 torso
+	}
+}
+
+jack2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+	trigger talk4
+	{
+		playsound cs14_jack_4	// 
+	}
+
+	trigger talk5
+	{
+		playsound cs14_jack_5	// 
+	}
+
+	trigger talk6
+	{
+		// playsound cs14_jack_6	// 
+		// clearanim
+		
+		// RealRTCW
+		playsound cs14_jack_6_1	// 
+		clearanim
+		wait 23500
+		playsound cs14_jack_6_2	// 
+		clearanim
+	}
+
+	trigger talk7
+	{
+		playsound cs14_jack_7	// 
+	}
+
+	trigger talk8
+	{
+		playsound cs14_jack_8	// 
+		clearanim
+	}
+
+	trigger anim_loop2
+	{
+		playanim talking_1 torso
+	}
+
+	trigger anim_loop3
+	{
+		playanim talking_2 torso
+		trigger jack2 anim_loop3
+	}
+
+	trigger anim_loop4
+	{
+		playanim clipboard_in torso forever
+		trigger jack2 anim_loop4
+	}
+}
+
+higgs
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		playsound cs14_hig_1
+	}
+
+	trigger talk2
+	{
+		playsound cs14_hig_2
+	}
+
+	trigger talk3
+	{
+		playsound cs14_hig_3
+		wait 3400
+		facetargetangles murphy
+		wait 4000
+		facetargetangles higgs
+	}
+}
+
+murphy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+	trigger talk1
+	{
+		playsound cs14_murphy_1
+	}
+
+	trigger talk2
+	{
+		playsound cs14_murphy_2
+	}
+
+	trigger talk3
+	{
+		playsound cs14_murphy_3
+	}
+
+	trigger talk4
+	{
+		playsound cs14_murphy_4
+	}
+
+	trigger anim_loop2
+	{
+		playanim talk1 torso
+	}
+}

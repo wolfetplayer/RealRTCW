@@ -1,0 +1,393 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "holdable_bandages"
+"origin" "1123 747 336"
+"angle" "180"
+}
+
+// REINFROCES
+
+{
+"classname" "ai_zombie"
+"origin" "85 612 -295"
+"ainame" "reinforce_ai_zombie_1"
+"angle" "164"
+"spawnflags" "1"
+"skin" "zombie/crypt5"
+"head" "crypt5"
+}
+{
+"classname" "ai_zombie"
+"origin" "-126 1042 -295"
+"ainame" "reinforce_ai_zombie_2"
+"angle" "-86"
+"spawnflags" "1"
+"skin" "zombie/fire1"
+"head" "fire1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-32 1441 -231"
+"ainame" "reinforce_ai_zombie_3"
+"angle" "-163"
+"spawnflags" "1"
+"skin" "zombie/crypt5"
+"head" "crypt5"
+}
+{
+"classname" "ai_zombie"
+"origin" "-176 1748 -231"
+"ainame" "reinforce_ai_zombie_4"
+"angle" "-6"
+"spawnflags" "1"
+"skin" "zombie/fire1"
+"head" "fire1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-298 1546 56"
+"ainame" "reinforce_ai_zombie_5"
+"angle" "0"
+"spawnflags" "1"
+"skin" "zombie/crypt5"
+"head" "crypt5"
+}
+{
+"classname" "ai_zombie"
+"origin" "133 1087 56"
+"ainame" "reinforce_ai_zombie_6"
+"angle" "-167"
+"spawnflags" "1"
+"skin" "zombie/fire1"
+"head" "fire1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-320 1158 56"
+"ainame" "reinforce_ai_zombie_7"
+"angle" "-7"
+"spawnflags" "1"
+"skin" "zombie/crypt5"
+"head" "crypt5"
+}
+{
+"classname" "ai_zombie"
+"origin" "-633 823 56"
+"ainame" "reinforce_ai_zombie_8"
+"angle" "-47"
+"spawnflags" "1"
+"skin" "zombie/fire1"
+"head" "fire1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-581 672 408"
+"ainame" "reinforce_ai_zombie_9"
+"angle" "105"
+"spawnflags" "1"
+"skin" "zombie/crypt5"
+"head" "crypt5"
+}
+{
+"classname" "ai_blackguard"
+"origin" "-7 -337 440"
+"ainame" "reinforce_ai_blackguard_10"
+"angle" "97"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_blackguard"
+"origin" "-334 -341 440"
+"ainame" "reinforce_ai_blackguard_11"
+"angle" "75"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle2"
+}
+{
+"classname" "ai_blackguard"
+"origin" "245 -48 440"
+"ainame" "reinforce_ai_blackguard_12"
+"angle" "120"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "-262 -779 440"
+"ainame" "reinforce_ai_eliteguard_13"
+"angle" "68"
+"spawnflags" "1"
+"skin" "eliteguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "20 -794 440"
+"ainame" "reinforce_ai_eliteguard_14"
+"angle" "115"
+"spawnflags" "1"
+"skin" "eliteguard/castle1"
+"head" "castle2"
+}
+{
+"classname" "ai_blackguard"
+"origin" "-151 -724 56"
+"ainame" "reinforce_ai_blackguard_15"
+"angle" "-79"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle4"
+}
+{
+"classname" "ai_blackguard"
+"origin" "-111 452 56"
+"ainame" "reinforce_ai_blackguard_16"
+"angle" "-95"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle5"
+}
+{
+"classname" "ai_blackguard"
+"origin" "530 46 56"
+"ainame" "reinforce_ai_blackguard_17"
+"angle" "172"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "875 -128 56"
+"ainame" "reinforce_ai_eliteguard_18"
+"angle" "100"
+"spawnflags" "1"
+"skin" "eliteguard/castle1"
+"head" "castle3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "1090 -145 56"
+"ainame" "reinforce_ai_eliteguard_19"
+"angle" "90"
+"spawnflags" "1"
+"skin" "eliteguard/castle2"
+"head" "castle3"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1284 -160 56"
+"ainame" "reinforce_ai_blackguard_20"
+"angle" "110"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1237 334 56"
+"ainame" "reinforce_ai_blackguard_21"
+"angle" "170"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle3"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1346 332 56"
+"ainame" "reinforce_ai_blackguard_22"
+"angle" "170"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle4"
+}
+{
+"classname" "ai_blackguard"
+"origin" "661 1089 296"
+"ainame" "reinforce_ai_blackguard_23"
+"angle" "-53"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle5"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1210 924 296"
+"ainame" "reinforce_ai_blackguard_24"
+"angle" "-170"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1512 1103 296"
+"ainame" "reinforce_ai_blackguard_25"
+"angle" "-152"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle2"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1503 1458 296"
+"ainame" "reinforce_ai_blackguard_26"
+"angle" "-133"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle3"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1175 2076 296"
+"ainame" "reinforce_ai_blackguard_27"
+"angle" "-106"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle4"
+}
+{
+"classname" "ai_blackguard"
+"origin" "711 1661 56"
+"ainame" "reinforce_ai_blackguard_28"
+"angle" "-91"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle5"
+}
+{
+"classname" "ai_blackguard"
+"origin" "600 927 56"
+"ainame" "reinforce_ai_blackguard_29"
+"angle" "32"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "386 750 56"
+"ainame" "reinforce_ai_eliteguard_30"
+"angle" "92"
+"spawnflags" "1"
+"skin" "eliteguard/castle2"
+"head" "castle2"
+}
+{
+"classname" "ai_blackguard"
+"origin" "897 1782 296"
+"ainame" "reinforce_ai_blackguard_31"
+"angle" "153"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle2"
+}
+{
+"classname" "ai_blackguard"
+"origin" "844 2015 296"
+"ainame" "reinforce_ai_blackguard_32"
+"angle" "-157"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "766 2023 296"
+"ainame" "reinforce_ai_eliteguard_33"
+"angle" "-162"
+"spawnflags" "1"
+"skin" "eliteguard/castle2"
+"head" "castle3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "718 1835 296"
+"ainame" "reinforce_ai_eliteguard_34"
+"angle" "151"
+"spawnflags" "1"
+"skin" "eliteguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1564 1779 296"
+"ainame" "reinforce_ai_blackguard_35"
+"angle" "160"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle4"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1571 2030 296"
+"ainame" "reinforce_ai_blackguard_36"
+"angle" "-157"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle5"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1324 1864 24"
+"ainame" "reinforce_ai_blackguard_37"
+"angle" "29"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle1"
+}
+{
+"classname" "ai_blackguard"
+"origin" "1448 2254 24"
+"ainame" "reinforce_ai_blackguard_38"
+"angle" "-107"
+"spawnflags" "1"
+"skin" "blackguard/castle1"
+"head" "castle2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "1140 2298 24"
+"ainame" "reinforce_ai_eliteguard_39"
+"angle" "-87"
+"spawnflags" "1"
+"skin" "eliteguard/castle1"
+"head" "castle2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "1060 2294 24"
+"ainame" "reinforce_ai_eliteguard_40"
+"angle" "-87"
+"spawnflags" "1"
+"skin" "eliteguard/castle1"
+"head" "castle3"
+}
+
+{
+"classname" "ai_priest"
+"origin" "-128 1273 -231"
+"ainame" "priest1"
+"aiteam" "2"
+"targetname" "priest1"
+"angle" "270"
+"spawnflags" "1"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

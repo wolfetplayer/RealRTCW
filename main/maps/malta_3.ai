@@ -1,0 +1,2615 @@
+//
+//AI Scripting
+//Map: Malta_3 (after SWF)
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+	    objectivesneeded 2
+		accum 0 bitreset 0	// Used to wait a few seconds before you are able to skip cinematic.
+		accum 0 bitset 2
+		accum 0 bitreset 3
+		accum 1 set 0   // used for NPC random dialogue lines
+		accum 2 set 0   // used for anims
+		accum 3 set 0   // used for weapon loadout
+		accum 4 set 0   // interrupt dialogue with colonel
+		accum 5 set 0   // interrupt waters
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_stop 0 2000
+		takeweapon all
+		giveinventory key_binocs
+		cvar cg_coronafardist 1024
+	}
+	
+	trigger enable_timer
+	{
+	   trigger timer time_start
+	}
+	
+	trigger jones
+	{
+	    achievement_malta_egypt
+	}
+	
+	trigger bm_teleport
+	{
+	   lockplayer on
+	   screenfade 6000 in
+	   wait 10000
+	   teleport teleport_end
+	   wait 2000
+	   lockplayer off
+	   screenfade 6000 out
+	}
+	
+    trigger bm_teleport2
+	{
+	   lockplayer on
+	   screenfade 6000 in
+	   wait 10000
+	   teleport teleport_end2
+	   wait 2000
+	   lockplayer off
+	   screenfade 6000 out
+	}
+	
+	trigger mystery_radio
+	{
+	   achievement_malta_radio
+	}
+	
+	trigger sleepy
+	{
+	    lockplayer on
+		screenfade 5000 in
+		wait 15000
+		sethealth 100
+		lockplayer off
+		screenfade 5000 out
+	}
+	
+	trigger briefing_1
+	{
+		trigger boss brief_player
+		//lockplayer on
+		//wait 15000
+		//lockplayer off
+	}
+	
+	trigger lock_waters
+	{
+	    //lockplayer on
+		//wait 10000
+		//lockplayer off
+	}
+	
+    trigger player_using_radio
+    {
+        trigger radio static
+    }
+
+	trigger player_using_radio_cafe
+    {
+        trigger radio_cafe static
+		trigger bar_guy1 stop_it
+    }
+	
+	trigger disable_timer
+	{
+	   trigger timer time_stop
+	   achievement_malta_course
+	}
+	
+	trigger give_me_your_weapons
+	{
+	    takeweapon all
+	}
+	
+	trigger take_knives
+	{
+	    takeweapon all
+	}
+	
+	trigger planes_flyby
+	{
+		trigger plane_no1 cycle1
+		trigger plane_no2 cycle2
+		alertentity planes_sound
+	}
+	
+	trigger took_key
+	{
+	   alertentity unlock_room
+	}
+	
+	trigger e1_toggle_upbtn	// This triggers while the player is NOT on the elevator.
+	{
+		trigger e1upbtn toggle
+	}
+
+	trigger e1_toggle_dwnbtn	// This triggers while the player is NOT on the elevator.
+	{
+		trigger e1dwnbtn toggle
+	}
+
+	trigger e1lever1_toggle
+	{
+		trigger e1lever1 toggle
+	}
+
+	trigger e1_downlever
+	{
+		accum 0 abort_if_not_bitset 2
+		trigger e1lever1 toggle
+	}
+
+	trigger enable_e1downlever
+	{
+		accum 0 bitset 2
+	}
+
+	trigger disable_e1downlever
+	{
+		accum 0 bitreset 2
+	}
+
+	trigger e1_uplever
+	{
+		accum 0 abort_if_not_bitset 3
+		trigger e1lever1 toggle
+	}
+
+	trigger enable_e1uplever
+	{
+		accum 0 bitset 3
+	}
+
+	trigger disable_e1uplever
+	{
+		accum 0 bitreset 3
+	}
+	
+    trigger package_taken
+	{
+		objectivemet 1
+		accum 4 set 1
+	}
+	
+	trigger armory_start
+	{
+		trigger waters greetings
+		trigger player lock_waters
+	}
+	
+	trigger select_loadout_1
+	{
+	    accum 3 set 1
+		objectivemet 2
+		trigger waters goodtogo
+	}
+	
+	trigger select_loadout_2
+	{
+	    accum 3 set 2
+		objectivemet 2
+		trigger waters goodtogo
+	}
+	
+	trigger give_loadout_1
+	{
+	     accum 3 abort_if_not_equal 1
+
+		#if g_fullarsenal == 0
+        applyloadout norway_vanilla_1
+		#endif
+
+		#if g_fullarsenal == 1
+        applyloadout norway_realrtcw_1
+		#endif
+		
+		#if g_fullarsenal == 2
+        applyloadout norway_vanilla_shotgun_1
+		#endif
+	}
+	
+	trigger give_loadout_2
+	{
+	     accum 3 abort_if_not_equal 2
+		 
+		#if g_fullarsenal == 0
+        applyloadout norway_vanilla_2
+		#endif
+
+		#if g_fullarsenal == 1
+        applyloadout norway_realrtcw_2
+		#endif
+		
+		#if g_fullarsenal == 2
+        applyloadout norway_vanilla_shotgun_2
+		#endif
+	}
+	
+	trigger secret1
+	{
+	    foundsecret
+	}
+	
+	trigger rug_run
+	{
+	   //alertentity rug_dealer
+	}
+	
+	trigger endmap
+	{
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		changelevel norway persistent
+	}
+
+
+}
+
+//Civilians//
+
+bartender
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all	
+		statetype relaxed
+		wait 1000
+		trigger bartender cook
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+	
+	trigger cook
+	{
+	   playanim cutting_food both holdframe forever
+	}
+	
+	trigger back_off
+	{
+	   wait 1000
+	   face_entity player
+	   wait 1000
+	   playsound bart_back // "Back off pal!"
+	   wait 3000
+	   facetargetangles bart_spot2
+	   resetscript
+	   wait 5000
+	   trigger bartender cook
+	   wait 5000
+	   achievement_malta_bartender
+	}
+	
+	trigger medic_response
+	{
+	   face_entity medic
+	   playsound bart_water
+	   wait 5200
+	   trigger medic response
+	   trigger bartender cook
+	}
+	
+	activate player
+    {
+	  trigger bartender check_speech
+	  accum 1 inc 1
+	  trigger bartender talk1
+	  trigger bartender talk2
+	  trigger bartender talk3
+	  wait 0
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound bart_told  // "I've already told the leuitanant everything I know" 
+	  wait 2000
+	  trigger bartender cook
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound bart_raids // "I thought the bombing raids are long over. Guess they are not."
+	  wait 2000
+	  trigger bartender cook
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound bart_cantsleep  // "I'm not closing anytime soon. Cant sleep anyway."
+	  wait 2000
+	  trigger bartender cook
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	    missionfailed 5 10
+	}
+}
+
+hotel_civ
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait 1000
+		trigger hotel_civ smoking
+	}
+	
+	trigger smoking
+	{
+		cigarette on
+		playanim smoking both holdframe forever
+		//cigarette off
+		//wait 5000
+		//trigger hotel_civ smoking
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+}
+
+harbor_civ
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait 1000
+		trigger harbor_civ smoking
+	}
+	
+	trigger smoking
+	{
+		cigarette on
+		playanim smoking both holdframe forever
+		//cigarette off
+		//wait 5000
+		//trigger hotel_civ smoking
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+}
+
+bar_guy1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		nosight 99999
+		wait 1000
+	}
+	
+	trigger comment
+	{
+	   wait 1000
+	   playsound barguy_nicetry
+	}
+
+    activate player
+    {
+	  deny
+    }	  
+	
+	trigger stop_it
+	{
+	  wait 1000
+	  playsound drunk_listen
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+}
+
+doc
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait 1000
+		trigger doc animloop
+	}
+
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}	
+	
+	trigger animloop
+	{
+      playanim clean_parts_2 both holdframe forever
+	}
+	
+    activate player
+    {
+	  trigger doc check_speech
+	  accum 1 inc 1
+	  trigger doc talk1
+	  trigger doc talk2
+	  trigger doc talk3
+	  wait 0
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  face_entity player
+	  playsound doc_side // "Any side effects to report, Captain?"
+	  wait 2000
+	  facetargetangles doc_spot1
+	  trigger doc animloop
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  face_entity player
+	  playsound doc_wherecoproral // "Captain, have you seen the Coproral? He was supposed to return an hour ago."
+	  wait 2000
+	  facetargetangles doc_spot1
+	  trigger doc animloop
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  face_entity player
+	  playsound doc_takesyringe  // "The last adrenaline syringe modification is on the table. You can take it." 
+	  wait 2000
+	  facetargetangles doc_spot1
+	  trigger doc animloop
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		 missionfailed 5 10
+	}
+	
+}
+
+civvie1
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait 1500
+		trigger civvie1 marchloop
+	}	
+	
+	trigger marchloop
+	{
+	    explicit_routing on
+		walktomarker civvie1_spot1
+		walktomarker civvie1_spot2
+		walktomarker civvie1_spot3
+		walktomarker civvie1_spot4
+		walktomarker civvie1_spot5
+		walktomarker civvie1_spot6
+		walktomarker civvie1_spot7
+		walktomarker civvie1_spot8
+		walktomarker civvie1_spot9
+		facetargetangles civvie1_spot9
+		wait 14000
+		walktomarker civvie1_spot8
+		walktomarker civvie1_spot7
+		walktomarker civvie1_spot6
+		walktomarker civvie1_spot5
+		walktomarker civvie1_spot11
+		walktomarker civvie1_spot12
+		walktomarker civvie1_spot13
+		walktomarker civvie1_spot14
+		facetargetangles civvie1_spot14
+		explicit_routing off
+		wait 10000
+		trigger civvie1 marchloop
+	}
+	
+		enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	    missionfailed 5 10
+	}
+	
+}
+
+rug_dealer
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait 1000
+		trigger rug_dealer run
+	}
+
+    trigger run
+    {
+       walktomarker rug_spot1
+       walktomarker rug_spot2
+       walktomarker rug_spot3
+       walktomarker rug_spot4
+       walktomarker rug_spot5
+       walktomarker rug_spot6
+       walktomarker rug_spot7
+       walktomarker rug_spot8
+	   alertentity kill_dealer_script
+    }	   
+	
+	activate player
+    {
+     deny
+    }	  
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+	
+}
+
+//Military//
+
+boss
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait 1000
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 4
+	   accum 1 set 0
+	}
+
+    activate player
+    {
+	  trigger boss check_speech
+	  accum 1 inc 1
+	  trigger boss talk1
+	  trigger boss talk2
+	  trigger boss talk3
+	  trigger boss talk4
+	  wait 0
+    }
+	
+	trigger brief_player
+	{
+	   playsound col_norway
+	   wait 7500
+	   playsound col_norway2
+	}
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound col_still_here
+	  wait 2000
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound col_waste
+	  wait 2000
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound col_ghost
+	  wait 2000
+	}
+	
+	trigger talk4
+	{
+	  accum 1 abort_if_not_equal 4
+	  playsound col_blazko? 
+	  wait 2000
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+}
+
+gimme_wp_guy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+        giveweaponfull weapon_thompson
+		wait 1500
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+
+    activate player
+    {
+	  trigger gimme_wp_guy check_speech
+	  accum 1 inc 1
+	  trigger gimme_wp_guy talk1
+	  trigger gimme_wp_guy talk2
+	  trigger gimme_wp_guy talk3
+    }
+	
+	trigger introduction
+	{
+	  playsound gimmewp_intro // "Welcome to the training facility, Captain."
+	  face_entity player
+	  wait 5000
+      facetargetangles gimmewp_spot1
+	  achievement_training
+	}
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound gimmewp_lt // "Leitanant McDermott is in the next section. He will guide you through our new course."
+	  face_entity player
+	  wait 5000
+	  facetargetangles gimmewp_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound gimmewp_justdont // "Sorry Captain, but you cant take those weapons outside this facility."
+	  face_entity player
+	  wait 5000
+	  facetargetangles gimmewp_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound gimmewp_resupply // "If you wanna resupply - use the ammo cabinet."
+	  face_entity player
+	  wait 5000
+	  facetargetangles gimmewp_spot1
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+}
+
+table_guard
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_colt
+		statetype relaxed
+		wait 1000
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+
+    activate player
+    {
+	  trigger table_guard check_speech
+	  accum 1 inc 1
+	  trigger table_guard talk1
+	  trigger table_guard talk2
+	  trigger table_guard talk3
+    }	  
+	
+	trigger captain
+	{
+      facetargetangles tg_spot2
+	  playsound captain_table // "Captain?"
+	  face_entity player
+	  wait 5000
+      facetargetangles tg_spot1
+	}
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound captain_table // "Captain?"
+	  face_entity player
+	  wait 5000
+	  facetargetangles tg_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound stay_post // "Sorry, I'll have to stay on my post"
+	  face_entity player
+	  wait 5000
+	  facetargetangles tg_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound anything_sir // "Do you need anything, sir?"
+	  face_entity player
+	  wait 5000
+	  facetargetangles tg_spot1
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+}
+
+course_sarge
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait forever
+	}
+
+    trigger welcome
+    {
+      wait 1000
+      playsound course_welcome
+	  face_entity player
+	  wait 5000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger results
+    {
+	  wait 2000
+	  accum 1 random_no_zero 6
+	  trigger course_sarge talk1
+	  trigger course_sarge talk2
+	  trigger course_sarge talk3
+	  trigger course_sarge talk4
+      trigger course_sarge talk5
+    }	
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound course_ok // "You looked ok"
+	  face_entity player
+	  wait 5000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound course_horrible // "Wasnt horrible"
+	  face_entity player
+	  wait 5000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound course_prettygood // "Pretty Good"
+	  face_entity player
+	  wait 5000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk4
+	{
+	  accum 1 abort_if_not_equal 4
+	  playsound course_seenworse // "I've seen worse"
+	  face_entity player
+	  wait 5000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk5
+	{
+	  accum 1 abort_if_not_equal 5
+	  playsound course_garbage //
+	  face_entity player
+	  wait 5000
+	  facetargetangles sarge_spot2
+	}
+	
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+	
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+}
+
+port_guard
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_m1garand
+		wait 10000
+		//trigger port_guard marchloop
+	}	
+	
+	trigger marchloop
+	{
+	    explicit_routing on
+		walktomarker port_spot1
+		walktomarker port_spot2
+		facetargetangles port_spot2
+		wait 18000
+		walktomarker port_spot1
+		walktomarker port_spot3
+		facetargetangles port_spot3
+		explicit_routing off
+		wait 9000
+		trigger port_guard marchloop
+	}
+	
+		enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	activate player
+    {
+	  deny
+    }	
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		    missionfailed 5 10
+	}
+	
+}
+
+port_guard2
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_m1garand
+		statetype relaxed
+		wait 1000
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+	
+	trigger closed
+	{
+	  face_entity player
+	  playsound port_closed
+	  wait 5000
+	  facetargetangles gate_spot1
+	}
+
+    activate player
+    {
+	  trigger port_guard2 check_speech
+	  accum 1 inc 1
+	  trigger port_guard2 talk1
+	  trigger port_guard2 talk2
+	  trigger port_guard2 talk3
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound captain_table // "Captain?"
+	  face_entity player
+	  wait 5000
+	  facetargetangles gate_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound stay_post // "Sorry, I'll have to stay on my post"
+	  face_entity player
+	  wait 5000
+	  facetargetangles gate_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound anything_sir // "Do you need anything, sir?"
+	  face_entity player
+	  wait 5000
+	  facetargetangles gate_spot1
+	}
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+	
+}
+
+
+harbor_patrol1
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_thompson
+		wait 1500
+		//trigger harbor_patrol1 start_patrol
+	}
+
+    trigger start_patrol	
+	{
+	  wait 1000
+	  walktomarker patrol_extra1
+	  walktomarker patrol_extra2
+	  trigger harbor_patrol1 marchloop
+	}
+	
+	trigger marchloop
+	{
+	    explicit_routing on
+		walktomarker harbor_spot1
+		walktomarker harbor_spot2
+		facetargetangles harbor_spot2
+		wait 15000
+		walktomarker harbor_spot1
+		walktomarker harbor_spot3
+		facetargetangles harbor_spot3
+		explicit_routing off
+		wait 13000
+		trigger harbor_patrol1 marchloop
+	}
+	
+	activate player
+    {
+	  deny
+    }	
+	
+		enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		    missionfailed 5 10
+	}
+	
+}
+
+museum_guard1
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_thompson
+		wait 1500
+		trigger museum_guard1 marchloop
+	}	
+	
+	trigger marchloop
+	{
+	    explicit_routing on
+		walktomarker museum_spot1
+		walktomarker museum_spot2
+		walktomarker museum_spot3
+		facetargetangles museum_spot3
+		wait 15000
+		walktomarker museum_spot2
+		walktomarker museum_spot1
+		walktomarker museum_spot4
+		facetargetangles museum_spot4
+		explicit_routing off
+		wait 11000
+		trigger museum_guard1 marchloop
+	}
+	
+		enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		    missionfailed 5 10
+	}
+	
+}
+
+hq_guard
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_thompson
+		wait forever
+	}	
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+	
+	activate player
+    {
+	  trigger hq_guard check_speech
+	  accum 1 inc 1
+	  trigger hq_guard talk1
+	  trigger hq_guard talk2
+	  trigger hq_guard talk3
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound hq_sir // "Sir!"
+	  face_entity player
+	  wait 5000
+	  facetargetangles hq_guard_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound hq_hq // "Headquarters are right ahead sir."
+	  face_entity player
+	  wait 5000
+	  facetargetangles hq_guard_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound hq_colonel // "Colonel should be inside, Captain."
+	  face_entity player
+	  wait 5000
+	  facetargetangles hq_guard_spot1
+	}
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+	
+}
+
+museum_guard2 
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_thompson
+		wait 1000
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+
+    activate player
+    {
+	  trigger museum_guard2 check_speech
+	  accum 1 inc 1
+	  trigger museum_guard2 talk1
+	  trigger museum_guard2 talk2
+	  trigger museum_guard2 talk3
+    }	  
+	
+	trigger welcome
+	{
+	   playsound welcome_museum // "Welcome to the museum, Captain!"
+	}
+	
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound dont_worry_cap // "We're gonna keep an eye out. Dont you worry Captain."
+	  face_entity player
+	  wait 5000
+	  facetargetangles museumg2_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound england_goods // "We gonna transport all of these goods once skies are safe."
+	  face_entity player
+	  wait 5000
+	  facetargetangles museumg2_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound welcome_museum // "Welcome to the museum, Captain!"
+	  face_entity player
+	  wait 5000
+	  facetargetangles museumg2_spot1
+	}		
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+	
+}
+
+medic
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_thompson
+		wait forever
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+
+    trigger bar
+    {
+       wait 500
+       playsound medic_al
+	   face_entity bartender
+       wait 4500
+       trigger bartender medic_response
+	   wait 2000
+    }
+
+    trigger response
+    {
+       wait 250
+       playsound medic_tried
+       wait 1500
+       facetargetangles medic_spot2
+       trigger bar_guy1 comment
+	   trigger medic go
+    }	   
+	
+	trigger go
+	{
+	   walktomarker medic_spot1
+	   walktomarker medic_spot2
+	   facetargetangles medic_spot2
+	   trigger medic read
+	}
+	
+	trigger read
+	{
+	   takeweapon all
+	   playanim tunning_radio both holdframe forever
+	}
+	
+
+	activate player
+    {
+	  trigger medic check_speech
+	  accum 1 inc 1
+	  trigger medic talk1
+	  trigger medic talk2
+	  trigger medic talk3
+	  wait 0
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  face_entity player
+	  playsound medic_captain  // "Captain?" 
+	  wait 5000
+	  facetargetangles medic_spot2
+	  trigger medic read
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  face_entity player
+	  playsound medic_checkup // "Leutanant ordered me to check up on civilians and personell. No one was really hurt. Well, maybe a little scared."
+	  wait 5000
+	  facetargetangles medic_spot2
+	  trigger medic read
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  face_entity player
+	  playsound medic_donttell  // "I'm gonna stick around for a bit. Please don't tell the doc."
+	  wait 5000
+	  facetargetangles medic_spot2
+	  trigger medic read
+	}
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+	
+}
+
+street_patrol2
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_thompson
+		wait 1500
+	}	
+	
+	trigger report
+	{
+	   wait 2000
+	   playsound patrol_report
+	   wait 3000
+	   explicit_routing on
+	   runtomarker brief_spot1
+	   runtomarker brief_spot2
+	   runtomarker brief_spot3
+	   runtomarker brief_spot4
+	   runtomarker brief_spot5
+	   runtomarker brief_spot6
+	   runtomarker brief_spot7
+	   runtomarker brief_spot8
+	   runtomarker brief_spot9
+	   runtomarker brief_spot10
+	   runtomarker brief_spot11
+	   runtomarker brief_spot12
+	   runtomarker brief_spot13
+	   runtomarker brief_spot14
+	   runtomarker brief_spot15
+	   runtomarker brief_spot16
+	   runtomarker brief_spot17
+	   runtomarker brief_spot18
+	   runtomarker brief_spot19
+	   facetargetangles brief_spot19
+	   wait 2000
+	   playsound patrol_report2
+	   wait 6000
+	   trigger lt order1
+	   explicit_routing off
+    }
+	
+	trigger got_it
+	{
+	    playsound patrol_report3
+		wait 1000
+		explicit_routing on
+		runtomarker brief_spot20
+		runtomarker brief_spot21
+		runtomarker brief_spot22
+		runtomarker brief_spot23
+		facetargetangles brief_spot23
+		explicit_routing off
+	}
+	
+	enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+	
+}
+
+lt
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		giveweaponfull weapon_colt
+		wait 1500
+	}	
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+	
+	trigger order1
+	{
+	   playsound lt_post
+	   wait 3000
+	   trigger street_patrol2 got_it
+	}
+	
+	
+	trigger report
+	{
+	   wait 1000
+	   playsound patrol_report
+	   wait 1500
+	   explicit_routing on
+	   runtomarker brief_spot1
+	   runtomarker brief_spot2
+	   runtomarker brief_spot3
+	   runtomarker brief_spot4
+	   runtomarker brief_spot5
+	   runtomarker brief_spot6
+	   runtomarker brief_spot7
+	   runtomarker brief_spot8
+	   runtomarker brief_spot9
+	   runtomarker brief_spot10
+	   runtomarker brief_spot11
+	   runtomarker brief_spot12
+	   runtomarker brief_spot13
+	   runtomarker brief_spot14
+	   runtomarker brief_spot15
+	   runtomarker brief_spot16
+	   runtomarker brief_spot17
+	   runtomarker brief_spot18
+	   runtomarker brief_spot19
+	   facetargetangles brief_spot19
+	   wait 2000
+	   playsound patrol_report2
+	   wait 6000
+	   trigger lt order1
+    }
+	
+	activate player
+    {
+	  trigger lt check_speech
+	  accum 1 inc 1
+	  trigger lt talk1
+	  trigger lt talk2
+	  trigger lt talk3
+	  wait 0
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound lt_never
+	  face_entity player
+	  wait 5000
+	  facetargetangles lt_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound lt_hurt 
+	  face_entity player
+	  wait 5000
+	  facetargetangles lt_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound lt_locked
+	  face_entity player
+	  wait 5000
+	  facetargetangles lt_spot1
+	}
+	
+	enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+	
+}
+
+south_guard2
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_colt
+		statetype relaxed
+		wait 1000
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+
+    activate player
+    {
+	  trigger south_guard2 check_speech
+	  accum 1 inc 1
+	  trigger south_guard2 talk1
+	  trigger south_guard2 talk2
+	  trigger south_guard2 talk3
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound captain_table // "Captain?"
+	  face_entity player
+	  wait 5000
+	  facetargetangles check_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound stay_post // "Sorry, I'll have to stay on my post"
+	  face_entity player
+	  wait 5000
+	  facetargetangles check_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound anything_sir // "Do you need anything, sir?"
+	  face_entity player
+	  wait 5000
+	  facetargetangles check_spot1
+	}
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+	
+}
+
+driver
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_colt
+		statetype relaxed
+		wait 1000
+	}
+	
+	trigger ready
+	{
+	  wait 500
+	  playsound driver_ready
+	}
+
+    activate player
+    {
+	  deny
+    }	  
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+	
+}
+
+waters
+{
+
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+		takeweapon all
+		wait 1000
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 2
+	   accum 1 set 0
+	}
+	
+	trigger working
+	{
+	   playanim tunning_radio_in both
+	   wait 1000
+	   playanim tunning_radio both holdframe forever
+	}
+	
+	trigger greetings
+	{  
+	   wait 500
+	   face_entity player
+	   playsound waters_norway
+	   wait 5000
+	   trigger waters greetings_2
+	}
+	
+	trigger greetings_2
+	{
+	  facetargetangles waters_spot2
+	  playsound waters_both_loadouts
+	  wait 3000
+	}
+	
+	trigger goodtogo
+	{
+	  wait 1000
+	  face_entity player
+	  playsound waters_hunt
+	  wait 5000
+	  facetargetangles waters_spot1
+	  trigger waters working
+	}
+	   
+    activate player
+    {
+	  trigger waters check_speech
+	  accum 1 inc 1
+	  trigger waters talk1
+	  trigger waters talk2
+	  wait 0
+    }	  
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  face_entity player
+	  playsound waters_venom_report
+	  wait 15000
+	  facetargetangles waters_spot1
+	  trigger waters working
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  face_entity player
+	  playsound waters_venom_wtf
+	  wait 5000
+	  facetargetangles waters_spot1
+	  trigger waters working
+	}
+	
+    enemysight
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+	
+}
+	
+	

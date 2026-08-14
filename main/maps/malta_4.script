@@ -1,0 +1,603 @@
+//
+//Brush Scripting
+//Map: Malta_3
+//Last edited by: WolfETPlayer
+//
+
+elevator1	// The first elevator you run into in the map.
+{
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used for the soundloop
+	}
+
+
+	trigger stop	// This stops the elevator in it's tracks.
+	{
+		accum 0 bitset 0
+		wait 5
+		stopsound
+		playsound sound\movers\elevators\elev1_end.wav
+		halt
+		resetscript
+	}
+
+	trigger soundloop
+	{
+		accum 0 abort_if_bitset 0
+		playsound sound\movers\elevators\elev1_loop.wav LOOPING
+	}
+
+	trigger up	// This moves the elevator up.
+	{
+		accum 0 bitreset 0
+		wait 5
+		playsound sound\movers\elevators\elev1_start.wav
+		trigger e1lever1 up	// This triggers the lever to move up with the elevator.
+		trigger big_door1_lever elevator1_soundloop
+		gotomarker e1up1 50 wait
+		gotomarker e1up4 50 deccel wait
+		stopsound
+		playsound sound\movers\elevators\elev1_end.wav
+	}
+
+	trigger down	// This moves the elevator down
+	{
+		accum 0 bitreset 0
+		wait 5
+		playsound sound\movers\elevators\elev1_start.wav
+		trigger e1lever1 down	// This trigger the lever to mvoe down with the elevator.
+		trigger big_door1_lever elevator1_soundloop
+		gotomarker e1down1 50 wait
+		gotomarker e1down4 50 deccel wait
+		stopsound
+		playsound sound\movers\elevators\elev1_end.wav
+	}
+}
+
+e1upbtn
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitreset 1
+		wait 5
+		gotomarker e1upbtnspot2 10
+	}
+
+	trigger toggle
+	{
+		wait 5
+		trigger e1upbtn beep
+		wait 5
+		trigger e1upbtn up
+	}
+
+	trigger beep
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		resetscript
+	}
+	
+	trigger up
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		accum 0 bitreset 0
+		resetscript
+		trigger e1lever1 up2	// This triggers the lever to go down.
+	}
+
+	trigger on	// Player has touched the button
+	{
+		accum 0 bitset 0
+		accum 0 bitreset 1
+		playsound basein_switch
+		gotomarker e1upbtnspot1 10 wait
+	}
+
+	trigger off 	// Player has not touched the button
+	{
+		accum 0 bitset 1
+		accum 0 bitreset 0
+		gotomarker e1upbtnspot2 10 wait
+	}
+}
+
+e1dwnbtn
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		wait 5
+		gotomarker e1dwnbtnspot2 10 wait
+	}
+
+	trigger toggle
+	{
+		wait 5
+		trigger e1dwnbtn beep
+		wait 5
+		trigger e1dwnbtn down
+	}
+
+	trigger beep
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		resetscript
+	}
+	
+	trigger down
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		accum 0 bitreset 0
+		resetscript
+		trigger e1lever1 down2	// This triggers the lever to go down.
+	}
+
+	trigger on	// Player has touched the button
+	{
+		accum 0 bitset 0
+		accum 0 bitreset 1
+		gotomarker e1dwnbtnspot1 10 wait
+	}
+
+	trigger off 	// Player has not touched the button
+	{
+		accum 0 bitset 1
+		accum 0 bitreset 0
+		playsound basein_switch
+		gotomarker e1dwnbtnspot2 10 wait
+	}
+}
+
+e1lever1	// This is the elevator's lever. 
+{
+	spawn
+	{
+		accum 0 bitset 0 	// Accum value so that it knows to Stop.
+		accum 0 bitreset 1	// Accum value so that it knows to go Down.
+		accum 0 bitset 2	// Accum value so that it knows to go Up.
+		accum 1 set 0		// Checks to see what direction the elevator is going. (1 up, 2 down, 3 stop)
+	}
+
+	trigger toggle
+	{
+		wait 5
+		trigger e1lever1 stop
+		wait 5
+		trigger e1lever1 up2
+		wait 5
+		trigger e1lever1 down2
+	}
+
+	trigger toggle_by_ai
+	{
+		wait 500
+		trigger e1lever1 stop
+		wait 5
+		trigger e1lever1 up2
+		wait 5
+		trigger e1lever1 down2
+	}
+
+	trigger stop	// This triggers everything to stop.
+	{
+		accum 0 abort_if_bitset 0
+		resetscript
+		accum 0 bitset 0
+		trigger e1lever1 check
+		wait 5	
+		trigger e1lever1 upstop // Checks to see what direction the elevator is heading.
+		wait 5
+		trigger e1lever1 downstop	
+	}
+
+	trigger upstop
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		trigger elevator1 stop	// Triggers the elevator to stop.
+		playsound sound\scenaric\basein\elev_lever.wav
+		wait 5
+		halt
+		faceangles 0 0 0 400
+	}
+
+	trigger downstop
+	{
+		accum 1 abort_if_not_equal 2
+		resetscript
+		trigger elevator1 stop	// Triggers the elevator to stop.
+		playsound sound\scenaric\basein\elev_lever.wav
+		wait 5
+		halt
+		faceangles 0 0 0 400		
+	}
+
+	trigger up2
+	{
+		accum 0 abort_if_bitset 1
+		resetscript
+		accum 0 bitreset 0
+		accum 0 bitset 1
+		accum 0 bitset 2
+		wait 20
+		trigger e1upbtn off
+		faceangles -20 0 0 750
+		trigger elevator1 up
+	}
+
+	trigger down2
+	{
+		accum 0 abort_if_bitset 2
+		resetscript
+		accum 0 bitreset 0
+		accum 0 bitset 1
+		accum 0 bitset 2
+		wait 20
+		trigger e1dwnbtn off
+		playsound sound\scenaric\basein\elev_lever.wav
+		faceangles 20 0 0 750
+		trigger elevator1 down	
+	}
+
+	trigger up	// Triggers the Lever to go up with the elevator.
+	{
+		accum 1 set 1
+		accum 0 bitreset 2
+		//alertentity e1downdisable
+		trigger player disable_e1downlever
+		gotomarker e1lvr1up1 50 wait
+		accum 0 bitset 0
+		gotomarker e1lvr1up4 50 deccel wait
+		wait 200
+		playsound sound\scenaric\basein\elev_lever.wav
+		faceangles 0 0 0 400
+		trigger player enable_e1uplever
+		trigger e1upbtn off
+		trigger e1dwnbtn on
+	}
+
+	trigger down	// Triggers the Lever to go up with the elevator.
+	{
+		accum 1 set 2
+		accum 0 bitreset 1
+		trigger player disable_e1uplever
+		gotomarker e1lvr1down1 50 wait
+		accum 0 bitset 0
+		gotomarker e1lvr1down4 50 deccel wait
+		wait 200
+		playsound sound\scenaric\basein\elev_lever.wav
+		faceangles 0 0 0 400
+		trigger player enable_e1downlever
+		trigger e1upbtn on
+		trigger e1dwnbtn off
+	}
+}
+
+plane_no1
+{
+	spawn
+	{
+		wait 5000
+		gotomarker no1loc1 10000
+		faceangles 0 196 0 gototime
+	}
+
+	trigger cycle1
+	{
+		wait 1000
+
+		gotomarker no1loc2 1500
+		faceangles 0 196 8 gototime
+		gotomarker no1loc3 1500
+		faceangles 0 196 8 gototime
+		gotomarker no1loc4 1500
+		faceangles 0 196 0 gototime
+		gotomarker no1loc5 1500
+		faceangles 0 196 -8 gototime
+		gotomarker no1loc6 1500
+		faceangles 0 196 0 gototime
+		gotomarker no1final 1500
+		faceangles 0 196 0 gototime
+	}
+}
+
+plane_no2
+{
+	spawn
+	{
+		wait 5000
+		gotomarker no2loc1 10000
+		faceangles 0 196 -8 gototime
+	}
+
+	trigger cycle2
+	{
+		wait 1000
+		gotomarker no2loc2 1500
+		faceangles 0 196 -8 gototime
+		gotomarker no2loc3 1500
+		faceangles 0 196 0 gototime
+		gotomarker no2loc4 1500
+		faceangles 0 196 0 gototime
+		gotomarker no2loc5 1600
+		faceangles 0 196 -12 gototime
+		gotomarker no2loc6 1500
+		faceangles 0 196 -12 gototime
+		gotomarker no2final 1500
+		faceangles 0 196 6 gototime
+	}
+}
+
+escapeboat
+{
+	spawn
+	{
+		wait 2000
+		gotomarker escapeboat_checkpoint1 1000
+		faceangles 0 0 0 gototime
+	}
+
+	trigger cycle1
+	{
+		wait 1000
+		gotomarker escapeboat_checkpoint2 110
+		faceangles 0 0 0 gototime
+		gotomarker escapeboat_checkpoint3 110
+		faceangles 0 0 0 gototime
+	}
+}
+
+buoy
+{
+	spawn
+	{
+	 wait 50
+	}
+	
+}
+
+big_door1_lever
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that open only triggers once.
+	}
+
+	trigger elevator1_soundloop
+	{
+		wait 1000 0
+		trigger elevator1 soundloop
+	}
+}
+
+// fishing ship #1
+
+ship1
+{ 
+	spawn 
+	{
+		trigger ship1 moveship
+	} 
+
+	trigger moveship 
+	{ 
+		gotomarker ship1_path1 4 wait
+		gotomarker ship1_path2 6 wait
+		gotomarker ship1_path3 4 wait
+		gotomarker ship1_path4 4 wait
+		trigger ship1 moveship
+	}
+}
+
+timer
+{
+    spawn
+	{
+	  printlabel off
+	  printlabel format string accum timer inline
+	  printlabel txt Your Time:
+	}
+	
+	trigger time_start
+	{
+	    printlabel format string accum timer inline
+		printlabel on
+		accumgametime 2
+		trigger timer time_go
+	}
+	
+	trigger time_go
+	{
+	   accumgametime 1
+	   accumaction 1 1 minus 2
+	   printlabel param 1 400 50
+	   wait 5
+	   trigger timer time_go
+	}
+	
+	trigger time_stop
+	{
+	   printlabel format pulse string accum timer inline
+	   wait 5000
+	   printlabel off
+	}
+}
+
+radio	
+{
+	spawn
+	{
+		accum 5 set 0
+	}
+
+	trigger static 
+	{
+		stopsound
+		playsound sound/scenaric/dam/radiostaticloop.wav looping
+		wait 1500
+		stopsound
+		trigger radio choose_tunes	
+	}
+
+	trigger choose_tunes
+	{
+		accum 5 random 7
+		resetscript
+		wait 5
+		trigger radio radio1
+		wait 5
+		trigger radio radio2
+		wait 5
+		trigger radio radio3
+		wait 5
+		trigger radio radio4
+		wait 5
+		trigger radio radio5
+		wait 5
+		trigger radio radio6
+		wait 5
+		trigger radio radio7
+	}
+
+	trigger radio1				
+	{
+		accum 5 abort_if_not_equal 0 
+		resetscript 
+		stopsound
+		playsound sound/scenaric/village2/beethoven.wav looping
+	}
+
+	trigger radio2		
+	{
+		accum 5 abort_if_not_equal 1 
+		stopsound
+		resetscript
+		playsound sound/world/lili_marlene_germ_cut.wav looping
+	}
+
+	trigger radio3		
+	{
+		accum 5 abort_if_not_equal 2 
+		resetscript
+		stopsound
+		playsound sound/scenaric/village2/beethoven_9_2.wav looping	
+	}
+	
+	trigger radio4		
+	{
+		accum 5 abort_if_not_equal 3
+		resetscript
+		stopsound
+	}
+	
+	trigger radio5
+	{
+		accum 5 abort_if_not_equal 4
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta/wellerman.wav looping	
+	}
+	
+	trigger radio6
+	{
+		accum 5 abort_if_not_equal 5
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta_2/green.wav looping
+	}
+	
+	trigger radio7
+	{
+		accum 5 abort_if_not_equal 6
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta_3/malta_folk.wav looping
+	}
+
+}
+
+radio_cafe	
+{
+	spawn
+	{
+		accum 6 set 0
+		trigger radio_cafe choose_tunes
+	}
+
+	trigger static 
+	{
+		stopsound
+		playsound sound/scenaric/dam/radiostaticloop.wav looping
+		wait 1500
+		stopsound
+		trigger radio_cafe choose_tunes
+	}
+
+	trigger choose_tunes
+	{
+		accum 6 random 3
+		resetscript
+		wait 5
+		trigger radio_cafe radio1
+		wait 5
+		trigger radio_cafe  radio2
+		wait 5
+		trigger radio_cafe  radio3
+	}
+
+	trigger radio1				
+	{
+		accum 6 abort_if_not_equal 0 
+		resetscript 
+		stopsound
+		playsound sound/scenaric/malta_4/malta_lul.wav looping
+	}
+
+	trigger radio2		
+	{
+		accum 6 abort_if_not_equal 1 
+		stopsound
+		resetscript
+		playsound sound/scenaric/malta_4/malta4_radio1.wav looping
+	}
+
+	trigger radio3		
+	{
+		accum 6 abort_if_not_equal 2 
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta_4/malta4_radio2.wav looping
+	}
+
+}
+
+handle
+{
+	spawn
+	{
+
+	}
+
+	trigger turnon
+	{
+		playsound sound/movers/switches/butn2.wav
+		alertentity start_tesla
+		faceangles 180 0 0 500
+		alertentity hurt1
+		alertentity smoke1
+		wait 3000
+		alertentity hurt1
+		wait 1000
+		alertentity smoke1
+		faceangles 0 0 0 500
+	}
+}
+

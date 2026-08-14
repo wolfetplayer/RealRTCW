@@ -1,0 +1,249 @@
+//Brush Scripting
+//Map: boss 1 
+//Last edited by: Dan
+
+counter1	// Used for cinematic syncronization.
+{
+	spawn
+	{
+		accum 2 set 0
+	}
+
+	trigger cinematic1
+	{
+		wait 5
+		alertentity opendoor
+		wait 3000
+		trigger zemph anim1
+		wait 500
+		trigger zemph talk1	// What are you planning now?
+		wait 2100
+		trigger helga anim1
+		wait 5
+		trigger helga talk1	// I'm not planning anything. I'm doing it...
+		wait 500
+		trigger zemph idle
+		wait 3000
+		wait 100
+		trigger player cam8
+		//trigger player cam2b
+		wait 100
+		trigger zemph talk2	// No! You can't do that! You'll break the inner seal!
+		wait 5
+		trigger zemph anim2
+		wait 1000
+		trigger helga idle
+		wait 2400
+		trigger helga anim2
+		trigger helga talk2	// I'm prepared to take that risk...
+		wait 100
+		trigger player cam6
+		wait 300
+		trigger zemph idle
+		wait 1200
+		trigger zemph talk3	// You're prepared? Are you completely mad!
+		wait 10
+		trigger zemph anim3
+		wait 1750
+		trigger player cam5
+		trigger helga idle
+		wait 7400
+		trigger zemph idle
+		trigger helga talk3	// I don't care. I've waited my whole life for an opportunity like this.
+		wait 500
+		trigger helga anim3
+		trigger player cam6
+		wait 6900
+		trigger zemph anim1
+		wait 500
+		trigger player cam5
+		wait 1700
+		trigger helga idle_b
+		trigger counter1 cinematic1a
+	}
+
+	trigger cinematic1a
+	{
+		wait 300
+		trigger zemph talk4	// Frau Von Bulow... I warn you!
+		wait 1000
+		trigger zemph anim4
+		wait 7000
+		trigger player cam8
+		trigger zemph anim1
+		wait 1600
+		trigger helga talk4	// Get out of my way, Zemph. Your feeble threats won't stop me.
+		wait 400
+		trigger helga anim4
+		trigger player cam6
+		wait 3450
+		trigger zemph talk5	// Please! Come to your senses! Stop this madness before it is too late.
+		wait 905
+		trigger zemph anim5
+		trigger player cam5
+		wait 450
+		trigger helga idle_b
+		wait 3550
+		trigger player cam6
+		trigger helga anim5
+		trigger helga talk5	// This is your last warning...
+		wait 800
+		trigger zemph idle_b
+		wait 450
+		trigger zemph anim6
+		wait 205
+		trigger zemph talk6	// No... No you can't.
+		wait 400
+		trigger player cam3
+		trigger helga anim6
+		wait 550
+		trigger helga getweap
+		wait 200
+		trigger helga fire_zemph
+		wait 250
+		trigger zemph talk7	// Argh!
+		wait 1750
+		trigger helga idle_b
+		wait 1500
+		trigger helga talk6	// At last...!
+		wait 1000
+		trigger helga anim7
+		wait 2500
+		trigger helga anim8
+		wait 5000
+		trigger player cam3d
+		alertentity cine1_end_sound
+		trigger counter1 cine1_cleanup
+	}
+
+	trigger cine1_cleanup
+	{
+		alertentity coronaon
+		alertentity kill_cine1
+//		trigger bj3 stop_talking	added by jeremy
+		resetscript
+	}
+
+	trigger killed_total
+	{
+		accum 2 inc 1
+		#if g_reinforce == 0 accum 2 abort_if_less_than 9 #endif
+		#if g_reinforce == 1 accum 2 abort_if_less_than 15 #endif
+		#if g_reinforce == 2 accum 2 abort_if_less_than 22 #endif
+		trigger player got_objective1
+		alertentity on_objective2
+		alertentity opendoor
+	}
+
+	trigger plane_cine1
+	{
+		wait 6000
+		mu_fade 0 1000
+		mu_queue sound/music/l_briefing_1
+		alertentity bj3
+		alertentity plane_engines
+		trigger player cam1_after 
+//		alertentity plane_smoke_left
+//		alertentity plane_smoke_right 
+		trigger bj3 anim_loop4
+		wait 2000
+		trigger bj3 talk6
+		wait 2000
+		trigger bj3 talk1
+//		alertentity plane_radio3_mh // mother hen1	Mother hen to eagles nest, come in eagles nest
+		wait 5000
+		trigger bj3 talk2
+//		alertentity plane_radio1 // eagles nest1	This is eagles nest WE read you Mother Hen
+		wait 4400
+		trigger bj3 talk3
+//		alertentity plane_radio4_mh // mother hen2	Our status is mission accomplished We are returning home
+		wait 3300
+		trigger bj3 talk4
+//		alertentity plane_radio2 // eagles nest2	Well done Mother Hen, What is the condisiton of the passenger? 
+		wait 4100
+		trigger player cam2_after 
+		wait 100
+		trigger bj3 talk5
+//		alertentity plane_radio5_mh // mother hen3	All Things considered, the passenger is doing fine.  Repeat...
+		wait 7300
+		trigger player endmap2
+//		alertentity plane_radio3_static // eagles nest static
+//		alertentity plane_radio5_static // mother hen4 static
+
+
+	}
+}
+
+counter2
+{
+	spawn
+	{
+		accum 0 bitset 0
+	}
+
+	trigger corner1 // player has touched corner 1, check for spawning zombies
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		// boom
+		trigger player ztrigger8_hit
+		wait 1500
+		// Boom
+		trigger player ztrigger1_hit
+		wait 1500
+		// BOOM!
+		trigger player ztrigger4_hit
+
+		// turn on all the remaining proximity triggers on the zombie graves
+		alertentity ztrigger2
+		alertentity ztrigger3
+		alertentity ztrigger5
+		alertentity ztrigger6
+		alertentity ztrigger7
+	}
+
+	trigger corner2 // player has touched corner 2, check for spawning zombies
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		// boom
+		trigger player ztrigger1_hit
+		wait 1500
+		// Boom
+		trigger player ztrigger8_hit
+		wait 1500
+		// BOOM!
+		trigger player ztrigger5_hit
+
+		// turn on all the remaining proximity triggers on the zombie graves
+		alertentity ztrigger2
+		alertentity ztrigger3
+		alertentity ztrigger4
+		alertentity ztrigger6
+		alertentity ztrigger7
+	}
+
+	trigger corner3 // player has touched corner 2, check for spawning zombies
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		// boom
+		trigger player ztrigger4_hit
+		wait 1500
+		// Boom
+		trigger player ztrigger5_hit
+		wait 1500
+		// BOOM!
+		trigger player ztrigger8_hit
+
+		// turn on all the remaining proximity triggers on the zombie graves
+		alertentity ztrigger1
+		alertentity ztrigger2
+		alertentity ztrigger3
+		alertentity ztrigger6
+		alertentity ztrigger7
+	}
+}

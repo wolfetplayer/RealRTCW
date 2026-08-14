@@ -1,0 +1,119 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "ai_zombie"
+"origin" "-1483 -196 24"
+"targetname" "reinforce_ai_zombie_1"
+"ainame" "reinforce_ai_zombie_1"
+"angle" "60"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-2063 -226 24"
+"targetname" "reinforce_ai_zombie_2"
+"ainame" "reinforce_ai_zombie_2"
+"angle" "45"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1778 -59 24"
+"targetname" "reinforce_ai_zombie_3"
+"ainame" "reinforce_ai_zombie_3"
+"angle" "76"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1778 -59 24"
+"targetname" "reinforce_ai_zombie_4"
+"ainame" "reinforce_ai_zombie_4"
+"angle" "88"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1713 54 24"
+"targetname" "reinforce_ai_zombie_5"
+"ainame" "reinforce_ai_zombie_5"
+"angle" "135"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1679 227 24"
+"targetname" "reinforce_ai_zombie_6"
+"ainame" "reinforce_ai_zombie_6"
+"angle" "225"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1412 121 36"
+"targetname" "reinforce_ai_zombie_10"
+"ainame" "reinforce_ai_zombie_10"
+"angle" "180"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1939 17 24"
+"targetname" "reinforce_ai_zombie_11"
+"ainame" "reinforce_ai_zombie_11"
+"angle" "225"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1429 310 24"
+"targetname" "reinforce_ai_zombie_12"
+"ainame" "reinforce_ai_zombie_12"
+"angle" "-4"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1247 199 24"
+"targetname" "reinforce_ai_zombie_13"
+"ainame" "reinforce_ai_zombie_13"
+"angle" "195"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-2107 -162 24"
+"targetname" "reinforce_ai_zombie_14"
+"ainame" "reinforce_ai_zombie_14"
+"angle" "-4"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-2143 253 24"
+"targetname" "reinforce_ai_zombie_15"
+"ainame" "reinforce_ai_zombie_15"
+"angle" "-14"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1107 63 24"
+"targetname" "reinforce_ai_zombie_16"
+"ainame" "reinforce_ai_zombie_16"
+"angle" "177"
+"spawnflags" "1"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

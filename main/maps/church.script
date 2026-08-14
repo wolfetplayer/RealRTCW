@@ -1,0 +1,729 @@
+//
+//Brush Scripting
+//Map: Church
+//Last Edited by: Mike (110501)
+//
+
+coffincover1a
+{
+	spawn
+	{
+		accum 0 set 0	// Used to count the dead elite guards.
+	}
+
+	trigger slowopen
+	{
+		playsound coffinlid_1
+		faceangles 0 10 0 2000
+		gotomarker cover1spot1 20 
+		faceangles 0 5 0 gototime
+		gotomarker cover1spot2 40
+		faceangles -20 5 0 gototime
+		gotomarker cover1spot3 60
+		faceangles -30 5 0 gototime
+		gotomarker cover1spot4 80
+		faceangles -40 5 0 gototime
+		gotomarker cover1spot5 100
+		faceangles -50 5 0 gototime
+		gotomarker cover1spot6 120
+		faceangles -60 5 0 gototime
+		gotomarker cover1spot7 140
+		faceangles -70 5 0 gototime
+		gotomarker cover1spot8 160
+		faceangles -80 5 0 gototime
+		alertentity dust1
+		gotomarker cover1spot10 40
+		faceangles -180 5 0 gototime
+		alertentity dust2
+		wait 100
+		alertentity dust3
+	}
+
+
+	trigger objective3
+	{
+		accum 0 inc 1
+#if g_reinforce == 0 accum 0 abort_if_not_equal 20 #endif
+#if g_reinforce == 1 accum 0 abort_if_not_equal 27 #endif
+#if g_reinforce == 2 accum 0 abort_if_not_equal 35 #endif
+		trigger player got_objective3
+	}
+
+	trigger fastopen
+	{
+	}
+}
+
+coffincover1b
+{
+	spawn
+	{
+	}
+
+	trigger slowopen
+	{
+		faceangles 0 10 0 2000
+		gotomarker cover1spot1 20 
+		faceangles 0 5 0 gototime
+		gotomarker cover1spot2 40
+		faceangles -20 5 0 gototime
+		gotomarker cover1spot3 60
+		faceangles -30 5 0 gototime
+		gotomarker cover1spot4 80
+		faceangles -40 5 0 gototime
+		gotomarker cover1spot5 100
+		faceangles -50 5 0 gototime
+		gotomarker cover1spot6 120
+		faceangles -60 5 0 gototime
+		gotomarker cover1spot7 140
+		faceangles -70 5 0 gototime
+		gotomarker cover1spot8 160
+		faceangles -80 0 0 gototime
+		alertentity dust1
+		gotomarker cover1spot9 40
+		faceangles -180 0 0 gototime
+		alertentity dust2
+		wait 100
+		alertentity dust3
+	}
+
+	trigger fastopen
+	{
+	}
+}
+
+lightning1
+{
+	spawn
+	{
+	}
+
+	trigger cine1
+	{
+		alertentity dlightning2
+		wait 50
+		alertentity slightning2
+		wait 1500
+		alertentity dlightning2
+		wait 3000
+		alertentity sthunder2
+		wait 10000
+		trigger lightning1 loop
+	}
+
+	trigger loop
+	{
+		wait 5000
+		alertentity dlightning1
+		wait 50
+		alertentity slightning1
+		wait 500
+		alertentity dlightning1
+		wait 3000
+		alertentity sthunder1
+		wait 10000
+
+		alertentity dlightning2
+		wait 50
+		alertentity slightning2
+		wait 1500
+		alertentity dlightning2
+		wait 3000
+		alertentity sthunder2
+		wait 10000
+
+		alertentity dlightning1
+		wait 50
+		alertentity slightning3
+		wait 750
+		alertentity dlightning2
+		wait 2000
+		alertentity sthunder3
+		wait 10000
+
+		alertentity dlightning2
+		wait 50
+		alertentity slightning1
+		wait 1500
+		alertentity dlightning2
+		wait 3000
+		alertentity sthunder3
+		wait 10000
+
+		alertentity dlightning1
+		wait 50
+		alertentity slightning1
+		wait 750
+		alertentity dlightning2
+		wait 50
+		alertentity slightning2
+		wait 750
+		alertentity dlightning2
+		wait 100
+		alertentity dlightning2
+		wait 50
+		alertentity slightning3
+		wait 1500
+		alertentity dlightning1
+		wait 2000
+		alertentity sthunder3
+		wait 16000
+
+		trigger lightning1 loop2
+	}
+
+	trigger loop2
+	{
+		alertentity dlightning1
+		wait 50
+		alertentity slightning1
+		wait 1500
+		alertentity dlightning1
+		wait 3000
+		alertentity sthunder3
+		wait 10000
+		
+		alertentity dlightning2
+		wait 50
+		alertentity slightning3
+		wait 750
+		alertentity dlightning2
+		wait 2000
+		alertentity sthunder3
+		wait 10000
+		trigger lightning1 loop
+	}
+
+	trigger once
+	{
+		alertentity dlightning2
+		wait 50
+		alertentity slightning2
+		wait 1500
+		alertentity dlightning2
+		wait 3000
+		alertentity sthunder2
+	}
+
+	trigger stinger
+	{
+		mu_play sound/music/s_lowramp
+		wait 6000
+		alertentity dlightning1
+		wait 50
+		alertentity slightning1
+		wait 10000
+		trigger lightning1 loop
+	}
+}
+
+portcullis1
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger toggle
+	{
+		wait 5
+		trigger portcullis1 up
+		wait 5
+		trigger portcullis1 down
+	}
+
+	trigger up
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		trigger portcullis3 down
+		resetscript
+		stopsound
+		playsound sound/movers/doors/door6_loopo.wav looping
+		gotomarker port1spot1 10 wait
+		stopsound
+	}
+
+	trigger down
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		stopsound
+		playsound sound/scenaric/church/doorcrash.wav
+		gotomarker port1spot2 200 accel wait
+		gotomarker port1spot3 60 deccel wait
+		gotomarker port1spot2 80 accel wait
+	}
+
+	trigger action3
+	{
+		wait 5000
+		mu_play sound/music/s_bighits
+		wait 5000
+		mu_fade 0 1000		
+		wait 1000
+		mu_queue sound/music/c_military
+	}
+}
+
+portcullis2
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger toggle
+	{
+		wait 5
+		trigger portcullis2 up
+		wait 5
+		trigger portcullis2 down
+	}
+
+	trigger up
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		resetscript
+		stopsound
+		playsound sound/movers/doors/door6_loopo.wav looping
+		gotomarker port2spot1 10 wait
+		stopsound
+	}
+
+	trigger down
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		stopsound
+		playsound sound/scenaric/church/doorcrash.wav
+		gotomarker port2spot2 200 accel wait
+		gotomarker port2spot3 60 deccel wait
+		gotomarker port2spot2 80 accel wait
+	}
+}
+
+portcullis3
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger toggle
+	{
+		wait 5
+		trigger portcullis3 up
+		wait 5
+		trigger portcullis3 down
+	}
+
+	trigger up
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		trigger counter1 pass_mission1
+		resetscript
+		stopsound
+		playsound sound/movers/doors/door6_loopo.wav looping
+		gotomarker port3spot1 10 wait
+		stopsound
+	}
+
+	trigger down
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		stopsound
+		playsound sound/scenaric/church/doorcrash.wav
+		gotomarker port3spot2 200 accel wait
+		gotomarker port3spot3 60 deccel wait
+		gotomarker port3spot2 80 accel wait
+	}
+}
+
+counter1
+{
+	spawn
+	{
+		accum 0 bitreset 2	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 3	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 4	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 5	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 6	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 7	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 8	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 9	// Used so that action6 is not triggered more than once.
+		accum 1 set 0	// Used to count how many elite guards are in the main room.
+		accum 2 set 0	// Used to randomly choose a elite guard in the main room.
+		accum 3 set 0	// Used to count how many elite guards are in the main room.
+		accum 0 bitreset 10	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 11	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 12	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 13	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 14	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 15	// Used so that one of the elite guards are not alerted twice.
+		accum 0 bitreset 16 	// Used so that "reset_d1" is only triggered once.
+		accum 0 bitreset 17	// Used for the "objectivemet"
+		accum 4 set 0	// Used to count who is in combat and who is not.
+	}
+
+	trigger cinematic1
+	{
+		wait 3000
+		trigger lightning1 once
+		wait 2000
+		trigger zemph1 anim1
+		wait 2000
+		trigger helga1 anim
+		wait 5
+		trigger helga1 talk1	// Well, what's happening?
+		wait 2000
+		trigger zemph1 talk1	// A moment please mein director.
+		wait 1500
+		alertentity dust5
+		wait 1500
+		trigger helga1 talk2 	// Is it working?
+		wait 500
+		trigger player cam1b
+		wait 1000
+		trigger player cam2
+		wait 500
+		trigger zemph1 talk2	// Please, be patient!
+		wait 1000
+		alertentity dust6
+		wait 2000
+		alertentity dust6
+		wait 2000
+		trigger player cam3
+		trigger helga1 talk3	// Enough of your stallin. Tell me, yes or no, will it work?
+		wait 5000
+		trigger counter1 cinematic1a
+	}
+
+	trigger cinematic1a
+	{
+		trigger player cam6
+		trigger zemph1 talk3	// Frau Von Bulow, how many times...
+		wait 5000
+		trigger player cam10
+		wait 3500
+		trigger player cam2
+		wait 3200
+		trigger player cam3
+		wait 300
+		trigger zemph1 anim3
+		trigger helga1 talk4	// Don't take that patroning tone with me....
+		wait 3000
+		trigger player cam2
+		trigger zemph1 talk4	// Just a moment, Just a moment...
+		wait 2000
+		trigger vacuum anim
+		wait 1000
+		trigger player cam3
+		trigger zemph1 anim3
+		trigger helga1 talk5 	// What What!?
+		wait 2000
+		trigger player cam5
+		trigger zemph1 talk5	// Ya, ya... The Extraction process is beginning.
+		wait 3000
+		trigger player cam2
+		wait 3000
+		trigger player cam3
+		mu_play sound/music/s_bighits
+		trigger helga1 talk6 	// Execllent
+		trigger lightning1 cine1
+		wait 3000
+		trigger player cam3d
+		wait 5000
+		trigger counter1 cleanup
+	}
+
+	trigger cleanup
+	{
+		alertentity kill_cine1
+		wait 5
+		alertentity elite1
+		wait 5
+		alertentity nazi1
+		wait 5
+		alertentity nazi2
+		wait 5
+		alertentity nazi3
+	}
+
+	trigger scare_zombie
+	{
+		mu_play sound/music/s_highramp
+		wait 6500
+		trigger fake_zombie anim
+		alertentity dust4
+		wait 6000
+	}
+
+	trigger pass_mission1
+	{
+		accum 0 abort_if_bitset 17
+		accum 0 bitset 17
+		trigger player pass_mission1
+	}
+
+	trigger action3
+	{
+		accum 1 abort_if_equal 4
+		accum 2 random 7
+		wait 5
+		trigger counter1 elite2
+		wait 5
+		trigger counter1 elite3
+		wait 5
+		trigger counter1 elite4
+		wait 5
+		trigger counter1 elite5
+		wait 5
+		trigger counter1 elite6
+		wait 5
+		trigger counter1 elite7
+		wait 5
+		trigger counter1 elite8
+		wait 5
+		trigger counter1 action3
+	}
+
+	trigger elite2
+	{
+		accum 2 abort_if_not_equal 0
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		accum 1 inc 1
+		alertentity elite2
+	}
+
+	trigger elite3
+	{
+		accum 2 abort_if_not_equal 1
+		accum 0 abort_if_bitset 3
+		accum 0 bitset 3
+		accum 1 inc 1
+		alertentity elite3
+	}
+
+	trigger elite4
+	{
+		accum 2 abort_if_not_equal 2
+		accum 0 abort_if_bitset 4
+		accum 0 bitset 4
+		accum 1 inc 1
+		alertentity elite4
+	}
+
+	trigger elite5
+	{
+		accum 2 abort_if_not_equal 3
+		accum 0 abort_if_bitset 5
+		accum 0 bitset 5
+		accum 1 inc 1
+		alertentity elite5
+	}
+
+	trigger elite6
+	{
+		accum 2 abort_if_not_equal 4
+		accum 0 abort_if_bitset 6
+		accum 0 bitset 6
+		accum 1 inc 1
+		alertentity elite6
+	}
+
+	trigger elite7
+	{
+		accum 2 abort_if_not_equal 5
+		accum 0 abort_if_bitset 7
+		accum 0 bitset 7
+		accum 1 inc 1
+		alertentity elite7
+	}
+
+	trigger elite8
+	{
+		accum 2 abort_if_not_equal 6
+		accum 0 abort_if_bitset 8
+		accum 0 bitset 8
+		accum 1 inc 1
+		alertentity elite8
+	}
+
+	trigger action6
+	{
+		accum 0 abort_if_bitset 9	// TEMP FIX FOR FUNC_BUTTON TRIGGERING THINGS TWICE, ALSO USED SO THAT IT CAN TOGGLE THE PORTCULLIS.
+		accum 0 bitset 9		// TEMP FIX FOR FUNC_BUTTON TRIGGERING THINGS TWICE, ALSO USED SO THAT IT CAN TOGGLE THE PORTCULLIS.
+		accum 3 set 0	// Used to count how many elite guards are in the main room.
+		accum 2 set 0	// Used to randomly choose a elite guard in the main room.
+		wait 5
+		trigger counter1 action6b		
+	}
+
+	trigger action6b
+	{
+		wait 5
+		accum 3 abort_if_equal 4
+		accum 2 random 6
+		wait 5
+		trigger counter1 elite18
+		wait 5
+		trigger counter1 elite19
+		wait 5
+		trigger counter1 elite20
+		wait 5
+		trigger counter1 elite21
+		wait 5
+		trigger counter1 elite22
+		wait 5
+		trigger counter1 elite23
+		wait 5
+		trigger counter1 action6b
+	}
+
+	trigger elite18
+	{
+		accum 2 abort_if_not_equal 0
+		accum 0 abort_if_bitset 10
+		accum 0 bitset 10
+		accum 3 inc 1
+		alertentity elite18
+	}
+
+	trigger elite19
+	{
+		accum 2 abort_if_not_equal 1
+		accum 0 abort_if_bitset 11
+		accum 0 bitset 11
+		accum 3 inc 1
+		alertentity elite19
+	}
+
+	trigger elite20
+	{
+		accum 2 abort_if_not_equal 2
+		accum 0 abort_if_bitset 12
+		accum 0 bitset 12
+		accum 3 inc 1
+		alertentity elite20
+	}
+
+	trigger elite21
+	{
+		accum 2 abort_if_not_equal 3
+		accum 0 abort_if_bitset 13
+		accum 0 bitset 13
+		accum 3 inc 1
+		alertentity elite21
+	}
+
+	trigger elite22
+	{
+		accum 2 abort_if_not_equal 4
+		accum 0 abort_if_bitset 14
+		accum 0 bitset 14
+		accum 3 inc 1
+		alertentity elite22
+	}
+
+	trigger elite23
+	{
+		accum 2 abort_if_not_equal 5
+		accum 0 abort_if_bitset 15
+		accum 0 bitset 15
+		accum 3 inc 1
+		alertentity elite23
+	}
+
+	trigger dialog1
+	{
+		wait 1500
+		trigger nazi1 talk1	// Poor Josef, look at him, torn to shreds.
+		wait 2000
+		trigger elite1 go
+		wait 3200
+		trigger nazi2 talk1	// What could have done that?
+		wait 2500
+		trigger nazi3 talk1	// Nothing Human
+	}
+
+	trigger reset_d1
+	{
+		accum 0 abort_if_bitset 16
+		accum 0 bitset 16
+		resetscript
+		trigger elite1 reset
+		trigger nazi1 reset
+		trigger nazi2 reset
+		trigger nazi3 reset
+	}
+
+	trigger music_inc	// TEST ONLY!!
+	{
+		accum 4 inc 1
+		accum 4 abort_if_less_than 1
+		mu_fade 0 1000
+		mu_queue sound/music/m_drums
+	}
+
+	trigger music_dec
+	{
+		accum 4 inc -1
+		accum 4 abort_if_greater_than 1
+		mu_fade 0 1000
+		mu_queue sound/music/c_chant
+	}
+}
+
+vacuum
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 270 0 1000
+	}
+
+	trigger anim
+	{
+		playanim 0 350 1000
+	}
+}
+
+zom
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 180 0 1000
+	}
+}
+
+fake_zombie
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 270 0 1000
+	}
+
+	trigger anim
+	{
+		playanim 0 34 10
+	}
+}
+
+box
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 180 0 1000
+	}
+}

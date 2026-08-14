@@ -1,0 +1,1051 @@
+½//
+//AI Scripting 
+//Map: w3d.map - Wolfenstein 3D E1M1
+//By: Kim_Pirat & Vicpas
+//Last edited by: Kim_Pirat@mail.tele.dk
+//
+
+player
+{
+	spawn
+	{
+		objectivesneeded 1
+		abort_if_loadgame
+		mu_queue sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000	//fades loading music
+		mu_queue sound/music/m_tension
+		// weapons
+		giveweapon weapon_knife
+		selectweapon weapon_knife
+	}
+
+	trigger beamfall
+	{
+		trigger beam drop
+	}
+
+	trigger start2
+	{
+		alertentity guard4
+		alertentity guard5
+	}
+
+	trigger start3
+	{
+		alertentity guard6
+		alertentity guard7
+	}
+
+	trigger start4
+	{
+		alertentity guard10
+		alertentity guard11
+		alertentity guard12
+		alertentity guard31
+		alertentity guard32
+		alertentity guard33
+	}
+
+	trigger start5
+	{
+		alertentity zom1
+		alertentity zom2
+		alertentity zom3
+	}
+
+	trigger start6
+	{
+		alertentity guard8
+		alertentity guard9
+		alertentity guard13
+		alertentity guard14
+		alertentity guard15
+	}
+
+	trigger start7
+	{
+		alertentity guard16
+		alertentity guard17
+		alertentity guard18
+		alertentity guard19
+		alertentity guard20
+	}
+
+	trigger start8	
+	{
+		alertentity guard25
+		alertentity guard26
+		alertentity guard27
+		alertentity guard28
+		alertentity guard29
+		alertentity guard30
+	}
+
+	trigger start9	
+	{	
+		alertentity guard22
+		alertentity guard23
+		alertentity guard24
+	}	
+
+	trigger start10
+	{
+		alertentity guard21
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		foundsecret
+	}
+
+	trigger secret3
+	{
+		foundsecret
+	}
+
+	trigger secret4
+	{
+		foundsecret
+	}
+
+	trigger secret5
+	{
+		foundsecret
+	}
+
+	trigger objective
+	{
+		objectivemet 1
+	}
+
+	trigger endmap
+	{
+		achievement_map_w3d
+		changelevel gamefinished 250
+	}
+
+	trigger endmap2
+	{
+		achievement_map_w3d
+		changelevel w3d_sec persistent
+	}
+}
+
+guard1	//opposite door from cell
+{
+	attributes
+	{
+	aim_accuracy 0.25	//1 of 4 bullets hit
+	fov 180	//normal vision
+	starting_health 20	//a real wreck...
+	inner_detection_radius 50	//spots you real near
+	hearing_scale 0.10	//near deaf, too!
+	}
+
+	spawn
+	{
+	takeweapon weapon_mp40	//removes 'greasegun'
+	giveweapon weapon_luger	//gives P08
+	setammo ammo_9mm 64
+	selectweapon weapon_luger	// selects P08
+	}
+
+	enemysight
+	{
+	resetscript
+	}
+
+	trigger run1
+	{
+	statetype alert
+	runtomarker marker1
+	}
+
+}
+
+guard2	//guard next to cell
+{
+	attributes
+	{
+	aim_accuracy 0.3	//1 of 3 bullets hit
+	fov 180	//looks straight forward
+	starting_health 20	//pride of the wehrmacht
+	inner_detection_radius 50	//spots you real near
+	hearing_scale 0.10	//near deaf, too!
+	}
+	
+	spawn
+	{
+	takeweapon weapon_mp40	//removes 'greasegun'
+	giveweapon weapon_luger	//gives P08
+	setammo ammo_9mm 64
+	selectweapon weapon_luger	// selects P08
+	}
+
+	enemysight
+	{
+	resetscript
+	}
+
+	trigger run2
+	{
+	wait 1000
+	runtomarker marker1
+	}
+}
+
+guard3	//guard in corridor
+{
+	attributes
+	{
+	aim_accuracy 0.3	// pretty good with a pistol
+	fov 180	//looks straight forward
+	starting_health 20	// little old lady
+	inner_detection_radius 250	//spots you near
+	hearing_scale 0.10	//near deaf, too!
+	}
+	
+	spawn
+	{
+	takeweapon weapon_mp40	//removes 'greasegun'
+	giveweapon weapon_luger	//gives P08
+	setammo ammo_9mm 64
+	selectweapon weapon_luger	// selects P08
+	}
+
+	enemysight
+	{
+	trigger guard1 run1
+	trigger guard2 run2
+	}
+}
+
+guard4	//guard in big room
+{
+	attributes
+	{
+		aim_accuracy 0.3	// pretty good with a pistol
+		fov 270	//normal field of vision
+		starting_health 30	// broken in his youth
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.10	//near deaf, too!
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+		explicit_routing on
+		trigger guard4 walk
+	}
+
+	enemysight
+	{
+		explicit_routing off
+		resetscript
+	}
+
+	trigger walk
+	{
+		walktomarker marker2
+		wait 500 marker3
+		walktomarker marker3
+		wait 500 marker4
+		walktomarker marker4
+		wait 500 marker5
+		walktomarker marker5
+		wait 500 marker2
+		trigger guard4 walk
+	}
+}
+
+guard5	//guard in big room
+{
+	attributes
+	{
+		aim_accuracy 0.3	// pretty good with a pistol
+		fov 270	//normal field of vision
+		starting_health 30	// not too good
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.10	//near deaf, too!
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard6	//guard in front of secret room, second corridor
+{
+	attributes
+	{
+		aim_accuracy 0.5	// good shot
+		fov 270	//normal field of vision
+		starting_health 30	// must have flat feet
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.00	// deaf as a post
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard7	//guard on top of second corridor
+{
+	attributes
+	{
+		aim_accuracy 0.2	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// german quality
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.75	// hears pretty well
+		aggression 1.0	// Rambo!
+		tactical 1.0	// clever bugger
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard8	//Officer (Obergruppenführer) in 'Kommandantur' next to spy room
+{
+	attributes
+	{
+		aim_accuracy 0.2	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 50	// little tougher than the rest
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.75	// hears pretty well
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard9	//Obersturmführer in spy room
+{
+	attributes
+	{
+		aim_accuracy 0.2	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 60	// above average
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 1.0	// hears well
+	}
+	
+	spawn
+	{
+		giveweapon weapon_mp40	//gives 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 128
+		selectweapon weapon_mp40	// selects 'greasegun'
+	}
+}
+
+guard10	// second guard on bottom of bluelight corridor
+{
+	attributes
+	{
+		aim_accuracy 0.2	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// little old lady
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 1.0	// hears well
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard11	// second guard on bottom of bluelight corridor
+{
+	attributes
+	{
+		aim_accuracy 0.3	// Not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// weakling
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 1.0	// hears well
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard12	// inside door of bluelight corridor
+{
+	attributes
+	{
+		aim_accuracy 0.3	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// oh dear
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.0	// attacks on visual
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard13	//Obersturmführer2 in spy room
+{
+	attributes
+	{
+		aim_accuracy 0.1	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 50	// average middle-aged buisnessman
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.3	// hears well
+	}
+	
+	spawn
+	{
+		giveweapon weapon_mp40	//gives 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 128
+		selectweapon weapon_mp40	// selects 'greasegun'
+	}
+}
+
+guard14	// inside stairwell
+{
+	attributes
+	{
+		aim_accuracy 0.3	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// weakling
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.0	// attacks on visual
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard15	// top of stairwell
+{
+	attributes
+	{
+		aim_accuracy 0.3	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// wehrmacht standard
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.6	// hears reasonably well
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard16	// Interrogation room, left inside door
+{
+	attributes
+	{
+		aim_accuracy 0.3	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 30	// not that good
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.4	// not quite deaf
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard17	// Interrogation room, right inside door
+{
+	attributes
+	{
+		aim_accuracy 0.1	// lousy shot, dangeroust with a MPI
+		fov 270	//normal field of vision
+		starting_health 30	// beer drinker
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.4	// not quite deaf
+	}
+	
+	spawn
+	{
+		setammo ammo_9mm 128
+		selectweapon weapon_mp40	// gives schmeisser
+	}
+}
+
+guard18	// SS Officer at interrogation room
+{
+	attributes
+	{
+		aim_accuracy 0.3	// lousy shot
+		fov 90	//normal field of vision
+		starting_health 60	// Better than the grunts
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.3	// hears well
+	}
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+		trigger guard18 animation
+	}
+
+	trigger animation
+	{
+		wait 1000
+		playanim scratching_chest both
+		trigger guard18 animation
+	}
+
+	enemysight player
+	{
+		clearanim
+		resetscript
+	}
+}
+
+guard19	// SS grunt at interrogation room
+{
+	attributes
+	{
+		aim_accuracy 0.4	// reasonable with a handgun
+		fov 270	//normal field of vision
+		starting_health 50	// Better than the ordinary grunts
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.3	// hears well
+	}
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+		trigger guard19 animation
+	}	
+
+	trigger animation
+	{
+		playanim looking_over_table both
+		wait 1000
+		trigger guard19 animation
+	}
+
+	enemysight player
+	{
+		clearanim
+		resetscript
+	}
+}
+
+guard20	// 'scientist' at interrogation room
+{
+	attributes
+	{
+		aim_accuracy 0.1	// hopeless with a handgun
+		fov 90	// focused on corpse
+		starting_health 5	// Bottom of the pit
+		inner_detection_radius 50	//can't spot nuthin'
+		hearing_scale 0.1	// nearly deaf
+	}
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	
+	}	
+}
+
+guard21	// Drunk goof-off in wine cellar - Pinched from Village1
+{
+	attributes
+	{
+		walking_speed 60
+		running_speed 150
+		crouching_speed 50
+		fov 120
+		yaw_speed 150
+		aim_skill 0.0
+		aim_accuracy 0.0
+		attack_skill 0.0
+		reaction_time 0.9
+		attack_crouch 0.0
+		idle_crouch 0.0
+		aggression 0.6
+		tactical 0.0
+		camper 0.3
+		alertness 768
+		starting_health 25
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		noavoid
+		takeweapon mp40
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setclip weapon_luger 12
+		setammo ammo_grenades 0	// Grenades
+		takeweapon grenades
+		wait 5
+		trigger guard21 morebeer
+	}
+
+	trigger morebeer
+	{
+		wait 5
+		playsound villdrunk1_1	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_5	// "Shut your filthy hole you slovenly swine!"
+		playanim drunk both
+		playsound villdrunk1_2	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_6	// "Stand at attention soldier, you are a disgrace to the Reich!"
+		playanim drunk both
+		playsound villdrunk1_3	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_7	// "Bring me another beer you dog. Schnell!! Schnell!!"
+		playanim drunk both
+		playsound villdrunk1_4	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_8	// "Hey Fraulhein! Fraulhein! Cominzee here! I'm thirsty!"
+		playanim drunk both
+		playsound villdrunk1_1	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_9	// "Get back to your post you malingering coward! I'll have you shot!"
+		playanim drunk both
+		trigger guard21 singloop
+	}
+
+	trigger singloop
+	{
+		wait 5
+		playsound villdrunk1_2	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_3	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_4	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_1	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		trigger guard21 singloop
+	}
+
+	bulletimpact	// TEMPORARILY NOT USED!! COME BACK TO THIS LATER!!
+	{
+		clearanim
+		resetscript
+		playsound blank
+		wait forever 0
+		resetscript
+	}
+
+	inspectsoundstart	// TEMPORARILY NOT USED!! COME BACK TO THIS LATER!!
+	{
+		clearanim
+		resetscript
+		playsound blank
+		wait forever 0
+		resetscript
+	}
+
+	inspectbodystart	// TEMPORARILY NOT USED!! COME BACK TO THIS LATER!!
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+		playsound blank
+		wait forever 0
+		resetscript
+	}
+}
+
+guard22	//Officer at lift
+{
+	attributes
+	{
+		aim_accuracy 0.3	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 60	// above average
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.3	// hears well
+	}
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}	
+
+}
+
+guard23	//grunt at lift
+{
+	attributes
+	{
+		aim_accuracy 0.1	//completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 40	// so-so
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.0	// attacks on visual
+	}
+	
+	spawn
+	{
+		giveweapon weapon_mp40	//gives 'greasegun'
+		setammo ammo_9mm 128
+		selectweapon weapon_mp40	// selects 'greasegun'
+	}
+}
+
+guard24	// grunt2 at lift
+{
+	attributes
+	{
+		aim_accuracy 0.3	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 40	// wehrmacht standard
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.4	// not quite deaf
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard25	// corridor outside interrogation room
+{
+	attributes
+	{
+		aim_accuracy 0.1	// lousy shot, dangerous with a MPI
+		fov 270	//normal field of vision
+		starting_health 30	// footrot and hemorhoids
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.0	// deaf
+	}
+	
+	spawn
+	{
+		setammo ammo_9mm 128
+		selectweapon weapon_mp40	// gives schmeisser
+	}
+}
+
+guard26	// Burial chamber, inside door
+{
+	attributes
+	{
+		aim_accuracy 0.2	// dangerous in suprise attacks
+		fov 270	//normal field of vision
+		starting_health 40	// wehrmacht standard
+		inner_detection_radius 250	//spots you resonably near
+		hearing_scale 0.4	// not quite deaf
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	//removes 'greasegun'
+		giveweapon weapon_luger	//gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard27	// Burial chamber, inside door
+{
+	attributes
+	{
+		aim_accuracy 0.3	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 40	// wehrmacht standard
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.0	// pretends not to hear. Sneaky.
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard28	// Burial chamber, opposite door
+{
+	attributes
+	{
+		aim_accuracy 0.2	// not above average
+		fov 270	//normal field of vision
+		starting_health 40	// wehrmacht standard
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.1	// looking too hard at the bones
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+		trigger guard28 smoke
+	}
+
+	trigger smoke
+	{
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 1200
+		trigger guard28 smoke
+	}
+
+	statechange relaxed combat
+	{
+		cigarette off
+		clearanim
+		resetscript
+	}
+
+	statechange query combat
+	{
+		cigarette off
+		clearanim
+		resetscript
+	}
+
+	statechange alert combat
+	{
+		cigarette off
+		clearanim
+		resetscript
+	}
+
+	death
+	{
+		cigarette off
+		clearanim
+		resetscript
+	}
+}
+
+guard29	// outside burial chamber
+{
+	attributes
+	{
+		aim_accuracy 0.2	// not completely lousy shot
+		fov 270	//normal field of vision
+		starting_health 40	// about average
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.3	// average
+		aggression 1.0
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard30	// Burial chamber, inside door
+{
+	attributes
+	{
+		aim_accuracy 0.5	// good shot
+		fov 270	//normal field of vision
+		starting_health 40	// standard
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.0	// Fraidycat. He'll get you from behind.
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard31	// Canteen next to 'dog room'
+{
+	attributes
+	{
+		aim_accuracy 0.5	// good shot
+		fov 270	//normal field of vision
+		starting_health 40	// standard
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.0	// Fraidycat. He'll get you from behind.
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard32	// Canteen next to 'dog room'
+{
+	attributes
+	{
+		aim_accuracy 0.5	// good shot
+		fov 270	//normal field of vision
+		starting_health 40	// not the bee's knees
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.0 .
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+guard33	// Canteen next to 'dog room'
+{
+	attributes
+	{
+		aim_accuracy 0.2	// lousy shot
+		fov 270	//normal field of vision
+		starting_health 40	// bad
+		inner_detection_radius 250	// spots you resonably near
+		hearing_scale 0.1	// may sneak in on you
+	}
+	
+	spawn
+	{
+		takeweapon weapon_mp40	// removes 'greasegun'
+		giveweapon weapon_luger	// gives P08
+		setammo ammo_9mm 64
+		selectweapon weapon_luger	// selects P08
+	}
+}
+
+zom1	// replacement for german shepherds
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		aim_accuracy 1.0
+		starting_health 20
+	}
+
+	spawn
+	{
+	}
+}
+
+zom2	// replacement for german shepherds
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		aim_accuracy 1.0
+		starting_health 20
+	}
+
+	spawn
+	{
+	}
+}
+
+zom3	// replacement for german shepherds
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		aim_accuracy 1.0
+		starting_health 40
+	}
+
+	spawn
+	{
+	}
+}

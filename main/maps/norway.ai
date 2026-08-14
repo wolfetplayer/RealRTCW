@@ -1,0 +1,6466 @@
+//
+//AI scripting
+//Map Norway_49
+//11/03/01
+//last edited by WolfETPlayer & William Faure
+//  
+
+player
+{
+	spawn
+	{
+		accum 3 set 0   // used for weapon loadout
+		
+		// Objectives
+		cvar g_episode 4
+		objectivesneeded 2
+
+		// Music
+		abort_if_loadgame
+		mu_start sound/music/m_drums
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_drums
+
+		#if g_midgame == 0
+		accum 3 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif		
+		
+		// Reinforced AI
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_2 #endif
+	}
+	
+	trigger give_loadout_1
+	{
+	     accum 3 abort_if_not_equal 1
+
+		#if g_fullarsenal == 0
+        applyloadout norway_vanilla_1
+		#endif
+
+		#if g_fullarsenal == 1
+        applyloadout norway_realrtcw_1
+		#endif
+		
+		#if g_fullarsenal == 2
+        applyloadout norway_vanilla_shotgun_1
+		#endif
+	}
+	
+	trigger give_loadout_2
+	{
+	     accum 3 abort_if_not_equal 2
+		 
+		#if g_fullarsenal == 0
+        applyloadout norway_vanilla_2
+		#endif
+
+		#if g_fullarsenal == 1
+        applyloadout norway_realrtcw_2
+		#endif
+		
+		#if g_fullarsenal == 2
+        applyloadout norway_vanilla_shotgun_2
+		#endif
+	
+	}
+
+	trigger first_conversation 
+	{
+		trigger checker1 conversation1
+	//	trigger nazi2 talk1	
+	}
+
+	trigger tower_middle_alarm		// TODO
+	{
+		alertentity alarm_sound
+		trigger checker1 alarm_on
+		wait 5
+	}
+
+	trigger nazi4_check_out
+	{
+		trigger nazi4 run_to_generator
+		trigger nazi2 run_to_generator
+		trigger nazi3 run_to_generator
+	}
+
+	trigger second_conversation
+	{
+		trigger truck_nazi6 talk1	
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_5 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_6 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_7 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_8 #endif		
+	}
+
+	trigger truck_nazis				// This activates truck nazis...
+	{
+		trigger checker1 truck_nazis_spawn
+		trigger checker1 in_zone1
+		//trigger checker1
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_3 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_4 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+ 
+	trigger balcony_before_mechanics
+	{
+		alertentity balcony1_guard1
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_9 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_10 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger sniper1				// This activates the first encountered sniper..
+	{
+		objectivemet 1
+		
+		alertentity mechanic1
+		alertentity mechanic2	
+		alertentity sniper
+		alertentity blackguard1
+		alertentity blackguard2
+		alertentity blackguard3		
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_11 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_12 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_13 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_14 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_15 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_16 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_17 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_18 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_19 #endif
+	}
+
+	trigger mg42nest			// This activates the nest...
+	{
+		trigger checker1 in_zone2
+		alertentity nest_nazi1
+		alertentity nest_nazi2
+		alertentity nest_nazi3
+		alertentity tower_nazi1
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_20 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_21 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger enter_mg42_nest
+	{
+		trigger nest_nazi1 unmount
+		#if g_reinforce >= 1 alertentity reinforce_ai_venom_23 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_28 #endif
+	}
+
+	trigger trigger_after_nest
+	{
+		alertentity tower_nazi2
+		trigger checker1 radio_nazi1_spawn
+		alertentity radio_nazi2
+		trigger checker1 zone2_backup_spawn
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_22 #endif	
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_24 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_25 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_26 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_27 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger stroopers
+	{
+		trigger checker1 stroopers_go
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_29 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_30 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_31 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_32 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_33 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_venom_34 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_35 #endif
+		
+		wait 1000
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger trigger_before_last_door
+	{
+		trigger checker1 in_zone3
+		trigger checker1 before_last_door
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_36 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_37 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_38 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_39 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_40 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger radio_destroyed1
+	{
+		trigger checker1 radio_destroyed1
+	}
+
+	trigger radio_destroyed2
+	{
+		trigger checker1 radio_destroyed2
+	}
+
+	trigger backup_2ndradio			// they come out of the house looking around for the commotion...
+	{
+	}
+
+	trigger turn_alarm_on
+	{
+		objectivemet 2
+		
+		trigger checker1 last_alarm
+	}
+	
+	trigger button
+	{
+		trigger button go1
+	}
+
+	trigger shutter1
+	{
+		trigger shutter1 fall1
+	}
+
+	trigger barrells_blown1
+	{
+		trigger mechanic1 alarm_on
+		trigger mechanic2 alarm_on
+	}
+
+	trigger barrells_blown2
+	{
+		trigger mechanic1 alarm_on
+		trigger mechanic2 alarm_on
+	}
+
+	trigger barrells_blown3
+	{
+		trigger mechanic1 alarm_on
+		trigger mechanic2 alarm_on
+	}
+
+	trigger barrells_blown4
+	{
+		trigger mechanic1 alarm_on
+		trigger mechanic2 alarm_on
+	}
+
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger endmap
+	{
+		changelevel xlabs persistent
+	}
+
+	trigger endmap_bonus										
+	{															
+		
+	#if g_fullarsenal == 0  			// Vanilla Bonus
+		printbonus norway	
+		giveinventory holdable_xshield
+	#endif
+		
+	#if g_fullarsenal == 1				// RealRTCW Bonus
+		printbonus norway_alt
+		giveinventory holdable_xshield
+	#endif	
+
+	#if g_fullarsenal == 2  			// Vanilla Bonus
+		printbonus norway	
+		giveinventory holdable_xshield
+	#endif	
+	
+	}	
+}
+
+nazi1				// Nazi in front of generator
+{
+	attributes
+	{
+		fov 10
+		tactical 1.0
+		aggression 0.3
+		camper 0.7
+		inner_detection_radius 200
+		alertness 1000
+		hearing_scale 0.3
+	}
+
+	spawn
+	{
+		accum 4 set 0
+		accum 5 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		trigger checker1 alive_check_in
+		trigger nazi1 go1	
+	}
+	
+	trigger go1				// He faces generator
+	{
+		accum 4 abort_if_equal 1
+		trigger checker1 alive_check_in
+		walktomarker n1spot1
+		facetargetangles n1spot1
+		movetype crouch
+		wait 8000 0
+		trigger nazi1 anim_loop
+	}
+
+	trigger anim_loop
+	{
+		accum 4 abort_if_equal 1
+		playanim scratching_chest both
+		wait 2000
+		accum 4 abort_if_equal 1
+		playanim butt_scratch_2h both
+		wait 6000
+		accum 4 abort_if_equal 1
+		playanim crotch_grab_2h both
+		wait 1000
+		trigger nazi1 looking_around
+	}
+
+	trigger anim_loop1
+	{
+	}
+
+	
+	//--------Conversation1---------
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		playsound g2_start_generator
+		wait 2500
+		trigger nazi2 talk2
+	}
+
+	trigger talk2
+	{
+		accum 4 abort_if_equal 1
+		playsound g2_because_of_cold
+		wait 1600
+		trigger nazi2 talk3 
+	}
+
+	trigger talk3
+	{
+		accum 4 abort_if_equal 1
+		playsound g2_crank_harder
+		wait 2500
+		trigger nazi2 talk4
+	}
+
+	trigger talk4
+	{
+		accum 4 abort_if_equal 1
+		playsound g2_relax
+		wait 5000
+		trigger nazi2 talk5 
+	}
+
+	trigger talk5
+	{
+		accum 4 abort_if_equal 1
+		playsound g2_alright
+		trigger nazi1 walk_to_coolant
+	}
+
+	trigger looking_around
+	{
+		accum 4 abort_if_equal 1
+		wait 8000
+		accum 4 abort_if_equal 1
+		wait 3000 
+		attrib fov 120
+		attrib alertness 2300
+		attrib hearing_scale 1.0
+		trigger nazi1 anim_loop
+	}
+
+	//---------End conversation1-------
+
+	trigger go_to_alarm
+	{
+		accum 4 set 1
+		statetype alert
+		runtocast nazi4
+		runtocast player
+	}
+
+	trigger walk_to_coolant				// This is his path to walk to get coolant
+	{
+		clearanim
+		resetscript
+		walktomarker n2spot4 nostop
+		walktomarker n2spot5 nostop
+		walktomarker n2spot6 nostop
+		walktomarker n2spot7 nostop
+		walktomarker n2spot8 nostop
+		walktomarker n2spot9
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		attrib fov 120
+		attrib alertness 2300
+		attrib hearing_scale 1.0
+		accum 4 set 1
+		alertentity kill_creak_sound
+		attrib alertness 2000
+		clearanim
+		playsound blank
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		attrib hearing_scale 0.8
+	}
+
+	trigger inspectsoundstart2		// event to help nazi on sub if to many sounds
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		attrib fov 240
+		attrib alertness 2000
+		attrib hearing_scale 0.8
+		statetype alert
+		runtocast nazi3
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script		
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+		clearanim
+		statetype alert
+	}	
+
+	death
+	{
+		alertentity kill_creak_sound
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+
+}
+
+nazi2				// Nazi in front of generator who goes for coolant
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 500
+		hearing_scale 0.4
+	}
+
+	spawn
+	{
+		takeweapon all
+		accum 0 bitset 0 
+		accum 1 set 0 
+		accum 2 set 0 
+		accum 4 set 0
+		accum 5 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		walktomarker n2spot1
+		facetargetangles n2spot1
+		trigger checker1 alive_check_in
+		trigger checker1 nazi2_alive
+		playanim tools both forever	
+	}
+	
+	trigger go1				// He faces generator
+	{
+		walktomarker n2spot1
+		facetargetangles n2spot1
+		wait 17000
+	}
+
+	trigger tools_animloop
+	{	
+		accum 4 abort_if_equal 1
+		playanim tools both
+		wait 4000 nazi1
+		playanim tools both
+		wait 3000
+		playanim tools both
+		trigger nazi2 tools_animloop
+	}
+	
+	trigger anim_loop_forever
+	{
+		accum 4 abort_if_equal 1
+		playanim tools both forever	
+	}
+
+	trigger anim_loop_forever2
+	{
+		accum 4 abort_if_equal 1
+		alertentity play_metal_creak
+		playanim tools both //forever
+		wait 1000
+		alertentity play_metal_creak
+		wait 1000
+		alertentity play_metal_creak
+		trigger nazi2 anim_loop_forever	
+	}
+
+	trigger look_at_nazi1
+	{		
+	}
+
+//---------Conversation---------
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 1
+		alertentity play_metal_creak
+		wait 1000
+		alertentity play_metal_creak
+		wait 1000 
+		alertentity play_metal_creak
+		wait 1000
+		alertentity play_metal_creak 
+		accum 4 abort_if_equal 1
+		playsound g1_worthless	// Acch, this worhtless pile of junk won't start.
+		wait 4500
+		trigger nazi1 talk1
+		wait 5
+		trigger nazi2 anim_loop_forever
+	}
+
+	trigger talk2
+	{
+		accum 4 abort_if_equal 1
+		playsound g1_no_upper_body		//No, I'm working on my upper body strenght one arm at a time.
+		wait 6250
+		trigger nazi1 talk2
+	}
+
+	trigger talk3
+	{
+		accum 4 abort_if_equal 1
+		playsound g1_shrewd_observation		// tell me, do you often make such swred observations? You should seroiusly consider officers traning.
+		wait 7400
+		trigger nazi1 talk3
+		wait 5
+		trigger nazi2 anim_loop_forever
+	}
+
+	trigger talk4
+	{
+		accum 4 abort_if_equal 1
+		playsound g1_frozen_solid		//Look are you acting stupid just to annoy me? don't you see me here practically taering my arm off.
+		wait 11000
+		trigger nazi1 talk4
+	}
+
+	trigger talk5
+	{
+		accum 4 abort_if_equal 1
+		playsound g1_look_for_antifreeze	// You want to be helpfull go get the antifreeze
+		wait 5900
+		trigger nazi1 talk5
+		wait 5
+		trigger nazi2 anim_loop_forever2
+	}
+
+//-------------------------------
+
+	trigger walk_to_coolant				// This is his path to walk to get coolant
+	{
+		walktomarker n2spot2 nostop
+		walktomarker n2spot3 nostop
+		walktomarker n2spot4 nostop
+		walktomarker n2spot5 nostop
+		walktomarker n2spot6 nostop
+		walktomarker n2spot7
+	}
+
+	trigger run_to_alarm				// This is his path to tell other about alarm...
+	{
+		accum 4 set 1
+		resetscript
+		statetype alert
+		nosight 99
+		runtomarker n2spot2 nostop
+		runtomarker n2spot3 nostop
+		runtomarker n4_gen1
+		trigger nazi4 help_nazi2
+		playsound g1_alarm
+		alertentity truck_nazi5			// This wakes all three truck nazis	
+		alertentity truck_nazi6
+		alertentity truck_nazi7
+		trigger truck_nazi7 check_run_to_alarm	// This has truck_nazi7 run to an alarm..	
+	}
+
+	trigger run_to_generator
+	{
+		accum 4 set 1
+		statetype alert
+		runtomarker n2spot1
+		trigger nazi2 run_to_alarm
+	}
+
+	trigger go_to_alarm
+	{
+		accum 4 set 1
+		statetype alert
+		runtocast nazi4
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		runtocast player
+	}
+
+	pain 10
+	{
+		attrib aggression 0.3
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 4 set 1
+		accum 0 bitset 1
+		alertentity kill_creak_sound
+		attrib alertness 2000
+		playsound blank
+		resetscript
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		trigger nazi2 run_to_alarm		// This has him go and alert truck nazi7
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 5 inc 1
+		accum 5 abort_if_not_equal 3
+		accum 4 set 1
+		statetype alert
+		resetscript
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+		clearanim
+		statetype alert
+		resetscript
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 5 inc 1
+		accum 5 abort_if_not_equal 3
+		accum 4 set 1
+		accum 0 bitset 1
+		clearanim
+		alertentity kill_creak_sound
+		attrib alertness 2200
+		attrib hearing_scale 0.8
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		playsound blank
+		resetscript
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 0 bitset 1
+		accum 4 set 1
+		alertentity kill_creak_sound
+		clearanim
+		attrib alertness 2000
+		playanim nono both player
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		resetscript
+	}
+
+	trigger inspectsoundstart2		// event to help nazi on sub if to many sounds
+	{
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		playsound blank
+		attrib alertness 2000
+		attrib hearing_scale 0.8
+		attrib fov 240
+		statetype alert
+		runtocast nazi3
+		wait 500 0 player
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script
+	{
+		resetscript
+		clearanim
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+		clearanim
+		statetype alert
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+	}	
+
+	death
+	{
+		accum 0 bitset 0
+		alertentity kill_creak_sound
+		trigger checker1 nazi2_dead
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+
+}
+
+
+nazi3					// this is nazi on submarine
+{
+	attributes
+	{
+		tactical 0.6
+		aggression 0.7
+		inner_detection_radius 200
+		alertness 1300
+		hearing_scale 5
+	}
+
+	spawn
+	{
+		accum 4 set 0		// so he deosn't call animations
+		accum 5 set 0		// So he hears 2 times before going alert
+		trigger checker1 alive_check_in
+		giveweaponfull weapon_mauserrifle
+		trigger nazi3 marchloop1	
+	}
+
+	trigger marchloop1			// This is loop on top sub..
+	{
+		accum 4 abort_if_equal 1
+		walktomarker n3spot1
+		facetargetangles n3spot1
+		wait 5000
+		playanim scratching_chest torso
+		walktomarker n3spot2
+		facetargetangles n3spot1
+		wait 5300
+		trigger nazi3 marchloop2		
+	}
+
+	trigger marchloop2			// This is loop on top sub..
+	{
+		accum 4 abort_if_equal 1
+		walktomarker n3spot1
+		facetargetangles n3spot1
+		wait 5000
+		cigarette on
+		playanim smoking both
+		cigarette off
+		walktomarker n3spot2
+		facetargetangles n3spot1
+		wait 5300
+		trigger nazi3 marchloop1		
+	}
+	
+	trigger go1				// smal march loop1
+	{
+	}
+
+	trigger go_to_alarm
+	{
+		statetype alert
+		runtocast nazi4
+		runtocast player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		clearanim
+		wait 500
+		attrib alertness 2000
+		trigger nazi1 inspectsoundstart
+		trigger nazi2 inspectsoundstart
+		playanim nono torso
+	}
+
+	trigger run_to_generator
+	{
+		accum 4 set 1
+		statetype alert
+		runtomarker n2spot1
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 5 inc 1
+		accum 5 abort_if_not_equal 3
+		accum 4 set 1
+		clearanim
+		statetype alert	
+		trigger nazi1 inspectsoundstart2		// This calls guards over
+		trigger nazi2 inspectsoundstart2	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 5 inc 1
+		accum 5 abort_if_not_equal 3
+		accum 4 set 1
+		clearanim
+		statetype alert	
+		playsound blank
+		trigger nazi1 inspectsoundstart2		// This calls guards over
+		trigger nazi2 inspectsoundstart2
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script
+	{
+	}
+
+	statechange relaxed alert
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+
+}
+
+nazi4				// This is nazi on pier
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2000
+		hearing_scale 0.8
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 4 set 0
+		giveweaponfull weapon_sniperscope
+		accum 5 set 0
+		trigger checker1 alive_check_in
+		trigger nazi4 marchloop1	
+	}
+
+	trigger marchloop1
+	{
+		accum 4 abort_if_equal 1
+		playanim shivering_2h torso
+		walktomarker n4spot1
+		facetargetangles n4spot1
+		wait 3000
+		playanim crotch_grab_2h torso
+		walktomarker n4spot2
+		facetargetangles n4spot2
+		trigger nazi4 marchloop1
+	}
+
+	trigger marchloop2
+	{
+		accum 4 abort_if_equal 1
+		playanim scratching_chest torso
+		wait 3000
+		walktomarker n4spot3
+		facetargetangles n4spot3
+		wait 3000
+		walktomarker n4spot4
+		facetargetangles n4spot4
+		playanim butt_scratch_2h torso		// Changed to torso
+		wait 3000
+		trigger nazi4 marchloop1		
+	}
+
+	trigger run_to_generator		// MUST RUN TO ALERT TRUCK NAZIS..
+	{
+		clearanim
+		accum 4 set 1
+		attrib alertness 2200
+		statetype alert
+		runtomarker n4spot3 nostop
+		runtomarker n4spot4 nostop
+		wait 500 player
+		alertentity truck_nazi5
+		trigger truck_nazi5 generator
+		alertentity truck_nazi6
+		trigger truck_nazi6 generator
+		alertentity truck_nazi7
+		trigger truck_nazi7 generator
+		wait 8000 0 player
+		runtomarker n4_gen1
+	}
+	
+	trigger go1				// smal march loop1
+	{
+	}
+
+	trigger help_nazi2
+	{
+		statetype alert
+		clearanim
+		trigger nazi4 run_to_generator
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		clearanim
+		alertentity truck_nazi7
+		alertentity truck_nazi5
+		alertentity truck_nazi6
+		trigger truck_nazi7 check_run_to_alarm
+		trigger truck_nazi6 generator
+		trigger truck_nazi5 generator		
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 5 inc 1 
+		accum 5 abort_if_not_equal 3
+		accum 4 set 1
+		clearanim
+		statetype alert
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 5 inc 1 
+		accum 5 abort_if_not_equal 3
+		accum 4 set 1
+		clearanim
+		statetype alert
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+
+}
+
+truck_nazi5				// Nazi near truck...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 1500
+		fov 90
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		trigger truck_nazi5 go1	
+	}
+
+	trigger marchloop1
+	{
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in	
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		walktomarker tn5spot1
+		wait 2000 0 truck_nazi6	
+		trigger truck_nazi5 anim_loop
+	}
+
+	trigger anim_loop
+	{
+		accum 4 abort_if_equal 1
+		wait 3000 nazi4
+		wait 9000 truck_nazi6
+		trigger truck_nazi5 anim_loop
+	}
+
+//-----------Converesation------
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		attrib fov 60
+		playsound g2_still_sick
+		wait 2700
+		trigger truck_nazi6 talk2
+	}
+
+	pain 10
+	{
+		attrib fov 90
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		attrib fov 90
+		clearanim
+		trigger truck_nazi5 tactic1
+	}
+
+//------- This is pulled from truck nazi7---------
+	trigger run_to_alarm			//  He will run to set off the alarm.
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		attrib aim_accuracy 0.6
+		runtomarker tn7_toalarm1 nostop
+		nosight 99
+		runtomarker tn7_toalarm2 nostop
+		runtomarker tn7_toalarm2a nostop
+		runtomarker tn7_toalarm3 nostop
+		runtomarker tn7_toalarm4 nostop
+		runtomarker tn7_toalarm5
+		trigger truck_nazi5 turn_alarm_on
+	}
+
+	trigger turn_alarm_on
+	{
+		alertentity alarm_sound
+		trigger checker1 alarm_on		// Sets counter so others know alarm is on..
+		playsound intruder_alert
+		mu_stop 500
+		mu_start sound/music/m_action 200
+		wait 6500 0
+		runtocast player
+	}
+
+	trigger tactic1
+	{
+		accum 4 set 1
+		runtocast player
+		resetscript		
+	}
+
+	trigger generator
+	{
+		accum 4 set 1
+		attrib fov 120
+		statetype alert
+		runtomarker n4_gen4
+		followcast nazi4
+		trigger checker1 spawn_in_guards_to_help_generator
+	}
+
+	trigger alerted
+	{
+		statetype alert
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		clearanim
+		wait 500 player 
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{                             
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+}
+
+truck_nazi6				// Nazi near truck...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		inner_detection_radius 200
+		alertness 1500
+		attrib fov 90
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 1 set 0
+		accum 4 set 0
+		trigger truck_nazi6 go1	
+	}
+
+	trigger marchloop1
+	{		
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		walktomarker tn6spot1
+		facetargetangles tn6spot1
+		wait 2000 truck_nazi7
+	}
+
+	trigger anim_loop
+	{
+		accum 4 abort_if_equal 1
+		wait 3000 truck_nazi5
+		wait 2000 truck_nazi7
+		accum 4 abort_if_equal 1
+		trigger truck_nazi6 anim_loop
+	}
+
+//--------Conversation-------
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		attrib fov 60
+		accum 0 abort_if_bitset 1
+		playsound cough2
+		wait 1000
+		accum 4 abort_if_equal 1
+		playsound g1_how_is_erich
+		wait 2700
+		trigger truck_nazi5 talk1
+	}
+		
+	trigger talk2
+	{
+		accum 4 abort_if_equal 1
+		playsound g1_too_bad
+		wait 4000
+		trigger truck_nazi7 talk1
+	}
+		
+	trigger talk3
+	{
+		accum 4 abort_if_equal 1
+		playsound g1_lucky_for_me
+		wait 3000
+		accum 4 abort_if_equal 1
+		playsound cough2
+		wait 1000
+		attrib fov 90
+		trigger truck_nazi6 anim_loop
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		accum 0 abort_if_bitset 1
+		clearanim
+		trigger truck_nazi6 tactic1
+	}
+
+//------- This is pulled from truck nazi---------
+	trigger run_to_alarm			//  He will run to set off the alarm.
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		attrib aim_accuracy 0.6
+		runtomarker tn7_toalarm1 nostop
+		nosight 99
+		runtomarker tn7_toalarm2 nostop
+		runtomarker tn7_toalarm2a nostop
+		runtomarker tn7_toalarm3 nostop
+		runtomarker tn7_toalarm4 nostop
+		runtomarker tn7_toalarm5
+		trigger truck_nazi6 turn_alarm_on
+	}
+
+	trigger turn_alarm_on
+	{
+		alertentity alarm_sound
+		trigger checker1 alarm_on		// Sets counter so others know alarm is on..
+		playsound intruder_alert
+		mu_stop 500
+		mu_start sound/music/m_action 200
+		wait 6500 0
+		runtocast player
+	}
+	
+	trigger tactic1
+	{
+		runtocast player
+		resetscript
+	}
+
+	trigger generator
+	{
+		accum 4 set 1
+		accum 0 bitset 1
+		statetype alert
+		runtomarker n4_gen4
+		attrib alertness 2200
+		followcast nazi4
+	}
+
+	trigger alerted
+	{
+		accum 4 set 1
+		statetype alert
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		clearanim
+		wait 500 player 0
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+}
+
+truck_nazi7				// Nazi near truck...   Getting stuck on stairs
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 9.0
+		inner_detection_radius 200
+		alertness 1500
+		hearing_scale 1.0
+		attrib fov 90
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 1 set 1
+		accum 4 set 0
+		accum 5 set 0
+		accum 6 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		trigger truck_nazi7 go1	
+	}
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		playsound g3_bad_water
+		wait 2900
+		trigger truck_nazi6 talk3
+	}
+
+	trigger marchloop1
+	{		
+	}
+	
+	trigger go1			
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		trigger checker1 alive_check_in
+		walktomarker tn7spot1
+		facetargetangles tn7spot1
+		wait 2000 truck_nazi5
+	}
+
+	trigger check_run_to_alarm
+	{
+		accum 4 set 1
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		resetscript
+		trigger truck_nazi7 run_to_alarm
+	}
+
+	trigger run_to_alarm			//  He will run to set off the alarm.
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		attrib aim_accuracy 0.6
+		playsound male_ze_american
+		runtomarker tn7_toalarm1 nostop
+		nosight 99
+		runtomarker tn7_toalarm2 nostop
+		runtomarker tn7_toalarm2a nostop
+		runtomarker tn7_toalarm3 nostop
+		runtomarker tn7_toalarm4 nostop
+		runtomarker tn7_toalarm5
+		trigger checker1 radio1_destroyed_response
+	}
+
+	trigger turn_alarm_on
+	{
+		alertentity alarm_sound
+		trigger checker1 alarm_on		// Sets counter so others know alarm is on..
+		playsound intruder_alert
+		mu_stop 500
+		mu_start sound/music/m_action 200
+		wait 6500 0
+		runtocast player
+	}
+
+	trigger alarm_destroyed
+	{
+		accum 4 set 1
+		wait 2000 player
+	}
+
+	trigger generator
+	{
+		trigger truck_nazi7 check_run_to_alarm
+	}
+
+	pain 10
+	{
+		attrib aggression 0.1
+		attrib camper 1.0
+	}
+
+	statechange alert combat
+	{
+		accum 4 set 1
+		clearanim
+		trigger truck_nazi7 check_run_to_alarm
+	}
+
+	enemysight  
+	{
+		accum 4 set 1
+		clearanim
+		trigger truck_nazi7 check_run_to_alarm
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		trigger truck_nazi7 check_run_to_alarm
+		deny
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		clearanim
+		trigger truck_nazi7 check_run_to_alarm
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger truck_nazi6 run_to_alarm
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone1
+	}
+}
+
+sniper				// First sniper... MOVE SNIPER TACTIC MARKERS
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2400
+	}
+
+	spawn
+	{
+		trigger checker1 zone2_checkin_relax
+		wait 5
+		giveweaponfull weapon_sniperscope
+		trigger checker1 alive_check_in
+		wait 5
+		trigger checker1 alarm_on_response
+		wait 10
+		trigger checker1 alarm_off_response	
+	}
+	
+	trigger go1			
+	{
+
+		walktomarker snspot1
+		facetargetangles snspot1
+		wait 3000
+		walktomarker snspot2
+		facetargetangles snspot2
+		wait 3000
+		trigger sniper marchloop1
+	}
+
+	trigger marchloop1
+	{
+		walktomarker snspot3
+		facetargetangles snspot3
+		attrib fov 90
+		attrib fov 180
+		wait 3000
+		walktomarker snspot4
+		facetargetangles snspot4
+		wait 3000
+		trigger sniper marchloop1		
+	}
+
+	trigger sniper_fight
+	{
+		runtomarker snspot3
+		wait 2000
+		runtomarker snspot4
+		trigger sniper sniper_fight
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		trigger checker1 alarm_on_response
+		wait 10
+		trigger checker1 alarm_off_response2	//checks when seeing player
+	}
+
+	trigger turn_alarm_on
+	{
+		statetype alert
+		runtomarker sn_spot_turn_alarm_on
+		facetargetangles sn_spot_turn_alarm_on
+		alertentity alarm_sound
+		trigger checker1 alarm_on
+		playanim switch_alarm both
+		trigger blackguard1 response_to_sniper
+		trigger blackguard2 response_to_sniper
+		trigger blackguard3 response_to_sniper
+		trigger sniper sniper_fight
+	}
+
+	trigger tactic1
+	{
+		statetype alert
+		runtomarker snspot2
+		wait forever 1
+	}
+
+	inspectsoundstart
+	{
+		trigger sniper turn_alarm_on
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		statetype alert
+		deny
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+balcony1_guard1				// First sniper...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.3
+		camper 0.9
+		inner_detection_radius 200
+		alertness 2400
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+
+	trigger alarm_on
+	{
+		statetype alert
+		runtomarker balcony1_spot1a
+		runtomarker balcony1_spot2
+		runtomarker balcony1_spot3
+		wait 2000
+		runtomarker balcony1_spot4
+		wait 2000
+		runtomarker balcony1_spot3
+		wait 2000
+		runtomarker balcony1_spot4
+		runtocast player
+	}
+	
+	trigger go1			
+	{
+
+		walktomarker snspot1
+		facetargetangles snspot1
+		wait 3000
+		walktomarker snspot2
+		facetargetangles snspot2
+		wait 3000
+		trigger sniper marchloop1
+	}
+
+	trigger alarm_off		//  Which is a marchloop1
+	{
+		walktomarker balcony1_spot1a
+		walktomarker balcony1_spot1		
+		walktomarker balcony1_spot2
+		walktomarker balcony1_spot3
+				
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		attack player
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+mechanic1			// Mechanic1...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 1000
+	}
+
+	spawn
+	{
+		trigger checker1 zone2_checkin_relax
+		wait 5
+		accum 4 set 0
+		accum 5 set 0
+		accum 6 set 0
+		takeweapon all
+		trigger checker1 alive_check_in
+		wait 5
+		trigger checker1 alarm_on_response
+		wait 5
+		trigger checker1 alarm_off_response
+		playanim clean_parts_1 both 
+	}
+
+	trigger alarm_on
+	{
+		clearanim
+		accum 4 set 1
+		statetype alert
+		giveweaponfull weapon_luger	
+	}
+
+	trigger alarm_off
+	{
+		walktomarker m1spot1
+		wait 3000
+		trigger mechanic1 talk1
+		playanim clean_parts_1 both forever
+	}
+	
+	trigger go1			
+	{
+		walktomarker m1spot1
+		wait 3000
+		trigger mechanic1 talk1
+	}
+
+//---------Conversation---------
+
+	trigger talk1			
+	{
+		accum 4 abort_if_equal 1
+		playsound m1_Ive_had_it		// I've had it! I have absolutely had it wit this place another day like this and I'll go insanse
+						// another day like today and I'll be ready for the insanse asylum.
+		wait 7000
+		accum 4 abort_if_equal 1
+		trigger mechanic2 talk1
+		trigger mechanic1 anim_loop
+	}
+
+	trigger talk2
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m1_stinking		// It's that stinking rocket plane again
+		wait 2700
+		accum 4 abort_if_equal 1
+		trigger mechanic2 talk2
+		trigger mechanic1 anim_loop
+	}
+
+	trigger talk3
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m1_orings		// Rememeber the cracked O rings?
+		wait 8000
+		accum 4 abort_if_equal 1
+		trigger mechanic2 talk3
+		trigger mechanic1 anim_loop
+	}
+
+	trigger talk4
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m1_full_standby	// Rocket needs to be ready for full stand by
+		wait 9200
+		accum 4 abort_if_equal 1
+		trigger mechanic2 talk4
+		trigger mechanic1 anim_loop
+	}
+
+	trigger talk5
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m1_I_didnt_know	// Oh I didn't, even know he was back 
+		wait 3800
+		playsound m1_I_dont_believe_it		// i don't belive it 
+		wait 4800
+		accum 4 abort_if_equal 1
+		trigger mechanic2 talk5
+		trigger mechanic1 anim_loop
+	}
+
+	trigger talk6
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m1_torque_wrench		// Where is my wrench
+		wait 3400
+		accum 4 abort_if_equal 1
+		trigger mechanic2 talk6
+		trigger mechanic1 anim_loop
+	}
+
+//---------------------------------
+
+	trigger anim_loop
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playanim clean_parts_1 both forever
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		playsound blank
+		clearanim
+		resetscript
+		giveweaponfull weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+		clearanim
+		resetscript
+		statetype alert
+		giveweaponfull weapon_luger	
+	}
+
+	trigger hide
+	{
+		accum 4 set 1
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+		clearanim
+		resetscript
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	inspectsoundend
+	{
+		restorescript
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		clearanim
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		accum 6 set 1
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+mechanic2			// First 
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 1000
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 4 set 0
+		accum 6 set 0
+		takeweapon all
+		trigger checker1 zone2_checkin_relax
+		wait 1000 mechanic1
+		trigger checker1 alive_check_in
+		wait 5
+		trigger checker1 alarm_on_response
+		wait 5
+		trigger checker1 alarm_off_response	
+	}
+
+	trigger alarm_on
+	{
+		accum 4 set 1
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	trigger alarm_off
+	{
+		walktomarker m2_tools
+		trigger mechanic2 go1
+	}
+	
+	trigger go1			
+	{
+	}
+
+//---------Conversation--------
+
+	trigger talk1			
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m2_what_is_it		// What is it this time?
+		wait 1700
+		accum 4 abort_if_equal 1
+		trigger mechanic1 talk2
+	}
+
+	trigger talk2
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m2_oh_gott		// Oh god...
+		wait 1500
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		trigger mechanic1 talk3
+	}
+
+	trigger talk3
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m2_ja_ja		// Ja ja
+		wait 1800
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		trigger mechanic1 talk4
+	}
+
+	trigger talk4
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m2_dh_himself		// I headr it was Deathshead hiimself
+		wait 6300
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		trigger mechanic1 talk5
+	}
+
+	trigger talk5
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m2_now_what		// no what?
+		wait 1700
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		trigger mechanic1 talk6
+	}
+
+	trigger talk6
+	{
+		accum 6 abort_if_equal 1
+		accum 4 abort_if_equal 1
+		playsound m2_dont_look_at_me		// Don't look at me these are my tools
+		wait 2000
+	}
+
+	trigger talk7
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		clearanim
+		playsound blank
+		resetscript
+		giveweaponfull weapon_luger
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+		clearanim
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+		clearanim
+		statetype alert
+		giveweaponfull weapon_luger
+	} 
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		clearanim
+		giveweaponfull weapon_luger
+	}
+
+	inspectsoundend
+	{
+		accum 4 set 1
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		accum 6 set 1
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+zone1_backup1				// This guards walk along gutter in zone1
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger zone1_backup1 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtocast player
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.6
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone1_backup2				// This guards walk along gutter in zone1
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger zone1_backup2 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtomarker bg2spot10
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.7
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtomarker bg2spot10
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+blackguard1				// This guards walk along gutter in zone2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2400		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger blackguard1 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		wait 10
+		trigger checker1 alarm_on_response
+		noavoid
+		attrib alertness 1500
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 zone2_checkin_relax
+		walktomarker bg1spot1 nostop
+		walktomarker bg1spot2 nostop
+		walktomarker bg1spot3 nostop
+		walktomarker bg1spot4 nostop
+		walktomarker bg1spot5 nostop
+		walktomarker bg1spot6 nostop
+		walktomarker bg1spot7 nostop
+		walktomarker bg1spot8 nostop
+		walktomarker bg1spot9 nostop
+		walktomarker bg1spot10
+		trigger blackguard1 walk_back
+	}
+
+	trigger walk_back
+	{
+		walktomarker bg1spot10 nostop
+		walktomarker bg1spot9 nostop
+		walktomarker bg1spot8 nostop
+		walktomarker bg1spot7 nostop
+		walktomarker bg1spot6 nostop
+		walktomarker bg1spot5 nostop
+		walktomarker bg1spot4 nostop
+		walktomarker bg1spot3 nostop
+		walktomarker bg1spot2 nostop
+		walktomarker bg1spot1
+	}
+
+	trigger alarm_on
+	{
+		statetype alert
+		noavoid
+		attrib aim_accuracy 0.1
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtomarker bg1spot5 nostop
+		runtomarker bg1spot10
+	}
+
+	trigger response_to_sniper
+	{
+		trigger blackguard1 alarm_on
+	}
+
+	pain 10
+	{
+		attrib aggression 0.2
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+blackguard2				// This guards walk onlong gutter in zone2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2400		
+	}
+
+	spawn
+	{
+		trigger blackguard2 go1	
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+	
+	trigger go1			
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alive_check_in
+		wait 10
+		trigger checker1 alarm_on_response
+		noavoid
+		attrib alertness 1500
+		wait 2000
+		trigger checker1 zone2_checkin_relax
+		walktomarker bg2spot1 nostop
+		walktomarker bg2spot2 nostop
+		walktomarker bg2spot3 nostop
+		walktomarker bg2spot4 nostop
+		walktomarker bg2spot5 nostop
+		walktomarker bg2spot6 nostop
+		walktomarker bg2spot7 nostop
+		walktomarker bg2spot8 nostop
+		walktomarker bg2spot9 nostop
+		walktomarker bg2spot10
+		trigger blackguard2 walk_back
+	}
+
+	trigger walk_back
+	{
+		walktomarker bg2spot10 nostop
+		walktomarker bg2spot9 nostop
+		walktomarker bg2spot8 nostop
+		walktomarker bg2spot7 nostop
+		walktomarker bg2spot6 nostop
+		walktomarker bg2spot5 nostop
+		walktomarker bg2spot4 nostop
+		walktomarker bg2spot3 nostop
+		walktomarker bg2spot2 nostop
+		walktomarker bg2spot1
+	}
+
+	trigger alarm_on
+	{
+		statetype alert
+		noavoid
+		attrib aim_accuracy 0.2
+		alertentity blackguard3
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		wait 4000
+		runtomarker bg2spot5 nostop
+		runtomarker bg2spot10
+	}
+
+	trigger response_to_sniper
+	{
+		trigger blackguard2 alarm_on
+	}
+
+	pain 10
+	{
+		attrib aggression 0.2
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+blackguard3				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500		
+	}
+
+	spawn
+	{
+		trigger blackguard3 go1	
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		wait 10
+		noavoid
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 zone2_checkin_relax
+		wait 4000
+		followcast blackguard1
+	}
+
+	trigger response_to_sniper
+	{
+		trigger blackguard3 alarm_on
+	}
+
+	trigger alarm_on
+	{
+		statetype alert
+		attrib alertness 2200
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+nest_nazi1				// NAzi near mg42
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2500
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		trigger nest_nazi1 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger nest_nazi1 marchloop1
+	}
+
+	trigger marchloop1
+	{
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		walktomarker nn1spot1
+		facetargetangles nn1spot1
+		wait 3000
+		walktomarker nn1spot2a nostop
+		walktomarker nn1spot2
+		facetargetangles nn1spot2
+		wait 3000
+		walktomarker nn1spot3
+		facetargetangles nn1spot3
+		wait 3000		
+		trigger nest_nazi1 marchloop1
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		wait 500 0 player
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 5 abort_if_greater_than 1
+		accum 5 inc 1
+		wait 500 0 player
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+nest_nazi2				// Nest nazi YOU NEED TO ADD MARKERS FOR THIS GUY
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2000
+	}
+
+	spawn
+	{
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger nest_nazi2 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger nest_nazi2 marchloop1
+		trigger checker1 alarm_on_response
+	}
+
+	trigger marchloop1
+	{
+		walktomarker nn2spot1
+		facetargetangles nn2spot1
+		wait 3000	
+		walktomarker nn2spot2
+		facetargetangles nn2spot2
+		wait 3000
+		walktomarker nn2spot3
+		facetargetangles nn2spot3
+		wait 3000
+		walktomarker nn2spot4	
+	}
+
+	trigger help_nest1
+	{
+		statetype alert
+		runtocast nest_nazi1
+		statetype alert
+		resetscript
+	}
+
+	trigger mount_mg42
+	{
+		runtomarker nn1mount1
+		wait 500 0 player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		trigger nest_nazi2 mount_mg42
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+nest_nazi3				// Nest nazi YOU NEED TO ADD MARKERS FOR THIS GUY // Venom
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2000
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+		trigger nest_nazi3 go1	
+	}
+	
+	trigger go1			
+	{
+	}
+
+	trigger marchloop1
+	{	
+	}
+
+	trigger help_nest1
+	{
+		runtocast nest_nazi1
+		statetype alert
+		resetscript
+	}
+
+	trigger mount_mg42
+	{
+		runtomarker nn1mount1
+		attrib aim_accuracy 0.8
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		runtomarker nn2spot2
+		movetype crouch
+		wait forever 0 player
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		trigger nest_nazi2 mount_mg42
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone2
+	}
+}
+
+zone2_backup1				// This guards walk along gutter in zone2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger zone2_backup1 go1	
+	}
+	
+	trigger go1			
+	{
+		takeweapon mp40
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		resetscript
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.1
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup2				// This guards walk along gutter in zone2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger zone2_backup2 go1	
+	}
+	
+	trigger go1			
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alive_check_in
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 1
+		selectweapon weapon_panzerfaust
+		resetscript
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.6
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup3				// This guards walk along gutter in zone2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		trigger checker1 alive_check_in
+		trigger zone2_backup3 go1	
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+	
+	trigger go1			
+	{
+		runtomarker bp3_spot1
+		runtomarker bp3_spot2
+		runtomarker bp3_spot3
+		runtomarker bp3_spot4
+		runtomarker bp3_spot5
+		runtomarker bp3_spot6
+		runtomarker bp3_spot7
+		resetscript
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.6
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup4				// This guards walk along gutter in zone2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		trigger checker1 alive_check_in
+		trigger zone2_backup4 go1	
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+	
+	trigger go1			
+	{
+		runtomarker bp3_spot1
+		runtomarker bp3_spot2
+		runtomarker bp3_spot3
+		runtomarker bp3_spot4
+		runtomarker bp3_spot5
+		runtomarker bp3_spot6
+		runtomarker bp3_spot7
+		resetscript
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.6
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup5				// NEWLLY ADDED BACK UPS FOR ZONE TWO RIGHT BEFORE SNIPER // 
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		camper 0.8
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 1
+		selectweapon weapon_panzerfaust
+		trigger zone2_backup5 go1	
+	}
+	
+	trigger go1			
+	{
+		resetscript
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup6				// NEWLLY ADDED BACK UPS FOR ZONE TWO RIGHT BEFORE SNIPER// Venom
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		camper 0.8
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_venom	
+		trigger checker1 alive_check_in
+		trigger zone2_backup6 go1	
+	}
+	
+	trigger go1			
+	{
+		wait 2000
+		runtomarker z2_b7_spot1 nostop
+		runtomarker z2_b7_spot2 nostop
+		runtomarker z2_b7_spot3 nostop
+		runtomarker z2_b7_spot4 nostop
+		runtomarker z2_b7_spot5 nostop
+		runtomarker z2_b7_spot6 nostop
+		runtomarker z2_b7_spot7 nostop
+		runtomarker z2_b7_spot8 nostop
+		runtomarker z2_b7_spot8b1 nostop
+		runtomarker z2_b7_spot8b3
+		wait 500 player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup7				// NEWLY ADDED BACK UPS FOR ZONE TWO RIGHT BEFORE SNIPER
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		camper 0.8
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger checker1 alive_check_in
+		trigger zone2_backup7 go1
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+	
+	trigger go1			
+	{	
+		runtomarker z2_b7_spot1 nostop
+		runtomarker z2_b7_spot2 nostop
+		runtomarker z2_b7_spot3 nostop
+		runtomarker z2_b7_spot4 nostop
+		runtomarker z2_b7_spot5 nostop
+		runtomarker z2_b7_spot6 nostop
+		runtomarker z2_b7_spot7 nostop
+		runtomarker z2_b7_spot8 nostop
+		runtomarker z2_b7_spot8a
+		wait 500 player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup9				// NEWLLY ADDED BACK UPS FOR ZONE TWO RIGHT BEFORE SNIPER  // Venom
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		camper 0.8
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+		trigger checker1 alive_check_in
+		trigger zone2_backup9 go1	
+	}
+	
+	trigger go1			
+	{	
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+zone2_backup10				// NEWLLY ADDED BACK UPS FOR ZONE TWO RIGHT BEFORE SNIPER // VENOM
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		camper 0.8
+		inner_detection_radius 200
+		alertness 2700		
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+		trigger checker1 alive_check_in
+		trigger zone2_backup10 go1	
+	}
+	
+	trigger go1			
+	{	
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+tower_nazi1				// This is nazi at water tower...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2400
+	}
+
+	spawn
+	{
+		trigger tower_nazi1 go1	
+	}
+	
+	trigger go1			
+	{
+		giveweaponfull weapon_mauserrifle
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+
+	trigger alarm_off
+	{
+		walktomarker tw1spot1
+		facetargetangles tw1spot1
+		wait 3000
+		walktomarker tw1spot2
+		facetargetangles tw1spot2
+		wait 3000
+		walktomarker tw1spot3
+		facetargetangles tw1spot3
+		wait 3000
+		walktomarker tw1spot4
+		facetargetangles tw1spot4
+		wait 3000
+		walktomarker tw1spot5
+		facetargetangles tw1spot5
+		wait 3000
+		walktomarker tw1spot6
+		facetargetangles tw1spot6
+		wait 3000
+		walktomarker tw1spot7
+		facetargetangles tw1spot7
+		wait 3000
+		trigger tower_nazi1 marchloop1		
+	}
+
+	trigger alarm_on_response
+	{
+		alertentity radio_nazi3
+		alertentity radio_nazi4		
+		alertentity radio_nazi5	
+		statetype alert
+		runtomarker tw1spot2
+		wait 2000
+		wait 2000
+		trigger tower_nazi1 tactic1
+	}
+
+	trigger tactic1
+	{
+		runtomarker tw1spot2
+		wait 2000
+	//	runtomarker tw1spot1
+		wait 2000
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		trigger checker1 alarm_on_response   
+		trigger checker1 alarm_off_response2  
+	}
+
+	trigger activate_alarm			// Basicaly alarm off...
+	{
+		alertentity radio_nazi1
+		alertentity radio_nazi3
+		alertentity radio_nazi4		
+		alertentity radio_nazi5	
+		wait 5
+		trigger checker1 radio_nazi1_spawn
+		trigger radio_nazi1 activator_of_alarm 	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// This makes the nazi, not return back to his script
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}	
+
+	death
+	{
+		alertentity tower_nazi3			/// Test to see if this works out...
+		trigger checker1 death_check_out
+	}
+}
+
+tower_nazi2				// Nest nazi YOU NEED TO ADD MARKERS FOR THIS GUY
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 1576		
+	}
+
+	spawn
+	{
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+	
+	trigger go1			
+	{
+		giveweaponfull weapon_mauserrifle
+		trigger tower_nazi2 marchloop1
+	}
+
+	trigger marchloop1
+	{		
+		walktomarker tw2spot1
+		facetargetangles tw2spot1
+		wait 1000
+		walktomarker tw2spot2
+		facetargetangles tw2spot2
+		wait 3000 
+		trigger tower_nazi2 marchloop1
+	}
+
+	trigger alarm_on_response
+	{
+		statetype alert
+		runtocast player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		alertentity tower_nazi3
+		trigger tower_nazi2 alarm_on_response
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+tower_nazi3				// Done
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		// This is special set so that tower nazi1 can get out of his view and possible be killed...
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger tower_nazi3 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		giveweaponfull weapon_mauserrifle
+		trigger tower_nazi3 marchloop1
+	}
+
+	trigger marchloop1
+	{		
+		walktomarker tw3spot1
+		facetargetangles tw3spot1
+		wait 1000
+		walktomarker tw3spot2
+		facetargetangles tw3spot2
+		wait 3000 
+		walktomarker tw3spot3
+		facetargetangles tw3spot3
+		wait 3000 
+		walktomarker tw3spot2
+		facetargetangles tw3spot2
+		wait 3000 
+		trigger tower_nazi2 marchloop1
+	}
+
+	trigger alarm_on_reponse
+	{
+		statetype alert
+		runtocast player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+radio_nazi1				// this is back up gaurds who come out of 2nd radio house...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.2
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 radio_nazi1_activated
+		trigger radio_nazi1 check_alarm_situation
+	}
+
+	trigger check_alarm_situation
+	{
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+	
+	trigger alarm_on_response		// this needs to be changed to only if alarm on mode..	
+	{
+		statetype alert
+		runtomarker rn1spot1 nostop
+		runtomarker rn1spot2 nostop
+		runtomarker rn1spot3 nostop
+		runtomarker rn1spot4
+	}
+
+	trigger activator_of_alarm  		// This will happen if alarm is off..
+	{
+	//	print RUNNING TO ALARM ON
+		runtomarker rn1on_radio1
+		trigger checker1 radio2_destroyed_response
+	}
+
+	trigger turn_alarm_on
+	{
+		alertentity alarm_sound
+		trigger checker1 alarm_on
+		trigger radio_nazi1 alarm_on_response  // He will use this once the alarm is on
+	}
+
+	trigger alarm_destroyed
+	{
+		wait 2000 player
+		resetscript
+	}
+
+	trigger alarm_off_response  		// This will happen if the alarm is off  // TO DO !!!!
+	{
+		takeweapon all
+		walktomarker rn1on_radio1
+		facetargetangles rn1on_radio1
+		trigger radio_nazi1 anim_loop
+	}
+
+	trigger anim_loop
+	{
+		playanim looking_over_table both
+		wait 3000
+		playanim looking_over_table both
+		wait 6000
+		trigger radio_nazi1 anim_loop
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+radio_nazi2				// This is back guards who come out of radio house.
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+	
+	trigger alarm_on_response			
+	{
+		statetype alert
+		runtomarker rn2spot1 nostop
+		runtomarker rn2spot2 nostop
+		runtomarker rn2spot3 nostop
+		runtomarker rn2spot4 nostop
+		runtomarker rn2spot5
+		resetscript
+	}
+
+	trigger alarm_off_response
+	{
+		trigger radio_nazi2 marchloop1
+		walktomarker rn2spot1
+		wait 4000
+		walktomarker rn2spot0
+		wait 3000
+	}
+
+	trigger marchloop1
+	{
+		walktomarker rn2spot1
+		wait 4000 
+		walktomarker rn2spot0
+		wait 3000 radio_nazi1
+		trigger radio_nazi2 marchloop1	
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		trigger radio_nazi2 go1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+radio_nazi3
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger radio_nazi3 go1	
+	}
+	
+	trigger go1			// this needs to be changed to only if alarm on mode..	
+	{
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtomarker rn3spot1 nostop
+		runtomarker rn3spot2 nostop
+		runtomarker rn3spot3 nostop
+		runtomarker rn3spot4 nostop
+		runtomarker rn3spot4
+		statetype alert
+		resetscript
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+radio_nazi4
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger radio_nazi4 go1	
+	}
+	
+	trigger go1			// this needs to be changed to only if alarm on mode..	
+	{
+		trigger checker1 alive_check_in
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtomarker rn3spot1 nostop
+		runtomarker rn3spot2 nostop
+		runtomarker rn3spot3 nostop
+		runtomarker rn3spot4 nostop
+		runtomarker rn3spot4
+		statetype alert
+		resetscript
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+radio_nazi5				// Which is venom soldier
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+		trigger radio_nazi5 go1	
+	}
+	
+	trigger go1			// this needs to be changed to only if alarm on mode..	
+	{
+		trigger checker1 alive_check_in
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+last_blackguard1				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+	}
+
+	trigger alarm_on_response
+	{
+		runtomarker lbg1spot1 nostop
+		runtomarker lbg1spot2 nostop
+		runtomarker lbg1spot3
+		resetscript
+	}
+
+	trigger alarm_off_response		// To do 
+	{
+		wait 2000
+		walktomarker lbg1spot1
+		facetargetangles lbg1spot1
+		wait 4000 last_blackguard2
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+last_blackguard2				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		noavoid
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		setammo 7.92mm 999
+	}
+
+	trigger alarm_on_response
+	{
+		statetype alert
+		wait 3000
+		runtomarker lbg2spot1 nostop
+		runtomarker lbg2spot2 nostop
+		runtomarker lbg2spot3
+		resetscript
+	}
+		
+	trigger alarm_off_response
+	{
+		wait 2000
+		walktomarker lbg2_relaxed1 
+		walktomarker lbg2_relaxed2 
+		wait 4000 
+		trigger last_blackguard2 marchloop1
+	}
+
+	trigger marchloop1
+	{
+		walktomarker lbg2_relaxed1 
+		walktomarker lbg2_relaxed2 
+		wait 4000 
+		trigger last_blackguard2 marchloop1		
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+		alertentity venom2
+	}
+}
+
+last_blackguard3				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.1
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alive_check_in
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+
+	trigger alarm_on_response
+	{
+		statetype alert	
+		runtomarker lbg4_relaxed1
+		movetype crouch
+		wait 500 player
+		wait forever 0 player 	
+	}
+
+	trigger alarm_off_response
+	{
+		//walktomarker lbg3_re1
+		wait 2000 last_blackguard4 	
+	}	
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+last_blackguard4				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.4
+		camper 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		trigger checker1 alarm_on_response
+		trigger checker1 alarm_off_response
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+	}
+
+	trigger alarm_on_response
+	{
+		statetype alert
+		runtomarker lbg4_alerted2
+		movetype crouch
+		wait forever 0 player
+		
+	}
+
+	trigger alarm_off_response
+	{
+		walktomarker lbg3_relaxed1
+		wait 2000 last_blackguard3
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		resetscript
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+last_blackguard5				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger	last_blackguard5 go1
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+last_blackguard6				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger last_blackguard6 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		runtomarker lbg6_alerted1
+		facetargetangles lbg6_alerted1
+		movetype crouch
+		wait forever 0 player 
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+venom1				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 400
+		alertness 5000
+		hearing_scale 4.0
+		fov 360		
+	}
+
+	spawn
+	{
+		wait 10
+		trigger checker1 alive_check_in
+		giveweaponfull weapon_venom
+		wait 5
+		trigger venom1 go1	
+	}
+	
+	trigger go1			
+	{
+		explicit_routing on
+		runtomarker lbg6_alerted1
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+venom2				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300		
+	}
+
+	spawn
+	{
+		trigger venom2 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		giveweaponfull weapon_venom
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+		trigger checker1 backup_for_zone3
+	}
+}
+
+strooper1				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 400
+		alertness 2500		
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_venom
+		trigger strooper1 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		runtomarker st1_spot1
+	}
+
+	pain 10
+	{
+		attrib aggression 0.4
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+strooper2				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 400
+		alertness 2500		
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_venom
+		trigger strooper2 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		runtomarker st2_spot1
+	}
+
+	pain 10
+	{
+		attrib aggression 0.4
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+//		trigger checker1 backup_for_zone2
+	}
+}
+
+strooper3				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 400
+		alertness 2500		
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_venom
+		trigger strooper1 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		runtomarker st3_spot1
+	}
+
+	pain 10
+	{
+		attrib aggression 0.4
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+
+venom3				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 400
+		alertness 2500	
+		hearing_scale 2.0	
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger venom3 go1	
+	}
+	
+	trigger go1			
+	{
+		trigger checker1 alive_check_in
+		noavoid
+		giveweaponfull weapon_venom
+		runtomarker v3spot1
+		runtomarker v3spot2
+		runtomarker v3spot3
+		runtomarker v3spot4
+		runtomarker v3spot5
+		runtomarker v3spot6
+		runtocast player
+	}
+
+	pain 10
+	{
+		attrib aggression 0.4
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+//		trigger checker1 backup_for_zone2
+	}
+}
+
+v3_support1				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300
+		hearing_scale 2.0		
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+		trigger checker1 alive_check_in
+		trigger v3_support1 go1	
+	}
+	
+	trigger go1			
+	{
+		followcast venom3
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+v3_support2				// This guard is only alerted if alarm is on...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300	
+		hearing_scale 2.0	
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+		trigger checker1 alive_check_in
+		trigger v3_support2 go1	
+	}
+	
+	trigger go1			
+	{
+		noavoid
+		wait 3000
+		followcast venom3
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert			// Must have... so he gos back to script...
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger checker1 death_check_out
+	}
+}
+
+
+reinforce_ai_soldier_1		// on the U-boat
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_2		// on the boxes
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_3		// at the gate 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_4		// at the gate 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_5		// House1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_6		// radio room 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_7		// radio room 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_fg42
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_fg42
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_8		// secret room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_9		// near balcony
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_10		// sniper on balcony
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_11		// garage upper floor
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_12		// near truck1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_13		// near truck2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_14		// behind the workers
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_15		// behind big garage door
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_16		// back-balcony
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_17		// back near-balcony
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_18		// sniper on tower
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_19		// bazooka near tower
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_20		// sniper near gate2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_21		// above gate2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_venom_22		// near gate 3
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+	}
+}
+
+reinforce_ai_venom_23		// on tower after gate2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+	}
+}
+
+reinforce_ai_venom_24		// barrackL
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+	}
+}
+
+reinforce_ai_soldier_25		// BarrackR 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_26		// BarrackR 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_27		// BarrackR 3
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_venom_28		// on hillway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+	}
+}
+
+reinforce_ai_venom_29		// ladder room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_30		// balcony3 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_31		// balcony3 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_32		// after gate3 Left
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_33		// after gate3 Right
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_34		// front of last garage 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_venom_35		// front of last garage 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_venom
+	}
+}
+
+reinforce_ai_venom_36		// ammo room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_venom_37		// exit room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_38		// garage 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_39		// garage 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_40		// garage 3
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}

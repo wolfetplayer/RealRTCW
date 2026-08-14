@@ -3368,6 +3368,10 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 			}
 			// end spinning
 
+			// knife's off-hand model is cosmetic only; hide it while holding a melee prop (chair)
+			if ( weaponNum == WP_KNIFE && i == W_PART_2 && ( ps->eFlags & EF_MELEE_ACTIVE ) ) {
+				barrel.hModel = 0;
+			}
 
 			if ( barrel.hModel ) {
 				if ( i == W_PART_1 ) {

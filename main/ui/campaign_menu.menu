@@ -57,7 +57,7 @@ itemDef
 					name				mappreview
 					group				campCreate
 					ownerdraw		     UI_CREATEMAPPREVIEW
-					rect				29 146 151 114
+					rect				29 146 229 114
 					visible				1
 					}
 
@@ -65,47 +65,11 @@ itemDef
 					name				mappreview
 					group				campCreate
 					style				WINDOW_STYLE_FILLED
-					rect				28 145 152 115
+					rect				28 145 230 115
 					border				1
 					bordercolor			.5 .5 .5 .5
 					visible				1
 					}
-
-						itemDef {
-							name			mappreview
-							group			campCreate
-							ownerdraw		UI_CREATEMAPPREVIEW_SMALL1
-							rect			186 146 72 54
-							visible			1
-							}
-
-						itemDef {
-							name			mappreview
-							group			campCreate
-							style			WINDOW_STYLE_FILLED
-							rect			185 145 73 55
-							border			1
-							bordercolor		.5 .5 .5 .5
-							visible			1
-							}
-
-						itemDef {
-							name			mappreview
-							group			campCreate
-							ownerdraw		UI_CREATEMAPPREVIEW_SMALL2
-							rect			186 206 72 54
-							visible			1
-							}
-
-						itemDef {
-							name			mappreview
-							group			campCreate
-							style			WINDOW_STYLE_FILLED
-							rect			185 205 73 55
-							border			1
-							bordercolor		.5 .5 .5 .5
-							visible			1
-							}
 
 				 itemDef {
 					name			maplist

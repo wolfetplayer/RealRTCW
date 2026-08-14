@@ -101,7 +101,7 @@ longname	"@CAMP_MAP_FACTORY"
 chapter		"4"
 }
 {
-map			"trainyards"
+map			"trainyard"
 longname	"@CAMP_MAP_TRAINYARDS"
 chapter		"4"
 }

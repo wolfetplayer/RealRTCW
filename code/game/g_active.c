@@ -524,13 +524,18 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			}
 
 		// regenerate health only if cvar is turned on
-		// g_regen: 0 = off, 1 = full regen, 2 = partial regen (heals up to the nearest 20hp threshold only, Wolfenstein: The New Order style)
+		// g_regen: 0 = off, 1 = full regen, 2 = partial regen (heals up to the nearest health threshold only, Wolfenstein: The New Order style)
 if ((g_regen.integer == 1 || g_regen.integer == 2 || g_gametype.integer == GT_SURVIVAL) && level.time >= client->healthRegenStartTime ) {
 
 		    int regenCap = client->ps.stats[STAT_MAX_HEALTH];
 
 		    if ( g_regen.integer == 2 && g_gametype.integer != GT_SURVIVAL ) {
-			    regenCap = ( ( ent->health + 19 ) / 20 ) * 20;
+			    // threshold scales with max health: 20/100, 10/50, 5/25, etc. (5 even segments)
+			    int regenSegment = client->ps.stats[STAT_MAX_HEALTH] / 5;
+			    if ( regenSegment < 1 ) {
+				    regenSegment = 1;
+			    }
+			    regenCap = ( ( ent->health + regenSegment - 1 ) / regenSegment ) * regenSegment;
 			    if ( regenCap > client->ps.stats[STAT_MAX_HEALTH] ) {
 				    regenCap = client->ps.stats[STAT_MAX_HEALTH];
 			    }

@@ -2,6 +2,7 @@
 // 
 {	
 	loadMenu { "ui/survival_menu.menu" }
+	loadMenu { "ui/campaign_menu.menu" }
 	loadMenu { "ui/main.menu" }
 // 	loadMenu { "ui/joinserver.menu" }	// NERVE - SMF - commented in for multiplayer
  	loadMenu { "ui/setup.menu" }

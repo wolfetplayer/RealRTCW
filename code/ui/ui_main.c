@@ -4824,9 +4824,66 @@ static void UI_RunMenuScript( char **args ) {
 				trap_Cvar_Set( "ui_cdkeyvalid", "CD Key does not appear to be valid." );
 			}
 		} else if ( Q_stricmp( name, "loadArenas" ) == 0 ) {
+			// force back to the survival game type in case campaign_menu left it on single player
+			ui_netGameType.integer = 3;
+			trap_Cvar_SetValue( "ui_netGameType", 3 );
 			UI_LoadArenasIntoMapList();
 			UI_MapCountByGameType( qfalse );
 			Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, "survival_menu" );
+		} else if ( Q_stricmp( name, "loadCampaignArenas" ) == 0 ) {
+			// force to the single player game type so campaign maps show up in FEEDER_ALLMAPS
+			ui_netGameType.integer = 1;
+			trap_Cvar_SetValue( "ui_netGameType", 1 );
+			UI_LoadArenasIntoMapList();
+			UI_MapCountByGameType( qfalse );
+			Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, "campaign_menu" );
+		} else if ( Q_stricmp( name, "StartCampaign" ) == 0 ) {
+			trap_Cvar_Set( "cg_thirdPerson", "0" );
+			trap_Cvar_Set( "cg_cameraOrbit", "0" );
+			switch ( ui_camp_bonusmode.integer ) {
+			case 1: // Walk in the Park
+				trap_Cvar_Set( "g_gameskill", "4" );
+				trap_Cvar_Set( "g_nohudchallenge", "1" );
+				trap_Cvar_Set( "g_ironchallenge", "0" );
+				trap_Cvar_Set( "g_nopickupchallenge", "0" );
+				trap_Cvar_Set( "g_decaychallenge", "0" );
+				break;
+			case 2: // Ironman
+				trap_Cvar_Set( "g_gameskill", "3" );
+				trap_Cvar_Set( "g_nohudchallenge", "0" );
+				trap_Cvar_Set( "g_ironchallenge", "1" );
+				trap_Cvar_Set( "g_nopickupchallenge", "0" );
+				trap_Cvar_Set( "g_decaychallenge", "0" );
+				break;
+			case 3: // Hardcore
+				trap_Cvar_Set( "g_gameskill", "3" );
+				trap_Cvar_Set( "g_nohudchallenge", "0" );
+				trap_Cvar_Set( "g_ironchallenge", "0" );
+				trap_Cvar_Set( "g_nopickupchallenge", "1" );
+				trap_Cvar_Set( "g_decaychallenge", "0" );
+				break;
+			case 4: // 999 Mode
+				trap_Cvar_Set( "g_gameskill", "3" );
+				trap_Cvar_Set( "g_nohudchallenge", "0" );
+				trap_Cvar_Set( "g_ironchallenge", "0" );
+				trap_Cvar_Set( "g_nopickupchallenge", "0" );
+				trap_Cvar_Set( "g_decaychallenge", "1" );
+				break;
+			case 5: // Nightmare
+				trap_Cvar_Set( "g_gameskill", "3" );
+				trap_Cvar_Set( "g_nohudchallenge", "1" );
+				trap_Cvar_Set( "g_ironchallenge", "1" );
+				trap_Cvar_Set( "g_nopickupchallenge", "1" );
+				trap_Cvar_Set( "g_decaychallenge", "0" );
+				break;
+			default: // None - use the Gameskill selection as-is, clear any leftover challenge flags
+				trap_Cvar_Set( "g_nohudchallenge", "0" );
+				trap_Cvar_Set( "g_ironchallenge", "0" );
+				trap_Cvar_Set( "g_nopickupchallenge", "0" );
+				trap_Cvar_Set( "g_decaychallenge", "0" );
+				break;
+			}
+			trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; spmap %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
 		} else if ( Q_stricmp( name, "saveControls" ) == 0 ) {
 			Controls_SetConfig( qtrue );
 		} else if ( Q_stricmp( name, "loadControls" ) == 0 ) {
@@ -5368,6 +5425,8 @@ static int UI_MapCountByGameType( qboolean singlePlayer ) {
 	c = 0;
 	game = singlePlayer ? uiInfo.gameTypes[ui_gameType.integer].gtEnum : uiInfo.gameTypes[ui_netGameType.integer].gtEnum;
 	static int s_lastEnemiesFilter = -1;
+	static int s_lastChapterFilter = -1;
+	static int s_lastMidgameFilter = -1;
 
 	/*
 	if ( game == GT_SINGLE_PLAYER ) {
@@ -5375,8 +5434,12 @@ static int UI_MapCountByGameType( qboolean singlePlayer ) {
 	}
 	*/
 
-	if ( ui_sv_enemies.integer != s_lastEnemiesFilter ) {
+	if ( ui_sv_enemies.integer != s_lastEnemiesFilter ||
+		 ui_camp_chapter.integer != s_lastChapterFilter ||
+		 ui_midgame.integer != s_lastMidgameFilter ) {
         s_lastEnemiesFilter = ui_sv_enemies.integer;
+        s_lastChapterFilter = ui_camp_chapter.integer;
+        s_lastMidgameFilter = ui_midgame.integer;
         UI_LoadArenasIntoMapList();
     }
 
@@ -7089,6 +7152,7 @@ void _UI_Init( qboolean inGameLoad ) {
 //	UI_LoadTeams();
 	UI_ParseGameInfo("gameinfo.txt");
 	UI_LoadArenas();
+	UI_ResolveArenaLongnames();
 
 	menuSet = UI_Cvar_VariableString( "ui_menuFiles" );
 	if ( menuSet == NULL || menuSet[0] == '\0' ) {
@@ -7757,6 +7821,9 @@ vmCvar_t ui_limboMode;
 
 vmCvar_t  cg_autoReload;
 vmCvar_t  ui_sv_enemies;
+vmCvar_t  ui_camp_chapter;
+vmCvar_t  ui_camp_bonusmode;
+vmCvar_t  ui_midgame;
 // -NERVE - SMF
 
 cvarTable_t cvarTable[] = {
@@ -7875,6 +7942,9 @@ cvarTable_t cvarTable[] = {
 	{ NULL, "g_localTeamPref", "", 0 },
 
 	{ &ui_sv_enemies, "ui_sv_enemies", "0", CVAR_ARCHIVE },
+	{ &ui_camp_chapter, "ui_camp_chapter", "0", CVAR_ARCHIVE },
+	{ &ui_camp_bonusmode, "ui_camp_bonusmode", "0", CVAR_ARCHIVE },
+	{ &ui_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH },
 };
 
 static int		cvarTableSize = ARRAY_LEN( cvarTable );

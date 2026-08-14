@@ -23,6 +23,7 @@
 		show back ;
 		show campCreate ;
 		show campOptions ;
+		hide campPacks ;
 	}
 
 	onEsc {

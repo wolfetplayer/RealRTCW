@@ -28,6 +28,15 @@ player
 		trigger player give_loadout_2
 		#endif
 
+		#if g_level_was_selected >= 1
+		accum 5 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+
+		cvar g_chapter_legit 1
+		cvar g_level_was_selected 0
+
 		trigger checker2 plane_cine1
 		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif	// Spawn these guys after the player does, otherwise we see them poof out of thin air. --BreakinBenny
 		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_2 #endif

@@ -20,6 +20,12 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		applyloadout village1
+		#endif
+		cvar g_level_was_selected 0
+
 		mu_fade 0 1000
 		mu_queue sound/music/c_military
 #if g_reinforce >= 2 alertentity reinforce_ai_zombie_4 #endif

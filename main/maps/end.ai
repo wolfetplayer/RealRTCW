@@ -13,6 +13,13 @@ player
 	spawn
 	{
 		accum 0 bitreset 0
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
+		#endif
+		#if g_chapter_legit < 1
+		accum 7 set 1
+		#endif
 		abort_if_loadgame
 		mu_fade 0 1000
 		mu_queue sound/music/c_atmos
@@ -21,8 +28,44 @@ player
 		objectivesneeded 1		
 	}
 
+	trigger give_loadout_1
+	{
+		accum 1 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 1 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_2
+		#endif
+	}
+
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 1 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
 		mu_fade 0 1000
 		mu_queue sound/music/c_chant
 		trigger counter1 action1	these three events are beggining events
@@ -182,18 +225,23 @@ player
 		trigger pillar1 fall
 	}
 
+	trigger achievement_hard_check
+	{
+		accum 7 abort_if_equal 1
+		achievement_chapter7_hard
+	}
+
 	trigger changelevel
 	{
+		#if g_chapter_legit >= 1
 		achievement_chapter7
-		#if g_gameskill >= 3
-		achievement_chapter7_hard
-		#endif
-		// Bonus modes achievements
 		achievement_ironman
 		achievement_hardcore
 		achievement_999
 		achievement_nightmare
 		achievement_walkinthepark
+		#endif
+		trigger player achievement_hard_check
 		changelevel cutscene19 5 silent 
 	}
 
@@ -1801,7 +1849,9 @@ heinrich
 	death
 	{
 		trigger player 0bitset0
+		#if g_chapter_legit >= 1
 		achievement_boss3
+		#endif
 		objectivemet 1	// mission objective complete
 		trigger counter1 himmler_cine1
 	}

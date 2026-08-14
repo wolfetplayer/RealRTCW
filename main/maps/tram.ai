@@ -16,12 +16,25 @@ player
 		accum 1 set 0
 		objectivesneeded 3
 
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
+		#endif
+		#if g_chapter_legit < 1
+		accum 7 set 1
+		#endif
 		abort_if_loadgame
 		mu_start sound/music/l_briefing_1
 	}
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		applyloadout village1
+		#endif
+		cvar g_level_was_selected 0
+
 		mu_fade 0 1500
 		mu_queue sound/music/m_drums
 		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif
@@ -249,18 +262,23 @@ player
 		trigger button2 pushbutton2
 	}
 
+	trigger achievement_hard_check
+	{
+		accum 7 abort_if_equal 1
+		achievement_chapter1_hard
+	}
+
 	trigger endmap
 	{
+		#if g_chapter_legit >= 1
 		achievement_chapter1
-		#if g_gameskill >= 3
-		achievement_chapter1_hard
-		#endif
-		// Bonus modes achievements
 		achievement_ironman
 		achievement_hardcore
 		achievement_999
 		achievement_nightmare
 		achievement_walkinthepark
+		#endif
+		trigger player achievement_hard_check
 		trigger kesler follow_me
 		changelevel village1 5000 persistent silent
 	}

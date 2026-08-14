@@ -35,6 +35,8 @@ player
 	{
 		accum 0 bitset 0 // post cutscene cell door should only trigger once
         applyloadout escape1
+		cvar g_chapter_legit 1
+		cvar g_level_was_selected 0
 	}
 
 	// ---Start Camera Section---

@@ -19,8 +19,27 @@ player
 		mu_queue sound/music/m_drums
 	}
 
+	trigger give_loadout_direct
+	{
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_1
+		#endif
+	}
+
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		trigger player give_loadout_direct
+		#endif
+		cvar g_level_was_selected 0
+
 		trigger checker3 enable_music
 		mu_fade 0 3000
 		mu_queue sound/music/m_drums	

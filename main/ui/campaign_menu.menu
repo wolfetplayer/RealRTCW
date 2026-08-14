@@ -691,6 +691,7 @@ itemDef
 						hide start }
 					action {
 						close campaign_menu ;
+						setcvar g_level_was_selected 1 ;
 						uiScript StartCampaign
 					}
 					}
@@ -719,6 +720,7 @@ itemDef
 						show start }
 					action {
 						close campaign_menu ;
+						setcvar g_level_was_selected 1 ;
 						uiScript StartCampaign
 					}
 					}

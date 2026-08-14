@@ -29,7 +29,16 @@ player
 		accum 3 random_no_zero 3
 		trigger player give_loadout_1
 		trigger player give_loadout_2
-		#endif		
+		#endif
+
+		#if g_level_was_selected >= 1
+		accum 3 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+
+		cvar g_chapter_legit 1
+		cvar g_level_was_selected 0
 		
 		// Reinforced AI
 		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif

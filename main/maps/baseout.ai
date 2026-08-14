@@ -15,8 +15,44 @@ player
 		mu_start sound/music/l_briefing_1
 	}
 
+	trigger give_loadout_1
+	{
+		accum 0 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout forest_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout forest_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout forest_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 0 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout forest_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout forest_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout forest_vanilla_shotgun_2
+		#endif
+	}
+
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 0 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
 		mu_fade 0 1000
 		mu_queue sound/music/m_situation
 	}

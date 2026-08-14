@@ -27,6 +27,7 @@ player
 		mu_stop 0 2000
 		takeweapon all
 		giveinventory key_binocs
+		cvar g_level_was_selected 0
 	}
 	
 	trigger planes_flyby
@@ -265,6 +266,7 @@ player
 	{
 		trigger player give_loadout_1
 		trigger player give_loadout_2
+		cvar g_chapter_legit 1
 		changelevel dam persistent
 	}
 

@@ -672,6 +672,11 @@ void Sys_SigHandler( int signal )
 	else
 	{
 		signalcaught = qtrue;
+
+		// save a crash log before shutdown, in case CL_Shutdown/SV_Shutdown fault too
+		if( signal != SIGTERM && signal != SIGINT )
+			Sys_ErrorDialog( va( "Received signal %d", signal ) );
+
 		VM_Forced_Unload_Start();
 #ifndef DEDICATED
 		CL_Shutdown(va("Received signal %d", signal), qtrue, qtrue);

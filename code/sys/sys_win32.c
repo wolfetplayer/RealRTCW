@@ -719,41 +719,37 @@ void Sys_Sleep( int msec )
 ==============
 Sys_ErrorDialog
 
-Display an error message
+Display an error message and save the console log to a crash log file
 ==============
 */
 void Sys_ErrorDialog( const char *error )
 {
-	if( Sys_Dialog( DT_YES_NO, va( "%s. Copy console log to clipboard?", error ),
-			"Error" ) == DR_YES )
+	const char *homepath = Cvar_VariableString( "fs_homepath" );
+	const char *gamedir = Cvar_VariableString( "fs_game" );
+	char *dirpath = FS_BuildOSPath( homepath, gamedir, "" );
+	char *ospath = FS_BuildOSPath( homepath, gamedir, "crashlog.txt" );
+	char buffer[ 1024 ];
+	unsigned int size;
+	FILE *f;
+
+	Sys_Mkdir( homepath );
+	Sys_Mkdir( dirpath );
+
+	// avoid FS_FOpenFileWrite() in case we're crashing due to a maxed-out file handle table
+	f = fopen( ospath, "wb" );
+	if( f )
 	{
-		HGLOBAL memoryHandle;
-		char *clipMemory;
+		while( ( size = CON_LogRead( buffer, sizeof( buffer ) ) ) > 0 )
+			fwrite( buffer, 1, size, f );
 
-		memoryHandle = GlobalAlloc( GMEM_MOVEABLE|GMEM_DDESHARE, CON_LogSize( ) + 1 );
-		clipMemory = (char *)GlobalLock( memoryHandle );
-
-		if( clipMemory )
-		{
-			char *p = clipMemory;
-			char buffer[ 1024 ];
-			unsigned int size;
-
-			while( ( size = CON_LogRead( buffer, sizeof( buffer ) ) ) > 0 )
-			{
-				Com_Memcpy( p, buffer, size );
-				p += size;
-			}
-
-			*p = '\0';
-
-			if( OpenClipboard( NULL ) && EmptyClipboard( ) )
-				SetClipboardData( CF_TEXT, memoryHandle );
-
-			GlobalUnlock( clipMemory );
-			CloseClipboard( );
-		}
+		fclose( f );
 	}
+
+#ifndef DEDICATED
+	if( Sys_Dialog( DT_YES_NO, va( "%s.\n\nA crash log has been saved to:\n%s\n\nOpen the containing folder now?",
+			error, ospath ), "RealRTCW Error" ) == DR_YES )
+		ShellExecute( NULL, "open", dirpath, NULL, NULL, SW_SHOWNORMAL );
+#endif
 }
 
 /*
@@ -811,6 +807,32 @@ void Sys_GLimpInit( void )
 
 /*
 ==============
+Sys_CrashHandler
+
+Called by the OS when an exception isn't handled anywhere else in the program
+==============
+*/
+static LONG WINAPI Sys_CrashHandler( EXCEPTION_POINTERS *ExceptionInfo )
+{
+	static qboolean handlingCrash = qfalse;
+	char reason[ 256 ];
+
+	if( handlingCrash )
+		return EXCEPTION_EXECUTE_HANDLER;
+
+	handlingCrash = qtrue;
+
+	Com_sprintf( reason, sizeof( reason ), "Unhandled exception 0x%08X at address 0x%p",
+		(unsigned int)ExceptionInfo->ExceptionRecord->ExceptionCode,
+		ExceptionInfo->ExceptionRecord->ExceptionAddress );
+
+	Sys_ErrorDialog( reason );
+
+	return EXCEPTION_EXECUTE_HANDLER;
+}
+
+/*
+==============
 Sys_PlatformInit
 
 Windows specific initialisation
@@ -821,6 +843,8 @@ void Sys_PlatformInit( void )
 #ifndef DEDICATED
 	TIMECAPS ptc;
 #endif
+
+	SetUnhandledExceptionFilter( Sys_CrashHandler );
 
 	Sys_SetFloatEnv();
 

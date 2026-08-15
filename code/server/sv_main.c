@@ -980,7 +980,12 @@ void SV_Frame( int msec ) {
 		frameMsec = 1;
 	}
 
-	sv.timeResidual += msec;
+	{
+		float scaled = (float)msec * sv.timeDilation + sv.timeDilationCarry;
+		int whole = (int)scaled;
+		sv.timeDilationCarry = scaled - whole;
+		sv.timeResidual += whole;
+	}
 
 	if (!com_dedicated->integer) SV_BotFrame (sv.time + sv.timeResidual);
 

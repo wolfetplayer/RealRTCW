@@ -1,0 +1,33 @@
+// menu defs
+// 
+{	
+	loadMenu { "ui/survival_menu.menu" }
+	loadMenu { "ui/campaign_menu.menu" }
+	loadMenu { "ui/main.menu" }
+// 	loadMenu { "ui/joinserver.menu" }	// NERVE - SMF - commented in for multiplayer
+ 	loadMenu { "ui/setup.menu" }
+	loadMenu { "ui/controls.menu" }
+	loadMenu { "ui/cdkey.menu" }
+	loadMenu { "ui/system.menu" }
+	loadMenu { "ui/options.menu" }
+//	loadMenu { "ui/cinematicmenu.menu" }
+	loadMenu { "ui/credit.menu" }
+	loadMenu { "ui/connect.menu" }
+	loadMenu { "ui/quit.menu" }
+	loadMenu { "ui/vid_restart.menu" }
+	loadMenu { "ui/snd_restart.menu" }
+	loadMenu { "ui/rec_restart.menu" }
+	loadMenu { "ui/default.menu" }
+	loadMenu { "ui/error.menu" }
+	loadMenu { "ui/serverinfo.menu" }
+	loadMenu { "ui/quitcredit.menu" }
+	loadMenu { "ui/resetscore.menu" }
+	loadMenu { "ui/multiplayer_pop.menu" }
+
+	loadMenu { "ui/play.menu" }			// (mx) added
+	loadMenu { "ui/load.menu" }			// (mx) added
+
+	loadMenu { "ui/briefing.menu" }		//----(SA)	added
+
+
+}

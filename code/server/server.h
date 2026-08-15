@@ -82,6 +82,8 @@ typedef struct {
 	int snapshotCounter;                // incremented for each snapshot built
 	int timeResidual;                   // <= 1000 / sv_frame->value
 	int nextFrameTime;                  // when time > nextFrameTime, process world
+	float timeDilation;                 // 0..1, scales real-ms fed into timeResidual; 1.0 = normal speed
+	float timeDilationCarry;            // fractional-ms carry to avoid truncation drift at low dilation
 	char            *configstrings[MAX_CONFIGSTRINGS];
 	svEntity_t svEntities[MAX_GENTITIES];
 

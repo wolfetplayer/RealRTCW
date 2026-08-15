@@ -1,0 +1,1040 @@
+#include "ui/menudef.h"
+
+{
+\\ SETUP MENU \\
+
+menuDef {
+		name "ingame_options"
+		visible 0
+		fullscreen 0
+		outOfBoundsClick			// this closes the window if it gets a click out of the rectangle
+		rect 200 100 443 340
+		focusColor 1 1 1 1
+		style 1
+		border 1
+
+		onopen { hide grpOptions ; show view }
+
+
+
+itemDef 
+	{
+	name window
+	group ingamebox
+	rect 0 2 443 330	
+	style WINDOW_STYLE_FILLED
+	border 1
+	bordercolor .5 .5 .5 .5
+	forecolor 1 1 1 1
+	backcolor 0 0 0 .85
+	visible 1
+	decoration
+	}
+
+	itemDef 
+	{
+		name window2
+		group grpControlbutton
+		rect 2 4 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25 
+		visible 1
+		decoration
+	}
+	
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    GAMEPLAY             //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//itemDef {
+	//name ctr_performance
+	//text "@GAMEPLAY"
+	//type 1
+	//textscale .23
+	//group grpControlbutton
+//	rect 50 10 100 12
+	//rect 50 10 100 12
+	//textalign 1
+	//textalignx 50
+	//textfont UI_FONT_BIG
+	//textaligny 10
+	//forecolor 1 1 1 1
+	//backcolor .1 .1 .1 0 
+	//visible 1
+	//action { hide grpOptions ; show gameplay }
+	//mouseEnter { setitemcolor ctr_performance backcolor .1 .37 .1 1 }
+	//mouseExit { setitemcolor ctr_performance backcolor .37 .1 .1 1 }
+	//}
+
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_ARSENAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_fullarsenal"
+		cvarFloatList { "@GM_ARSENAL_CLASSIC" 0 "@GM_ARSENAL_REALRTCW" 1 }
+		rect 82 30 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_MIDGAME"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_midgame"
+		cvarFloatList { "@GM_MIDGAME_CLASSIC" 0 "@GM_MIDGAME_HUB" 1 "@GM_MIDGAME_HUBANDCUTSCENE" 2 }
+		rect 82 45 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_REALISMM"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_realism"
+		rect 82 60 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_REWARDS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_endmapbonus"
+		rect 82 75 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_DOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawndogs"
+		rect 82 90 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_PRIESTS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnpriests"
+		rect 82 105 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_XDOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnxshepherds"
+		rect 82 120 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_ADDENEMIES"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_reinforce"
+		cvarFloatList { "@GM_ADDENEMIES_NO" 0 "@GM_ADDENEMIES_MORE" 1 "@GM_ADDENEMIES_EVENMORE" 2 }
+		rect 82 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_FALLOFF"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_weaponfalloff"
+		rect 82 155 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_STRAFEJUMP"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_jumptime"
+		rect 82 170 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_AIRESPAWN"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_airespawn"
+		cvarFloatList { "@GM_AIRESPAWN_NO" 0 "@GM_AIRESPAWN_ONCE" 1 "@GM_AIRESPAWN_INFINITE" -1 }
+		rect 82 185 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_AIHEADSHOT"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_aicanheadshot"
+		rect 82 200 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_AIRIFLES"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_fireonthemove"
+		rect 82 215 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                      VIEW                    //////////////////////////////////////////               
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+    itemDef {
+	name ctr_view
+	text "@HUD"
+	type 1
+	textscale .23
+	group grpControlbutton
+	rect 50 10 100 12
+	textalign 1
+	textalignx 50
+	textfont UI_FONT_BIG
+	textaligny 10
+	forecolor 1 1 1 1
+	backcolor .1 .1 .1 0 
+	visible 1
+	action { hide grpOptions ; show view }
+	mouseEnter { setitemcolor ctr_view backcolor .1 .37 .1 1 }
+		mouseExit { setitemcolor ctr_view backcolor .37 .1 .1 1 }
+
+}
+
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_ENABLE"
+		cvar "cg_draw2D"
+		rect 82 45 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_MULTI
+		text "@HUD_STYLE_INGAME"
+		cvar "cg_hudstyle"
+		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
+		rect 82 60 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@HUD_ALPHA"
+		cvarfloat "cg_hudAlpha" .6 .1 1
+		rect 82 75 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+   	}
+	
+	itemDef {
+		name view				
+		type ITEM_TYPE_MULTI	
+		group grpOptions
+		text "@HUD_CURSORHINTS"
+		cvar "cg_cursorHints"
+		cvarFloatList { "@HUD_STROBE" 2 "@HUD_ALPHAPULSE" 3 "@HUD_CURSORSOLID" 4 "@OFF" 0 "@HUD_CURSORSIZEPULSE" 1 }
+		textalign ITEM_ALIGN_RIGHT
+		rect 82 90 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textfont UI_FONT_BIG
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3"; "4" }
+				
+		type ITEM_TYPE_MULTI
+		text "@HUD_STATUS"
+		cvar "cg_hudstatus"
+		cvarFloatList { "@HUD_STATUS_3" 3 "@HUD_STATUS_4" 4 "@HUD_STATUS_5" 5 }
+		rect 82 105 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3"; "4" }
+				
+		type ITEM_TYPE_MULTI
+		text "@HUD_STATUS"
+		cvar "cg_hudstatus"
+		cvarFloatList { "@HUD_STATUS_3" 3 "@HUD_STATUS_4" 4 "@HUD_STATUS_5" 5 }
+		rect 82 105 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+			itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_BLOOD"
+		cvar "cg_bloodBlend"
+		rect 82 120 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_STAMINA"
+		cvar "cg_hudstamina"
+		rect 82 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_STAMINA"
+		cvar "cg_hudstamina"
+		rect 82 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "3"; "5" }
+		
+		type ITEM_TYPE_YESNO
+		text "@HUD_WEAPONICON"
+		cvar "cg_hudweapicon"
+		rect 82 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "3"; "5" }
+		
+		type ITEM_TYPE_YESNO
+		text "@HUD_WEAPONICON"
+		cvar "cg_hudweapicon"
+		rect 82 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3"; "4"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_AMMOCLIP"
+		cvar "cg_hudammoclip"
+		rect 82 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3"; "4"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_AMMOCLIP"
+		cvar "cg_hudammoclip"
+		rect 82 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_JOURNAL"
+		cvar "cg_journalstyle"
+		rect 82 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_CHECKPOINT"
+		cvar "cg_drawCheckpoint"
+		rect 82 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		text "@SYSTEM_APPLY"
+		type 1	
+		textscale .25
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		rect 181 250 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { play "sound/misc/kcaction.wav" ; exec "vid_restart" ; hide grpOptions ; hide view }
+		}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    CROSSHAIR              ////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+itemDef {
+	name ctr_crosshair
+	text "@VIEW"
+	type 1
+	textscale .23
+	group grpControlbutton
+	rect 270 10 100 12
+	textalign 1
+	textalignx 50
+	textfont UI_FONT_BIG
+	textaligny 10
+	forecolor 1 1 1 1
+	backcolor .1 .1 .1 0 
+	visible 1
+	action { hide grpOptions ; show crosshair }
+	mouseEnter { setitemcolor ctr_performance backcolor .1 .37 .1 1 }
+	mouseExit { setitemcolor ctr_performance backcolor .37 .1 .1 1 }
+	}
+	
+	
+				itemDef {
+	    name crosshair
+		group grpOptions
+	    text "@GM_CROSSHAIR"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 200 20 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	
+    itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		text "@GM_CROSSHAIR_SIZE"
+		cvar "cg_crosshairsize"
+		cvarFloatList { "@GM_CROSSHAIR_SMALL" 24 "@GM_CROSSHAIR_MEDIUM" 32 "@GM_CROSSHAIR_BIG" 40 "@GM_CROSSHAIR_LARGE" 48 "@GM_CROSSHAIR_HUGE" 64 "@GM_CROSSHAIR_TINY" 12 }
+		rect 82 40 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+
+	itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@GM_CROSSHAIR_ALPHA"
+		cvarfloat "cg_crosshairAlpha" .6 .1 1
+		rect 82 55 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+	itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@GM_CROSSHAIR_SOLID"
+		cvar "cg_solidCrosshair"
+		rect 82 70 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@GM_CROSSHAIR_SNIPER"
+		cvar "cg_snipersCrosshair"
+		rect 82 85 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+    itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		text "@GM_CROSSHAIR_COLORING"
+		cvar "cg_crosshairColoring"
+		cvarFloatList { "@GM_CROSSHAIR_COLORING_OFF" 0 "@GM_CROSSHAIR_COLORING_HEALTH" 1 "@GM_CROSSHAIR_COLORING_ENEMY" 2 }
+		rect 82 100 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+	
+	itemDef {
+		name crosshair
+		group grpOptions
+		text "@GM_CROSSHAIR2"
+		textfont UI_FONT_BIG
+ 		type 1	
+		rect 195 120 60 12
+		textalign ITEM_ALIGN_CENTER
+		textscale .23		
+		textalignx 30
+		textaligny 12
+		forecolor 1 1 1 1
+		visible 0 
+		decoration
+	}
+
+	itemDef {
+		name crosshair			
+		group grpOptions
+		rect 200 135 50 50
+		ownerdraw UI_CROSSHAIR
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 0 
+		textaligny 50  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07      
+		forecolor 1 1 1 1
+		visible 0
+   	}
+	
+			itemDef {
+	    name crosshair
+		group grpOptions
+	    text "@GM_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 200 185 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		text "@GM_FIXEDFOV"
+		cvar "cg_fixedAspectFOV"
+		rect 82 205 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_SLIDER
+		text "@GM_FOV"
+		cvarfloat "cg_fov" 90 65 120
+		rect 82 220 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+	
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@GM_DRAWGUN"
+		cvar "cg_drawGun"
+		rect 82 235 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_MULTI
+		text "@GM_VIEWPOS"
+		cvar "cg_gunposlock"
+		cvarFloatList { "@GM_VIEWREALRTCW" 1 "@GM_VIEWQUAKE" 3	}
+		rect 82 250 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@GM_BOBBING"
+		cvar "cg_bobbing"
+		rect 82 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@GM_THIRDPERSON"
+		cvar "cg_thirdperson"
+		rect 82 280 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_SLIDER
+		text "@GM_THIRDPERSONRANGE"
+		cvarfloat "cg_thirdpersonrange" 40 50 120
+		rect 82 295 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+			itemDef {
+		name crosshair
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@GM_HITMARKERS"
+		cvar "cg_hitMarker"
+		rect 82 310 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	}
+	
+
+
+
+
+//////////////////////////////
+
+
+
+
+itemDef {
+      name slider_message
+      rect 30 15 640 30 
+	text "@SLIDERMESSAGE"      
+	forecolor 1 .75 0 1
+	textscale .23
+	textfont UI_FONT_BIG
+	textalignx 221
+	textalign 1
+	textaligny 20
+	visible 0
+      decoration 
+	}
+
+}
+
+
+}

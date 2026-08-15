@@ -1,0 +1,184 @@
+#include "ui/menudef.h"
+
+{
+\\ play MENU \\
+
+menuDef {
+    name "play_menu"
+    visible MENU_FALSE
+    fullscreen 1
+    rect 0 0 640 480
+	 //background "menu_load"
+    soundloop ""
+    focusColor .9 .9 .9 1
+    style 1
+    border 0
+
+	onEsc
+	{
+		close play_menu;
+		open main
+	}
+
+	onOpen {
+		setitemcolor fadebox backcolor 0 0 0 1 ;
+		//close load_menu;
+		play "sound/misc/kcswish.wav";
+
+		fadeout fadebox;
+
+		show realrtcw_main_play;
+		hide select;
+	}
+////////////////////////////////////////////////ASSETS////////////////////////////////////////////////
+
+itemDef
+	{
+		name realrtcw_background
+		style WINDOW_STYLE_SHADER
+		rect -120 -9.25 917 500
+		background "realrtcw_background"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+
+	// 5.1 //
+
+	itemDef
+	{
+		name realrtcw_main_play
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play.tga"
+		visible 1
+		decoration
+	}
+
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_campaign
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_campaign.tga"
+		visible 0
+		decoration
+	}
+
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_survival
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_survival.tga"
+		visible 0
+		decoration
+	}
+
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_training
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_training.tga"
+		visible 0
+		decoration
+	}
+
+	itemDef
+	{
+		group select
+		name realrtcw_main_play_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_play_back.tga"
+		visible 0
+		decoration
+	}
+
+	//
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 5.1 //
+
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 144 178 26
+	    visible 1
+
+	    action { close play_menu; open campaign_menu ; uiScript loadCampaignArenas }
+
+		mouseEnter { show "realrtcw_main_play_campaign" }
+		mouseExit { hide "realrtcw_main_play_campaign" }
+	}
+
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 177 178 26
+	    visible 1
+
+	    action { close play_menu; open survival_menu ; uiScript loadArenas  }
+
+		mouseEnter { show "realrtcw_main_play_survival" }
+		mouseExit { hide "realrtcw_main_play_survival" }
+	}
+
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 210 178 26
+	    visible 1
+
+	    action
+		{
+		setCvar g_gameskill "0";
+		setCvar g_nohudchallenge "0";
+		setCvar g_ironchallenge "0";
+		setcvar g_nopickupchallenge "0";
+		setCvar g_decaychallenge "0";
+		exec "spmap malta_menu"
+		}
+
+		mouseEnter { show "realrtcw_main_play_training" }
+		mouseExit { hide "realrtcw_main_play_training" }
+	}
+
+	itemDef
+	{
+	    name realrtcw_main_play
+	    type 1
+	    rect 10 243 178 26
+	    visible 1
+
+	    action { close play_menu; open main }
+
+		mouseEnter { show "realrtcw_main_play_back" }
+		mouseExit { hide "realrtcw_main_play_back" }
+	}
+
+}
+
+
+}
+
+
+

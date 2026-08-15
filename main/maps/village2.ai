@@ -1,0 +1,4808 @@
+//AI scripting
+//Map Village2_118
+//10/31/01
+//last edited by WolfETPlayer & William Faure
+
+player
+{
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0 
+		
+	// Items
+		cvar g_episode 5
+	// Weapons
+		objectivesneeded 7
+	// Ammo
+	//setammo clips
+		abort_if_loadgame
+		mu_stop 0 2000
+	}
+
+	trigger give_loadout_1
+	{
+		accum 6 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 6 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_2
+		#endif
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 6 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
+		mu_stop 0 2000	
+	}
+
+	trigger alarm1_destroyed
+	{
+		trigger alarm_nazi13 alarm1_destroyed
+	}
+
+	trigger alarm2_destroyed
+	{
+		trigger nazi16 alarm2_destroyed
+	}
+
+	trigger action1	// This places sniper one nazi5 and drz
+	{	
+		alertentity sniper1
+		alertentity nazi5
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger eva_and_officer1
+	{
+		trigger officer1 talk1
+	}
+
+	trigger vincent	// THIS STARTS VINCENT WITH HIS EXPERIEMENTS
+	{
+		trigger player secret2a
+		alertentity nazi4
+		wait 5
+		trigger nazi4 go2	// trigger various animations and sounds for him to use
+	}
+
+	trigger action2
+	{
+		alertentity inge1	// 
+		alertentity nazi6	// 
+		alertentity nazi7	// 
+		alertentity officer2	// 
+		trigger nazi6 enable_bulletimpact
+		trigger nazi7 enable_bulletimpact
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action3	// This alerts third house..
+	{
+		alertentity nazi8
+		alertentity officer3
+		alertentity alarm_nazi11		
+	}
+
+	trigger action4	// To do			
+	{
+	}
+
+	trigger underground_group1
+	{
+		trigger nazi11 dumb1
+		alertentity nazi9	// Looking at whine
+		alertentity nazi10	// Drunk
+	}
+
+	trigger out_of_underground	// This triggers event out of ground...
+	{
+		trigger alarm_nazi11 get_into_position
+		alertentity officer5
+		alertentity alarm_nazi12	// nazi near alarm
+		alertentity alarm_nazi13	// nazi near alarm 
+		alertentity inge2
+		trigger nazi11 not_so_dumb
+		alertentity kill_nazi11
+		alertentity nazi11_offduty
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger guard_off_duty	// This triggers guard to come into duty
+	{
+		trigger nazi11 not_so_dumb
+		alertentity kill_nazi11
+		alertentity nazi11_offduty
+	}
+
+	trigger destroyed_player	// This has officer2 get upset about his record player... 
+	{
+		trigger officer2 destroyed_player_response
+	}
+
+	trigger last_two	// This trigger in the last three nazis the user encounters...
+	{
+		objectivemet 7	// mission objective complete
+		
+		alertentity nazi14
+		alertentity nazi15
+		alertentity nazi16
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger moonlight	// This is to make sure that moonlight guys does his thang...
+	{
+		alertentity 04_help1
+		alertentity officer4
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger officer5_willy
+	{
+		trigger officer5 talk1
+	}
+
+	trigger inge1a_hide	// This makes inge1a hide near first officer...
+	{
+	}
+
+	trigger inge1_hide	// This makes inge1` hide
+	{
+		trigger inge1 surprise
+		trigger nazi6 talk1
+	}
+
+	trigger inge2_hide	// This makes inge2 hide
+	{
+		trigger inge2 surprise
+	}
+
+	trigger startwall1	// This is for the first secret...
+	{
+		trigger wall1 start
+	}
+
+	trigger startwall2	// This is fot the second secret..
+	{
+		trigger wall2 start
+	}
+
+	trigger car1	// This will trigger the car to come running by...
+	{
+	}
+
+	trigger player_hits_alarm	// This occurs when player hsits alarm...
+	{
+		trigger checker1 player_hits_alarm
+		alertentity sound_alarm
+		trigger player alarm_on_mission_fail
+		trigger checker1 alarm_music		
+	}
+
+	trigger drz_come_out	// this activates when the player goes into sniper room...
+	{
+		alertentity nazi4
+		wait 5
+		trigger nazi4 walk_down_street
+		trigger player secret5
+	}
+
+	trigger last_alarm
+	{
+		alertentity sound_alarm
+		trigger player alarm_on_mission_fail
+	}
+
+	trigger alarm_on_mission_fail
+	{
+		wait 5000
+		missionfailed 6 5
+	}
+
+	trigger secret1
+	{
+		foundsecret	
+	}
+
+	trigger secret2
+	{
+	}
+
+	trigger secret5
+	{
+		foundsecret	
+	}
+
+	trigger secret2a
+	{
+		foundsecret
+	}
+
+	trigger secret3
+	{
+		foundsecret	
+	}
+
+	trigger secret4
+	{
+		foundsecret	
+	}
+
+	trigger endmap
+	{
+		achievement_stealth2
+		changelevel chateau persistent 
+	}
+
+	trigger endmap_bonus										
+	{															
+		#if g_fullarsenal == 0	// Vanilla Bonus
+		printbonus village2	
+		giveweapon weapon_flamethrower
+		giveammo ammo_fuel
+		#endif
+		
+		#if g_fullarsenal == 1	// RealRTCW Bonus
+		printbonus village2_alt
+		giveweapon weapon_flamethrower
+		giveammo ammo_fuel
+		#endif	
+
+		#if g_fullarsenal == 2
+		printbonus village2
+		giveweapon weapon_flamethrower
+		giveammo ammo_fuel
+		#endif			
+	}
+		
+}
+
+nazi1a	// First nazi seen by player... Has two patterns he can choose...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		alertness 1024
+		inner_detection_radius 192
+		hearing_scale 0.4
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0	
+	}
+
+	trigger nazi1_alive_checkin
+	{
+		accum 0 bitreset 5
+		trigger nazi1 nazi1a_alive_checkin
+		wait 4000
+		trigger nazi1a go1
+	}
+
+	trigger nazi1_dead_checkin
+	{	
+		accum 0 bitset 5
+		trigger nazi1a nazi1a_dead_response
+	}
+	
+	trigger go1
+	{
+//		print Talk now
+		walktomarker n1a_spot1
+		trigger nazi1a talk1	
+	}
+
+	trigger go2
+	{
+		walktomarker n1a_spot1
+		walktomarker n1a_spot2
+		walktomarker n1a_spot2a
+		walktomarker n1a_spot3
+		walktomarker n1a_spot4
+		walktomarker n1a_spot5
+		walktomarker n1a_spot6
+		walktomarker n1a_spot7
+	}
+
+//-------CONVERSATION-------------
+
+	trigger talk1
+	{
+		wait 500 nazi1
+		playsound g1_vas_is_los
+		wait 3000
+		trigger nazi1 talk1
+	}
+
+	trigger talk2
+	{
+		playsound g1_ach_allright
+		wait 4100
+		trigger nazi1 talk2
+	}
+
+//-----------END------------------
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	trigger inspectsoundstart2	// this occurs after a sound has been heard tow times in a row...
+	{
+		accum 2 abort_if_not_equal 3
+		resetscript
+	}
+
+	trigger nazi1a_dead_response
+	{
+		statetype alert
+		wait 500 player
+	}
+
+	inspectsoundend
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+		clearanim
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	enemysight
+	{
+		playsound blank
+		clearanim
+		resetscript
+	}
+
+	death
+	{
+		trigger nazi1 nazi1a_dead_response
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger help_officer1
+	{
+		runtocast player
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi1	// TRUE First nazi seen by player... 
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		alertness 1024
+		inner_detection_radius 192
+		hearing_scale 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		trigger nazi1 go1	
+	}
+
+	trigger nazi1a_alive_checkin
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi1a_dead_checkin
+	{	
+		accum 0 bitset 5
+	}
+
+	trigger nazi1_and_2_search
+	{
+		accum 3 inc 1
+		accum 3 abort_if_not_equal 2
+		playsound MiscSmellHim
+		wait 3000
+		trigger nazi2 follow_nazi1 
+		trigger nazi3 follow_nazi1
+		runtocast nazi1a
+	}
+	
+	trigger go1
+	{
+		playsound da_dum4
+		walktomarker n1spot1 nostop
+		facetargetangles n1spot1
+		walktomarker n1spot2 
+		facetargetangles n1spot2
+		playsound whistle1	// This has soldier whistle
+		wait 2000
+		facetargetangles n1spot3
+		playanim butt_scratch_2h torso
+		facetargetangles n1spot2
+		wait 2000
+		playsound da_dum2
+		walktomarker n1spot4
+		facetargetangles n1spot4
+		playsound whistle1	// This has soldier whistle
+		wait 2000
+		walktomarker n1spot5
+		walktomarker n1spot6
+		playsound da_dum2
+		playsound whistle	// This has soldier whistle
+		walktomarker n1spot7
+		facetargetangles n1spot7
+		wait 2000
+		playanim scratching_chest torso
+		walktomarker n1spot8
+		playsound da_dum3
+		facetargetangles n1spot8
+		walktomarker n1spot6
+		walktomarker n1spot5
+		playsound whistle	// This has soldier whistle
+		walktomarker n1spot4
+		playsound da_dum2
+		walktomarker n1spot1
+		trigger nazi1 go2
+		
+	}
+
+	trigger go2
+	{
+		walktomarker n1spot4
+		facetargetangles n1spot4
+		wait 2000
+		walktomarker n1spot5
+		walktomarker n1spot6
+		facetargetangles n1spot6
+		wait 2000
+		walktomarker n1spot7
+		facetargetangles n1spot7
+		wait 2000
+		walktomarker n1spot6
+		facetargetangles n1spot6
+		wait 2000
+		walktomarker n1spot5
+		walktomarker n1spot4
+		walktomarker n1spot1
+		facetargetangles n1spot1
+		wait 2000
+		walktomarker n1spot2
+		facetargetangles n1spot2
+		wait 2000
+		walktomarker n1spot3
+		facetargetangles n1spot3
+		wait 2000
+		facetargetangles n1spot2
+		wait 2000
+		trigger nazi1 go1
+	}
+
+	trigger go3	// SO HE CAN WALK, TALK AND PLAY ANIMATION AS WELL... 
+	{
+		walktomarker n1spot4
+	}
+
+	trigger go4	// USED WITH WALKING AND TALKING...
+	{
+		walktomarker n1spot5
+		walktomarker n1spot6
+		facetargetangles n1spot6
+		wait 2000
+		walktomarker n1spot7
+		facetargetangles n1spot7
+		wait 2000
+		walktomarker n1spot6
+		facetargetangles n1spot6
+	}
+
+	trigger go5
+	{
+	}
+
+//-----------CONVERSATION-------------
+	trigger talk1
+	{
+		accum 0 bitset 7	// AI knows it's started conversation
+		accum 0 abort_if_bitset 5
+		runtomarker n1spot1
+		accum 0 abort_if_bitset 5
+		wait 500 nazi1a
+		accum 0 abort_if_bitset 5
+		playsound g2_he_changed_mind
+		accum 0 abort_if_bitset 5
+		wait 2400
+		accum 0 abort_if_bitset 5
+		trigger nazi1a talk2
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 5
+		playsound g2_ya_ya
+		accum 0 abort_if_bitset 5
+		wait 2300
+		accum 0 abort_if_bitset 5
+		trigger nazi1a go2
+		accum 0 abort_if_bitset 5
+		wait 5
+		trigger nazi1 go1
+	}
+
+	trigger talk3
+	{
+	}
+
+
+//--------------END-------------------
+	trigger nazi1a_dead_response	//THIS IS CALLED I HE  IS IN  THE CCONVERSATION
+	{
+		statetype alert
+		accum 0 abort_if_not_bitset 7
+		wait 500 nazi1a
+		playsound MiscGetHelp
+		trigger nazi2 respond1	// To do 
+		trigger nazi3 respond1	// To do
+	}
+
+	trigger search
+	{
+				
+	}
+
+	trigger anim_loop1
+	{
+		playanim scratching_chest torso
+	}
+
+	trigger anim_loop2
+	{
+		playanim butt_scratch_2h torso
+	}
+
+	trigger sound1
+	{
+		playsound whistle1	// This has soldier whistle
+	}
+
+	trigger sound2
+	{
+		playsound da_dum2
+	}
+
+	trigger sound3
+	{
+		playsound da_dum3
+	}
+
+	trigger sound4
+	{
+		playsound da_dum4
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim	
+	}
+
+	inspectbodyend
+	{
+	}
+
+	enemysight
+	{
+		accum 1 set 1
+		playsound blank
+		resetscript
+		clearanim
+		trigger nazi2 respond1
+		trigger nazi3 respond1		
+		playsound guard1_alarm	
+	}
+
+	bulletimpact
+	{
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+		resetscript
+		wait 500 0 player
+	}
+
+	trigger talk1
+	{
+		playsound blank
+	}
+
+	trigger talk2	// guards alarm!!
+	{
+		playsound guard1_alarm		
+	}
+
+	death
+	{
+		trigger nazi1a nazi1_dead_checkin
+	}
+
+	trigger help_officer1
+	{
+		runtocast player
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi2	// Warming hands next to fire...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		hearing_scale 1.0
+		alertness 1000
+		fov 180
+	}
+
+	spawn
+	{	
+		accum 0 bitreset 0
+		giveweaponfull weapon_luger
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		wait 5
+		takeweapon all
+		wait 5
+		trigger nazi2 go2
+	}
+
+	trigger test
+	{
+		walktomarker n2spot2
+	}
+	
+	trigger go1	// This has nazi2 stand in front of fire and then stand in front of table couch and return
+	{
+		walktomarker n2spot1
+		facetargetangles n2spot1
+		wait 4000
+		walktomarker n2spot2
+		facetargetangles n2spot2
+		wait 2000
+		playsound cough2
+		playanim coughing_2h both
+		wait 1000
+	}
+
+	trigger go2	// stands in front of fire and gets warm
+	{
+		walktomarker n2spot1
+		facetargetangles n2spot1
+		wait 3000
+		playanim being_cold both
+		trigger nazi2 go2
+	}
+
+	trigger warm1
+	{
+		playanim being_cold both
+	}
+
+	trigger respond1	// this is the response if nazi becomes alerted...
+	{
+		clearanim
+		statetype alert
+		giveweaponfull weapon_luger
+		runtocast nazi1
+	}
+
+	trigger follow_nazi1
+	{
+		playsound corp_sir
+		runtocast nazi1a
+		playsound MiscKeepLooking
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker1 sight_check_in
+		clearanim
+		trigger nazi1 help_officer1
+		giveweaponfull weapon_luger
+	}
+
+	bulletimpact
+	{
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1
+		deny
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+		statetype alert
+		resetscript
+		wait 500 0 player
+	}
+
+	trigger give_weapon
+	{
+		giveweaponfull weapon_luger	
+	}
+
+	statechange relaxed query
+	{
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1
+		clearanim
+		resetscript
+		playsound blank
+		statetype alert
+		trigger nazi2 give_weapon
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}
+
+	blocked officer1
+	{	
+		pushaway officer1
+	}
+
+	death
+	{
+		accum 0 abort_if_not_equal 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi3	// Warming hands next to fire...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		hearing_scale 1.0
+		alertness 1000
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_luger
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		takeweapon all
+		trigger nazi3 go2	
+	}
+
+	trigger test1
+	{
+		walktomarker door_house1
+	}
+	
+	trigger go1
+	{
+		walktomarker n3spot2
+		facetargetangles n3spot2
+		walktomarker n3spot3
+		wait 2000
+		facetargetangles n3spot3
+		wait 3000
+		walktomarker n3spot2
+		walktomarker n3spot1
+		facetargetangles n3spot1
+		wait 4000
+		wait 2000
+		trigger nazi3 go1
+	}
+
+	trigger go2	// stands infront of fire 
+	{
+		walktomarker n3spot1
+		wait 6000
+		facetargetangles n3spot1
+		playanim being_cold both
+		trigger nazi3 go2
+	}
+
+	trigger respond1	// this is the response if nazi1 becomes alerted...
+	{
+		statetype alert
+		runtocast nazi1
+	}
+
+	trigger follow_nazi1
+	{
+		playsound corp_sir
+		runtocast nazi1a
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		clearanim
+		playsound MiscKillHim
+		avoid
+	}
+
+	bulletimpact
+	{
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1
+		deny
+		clearanim
+		playsound blank
+		statetype alert
+		resetscript
+		wait 500 0 player
+	}
+
+	statechange relaxed query
+	{
+		clearanim
+		playsound blank
+		statetype alert
+		trigger nazi3 give_weapon
+	}
+
+	trigger give_weapon
+	{
+    giveweaponfull weapon_luger
+	}
+
+	inspectsoundstart
+	{
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1
+		clearanim
+	}
+
+	inspectsoundend
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+		clearanim
+	}
+
+	death
+	{
+	}
+
+	blocked officer1
+	{
+		pushaway officer1
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out	
+	}
+}
+
+inge1a	// Warming hands next to fire...
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.2
+		tactical 1.0
+		aggression 1.0
+		alertness 600
+		inner_detection_radius 150
+		hearing_scale 0.7
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		takeweapon all
+		trigger inge1a go1	
+	}
+	
+	trigger go1
+	{
+		walktomarker i1aspot1
+		facetargetangles i1aspot1
+		walktomarker i1aspot2
+		facetargetangles i1aspot2
+		walktomarker i1aspot3
+		facetargetangles i1aspot3
+		trigger inge1a go1
+	}
+
+//--------CONVERSATION---------
+	trigger talk1
+	{
+		accum 3 abort_if_equal 1
+		playsound hilda_just_a_minute
+		wait 1700
+	}
+
+//------------END--------------
+	trigger hide	// To do
+	{
+		accum 3 abort_if_greater_than 1
+		playsound v2_inge_please_dont
+		runtomarker i1aspot1
+		facetargetangles i1aspot1		
+		trigger inge1a anim
+	}
+
+	trigger anim
+	{
+		playanim dont_kill_me both forever player 
+	}
+
+	trigger sound1	// THIS IS RESPONSE TO GENERAL ASKING FOR HER...
+	{
+		accum 3 abort_if_equal 1
+		playsound hilda_just_a_minute
+	}
+
+	trigger surprise
+	{
+		trigger inge1 hide
+	}
+
+	trigger go2
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	sight player
+	{
+		accum 3 set 1
+		clearanim
+		playsound inge_wimp1
+		runtomarker i1aspot1
+		facetargetangles i1aspot1
+		runtomarker i1aspot1
+		trigger inge1a anim		
+	}
+
+	statechange relaxed alert
+	{
+		trigger inge1a anim
+	}
+
+	statechange alert combat
+	{
+		trigger inge1a anim	
+	}
+
+	bulletimpact
+	{
+		accum 3 set 1	
+		trigger inge1a anim	
+	}
+
+	inspectsoundstart
+	{
+		trigger inge1a anim
+	}
+
+	inspectsoundend
+	{
+		accum 3 set 1
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death player
+	{
+		achievement_warcrime
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+}
+
+officer1	// Upstairts in first area. Target.
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 768
+		hearing_scale 0.8
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 7
+		accum 0 bitreset 8
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		wait 5
+		takeweapon all	
+		trigger officer1 go2
+	}
+	
+	trigger go1
+	{
+		walktomarker 01spot1
+		facetargetangles 01spot1
+		wait 2000
+		playanim scratching_chest both
+		walktomarker 01spot2
+		walktomarker 01spot3
+		facetargetangles 01spot3
+		wait 2000
+		walktomarker 01spot4 nostop
+		walktomarker 01spot5 nostop
+		walktomarker 01spot6
+		wait 1000
+		playanim butt_scratch_1h both
+		wait 1000
+		trigger officer1 go1		
+	}
+
+	trigger go2
+	{
+		accum 3 abort_if_equal 1
+		walktomarker 01spot1
+		facetargetangles 01spot1
+		trigger officer1 easy_mmm
+	}
+
+	trigger easy_mmm
+	{
+		accum 3 abort_if_equal 1	// should not play
+		wait 3000
+		playsound officer1_mmm1 
+		wait 4000
+		playsound officer1_mmm2 
+		trigger officer1 easy_mmm
+	}
+
+	trigger mmm1
+	{
+		accum 3 abort_if_equal 1
+		playsound officer1_mmm1 
+	}
+
+	trigger mmm2
+	{
+		accum 3 abort_if_equal 1
+		playsound officer1_mmm2 
+	}
+
+	trigger mmm3
+	{
+		playsound officer1_mmm3 	
+	}
+
+	trigger talk_with_inge
+	{
+		accum 3 abort_if_equal 1
+		trigger checker1 start_talk_inge
+	}
+	
+	
+// This is the mmm sound loop when standing...
+	trigger hide1
+	{
+		accum 1 abort_if_greater_than 1
+		accum 1 inc 1
+		giveweaponfull weapon_luger
+		runtomarker 01_hide1
+		facetargetangles 01_hide1
+		movetype crouch
+		wait 20000 0 
+	}
+
+
+//-----------CONVERSATION---------
+	trigger talk1
+	{
+		accum 3 abort_if_equal 1
+		accum 0 abort_if_bitset 8
+		accum 0 abort_if_bitset 20
+		accum 0 abort_if_bitset 25
+		accum 0 bitset 7	// says talk has begun
+		accum 3 abort_if_equal 1
+		playsound hoch_come_my_dear
+		wait 4100
+		trigger inge1a talk1
+		wait 5
+		trigger officer1 easy_mmm
+	}
+
+	trigger talk2
+	{
+	}
+
+//--------------END---------------
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 3 set 1
+		trigger nazi1 help_officer1
+		playsound officer1_enemysight
+		clearanim
+		resetscript
+		trigger officer1 give_weapon
+	}
+
+	trigger give_weapon
+	{
+		accum 0 abort_if_bitset 25
+		accum 0 bitset 25
+		giveweaponfull weapon_luger		
+	}
+
+	inspectsoundstart
+	{
+		giveweaponfull weapon_luger
+		accum 3 set 1
+		accum 0 bitset 9
+		accum 0 abort_if_bitset 8
+		accum 1 abort_if_greater_than 1
+		accum 1 inc 1
+		wait 5
+		resetscript
+		playsound officer1_speak	//print What's going on down there...
+		trigger officer1 hide1
+	}
+
+	bulletimpact
+	{
+		accum 3 set 1
+		statetype alert
+		wait 500 player
+		trigger officer1 give_weapon
+	}
+
+	trigger inspectsound2
+	{
+		accum 0 abort_if_less_than 2
+		resetscript
+		wait 2000
+		giveweaponfull weapon_luger
+		runtocast player
+		accum 0 set 0 					
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		wait 2000
+		wait 2000
+		runtocast nazi5
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		objectivemet 1
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi4	// dr strangelove
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 100
+		alertness 400
+		reaction_time 0.9
+		hearing_scale 0.8
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		takeweapon all	
+	}
+	
+	trigger go1
+	{
+		walktomarker n4spot1
+		facetargetangles n4spot1
+		playanim device both
+		wait 4000
+		walktomarker n4spot2
+		facetargetangles n4spot2
+		wait 4000
+		walktomarker n4spot3
+		facetargetangles n4spot3
+		playanim pointing both
+		wait 4000
+		trigger nazi4 go1
+	}
+
+	trigger go1a
+	{
+		walktomarker n4spot1
+		facetargetangles n4spot1
+		playanim device both
+		wait 5000
+		walktomarker n4spot3
+		facetargetangles n4spot3
+		playanim pointing both
+		wait 3000
+		trigger nazi4 go1a
+	}
+
+	trigger go2	// What drew wanted
+	{
+		walktomarker n4spot1
+		facetargetangles n4spot1
+		wait 2000
+		trigger nazi4 choose_anim
+	}
+
+
+	trigger choose_anim
+	{
+		accum 3 abort_if_equal 1
+		accum 1 random 3
+		wait 5
+		trigger nazi4 talk1
+		wait 5
+		trigger nazi4 talk2
+		wait 5
+		trigger nazi4 talk3				
+	}
+
+	trigger talk1_offset
+	{
+		accum 0 abort_if_not_bitset 10
+		trigger nazi4 choose_anim
+	}
+
+	trigger talk1
+	{
+		accum 3 abort_if_equal 1
+		accum 1 abort_if_not_equal 0
+		resetscript
+		trigger nazi4 talk1_offset
+		accum 0 abort_if_bitset 10
+		accum 0 bitset 10
+		accum 0 bitreset 11
+		accum 0 bitreset 12
+		trigger checker1 nazi4_anim_and_sound1
+	}
+
+	trigger talk2_offset
+	{
+		accum 3 abort_if_equal 1
+		accum 0 abort_if_not_bitset 11
+		trigger nazi4 choose_anim
+	}
+
+	trigger talk2
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		trigger nazi4 talk2_offset
+		accum 0 abort_if_bitset 11
+		accum 0 bitset 11
+		accum 0 bitreset 10
+		accum 0 bitreset 12
+		trigger checker1 nazi4_anim_and_sound2
+	}
+
+	trigger talk3_offset
+	{
+		accum 3 abort_if_equal 1
+		accum 0 abort_if_not_bitset 12
+		trigger nazi4 choose_anim
+	}
+
+	trigger talk3
+	{
+		accum 3 abort_if_equal 1
+		accum 1 abort_if_not_equal 2
+		resetscript
+		trigger nazi4 talk3_offset
+		accum 0 abort_if_bitset 12
+		accum 0 bitset 12
+		accum 0 bitreset 10
+		accum 0 bitreset 11
+		trigger checker1 nazi4_anim_and_sound3
+	}
+
+	trigger anim_loop1
+	{
+		playanim clean_parts_1 both
+	}
+
+	trigger anim_loop2
+	{
+		playanim clean_parts_2 both
+	}
+
+	trigger anim_loop1
+	{
+		playanim clean_parts_2 both
+	}
+
+	trigger walk_down_street
+	{
+		runtomarker n4_street1
+		runtomarker n4_street2
+		alertentity drz_open_door
+		walktomarker n4_street3
+		walktomarker n4_street4
+		walktomarker n4_street5
+		walktomarker n4_street6
+		walktomarker n4_street7
+		walktomarker n4_street8
+		walktomarker n4_street9
+		walktomarker n4_street10
+		walktomarker n4_street11
+		trigger officer1 marchloop1
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n4_street7	
+		walktomarker n4_street6	
+		walktomarker n4_street5
+		walktomarker n4_street4
+		walktomarker n4_street5
+		walktomarker n4_street6
+		walktomarker n4_street7	
+		trigger nazi4 marchloop1
+	}
+
+	trigger sound1
+	{
+		accum 3 abort_if_equal 1
+		alertentity vincent_explosion
+		wait 500
+		playsound prof_another_failure
+		wait 4900
+	}
+
+	trigger sound2
+	{
+		accum 3 abort_if_equal 1
+		playsound prof_hmm
+		wait 3600
+	}
+
+	trigger sound3
+	{
+		accum 3 abort_if_equal 1
+		playsound prof_yes_yes
+		wait 2500
+	}
+
+	trigger play_anim
+	{
+		accum 3 abort_if_equal 1
+		wait 2000
+		playanim clean_parts_1 both
+		accum 3 abort_if_equal 1
+		wait 3000
+		playanim clean_parts_2 both
+		trigger nazi4 play_anim
+	}
+
+	trigger oustside_noise
+	{
+	}
+
+	trigger go2
+	{
+
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 3 set 1
+		resetscript
+		clearanim
+		giveweaponfull weapon_luger
+		playsound prof_who_are_you
+		wait 500 0 player
+	}
+
+	statechange relaxed query
+	{
+		accum 3 set 1
+		deny
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+		statetype alert
+		resetscript
+		wait 500 0 player		
+	}
+
+	bulletimpact
+	{
+		accum 3 set 1
+		deny
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+		statetype alert
+		resetscript
+		wait 500 0 player
+	}
+
+	inspectsoundstart
+	{
+		accum 3 set 1
+		clearanim
+		giveweaponfull weapon_luger
+		statetype alert
+		resetscript
+	}
+
+	inspectsoundend
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		accum 4 abort_if_equal 1
+		accum 4 inc 1
+		walktomarker n4_street12
+		walktomarker n4_street13
+		walktomarker n4_street14
+		trigger alarm_nazi11 runto_alarm
+	}
+
+	inspectbodyend
+	{
+		clearanim
+	}
+
+	death
+	{
+		achievement_strangelove
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+sniper1	// SNIPER ON THE LONG NEAR MYSTIC SHOP
+{
+	attributes
+	{
+		aim_accuracy 0.7
+		tactical 1.0
+		aggression 1.0
+		camper 0.1
+		alertness 1240
+		inner_detection_radius 192
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		trigger nazi5 sniper1_alive_checkin	// THIS CHECKS TELLS NAZI 6 HE IS ALIVE
+		wait 5
+		giveweaponfull weapon_sniperscope
+		setammo ammo_792mm 999
+		trigger sniper1 go1	
+	}
+
+	trigger nazi5_alive_checkin	//THIS KEEPS TRACK OF NAZI IN STREET
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi5_dead_checkin
+	{
+		accum 0 bitset 5
+	}
+	
+	trigger go1
+	{
+		trigger checker1 sniper1_alive
+		giveweaponfull weapon_sniperscope
+		walktomarker sp1spot1
+		walktomarker sp1spot2
+		facetargetangles sp1spot2
+		trigger sniper1 choose_anim
+	}
+
+	trigger choose_anim
+	{
+		accum 5 random 3	// This is so sniper1 can choose randmoly between 5 animations..
+		wait 5
+		trigger sniper1 anim1
+		wait 5
+		trigger sniper1 anim2
+		wait 5
+		trigger sniper1 anim3
+		wait 5
+		trigger sniper1 anim4
+		wait 5
+		trigger sniper1 anim5
+	}
+
+	trigger anim1
+	{
+		accum 5 abort_if_not_equal 0
+		resetscript
+		attrib alertness 30
+		playsound cough2
+		playanim coughing_2h both
+		attrib alertness 1240
+		wait 10000
+		trigger sniper1 choose_anim
+	}
+
+	trigger anim2
+	{
+		accum 5 abort_if_not_equal 1
+		resetscript
+		attrib alertness 30
+		playanim crotch_grab_2h both
+		attrib alertness 1240
+		wait 13000
+		trigger sniper1 choose_anim
+	}
+
+	trigger anim3
+	{
+		accum 5 abort_if_not_equal 2
+		resetscript
+		attrib alertness 30
+		playanim scratching_chest both
+		attrib alertness 1240
+		wait 22000
+		trigger sniper1 choose_anim
+	}
+
+	trigger anim4
+	{
+		accum 5 abort_if_not_equal 3
+		resetscript
+		attrib alertness 30
+		playanim shivering_2h both
+		attrib alertness 1240
+		wait 17000
+		trigger sniper1 choose_anim
+	}
+
+	trigger anim5
+	{
+		accum 5 abort_if_not_equal 4
+		resetscript
+		attrib alertness 30
+		playanim clean_parts both
+		attrib alertness 1240
+		wait 18000
+		trigger sniper1 choose_anim
+	}
+
+	trigger go2
+	{
+	}
+
+	trigger nazi5_response
+	{
+		statetype alert
+		runtomarker sp1spot1
+		facetargetangles sp1spot1
+		wait forever 
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight	// wait need to script nazi 5 first...
+	{
+		trigger checker3 ballroom_checkin
+		accum 0 bitset 20
+		clearanim
+		runtomarker sp1spot1
+		facetargetangles sp1spot2
+		trigger nazi5 backup_sniper1
+		trigger nazi4 outside_noise	// To do ...
+		playsound MiscAlarm1
+		wait 15000	// sniper will wait awhile and then tell nazi5 to alert others...
+		accum 0 abort_if_bitset 5
+		playsound MiscGetHelp
+		trigger nazi5 nazi5_street_tell
+	}
+
+	bulletimpact
+	{
+		attrib alertness 1400
+	}
+
+	trigger defend1
+	{
+		clearanim
+		runtomarker sp1spot1
+		wait 1500
+		runtomarker sp1spot2
+		wait 1000 
+		trigger sniper1 defend1
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger nazi5 sniper1_dead_checkin	// THIS CHECKS TELLS NAZI 6 HE IS DEAD
+		trigger checker1 sniper1_dead
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+}
+
+nazi5	// this is guard near gate... WHO COMMUNICATES WITH SNIPER...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		alertness 1024
+		inner_detection_radius 192
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 2 set 0
+		trigger sniper1 nazi5_alive_checkin
+		trigger nazi5 go1	
+	}
+
+	trigger sniper1_alive_checkin	//THIS KEEPS TRACK OF THE SNIPER BEING ALIVE OR DEAD
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger sniper1_dead_checkin
+	{
+		accum 0 bitset 5
+	}
+	
+	trigger go1	// Done:)
+	{
+		walktomarker n5spot1
+		facetargetangles n5spot1
+		trigger nazi5 choose_anim
+	}
+
+	trigger choose_anim
+	{
+		accum 1 random 3
+		wait 5 
+		trigger nazi5 anim1
+		wait 5
+		trigger nazi5 anim2
+		wait 5
+		trigger nazi5 anim3
+	}
+
+	trigger anim1
+	{
+		accum 1 abort_if_not_equal 0
+		wait 5 
+		playanim scratching_chest both
+		wait 3000
+		trigger nazi5 choose_anim
+	}
+
+	trigger anim2
+	{
+		accum 1 abort_if_not_equal 1
+		wait 5 
+		playanim crotch_grab_2h both
+		wait 5000
+		trigger nazi5 choose_anim
+	}
+
+	trigger anim3
+	{
+		accum 1 abort_if_not_equal 2
+		wait 5 
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 1500
+		trigger nazi5 choose_anim
+	}
+
+	trigger go2	// Nazi5 will run to signal the alarm with this one...
+	{
+		clearanim
+		accum 0 abort_if_bitset 0 
+		resetscript 
+		wait 2000
+		runtomarker n5spot2 nostop
+		runtomarker n5spot3
+		trigger officer2 runto_alarm
+		
+
+	}
+
+	trigger backup_sniper1	// nazi5 will back up snniper1, if sniper1 sees bj...
+	{
+		statetype alert
+		clearanim
+		accum 0 bitset 0
+		wait 5
+		runtomarker back_sniper1 nostop
+		runtomarker back_sniper2 nostop
+		runtomarker back_sniper3 nostop
+		runtomarker back_sniper4
+		attrib aggression 1.0
+		attrib camper 1.0
+		attrib aim_accuracy 0.9
+		wait 5		
+	}
+
+	trigger backup2_sniper1
+	{
+		clearanim
+		trigger sniper1 nazi5_response	//todo
+		runtomarker back_sniper1 nostop
+		runtomarker back_sniper2 nostop
+		
+	}
+
+	trigger nazi5_street_tell	// to do need to add to script...
+	{
+		accum 0 abort_if_bitset 5
+		clearanim
+		playsound corp_sir
+		runtomarker nazi5_street_tell1 nostop
+		runtomarker nazi5_street_tell2 nostop
+		runtomarker nazi5_street_tell3
+		facetargetangles nazi5_street_tell3
+		playsound guard1_alarm
+		alertentity nazi8
+		wait 5 player
+		trigger nazi8 runto_alarm
+		
+	}
+
+	trigger response_sniper_alive
+	{
+		trigger nazi5 backup2_sniper1
+	}
+
+	trigger response_sniper_dead
+	{
+		trigger nazi5 nazi5_street_tell
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		resetscript
+		//trigger nazi5 go2	// N5 will check and se if sniper is stilla live..
+		trigger checker1 check_sniper1
+		trigger nazi5 nazi5_street_tell
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	bulletimpact
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		trigger sniper1 nazi5_dead_checkin
+		runtocast player
+	}
+}
+
+inge1	// Warming hands next to fire...
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.2
+		tactical 1.0
+		aggression 1.0
+		alertness 1024
+		inner_detection_radius 192
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+		accum 5 set 0
+		trigger inge1 go1	
+	}
+	
+	trigger go1
+	{
+		takeweapon all
+		walktomarker i1spot1
+		facetargetangles i1spot1
+		wait 2000
+		walktomarker i1spot2
+		facetargetangles i1spot2
+		wait 2000
+		walktomarker i1spot3
+		facetargetangles i1spot3
+		trigger inge1 go1
+	}
+
+	trigger hide	// To do
+	{
+		accum 5 abort_if_equal 1
+		accum 5 set 1
+		runtomarker i1spot3 nostop
+		runtomarker i1_hide1 nostop
+		runtomarker i1_hide2
+		movetype crouch
+		facetargetangles i1_hide2
+		accum 0 abort_if_bitset 1
+		trigger inge1 anim		
+	}
+
+	trigger anim	// Loop with anim and time 
+	{
+		accum 0 bitset 1
+		playanim dont_kill_me both player forever
+		trigger inge1 anim
+	}
+
+	trigger surprise
+	{
+		trigger inge1 hide
+	}
+
+	trigger go2
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	sight player
+	{
+		trigger inge1 hide	
+	}
+
+	enemysight
+	{
+		trigger ibge1 hide
+	}
+
+	statechange relaxed alert
+	{
+		trigger inge1 anim
+	}
+
+	statechange alert combat
+	{
+		trigger inge1 anim
+	}	
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death player
+	{
+	}
+
+	death
+	{
+	achievement_warcrime
+	}
+}
+
+nazi6	// 2nd house, in room looking at food...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		alertness 1024
+		inner_detection_radius 50
+		aim_accuracy 1.0
+	}
+
+	spawn
+	{
+		takeweapon all
+		accum 0 bitset 10 
+		giveweaponfull weapon_luger
+		accum 1 set 0
+		accum 2 set 0 
+		accum 3 set 0
+		accum 4 set 0
+		trigger nazi7 nazi6_alive_checkin
+	}
+
+	trigger nazi7_alive_checkin
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi7_dead_checkin
+	{
+		accum 3 set 1
+		accum 0 bitset 5
+		statetype alert
+		giveweaponfull weapon_luger
+		wait 500 player
+	}
+	
+	trigger go1
+	{
+		takeweapon all
+	}
+
+	trigger go2
+	{
+
+	}
+
+	trigger no_talk	// THIS IS RESPONSE IF NAZI 5 SEES PLAYER
+	{
+		statetype alert
+		wait 500 player
+	}
+
+//------conversation----------
+	trigger talk1_respond	// speaking with nazi7 No longer used now useing Gscript technique
+	{
+		trigger checker1 can_nazi6_talk
+	}
+
+	trigger talk1
+	{
+		wait 500
+		trigger checker1 hotel_conversation
+	}
+
+	trigger talk2
+	{	
+	}
+
+	trigger talk3
+	{
+	}	
+
+//----------END----------
+	trigger conversation1
+	{
+		accum 3 abort_if_equal 1
+		playsound g1_tasty_sb
+	}
+
+	trigger conversation2
+	{
+		accum 3 abort_if_equal 1
+		playsound v2_g1_haha
+	}
+
+	trigger conversation3
+	{
+		accum 3 abort_if_equal 1
+		playsound v2_g1_no_ze_officers
+		wait 2000
+		trigger nazi7 walk
+	}
+
+	trigger walk					
+	{
+		walktomarker n6spot2
+		facetargetangles n6spot2
+		wait forever nazi7 0
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	statechange relaxed query
+	{
+		accum 3 set 1
+		trigger nazi6 giveweapon		
+	}
+
+	statechange query alert
+	{
+		accum 3 set 1
+		trigger nazi6 giveweapon
+	}
+
+	statechange relaxed alert
+	{
+		accum 3 set 1
+		trigger nazi6 giveweapon
+	}
+
+	enemysight
+	{
+		accum 3 set 1
+		trigger checker1 sight_check_in
+		accum 0 bitset 20
+		clearanim
+		resetscript
+		playsound MiscKillHim
+		trigger nazi6 giveweapon
+		avoid
+	}
+
+	trigger enable_bulletimpact
+	{
+		accum 0 bitreset 10
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_bitset 10
+		accum 3 set 1
+		deny
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+		statetype alert
+		resetscript
+		wait 500 0 player
+	}
+
+	trigger giveweapon
+	{
+		statetype alert
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger	
+	}
+
+	inspectsoundstart
+	{
+		accum 3 set 1
+		playsound blank
+		statetype alert
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 3 set 1
+		statetype alert
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger nazi7 nazi6_dead_checkin
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi7	// 2nd house, in room looking at food... and looking at inga
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 50
+		alertness 1024
+		aim_accuracy 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitset 10 
+		giveweaponfull weapon_luger
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		trigger nazi6 nazi7_alive_checkin
+		trigger nazi7 go1	
+	}
+
+	trigger nazi6_alive_checkin
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi6_dead_checkin
+	{
+		accum 3 set 1
+		accum 0 bitset 5
+		statetype alert
+		giveweaponfull weapon_luger
+		wait 500 player
+	}
+	
+	trigger go1
+	{
+		takeweapon mp40
+		wait 5
+		wait 4000
+	}
+
+	trigger go2
+	{
+		walktomarker n7spot1 nostop
+		walktomarker n7spot2 nostop
+		walktomarker n7spot3
+		facetargetangles n7spot3
+	}
+
+//-----CONVERSATION--------
+	trigger talk1
+	{
+	}
+
+	trigger talk2
+	{
+	}
+
+//-------END--------
+	trigger conversation1
+	{
+		accum 3 abort_if_equal 1
+		playsound v2_g2_not_bad 
+	}
+
+	trigger conversation2
+	{
+		accum 3 abort_if_equal 1
+		playsound v2_g2_so_did_you_find
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 3 set 1
+		clearanim
+		resetscript
+		giveweaponfull weapon_luger
+		playsound MiscStopHim
+		avoid
+	}
+
+	trigger walk					
+	{
+		walktomarker n7spot2 nostop
+		walktomarker n7spot3 nostop
+		facetargetangles n7spot3
+		wait forever 0
+	}
+
+	statechange relaxed query
+	{
+		accum 3 set 1
+		trigger nazi6 giveweapon		
+	}
+
+	trigger give_weapon
+	{
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+	}
+
+	trigger enable_bulletimpact
+	{
+		accum 0 bitreset 10 
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_bitset 10
+		accum 3 set 1
+		deny
+		clearanim
+		playsound blank
+		giveweaponfull weapon_luger
+		statetype alert
+		resetscript
+		wait 500 0 player
+	}
+
+	inspectsoundstart
+	{
+		accum 3 set 1
+		resetscript
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 3 set 1
+		statetype alert
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger nazi6 nazi7_dead_checkin
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+officer2	// 2nd house, at top level listening to music. TARGET
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 768
+		hearing_scale 0.4
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		takeweapon all
+		trigger officer2 go1
+			
+	}
+	
+	trigger go1
+	{
+		trigger checker1 officer2_alive
+		playsound dum_dum4
+		walktomarker 02spot1
+		facetargetangles 02spot1
+		wait 2000 0 
+		wait forever 0 
+	}
+
+	trigger go2
+	{
+
+	}
+
+	trigger runto_alarm
+	{
+		clearanim
+		runtomarker 02spot2
+		runtomarker 02spot3
+		facetargetangles 02spot3
+		runtomarker 02spot4
+		alertentity nazi8
+		wait 5
+		playsound guard1_alarm
+		trigger nazi8 runto_alarm	// This tells nazi8 to tell others to turn alarm on...
+		trigger officier2 camp
+	}
+
+	trigger destroyed_player_response
+	{
+		accum 0 abort_if_not_equal 1 
+		resetscript
+		wait 2000
+		trigger officer2 runto_alarm		
+	}
+
+	trigger camp
+	{
+		clearanim
+		giveweaponfull weapon_luger
+		runtomarker 02spot5
+		facetargetangles 02spot5
+		wait forever 0 
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		trigger checker1 sight_check_in
+		accum 0 bitset 20
+		playsound blank
+		playsound officer2_alarm
+		giveweaponfull weapon_luger
+		trigger officer2 runto_alarm
+	}
+
+	inspectsoundstart
+	{
+		accum 0 inc 1
+		trigger officer1 inspectsound2
+		accum 0 abort_if_greater_than 2
+		playsound blank
+		playsound officer2_whats_happening_down_there
+		resetscript
+		trigger officer2 camp2
+	}
+
+	trigger camp2
+	{
+		runtomarker 02_camp2
+		facetargetangles 02_camp2
+		movetype crouch
+		wait forever 0
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		objectivemet 2
+		
+		
+		trigger checker1 objective_complete
+		trigger checker1 officer2_dead
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi8	// 3rd house, comes outside and then mumbles something on porch..
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0	
+		inner_detection_radius 192
+		alertness 450
+		hearing_scale 2.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		trigger nazi8 go1	
+	}
+	
+	trigger go1
+	{
+		walktomarker n8spot1
+		wait 3000
+		walktomarker n8spot2
+		facetargetangles n8spot2
+		walktomarker n8spot3
+		facetargetangles n8spot3
+		wait 8000
+		playanim crotch_grab_2h both
+		walktomarker n8spot2
+		walktomarker n8spot1
+		trigger nazi8 go2
+	}
+
+	trigger go2
+	{
+		walktomarker n8spot2
+		walktomarker n8spot3
+		facetargetangles n8spot3
+		wait 4000
+		walktomarker n8spot2
+		walktomarker n8spot1
+		trigger nazi8 go1
+	}
+
+	trigger runto_alarm				
+	{
+		statetype alert
+		runtomarker n8spot3
+		alertentity alarm_nazi11
+		wait 5
+		playsound guard1_alarm
+		trigger alarm_nazi11 runto_alarm	// This tell nazi11 to tell others to set the alarm...
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		trigger checker1 sight_check_in
+		accum 0 bitset 20
+		playsound blank
+		//playsound to do
+		playsound MiscAlarm1
+		alertentity alarm_nazi11
+		wait 5
+		trigger alarm_nazi8 runto_alarm		// This tell nazi11 to tell others to set the alarm...
+		avoid
+	}
+
+	inspectsoundstart
+	{
+		accum 4 abort_if_greater_than 2
+		accum 4 inc 1
+		trigger nazi8 runto_alarm
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 4 abort_if_greater_than 2
+		accum 4 inc 1	
+		trigger nazi8 runto_alarm
+		deny	
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 4 abort_if_greater_than 2
+		accum 4 inc 1
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+officer3	// 3rd house with crazy nazi8 IS TARGET
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 75
+		alertness 300
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		takeweapon all
+		trigger officer3 go1	
+	}
+	
+	trigger go1
+	{
+		playsound officer3_random_mumble
+		walktomarker 03spot1
+		facetargetangles 03spot1
+		wait 2000
+		walktomarker 03spot2
+		facetargetangles 03spot2
+		//playsound officer3_mmm2 
+		wait 2000
+		playsound officer3_random_mumble
+		walktomarker 03spot3
+		facetargetangles 03spot3
+		wait 2000
+		walktomarker 03spot2
+		facetargetangles 03spot2
+		wait 2000
+		trigger officer3 go1
+	}
+
+	trigger go2
+	{
+
+	}
+		
+	trigger grab_gun
+	{
+		runtomarker 03_grab_gun
+		alertentity grab_gun3
+		giveweaponfull weapon_luger
+		
+	}
+
+	trigger runto_alarm 
+	{
+		runtomarker 03_alarmed1
+		runtomarker 03_alarmed2
+		runtomarker 03_alarmed3
+		alertentity alarm_nazi11
+		wait 5
+		playsound guard1_alarm
+		trigger alarm_nazi11 runto_alarm
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		playsound blank
+		playsound officer3_sight
+		resetscript
+		avoid
+		giveweaponfull weapon_luger
+		trigger officer3 runto_alarm
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1 
+		playsound blank
+		playsound officer3_sound
+		giveweaponfull weapon_luger
+	}
+	
+	bulletimpact
+	{
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1 
+		clearanim
+		playsound blank	
+		giveweaponfull weapon_luger	
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		objectivemet 3
+		
+		
+		trigger checker1 objective_complete
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+officer4	// 4th house, looking at moon
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		hearing_scale 0.1
+		inner_detection_radius 192
+		attrib alertness 100
+		fov 10
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		takeweapon all
+		trigger checker1 alarm_on_response1
+	}
+	
+	trigger go1
+	{
+		takeweapon mp40
+		walktomarker 04spot1
+		walktomarker 04spot2
+		walktomarker 04spot3
+		facetargetangles 04spot2
+		wait 3000
+		playanim coughing_1h both
+		trigger officer4 go2
+	}
+
+	trigger go2
+	{
+		accum 3 abort_if_equal 1
+		attrib alertness 0
+		noavoid
+		walktomarker 04spot1
+		walktomarker 04spot2
+		walktomarker 04spot3
+		facetargetangles 04spot2
+		accum 3 abort_if_equal 1
+		playsound officer4_breath_taking
+		wait 2000
+		accum 3 abort_if_equal 1
+		playsound officer4_where_is_latour
+		attrib alertness 0
+		trigger 04_help1 whine_talk
+		wait 5
+		trigger officer4 go3
+	}
+
+	trigger go3	// This has officer go to library after requesting whine...
+	{
+		accum 3 abort_if_equal 1
+		wait 700
+		playsound officer4_see_that_you_do 
+		attrib fov 190
+		accum 3 abort_if_equal 1
+		walktomarker 04spot1 
+		walktomarker 04_lib1 nostop
+		walktomarker 04_lib2 nostop
+		walktomarker 04_lib3
+		facetargetangles 04_lib3
+		attrib alertness 400
+		wait 6000 0
+		trigger officer4 anim_loop1
+	}
+
+	trigger anim_loop1
+	{
+		accum 3 abort_if_equal 1
+		playanim butt_scratch_1h torso
+		walktomarker 04_lib2
+		facetargetangles 04_lib3
+		wait 500 0 
+		accum 3 abort_if_equal 1
+		walktomarker 04_lib3
+		facetargetangles 04_lib3
+		wait 10000 0
+		trigger officer4 anim_loop1
+	}
+
+	trigger moonlight
+	{
+		accum 3 abort_if_equal 1
+		runtomarker 04spot3
+		facetargetangles 04spot3
+		wait 1000
+		accum 3 abort_if_equal 1
+		playsound officer4_breath_taking
+		wait 2000
+		accum 3 abort_if_equal 1
+		playsound officer4_where_is_latour
+		wait 2000
+		trigger 04_help1 wine_talk		
+	}
+
+	trigger runto_alarm //to do 
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		runtomarker 04_alarm1 nostop
+		runtomarker 04_alarm2 nostop
+		runtomarker 04_alarm3 nostop
+		runtomarker 04_alarm4 nostop
+		runtomarker 04_alarm5
+		alertentity alarm_nazi12
+		wait 5
+		trigger alarm_nazi12 runto_alarm 
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 3 set 1
+		accum 0 bitset 0
+		giveweaponfull weapon_luger
+		wait 2000
+		trigger officer4 runto_alarm
+
+	}
+
+	inspectsoundstart
+	{
+		accum 3 set 1
+		resetscript
+		wait 2000
+		runtomarker 04spot3
+		wait 2000
+		wait 2000
+		alertentity alarm_nazi12
+		wait 5
+		trigger alarm_nazi12 runto_alarm
+	}
+
+	statechange relaxed alert
+	{
+		accum 3 set 1
+		giveweaponfull weapon_luger
+	}
+
+	bulletimpact
+	{
+		accum 3 set 1
+		giveweaponfull weapon_luger
+	}
+
+	inspectsoundend
+	{
+		giveweaponfull weapon_luger
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		objectivemet 4
+		
+		
+		trigger checker1 objective_complete
+		trigger 04_help1 runto_alarm
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		attrib alertness 600
+		attrib hearing_scale 1.0
+		giveweaponfull weapon_luger
+		runtocast player
+	}
+}
+
+04_help1
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		hearing_scale 0.2
+		inner_detection_radius 192
+		alertness 1024
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 2 set 0
+		accum 3 set 0
+	}
+	
+	trigger go1
+	{
+	}
+
+	trigger wine_talk
+	{
+		accum 3 abort_if_equal 1
+		wait 5500
+		playsound 04_help1_respond
+		wait 2000
+		accum 3 abort_if_equal 1
+		trigger officer4 go3	// This sends officer to library...
+		trigger 04_help1 cellar
+	}
+
+	trigger cellar
+	{
+		runtomarker 04_alarm1 nostop
+		runtomarker 04_alarm2 nostop
+		alertentity kill_kemph
+		runtomarker 04_alarm3
+	}
+
+	trigger officer4_dead
+	{
+		accum 3 set 1
+		trigger 04_help1 runto_alarm
+	}
+
+	trigger runto_alarm //to do 
+	{
+		wait 1000
+		alertentity alarm_nazi11
+		wait 5
+		runtomarker 04_alarm1 nostop
+		runtomarker 04_alarm2 nostop
+		alertentity alarm_nazi11
+		alertentity alarm_nazi12
+		wait 5
+		trigger alarm_nazi12 runto_alarm 
+	}
+
+	trigger dumb1
+	{
+		attrib hearing_scale 0.0
+		attrib alertness 0
+	}
+
+	trigger not_so_dumb
+	{
+		attrib hearing_scale 0.1
+		attrib alertness 500		
+	}
+
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 3 set 1
+		trigger officer4 runto_alarm
+	}
+
+	inspectsoundstart
+	{
+		accum 3 set 1
+		resetscript
+		wait 2000
+		runtomarker 04spot3
+		wait 2000
+		wait 2000
+		alertentity alarm_nazi12
+		wait 5
+		trigger alarm_nazi12 runto_alarm
+	}
+		
+	bulletimpact
+	{
+		accum 3 set 1
+	}
+	
+	statechange relaxed alert
+	{
+		accum 3 set 1
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 3 set 1
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+}
+
+
+officer5	// to do need to put in markers		// 5th house last 
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 500
+		reaction_time 0.2
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 20
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		trigger officer5 go1	
+	}
+	
+	trigger go1
+	{
+		takeweapon mp40
+		walktomarker 05spot1
+		facetargetangles 05spot1
+		accum 4 abort_if_equal 1
+		playanim looking_over_table both
+		trigger officer5 anim
+	}
+
+	trigger anim
+	{
+		accum 4 abort_if_equal 1
+		facetargetangles 05spot1
+		playanim looking_over_table both
+		wait 2000
+		trigger officer5 anim
+	}
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1	
+		accum 3 abort_if_greater_than 0
+		accum 3 inc 1
+		playsound v2_Gen_izzat_you
+		wait 2000
+		trigger officer5 anim
+	}
+
+	trigger go2
+	{
+
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		clearanim
+		playsound v2_Gen5_alarm_alarm
+		wait 500 0 player
+		trigger officer5 give_weapon
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+		clearanim
+		resetscript
+		giveweaponfull weapon_luger	
+	}
+
+	trigger give_weapon
+	{
+		giveweaponfull weapon_luger
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+		clearanim
+		resetscript
+		wait 500 0 player
+		trigger officer5 give_weapon		
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		clearanim
+		resetscript
+		giveweaponfull weapon_luger
+	}
+
+	inspectsoundend
+	{
+		
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		objectivemet 5
+		
+		
+		trigger checker1 print_objectives
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+inge2	// Warming hands next to fire...
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.2
+		tactical 1.0
+		aggression 1.0
+		alertness 1024
+		inner_detection_radius 192
+	}
+
+	spawn
+	{
+		takeweapon all
+		trigger inge2 go1	
+	}
+	
+	trigger go1
+	{
+		takeweapon mp40
+		walktomarker i2spot1
+		facetargetangles i2spot1
+		wait 2000
+		walktomarker i2spot2
+		facetargetangles i2spot2
+		wait 2000
+		walktomarker i2spot3
+		facetargetangles i2spot3
+		trigger inge2 go1
+	}
+
+	trigger anim
+	{
+		playanim dont_kill_me both forever player
+	}
+	trigger surprise
+	{
+	}
+
+	trigger go2
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	sight player	// newly added
+	{
+		trigger inge2 hide
+	}
+
+	enemysight
+	{
+		playsound v2_Gret_dont_kill_me
+		trigger inge2 runaway
+	}
+
+	trigger hide
+	{
+		playsound v2_inge_please_dont
+		runtomarker i2spot1 nostop
+		facetargetangles i2spot1
+		movetype crouch 
+		trigger inge2 anim
+	}
+
+	statechange relaxed alert
+	{
+		trigger inge1 anim
+	}
+
+	statechange alert combat
+	{
+		trigger inge1 anim
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death player
+	{
+	achievement_warcrime
+	}
+}
+
+
+nazi9	// Underground, this nazi is looking at whine glasses...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 1024
+		hearing_scale 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		trigger checker1 alarm_on_response2	
+	}
+
+	trigger enable_hearing
+	{
+		attrib alertness 1.0
+		attrib hearing_scale 1024
+	}
+
+	trigger wine_talk
+	{
+		accum 4 abort_if_equal 1
+		playsound nazi9_can't_find_wine	//	print He said 38 "latour" was down here?
+		wait 3000		
+	}
+	
+	trigger go1
+	{
+		accum 4 abort_if_equal 1
+		walktomarker n9spot1
+		facetargetangles n9spot1
+		accum 4 abort_if_equal 1
+		playsound nazi9_can't_find_wine	//	print He said 38 "latour" was down here?
+		wait 7000
+		facetargetangles n9spot1
+		accum 4 abort_if_equal 1
+		playsound nazi9_hopeless 	//	print This is hopeless, I'm never going to find this whine
+		wait 2000
+		walktomarker n9spot2
+		walktomarker n9spot3
+		walktomarker n9spot4
+		facetargetangles n9spot4
+		movetype crouch
+		accum 4 abort_if_equal 1
+		playsound nazi9_frustrated 
+		wait 2000
+		trigger nazi9 go2
+	}
+
+	trigger go2
+	{
+		walktomarker n9spot3
+		walktomarker n9spot2
+		walktomarker n9spot1
+		facetargetangles n9spot1
+		movetype crouch
+		wait 2000
+		wait 2000
+		wait 2000				
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		avoid
+	}
+		
+	bulletimpact
+	{
+		accum 4 set 1 
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi10	// This is drunk hanz in underground...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 100
+		alertness 100
+		hearing_scale 0.3
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 0 bitreset 20
+		accum 1 set 0
+		accum 2 set 0
+		trigger nazi11_offduty nazi10_alive_check_in
+		trigger nazi10 go1	
+	}
+	
+	trigger go1
+	{
+		takeweapon mp40
+		walktomarker n10spot1
+		walktomarker n10spot2
+		playanim drunk both
+		wait 2000
+		playsound villdrunk1	// Yaaah yaah 
+		wait 2000
+		playanim drunk both
+		trigger nazi10 go1	
+	}
+
+	trigger go2
+	{
+
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker1 sight_check_in 
+		avoid
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+
+	bulletimpact
+	{
+		clearanim
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+		clearanim
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger nazi11_offduty nazi10_dead_check_in
+		trigger checker1 nazi10_dead
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+alarm_nazi11	// This is alarm nazi11 he is closest to gate...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 768
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 1 set 0
+		accum 2 set 0
+		trigger alarm_nazi11 go1	
+	}
+	
+	trigger go1
+	{
+		walktomarker an11spot1
+		wait 1000
+		walktomarker an11spot2
+		wait 2000
+		walktomarker an11spot3
+		wait 2000
+		walktomarker an11spot4
+		wait 2000
+		trigger alarm_nazi11 go1
+	}
+
+	trigger go2
+	{
+
+	}
+
+	trigger get_into_position 	// nazi 11 gets into position to enter house...
+	{
+		runtomarker n11_position1 nostop
+		runtomarker n11_position2 nostop
+		runtomarker n11_position3 nostop
+		runtomarker n11_position4
+		wait forever 0 
+	}
+
+	trigger enter_house
+	{
+		wait 1000
+		walktomarker n11_enterhouse1
+		walktomarker n11_enterhouse2
+		walktomarker n11_enterhouse3
+		facetargetangles n11_enterhouse3
+		wait 2000
+	}
+
+	trigger runto_alarm
+	{
+		playsound MiscAlarm1	
+		statetype alert
+		alertentity alarm_nazi12
+		trigger alarm_nazi12 runto_alarm
+		avoid
+		
+	}
+
+	trigger dumb
+	{
+		attrib alertness 0
+	}
+
+	trigger not_so_dumb
+	{
+		attrib alertness 500
+	} 
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		playsound MiscAlarm1
+		alertentity alarm_nazi12
+		trigger alarm_nazi12 runto_alarm
+		avoid
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+		alertentity alarm_nazi12
+		trigger alarm_nazi12 runto_alarm
+		avoid
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity alarm_nazi12
+		trigger alarm_nazi12 runto_alarm
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi11_offduty	// This guy will trigger in if the user makes it to this house...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 600
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 0 bitreset 5
+		accum 0 bitreset 20
+		accum 1 set 0
+		accum 2 set 0
+		trigger checker1 alarm_on_response3
+		trigger nazi11_offduty enter_house	
+	}
+
+	trigger nazi10_alive_check_in
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi10_dead_check_in
+	{
+		accum 0 bitset 5
+	}
+	
+	trigger go1
+	{
+		walktomarker an11spot1
+		wait 1000
+		walktomarker an11spot2
+		wait 2000
+		walktomarker an11spot3
+		wait 2000
+		walktomarker an11spot4
+		wait 2000
+		trigger alarm_nazi11 go1
+	}
+
+	trigger go2
+	{
+
+	}
+
+	trigger get_into_position 	// nazi 11 gets into position to enter house...
+	{
+		runtomarker n11_position1 nostop
+		runtomarker n11_position2 nostop
+		runtomarker n11_position3 nostop
+		runtomarker n11_position4
+		wait forever 0 
+	}
+
+	trigger enter_house
+	{
+		playsound offduty_warm
+		wait 2000
+		walktomarker n11_enterhouse1
+		walktomarker n11_enterhouse2
+		walktomarker n11_enterhouse3
+		facetargetangles n11_enterhouse3
+		wait 2000
+		trigger nazi11_offduty choose2
+	}	
+
+	trigger nazi11_offduty_choose
+	{
+		accum 4 abort_if_equal 1
+		trigger checker1 nazi11_offduty_choose
+	}
+
+	trigger choose1
+	{
+		accum 4 abort_if_equal 1
+		resetscript
+		accum 4 abort_if_equal 1		
+		wait 8000
+		accum 4 abort_if_equal 1
+		playanim crotch_grab_2h both
+		wait 10000
+	}
+
+	trigger choose2
+	{
+		accum 4 abort_if_equal 1
+		resetscript
+		accum 4 abort_if_equal 1
+		wait 3000
+		accum 4 abort_if_equal 1
+		playanim crotch_grab_2h both
+		wait 5
+		playsound v2_g_shut_up
+		wait 3000 
+	}
+
+	trigger drunk_response
+	{
+	}
+
+	trigger talk2
+	{
+		playsound v2_g_awful_racket		
+	}
+
+	trigger runto_alarm
+	{
+		runtomarker n11_enterhouse2 nostop
+		runtomarker n11_enterhouse1	
+		statetype alert
+		trigger alarm_nazi12 runto_alarm
+		avoid	
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		attrib fov 120
+		accum 4 set 1
+		accum 0 bitset 20
+		trigger checker1 sight_check_in
+		trigger nazi11_offduty runto_alarm
+		avoid
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+		attrib fov 120
+		attrib alertness 1000
+		clearanim
+	}
+
+	bulletimpact
+	{
+		attrib fov 120
+		attrib alertness 1000
+	}
+
+	inspectsoundend
+	{
+		accum 4 set 1
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		clearanim
+	}
+
+	inspectbodyend
+	{
+		accum 4 set 1
+		clearanim
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+alarm_nazi12	// On 2nd level plateue
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 1024
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 1 set 0
+		accum 2 set 0
+		trigger alarm_nazi12 go1	
+	}
+	
+	trigger go1
+	{
+		walktomarker an12spot1
+		facetargetangles an12spot1
+		wait 2000
+		walktomarker an12spot2
+		facetargetangles an12spot2
+		wait 2000
+		walktomarker an12spot3
+		facetargetangles an12spot3
+		wait 2000
+		trigger alarm_nazi12 go1
+	}
+
+	trigger go2
+	{
+
+	}
+
+	trigger runto_alarm
+	{
+		statetype alert
+		alertentity alarm_nazi13
+		trigger checker1 alarm_on
+		wait 5
+		trigger alarm_nazi13 runto_alarm
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker1 sight_check_in
+		trigger alarm_nazi13 runto_alarm	// this trigger nazi 13 to run to alarm...
+		avoid
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+alarm_nazi13	// Last nazis encountered  13 14
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 1024
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 0 bitreset 15
+		accum 1 set 0
+		accum 2 set 0
+		trigger alarm_nazi13 marchloop1
+	}
+
+	trigger alarm1_destroyed
+	{
+		accum 0 bitset 15
+		statetype alert
+		wait 500 0 player
+	}
+	
+	trigger marchloop1
+	{
+		walktomarker an13spot1
+		facetargetangles an13spot1
+		wait 2000
+		walktomarker an13spot1a
+		facetargetangles an13spot1a
+		wait 2000
+		trigger alarm_nazi13 marchloop1
+	}
+
+	trigger go2
+	{
+	}
+
+	trigger runto_alarm
+	{
+		accum 0 abort_if_bitset 15
+		statetype alert
+		playsound guard1_alarm
+		wait 2000
+		accum 0 abort_if_bitset 15
+		runtomarker an13spot2
+		accum 0 abort_if_bitset 15
+		trigger alarm_nazi13 alarm_on
+	}
+
+	trigger alarm_on
+	{ 
+		accum 0 abort_if_bitset 15
+		alertentity sound_alarm
+		trigger player alarm_on_mission_fail
+		facetargetangles an13spot2
+		playanim switch_alarm both
+	//print ALARM HAS BEEN SET MISSION FAILED :(
+		trigger checker1 alarm_on
+		trigger checker1 all_run_for_bj
+	}
+
+	trigger end_level	// This will print state over and over again....
+	{
+		wait 6000
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		trigger checker1 sight_check_in
+		trigger nazi15 help_nazi13
+		trigger nazi14 help_nazi13
+		trigger alarm_nazi13 runto_alarm	// This has nazi13 trigger alarm...
+		avoid
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi14	// This nazi is near 13 and 
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 768
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 4 set 0
+		trigger nazi15 nazi14_alive_checkin
+		trigger nazi14 talk1	
+	}
+
+	trigger nazi15_alive_checkin
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi15_dead_checkin
+	{
+		accum 0 bitset 5
+	}
+	
+	trigger go1
+	{
+		trigger nazi14 talk1
+		walktomarker n14spot2 nostop
+		walktomarker n14spot3 nostop
+		walktomarker n14spot4 nostop
+		walktomarker n14spot5 nostop
+		walktomarker n14spot6
+		trigger nazi14 marchloop1
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n15spot6 nostop
+		walktomarker n15spot5 nostop
+		walktomarker n15spot4 nostop
+		walktomarker n15spot3 nostop
+		walktomarker n15spot4 nostop
+		walktomarker n15spot5 nostop
+		walktomarker n15spot6
+		trigger nazi14 marchloop1
+	}
+
+	trigger runto_alarm
+	{
+		runtomarker n14_alarm1
+		runtomarker n14_alarm2
+		runtomarker n14_alarm3
+		trigger nazi16 runto_alarm 
+	}
+
+//---------conversation------------
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g1_quite_a_show
+		wait 2700 nazi15
+		accum 0 abort_if_bitset 5
+		trigger nazi15 talk1
+	}
+
+	trigger talk2
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g1_still_you_doubt
+		wait 5300
+		accum 0 abort_if_bitset 5
+		trigger nazi15 talk2
+	}
+
+	trigger talk3
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g1_glorious_death
+		wait 3000
+		accum 0 abort_if_bitset 5
+		trigger nazi15 talk3
+	}
+
+	trigger talk4
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g1lc_haha
+		accum 0 abort_if_bitset 5
+		wait 3000
+		trigger nazi14 marchloop1 
+	}
+
+//-------------end-----------------
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	trigger help_nazi13
+	{
+		statetype alert
+		runtocast alarm_nazi13
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		accum 0 bitset 20
+		trigger checker1 sight_check_in
+		avoid
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+	} 
+
+	inspectsoundstart
+	{
+		accum 4 set 1
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger nazi15 nazi14_dead_checkin
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+
+nazi15	// This is the last nazi that can be set off the alarm...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 600
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 0 bitreset 0
+		accum 1 set 0	
+		accum 2 set 0
+		accum 4 set 0
+		trigger nazi14 nazi15_alive_checkin
+		trigger nazi15 go1	
+	}
+
+	trigger nazi14_alive_checkin
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi14_dead_checkin
+	{
+		accum 0 bitset 5
+	}
+	
+	trigger go1	// start off walking towards alarm... 
+	{
+		wait 1500
+		walktomarker n15spot2 nostop
+		walktomarker n15spot3 nostop
+		walktomarker n15spot4 nostop
+		walktomarker n15spot5 nostop
+		walktomarker n15spot6 nostop
+		walktomarker n15spot7
+		wait 5000
+		trigger nazi15 marchloop1
+	}
+		
+	trigger nazi15 marchloop1
+	{
+		walktomarker n15spot6 nostop
+		walktomarker n15spot5 nostop
+		walktomarker n15spot4 nostop
+		walktomarker n15spot3 nostop
+		walktomarker n15spot4 nostop
+		walktomarker n15spot5 nostop
+		walktomarker n15spot6
+		trigger nazi15 marchloop1
+	}
+
+	trigger runto_alarm
+	{
+		runtomarker n15_alarm1
+		runtomarker n15_alarm2
+		runtomarker n15_alarm3
+		trigger nazi16 runto_alarm
+	}
+
+//-----------conversation---------
+
+	trigger talk1
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g2_really_true
+		accum 0 abort_if_bitset 5
+		wait 2000 0 nazi14
+		accum 0 abort_if_bitset 5
+		trigger nazi14 talk2
+		accum 0 abort_if_bitset 5
+	}
+
+	trigger talk2
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g2_yes_I_remember
+		accum 0 abort_if_bitset 5
+		wait 2900
+		accum 0 abort_if_bitset 5
+		trigger nazi14 talk3	
+		accum 0 abort_if_bitset 5
+	}
+
+	trigger talk3
+	{
+		accum 4 abort_if_equal 1
+		accum 0 abort_if_bitset 5
+		playsound v2_g2_no_glory
+		accum 0 abort_if_bitset 5
+		wait 2800
+		accum 0 abort_if_bitset 5
+		trigger nazi14 talk4
+		accum 0 abort_if_bitset 5
+		trigger nazi15 go1
+	}
+
+//--------------end--------------
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 4 set 1
+		accum 0 bitset 20
+		trigger checker1 sight_check_in
+		avoid
+		trigger nazi15 runto_alarm
+	}
+
+	trigger help_nazi13
+	{
+		statetype alert
+		runtocast alarm_nazi13
+	}
+
+	statechange relaxed alert
+	{
+		accum 4 set 1
+	}
+
+	bulletimpact
+	{
+		accum 4 set 1
+	}
+
+	inspectsoundstart
+	{
+		accum 4 set 1		
+	}
+
+	inspectsoundend
+	{
+		accum 4 set 1
+	}
+
+	inspectbodystart
+	{
+		accum 4 set 1
+		statetype alert
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger nazi14 nazi15_dead_checkin
+		accum 0 abort_if_not_bitset 20
+		trigger checker1 sight_check_out
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}
+
+nazi16	// This is the last nazi that can be set off the last alarm...
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 192
+		alertness 800
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		accum 1 set 0
+		accum 2 set 0
+		accum 0 bitreset 15
+		trigger nazi16 marchloop1	
+	}
+	
+	trigger go1	// smal march loop1
+	{
+
+	}
+
+	trigger alarm2_destroyed
+	{
+		accum 0 bitset 15
+		statetype alert
+		wait 500 0 player
+	}
+
+	trigger marchloop1
+	{
+		noavoid
+		walktomarker n16spot1
+		facetargetangles n16spot1
+		wait 2000
+		walktomarker n16spot2
+		facetargetangles n16spot1
+		wait 2000
+		walktomarker n16spot3
+		facetargetangles n16spot1
+		wait 2000
+		walktomarker n16spot4
+		facetargetangles n16spot1
+		wait 2000
+		walktomarker n16spot5	
+		facetargetangles n16spot1
+		wait 2000
+		trigger nazi16 marchloop1
+	}
+
+	trigger runto_alarm
+	{
+		accum 0 abort_if_bitset 15
+		accum 4 abort_if_greater_than 1
+		accum 4 inc 1
+		runtomarker n16_alarm1
+		accum 0 abort_if_bitset 15
+		alertentity sound_alarm
+		trigger player alarm_on_mission_fail
+		resetscript
+	}
+	
+	trigger alarm_sound
+	{
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		trigger nazi16 runto_alarm
+	}
+
+	bulletimpact
+	{
+		trigger nazi16 runto_alarm		
+	}
+
+	inspectsoundstart
+	{
+		trigger nazi16 runto_alarm
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		statetype alert
+	}
+
+	inspectbodyend
+	{
+		trigger nazi16 runto_alarm
+	}
+
+	death
+	{
+		objectivemet 6	// mission objective complete
+		
+	}
+
+	trigger run_for_bj
+	{
+		resetscript
+		runtocast player
+	}
+}

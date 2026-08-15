@@ -353,15 +353,16 @@ UseHoldableItem
 */
 void UseHoldableItem( gentity_t *ent, int item ) {
 	switch ( item ) {
-	case HI_WINE:           // 1921 Chateu Lafite - gives 25 pts health up to max health
+	case HI_WINE:           // 1921 Chateu Lafite - gives 25 pts health, overheals up to 200% max health in modern mode
 		ent->health += 25;
-		if ( !g_cheats.integer ) 
+		if ( !g_cheats.integer )
 		{
 		steamSetAchievement("ACH_WINE");
 		}
 		if (!g_decaychallenge.integer){
-		if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+		int wineCap = ( g_overheal.integer == 1 ) ? ent->client->ps.stats[STAT_MAX_HEALTH] * 2 : ent->client->ps.stats[STAT_MAX_HEALTH];
+		if ( ent->health > wineCap ) {
+			ent->health = wineCap;
 		}
 		}
 		break;
@@ -468,16 +469,17 @@ void UseHoldableItem( gentity_t *ent, int item ) {
 
 		break;
 
-	case HI_BANDAGES:       
+	case HI_BANDAGES:
 		ent->health += 20;
-		if ( !g_cheats.integer ) 
+		if ( !g_cheats.integer )
 		{
 		steamSetAchievement("ACH_BANDAGES");
 		}
 
 		if (!g_decaychallenge.integer){
-		if ( ent->health > ent->client->ps.stats[STAT_MAX_HEALTH] ) {
-		ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+		int bandageCap = ( g_overheal.integer == 1 ) ? ent->client->ps.stats[STAT_MAX_HEALTH] * 2 : ent->client->ps.stats[STAT_MAX_HEALTH];
+		if ( ent->health > bandageCap ) {
+		ent->health = bandageCap;
 		}
 		}
 		break;
@@ -929,6 +931,8 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 		COM_BitSet( other->client->ps.weapons, WP_M1GARAND );
 	} else if ( weapon == WP_DELISLESCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_DELISLE );
+	} else if ( weapon == WP_DELISLE ) {
+		COM_BitSet( other->client->ps.weapons, WP_DELISLESCOPE );
 	} else if ( weapon == WP_M1941SCOPE ) {
 		COM_BitSet( other->client->ps.weapons, WP_M1941 );
 	}
@@ -1029,14 +1033,15 @@ qboolean IsWeaponComplex( weapon_t weapon ) {
 	case WP_GARAND:
 	case WP_FG42:
 	case WP_M1GARAND:
+	case WP_DELISLE:
 
 	case WP_SNOOPERSCOPE:
 	case WP_FG42SCOPE:
 	case WP_M7:
+	case WP_DELISLESCOPE:
 
 	// semi complex
 	case WP_SNIPERRIFLE:
-	case WP_DELISLESCOPE:
 	case WP_M1941SCOPE:
 		return qtrue;
 	default:
@@ -1379,11 +1384,16 @@ int Pickup_Health( gentity_t *ent, gentity_t *other ) {
 	int max;
 	int quantity = 0;
 
-	// small and mega healths will go over the max
-	if ( ent->item->quantity != 5 && ent->item->quantity != 100  ) {
-		max = other->client->ps.stats[STAT_MAX_HEALTH];
-	} else {
+	if ( g_overheal.integer == 1 ) {
+		// modern: any health pickup can overheal up to 200% max health
 		max = other->client->ps.stats[STAT_MAX_HEALTH] * 2;
+	} else {
+		// classic: only small and mega healths go over the max
+		if ( ent->item->quantity != 5 && ent->item->quantity != 100 ) {
+			max = other->client->ps.stats[STAT_MAX_HEALTH];
+		} else {
+			max = other->client->ps.stats[STAT_MAX_HEALTH] * 2;
+		}
 	}
 
 	if ( ent->count ) {
@@ -1877,7 +1887,7 @@ void FinishSpawningItem( gentity_t *ent ) {
     return;
 	}
 
-	if ( g_regen.integer && ent->item->giType == IT_HEALTH )
+	if ( g_regen.integer == 1 && ent->item->giType == IT_HEALTH )
 	{
     return;
 	}

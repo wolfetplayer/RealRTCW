@@ -1,0 +1,2723 @@
+///
+///
+/// The BIG BAD BOSS level
+/// Chad and jeremy...
+/// 10/03/00
+//
+// // DO NOT EDIT WITHOUT SPEAKING TO CHAD.  I DON'T CARE WHO YOU ARE.
+//
+
+player
+{
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
+		#endif
+		#if g_chapter_legit < 1
+		accum 7 set 1
+		#endif
+		abort_if_loadgame
+		mu_fade 0 1000
+		mu_queue sound/music/c_atmos
+
+		cvar g_episode 6
+		objectivesneeded 1		
+	}
+
+	trigger give_loadout_1
+	{
+		accum 1 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 1 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout dam_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout dam_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout dam_vanilla_shotgun_2
+		#endif
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 1 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
+		mu_fade 0 1000
+		mu_queue sound/music/c_chant
+		trigger counter1 action1	these three events are beggining events
+		trigger counter1 cinematic1	
+		trigger player cam1
+	}
+
+	trigger cam_himmler1a
+	{
+		startcamblack cs18_04
+	}
+
+	trigger cam_himmler
+	{
+		startcamblack cs18_04
+	}
+
+	trigger cam1
+	{
+		startcam cs16_01
+	}
+
+	trigger cam2
+	{
+		startcam cs16_02
+	}
+
+	trigger cam3
+	{
+		startcam cs16_03
+	}
+
+	trigger cam3d
+	{
+		startcam cs16_03d
+	}
+
+	trigger cam4
+	{
+		startcam cs16_04
+	}
+
+	trigger cam5
+	{
+		startcam cs16_05
+	}
+
+	trigger cam6
+	{
+		startcam cs16_06
+	}
+
+	trigger cam6d
+	{
+		startcam cs15_06d
+	}
+
+	trigger cam7		// new camers for the end...
+	{
+		startcam cs16_07
+	}
+
+	trigger cam8
+	{
+		startcam cs16_08
+	}
+
+	trigger cam9
+	{
+		startcam cs16_09
+	}
+
+	trigger cam10
+	{
+		startcam cs16_10
+	}
+
+	trigger cam10d
+	{
+		startcam cs16_10d
+	}
+
+	trigger cam11
+	{
+		startcam cs16_11
+	}
+	trigger cam12
+	{
+		startcam cs16_12
+	}
+
+	trigger cam13
+	{
+		startcam cs16_13
+	}
+
+	trigger cam14
+	{
+		startcam cs16_14
+	}
+
+	trigger cam15
+	{
+		startcam cs16_15
+	}
+
+	trigger camerainterrupt
+	{
+		accum 0 abort_if_bitset 0
+		trigger counter1 cine1_cleanup
+		stopcam			
+	}
+
+	trigger 0bitset0
+	{
+		accum 0 bitset 0
+		mu_fade 0 1000
+		mu_queue sound/music/c_atmos
+		wait 8000
+		notarget on
+	}
+	
+	trigger bg_run 
+	{
+	   alertentity bg_run1
+	   alertentity bg_run2
+	}
+
+	trigger action1
+	{
+		trigger heinrich begin
+		trigger pillar1 swing
+		trigger rope1 swing
+		alertentity dark4
+		alertentity dark5
+		alertentity dark6
+		alertentity killknights
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger rocksfall
+	{
+		alertentity rocksfall
+	}
+
+	trigger rubblefall1
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_darktension
+		trigger rubble1 begin
+	}
+
+	trigger pillar1fall
+	{
+		trigger pillar1 fall
+	}
+
+	trigger achievement_hard_check
+	{
+		accum 7 abort_if_equal 1
+		achievement_chapter7_hard
+	}
+
+	trigger changelevel
+	{
+		#if g_chapter_legit >= 1
+		achievement_chapter7
+		achievement_ironman
+		achievement_hardcore
+		achievement_999
+		achievement_nightmare
+		achievement_walkinthepark
+		#endif
+		trigger player achievement_hard_check
+		changelevel cutscene19 5 silent 
+	}
+
+	death
+	{
+		trigger counter1 deathreset
+	}
+}
+
+ps1
+{
+
+	attributes
+	{
+		headlook off
+		starting_health 5
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 1.0
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 5
+		headlook off
+		nosight 99999
+		takeweapon all
+		knockback off
+	}
+
+	trigger go1
+	{
+	}
+
+	trigger go2
+	{
+		walktomarker t691		// ps1spot2
+	}
+
+	trigger anim1a
+	{
+		playanim idle both 
+	}
+
+	trigger anim1
+	{
+
+		nosight 99999
+		playanim stuff both //forever
+	}
+
+	trigger anim2
+	{
+
+		playanim bow both //forever
+	}
+
+	trigger talk1		// Yes yes
+	{
+		playsound end_cs16_pri_01_1
+	}
+
+	trigger talk2		// Yes it is true
+	{
+		nosight 99999
+		playsound end_cs16_pri_02_6
+	}
+
+	trigger talk3		// I serve you my dark msater
+	{
+		playsound end_cs16_pri_03_7 
+	}
+
+	trigger talk4		// Ahahahaha
+	{
+		playsound end_cs16_pri_04_a
+		alertentity spirit4
+	}
+
+	trigger talk5
+	{
+		playsound end_eg_solo_loop
+	}
+
+	trigger talk6
+	{
+		playsound  end_liftup
+		wait 4000
+	}
+
+	trigger talk6_stop
+	{
+		playsound  blank
+	}
+
+ 	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+dark1
+{
+
+	attributes
+	{
+		starting_health 500
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		playanim powered_down both forever
+		setmovespeed fast
+	}
+
+	trigger anim1
+	{
+		clearanim
+		playanim come_alive both forever
+	}
+
+	trigger talk1
+	{
+		playsound end_ss_powerup
+	}
+
+	trigger pain
+	{
+		playanim pain_ceremony both
+		playanim asleep both forever
+	}
+}
+
+dark2
+{
+
+	attributes
+	{
+		starting_health 500
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		playanim powered_down both forever
+		setmovespeed fast
+	}
+
+	trigger anim1
+	{
+		clearanim
+		playanim come_alive both forever
+	}
+
+	trigger talk1
+	{
+		playsound end_ss_powerup
+	}
+
+	trigger pain
+	{
+		playanim pain_ceremony both
+		playanim asleep both forever
+	}
+}
+
+dark3
+{
+
+	attributes
+	{
+		starting_health 500
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		playanim powered_down both forever
+		setmovespeed fast
+	}
+
+	trigger anim1
+	{
+		clearanim
+		playanim come_alive both forever
+	}
+
+	trigger talk1
+	{
+		playsound end_ss_powerup
+	}
+
+	trigger pain
+	{
+		playanim pain_ceremony both
+		playanim asleep both forever
+	}
+}
+
+dark4
+{
+
+	attributes
+	{
+		starting_health 500
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 5
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant1
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark5
+{
+
+	attributes
+	{
+		starting_health 500
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 5
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant2
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark6
+{
+
+	attributes
+	{
+		starting_health 500
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp1
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp2
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp3
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp4
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp5
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp6
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp7
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp8
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp9
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp10
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp11
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp12
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp13
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp14
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp15
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp16
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp17
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp18
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp19
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp20
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp21
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp22
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp23
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark_supp24
+{
+
+	attributes
+	{
+		starting_health 250
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+	}
+
+	spawn
+	{
+		wait 10
+		statetype alert
+		knockback off
+		setmovespeed fast
+	}
+
+	trigger talk1
+	{
+		playsound end_war_giant3
+	}
+
+	trigger talk2
+	{
+		playsound end_war_giant_medley
+	}
+
+ 	enemysight
+	{
+		gotocast player
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+
+fem1
+{
+
+	attributes
+	{
+		starting_health 650
+	}
+
+	spawn
+	{
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_7 #endif
+//#if g_reinforce >= 2 alertentity reinforce_ai_venom_9 #endif
+#if g_reinforce >= 1 alertentity reinforce_ai_soldier_10 #endif
+//#if g_reinforce >= 1 alertentity reinforce_ai_soldier_11 #endif
+#if g_reinforce >= 2 alertentity reinforce_ai_soldier_12 #endif
+#if g_reinforce >= 2 alertentity reinforce_ai_venom_13 #endif
+wait 100
+#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_15 
+alertentity reinforce_ai_soldier_8
+alertentity reinforce_ai_soldier_14
+alertentity reinforce_ai_blackguard_16
+alertentity reinforce_ai_eliteguard_24
+alertentity reinforce_ai_eliteguard_26
+#endif
+#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_17 #endif
+#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_18 #endif
+
+#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_19 #endif
+#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_20 #endif
+//#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_21 #endif
+#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_22 #endif
+#if g_reinforce >= 2 alertentity reinforce_ai_eliteguard_23 #endif
+#if g_reinforce >= 1 alertentity reinforce_ai_eliteguard_25 #endif
+		playanim get_up_still both forever
+	}
+
+	trigger getup
+	{
+		playanim get_up both
+	}
+		
+	enemysight
+	{
+		attack player
+		resetscript
+	}
+}
+
+heinrich
+{
+
+	attributes
+	{
+		alertness 50000
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 0.1
+		aim_skill 1.0
+		fov 360
+		statetype alert
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		noavoid off
+		takeweapon monsterattack2
+		trigger heinrich still
+	}
+
+	trigger sight_on 
+	{
+		sight
+	}
+
+	trigger quake
+	{
+		alertentity rocksfall
+	}
+	
+	trigger still
+	{
+		playanim lift_still both
+		trigger heinrich still
+	}
+
+	trigger anim1a		// newly added by jeremy for break up of animations
+	{
+		playanim lift both holdframe
+	}
+
+	trigger anim1
+	{
+		playanim alive both //holdframe
+	}
+
+	trigger anim2
+	{
+		playanim laughing both
+	}
+
+	trigger anim3
+	{
+		playanim who_are_you both
+	}
+
+	trigger anim4_reset
+	{
+		clearanim
+	}
+
+
+	trigger talk1		//  I live
+	{
+		playsound end_cs16_hei_01
+	}
+
+	trigger talk2		//  who are you
+	{
+		playsound end_cs16_hei_03 
+	}
+
+	trigger talk3		// Rargh
+	{
+    		playsound end_heinr127
+	}
+
+	trigger talk4		// So much to tend to 
+	{
+		playsound end_cs16_hei_05_4
+	}
+
+	trigger begin
+	{
+		explicit_routing on
+		sight
+		runtomarker hspot1
+		gotocast player
+	}
+
+	trigger warzombiedead
+	{
+  		  accum 1 inc 1
+  		  accum 1 abort_if_less_than 3
+  		  giveweapon monsterattack2
+  		  accum 1 set 0
+	}
+	
+	pain 4000
+	{
+		alertentity bg1
+		alertentity bg5
+		alertentity bg9
+	}
+
+	pain 3000
+	{
+		alertentity bg2
+		alertentity bg6
+		alertentity bg10
+		alertentity bg13
+	}
+
+	pain 2000
+	{
+		alertentity bg3
+		alertentity bg7
+		alertentity bg11
+	}
+
+	pain 1000
+	{
+		alertentity bg4
+		alertentity bg8
+		alertentity bg12
+	}
+
+ 	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player 0bitset0
+		#if g_chapter_legit >= 1
+		achievement_boss3
+		#endif
+		objectivemet 1	// mission objective complete
+		trigger counter1 himmler_cine1
+	}
+}
+
+
+bg_run1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg_run1_marker1
+		runtomarker bg_run1_marker2
+		runtomarker bg_run1_marker3
+		facetargetangles bg_run1_marker3
+	}
+	
+	enemysight
+	{
+		wait 5
+		playsound sound/scenaric/village2/hoch_who_are_you.wav
+		attack player
+		resetscript
+	}
+}
+
+bg_run2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		playsound sound/scenaric/crypt1/lets_go.wav
+		runtomarker bg_run2_marker1
+		runtomarker bg_run2_marker2
+		facetargetangles bg_run2_marker2
+	}
+	
+	enemysight
+	{
+		attack player
+		resetscript
+	}
+}
+
+bg1
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg1_marker1
+		runtomarker bg1_marker2
+		runtomarker bg1_marker3
+		facetargetangles bg1_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg2
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		runtomarker bg2_marker1
+		runtomarker bg2_marker2
+		runtomarker bg2_marker3
+		facetargetangles bg2_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg3
+{
+	attributes
+	{
+	  aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg3_marker1
+		runtomarker bg3_marker2
+		runtomarker bg3_marker3
+		facetargetangles bg3_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg4
+{
+	attributes
+	{
+	 aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg4_marker1
+		runtomarker bg4_marker2
+		runtomarker bg4_marker3
+		facetargetangles bg4_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg5
+{
+	attributes
+	{
+	  aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg5_marker1
+		runtomarker bg5_marker2
+		runtomarker bg5_marker3
+		facetargetangles bg5_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg6
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg6_marker1
+		runtomarker bg6_marker2
+		runtomarker bg6_marker3
+		facetargetangles bg6_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg7
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg7_marker1
+		runtomarker bg7_marker2
+		runtomarker bg7_marker3
+		facetargetangles bg7_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg8
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		runtomarker bg8_marker1
+		runtomarker bg8_marker2
+		runtomarker bg8_marker3
+		facetargetangles bg8_marker3
+		wait forever 0
+		attack
+	}
+}
+
+bg9
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg9_marker1
+		facetargetangles bg9_marker1
+		wait forever 0
+		attack
+	}
+}
+
+bg10
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg10_marker1
+		facetargetangles bg10_marker1
+		wait forever 0
+		attack
+	}
+}
+
+bg11
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg11_marker1
+		facetargetangles bg11_marker1
+		wait forever 0
+		attack
+	}
+}
+
+bg12
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg12_marker1
+		facetargetangles bg12_marker1
+		wait forever 0
+		attack
+	}
+}
+
+
+bg13
+{
+	attributes
+	{
+	   aim_accuracy 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		runtomarker bg13_marker1
+		facetargetangles bg13_marker1
+		wait forever 0
+		attack
+	}
+}
+
+himmler
+{
+
+	attributes
+	{
+		alertness 0
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		nosight 99999
+		zoom on
+		walktomarker hm_spot1
+		facetargetangles help_spot2
+		headlook off
+		takeweapon all
+		trigger himmler go1
+	}
+
+	trigger go1
+	{
+		facetargetangles help_spot2
+	}
+
+	trigger anim_loop1
+	{ 
+		playanim binocular both 
+		zoom off
+	}
+
+	trigger anim_loop2
+	{
+		playanim talking_1 both 
+	}
+
+	trigger anim_loop3
+	{
+		playanim talking_2 both 
+	}
+
+	trigger anim_loop4
+	{
+		playanim relaxed_walk_no both forever
+	}
+
+	trigger go2		// walk to car
+	{
+		facetargetangles hm_spot3
+		walktomarker hm_spot2 nostop
+		walktomarker hm_spot3
+	}
+
+	trigger talk1
+	{
+		playsound end_cs18_him_01		// He destroyed everything
+		wait 1000		// og 5200
+		zoom off
+		clearanim
+	}
+
+	trigger talk2
+	{
+		playsound end_cs18_him_02		// Ya ya
+		wait 3000
+		clearanim
+	}
+
+	trigger clean_anim
+	{
+		clearanim
+	}
+}
+
+help
+{
+	attributes
+	{
+		alertness 0
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		nosight 99999
+		headlook off
+		takeweapon all	
+		trigger help go1	
+	}
+
+	trigger go1
+	{
+		nosight 99999
+		wait forever 0 himmler
+		nosight 99999
+	}
+
+	trigger go2		// walk to car
+	{
+		nosight 99999
+		walktomarker help_spot1a
+	}
+
+	trigger go3
+	{
+		walktomarker help_spot2 himmler noattack
+		clearanim
+		wait 1000 0 himmler
+	}
+
+	trigger talk1
+	{
+		playsound end_cs18_aid_01	// The plane is waiting to take back to Berlin
+	}
+
+	trigger talk2
+	{
+		playsound end_cs18_aid_02		// The furer is expecting your arrival
+		wait 2500
+		clearanim
+		wait 3000 0 himmler
+	}
+
+	trigger anim_loop1
+	{
+		playanim talking_1h both 
+	}
+
+	trigger anim_loop2
+	{
+		playanim pointing both 
+	}
+
+	trigger anim_loop3
+	{
+		playanim giving_orders both 
+		
+	}
+
+	trigger anim_loop4
+	{
+		playanim alert_walk_no both forever
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	statechange relaxed alert
+	{
+		deny
+	}
+}
+
+reinforce_ai_soldier_7		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_8		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_9		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_10		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_11		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_12		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_venom_13		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_14		// 1st room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mp40
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp44
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mp40
+		#endif
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_15		// 2nd room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_16		// 2nd room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_17		// 2nd room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_18		// 2nd room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_eliteguard_19		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_20		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_21		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_22		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_23		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_24		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_25		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}
+
+reinforce_ai_eliteguard_26		// 3rd room
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+		aggression 0.2
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_sten
+		#endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_mp34
+		#endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_sten
+		#endif
+	}
+}

@@ -166,7 +166,8 @@ translateString_t translateStrings[] = {
 	{"usedshield"}
 };
 
-bonusString_t bonusStrings[] = {
+// sized to MAX_BONUSSTRINGS so trailing slots are free for custom campaign keys to append into
+bonusString_t bonusStrings[MAX_BONUSSTRINGS] = {
 	{"bonus_escape1"},   
 	{"bonus_escape1_alt"},                   
 	{"bonus_escape2"},   
@@ -3154,6 +3155,21 @@ void Menu_HandleKey( menuDef_t *menu, int key, qboolean down ) {
 			DC->executeText( EXEC_APPEND, "screenshot\n" );
 		}
 		break;
+
+	case K_PAD0_LEFTSHOULDER:
+		if ( !Q_stricmp( menu->window.name, "ingame" ) ) {
+			DC->executeText( EXEC_APPEND, "togglemenu\n" );
+			DC->executeText( EXEC_APPEND, "loadgame quicksave\n" );
+		}
+		break;
+
+	case K_PAD0_RIGHTSHOULDER:
+		if ( !Q_stricmp( menu->window.name, "ingame" ) ) {
+			DC->executeText( EXEC_APPEND, "togglemenu\n" );
+			DC->executeText( EXEC_APPEND, "savegame quicksave\n" );
+		}
+		break;
+
 	case K_KP_UPARROW:
 	case K_UPARROW:
     case K_PAD0_DPAD_UP:

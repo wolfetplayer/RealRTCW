@@ -1,0 +1,12 @@
+beam
+{
+	trigger drop // makes heavy beam topple
+		{
+		playsound sound/world/stonefall.wav
+		wait 1000
+		faceangles 30 0 0 300
+		faceangles 88 0 0 200
+		playsound sound/scenaric/chateau/fplace_end.wav
+		}
+
+}

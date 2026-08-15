@@ -1829,7 +1829,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 case EV_FILL_CLIP:
     DEBUGNAME( "EV_FILL_CLIP" );
-	CG_ResetSimpleZoom();
+	if ( es->number == cg.snap->ps.clientNum ) {
+		CG_ResetSimpleZoom();
+	}
     if ( cg_weapons[es->weapon].reloadSound ) {
         if ( cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
             trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast, SND_REQUESTCUT );
@@ -1840,7 +1842,9 @@ case EV_FILL_CLIP:
     break;
 case EV_FILL_CLIP_FULL:
     DEBUGNAME( "EV_FILL_CLIP_FULL" );
-	CG_ResetSimpleZoom();
+	if ( es->number == cg.snap->ps.clientNum ) {
+		CG_ResetSimpleZoom();
+	}
     if ( cg_weapons[es->weapon].reloadFullSound ) {
         if (cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
             trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast, SND_REQUESTCUT );
@@ -1857,7 +1861,9 @@ case EV_FILL_CLIP_FULL:
 		break;
 	case EV_RESET_ZOOM:
 	    DEBUGNAME( "EV_RESET_ZOOM" );
-		CG_ResetSimpleZoom();
+		if ( es->number == cg.snap->ps.clientNum ) {
+			CG_ResetSimpleZoom();
+		}
 		break;
 	case EV_M97_PUMP:
 		DEBUGNAME("EV_M97_PUMP");
@@ -1874,7 +1880,9 @@ case EV_FILL_CLIP_FULL:
 
 	case EV_NOAMMO:
 		DEBUGNAME( "EV_NOAMMO" );
-		CG_ResetSimpleZoom();
+		if ( es->number == cg.snap->ps.clientNum ) {
+			CG_ResetSimpleZoom();
+		}
 		if ( ( es->weapon != WP_GRENADE_LAUNCHER ) && ( es->weapon != WP_GRENADE_PINEAPPLE ) && ( es->weapon != WP_SMOKE_BOMB ) && ( es->weapon != WP_DYNAMITE )  && ( es->weapon != WP_DYNAMITE_ENG ) && ( es->weapon != WP_AIRSTRIKE ) && ( es->weapon != WP_POISONGAS )  ) {
 			trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
 		}
@@ -1894,7 +1902,9 @@ case EV_FILL_CLIP_FULL:
 
 		DEBUGNAME( "EV_CHANGE_WEAPON" );
 
-		CG_ResetSimpleZoom();
+		if ( es->number == cg.snap->ps.clientNum ) {
+			CG_ResetSimpleZoom();
+		}
 
 		// client will get this message if reloading while using an alternate weapon
 		// client should voluntarily switch back to primary at that point

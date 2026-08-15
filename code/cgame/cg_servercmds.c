@@ -396,6 +396,11 @@ static void CG_ConfigStringModified( void ) {
 		cgs.scores2 = atoi( str );
 	} else if ( num == CS_LEVEL_START_TIME ) {
 		cgs.levelStartTime = atoi( str );
+	} else if ( num == CS_TIMEDILATION ) {
+		cgs.timeDilation = (float)atof( str );
+		if ( cgs.timeDilation <= 0.0f ) {
+			cgs.timeDilation = 1.0f;
+		}
 	} else if ( num == CS_VOTE_TIME ) {
 		cgs.voteTime = atoi( str );
 		cgs.voteModified = qtrue;

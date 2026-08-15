@@ -1,0 +1,3180 @@
+//AI Scripting
+//Map: SWF (Secret Weapons Facility)
+//Last edited by: WolfETPLayer & William Faure
+
+player
+{
+	spawn
+	{
+		accum 0 bitset 0
+		
+		cvar g_episode 3
+		objectivesneeded 2
+
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
+		#endif
+		#if g_chapter_legit < 1
+		accum 7 set 1
+		#endif
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	trigger give_loadout_1
+	{
+		accum 1 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout sfm_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout sfm_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout sfm_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 1 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout sfm_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout sfm_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout sfm_vanilla_shotgun_2
+		#endif
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 1 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
+		mu_fade 0 1500
+		mu_queue sound/music/l_briefing_2
+
+		trigger elevator cinematic1
+		trigger player cam1
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_1 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_2 #endif
+	}
+
+	// ---Start Camera Section---
+	trigger cam1
+	{
+		startcam cs10_01
+	}
+
+	trigger cam2
+	{
+		startcam cs10_02
+	}
+
+	trigger cam3
+	{
+		startcam cs10_03
+	}
+
+	trigger cam3d
+	{
+		startcam cs10_03d
+	}
+
+	trigger cam4
+	{
+		startcam cs10_04
+	}
+
+	trigger camend1
+	{
+		startcam swfend2
+	}
+
+	trigger camend2
+	{
+		startcam swfend2d
+	}
+
+	// ---End Camera Section---
+	trigger camstop
+	{
+		stopcam
+	}
+
+	trigger camerainterrupt
+	{
+		accum 0 abort_if_not_bitset 0
+		stopcam
+		trigger elevator cine_cleanup
+	}
+
+
+	trigger action1
+	{
+		trigger elevator spawnin
+		alertentity nazi3
+		alertentity nazi4
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_3 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_4 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action2
+	{
+		accum 0 bitreset 0
+		alertentity nazi5
+		alertentity nazi14
+	
+	}
+
+	trigger action3
+	{
+		alertentity nazi6
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi15
+		#if g_spawnxshepherds > 0 alertentity xdog1 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_5 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action4
+	{
+		trigger nazi6 closewindow
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_6 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_7 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_8 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_9 #endif
+	}
+
+	trigger action5
+	{
+		trigger crane1 spawnaction
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_10 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_16 #endif
+	}
+
+	trigger action6
+	{
+		alertentity nazi9
+		alertentity nazi10
+		alertentity nazi11
+		alertentity loper4
+		#if g_spawnxshepherds > 0 alertentity xdog2 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_11 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_12 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action7
+	{
+		alertentity loper1
+	}
+
+	trigger action8
+	{
+		alertentity nazi12
+		trigger loper1 crash
+		#if g_reinforce >= 1 alertentity reinforce_ai_loper_13 #endif
+		#if g_reinforce == 2 alertentity reinforce_ai_loper_14 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action9
+	{
+		alertentity lab3
+		alertentity loper3
+	}
+
+	trigger action10	// just spawn the guys in
+	{
+		alertentity nazi18
+		alertentity nazi19
+		alertentity nazi20
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_15 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action11	// get them to attack ... cover fire and movement
+	{
+		trigger nazi18 moveout18
+		trigger nazi19 moveout19
+		trigger nazi20 moveout20
+	}
+	
+	trigger action12
+	{
+		alertentity nazi21
+		alertentity nazi22
+		alertentity nazi23
+		alertentity lab4
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_17 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_18 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_19 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_loper_20 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_21 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action13
+	{
+		alertentity nazi24
+		alertentity lab5
+	}
+
+	trigger action14
+	{
+		alertentity black1
+		trigger lab5 takecover5
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_22 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_23 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_26 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_27 #endif
+	}
+
+	trigger action15
+	{
+		objectivemet 1
+		
+		alertentity black2
+		alertentity black3
+		alertentity black4
+		alertentity black8
+		trigger submarine leaving
+		alertentity lab6
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_28 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_29 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_30 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_33 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_blackguard_34 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action16
+	{
+		alertentity black5
+		#if g_reinforce >= 1 alertentity reinforce_ai_venom_32 #endif
+	}
+
+	trigger action17
+	{
+		trigger black8 openfire8
+		trigger black5 openfire5
+	}
+
+	trigger action18
+	{
+		objectivemet 2
+		
+		alertentity black6
+		alertentity black7
+		#if g_reinforce >= 2 alertentity reinforce_ai_venom_35 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_venom_36 #endif
+	}
+
+	trigger action19
+	{
+		trigger black8 takecover8
+	}
+
+	trigger raisewater
+	{
+		trigger waterwheel raise
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		foundsecret
+	}
+
+	trigger secret3
+	{
+		foundsecret
+		
+		#if g_reinforce >= 2 alertentity reinforce_ai_loper_24 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_blackguard_25 #endif
+	}
+
+	trigger secret4
+	{
+		foundsecret
+	}
+
+	trigger end_cutscene
+	{
+		trigger elevator end_cutscene
+	}
+
+	trigger endmap
+	{
+	
+	}
+
+	trigger achievement_hard_check
+	{
+		accum 7 abort_if_equal 1
+		achievement_chapter4_hard
+	}
+
+	trigger endnow
+	{
+		#if g_chapter_legit >= 1
+		achievement_chapter4
+		achievement_ironman
+		achievement_hardcore
+		achievement_999
+		achievement_nightmare
+		achievement_walkinthepark
+		#endif
+		trigger player achievement_hard_check
+		changelevel cutscene11 4000
+	}
+
+	trigger endmap_bonus										
+	{															
+		
+	#if g_fullarsenal == 0  	// Vanilla Bonus
+		printbonus swf
+	#endif
+		
+	#if g_fullarsenal > 0		// RealRTCW Bonus
+		printbonus swf_alt
+	#endif	
+
+	}
+}
+
+cine_death
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		headlook off
+		takeweapon all
+		noavoid
+		nosight 99999
+		explicit_routing on
+	}
+
+	trigger anim1
+	{
+		playanim talking both
+	}
+
+	trigger dtalk1
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound SWFdeath_1
+	}
+
+	trigger dtalk2
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound SWFdeath_2
+	}
+
+	trigger go
+	{
+		clearanim
+		resetscript
+		wait 500 0 black3
+		walktomarker cdeath_spot1 cdeath_spot1 noattack
+	}
+
+	death 
+	{
+		accum 0 bitreset 0
+	}
+}
+
+cine_major
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		headlook off
+		takeweapon all
+		noavoid
+		wait 1000 cine_death
+	}
+
+	trigger mtalk1
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound SWFmajor_1
+	}
+
+	trigger mtalk2
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound SWFmajor_2
+	}
+
+	death 
+	{
+		accum 0 bitreset 0
+	}
+}
+
+cine_nazi1
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		noavoid on
+		nosight 99999
+		headlook off
+		godmode on
+		knockback off
+
+		wait 100
+		walktomarker cine_n1spot1
+		walktomarker cine_n1spot2
+		wait 500
+		walktomarker cine_n1spot3
+		walktomarker cine_n1spot4
+	}
+}
+
+cine_nazi2
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		noavoid on
+		nosight 99999
+		headlook off
+		godmode on
+		knockback off
+
+		wait 100
+		walktomarker cine_n2spot1
+		walktomarker cine_n2spot2
+		walktomarker cine_n2spot3
+	}
+}
+
+
+
+nazi1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0	// 1= sighted player or pained by player
+
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		wait 100
+		trigger nazi1 idle1
+	}
+
+	trigger idle1
+	{
+		accum 0 abort_if_not_equal 0
+
+		walktomarker n1spot1
+		facetargetangles n1spot1
+		wait 1000
+		playanim crotch_grab_2h both
+		wait 2000
+		walktomarker n1spot2
+		facetargetangles n1spot2
+		wait 500
+		playanim crotch_grab_2h both
+		wait 4000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 3000
+		trigger nazi1 idle1
+	}
+
+	trigger elevworks
+	{
+		accum 0 abort_if_not_equal 0
+		playsound SWFNazi1_1
+	}
+
+	pain 38
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+
+		playsound Blank
+		clearanim
+		trigger elevator spawnin
+		resetscript
+		trigger nazi13 alerton
+		trigger nazi2 alerton
+	}
+
+	bulletimpact
+	{
+		playsound Blank
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		playsound Blank
+		clearanim
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+
+		playsound Blank
+		clearanim
+		trigger elevator spawnalert
+		resetscript
+	}
+
+	death
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger elevator spawnin
+		resetscript
+	}
+}
+
+nazi2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 1
+
+		wait 100
+		giveweaponfull weapon_mp40
+		trigger nazi2 marchloop
+	}
+
+	trigger marchloop
+	{
+		walktomarker n2spot2 nostop
+		walktomarker n2spot3 nostop
+		walktomarker n2spot2 nostop
+		walktomarker n2spot1
+		wait 200
+		facetargetangles n2spot1
+		wait 100
+		trigger nazi2 marchloop
+	}
+
+	trigger alerton
+	{
+		resetscript
+		runtomarker n2spot2 nostop
+		runtomarker n2spot3
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		gotomarker n3spot1
+		wait 12000
+	}
+}
+
+nazi4
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = player sighted
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+
+		wait 100
+		trigger nazi4 march1
+	}
+
+	trigger march1
+	{	
+		walktomarker n4spot1
+		wait 100
+		facetargetangles n4spot1
+		wait 100
+		walktomarker n4spot2
+		wait 100
+		facetargetangles n4spot2
+		wait 100
+		trigger nazi4 march1
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		resetscript
+	}
+}
+
+nazi5
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 1
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+
+		walktomarker n5spot1 nostop
+		walktomarker n5spot2
+		wait 5000
+		walktomarker n5spot3
+	}
+
+	pain 45
+	{
+		accum 0 abort_if_less_than 1
+		accum 0 set 0
+
+		resetscript
+		runtomarker n5spot2
+		runtomarker n5spot3 player
+		facetargetangles n5spot3
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_less_than 1
+		accum 0 set 0
+
+		resetscript
+		wait 1000
+		runtomarker n5spot2
+		runtomarker n5spot3 player
+		facetargetangles n5spot3
+	}
+
+	bulletimpact
+	{
+	}
+}
+
+nazi6
+{
+	attributes
+	{
+		aggression 1.0
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 set 0 // used to close window
+		giveweaponfull weapon_mauserrifle
+		accum 1 set 0 // used to unlock door and exit room
+		setammo ammo_grenades 0
+		nosight 999999
+
+		wait 100
+	}
+
+	trigger closewindow
+	{
+		wait 8000
+		runtomarker n6spot1
+		facetargetangles n6spot1
+		playanim switch_alarm both
+		alertentity n6button1
+		runtomarker n6spot2
+		facetargetangles n6spot1
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger walkout
+	{
+		accum 1 inc 1
+		statetype alert
+		sight
+		resetscript
+		alertentity n6unlock
+		wait 500
+		runtomarker n6spot3
+	}
+
+	death
+	{
+	}
+}
+
+nazi7
+{
+	attributes
+	{
+		attack_crouch 0.1
+		aggression 1.0
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 1
+		selectweapon weapon_panzerfaust
+		statetype alert
+
+		wait 100
+		gotomarker n7spot1
+		facetargetangles n7spot1
+		wait 5000 0
+		gotomarker n7spot2
+		facetargetangles n7spot2
+		wait forever 0
+	}
+
+	statechange alert combat
+	{
+		playsound MiscStopHim
+		resetscript
+		gotomarker n7spot2
+		facetargetangles n7spot2
+		wait 4000 0
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	pain 20
+	{
+		resetscript
+		giveweaponfull weapon_mp40
+		gotomarker n7spot3
+		wait 15000
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+nazi8
+{
+	attributes
+	{
+		inner_detection_radius 256
+		aggression 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 2
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+
+		wait 1000
+		explicit_routing on
+		gotomarker n8spot1
+		gotomarker n8spot2
+		explicit_routing off
+		facetargetangles n8spot2
+		wait forever 0
+	}
+
+	pain 20
+	{
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi9
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitset 0 // bitreset = spotted player
+		giveweaponfull weapon_mauserrifle
+		setammo ammo_grenades 2
+
+		wait 100
+		trigger nazi9 waiting9
+	}
+
+	trigger waiting9
+	{
+		accum 0 abort_if_not_bitset 0 
+		playanim crotch_grab_2h both
+		wait 3500
+		playanim crotch_grab_2h both
+		wait 5000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 3000
+		trigger nazi9 waiting9
+	}
+
+
+	enemysight
+	{
+		accum 0 bitreset 0 
+		playsound Blank
+		clearanim
+		resetscript
+		trigger nazi10 alert10
+		trigger nazi11 alert11
+	}
+
+	trigger alert9
+	{
+		accum 0 bitreset 0 
+		playsound Blank
+		clearanim
+		statetype alert
+		wait 100 player
+	}
+
+	bulletimpact
+	{
+		accum 0 bitreset 0 
+		playsound Blank
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		accum 0 bitreset 0 
+		playsound Blank
+		clearanim
+	}
+}
+
+nazi10
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitset 0 // bitreset = spotted player
+		setammo ammo_grenades 2
+
+		wait 100
+		giveweaponfull weapon_mp40
+		walktomarker n10spot1
+		trigger nazi10 marchloop10
+	}
+
+	trigger marchloop10
+	{
+		walktomarker n10spot3
+		walktomarker n10spot4
+		wait 500
+		facetargetangles n10spot4
+		wait 500
+		walktomarker n10spot3
+		walktomarker n10spot1
+		wait 2000 nazi9
+		facetargetangles n10spot1
+		wait 500
+		trigger nazi10 marchloop10
+	}
+		
+	enemysight
+	{
+		resetscript
+		trigger nazi9 alert9
+		trigger nazi11 alert11
+	}
+
+	trigger alert10
+	{
+		statetype alert
+		wait 100 player
+	}
+	
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+}
+
+nazi11
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		wait forever 0
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	trigger alert11
+	{
+		statetype alert
+		wait 100 player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+}
+
+nazi12
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		nosight 999999
+		giveweaponfull weapon_venom
+		knockback off
+		godmode on
+
+		wait 100
+		runtomarker n12spot1
+		alertentity loper2
+		fireattarget loper1 999999
+	}
+
+	trigger nogod
+	{
+		godmode off
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger loper1dead
+	{
+		resetscript
+		wait 100 player
+	}
+
+	death
+	{
+		trigger loper2 reset		
+	}
+}
+
+nazi13
+{
+	attributes
+	{
+		aggression 0.8
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		giveweaponfull weapon_mauserrifle
+		setammo ammo_grenades 1
+
+		wait 1000
+		walktomarker n13spot1
+		facetargetangles n13spot1
+		wait 200
+		walktomarker n13spot2
+		facetargetangles n13spot2
+		wait 200		
+	}
+
+	trigger alerton
+	{
+		resetscript
+		statetype alert
+		runtomarker n13spot1 nostop
+		runtomarker n13spot2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart nazi1
+	{
+		accum 0 abort_if_not_equal 0
+		//print Who did this? (I agree, who left this debug message in? -BreakinBenny, 22/12/01)
+	}
+
+	enemysight
+	{
+		accum 0 set 1 // 1 = sighted player
+		attack
+	}
+}
+
+nazi14
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		wait 100
+		gotomarker n14spot1
+		facetargetangles n14spot1
+		wait 1000
+		trigger nazi14 working14 
+	}
+
+	trigger working14
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 abort_if_not_equal 0
+		playsound MiscHum1
+		playanim device both		
+		trigger nazi14 working14
+	}
+
+	statechange relaxed query
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweaponfull weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweaponfull weapon_luger
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweaponfull weapon_luger
+	}
+
+	statechange alert combat
+	{
+		giveweaponfull weapon_luger
+		gotomarker n14spot2
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 1 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+
+nazi15
+{
+	attributes
+	{
+		alertness 1200
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 set 0	// 1 = sighted player
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		wait 100
+		gotomarker n15spot1
+		facetargetangles n15spot1
+		wait 1000
+	}
+
+	statechange relaxed query
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweaponfull weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweaponfull weapon_luger
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweaponfull weapon_luger
+	}
+
+	statechange alert combat
+	{
+		giveweaponfull weapon_luger
+		gotomarker n15spot1
+		wait 10000
+		gotomarker n15spot2
+		wait 8000		
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+nazi16
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+
+		wait 1000
+		runtomarker n16spot1
+		runtomarker n16spot2
+		runtomarker n16spot3
+		facetargetangles n16spot3
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+	}
+
+}
+
+nazi17
+{
+	attributes
+	{
+		aggression 0.7
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 1
+		giveweaponfull weapon_mp40
+		statetype alert
+
+		wait 1250
+		runtomarker n17spot1
+		runtomarker n17spot2
+		runtomarker n17spot3
+		facetargetangles n17spot3
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+	}
+}
+
+nazi18
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+
+		wait 100
+		runtomarker n18spot1
+		wait forever 0
+	}
+
+	trigger moveout18
+	{
+		resetscript
+		runtomarker n5spot2 nostop
+		runtomarker n5spot3
+		wait 5 player
+		wait 5000
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+nazi19
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 1
+		selectweapon weapon_panzerfaust
+		statetype alert
+
+		wait 100
+		runtomarker n19spot1
+		wait forever 0
+	}
+
+	trigger moveout19
+	{
+		resetscript
+		runtomarker n19spot2 nostop
+		runtomarker n19spot3
+		wait 5 player
+		wait 5000
+		giveweaponfull weapon_mp40
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+nazi20
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 100
+		runtomarker n20spot1
+		wait forever 0
+	}
+
+	trigger moveout20
+	{
+		resetscript
+		runtomarker n20spot2
+		wait 5 player
+		wait 8000 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+nazi21
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 100
+		walktomarker n21spot1
+		walktomarker n21spot2 nostop
+		walktomarker n21spot3 nostop
+		walktomarker n21spot4 nostop
+		walktomarker n21spot5 nostop
+		walktomarker n21spot6 nostop
+		walktomarker n21spot7	
+	}
+
+	statechange alert combat
+	{
+		trigger nazi22 takecover22
+		trigger nazi23 takecover23
+		resetscript
+	}
+}
+
+nazi22
+{
+	attributes
+	{
+		aggression 0.8
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+
+		wait 100
+	}
+
+	trigger takecover22
+	{
+		runtomarker n22spot1
+		facetargetangles n22spot1
+		wait 5000 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+}
+
+nazi23
+{
+	attributes
+	{
+		aggression 0.6
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+
+		wait 100
+	}
+
+	trigger takecover23
+	{
+		resetscript
+		runtomarker n23spot1
+		facetargetangles n23spot1
+		wait 5000 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+}
+
+nazi24
+{
+	attributes
+	{
+		aggression 0.8
+		fov 120
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		statetype alert
+
+		wait 100
+		runtomarker n23spot1
+	}
+
+	statechange alert combat
+	{
+		runtomarker n23spot1
+		wait 2000
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+black1
+{
+	attributes
+	{
+		hearing_scale_not_pvs 0.3
+		aggression 0.7
+	}
+
+	spawn
+	{
+		accum 0 bitset 0 // reset = seen something
+		setammo ammo_grenades 0
+		statetype alert
+		giveweaponfull weapon_fg42
+
+		wait 100
+		explicit_routing on
+		walktomarker black1spot1
+		walktomarker black1spot2
+		walktomarker black1spot3 nostop
+		walktomarker black1spot4 nostop
+		explicit_routing off
+		walktomarker black1spot5
+		trigger black1 looking1
+	}
+
+	trigger looking1
+	{
+		accum 0 abort_if_not_bitset 0
+		wait 500
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		trigger black1 looking1
+	}
+
+	enemysight
+	{
+		clearanim
+		explicit_routing off
+		resetscript
+	}
+
+	trigger takeaction1
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		runtomarker black1spot3
+		facetargetangles black1spot3
+		explicit_routing off
+		wait 1000
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart lab5
+	{
+		deny
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		runtocast lab5
+		explicit_routing off
+		wait 1000
+		wait 500 player
+		wait 2000	
+	}
+}
+
+black2
+{
+	attributes
+	{
+		hearing_scale 2.0
+		aggression 0.8
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+	}
+}
+
+black3
+{
+	attributes
+	{
+		hearing_scale 2.0
+		aggression 1.0
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+	}
+}
+
+black4
+{
+	attributes
+	{
+		aggression 0.7
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+	}
+}
+
+black5
+{
+	attributes
+	{
+		aggression 0.7
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+		gotomarker black5spot1
+	}
+
+	trigger openfire5
+	{
+		runtomarker black5spot2
+		wait 100 player
+		wait 10000
+	}
+
+}
+
+black6
+{
+	attributes
+	{
+		aggression 0.7
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+		gotomarker black6spot1
+		runtomarker black6spot2
+		facetargetangles black6spot2
+		wait 5000
+	}
+}
+
+black7
+{
+	attributes
+	{
+		aggression 0.7
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+		gotomarker black7spot1
+		runtomarker black7spot2
+		facetargetangles black7spot2
+		wait 3000
+	}
+}
+
+black8
+{
+	attributes
+	{
+		hearing_scale 2.0
+		aggression 0.8
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		setammo ammo_grenades 0
+		giveweaponfull weapon_fg42
+		statetype alert
+
+		wait 100
+		gotomarker black8spot1
+	}
+
+	trigger takecover8
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		runtomarker black8spot2
+		wait 2000
+	}
+
+	trigger openfire8
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		runtomarker black8spot2
+		runtomarker black8spot3
+		wait 100 player
+		wait 5000
+	}
+
+
+}
+
+loper1
+{
+	attributes
+	{
+		aggression 1.0
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		nosight 999999
+		accum 0 set 0
+		knockback off
+		godmode on
+		wait 100
+		explicit_routing on
+		runtomarker l1spot2 nostop
+		trigger loper1 runspawn
+	}
+
+	trigger runspawn
+	{
+		accum 0 random 2
+		wait 5
+		trigger loper1 runloop1
+		wait 5
+		trigger loper1 runloop2
+	}
+
+	trigger runloop1
+	{
+		accum 0 abort_if_not_equal 0
+		runtomarker l1spot1 nostop
+		runtomarker l1spot2 nostop
+		runtomarker l1spot3 nostop
+		runtomarker l1spot4 nostop
+		runtomarker l1spot2 nostop
+		runtomarker l1spot3 nostop
+		runtomarker l1spot4 nostop
+		runtomarker l1spot2 nostop
+		runtomarker l1spot4 nostop
+		runtomarker l1spot3 nostop
+		runtomarker l1spot2 nostop
+		trigger loper1 runspawn
+	}
+
+	trigger runloop2
+	{
+		accum 0 abort_if_not_equal 1
+		runtomarker l1spot1 nostop
+		runtomarker l1spot4 nostop
+		runtomarker l1spot3 nostop
+		runtomarker l1spot4 nostop
+		runtomarker l1spot3 nostop
+		runtomarker l1spot2 nostop
+		trigger loper1 runspawn
+	}
+
+	trigger crash
+	{
+		explicit_routing off
+		runtomarker l1spot4 nostop
+		runtomarker l1spot5 nostop
+		alertentity l1jump
+		runtomarker l1spot6 nostop
+		runtomarker l1spot7 nostop
+		godmode off
+		trigger nazi12 nogod
+		alertentity l1bust
+		alertentity l1jump
+		sight
+		runtomarker l1spot8 nostop
+		wait 1000 player
+	}
+
+	death
+	{
+		trigger nazi12 loper1dead
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+loper2
+//TODO ! spawn trigger needs moved
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		knockback off
+		wait 100
+		trigger loper2 runloop
+	}
+
+	trigger runloop
+	{
+		runtomarker l2spot1 nostop
+		runtomarker l2spot6 nostop
+		runtomarker l2spot1 nostop
+		runtomarker l2spot6 nostop
+		runtomarker l2spot1 nostop
+		runtomarker l2spot6 nostop
+		runtomarker l2spot1 nostop
+		runtomarker l2spot6 nostop
+		runtomarker l2spot1 nostop
+		runtomarker l2spot6 nostop
+		runtomarker l2spot1 nostop
+		runtomarker l2spot6 nostop
+		trigger loper2 runloop
+
+	}
+	
+	trigger reset
+	{
+		resetscript
+		trigger loper2 runloop
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger nazi6 walkout
+	}
+
+
+}
+
+loper3
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		knockback off
+		wait 1000
+		gotomarker lab3spot1 nostop
+		gotomarker lab3spot2
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger nazi6 walkout
+	}
+}
+
+loper4
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		knockback off
+	}
+
+	enemysight
+	{
+	}
+
+	death
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+lab1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0	// 1 = frightened state
+
+		takeweapon weapon_mp40
+		wait 100 lab2
+		trigger lab1 talking1		
+	}
+
+	enemysight player
+	{
+		accum 0 set 1
+		clearanim
+		wait 100 player
+		trigger lab1 fright1
+	}
+
+	trigger talking1
+	{
+		accum 0 abort_if_not_equal 0
+		playanim talking both
+		trigger lab1 talking1
+	}	
+
+	trigger fright1
+	{
+		nosight 999999
+		playanim frightened both
+		playanim frightened both
+		playanim frightened both
+		playanim frightened both
+		trigger lab1 fright1
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+		wait 5 player
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+lab2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0	// 1 = frightened state
+
+		takeweapon weapon_mp40
+		wait 100 lab1
+		trigger lab2 talking2		
+	}
+
+	enemysight player
+	{
+		accum 0 set 1
+		clearanim
+		wait 100 player
+		trigger lab2 fright2
+	}
+
+	trigger talking2
+	{
+		accum 0 abort_if_not_equal 0
+		playanim talking both
+		trigger lab2 talking2
+	}	
+
+	trigger fright2
+	{
+		nosight 999999
+		playanim frightened both
+		playanim frightened both
+		playanim frightened both
+		playanim frightened both
+		trigger lab2 fright2
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+		wait 5 player
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+lab3
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_luger
+		statetype alert
+
+		wait 500
+		runtomarker lab3spot1 nostop
+		runtomarker lab3spot2 nostop
+		playsound SWFLab3_1
+		runtomarker lab3spot3
+		wait 10000 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger loper3 reset
+	}
+
+}
+
+lab4
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 1 set 0	// 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		wait 100
+		walktomarker lab4spot1
+		wait 1000
+		trigger lab4 reading4
+	}
+
+	trigger reading4
+	{
+		accum 0 abort_if_not_equal 0
+		playanim clipboard both
+		trigger lab4 reading4		
+	}
+
+	statechange relaxed query
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger lab4 quickdraw
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger lab4 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger lab4 quickdraw
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger lab4 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	enemysight
+	{
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+
+lab5
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_luger
+		statetype alert
+
+		wait 100
+		gotomarker lab5spot1
+		facetargetangles lab5spot1
+	}
+
+	trigger takecover5
+	{
+		runtomarker lab5spot2
+		trigger black1 takeaction1
+		wait 2000
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+lab6
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		nosight 99999
+		takeweapon all
+		clearanim
+		wait forever 0 black5spot2
+		trigger lab6 nosightloop
+	}
+
+	trigger nosightloop
+	{
+		nosight 99999
+		wait 9000 0 black5spot2
+		trigger lab6 nosightloop
+	}
+
+	trigger look_at_bj1
+	{
+		playanim relaxed_idle_no both forever fake_bj
+	}
+
+	trigger look_at_bj2
+	{
+		clearanim
+		playanim frightened both forever fake_bj
+	}
+
+	trigger talk1
+	{
+		playsound SWFSub_1
+	}
+
+	trigger talk2
+	{
+		playsound SWFSub_2
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+}
+
+fake_bj
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		nosight 99999
+		takeweapon all
+		giveweapon weapon_fg42
+		setclip weapon_fg42 40
+		setammo ammo_792mm 10
+		wait 5 0 lab6
+		playanim idle both forever lab6
+	}
+
+	trigger reload
+	{
+		nosight 99999
+		setclip weapon_fg42 0
+		playanim reload both
+		statetype combat
+		playanim firing both forever lab6
+	}
+}
+
+reinforce_ai_soldier_1	// down
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_2	// behind the door
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_3	// front of next door
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_4	// under stairs
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+	}
+}
+
+reinforce_ai_soldier_5	// near sevicer
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_6	// behind the column
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_7	// 1st hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+	}
+}
+
+reinforce_ai_soldier_8	// 2nd hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_9	// upper place
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_10	// office
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_11	// upper hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_12	// end of upper hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_loper_13	// loper 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		knockback off
+	}
+
+	death
+	{
+		trigger player loper_counter
+	}
+}
+
+reinforce_ai_loper_14	// loper 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		knockback off
+	}
+
+	death
+	{
+		trigger player loper_counter
+	}
+}
+
+reinforce_ai_soldier_15	// box-area, behind box
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_16	// after the upper bridge
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_17	// new hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_18	// office with worker
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_19	// new hallway 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_loper_20	// below stairs
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		knockback off
+	}
+}
+
+reinforce_ai_soldier_21	// after grid-bridge
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_venom_22	// service floor 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_23	// service floor 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_loper_24	// in secret hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		//norespawn
+		knockback off
+	}
+}
+
+reinforce_ai_blackguard_25	// in secret water enabler
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_26	// before U-boat 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_27	// before U-boat 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_28	// near U-boat door
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_29	// U-area 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_30	// U-area 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_soldier_31	// ammo room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_venom_32	// upper hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_blackguard_33	// on bridge 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_blackguard_34	// on bridge 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_fg42
+		statetype alert
+		parachute on
+	}
+}
+
+reinforce_ai_venom_35	// behind bridge's door
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+reinforce_ai_venom_36	// exit-door
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_flamethrower
+		statetype alert
+	}
+}
+
+xdog1
+{
+	attributes
+	{
+		fov 360
+		aggression 1.0
+	}
+
+	spawn
+	{
+		knockback off
+		statetype alert
+		giveweapon weapon_venom
+		setammo ammo_127mm 99999
+	}
+	
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+xdog2
+{
+	attributes
+	{
+		fov 360
+		aggression 1.0
+	}
+
+	spawn
+	{
+		knockback off
+		statetype alert
+		giveweapon weapon_venom
+		setammo ammo_127mm 99999
+	}
+	
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}

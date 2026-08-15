@@ -1,0 +1,1347 @@
+//AI Scripting
+//Map: Boss 1 map
+//Last edited by: WolfETPlayer
+
+player
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		accum 0 bitset 2	// spawn helga once
+		accum 1 set 0
+		cvar g_episode 1
+		objectivesneeded 2
+
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
+		#endif
+		#if g_chapter_legit < 1
+		accum 7 set 1
+		#endif
+		abort_if_loadgame
+		mu_fade 0 1000
+		mu_queue sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		applyloadout village1
+		#endif
+		cvar g_level_was_selected 0
+
+		mu_fade 0 1000
+		mu_queue sound/music/c_atmos
+		trigger counter1 cinematic1
+		trigger player cam2
+	}
+
+	// --- Start Camera section ---
+	trigger cam1
+	{
+		startcam cs05_01
+	}
+
+	trigger cam2
+	{
+		startcam cs05_02
+	}
+
+	trigger cam2b
+	{
+		startcam cs05_02b
+	}
+
+	trigger cam3
+	{
+		startcam cs05_03
+	}
+
+	trigger cam3d
+	{
+		startcam cs05_03d
+	}
+
+	trigger cam4
+	{
+		startcam cs05_04
+	}
+
+	trigger cam5
+	{
+		startcam cs05_05
+	}
+
+	trigger cam6
+	{
+		startcam cs05_06
+	}
+
+	trigger cam7
+	{
+		startcam cs05_07
+	}
+
+	trigger cam8
+	{
+		startcam cs05_08
+	}
+
+	trigger cam9
+	{
+		startcam cs05_09
+	}
+
+	trigger cam10
+	{
+		startcam cs05_10
+	}
+	// --- End Camera section ---
+
+	trigger cam1_after	// Used with plane...
+	{
+		startcam boss1b25_01
+	}
+
+	trigger cam2_after
+	{
+		startcam boss1b25_02
+	}
+
+	trigger cam3_after
+	{
+	}
+
+	trigger camerainterrupt
+	{
+		accum 1 abort_if_equal 1
+		stopcam
+		trigger counter1 cine1_cleanup
+	}
+
+	trigger action1
+	{
+		accum 1 set 1
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action2
+	{
+		accum 0 abort_if_not_bitset 2
+		accum 0 bitreset 2
+		// spawn the femzombie
+		alertentity helga_zombie
+	}
+
+	trigger enterbattle
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		trigger helga_zombie unhide1
+	}
+
+	trigger exitbattle
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		trigger helga_zombie hide1
+	}
+
+	trigger phitcorner1	// player has touched corner 1, check for spawning zombies
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		trigger counter2 corner1
+		accum 0 abort_if_not_bitset 2
+		accum 0 bitreset 2
+		// spawn the femzombie
+		alertentity helga_zombie
+	}
+
+	trigger phitcorner2	// player has touched corner 1, check for spawning zombies
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		trigger counter2 corner2
+	}
+
+	trigger phitcorner3	// player has touched corner 1, check for spawning zombies
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		trigger counter2 corner3
+	}
+
+	trigger spawned_zombie
+	{
+		accum 2 inc 1
+	}
+
+	trigger killed_zombie
+	{
+		accum 2 inc -1
+	}
+
+	trigger ztrigger1_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie1				// wake up zombie
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_1 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_16 #endif
+	}
+
+	trigger ztrigger2_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie2				// wake up zombie
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_2 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_12 #endif
+	}
+
+	trigger ztrigger3_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie3				// wake up zombie
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_5 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_15 #endif
+	}
+
+	trigger ztrigger4_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie4				// wake up zombie
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_3 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_14 #endif
+	}
+
+	trigger ztrigger5_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie5				// wake up zombie
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_4 #endif
+	}
+
+	trigger ztrigger6_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie6				// wake up zombie
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_10 #endif
+	}
+
+	trigger ztrigger7_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie7				// wake up zombie
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_6 #endif
+	}
+
+	trigger ztrigger8_hit
+	{
+		accum 2 abort_if_greater_than 2	// only 3 zombies at once
+		alertentity zombie8				// wake up zombie
+		#if g_reinforce >= 2 alertentity reinforce_ai_zombie_11 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_13 #endif
+	}
+
+	trigger got_objective2
+	{
+		objectivemet 2	// mission objective complete
+	}
+
+	trigger endmap
+	{
+		startcam boss1end
+		alertentity bj
+		trigger counter1 plane_cine1
+	}
+
+	trigger achievement_hard_check
+	{
+		accum 7 abort_if_equal 1
+		achievement_chapter2_hard
+	}
+
+	trigger endmap2
+	{
+		#if g_chapter_legit >= 1
+		achievement_chapter2
+		achievement_ironman
+		achievement_hardcore
+		achievement_999
+		achievement_nightmare
+		achievement_walkinthepark
+		#endif
+		trigger player achievement_hard_check
+		changelevel cutscene6 4000
+	}
+
+}
+
+//------------Plane cutscene------------
+
+bj3	// Bj3 added by jeremy with plane
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		nosight 99999
+		trigger bj3 go1
+	}
+
+	trigger go1
+	{
+		facetargetangles bj3_spot1
+		trigger bj3 anim_loop		
+	}
+
+	trigger anim_loop
+	{
+		nosight 99999
+		playanim idle both forever
+		wait 6000
+		clearanim
+		trigger bj3 anim_loop2			
+	}
+
+	trigger anim_loop2
+	{
+		nosight 99999
+		playanim jumping both forever			
+	}
+
+	trigger anim_loop3
+	{
+		clearanim
+		nosight 99999
+		playanim plane_2 both forever			
+	}
+
+	trigger anim_loop4
+	{
+		playanim plane_2 both forever
+		wait 10000
+		playanim plane_2 both	// pilots stays get ready
+	}
+
+	trigger talk1
+	{
+		playsound boss1_mh_01
+	}
+
+	trigger talk2
+	{
+		playsound boss1_en_01
+	}
+
+	trigger talk3
+	{
+		playsound boss1_mh_02
+	}
+
+	trigger talk4
+	{
+		playsound boss1_en_02
+	}
+
+	trigger talk5
+	{
+		playsound boss1_mh_03
+	}
+
+	trigger talk6
+	{
+		playsound boss1_mh_static
+	}
+
+	trigger talk7
+	{
+		playsound boss1_en_static
+	}
+
+	trigger stop_talking
+	{
+		accum 4 set 1
+		playsound blank
+	}
+}
+//---------------end plane------------------
+
+// Start Cinematic1 AI section
+helga
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		noavoid
+		takeweapon all
+		headlook off
+	}
+
+	trigger idle
+	{
+		playanim idle_1 both forever
+	}
+
+	trigger idle_b
+	{
+		playanim idle_2 both forever
+	}
+
+	trigger anim1
+	{
+		playanim cs_5-01 both
+	}
+
+	trigger anim2
+	{
+		playanim cs_5-02 both
+	}
+
+	trigger anim3
+	{
+		playanim cs_5-03 both
+	}
+
+	trigger anim4
+	{
+		playanim cs_5-04 both
+	}
+
+	trigger anim5
+	{
+		playanim cs_5-05 both	
+	}
+
+	trigger anim6
+	{
+		playanim cs_5-06 both	
+	}
+
+	trigger anim7
+	{
+		playanim cs_5-07 both
+	}
+
+	trigger anim8
+	{
+		playanim cs_5-08 both
+	}
+
+	trigger talk1
+	{
+		playsound helga_1	// I'm not planning anything. I'm doing it...
+	}
+
+	trigger talk2
+	{
+		playsound helga_2	// I'm prepared to take that risk...
+	}
+
+	trigger talk3
+	{
+		playsound helga_3	// I don't care. I've waited my whole life for an opportunity liek this.
+	}
+
+	trigger talk4
+	{
+		playsound helga_4	// Get out of my way, Zemph. Your feeble threats won't stop me.
+	}
+
+	trigger talk5
+	{
+		playsound helga_5	// This is your last warning...
+	}
+
+	trigger talk6
+	{
+		playsound helga_6	// At last...!
+	}
+
+	trigger getweap
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 8
+		setclip weapon_luger 8
+		selectweapon weapon_luger
+	}
+
+	trigger fire_zemph
+	{
+		fireattarget zemph
+		wait 5
+		facetargetangles exithidden3 	// Used so that she resets her angles.
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zemph
+{
+	attributes
+	{
+		hearing_scale 0.0
+		health 5
+	}
+
+	spawn
+	{
+		noavoid on
+		nosight 99999
+		takeweapon all
+		headlook off
+		knockback off
+	}
+
+	trigger idle
+	{
+		playanim idle_1 both forever
+	}
+
+	trigger idle_b
+	{
+		playanim idle_2 both forever
+	}
+
+	trigger anim1
+	{
+		playanim cs_5-01 both
+	}
+
+	trigger anim2
+	{
+		nosight 99999
+		playanim cs_5-02 both
+	}
+
+	trigger anim3
+	{
+		playanim cs_5-03 both
+	}
+
+	trigger anim4
+	{
+		nosight 99999
+		playanim cs_5-04 both
+	}
+
+	trigger anim5
+	{
+		playanim cs_5-05 both
+	}
+
+	trigger anim6
+	{
+		playanim cs_5-06 both
+	}
+
+	trigger talk1
+	{
+		playsound zemph_1	// What are you planning now?
+	}
+
+	trigger talk2
+	{
+		playsound zemph_2	// No! You can't do that! You'll break the inner seal!
+	}
+
+	trigger talk3
+	{
+		playsound zemph_3	// You're prepared? Are you completely mad!
+	}
+
+	trigger talk4
+	{
+		playsound zemph_4	// Frau Von Bulow... I warn you!
+	}
+
+	trigger talk5
+	{
+		playsound zemph_5	// Please! Come to your senses! Stop this madness before it is too late.
+	}
+
+	trigger talk6
+	{	
+		playsound zemph_6	// No... No you can't.
+	}
+
+	trigger talk7
+	{
+		playsound zemph_7	// Argh!
+	}
+
+		bulletimpact
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+bj
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		noavoid on
+		nosight 99999
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		headlook off
+		godmode on
+		knockback off
+
+		wait 100
+		explicit_routing on
+		walktomarker bjspot1
+		walktomarker bjspot2
+	}
+}
+
+// END Cinematic1 AI section
+zombie1
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave1	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie2
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave2	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie3
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave3	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie4
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave4	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie5
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave5	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie6
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave6	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie7
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave7	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+zombie8
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		trigger player spawned_zombie
+		alertentity zgrave8	// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript	// resume normal combat now
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+helga_zombie	// reincarnation of helga
+{
+	attributes
+	{
+		pain_threshold_scale 50
+		aggression 1.0
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 set 0	// 1 = helga has broken gate
+		accum 1 set 0	// 1 = fired fakedeath
+		accum 2 set 0	// 1 = gate blown
+		statetype alert
+		knockback off
+		godmode on
+		nosight 999999
+		wait 100
+		runtomarker helga1 nostop
+		runtomarker helga2 nostop
+		alertentity closedoor
+		runtomarker helga3 nostop
+		runtomarker helga4 nostop
+		runtomarker helga5 nostop
+		godmode off
+		runtomarker helga6
+		alertentity blowfence
+		accum 2 set 1	// 1 = gate blown
+		playanim attack3 both
+		trigger player phitcorner1	// simulate hitting a corner to force some zombie out of their coffins
+		runtomarker helga7
+		attrib pain_threshold_scale 10
+		sight
+		accum 0 set 1
+		gotocast player
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	trigger unhide1
+	{
+		accum 0 abort_if_not_equal 1
+		sight
+		runtomarker you_cant_hide
+		resetscript
+	}
+
+	trigger hide1
+	{
+		accum 0 abort_if_not_equal 1
+		runtomarker hidden1
+		wait 5 1
+		facetargetangles hidden1
+		wait forever 1
+	}		
+
+	death
+	{
+		objectivemet 1
+		#if g_chapter_legit >= 1
+		achievement_boss1
+		#endif
+		alertentity zombie1
+		alertentity zombie2
+		alertentity zombie3
+		alertentity zombie4
+		alertentity zombie5
+		alertentity zombie6
+		alertentity zombie7
+		alertentity zombie8
+		trigger counter1 killed_total
+		accum 2 abort_if_not_equal 0
+		alertentity blowfence
+	}
+}
+
+reinforce_ai_zombie_1
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_2
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_3
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_4
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_5 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_6
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_10 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_11
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_12 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_13 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_14 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_15 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}
+
+reinforce_ai_zombie_16 		//
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 70000
+		godmode on
+		knockback off
+		playanim off_hole both
+		sight
+		godmode off
+		resetscript
+		attack player
+	}
+
+	death
+	{
+		trigger player killed_zombie
+		trigger counter1 killed_total
+	}
+}

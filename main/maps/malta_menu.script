@@ -1,0 +1,40 @@
+//
+//Brush Scripting
+//Map: malta_menu
+//Last edited by: WolfETPlayer
+//
+
+timer
+{
+    spawn
+	{
+	  printlabel off
+	  printlabel format string accum timer inline
+	  printlabel txt Your Time:
+	}
+	
+	trigger time_start
+	{
+	    printlabel format string accum timer inline
+		printlabel on
+		accumgametime 2
+		trigger timer time_go
+	}
+	
+	trigger time_go
+	{
+	   accumgametime 1
+	   accumaction 1 1 minus 2
+	   printlabel param 1 400 50
+	   wait 5
+	   trigger timer time_go
+	}
+	
+	trigger time_stop
+	{
+	   printlabel format pulse string accum timer inline
+	   wait 5000
+	   printlabel off
+	}
+}
+

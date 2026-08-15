@@ -1,0 +1,990 @@
+player
+{
+		
+	spawn
+	{
+		objectivesneeded 2	// tells the number of objectives
+		 		abort_if_loadgame
+		mu_queue sound/music/m_stealth_new
+	} 
+	playerstart
+	{
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		setammo ammo_9mm 200
+		selectweapon weapon_mp40
+		mu_fade 0 1000
+		mu_queue sound/music/m_stealth_new
+	}
+	trigger action1
+	{
+	alertentity nazi1
+	}
+	trigger action2
+	{
+	alertentity nazi3
+	alertentity officer1 
+	alertentity nazi2
+	}	
+	trigger action3
+	{
+	alertentity officer2 
+	alertentity officer3
+	alertentity officer4
+	alertentity officer5
+	}
+	trigger action4
+	{
+	alertentity elite1
+	alertentity blackguard1
+	}
+	trigger action5
+	{
+	alertentity zom1
+	alertentity warzom1
+	}
+	trigger action6
+	{
+	alertentity warzom3
+	alertentity warzom2
+	}
+	trigger action7
+	{
+	alertentity nazicorr3
+	alertentity nazicorr1
+	}
+	trigger action8
+	{
+	alertentity nazicorr2
+	}
+	trigger action9
+	{
+	alertentity nazicorr4
+	alertentity nazicorr5
+	}
+	trigger action10
+	{
+	alertentity nazicorr6
+	}
+	trigger action11
+	{
+	alertentity nazicorr7
+	alertentity nazicorr8
+	alertentity nazicorr20 
+	alertentity nazicorr21 
+	alertentity nazicorr22
+	}
+	trigger actionhallmain1
+	{
+	alertentity nazihall1
+	alertentity nazihall2
+	}
+	trigger actionmainhall4
+	{
+	alertentity nazimainhall4
+	}
+	trigger actionmainhall5
+	{
+	alertentity supermainhall4
+	}
+	trigger actionmainhall6
+	{
+	alertentity nazimainhall5 
+	alertentity nazimainhall6
+	}
+	trigger actionmainhall7
+	{
+	alertentity nazimainhall8	
+	}
+	trigger actionmainhall8
+	{
+	alertentity bosshelga1
+	}
+	trigger actionmainhall9
+	{
+	alertentity nazimainhall13
+	alertentity nazimainhall12
+	alertentity nazimainhall15
+	}
+	trigger actionmainhall10
+	{
+	alertentity zomcorrd4	// zombie in cave area
+	alertentity zomcorrd7
+	alertentity zomcorrd8
+	}
+	trigger actionmainhall11
+	{
+	alertentity zomcorrd4
+	alertentity zomcorrd7
+	alertentity zomcorrd8
+	}
+	trigger actionhalla15	// this triggers the AIs if you turn into left door
+	{
+	alertentity nazicorr7 
+	alertentity nazicorr8 
+	alertentity nazicorr20 
+	alertentity nazicorr21 
+	alertentity nazicorr22
+	}
+	trigger actionhalla16	// same as action 8,9 and 10	
+	{
+	alertentity nazicorr2
+	alertentity nazicorr4
+	alertentity nazicorr5
+	alertentity nazicorr6
+	}
+	trigger actionblue1	// blue corridor
+	{
+	alertentity bluenazi1	// in blue rooms
+	alertentity bluenazi2	
+	alertentity bluenazi3	
+	alertentity bluenazi4	
+	alertentity bluenazi5	
+	alertentity bluenazi6
+	}
+	trigger actionblue2
+	{
+	alertentity bluenazi7	// black guard 
+	}
+	trigger actionblue3
+	{
+	alertentity bluenazi8	// elite guard	
+	alertentity bluenazi9	// soldier
+	alertentity bluenazi10
+	}
+	trigger actionblue4
+	{
+	alertentity bluenazi11	// black guard
+	alertentity bluenazi12	//in blue rooms
+	}
+	trigger actionred1 
+	{
+	alertentity naziredcorr1
+	alertentity naziredcorr2
+	}
+	trigger actionred2 
+	{
+	alertentity naziredcorr3
+	alertentity naziredcorr4
+	}
+	trigger actionfinal1
+	{
+	alertentity blackguardend7
+	alertentity blackguardend8
+	}
+	trigger actionfinal2
+	{
+	alertentity blackguardend2
+	alertentity blackguardend4
+	}
+	trigger actionfinal3
+	{
+	alertentity blackguardend9
+	alertentity blackguardend10
+	}
+	trigger actionfinal4
+	{
+	alertentity blackguardend11
+	alertentity blackguardend13
+	}
+	trigger actionfinal5
+	{
+	alertentity blackguardend11
+	alertentity blackguardend13
+	}
+	trigger secret1
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret2
+	{
+	foundsecret
+	alertentity debris1
+	trigger counter1 steal_treasure
+	}
+	trigger secret3
+	{
+	foundsecret
+	alertentity debris2
+	trigger counter1 steal_treasure
+	}
+	trigger secret4
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret5
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret6
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret7
+	{
+	foundsecret
+	alertentity debris3
+	}
+	trigger secret8
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret9
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret10
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret11
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret12
+	{
+	foundsecret
+	}
+	trigger secret13
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret14
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger secret15
+	{
+	foundsecret
+	trigger counter1 steal_treasure
+	}
+	trigger objective1
+	{
+	objectivemet 1	
+	}
+	trigger objective2
+	{
+	objectivemet 2	
+	}
+	trigger dos
+	{
+	trigger shelf fall1
+	trigger barrell1 fall1
+	trigger barrell2 fall1
+	trigger barrell3 fall1
+	}
+	trigger endmap
+	{
+	achievement_map_w3dsec
+	changelevel gamefinished 250
+	}	
+
+} 
+	nazi1	// in first room on player left
+	{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+	nazi2	// to left of first junction
+	{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0.25
+	attack_skill 0.25
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{ 
+	takeweapon all
+	giveweapon weapon_luger
+	setammo ammo_9mm 64
+	selectweapon weapon_luger
+	sethealth 30
+	}
+	enemysight
+	{
+	resetscript
+	}
+}
+nazi3	// to right of end of first junction
+{
+	attributes
+	{
+		aim_accuracy 0.33
+		aim_skill 0.33
+		attack_skill 0.33
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.3
+		inner_detection_radius 640
+	 } 
+	spawn
+	{ 
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 64
+		selectweapon weapon_luger
+		sethealth 50
+	}
+}
+officer1	// next to nazi3
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+officer2	// in room upstairs on left of corner
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 50
+	}
+	}
+officer3	// in room upstairs on left of corner
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 20
+	}
+	}
+officer4	// in room upstairs on right of corner
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 50
+	}
+	}
+officer5	// in room upstairs on left of corner
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 20
+	}
+	}
+elite1
+{
+spawn
+{
+sethealth 60
+}
+}
+blackguard1
+{
+spawn
+{
+sethealth 100
+}
+}
+zom1	// in corridor 
+{
+spawn
+{
+sethealth 80
+}
+}
+warzom1	// in corridor
+{
+	spawn
+	{
+	sethealth 80
+	}
+	death
+	{
+	}
+}
+warzom2	// in corridor
+{
+spawn
+{
+sethealth 50
+}
+}
+warzom3	//in corridor
+{
+spawn
+{
+sethealth 30
+}
+}
+nazimainhall4
+{
+spawn
+{
+sethealth 50
+}
+}
+supermainhall4
+{
+spawn
+{
+sethealth 100
+}
+}
+nazicorr1	// in corridor by corner
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+
+nazicorr2
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazicorr3
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazicorr4
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazicorr5
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazicorr6
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazicorr7
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazicorr8
+{
+	attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazihall1
+	{
+attributes
+	{
+	aim_accuracy 0.25
+	aim_skill 0..25
+	attack_skill 0.5
+	inner_detection_radius 1024
+	alertness 2500
+	hearing_scale 0.3
+	inner_detection_radius 640
+	} 
+	spawn
+	{
+	takeweapon all
+	giveweapon weapon_mp40
+	setammo ammo_9mm 64
+	selectweapon weapon_mp40
+	sethealth 30
+	}
+	}
+nazihall2
+{
+	spawn
+	{
+	sethealth 80
+	}
+	}
+nazimainhall5 
+{
+	spawn
+	{
+	sethealth 60
+	}
+	}
+nazimainhall6
+{
+	spawn
+	{
+	sethealth 60
+	}
+	}
+nazimainhall8	//elite
+{
+	spawn
+	{
+	sethealth 60
+	}
+	}
+bosshelga1	//boss helga
+{
+	spawn
+	{
+	sethealth 60
+	}
+	death
+			{
+			}
+	}
+nazimainhall11	// 
+{
+	spawn
+	{
+	sethealth 60
+	}
+	}
+nazimainhall12	// 
+{
+	spawn
+	{
+	sethealth 60
+	}
+	}
+nazimainhall13	// 
+	spawn
+	{
+	sethealth 60
+	}
+	}
+nazimainhall15	// 
+{
+	spawn
+	{
+	sethealth 60
+	}
+	}
+zomcorrd4	// zombie in cave area
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+zomcorrd7	// zombie in cave area
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+zomcorrd8	// zombie in cave area
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+nazicorr20	// zombie in cave area
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+nazicorr21	// zombie in cave area
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+nazicorr22	// zombie in cave area
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluen	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi2	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi3	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi4	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi5	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi6	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi7	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi8	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi9	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi10	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi11	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+bluenazi12	// in blue rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+naziredcorr1	// in red rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+naziredcorr2	// in red rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+naziredcorr3	// in red rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+naziredcorr4	// in red rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+blackguardend2	// in final rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+blackguardend4	// in final rooms
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+blackguardend7	// in final rooms
+{
+	spawn
+	{
+	sethealth 100
+	}
+	}
+blackguardend8	// super soldiers in final rooms
+{
+	spawn
+	{
+	sethealth 100
+	}
+	}
+blackguardend9	// in hall before final
+{
+	spawn
+	{
+	sethealth 100
+	}
+	}
+blackguardend10	// in hall before final
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+blackguardend11		// in hall before final
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}
+
+blackguardend13	// in hall before final
+{
+	spawn
+	{
+	sethealth 50
+	}
+	}

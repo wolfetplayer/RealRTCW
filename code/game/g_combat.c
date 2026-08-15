@@ -430,6 +430,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	self->client->ps.pm_type = PM_DEAD;
+	self->client->pers.weaponWheelOpen = qfalse;
 
 	if ( attacker ) {
 		killer = attacker->s.number;
@@ -726,6 +727,7 @@ qboolean IsHeadShotWeapon( int mod, gentity_t *targ, gentity_t *attacker ) {
 	case MOD_FG42SCOPE:
 	case MOD_SNOOPERSCOPE:
 	case MOD_DELISLE:
+	case MOD_DELISLESCOPE:
 	case MOD_SNIPERRIFLE:
 	case MOD_BROWNING:
 	case MOD_MG42M:

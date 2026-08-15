@@ -1,0 +1,239 @@
+//
+//Brush Scripting
+//Map: Malta_3
+//Last edited by: WolfETPlayer
+//
+
+buoy
+{
+	spawn
+	{
+	 wait 50
+	}
+	
+}
+
+// fishing ship #1
+
+ship1
+{ 
+	spawn 
+	{
+		trigger ship1 moveship
+	} 
+
+	trigger moveship 
+	{ 
+		gotomarker ship1_path1 4 wait
+		gotomarker ship1_path2 6 wait
+		gotomarker ship1_path3 4 wait
+		gotomarker ship1_path4 4 wait
+		trigger ship1 moveship
+	}
+}
+
+timer
+{
+    spawn
+	{
+	  printlabel off
+	  printlabel format string accum timer inline
+	  printlabel txt Your Time:
+	}
+	
+	trigger time_start
+	{
+	    printlabel format string accum timer inline
+		printlabel on
+		accumgametime 2
+		trigger timer time_go
+	}
+	
+	trigger time_go
+	{
+	   accumgametime 1
+	   accumaction 1 1 minus 2
+	   printlabel param 1 400 50
+	   wait 5
+	   trigger timer time_go
+	}
+	
+	trigger time_stop
+	{
+	   printlabel format pulse string accum timer inline
+	   wait 5000
+	   printlabel off
+	}
+}
+
+radio	
+{
+	spawn
+	{
+		accum 5 set 0
+	}
+
+	trigger static 
+	{
+		stopsound
+		playsound sound/scenaric/dam/radiostaticloop.wav looping
+		wait 1500
+		stopsound
+		trigger radio choose_tunes	
+	}
+
+	trigger choose_tunes
+	{
+		accum 5 random 7
+		resetscript
+		wait 5
+		trigger radio radio1
+		wait 5
+		trigger radio radio2
+		wait 5
+		trigger radio radio3
+		wait 5
+		trigger radio radio4
+		wait 5
+		trigger radio radio5
+		wait 5
+		trigger radio radio6
+		wait 5
+		trigger radio radio7
+	}
+
+	trigger radio1				
+	{
+		accum 5 abort_if_not_equal 0 
+		resetscript 
+		stopsound
+		playsound sound/scenaric/village2/beethoven.wav looping
+	}
+
+	trigger radio2		
+	{
+		accum 5 abort_if_not_equal 1 
+		stopsound
+		resetscript
+		playsound sound/world/lili_marlene_germ_cut.wav looping
+	}
+
+	trigger radio3		
+	{
+		accum 5 abort_if_not_equal 2 
+		resetscript
+		stopsound
+		playsound sound/scenaric/village2/beethoven_9_2.wav looping	
+	}
+	
+	trigger radio4		
+	{
+		accum 5 abort_if_not_equal 3
+		resetscript
+		stopsound
+	}
+	
+	trigger radio5
+	{
+		accum 5 abort_if_not_equal 4
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta/wellerman.wav looping	
+	}
+	
+	trigger radio6
+	{
+		accum 5 abort_if_not_equal 5
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta_2/green.wav looping
+	}
+	
+	trigger radio7
+	{
+		accum 5 abort_if_not_equal 6
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta_3/mystery.wav looping
+		trigger player mystery_radio
+	}
+
+}
+
+radio_cafe	
+{
+	spawn
+	{
+		accum 6 set 0
+		trigger radio_cafe choose_tunes
+	}
+
+	trigger static 
+	{
+		stopsound
+		playsound sound/scenaric/dam/radiostaticloop.wav looping
+		wait 1500
+		stopsound
+		trigger radio_cafe choose_tunes
+	}
+
+	trigger choose_tunes
+	{
+		accum 6 random 3
+		resetscript
+		wait 5
+		trigger radio_cafe radio1
+		wait 5
+		trigger radio_cafe  radio2
+		wait 5
+		trigger radio_cafe  radio3
+	}
+
+	trigger radio1				
+	{
+		accum 6 abort_if_not_equal 0 
+		resetscript 
+		stopsound
+		playsound sound/scenaric/malta/malta_news2.wav looping
+	}
+
+	trigger radio2		
+	{
+		accum 6 abort_if_not_equal 1 
+		stopsound
+		resetscript
+		playsound sound/scenaric/malta_3/malta3_radio1.wav looping
+	}
+
+	trigger radio3		
+	{
+		accum 6 abort_if_not_equal 2 
+		resetscript
+		stopsound
+		playsound sound/scenaric/malta_3/malta_folk.wav looping
+	}
+
+}
+
+handle
+{
+	spawn
+	{
+
+	}
+
+	trigger turnon
+	{
+		playsound sound/movers/switches/butn2.wav
+		alertentity start_tesla
+		faceangles 180 0 0 500
+		alertentity hurt1
+		alertentity smoke1
+		wait 3000
+		alertentity hurt1
+		wait 1000
+		alertentity smoke1
+		faceangles 0 0 0 500
+	}
+}
+

@@ -1,0 +1,274 @@
+//
+//AI Scripting
+//Map: malta_menu
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+	    objectivesneeded 2
+		accum 0 bitreset 0	// Used to wait a few seconds before you are able to skip cinematic.
+		accum 0 bitset 2
+		accum 0 bitreset 3
+		accum 1 set 0   // used for NPC random dialogue lines
+		accum 2 set 0   // used for anims
+		accum 3 set 0   // used for weapon loadout
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_stop 0 2000
+		giveinventory key_binocs
+	}
+	
+	trigger enable_timer
+	{
+	   trigger timer time_start
+	}
+	
+	trigger disable_timer
+	{
+	   trigger timer time_stop
+	   achievement_malta_course
+	}
+	
+	trigger endmap
+	{
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		changelevel forest persistent
+	}
+
+
+}
+
+gimme_wp_guy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype relaxed
+        giveweaponfull weapon_thompson
+		wait 1500
+	}
+	
+	trigger check_speech
+	{
+	   accum 1 abort_if_not_equal 3
+	   accum 1 set 0
+	}
+
+    activate player
+    {
+	  trigger gimme_wp_guy check_speech
+	  accum 1 inc 1
+	  trigger gimme_wp_guy talk1
+	  trigger gimme_wp_guy talk2
+	  trigger gimme_wp_guy talk3
+	  wait 0 0 player
+    }
+	
+	trigger introduction
+	{
+	  playsound gimmewp_intro // "Welcome to the training facility, Captain."
+	  wait 2000
+      facetargetangles gimmewp_spot1
+	  achievement_training
+	}
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  playsound gimmewp_lt // "Leitanant McDermott is in the next section. He will guide you through our new course."
+	  face_entity player
+	  wait 5000
+      facetargetangles gimmewp_spot1
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  playsound gimmewp_justdont // "Sorry Captain, but you cant take those weapons outside this facility."
+	  face_entity player
+	  wait 5000
+      facetargetangles gimmewp_spot1
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  playsound gimmewp_resupply // "If you wanna resupply - use the ammo cabinet."
+	  face_entity player
+	  wait 5000
+      facetargetangles gimmewp_spot1
+	}
+	
+	enemysight
+	{
+	    deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	    deny
+	}
+
+	inspectbodystart
+	{
+	    deny
+	}
+
+	inspectbodyend
+	{
+	   deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		missionfailed 5 10
+	}
+}
+
+course_sarge
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		statetype relaxed
+		wait forever
+	}
+
+    trigger welcome
+    {
+      wait 1000
+	  facetargetangles sarge_spot3
+      playsound course_welcome
+	  wait 4000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger results
+    {
+	  wait 2000
+	  accum 1 random 5
+	  trigger course_sarge talk1
+	  trigger course_sarge talk2
+	  trigger course_sarge talk3
+	  trigger course_sarge talk4
+    }	
+	
+	trigger talk1
+	{
+	  accum 1 abort_if_not_equal 1
+	  facetargetangles sarge_spot1
+	  playsound course_ok // "You looked ok"
+	  wait 3000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk2
+	{
+	  accum 1 abort_if_not_equal 2
+	  facetargetangles sarge_spot1
+	  playsound course_horrible // "Wasnt horrible"
+	  wait 3000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk3
+	{
+	  accum 1 abort_if_not_equal 3
+	  facetargetangles sarge_spot1
+	  playsound course_prettygood // "Pretty Good"
+	  wait 3000
+	  facetargetangles sarge_spot2
+	}
+	
+	trigger talk4
+	{
+	  accum 1 abort_if_not_equal 4
+	  facetargetangles sarge_spot1
+	  playsound course_seenworse // "I've seen worse"
+	  wait 3000
+	  facetargetangles sarge_spot2
+	}
+	
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+	
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	    deny
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	   missionfailed 5 10
+	}
+}
+	
+	

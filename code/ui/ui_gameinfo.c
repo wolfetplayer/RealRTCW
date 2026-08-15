@@ -174,13 +174,38 @@ void UI_LoadArenas( void ) {
 
 /*
 ===============
+UI_ResolveArenaLongnames
+===============
+*/
+// must run before UI_FreeTranslateTable(); UI_LoadArenasIntoMapList() runs later, after the table is gone
+void UI_ResolveArenaLongnames( void ) {
+	int n;
+	char *longname;
+	const char *translated;
+
+	for ( n = 0; n < ui_numArenas; n++ ) {
+		longname = Info_ValueForKey( ui_arenaInfos[n], "longname" );
+		if ( longname[0] == '@' ) {
+			translated = TranslateTable_Find( longname + 1 );
+			if ( translated ) {
+				Info_SetValueForKey( ui_arenaInfos[n], "longname", translated );
+			}
+		}
+	}
+}
+
+/*
+===============
 UI_LoadArenasIntoMapList
 ===============
 */
 void UI_LoadArenasIntoMapList( void ) {
 	int   n;
 	char  *type;
+	char  *chapter;
+	char  *hubonly;
 	int   enemiesFilter;
+	int   chapterFilter;
 
 	uiInfo.mapCount = 0;
 
@@ -193,6 +218,9 @@ void UI_LoadArenasIntoMapList( void ) {
 		enemiesFilter = SV_ENEMIES_FILTER_ALL;
 	}
 
+	// ui_camp_chapter: 0 = all missions, 1-7 = a single mission
+	chapterFilter = ui_camp_chapter.integer;
+
 	for ( n = 0; n < ui_numArenas; n++ ) {
 		int enemiesType = UI_ParseArenaEnemiesType( ui_arenaInfos[n] );
 
@@ -204,8 +232,21 @@ void UI_LoadArenasIntoMapList( void ) {
 			// Doesn't match the selected filter – skip this map
 			continue;
 		}
+
+		// skip if "chapter" key doesn't match the mission filter (survival maps have no "chapter" key)
+		chapter = Info_ValueForKey( ui_arenaInfos[n], "chapter" );
+		if ( *chapter && chapterFilter != 0 && atoi( chapter ) != chapterFilter ) {
+			continue;
+		}
+
+		// "hubonly" maps only show when the Malta hub story progression is enabled
+		hubonly = Info_ValueForKey( ui_arenaInfos[n], "hubonly" );
+		if ( *hubonly && ui_midgame.integer != 1 ) {
+			continue;
+		}
 		// determine type
 
+		// "longname" @KEY references are already resolved by UI_ResolveArenaLongnames() at init time
 		uiInfo.mapList[uiInfo.mapCount].cinematic = -1;
 		uiInfo.mapList[uiInfo.mapCount].mapLoadName = String_Alloc( Info_ValueForKey( ui_arenaInfos[n], "map" ) );
 		uiInfo.mapList[uiInfo.mapCount].mapName = String_Alloc( Info_ValueForKey( ui_arenaInfos[n], "longname" ) );

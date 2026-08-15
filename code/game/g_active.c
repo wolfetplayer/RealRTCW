@@ -524,9 +524,24 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			}
 
 		// regenerate health only if cvar is turned on
-if ((g_regen.integer == 1 || g_gametype.integer == GT_SURVIVAL) && level.time >= client->healthRegenStartTime ) {
+		// g_regen: 0 = off, 1 = full regen, 2 = partial regen (heals up to the nearest health threshold only, Wolfenstein: The New Order style)
+if ((g_regen.integer == 1 || g_regen.integer == 2 || g_gametype.integer == GT_SURVIVAL) && level.time >= client->healthRegenStartTime ) {
 
-		    if (ent->health < client->ps.stats[STAT_MAX_HEALTH])
+		    int regenCap = client->ps.stats[STAT_MAX_HEALTH];
+
+		    if ( g_regen.integer == 2 && g_gametype.integer != GT_SURVIVAL ) {
+			    // threshold scales with max health: 20/100, 10/50, 5/25, etc. (5 even segments)
+			    int regenSegment = client->ps.stats[STAT_MAX_HEALTH] / 5;
+			    if ( regenSegment < 1 ) {
+				    regenSegment = 1;
+			    }
+			    regenCap = ( ( ent->health + regenSegment - 1 ) / regenSegment ) * regenSegment;
+			    if ( regenCap > client->ps.stats[STAT_MAX_HEALTH] ) {
+				    regenCap = client->ps.stats[STAT_MAX_HEALTH];
+			    }
+		    }
+
+		    if (ent->health < regenCap)
 		    {
 			if (!ent->aiCharacter){ // no regen for AI
 
@@ -536,23 +551,35 @@ if ((g_regen.integer == 1 || g_gametype.integer == GT_SURVIVAL) && level.time >=
 					client->healthRegenStartTime = level.time + 500;
 					ent->health += 10;
 
-					if (ent->health > client->ps.stats[STAT_MAX_HEALTH])
+					if (ent->health > regenCap)
 					{
-						ent->health = client->ps.stats[STAT_MAX_HEALTH];
+						ent->health = regenCap;
 					}
 				}
 				  else if (ent->health >= client->ps.stats[STAT_MAX_HEALTH] * 0.50 && ent->health < client->ps.stats[STAT_MAX_HEALTH] * 0.75)
 				{
 					client->healthRegenStartTime = level.time + 750;
 					ent->health += 9;
+					if (ent->health > regenCap)
+					{
+						ent->health = regenCap;
+					}
 				} else if (ent->health >= client->ps.stats[STAT_MAX_HEALTH] * 0.25 && ent->health < client->ps.stats[STAT_MAX_HEALTH] * 0.50)
 				{
                    	client->healthRegenStartTime = level.time + 1000;
 					ent->health += 7;
+					if (ent->health > regenCap)
+					{
+						ent->health = regenCap;
+					}
 				}  else if (ent->health < client->ps.stats[STAT_MAX_HEALTH] * 0.25)
 				{
 					client->healthRegenStartTime = level.time + 1500;
 					ent->health += 5;
+					if (ent->health > regenCap)
+					{
+						ent->health = regenCap;
+					}
 				}
 
 
@@ -1123,6 +1150,13 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.pm_type = PM_DEAD;
 	} else {
 		client->ps.pm_type = PM_NORMAL;
+	}
+
+	// defense-in-depth: don't let a stuck/spoofed weapon wheel flag keep dilation active while dead, in a cutscene, on mg42, or at intermission
+	if ( client->pers.weaponWheelOpen &&
+		 ( client->ps.stats[STAT_HEALTH] <= 0 || client->cameraPortal ||
+		   ( client->ps.eFlags & EF_MG42_ACTIVE ) || level.intermissiontime ) ) {
+		client->pers.weaponWheelOpen = qfalse;
 	}
 
 	// set parachute anim condition flag

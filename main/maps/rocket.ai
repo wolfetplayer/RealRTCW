@@ -1,0 +1,5943 @@
+//
+// AI Scripting
+// Map: Rocket (Inner Compound)
+// Last updated by: WolfETPlayer & William Faure
+// Notes: Took out nazi1 on 080801, refer to rocket_102 for his script
+//
+
+
+player
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used for action21/21b, support if the player jumps off the bridge.
+		accum 0 bitreset 1	// Used for voice toggle.
+		accum 0 bitset 2	// Used for elevator1's DOWN lever
+		accum 0 bitreset 3	// Used for elevator1's UP lever
+		accum 0 bitreset 4
+		
+		cvar g_episode 2
+		objectivesneeded 3
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	trigger give_loadout_1
+	{
+		accum 1 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout forest_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout forest_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout forest_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 1 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout forest_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout forest_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout forest_vanilla_shotgun_2
+		#endif
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 1 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
+		mu_fade 0 1000
+		mu_queue sound/music/m_stealth_new
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_2 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_3 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_5 #endif
+	}
+
+	// ---Start Music section---
+
+	trigger change_music2
+	{
+		mu_fade 0 1000
+		mu_start sound/music/m_alarm
+	}
+
+	trigger change_music3
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_situation
+	}
+
+	trigger change_music4
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_mission
+	}
+
+	trigger change_music5
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_action
+	}
+
+	trigger start_music2
+	{
+		mu_start sound/music/m_alarm 2000
+	}
+
+	// ---End Music Section---
+
+	trigger truckdoor_toggle	// Triggers the door to toggle opened and closed.
+	{
+		trigger truckdoor toggle
+	}
+
+	trigger alarm1_toggle
+	{
+		trigger siren1 toggle
+	}
+
+	trigger alarm1_gone
+	{
+		trigger siren1 off_by_explode
+	}
+
+	trigger crane1lift
+	{
+		trigger crane1 lift
+	}
+
+	trigger e1_toggle_upbtn	// This triggers while the player is NOT on the elevator.
+	{
+		trigger e1upbtn toggle
+	}
+
+	trigger e1_toggle_dwnbtn	// This triggers while the player is NOT on the elevator.
+	{
+		trigger e1dwnbtn toggle
+	}
+
+	trigger e1lever1_toggle
+	{
+		trigger e1lever1 toggle
+	}
+
+	trigger e1_downlever
+	{
+		accum 0 abort_if_not_bitset 2
+		trigger e1lever1 toggle
+	}
+
+	trigger enable_e1downlever
+	{
+		accum 0 bitset 2
+	}
+
+	trigger disable_e1downlever
+	{
+		accum 0 bitreset 2
+	}
+
+	trigger e1_uplever
+	{
+		accum 0 abort_if_not_bitset 3
+		trigger e1lever1 toggle
+	}
+
+	trigger enable_e1uplever
+	{
+		accum 0 bitset 3
+	}
+
+	trigger disable_e1uplever
+	{
+		accum 0 bitreset 3
+	}
+
+	trigger e2_toggle_upbtn	// This triggers while the player is NOT on the elevator.
+	{
+		trigger e2upbtn toggle
+	}
+
+	trigger e2_toggle_dwnbtn	// This triggers while the player is NOT on the elevator.
+	{
+		trigger e2dwnbtn toggle
+	}
+
+	trigger e2lever1_toggle
+	{
+		trigger e2lever1 toggle
+	}
+
+	trigger e2_downlever
+	{
+		trigger truckdoor e2_downlever
+	}
+
+	trigger e2_uplever
+	{
+		trigger truckdoor e2_uplever
+	}
+
+	trigger action1
+	{
+		alertentity nazi4
+		alertentity nazi5
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_6 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_7 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action1b	// Used for nazi2, see if they can spawn in below the stairs.
+	{
+		alertentity reinforcer_door
+		alertentity nazi2a
+		alertentity reinforcer1a
+		trigger nazi2 go_inside
+	}
+
+	trigger action2a
+	{
+		alertentity kill_action2
+		alertentity nazi6a
+		alertentity nazi7a
+		trigger mech2 on_sighta
+		trigger nazi8 on_sighta
+		trigger mech2 hearing_on
+	}
+
+	trigger action2b
+	{
+		alertentity kill_action2
+		alertentity nazi6
+		alertentity nazi7
+		trigger mech2 on_sighta
+		trigger nazi8 on_sighta
+		trigger mech2 hearing_on
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_8 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_9 #endif
+	}
+
+	trigger toggle_ldoor1
+	{
+		trigger locker_door1 toggle
+	}
+
+	trigger pa_toggle1
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		trigger mech2 voice_pa
+		trigger mech1 voice_reg
+	}
+
+	trigger pa_toggle2
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		alertentity toggle_pa_trig
+		trigger mech2 voice_reg
+		trigger mech1 voice_pa
+	}
+
+	trigger action3
+	{
+		trigger counter5 snd_fueling
+		trigger nazi2a go_down_elevator1
+		trigger nazi8 hearing_on
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_10 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_11 #endif
+	}
+
+	trigger action3a
+	{
+		trigger counter5 snd_fueling
+		alertentity toggle_pa_trig
+		trigger mech2 voice_reg
+		trigger mech1 voice_reg
+		trigger nazi8 hearing_on
+	}
+
+	trigger action4
+	{
+		trigger nazi6a go
+	}
+
+	trigger train_button
+	{
+		trigger trainlever go
+	}
+
+	trigger action5
+	{
+		alertentity nazi9
+		alertentity nazi10
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_12 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_13 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_14 #endif
+	}
+
+	trigger action7
+	{
+		alertentity nazi12
+		alertentity nazi13
+		alertentity mech3
+		trigger counter2 v2_countdown
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_15 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger failed
+	{
+		missionfailed 5 6
+	}
+
+	trigger action8
+	{
+		alertentity scientist0
+		alertentity mech5
+		alertentity mech4
+		alertentity nazi15
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_16 #endif
+	}
+
+	trigger action9
+	{
+		alertentity nazi12
+		alertentity nazi13
+		alertentity mech3
+	}
+
+	trigger action9a
+	{
+		alertentity scientist1
+		alertentity scientist2
+		alertentity scientist3
+		alertentity v2_smoke1
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_18 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_19 #endif
+	}
+
+	trigger action10
+	{
+		alertentity scientist4
+		alertentity scientist5
+		alertentity scientist6
+		alertentity nazi15a
+		objectivemet 1
+		
+		accum 6 inc 1	// REALRTCW ENDMAP BONUS
+		
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_20 #endif
+	}
+
+	trigger abort_launch
+	{
+		objectivemet 2
+		
+		accum 6 inc 1	// REALRTCW ENDMAP BONUS
+		
+		trigger v2_button push
+		trigger beam2 swingloop
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_21 #endif
+		
+		wait 2500
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger v2_door1_open
+	{
+		trigger v2_door1 check
+	}
+
+	trigger e2_fall
+	{
+		trigger elevator2 fall
+		alertentity kill_user_v2_door
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_17 #endif
+	}
+
+	trigger action11
+	{
+		alertentity kill_elev2
+		trigger v2_door1 close
+	}
+
+	trigger action12
+	{
+		alertentity nazi20
+		alertentity nazi21
+		alertentity nazi22
+	}
+
+	trigger action13
+	{
+		alertentity nazi23
+		alertentity nazi24		
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_22 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_23 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_24 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_25 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action14
+	{
+		alertentity nazi25
+		alertentity nazi26
+		alertentity nazi27
+		alertentity nazi28		
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_26 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_27 #endif
+	}
+
+	trigger action16
+	{
+		alertentity nazi29
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_28 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_29 #endif
+	}
+
+	trigger action17
+	{
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi32
+		alertentity nazi33
+		alertentity nazi34
+		alertentity nazi35
+		alertentity nazi36
+		alertentity nazi37
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action18
+	{
+		trigger front_door open
+		alertentity unlocklastdoor
+		trigger nazi35 go
+		trigger nazi36 go
+		mu_queue sound/music/m_grave
+		mu_fade 0 1000
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_30 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_31 #endif
+	}
+
+	trigger action18a
+	{
+		trigger sus_bridge go1b
+		alertentity nazi38
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_32 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_33 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_34 #endif
+	}
+
+	trigger action18b
+	{
+		trigger sus_bridge go2
+		alertentity nazi39
+	}
+
+	trigger action20
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		alertentity nazi41
+		alertentity nazi42
+		alertentity nazi43
+		alertentity nazi44
+		trigger front_door close
+		mu_fade 0 1000
+		mu_queue sound/music/m_situation
+	}
+
+	trigger action21
+	{
+		accum 0 abort_if_bitset 4
+		accum 0 bitset 4
+		objectivemet 3
+		
+		accum 6 inc 1	// REALRTCW ENDMAP BONUS
+		
+		alertentity nazi40
+		alertentity nazi40a
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_35 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_36 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_37 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_38 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_39 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_40 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action21b
+	{
+		alertentity nazi41
+		alertentity nazi42
+		alertentity nazi43
+		alertentity nazi44
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		accum 0 bitset 4
+		objectivemet 3
+		
+		accum 6 inc 1	// REALRTCW ENDMAP BONUS
+		
+		alertentity nazi40
+		alertentity nazi40a
+		trigger front_door close2
+		mu_fade 0 1000
+		mu_queue sound/music/m_situation
+	}
+
+	trigger secret1
+	{
+		trigger counter5 secret_count
+	}
+
+	trigger found_secret1
+	{
+		foundsecret
+		
+		accum 7 inc 1					// REALRTCW ENDMAP BONUS
+	}
+	
+	trigger endmap
+	{					
+		alertentity d_battle
+		changelevel baseout persistent
+	}
+
+	trigger endmap_bonus										
+	{															
+		
+	#if g_fullarsenal == 0  			// Vanilla Bonus	// REALRTCW ENDMAP BONUS
+		printbonus rocket	
+		giveammo .45cal
+	#endif
+		
+	#if g_fullarsenal == 1				// RealRTCW Bonus	// REALRTCW ENDMAP BONUS
+		printbonus rocket_alt
+		giveammo .45cal
+	#endif		
+
+	#if g_fullarsenal == 2				// Vanilla Bonus	// REALRTCW ENDMAP BONUS
+		printbonus rocket
+		giveammo .45cal
+	#endif		
+	}	
+
+}
+
+driver1
+{
+	attributes
+	{
+		running_speed 120
+		starting_health 15
+		alertness 2048
+		hearing_scale 0.1
+		inner_detection_radius 64
+		aim_accuracy 0.2
+		aim_skill 0.6
+		fov 90
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used to tell whether he should go to the alarm or not.
+		accum 0 bitreset 1	// Used so that this AI does not trigger counter1 turn on alarm twice.
+		accum 0 bitreset 2	// Used to check if this AI should respond to the player more than once.
+		accum 0 bitreset 3	// If alarm has gone off, then this AI will not respond to sounds, deadbodies, bulletimpacts, etc.
+		accum 0 bitreset 4	// Used to tell wheter the AI should play scared or fight.
+		accum 0 bitreset 5	// Used so that inspect sound does not trigger twice.
+		accum 0 bitreset 6	// Used to see if he can hear the TRUCK DOOR when it closes.
+		accum 0 bitset 7	// Disabled driver1's ability to hear the truck door DO to NEWBIE PLAYERS not understanding.
+		accum 0 bitreset 8	// Used so that he doesn't say "HUH?" twice.
+		accum 0 bitreset 9 	// Used so that he doesn't turn off sight while in battle.
+		accum 0 bitreset 10	// Used so that he does not say "fall for it again" twice.
+		accum 1 set 0		// Bullet Counter.
+		accum 2 set 0		// Tailgate counter.
+		takeweapon all
+		wait 250
+		trigger driver1 go
+	}
+
+	trigger go
+	{
+		wait 1000 0
+		walktomarker d1spot1 nostop
+		walktomarker d1spot2 nostop
+		walktomarker d1spot3
+		walktomarker d1spot4 nostop
+		accum 0 bitset 7
+		attrib alertness 256
+		walktomarker d1spot5 nostop
+		walktomarker d1spot6 nostop
+		walktomarker d1spot7 nostop
+		walktomarker d1spot8 nostop
+		walktomarker d1spot9 nostop
+		walktomarker d1spot10 nostop
+		accum 0 bitset 0
+		walktomarker d1spot11 nostop
+		walktomarker d1spot12 nostop
+		runtomarker d1spot15 nostop
+		runtomarker d1spot16 nostop
+		runtomarker d1spot17
+		facetargetangles d1spot17
+		accum 0 bitset 2
+		wait forever 0
+	}
+
+	trigger heard_door
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 abort_if_bitset 3
+		accum 0 abort_if_bitset 7
+		trigger truckdoor d1_not_again
+		accum 0 abort_if_bitset 8	// Used so that he doesn't say, "HUH," twicse.
+		accum 0 bitset 8
+		playsound rocket_driver1_huh // print Huh!? what was that!?
+		wait 4000 0 d1spot0
+		runtomarker d1spot0
+		facetargetangles d1spot0
+		trigger truckdoor driver1_check
+	}
+
+	trigger truckdoor_opened
+	{
+		playsound rocket_driver1_damn_tailgate // print Damn, this tailgate is still not fixed.
+		wait 2000 0
+		trigger truckdoor d1_close
+		playanim switch_alarm both
+		walktomarker d1spot4 nostop
+		accum 0 bitset 7
+		walktomarker d1spot5 nostop
+		walktomarker d1spot6 nostop
+		walktomarker d1spot7 nostop
+		walktomarker d1spot8 nostop
+		walktomarker d1spot9 nostop
+		walktomarker d1spot10 nostop
+		accum 0 bitset 0
+		walktomarker d1spot11 nostop
+		walktomarker d1spot12 nostop
+		runtomarker d1spot15 nostop
+		runtomarker d1spot16 nostop
+		runtomarker d1spot17
+		facetargetangles d1spot17
+		accum 0 bitset 2
+		wait forever 0
+	}
+
+	trigger truckdoor_closed
+	{
+		playsound rocket_driver1_imagination // print Hmm... Must of been my imagination.
+		wait 2000 0
+		walktomarker d1spot4 nostop
+		accum 0 bitset 7
+		walktomarker d1spot5 nostop
+		walktomarker d1spot6 nostop
+		walktomarker d1spot7 nostop
+		walktomarker d1spot8 nostop
+		walktomarker d1spot9 nostop
+		walktomarker d1spot10 nostop
+		accum 0 bitset 0
+		walktomarker d1spot11 nostop
+		walktomarker d1spot12 nostop
+		runtomarker d1spot15 nostop
+		runtomarker d1spot16 nostop
+		runtomarker d1spot17
+		facetargetangles d1spot17
+		accum 0 bitset 2
+		wait forever 0
+	}
+
+	trigger truckdoor_not_again
+	{
+		accum 0 abort_if_bitset 10
+		playsound rocket_driver1_not_falling // print Nah, I'm not going to fall for it again.
+	}
+
+	trigger hit_alarm	
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		statetype alert
+		wait 2500
+		trigger driver1 run_to_barracks
+		wait 5
+		trigger driver1 go_hit_alarm
+	}
+
+	trigger go_hit_alarm	// AI hears gun fire and runs to hit the alarm.
+	{
+		accum 0 abort_if_bitset 0
+		movetype run
+		giveweaponfull weapon_luger
+		resetscript
+		runtomarker alarm1_spot1
+		facetargetangles alarm1_spot1
+		trigger nazi3 stop
+		trigger mech1 stop
+		wait 500 0
+		alertentity ai_hit_alarm
+		playanim switch_alarm both
+		wait 500 0
+	}
+
+	trigger run_to_barracks	// AI hears gun fire and runs to the barracks to hide.
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 abort_if_bitset 2	// IF already hiding in barracks, no need to run to the barracks.
+		movetype run		
+		resetscript
+		runtomarker d1spot11 nostop
+		runtomarker d1spot12 nostop
+		runtomarker d1spot15 nostop
+		runtomarker d1spot16 nostop
+		runtomarker d1spot17
+		facetargetangles d1spot17
+		statetype alert
+		accum 0 bitreset 4
+		accum 0 bitset 2
+		wait forever 0
+	}
+
+	trigger alarm_on	// When the alarm has gone off, this triggers.
+	{
+		accum 0 abort_if_bitset 3
+		accum 0 bitset 3
+		statetype alert
+		wait 5
+		trigger driver1 run_to_barracks_fight
+		wait 5
+		trigger driver1 run_to_barracks
+	}
+	
+	trigger run_to_barracks_fight		// AI hears the alarm and runs to the barracks while shooting.
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 4
+		resetscript
+		movetype run
+		giveweaponfull weapon_luger
+		selectweapon weapon_luger
+		runtomarker d1spot11 nostop
+		runtomarker d1spot12 nostop
+		runtomarker d1spot14
+		facetargetangles d1spot14
+		statetype alert
+		movetype crouch
+		accum 0 bitset 2
+		wait forever 0
+	}
+
+	trigger stop	// When someone else is at the ALARM terminal, this will trigger.
+	{
+		resetscript
+		attack
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		accum 0 abort_if_not_bitset 2
+		accum 0 bitreset 2
+		trigger driver1 fight
+		wait 5
+		trigger driver1 scared
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	trigger fight
+	{
+		accum 0 abort_if_not_bitset 4
+		movetype run
+		resetscript
+	}
+
+	trigger scared
+	{
+		accum 0 abort_if_bitset 4
+		resetscript
+		playsound rocket_driver1_dont_kill_me // print Please don't kill me!! I'm just a driver.
+		playanim don't_kill_me both
+		playanim frightened both forever player
+	}
+
+	pain 13
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		accum 0 abort_if_bitset 3
+		trigger counter1 turn_on_alarm
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 1
+		accum 0 abort_if_bitset 3
+		trigger counter1 turn_on_alarm
+	}
+
+	bulletimpact
+	{
+		trigger fueltank2 go_away
+		trigger driver1 bulletcount
+		accum 0 abort_if_not_bitset 3
+		deny
+	}
+
+	trigger bulletcount
+	{
+		accum 1 inc 1
+		accum 1 abort_if_not_equal 2
+		accum 0 abort_if_bitset 1
+		resetscript
+		trigger counter1 turn_on_alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_not_bitset 1
+		deny
+		accum 0 abort_if_bitset 5
+		accum 0 bitset 5
+		playsound rocket_driver1_gun_fire // print GUN FIRE!!!
+		movetype crouch
+		wait 1000 0
+		movetype run
+		trigger counter1 turn_on_alarm
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_not_bitset 1
+		deny
+	}
+
+	inspectbodyend
+	{
+		accum 0 abort_if_bitset 1
+		deny
+		playsound rocket_driver1_man_down // print MAN DOWN!!! HIT THE ALARM!!!
+		trigger driver1 dead_body
+	}
+
+	trigger dead_body
+	{
+		movetype crouch
+		wait 1000 0
+		movetype run
+		trigger counter1 turn_on_alarm
+	}
+
+	death
+	{
+		accum 0 bitset 9
+		accum 0 bitset 10
+	}
+}
+
+mech1
+{
+	attributes
+	{
+		alertness 512
+		inner_detection_radius 256
+		fov 90
+	}
+
+	spawn
+	{
+		accum 0 bitreset 1	// Used so that this AI does not trigger counter1 turn on alarm twice.
+		accum 0 bitreset 2	// If alarm has gone off, then this AI will not respond to sounds, deadbodies, bulletimpacts, etc.
+		accum 0 bitreset 3	// Statechange does not trigger until this is "bitset."
+		accum 0 bitreset 4	// Used to check to see if this guy is dead while moving transport/fueltank1.
+		accum 0 bitreset 5	// Used so that MECH2 doesn't recognize Mech1 dead AFTER the crane is in position.
+		accum 0 bitset 6	// Used to determine either talk into the PA or regular.
+		accum 0 bitreset 9 	// Used so that he doesn't turn off sight while in battle.
+		accum 1 set 0		// Bullet Counter.
+		accum 2 set 0 		// Inspectsound start.
+		noavoid
+		takeweapon all
+		wait 5
+		facetargetangles m1spot1
+		trigger mech1 animloop
+	}
+
+	trigger voice_pa
+	{
+		accum 0 bitreset 6
+	}
+
+	trigger voice_reg
+	{
+		accum 0 bitset 6
+	}
+
+	trigger animloop
+	{
+		playanim device both forever
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		playanim device both forever
+		wait 5
+		trigger mech1 talk1_pa
+		wait 5
+		trigger mech1 talk1_reg
+	}
+
+	trigger talk1_pa
+	{
+		accum 0 abort_if_bitset 6
+		trigger fakeradio2 talk1
+	}
+
+	trigger talk1_reg
+	{
+		accum 0 abort_if_not_bitset 6
+		playsound rocket_mech1_crane_connected // print Ok, the crane has been connected to transport container.
+	}
+
+	trigger talk1b
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech1 talk1b_pa
+		wait 5
+		trigger mech1 talk1b_reg
+	}
+
+	trigger talk1b_pa
+	{
+		accum 0 abort_if_bitset 6
+		trigger fakeradio2 talk2
+	}
+
+	trigger talk1b_reg
+	{
+		accum 0 abort_if_not_bitset 6
+		playsound rocket_mech1_train_arrived // print Has the transporter arrived?
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		alertentity stand_clear
+	}
+
+	trigger talk2b
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech1 talk2b_pa
+		wait 5
+		trigger mech1 talk2b_reg
+	}
+
+	trigger talk2b_pa
+	{
+		accum 0 abort_if_bitset 6
+		trigger fakeradio2 talk3
+	}
+
+	trigger talk2b_reg
+	{
+		accum 0 abort_if_not_bitset 6
+		playsound rocket_mech1_crane_ready // print Ok, crane is ready.
+	}
+
+	trigger talk3
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech1 talk3_pa
+		wait 5
+		trigger mech1 talk3_reg
+	}
+
+	trigger talk3_pa
+	{
+		accum 0 abort_if_bitset 6
+		trigger fakeradio2 talk4
+	}
+
+	trigger talk2b_reg
+	{
+		accum 0 abort_if_not_bitset 6
+		playsound rocket_mech1_lifting // print Lifting transport container.
+	}
+
+	trigger talk4
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech1 talk4_pa
+		wait 5
+		trigger mech1 talk4_reg
+	}
+
+	trigger talk4_pa
+	{
+		accum 0 abort_if_bitset 6
+		trigger fakeradio2 talk5
+	}
+
+	trigger talk4_reg
+	{
+		accum 0 abort_if_not_bitset 6
+		playsound rocket_mech1_moving_container // print Moving transport into position.
+	}
+
+	trigger talk5
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech1 talk5_pa
+		wait 5
+		trigger mech1 talk5_reg
+	}
+
+	trigger talk5_pa
+	{
+		accum 0 abort_if_bitset 6
+		trigger fakeradio2 talk6
+	}
+
+	trigger talk5_reg
+	{
+		accum 0 abort_if_not_bitset 6
+		playsound rocket_mech1_lowering // print Ok, transport in position... Now lowering.
+	}
+
+	trigger hit_alarm
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		clearanim
+		resetscript
+		attrib alertness 2048
+		movetype run
+		resetscript
+		giveweaponfull weapon_luger
+		runtomarker alarm1_spot1
+		facetargetangles alarm1_spot1
+		trigger nazi3 stop
+		trigger driver1 stop
+		wait 500 0
+		alertentity ai_hit_alarm
+		playanim switch_alarm both
+		wait 1000 0 player
+		resetscript
+	}
+
+	trigger alarm_on
+	{
+		accum 0 bitset 2
+		accum 0 bitset 3
+		clearanim
+		attrib alertness 2048
+		statetype alert
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	trigger stop	// When someone else is at the ALARM terminal, this will trigger.
+	{
+		statetype alert
+		attrib alertness 2048
+		accum 0 bitset 3
+		wait 5 player
+		resetscript
+	}
+
+	pain 23
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		trigger counter1 turn_on_alarm
+	}
+
+	trigger loudspeaker_stop
+	{
+		accum 0 abort_if_bitset 2
+		backupscript
+		resetscript
+		wait forever 0
+	}
+
+	trigger loudspeaker_restore
+	{
+		accum 0 abort_if_bitset 2
+		wait 1000 0
+		facetargetangles m1spot1
+		trigger counter5 mech_1_2_talk
+		restorescript
+	}
+
+	trigger start_crane
+	{
+		trigger counter1 mech1_start_crane
+		trigger mech1 animloop
+	}
+
+	trigger stop_crane
+	{
+		wait 1000 0
+		accum 0 bitset 5
+		walktomarker d1spot10 nostop
+		walktomarker d1spot11 nostop
+		walktomarker d1spot12 nostop
+		walktomarker m1spot5
+		facetargetangles m1spot5
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		attrib alertness 2048
+		trigger counter4 mech1_dead	// Stops the crane in it's tracks.
+		trigger mech2 mech1_dead	// So that mech2 will say what happened to mech1
+		trigger counter1 turn_on_alarm
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		accum 0 abort_if_not_bitset 3
+		trigger counter4 mech1_dead	// Stops the crane in it's tracks.
+		attrib alertness 2048
+		resetscript
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	bulletimpact
+	{
+		deny
+		trigger fueltank2 go_away
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		accum 2 inc 1
+		accum 2 abort_if_not_equal 2
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		trigger counter1 turn_on_alarm
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_not_bitset 1
+		trigger counter4 mech1_dead	// Stops the crane in it's tracks.
+		trigger mech2 mech1_dead	// So that mech2 will say what happened to mech1
+		resetscript
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+		movetype crouch
+		playsound rocket_mech1_man_down // print MAN DOWN!!! HIT THE ALARM!!!
+		trigger counter4 mech1_dead	// Stops the crane in it's tracks.
+		trigger counter1 turn_on_alarm
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+		accum 0 bitset 4
+		trigger counter4 mech1_dead	// Stops the crane in it's tracks.
+		accum 0 abort_if_bitset 5
+		trigger mech2 mech1_dead
+	}
+}
+
+nazi2
+{
+	attributes
+	{
+		alertness 1024
+		fov 90
+		inner_detection_radius 256
+	}
+
+	spawn
+	{
+		accum 0 bitreset 1
+		giveweaponfull weapon_mp40
+		accum 0 bitreset 9
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n2spot5 nostop
+		walktomarker n2spot6
+		facetargetangles n2spot6
+		wait 45000 0
+		walktomarker n2spot4 nostop
+		walktomarker n2spot3 nostop
+		walktomarker n2spot9 nostop
+		walktomarker n2spot10
+		facetargetangles n2spot10
+		wait 3000 0
+		walktomarker n2spot9 nostop
+		walktomarker n2spot3 nostop
+		walktomarker n2spot4 nostop
+		trigger nazi2 marchloop1
+	}
+
+	trigger march_cough
+	{
+		accum 0 abort_if_bitset 1
+		backupscript
+		wait 5 0
+		playsound basein_cough2
+		playanim coughing_2h both
+		restorescript		
+	}
+
+	trigger march_yawn
+	{
+		accum 0 abort_if_bitset 1
+		backupscript
+		wait 5 0
+		playsound basein_yawn
+		playanim scratching_chest both
+		restorescript
+	}
+
+	trigger loudspeaker_stop
+	{
+		accum 0 abort_if_bitset 1
+		backupscript
+		wait 8000 0
+		movetype crouch
+	}
+
+	trigger loudspeaker_restore
+	{
+		accum 0 abort_if_bitset 1
+		movetype run
+		restorescript
+	}
+
+	trigger hit_alarm
+	{
+		accum 0 bitset 1
+		statetype alert
+		resetscript
+		runtomarker n2spot7
+		wait forever 0
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	pain 43
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 1
+		trigger counter1 turn_on_alarm
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 1
+		trigger counter1 turn_on_alarm
+	}
+
+	trigger alarm_on
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		statetype alert
+		resetscript
+		runtomarker n2spot7
+		wait forever 0
+	}
+
+	trigger go_inside
+	{
+		nosight 9999
+		runtomarker n2spot5
+		alertentity kill_nazi2
+	}
+
+	trigger bulletcount
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodyend
+	{
+		accum 0 abort_if_bitset 1
+		playsound rocket_mech1_man_down // print MAN DOWN!!! HIT THE ALARM!!!
+		trigger counter1 turn_on_alarm
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+		accum 0 abort_if_bitset 1
+		trigger counter1 turn_on_alarm
+	}
+}
+
+nazi2a
+{
+	attributes
+	{
+		inner_detection_radius 256
+	}
+
+	spawn
+	{
+		wait 5
+		statetype alert
+		giveweaponfull weapon_mp40
+		accum 0 bitreset 0
+		accum 0 bitreset 1	// Used if enemysight is triggered.
+		accum 0 bitreset 9	// USe so that OFF_SIGHT does not trigger while in combat.
+		accum 0 bitreset 2	// Used so he does not continue to say, I heard gunfire.
+		accum 0 bitreset 3
+		trigger nazi2a go
+	}
+
+	trigger go
+	{
+		runtomarker n3spot3 nostop
+		runtomarker d1spot8 nostop
+		runtomarker d1spot9 nostop
+		runtomarker d1spot10 nostop
+		runtomarker n2aspot1 nostop
+		playsound rocket_nazi2a_elevator // print He must of gone down the elevator.
+		runtomarker n2aspot2
+		facetargetangles n2aspot2
+		trigger counter2 check_elevator1
+	}
+
+	trigger go_down_elevator1
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		runtomarker n2aspot2
+		facetargetangles n2aspot2
+		playsound rocket_nazi2a_down // print He's going down the elevator!
+		trigger counter2 check_elevator1
+	}
+
+	trigger get_on_elevator1
+	{
+		runtomarker n2aspot4
+		facetargetangles n2aspot4
+		trigger e1lever1 toggle_by_ai
+		playanim switch_alarm both
+	}
+
+	trigger call_elevator1
+	{
+		runtomarker n2aspot4
+		facetargetangles n2aspot4
+		trigger e1upbtn toggle
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		trigger counter3 n2a_choose_talk1
+		wait 1000 0
+	}
+
+	inspectsoundend
+	{
+		accum 0 abort_if_bitset 3
+		accum 0 bitset 3
+		trigger counter3 n2a_choose_talk2
+		playsound rocket_nazi2a_lost_him // print Hmm! He must of tricked us! Damn him!
+	}
+
+	trigger talk1_not_alone
+	{
+		playsound rocket_nazi2a_gunfire // print Hold up, I heard gun fire.
+	}
+
+	trigger talk1_alone
+	{
+		playsound rocket_nazi2a_gunfire // print Huh? That was gun fire.
+	}
+
+	trigger talk2_not_alone
+	{
+		playsound rocket_nazi2a_lost_him // print Damn! He must of tricked us.
+	}
+
+	trigger talk2_alone
+	{
+		playsound rocket_nazi2a_lost_him // print Damn those sneaky Americans.
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		resetscript
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	enemysight
+	{
+		accum 0 bitset 1
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+reinforcer1a
+{
+	attributes
+	{
+		leader 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 9	// Used so that OFF_SIGHT does not trigger while in combat.
+		giveweaponfull weapon_mp40
+		runtomarker n3spot3 nostop
+		runtomarker d1spot8 nostop
+		runtomarker d1spot9 nostop
+		runtomarker d1spot10 nostop
+		runtomarker n2aspot1 nostop
+		facetargetangles n2aspot1
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9	
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+		alertness 768
+		hearing_scale 0.5
+		inner_detection_radius 256
+	}
+
+	spawn
+	{
+		accum 0 bitreset 1	// Used so that this AI does not trigger counter1 turn on alarm twice.
+		accum 0 bitreset 2	// If alarm has gone off, then this AI will not respond to sounds, deadbodies, bulletimpacts, etc.
+		accum 0 bitreset 3	// Statechange does not trigger until this is "bitset."
+		accum 0 bitreset 4	// Determines where the AI is located during the marchloop.
+		accum 0 bitreset 9	// Used so that off_sight does not trigger while in combat.
+		accum 1 set 0		// Bullet Counter.
+
+	}
+
+	trigger marchloop1
+	{
+		walktomarker n3spot2
+		facetargetangles n3spot1
+		wait 3000 0
+		walktomarker n3spot1
+		facetargetangles n3spot1
+		wait 3000 0
+		trigger nazi3 marchloop1
+	}
+
+	trigger go_to_crane
+	{
+		wait 1000 0
+		facetargetangles n3spot1
+		walktomarker n3spot3
+		walktomarker d1spot7
+		walktomarker n3spot4
+		facetargetangles n3spot4
+		wait forever 0 crane1
+	}
+
+	trigger alarm_on
+	{
+		accum 0 bitset 2
+		accum 0 bitset 3
+		attrib alertness 2048
+		statetype alert
+		wait 5 player
+		resetscript
+	}
+
+	trigger hit_alarm
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		movetype run
+		resetscript
+		runtomarker alarm1_spot1
+		facetargetangles alarm1_spot1
+		trigger nazi3 stop
+		trigger driver1 stop
+		wait 500 0
+		alertentity ai_hit_alarm
+		playanim switch_alarm both
+		wait 500 0
+		resetscript
+	}
+
+	trigger back_to_marchloop1
+	{
+		walktomarker n3spot1
+		trigger nazi3 marchloop1
+	}
+
+	trigger loudspeaker_stop
+	{
+		accum 0 abort_if_bitset 2
+		backupscript
+		wait 8000 0
+	}
+
+	trigger loudspeaker_restore
+	{
+		accum 0 abort_if_bitset 2
+		movetype run
+		restorescript
+	}
+
+	statechange alert combat
+	{
+		trigger fueltank2 go_away
+		accum 0 bitreset 9
+		accum 0 abort_if_not_bitset 3
+		resetscript
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	trigger bulletcount
+	{
+		trigger fueltank2 go_away
+		accum 1 inc 1
+		accum 1 abort_if_not_equal 2
+		accum 0 abort_if_bitset 1
+		playsound rocket_driver1_gun_fire // print GUN FIRE!!!
+		resetscript
+		trigger counter1 turn_on_alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_not_bitset 1
+		deny
+		accum 0 abort_if_bitset 5
+		accum 0 bitset 5
+		playsound rocket_driver1_gun_fire // print GUN FIRE!!!
+		movetype crouch
+		wait 1000 0
+		movetype run
+		trigger counter1 turn_on_alarm
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_not_bitset 1
+		resetscript
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+		movetype crouch
+		playsound rocket_mech1_man_down //print MAN DOWN!!! HIT THE ALARM!!!
+		trigger counter1 turn_on_alarm
+	}
+
+	death
+	{
+		accum 0 bitset 9
+		accum 0 abort_if_not_bitset 1
+		trigger counter1 turn_on_alarm
+	}
+}
+
+nazi4 // barracks
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 9	// Used so that off_sight does not trigger while in combat.
+		accum 0 bitreset 1	// Used so that the inspects only trigger the playsound blank once.
+		wait 1000 0
+		giveweaponfull weapon_luger
+		trigger nazi4 talk1	
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 1
+		wait 5
+		playsound rocket_nazi4_rocket_tests // print Damn rocket tests, why don't they just launch the damn thing.
+		wait 4000 0
+		trigger nazi5 talk1
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 1
+		wait 5
+		playsound rocket_nazi4_the_front // print So, how's things on the front? Have you heard anything?
+		wait 3750 0
+		trigger nazi5 talk2
+		wait 5000
+		walktomarker m1spot5
+		facetargetangles m1spot5
+	}
+
+	trigger alarm_on
+	{
+		resetscript
+		statetype alert
+		runtomarker d1spot12 nostop
+		runtomarker d1spot11 nostop
+		runtomarker d1spot10 nostop
+		runtomarker n4spot1
+		wait forever 0
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+		wait 4000 0
+		gotocast player
+	}
+
+	inspectbodyend
+	{
+	}
+
+	trigger reset
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound blank
+		wait 500 player
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		trigger nazi5 reset
+		playsound blank
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+nazi5 // barracks
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_luger
+		accum 0 bitreset 1
+		accum 0 bitreset 9	// Used so that OFF_SIGHT does not trigger while in combat.
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_bitset 1
+		wait 5
+		playsound rocket_nazi5_headache // print Yea, they're giving me a freakin headache already.
+		wait 2900 0
+		trigger nazi4 talk2
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 1
+		wait 5
+		playsound rocket_nazi5_babysitting // print I wouldn't know, I'm here babysitting a bomb!
+		wait 3750 0
+	}
+
+	trigger alarm_on
+	{
+		wait 2000 0
+		resetscript
+		statetype alert
+		runtomarker d1spot12 nostop
+		runtomarker d1spot11 nostop
+		runtomarker d1spot10 nostop
+		runtomarker n5spot1
+		wait forever 0
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound blank
+		wait 4000 0
+		gotocast player
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	trigger reset
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound blank
+		wait 500 player
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound blank
+		trigger nazi4 reset
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+mech2
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used to know when to turn on his sight.
+		accum 0 bitreset 1	// Used so that mech2 does not trigger the train to go if dead.
+		accum 0 bitreset 2	// Used to stop the animation loop while in combat.
+		accum 0 bitreset 3	// Used to see where the container is.
+		accum 0 bitreset 4	// USed so that "mech1_dead" will not trigger more than once.
+		accum 0 bitreset 5	// Used to toggle voice.
+		accum 0 bitreset 7	// Used to determine if the crane is back home or not.
+		takeweapon all
+		trigger mech2 animloop
+	}
+
+	trigger hearing_on
+	{
+		attrib hearing_scale 1.0
+	}
+
+	trigger animloop
+	{
+		wait 5
+		accum 0 abort_if_bitset 2
+		trigger mech2 off_sighta
+		playanim device both forever
+	}
+
+	trigger voice_pa
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger voice_reg
+	{
+		accum 0 bitset 5
+	}
+
+	trigger talk1
+	{
+		wait 5
+		trigger mech2 talk1_pa
+		wait 5
+		trigger mech2 talk1_reg
+	}
+
+	trigger talk1_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk1
+	}
+
+	trigger talk1_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_affirmative // print Afirmative, however it is not in position.
+	}
+
+	trigger talk1b
+	{
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech2 talk1b_pa
+		wait 5
+		trigger mech2 talk1b_reg
+	}
+
+	trigger talk1b_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk2
+	}
+
+	trigger talk1b_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_in_position // print Ok, there. The transport is in position.
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech2 talk2_pa
+		wait 5
+		trigger mech2 talk2_reg
+	}
+
+	trigger talk2_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk3
+	}
+
+	trigger talk2_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_acknowledged // print Copy.
+	}
+
+	trigger talk3
+	{
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech2 talk3_pa
+		wait 5
+		trigger mech2 talk3_reg
+	}
+
+	trigger talk3_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk4
+	}
+
+	trigger talk3_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_almost_there // print Ok, almost there, lower...
+		achievement_rocketstealth
+	}
+
+	trigger talk3b
+	{
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech2 talk3b_pa
+		wait 5
+		trigger mech2 talk3b_reg
+	}
+
+	trigger talk3b_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk5
+	}
+
+	trigger talk3b_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_lower // print Lower
+	}
+
+	trigger talk4
+	{
+		accum 0 abort_if_bitset 4
+		wait 5
+		trigger mech2 talk4_pa
+		wait 5
+		trigger mech2 talk4_reg
+	}
+
+	trigger talk4_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk6
+	}
+
+	trigger talk4_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_its_on // print There, it's on, go ahead and lift it back up.
+	}
+
+	trigger 0bitset0
+	{
+		accum 0 bitset 0
+	}
+
+	trigger 0bitset7
+	{
+		accum 0 bitset 7
+	}
+
+	trigger mech1_dead	// Triggers when mech1 is dead.
+	{
+		accum 0 abort_if_bitset 4
+		accum 0 bitset 4
+		playsound blank
+		trigger mech2 mech1_dead1
+		wait 5
+		trigger mech2 mech1_dead2
+	}
+
+	trigger mech1_dead1
+	{
+		accum 0 abort_if_bitset 2	// Abort if enemysighted.
+		accum 0 abort_if_bitset 0	// Abort if mech1 is dead before the crane is lefted back.
+		accum 0 abort_if_bitset 7	// Abort if crane is out of sight of mech2
+		wait 9000 0
+		trigger mech2 talk_come_in_pa
+		wait 5
+		trigger mech2 talk_come_in_reg
+		wait 8000 0
+		trigger mech2 talk_happening_pa
+		wait 5
+		trigger mech2 talk_happening_reg
+		wait 3000 0
+		trigger mech2 talk_troops_pa
+		wait 5
+		trigger mech2 talk_troops_reg
+		alertentity nazi6
+		alertentity nazi7
+	}
+
+	trigger talk_come_in_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk7
+	}
+
+	trigger talk_come_in_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_come_in // print HANZ? Come in crane controller... Come in.
+	}
+
+	trigger talk_happening_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk8
+	}
+
+	trigger talk_happening_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_whats_happening // print What is happening up there?
+	}	
+
+	trigger talk_troops_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk9
+	}	
+
+	trigger talk_troops_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		playsound rocket_mech2_sending_troops // print Sending 2 troops up there to investigate.
+	}	
+
+	trigger talk_forgot_pa
+	{
+		accum 0 abort_if_bitset 5
+		trigger fakeradio1 talk10
+	}
+
+	trigger talk_forgot_reg
+	{
+		accum 0 abort_if_not_bitset 5
+		trigger fakeradio1 talk10
+		playsound rocket_mech2_forgot // print Hanz! You forgot to lift the crane all the way up.
+	}
+
+	trigger mech1_dead2
+	{
+		accum 0 abort_if_bitset 2	// Abort if enemysighted.
+		accum 0 abort_if_not_bitset 0	// Abort if mech1 is dead
+		accum 0 abort_if_bitset 7	// Abort if crane is out of sight of mech2
+		wait 5000
+		trigger mech2 talk_forgot_pa
+		wait 5
+		trigger mech2 talk_forgot_reg
+		wait 8000
+		trigger mech2 talk_come_in_pa
+		wait 5
+		trigger mech2 talk_come_in_reg
+		wait 8000 0
+		trigger mech2 talk_happening_pa
+		wait 5
+		trigger mech2 talk_happening_reg
+		wait 3000 0
+		trigger mech2 talk_troops_pa
+		wait 5
+		trigger mech2 talk_troops_reg
+		alertentity nazi6
+		alertentity nazi7
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	trigger train_go
+	{
+		accum 0 abort_if_bitset 1
+		trigger trainlever go_by_mech2
+		playanim device both
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	statechange relaxed alert
+	{
+		clearanim
+		giveweaponfull weapon_luger
+		runtomarker m2_spot1
+		facetargetangles m2_spot1
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitset 2
+		accum 0 bitreset 9
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	trigger on_sight
+	{
+		sight
+	}
+
+	trigger off_sight
+	{
+		accum 0 abort_if_not_bitset 9
+		nosight 99999
+	}
+
+	pain 18
+	{
+		trigger fueltank2 go_away
+	}
+	
+	enemysight
+	{
+		accum 0 bitset 2
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		trigger mech1 mech2_dead
+		accum 0 bitset 9
+		accum 0 bitset 1
+	}
+}
+
+nazi6
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 9	// USed so that OFF_SIGHT is not triggered while in combat.
+		accum 0 bitreset 1	// Used so that inspectsound gets triggers after he's at the top of the elevator.
+		alertentity kill_action2
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		wait 500
+		facetargetangles n6spot1
+		trigger e1lever1 toggle_by_ai
+		playanim switch_alarm both
+		trigger nazi6 elev_wait
+	}
+
+	trigger elev_wait
+	{
+		wait 12000 0 player
+		trigger nazi7 go
+		trigger nazi6 go
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		runtomarker n6spot2 nostop
+		explicit_routing off
+		accum 0 bitset 0
+		runtomarker n2aspot1 nostop
+		runtomarker d1spot11 nostop
+		runtomarker d1spot10 nostop
+		runtomarker d1spot9
+		trigger nazi6 patrol
+	}
+
+	trigger patrol
+	{
+		walktomarker d1spot8 nostop
+		walktomarker n3spot4 nostop
+		walktomarker d1spot7 nostop
+		walktomarker d1spot6
+		wait 2000
+		walktomarker d1spot7 nostop
+		walktomarker n3spot4 nostop
+		walktomarker d1spot8 nostop
+		walktomarker d1spot9
+		wait 2000
+		trigger nazi6 patrol
+	}
+
+	bulletimpactsound
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+		statetype alert
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		accum 0 abort_if_not_bitset 0
+		resetscript
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	enemysight
+	{
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}	
+}
+
+nazi7
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 9	// Used so that OFF_SIGHT is not triggered while in combat.
+		accum 0 bitreset 0
+		statetype alert
+		wait 5
+		facetargetangles n7spot1
+		trigger nazi7 waitloop
+	}
+
+	trigger waitloop
+	{
+		wait forever 0 player
+	}
+
+	trigger go
+	{
+		resetscript
+		wait 1000 0
+		explicit_routing on
+		runtomarker n6spot2 nostop
+		explicit_routing off
+		accum 0 bitset 0
+		runtomarker n2aspot1 nostop
+		runtomarker d1spot11 nostop
+		runtomarker d1spot10 nostop
+		runtomarker n5spot1
+		trigger nazi7 patrol
+	}
+
+	trigger patrol
+	{
+		walktomarker n5spot1
+		wait 2000
+		walktomarker d1spot10 nostop
+		walktomarker n2aspot1
+		wait 2000 d1spot10
+		walktomarker d1spot10 nostop
+		trigger nazi7 patrol
+	}
+
+	bulletimpactsound
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		statetype alert
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+		accum 0 abort_if_not_bitset 0
+		resetscript
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	trigger on_sight
+	{
+		sight
+	}
+
+	trigger off_sight
+	{
+		accum 0 abort_if_not_bitset 9
+		nosight 99999
+	}
+	
+	enemysight
+	{
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+nazi6a
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 9	// Used so that OFF_SIGHT does not trigger in combat.
+		accum 0 bitreset 0	// Alarm is off.
+		wait 5
+		trigger nazi6a alarm_is_on
+		wait 5
+		wait forever 0
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 0
+		resetscript
+		wait 5
+		playsound rocket_nazi6a_where // print Where the hell is he?!?
+		runtomarker n6aspot2
+		facetargetangles n6aspot2
+	}
+
+	trigger alarm_on
+	{
+		accum 0 bitset 0
+	}
+
+	trigger alarm_is_on
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n6aspot1
+		facetargetangles n6aspot1
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+nazi7a
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Alarm is off.
+		accum 0 bitreset 9	// Used so that OFF_SIGHT does not trigger while in combat.
+		wait 5
+		trigger nazi7a alarm_is_on
+		wait 5
+		wait forever 0
+	}
+
+	trigger alarm_on
+	{
+		accum 0 bitset 0
+	}
+
+	trigger alarm_is_on
+	{
+		accum 0 abort_if_not_bitset 0
+		wait 2000 0 n6aspot2
+		runtomarker n7aspot1
+		facetargetangles n7aspot1
+		movetype crouch
+		playsound rocket_nazi7a_any_minute // print Ok, he should be coming down any minute now...		
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+	}
+
+	statechange combat alert
+	{
+		accum 0 bitset 9
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	inspectbodyend
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+nazi8
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 9	// Used so that OFF_SIGHT does not trigger while in combat.
+		trigger nazi8 marchloop
+	}
+
+	trigger hearing_on
+	{
+		attrib hearing_scale 1.0
+	}
+
+	trigger marchloop
+	{
+		wait 5
+		trigger nazi8 off_sight
+		walktomarker n8spot2 nostop
+		walktomarker n8spot3
+		facetargetangles n8spot3
+		wait 2000 0
+		wait 1000 0 n8spot2
+		walktomarker n8spot2 nostop
+		walktomarker n8spot1
+		wait 2000 0
+		wait 1000 0 n8spot2
+		trigger nazi8 marchloop
+	}
+
+	trigger alarm_on
+	{
+		runtomarker n8spot4
+		facetargetangles n8spot4
+		movetype crouch
+		wait forever 0 n7spot1
+	}
+
+	statechange relaxed alert
+	{
+		runtomarker n8spot4
+		facetargetangles n8spot4
+		movetype crouch
+		wait forever 0 n7spot1
+	}
+
+	trigger on_sight
+	{
+		accum 0 abort_if_bitset 9
+		sight
+	}
+
+	trigger off_sight
+	{
+		accum 0 abort_if_not_bitset 9
+		nosight 99999
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+		wait forever 0 n7spot1
+	}
+
+	inspectsoundend
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	pain 38
+	{
+		trigger fueltank2 go_away
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		alertentity kill_action4
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count	// Used for music change.
+		accum 0 bitset 9
+	}
+}
+
+nazi9
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that OFF_SIGHT is not triggered while in combat.
+		giveweaponfull weapon_mauserrifle
+		trigger nazi9 marchloop
+	}
+
+	trigger marchloop
+	{
+		walktomarker n9spot1 nostop
+		walktomarker n9spot2
+		wait 2000 0
+		wait 1000 0 n9spot1
+		walktomarker n9spot1 nostop
+		walktomarker n9spot3 nostop
+		walktomarker n9spot4
+		facetargetangles n9spot4
+		wait 2000 0
+		wait 1000 0 n9spot3
+		walktomarker n9spot3
+		trigger nazi9 marchloop
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+	}
+
+	statechange combat alert
+	{	
+		accum 0 bitset 9
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	trigger reset
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		statetype alert
+		attack player
+		resetscript
+	}
+
+	pain 38
+	{
+		trigger fueltank2 go_away
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		trigger nazi10 reset
+		statetype alert
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		accum 0 bitset 9
+	}	
+}
+
+nazi10
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 9	// Used so that OFF_SIGHT does not trigger while in combat.
+		wait 10000 0 train1
+		trigger nazi10 marchloop
+	}
+
+	trigger marchloop
+	{
+		walktomarker n10spot1
+		facetargetangles n10spot1
+		wait 2000 0
+		wait 1000 0 n10spot2
+		walktomarker n10spot2
+		wait 2000 0
+		wait 1000 0 n10spot1
+		trigger nazi10 marchloop
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitreset 9
+	}
+
+	statechange combat alert
+	{	
+		accum 0 bitset 9
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	trigger reset
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		statetype alert
+		attack player
+		resetscript
+	}
+
+	pain 38
+	{
+		trigger fueltank2 go_away
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		trigger nazi9 reset
+		statetype alert
+		attack player
+		resetscript
+	}
+
+	death
+	{
+		accum 0 bitset 9
+	}
+}
+
+mech3
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		takeweapon all
+		trigger mech3 animloop
+	}
+
+	trigger animloop
+	{
+		playanim device both forever
+	}
+
+	bulletimpact
+	{
+		trigger fueltank2 go_away
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	enemysight
+	{
+		sight
+		trigger fueltank2 go_away
+		clearanim
+		wait 500
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi12
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that none of the inspects will trigger until at the bottom.
+		setammo grenades 0
+		wait 5000 0
+		trigger e2lever1 toggle_by_ai
+		wait 2000 0
+		attrib hearing_scale 1.0
+		wait forever 0
+	}
+
+	trigger go
+	{
+		accum 0 bitset 0
+		walktomarker n13spot2
+		resetscript
+	}
+
+	bulletimpact
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		deny		
+	}
+
+	inspectsoundend
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 bitreset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi13
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0 //Used so that none of the inspects triggere before off elevator stops.
+		setammo grenades 0
+		wait 7000 0
+		giveweaponfull weapon_mauserrifle
+		attrib hearing_scale 1.0
+		wait forever 0
+	}
+	
+	trigger go
+	{
+		accum 0 bitset 0
+		wait 2000 0
+		walktomarker n13spot1
+	}
+
+	bulletimpact
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		trigger fueltank2 go_away
+		accum 0 abort_if_bitset 0
+		deny
+	}
+
+	enemysight
+	{
+		trigger fueltank2 go_away
+		accum 0 bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+scientist0
+{
+	attributes
+	{
+		starting_health 5
+		fov 45
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		playsound rocket_sci0_hurry_up // print Come on you guys! Hurry it up...
+		wait 2000 0
+		playsound rocket_sci0_here_all_day // print I don't want to be here all day!
+		playanim talking both
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		clearanim
+		playsound rocket_mech1_man_down	// playsound rocket_sci0_man_down // print Man down!!
+		accum 0 bitset 0
+	}
+
+	trigger scaredloop
+	{
+		nosight 9999
+		playanim frightened both
+		trigger scientist0 scaredloop
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		playsound rocket_sci0_dont_shoot // print No, please don't shoot me
+		nosight 9999
+		playanim don't_kill_me both player
+		playanim frightened both forever player
+	}
+
+	death
+	{
+	}
+}
+
+mech4
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		wait 750
+		trigger mech4 animloop
+	}
+
+	trigger animloop
+	{
+		playanim working_with_tools both forever
+	}
+
+	bulletimpact
+	{
+		statetype alert
+		sight
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		statetype alert
+		sight
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodystart
+	{
+		statetype alert
+		sight
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		statetype alert
+		sight
+		clearanim
+		playsound rocket_mech1_man_down	// print Man down!!
+		accum 0 bitset 0
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+mech5
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		trigger mech5 animloop
+	}
+
+	trigger animloop
+	{
+		playanim working_with_tools both forever
+	}
+
+	bulletimpact
+	{
+		statetype alert
+		sight
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		statetype alert
+		sight
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodystart
+	{
+		statetype alert
+		sight
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		clearanim
+		playsound rocket_mech1_man_down	// print Man down!!
+		accum 0 bitset 0
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi15
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		trigger nazi15 marchloop
+	}
+
+	trigger marchloop
+	{
+		walktomarker n15spot1
+		wait 3000 0
+		walktomarker n15spot2
+		wait 3000 0
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_bitset 0
+		runtomarker n15spot1
+		accum 0 bitset 0
+		wait 1000 0 n15spot2
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 0 abort_if_bitset 0
+		runtomarker n15spot1
+		accum 0 bitset 0
+		wait 1000 0 n15spot2
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}	
+}
+
+scientist1
+{
+	attributes
+	{
+		starting_health 5
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		trigger scientist1 animloop
+	}
+
+	trigger animloop
+	{
+		playanim clipboard both
+		trigger scientist1 animloop
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		clearanim
+		playsound rocket_sci1_man_down // print Man down!!
+		accum 0 bitset 0
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		playsound rocket_sci1_guards // print Uh!? WHO ARE YOU!?! GUARDS!!!
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+scientist2
+{
+	attributes
+	{
+		starting_health 5
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		accum 0 bitreset 1
+		takeweapon all
+		wait 1600
+		trigger scientist2 animloop
+	}
+
+	trigger animloop
+	{
+		playanim device both
+		trigger scientist2 animloop
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 0 bitset 1
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 0 bitset 1
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 bitset 1
+		clearanim
+		resetscript
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		accum 0 bitset 1
+		clearanim
+		resetscript
+		playsound rocket_sci1_man_down // print Man down!!
+		accum 0 bitset 0
+	}
+
+	trigger scaredloop
+	{
+		playanim frightened both forever player
+	}
+
+	enemysight
+	{
+		accum 0 bitset 1
+		clearanim
+		resetscript
+		accum 0 bitset 0
+		playsound rocket_sci_misc_fear2 // print No. Please don't shoot me.
+		trigger scientist2 scareloop
+	}
+
+	death
+	{
+		accum 0 bitset 1
+		accum 0 bitset 2
+		resetscript
+	}
+}
+
+scientist3
+{
+	attributes
+	{
+		starting_health 5
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		wait 700
+		trigger scientist3 animloop
+	}
+
+	trigger animloop
+	{
+		playanim device both
+		trigger scientist3 animloop
+	}
+
+	bulletimpact
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectsoundend
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodystart
+	{
+		clearanim
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		clearanim
+		playsound rocket_sci1_man_down // print Man down!!
+		accum 0 bitset 0
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		playsound rocket_sci_jeapordize		// print he's going to jeopardize the launch!
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+scientist4
+{
+	attributes
+	{
+		starting_health 5
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		wait 900
+		trigger scientist4 animloop
+	}
+
+	trigger animloop
+	{
+		playanim clipboard both
+		trigger scientist4 animloop
+	}
+
+	bulletimpact
+	{
+		deny
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+		wait forever sci_look1
+	}
+
+	inspectsoundstart
+	{
+		deny
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+		wait forever sci_look1
+	}
+
+	inspectsoundend
+	{
+		clearanim
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		clearanim
+		playsound rocket_sci1_man_down // print Man down!!
+		accum 0 bitset 0
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		playsound rocket_sci_jeapordize // print Uh!? WHO ARE YOU!?! GUARDS!!!
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+scientist5
+{
+	attributes
+	{
+		starting_health 5
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		takeweapon all
+		trigger scientist5 animloop
+	}
+
+	trigger animloop
+	{
+		playanim device both
+		trigger scientist5 animloop
+	}
+
+	bulletimpact
+	{
+		deny
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+		wait forever sci_look1
+	}
+
+	inspectsoundstart
+	{
+		deny
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+		wait forever sci_look1
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		clearanim
+		giveweaponfull weapon_luger
+		resetscript
+		wait forever sci_look1
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	enemysight
+	{
+		clearanim
+		accum 0 bitset 0
+		playsound rocket_sci_quick_guards // print Uh!? WHO ARE YOU!?! GUARDS!!!
+		giveweaponfull weapon_luger
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+scientist6
+{
+	attributes
+	{
+		starting_health 5
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		wait 5
+		takeweapon all
+		wait 500
+		trigger scientist6 animloop
+	}
+
+	trigger animloop
+	{
+		playanim pointing both
+		trigger scientist6 animloop
+	}
+
+	bulletimpact
+	{
+		deny
+		clearanim
+		wait forever sci_look1
+	}
+
+	inspectsoundstart
+	{
+		deny
+		clearanim
+		wait forever sci_look1
+	}
+
+	inspectsoundend
+	{
+		deny
+		clearanim
+		wait forever sci_look1
+	}
+
+	inspectbodystart
+	{
+		deny
+		clearanim
+		wait forever sci_look1
+	}
+
+	inspectbodyend
+	{
+		clearanim
+		playsound rocket_sci1_man_down // print Man down!!
+		accum 0 bitset 0
+	}
+
+	trigger scaredloop
+	{
+		playanim frightened both forever player
+	}
+
+	enemysight
+	{
+		noattack 99999
+		clearanim
+		accum 0 bitset 0
+		playsound rocket_sci_fear3 // print No! PLease, don't shoot!!!
+		nosight 99999
+		trigger scientist6 scaredloop
+	}
+
+	death
+	{
+	}
+}
+
+nazi15a
+{
+	attributes
+	{
+		attack_crouch 0.1
+		idle_crouch 0.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		gotocast player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		gotocast player
+	}
+
+	inspectsoundend
+	{
+		deny
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		gotocast player
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi16
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		trigger nazi16 go
+	}
+
+	trigger go
+	{
+		runtomarker n16spot1 nostop
+		runtomarker n16spot4 nostop
+		runtomarker n16spot7 nostop
+		runtomarker n16spot8 nostop
+		runtomarker n16spot9 nostop
+		runtomarker n16spot10
+		facetargetangles n16spot10
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi17
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		trigger nazi17 go
+		
+	}
+
+	trigger go
+	{
+		wait 1000
+		runtomarker n16spot1 nostop
+		runtomarker n17spot1
+		facetargetangles n17spot1
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi18
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		trigger nazi18 go
+	}
+
+	trigger go
+	{
+		wait 2000
+		runtomarker n16spot1 nostop
+		runtomarker n16spot4 nostop
+		runtomarker n16spot7 nostop
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi19
+{
+	attributes
+	{
+		camper 1.0
+		tactical 0.75
+	}
+
+	spawn
+	{
+		statetype alert
+		accum 0 bitreset 0	// Used so that the INSPECTS don't trigger while after enemy has been spotted.
+		giveweaponfull weapon_mauserrifle
+		wait 3000
+		runtomarker n16spot1
+		wait forever 0 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi20
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait 1000 0
+		runtomarker n20spot2 nostop
+		runtomarker n20spot4 nostop
+		runtomarker n16spot1 nostop
+		runtomarker n16spot4
+		facetargetangles n16spot4
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi21
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait 1000 0
+		runtomarker n20spot1 nostop
+		runtomarker n20spot4 nostop
+		runtomarker n16spot1 nostop
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi22
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 1000 0
+		runtomarker n20spot1 nostop
+		runtomarker n20spot3
+		facetargetangles n20spot3
+		movetype crouch
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		movetype run
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi23
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		wait 100 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		runtomarker n23spot1
+		movetype crouch
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		movetype run
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi24
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		wait 100 0
+		statetype alert
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi25
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		wait 100 0
+		statetype alert
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2
+		facetargetangles n25spot2
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi26
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		wait 100 0
+		statetype alert
+		runtomarker n26spot1 nostop
+		playsound rocket_nazi26_this_way // print Hurry GUYS! He's this way!
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4 nostop
+		statetype alert
+		accum 0 bitset 0
+		runtomarker n26spot5 nostop
+		runtomarker n26spot6 nostop
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n26spot7
+		facetargetangles n26spot7
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_not_bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi27
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		wait 100 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		runtomarker n27spot1 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot3 nostop
+		statetype alert
+		accum 0 bitset 0
+		runtomarker n27spot2
+		facetargetangles n27spot2
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_not_bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi28
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		accum 0 bitreset 0
+		wait 100 0
+		statetype alert
+		runtomarker n28spot1 nostop
+		runtomarker n28spot2 n28target1 noattack
+		wait forever 0		
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n28spot2
+		wait forever 0
+	}
+
+	statechange combat alert
+	{
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4
+		accum 0 bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi29
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 32
+		wait 10
+		runtomarker n30spot6 player
+		wait 2000 0
+		playsound rocket_nazi29_ammo // print Dammit! Out of ammo!
+		runtomarker n29spot1
+		facetargetangles n20spot1
+		nosight 9999
+		playanim switch_alarm both
+		setclip weapon_mp40 10
+		setammo ammo_9mm 999
+		sight
+		accum 0 bitset 0
+		statetype alert
+		gotocast player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_not_bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi30
+{
+	attributes
+	{
+		fov 90
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		wait 10
+		playsound rocket_nazi30_hurry // print He is this way guys!
+		runtomarker n30spot1 nostop
+		runtomarker n30spot3 nostop
+		runtomarker n30spot6 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4 nostop
+		runtomarker n26spot6 nostop
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n23spot1 nostop
+		runtomarker n20spot4 nostop
+		runtomarker n16spot4
+		facetargetangles n16spot4
+	}
+
+	pain 35
+	{
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi31
+{
+	attributes
+	{
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 500
+		runtomarker n30spot1 nostop
+		runtomarker n30spot2 nostop
+		runtomarker n30spot6 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4 nostop
+		runtomarker n26spot6 nostop
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n23spot1 nostop
+		runtomarker n20spot4 nostop
+	}
+
+	pain 35
+	{
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi32
+{
+	attributes
+	{
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 1000
+		runtomarker n30spot1 nostop
+		runtomarker n30spot2 nostop
+		runtomarker n30spot6 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4 nostop
+		runtomarker n26spot6 nostop
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n23spot1 nostop
+		runtomarker n20spot4 nostop
+	}
+
+	pain 35
+	{
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi33
+{
+	attributes
+	{
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		wait 1500
+		runtomarker n30spot1 nostop
+		runtomarker n30spot3 nostop
+		runtomarker n30spot6 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4 nostop
+		runtomarker n26spot6 nostop
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n23spot1 nostop
+		runtomarker n20spot4 nostop
+		runtomarker n16spot1
+		facetargetangles n16spot1
+	}
+
+	pain 35
+	{
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi34
+{
+	attributes
+	{
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		wait 2000
+		runtomarker n30spot1 nostop
+		runtomarker n30spot4 nostop
+		runtomarker n29spot1
+		wait 3000 0
+		runtomarker n30spot6 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot4 nostop
+		runtomarker n26spot6 nostop
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n23spot1 nostop
+		runtomarker n20spot4 nostop
+		runtomarker n20spot3
+		facetargetangles n20spot3
+	}
+
+	pain 35
+	{
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi35
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		accum 0 bitreset 0
+		wait forever 0 player
+	}
+
+	trigger go
+	{
+		playsound rocket_nazi35_comes // print Here he comes! Hurry!
+		runtomarker n35spot0 nostop
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nazi36
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait 100 0
+		movetype crouch
+		wait forever 0
+	}
+
+	trigger go
+	{
+		trigger counter4 blow_bridge
+		wait 1000
+		playsound rocket_nazi36_charge_set // print Ok! The charge is set! Get out!!!
+		trigger nazi37 go
+		movetype run
+		runtomarker n35spot2
+		statetype alert
+		accum 0 bitset 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		accum 0 abort_if_not_bitset 0
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi37
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	trigger go
+	{
+		wait 500 0
+		playsound rocket_nazi37_hold_him // print I'll hold him off!!! NOW GO!
+		runtomarker n35spot2
+		wait forever 0 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nazi38
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 5
+		runtomarker n35spot3 n35spot2
+		wait 6000 0
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi39
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+	}
+}
+
+nazi40
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		alertentity unlockexitdoor
+		wait 10
+		runtomarker n40spot1
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count2
+	}
+}
+
+nazi40a
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count2
+	}
+}
+
+nazi41
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait 10
+		playsound rocket_nazi40_move_out // print Move out guys! Fide cover, we can't let the american escape!
+		runtomarker n41spot1
+		wait forever 0 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count2
+	}
+}
+
+nazi42
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		accum 0 bitreset 0	// Used so he does not resetscript until in position.
+		wait 10
+		giveweaponfull weapon_mp40
+		wait forever 0 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		wait 1000
+		runtomarker n2spot5 nostop
+		runtomarker n2spot4 nostop
+		runtomarker n2spot3
+		statetype alert
+		accum 0 bitset 0
+		wait forever 0 player
+	}
+
+	death
+	{
+		trigger counter5 deadman_count2
+	}
+}
+
+nazi43
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait 750
+		runtomarker n43spot1
+		movetype crouch
+		wait forever 0 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+	}
+
+	death
+	{
+		trigger counter5 deadman_count2
+	}
+}
+
+nazi44
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 750
+		runtomarker n44spot1
+		movetype crouch
+		wait forever 0 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	statechange alert combat
+	{
+		movetype run
+		resetscript
+	}
+
+	death
+	{
+		trigger counter5 deadman_count2
+	}
+}
+
+reinforce_ai_soldier_1	// Boxes1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_2	// Boxes2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_3	// PB
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_5	// with Worker
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_6	// Barrack 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_7	// Barrack 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_8	// end of hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_9	// down on the elevator
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		norespawn
+
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_10	// down area 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_11	// down area 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_12	// out of cave
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_13	// in cave 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_14	// in cave 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_15	// dead end
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_16	// upper floor, near the elevator
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_17	// behind the ladder
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_18	// with scients 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_19	// with scients 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_20	// launcher room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype relaxed
+	}
+}
+
+reinforce_ai_soldier_21	// near the rocket
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_22	// after bridge1 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_23	// after bridge1 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_24		// below the stairs 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_25		// below the stairs 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_26		// on bridge2 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_27		// on bridge2 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_28		// ammo room 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_29	// ammo room 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_30	// before bridge 3 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_31	// before bridge 3 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_32	// office1 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_33	// office1 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_34	// hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_35	// office2 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_36	// office2 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_37	// office2 upper floor 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_38	// office2 upper floor 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_39		// exit 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_40	// exit 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}

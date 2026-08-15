@@ -548,6 +548,8 @@ typedef struct {
 	qboolean teamInfo;              // send team overlay updates?
 
 	int resetStatsConfirmTime;
+
+	qboolean weaponWheelOpen;       // client has told us its weapon wheel UI is open (SP world-slowdown trigger)
 } clientPersistant_t;
 
 
@@ -786,6 +788,9 @@ typedef struct {
 
 	qboolean pendingFSGameChange;
 	char nextFSGame[MAX_QPATH];
+
+	float timeDilation;             // current eased world time dilation factor (1.0 = normal)
+	float timeDilationTarget;       // target factor we're easing toward
 
 } level_locals_t;
 
@@ -1177,6 +1182,9 @@ extern vmCvar_t g_level_was_selected;
 extern vmCvar_t g_survivalDifficulty;
 extern vmCvar_t g_survivalBosses;
 
+extern vmCvar_t g_weaponWheelDilation;
+extern vmCvar_t g_weaponWheelDilationRamp;
+
 extern vmCvar_t g_playerSurvivalClass;
 
 extern vmCvar_t g_ee_skinEliteGuard;
@@ -1280,6 +1288,7 @@ extern vmCvar_t g_spawnxshepherds;
 extern vmCvar_t g_aicanheadshot;
 extern vmCvar_t g_realism;
 extern vmCvar_t g_regen;
+extern vmCvar_t g_overheal;
 extern vmCvar_t	g_flushItems;
 extern vmCvar_t g_vanilla_guns;
 extern vmCvar_t g_specialWaves;

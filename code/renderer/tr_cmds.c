@@ -459,10 +459,13 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 #endif
 
 	//
-	// gamma stuff
+	// gamma / intensity stuff
 	//
-	if ( r_gamma->modified ) {
+	if (r_gamma->modified || r_intensity->modified || r_overBrightBits->modified)
+	{
 		r_gamma->modified = qfalse;
+		r_intensity->modified = qfalse;
+		r_overBrightBits->modified = qfalse;
 
 		R_IssuePendingRenderCommands();
 		R_SetColorMappings();

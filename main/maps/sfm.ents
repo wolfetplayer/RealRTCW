@@ -1,0 +1,352 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "holdable_bandages"
+"origin" "365 796 -87"
+}
+
+{
+"classname" "ammo_m97ammo"
+"origin" "-39 1834 112"
+}
+
+{
+"classname" "ammo_m97ammo"
+"origin" "-39 1867 112"
+}
+
+{
+"classname" "ai_civilian"
+"origin" "-798 2273 -423"
+"ainame" "ast"
+"targetname" "ast"
+"skin" "inge/default"
+"head" "default"
+}
+
+// REINFORCES
+
+{
+"classname" "ai_soldier"
+"origin" "1484 -1881 -103"
+"ainame" "reinforce_ai_soldier_1"
+"angle" "-71"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "1394 -1425 -103"
+"ainame" "reinforce_ai_soldier_2"
+"angle" "-73"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "2418 -1954 -103"
+"ainame" "reinforce_ai_soldier_3"
+"angle" "-138"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm3"
+}
+{
+"classname" "ai_soldier"
+"origin" "2983 -1582 -103"
+"ainame" "reinforce_ai_soldier_4"
+"angle" "-95"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm4"
+}
+{
+"classname" "ai_soldier"
+"origin" "2978 -1294 -103"
+"ainame" "reinforce_ai_soldier_5"
+"angle" "91"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "2557 -943 -103"
+"ainame" "reinforce_ai_soldier_6"
+"angle" "176"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "2554 -1278 -31"
+"ainame" "reinforce_ai_soldier_7"
+"angle" "-79"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm3"
+}
+{
+"classname" "ai_soldier"
+"origin" "2205 -1304 120"
+"ainame" "reinforce_ai_soldier_8"
+"angle" "-26"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm4"
+}
+{
+"classname" "ai_soldier"
+"origin" "2219 -1658 120"
+"ainame" "reinforce_ai_soldier_9"
+"angle" "88"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "780 50 -104"
+"ainame" "reinforce_ai_soldier_10"
+"angle" "-90"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "1173 670 -111"
+"ainame" "reinforce_ai_soldier_11"
+"angle" "-160"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm3"
+}
+{
+"classname" "ai_venom"
+"origin" "2557 642 -103"
+"ainame" "reinforce_ai_venom_12"
+"angle" "162"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "863 13 -103"
+"ainame" "reinforce_ai_soldier_13"
+"angle" "-178"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "1036 940 56"
+"ainame" "reinforce_ai_soldier_14"
+"angle" "-110"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "1122 417 -103"
+"ainame" "reinforce_ai_soldier_15"
+"angle" "135"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm3"
+}
+{
+"classname" "ai_soldier"
+"origin" "1716 414 -103"
+"ainame" "reinforce_ai_soldier_16"
+"angle" "91"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm4"
+}
+{
+"classname" "ai_soldier"
+"origin" "562 234 58"
+"ainame" "reinforce_ai_soldier_17"
+"angle" "36"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "1167 1211 56"
+"ainame" "reinforce_ai_soldier_18"
+"angle" "178"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "1805 1805 -111"
+"ainame" "reinforce_ai_soldier_19"
+"angle" "-103"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm3"
+}
+{
+"classname" "ai_venom"
+"origin" "-556 -429 -183"
+"ainame" "reinforce_ai_venom_20"
+"angle" "-90"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-319 -400 -175"
+"ainame" "reinforce_ai_soldier_21"
+"angle" "179"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-295 -280 -175"
+"ainame" "reinforce_ai_soldier_22"
+"angle" "-143"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1123 52 -175"
+"ainame" "reinforce_ai_soldier_23"
+"angle" "-172"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm3"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1102 798 -175"
+"ainame" "reinforce_ai_soldier_24"
+"angle" "-28"
+"spawnflags" "1"
+"skin" "infantryss/sfm2"
+"head" "sfm4"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1384 557 -103"
+"ainame" "reinforce_ai_soldier_25"
+"angle" "-113"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-979 553 96"
+"ainame" "reinforce_ai_soldier_26"
+"angle" "-178"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1031 382 96"
+"ainame" "reinforce_ai_soldier_27"
+"angle" "98"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm3"
+}
+{
+"classname" "ai_soldier"
+"origin" "-693 1270 -175"
+"ainame" "reinforce_ai_soldier_28"
+"angle" "-84"
+"spawnflags" "1"
+"skin" "infantryss/sfm3"
+"head" "sfm4"
+}
+{
+"classname" "ai_soldier"
+"origin" "-282 1282 -175"
+"ainame" "reinforce_ai_soldier_29"
+"angle" "-104"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-507 2155 -167"
+"ainame" "reinforce_ai_soldier_30"
+"angle" "-38"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm2"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1051 1572 -167"
+"ainame" "reinforce_ai_soldier_31"
+"angle" "71"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm3"
+}
+{
+"classname" "ai_soldier"
+"origin" "-821 1482 -167"
+"ainame" "reinforce_ai_soldier_32"
+"angle" "88"
+"spawnflags" "1"
+"skin" "infantryss/sfm4"
+"head" "sfm4"
+}
+{
+"classname" "ai_soldier"
+"origin" "-818 1546 -167"
+"ainame" "reinforce_ai_soldier_33"
+"angle" "85"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-814 1603 -167"
+"ainame" "reinforce_ai_soldier_34"
+"angle" "85"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm2"
+}
+{
+"classname" "ai_venom"
+"origin" "-1044 1646 -167"
+"ainame" "reinforce_ai_venom_35"
+"angle" "80"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1054 1497 -167"
+"ainame" "reinforce_ai_soldier_36"
+"angle" "74"
+"spawnflags" "1"
+"skin" "infantryss/sfm1"
+"head" "sfm4"
+}
+
+
+
+
+
+

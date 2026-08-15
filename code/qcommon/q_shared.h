@@ -1540,6 +1540,8 @@ typedef struct playerState_s {
 
 	int weaponUpgraded[MAX_WEAPONS]; // 0 = not upgraded, 1 = upgraded
 
+	qboolean simpleZoomed;               // networked mirror of cg.simpleZoomed, so spectators/followers see it too
+
 } playerState_t;
 
 

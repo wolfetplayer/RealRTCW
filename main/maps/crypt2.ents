@@ -1,0 +1,362 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "ammo_m97ammo"
+"origin" "-959 68 96"
+}
+
+{
+"classname" "ammo_m97ammo"
+"origin" "-959 100 96"
+}
+
+{
+"classname" "ammo_792mm_large"
+"origin" "-959 52 96"
+}
+
+{
+"classname" "ammo_9mm"
+"origin" "-227 -451 160"
+}
+
+{
+"classname" "holdable_cross"
+"origin" "-902 218 175"
+}
+
+
+// REINFROCES
+
+// REINFROCES
+
+{
+"classname" "ai_zombie"
+"origin" "-92 -570 160"
+"ainame" "reinforce_ai_zombie_1"
+"angle" "83"
+"spawnflags" "1"
+"head" "crypt2"
+"skin" "zombie/crypt2"
+}
+{
+"classname" "ai_warzombie"
+"origin" "-79 -210 160"
+"ainame" "reinforce_ai_zombie_2"
+"angle" "-90"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}
+{
+"classname" "ai_zombie"
+"origin" "-80 -503 160"
+"ainame" "reinforce_ai_zombie_3"
+"angle" "114"
+"spawnflags" "1"
+"head" "crypt6"
+"skin" "zombie/crypt6"
+}
+{
+"classname" "ai_zombie"
+"origin" "-215 -384 344"
+"ainame" "reinforce_ai_zombie_4"
+"targetname" "reinforce_ai_zombie_4"
+"angle" "0"
+}
+{
+"classname" "ai_zombie"
+"origin" "-745 58 96"
+"ainame" "reinforce_ai_zombie_5"
+"angle" "134"
+"spawnflags" "1"
+"head" "crypt7"
+"skin" "zombie/crypt7"
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1043 242 96"
+"ainame" "reinforce_ai_zombie_6"
+"angle" "-48"
+"spawnflags" "1"
+"skin" "warrior/crypt3"
+"head" "crypt3" 
+}
+{
+"classname" "ai_zombie"
+"origin" "-1107 -381 160"
+"ainame" "reinforce_ai_zombie_7"
+"angle" "0"
+"spawnflags" "1"
+"head" "crypt1"
+"skin" "zombie/crypt1"
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1218 -300 160"
+"ainame" "reinforce_ai_zombie_8"
+"angle" "-38"
+"spawnflags" "1"
+"skin" "warrior/crypt1"
+"head" "crypt1" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1499 -85 -55"
+"ainame" "reinforce_ai_zombie_9"
+"angle" "45"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}
+{
+"classname" "ai_zombie"
+"origin" "-1737 -581 -55"
+"ainame" "reinforce_ai_zombie_10"
+"angle" "4"
+"spawnflags" "1"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1483 -2318 -63"
+"ainame" "reinforce_ai_zombie_11"
+"angle" "270"
+"spawnflags" "1"
+"head" "crypt6"
+"skin" "zombie/crypt6"
+}
+{
+"classname" "ai_zombie"
+"origin" "-833 -1593 -55"
+"ainame" "reinforce_ai_zombie_12"
+"angle" "180"
+"spawnflags" "1"
+"head" "crypt2"
+"skin" "zombie/crypt2"
+}
+{
+"classname" "ai_zombie"
+"origin" "-698 -1499 -55"
+"ainame" "reinforce_ai_zombie_13"
+"angle" "-139"
+"spawnflags" "1"
+"head" "crypt7"
+"skin" "zombie/crypt7"
+}
+{
+"classname" "ai_warzombie"
+"origin" "-690 -1699 -55"
+"ainame" "reinforce_ai_zombie_14"
+"angle" "124"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}
+
+{
+"classname" "ai_soldier"
+"origin" "-1537 -1121 264"
+"ainame" "reinforce_ai_soldier_15"
+"angle" "-72"
+"spawnflags" "1"
+"targetname" "reinforce_ai_soldier_15"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1383 -1098 264"
+"ainame" "reinforce_ai_soldier_16"
+"targetname" "reinforce_ai_soldier_16"
+"angle" "-109"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1809 -1296 264"
+"ainame" "reinforce_ai_soldier_17"
+"targetname" "reinforce_ai_soldier_17"
+"angle" "-41"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1803 -1871 264"
+"ainame" "reinforce_ai_soldier_18"
+"targetname" "reinforce_ai_soldier_18"
+"angle" "41"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1185 -1929 264"
+"ainame" "reinforce_ai_soldier_19"
+"targetname" "reinforce_ai_soldier_19"
+"angle" "121"
+"spawnflags" "1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-1213 -1236 264"
+"ainame" "reinforce_ai_soldier_20"
+"targetname" "reinforce_ai_soldier_20"
+"angle" "-116"
+"spawnflags" "1"
+}
+
+
+/*
+{
+"classname" "ai_warzombie"
+"origin" "-1410 -2086 264"
+"ainame" "reinforce_ai_zombie_21"
+"angle" "102"
+"spawnflags" "1"
+"skin" "warrior/crypt3"
+"head" "crypt3" 
+}
+{
+"classname" "ai_zombie"
+"origin" "-1485 -2257 264"
+"ainame" "reinforce_ai_zombie_22"
+"angle" "89"
+"spawnflags" "1"
+"head" "crypt1"
+"skin" "zombie/crypt1"
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1553 -2105 264"
+"ainame" "reinforce_ai_zombie_23"
+"angle" "69"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}*/
+
+
+{
+"classname" "ai_zombie"
+"origin" "-1681 -2382 264"
+"ainame" "reinforce_ai_zombie_24"
+"angle" "64"
+"spawnflags" "1"
+"head" "crypt2"
+"skin" "zombie/crypt2"
+}
+{
+"classname" "ai_zombie"
+"origin" "-1464 -1893 264"
+"ainame" "reinforce_ai_zombie_25"
+"targetname" "reinforce_ai_zombie_25"
+"angle" "90"
+"spawnflags" "1"
+"head" "crypt7"
+"skin" "zombie/crypt7"
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1128 -3348 264"
+"ainame" "reinforce_ai_zombie_26"
+"targetname" "reinforce_ai_zombie_26"
+"angle" "135"
+"spawnflags" "1"
+"skin" "warrior/crypt1"
+"head" "crypt1" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1491 -2470 -55"
+"ainame" "reinforce_ai_zombie_27"
+"angle" "90"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1451 -2518 -55"
+"ainame" "reinforce_ai_zombie_28"
+"angle" "90"
+"spawnflags" "1"
+"skin" "warrior/crypt3"
+"head" "crypt3" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1512 -2550 264"
+"ainame" "reinforce_ai_zombie_29"
+"targetname" "reinforce_ai_zombie_29"
+"angle" "270"
+"spawnflags" "1"
+"skin" "warrior/crypt1"
+"head" "crypt1" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1432 -2588 272"
+"ainame" "reinforce_ai_zombie_30"
+"targetname" "reinforce_ai_zombie_30"
+"angle" "270"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1816 -3348 264"
+"ainame" "reinforce_ai_zombie_31"
+"targetname" "reinforce_ai_zombie_31"
+"angle" "45"
+"spawnflags" "1"
+"skin" "warrior/crypt3"
+"head" "crypt3" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1128 -2152 264"
+"ainame" "reinforce_ai_zombie_32"
+"targetname" "reinforce_ai_zombie_32"
+"angle" "225"
+"spawnflags" "1"
+"skin" "warrior/crypt1"
+"head" "crypt1" 
+}
+{
+"classname" "ai_warzombie"
+"origin" "-1816 -2152 264"
+"ainame" "reinforce_ai_zombie_33"
+"targetname" "reinforce_ai_zombie_33"
+"angle" "315"
+"spawnflags" "1"
+"skin" "warrior/crypt2"
+"head" "crypt2" 
+}
+/*
+{
+"classname" "ai_warzombie"
+"origin" "-1472 -2112 264"
+"ainame" "reinforce_ai_zombie_34"
+"targetname" "reinforce_ai_zombie_34"
+"angle" "270"
+"spawnflags" "1"
+"skin" "warrior/crypt3"
+"head" "crypt3" 
+}*/
+
+{
+"classname" "ai_priest"
+"origin" "-1231 -3256 264"
+"ainame" "priest1"
+"aiteam" "2"
+"targetname" "priest1"
+"angle" "90"
+"spawnflags" "1"
+}
+{
+"classname" "ai_priest"
+"origin" "-1683 -3255 264"
+"ainame" "priest2"
+"aiteam" "2"
+"targetname" "priest2"
+"angle" "90"
+"spawnflags" "1"
+}

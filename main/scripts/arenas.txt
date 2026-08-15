@@ -1,0 +1,67 @@
+{
+map			"sv_escape2"
+longname	"Castle Keep"
+type		"sv_normal"
+enemies     "human"
+}
+{
+map			"sv_boss1"
+longname	"Defiled Church"
+type		"sv_normal"
+enemies     "undead"
+}
+{
+map			"sv_kugelstadt"
+longname	"Kugelstadt"
+type		"sv_normal"
+enemies     "human"
+}
+{
+map			"sv_castle"
+longname	"Castle Wolfenstein"
+type		"sv_normal"
+enemies     "undead"
+}
+{
+map			"sv_dig"
+longname	"Dig"
+type		"sv_normal"
+enemies     "human"
+}
+{
+map			"sv_karsiah"
+longname	"Karsiah"
+type		"sv_normal"
+enemies     "human"
+}
+{
+map			"sv_river_outpost"
+longname	"River Outpost"
+type		"sv_normal"
+enemies     "undead"
+}
+{
+map			"sv_barn"
+longname	"Barn"
+type		"sv_normal"
+enemies     "human"
+}
+{
+map			"sv_safe"
+longname	"Safe"
+type		"sv_normal"
+enemies     "undead"
+}
+{
+map			"sv_norway"
+longname	"Norway"
+type		"sv_normal"
+enemies     "human"
+}
+{
+map			"sv_crypt1"
+longname	"Crypt"
+type		"sv_normal"
+enemies     "undead"
+}
+

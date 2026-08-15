@@ -1561,29 +1561,21 @@ static int FFMPEG_DecodeVideo( ) {
     if ( ret == 0 ) {
         // convert
         if ( !cinTable[currentHandle].swsCtx ) {
-            cinTable[currentHandle].swsCtx = sws_getContext(
-                cinTable[currentHandle].vFrame->width,
-                cinTable[currentHandle].vFrame->height,
-                cinTable[currentHandle].vFrame->format,
-                cinTable[currentHandle].vFrame->width,
-                cinTable[currentHandle].vFrame->height,
-                AV_PIX_FMT_RGBA,
-                SWS_BICUBIC | SWS_ACCURATE_RND,
-                NULL, NULL, NULL
-            );
+            // dynamic context: reads colorspace/range/primaries from the AVFrames themselves
+            cinTable[currentHandle].swsCtx = sws_alloc_context();
+            cinTable[currentHandle].swsCtx->flags = SWS_BICUBIC | SWS_ACCURATE_RND;
+            cinTable[currentHandle].swsCtx->dither = SWS_DITHER_ED;
         }
 
-        sws_scale(
+        sws_scale_frame(
             cinTable[currentHandle].swsCtx,
-            ( const byte * const * )cinTable[currentHandle].vFrame->data,
-            cinTable[currentHandle].vFrame->linesize,
-            0,
-            cinTable[currentHandle].vFrame->height,
-            cinTable[currentHandle].vRgbaFrame->data,
-            cinTable[currentHandle].vRgbaFrame->linesize
+            cinTable[currentHandle].vRgbaFrame,
+            cinTable[currentHandle].vFrame
         );
 
 		cinTable[currentHandle].buf = cinTable[currentHandle].vRgbaFrame->data[0];
+        cinTable[currentHandle].drawX = cinTable[currentHandle].CIN_WIDTH  = cinTable[currentHandle].vFrame->width;
+        cinTable[currentHandle].drawY = cinTable[currentHandle].CIN_HEIGHT = cinTable[currentHandle].vFrame->height;
         cinTable[currentHandle].dirty = qtrue;
         cinTable[currentHandle].numQuads++;
     }
@@ -1800,6 +1792,9 @@ static int FFMPEG_Init( void ) {
 		return -1;
 	}
 
+	// default is single-threaded; 0 lets libavcodec use all CPUs
+	cinTable[currentHandle].vCodecCtx->thread_count = 0;
+
 	if ( avcodec_open2( cinTable[currentHandle].vCodecCtx, cinTable[currentHandle].vCodec, NULL ) < 0 ) {
 		Com_Error( ERR_FATAL, "Could not open codec\n" );
 		return -1;
@@ -1993,8 +1988,7 @@ static void FFMPEG_Free( void ) {
 	}
 
     if ( cinTable[currentHandle].swsCtx ) {
-        sws_freeContext( cinTable[currentHandle].swsCtx );
-        cinTable[currentHandle].swsCtx = NULL;
+        sws_free_context( &cinTable[currentHandle].swsCtx );
     }
 
     if ( cinTable[currentHandle].vRgbaFrame ) {
@@ -2501,12 +2495,6 @@ h = cls.glconfig.vidHeight;
 	// Save original destination rect (usually fullscreen or whatever caller set).
 	ox = x; oy = y; ow = w; oh = h;
 
-	// Update source size for FFmpeg video (ROQ already has CIN_WIDTH/HEIGHT set via ROQ_QUAD_INFO).
-	if ( !cin.isRoq ) {
-		cinTable[handle].drawX = cinTable[handle].CIN_WIDTH  = cinTable[handle].vFrame->width;
-		cinTable[handle].drawY = cinTable[handle].CIN_HEIGHT = cinTable[handle].vFrame->height;
-	}
-
 	// Fit video into destination rect while preserving aspect ratio.
 	{
 		float srcW = (float)cinTable[handle].drawX;
@@ -2828,6 +2816,9 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 	int len, i;
 	char *token;
 
+	// initial clear
+	memset( cinTable[handle].subtitles, 0, sizeof(cinTable[handle].subtitles) );
+
 	// cine subtitle filename
 	Q_strncpyz( name, cinTable[handle].fileName, sizeof(name) );
 	char *dot = strrchr( name, '.' );
@@ -2838,11 +2829,11 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 
 	// read file content
 	len = FS_FOpenFileByMode(name, &f, FS_READ);
-	if (len <= 0 && com_developer->integer) {
-		Com_Printf(S_COLOR_YELLOW "cine subtitle file \"%s\" not found or unreadable\n", name);
+	if (len <= 0) {
+		Com_DPrintf(S_COLOR_YELLOW "cine subtitle file \"%s\" not found or unreadable\n", name);
 		return;
 	}
-	if (len > MAX_BUFFER) {
+	if (len >= MAX_BUFFER) {
 		Com_Printf(S_COLOR_YELLOW "\"%s\" is too big, make it smaller (max = %i bytes)\n", name, MAX_BUFFER);
 	}
 
@@ -2857,8 +2848,6 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 		Com_Printf("^1WARNING: expecting '{', found '%s' instead in cine subtitle file \"%s\"\n", token, name);
 		return;
 	}
-
-	memset( cinTable[handle].subtitles, 0, sizeof(cinTable[handle].subtitles) );
 
 	i = 0;
 	while ( cinTable[handle].subtitleCount < MAX_SUBTITLES) {
@@ -2967,7 +2956,8 @@ static void CIN_DrawCinematicSubtitle( int handle ) {
 										subs[i].width, color, TEXT_ALIGN_CENTER, qtrue, qtrue );
 			} else {
 				SCR_Text_AutoWrapped_Paint( x, y, subs[i].sizeScale, subs[i].lineText,
-											subs[i].width, color, TEXT_ALIGN_CENTER );
+										subs[i].width, color, TEXT_ALIGN_CENTER,
+										cls.subtitleCharSetShader );
 			}
 		}
 	}

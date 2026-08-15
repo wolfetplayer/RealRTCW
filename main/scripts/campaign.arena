@@ -1,0 +1,198 @@
+// campaign maps for campaign_menu; w3d, w3d_sec and malta_menu are intentionally excluded
+
+{
+map			"cutscene1"
+longname	"@CAMP_MAP_CUTSCENE1"
+chapter		"1"
+}
+{
+map			"escape1"
+longname	"@CAMP_MAP_ESCAPE1"
+chapter		"1"
+}
+{
+map			"escape2"
+longname	"@CAMP_MAP_ESCAPE2"
+chapter		"1"
+}
+{
+map			"tram"
+longname	"@CAMP_MAP_TRAM"
+chapter		"1"
+}
+
+{
+map			"village1"
+longname	"@CAMP_MAP_VILLAGE1"
+chapter		"2"
+}
+{
+map			"crypt1"
+longname	"@CAMP_MAP_CRYPT1"
+chapter		"2"
+}
+{
+map			"crypt2"
+longname	"@CAMP_MAP_CRYPT2"
+chapter		"2"
+}
+{
+map			"church"
+longname	"@CAMP_MAP_CHURCH"
+chapter		"2"
+}
+{
+map			"boss1"
+longname	"@CAMP_MAP_BOSS1"
+chapter		"2"
+}
+
+{
+map			"malta_1"
+longname	"@CAMP_MAP_MALTA1"
+chapter		"3"
+hubonly		"1"
+}
+{
+map			"cutscene6"
+longname	"@CAMP_MAP_CUTSCENE6"
+chapter		"3"
+}
+{
+map			"forest"
+longname	"@CAMP_MAP_FOREST"
+chapter		"3"
+}
+{
+map			"rocket"
+longname	"@CAMP_MAP_ROCKET"
+chapter		"3"
+}
+{
+map			"baseout"
+longname	"@CAMP_MAP_BASEOUT"
+chapter		"3"
+}
+{
+map			"assault"
+longname	"@CAMP_MAP_ASSAULT"
+chapter		"3"
+}
+
+{
+map			"malta_2"
+longname	"@CAMP_MAP_MALTA2"
+chapter		"4"
+hubonly		"1"
+}
+{
+map			"cutscene9"
+longname	"@CAMP_MAP_CUTSCENE9"
+chapter		"4"
+}
+{
+map			"sfm"
+longname	"@CAMP_MAP_SFM"
+chapter		"4"
+}
+{
+map			"factory"
+longname	"@CAMP_MAP_FACTORY"
+chapter		"4"
+}
+{
+map			"trainyard"
+longname	"@CAMP_MAP_TRAINYARDS"
+chapter		"4"
+}
+{
+map			"swf"
+longname	"@CAMP_MAP_SWF"
+chapter		"4"
+}
+
+{
+map			"malta_3"
+longname	"@CAMP_MAP_MALTA3"
+chapter		"5"
+hubonly		"1"
+}
+{
+map			"cutscene11"
+longname	"@CAMP_MAP_CUTSCENE11"
+chapter		"5"
+}
+{
+map			"norway"
+longname	"@CAMP_MAP_NORWAY"
+chapter		"5"
+}
+{
+map			"xlabs"
+longname	"@CAMP_MAP_XLABS"
+chapter		"5"
+}
+{
+map			"boss2"
+longname	"@CAMP_MAP_BOSS2"
+chapter		"5"
+}
+
+{
+map			"malta_4"
+longname	"@CAMP_MAP_MALTA4"
+chapter		"6"
+hubonly		"1"
+}
+{
+map			"cutscene14"
+longname	"@CAMP_MAP_CUTSCENE14"
+chapter		"6"
+}
+{
+map			"dam"
+longname	"@CAMP_MAP_DAM"
+chapter		"6"
+}
+{
+map			"village2"
+longname	"@CAMP_MAP_VILLAGE2"
+chapter		"6"
+}
+{
+map			"chateau"
+longname	"@CAMP_MAP_CHATEAU"
+chapter		"6"
+}
+{
+map			"dark"
+longname	"@CAMP_MAP_DARK"
+chapter		"6"
+}
+
+{
+map			"dig"
+longname	"@CAMP_MAP_DIG"
+chapter		"7"
+}
+{
+map			"castle"
+longname	"@CAMP_MAP_CASTLE"
+chapter		"7"
+}
+{
+map			"end"
+longname	"@CAMP_MAP_END"
+chapter		"7"
+}
+{
+map			"cutscene19"
+longname	"@CAMP_MAP_CUTSCENE19"
+chapter		"7"
+}
+{
+map			"malta_5"
+longname	"@CAMP_MAP_MALTA5"
+chapter		"7"
+hubonly		"1"
+}

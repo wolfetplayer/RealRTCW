@@ -1,0 +1,554 @@
+#include "ui/menudef.h"
+
+
+
+
+{
+
+/////////////////////
+//
+//	main load/save menu
+//
+/////////////////////
+
+menuDef {
+   	name ingame_load
+   	visible 0
+   	fullscreen 0
+	outOfBoundsClick			// this closes the window if it gets a click out of the rectangle
+	rect 200 100 503 300
+   	focusColor 1 1 1 1
+   	style 1
+   	border 1
+
+	onOpen {	uiScript loadSavegames;
+				setcvar "ui_savegame" "<type name here>" ;
+				setcvar ui_savegameListAutosave 0;	// hmm
+//				uiScript update ui_savegameListAutosave
+			}
+
+
+
+	itemDef {
+		name window
+		group ingamebox
+		rect 20 2 463 300
+//		background "ui/assets/testmap1.tga"
+//		style WINDOW_STYLE_SHADER
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .85
+		visible 1
+		decoration
+		}
+
+
+	itemDef 
+	{
+		name window
+		group ingamebox2
+		rect 22 4 459 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25 
+		visible 1
+		decoration
+	}
+
+//////////////// image box ///////////////////
+
+//
+// 'episode shot'
+//
+
+	itemDef {
+		name window
+		group ingamebox3
+		rect 322 62 148 110
+		ownerdraw UI_SAVEGAME_SHOT		// screenshot for savegame.  			//located in /save/images/<savegamename>.tga
+//		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor .10 .10 .10 .5
+		visible 1
+		decoration
+		}
+
+	itemDef 
+	{
+		name window2
+		group grpControlbutton
+		rect 22 29 298 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .5 0.5 0.5 .25
+		visible 1
+		decoration
+	}
+
+	itemDef 
+	{
+		name window2
+		group grpControlbutton
+		rect 162 29 140 222	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .4 0.4 0.4 .25
+		visible 1
+		decoration
+	}
+
+
+////////////////////////////////////////
+
+
+	itemDef {
+		name savegamelist
+		rect 20 50 300 200
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		elementwidth 120
+		elementheight 14
+		textscale .23
+
+//		columns 2  2 40 18  170 40 30
+		columns 2  2 40 18  142 40 30
+
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_SAVEGAMES
+		doubleclick { uiScript Loadgame ; uiScript closeingame }
+		textalign 3
+		textaligny 10
+		forecolor .9 .9 .9 .5
+		backcolor .2 .2 .2 .3
+		outlinecolor .9 .9 .9 .2
+		visible MENU_TRUE
+		mouseEnter { fadein message_savegame ; setitemcolor savegamelist bordercolor .7 .7 .7 1 } 
+		mouseExit { fadeout message_savegame ; setitemcolor savegamelist bordercolor .5 .5 .5 .5 } 
+		}
+
+///////////// name and date //////////////// 
+
+	itemDef {
+		name levelbar
+		text "@LOADGAME_NAME"
+		textscale .23
+		style 0	
+		type ITEM_TYPE_BUTTON
+		textalign ITEM_ALIGN_CENTER
+		textfont UI_FONT_BIG
+		textstyle 6
+		rect 30 34 100 20 
+//		rect 302 264 148 18
+
+		textalign 1	 
+		textalignx 50  	
+		textaligny 12        
+		backcolor 0 0 0 0
+		forecolor 1 1 1 1
+		visible MENU_TRUE
+//		decoration
+		action {
+			play "sound/misc/kcswish.wav";
+			uiScript SavegameSort 0
+			}
+		}
+
+
+
+	itemDef {
+		name levelbar
+		text "@LOADGAME_DATE"
+		textscale .23
+		style 0
+		textalign ITEM_ALIGN_CENTER	
+		type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+		textstyle 6
+		rect 180 34 100 20 
+		textalign 1	 
+		textalignx 50  	
+		textaligny 12        
+		backcolor 0 0 0 0
+		forecolor 1 1 1 1
+		visible MENU_TRUE
+//		decoration
+		action {
+			play "sound/misc/kcswish.wav";
+			uiScript SavegameSort 1
+			}
+		}
+
+
+/////////////////////////////////////
+
+//
+// name of savegame
+//
+	itemDef {
+		name mapname
+		ownerdraw UI_SAVEGAMENAME
+		rect 322 52 148 110
+		backcolor 1 1 1 .25
+		visible 1
+		textscale .23
+		textalign ITEM_ALIGN_CENTER
+		textfont UI_FONT_BIG
+		textstyle 6
+		textaligny 130
+		textalignx 74	
+		decoration
+		}
+//	
+//
+// savegame detail info
+//
+	itemDef {
+		name mapinfo
+	textsavegame	// get text from current savegame file
+		autowrapped
+//		ownerdraw UI_SAVEGAMEINFO
+		rect 322 180 148 50
+		backcolor 1 1 1 .25
+		visible 1
+		textalign ITEM_ALIGN_CENTER
+		textscale .23
+		textfont UI_FONT_BIG
+		textstyle 6
+		textaligny 20
+		textalignx 74
+		decoration
+		}
+
+
+////////////////////////////////////////
+
+	itemDef {
+		name window
+		group ingamebox4
+		rect 322 62 148 168
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 0
+		visible 1
+		decoration
+		}
+
+	itemDef 
+	{
+		name window
+		group ingamebox2
+		text "@LOADGAME_LOAD"
+		type 1
+		textscale .23
+		group grpControlbutton
+		rect 220 3.5 45 20
+		textalign 1
+		textfont UI_FONT_BIG
+		textalignx 22
+		textaligny 14
+		border 1
+		bordercolor .1 .1 .1 0
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+
+//
+// name entry
+//
+
+//
+// the list
+//
+//	itemDef {
+//		name savegamelist
+//		group savemorepopup
+//		rect 30 30 260 234
+//		type ITEM_TYPE_LISTBOX
+//		style WINDOW_STYLE_FILLED
+//		elementwidth 120
+//		elementheight 20
+//		textscale .25
+//		doubleclick { uiScript closeingame; uiScript Loadgame}
+//		elementtype LISTBOX_TEXT
+//		feeder FEEDER_SAVEGAMES
+//		textaligny 64
+//		forecolor 1 1 1 1
+//		backcolor .1 .1 .1 .6
+//		outlinecolor .9 .9 .9 .2
+//		visible 1
+//		mouseEnter { setitemcolor savegamelist bordercolor .7 .7 .7 1 } 
+//		mouseExit { setitemcolor savegamelist bordercolor .5 .5 .5 1 } 
+//		}
+//
+
+
+
+//
+// load
+//
+	itemDef {
+		name load
+		text "@LOADGAME_LOAD"
+		type ITEM_TYPE_BUTTON
+		rect 322 270 148 18
+		style 1
+		textscale .25
+		border 1
+		bordercolor .5 .5 .5 .5        
+		backcolor 0 0 0 .25
+		textfont UI_FONT_BIG
+		textaligny 13
+		textalignx 74
+		textalign ITEM_ALIGN_CENTER
+		mouseEnter { setitemcolor load backcolor .5 .5 .5 .25 }
+		mouseExit { setitemcolor load backcolor 0 0 0 .25 }
+//		action { uiScript closeingame; uiScript Loadgame }
+		action { uiScript Loadgame; uiScript closeingame }
+		visible 1
+	}
+
+
+//////////////////////////////////
+
+
+
+
+// the actual switch
+	itemDef {
+		name autosave
+//		type ITEM_TYPE_BUTTON
+		rect 72 270 170 18
+//		cvar ui_savegameListAutosave
+		type ITEM_TYPE_MULTI
+		cvar "ui_savegameListAutosave"
+		cvarFloatList { "" 0 "" 1  }	// no text, just toggle
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5        
+		backcolor 0 0 0 .25
+		mouseEnter { setitemcolor showgametype backcolor .5 .5 .5 .25 }
+		mouseExit { setitemcolor showgametype backcolor 0 0 0 .25 }
+		action {	uiScript update "ui_savegameListAutosave" }	// update the feeder
+		visible MENU_TRUE
+	}
+
+// the 'off' button
+	itemDef {
+		name autosave_off
+		group showgametype
+		text "@LOADGAME_SHOWAUTOSAVES"
+		rect 72 270 170 18
+		cvarTest "ui_savegameListAutosave"
+		showcvar { "0" }
+		style 1
+		textscale .25
+		border 1
+		bordercolor .5 .5 .5 .5        
+		backcolor 0 0 0 .25
+		textaligny 13
+		textalignx 82
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		decoration
+		visible MENU_TRUE
+	}
+
+// the 'on' button
+	itemDef {
+		name autosave_on
+		group showgametype
+		text "@LOADGAME_SHOWSAVEGAMES"
+		rect 72 270 170 18
+		cvarTest "ui_savegameListAutosave"
+		showcvar { "1" }
+		style 1
+		textscale .25
+		border 1
+		bordercolor .5 .5 .5 .5        
+		backcolor 0 0 0 .25
+		textaligny 13
+		textfont UI_FONT_BIG
+		textalignx 82
+		textalign ITEM_ALIGN_CENTER
+		decoration
+		visible MENU_TRUE
+	}
+
+//////////////////////////////////////
+
+//	itemDef {
+//		name list
+//		text "Autosaves List"
+///		type ITEM_TYPE_BUTTON
+//		rect 52 270 170 18
+//		style 1
+//		textscale .25
+//		border 1
+//		bordercolor .5 .5 .5 .5        
+//		backcolor 0 0 0 .25
+//		textaligny 13
+//		textalignx 82
+//		textalign ITEM_ALIGN_CENTER
+//		mouseEnter { setitemcolor load backcolor .5 .5 .5 .25 }
+//		mouseExit { setitemcolor load backcolor 0 0 0 .25 }
+//
+/// action ???? ////////// 
+//		action { uiScript closeingame; uiScript Loadgame}
+//		visible 1
+//	}
+//
+//
+// delete
+//
+
+	itemDef {
+		name del
+		text "@LOADGAME_DELETE"
+		type ITEM_TYPE_BUTTON
+   		rect 322 30 148 18
+		textscale .25
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5        
+		backcolor 0 0 0 .25
+		textfont UI_FONT_BIG
+		textaligny 13
+		textalignx 80
+		textalign ITEM_ALIGN_CENTER
+		mouseEnter { setitemcolor del backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor del backcolor 0 0 0 .25 }
+		action { open load_del_sure_popmenu }
+		visible 1
+	}
+
+
+
+
+
+}	// end menudef
+
+/////////////////////
+//
+// Delete for sure? popup
+//
+/////////////////////
+
+menuDef {
+	name "load_del_sure_popmenu"
+	visible 0
+	fullscreen 0
+
+	rect 240 220 200 80
+
+	focusColor 1 .75 0 1
+
+	backcolor .15 .15 .15 1
+	border 1
+	bordercolor .5 .5 .5 .5
+	style WINDOW_STYLE_FILLED
+	popup
+	onESC {
+		close load_del_sure_popmenu;
+		open ingame_load
+		}
+
+
+
+	itemDef {
+		name confirm
+		text "@LOADGAME_DELETEFORSURE" 
+		style 0
+		textscale .25
+		textstyle 3
+		rect 0 0 212 60
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 100
+		textaligny 20
+		decoration
+//		forecolor 1 1 1 1
+		visible 1
+		}
+
+
+	itemDef {
+		name ldelsure_yes
+		text "@LOADGAME_DELETEYES"
+		type 1
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		style WINDOW_STYLE_FILLED
+		textscale .25
+		rect 18 30 60 44
+		textalign 1
+		textalignx 30
+		textaligny 22
+		forecolor 1 1 1 1
+		backcolor .37 .1 .1 0 
+		visible 1
+//	border 1
+//	bordercolor .5 .5 .5 .5 
+
+		// delete the selected savegame and update the list
+		action
+		{
+			play "sound/misc/nomenu.wav"; 
+			close load_del_sure_popmenu; 
+			uiScript DelSavegame;
+//			uiScript loadSavegames;
+			open ingame_load
+		}
+
+		mouseEnter { setitemcolor ldelsure_yes backcolor .37 .37 .37 0 } 
+		mouseExit { setitemcolor ldelsure_yes backcolor .37 .1 .1 0 } 	
+		}
+
+
+	itemDef {
+		name ldelsure_no
+		text "@LOADGAME_DELETENO"
+		type 1
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		textscale .25
+		rect 128 30 60 44
+		textalign 1
+		textalignx 30
+		textaligny 22
+		forecolor 1 1 1 1
+		backcolor .37 .1 .1 0 
+		visible 1
+//	border 1
+//	bordercolor .5 .5 .5 .5 
+		action 
+		{ 
+			play "sound/misc/nomenu.wav";
+			close load_del_sure_popmenu;
+			open ingame_load
+		}
+
+		mouseEnter { setitemcolor ldelsure_no backcolor .37 .37 .37 0 } 
+		mouseExit { setitemcolor ldelsure_no backcolor .37 .1 .1 0 } 		
+
+		}	// end item
+
+	}	// end menudef
+
+}	// end menu

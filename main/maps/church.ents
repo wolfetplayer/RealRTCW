@@ -1,0 +1,261 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "weapon_mp34"
+"origin" "1797 470 328"
+"angle" "135"
+}
+
+{
+"classname" "holdable_adrenaline"
+"origin" "-614 306 704"
+}
+
+{
+"classname" "ammo_9mm_large"
+"origin" "-768 106 88"
+"angle" "135"
+}
+
+{
+"classname" "ammo_9mm"
+"origin" "713 208 664"
+}
+
+// REINFROCES
+
+{
+"classname" "ai_soldier"
+"origin" "331 -45 72"
+"ainame" "reinforce_ai_soldier_3"
+"angle" "-98"
+"spawnflags" "1"
+"skin" "infantryss/church1"
+"head" "church3"
+}
+{
+"classname" "ai_soldier"
+"origin" "259 98 88"
+"ainame" "reinforce_ai_soldier_4"
+"angle" "-94"
+"spawnflags" "1"
+"skin" "infantryss/church2"
+"head" "church1"
+}
+{
+"classname" "ai_soldier"
+"origin" "46 614 88"
+"ainame" "reinforce_ai_soldier_5"
+"angle" "1"
+"spawnflags" "1"
+"skin" "infantryss/church2"
+"head" "church2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "756 202 184"
+"ainame" "reinforce_ai_eliteguard_6"
+"angle" "95"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "746 370 232"
+"ainame" "reinforce_ai_eliteguard_7"
+"angle" "-90"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church2"
+}
+{
+"classname" "ai_soldier"
+"origin" "1947 201 296"
+"ainame" "reinforce_ai_soldier_8"
+"angle" "173"
+"spawnflags" "1"
+"skin" "infantryss/church2"
+"head" "church3"
+}
+{
+"classname" "ai_soldier"
+"origin" "1290 469 312"
+"ainame" "reinforce_ai_soldier_9"
+"angle" "-103"
+"spawnflags" "1"
+"skin" "infantryss/church1"
+"head" "church1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "748 -155 608"
+"ainame" "reinforce_ai_eliteguard_10"
+"angle" "0"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "746 -113 608"
+"ainame" "reinforce_ai_eliteguard_11"
+"angle" "0"
+"spawnflags" "1"
+"skin" "eliteguard/church2"
+"head" "church1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "424 694 608"
+"ainame" "reinforce_ai_eliteguard_14"
+"angle" "-179"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "-629 760 664"
+"ainame" "reinforce_ai_eliteguard_15"
+"angle" "-42"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "368 212 1112"
+"ainame" "reinforce_ai_eliteguard_16"
+"angle" "173"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "396 392 1112"
+"ainame" "reinforce_ai_eliteguard_17"
+"angle" "178"
+"spawnflags" "1"
+"skin" "eliteguard/church2"
+"head" "church3"
+}
+{
+"classname" "ai_soldier"
+"origin" "-235 726 1112"
+"ainame" "reinforce_ai_soldier_18"
+"angle" "-86"
+"spawnflags" "1"
+"skin" "infantryss/church1"
+"head" "church2"
+}
+{
+"classname" "ai_soldier"
+"origin" "189 734 1112"
+"ainame" "reinforce_ai_soldier_19"
+"angle" "-85"
+"spawnflags" "1"
+"skin" "infantryss/church1"
+"head" "church3"
+}
+{
+"classname" "ai_soldier"
+"origin" "-610 594 1120"
+"ainame" "reinforce_ai_soldier_20"
+"angle" "-86"
+"spawnflags" "1"
+"skin" "infantryss/church2"
+"head" "church1"
+}
+{
+"classname" "ai_soldier"
+"origin" "-480 698 1112"
+"ainame" "reinforce_ai_soldier_21"
+"angle" "0"
+"spawnflags" "1"
+"skin" "infantryss/church2"
+"head" "church2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "607 1139 600"
+"ainame" "reinforce_ai_eliteguard_22"
+"angle" "152"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "541 663 608"
+"ainame" "reinforce_ai_eliteguard_23"
+"angle" "77"
+"spawnflags" "1"
+"skin" "eliteguard/church2"
+"head" "church2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "897 6 616"
+"ainame" "reinforce_ai_eliteguard_24"
+"angle" "86"
+"spawnflags" "1"
+"skin" "eliteguard/church2"
+"head" "church3"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "1484 258 632"
+"ainame" "reinforce_ai_eliteguard_25"
+"angle" "161"
+"spawnflags" "1"
+"skin" "eliteguard/church2"
+"head" "church1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "1471 524 632"
+"ainame" "reinforce_ai_eliteguard_26"
+"angle" "-116"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church1"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "1989 289 664"
+"ainame" "reinforce_ai_eliteguard_27"
+"angle" "-176"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church2"
+}
+{
+"classname" "ai_eliteguard"
+"origin" "2136 299 664"
+"ainame" "reinforce_ai_eliteguard_28"
+"angle" "-176"
+"spawnflags" "1"
+"skin" "eliteguard/church1"
+"head" "church3"
+}
+
+// PRIESTS
+
+{
+"classname" "ai_priest"
+"origin" "-152 294 600"
+"ainame" "priest1"
+"targetname" "priest1"
+"angle" "360"
+"spawnflags" "1"
+}
+{
+"classname" "ai_priest"
+"origin" "202 681 608"
+"ainame" "priest2"
+"targetname" "priest2"
+"angle" "360"
+"spawnflags" "1"
+}

@@ -1041,6 +1041,17 @@ static void ComputeColors( shaderStage_t *pStage ) {
 			}
 		}
 	}
+
+	//
+	// software gamma correction
+	//
+	if ( R_UseSoftwareGamma() ) {
+		for ( i = 0; i < tess.numVertexes; i++ ) {
+			tess.svars.colors[i][0] = R_GammaByte( tess.svars.colors[i][0] );
+			tess.svars.colors[i][1] = R_GammaByte( tess.svars.colors[i][1] );
+			tess.svars.colors[i][2] = R_GammaByte( tess.svars.colors[i][2] );
+		}
+	}
 }
 
 

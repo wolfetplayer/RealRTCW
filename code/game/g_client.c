@@ -1530,6 +1530,8 @@ void ClientDisconnect( int clientNum ) {
 		return;
 	}
 
+	ent->client->pers.weaponWheelOpen = qfalse;
+
 	// stop any following clients
 	for ( i = 0 ; i < level.maxclients ; i++ ) {
 		if ( level.clients[i].sess.sessionTeam == TEAM_SPECTATOR

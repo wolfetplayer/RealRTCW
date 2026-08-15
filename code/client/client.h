@@ -110,6 +110,8 @@ typedef struct {
 #define  MAX_PARSE_ENTITIES  ( PACKET_BACKUP * MAX_SNAPSHOT_ENTITIES )
 
 extern int g_console_field_width;
+extern int g_smallchar_width;
+extern int g_smallchar_height;
 
 typedef struct {
 	int timeoutcount;               // it requres several frames in a timeout condition
@@ -125,6 +127,9 @@ typedef struct {
 	qboolean extrapolatedSnapshot;      // set if any cgame frame has been forced to extrapolate
 	// cleared when CL_AdjustTimeDelta looks at it
 	qboolean newSnapshots;          // set on parse of any valid packet
+
+	float timeDilation;             // world time dilation factor from CS_TIMEDILATION, 1.0 = normal speed
+	float timeDilationCarry;        // fractional-ms carry for the per-frame serverTimeDelta bleed, avoids truncation drift
 
 	gameState_t gameState;          // configstrings
 	char mapname[MAX_QPATH];        // extracted from CS_SERVERINFO
@@ -388,6 +393,9 @@ typedef struct {
 	qhandle_t whiteShader;
 	qhandle_t consoleShader;
 	qhandle_t consoleShader2;   //----(SA)	added
+
+	// cine subtitle
+	qhandle_t subtitleCharSetShader;
 } clientStatic_t;
 
 extern clientStatic_t cls;
@@ -714,7 +722,8 @@ void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, 
 void    SCR_DrawSmallChar( int x, int y, int ch );
 
 void    SCR_DrawStringExt( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
-void    SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType);
+void    SCR_DrawStringExt2( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape, int font );
+void    SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType, int font );
 
 int CG_DrawStrCount( const char *str );
 void SCR_DrawChar_Utf8( int x, int y, float scale, int unicode, qboolean adjust640 );

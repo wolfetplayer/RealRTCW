@@ -1,0 +1,1119 @@
+//
+//Brush Scripting
+//Map: Crypt2
+//Last edited by: Mike (110501)
+//
+
+bigblock
+{
+	spawn
+	{
+		wait 20
+		gotomarker blockspot1 200 wait
+		accum 0 set 0
+	}
+	
+	trigger go
+	{
+		alertentity thump
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 3
+		wait 1000
+		playsound sound/scenaric/crypt2/pillar_raise_loop.wav looping
+		gotomarker blockspot2 100 accel wait
+		stopsound
+		playsound sound/movers/doors/door2_locked.wav
+		alertentity platdust
+		alertentity blocktrig
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_16 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_17 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_zombie_25 #endif
+	}
+
+	trigger ready
+	{
+		alertentity drawbridge
+		playsound sound/movers/doors/door2_locked.wav
+		gotomarker blockspot4 75 accel wait
+		stopsound
+		playsound sound/scenaric/crypt2/pillar_raise_loop.wav looping
+		gotomarker blockspot5 75 deccel wait
+		stopsound
+		wait 15000
+		alertentity drawbridge
+		wait 5000
+		gotomarker blockspot1 100 accel wait
+		stopsound
+		playsound sound/movers/doors/door2_locked.wav
+		trigger 1st_btn go_back
+		trigger 3rd_btn go_back
+		trigger big_wall1 go_back
+		trigger big_wall2 go_back
+		trigger secretdummy reset
+		accum 0 set 0
+	}
+
+	trigger flame1_go
+	{
+		wait 5
+		alertentity flame1
+		wait 5
+		alertentity flame1
+		wait 2000
+		alertentity flame1		
+	}
+}
+
+cross
+{
+	trigger fall
+	{
+		faceangles 18 0 0 500
+		gotomarker cspot1 90
+		faceangles 36 0 0 gototime
+		gotomarker cspot2 180
+		faceangles 54 0 0 gototime
+		gotomarker cspot3 270
+		faceangles 72 0 0 gototime
+		gotomarker cspot4 360
+		faceangles 90 0 0 gototime
+		gotomarker cspot5 450
+		faceangles 90 0 0 gototime
+		alertentity floorbust
+		alertentity crosskill
+	}
+}
+
+swingblade
+{
+	spawn
+	{
+		accum 0 set 0	// Used to randomly choose a wait.
+		wait 5
+		faceangles 0 0 -140 1
+	}
+
+	trigger swing1
+	{
+		playsound crypt2_swingblade_1
+		faceangles 0 0 -140 150
+		faceangles 0 0 -130 135
+		faceangles 0 0 -120 90
+		faceangles 0 0 -110 15
+		faceangles 0 0 -100 5
+		faceangles 0 0 -90 5
+		alertentity hurt2-80	// On
+		faceangles 0 0 -80 5
+		faceangles 0 0 -70 5
+		alertentity hurt2-80	// Off
+		alertentity hurt2-60	// On
+		faceangles 0 0 -60 5
+		faceangles 0 0 -50 5
+		alertentity hurt2-60	// Off
+		alertentity hurt2-40	// On
+		faceangles 0 0 -40 5
+		faceangles 0 0 -30 5
+		alertentity hurt2-40	// Off
+		alertentity hurt2-20	// On
+		alertentity dust1
+		faceangles 0 0 -20 5
+		faceangles 0 0 -10 5
+		alertentity hurt2-20	// Off
+		alertentity hurt20	// On
+		faceangles 0 0 0 5
+		alertentity dust2
+		trigger swingblade swing2
+	}
+
+	trigger swing2
+	{
+		faceangles 0 0 5 4
+		faceangles 0 0 10 8
+		alertentity hurt20	// Off
+		alertentity hurt220	// On
+		faceangles 0 0 15 14
+		faceangles 0 0 20 22
+		faceangles 0 0 25 32
+		faceangles 0 0 30 44
+		alertentity hurt220	// Off
+		alertentity hurt240	// On
+		faceangles 0 0 35 58
+		alertentity dust3
+		faceangles 0 0 40 76
+		faceangles 0 0 45 94
+		faceangles 0 0 50 114
+		alertentity hurt240	// Off
+		alertentity hurt260	// On
+		faceangles 0 0 55 136
+		faceangles 0 0 60 160
+		trigger swingblade swing3
+	}
+
+	trigger swing3
+	{
+		faceangles 0 0 50 160
+		alertentity hurt260	// Off
+		alertentity hurt240	// On
+		faceangles 0 0 40 140
+		faceangles 0 0 30 120
+		alertentity hurt240	// Off
+		alertentity hurt220	// On
+		alertentity dust3
+		faceangles 0 0 20 100
+		faceangles 0 0 10 80
+		alertentity hurt220	// Off
+		alertentity hurt20	// On
+		faceangles 0 0 0 60
+		alertentity dust2
+		faceangles 0 0 -10 90
+		alertentity hurt20	// Off
+		alertentity hurt2-20	// On
+		faceangles 0 0 -20 120
+		faceangles 0 0 -30 150
+		alertentity dust1
+		faceangles 0 0 -20 130
+		faceangles 0 0 -10 110
+		alertentity hurt2-20	// Off
+		alertentity hurt20	// On
+		faceangles 0 0 0 90
+		alertentity dust2
+		faceangles 0 0 7 105
+		faceangles 0 0 15 120
+		alertentity hurt20	// Off
+		faceangles 0 0 7 110
+		faceangles 0 0 0 100
+		alertentity dust2
+		stopsound
+		wait 2000
+		trigger swingblade retract
+	}
+
+	trigger retract
+	{
+		playsound sound/movers/doors/door6_loopo.wav looping
+		faceangles 0 0 -140 7000
+		stopsound
+		trigger swingblade choose_wait
+	}
+
+	trigger choose_wait
+	{
+		wait 5
+		accum 0 random 4
+		wait 10
+		trigger swingblade wait1500
+		wait 5
+		trigger swingblade wait2250
+		wait 5
+		trigger swingblade wait500
+		wait 5
+		trigger swingblade wait5000
+	}
+
+	trigger wait1500
+	{
+		accum 0 abort_if_not_equal 0
+		wait 1500
+		trigger swingblade swing1
+	}
+
+	trigger wait2250
+	{
+		accum 0 abort_if_not_equal 1
+		wait 2250
+		trigger swingblade swing1
+	}
+
+	trigger wait500
+	{
+		accum 0 abort_if_not_equal 2
+		wait 500
+		trigger swingblade swing1
+	}
+
+	trigger wait5000
+	{
+		accum 0 abort_if_not_equal 3
+		wait 5000
+		trigger swingblade swing1
+	}
+
+	trigger stop
+	{
+		trigger player music_stop_1000
+		wait 5
+		trigger player music3_start
+		faceangles 0 0 -140 1000
+	}
+}
+
+hsaw1
+{
+	spawn
+	{
+		wait 1000
+		faceangles 0 0 -90 1
+		faceangles 0 90 -90 1
+		gotomarker hsaw1spot1 2000 wait
+	}
+
+	trigger go
+	{
+		trigger hsaw3 forward
+		wait 5
+		trigger hsaw3 backward
+		trigger hsaw2 go
+		trigger razor1 rotateloop
+		wait 250
+		playsound sound/scenaric/crypt2/saw_trap1.wav
+		gotomarker hsaw1spot2 600 wait
+		gotomarker hsaw1spot3 450 wait
+		gotomarker hsaw1spot4 600 wait
+		wait 250
+		gotomarker hsaw1spot3 600 wait
+		gotomarker hsaw1spot2 450 wait
+		gotomarker hsaw1spot1 600 wait
+		trigger razor1 stop
+	}
+}
+
+hsaw2
+{
+	spawn
+	{
+		wait 1000
+		faceangles 0 0 -90 1
+		faceangles 0 -90 -90 1
+		gotomarker hsaw2spot4 2000 wait
+	}
+
+	trigger go
+	{
+		trigger razor2 rotateloop
+		wait 250
+		playsound sound/scenaric/crypt2/saw_trap1.wav
+		gotomarker hsaw2spot3 600 wait
+		alertentity hurt1
+		gotomarker hsaw2spot2 450 wait
+		gotomarker hsaw2spot1 600 wait
+		wait 250
+		gotomarker hsaw2spot2 600 wait
+		gotomarker hsaw2spot3 450 wait
+		gotomarker hsaw2spot4 600 wait
+		alertentity hurt1
+		trigger razor2 stop
+	}
+}
+
+hsaw3
+{
+	spawn
+	{
+		wait 1000
+		accum 0 set 0
+		faceangles 89 0 0 1
+		wait 5
+		gotomarker hsaw3spot1 2000 wait
+	}
+
+	trigger go
+	{
+		trigger hsaw2 forward
+		wait 5
+		trigger hsaw2 backward
+	}
+	
+	trigger forward
+	{
+		accum 0 abort_if_greater_than 0
+		wait 10
+		accum 0 set 1
+		trigger razor3 rotateloop
+		wait 250
+		playsound sound/scenaric/crypt2/saw_trap1.wav
+		gotomarker hsaw3spot2 200 wait
+		gotomarker hsaw3spot3 150 wait
+		gotomarker hsaw3spot4 200 wait
+		trigger razor3 stop
+	}
+
+	trigger backward
+	{
+		accum 0 abort_if_less_than 1
+		accum 0 set 0
+		trigger razor3 rotateloop
+		wait 250
+		playsound sound/scenaric/crypt2/saw_trap1.wav
+		gotomarker hsaw3spot3 200 wait
+		gotomarker hsaw3spot2 150 wait
+		gotomarker hsaw3spot1 200 wait
+		trigger razor3 stop
+	}
+}
+
+razor1
+{
+	spawn
+	{
+		wait 50
+		attachtotag hsaw1 tag_blade
+	}
+
+	trigger rotateloop
+	{
+		faceangles 0 90 0 50
+		faceangles 0 180 0 50
+		faceangles 0 270 0 50
+		faceangles 0 360 0 50
+		trigger razor1 rotateloop
+	}
+
+	trigger stop
+	{
+		resetscript
+	}
+}
+
+razor2
+{
+	spawn
+	{
+		wait 50
+		attachtotag hsaw2 tag_blade
+	}
+
+	trigger rotateloop
+	{
+		faceangles 0 90 0 50
+		faceangles 0 180 0 50
+		faceangles 0 270 0 50
+		faceangles 0 360 0 50
+		trigger razor2 rotateloop
+	}
+
+	trigger stop
+	{
+		resetscript
+	}
+}
+
+razor3
+{
+	spawn
+	{
+		wait 5
+		attachtotag hsaw3 tag_blade
+	}
+
+	trigger rotateloop
+	{
+		faceangles 90 0 0 50
+		faceangles 180 0 0 50
+		faceangles 270 0 0 50
+		faceangles 360 0 0 50
+		trigger razor3 rotateloop
+	}
+
+	trigger stop
+	{
+		resetscript
+	}
+}
+
+trapdoor2
+{
+	spawn
+	{
+		wait 20
+		gotomarker trapdoor2spot3 500 wait
+	}
+
+	trigger close
+	{
+		wait 1000
+		gotomarker trapdoor2spot1 250 wait
+		gotomarker trapdoor2spot2 100 wait
+		gotomarker trapdoor2spot1 100 wait
+		alertentity traprubble
+		trigger trapwall1 close
+		trigger trapwall2 close
+	}
+
+	trigger open
+	{
+		gotomarker trapdoor2spot3 50 wait
+	}
+}
+
+trapwall1
+{
+
+	spawn
+	{
+		wait 20
+		gotomarker trapwall1spot2 500 wait
+	}
+
+	trigger close
+	{
+		gotomarker trapwall1spot1 1 wait
+		wait 3000
+		trigger trapwall1 open
+	}
+
+	trigger open
+	{
+		gotomarker trapwall1spot2 10 wait
+		trigger trapdoor1 open
+		trigger trapdoor2 open
+	}
+}
+
+trapwall2
+{
+
+	spawn
+	{
+		wait 20
+		gotomarker trapwall2spot2 500 wait
+	}
+
+	trigger close
+	{
+		gotomarker trapwall2spot1 1 wait
+		wait 3000
+		trigger trapwall2 open
+	}
+
+	trigger open
+	{
+		gotomarker trapwall2spot2 10 wait
+	}
+}
+
+secretdummy
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 bitreset 0	// Used so that the secret can only get call once.
+		accum 2 set 0	// Used to crack the floor at the end of the map. I used this entity to save entities.
+	}
+
+	trigger first
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 inc 1	
+	}
+
+	trigger second
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 inc 1
+	}
+
+	trigger third
+	{
+		accum 0 abort_if_not_equal 2
+		accum 1 abort_if_bitset 0
+		accum 1 bitset 0
+		alertentity super_secret
+	}
+
+	trigger reset
+	{
+		accum 0 set 0
+	}
+
+	trigger cracks
+	{
+		accum 2 inc 1
+		trigger player pass_mission
+		trigger secretdummy crack1
+	}
+
+	trigger crack1
+	{
+		#if g_reinforce == 0 accum 2 abort_if_not_equal 2 #endif
+		#if g_reinforce == 1 accum 2 abort_if_not_equal 5 #endif
+		#if g_reinforce == 2 accum 2 abort_if_not_equal 7 #endif
+		trigger counter1 flame_stop
+		wait 7000
+		alertentity rumble_snd1
+		wait 500
+		alertentity end_debris1
+		alertentity end_debris2
+		alertentity end_debris3
+		alertentity end_debris4
+		alertentity end_debris5
+		wait 1500
+		trigger floor1 go1
+		trigger floor1 go1
+		trigger floor2 go1
+	}
+
+	trigger crack2
+	{
+		alertentity end_debris1
+		alertentity end_debris2
+		alertentity end_debris3
+		alertentity end_debris4
+		alertentity end_debris5
+		trigger floor1 go2
+		trigger floor3 go1
+		trigger floor4 go1
+		trigger floor2 go2
+
+	}
+
+	trigger crack3
+	{
+		alertentity end_debris1
+		alertentity end_debris2
+		alertentity end_debris3
+		alertentity end_debris4
+		alertentity end_debris5
+		trigger floor1 go3
+		trigger floor2 go3
+		trigger floor5 go1
+		trigger floor6 go1
+		trigger floor7 go1
+		trigger floor8 go1
+		trigger floor9 go1
+		trigger floor3 go2
+		trigger floor4 go2
+	}
+}
+
+counter1
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used to stop all flaming.
+		accum 0 bitreset 1	// Used so that the "end sequence" is triggered only once.
+		accum 1 set 0		// used to choose a flamehead.
+		accum 2 set 0		// Used to crack the floor.
+		accum 3 set 0		// Used to count dead zombies in "fog room"
+	}
+
+	trigger action0b
+	{
+		alertentity kill_s_coffin
+		wait 5		
+		alertentity s_coffin1_bust
+		alertentity zombie2b
+	}
+
+	trigger action2
+	{
+		wait 500
+		alertentity zombie7b
+		wait 1000
+		alertentity zombie7a
+		wait 250
+		alertentity zombie7c
+	}
+
+	trigger action3
+	{
+		wait 4000
+		alertentity fakenoise2
+		wait 5000
+		alertentity zombie8d
+		wait 5
+		wait 1200
+		alertentity zombie8b
+		wait 5
+		wait 500
+		alertentity zombie8a
+		wait 5
+		wait 250
+		alertentity zombie8c
+		wait 5
+	}
+
+	trigger action3_dead
+	{
+		accum 3 inc 1
+		accum 3 abort_if_not_equal 4
+		wait 1000
+		alertentity nazi6
+		alertentity nazi7
+		alertentity warzombie16
+		alertentity warzombie15
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		wait 5000
+		alertentity lastwall_bust
+		trigger warboss1 go
+		trigger warboss2 go
+		trigger counter1 randomflame
+	}
+
+	trigger randomflame
+	{
+		accum 0 abort_if_bitset 0
+		accum 1 random 8
+		wait 5
+		trigger counter1 flamehead1
+		wait 5
+		trigger counter1 flamehead2
+		wait 5
+		trigger counter1 flamehead3
+		wait 5
+		trigger counter1 flamehead4
+		wait 5
+		trigger counter1 flamehead5
+		wait 5
+		trigger counter1 flamehead6
+		wait 5
+		trigger counter1 flamehead7
+		wait 5
+		trigger counter1 flamehead8
+	}
+
+	trigger flamehead1
+	{
+		accum 1 abort_if_not_equal 0
+		alertentity flamehead1
+		wait 500
+		alertentity flamehead1
+		wait 1000
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead2
+	{
+		accum 1 abort_if_not_equal 1
+		alertentity flamehead2
+		wait 500
+		alertentity flamehead2
+		wait 500
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead3
+	{
+		accum 1 abort_if_not_equal 2
+		alertentity flamehead3
+		wait 500
+		alertentity flamehead3
+		wait 2250
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead4
+	{
+		accum 1 abort_if_not_equal 3
+		alertentity flamehead4
+		wait 500
+		alertentity flamehead4
+		wait 500
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead5
+	{7
+		accum 1 abort_if_not_equal 4
+		alertentity flamehead5
+		wait 500
+		alertentity flamehead5
+		wait 1000
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead6
+	{
+		accum 1 abort_if_not_equal 5
+		alertentity flamehead6
+		wait 500
+		alertentity flamehead6
+		wait 2000
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead7
+	{
+		accum 1 abort_if_not_equal 6
+		alertentity flamehead7
+		wait 500
+		alertentity flamehead7
+		wait 1000
+		trigger counter1 randomflame
+	}
+
+	trigger flamehead8
+	{
+		accum 1 abort_if_not_equal 7
+		alertentity flamehead8
+		wait 500
+		alertentity flamehead8
+		wait 2750
+		trigger counter1 randomflame
+	}
+
+	trigger flame_stop
+	{
+		accum 0 bitset 0
+	}
+}
+
+s_coffin1
+{
+	spawn
+	{
+	}
+
+	trigger loop
+	{
+		playsound sound/scenaric/crypt2/stone_coffin_pound.wav
+		faceangles 1 -1 1 100
+		alertentity coffin_dust1
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		alertentity coffin_dust1
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		alertentity coffin_dust1
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		alertentity coffin_dust1
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		alertentity coffin_dust1
+		faceangles 0 1 0 100
+		faceangles 1 -1 1 100
+		faceangles 0 1 0 100
+		alertentity coffin_dust1
+		faceangles 1 -1 1 100
+		faceangles 0 1 0 100
+		wait 5000		
+		trigger s_coffin1 loop
+	}
+
+	trigger stop
+	{
+		faceangles 0 0 0 250
+		resetscript
+	}
+}
+
+big_wall1
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound crypt2_bigwall_1
+		gotomarker bw1_spot1 150 accel wait
+		alertentity bigwall_dust1
+	}
+
+	trigger go_back
+	{
+		playsound sound/movers/doors/door2_loopo.wav looping
+		gotomarker bw1_spot2 25 wait
+		accum 0 bitreset 0
+		stopsound
+	}
+}
+
+big_wall2
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		gotomarker bw2_spot1 150 accel wait
+	}
+
+	trigger go_back
+	{
+		playsound sound/movers/doors/door2_loopo.wav looping
+		gotomarker bw2_spot2 25 wait
+		accum 0 bitreset 0
+		stopsound
+		trigger 2nd_btn go_back
+	}
+}
+
+floor1
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		alertentity floor1_dust
+		playsound sound/scenaric/crypt2/split3.wav
+		faceangles 0 2 0 5000
+		stopsound
+	}
+
+	trigger go2
+	{
+		gotomarker floor1spot1 1 wait
+		stopsound
+	}
+
+	trigger go3
+	{
+		gotomarker floor1spot2 1 wait
+		stopsound
+	}
+}
+
+floor2
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound/scenaric/crypt2/stone_fall1.wav
+		faceangles 0 -2 0 5000
+		stopsound
+		wait 5
+		trigger secretdummy crack2
+	}
+
+	trigger go2
+	{
+		gotomarker floor2spot1 1 wait
+		stopsound
+	}
+
+	trigger go3
+	{
+		gotomarker floor2spot2 1 wait
+		stopsound
+	}
+}
+
+floor3
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		alertentity floor3_dust
+		playsound sound/scenaric/crypt2/split2.wav
+		faceangles 0 2 0 5000
+		stopsound
+	}
+
+	trigger go2
+	{
+
+		gotomarker floor3spot1 2 wait
+		stopsound
+	}
+}
+
+floor4
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound/scenaric/crypt2/stone_fall1.wav
+		faceangles 0 -2 0 5000
+		stopsound
+		wait 5
+		trigger secretdummy crack3
+	}
+
+	trigger go2
+	{
+		gotomarker floor4spot1 2 wait
+		stopsound
+	}
+}
+
+floor5
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		alertentity floor5_dust
+		playsound sound/scenaric/crypt2/split1.wav
+		faceangles 0 2 0 5000
+		stopsound
+	}
+}
+
+floor6
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound/scenaric/crypt2/stone_fall2.wav
+		faceangles 0 -2 0 5000
+		stopsound
+	}
+}
+
+floor7
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		faceangles 10 0 0 500
+		gotomarker floor7spot1 500 accel
+		faceangles 90 -2 45 gototime
+	}
+}
+
+floor8
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound/scenaric/crypt2/big_stone_fall1.wav
+		faceangles 5 0 10 700
+		gotomarker floor8spot1 500 accel
+		faceangles 60 40 45 gototime
+	}
+}
+
+floor9
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		alertentity floor9_dust
+		playsound sound/scenaric/crypt2/big_stone_fall2.wav
+		faceangles -10 -1 13 600
+		gotomarker floor9spot1 500 accel
+		faceangles -80 -50 50 gototime
+	}
+}
+
+1st_btn
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound sound/world/alarmswitch.wav
+		gotomarker 1st_btn_spot2 25 wait
+		trigger bigblock go
+	}
+
+	trigger go_back
+	{
+		gotomarker 1st_btn_spot1 25 wait
+		accum 0 bitreset 0
+	}
+}
+
+2nd_btn
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		trigger bigblock go
+		playsound sound/world/alarmswitch.wav
+		gotomarker 2nd_btn_spot2 25 wait
+	}
+
+	trigger go_back
+	{
+		gotomarker 2nd_btn_spot1 25 wait
+		accum 0 bitreset 0
+	}
+}
+
+3rd_btn
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger go
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound sound/world/alarmswitch.wav
+		gotomarker 3rd_btn_spot2 25 wait
+		trigger bigblock go
+	}
+
+	trigger go_back
+	{
+		gotomarker 3rd_btn_spot1 25 wait
+		accum 0 bitreset 0
+	}
+}
+
+spikes
+{
+	spawn
+	{
+		wait 5
+		gotomarker spike_spot2 1000
+	}
+
+	trigger go
+	{
+		wait 100
+		playsound sound/scenaric/crypt2/spikes.wav
+		gotomarker spike_spot1 250 accel wait
+		alertentity spikeup
+	}
+}

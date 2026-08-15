@@ -1,0 +1,5957 @@
+//
+//AI Scripting
+//Map: Base Out
+//Last edited by: WolfETPLayer & William Faure
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 2
+		objectivesneeded 2
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	trigger give_loadout_1
+	{
+		accum 0 abort_if_not_equal 1
+		#if g_fullarsenal == 0
+		applyloadout forest_vanilla_1
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout forest_realrtcw_1
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout forest_vanilla_shotgun_1
+		#endif
+	}
+
+	trigger give_loadout_2
+	{
+		accum 0 abort_if_not_equal 2
+		#if g_fullarsenal == 0
+		applyloadout forest_vanilla_2
+		#endif
+		#if g_fullarsenal == 1
+		applyloadout forest_realrtcw_2
+		#endif
+		#if g_fullarsenal == 2
+		applyloadout forest_vanilla_shotgun_2
+		#endif
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		cvar g_chapter_legit 0
+		accum 0 random_no_zero 3
+		trigger player give_loadout_1
+		trigger player give_loadout_2
+		#endif
+		cvar g_level_was_selected 0
+
+		mu_fade 0 1000
+		mu_queue sound/music/m_situation
+	}
+
+	trigger action1
+	{
+		trigger mech1 go
+		trigger nazi1 go
+	}
+
+	trigger action2
+	{
+		#if g_spawndogs > 0 alertentity dog1 #endif
+		trigger nazi3 choosego
+		trigger nazi4 choosego
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_2 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_4 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action4
+	{
+		alertentity killaction4target
+		alertentity killaction4trig
+		alertentity nazi6
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi9
+		alertentity nazi10
+		alertentity nazi11
+		alertentity nazi12
+		alertentity nazi13
+		alertentity nazi14
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_5 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_6 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_7 #endif
+	}
+
+	trigger action4b
+	{
+		#if g_spawndogs > 0 alertentity dog2 #endif
+		alertentity nazi15
+		alertentity nazi16
+		alertentity nazi18
+		trigger nazi14 wake_up
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_8 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_9 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action5
+	{
+		alertentity nazi19
+		alertentity nazi20
+		alertentity nazi21
+		#if g_spawndogs > 0 alertentity dog3 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_10 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_11 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_12 #endif
+	}
+
+	trigger action6
+	{
+		alertentity nazi22
+		alertentity nazi23
+		alertentity nazi24		
+	}
+
+	trigger action7
+	{
+		alertentity nazi25
+		alertentity nazi26
+		alertentity nazi27
+		alertentity nazi28
+		trigger nazi21 rush
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_13 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_14 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_15 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_16 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_17 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_18 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger n19_grentoss
+	{
+		trigger nazi21 grentoss
+		trigger nazi22 go
+	}
+
+	trigger action8
+	{
+		alertentity nazi29
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_19 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_20 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_21 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_22 #endif
+	}
+
+	trigger action9
+	{
+		alertentity killaction9
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi32
+		alertentity nazi33
+		trigger counter1 action9
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_23 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_24 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_25 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_26 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_27 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_28 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_29 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_30 #endif
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_31 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_32 #endif
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action9a
+	{
+		alertentity killaction9
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi32
+		alertentity nazi33
+		alertentity nazi33a
+		trigger counter1 action9a
+		
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger action10
+	{
+	}
+
+	trigger watervalve
+	{
+		trigger water_valve rotate
+	}
+
+	trigger board_flip_clock
+	{
+		trigger board1 clockwise
+		alertentity killweapclips
+	}
+
+	trigger board_flip_counter
+	{
+		trigger board1 counter_clockwise
+		alertentity killweapclips
+	}
+
+	trigger board_kill
+	{
+		alertentity killboard
+	}
+
+	trigger blowradar
+	{
+		objectivemet 1
+		
+		trigger radar blow
+		
+		wait 2000
+		wait 1000 
+ savecheckpoint
+	}
+
+	trigger got_objective2
+	{
+		objectivemet 2
+		
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_37 #endif
+		#if g_reinforce >= 2 alertentity reinforce_ai_soldier_38 #endif
+	}
+
+	trigger secret1
+	{
+		foundsecret
+		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_23 #endif
+	}
+
+	trigger endmap
+	{
+		changelevel assault persistent
+	}
+
+	trigger endmap_bonus										
+	{															
+		
+	#if g_fullarsenal == 0  			// Vanilla Bonus
+		printbonus baseout	
+		givearmor Flak Jacket
+		giveammo .45cal Box
+	#endif
+		
+	#if g_fullarsenal == 1				// RealRTCW Bonus
+		printbonus baseout_alt
+		givearmor Flak Jacket
+		giveammo .45cal Box
+	#endif	
+
+	#if g_fullarsenal == 2 			// Vanilla Bonus
+		printbonus baseout	
+		givearmor Flak Jacket
+		giveammo .45cal Box
+	#endif	
+	}	
+}
+
+mech1
+{
+	attributes
+	{
+		hearing_scale 1.0
+		starting_health 10
+		walking_speed 90
+		running_speed 220
+		fov 240
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+	}
+
+	trigger go
+	{
+		trigger mech3 explode1
+		runtomarker m1spot1
+		facetargetangles m1spot1
+		attrib hearing_scale 1.0
+		wait 1000
+		trigger nazi1 go
+		runtomarker m1spot2
+		movetype crouch
+		sight
+		wait forever 0 mech3
+	}
+
+	trigger talk1
+	{
+		wait 1500
+		trigger nazi1 talk2
+	}
+
+	trigger talk2
+	{
+		wait 1500
+		trigger nazi1 talk3 
+	}
+
+	trigger talk3
+	{
+		wait 1500
+		trigger nazi1 talk4
+		attrib fov 160
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		attrib fov 240
+		giveweapon weapon_luger
+		setammo ammo_9mm 30
+		resetscript
+	}
+}
+
+mech3
+{
+	attributes
+	{
+		starting_health 10
+		walking_speed 90
+		running_speed 220
+	}
+
+	spawn
+	{
+		godmode on
+		nosight 99999
+		noavoid
+		takeweapon mp40
+		setammo ammo_grenades 0
+		statetype alert
+	}
+
+	trigger explode1
+	{
+		wait 1000
+		godmode off
+		alertentity explode1
+	}
+
+	death
+	{
+		trigger nazi1 choose_combat
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi1
+{
+	attributes
+	{
+		alertness 1280
+		fov 240
+		walking_speed 90
+		running_speed 220
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait forever 0
+	}
+
+	trigger go
+	{
+		runtomarker n1spot1
+		wait 1500
+		trigger mech1 talk1
+	}
+
+	trigger talk2
+	{
+		wait 1500
+		trigger mech1 talk2
+	}
+
+	trigger talk3
+	{
+		wait 500 mech1
+		trigger mech1 talk3
+	}
+
+	trigger talk4
+	{
+		runtomarker n1spot2 nostop
+		attrib fov 240
+		runtomarker n1spot3
+		trigger nazi1 man_m42
+	}
+
+	trigger man_mg42		// Nazi1 goes back to man the MG42.
+	{
+		runtomarker n1spot2 nostop
+		accum 0 set 1		// This will tell Nazi2 not go to the MG42 as nazi2 is now closer to it.
+		runtomarker n1spot3 nostop
+		runtomarker n1spot4 nostop
+		runtomarker n1spot5 nostop
+		runtomarker mg42_1_spot1
+		mount mg42_1
+		attrib aim_accuracy 0.25
+		attrib attack_skill 0.3
+		attrib aim_skill 0.2
+		accum 0 set 3
+	}
+
+	trigger choose_mg42
+	{
+		trigger nazi1 man_mg42_combat
+		wait 5
+		trigger nazi1 go_combat
+	}
+
+	trigger man_mg42_combat
+	{
+		accum 0 abort_if_not_equal 1
+		wait 500 0 nazi2
+		trigger nazi2 go_combat
+		runtomarker n1spot3 nostop
+		runtomarker n1spot4 nostop
+		runtomarker n1spot5 nostop
+		runtomarker mg42_1_spot1
+		mount mg42_1
+		attrib aim_accuracy 0.25
+		attrib attack_skill 0.3
+		attrib aim_skill 0.2
+	}
+
+	trigger go_combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger nazi2 man_mg42
+		wait 500
+		attrib camper 0.8
+		resetscript
+		attack
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 0 set 1	
+		trigger nazi2 man_mg42
+	}
+
+	enemysight
+	{
+		resetscript
+		accum 0 abort_if_equal 3	// If nazi1 is already on the MG42, do not continue.
+		trigger nazi1 choose_mg42
+	}
+
+}
+
+nazi2
+{
+	attributes
+	{
+		hearing_scale 1.0
+		walking_speed 90
+		running_speed 220
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait 500
+		trigger nazi2 man_mg42
+	}
+
+	trigger man_mg42
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1		// This is set so that nazi2 will not man_mg42 more than once.
+		runtomarker n1spot3 nostop
+		runtomarker n1spot4 nostop
+		runtomarker n1spot5
+		runtomarker mg42_1_spot1
+		attrib aim_accuracy 0.25
+		attrib attack_skill 0.3
+		attrib aim_skill 0.2
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	trigger go_combat
+	{
+		wait 500
+		attrib aggression 1.0
+		resetscript
+	}
+
+	avoiddanger grenade
+	{
+		unmount
+		resetscript
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+		hearing_scale 1.0
+		walking_speed 90
+		running_speed 300
+		attack_crouch 0.0
+		idle_crouch 0.3
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 4
+		statetype alert
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_g43
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		accum 0 set 5
+		accum 1 bitreset 0	// USed so he will react when bulletimpact/inspectsound are triggered when he is in position
+		wait forever 0
+	}
+
+	trigger choosego
+	{
+		accum 0 random 2
+		wait 5
+		trigger nazi3 go1
+		wait 5
+		trigger nazi3 go2
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 bitset 0
+		noavoid
+		noattack 2000
+		runtomarker n3spot1
+		wait 500
+		runtomarker n3spot2
+		resetscript
+	}
+
+	trigger go2
+	{
+		accum 0 abort_if_not_equal 1
+		noavoid
+		runtomarker n3spot1
+		wait 500
+		runtomarker n3spot3
+		facetargetangles n3spot3
+		wait 3000 512
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi4
+{
+	attributes
+	{
+		hearing_scale 1.0
+		walking_speed 90
+		running_speed 220
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 bitreset 0	// USed so he will react when bulletimpact/inspectsound are triggered when he is in position
+		setammo ammo_grenades 6
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	trigger choosego
+	{
+		accum 0 random 3
+		trigger nazi4 go1
+		wait 5
+		trigger nazi4 go2
+		wait 5
+		trigger nazi4 go3
+		wait 5
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 bitset 0
+		resetscript
+		runtomarker n4spot1 nostop
+		runtomarker n4spot2 nostop
+		runtomarker n4spot3 nostop
+		facetargetangles n4spot3
+		wait forever 512
+	}
+
+	trigger go2
+	{
+		accum 0 abort_if_not_equal 1
+		accum 1 bitset 0
+		resetscript
+		runtomarker n4spot1 nostop
+		runtomarker n4spot2 nostop
+		runtomarker n4spot3 nostop
+		runtomarker n4spot4 nostop
+		runtomarker n4spot5
+		facetargetangles n4spot5
+		wait forever 512
+	}
+
+	trigger go3
+	{
+		accum 0 abort_if_not_equal 2
+		accum 1 bitset 0
+		resetscript
+		runtomarker n4spot1 nostop
+		runtomarker n4spot2 nostop
+		runtomarker n4spot6 nostop
+		runtomarker n4spot7
+		facetargetangles n4spot7
+		wait forever 512
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi5
+{
+	attributes
+	{
+		tactical 1.0
+		hearing_scale 0.5
+		attack_crouch 0.0
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 220
+	}
+
+	spawn
+	{
+		accum 1 bitreset 0	// USed so he will react when bulletimpact/inspectsound are triggered when he is in position	
+		statetype alert
+		movetype crouch
+		giveweaponfull weapon_mp40
+		wait forever 0 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_not_bitset 0
+		accum 1 bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		accum 1 bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		accum 1 bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		accum 1 bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi6
+{
+	attributes
+	{
+		hearing_scale 1.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Lower Bunker, 2 Upper Bunker)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		setammo ammo_grenades 3
+		giveweaponfull weapon_mp40
+		statetype alert
+		trigger nazi6 go
+	}
+
+	trigger go	// This tells the AI to run towards the MG42, through the tunnel.
+	{
+		wait 1000
+		noavoid
+		runtomarker n6spot1 nostop
+		runtomarker n6spot2 nostop
+		runtomarker n6spot3 nostop
+		runtomarker n6spot4 nostop
+		accum 0 set 2
+		trigger nazi7 set0to2
+		trigger nazi8 set0to2
+		trigger nazi9 set0to2
+		runtomarker n6spot5 nostop
+		runtomarker n6spot6 nostop
+		runtomarker n6spot7 nostop
+		accum 0 set 3
+		trigger nazi7 set0to3
+		trigger nazi8 set0to3
+		trigger nazi9 set0to3
+		runtomarker n6spot8 nostop
+		runtomarker n6spot9
+		accum 0 set 4
+		trigger nazi7 set0to4
+		trigger nazi8 set0to4
+		trigger nazi9 set0to4
+		wait 5
+		trigger nazi7 no_follow
+		wait 1000
+		walktomarker n6spot9a
+		wait 500 nazi12
+		trigger nazi13 gomarch1	// TELLS THE OTHER AI TO BEGIN THEIR MOVEOUT SCRIPT
+		trigger nazi12 moveout
+		trigger nazi11 moveout
+		trigger nazi10 moveout
+		trigger nazi9 gomarch1
+		trigger nazi8 moveout
+		trigger nazi7 moveout
+		trigger nazi6 moveout
+	}
+
+	// Script to check out the bunker. Nazi10 will join Nazi6
+	trigger moveout
+	{
+		wait 1000
+		attrib running_speed 220
+		avoid
+		runtomarker n1spot3 nostop
+		runtomarker n1spot4 nostop
+		runtomarker n1spot5 nostop
+		runtomarker n6spot10
+		accum 1 set 2
+		wait 2000
+		wait 1500
+		trigger nazi10 man_mg42
+		trigger nazi6 lower_bunker
+	}
+
+	// Script to check out the lower portion of the bunker.
+	trigger lower_bunker
+	{
+		runtomarker n1spot5 nostop
+		runtomarker n1spot4 nostop
+		runtomarker n1spot3 nostop
+		runtomarker n4spot1 nostop
+		wait 500
+		crouchtomarker n6spot11 nostop
+		accum 1 set 1
+		crouchtomarker n6spot12
+		crouchtomarker n5spot1 nostop
+		runtomarker n6spot13 nostop
+		runtomarker n6spot14
+		runtomarker n6spot10 nostop
+		runtomarker n1spot5
+		accum 1 set 2
+		wait 500
+		wait 1500
+		walktomarker n6spot15
+		facetargetangles n6spot15
+		wait forever 0		
+	}
+
+	// This will choose the correct "EVADE" script.
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		resetscript
+		trigger nazi6 evade_way_before_tunnel
+		wait 5
+		trigger nazi6 evade_before_tunnel
+		wait 5
+		trigger nazi6 evade_in_tunnel
+		wait 5
+		trigger nazi6 evade_after_tunnel
+	}
+
+	// If AI is not even near the tunnel and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi6 cover_way_before_tunnel
+	}
+
+	// If the AI is not even near the tunnel and the player has been spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		resetscript 
+		runtomarker n6cover1
+		facetargetangles n6cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// If the AI is just before the tunnel and sees the layer, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi7 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi6 cover_before_tunnel
+	}
+
+	// If the AI is just before the tunnel and the player has been spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		resetscript 
+		runtomarker n6cover2
+		facetargetangles n6cover2
+		movetype crouch
+		trigger counter1 go_before_tunnel
+		wait forever 0
+	}
+
+	// If the AI is in the tunnel and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi7 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi6 cover_in_tunnel
+	}
+
+	// If the AI is in the tunnel and the player has been spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		resetscript 
+		runtomarker n6cover3
+		facetargetangles n6cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If the AI is at the end of the tunnel and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi7 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+		trigger nazi6 cover_after_tunnel
+	}
+
+	// If the AI is at the end of the tunnel and the player has been spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		resetscript 
+		runtomarker n4spot2 nostop
+		runtomarker n7spot2
+		trigger counter1 go_after_tunnel
+		resetscript
+	}
+
+	// If the AI is checking out the bunker and sees the player, this will trigger.
+	trigger choose_help_bunker
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		resetscript
+		trigger nazi6 help_lower_bunker
+		wait 5
+		trigger nazi6 help_upper_bunker
+	}
+
+	// If the AI is checking out the lower part of the bunker and the player has been spotted,
+	// this will trigger.
+	trigger help_lower_bunker
+	{
+		accum 1 abort_if_not_equal 1
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi7 help_lower_bunker
+		trigger nazi8 help_lower_bunker
+		trigger nazi9 help_lower_bunker
+		trigger nazi10 help_lower_bunker
+		trigger nazi11 help_lower_bunker
+		trigger nazi12 help_lower_bunker
+		trigger nazi13 help_lower_bunker
+		resetscript
+	}
+
+	// If the AI is checking out the upper part of the bunker and the player has been spotted, 
+	// this will trigger.
+	trigger help_upper_bunker	
+	{
+		accum 1 abort_if_not_equal 2
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi7 help_upper_bunker
+		trigger nazi8 help_upper_bunker
+		trigger nazi9 help_upper_bunker
+		trigger nazi10 help_upper_bunker
+		trigger nazi11 help_upper_bunker
+		trigger nazi12 help_upper_bunker
+		trigger nazi13 help_upper_bunker
+		resetscript
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+		accum 2 set 0
+	}
+
+	trigger help_upper_bunker
+	{
+		accum 2 set 0
+	}
+
+	trigger help_inner_barracks
+	{
+		accum 2 set 0
+	}
+
+	trigger help_outter_barracks
+	{
+		accum 2 set 0
+	}
+
+
+	trigger help_inner_entrance
+	{
+		accum 2 set 0
+	}
+
+	trigger help_outter_entrance
+	{
+		accum 2 set 0
+	}
+
+	trigger help_end_tunnel
+	{
+		accum 2 set 0
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	// TEMP!
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player	// TEMP!
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player	// TEMP!
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player	// TEMP!
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi6 choose_evade_tunnel
+		wait 5
+		trigger nazi6 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi6 choose_evade_tunnel
+		wait 5
+		trigger nazi6 choose_evade_bunker
+	}
+}
+
+nazi7
+{
+	attributes
+	{
+		hearing_scale 1.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Inner Barracks, 2 outter Barracks)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		statetype alert
+		giveweaponfull weapon_mp40
+		trigger nazi7 go
+	}
+
+	// Tells this AI to follow Nazi6, using the markers messes up his path finding.
+	trigger go
+	{
+		wait 500
+		noavoid
+		followcast nazi6
+	}
+
+	// Depending on how far Nazi6 is during his run to the MG42, the follow set N to N will trigger.
+	trigger set0to1
+	{
+		accum 0 set 1
+	}
+
+	trigger set0to2
+	{
+		accum 0 set 2
+	}
+
+	trigger set0to3
+	{
+		accum 0 set 3
+	}
+
+	trigger set0to4
+	{
+		accum 0 set 4
+	}
+
+	// Tells Nazi7 not to follow Nazi6 anymore.
+	trigger no_follow
+	{
+		resetscript
+		trigger nazi8 no_follow
+		wait forever 0 nazi6
+	}
+
+	// Tells Nazi7 to head towards the Barracks.
+	trigger moveout
+	{
+		attrib running_speed 220
+		avoid
+		wait 2000
+		attrib idle_crouch 0.0
+		attrib attack_crouch 0.0
+		runtomarker n7spot2 nostop
+		runtomarker n3spot3
+		wait forever 0
+	}
+
+	// Tells Nazi7 to check out he Barracks.
+	trigger goin
+	{
+		accum 1 set 1
+		crouchtomarker n7spot3 n11spot3 noattack nostop
+		crouchtomarker n11spot2 n11spot3 noattack nostop
+		crouchtomarker n3spot1 nostop
+		crouchtomarker n11spot3 nostop
+		crouchtomarker n7spot4
+		wait 500
+		facetargetangles n7spot4
+		wait 1000
+		wait 1500
+		wait 1500
+		trigger nazi11 talk1
+	}
+
+	// Tells Nazi7 to walk out of the barracks.
+	trigger go_out
+	{
+		walktomarker n11spot3 nostop
+		walktomarker n11spot2
+		accum 1 set 2
+		walktomarker n7spot3 nostop
+		walktomarker n7spot5
+		facetargetangles n7spot5
+		wait forever 0
+	}
+
+	// This will trigger the correct "EVADE" script depending on current position.
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		accum 2 set 0
+		resetscript
+		trigger nazi7 evade_before_tunnel
+		wait 5
+		trigger nazi7 evade_in_tunnel
+		wait 5
+		trigger nazi7 evade_after_tunnel
+	}
+
+	// If Nazi7 is not even close to the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+	}
+
+	// If Nazi7 is not even close to the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n7cover1
+		facetargetangles n7cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// If Nazi7 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+	}
+
+	// If Nazi7 is just before the TUNNEL and the player has been spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n7cover2
+		facetargetangles n7cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi7 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+	}
+
+	// IF Nazi7 is in the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n7cover3
+		facetargetangles n7cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi7 is at the end of the TUNNEL and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_t  unnel
+		trigger nazi7 cover_after_tunnel
+	}
+
+	// If Nazi7 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n4spot2 nostop
+		runtomarker n4spot3 nostop
+		runtomarker n4spot4 nostop
+		runtomarker n3spot3 nostop
+		trigger counter1 go_after_tunnel
+		resetscript
+	}
+
+	// If Nazi7 sees the player while in the Barracks or during his marchloop, this will trigger.
+	trigger choose_evade_barracks
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi7 evade_inner_barracks
+		wait 5
+		trigger nazi7 evade_outter_barracks
+	}
+
+	trigger evade_inner_barracks
+	{
+		accum 1 abort_if_not_equal 1
+		accum 2 set 0
+		resetscript
+		trigger nazi6 inner_barracks
+		trigger nazi8 inner_barracks
+		trigger nazi9 inner_barracks
+		trigger nazi10 inner_barracks
+		trigger nazi11 inner_barracks
+		trigger nazi12 inner_barracks
+		trigger nazi13 inner_barracks
+		resetscript
+	}
+
+	trigger evade_outter_barracks
+	{
+		accum 1 abort_if_not_equal 2
+		accum 2 set 0
+		resetscript
+		trigger nazi6 outter_barracks
+		trigger nazi8 outter_barracks
+		trigger nazi9 outter_barracks
+		trigger nazi10 outter_barracks
+		trigger nazi11 outter_barracks
+		trigger nazi12 outter_barracks
+		trigger nazi13 outter_barracks
+		resetscript
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+
+	trigger help_lower_bunker
+	{
+		accum 2 set 0
+	}
+
+	trigger help_upper_bunker
+	{
+		accum 2 set 0
+	}
+
+	trigger help_inner_barracks
+	{
+		accum 2 set 0
+	}
+
+	trigger help_outter_barracks
+	{
+		accum 2 set 0
+	}
+
+
+	trigger help_inner_entrance
+	{
+		accum 2 set 0
+	}
+
+	trigger help_outter_entrance
+	{
+		accum 2 set 0
+	}
+
+	trigger help_end_tunnel
+	{
+		accum 2 set 0
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi7 choose_evade_tunnel
+		wait 5
+		trigger nazi7 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 nazi_died	
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi7 choose_evade_tunnel
+		wait 5
+		trigger nazi7 choose_evade_barracks
+	}
+}
+
+nazi8
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Inner Entrance, 2 outter Entrance)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		statetype alert
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_g43
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		trigger nazi8 go
+	}
+
+	// Depending on how far Nazi6 is during his run to the MG42, the follow set N to N will trigger.
+	trigger go
+	{
+		wait 500
+		noavoid
+		followcast nazi7
+	}
+
+	trigger set0to1
+	{
+		accum 0 set 1
+	}
+
+	trigger set0to2
+	{
+		accum 0 set 2
+	}
+
+	trigger set0to3
+	{
+		accum 0 set 3
+	}
+
+	trigger set0to4
+	{
+		accum 0 set 4
+	}
+
+	// Tells Nazi8 not to follow Nazi7 anymore.
+	trigger no_follow
+	{
+		resetscript
+		trigger nazi9 no_follow
+		wait forever 0 nazi6
+	}
+
+	// Tells Nazi8 to head towards the entrance of the base.
+	trigger moveout
+	{
+		attrib running_speed 220
+		avoid
+		wait 4000
+		runtomarker n1spot2 nostop
+		runtomarker n8spot2 nostop
+		runtomarker n8spot2b nostop
+		runtomarker n8spot3 nostop
+		runtomarker n8spot4 nostop
+		runtomarker n2spot1 nostop
+		runtomarker n8spot5
+		facetargetangles n8spot5
+		trigger nazi12 choosego
+		wait forever 0
+	}
+
+	// Tells Nazi8 to check out the inner part of the entrance. (Little guard post).
+	trigger go_in
+	{
+		attrib crouching_speed 100
+		crouchtomarker n8spot6
+		crouchtomarker n8spot7
+		crouchtomarker n8spot8 n8spot9 noattack
+		attrib crouching_speed 150	
+		crouchtomarker n8spot9
+		accum 1 set 1
+		wait 3000 0
+		wait 1000
+		wait 1000
+		trigger nazi12 marchloop1
+		trigger nazi8 marchloop1
+	}
+
+
+	// Telss Nazi8 to begin his marchloop, which is lean against the wall, near the guard post.
+	trigger marchloop1
+	{
+		accum 1 set 2
+		wait 2000
+		walktomarker n8spot7
+		facetargetangles n8spot7
+		wait forever 0
+	}
+
+	// This will trigger the correct "EVADE" script depending on current position. 
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		accum 2 set 0
+		resetscript
+		trigger nazi8 evade_before_tunnel
+		wait 5
+		trigger nazi8 evade_in_tunnel
+		wait 5
+		trigger nazi8 evade_after_tunnel
+	}
+
+	// If Nazi8 is not even close to the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+	}
+
+	// If Nazi8 is not even close to the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n8cover1
+		facetargetangles n8cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// If Nazi8 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+	}
+
+	// If Nazi8 is just before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n8cover2
+		facetargetangles n8cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi8 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+	}
+
+	// If Nazi8 is in the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n8cover3
+		facetargetangles n8cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi8 is at the end of the TUNNEL and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi7 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+	}
+
+	// If Nazi8 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n4spot2 nostop
+		runtomarker n4spot3 nostop
+		runtomarker n4spot4 nostop
+		runtomarker n11spot5
+		trigger counter1 go_after_tunnel
+		resetscript
+	}
+
+	// If Nazi8 sees the player while checking out the Base Entrance, this will trigger.
+	trigger choose_evade_entrance
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi8 evade_inner_entrance
+		wait 5
+		trigger nazi8 evade_outter_entrance
+	}
+
+	// If Nazi8 is checking out the Base Entrance and sees the player, this will trigger.
+	trigger evade_inner_entrance
+	{
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 inner_entrance
+		trigger nazi7 inner_entrance
+		trigger nazi9 inner_entrance
+		trigger nazi10 inner_entrance
+		trigger nazi11 inner_entrance
+		trigger nazi12 inner_entrance
+		trigger nazi13 inner_entrance
+		resetscript
+	}
+
+	// If Nazi8 is outside doing his marchloop then sees the player, this will trigger.
+	trigger evade_outter_entrance
+	{
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 outteroutter_entrance
+		trigger nazi7 outter_entrance
+		trigger nazi9 outter_entrance
+		trigger nazi10 outter_entrance
+		trigger nazi11 outter_entrance
+		trigger nazi12 outter_entrance
+		trigger nazi13 outter_entrance
+		resetscript
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+		accum 2 set 0
+	}
+
+	trigger help_upper_bunker
+	{
+		accum 2 set 0
+	}
+
+	trigger help_inner_barracks
+	{
+		accum 2 set 0
+	}
+
+	trigger help_outter_barracks
+	{
+		accum 2 set 0
+	}
+
+	trigger help_inner_entrance
+	{
+		accum 2 set 0
+	}
+
+	trigger help_outter_entrance
+	{
+		accum 2 set 0
+	}
+
+	trigger help_end_tunnel
+	{
+		accum 2 set 0
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi8 choose_evade_tunnel
+		wait 5
+		trigger nazi8 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{	
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi8 choose_evade_tunnel
+		wait 5
+		trigger nazi8 choose_evade_entrance
+	}
+}
+
+nazi9
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1900
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Marchloop)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		giveweaponfull weapon_sniperscope
+		statetype alert
+		trigger nazi9 go
+	}
+
+	// Depending on how far Nazi6 is during his run to the MG42, the follow set N to N will trigger.
+	trigger go	
+	{
+		wait 500
+		noavoid
+		followcast nazi8
+	}
+
+	trigger set0to1
+	{
+		accum 0 set 1
+	}
+
+	trigger set0to2
+	{
+		accum 0 set 2
+	}
+
+	trigger set0to3
+	{
+		accum 0 set 3
+	}
+
+	trigger set0to4
+	{
+		accum 0 set 4
+	}
+
+	// Tells Nazi8 not to follow Nazi7 anymore.
+	trigger no_follow
+	{
+		resetscript
+		wait forever 0 nazi6
+	}
+
+	// Instead of MOVEOUT, Nazi9 goes straight to a marchloop.
+	trigger gomarch1	
+	{
+		wait 6000
+		trigger nazi9 marchloop1
+	}
+ 
+	trigger marchloop1
+	{
+		attrib running_speed 220
+		attrib walking_speed 70
+		avoid
+		wait 2000
+		walktomarker n9spot2
+		facetargetangles n9spot2
+		wait forever 0
+	}
+
+	// This will trigger the correct "EVADE" script depending on current position. 
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		accum 2 set 0
+		resetscript
+		trigger nazi9 evade_before_tunnel
+		wait 5
+		trigger nazi9 evade_in_tunnel
+		wait 5
+		trigger nazi9 evade_after_tunnel
+	}
+
+	// If Nazi9 is not even close to the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+	}
+
+	// If Nazi9 is not even close to the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n9cover1
+		facetargetangles n9cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// If Nazi9 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+	}
+
+	// If Nazi9 is just before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n9cover2
+		facetargetangles n9cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi9 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+	}
+
+	// If Nazi9 is in the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		resetscript
+		runtomarker n9cover3
+		facetargetangles n9cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi9 is at the end of the TUNNEL and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi7 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+	}
+
+	// If Nazi9 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n6cover3
+		trigger counter1 go_after_tunnel
+		wait 20000 512
+		resetscript
+	}
+
+	// If Nazi9 sees the player while in his MARCHLOOP1, then this will trigger.
+	trigger help_end_tunnel
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 help_end_tunnel
+		trigger nazi7 help_end_tunnel
+		trigger nazi8 help_end_tunnel
+		trigger nazi10 help_end_tunnel
+		trigger nazi11 help_end_tunnel
+		trigger nazi12 help_end_tunnel
+		trigger nazi13 help_end_tunnel
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+	}
+
+	trigger help_upper_bunker
+	{
+	}
+
+	trigger help_inner_barracks
+	{
+	}
+
+	trigger help_outter_barracks
+	{
+	}
+
+	trigger help_inner_entrance
+	{
+	}
+
+	trigger help_outter_entrance
+	{
+	}
+
+	trigger help_end_tunnel
+	{
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi9 choose_evade_tunnel
+		wait 5
+		trigger nazi9 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{	
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi9 choose_evade_tunnel
+		wait 5
+		trigger nazi9 help_end_tunnel
+
+	}
+}
+
+nazi10
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Lower Bunker, 2 Upper Bunker)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		statetype alert
+		giveweaponfull weapon_mp40
+		trigger nazi10 go
+	}
+
+	trigger go	// This tells the AI to run towards the MG42, through the tunnel.
+	{
+		wait 1750
+		noavoid
+		runtomarker n10spot1 nostop
+		runtomarker n10spot2 nostop
+		runtomarker n10spot3 nostop
+		runtomarker n10spot4 nostop
+		accum 0 set 2
+		trigger counter1 set2to2
+		runtomarker n10spot5 nostop
+		runtomarker n10spot6 nostop
+		runtomarker n10spot7 nostop
+		accum 0 set 3
+		trigger counter1 set2to3
+		runtomarker n10spot8 nostop
+		runtomarker n10spot9
+		accum 0 set 4
+		trigger counter1 set2to4
+		wait 5
+		trigger nazi11 no_follow
+		wait forever 0 nazi6
+	}
+
+	// Script to check out the bunker. Nazi6 will join Nazi10
+	trigger moveout
+	{
+		attrib running_speed 220
+		avoid
+		runtomarker n1spot3 nostop
+		runtomarker n1spot4 nostop
+		accum 0 set 0
+		accum 1 set 1
+		runtomarker n1spot5 nostop
+		runtomarker mg42_1_spot1
+		wait forever 0			
+	}
+
+	// This tells Nazi10 to man the MG42 while Nazi6 checks out the lower bunker.
+	trigger man_mg42
+	{
+		attrib idle_crouch 0.0
+		attrib attack_crouch 0.0
+		wait 1000 0
+		mount mg42_1
+		attrib aim_accuracy 0.25
+		attrib attack_skill 0.3
+		attrib aim_skill 0.2
+	}
+
+	// If Nazi10 sees the player, this will trigger.
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		accum 2 set 0
+		resetscript
+		trigger nazi10 evade_way_before_tunnel
+		wait 5
+		trigger nazi10 evade_before_tunnel
+		wait 5
+		trigger nazi10 evade_in_tunnel
+		wait 5
+		trigger nazi10 evade_after_tunnel
+	}
+
+	// If Nazi10 is way before the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+	}
+
+	// If Nazi10 is way before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n10cover1
+		facetargetangles n10cover1
+		trigger counter1 go_way_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi10 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+	}
+
+	// If Nazi10 is just before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n10cover2
+		facetargetangles n10cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi10 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+	}
+
+	// If Nazi10 is in the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n10cover3
+		facetargetangles n10cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi10 is at the end of the TUNNEL and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi7 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+	}
+
+	// If Nazi10 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n1spot3
+		trigger counter1 go_after_tunnel
+		resetscript
+	}
+
+	// If Nazi10 is in the UPPER BUNKER and sees the player, this will trigger.
+	trigger evade_upper_bunker
+	{
+		accum 1 abort_if_not_equal 1
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 upper_bunker
+		trigger nazi7 upper_bunker
+		trigger nazi8 upper_bunker
+		trigger nazi9 upper_bunker
+		trigger nazi11 upper_bunker
+		trigger nazi12 upper_bunker
+		trigger nazi13 upper_bunker
+		resetscript
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+	}
+
+	trigger help_upper_bunker
+	{
+	}
+
+	trigger help_inner_barracks
+	{
+	}
+
+	trigger help_outter_barracks
+	{
+	}
+
+	trigger help_inner_entrance
+	{
+	}
+
+	trigger help_outter_entrance
+	{
+	}
+
+	trigger help_end_tunnel
+	{
+	}
+
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi10 choose_evade_tunnel
+		wait 5
+		trigger nazi10 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{	
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi10 choose_evade_tunnel
+		wait 5
+		trigger nazi10 evade_upper_bunker
+	}
+}
+
+nazi11
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Inner Barracks, 2 outter Barracks)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		setammo ammo_grenades 3
+		giveweaponfull weapon_mp40
+		statetype alert
+		trigger nazi11 go
+	}
+
+	trigger go
+	{
+		wait 500
+		noavoid
+		followcast nazi10
+	}
+
+	trigger set0to1
+	{
+		accum 0 set 1
+	}
+
+	trigger set0to2
+	{
+		accum 0 set 2
+	}
+
+	trigger set0to3
+	{
+		accum 0 set 3
+	}
+
+	trigger set0to4
+	{
+		accum 0 set 4
+	}
+
+	// When Nazi10 has reached the end of the TUNNEL, this will trigger.
+	trigger no_follow
+	{
+		resetscript
+		trigger nazi12 no_follow
+		wait forever 0 nazi6
+	}
+
+	// Script to check out the Barracks. Nazi7 will join Nazi11
+	trigger moveout
+	{
+		attrib running_speed 220
+		avoid
+		wait 3000
+		runtomarker n7spot2 nostop
+		runtomarker n11spot2
+		accum 0 set 0
+		accum 1 set 1
+		wait 1500
+		wait 500
+		wait 1000 0
+		attrib crouching_speed 80
+		crouchtomarker n3spot1 nostop
+		crouchtomarker n11spot3 nostop
+		trigger nazi7 goin
+		crouchtomarker n11spot4
+		wait 500
+		facetargetangles n11spot4
+		wait 2000 0
+		wait forever 0 nazi7
+	}
+
+	// Script to talk with Nazi7.
+	trigger talk1
+	{
+		wait 1000
+		trigger nazi11 go_out
+	}
+
+	// Tells Nazi11 to go outside and do his Marchloop
+	trigger go_out
+	{
+		walktomarker n11spot3 nostop
+		trigger nazi7 go_out
+		walktomarker n11spot2 nostop
+		walktomarker n11spot5 nostop
+		trigger nazi11 marchloop1
+	}
+
+	// After Nazi11 checks out the BUNKER, this will trigger.
+	trigger marchloop1
+	{
+		accum 1 set 2
+		attrib walking_speed 70
+		walktomarker n4spot4
+		walktomarker n4spot3
+		wait 2000
+		wait 2000 n4spot4
+		walktomarker n4spot4
+		walktomarker n11spot5
+		wait 2000
+		wait 2000 n4spot4
+		trigger nazi11 marchloop1
+	}
+
+	// When Nazi11 sees the player, this will trigger.
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		resetscript
+		trigger nazi11 evade_before_tunnel
+		wait 5
+		trigger nazi11 evade_in_tunnel
+		wait 5
+		trigger nazi11 evade_after_tunnel
+	}
+
+	// If Nazi11 is way before the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+	}
+
+	// If Nazi11 is way before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n11cover1
+		facetargetangles n11cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// If Nazi11 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		trigger nazi6 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+	}
+
+	// If Nazi11 is just before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n11cover2
+		facetargetangles n11cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi11 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		trigger nazi6 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+	}
+
+	// If Nazi11 is in the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n11cover3
+		facetargetangles n11cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi11 is at the end of the TUNNEL and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi7 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+	}
+
+	// If Nazi11 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n1spot4 nostop
+		runtomarker n6spot15
+		facetargetangles n6spot15
+		trigger counter1 go_before_tunnel
+		resetscript
+	}
+
+	// If Nazi11 is at the Barracks and sees the player, this will trigger.
+	trigger choose_evade_barracks
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		resetscript
+		trigger nazi11 evade_inner_barracks
+		wait 5
+		trigger nazi11 evade_outter_barracks
+	}
+
+	// If Nazi11 is in the BARRACKS and sees the player, this will trigger
+	trigger evade_inner_barracks
+	{
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 inner_barracks
+		trigger nazi7 inner_barracks
+		trigger nazi8 inner_barracks
+		trigger nazi9 inner_barracks
+		trigger nazi10 inner_barracks
+		trigger nazi12 inner_barracks
+		trigger nazi13 inner_barracks
+		resetscript
+	}
+
+	// If Nazi11 is doing his MARCHLOOP and sees the player, this will trigger.
+	trigger evade_outter_barracks
+	{
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 outter_barracks
+		trigger nazi7 outter_barracks
+		trigger nazi8 outter_barracks
+		trigger nazi9 outter_barracks
+		trigger nazi10 outter_barracks
+		trigger nazi12 outter_barracks
+		trigger nazi13 outter_barracks
+		resetscript
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+	}
+
+	trigger help_upper_bunker
+	{
+	}
+
+	trigger help_inner_barracks
+	{
+	}
+
+	trigger help_outter_barracks
+	{
+	}
+
+	trigger help_inner_entrance
+	{
+	}
+
+	trigger help_outter_entrance
+	{
+	}
+
+	trigger help_end_tunnel
+	{
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi11 choose_evade_tunnel
+		wait 5
+		trigger nazi11 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{	
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi11 choose_evade_tunnel
+		wait 5
+		trigger nazi11 choose_evade_barracks
+	}
+}
+
+nazi12
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Inner Entrance, 2 outter Entrance)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		accum 6 set 0
+		accum 7 set 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		trigger nazi12 go
+	}
+
+	trigger go
+	{
+		wait 500
+		noavoid
+		followcast nazi11
+	}
+
+	trigger set0to1
+	{
+		accum 0 set 1
+	}
+
+	trigger set0to2
+	{
+		accum 0 set 2
+	}
+
+	trigger set0to3
+	{
+		accum 0 set 3
+	}
+
+	trigger set0to4
+	{
+		accum 0 set 4
+	}
+
+	// Tells Nazi12 to stop following Nazi13.
+	trigger no_follow
+	{
+		resetscript
+		trigger nazi13 no_follow
+		wait forever 0 nazi6
+	}
+
+	// Tells Nazi12 to go towards the BASE ENTRANCE.
+	trigger moveout
+	{
+		attrib running_speed 220
+		avoid
+		wait 5000
+		runtomarker n1spot2 nostop
+		runtomarker n8spot2 nostop
+		runtomarker n8spot2b nostop
+		runtomarker n8spot3 nostop
+		runtomarker n8spot4 nostop
+		runtomarker n2spot1 nostop
+		runtomarker n9spot2
+		facetargetangles n9spot2
+		trigger nazi12 choosego
+	}
+
+	// Tells Nazi12 to either follow Nazi8 or to position himself across the way so that he can see
+	// into the Guard post.
+	trigger choosego
+	{
+		accum 6 inc 1
+		accum 6 abort_if_not_equal 2
+		accum 7 random 2
+		trigger nazi12 go_in
+		wait 5
+		trigger nazi12 give_cover
+	}
+
+	// Tells Nazi12 to follow Nazi8
+	trigger go_in
+	{
+		accum 7 abort_if_not_equal 0
+		trigger nazi8 go_in		
+		wait 1500 0
+		attrib crouching_speed 100
+		crouchtomarker n8spot6
+		crouchtomarker n8spot7
+		crouchtomarker n8spot8 n8spot9 noattack
+		attrib crouching_speed 120	
+		crouchtomarker n9spot4
+		crouchtomarker n9spot5
+	}
+
+	// Tells Nazi12 to go across the road and provide cover.
+	trigger give_cover
+	{
+		accum 7 abort_if_not_equal 1
+		wait 1500 0
+		attrib crouching_speed 120
+		crouchtomarker n9spot3 n9spot4 noattack
+		trigger nazi8 go_in
+	}
+
+	// Triggers Nazi12 to start his Marchloop.
+	trigger marchloop1
+	{
+		walktomarker n9spot7
+		facetargetangles n9spot7
+		wait 2000
+		walktomarker n9spot6
+		facetargetangles n9spot7
+		wait 2000
+		trigger nazi12 marchloop1
+	}
+
+	// When Nazi11 sees the player, this will trigger.
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		accum 2 set 0
+		resetscript
+		trigger nazi12 evade_before_tunnel
+		wait 5
+		trigger nazi12 evade_in_tunnel
+		wait 5
+		trigger nazi12 evade_after_tunnel
+	}
+
+	// IF Nazi12 is way before the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+	}
+
+	// IF Nazi12 is way before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n12cover1
+		facetargetangles n12cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// IF Nazi12 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+	}
+
+	// IF Nazi12 is just before the TUNNEL and player is spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n12cover2
+		facetargetangles n12cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// IF Nazi12 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+	}
+
+	// If Nazi12 is in the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n12cover3
+		facetargetangles n12cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi12 is at the end of the TUNNEl and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi7 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+	}
+
+	// If Nazi12 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n13spot3 nostop
+		trigger counter1 go_after_tunnel
+		resetscript
+	}
+
+	// If Nazi12 is at the Base Entrance and sees the player, this will trigger.
+	trigger choose_evade_entrance
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi12 evade_inner_entrance
+		wait 5
+		trigger nazi12 evade_outter_entrance
+	}
+
+	// If Nazi12 is in the Gaurd Post at the Base Entrance and sees the player, this will trigger.
+	trigger evade_inner_entrance
+	{
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 inner_entrance
+		trigger nazi7 inner_entrance
+		trigger nazi8 inner_entrance
+		trigger nazi9 inner_entrance
+		trigger nazi10 inner_entrance
+		trigger nazi11 inner_entrance
+		trigger nazi13 inner_entrance
+		resetscript
+	}
+
+	// If Nazi12 is in his marchloop and sees the player, this will trigger.
+	trigger evade_outter_entrance
+	{
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 outteroutter_entrance
+		trigger nazi7 outter_entrance
+		trigger nazi6 outter_entrance
+		trigger nazi9 outter_entrance
+		trigger nazi10 outter_entrance
+		trigger nazi11 outter_entrance
+		trigger nazi13 outter_entrance
+		resetscript
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+	}
+
+	trigger help_upper_bunker
+	{
+	}
+
+	trigger help_inner_barracks
+	{
+	}
+
+	trigger help_outter_barracks
+	{
+	}
+
+	trigger help_inner_entrance
+	{
+	}
+
+	trigger help_outter_entrance
+	{
+	}
+
+	trigger help_end_tunnel
+	{
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+
+	pain 25
+	{
+		trigger nazi12 choose_evade_tunnel
+		wait 5
+		trigger nazi12 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{	
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi12 choose_evade_tunnel
+		wait 5
+		trigger nazi12 choose_evade_barracks
+	}
+}
+
+nazi13
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		idle_crouch 0.0
+		walking_speed 90
+		running_speed 275
+		alertness 1800
+	}
+
+	spawn
+	{
+		accum 0 set 1	// AI Position (0=Disabled, 1=Way Before Tunnel, 2=Before Tunnel, 3=In Tunnel, 4=End of Tunnel)
+		accum 1 set 0	// AI Position Past Tunnel while proceeding (0=Disabled, 1=Marchloop)
+		accum 2 set 1	// Checks to see if an event has already triggered (0=Disabled, 1=Enabled)
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_g43
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		statetype alert
+		trigger nazi13 go
+	}
+
+	trigger go
+	{
+		wait 500
+		noavoid
+		followcast nazi12
+	}
+
+	trigger set0to1
+	{
+		accum 0 set 1
+	}
+
+	trigger set0to2
+	{
+		accum 0 set 2
+	}
+
+	trigger set0to3
+	{
+		accum 0 set 3
+	}
+
+	trigger set0to4
+	{
+		accum 0 set 4
+	}
+
+	// Tells NAZI13 to stop following Nazi12
+	trigger no_follow
+	{
+		resetscript
+		wait forever 0 nazi6	
+	}
+
+	// Instead of MOVEOUT, this will trigger when the group is at the end of the TUNNEL.
+	trigger gomarch1
+	{
+		wait 7000
+		trigger nazi13 marchloop1
+	}
+
+	trigger marchloop1
+	{
+		accum 1 set 1
+		attrib running_speed 220
+		avoid
+		wait 3500
+		walktomarker n13spot2
+		facetargetangles n13spot2
+		wait 2000
+		walktomarker n13spot3
+		facetargetangles n13spot3
+		wait 2000
+		trigger nazi13 marchloop1
+	}
+
+	// If Nazi13 sees the player while in transition to marchloop, this will trigger.
+	trigger choose_evade_tunnel
+	{
+		accum 0 abort_if_equal 0
+		accum 2 set 0
+		resetscript
+		trigger nazi9 evade_before_tunnel
+		wait 5
+		trigger nazi9 evade_in_tunnel
+		wait 5
+		trigger nazi9 evade_after_tunnel
+	}
+
+	// If Nazi13 is way before the TUNNEL and sees the player, this will trigger.
+	trigger evade_way_before_tunnel
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_way_before_tunnel
+		trigger nazi7 cover_way_before_tunnel
+		trigger nazi8 cover_way_before_tunnel
+		trigger nazi9 cover_way_before_tunnel
+		trigger nazi10 cover_way_before_tunnel
+		trigger nazi11 cover_way_before_tunnel
+		trigger nazi12 cover_way_before_tunnel
+		trigger nazi13 cover_way_before_tunnel
+	}
+
+	// If Nazi13 is way before the TUNNEl and the player is spotted, this will trigger.
+	trigger cover_way_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n13cover1
+		facetargetangles n13cover1
+		movetype crouch
+		trigger counter1 go_way_before_tunnel
+		wait forever 0
+	}
+
+	// If Nazi13 is just before the TUNNEL and sees the player, this will trigger.
+	trigger evade_before_tunnel
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_before_tunnel
+		trigger nazi7 cover_before_tunnel
+		trigger nazi8 cover_before_tunnel
+		trigger nazi9 cover_before_tunnel
+		trigger nazi10 cover_before_tunnel
+		trigger nazi11 cover_before_tunnel
+		trigger nazi12 cover_before_tunnel
+		trigger nazi13 cover_before_tunnel
+	}
+
+	// If Nazi13 is just before the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_before_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n13cover2
+		facetargetangles n13cover2
+		trigger counter1 go_before_tunnel
+		movetype crouch
+		wait forever 0
+	}
+
+	// If Nazi13 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_in_tunnel
+	{
+		accum 0 abort_if_not_equal 3
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_in_tunnel
+		trigger nazi7 cover_in_tunnel
+		trigger nazi8 cover_in_tunnel
+		trigger nazi9 cover_in_tunnel
+		trigger nazi10 cover_in_tunnel
+		trigger nazi11 cover_in_tunnel
+		trigger nazi12 cover_in_tunnel
+		trigger nazi13 cover_in_tunnel
+	}
+
+	// If Nazi13 is in the TUNNEL and the player has been spotted, this will trigger.
+	trigger cover_in_tunnel
+	{
+		trigger counter1 checkmg42
+		accum 0 set 0
+		accum 2 set 0
+		resetscript
+		runtomarker n13cover3
+		facetargetangles n13cover3
+		movetype crouch
+		trigger counter1 ai_check
+		wait forever 0
+	}
+
+	// Calls for the PanzerFaust guy.
+	trigger callpanzer
+	{
+		trigger counter1 reset
+		trigger nazi14 go
+	}
+
+	// If Nazi13 is in the TUNNEL and sees the player, this will trigger.
+	trigger evade_after_tunnel
+	{
+		accum 0 abort_if_not_equal 4
+		accum 0 set 0
+		resetscript
+		trigger nazi6 cover_after_tunnel
+		trigger nazi7 cover_after_tunnel
+		trigger nazi8 cover_after_tunnel
+		trigger nazi9 cover_after_tunnel
+		trigger nazi10 cover_after_tunnel
+		trigger nazi11 cover_after_tunnel
+		trigger nazi12 cover_after_tunnel
+		trigger nazi13 cover_after_tunnel
+	}
+
+	// If Nazi13 is at the end of the TUNNEL and the player is spotted, this will trigger.
+	trigger cover_after_tunnel
+	{
+		accum 0 set 0
+		accum 2 set 0
+		resetscript 
+		runtomarker n6cover3
+		trigger counter1 go_after_tunnel
+		wait 20000 512
+		resetscript
+	}
+
+	// If Nazi13 is doing his MARCHLOOP and sees the player, this will trigger.
+	trigger help_end_tunnel
+	{
+		accum 1 abort_if_equal 0
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 set 0
+		resetscript
+		trigger nazi6 help_end_tunnel
+		trigger nazi7 help_end_tunnel
+		trigger nazi8 help_end_tunnel
+		trigger nazi9 help_end_tunnel
+		trigger nazi10 help_end_tunnel
+		trigger nazi11 help_end_tunnel
+		trigger nazi12 help_end_tunnel
+	}
+
+	// ---BEGIN HELP SCRIPTS, (if another AI sees the player they will call for help.)---
+	trigger help_lower_bunker
+	{
+	}
+
+	trigger help_upper_bunker
+	{
+	}
+
+	trigger help_inner_barracks
+	{
+	}
+
+	trigger help_outter_barracks
+	{
+	}
+
+	trigger help_inner_entrance
+	{
+	}
+
+	trigger help_outter_entrance
+	{
+	}
+
+	trigger help_end_tunnel
+	{
+	}
+	// ---END HELP SCRIPTS---
+
+	// ---BEGIN GO_* SCRIPTS (Once in a evade position, one of the following will trigger)
+	trigger go_way_before_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_before_tunnel	
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_in_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+
+	trigger go_after_tunnel
+	{
+		gotocast player	
+		resetscript
+	}
+	// ---END Go_* SCRIPTS---
+
+	pain 25
+	{
+		trigger nazi13 choose_evade_tunnel
+		wait 5
+		trigger nazi13 choose_evade_bunker
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{	
+		trigger counter1 nazi_died
+	}
+
+	enemysight
+	{
+		accum 2 abort_if_equal 0
+		accum 2 set 0
+		trigger nazi13 choose_evade_tunnel
+		wait 5
+		trigger nazi13 help_end_tunnel
+	}
+}
+
+nazi14
+{
+	attributes
+	{
+		hearing_scale 0.0
+		crouching_speed 150
+		aggression 1.0
+		aim_accuracy 0.7
+		aim_skill 1.0
+		alertness 1240
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		nosight 99999
+		noavoid
+		statetype alert
+		setammo ammo_panzerfaust 1
+		giveweapon weapon_panzerfaust
+		selectweapon weapon_panzerfaust
+		movetype crouch
+	}
+
+	trigger go
+	{
+		accum 1 set 1
+		noavoid
+		movetype run
+		runtomarker n6spot1 nostop
+		runtomarker n6spot2 nostop
+		runtomarker n6spot3 nostop
+		runtomarker n6spot4 nostop
+		runtomarker n6spot5 nostop
+		runtomarker n6spot6 nostop
+		runtomarker n8cover2
+		movetype crouch
+		attrib aim_accuracy 1.0
+		wait 2000 mg42_1
+		fireattarget mg42_1 1000
+		trigger counter1 go_in_tunnel	// Triggers Nazi6-Nazi13 to GO_IN_TUNNEL!
+		selectweapon weapon_mp40
+		attrib aim_accuracy 0.25
+		movetype run
+		sight
+		runtomarker n14spot2
+		resetscript
+	}
+
+	trigger wake_up
+	{
+		sight
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 go_in_tunnel	// Triggers Nazi6-Nazi13 to GO_IN_TUNNEL!
+	}
+
+	enemysight
+	{
+		resetscript
+		accum 0 abort_if_equal 1
+		wait 3000 0
+		resetscript
+	}
+}
+
+nazi15
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 1.0
+		tactical 0.1
+	}
+	
+	spawn
+	{
+		wait 5
+		statetype alert
+		runtomarker n15spot1
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_g43
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi16
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+	
+	spawn
+	{
+		wait 5
+		statetype alert
+		giveweaponfull weapon_mp40
+		runtomarker n16spot1 nostop
+		runtomarker n16spot2
+		wait forever 0
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}	
+}
+
+nazi17
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+	
+	spawn
+	{
+		wait 5
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_g43
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		statetype alert
+		runtomarker n17spot1
+		wait forever 0		
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi18
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+	
+	spawn
+	{
+		wait 5
+		noavoid
+		giveweaponfull weapon_mp40
+		statetype alert
+		explicit_routing on
+		runtomarker mg42_2_spot1
+		explicit_routing off
+		mount mg42_2
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi19
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		wait 5
+		giveweaponfull weapon_mp40
+		statetype alert
+		runtomarker n19spot1 nostop
+		runtomarker n19spot2
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi20
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+		statetype alert
+		wait forever 0 nazi21
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+		trigger nazi22 go
+	}
+
+	enemysight
+	{
+		trigger nazi22 go
+		runtomarker n20spot1
+		wait 3000 0
+	}
+}
+
+nazi21
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		accum 0 set 0
+		accum 1 bitreset 0
+		wait forever 0 nazi20
+	}
+
+	trigger go
+	{
+		runtomarker n22spot3 nostop
+		runtomarker n21spot1
+		facetargetangles n21spot1
+		movetype crouch
+		accum 0 inc 1
+		trigger nazi21 rush
+		wait forever 0
+	}
+
+	trigger grentoss
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		movetype run
+		setammo ammo_grenades 1
+		selectweapon grenade
+		runtomarker n21spot2 grentarget1 noattack
+		wait 100
+		fireattarget grentarget1 500
+		runtomarker n21spot1
+		wait 1000
+		runtomarker n21spot2
+		resetscript
+	}
+
+	trigger rush
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		accum 1 bitset 0
+		movetype run
+		runtomarker n21spot2 nostop
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		trigger nazi21 go
+	}
+}
+
+nazi22
+{
+	attributes
+	{
+		hearing_scale 0.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		nosight 99999
+		giveweaponfull weapon_mauserrifle
+		accum 0 set 0	// Used for RANDOM SITUATION.
+		accum 1 set 0	// Used so that GO does not get triggered more than once.
+		accum 2 bitreset 0
+	}
+
+	trigger go
+	{
+		accum 1 abort_if_equal 1
+		accum 1 set 1
+		accum 0 random 3
+		trigger nazi22 go1	
+		wait 5
+		trigger nazi22 go2
+		wait 5
+		trigger nazi22 go3
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_not_equal 0
+		trigger nazi23 go1
+		trigger nazi24 go1
+		accum 2 bitset 0
+		attrib running_speed 250
+		runtomarker n22spot1 nostop
+		runtomarker n22spot2 nostop
+		runtomarker n22spot3 nostop
+		runtomarker n22spot4 nostop
+		runtomarker n22spot5
+		facetargetangles n22spot5
+		movetype crouch
+		attrib tactical 1.0
+		attrib aggression 0.6
+		attrib camper 0.0
+		sight
+		wait forever 0
+	}
+
+	trigger go2
+	{
+		accum 0 abort_if_not_equal 1
+		trigger nazi23 go2
+		trigger nazi24 go2
+		accum 2 bitset 0
+		runtomarker n22spot1 nostop
+		runtomarker n22spot2 nostop
+		runtomarker n22spot3 nostop
+		runtomarker n22spot6 nostop
+		runtomarker n22spot7
+		facetargetangles n22spot7
+		movetype crouch
+		sight
+		attrib tactical 1.0
+		attrib camper 1.0
+		attrib aggression 0.1
+		attrib hearing_scale 1.0
+		wait forever 0
+	}
+
+	trigger go3
+	{
+		accum 0 abort_if_not_equal 2
+		sight
+		trigger nazi23 go3
+		trigger nazi24 go3
+		accum 2 bitset 0
+		runtomarker n22spot8
+		runtomarker n22spot9
+		facetargetangles n22spot9
+		attrib aggression 0.75
+		attrib tactical 0.5
+		movetype crouch
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 2 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 2 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 2 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 2 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		movetype run
+		resetscript
+	}
+}
+
+nazi23
+{
+	attributes
+	{
+		hearing_scale 0.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		accum 1 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	trigger go1
+	{
+		accum 1 bitset 0
+		attrib running_speed 225
+		runtomarker n22spot1 nostop
+		runtomarker n22spot2 nostop
+		runtomarker n22spot3 nostop
+		runtomarker n22spot4 nostop
+		runtomarker n23spot1
+		facetargetangles n23spot1
+		movetype crouch
+		attrib tactical 1.0
+		attrib aggression 0.3
+		sight
+		wait forever 0
+	}
+
+	trigger go2
+	{
+		accum 1 bitset 0
+		runtomarker n22spot1 nostop
+		runtomarker n22spot2 nostop
+		runtomarker n23spot2 nostop
+		runtomarker n23spot4
+		sight
+		attrib tactical 1.0
+		attrib aggression 1.0
+		facetargetangles n23spot4
+		movetype crouch
+		wait forever 0
+	}
+
+	trigger go3
+	{
+		accum 1 bitset 0
+		runtomarker n23spot4
+		facetargetangles n23spot4
+		movetype crouch
+		sight		
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		movetype run
+		resetscript
+	}
+}
+
+nazi24
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		accum 1 bitreset 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+
+	trigger go1
+	{
+		accum 1 bitset 0
+		attrib running_speed 215
+		runtomarker n22spot1 nostop
+		runtomarker n22spot2 nostop
+		runtomarker n22spot3 nostop
+		runtomarker n24spot1
+		runtomarker n24spot2
+		facetargetangles n24spot2
+		movetype crouch
+		sight
+		wait forever 0
+	}
+
+	trigger go2
+	{
+		accum 1 bitset 0
+		runtomarker n22spot1 nostop
+		runtomarker n22spot2
+		runtomarker n22spot1
+		runtomarker n24spot3
+		facetargetangles n24spot3
+		movetype crouch
+		attrib aggression 1.0
+		sight
+		wait forever 0
+	}
+
+	trigger go3
+	{
+		accum 1 bitset 0
+		runtomarker n24spot4 nostop
+		runtomarker n24spot5
+		facetargetangles n24spot5
+		attrib tactical 1.0
+		attrib camper 0.0
+		movetype crouch
+		sight
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		movetype run
+		resetscript
+	}
+}
+
+nazi25
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		wait 5
+		statetype alert
+		giveweaponfull weapon_mp40
+		runtomarker n25spot1 nostop
+		runtomarker n25spot2 nostop
+		runtomarker n25spot3
+		facetargetangles n25spot3
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi26
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		wait 5
+		giveweaponfull weapon_mp40
+		statetype alert
+		runtomarker n26spot1 nostop
+		runtomarker n26spot2 nostop
+		runtomarker n26spot3 nostop
+		runtomarker n26spot4
+		facetargetangles n26spot4
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript		
+	}
+}
+
+nazi27
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		wait forever 0
+		giveweaponfull weapon_mp40
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi28
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi29
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi30
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi31
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	trigger go1
+	{
+		attrib aggression 1.0
+		runtomarker n31spot1 nostop
+		resetscript
+	}
+
+	trigger go2
+	{
+		accum 0 set 1
+		runtomarker n31spot2
+		facetargetangles n31spot2
+		movetype crouch
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+		accum 0 abort_if_not_equal 1
+		wait 3000 0
+		resetscript
+	}
+}
+
+nazi32
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		accum 1 bitreset 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 1 abort_if_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+
+	trigger go1
+	{
+		accum 1 bitset 0
+		runtomarker n32spot1 nostop
+		resetscript
+	}
+
+	trigger go2
+	{
+		accum 1 bitset 0
+		attrib aggression 1.0
+		runtomarker n32spot2
+		runtomarker n32spot3
+		facetargetangles n32spot3
+		movetype crouch
+		wait forever 0
+	}
+
+	enemysight
+	{
+		accum 1 bitset 0
+		resetscript
+	}
+}
+
+nazi33
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi33a
+{
+	attributes
+	{
+		hearing_scale 1.0
+		aggression 0.1
+		tactical 0.1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mp40
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi34
+{
+	attributes
+	{
+		hearing_scale 0.0
+		aggression 1.0
+		tactical 0.1
+	}
+
+	spawn
+	{
+		nosight 5000
+		wait 5000
+		giveweaponfull weapon_mp40
+		attrib hearing_scale 1.0
+		alertentity n34_unlock
+		statetype alert
+		wait 5
+		runtomarker n34spot1
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi35
+{
+	attributes
+	{
+		hearing_scale 0.0
+		aggression 0.1
+		tactical 1.0
+	}
+
+	spawn
+	{
+		nosight 5000
+		giveweaponfull weapon_mp40
+		wait 5000
+		statetype alert
+		wait 1000
+		runtomarker n34spot1
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+nazi36
+{
+	attributes
+	{
+		hearing_scale 0.0
+		aggression 0.1
+		tactical 1.0
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+
+nazi37
+{
+	attributes
+	{
+		hearing_scale 0.0
+		aggression 0.1
+		tactical 1.0
+	}
+
+	spawn
+	{
+		statetype alert
+		giveweaponfull weapon_mp40
+		wait forever 0
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+reinforce_ai_soldier_1		// Near the house
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_2		// Front of the house
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_3		// Near the gunner
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_4		// below the gunner
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_5		// big hallway 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_6		// big hallway 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_7		// on the bridge
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		statetype alert
+		setammo ammo_panzerfaust 15
+		giveweapon weapon_panzerfaust
+		selectweapon weapon_panzerfaust
+	}
+}
+
+reinforce_ai_soldier_8		// near the lamp
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_9		// near the house
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_10		// barrack 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_11		// barrack 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_12		// behind the gunner
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_13		// garage 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_14		// garage 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_15		// front of barrack 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_16		// deadend 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		statetype alert
+		setammo ammo_panzerfaust 15
+		giveweapon weapon_panzerfaust
+		selectweapon weapon_panzerfaust
+		movetype crouch
+	}
+}
+
+reinforce_ai_soldier_17		// deadend 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_18		// deadend 3
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_19		// deadend upper 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_20		// deadend upper 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_21		// labour 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_22		// labor 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		#if g_fullarsenal == 0
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		#if g_fullarsenal == 1
+		giveweaponfull weapon_g43
+	    #endif
+		#if g_fullarsenal == 2
+		giveweaponfull weapon_mauserrifle
+	    #endif
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_23		// ammo room
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_24		// upper hallway
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_25		// outside 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_26		// outside 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		statetype alert
+		setammo ammo_panzerfaust 15
+		giveweapon weapon_panzerfaust
+		selectweapon weapon_panzerfaust
+		movetype crouch
+	}
+}
+
+reinforce_ai_soldier_27		// top of stairs
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_28		// kitchen
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_29		// radio room 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_30		// radio room 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_31		// under radar 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_32		// under radar 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_33		// locator room 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_34		// locator room 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_35		// down room 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_mauserrifle
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_36		// down room 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_37		// exit 1
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+reinforce_ai_soldier_38		// exit 2
+{
+	attributes
+	{
+		camper 1
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweaponfull weapon_mp40
+		statetype alert
+	}
+}
+
+dog1
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+	 	gotocast player
+	}
+
+	death
+	{
+	}
+}
+
+dog2
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+	 	gotocast player
+	}
+
+	death
+	{
+	}
+}
+
+dog3
+{
+	attributes
+	{
+		aggression 1.0
+	}
+
+	spawn
+	{
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+	{
+	 	gotocast player
+	}
+
+	death
+	{
+	}
+}
+

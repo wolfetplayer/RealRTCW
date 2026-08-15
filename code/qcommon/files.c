@@ -661,6 +661,65 @@ static void FS_GateResetSeenDirs(void) {
     }
 }
 
+// -------- gate: append fs_gates_mod.cfg rules for one game dir across every root path --------
+static void FS_LoadGateRulesAppendForAllRoots( const char *dir )
+{
+    if ( !dir || !dir[0] ) {
+        return;
+    }
+
+#ifdef STEAM
+    if ( fs_steampath && fs_steampath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_steampath->string, dir );
+    }
+    if ( fs_workshop && fs_workshop->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_workshop->string, dir );
+    }
+#endif
+
+    if ( fs_basepath && fs_basepath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_basepath->string, dir );
+    }
+
+#ifdef __APPLE__
+    if ( fs_apppath && fs_apppath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_apppath->string, dir );
+    }
+#endif
+
+    if ( fs_homepath && fs_homepath->string[0] ) {
+        FS_LoadGateRulesAppendForDir( fs_homepath->string, dir );
+    }
+}
+
+// Discover fs_gates_mod.cfg rules for basegame/fs_basegame/active fs_game before priming.
+static void FS_LoadGateRulesAppendForStartupDirs( const char *gameName )
+{
+    FS_LoadGateRulesAppendForAllRoots( gameName );
+
+    if ( fs_basegame && fs_basegame->string[0] && Q_stricmp( fs_basegame->string, gameName ) ) {
+        FS_LoadGateRulesAppendForAllRoots( fs_basegame->string );
+    }
+
+    if ( fs_gamedirvar && fs_gamedirvar->string[0] && Q_stricmp( fs_gamedirvar->string, gameName ) ) {
+        FS_LoadGateRulesAppendForAllRoots( fs_gamedirvar->string );
+    }
+}
+
+// Prime gate cvars once, active fs_game last, so it wins over basegame/main.
+static void FS_PrimeGateCvarsForStartupDirs( const char *gameName )
+{
+    FS_PrimeGateCvarsFromConfig( gameName );
+
+    if ( fs_basegame && fs_basegame->string[0] && Q_stricmp( fs_basegame->string, gameName ) ) {
+        FS_PrimeGateCvarsFromConfig( fs_basegame->string );
+    }
+
+    if ( fs_gamedirvar && fs_gamedirvar->string[0] && Q_stricmp( fs_gamedirvar->string, gameName ) ) {
+        FS_PrimeGateCvarsFromConfig( fs_gamedirvar->string );
+    }
+}
+
 // Parse "fs_gates.cfg" lines:   <cvar> : <pattern> [pattern...]
 static qboolean FS_LoadGateRulesEarly(const char *gameDir)
 {
@@ -3858,11 +3917,8 @@ void FS_AddGameDirectory( const char *path, const char *dir ) {
 		}
 	}
 
-	// 1) Pull in any local gate rules from this folder (only once per physical dir)
+	// Pull in local gate rules for this dir; cvars are primed once in FS_Startup, not per-dir.
 	FS_LoadGateRulesAppendForDir(path, dir);
-
-	// 2) Prime saved user values for this folder from homepath cfgs (so gating applies now)
-	FS_PrimeGateCvarsFromConfig(dir);
 
 	Q_strncpyz( fs_gamedir, dir, sizeof( fs_gamedir ) );
 
@@ -4262,16 +4318,25 @@ static void FS_Startup( const char *gameName )
 		Com_Error( ERR_DROP, "Invalid fs_game '%s'", fs_gamedirvar->string );
 	}
 
+#ifdef STEAM
+	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
+	fs_workshop = Cvar_Get("fs_workshop", Sys_SteamWorkshopPath(), CVAR_INIT|CVAR_PROTECTED );
+#endif
+#ifdef __APPLE__
+	fs_apppath = Cvar_Get ("fs_apppath", Sys_DefaultAppPath(), CVAR_INIT|CVAR_PROTECTED );
+#endif
+
+	// Load gate rules, then prime cvars once (active fs_game last) before mounting any dir.
 	FS_LoadGateRulesEarly(gameName);
+	FS_LoadGateRulesAppendForStartupDirs(gameName);
+	FS_PrimeGateCvarsForStartupDirs(gameName);
 
 
 	// add search path elements in reverse priority order
 #ifdef STEAM
-	fs_steampath = Cvar_Get ("fs_steampath", Sys_SteamPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_steampath->string[0]) {
 		FS_AddGameDirectory( fs_steampath->string, gameName );
 	}
-	fs_workshop = Cvar_Get("fs_workshop", Sys_SteamWorkshopPath(), CVAR_INIT|CVAR_PROTECTED );
 	if (fs_workshop->string[0]) {
 		FS_AddGameDirectory( fs_workshop->string, gameName );
 	}
@@ -4284,7 +4349,6 @@ static void FS_Startup( const char *gameName )
 	}
 
 #ifdef __APPLE__
-	fs_apppath = Cvar_Get ("fs_apppath", Sys_DefaultAppPath(), CVAR_INIT|CVAR_PROTECTED );
 	// Make MacOSX also include the base path included with the .app bundle
 	if (fs_apppath->string[0])
 		FS_AddGameDirectory(fs_apppath->string, gameName);

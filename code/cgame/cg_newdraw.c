@@ -2091,56 +2091,60 @@ static void CG_DrawWeapRecharge( rectDef_t *rect, vec4_t color, int align ) {
 	//qboolean fade = qfalse;
 	vec4_t bgcolor = {1.0f, 1.0f, 1.0f, 0.25f};
 
+	switch ( cg.snap->ps.weapon ) {
+	case WP_AIRSTRIKE:
+		chargeTime = cg_LTChargeTime.value;
+		break;
+	case WP_POISONGAS:
+		chargeTime = cg_medicChargeTime.value;
+		break;
+	case WP_DYNAMITE_ENG:
+		chargeTime = cg_engineerChargeTime.value;
+		break;
+	case WP_SMOKE_BOMB:
+		chargeTime = cg_cvopsChargeTime.value;
+		break;
+	default:
+		if ( COM_BitCheck( cg.snap->ps.weapons, WP_AIRSTRIKE ) ) {
+			chargeTime = cg_LTChargeTime.value;
+		} else if ( COM_BitCheck( cg.snap->ps.weapons, WP_POISONGAS ) ) {
+			chargeTime = cg_medicChargeTime.value;
+		} else if ( COM_BitCheck( cg.snap->ps.weapons, WP_DYNAMITE_ENG ) ) {
+			chargeTime = cg_engineerChargeTime.value;
+		} else if ( COM_BitCheck( cg.snap->ps.weapons, WP_SMOKE_BOMB ) ) {
+			chargeTime = cg_cvopsChargeTime.value;
+		} else {
+			return;
+		}
+		break;
+	}
+
 	if ( align != HUD_HORIZONTAL) {
 		flags |= 4;   // BAR_VERT
 		flags |= 1;   // BAR_LEFT (left, when vertical means grow 'up')
 	}
 	flags |= 16;
 
-		
-		// Determine charge time based on class
-		switch (cg.snap->ps.stats[STAT_PLAYER_CLASS])
-		{
-		case PC_MEDIC:
-			chargeTime = cg_medicChargeTime.value;
-			break;
-		case PC_ENGINEER:
-			chargeTime = cg_engineerChargeTime.value;
-			break;
-		case PC_SOLDIER:
-			chargeTime = cg_soldierChargeTime.value;
-			break;
-		case PC_LT:
-			chargeTime = cg_LTChargeTime.value;
-			break;
-	    case PC_CVOPS:
-		    chargeTime = cg_cvopsChargeTime.value;
-		default:
-		    chargeTime = 30000;
-			break;
-		}
+	barFrac = (float)( cg.time - cg.snap->ps.classWeaponTime ) / chargeTime;
 
-		barFrac = (float)( cg.time - cg.snap->ps.classWeaponTime ) / chargeTime;
+	if ( barFrac > 1.0 ) {
+		barFrac = 1.0;
+	}
 
-		if ( barFrac > 1.0 ) {
-			barFrac = 1.0;
-		}
+	color[0] = 1.0f;
+	color[1] = color[2] = barFrac;
+	color[3] = 0.25 + barFrac * 0.5;
 
-		color[0] = 1.0f;
-		color[1] = color[2] = barFrac;
-		color[3] = 0.25 + barFrac * 0.5;
+	/*if ( fade ) {
+		bgcolor[3] *= 0.4f;
+		color[3] *= 0.4;
+	}*/
 
-		/*if ( fade ) {
-			bgcolor[3] *= 0.4f;
-			color[3] *= 0.4;
-		}*/
+	CG_FilledBar( rect->x, rect->y + 6, rect->w, rect->h * 0.84f, color, NULL, bgcolor, barFrac, flags );
 
-		CG_FilledBar( rect->x, rect->y + 6, rect->w, rect->h * 0.84f, color, NULL, bgcolor, barFrac, flags );
-
-		color[1] = color[2] = 1.0f;
-		color[3] = cg_hudAlpha.value;
-		trap_R_SetColor( color );
-
+	color[1] = color[2] = 1.0f;
+	color[3] = cg_hudAlpha.value;
+	trap_R_SetColor( color );
 }
 /*
 ==============

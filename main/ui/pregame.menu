@@ -1,0 +1,63 @@
+#include "ui/menudef.h"
+
+{
+    menuDef {
+        name "pregame"
+        background "ui/assets/backscreen"
+        rect -107 0 854 480
+        fullScreen MENU_TRUE
+        visible MENU_TRUE
+        style WINDOW_STYLE_EMPTY
+
+        //
+        // draw levelshot
+        //
+        itemDef {
+            name background
+            rect -107 0 854 480
+            style WINDOW_STYLE_SHADER
+            ownerdraw UI_LEVELSHOT
+            forecolor 1 1 1 1
+            visible MENU_TRUE
+            decoration
+        }
+
+        //
+        // semi-transparent background panel
+        //
+        itemDef {
+            name "pressanykey_bg"
+            rect 160 420 320 40
+            style WINDOW_STYLE_FILLED
+
+            backcolor 0 0 0 0.55   // semi-transparent black
+            visible 1
+            decoration
+        }
+
+        //
+        // hint text (on top)
+        //
+        itemDef {
+            name "pressanykey"
+            type ITEM_TYPE_TEXT
+            style WINDOW_STYLE_EMPTY
+
+            text "@PREGAME_START"
+
+            textfont UI_FONT_BIG
+            textscale 0.30
+
+            rect 0 430 640 24
+
+            textalign 1
+            textalignx 320
+            textaligny 18
+
+            forecolor 1 1 1 0.95
+
+            visible 1
+            decoration
+        }
+    }
+}

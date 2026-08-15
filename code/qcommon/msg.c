@@ -1405,6 +1405,7 @@ netField_t playerStateFields[] =
 	{ PSF( classWeaponTime ), 32}, // JPW NERVE
 	{ PSF( footstepCount ), 0},
 	{ PSF( holding ), 32},
+	{ PSF( simpleZoomed ), 1 },
 };
 
 /*

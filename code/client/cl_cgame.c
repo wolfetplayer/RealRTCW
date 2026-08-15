@@ -267,6 +267,13 @@ CL_SetUserCmdValue
 			CL_SystemInfoChanged();
 		}
 
+		if ( index == CS_TIMEDILATION ) {
+			cl.timeDilation = (float)atof( s );
+			if ( cl.timeDilation <= 0.0f ) {
+				cl.timeDilation = 1.0f;
+			}
+		}
+
 	}
 
 
@@ -446,6 +453,37 @@ static int  FloatAsInt( float f ) {
 }
 
 /*
+==================
+CL_CM_inPVS
+
+Client-side equivalent of SV_inPVS (server/sv_game.c), using the CM_*
+functions already available on the client for local collision/rendering.
+==================
+*/
+static qboolean CL_CM_inPVS( const vec3_t p1, const vec3_t p2 ) {
+	int leafnum;
+	int cluster;
+	int area1, area2;
+	byte *mask;
+
+	leafnum = CM_PointLeafnum( p1 );
+	cluster = CM_LeafCluster( leafnum );
+	area1 = CM_LeafArea( leafnum );
+	mask = CM_ClusterPVS( cluster );
+
+	leafnum = CM_PointLeafnum( p2 );
+	cluster = CM_LeafCluster( leafnum );
+	area2 = CM_LeafArea( leafnum );
+	if ( mask && ( !( mask[cluster >> 3] & ( 1 << ( cluster & 7 ) ) ) ) ) {
+		return qfalse;
+	}
+	if ( !CM_AreasConnected( area1, area2 ) ) {
+		return qfalse;      // a door blocks sight
+	}
+	return qtrue;
+}
+
+/*
 ====================
 CL_CgameSystemCalls
 
@@ -549,6 +587,11 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		S_StartSoundEx( VMA( 1 ), args[2], args[3], args[4], args[5] );
 		return 0;
 //----(SA)	end
+	case CG_S_STARTSOUNDVCONTROL:
+		S_StartSoundVControl( VMA( 1 ), args[2], args[3], args[4], args[5] );
+		return 0;
+	case CG_R_INPVS:
+		return CL_CM_inPVS( VMA( 1 ), VMA( 2 ) );
 	case CG_S_STARTLOCALSOUND:
 		S_StartLocalSound( args[1], args[2] );
 		return 0;
@@ -1114,6 +1157,29 @@ void CL_AdjustTimeDelta( void ) {
 	newDelta = cl.snap.serverTime - cls.realtime;
 	deltaDelta = abs( newDelta - cl.serverTimeDelta );
 
+	// world time dilation: rate-matching happens continuously in CL_SetCGameTime, this just trims residual error gently, independent of com_timescale
+	if ( fabs( cl.timeDilation - 1.0f ) > 0.001f ) {
+		if ( deltaDelta > RESET_TIME * 4 ) {
+			// only a truly pathological gap warrants a hard reset
+			cl.serverTimeDelta = newDelta;
+			cl.oldServerTime = cl.snap.serverTime;
+			cl.serverTime = cl.snap.serverTime;
+			if ( cl_showTimeDelta->integer ) {
+				Com_Printf( "<DILATION RESET> " );
+			}
+		} else {
+			cl.serverTimeDelta += (int)( ( newDelta - cl.serverTimeDelta ) * 0.15f );
+			if ( cl_showTimeDelta->integer ) {
+				Com_Printf( "<DILATION> " );
+			}
+		}
+
+		if ( cl_showTimeDelta->integer ) {
+			Com_Printf( "%i ", cl.serverTimeDelta );
+		}
+		return;
+	}
+
 	if ( deltaDelta > RESET_TIME ) {
 		cl.serverTimeDelta = newDelta;
 		cl.oldServerTime = cl.snap.serverTime;  // FIXME: is this a problem for cgame?
@@ -1282,6 +1348,17 @@ void CL_SetCGameTime( void ) {
 			tn = -30;
 		} else if ( tn > 30 ) {
 			tn = 30;
+		}
+
+		// world time dilation: continuously bleed serverTimeDelta every frame (not just reactively on snapshot arrival) so cl.serverTime's rate stays smoothly dilated instead of racing then snapping back
+		if ( !clc.demoplaying && fabs( cl.timeDilation - 1.0f ) > 0.001f ) {
+			// carry the fractional ms remainder to avoid truncation drift, same fix as sv.timeDilationCarry
+			float bleed = ( 1.0f - cl.timeDilation ) * (float)cls.frametime + cl.timeDilationCarry;
+			int whole = (int)bleed;
+			cl.timeDilationCarry = bleed - whole;
+			cl.serverTimeDelta -= whole;
+		} else {
+			cl.timeDilationCarry = 0.0f;
 		}
 
 		cl.serverTime = cls.realtime + cl.serverTimeDelta - tn;

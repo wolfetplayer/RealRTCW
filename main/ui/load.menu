@@ -1,0 +1,502 @@
+#include "ui/menudef.h"
+
+{
+\\ play MENU \\
+
+menuDef {
+    name "load_menu"
+    visible MENU_FALSE
+    fullscreen 1
+    rect 0 0 640 480
+    //background "menu_load"
+    soundloop ""
+    focusColor .9 .9 .9 1
+    style 1
+    border 0
+
+	onEsc {
+		close load_menu;
+		open main
+	}
+
+	onOpen {
+		setitemcolor fadebox backcolor 0 0 0 1 ;
+        close play_menu;		
+		play "sound/misc/kcswish.wav";
+
+		fadeout fadebox;
+//		transition mappreview 400 0 640 480 320 143 256 192 20 10;
+		transition mappreview 400 0 640 480 486 130 212 170 20 10; //400 0 640 480 466 130 212 170 20 10;
+
+		uiScript loadSavegames;
+		hide lightning;
+		hide accept_alt;
+		show accept;
+		hide back_alt;
+		show back;
+		hide grpmessage;
+		setcvar ui_savegameListAutosave 0;
+		
+		hide realrtcw_load_load;
+		hide realrtcw_load_back
+	}
+		 
+
+
+
+
+itemDef
+	{
+		name realrtcw_background
+		style WINDOW_STYLE_SHADER
+		rect -120 -9.25 917 500
+		background "realrtcw_background"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_load_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load_load.tga"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_load_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load_back.tga"
+		visible 1
+		decoration
+	}
+	
+	
+	
+
+//////// 
+
+
+
+
+
+// LEVEL SELECTION BAR	//
+
+//////////////
+
+
+	itemDef 
+	{
+		name window
+		group grpControlbutton
+		rect 231 107 470 260	// 161
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible MENU_TRUE
+		decoration
+	}
+
+
+//////////////////// temp layout /////////////////////
+
+	itemDef 
+	{
+		name window2
+		group grpControlbutton
+		rect 234 110 462 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .5 0.5 0.5 .25
+		visible 1
+		decoration
+	}
+
+	itemDef 
+	{
+		name window2
+		group grpControlbutton
+		rect 359 110 111 250	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .4 0.4 0.4 .25
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name levelbar
+		text "@LOADGAME_NAME"
+		textscale .23
+		style 0	
+		type ITEM_TYPE_BUTTON
+		textalign ITEM_ALIGN_CENTER
+		textfont UI_FONT_BIG
+		textstyle 6
+		rect 210 114 50 20 
+		textalign 1	 
+		textalignx 50  	
+		textaligny 12        
+		backcolor 0 0 0 0
+		forecolor 1 1 1 1
+		visible MENU_TRUE
+//		decoration
+		action {
+			play "sound/misc/kcswish.wav";
+			uiScript SavegameSort 0
+			}
+		}
+
+
+
+	itemDef {
+		name levelbar
+		text "@LOADGAME_DATE"
+		textscale .23
+		style 0
+		textalign ITEM_ALIGN_CENTER	
+		type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+		textstyle 6
+		rect 335 114 50 20 
+		textalign 1	 
+		textalignx 50  	
+		textaligny 12        
+		backcolor 0 0 0 0
+		forecolor 1 1 1 1
+		visible MENU_TRUE
+//		decoration
+		action {
+			play "sound/misc/kcswish.wav";
+			uiScript SavegameSort 1
+			}
+		}
+
+
+////////////
+
+
+ 
+
+itemDef {
+		name savegamelist
+		rect 236 130 250 230
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		elementwidth 125
+		elementheight 14
+		textscale .23
+		textfont UI_FONT_BIG
+
+		columns 2  0 40 30  125 40 30
+
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_SAVEGAMES
+		doubleclick { uiScript Loadgame }
+		textalign 3
+		textaligny 10
+		forecolor .9 .9 .9 .5
+		backcolor .10 .10 .1 .3
+		outlinecolor .9 .9 .9 .2
+		visible MENU_TRUE
+		mouseEnter { fadein message_savegame ; setitemcolor savegamelist bordercolor .7 0 0 1 } 
+		mouseExit { fadeout message_savegame ; setitemcolor savegamelist bordercolor .5 .5 .5 .5 } 
+		}
+
+
+
+// the actual switch
+
+	itemDef {
+		name autosave
+//		type ITEM_TYPE_BUTTON
+		rect 254 370 170 18
+//		cvar ui_savegameListAutosave
+		type ITEM_TYPE_MULTI
+		cvar "ui_savegameListAutosave"
+		cvarFloatList { "" 0 "" 1  }	// no text, just toggle
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5        
+		backcolor 0 0 0 .25
+		mouseEnter { setitemcolor showgametype backcolor .5 .5 .5 .25 }
+		mouseExit { setitemcolor showgametype backcolor 0 0 0 .25 }
+		action {	uiScript update "ui_savegameListAutosave" }	// update the feeder
+		visible MENU_TRUE
+	}
+
+// the 'off' button
+	itemDef {
+		name autosave_off
+		group showgametype
+		text "@LOADGAME_SHOWAUTOSAVES"
+		rect 254 370 170 18
+		cvarTest "ui_savegameListAutosave"
+		showcvar { "0" }
+		style 1
+		textscale .25
+		border 1
+		bordercolor .5 .5 .5 .0        
+		backcolor 0 0 0 .0
+		textaligny 13
+		textalignx 82
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		visible MENU_TRUE
+		decoration
+	}
+
+// the 'on' button
+	itemDef {
+		name autosave_on
+		group showgametype
+		text "@LOADGAME_SHOWSAVEGAMES"
+		rect 254 370 170 18
+		cvarTest "ui_savegameListAutosave"
+		showcvar { "1" }
+		style 1
+		textscale .25
+		border 1
+		bordercolor .5 .5 .5 .0        
+		backcolor 0 0 0 .0
+		textaligny 13
+		textfont UI_FONT_BIG
+		textalignx 82
+		textalign ITEM_ALIGN_CENTER
+		visible MENU_TRUE
+		decoration
+	}
+
+	itemDef {
+		name autosave_off
+		text "@LOADGAME_MANUALSAVED"
+		type 1
+		cvarTest "ui_savegameListAutosave"
+		showcvar { "0" }
+		textfont UI_FONT_BIG
+		style 0	
+		textstyle 6
+		rect 520 114 40 14 
+		textalign 0
+		textscale .25		
+		textalignx 6
+		textaligny 12
+		forecolor 1 1 1 1
+		visible MENU_TRUE
+		decoration
+	}
+	itemDef {
+		name autosave_on
+		text "@LOADGAME_AUTOSAVED"
+		cvarTest "ui_savegameListAutosave"
+		showcvar { "1" }
+		type 1
+		textfont UI_FONT_BIG
+		style 0	
+		textstyle 6
+		rect 520 114 40 14 
+		textalign 0
+		textscale .25		
+		textalignx 6
+		textaligny 12
+		forecolor 1 1 1 1
+		visible MENU_TRUE
+		decoration
+	}
+
+
+
+// BACK BAR	//
+
+	itemDef {
+		name back
+		text ""
+		type 1
+		textfont UI_FONT_BIG
+		style 0	
+		textstyle 6
+		rect 10 177 178 26
+		textalign 0
+		textscale .38		
+		textalignx 6
+		textaligny 12
+		forecolor .9 .9 .9 .9
+		visible MENU_TRUE
+		action { close load_menu ; open main }
+		mouseEnter { hide back ; show back_alt ; fadein message_back ;
+		show realrtcw_load_back
+		}
+		mouseExit { hide realrtcw_load_back	}
+	}
+
+	itemDef {
+		name back_alt
+		text ""
+		type 1
+		textfont UI_FONT_BIG
+		style 0	
+		textstyle 6
+		rect 10 177 178 26
+		textalign 0
+		textscale .38		
+		textalignx 6
+		textaligny 12
+		forecolor .6 .6 .6 .6
+		visible MENU_TRUE
+		type ITEM_TYPE_BUTTON
+		mouseExit { hide back_alt ; show back ; fadeout message_back }	  
+		action { close load_menu ; open main }		  
+		}
+
+	itemDef {
+		name accept
+		text ""
+		type 1
+		textfont UI_FONT_BIG
+		style 0	
+		textstyle 6
+		rect 10 144 178 26
+		textalign 0
+		textscale .38	
+		textalignx 6
+		textaligny 12
+		forecolor .9 .9 .9 .9
+		visible MENU_TRUE
+		mouseEnter { hide accept ; show accept_alt ; fadein message_accept ;
+		show realrtcw_load_load
+		}
+		mouseExit { hide realrtcw_load_load	}
+		action { close load_menu }
+  		}
+
+	itemDef {
+		name accept_alt
+		text ""
+		type 1
+		textfont UI_FONT_BIG
+		style 0	
+		textstyle 6
+		rect 10 144 178 26
+		textalign 0
+		textscale .38	
+		textalignx 6
+		textaligny 12
+		forecolor .6 .6 .6 .6
+		visible MENU_TRUE
+		action { close load_menu ; uiScript Loadgame }
+		mouseExit { hide accept_alt ; show accept ; fadeout message_accept }	
+  	}
+
+
+
+	
+//////////////////////// video /////////////////////////////// 
+
+
+
+
+
+
+	itemDef {
+		name mappreview
+		ownerdraw UI_SAVEGAME_SHOT		// screenshot for savegame.  			//located in /save/images/<savegamename>.tga
+		rect 90 900 256 192
+//		scralign center
+		backcolor 1 1 1 .25
+//		border 1
+//		bordersize 1
+//		bordercolor .1 .1 .1 .7
+		decoration
+		visible MENU_TRUE
+		}
+
+
+	itemDef {
+		name mapname
+		ownerdraw UI_SAVEGAMENAME
+		rect 492 300 200 60
+		backcolor 1 1 1 .25
+		autowrapped
+//		border 1
+//		bordersize 1
+//		bordercolor .1 .1 .1 .7
+		visible MENU_TRUE
+		textalign ITEM_ALIGN_CENTER
+		textscale .25
+//		textfont UI_FONT_HANDWRITING
+		textfont UI_FONT_BIG
+		textstyle 6
+		textaligny 10
+		textalignx 100
+		decoration	
+		}
+	
+	itemDef {
+		name mapinfo
+
+//		ownerdraw UI_SAVEGAMEINFO
+//		text "savegameinfo"
+		textsavegame	// get text from current savegame file
+		autowrapped
+		rect 492 300 200 60
+		backcolor 1 1 1 .25
+//		border 1
+//		bordersize 1
+//		bordercolor .1 .1 .1 .7
+        textfont UI_FONT_BIG
+		visible MENU_TRUE
+		textalign ITEM_ALIGN_CENTER
+		textscale .25
+//		textfont UI_FONT_HANDWRITING
+		textfont UI_FONT_BIG
+		textstyle 6
+		textaligny 30
+		textalignx 100
+		decoration	
+		}
+	
+
+
+
+
+}
+
+
+}
+
+
+

@@ -1,0 +1,5008 @@
+S#include "ui/menudef.h"
+
+{
+	assetGlobalDef {
+		font "fonts/normal" 16			
+		smallFont "fonts/smallFont" 12			
+		bigFont "fonts/bigFont" 24			
+		cursor "ui/assets/3_cursor3"			
+		gradientBar "ui/assets/gradientbar2.tga"	
+		itemFocusSound "sound/misc/menu2.wav"
+		fadeClamp 1.0				
+		fadeCycle 1				
+		fadeAmount 0.1				
+		shadowColor 0.1 0.1 0.1 0.25			
+		}
+		
+	menuDef
+	{
+		name "backgroundmusic"
+		fullScreen 0
+		visible 0
+		onOpen 
+		{
+			playlooped "sound/music/l_theme.wav"
+		}
+    }
+		
+	menuDef {
+	name "main"
+	fullScreen MENU_TRUE				
+	rect -120 0 900 480			    // Size and position of the menu
+	visible MENU_TRUE				// Visible on open
+	focusColor .9 .85 1 .8			// Menu focus color for text and items
+	
+	onOpen { 
+		setitemcolor fadebox backcolor 0 0 0 1 ;   
+		uiScript stopRefresh ;
+		
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_discord;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		
+		hide realrtcw_load;
+		hide realrtcw_load_load;
+		hide realrtcw_load_back;
+		
+		hide realrtcw_options;
+		hide realrtcw_options_controls;
+		hide realrtcw_options_system;
+		hide realrtcw_options_game;
+		hide realrtcw_options_defaults;
+		hide realrtcw_options_back;
+		
+		show realrtcw_main;
+		
+		setitemcolor ee forecolor .8 .8 .8 1; setitemcolor ee_check forecolor .6 .6 .6 1
+	}
+
+itemDef
+	{
+		name realrtcw_background
+		style WINDOW_STYLE_SHADER
+		rect -120 -9.25 917 500
+		background "realrtcw_background"
+		visible 1
+		decoration
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               IMAGES            //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main.tga"
+		visible 1
+		decoration
+	}
+	
+	
+// Socials
+
+	itemDef {
+		name social_border
+		group socials
+		rect 0 450 320 32 
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 1
+		decoration
+		
+ 	    cvarTest "cg_showSocials"
+	    showcvar { "1" }
+	
+	}	
+	
+	
+itemDef
+	{
+		name socials_close
+		style WINDOW_STYLE_SHADER
+		rect 310 445 12 12
+		background "ui/assets/check_no.tga"
+		visible 1
+		type 1
+		
+	    action 
+		{ 
+		setCvar cg_showSocials "0"; 
+		}
+		
+		cvarTest "cg_showSocials"
+	    showcvar { "1" }
+	}
+	
+itemDef 
+    {
+	name discord_button
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 5 460 89 13
+	background "ui/assets/disc_logo.png"
+	visible 1
+	action { uiScript validate_openURL "https://discord.gg/Tns4CjA" }
+	
+ 	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+	mouseEnter { show "discord_button2" } 
+	mouseExit { hide "discord_button2" } 	
+    }
+	
+itemDef 
+    {
+	name discord_button2
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 5 460 89 13
+	background "ui/assets/disc_logo2.png"
+	visible 0
+	action { uiScript validate_openURL "https://discord.gg/Tns4CjA" }
+	
+ 	cvarTest "cg_showSocials"
+	showcvar { "1" }
+    }
+	
+itemDef 
+    {
+	name patreon_button
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 115 460 89 13
+	background "ui/assets/patr_logo.png"
+	visible 1
+	action { uiScript validate_openURL "https://www.patreon.com/c/aardwolf4ever" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+	mouseEnter { show "patreon_button2" } 
+	mouseExit { hide "patreon_button2" } 	
+    }
+	
+itemDef 
+    {
+	name patreon_button2
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 115 460 89 13
+	background "ui/assets/patr_logo2.png"
+	visible 0
+	action { uiScript validate_openURL "https://www.patreon.com/c/aardwolf4ever" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+    }
+	
+itemDef 
+    {
+	name pp_button
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 225 460 89 13
+	background "ui/assets/pp_logo.png"
+	visible 1
+	action { uiScript validate_openURL "https://www.paypal.com/donate/?hosted_button_id=ALA66LGSMQM5W" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+	mouseEnter { show "pp_button2" } 
+	mouseExit { hide "pp_button2" } 	
+    }
+	
+itemDef 
+    {
+	name pp_button2
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 225 460 89 13
+	background "ui/assets/pp_logo2.png"
+	visible 0
+	action { uiScript validate_openURL "https://www.paypal.com/donate/?hosted_button_id=ALA66LGSMQM5W" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+    }
+
+itemDef
+	{
+		name realrtcw_main_newgame
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_newgame.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_loadgame
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_loadgame.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_options
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_options.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_addons
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_addons.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_credits
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_credits.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_quit
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_quit.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_load_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load_load.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_load_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load_back.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_controls
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_controls.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_system
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_system.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_game
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_game.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_defaults
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_defaults.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_back.tga"
+		visible 1
+		decoration
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                        MAIN MENU BUTTONS    //////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+	// NEW GAME BUTTON
+	itemDef { 
+	    name newgamemenu
+	    group mainmenus
+	    text ""
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action 
+		{ 
+		open play_menu; 
+		hide modmenus; 
+		hide load_menu; 
+		hide optionsmenugroup; 
+		hide credits; 
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0"; 
+		setcvar g_nopickupchallenge "0"; 
+		setCvar g_decaychallenge "0" ;
+		close main;
+		}
+		
+	    mouseEnter { show "realrtcw_main_newgame" } 
+	    mouseExit { hide "realrtcw_main_newgame" } 	
+	}
+	
+	// LOAD GAME BUTTON
+	itemDef {
+		name loadgamemenu
+		text ""
+		group mainmenus
+		type 1
+	    rect 10 177 178 26
+		visible 1 
+		textfont UI_FONT_BIG
+		
+		action 
+		{ 
+		open load_menu; 
+		hide modmenus; 
+		hide newgamemenugroup; 
+		hide optionsmenugroup; 
+		hide credits;
+		hide realrtcw_main;
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0"; 
+		setcvar g_nopickupchallenge "0";
+		setCvar g_decaychallenge "0"
+		}
+		
+	    mouseEnter { show "realrtcw_main_loadgame" } 
+	    mouseExit { hide "realrtcw_main_loadgame" } 	
+    }
+		
+    // OPTIONS BUTTON
+	itemDef {
+		name optionsmenu
+		text ""
+		group mainmenus
+		type 1
+	    rect 10 210 178 26
+		visible 1
+		textfont UI_FONT_BIG
+		
+		action 
+		{ 
+		hide mainmenus; 
+		show optionsmenugroup; 
+		hide modmenus; 
+		hide newgamemenugroup; 
+		hide load_menu; 
+		hide credits;
+		hide realrtcw_main;
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		show realrtcw_options
+		}
+		
+	    mouseEnter { show "realrtcw_main_options" } 
+	    mouseExit { hide "realrtcw_main_options" }  
+    }
+	
+    // ADDONS BUTTON	
+	itemDef {
+        name modmenu
+        text ""
+		group mainmenus
+ 	    type 1
+	    rect 10 243 178 26
+	    visible 1
+		
+	    action 
+		{ 
+		uiScript loadMods; 
+		hide newgamemenugroup; 
+		hide optionsmenugroup; 
+		hide load_menu; 
+		show modmenus; 
+		hide credits; 
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0"; 
+		setcvar g_nopickupchallenge "0"; 
+		setCvar g_decaychallenge "0" 
+		}
+		
+	    mouseEnter { show "realrtcw_main_addons" } 
+	    mouseExit { hide "realrtcw_main_addons" }  	
+	}
+	
+	// CREDITS BUTTON
+	itemDef {
+        name creditsmenu
+        text ""
+		group mainmenus
+ 	    type 1
+	    rect 10 276 178 26
+	    visible 1
+		
+	    action 
+		{ 
+		hide newgamemenugroup; 
+		hide optionsmenugroup; 
+		hide load_menu; 
+		hide modmenus; 
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0";
+		setcvar g_nopickupchallenge "0"; 
+		setCvar g_decaychallenge "0"; 
+		show credits1; 
+		show credits0 
+		}	
+		
+	    mouseEnter { show "realrtcw_main_credits" } 
+	    mouseExit { hide "realrtcw_main_credits" }	
+	}
+	
+	// QUIT BUTTON
+	itemDef {
+		name quit
+		text ""
+		group mainmenus
+		type 1
+	    rect 10 309 178 26
+		visible 1 
+		
+		action 
+		{ 
+		uiScript "quit" 
+		}	
+		
+	    mouseEnter { show "realrtcw_main_quit" } 
+	    mouseExit { hide "realrtcw_main_quit" }
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             OPTIONS MENU BUTTONS                       //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// CONTROLS BUTTON
+	itemDef {
+	    name controlsmenu
+		group optionsmenugroup
+ 	    type 1
+	    rect 10 144 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_controls" } 
+	    mouseExit { hide "realrtcw_options_controls" }
+		
+	    action 
+		{ 
+		show controlsmenus;
+		show controlbuttons;
+		show look;
+		hide gomenus;
+		hide performance;
+		hide gameplay;
+		hide crosshair;
+		hide content_packs;
+		hide realrtcw;
+		hide view;
+		hide systemmenus;
+		hide graphics;
+		hide iortcwgraphics;
+		hide performancegraphics;
+		hide graphicsapply;
+		hide applysys;
+		hide sounds;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn;
+		hide shoot;
+		hide move;
+		hide misc
+		}
+	}
+	
+	// SYSTEM BUTTON
+	itemDef {
+        name systemmenu
+		group optionsmenugroup
+ 	    type 1
+	    rect 10 177 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_system" } 
+	    mouseExit { hide "realrtcw_options_system" }	
+		
+	    action 
+		{ 
+		show graphics;
+		show systemmenus;
+		show graphicsapply;
+		hide gomenus;
+		hide performance;
+		hide gameplay;
+		hide crosshair;
+		hide content_packs;
+		hide realrtcw;
+		hide view;
+		hide controlsmenus;
+		hide controlbuttons;
+		hide look;
+		hide shoot;
+		hide misc;
+		hide shoot_advanced;
+		hide move;
+		hide advancedshootbutton;
+		hide sounds;
+		hide applysys;
+		hide iortcwgraphics;
+		hide performancegraphics;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn
+		}
+	}
+	
+	// GAME OPTIONS BUTTON
+	itemDef {
+        name gameoptionsmenu
+		group optionsmenugroup
+ 	    type 1
+	    rect 10 210 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_game" } 
+	    mouseExit { hide "realrtcw_options_game" }	
+		
+	    action 
+		{ 
+		show gomenus;
+		show gameplay;
+		hide graphics;
+		hide iortcwgraphics;
+		hide performancegraphics;
+		hide systemmenus;
+		hide graphicsapply;
+		hide controlsmenus;
+		hide controlbuttons;
+		hide look;
+		hide shoot;
+		hide move;
+		hide misc;
+		hide shoot_advanced;
+		hide advancedshootbutton;
+		hide sounds;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn;
+		hide view;
+		hide applysys;
+		hide crosshair;
+		hide content_packs
+		}
+	}
+	
+	// DEFAULTS BUTTON
+	itemDef {
+      	name defaultsmenu
+		group optionsmenugroup
+ 	    type 1
+	    textstyle 6
+	    rect 10 243 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_defaults" } 
+	    mouseExit { hide "realrtcw_options_defaults" }	
+		
+	    action 
+		{ 
+		uiScript resetDefaults  
+		}
+	}
+	
+	// BACK BUTTON
+	itemDef {
+        name backmenu
+		group optionsmenugroup
+ 	    type 1
+        rect 10 276 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_back" } 
+	    mouseExit { hide "realrtcw_options_back" }
+		
+        action 
+		{ 
+		hide optionsmenugroup; 
+		show mainmenus;  
+		hide gomenus; 
+		hide performance; 
+		hide gameplay; 
+		hide crosshair;
+		hide content_packs;  
+		hide realrtcw; 
+		hide view; 
+		hide systemmenus; 
+		hide graphics; 
+		hide iortcwgraphics; 
+		hide performancegraphics; 
+		hide graphicsapply; 
+		hide controlsmenus; 
+		hide controlbuttons; 
+		hide look; 
+		hide shoot; 
+		hide move; 
+		hide shoot_advanced; 
+		hide advancedshootbutton; 
+		hide misc;
+		hide sounds;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn;
+		hide applysys;
+
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_discord;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		
+		hide realrtcw_load;
+		hide realrtcw_load_load;
+		hide realrtcw_load_back;
+		
+		hide realrtcw_options;
+		hide realrtcw_options_controls;
+		hide realrtcw_options_system;
+		hide realrtcw_options_game;
+		hide realrtcw_options_defaults;
+		hide realrtcw_options_back;
+		
+		show realrtcw_main
+		}
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               CONTROLS MENU           //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	itemDef {
+		name controlsmenu1
+		group controlsmenus
+		rect 220 102 443 320	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 0
+		decoration
+	}
+
+	itemDef {
+		name controlsmenu2
+		group controlsmenus
+		rect 222 104 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		//backcolor .5 0.5 0.5 .25
+        backcolor .3 0.6 0.2 .25 
+		visible 0
+		decoration
+	}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               LOOK CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name lookbutton
+	    text "@LOOK"
+	    type 1
+	    textscale .23
+	    group controlbuttons
+	    type ITEM_TYPE_BUTTON
+	    style WINDOW_STYLE_FILLED
+	    rect 250 105 45 20
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	    action { hide controls ; show look }
+	    mouseEnter { setitemcolor ctr_look backcolor .3 .6 .3 .0 } 
+	    mouseExit { setitemcolor ctr_look backcolor .1 .1 .1 0 } 
+	}
+
+    itemDef {
+	    name look
+	    text "@CONTROLS"
+ 	    type 1
+	    textfont UI_FONT_BIG
+	    style 0	
+	    textstyle 6
+	    rect 222.5 -12 64 14 
+	    textalign ITEM_ALIGN_CENTER
+	    textscale .23		
+	    textalignx 2
+	    textaligny 12
+	    forecolor .9 .9 .9 1
+	    visible 0 
+	    decoration
+    }
+	
+	    itemDef {
+	    name look
+		group controls
+	    text "@MOUSE_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@MOUSE_SENS"
+		cvarfloat "sensitivity" 5 1 30
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@MOUSE_INVERT"
+		cvar "ui_mousePitch"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		action { uiScript update ui_mousePitch }
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+    }
+
+	itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@MOUSE_SMOOTH"
+		cvar "m_filter"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_MULTI
+		text "@MOUSE_ACCEL"
+		cvar "cl_mouseAccelStyle"
+		cvarFloatList { "@MOUSE_ACCEL_STYLE1" 0 "@MOUSE_ACCEL_STYLE2" 1  }
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	
+	
+		itemDef {
+	    name look
+		group controls
+	    text "@GAMEPAD_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 210 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@GAMEPAD_ENABLE"
+		cvar "in_joystick"
+		rect 300 235 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@GAMEPAD_ANALOG"
+		cvar "in_joystickuseanalog"
+		rect 300 250 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@GAMEPAD_MOVESENS"
+        cvarfloat "j_moveSens"  1.0   0.2   2.0
+		rect 300 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@GAMEPAD_LOOKSENS"
+        cvarfloat "j_lookSens"  1.0   0.2   3.0
+		rect 300 280 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@GAMEPAD_UISENS"
+        cvarfloat "j_uiSpeed"  700 300 1000
+		rect 300 295 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_MULTI
+		text "@GAMEPAD_ASSIST"
+		cvar "j_aimassist"
+		cvarFloatList { "@GAMEPAD_ASSIST_OFF" 0 "@GAMEPAD_ASSIST_WEAK" 1 "@GAMEPAD_ASSIST_MID" 2 "@GAMEPAD_ASSIST_STRONG" 3  }
+		rect 300 310 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@GAMEPAD_INVERTLOOK"
+		cvar "j_invertLook"
+		rect 300 325 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////              MOVE CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name movebutton
+	    text "@CONTROLS_MOVE"
+	    type 1
+	    textscale .23
+	    group controlbuttons
+	    type ITEM_TYPE_BUTTON
+	    style WINDOW_STYLE_FILLED
+	    background "ui/assets/button_back.tga"
+	    rect 350 105 45 20
+	    textalign 1
+	    textalignx 22
+		textfont UI_FONT_BIG
+	    textaligny 14
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1 
+	    backcolor .1 .1 .1 0
+	    visible 0
+	    action { hide controls ; show move }
+	    mouseEnter { show message_move ; setitemcolor ctr_move backcolor .3 .3 .3 0  } 
+	    mouseExit { hide message_move ; setitemcolor ctr_move backcolor .1 .1 .1 0 } 
+	}
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_FWD"
+		cvar "+forward"
+		rect 300 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    		}
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_BWD"
+		cvar "+back"
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23                   
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LFT"
+		cvar "+moveleft"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_RGT"
+		cvar "+moveright"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_TRNLFT"
+		cvar "+left"
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+	}
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_TRNRGT"
+		cvar "+right"
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus } 
+	}
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_STRAFE"
+		cvar "+strafe"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+	}
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_JUMP"
+		cvar "+moveup"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_TOOGLECROUCH"
+		cvar "=movedown"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_CROUCH"
+		cvar "+movedown"
+		rect 300 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_SPRINT"
+		cvar "+sprint"
+		rect 300 300 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+    }
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_WALK"
+		cvar "+speed"
+		rect 300 315 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+    }
+
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LEANLEFT"
+		cvar "+leanleft"
+		rect 300 345 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LEANRIGHT"
+		cvar "+leanright"
+		rect 300 360 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               SHOOT CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name shootbutton
+	    text "@CONTROLS_SHOOT"
+	    type 1
+	    textscale .23
+	    group controlbuttons
+	    type ITEM_TYPE_BUTTON
+	    style WINDOW_STYLE_FILLED
+	    background "ui/assets/button_back.tga"
+	    rect 470 105 47 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+		textfont UI_FONT_BIG
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide controls ; show shoot ; show advancedshootbutton }
+	    mouseEnter { show message_shoot ; setitemcolor ctr_shoot backcolor .3 .3 .3 0 } 
+	    mouseExit { hide message_shoot ; setitemcolor ctr_shoot backcolor .1 .1 .1 0 }
+	}
+	
+	itemDef {
+		name shoot				
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_ATTACK"
+		cvar "+attack"
+		rect 300 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name shoot				
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_WEAPONWHEEL"
+		cvar "+weaponwheel"
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot				
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_ALTERNATE"
+		cvar "weapalt"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_NEXTWPN"
+		cvar "weapnext"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_PREVWPN"
+		cvar "weapprev"
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_RELOAD"
+		cvar "+reload"
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_KNIFE"
+		cvar "weaponbank 1"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_PISTOLS"
+		cvar "weaponbank 2"
+		rect 300 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_SMGS"
+		cvar "weaponbank 3"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_RIFLES"
+		cvar "weaponbank 4"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_AUTORIFLES"
+		cvar "weaponbank 5"
+		rect 300 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_ASSAULTRIFLES"
+		cvar "weaponbank 6"
+		rect 300 300 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_SHOTGUN"
+		cvar "weaponbank 7"
+		rect 300 315 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+			
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_GRENADES"
+		cvar "weaponbank 8"
+		rect 300 330 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+			
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_HEAVY"
+		cvar "weaponbank 9"
+		rect 300 345 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23                
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus } 
+    }
+			
+	itemDef {
+		name shoot
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_SECRET"
+		cvar "weaponbank 10"
+		rect 300 360 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		visible 0
+        textfont UI_FONT_BIG		
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               SHOOT ADVANCED CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name advancedshootbutton
+	    text "@CONTROLS_SHOOT_ADVANCED"
+	    type 1
+	    textscale .25
+	    group controls
+	    style WINDOW_STYLE_FILLED
+	    rect 395 380 80 18
+	    textalign 1
+	    textalignx 36
+	    textaligny 12
+	    forecolor 1 1 1 1
+	    backcolor .3 0.6 0.2 .25 
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    visible 0
+		textfont UI_FONT_BIG
+	    action { hide controls ; show shoot_advanced }
+	}
+
+	itemDef {
+		name shoot_advanced
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_ALTFIRE"
+		cvar "+attack2"
+		rect 300 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 176
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+		forecolor 1 1 1 1
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name shoot_advanced
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_NEXTWPNBANK"
+		cvar "weapnextinbank"
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 176
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+		forecolor 1 1 1 1
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name shoot_advanced
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_PREVWPNBANK"
+		cvar "weapprevinbank"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 176
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07        
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name shoot_advanced				
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LASTWEAPUSED"
+		cvar "weaplastused"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+
+    itemDef {
+	    name shoot_advanced
+	    group controls
+	    type ITEM_TYPE_TEXT
+	    text "@CONTROLS_USEWEAPCYCLE"
+	    rect 300 205 290 12
+	    textalign ITEM_ALIGN_RIGHT
+	    textalignx 180
+	    textaligny 10
+	    textscale .23
+        textfont UI_FONT_BIG		
+	    forecolor 1 1 1 1
+	    decoration
+	    visible 0 
+	}
+
+    itemDef {
+	    name shoot_advanced
+	    group controls
+	    type ITEM_TYPE_MULTI
+	    text "@CONTROLS_FORZOOMING"
+	    cvar "cg_useWeapsForZoom"
+	    cvarFloatList { "@OFF" 0 "@ONNORMAL" 1 "@ONREVERSE" 2 }
+	    rect 300 220 290 12
+	    textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+	    textalignx 142
+	    textaligny 10
+	    textscale .23           
+	    forecolor 1 1 1 1
+	    style WINDOW_STYLE_FILLED
+	    backcolor 1 1 1 .07
+	    visible 0 
+	}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               MISC CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name miscbutton
+	    text "@CONTROLS_MISC"
+	    type 1
+	    textscale .23
+	    group controlbuttons
+	    style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+	    rect 590 105 45 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide controls ; show misc }
+	    mouseEnter { show message_misc ; setitemcolor miscbutton backcolor .3 .3 .3 0 } 
+	    mouseExit { hide message_misc ; setitemcolor miscbutton backcolor .1 .1 .1 0} 
+	}
+	
+		itemDef {
+	    name misc
+		group controls
+	    text "@CONTROLS_ACTIONS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_ACTIVATE"
+		cvar "+activate"
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@CONTROLS_AUTOPICKUP"
+		cvar "cg_autoactivate"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textfont UI_FONT_BIG
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07          
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+   	}
+	
+	
+	   itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@CONTROLS_AUTORELOAD"
+		cvar "cg_autoreload"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	
+		itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_MULTI
+		text "@CONTROLS_AUTOSWITCH"
+		cvar "cg_autoswitch"
+		cvarFloatList { "@OFF" 0 "@CONTROLS_ALWAYSSWITCH" 1 "@CONTROLS_IFNEW" 2 "@CONTROLS_IFBETTER" 3 "@CONTROLS_NEWORBETTER" 4 "@CONTROLS_NEWANDBETTER" 5 }
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0
+    }
+	
+	
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_KICK"
+		cvar "+kick"
+		rect 300 210 290 12
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                    
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+
+	
+
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_QUICKGRENADE"
+		cvar "+quickgren"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textfont UI_FONT_BIG
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+	
+		itemDef {
+	    name misc
+		group controls
+	    text "@CONTROLS_INVENTORY"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 240 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_NEXTITEM"
+		cvar "itemnext"
+		rect 300 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_PREVITEM"
+		cvar "itemprev"
+		rect 300 280 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_USEITEM"
+		cvar "+useitem"
+		rect 300 295 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_NOTEBOOK"
+		cvar "notebook"
+		rect 300 310 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textfont UI_FONT_BIG
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                   
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+	}
+	
+		itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_BINOCS"
+		cvar "+zoom"
+		rect 300 325 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+	    name misc
+		group controls
+	    text "@CONTROLS_SAVELOAD"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 340 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_QUICKSAVE"
+		cvar "savegame quicksave"
+		rect 300 365 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142 
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_QUICKLOAD"
+		cvar "loadgame quicksave"
+		rect 300 380 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142 
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+	
+	itemDef {
+		name misc
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_CHECKPOINT"
+		cvar "loadgame lastcheckpoint"
+		rect 300 395 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142 
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	itemDef 
+	{
+		name sysmenu
+		group systemmenus
+		rect 220 102 443 315	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 0
+		decoration
+	}
+
+	itemDef 
+	{
+		name systembutton1
+		group systemmenus
+		rect 222 104 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25 
+		visible 0
+		decoration
+	}
+
+    itemDef {
+	    name ctr_graphics
+	    text "@SYSTEM"
+		group systemmenus
+ 	    type 1
+	    textfont UI_FONT_BIG
+	    style 0	
+	    textstyle 6
+	    rect 222.5 -12 64 14 
+	    textalign ITEM_ALIGN_CENTER
+	    textscale .22		
+	    textalignx 2
+	    textaligny 12
+	    forecolor .9 .9 .9 .8
+	    visible 0 
+	    decoration
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               DISPLAY SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	    itemDef {
+	    name systembutton
+	    text "@SYSTEM_DISPLAY"
+	    type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+	    rect 250 105 45 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor 1 1 1 1
+ 	    visible 0
+	    action { hide system ; hide iortcwgraphics; hide performancegraphics ; show graphics ; show graphicsapply }
+	}
+	
+		itemDef {
+	    name graphics
+		group system
+	    text "@SYSTEM_DISPLAYSETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+   		name graphics
+		group system
+   		type ITEM_TYPE_MULTI	
+		text "@SYSTEM_RESOLUTION"
+		cvar "r_mode"
+		cvarFloatList {  "640*480" 3 "800*600" 4 "960*720" 5 "1024*768" 6 "1152*864" 7 "1280*1024" 8 "1600*1200" 9 "2048*1536" 10 "856*480" 11 }
+//		"320*240" 0 "400*300" 1 "512*384" 2
+		rect 300 150 290 12
+      	textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+	}
+	
+	
+	itemDef {
+      	name graphics
+		group system
+      	type ITEM_TYPE_MULTI			
+		text "@SYSTEM_ASPECTRATIO"
+		cvar "cg_fixedaspect"
+		cvarFloatList { "@OFF" 0 "4:3" 1 "@SYSTEM_WIDESCREEN" 2  }
+		rect 300 165 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22   
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+		textfont UI_FONT_BIG
+      	visible 0 
+		action { uiScript glCustom }
+	}
+
+	
+	itemDef {
+   		name graphics
+		group system
+      	type ITEM_TYPE_YESNO
+		text "@SYSTEM_FULLSCREEN"
+		cvar "r_fullscreen"
+		rect 300 180 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+	}
+
+	itemDef {
+		name graphics
+		group system
+		text "@SYSTEM_APPLYWARNING"
+		textfont UI_FONT_NORMAL
+		decoration
+		style WINDOW_STYLE_EMPTY
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_CENTER
+		textalignx 145
+		textaligny 10
+		textscale .16
+		forecolor 1 1 1 1
+		visible 0
+	}
+
+		itemDef {
+ 		cvarTest "r_ignorehwgamma"
+		textfont UI_FONT_BIG
+		showcvar { "1" }
+ 		name graphics
+		group system
+      	type ITEM_TYPE_SLIDER
+		text "@SYSTEM_BRIGHTNESS"
+		cvarfloat "r_gamma" 1.3 0.5 3
+		rect 300 210 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142 
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+    		
+	itemDef {
+ 		cvarTest "r_ignorehwgamma"
+		showcvar { "0" }
+ 		name graphics
+		group system
+      	type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@SYSTEM_BRIGHTNESS"
+		cvarfloat "r_gamma" 1 0.5 2
+		rect 300 210 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142 
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+	
+		itemDef {
+		name graphics		
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@COLOR_BLACKWHITE"
+		cvar "r_greyscale"
+		rect 300 225 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		name graphics			
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		group system
+		text "@COLOR_GOTHIC"
+		cvar "r_gothic"
+		cvarFloatList { "@GENERAL_YES" 2 "@GENERAL_NO" 0 }
+		textalign ITEM_ALIGN_RIGHT
+		rect 300 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+
+	
+		itemDef {
+	    name graphics
+		group system
+	    text "@GM_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 260 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name graphics		
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@SYSTEM_VSYNC"
+		cvar "r_swapinterval"
+		rect 300 280 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		name graphics	
+		group system
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		text "@SYSTEM_SHOWFPS"
+		cvar "cg_drawfps"
+		rect 300 295 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+		itemDef {
+		name graphics			
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		group system
+		text "@SYSTEM_MAXFPS"
+		cvar "com_maxfps"
+		cvarFloatList { "30 FPS" 30 "60 FPS" 60 "76 FPS" 76 "90 FPS" 90 "100 FPS" 100 "144 FPS" 144 "240 FPS" 240 }
+		textalign ITEM_ALIGN_RIGHT
+		rect 300 310 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+	
+		itemDef {
+		name graphics	
+		group system
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		text "@SYSTEM_SOCIALS"
+		cvar "cg_showSocials"
+		rect 300 325 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               GRAPHICS SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	    itemDef {
+	    name systembutton
+	    text "@SYSTEM_GRAPHICS"
+	    type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+	    rect 335 105 45 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor 1 1 1 1
+ 	    visible 0
+	    action { hide system ; show iortcwgraphics ; show graphicsapply }
+	}
+
+    itemDef {
+    	name iortcwgraphics				
+	    group system
+	    text "@SYSTEM_PRESET"
+   	    type ITEM_TYPE_MULTI
+	    textfont UI_FONT_BIG
+	    cvar "ui_glCustom"
+	    cvarFloatList { "@SYSTEM_ULTRA" 0 "@SYSTEM_HIGHQUALITY" 1 "@SYSTEM_NORMALQUALITY" 2 "@SYSTEM_LOWQUALITY" 3 "@SYSTEM_CUSTOMQUALITY" 4 }
+	    cvarTest		"ui_glCustom"
+	    hideCvar		{ "999" }	// 999 is 'recommended'
+	    rect 300 140 290 12
+   	    textalign ITEM_ALIGN_RIGHT
+   	    textalignx 142 
+   	    textaligny 10
+	    textscale .22
+	    style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+   	    visible 0 
+	    action { uiScript update "ui_glCustom" }
+	}
+
+	itemDef {
+		name iortcwgraphics				
+		group system
+		text "@SYSTEM_DEFAULTPRESET"
+		textfont UI_FONT_BIG
+		type ITEM_TYPE_BUTTON	
+		cvarTest		"ui_glCustom"
+		showCvar		{ "999" }	// 999 is 'recommended'
+		rect 300 140 290 12
+		textalign ITEM_ALIGN_CENTER
+		textalignx 142
+		textaligny 10
+		textscale .22
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		visible 0
+		action {setcvar ui_glCustom 0; uiScript update "ui_glCustom" }
+	}
+
+	itemDef {
+   		name iortcwgraphics
+		group system
+      	type ITEM_TYPE_YESNO
+		text "@SYSTEM_GLEXTENSIONS"
+		cvar "r_allowExtensions"
+		textfont UI_FONT_BIG
+		rect 300 165 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+      	visible 0
+		action { uiScript glCustom }
+	}
+	
+
+	itemDef {
+      	name iortcwgraphics
+		group system
+      	type ITEM_TYPE_MULTI			
+		text "@SYSTEM_LIGHTING"
+		cvar "r_vertexlight"
+		cvarFloatList { "@SYSTEM_LIGHTMAP" 0 "@SYSTEM_VERTEX" 1  }
+		rect 300 180 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22   
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+		textfont UI_FONT_BIG
+      	visible 0 
+		action { uiScript glCustom }
+	}
+
+	itemDef {
+   		name iortcwgraphics
+		group system
+    	type ITEM_TYPE_MULTI
+		text "@SYSTEM_GEODETAIL"
+		cvar "r_lodbias"
+		cvarFloatList { "@SYSTEM_VERYLOWGEO" 2 "@SYSTEM_LOWGEO" 1 "@SYSTEM_MEDIUMGEO" 0 "@SYSTEM_HIGHGEO" -1 "@SYSTEM_VERYHIGHGEO" -2   }
+		rect 300 195 290 12
+      	textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom ; uiScript update "r_lodbias" }
+	}
+
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_MULTI
+		text "@SYSTEM_CHARTEXTURES"
+		cvar "r_picmip2"
+		cvarFloatList { "@SYSTEM_CHARLOW" 3 "@SYSTEM_CHARNORMAL" 2 "@SYSTEM_CHARHIGH" 1 "@SYSTEM_CHAREXTRA" 0 }
+		rect 300 210 290 12
+      	textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_MULTI
+		text "@SYSTEM_GENTEXTURES"
+		textfont UI_FONT_BIG
+		cvar "r_picmip"
+		cvarFloatList { "@SYSTEM_GENTEXTURESLOW" 2 "@SYSTEM_GENTEXTURESMED" 1 "@SYSTEM_GENTEXTURESHIGH" 0 }
+		rect 300 225 290 12
+	    textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+ 		action { uiScript glCustom }
+   	}
+
+	itemDef {
+      	name iortcwgraphics
+		group system
+      	type ITEM_TYPE_MULTI
+		text "@SYSTEM_TEXTUREFILTER"
+		textfont UI_FONT_BIG
+		cvar "r_texturemode"
+		cvarStrList { "@SYSTEM_BILINEAR", "GL_LINEAR_MIPMAP_NEAREST", "@SYSTEM_TRILINEAR", "GL_LINEAR_MIPMAP_LINEAR"  }
+		rect 300 240 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07      
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+	}
+
+itemDef {
+   		name iortcwgraphics
+		group system
+   		type ITEM_TYPE_MULTI
+		textfont UI_FONT_BIG
+		text "@SYSTEM_COLORDEPTH"
+		cvar "r_colorbits"
+		cvarFloatList { "@SYSTEM_DEPTHDESKTOP" 0 "@SYSTEM_16BIT" 16 "@SYSTEM_32BIT" 32 }
+		rect 300 255 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07      
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom ; uiScript update "r_colorbits" }
+	}
+
+	itemDef {
+      	name iortcwgraphics
+		group system
+      	type ITEM_TYPE_YESNO
+		text "@SYSTEM_COMPRESSTEXTURES"
+		textfont UI_FONT_BIG
+		cvar "r_ext_compressed_textures"
+		rect 300 270 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+	}
+		
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_MULTI
+		text "@SYSTEM_TEXTUREQUALITY"
+		textfont UI_FONT_BIG
+		cvar "r_texturebits"
+		cvarFloatList { "@SYSTEM_DEFAULT" 0 "@SYSTEM_16BIT " 16 "@SYSTEM_32BIT" 32 }
+		rect 300 285 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@SYSTEM_DISTANCEFOG"
+		cvar "r_ext_NV_fog_dist"
+		rect 300 300 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@SYSTEM_ANISOTROPIC"
+		cvar "r_ext_texture_filter_anisotropic"
+		rect 300 325 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		textfont UI_FONT_BIG
+		showcvar { "1" }
+ 		name iortcwgraphics
+		group system
+      	type ITEM_TYPE_SLIDER
+		text "@SYSTEM_MAXANISOTROPY"
+		cvarfloat "r_ext_max_anisotropy" 0 0 16
+		rect 300 340 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142 
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		textfont UI_FONT_BIG
+		showcvar { "1" }
+ 		name iortcwgraphics
+		group system
+      	type ITEM_TYPE_SLIDER
+		text "@SYSTEM_MULTISAMPLE"
+		cvarfloat "r_ext_multisample" 0 0 4
+		rect 300 355 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142 
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+
+
+	itemDef {
+		name graphicsapply
+		textfont UI_FONT_BIG
+		text "@SYSTEM_APPLY"
+		type 1	
+		textscale .25
+		style WINDOW_STYLE_FILLED
+		group system
+		rect 395 390 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { exec "vid_restart"  }
+		mouseEnter { setitemcolor graphicsapply backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor graphicsapply backcolor .1 .1 .1 .1 }
+	}
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               PERFORMANCE SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		itemDef {
+	    name systembutton
+	    text "@PERFORMANCE"
+	    type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+		rect 420 105 47 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor 1 1 1 1
+ 	    visible 0
+	    action { hide system ; show performancegraphics ; hide graphicsapply }
+	}
+	
+		itemDef {
+	    name performancegraphics
+		group system
+	    text "@GM_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name performancegraphics
+		group system
+		text "@PERF_WALLMARK"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "cg_markTime"
+        cvarFloatList {"@PERF_MARK_NORMAL" 20000 "@PERF_MARK_SHORT" 10000 "@OFF" 0 "@PERF_MARK_LONG" 30000 "@PERF_MARK_VERYLONG" 99999  }
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	itemDef {
+		name performancegraphics
+		group system
+		text "@PERF_BRASS"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "cg_brassTime"
+		cvarFloatList { "@PERF_BRASS_ULTRA" 10000 "@PERF_BRASS_HIGH" 2500 "@PERF_BRASS_MED" 1250 "@OFF" 0 }
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name performancegraphics
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		group system
+		text "@PERF_CORONA"
+		rect 300 180 290 12
+		cvar "cg_coronafardist"
+		cvarFloatList { "@PERF_CORONA_NORMAL" 1536 "@PERF_CORONA_FAR" 4096 "@PERF_CORONA_VERYFAR" 8000 "@PERF_CORONA_ULTRA" 16000 "@OFF" 0 "@PERF_CORONA_NEAR" 800 }
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+	
+		itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_FOLIAGE"
+		cvar "r_drawfoliage"
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_DYNAMICLIGHTS"
+		cvar "r_dynamiclight"
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_LQSKY"
+		cvar "r_fastsky"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+    itemDef {
+	    name performancegraphics
+	    group system
+	    type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+	    text "@PERF_PORTALSKIES"
+	    cvar "cg_skybox"
+		rect 300 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0  
+	}
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_SYNCFRAME"
+		cvar "r_finish"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_PATRICLES"
+		cvar "cg_wolfparticles"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		text "@PERF_FOGTYPE"
+		cvarTest "r_ext_NV_fog_dist"
+		showcvar { "1" }
+		cvar "r_nv_fogdist_mode"
+		cvarStrList { "@PERF_RADIAL", "GL_EYE_RADIAL_NV", "@PERF_PLANE", "GL_EYE_PLANE_ABSOLUTE_NV" }
+		rect 300 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               SOUND SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+    itemDef {
+	    name soundbutton
+	    text "@SOUND"
+		textfont UI_FONT_BIG
+	    type 1
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+	    rect 506 105 45 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor .9 .9 .9 .8
+	    backcolor .1 .1 .1 0
+	    visible 0
+	    action { hide system ; show sounds ; show applysys }
+	    mouseEnter { show message_other ; setitemcolor ctr_other backcolor .3 .3 .3 0 }
+	    mouseExit { hide message_other ; setitemcolor ctr_other backcolor .1 .1 .1 0}
+	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               STEAM SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name steambutton
+	    text "@STEAM"
+		textfont UI_FONT_BIG
+	    type 1
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+	    rect 590 105 45 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor .9 .9 .9 .8
+	    backcolor .1 .1 .1 0
+	    visible 0
+	    action { hide system ; show steamsettings ; show steamreset_btn ; hide graphicsapply ; hide applysys }
+	}
+
+		itemDef {
+	    name steamsettings
+		group system
+	    text "@STEAM_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+		itemDef {
+			name steamreset_btn
+			group system
+			type ITEM_TYPE_BUTTON
+			textfont UI_FONT_BIG
+			text "@STEAM_RESETSTATS"
+			rect 300 150 290 12
+			textalign ITEM_ALIGN_CENTER
+			textalignx 142
+			textaligny 10
+			textscale .22
+			style WINDOW_STYLE_FILLED
+			backcolor 1 1 1 .07
+			forecolor 1 1 1 1
+			visible 0
+			action { hide steamreset_btn ; show steamreset_warn }
+		}
+
+		itemDef {
+			name steamreset_warn
+			group system
+			type ITEM_TYPE_BUTTON
+			textfont UI_FONT_BIG
+			text "@STEAM_RESETSTATS_WARN"
+			rect 300 150 290 12
+			textalign ITEM_ALIGN_CENTER
+			textalignx 142
+			textaligny 10
+			textscale .22
+			style WINDOW_STYLE_FILLED
+			backcolor 1 1 1 .07
+			forecolor 1 .3 .3 1
+			visible 0
+			action { uiScript ResetSteamStats ; hide steamreset_warn ; show steamreset_btn }
+		}
+
+		itemDef {
+	    name sounds
+		group system
+	    text "@SOUND_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+	itemDef {
+		name sounds
+		group system
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@SOUND_EFFECTS"
+		cvarfloat "s_volume" 0.7 0 1
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22    
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07   
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+		name sounds
+		group system
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@SOUND_MUSIC"
+		cvarfloat "s_musicvolume" 0.25 0 1
+		rect 300 175 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22   
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+	    name sounds
+		group system
+	    text "@SOUND_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 195 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name sounds
+		textfont UI_FONT_BIG
+		group system
+		type ITEM_TYPE_YESNO
+		text "@SOUND_SUBTITLES"
+		cvar "cg_drawsubtitles"
+		rect 300 220 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sounds
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		group system
+		text "@SOUND_SUBSSIZE"
+		rect 300 235 290 12
+		cvar "cg_subtitlesize"
+		cvarFloatList { "@SOUND_SUBS_VERYSMALL" 5 "@SOUND_SUBS_SMALL" 7 "@SOUND_SUBS_MEDIUM" 9 "@SOUND_SUBS_LARGE" 12 "@SOUND_SUBS_EXTRALARGE" 16 }
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+	
+		itemDef {
+		name sounds
+		textfont UI_FONT_BIG
+		group system
+		type ITEM_TYPE_YESNO
+		text "@SOUND_SUBSSHADOW"
+		cvar "cg_subtitleshadow"
+		rect 300 250 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+	
+		itemDef {
+		name sounds
+		textfont UI_FONT_BIG
+		group system
+		type ITEM_TYPE_YESNO
+		text "@SOUND_OPENAL"
+		cvar "s_useOpenAL"
+		rect 300 265 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sounds
+		textfont UI_FONT_BIG
+		group system
+		type ITEM_TYPE_YESNO
+		text "@SOUND_MUTEMIN"
+		cvar "s_muteWhenMinimized"
+		rect 300 280 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sounds
+		textfont UI_FONT_BIG
+		group system
+		type ITEM_TYPE_YESNO
+		text "@SOUND_MUTEUNFOCUS"
+		cvar "s_muteWhenUnfocused"
+		rect 300 295 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sounds
+		textfont UI_FONT_BIG
+		group system
+		type ITEM_TYPE_YESNO
+		text "@SOUND_HITSOUNDS"
+		cvar "cg_hitSounds"
+		rect 300 310 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+
+	itemDef {
+		name applysys
+		group system
+		text "@SOUND_APPLY"
+		textfont UI_FONT_BIG
+		type 1
+		style WINDOW_STYLE_FILLED	
+		textscale .25
+		rect 395 390 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { exec "snd_restart" ; hide sounds ; hide applysys }
+		mouseEnter { setitemcolor applysystem backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor applysystem backcolor .1 .1 .1 .1 }
+	}
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    GAME OPTIONS           ////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	itemDef {
+	    name gowindow
+	    group gomenus
+	    rect 220 102 443 330	
+	    style WINDOW_STYLE_FILLED
+	    border 1
+	    bordercolor .5 .5 .5 .5
+	    forecolor 1 1 1 1
+	    backcolor 0 0 0 .8
+	    visible 0
+	    decoration
+	}
+	
+	itemDef {
+		name gowindow2
+		group gomenus
+		rect 222 104 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25  
+		visible 0
+		decoration
+	}
+	
+	itemDef {
+	    name gameplaybutton
+	    text "@GAMEPLAY"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 230 108 64 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show gameplay }
+	}
+	
+	itemDef {
+	    name viewbutton
+	    text "@HUD"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 330 108 50 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show view }
+	}
+	
+    itemDef {
+	    name crosshairbutton
+	    text "@VIEW"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 430 108 55 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show crosshair }
+	}
+	
+    itemDef {
+	    name content_packs_button
+	    text "@CONTENTPACKS"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 530 108 65 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show content_packs }
+	}
+	
+	
+		itemDef {
+	    name content_packs
+		group options
+	    text "@HDASSETS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_WORLDTEXTURES"
+		cvar "fs_hd_worldtextures"
+		rect 300 150 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_WORLDMODELS"
+		cvar "fs_hd_worldmodels"
+		rect 300 165 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_CHARACTERS"
+		cvar "fs_hd_characters"
+		rect 300 180 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_SOUNDS"
+		cvar "fs_hd_sounds"
+		rect 300 195 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_ICONS"
+		cvar "fs_hd_icons"
+		rect 300 210 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+	
+		itemDef {
+	    name content_packs
+		group options
+	    text "@SOUND_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 230 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_MAPS"
+		cvar "fs_re_maps"
+		rect 300 250 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+		itemDef {
+   		name content_packs
+		group options
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_DEPACK"
+		cvar "fs_de_pack"
+		rect 300 265 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG        
+      	forecolor 1 1 1 1
+      	visible 0 
+	}
+	
+		itemDef {
+		name content_packs
+		textfont UI_FONT_BIG
+		text "@SYSTEM_APPLY"
+		type 1	
+		textscale .25
+		style WINDOW_STYLE_FILLED
+		group options
+		rect 395 350 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { exec "game_restart"  }
+		mouseEnter { setitemcolor graphicsapply backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor graphicsapply backcolor .1 .1 .1 .1 }
+	}
+	
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    CROSSHAIR              ////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		itemDef {
+		name crosshair
+		group options
+	    text "@GM_CROSSHAIR"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+    itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		text "@GM_CROSSHAIR_SIZE"
+		cvar "cg_crosshairsize"
+		cvarFloatList { "@GM_CROSSHAIR_SMALL" 24 "@GM_CROSSHAIR_MEDIUM" 32 "@GM_CROSSHAIR_BIG" 40 "@GM_CROSSHAIR_LARGE" 48 "@GM_CROSSHAIR_HUGE" 64 "@GM_CROSSHAIR_TINY" 12 }
+		rect 300 145 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+
+	itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@GM_CROSSHAIR_ALPHA"
+		cvarfloat "cg_crosshairAlpha" .6 .1 1
+		rect 300 160 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+	itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@GM_CROSSHAIR_SOLID"
+		cvar "cg_solidCrosshair"
+		rect 300 175 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@GM_CROSSHAIR_SNIPER"
+		cvar "cg_snipersCrosshair"
+		rect 300 190 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+    itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		text "@GM_CROSSHAIR_COLORING"
+		cvar "cg_crosshairColoring"
+		cvarFloatList { "@GM_CROSSHAIR_COLORING_OFF" 0 "@GM_CROSSHAIR_COLORING_HEALTH" 1 "@GM_CROSSHAIR_COLORING_ENEMY" 2 }
+		rect 300 205 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+	
+	itemDef {
+		name crosshair
+		group options
+		text "@GM_CROSSHAIR2"
+		textfont UI_FONT_BIG
+ 		type 1	
+		rect 410 220 60 12
+		textalign ITEM_ALIGN_CENTER
+		textscale .23		
+		textalignx 30
+		textaligny 12
+		forecolor 1 1 1 1
+		visible 0 
+		decoration
+	}
+
+	itemDef {
+		name crosshair			
+		group options
+		rect 415 235 50 50
+		ownerdraw UI_CROSSHAIR
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 0 
+		textaligny 50  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07      
+		forecolor 1 1 1 1
+		visible 0
+   	}
+	
+		itemDef {
+		name crosshair
+		group options
+	    text "@GM_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 285 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		text "@GM_FIXEDFOV"
+		cvar "cg_fixedAspectFOV"
+		rect 300 305 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+    }
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_SLIDER
+		text "@GM_FOV"
+		cvarfloat "cg_fov" 90 65 120
+		rect 300 320 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+		text "@GM_DRAWGUN"
+		cvar "cg_drawGun"
+		rect 300 335 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_MULTI
+		text "@GM_VIEWPOS"
+		cvar "cg_gunposlock"
+		cvarFloatList { "@GM_VIEWREALRTCW" 1 "@GM_VIEWQUAKE" 3	}
+		rect 300 350 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+		text "@GM_BOBBING"
+		cvar "cg_bobbing"
+		rect 300 365 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+		text "@GM_THIRDPERSON"
+		cvar "cg_thirdperson"
+		rect 300 380 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_SLIDER
+		text "@GM_THIRDPERSONRANGE"
+		cvarfloat "cg_thirdpersonrange" 40 50 120
+		rect 300 395 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name crosshair
+		group options
+		type ITEM_TYPE_YESNO
+		text "@GM_HITMARKERS"
+		cvar "cg_hitMarker"
+		rect 300 410 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    GAMEPLAY             //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		itemDef {
+	    name gameplay
+		group options
+	    text "@GM_CORE_GAMEPLAY"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_MIDGAME"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_midgame"
+		cvarFloatList { "@GM_MIDGAME_CLASSIC" 0 "@GM_MIDGAME_HUBANDCUTSCENE" 1 }
+		rect 300 145 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+        }
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_ARSENAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_fullarsenal"
+		cvarFloatList { "@GM_ARSENAL_CLASSIC" 0 "@GM_ARSENAL_REALRTCW" 1 "@GM_ARSENAL_TOW" 2 }
+		rect 300 160 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_REWARDS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_endmapbonus"
+		rect 300 175 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_VANILLA_GUNS"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_vanilla_guns"
+		cvarFloatList { "@GM_GUNS_HD" 0 "@GM_GUNS_VANILLA" 1 }
+		rect 300 190 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+	    name gameplay
+		group options
+	    text "@GM_AI_OPTIONS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 225 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_ADDENEMIES"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_reinforce"
+		cvarFloatList { "@GM_ADDENEMIES_NO" 0 "@GM_ADDENEMIES_MORE" 1 "@GM_ADDENEMIES_EVENMORE" 2 }
+		rect 300 245 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_AIRESPAWN"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_airespawn"
+		cvarFloatList { "@GM_AIRESPAWN_NO" 0 "@GM_AIRESPAWN_ONCE" 1 "@GM_AIRESPAWN_INFINITE" -1 }
+		rect 300 260 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+			itemDef {
+		name gameplay
+		group options
+		text "@GM_DOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawndogs"
+		rect 300 275 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_PRIESTS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnpriests"
+		rect 300 290 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_XDOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnxshepherds"
+		rect 300 305 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+	
+			itemDef {
+	    name gameplay
+		group options
+	    text "@GM_REALISM_OPTIONS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 315 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_REALISMM"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_realism"
+		rect 300 335 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_REGEN"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_regen"
+		cvarFloatList { "@GM_REGEN_OFF" 0 "@GM_REGEN_FULL" 1 "@GM_REGEN_PARTIAL" 2 }
+		rect 300 350 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_OVERHEAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_overheal"
+		cvarFloatList { "@GM_OVERHEAL_CLASSIC" 0 "@GM_OVERHEAL_MODERN" 1 }
+		rect 300 365 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+
+
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_FALLOFF"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG
+		cvar "g_weaponfalloff"
+		rect 300 380 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group options
+		text "@GM_STRAFEJUMP"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG
+		cvar "g_jumptime"
+		rect 300 395 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+	
+	
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                      VIEW                    //////////////////////////////////////////               
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		itemDef {
+		name view
+		group options
+		type ITEM_TYPE_YESNO
+		text "@HUD_ENABLE"
+		cvar "cg_draw2D"
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		type ITEM_TYPE_MULTI
+		text "@HUD_STYLE"
+		cvar "cg_hudstyle"
+		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@HUD_ALPHA"
+		cvarfloat "cg_hudAlpha" .6 .1 1
+		rect 300 180 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+   	}
+	
+	itemDef {
+		name view				
+		type ITEM_TYPE_MULTI	
+		group options
+		text "@HUD_CURSORHINTS"
+		cvar "cg_cursorHints"
+		cvarFloatList { "@HUD_STROBE" 2 "@HUD_ALPHAPULSE" 3 "@HUD_CURSORSOLID" 4 "@OFF" 0 "@HUD_CURSORSIZEPULSE" 1 }
+		textalign ITEM_ALIGN_RIGHT
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textfont UI_FONT_BIG
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3"; "4" }
+				
+		type ITEM_TYPE_MULTI
+		text "@HUD_STATUS"
+		cvar "cg_hudstatus"
+		cvarFloatList { "@HUD_STATUS_3" 3 "@HUD_STATUS_4" 4 "@HUD_STATUS_5" 5 }
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3"; "4" }
+				
+		type ITEM_TYPE_MULTI
+		text "@HUD_STATUS"
+		cvar "cg_hudstatus"
+		cvarFloatList { "@HUD_STATUS_3" 3 "@HUD_STATUS_4" 4 "@HUD_STATUS_5" 5 }
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		decoration
+    }
+	
+			itemDef {
+		name view
+		group options
+		type ITEM_TYPE_YESNO
+		text "@HUD_BLOOD"
+		cvar "cg_bloodBlend"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_STAMINA"
+		cvar "cg_hudstamina"
+		rect 300 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_STAMINA"
+		cvar "cg_hudstamina"
+		rect 300 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "1"; "3"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_WEAPONICON"
+		cvar "cg_hudweapicon"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "1"; "3"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_WEAPONICON"
+		cvar "cg_hudweapicon"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3"; "4"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_AMMOCLIP"
+		cvar "cg_hudammoclip"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3"; "4"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_AMMOCLIP"
+		cvar "cg_hudammoclip"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group options
+		type ITEM_TYPE_YESNO
+		text "@HUD_JOURNAL"
+		cvar "cg_journalstyle"
+		rect 300 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group options
+		type ITEM_TYPE_YESNO
+		text "@HUD_CHECKPOINT"
+		cvar "cg_drawCheckpoint"
+		rect 300 300 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             ADDONS MENU                       ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	itemDef {
+		name modmenu3
+		group modmenus
+		rect 200 120 437 249 //200 110 437 249
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		elementwidth 120
+		elementheight 20
+		textscale .25
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_MODS
+		textalign 1
+		textfont UI_FONT_BIG
+		textalignx 0
+		textaligny -8
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 0.8
+		outlinecolor .45 .45 .45 .20
+		visible 0
+		doubleClick { uiScript RunMod }
+	}
+
+	itemDef {
+		name modmenu4
+		text "@ADDONS_LAUNCH"
+		type 1
+	    group modmenus
+		textscale .3
+		style WINDOW_STYLE_FILLED		
+		rect 250 370 100 20
+		textalign 1
+		textalignx 48
+		textfont UI_FONT_BIG
+		textaligny 14
+		backcolor 0 0 0 0.8
+		border 1
+		bordercolor .1 .1 .1 .3
+		visible 0
+		action { uiScript RunMod }		
+	}
+	
+	itemDef {
+		name modmenu4
+		text "@ADDONS_UNLOAD"
+		type 1
+	    group modmenus
+		textscale .3
+		style WINDOW_STYLE_FILLED		
+		rect 450 370 100 20
+		textalign 1
+		textalignx 48
+		textfont UI_FONT_BIG
+		textaligny 14
+		backcolor 0 0 0 0.8
+		border 1
+		bordercolor .1 .1 .1 .3
+		visible 0
+		action { uiscript RunMod; setcvar fs_game Main }		
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             CREDITS MENU                      ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+		
+	itemDef {
+		name credits1
+		group credits
+		rect 205 100 440 350	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 0
+		decoration
+	}
+	
+	itemDef {
+		name credits1
+		text "@CREDITS_PSYCHO"
+		type 1
+	    group credits
+		textscale .3
+		style WINDOW_STYLE_FILLED		
+		rect 530 410 100 20
+		textalign 1
+		textalignx 48
+		textfont UI_FONT_BIG
+		textaligny 14
+		backcolor .5 0.0 0.0 .25
+		forecolor 1 0 0 1
+		border 1
+		bordercolor .1 .0 .0 .3
+		visible 0
+		action { setCvar g_gameskill "1" ; exec "spmap w3d" }		
+	}
+	
+	
+	itemDef {
+	name credits1
+	group credits
+	rect 225 117.5 500 500 
+	textfile "text/EnglishUSA/creditsp1.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits1
+	group credits
+	rect 395 117.5 500 500 
+	textfile "text/EnglishUSA/creditsp1_2.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits1
+	group credits
+	rect 530 117.5 500 500 
+	textfile "text/EnglishUSA/creditsp1_3.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits2
+	group credits
+	rect 225 117.5 500 500 
+	textfile "text/EnglishUSA/patronsp1.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits2
+	group credits
+	rect 395 117.5 500 500 
+	textfile "text/EnglishUSA/patronsp2.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits2
+	group credits
+	rect 530 117.5 500 500 
+	textfile "text/EnglishUSA/patronsp3.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	//
+	//
+	//	CURSED SANDS
+	//
+	//
+
+		//	WINDOW	//
+		
+		itemDef 
+		{
+			group			grpEE
+			name 			ee_window
+		
+			cvarTest 	"g_ee_dlc"
+			showCvar	{ "1" }
+		
+			rect 			400 432 240 48	
+			style 			WINDOW_STYLE_FILLED
+			border 			1
+			bordercolor 	.5 .5 .5 .5
+			forecolor 		1 1 1 1
+			backcolor 		0 0 0 .25
+			visible 		1
+			decoration
+		}
+		
+			//	CLICKABLE LINK	//
+		
+			itemDef
+			{
+				group	grpEE
+				name	ee
+			
+				cvarTest 	"g_ee_dlc"
+				showCvar	{ "1" }
+					
+				type ITEM_TYPE_BUTTON
+				rect 402 434 236 44
+				
+				border 			1
+				bordercolor 	0 0 0 0
+				
+				visible 1
+				
+				style WINDOW_STYLE_SHADER
+				background "ui/assets/ee"
+				forecolor .8 .8 .8 1
+				
+				action { exec "game_restart EE" }
+				
+				mouseEnter { setitemcolor ee forecolor 1 1 1 1 }
+				mouseExit { setitemcolor ee forecolor .8 .8 .8 1 }
+			}
+		
+		/*	//	CLICKABLE CHECK	//
+	
+			itemDef
+			{
+				group	grpEE
+				name	ee_check
+			
+				cvarTest 	"g_ee_dlc"
+				showCvar	{ "1" }
+					
+				type ITEM_TYPE_BUTTON
+				rect 630 432 12 12
+				visible 1
+		
+				style WINDOW_STYLE_SHADER
+				background "ui/assets/check_no"
+				forecolor .6 .6 .6 1
+				
+				action { play "sound/menu/select.wav"; setCvar g_ee_dlc "0" }
+				
+				mouseEnter { setitemcolor ee_check forecolor 1 .1 .1 1 }
+				mouseExit { setitemcolor ee_check forecolor .6 .6 .6 1 }
+			}
+		*/
+}
+
+
+
+}
+
+		
+		
+		

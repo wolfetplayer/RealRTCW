@@ -1,0 +1,1336 @@
+//
+//BRUSH scripting
+//Map chateau_90
+//10/11/01
+//last edited by jeremy
+
+
+fireplace
+{
+	spawn
+	{
+	}
+
+	trigger						
+	{
+	}
+}
+
+treasure1							// This will open the secret door...
+{
+	spawn
+	{
+	}
+
+	trigger rotate1
+	{
+		gotomarker t1spot1 5 wait 
+		gotomarker t1spot2 2 wait
+		wait 3000
+		//faceangles 0 0 -20 300
+		//print TREASURE BUTTON, STILL under construction
+		wait 2000
+		gotomarker t1spot3 5 wait
+		//faceangles 0 0 -20 400
+	}
+}
+
+statue1
+{
+	spawn
+	{
+	}
+
+	trigger st1_fallover1
+	{
+		faceangles 0 0 -15 200
+		faceangles 0 0 -30 300
+		faceangles 0 0 -45 50
+		trigger head1 fall1
+		faceangles 0 0 -65 20
+		faceangles 0 0 -80 5
+		faceangles 0 0 -90 1
+		//gotomarker st1spot1 4000 wait
+	}
+}
+
+statue2
+{
+	spawn
+	{
+	}
+
+	trigger st2_fallover1
+	{
+		faceangles 0 -15 0 200
+		faceangles 0 -30 0 300
+		faceangles 0 -45 0 50
+		//trigger head1 fall1
+		faceangles 0 -65 0 20
+		faceangles 0 -80 0 5
+		faceangles 0 -90 0 1
+	}
+}
+
+fireplace_wall1
+{
+	spawn
+	{
+	}
+
+	trigger wall_move1			// Opening... 
+	{
+		gotomarker w1spot1 5 wait
+		gotomarker w1spot2 5 wait
+		gotomarker w1spot3 5 wait
+		//gotomarker w1spot4 5 deccel wait
+		trigger fireplace1 rotate1a
+	}
+
+
+	trigger wall_move2			// Closing...
+	{
+		gotomarker w1spot3 5 wait
+		gotomarker w1spot2 5 wait
+		gotomarker w1spot1 5 wait
+		//gotomarker w1spot4 5 deccel wait
+		//trigger fireplace1 rotate1a
+	}
+}
+
+fp_switch
+{
+	spawn
+	{
+		accum 0 bitreset 0 
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0	
+	}
+
+	trigger fireplace_open_checkin
+	{
+		accum 0 bitset 5
+		alertentity hide_fire_hint
+	}
+
+	trigger fireplace_close_checkin
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger choose_function
+	{
+		playsound sound/movers/switches/switch.wav
+		trigger fp_switch open
+		wait 5
+		trigger fp_switch close
+	}
+
+	trigger open 
+	{
+		accum 0 abort_if_bitset 5
+		faceangles 20 0 0 500
+		resetscript
+		trigger fireplace1 rotate1	// the fireplace
+		trigger fpt rotate1	//holding tools
+		trigger fptb rotate1		// tool	
+		playsound sound/movers/switches/switch.wav
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_bitset 5
+		faceangles 340 0 0 500
+		resetscript
+		trigger fireplace1 close1	// the fireplace
+		trigger fpt close1	//holding tools
+		trigger fptb close1		// tool
+		playsound sound/movers/switches/switch.wav
+	}
+}
+
+fireplace1
+{
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+	}
+
+	trigger rotate1
+	{
+		resetscript
+//		wait 0
+		playsound sound/scenaric/chateau/fplace_begin.wav
+		playsound sound/scenaric/chateau/fplace_end.wav looping
+		gotomarker fireplace_spot1a 20 accel wait
+		gotomarker fireplace_spot2 20 deccel wait
+		playsound sound/scenaric/chateau/door2_closeq.wav
+		stopsound
+		trigger fp_switch fireplace_open_checkin
+	//	HAVE IT END HERE--------------	
+
+	}
+
+	trigger close1
+	{
+		wait 2
+//		gotomarker fireplace_spot1 20
+		playsound sound/scenaric/chateau/fplace_begin.wav
+		playsound sound/scenaric/chateau/fplace_loop.wav looping
+		gotomarker fireplace_spot2a 20 accel wait
+		gotomarker fireplace_spot1 20 deccel wait
+		playsound sound/scenaric/chateau/ fplace_end.wav 
+		stopsound
+		trigger fp_switch fireplace_close_checkin
+	}
+
+	trigger rotate1a
+	{
+		//accum 0 abort_if_not_equal 0
+		resetscript
+	//	trigger fpt rotate1
+		faceangles 0 -5 0 600
+		faceangles 0 -10 0 700
+		wait 1000
+		faceangles 0 -80 0 7000
+		faceangles 0 -90 0 3000
+
+//		HAVE IT END HERE--------------
+		
+//		wait 5000
+//		faceangles 0 -80 0 3000
+//		faceangles 0 -10 0 7000
+//		faceangles 0 -5 0 600
+//		faceangles 0 0 0 500
+//		trigger fireplace_wall1 wall_move2
+
+
+		//wait 2500		test
+		//faceangles 0 -170 0 7000 test
+		//faceangles 0 -180 0 3000 test
+		//accum 0 set 1
+		//accum 1 set 1	// Enable button
+	}
+
+	trigger rotate2a
+	{
+		//accum 0 abort_if_not_equal 1
+		resetscript
+		faceangles 0 360 0 7000
+		//accum 0 set 0
+		//accum 1 set 1
+	}
+}
+
+fpt			// HOlding tools
+{
+	spawn
+	{
+	}
+
+	trigger rotate1
+	{
+		wait 2
+//		gotomarker fireplace_spot2 20
+		gotomarker fireplace_spot1a 20 accel wait
+		gotomarker fireplace_spot2 20 deccel wait
+	//	faceangles 0 -80 0 3000
+	//	faceangles 0 -10 0 7000
+	//	faceangles 0 -5 0 600
+	//	faceangles 0 0 0 500		
+	}
+	trigger close1
+	{
+		wait 2
+//		gotomarker fireplace_spot1 20
+		gotomarker fireplace_spot2a 20 accel wait
+		gotomarker fireplace_spot1 20 deccel wait
+	}
+}
+
+fpta			// HOlding tools
+{
+	spawn
+	{
+	}
+
+	trigger rotate1
+	{
+		wait 2
+//		gotomarker fireplace_spot2 20	
+		gotomarker fireplace_spot1a 20 accel wait
+		gotomarker fireplace_spot2 20 deccel wait	
+	}
+
+	trigger close1
+	{
+		wait 2
+//		gotomarker fireplace_spot1 20
+		gotomarker fireplace_spot2a 20 accel wait
+		gotomarker fireplace_spot1 20 deccel wait
+	}
+
+}
+
+fptb			// tool itself
+{
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+	}
+
+	trigger pull		// This is it being pulled then closed
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		playsound sound/movers/switches/switch.wav
+		playanim 0 18 3000
+//		faceangles 10 0 0 300
+//		wait 2000
+//		faceangles 0 0 0 300 
+		wait 2000
+		trigger fireplace1 rotate1	// the fireplace
+		trigger fpt rotate1	//holding tools
+		trigger fptb rotate1		// tool
+	//	trigger fpta rotate1
+	}
+
+	trigger rotate1
+	{
+		wait 2
+//		gotomarker fireplace_spot2 20
+		gotomarker fireplace_spot1a 20 accel wait
+		gotomarker fireplace_spot2 20 deccel wait		
+	}
+
+	trigger close1
+	{
+		wait 2
+//		gotomarker fireplace_spot1 20
+		gotomarker fireplace_spot2a 20 accel wait
+		gotomarker fireplace_spot1 20 deccel wait
+		accum 0 bitreset 1
+	}
+}
+
+checker1
+{
+	spawn
+	{
+		accum 0 bitreset 0 
+		accum 0 bitreset 5 
+		accum 0 bitreset 11
+		accum 0 bitreset 12 	// used so medium musci doesnt play twice
+		accum 0 bitreset 15	//	used for ballroom status
+		accum 0 bitreset 27
+		accum 0 bitreset 28
+		accum 0 bitreset 20
+		accum 0 bitreset 21
+		accum 0 bitreset 22
+		accum 0 bitreset 23
+		accum 0 bitset 27	// Used to keep track of backup guards and to not send them in
+		accum 0 bitset 30  		
+		accum 1 set 0 
+		accum 2 set 0 
+		accum 3 set 0 
+		accum 4 set 0 		// used for sight count
+		accum 5 set 0 
+		accum 6 set 0 
+		accum 7 set 0 		// used for body count
+	}
+
+	trigger music_stealth
+	{
+		trigger player stealth_low
+	}
+
+	trigger alive_check_in
+	{
+		accum 7 inc 1
+		accum 7 abort_if_greater_than 7
+		accum 0 abort_if_bitset 27
+		accum 0 bitreset 28
+		accum 0 bitset 27
+//		trigger checker3 alive_check_in_b		// action on			
+	}
+
+	trigger death_check_out
+	{
+		accum 7 inc -1
+		accum 7 abort_if_less_than 6
+		accum 0 abort_if_bitset 28
+		accum 0 bitreset 27
+		accum 0 bitset 28		// medium on
+//		mu_fade 0 3000 
+//		mu_start sound/music/m_situation 	
+	}
+
+	trigger ballroom_checkin
+	{
+		accum 4 inc 1
+	}
+
+
+	// NOTE THIS LOOKS MORE COMPLICATED THAN NEEDED... -MIKE-
+	trigger sight_check_in		// IF NAZI IS ALIVE AND HAS SEEN USER THIS WILL ACCUM UP, FROM THERE ENEMYSIGHT
+	{
+//		accum 4 abort_if_less_than 0
+//		accum 4 inc 1			// THIS WILL TRIGGER THE ACCUM TO GO UP
+//		trigger checker1 sight_check_in_intense	
+//		wait 7
+//		trigger checker1 sight_check_ina	
+	}
+
+	trigger sight_check_in_intense
+	{	
+//		trigger checker1 sight_check_inb		// uses check out for music
+//		wait 5
+//		trigger checker1 sight_check_in_c
+//		wait 5
+//		trigger checker1 sight_check_ind
+	}
+
+	trigger sight_check_inb				// new
+	{
+//		wait 5
+//		accum 4 abort_if_greater_than 2
+//		accum 4 abort_if_not_equal 1
+//		mu_queue sound/music/m_situation
+//		accum 4 abort_if_equal 0
+//		accum 4 abort_if_greater_than 3
+//		accum 0 bitreset 20
+//		accum 0 bitreset 22
+//		accum 0 bitreset 22		//clears med
+//		accum 0 abort_if_bitset 21
+//		accum 0 bitset 21		// says med music on
+//		trigger player stealth_med
+//		mu_fade 0 3000 
+//		mu_queue sound/music/m_situation
+//		mu_start sound/music/m_situation 200
+//		mu_fade 1 5000		
+	}
+
+
+	trigger sight_check_ina		// seen the player
+	{
+//		wait 5
+//		accum 4 abort_if_less_than 3
+//		trigger checker1 sight_check_ina_1
+//		accum 0 abort_if_bitset 20
+//		accum 0 bitreset 21
+//		accum 0 bitreset 22		// clears med
+//		accum 0 bitset 20		// says high music is on
+//		trigger player stealth_high
+//		print HIGH
+//		mu_fade 0 3000
+//		mu_start sound/music/m_action //200
+	}
+
+	trigger sight_check_ina_1
+	{
+//		accum 0 abort_if_bitset 20
+//		accum 0 bitreset 21
+//		accum 0 bitreset 22		// clears med
+//		accum 0 bitset 20		// says high music is on
+//		trigger player stealth_high
+//		print HIGH
+//		mu_start sound/music/m_action //200
+//		mu_fade 0 3000	
+//		mu_queue sound/music/m_tension
+	}
+
+	trigger sight_no_one		// IF THERE ALL AI HAVE SEEN THE USER AND DIED PLAY THIS
+	{
+//		accum 4 abort_if_not_equal 0
+//		mu_queue sound/music/m_tension
+//		accum 4 abort_if_greater_than 0
+//		accum 0 abort_if_bitset 22	
+//		accum 0 bitset 22		// THIS SAYS THAT STEALTH_LOW IS PLAYING DO NOT RESTART PLEASE
+//		accum 0 bitreset 21		// THIS CLEARS sight_check_outa, b and c
+//		accum 0 bitreset 20		// THIS CLEARS sight_check_ina_1
+//		trigger player stealth_low
+//		mu_fade 0 3000	
+//		mu_queue sound/music/m_tension //200
+//		mu_fade 0 2000	
+//		mu_queue sound/music/m_tension
+//		mu_fade 0.5 2000
+	}
+
+	trigger sight_check_out		// IF NAZI IS ALIVE AND HAS SEEN USER THIS WILL ACCUM DOWN, WHICH IS TRIGGERED BY THIER DEATH
+	{
+//		accum 4 inc -1				// THIS WILL TRIGGER THE ACCUM TO DOWN 
+//		trigger checker1 sight_no_one		// THIS WILL TRIGGER "LOW" MUSIC IF ACCUM IS 0 0R LESS
+//		wait 500
+//		trigger checker1 sight_check_outa		// THREE ACCUM IS NOT EQUAL ARE NEEDED TO SIMULATE 1 TO THREE 3 ACTIVE SIGHTINGS 
+//		wait 5						
+//		trigger checker1 sight_check_outb
+//		wait 500
+//		trigger checker1 sight_check_outc
+	}
+
+	trigger sight_check_outa				// 
+	{
+//		wait 5
+//		accum 4 abort_if_greater_than 2
+//		accum 4 abort_if_not_equal 1
+//		mu_queue sound/music/m_situation
+//		accum 4 abort_if_equal 0
+//		accum 4 abort_if_greater_than 3
+//		accum 0 bitreset 20		// THIS CLEARS sight_check_ina_1
+//		accum 0 bitreset 22		// THIS CLEARS sight_no_one
+//		accum 0 bitreset 22		//clears med
+//		accum 0 abort_if_bitset 21
+//		accum 0 bitset 21		// THIS SAYS THAT STEALTH_MED IS PLAYING DO NOT RESTART PLEASE
+//		trigger player stealth_med
+//		mu_fade 0 3000
+//		mu_queue sound/music/m_situation 200	
+//		mu_start sound/music/m_situation 200
+//		mu_fade 1 5000
+	}
+
+	trigger sight_check_outb
+	{
+//		wait 5
+//		accum 4 abort_if_greater_than 2
+//		accum 4 abort_if_not_equal 2
+//		mu_queue sound/music/m_situation
+//		accum 4 abort_if_equal 0
+//		accum 4 abort_if_greater_than 3
+//		accum 0 bitreset 20		// THIS CLEARS sight_check_ina_1
+//		accum 0 bitreset 22		// THIS CLEARS sight_no_one
+//		accum 0 bitreset 22		//clears med
+//		accum 0 abort_if_bitset 21
+//		accum 0 bitset 21		// THIS SAYS THAT STEALTH_MED IS PLAYING DO NOT RESTART PLEASE
+//		trigger player stealth_med
+//		mu_fade 0 3000
+//		mu_queue sound/music/m_situation 200
+//		mu_start sound/music/m_situation 200
+//		mu_fade 1 5000
+	}
+
+	trigger nazi1_alive
+	{
+		accum 6 set 1
+	}
+
+	trigger nazi1_dead
+	{
+		accum 6 set 0
+	}
+
+	trigger nazi2_talk1alive
+	{
+		trigger checker1 nazi2_alive_response
+		wait 5
+		trigger checker1 nazi2_dead_response
+	}
+
+	trigger nazi2_alive_response
+	{
+		accum 6 abort_if_not_equal 1		// this is to make sure nazi1 is still alive, so the script can continue
+		resetscript
+		wait 2000
+		trigger nazi2 go1a
+	}
+
+	trigger nazi2_dead_response
+	{
+		accum 6 abort_if_not_equal 0		// this is to make sure nazi1 is still alive, so the script can continue
+		resetscript
+		wait 2000
+		trigger nazi2 go2
+	}
+
+	trigger firstcheck
+	{
+		//accum 0 abort_if_not_equal 1			WHATCH IT CHANGED TO BITSET  You can no longer use this...
+		//trigger nazi2 go3
+	}
+
+	trigger nazi2move
+	{
+		accum 1 set 1
+	}
+
+	trigger nazi2movealready
+	{
+		accum 6 abort_if_not_equal 1
+		resetscript
+		trigger nazi2 go3
+	}
+
+	trigger nazi4a					//Nazi4 will trigger this if he chosses tactic2!
+	{
+		alertentity nazi4a
+	}
+
+	trigger nazi5and6				// THis  a checker so the level can check to see if its alerted
+	{
+		accum 2 set 1
+	}
+
+	trigger nazi5and6check				// This is to know what event to continue with...  which is an alerted level
+	{
+		accum 2 abort_if_not_equal 1
+		resetscript
+		alertentity nazi8
+		alertentity nazi9
+		alertentity nazi10
+	}
+
+	trigger nazi7check
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript 
+		alertentity nazi7
+		alertentity nazi7a
+//		alertentity nazi13			//This officer will be alerted if room is relaxed... NO longer needed
+		alertentity nazi8		// Guard with back to officers talking...
+	}
+
+	trigger nazi8and9alive				// This has nazi8 and 9 set an accum to be alive...
+	{
+		accum 3 inc 1
+	}
+
+	trigger nazi8and9alternate			// This has nazi10 or 13 check to see if 8 and 9 are still alive	
+	{						// If they are then only two nazis will spawn in instead of 4..
+		accum 3 abort_if_not_equal 2
+		alertentity nazi11
+		alertentity nazi12
+		accum 3 set 0 
+	}
+
+	trigger nazi8and9dead
+	{
+		accum 3 inc -1
+	}
+
+	trigger alert_ballroom		// new music added to this event
+	{
+		accum 0 bitset 15
+		accum 0 abort_if_bitset 5
+		accum 0 bitset 5 
+		mu_fade 0 3000 
+		mu_start sound/music/m_action 
+	}
+
+	trigger ballroom_event		//THIS IS FOR NAZIS WHO COME OUT ON TOP STAIRS
+	{
+		trigger checker1 ballroom_event1
+		wait 5
+		trigger checker1 ballroom_event2
+	}
+
+	trigger ballroom_event_response_alerted
+	{
+		accum 0 abort_if_not_bitset 15
+		resetscript
+		trigger nazi11 go1
+		trigger nazi12 go1
+	}
+
+	trigger ballroom_event_response_relaxed
+	{
+		accum 0 abort_if_bitset 15
+		resetscript
+		trigger nazi11 go2
+		trigger nazi12 go2
+	}
+
+	trigger ballroom_spawn_top_stairs
+	{
+		accum 7 abort_if_greater_than 3
+		resetscript
+		alertentity nazi11
+		alertentity nazi12
+	}
+
+	trigger ballroom_status
+	{
+		accum 0 bitreset 27
+		trigger checker1 ballroom1
+		wait 50
+		trigger checker1 ballroom2
+	}
+
+	trigger ballroom1		// THIS SETS CHANTING SITUATION UP FOR RELAXED ENTRY
+	{
+		accum 0 abort_if_bitset 15
+		alertentity eg2
+		alertentity eg1
+		alertentity nazi13
+		alertentity nazi13a
+		alertentity nazi13b
+		alertentity nazi13c
+		trigger player hit_for_ballroom
+	}
+
+	trigger ballroom2		// THIS IS FOR ALERTED ENTRY
+	{
+		accum 0 abort_if_not_bitset 15
+		alertentity treasure_guard1
+		alertentity treasure_guard2
+		alertentity treasure_guard3
+	}
+
+
+	trigger eg1_and_eg2_choose_tactic		//THIS IS SO GURDS IN BALLROM WILL EITHER BE ALERTED OT RELEXED
+	{
+//		print made it to checker1 should choose now
+		trigger checker1 eg1_and_eg2_choose_tactic1
+		wait 5
+		trigger checker1 eg1_and_eg2_choose_tactic2		
+	}
+
+	trigger eg1_and_eg2_choose_tactic1		// relaxed
+	{
+		accum 0 abort_if_bitset 15
+		trigger eg1 go2
+		trigger eg2 go2
+	}
+
+	trigger eg1_and_eg2_choose_tactic2		// alerted
+	{
+		accum 0 abort_if_not_bitset 15
+		trigger eg1 go1
+		trigger eg2 go1
+	}
+
+	trigger nazi25_tactic
+	{
+		trigger checker1 nazi25_tacitic1
+		wait 5
+		trigger checker1 nazi25_tacitic2
+		wait 5
+		accum 7 abort_if_greater_than 3		// new music stuff...
+	}
+
+	trigger nazi25_tacitic1		// alerted
+	{
+		accum 0 abort_if_not_bitset 15
+		resetscript
+		trigger nazi25 defense
+		wait 5
+		trigger nazi24 defense
+	}
+
+	trigger nazi25_tacitc2		// relaxed
+	{
+		accum 0 abort_if_bitset 15
+		resetscript
+		trigger nazi25 go1
+		wait 5
+		trigger nazi24 go1
+	}
+
+	//Checkers needed
+	// 1 you need to have a checker for 4 nazis on top of stairs, so that other can enter the map and keep the gameplay contimuig...
+
+	trigger stair_nazis_checkin			// This includes nazis 11 12 14 and 15
+	{
+		accum 5 set 3
+	}
+
+	trigger stair_nazis_checkout
+	{
+		accum 5 inc -1
+	}
+
+	trigger stair_nazis_choose_enemy_respond
+	{
+		accum 0 abort_if_bitset 27
+		accum 5 abort_if_greater_than 1 
+//		print Guys should come now
+		alertentity nazi16			// these two are added for test...
+		alertentity nazi16ab
+		wait 5
+//		accum 6 set 0  //test
+//		accum 6 random 3			// Test for Rich
+//		accum 6 random 2
+//		wait 5
+//		trigger checker1 stair_respond1			// More guys will come out of top LEFT and RIGHT area
+//		wait 5
+//		trigger checker1 stair_respond2			// Guys will only come from ballroom area...
+//		wait 5
+//		trigger checker1 stair_respond3			// Guys will come from behind in whine barrel room...
+	}
+
+	trigger stair_respond1
+	{
+		accum 6 abort_if_not_equal 0
+		resetscript
+		wait 5
+		alertentity nazi16d
+		alertentity nazi16e
+		// Need to do= put in counter event for all dying1
+	}
+
+	trigger stair_respond2
+	{
+//		print BACKUP NOW!!!!
+		accum 6 abort_if_not_equal 1
+		resetscript
+		wait 5
+		alertentity nazi16			// these two are added for test...
+		alertentity nazi16ab
+	}
+
+	trigger stair_respond3
+	{
+		accum 6 abort_if_not_equal 2
+		resetscript
+		wait 5
+		alertentity nazi16
+		alertentity nazi16ab
+	}
+
+	trigger left_hallway_room_check		// relaxed  THIS SPAWNS IN GUARDS IS BALLROOM WAS NOT ALERTED
+	{
+		wait 5
+		accum 0 abort_if_bitset 15		//ABORT IF BALLROM WAS ALERTED
+		accum 0 bitset 16			//  THIS MEaNS THIS HAS BEEN ACTIVATED
+		resetscript
+		alertentity nazi16bb
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi18
+	}
+
+	trigger lefthallway_studs		// alerted
+	{
+		wait 5
+		accum 0 abort_if_not_bitset 15
+		accum 0 abort_if_equal 16
+		trigger hall_table go1
+		resetscript
+		alertentity nazi19
+		alertentity nazi20
+		alertentity nazi21
+		alertentity nazi18
+		trigger hall_table go1
+	}
+
+	trigger nazi26b_relax_or_alerted
+	{
+		trigger checker1 nazi16b_relaxed
+		wait 50
+		trigger checker1 nazi26b_alerted
+	}
+
+	trigger nazi16b_relaxed
+	{
+		accum 0 abort_if_bitset 15
+		wait 50
+		trigger nazi26b go2
+	}
+
+	trigger nazi26b_alerted
+	{
+		accum 0 abort_if_not_bitset 15
+		wait 50
+		trigger nazi26b go1
+	}
+
+	trigger nazi18_status
+	{
+		trigger checker1 nazi18_alerted
+		wait 10
+		trigger checker1 nazi18_relaxed
+	}
+
+	trigger nazi18_alerted
+	{
+		accum 0 abort_if_not_bitset 15
+		trigger nazi18 go1
+	}
+
+	trigger nazi18_relaxed	
+	{
+		accum 0 abort_if_bitset 15
+		trigger nazi18 go2
+	}
+
+	trigger end_battle
+	{
+		trigger checker1 end_battle1
+		wait 10
+		trigger checker1 end_battle2
+	}
+
+	trigger end_battle1		// alerted
+	{
+		accum 0 abort_if_not_bitset 15
+//		resetscript
+		trigger library_table go1
+		alertentity eg4
+		trigger eg4 go2
+		alertentity blackguard4
+		trigger blackguard4 go2
+		alertentity blackguard5
+		trigger blackguard5 go2			
+		alertentity nazi27
+		trigger nazi27 go1
+		alertentity blackguard6
+		trigger blackguard6 go2	
+	}
+
+	trigger end_battle2		// Not alerted
+	{
+		accum 0 abort_if_bitset 15
+//		resetscript
+		alertentity eg4
+		trigger eg4 go1
+		alertentity blackguard4
+		trigger blackguard4 go2a
+		alertentity blackguard5	
+		trigger blackguard5 go2a
+		alertentity nazi27
+		trigger nazi27 go2		
+		alertentity blackguard6	
+		trigger blackguard6 go2a	
+	}
+
+	trigger alarm_runner_go
+	{
+		accum 0 abort_if_bitset 15
+		resetscript
+//		alertentity last_backup3
+	}	
+}
+
+last_table
+{
+	spawn
+	{
+		accum 7 set 0
+	}
+
+	trigger fall1
+	{
+		mu_fade 0 3000 
+		mu_start sound/music/m_situation	
+		alertentity last_table_clip
+		faceangles 275 0 0 5
+	}
+
+	trigger go2
+	{
+		faceangles 275 0 0 5
+	}
+
+	trigger last_battle_alive
+	{
+		accum 7 inc 1
+	}
+
+	trigger last_battle_dead
+	{
+		accum 7 inc -1
+	}
+
+	trigger last_backups
+	{
+	//	objectivemet 2
+		accum 7 abort_if_greater_than 1
+		resetscript
+		alertentity unlock_door3
+		alertentity last_backup1
+		alertentity last_backup2
+	//	alertentity last_backup3
+	//	alertentity last_backup4
+	//	alertentity last_backup5
+	}
+}
+
+checker2
+{
+	spawn
+	{
+	}
+
+	trigger
+	{
+	}
+}
+
+smalltable1
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used to "check" whether the vase is alive or not. "bitreset=alive" "bitset=dead"
+	}
+
+	trigger 0bitset0
+	{
+		accum 0 bitset 0
+	}
+
+	death
+	{
+	//	accum 0 abort_if_bitset 0 // If vase1 is dead, then do not continue.
+	//	trigger vase1 fall1	// Triggers vase1 to fall.
+	//	alertentity small_table1_destroyed	// Triggers the small table1 debris
+	}
+}
+
+vase1
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used so that when the "target_kill" is triggered, the death event for this will not trigger vase1_blow1
+	}
+
+	trigger fall1	// This will trigger if smalltable1 is shot and destroyed while vase1 is still on it.
+	{
+		gotomarker v1spot1 500
+		faceangles 0 0 10 gototime
+		accum 0 bitset 0 // Used so that when the "target_kill" is triggered, the death event for this will not trigger vase1_blow1
+		gotomarker v1spot2 100
+		trigger checker3 vase1_blow2
+	}
+
+	death
+	{
+	//	trigger smalltable1 0bitset0
+	//	accum 0 abort_if_bitset 0	// IF vase1 falls, then do not continue.
+	//	trigger checker3 vase1_blow1
+	}
+}
+
+checker3	// NOTE: ONLY REASON WE MUST USE CHECKER3 IS SO THAT WHEN THE VASE1_BLOW2 IS TRIGGERED, IT WON'T CRASH WHEN THE TARGET KILL IS ACTIVATED. 'CAUSE IF THE TARGET KILL WAS ACTIVATED INSIDE OF THE VASE1 SCRIPT, THEN IT WOULD CRASH.
+{
+	spawn
+	{
+		accum 0 bitset 0 
+		accum 0 bitreset 15
+		accum 0 bitreset 30
+		accum 1 set 0 
+		accum 2 set 0 
+		accum 3 set 0 
+		accum 4 set 0 
+		accum 5 set 0 
+		accum 6 set 0
+		accum 7 set 0  
+	}
+
+	trigger fptb
+	{
+		trigger fptb pull
+	}
+
+//---------- This is continued from checker1---------
+
+	trigger enable_music
+	{
+		accum 0 bitreset 30		
+	}
+
+	trigger alive_check_in_b		// action on
+	{
+		accum 0 abort_if_bitset 30
+//		mu_fade 0 3000 
+//		mu_start sound/music/m_action 
+	}
+
+//	trigger sight_check_ina
+//	{
+//		trigger checker1 sight_check_ina
+//	}
+
+//	trigger vase1_blow1	// Vase1 breaks on table.
+//	{
+//		alertentity vase1_stay_break  // This targets a func_explosive which shows the debris on top of the table.
+//	}
+
+//	trigger vase1_blow2	// Vase1 breaks on ground.
+//	{
+//		alertentity vase1_fall_break // This targets a func_explosive (shows debris on the ground) and also targets a target kill which is targetting the vase1.
+//	}
+
+	// THIS IS FOR GAURDS THAT CoMe OUT OF BHALLROM TO WORK WITH EACH OTHER
+
+	trigger eg2_alive	// GUARD WITH VENOM GUN WHO TAKES POSITION IN FRONT OF DOOR IS ALIVE.
+	{
+		accum 0 bitset 0	// THIS IS OFF
+	}
+
+	trigger eg2_dead	// SAME GUARD, BUT NOW HE IS DEAD.	
+	{
+		accum 0 bitreset 0 	// THIS IS ON
+	}
+
+	trigger eg2_alive_or_dead_response
+	{
+		trigger checker3 eg2_alive 
+		wait 5
+		trigger checker3 eg2_dead
+	}
+
+	trigger eg2_alive
+	{
+		accum 0 abort_if_not_bitset 0 
+		resetscript	
+	}
+
+	trigger eg2_dead
+	{
+		accum 0 abort_if_bitset 0
+		resetscript
+	}
+
+	trigger alert_ballroom
+	{
+		accum 0 bitset 15
+	}
+
+	trigger nazi3_response
+	{
+		trigger checker3 nazi3_response_relaxed
+		wait 10
+		trigger checker3 nazi3_response_alerted
+	}
+
+	trigger nazi3_response_relaxed
+	{
+		accum 0 abort_if_bitset 11
+		trigger nazi3 go1
+	}
+
+	trigger nazi3_response_alerted
+	{
+		accum 0 abort_if_not_bitset 11
+		trigger nazi3 defense
+	}
+
+	trigger nazi3_alive			// checker to be used with torso smoking animation
+	{
+		accum 0 bitreset 5
+	}
+
+	trigger nazi3_dead
+	{
+		accum 0 bitset 5
+	}
+
+	trigger walk_anim_loop_conduct1		//THIS IS FOR POSITION ONE
+	{
+		accum 0 abort_if_bitset 5
+		trigger nazi3 anim_loop3
+		wait 5
+		accum 0 abort_if_bitset 5
+		trigger nazi3 dadum
+		wait 5
+		trigger nazi3 go2 
+	}
+
+	trigger walk_anim_loop_conduct2		//THIS IS FOR POSITION TWO
+	{
+		accum 0 abort_if_bitset 5
+		trigger nazi3 anim_loop3
+		wait 5
+		accum 0 abort_if_bitset 5
+		
+	}
+
+	trigger walk_anim_loop_conduct3		//THIS IS FOR POSITION THREE
+	{
+		trigger nazi3 anim_loop3
+		accum 0 abort_if_bitset 5
+		wait 5
+		accum 0 abort_if_bitset 5
+		
+	}
+
+	trigger nazi8_run_for_help
+	{
+		trigger nazi8 run_for_help
+		wait 5
+		trigger nazi8 sound1
+		
+	}
+
+	trigger nazi16bb_anim_sound_loop
+	{
+		trigger nazi16bb anim_loop1
+		wait 5
+		trigger nazi16bb sound1
+		wait 5
+		trigger nazi16bb go2
+	}
+
+	trigger barrell_sound_hit
+	{
+//		trigger player hit_for_shelf
+	}
+
+	trigger turn_hurt_on
+	{
+		alertentity barrell_pain
+		wait 500
+		alertentity kill_trigger_hurt
+	}
+
+	trigger sight_check_in
+	{
+		trigger checker1 sight_check_in
+	}
+}
+
+shelf
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+//		faceangles 0 0 3 500
+		trigger barrell3 fall1
+		trigger barrell2 fall1
+		trigger barrell1 fall1
+		faceangles 0 0 3 500
+		playsound sound/world/metalbreak.wav
+		playsound sound/movers/doors/door4_locked.wav
+		wait 700
+		faceangles 0 0 90 500 accel
+		wait 5
+		faceangles 0 0 85 500
+		wait 5
+		faceangles 0 0 83 225
+		wait 5
+		faceangles 0 0 90 175
+		wait 5
+		faceangles 0 0 87 150
+		wait 5
+		faceangles 0 0 90 100
+	//	alertentity barrell_pain
+	}
+}
+
+barrell1
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell1_spot1 25
+		faceangles 0 0 15 gototime
+		gotomarker barrell1_spot2 25 wait
+		wait 895
+	//	faceangles 0 0 17 gototime
+	//	gotomarker barrell1_spot3 150 wait 
+	//	faceangles 0 0 20 gototime
+	//	gotomarker barrell1_spot4 150 wait
+	//	faceangles 0 0 23 gototime 		
+		gotomarker barrell1_spot5 500 accel
+		faceangles 0 0 60 gototime
+		alertentity barrell1_func
+		alertentity barrell1_alert
+		alertentity barrell1_trigger
+		alertentity kill_barrell1
+	}
+}
+
+barrell2
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell2_spot1 75 
+		faceangles 0 0 15 gototime
+		gotomarker barrell2_spot2 75 wait
+		wait 890
+	//	faceangles 0 0 17 gototime
+	//	gotomarker barrell2_spot3 160 wait
+	//	faceangles 0 0 20 gototime
+	//	gotomarker barrell2_spot4 150 wait
+	//	faceangles 0 0 23 gototime 		
+		gotomarker barrell2_spot5 500 accel 
+		faceangles 0 0 85 gototime
+		alertentity barrell2_func
+		alertentity barrell2_alert
+		alertentity barrell2_trigger
+		alertentity kill_barrell2
+	}
+}
+
+barrell3
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell3_spot1 50 
+		faceangles 0 0 15 gototime
+		gotomarker barrell3_spot2 50 wait
+		wait 900
+		//faceangles 0 0 17 200
+		//gotomarker barrell3_spot3 150  
+		//faceangles 0 0 20 gototime
+		//gotomarker barrell3_spot4 150  
+		//faceangles 0 0 60 gototime 		
+		gotomarker barrell3_spot5 500 accel
+		faceangles 0 0 80 gototime
+		alertentity barrell3_func
+//		wait 1000
+		alertentity barrell3_func_explode_now
+//		wait 1000
+		trigger checker3 turn_hurt_on
+		alertentity kill_barrell3
+	}
+}
+
+hall_table
+{
+	spawn
+	{ 
+	}
+
+	trigger go1     // ALERTED
+	{
+		alertentity hall_table_clip
+		gotomarker hall_table_spot1 500 wait
+		faceangles 85 270 0 5
+//		faceangles 0 270 0 5
+	}
+
+	trigger go1a
+	{
+//		faceangles 85 270 0 200
+	}
+	
+}
+
+library_table
+{
+	spawn
+	{
+	}
+
+	trigger go1     // ALERTED
+	{
+		faceangles 275 0 0 5
+	}
+
+	trigger go2
+	{
+		faceangles 275 0 0 200
+	}
+	
+}

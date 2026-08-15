@@ -1,0 +1,897 @@
+// Escape1
+loadout escape1
+{
+		giveweapon weapon_knife
+		
+		selectweapon weapon_knife
+}
+
+// Village1
+loadout village1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		
+		setammo ammo_9mm 128
+		setammo ammo_792mm 40
+		
+		setclip weapon_mp40 full
+		setclip weapon_luger full
+		setclip weapon_mauserrifle full
+		
+		selectweapon weapon_mp40
+		
+		giveinventory key_binocs
+}
+
+loadout boss1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		
+		setammo ammo_9mm 300
+		setammo ammo_792mm 100
+		
+		setammo ammo_grenades 10
+		
+		setclip weapon_mp40 full
+		setclip weapon_luger full
+		setclip weapon_mauserrifle full
+		
+		setarmor 50
+		
+		selectweapon weapon_mp40
+		
+		giveinventory key_binocs
+}
+
+// Forest + Malta_1
+loadout forest_vanilla_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_silencer
+		giveweapon weapon_thompson
+		giveweapon weapon_snooperrifle
+		
+		setammo ammo_9mm 96
+		setammo ammo_45cal 200
+		setammo ammo_30cal 10
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_silencer full
+		setclip weapon_thompson full
+		setclip weapon_snooperrifle full
+		
+		selectweapon weapon_thompson
+		
+		setarmor 50
+		giveinventory key_binocs
+}
+
+loadout forest_vanilla_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_colt
+		giveweapon weapon_sten
+		giveweapon weapon_snooperrifle
+		
+		setammo ammo_9mm 96
+		setammo ammo_45cal 200
+		setammo ammo_30cal 10
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_colt full
+		setclip weapon_sten full
+		setclip weapon_snooperrifle full
+		
+		selectweapon weapon_sten
+		
+		setarmor 50
+		giveinventory key_binocs
+}
+
+
+loadout forest_vanilla_shotgun_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_silencer
+		giveweapon weapon_thompson
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm 96
+		setammo ammo_45cal 200
+		setammo ammo_30cal 10
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		
+		setclip weapon_silencer full
+		setclip weapon_thompson full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_thompson
+		
+		setarmor 50
+		giveinventory key_binocs
+}
+
+loadout forest_vanilla_shotgun_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_colt
+		giveweapon weapon_sten
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm 96
+		setammo ammo_45cal 200
+		setammo ammo_30cal 10
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		
+		setclip weapon_colt full
+		setclip weapon_sten full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		setarmor 50
+		giveinventory key_binocs
+}
+
+
+loadout forest_realrtcw_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_hdm
+		giveweapon weapon_thompson
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		
+		setammo ammo_hdm 50
+		setammo ammo_45cal 200
+		setammo ammo_30cal 10
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		
+		setclip weapon_hdm full
+		setclip weapon_thompson full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_thompson
+		
+		#if g_dlc1 == 1			
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+        setclip weapon_delisle full		
+		selectweapon weapon_delisle	
+	    #endif
+		
+		setarmor 50
+		giveinventory key_binocs
+}
+
+loadout forest_realrtcw_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_colt
+		giveweapon weapon_sten
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		
+		setammo ammo_45cal 250
+		setammo ammo_9mm   96
+		setammo ammo_30cal 10
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		
+		setclip weapon_colt full
+		setclip weapon_sten full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		#if g_dlc1 == 1			
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+        setclip weapon_delisle full
+        selectweapon weapon_delisle	
+	    #endif
+		
+		setarmor 50
+		giveinventory key_binocs
+}
+
+// SFM + Malta_2
+loadout sfm_vanilla_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		
+		setammo ammo_792mm 100
+		setammo ammo_45cal full
+		setammo ammo_30cal 15
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		
+		selectweapon weapon_akimbo
+		
+		setarmor 75
+		giveinventory key_binocs
+}
+
+loadout sfm_vanilla_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_thompson
+		giveweapon weapon_sniperscope
+		giveweapon weapon_snooperrifle
+		
+		setammo ammo_792mm 100
+		setammo ammo_45cal full
+		setammo ammo_30cal 15
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_thompson full
+		setclip weapon_sniperscope full
+		setclip weapon_snooperrifle full
+		
+		selectweapon weapon_thompson
+		
+		setarmor 75
+		giveinventory key_binocs
+}
+
+
+loadout sfm_vanilla_shotgun_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		
+		setammo ammo_792mm 100
+		setammo ammo_45cal full
+		setammo ammo_30cal 15
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_akimbo
+		
+		setarmor 75
+		giveinventory key_binocs
+}
+
+loadout sfm_vanilla_shotgun_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_thompson
+		giveweapon weapon_sniperscope
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		
+		setammo ammo_792mm 100
+		setammo ammo_45cal full
+		setammo ammo_30cal 15
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		
+		setclip weapon_thompson full
+		setclip weapon_sniperscope full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_thompson
+		
+		setarmor 75
+		giveinventory key_binocs
+}
+
+
+loadout sfm_realrtcw_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_m1garand
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		giveweapon weapon_grenadesmoke
+		
+		setammo ammo_barammo 150
+		setammo ammo_45cal full
+		setammo ammo_30cal 15
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		setammo ammo_m7 full
+		setammo smokeGrenade 1
+		
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_m1garand full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		#if g_dlc1 == 1
+		takeweapon weapon_m97
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		#endif
+		
+		selectweapon weapon_m1garand
+		
+		setarmor 75
+		giveinventory key_binocs
+}
+
+loadout sfm_realrtcw_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_thompson
+		giveweapon weapon_bar
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_m97
+		giveweapon weapon_grenadesmoke
+		
+		setammo ammo_barammo 150
+		setammo ammo_45cal full
+		setammo ammo_30cal 15
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 24
+		setammo smokeGrenade 1
+		
+		setclip weapon_thompson full
+		setclip weapon_bar full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		#if g_dlc1 == 1
+		takeweapon weapon_m97
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		#endif
+		
+		selectweapon weapon_bar
+		
+		setarmor 75
+		giveinventory key_binocs
+}
+
+
+// Norway + Malta_3
+loadout norway_vanilla_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_thompson
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_flamethrower
+		
+		setammo ammo_45cal full
+		setammo ammo_792mm 120
+		setammo ammo_30cal 15
+		setammo ammo_fuel full
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_thompson full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		
+		selectweapon weapon_fg42
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+loadout norway_vanilla_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_panzerfaust
+		
+		setammo ammo_9mm 200
+		setammo ammo_792mm 120
+		setammo ammo_30cal 15
+		setammo ammo_panzerfaust 5
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_sten full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_panzerfaust 1
+		
+		selectweapon weapon_sten
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+
+loadout norway_vanilla_shotgun_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_thompson
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_flamethrower
+		giveweapon weapon_m97
+		
+		setammo ammo_45cal full
+		setammo ammo_792mm 120
+		setammo ammo_30cal 15
+		setammo ammo_fuel full
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 32
+		
+		setclip weapon_thompson full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_fg42
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+loadout norway_vanilla_shotgun_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_panzerfaust
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm 200
+		setammo ammo_792mm 120
+		setammo ammo_30cal 15
+		setammo ammo_panzerfaust 5
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo 32
+		
+		setclip weapon_sten full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_panzerfaust 1
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+
+loadout norway_realrtcw_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_thompson
+		giveweapon weapon_m1garand
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_browning
+		giveweapon weapon_poisongas
+		
+		setammo ammo_45cal full
+		setammo ammo_barammo 120
+		setammo ammo_m7 full
+		setammo ammo_30cal 15
+		setammo ammo_127mm 300
+		setammo ammo_grenades_american 5
+		setammo weapon_poisongas 1
+		
+		setclip weapon_thompson full
+		setclip weapon_m1garand full
+		setclip weapon_snooperrifle full
+		setclip weapon_browning full
+		
+		selectweapon weapon_browning
+		
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		selectweapon weapon_m1941
+		#endif
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+loadout norway_realrtcw_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_bar
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_mg42m
+		giveweapon weapon_poisongas
+			
+		setammo ammo_9mm full
+		setammo ammo_barammo 180
+		setammo ammo_30cal 15
+		setammo ammo_127mm 450
+		setammo ammo_grenades_american 5
+		setammo weapon_poisongas 1
+		
+		setclip weapon_sten full
+		setclip weapon_bar full
+		setclip weapon_snooperrifle full
+		setclip weapon_mg42m full
+		
+		selectweapon weapon_sten
+		
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		selectweapon weapon_m1941
+		#endif
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+// Dam + Malta_4
+loadout dam_vanilla_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_thompson
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_venom
+		
+		setammo ammo_9mm 150
+		setammo ammo_45cal full
+		setammo ammo_792mm 150
+		setammo ammo_30cal 15
+		setammo ammo_127mm 300
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_sten full
+		setclip weapon_thompson full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_venom 100
+		
+		selectweapon weapon_sten
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+loadout dam_vanilla_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_thompson
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_tesla
+		
+		setammo ammo_9mm 150
+		setammo ammo_45cal full
+		setammo ammo_792mm 150
+		setammo ammo_30cal 15
+		setammo ammo_cell full
+		setammo ammo_grenades_american 5
+		
+		setclip weapon_sten full
+		setclip weapon_thompson full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		
+		selectweapon weapon_sten
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+
+loadout dam_vanilla_shotgun_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_thompson
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_venom
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm 150
+		setammo ammo_45cal full
+		setammo ammo_792mm 150
+		setammo ammo_30cal 15
+		setammo ammo_127mm 300
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo full
+		
+		setclip weapon_sten full
+		setclip weapon_thompson full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_venom 100
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+loadout dam_vanilla_shotgun_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_thompson
+		giveweapon weapon_fg42
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_tesla
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm 150
+		setammo ammo_45cal full
+		setammo ammo_792mm 150
+		setammo ammo_30cal 15
+		setammo ammo_cell full
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo full
+		
+		setclip weapon_sten full
+		setclip weapon_thompson full
+		setclip weapon_fg42 full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+
+loadout dam_realrtcw_1
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_thompson
+		giveweapon weapon_bar
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_venom
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm full
+		setammo ammo_45cal full
+		setammo ammo_barammo 150
+		setammo ammo_30cal 15
+		setammo ammo_127mm 300
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo full
+		
+		setclip weapon_sten full
+		setclip weapon_thompson full
+		setclip weapon_bar full
+		setclip weapon_snooperrifle full
+		setclip weapon_venom 100
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		#if g_dlc1 == 1
+		takeweapon weapon_m97
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		selectweapon weapon_m1941
+		#endif
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+
+loadout dam_realrtcw_2
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_sten
+		giveweapon weapon_thompson
+		giveweapon weapon_bar
+		giveweapon weapon_snooperrifle
+		giveweapon weapon_tesla
+		giveweapon weapon_m97
+		
+		setammo ammo_9mm full
+		setammo ammo_45cal full
+		setammo ammo_barammo 150
+		setammo ammo_30cal 15
+		setammo ammo_cell full
+		setammo ammo_grenades_american 5
+		setammo ammo_m97ammo full
+		
+		setclip weapon_sten full
+		setclip weapon_thompson full
+		setclip weapon_bar full
+		setclip weapon_snooperrifle full
+		setclip weapon_m97 full
+		
+		selectweapon weapon_sten
+		
+		#if g_dlc1 == 1
+		takeweapon weapon_m97
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		selectweapon weapon_m1941
+		#endif
+		
+		setarmor 100
+		giveinventory key_binocs
+}
+

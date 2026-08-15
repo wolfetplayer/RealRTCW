@@ -1,0 +1,124 @@
+counter1
+{
+	spawn
+	{
+		accum 0 set 0	
+	}
+	trigger steal_treasure
+	{
+		accum 1 inc 1
+		accum 1 abort_if_not_equal 13
+		trigger player objective1
+	}
+}
+
+barrell1
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell1_spot1 25
+		faceangles 0 0 -15 gototime
+		gotomarker barrell1_spot2 25 wait
+		wait 895
+	//	faceangles 0 0 -17 gototime
+	//	gotomarker barrell1_spot3 150 wait
+	//	faceangles 0 0 -20 gototime
+	//	gotomarker barrell1_spot4 150 wait
+	//	faceangles 0 0 -23 gototime
+		gotomarker barrell1_spot5 500 accel
+		faceangles 0 0 -60 gototime
+		alertentity barrell1_func
+		alertentity soundbarrell1
+		alertentity effect1
+		alertentity killbarrell1
+	}
+}
+
+barrell2
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell2_spot1 25
+		faceangles 0 0 -15 gototime
+		gotomarker barrell2_spot2 25 wait
+		wait 890
+	//	faceangles 0 0 -17 gototime
+	//	gotomarker barrell2_spot3 150 wait
+	//	faceangles 0 0 -20 gototime
+	//	gotomarker barrell2_spot4 150 wait
+	//	faceangles 0 0 -23 gototime
+		gotomarker barrell2_spot5 500 accel
+		faceangles 0 0 -60 gototime
+		alertentity barrell2_func
+		alertentity soundbarrell2
+		alertentity effect2
+		alertentity killbarrell2
+	}
+}
+
+barrell3
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell3_spot1 50
+		faceangles 0 0 -15 gototime
+		gotomarker barrell3_spot2 50 wait
+		wait 900
+		//faceangles 0 0 -17 200
+		//gotomarker barrell3_spot3 150
+		//faceangles 0 0 -20 gototime
+		//gotomarker barrell3_spot4 150
+		//faceangles 0 0 -60 gototime
+		gotomarker barrell3_spot5 500 accel
+		faceangles 0 0 -80 gototime
+		alertentity barrell3_func_explode_now
+		alertentity soundbarrell3
+		alertentity effect3
+		alertentity killbarrell3
+	}
+}
+
+shelf
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+//		faceangles 0 0 357 500
+		trigger barrell3 fall1
+		trigger barrell2 fall1
+		trigger barrell1 fall1
+		faceangles 0 0 357 500
+		playsound sound/movers/doors/door4_locked.wav
+		wait 700
+		faceangles 0 0 270 500 accel
+		alertentity pil
+		wait 5
+		faceangles 0 0 265 500
+		wait 5
+		faceangles 0 0 263 225
+		wait 5
+		faceangles 0 0 270 175
+		wait 5
+		faceangles 0 0 267 150
+		wait 5
+		faceangles 0 0 270 100
+	}
+}

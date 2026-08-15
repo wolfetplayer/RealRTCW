@@ -1,0 +1,29 @@
+#include "ui/menudef.h"
+
+
+{
+
+	menuDef {
+    		name "briefing"
+    		background "ui/assets/backscreen"
+      		rect 0 0 640 480
+      		////scralign right
+    		fullScreen MENU_FALSE
+    		visible MENU_FALSE
+      		style WINDOW_STYLE_EMPTY
+
+//
+// draw levelshot
+//
+
+			itemDef {
+					name background
+					rect -107 0 854 480
+					////scralign center
+					style WINDOW_STYLE_SHADER
+					ownerdraw UI_LEVELSHOT
+					forecolor 0 0 0 1
+					visible MENU_TRUE
+					decoration
+				}
+				}

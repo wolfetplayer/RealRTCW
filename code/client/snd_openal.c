@@ -1033,7 +1033,7 @@ typedef struct sentity_s
   sfxHandle_t			loopSfx;
   qboolean				startLoopingSound;
   int             loopVolume;   // 0-255, per-loop volume (AddLoopingSound's volume arg)
-  float           loopRange;    // per-loop attenuation reference distance
+  float           loopRange;    // per-loop fade-to-silent cutoff
 } sentity_t;
 
 static sentity_t entityList[MAX_GENTITIES + MAX_AMBIENT_LOOPS];
@@ -1093,7 +1093,7 @@ static void S_AL_Gain(ALuint source, float gainval)
    =================
    */
 
-static void S_AL_ScaleGain(src_t *chksrc, vec3_t origin)
+static void S_AL_ScaleGain(src_t *chksrc, vec3_t origin, float maxDistance)
 {
   float distance;
 
@@ -1102,7 +1102,7 @@ static void S_AL_ScaleGain(src_t *chksrc, vec3_t origin)
 
   // If we exceed a certain distance, scale the gain linearly until the sound
   // vanishes into nothingness.
-  if(!chksrc->local && (distance -= s_alMaxDistance->value) > 0)
+  if(!chksrc->local && (distance -= maxDistance) > 0)
   {
     float scaleFactor;
 
@@ -1842,17 +1842,17 @@ static void S_AL_MainStartSound( vec3_t origin, int entnum, int entchannel, sfxH
       qalSourcei( curSource->alSource, AL_SOURCE_RELATIVE, AL_TRUE );
       qalSource3f( curSource->alSource, AL_POSITION, 0.0f, 0.0f, 0.0f );
       qalSourcef( curSource->alSource, AL_ROLLOFF_FACTOR, 0.0f );
-      S_AL_ScaleGain( curSource, lastListenerOrigin );
+      S_AL_ScaleGain( curSource, lastListenerOrigin, s_alMaxDistance->value );
     } else {
       curSource->isTracking = qtrue;
       qalSourcei( curSource->alSource, AL_SOURCE_RELATIVE, AL_FALSE );
       qalSourcefv( curSource->alSource, AL_POSITION, sorigin );
-      S_AL_ScaleGain( curSource, sorigin );
+      S_AL_ScaleGain( curSource, sorigin, s_alMaxDistance->value );
     }
   } else {
     qalSourcei( curSource->alSource, AL_SOURCE_RELATIVE, AL_FALSE );
     qalSourcefv( curSource->alSource, AL_POSITION, sorigin );
-    S_AL_ScaleGain( curSource, sorigin );
+    S_AL_ScaleGain( curSource, sorigin, s_alMaxDistance->value );
   }
 
   // Start it playing
@@ -1983,7 +1983,7 @@ static void S_AL_SrcLoop( alSrcPriority_t priority, sfxHandle_t sfx,
   sent->loopPriority = priority;
   sent->loopSfx = sfx;
   sent->loopVolume = volume;
-  sent->loopRange = ( range > 0 ) ? (float)range : s_alMinDistance->value;
+  sent->loopRange = ( range > 0 ) ? (float)range : s_alMaxDistance->value;
 
   // If this is not set then the looping sound is stopped.
   sent->loopAddedThisFrame = qtrue;
@@ -2153,10 +2153,8 @@ void S_AL_SrcUpdate( void )
               entityNum, -1, 0, curSource->local);
           curSource->isLooping = qtrue;
 
-          // apply this loop's own volume/range on top of S_AL_SrcSetup's global defaults
+          // apply this loop's own volume
           curSource->curGain *= sent->loopVolume / 255.0f;
-          if ( !curSource->local )
-            qalSourcef(curSource->alSource, AL_REFERENCE_DISTANCE, sent->loopRange);
 
           knownSfx[curSource->sfx].loopCnt++;
           sent->startLoopingSound = qfalse;
@@ -2164,7 +2162,7 @@ void S_AL_SrcUpdate( void )
 
         curSfx = &knownSfx[curSource->sfx];
 
-        S_AL_ScaleGain(curSource, curSource->loopSpeakerPos);
+        S_AL_ScaleGain(curSource, curSource->loopSpeakerPos, sent->loopRange);
         if(!curSource->scaleGain)
         {
           if(curSource->isPlaying)
@@ -2296,7 +2294,7 @@ void S_AL_SrcUpdate( void )
       if(entityNum >= 0 && entityNum < MAX_GENTITIES)
       {
         qalSourcefv(curSource->alSource, AL_POSITION, entityList[entityNum].origin);
-        S_AL_ScaleGain(curSource, entityList[entityNum].origin);
+        S_AL_ScaleGain(curSource, entityList[entityNum].origin, s_alMaxDistance->value);
       }
     }
 

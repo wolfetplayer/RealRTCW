@@ -1033,13 +1033,14 @@ SAVE
 	15 - (SA) moved time info above the main game reading
 	16 - (SA) added fog
 	17 - (SA) rats, changed fog.
-  18 - TTimo targetdeath fix
-	   show_bug.cgi?id=434
+	18 - TTimo targetdeath fix
+	19 - RealRTCW Save
+	20 - RealRTCW 5.44 - venom pre-spin + slow-mo
 
 ==============================================================
 */
 
-#define SAVE_VERSION    19
+#define SAVE_VERSION    20
 #define SAVE_INFOSTRING_LENGTH  256
 
 

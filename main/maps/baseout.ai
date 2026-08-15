@@ -46,7 +46,7 @@ player
 	playerstart
 	{
 		#if g_level_was_selected >= 1
-		cvar g_chapter_legit 0
+		globalaccum 0 set 0
 		accum 0 random_no_zero 3
 		trigger player give_loadout_1
 		trigger player give_loadout_2

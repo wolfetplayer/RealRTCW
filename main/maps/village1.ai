@@ -29,7 +29,7 @@ player
 		trigger player cam0
 		
 		applyloadout village1
-		cvar g_chapter_legit 1
+		globalaccum 0 set 1
 		cvar g_level_was_selected 0
 	}
 

@@ -13,13 +13,6 @@ player
 		cvar g_episode 1
 		objectivesneeded 2
 
-		accum 7 set 0
-		#if g_gameskill < 3
-		accum 7 set 1
-		#endif
-		#if g_chapter_legit < 1
-		accum 7 set 1
-		#endif
 		abort_if_loadgame
 		mu_fade 0 1000
 		mu_queue sound/music/l_briefing_1
@@ -28,7 +21,7 @@ player
 	playerstart
 	{
 		#if g_level_was_selected >= 1
-		cvar g_chapter_legit 0
+		globalaccum 0 set 0
 		applyloadout village1
 		#endif
 		cvar g_level_was_selected 0
@@ -260,22 +253,37 @@ player
 		trigger counter1 plane_cine1
 	}
 
-	trigger achievement_hard_check
+	trigger achievement_base_check
 	{
-		accum 7 abort_if_equal 1
-		achievement_chapter2_hard
-	}
-
-	trigger endmap2
-	{
-		#if g_chapter_legit >= 1
+		globalaccum 0 abort_if_not_equal 1
 		achievement_chapter2
 		achievement_ironman
 		achievement_hardcore
 		achievement_999
 		achievement_nightmare
 		achievement_walkinthepark
+	}
+
+	trigger achievement_boss1_check
+	{
+		globalaccum 0 abort_if_not_equal 1
+		achievement_boss1
+	}
+
+	trigger achievement_hard_check
+	{
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
 		#endif
+		globalaccum 0 abort_if_not_equal 1
+		accum 7 abort_if_equal 1
+		achievement_chapter2_hard
+	}
+
+	trigger endmap2
+	{
+		trigger player achievement_base_check
 		trigger player achievement_hard_check
 		changelevel cutscene6 4000
 	}
@@ -952,9 +960,7 @@ helga_zombie	// reincarnation of helga
 	death
 	{
 		objectivemet 1
-		#if g_chapter_legit >= 1
-		achievement_boss1
-		#endif
+		trigger player achievement_boss1_check
 		alertentity zombie1
 		alertentity zombie2
 		alertentity zombie3

@@ -48,15 +48,15 @@ chapter		"2"
 }
 
 {
+map			"cutscene6"
+longname	"@CAMP_MAP_CUTSCENE6"
+chapter		"3"
+}
+{
 map			"malta_1"
 longname	"@CAMP_MAP_MALTA1"
 chapter		"3"
 hubonly		"1"
-}
-{
-map			"cutscene6"
-longname	"@CAMP_MAP_CUTSCENE6"
-chapter		"3"
 }
 {
 map			"forest"
@@ -80,15 +80,15 @@ chapter		"3"
 }
 
 {
+map			"cutscene9"
+longname	"@CAMP_MAP_CUTSCENE9"
+chapter		"4"
+}
+{
 map			"malta_2"
 longname	"@CAMP_MAP_MALTA2"
 chapter		"4"
 hubonly		"1"
-}
-{
-map			"cutscene9"
-longname	"@CAMP_MAP_CUTSCENE9"
-chapter		"4"
 }
 {
 map			"sfm"
@@ -112,15 +112,15 @@ chapter		"4"
 }
 
 {
+map			"cutscene11"
+longname	"@CAMP_MAP_CUTSCENE11"
+chapter		"5"
+}
+{
 map			"malta_3"
 longname	"@CAMP_MAP_MALTA3"
 chapter		"5"
 hubonly		"1"
-}
-{
-map			"cutscene11"
-longname	"@CAMP_MAP_CUTSCENE11"
-chapter		"5"
 }
 {
 map			"norway"
@@ -139,15 +139,15 @@ chapter		"5"
 }
 
 {
+map			"cutscene14"
+longname	"@CAMP_MAP_CUTSCENE14"
+chapter		"6"
+}
+{
 map			"malta_4"
 longname	"@CAMP_MAP_MALTA4"
 chapter		"6"
 hubonly		"1"
-}
-{
-map			"cutscene14"
-longname	"@CAMP_MAP_CUTSCENE14"
-chapter		"6"
 }
 {
 map			"dam"

@@ -184,6 +184,8 @@ typedef struct {
 	long roqFPS;
 	int playonwalls;
 	byte*               buf;
+	byte*               rgbaBuf;
+	int rgbaBufSize;
 	long drawX, drawY;
 
 	// ffmpeg
@@ -1573,7 +1575,30 @@ static int FFMPEG_DecodeVideo( ) {
             cinTable[currentHandle].vFrame
         );
 
-		cinTable[currentHandle].buf = cinTable[currentHandle].vRgbaFrame->data[0];
+        // copy into our own buffer: vRgbaFrame->data[0] can be freed/reallocated by a later sws_scale_frame call before we upload it
+        {
+            int frameW = cinTable[currentHandle].vFrame->width;
+            int frameH = cinTable[currentHandle].vFrame->height;
+            int srcStride = cinTable[currentHandle].vRgbaFrame->linesize[0];
+            byte *src = cinTable[currentHandle].vRgbaFrame->data[0];
+            int rowBytes = frameW * 4;
+            int neededSize = rowBytes * frameH;
+            int y;
+
+            if ( cinTable[currentHandle].rgbaBufSize < neededSize ) {
+                if ( cinTable[currentHandle].rgbaBuf ) {
+                    Z_Free( cinTable[currentHandle].rgbaBuf );
+                }
+                cinTable[currentHandle].rgbaBuf = Z_Malloc( neededSize );
+                cinTable[currentHandle].rgbaBufSize = neededSize;
+            }
+
+            for ( y = 0; y < frameH; y++ ) {
+                memcpy( cinTable[currentHandle].rgbaBuf + y * rowBytes, src + y * srcStride, rowBytes );
+            }
+        }
+
+		cinTable[currentHandle].buf = cinTable[currentHandle].rgbaBuf;
         cinTable[currentHandle].drawX = cinTable[currentHandle].CIN_WIDTH  = cinTable[currentHandle].vFrame->width;
         cinTable[currentHandle].drawY = cinTable[currentHandle].CIN_HEIGHT = cinTable[currentHandle].vFrame->height;
         cinTable[currentHandle].dirty = qtrue;

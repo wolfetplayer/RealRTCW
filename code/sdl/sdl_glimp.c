@@ -123,6 +123,20 @@ void GLimp_Minimize( void )
 	SDL_MinimizeWindow( SDL_window );
 }
 
+/*
+===============
+GLimp_IsMinimized
+
+Live OS/SDL window state, unlike the com_minimized cvar which lags a frame
+behind the actual transition (only updated once the SDL event is dequeued).
+Used to guard GL calls that must not run against a 0-sized/hidden window.
+===============
+*/
+qboolean GLimp_IsMinimized( void )
+{
+	return ( SDL_GetWindowFlags( SDL_window ) & SDL_WINDOW_MINIMIZED ) != 0;
+}
+
 
 /*
 ===============
@@ -1326,8 +1340,10 @@ Responsible for doing a swapbuffers
 */
 void GLimp_EndFrame( void )
 {
-	// don't flip if drawing to front buffer
-	if ( Q_stricmp( r_drawBuffer->string, "GL_FRONT" ) != 0 )
+	// don't flip if drawing to front buffer, and don't present while minimized
+	// (some GL drivers, e.g. NVIDIA, crash in DrvPresentBuffers on a 0-sized/occluded window)
+	if ( Q_stricmp( r_drawBuffer->string, "GL_FRONT" ) != 0 &&
+		 !( SDL_GetWindowFlags( SDL_window ) & SDL_WINDOW_MINIMIZED ) )
 	{
 		SDL_GL_SwapWindow( SDL_window );
 	}

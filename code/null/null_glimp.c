@@ -59,3 +59,7 @@ void		GLimp_SetGamma( unsigned char red[256], unsigned char green[256], unsigned
 
 void		GLimp_Minimize( void ) {
 }
+
+qboolean	GLimp_IsMinimized( void ) {
+	return qfalse;
+}

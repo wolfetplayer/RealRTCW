@@ -32,7 +32,7 @@ player
 		trigger player give_loadout_2
 		#endif
 		
-		cvar g_chapter_legit 1
+		globalaccum 0 set 1
 		cvar g_level_was_selected 0
 		
 		#if g_reinforce >= 1 alertentity reinforce_ai_soldier_1 #endif

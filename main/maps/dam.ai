@@ -34,7 +34,7 @@ player
 		trigger player give_loadout_2
 		#endif
 
-		cvar g_chapter_legit 1
+		globalaccum 0 set 1
 		cvar g_level_was_selected 0
 
 		trigger checker2 plane_cine1

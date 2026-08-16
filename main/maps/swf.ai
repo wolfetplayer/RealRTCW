@@ -11,13 +11,6 @@ player
 		cvar g_episode 3
 		objectivesneeded 2
 
-		accum 7 set 0
-		#if g_gameskill < 3
-		accum 7 set 1
-		#endif
-		#if g_chapter_legit < 1
-		accum 7 set 1
-		#endif
 		abort_if_loadgame
 		mu_start sound/music/l_briefing_1
 	}
@@ -53,7 +46,7 @@ player
 	playerstart
 	{
 		#if g_level_was_selected >= 1
-		cvar g_chapter_legit 0
+		globalaccum 0 set 0
 		accum 1 random_no_zero 3
 		trigger player give_loadout_1
 		trigger player give_loadout_2
@@ -339,22 +332,31 @@ player
 	
 	}
 
-	trigger achievement_hard_check
+	trigger achievement_base_check
 	{
-		accum 7 abort_if_equal 1
-		achievement_chapter4_hard
-	}
-
-	trigger endnow
-	{
-		#if g_chapter_legit >= 1
+		globalaccum 0 abort_if_not_equal 1
 		achievement_chapter4
 		achievement_ironman
 		achievement_hardcore
 		achievement_999
 		achievement_nightmare
 		achievement_walkinthepark
+	}
+
+	trigger achievement_hard_check
+	{
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
 		#endif
+		globalaccum 0 abort_if_not_equal 1
+		accum 7 abort_if_equal 1
+		achievement_chapter4_hard
+	}
+
+	trigger endnow
+	{
+		trigger player achievement_base_check
 		trigger player achievement_hard_check
 		changelevel cutscene11 4000
 	}

@@ -35,7 +35,7 @@ player
 	playerstart
 	{
 		#if g_level_was_selected >= 1
-		cvar g_chapter_legit 0
+		globalaccum 0 set 0
 		trigger player give_loadout_direct
 		#endif
 		cvar g_level_was_selected 0

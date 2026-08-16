@@ -253,7 +253,7 @@ player
 	{
 		trigger player give_loadout_1
 		trigger player give_loadout_2
-		cvar g_chapter_legit 1
+		globalaccum 0 set 1
 		changelevel norway persistent
 	}
 

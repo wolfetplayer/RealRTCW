@@ -13,13 +13,6 @@ player
 	spawn
 	{
 		accum 0 bitreset 0
-		accum 7 set 0
-		#if g_gameskill < 3
-		accum 7 set 1
-		#endif
-		#if g_chapter_legit < 1
-		accum 7 set 1
-		#endif
 		abort_if_loadgame
 		mu_fade 0 1000
 		mu_queue sound/music/c_atmos
@@ -59,7 +52,7 @@ player
 	playerstart
 	{
 		#if g_level_was_selected >= 1
-		cvar g_chapter_legit 0
+		globalaccum 0 set 0
 		accum 1 random_no_zero 3
 		trigger player give_loadout_1
 		trigger player give_loadout_2
@@ -225,22 +218,37 @@ player
 		trigger pillar1 fall
 	}
 
-	trigger achievement_hard_check
+	trigger achievement_base_check
 	{
-		accum 7 abort_if_equal 1
-		achievement_chapter7_hard
-	}
-
-	trigger changelevel
-	{
-		#if g_chapter_legit >= 1
+		globalaccum 0 abort_if_not_equal 1
 		achievement_chapter7
 		achievement_ironman
 		achievement_hardcore
 		achievement_999
 		achievement_nightmare
 		achievement_walkinthepark
+	}
+
+	trigger achievement_boss3_check
+	{
+		globalaccum 0 abort_if_not_equal 1
+		achievement_boss3
+	}
+
+	trigger achievement_hard_check
+	{
+		accum 7 set 0
+		#if g_gameskill < 3
+		accum 7 set 1
 		#endif
+		globalaccum 0 abort_if_not_equal 1
+		accum 7 abort_if_equal 1
+		achievement_chapter7_hard
+	}
+
+	trigger changelevel
+	{
+		trigger player achievement_base_check
 		trigger player achievement_hard_check
 		changelevel cutscene19 5 silent 
 	}
@@ -1849,9 +1857,7 @@ heinrich
 	death
 	{
 		trigger player 0bitset0
-		#if g_chapter_legit >= 1
-		achievement_boss3
-		#endif
+		trigger player achievement_boss3_check
 		objectivemet 1	// mission objective complete
 		trigger counter1 himmler_cine1
 	}

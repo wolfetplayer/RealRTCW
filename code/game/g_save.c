@@ -649,6 +649,8 @@ void ReadClient( fileHandle_t f, gclient_t *client, int size ) {
 	// now copy the temp structure into the existing structure
 	memcpy( client, &temp, size );
 
+	client->pers.weaponWheelOpen = qfalse;
+
 	// make sure they face the right way
 	//client->ps.pm_flags |= PMF_RESPAWNED;
 	// don't allow full run speed for a bit

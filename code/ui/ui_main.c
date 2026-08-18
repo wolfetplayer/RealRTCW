@@ -1875,7 +1875,7 @@ static void UI_DrawMapPreview( rectDef_t *rect, float scale, vec4_t color, qbool
 
 static void UI_DrawMapTimeToBeat( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
 	int minutes, seconds, time;
-	if ( ui_currentMap.integer < 0 || ui_currentMap.integer > uiInfo.mapCount ) {
+	if ( ui_currentMap.integer < 0 || ui_currentMap.integer >= uiInfo.mapCount ) {
 		ui_currentMap.integer = 0;
 		trap_Cvar_Set( "ui_currentMap", "0" );
 	}
@@ -2040,7 +2040,8 @@ static void UI_DrawNetMapPreview( rectDef_t *rect, float scale, vec4_t color ) {
 
 static void UI_DrawSmallCreateMapPreview( rectDef_t *rect, float scale, vec4_t color, int number ) {
 
-	if ( uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) {
+	if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount &&
+		 uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( va( "levelshots/ui_%s_s%d", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName, number ) ) );
 	} else {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( "menu/art/unknownmap" ) );
@@ -2049,7 +2050,8 @@ static void UI_DrawSmallCreateMapPreview( rectDef_t *rect, float scale, vec4_t c
 
 static void UI_DrawCreateMapPreview( rectDef_t *rect, float scale, vec4_t color ) {
 
-	if ( uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) {
+	if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount &&
+		 uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( va( "levelshots/ui_%s", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) ) );
 	} else {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( "menu/art/unknownmap" ) );
@@ -2057,7 +2059,7 @@ static void UI_DrawCreateMapPreview( rectDef_t *rect, float scale, vec4_t color 
 }
 
 static void UI_DrawNetMapCinematic( rectDef_t *rect, float scale, vec4_t color ) {
-	if ( ui_currentNetMap.integer < 0 || ui_currentNetMap.integer > uiInfo.mapCount ) {
+	if ( ui_currentNetMap.integer < 0 || ui_currentNetMap.integer >= uiInfo.mapCount ) {
 		ui_currentNetMap.integer = 0;
 		trap_Cvar_Set( "ui_currentNetMap", "0" );
 	}
@@ -4755,10 +4757,12 @@ static void UI_RunMenuScript( char **args ) {
 			UI_GameType_HandleKey( 0, NULL, K_MOUSE1, qfalse );
 			UI_GameType_HandleKey( 0, NULL, K_MOUSE2, qfalse );
 		} else if ( Q_stricmp( name, "StartSurvival" ) == 0 ) {
-			trap_Cvar_Set( "cg_thirdPerson", "0" );
-			trap_Cvar_Set( "cg_cameraOrbit", "0" );
-			trap_Cvar_SetValue( "g_gametype", 3 );
-			trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; map %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
+			if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount ) {
+				trap_Cvar_Set( "cg_thirdPerson", "0" );
+				trap_Cvar_Set( "cg_cameraOrbit", "0" );
+				trap_Cvar_SetValue( "g_gametype", 3 );
+				trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; map %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
+			}
 
 		} else if (Q_stricmp( name, "validate_openURL" ) == 0 ) 
 		{
@@ -4886,7 +4890,9 @@ static void UI_RunMenuScript( char **args ) {
 				trap_Cvar_Set( "g_decaychallenge", "0" );
 				break;
 			}
-			trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; spmap %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
+			if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount ) {
+				trap_Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; spmap %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
+			}
 		} else if ( Q_stricmp( name, "saveControls" ) == 0 ) {
 			Controls_SetConfig( qtrue );
 		} else if ( Q_stricmp( name, "loadControls" ) == 0 ) {
@@ -5444,6 +5450,10 @@ static int UI_MapCountByGameType( qboolean singlePlayer ) {
         s_lastChapterFilter = ui_camp_chapter.integer;
         s_lastMidgameFilter = ui_midgame.integer;
         UI_LoadArenasIntoMapList();
+
+        trap_Cvar_SetValue( "ui_currentNetMap", 0 );
+        ui_currentNetMap.integer = 0;
+        Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, NULL );
     }
 
 	for ( i = 0; i < uiInfo.mapCount; i++ ) {

@@ -912,13 +912,16 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 			// file for itself. --zturtleman
 			return qfalse;
 		}
-
+	
 	// New in IORTCW
 	case CG_ALLOC:
 		return VM_Alloc( args[1] );
 	case CG_R_REGISTERSMARTSKIN:
 		return re.RegisterSmartSkin(VMA(1), VMA(2), args[3]);
 		//----(SA)	added
+	case CG_R_REGISTERUTF8FONT:
+		re.RegisterUtf8Font( VMA( 1 ), VMA( 2 ) );
+		return 0;
 	default:
 		Com_Error( ERR_DROP, "Bad cgame system trap: %ld", (long int) args[0] );
 	}

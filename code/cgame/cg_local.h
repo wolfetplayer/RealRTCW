@@ -90,6 +90,10 @@ If you have questions concerning this license or the applicable additional terms
 #define GIANT_WIDTH         32
 #define GIANT_HEIGHT        48
 
+#define TEXT_ALIGN_LEFT     0       // left alignment
+#define TEXT_ALIGN_CENTER   1       // center alignment
+#define TEXT_ALIGN_RIGHT    2       // right alignment
+
 #define NUM_CROSSHAIRS      11
 #define NUM_HITMARKERS    5
 
@@ -807,6 +811,10 @@ typedef struct {
 
 #define MAX_PREDICTED_EVENTS    16
 
+// incresed for utf8 format
+#define STRING_PRINT_BUFFER      1024
+#define STRING_SBUTITLE_BUFFER   4096
+
 typedef struct {
 	int clientFrame;                // incremented each frame
 
@@ -926,25 +934,25 @@ typedef struct {
 	int centerPrintTime;
 	int centerPrintCharWidth;
 	int centerPrintY;
-	char centerPrint[1024];
+	char centerPrint[STRING_PRINT_BUFFER];
 	int centerPrintLines;
 
 	int buyPrintTime;
 	int buyPrintCharWidth;
 	int buyPrintY;
-	char buyPrint[1024];
+	char buyPrint[STRING_PRINT_BUFFER];
 	int buyPrintLines;
 
 	int egPrintTime;
 	int egPrintCharWidth;
 	int egPrintY;
-	char egPrint[1024];
+	char egPrint[STRING_PRINT_BUFFER];
 	int egPrintLines;
 
 	int subtitlePrintTime;
 	int subtitlePrintCharWidth;
 	int subtitlePrintY;
-	char subtitlePrint[1024];
+	char subtitlePrint[STRING_SBUTITLE_BUFFER];
 	int subtitlePrintLines;
 
 	// hitMarker
@@ -1100,7 +1108,7 @@ typedef struct {
 	int oidPrintTime;
 	int oidPrintCharWidth;
 	int oidPrintY;
-	char oidPrint[1024];
+	char oidPrint[STRING_PRINT_BUFFER];
 	int oidPrintLines;
 
 	cameraShake_t cameraShake[MAX_CAMERA_SHAKE];
@@ -1771,7 +1779,7 @@ typedef struct {
 
 	char ignoredSubtitles[255][255];
 
-	char itemPrintNames[MAX_ITEMS][32];             //----(SA)	added
+	char itemPrintNames[MAX_ITEMS][256];             //----(SA)	added // increased, utf8 need more bytes
 
 	int cursorX;
 	int cursorY;
@@ -2042,6 +2050,10 @@ extern vmCvar_t cg_simpleZoomFov;
 extern vmCvar_t cg_simpleZoomTimeMs;
 extern vmCvar_t cg_simpleZoomVenomScale;
 
+extern vmCvar_t cg_enableUtf8Font;
+extern vmCvar_t cg_hudUtf8FontScale;
+extern vmCvar_t cg_subtitleUtf8FontScale;
+
 //
 // cg_main.c
 //
@@ -2123,6 +2135,17 @@ void CG_DrawBigString2( int x, int y, const char *s, float alpha );
 void CG_DrawBigStringColor2( int x, int y, const char *s, vec4_t color );
 // END JOSEPH
 int CG_DrawStrlen( const char *str );
+
+// utf8 support
+int CG_DrawStrCount( const char *str );
+float CG_DrawStrWidth_Utf8( const char *str, float scale );
+float CG_DrawStrHeight_Utf8( const char* str, float scale );
+void CG_Text_AutoWrapped_Paint_Utf8( float x, float y, int font, float scale, vec4_t color, 
+								 const char *text, float maxLineWidth, int alignType, int style);
+void CG_DrawChar_Utf8( int x, int y, float scale, int unicode );
+void CG_DrawStringExt_Utf8( int x, int y, const char *string, const float *setColor,
+					  		qboolean forceColor, qboolean shadow, float scale, int maxChars );
+
 
 float   *CG_FadeColor( int startMsec, int totalMsec );
 float *CG_TeamColor( int team );
@@ -2491,6 +2514,7 @@ const char *CG_translateString( const char *str );
 const char *CG_bonusString( const char *str );
 const char *CG_translateTextString( const char *str );
 const char *CG_translateTextString2( const char *str );
+const char *CG_translateTextString3(const char *str);
 
 
 //
@@ -2723,6 +2747,7 @@ void        testPrintFloat( char *string, float f );
 
 int         trap_MemoryRemaining( void );
 void        trap_R_RegisterFont( const char *fontName, int pointSize, fontInfo_t *font );
+void        trap_R_RegisterUtf8Font( const char *fontName, utf8FontInfo_t *font );
 qboolean    trap_Key_IsDown( int keynum );
 int         trap_Key_GetCatcher( void );
 void        trap_Key_SetCatcher( int catcher );

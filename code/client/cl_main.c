@@ -169,6 +169,9 @@ cvar_t	*cl_rate;
 
 cvar_t	*cl_drawCineSubtitles;
 
+cvar_t  *cl_enableUtf8Font;
+cvar_t	*cl_hudUtf8FontScale;
+
 clientActive_t cl;
 clientConnection_t clc;
 clientStatic_t cls;
@@ -199,6 +202,8 @@ typedef struct serverStatus_s
 serverStatus_t cl_serverStatusList[MAX_SERVERSTATUSREQUESTS];
 
 static int noGameRestart = qfalse;
+
+utf8FontInfo_t utf8Font;
 
 extern void SV_BotFrame( int time );
 void CL_CheckForResend( void );
@@ -3330,6 +3335,9 @@ void CL_InitRenderer( void ) {
 	cls.consoleShader2 = re.RegisterShader( "console2" );
 	g_console_field_width = cls.glconfig.vidWidth / g_smallchar_width - 2;
 	g_consoleField.widthInChars = g_console_field_width;
+
+	// utf8 font
+	re.RegisterUtf8Font( "fontImage_utf8_0", &utf8Font );
 }
 
 /*
@@ -3880,6 +3888,9 @@ void CL_Init( void ) {
 	cl_language = Cvar_Get( "cl_language", "0", CVAR_ARCHIVE );
 	cl_debugTranslation = Cvar_Get( "cl_debugTranslation", "0", 0 );
 	cl_drawCineSubtitles = Cvar_Get( "cl_drawCineSubtitles", "0", CVAR_ARCHIVE );
+
+	cl_enableUtf8Font = Cvar_Get( "cl_enableUtf8Font", "1", CVAR_ARCHIVE );
+	cl_hudUtf8FontScale = Cvar_Get( "cl_hudUtf8FontScale", "0.425", CVAR_ARCHIVE );
 	// -NERVE - SMF
 
 	//

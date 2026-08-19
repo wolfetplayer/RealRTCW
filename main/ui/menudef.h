@@ -156,6 +156,11 @@ If you have questions concerning this license or the applicable additional terms
 #define UI_FONT_BIG             2
 #define UI_FONT_SMALL           3
 #define UI_FONT_HANDWRITING     4
+// unicode font types (not only used for UI. CGAME, CLIENT also use these)
+#define FONT_UTF_DEFAULT        5
+#define FONT_UTF_CUSTOM1        6
+#define FONT_UTF_CUSTOM2        7
+#define FONT_UTF_CUSTOM3        8
 
 // owner draw types
 // ideally these should be done outside of this file but

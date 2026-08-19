@@ -42,6 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../steam/steam.h"
 
 uiInfo_t uiInfo;
+utf8FontInfo_t utf8Fonts[MAX_UTF8_FONTS];
 
 static const char *MonthAbbrev[] = {
 	"Jan","Feb","Mar",
@@ -286,7 +287,54 @@ void _UI_DrawRect( float x, float y, float width, float height, float size, cons
 }
 
 
+float Text_Width_Utf8( const char *text, int font, float scale, int limit ) {
+	int count,len;
+	float out;
+	glyphInfo_t *glyph;
+	float useScale;
+	const char *s = text;
 
+	utf8FontInfo_t *ufnt = NULL;
+	if ( font == FONT_UTF_DEFAULT ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_DEFAULT)];
+	} else if ( font == FONT_UTF_CUSTOM1 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM1)];
+	} else if ( font == FONT_UTF_CUSTOM2 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM2)];
+	} else if ( font == FONT_UTF_CUSTOM3 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM3)];
+	}
+
+	if ( !ufnt || !ufnt->loaded ) {
+		// ufnt = &utf8Fonts[UFontIndex(FONT_UTF_DEFAULT)];
+		Com_Error( ERR_FATAL, "Text_Width_Utf8: bad font index %d", font );
+		return -1;
+	}
+
+	useScale = scale * ufnt->glyphScale;
+	out = 0;
+	if ( text ) {
+		len = strlen( text );
+		if ( limit > 0 && len > limit ) {
+			len = limit;
+		}
+		count = 0;
+		while ( s && *s && count < len ) {
+			if ( Q_IsColorString( s ) ) {
+				s += 2;
+				continue;
+			} else {
+				uint32_t utf8Index = Q_utf8ToCodePoint(s);
+				uint32_t unicode = utf8Index < UTF8_GLYPHS_PER_FONT ? utf8Index : '?';
+				glyph = &ufnt->glyphs[unicode];
+				out += glyph->xSkip;
+				s += Q_utf8bytesLength(s);
+				count++;
+			}
+		}
+	}
+	return out * useScale;
+}
 
 int Text_Width( const char *text, int font, float scale, int limit ) {
 	int count,len;
@@ -294,6 +342,10 @@ int Text_Width( const char *text, int font, float scale, int limit ) {
 	glyphInfo_t *glyph;
 	float useScale;
 	const char *s = text;
+
+	if ( font >= FONT_UTF_DEFAULT ) {
+		return Text_Width_Utf8(text, font, scale, limit);
+	}
 
 	fontInfo_t *fnt = &uiInfo.uiDC.Assets.textFont;
 	if ( font == UI_FONT_DEFAULT ) {
@@ -333,12 +385,55 @@ int Text_Width( const char *text, int font, float scale, int limit ) {
 	return out * useScale;
 }
 
+float Text_Height_Utf8( const char *text, int font, float scale, int limit ) {
+	const char *s = text;
+	float h, maxHeight;
+	int32_t unicode;
+	glyphInfo_t *glyph;
+	float useScale;
+	
+	utf8FontInfo_t *ufnt = NULL;
+	if ( font == FONT_UTF_DEFAULT ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_DEFAULT)];
+	} else if ( font == FONT_UTF_CUSTOM1 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM1)];
+	} else if ( font == FONT_UTF_CUSTOM2 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM2)];
+	} else if ( font == FONT_UTF_CUSTOM3 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM3)];
+	}
+
+	if ( !ufnt || !ufnt->loaded ) {
+		// ufnt = &utf8Fonts[UFontIndex(FONT_UTF_DEFAULT)];
+		Com_Error( ERR_FATAL, "Text_Height_Utf8: bad font index %d", font );
+		return -1;
+	}
+
+	useScale = ufnt->glyphScale * scale;
+	maxHeight = 0;
+	while ( s && *s ) {
+		unicode = Q_utf8ToCodePoint(s);
+		glyph = &ufnt->glyphs[unicode];
+		h = glyph->height * useScale;
+		if ( h > maxHeight ) {
+			maxHeight = h;
+		}
+		s += Q_utf8bytesLength(s);
+	}
+	
+	return maxHeight;
+}
+
 int Text_Height( const char *text, int font, float scale, int limit ) {
 	int len, count;
 	float max;
 	glyphInfo_t *glyph;
 	float useScale;
 	const char *s = text;
+
+	if ( font >= FONT_UTF_DEFAULT ) {
+		return Text_Height_Utf8(text, font, scale, limit);
+	}
 
 	fontInfo_t *fnt = &uiInfo.uiDC.Assets.textFont;
 	if ( font == UI_FONT_DEFAULT ) {
@@ -388,11 +483,116 @@ void Text_PaintChar( float x, float y, float width, float height, int font, floa
 	trap_R_DrawStretchPic( x, y, w, h, s, t, s2, t2, hShader );
 }
 
+void Text_Paint_Utf8( float x, float y, int font, float scale, vec4_t color, const char *text, float adjust, int limit, int style ) {
+	int len, count;
+	vec4_t newColor;
+	glyphInfo_t *glyph;
+	float useScale;
+
+	utf8FontInfo_t *ufnt = NULL;
+	if ( font == FONT_UTF_DEFAULT ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_DEFAULT)];
+	} else if ( font == FONT_UTF_CUSTOM1 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM1)];
+	} else if ( font == FONT_UTF_CUSTOM2 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM2)];
+	} else if ( font == FONT_UTF_CUSTOM3 ) {
+		ufnt = &utf8Fonts[UFontIndex(FONT_UTF_CUSTOM3)];
+	}
+
+	if ( !ufnt || !ufnt->loaded ) {
+		// ufnt = &utf8Fonts[UFontIndex(FONT_UTF_DEFAULT)];
+		Com_Error( ERR_FATAL, "Text_Paint_Utf8: bad font index %d", font );
+		return;
+	}
+
+	if ( !text || text[0] == '\0' ) {
+		return;
+	}
+
+	useScale = scale * ufnt->glyphScale;
+
+	const char *s = text;
+	trap_R_SetColor( color );
+	memcpy( &newColor[0], &color[0], sizeof( vec4_t ) );
+	len = strlen( text );
+	if ( limit > 0 && len > limit ) {
+		len = limit;
+	}
+	count = 0;
+	
+	while ( s && *s && count < len ) {
+		if ( Q_IsColorString( s ) ) {
+			memcpy( newColor, g_color_table[ColorIndex( *( s + 1 ) )], sizeof( newColor ) );
+			newColor[3] = color[3];
+			trap_R_SetColor( newColor );
+			s += 2;
+			continue;
+		}
+		
+		int charBytes = Q_utf8bytesLength(s);
+		uint32_t utf8Index = Q_utf8ToCodePoint(s);
+
+		// ensure that it does not exceed the supported range
+		uint32_t unicode = utf8Index < UTF8_GLYPHS_PER_FONT ? utf8Index : '?';
+		glyph = &ufnt->glyphs[unicode];
+		
+		if ( glyph ) {
+			float yadj = useScale * glyph->top;
+			
+			if ( style == ITEM_TEXTSTYLE_SHADOWED || style == ITEM_TEXTSTYLE_SHADOWEDMORE ) {
+				int ofs = style == ITEM_TEXTSTYLE_SHADOWED ? 1 : 2;
+				colorBlack[3] = newColor[3];
+				trap_R_SetColor( colorBlack );
+				Text_PaintChar( x + ofs, y - yadj + ofs,
+								glyph->imageWidth,
+								glyph->imageHeight,
+								font,
+								useScale,
+								glyph->s,
+								glyph->t,
+								glyph->s2,
+								glyph->t2,
+								glyph->glyph );
+				trap_R_SetColor( newColor );
+				colorBlack[3] = 1.0;
+			}
+			
+			Text_PaintChar( x, y - yadj,
+							glyph->imageWidth,
+							glyph->imageHeight,
+							font,
+							useScale,
+							glyph->s,
+							glyph->t,
+							glyph->s2,
+							glyph->t2,
+							glyph->glyph );
+
+			if ( Q_IsUtf8TightSpacing(unicode) ) {
+				x += glyph->xSkip * useScale;
+			} else {
+				x += ( glyph->xSkip * useScale ) + adjust;
+			}
+		}
+		
+		count++;
+		s += charBytes;
+	}
+
+	trap_R_SetColor( NULL );
+}
+
 void Text_Paint( float x, float y, int font, float scale, vec4_t color, const char *text, float adjust, int limit, int style ) {
 	int len, count;
 	vec4_t newColor;
 	glyphInfo_t *glyph;
 	float useScale;
+
+	if ( font >= FONT_UTF_DEFAULT ) {
+		Text_Paint_Utf8( x, y, font, scale, color, text, adjust, limit, style );
+		return;
+	}
 
 	fontInfo_t *fnt = &uiInfo.uiDC.Assets.textFont;
 	if ( font == UI_FONT_DEFAULT ) {
@@ -7034,6 +7234,12 @@ static void UI_BuildQ3Model_List( void ) {
 
 }
 
+static void UI_LoadUtf8Fonts( void ) {
+	for ( int i = 0; i < MAX_UTF8_FONTS; i++ ) {
+		trap_R_RegisterUtf8Font( va("fontImage_utf8_%d", i), &utf8Fonts[i] );
+	}
+}
+
 
 /*
 =================
@@ -7147,6 +7353,8 @@ void _UI_Init( qboolean inGameLoad ) {
 	Init_Display( &uiInfo.uiDC );
 
 	String_Init();
+
+	UI_LoadUtf8Fonts();
 
 	// load translation text
 	UI_LoadTranslationStrings();

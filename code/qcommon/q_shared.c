@@ -35,6 +35,13 @@ If you have questions concerning this license or the applicable additional terms
 #include "../game/g_local.h"
 #endif
 
+#ifdef _WIN32
+  #define USE_FRIBIDI
+  #ifdef USE_FRIBIDI
+    #include "fribidi.h"
+  #endif
+#endif
+
 // ^[0-9a-zA-Z]
 qboolean Q_IsColorString(const char *p) {
 	if (!p)
@@ -780,6 +787,243 @@ char *COM_ParseExt( char **data_p, qboolean allowLineBreaks ) {
 		while ( 1 )
 		{
 			c = *data++;
+			if ( c == '\"' || !c ) {
+				com_token[len] = 0;
+				*data_p = ( char * ) data;
+				return com_token;
+			}
+			if ( c == '\n' )
+			{
+				com_lines++;
+			}
+			if ( len < MAX_TOKEN_CHARS - 1 ) {
+				com_token[len] = c;
+				len++;
+			}
+		}
+	}
+
+	// parse a regular word
+	do
+	{
+		if ( len < MAX_TOKEN_CHARS - 1 ) {
+			com_token[len] = c;
+			len++;
+		}
+		data++;
+		c = *data;
+	} while (c>32);
+
+	com_token[len] = 0;
+
+	*data_p = ( char * ) data;
+	return com_token;
+}
+
+/*
+================
+COM_ParseExt2
+
+Add escape character parse support
+
+Note: it only parse escape character in strings with double quotation marks
+================
+*/
+char *COM_ParseExt2( char **data_p, qboolean allowLineBreaks, qboolean allowEscapeChar ) {
+	int c = 0, len;
+	qboolean hasNewLines = qfalse;
+	char *data;
+#ifdef GAMEDLL
+	qboolean ignore = qfalse;     // used for #if statements
+#endif
+
+	data = *data_p;
+	len = 0;
+	com_token[0] = 0;
+	com_tokenline = 0;
+
+	// make sure incoming data is valid
+	if ( !data ) {
+		*data_p = NULL;
+		return com_token;
+	}
+
+	// RF, backup the session data so we can unget easily
+	backup_lines = com_lines;
+	backup_text = *data_p;
+
+	while ( 1 )
+	{
+		// skip whitespace
+		data = SkipWhitespace( data, &hasNewLines );
+		if ( !data ) {
+			*data_p = NULL;
+			return com_token;
+		}
+		if ( hasNewLines && !allowLineBreaks ) {
+			*data_p = data;
+			return com_token;
+		}
+
+		c = *data;
+
+#ifdef GAMEDLL
+		// #if cvar == value #else #endif
+		if ( c == '#' && data[1] == 'i' && data[2] == 'f' ) {
+			char cvarname[256];
+			char value[256];
+			char condition[256];
+			int i = 0;
+
+			data += 3;
+			// skip the witespace
+			while ( *data && *data <= ' ' )
+				data++;
+			// get the cvar name
+			while ( *data && *data > ' ' ) {
+				cvarname[i++] = *data;
+				data++;
+			}
+			cvarname[i] = '\0';
+			//Com_Printf("->%s\n", cvarname);
+			i = 0;
+
+			// skip the witespace
+			while ( *data && *data <= ' ' )
+				data++;
+
+			// get the condition
+			while ( *data && *data > ' ' ) {
+				condition[i++] = *data;
+				data++;
+			}
+			condition[i] = '\0';
+			//Com_Printf("->%s\n", condition);
+			i = 0;
+
+			// skip the witespace
+			while ( *data && *data <= ' ' )
+				data++;
+
+			// get the value
+			while ( *data && *data > ' ' ) {
+				value[i++] = *data;
+				data++;
+			}
+			value[i] = '\0';
+			//Com_Printf("%d %d %d\n", strlen(cvarname), strlen(condition), strlen(value));
+			//Com_Printf("--> #if %s %s %s\n", cvarname, condition, value);
+			//Com_Printf("->%s\n", value);
+
+			// now evaluate these
+			ignore = !COM_Eval( cvarname, condition, value );
+			//ignore = qtrue;
+			continue;
+		} else if ( c == '#' && data[1] == 'e' && data[2] == 'n' && data[3] == 'd' && data[4] == 'i' && data[5] == 'f' )           {
+			data += 6;
+			//Com_Printf("--> #endif\n");
+			ignore = qfalse;
+			continue;
+		} else if ( c == '#' && data[1] == 'e' && data[2] == 'l' && data[3] == 's' && data[4] == 'e' )           {
+			data += 5;
+			//Com_Printf("--> #else\n");
+			ignore = !ignore;
+			continue;
+		}
+
+		// ignore #if / # else section
+		if ( ignore ) {
+			//Com_Printf("%c", c);
+			data++;
+			continue;
+		}
+#endif
+
+		// skip double slash comments
+		if ( c == '/' && data[1] == '/' ) {
+			data += 2;
+			while ( *data && *data != '\n' ) {
+				data++;
+			}
+		}
+
+		// skip /* */ comments
+		else if ( c == '/' && data[1] == '*' ) {
+			data += 2;
+			while ( *data && ( *data != '*' || data[1] != '/' ) )
+			{
+				if ( *data == '\n' )
+				{
+					com_lines++;
+				}
+				data++;
+			}
+			if ( *data ) {
+				data += 2;
+			}
+		} else
+		{
+			break;
+		}
+	}
+
+	// token starts on this line
+	com_tokenline = com_lines;
+
+	// handle quoted strings
+	if ( c == '\"' ) {
+		data++;
+		while ( 1 )
+		{
+			c = *data++;
+
+			// handle escape character
+			if ( allowEscapeChar && c == '\\' ) {
+				char nextChar = *data;
+				if ( nextChar && nextChar >= 32) {
+					switch ( nextChar ) {
+						case 'n':
+							c = '\n';
+							data++;
+							break;
+						case 'r':
+							c = '\r';
+							data++;
+							break;
+						case 't':
+							c = '\t';
+							data++;
+							break;
+						case '\\':
+							c = '\\';
+							data++;
+							break;
+						case '\"':
+							c = '\"';
+							data++;
+							break;
+						case '\'':
+							c = '\'';
+							data++;
+							break;
+						case '0':
+							c = '\0';
+							data++;
+							break;
+						default:
+							c = nextChar;
+							data++;
+							break;
+					}
+
+					if ( len < MAX_TOKEN_CHARS - 1 ) {
+						com_token[len] = c;
+						len++;
+					}
+				}
+				continue;
+			}
+
 			if ( c == '\"' || !c ) {
 				com_token[len] = 0;
 				*data_p = ( char * ) data;
@@ -1967,3 +2211,276 @@ char *Com_SkipTokens( char *s, int numTokens, char *sep )
 		return s;
 }
 
+/*
+==================
+for unicode support (utf8 format)
+==================
+*/
+// for utf8 character first byte, return the whole bytes length
+int Q_utf8bytesLength( const char *utf8 ) {
+	if ( !utf8 || !*utf8 ) return 0;
+
+	unsigned char c = (unsigned char)*utf8;
+	int expected_bytes = 1;
+	
+	if ( (c & 0xE0) == 0xC0 ) {			// 2 bytes UTF-8
+		expected_bytes = 2;
+	} else if ( (c & 0xF0) == 0xE0 ) {	// 3 bytes UTF-8
+		expected_bytes = 3;
+	} else if ( (c & 0xF8) == 0xF0 ) {	// 4 bytes UTF-8
+		expected_bytes = 4;
+	} else {							// default
+		expected_bytes = 1;
+	}
+
+	return expected_bytes;
+}
+
+// is a utf8 character
+qboolean Q_isUtf8Char( const char *c ) {
+	if ( !c || !*c ) return qfalse;
+
+	if ( Q_utf8bytesLength(c) > 1 ) {
+		return qtrue;
+	}
+	
+	return qfalse;
+}
+
+// does a string has utf8 charaters
+qboolean Q_isUtf8String( const char *str ) {
+	if ( !str || !*str ) return qfalse;
+
+	const char *p = str;
+	while ( *p ) {
+		if ( Q_isUtf8Char(p) ) return qtrue;
+		p++;
+	}
+
+	return qfalse;
+}
+
+// utf8 to code point, return 63 ('?') if invalid
+uint32_t Q_utf8ToCodePoint( const char *utf8 ) {
+    if ( !utf8 || !*utf8 ) {
+		return '?';
+	}
+    
+    unsigned char c = (unsigned char)*utf8;
+    int expected_bytes = 0;
+    uint32_t codepoint = 0;
+    
+    if ( c <= 0x7F ) {
+        expected_bytes = 1;
+        codepoint = c;
+    } else if ( (c & 0xE0) == 0xC0 ) {
+        expected_bytes = 2;
+        codepoint = c & 0x1F;
+    } else if ( (c & 0xF0) == 0xE0 ) {
+        expected_bytes = 3;
+        codepoint = c & 0x0F;
+    } else if ( (c & 0xF8) == 0xF0 ) {
+        expected_bytes = 4;
+        codepoint = c & 0x07;
+    } else {
+        return '?';
+    }
+    
+    for ( int i = 1; i < expected_bytes; i++ ) {
+        if ( utf8[i] == '\0' ) {
+            return '?';
+        }
+        if ( (utf8[i] & 0xC0) != 0x80 ) {
+            return '?';
+        }
+        codepoint = (codepoint << 6) | (utf8[i] & 0x3F);
+    }
+    
+    return codepoint;
+}
+
+// some languages are not separated by spaces like English words
+// uesd to prevent a line of text from always being displayed on one line
+qboolean Q_IsUtf8BreakOpportunity( uint32_t unicode ) {
+	if ( unicode == 0 || unicode == ' ' || unicode == '\t' || unicode == '\r' || unicode == '\n' ) {
+		return qtrue;
+	}
+
+	if ( unicode > 0 && unicode < 0x2000 ) {
+		return qfalse;
+	}
+
+	
+	if ( ( unicode >= 0x0590 && unicode <= 0x05FF ) ||		// Hebrew
+			( unicode >= 0x0600 && unicode <= 0x06FF ) ||	// Arabic
+			( unicode >= 0x0750 && unicode <= 0x077F ) ||	// Arabic Supplement
+			( unicode >= 0x08A0 && unicode <= 0x08FF ) ||	// Arabic Extended-A
+			( unicode >= 0xFB50 && unicode <= 0xFDFF ) ||	// Arabic Presentation Forms-A
+			( unicode >= 0xFE70 && unicode <= 0xFEFF )		// Arabic Presentation Forms-B
+	) {
+		return qfalse;
+	}
+
+	// some languages that can wrap lines anywhere
+	if ( ( unicode >= 0x3040 && unicode <= 0x32FF) ||	// Hiragana, Katakana
+			( unicode >= 0x4E00 && unicode <= 0xFE4F )	// CJK 
+	) {
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
+// check if this character require tight spacing behind it
+qboolean Q_IsUtf8TightSpacing( uint32_t unicode ) {
+	if ( ( unicode >= 0x0590 && unicode <= 0x05FF ) ||		// Hebrew
+			( unicode >= 0x0600 && unicode <= 0x06FF ) ||	// Arabic
+			( unicode >= 0x0750 && unicode <= 0x077F ) ||	// Arabic Supplement
+			( unicode >= 0x08A0 && unicode <= 0x08FF ) ||	// Arabic Extended-A
+			( unicode >= 0xFB50 && unicode <= 0xFDFF ) ||	// Arabic Presentation Forms-A
+			( unicode >= 0xFE70 && unicode <= 0xFEFF )		// Arabic Presentation Forms-B
+	) {
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
+// check if string require bidirectional text processing
+qboolean Q_IsUtf8StringNeedBidi( const char *str ) {
+	if ( !str || !*str ) return qfalse;
+
+	const char *p = str;
+	while ( *p ) {
+		int bytesLen = Q_utf8bytesLength(p);
+		int32_t unicode = Q_utf8ToCodePoint(p);
+
+		// these ranges may need to be adjusted 
+		// as I am not entirely sure which other languages need to be included within this range
+		if ( ( unicode >= 0x0590 && unicode <= 0x05FF ) ||		// Hebrew
+				( unicode >= 0x0600 && unicode <= 0x06FF ) ||	// Arabic
+				( unicode >= 0x0750 && unicode <= 0x077F ) ||	// Arabic Supplement
+				( unicode >= 0x08A0 && unicode <= 0x08FF ) ||	// Arabic Extended-A
+				( unicode >= 0xFB50 && unicode <= 0xFDFF ) ||	// Arabic Presentation Forms-A
+				( unicode >= 0xFE70 && unicode <= 0xFEFF )		// Arabic Presentation Forms-B
+		) {
+			return qtrue;
+		}
+		p += bytesLen;
+	}
+
+	return qfalse;
+}
+
+// using when the text contains multiple languages and they require bidirectional text processing
+// this will overwrite `char *str`
+void Q_TransToUtf8BidiString( char *str, int maxLen ) {
+#ifndef USE_FRIBIDI
+	// unicode bidirectional algorrithm: https://www.unicode.org/reports/tr9/
+	return;
+#else
+	if (!str || maxLen <= 0) {
+		return;
+	}
+
+	int len = strlen(str);
+	if (len <= 0) {
+		return;
+	}
+
+	// our input string sould be utf-8, Fribidi needs utf-32 format, so convert it 
+	FriBidiChar *text = (FriBidiChar *)malloc((len + 1) * sizeof(FriBidiChar));
+	int unicode_len = 0;
+	for (int i = 0; i < len; ) {
+		unsigned char c = (unsigned char)str[i];
+		
+		if (c < 0x80) {
+			// ascii
+			text[unicode_len++] = c;
+			i++;
+		} else if ((c & 0xE0) == 0xC0 && i + 1 < len) {
+			// 2 bytes utf-8
+			unsigned char c1 = (unsigned char)str[i+1];
+			if ((c1 & 0xC0) == 0x80) {
+				FriBidiChar code = ((c & 0x1F) << 6) | (c1 & 0x3F);
+				text[unicode_len++] = code;
+				i += 2;
+			} else {
+				i++;
+			}
+		} else if ((c & 0xF0) == 0xE0 && i + 2 < len) {
+			// 3 bytes utf-8
+			unsigned char c1 = (unsigned char)str[i+1];
+			unsigned char c2 = (unsigned char)str[i+2];
+			if ((c1 & 0xC0) == 0x80 && (c2 & 0xC0) == 0x80) {
+				FriBidiChar code = ((c & 0x0F) << 12) | ((c1 & 0x3F) << 6) | (c2 & 0x3F);
+				text[unicode_len++] = code;
+				i += 3;
+			} else {
+				i++;
+			}
+		} else if ((c & 0xF8) == 0xF0 && i + 3 < len) {
+			// 4 bytes utf-8
+			unsigned char c1 = (unsigned char)str[i+1];
+			unsigned char c2 = (unsigned char)str[i+2];
+			unsigned char c3 = (unsigned char)str[i+3];
+			if ((c1 & 0xC0) == 0x80 && (c2 & 0xC0) == 0x80 && (c3 & 0xC0) == 0x80) {
+				FriBidiChar code = ((c & 0x07) << 18) | ((c1 & 0x3F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F);
+				text[unicode_len++] = code;
+				i += 4;
+			} else {
+				i++;
+			}
+		} else {
+			i++;
+		}
+	}
+	text[unicode_len] = 0;
+
+	// using Fribidi for bidirectional processing
+	FriBidiChar *visualText = (FriBidiChar *)malloc((unicode_len + 1) * sizeof(FriBidiChar));
+	if (!visualText) {
+		free(text);
+		return;
+	}
+	FriBidiParType pbase_dir = FRIBIDI_PAR_ON;
+	fribidi_log2vis(text, unicode_len, &pbase_dir, visualText, NULL, NULL, NULL);
+
+	// convert utf-32 to utf-8 back
+	char *output = (char *)malloc(unicode_len * 4 + 1);
+	if (output) {
+		int out_len = 0;
+		
+		for (int i = 0; i < unicode_len; i++) {
+			FriBidiChar ch = visualText[i];
+			
+			if (ch <= 0x7F) {
+				output[out_len++] = (char)ch;
+			} else if (ch <= 0x7FF) {
+				output[out_len++] = 0xC0 | (ch >> 6);
+				output[out_len++] = 0x80 | (ch & 0x3F);
+			} else if (ch <= 0xFFFF) {
+				output[out_len++] = 0xE0 | (ch >> 12);
+				output[out_len++] = 0x80 | ((ch >> 6) & 0x3F);
+				output[out_len++] = 0x80 | (ch & 0x3F);
+			} else if (ch <= 0x10FFFF) {
+				output[out_len++] = 0xF0 | (ch >> 18);
+				output[out_len++] = 0x80 | ((ch >> 12) & 0x3F);
+				output[out_len++] = 0x80 | ((ch >> 6) & 0x3F);
+				output[out_len++] = 0x80 | (ch & 0x3F);
+			}
+		}
+		output[out_len] = '\0';
+		
+		// copy bytes
+		int copy_len = (out_len < maxLen - 1) ? out_len : maxLen - 1;
+		Com_Memcpy(str, output, copy_len);
+		str[copy_len] = '\0';
+		
+		free(output);
+	}
+
+	free(text);
+	free(visualText);
+#endif
+}

@@ -657,6 +657,7 @@ extern qboolean G_ScriptAction_TagConnect ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_ResetScript ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_FaceAngles ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_Print ( gentity_t * ent , char * params ) ;
+extern qboolean G_ScriptAction_PrintSubtitle( gentity_t *ent, char *params );
 
 //1NTERRUPTOR
 extern qboolean G_ScriptAction_AccumGameTime(gentity_t * ent, char * params);
@@ -1417,6 +1418,7 @@ extern qboolean AICast_ScriptAction_ApplyLoadout( cast_state_t *cs, char *params
 extern qboolean AICast_Loadouts_ApplyToEnt( cast_state_t *cs, gentity_t *target, const char *loadoutName );
 extern qboolean G_ScriptAction_ShaderRemapFlush ( gentity_t * ent , char * params ) ;
 extern qboolean G_ScriptAction_ShaderRemap ( gentity_t * ent , char * params ) ;
+extern qboolean AICast_ScriptAction_PrintSubtitle( cast_state_t *cs, char *params );
 extern void AICast_NoAttackIfNotHurtSinceLastScriptAction ( cast_state_t * cs ) ;
 extern char * AIFunc_DefaultStart ( cast_state_t * cs ) ;
 extern char * AIFunc_BattleStart ( cast_state_t * cs ) ;

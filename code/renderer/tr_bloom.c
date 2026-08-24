@@ -24,12 +24,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef USE_BLOOM
 
 
-static cvar_t *r_bloom;
+// r_bloom and r_bloom_intensity are shared with the \r_fbo 1 ARB-program bloom, registered once in tr_init.c
 static cvar_t *r_bloom_sample_size;
 static cvar_t *r_bloom_fast_sample;
 static cvar_t *r_bloom_alpha;
 static cvar_t *r_bloom_darken;
-static cvar_t *r_bloom_intensity;
 static cvar_t *r_bloom_diamond_size;
 
 /* 
@@ -470,10 +469,8 @@ void R_BloomScreen( void )
 void R_BloomInit( void ) {
 	memset( &bloom, 0, sizeof( bloom ));
 
-	r_bloom = ri.Cvar_Get( "r_bloom", "0", CVAR_ARCHIVE );
 	r_bloom_alpha = ri.Cvar_Get( "r_bloom_alpha", "0.3", CVAR_ARCHIVE );
 	r_bloom_diamond_size = ri.Cvar_Get( "r_bloom_diamond_size", "8", CVAR_ARCHIVE );
-	r_bloom_intensity = ri.Cvar_Get( "r_bloom_intensity", "1.3", CVAR_ARCHIVE );
 	r_bloom_darken = ri.Cvar_Get( "r_bloom_darken", "4", CVAR_ARCHIVE );
 	r_bloom_sample_size = ri.Cvar_Get( "r_bloom_sample_size", "128", CVAR_ARCHIVE|CVAR_LATCH );
 	r_bloom_fast_sample = ri.Cvar_Get( "r_bloom_fast_sample", "0", CVAR_ARCHIVE|CVAR_LATCH );

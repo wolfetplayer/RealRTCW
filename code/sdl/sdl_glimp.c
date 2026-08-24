@@ -96,6 +96,7 @@ QGL_3_0_PROCS;
 QGL_ARB_occlusion_query_PROCS;
 QGL_ARB_framebuffer_object_PROCS;
 QGL_ARB_vertex_array_object_PROCS;
+QGL_ARB_vertex_fragment_program_PROCS;
 QGL_EXT_direct_state_access_PROCS;
 #undef GLE
 
@@ -534,6 +535,7 @@ static void GLimp_ClearProcAddresses( void ) {
 	QGL_ARB_occlusion_query_PROCS;
 	QGL_ARB_framebuffer_object_PROCS;
 	QGL_ARB_vertex_array_object_PROCS;
+	QGL_ARB_vertex_fragment_program_PROCS;
 	QGL_EXT_direct_state_access_PROCS;
 
 	qglActiveTextureARB = NULL;

@@ -36,6 +36,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "tr_public.h"
 #include "qgl.h"
 #include "iqm.h"
+#include "tr_fbo.h"
 
 #define GLE(ret, name, ...) extern name##proc * qgl##name;
 QGL_1_1_PROCS;
@@ -43,6 +44,8 @@ QGL_1_1_FIXED_FUNCTION_PROCS;
 QGL_DESKTOP_1_1_PROCS;
 QGL_DESKTOP_1_1_FIXED_FUNCTION_PROCS;
 QGL_3_0_PROCS;
+QGL_ARB_framebuffer_object_PROCS;
+QGL_ARB_vertex_fragment_program_PROCS;
 #undef GLE
 
 #ifdef USE_OPENGLES
@@ -1195,6 +1198,9 @@ typedef struct {
 	image_t                 *whiteImage;            // full of 0xff
 	image_t                 *identityLightImage;    // full of tr.identityLightByte
 
+	FBO_t                   *mainFbo;               // offscreen render target when \r_fbo 1, see tr_fbo.c
+	FBO_t                   *bloomFbo[2];           // half-res ping-pong scratch for \r_bloom, see tr_arb.c
+
 	shader_t                *defaultShader;
 	shader_t                *shadowShader;
 	shader_t		*projectionShadowShader;
@@ -1220,6 +1226,7 @@ typedef struct {
 	float identityLight;                        // 1.0 / ( 1 << overbrightBits )
 	int identityLightByte;                      // identityLight * 255
 	int overbrightBits;                         // r_overbrightBits->integer, but set to 0 if no hw gamma
+	float invGamma;                             // 1.0 / r_gamma->value, applied by the \r_fbo gamma ARB fragment program
 
 	orientationr_t          or;                 // for current entity
 
@@ -1279,6 +1286,31 @@ extern trGlobals_t tr;
 extern glconfig_t glConfig;         // outside of TR since it shouldn't be cleared during ref re-init
 extern glstate_t glState;           // outside of TR since it shouldn't be cleared during ref re-init
 
+// capability flags for extensions not covered by glconfig_t, detected by GLimp_InitExtraExtensions() (tr_extensions.c)
+typedef struct {
+	qboolean	framebufferObject;      // GL_ARB_framebuffer_object
+	int			maxRenderbufferSize;
+	int			maxColorAttachments;
+	qboolean	framebufferBlit;
+	qboolean	framebufferMultisample;
+
+	qboolean	arbPrograms;            // GL_ARB_vertex_program + GL_ARB_fragment_program
+} glRefConfig_t;
+
+extern glRefConfig_t glRefConfig;
+
+// generic ARB assembly program compile/bind helpers, see tr_arb.c
+qboolean ARB_CompileProgram( GLenum target, const char *text, GLuint program );
+void     ARB_ProgramEnable( GLuint vp, GLuint fp );
+void     ARB_ProgramDisable( void );
+qboolean GL_ProgramAvailable( void );
+
+// specific ARB program effects used by the \r_fbo pipeline, see tr_arb.c
+void     ARB_InitPrograms( void );
+void     ARB_ShutdownPrograms( void );
+void     FBO_PostProcess( void );
+void     FBO_Bloom( void );
+
 // These two variables should live inside glConfig but can't because of compatibility issues to the original ID vms.
 // If you release a stand-alone game and your mod uses tr_types.h from this build you can safely move them to
 // the glconfig_t struct.
@@ -1318,6 +1350,13 @@ extern cvar_t   *r_texturebits;         // number of desired texture bits
 										// 32 = use 32-bit textures
 										// all else = error
 extern cvar_t	*r_ext_multisample;
+
+extern cvar_t   *r_fbo;                 // render into an offscreen FBO instead of directly to the backbuffer, see tr_fbo.c
+
+extern cvar_t   *r_bloom;               // shared by the \r_fbo 1 ARB-program bloom and the legacy \r_fbo 0 fallback (only one runs per frame)
+extern cvar_t   *r_bloom_threshold;     // brightness (0..1) a pixel must exceed to contribute to bloom
+extern cvar_t   *r_bloom_intensity;     // blend strength of the bloom glow
+extern cvar_t   *r_bloom_passes;        // separable blur iterations; higher = wider/softer glow
 
 extern cvar_t   *r_measureOverdraw;     // enables stencil buffer overdraw measurement
 
@@ -1629,6 +1668,8 @@ qboolean	GLimp_IsMinimized(void);
 void	GLimp_SetGamma( unsigned char red[256],
 					 unsigned char green[256],
 					 unsigned char blue[256] );
+
+void	GLimp_InitExtraExtensions( void );
 
 
 /*

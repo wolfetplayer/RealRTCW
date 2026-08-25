@@ -435,7 +435,7 @@ lighting range
 */
 void R_LightScaleTexture( unsigned *in, int inwidth, int inheight, qboolean only_gamma ) {
 	if ( only_gamma ) {
-		if ( !glConfig.deviceSupportsGamma ) {
+		if ( R_UseSoftwareGamma() ) {
 			int i, c;
 			byte    *p;
 
@@ -458,7 +458,7 @@ void R_LightScaleTexture( unsigned *in, int inwidth, int inheight, qboolean only
 
 		c = inwidth * inheight;
 
-		if ( glConfig.deviceSupportsGamma ) {
+		if ( !R_UseSoftwareGamma() ) {
 			for ( i = 0 ; i < c ; i++, p += 4 )
 			{
 				p[0] = s_intensitytable[p[0]];

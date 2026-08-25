@@ -42,6 +42,9 @@ qboolean ARB_CompileProgram( GLenum target, const char *text, GLuint program )
 	GLint errorPos;
 	GLenum errCode;
 
+	// drain errors pending from earlier in this init pass so they aren't misattributed below
+	while ( qglGetError() != GL_NO_ERROR ) {}
+
 	qglBindProgramARB( target, program );
 	qglProgramStringARB( target, GL_PROGRAM_FORMAT_ASCII_ARB, (GLsizei)strlen( text ), text );
 	qglGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &errorPos );
@@ -265,6 +268,10 @@ void ARB_ShutdownPrograms( void )
 	}
 	Com_Memset( arbPrograms, 0, sizeof( arbPrograms ) );
 	arbProgramsReady = qfalse;
+
+	// these named programs are gone; don't let a later re-init's recycled IDs match the stale cache
+	current_vp = 0;
+	current_fp = 0;
 }
 
 

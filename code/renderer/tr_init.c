@@ -1121,6 +1121,10 @@ void GfxInfo_f( void ) {
 	{
 		ri.Printf( PRINT_ALL, "GAMMA: software w/ %d overbright bits\n", tr.overbrightBits );
 	}
+	ri.Printf( PRINT_ALL, "FBO: %s\n", fboEnabled ? "enabled" : "disabled" );
+	ri.Printf( PRINT_ALL, "FBO gamma shader (ARB programs): %s\n", GL_ProgramAvailable() ? "ready" : "not ready" );
+	ri.Printf( PRINT_ALL, "GL_ARB_vertex_program / GL_ARB_fragment_program: %s\n", glRefConfig.arbPrograms ? "supported" : "NOT supported" );
+	ri.Printf( PRINT_ALL, "r_gamma: %g  tr.invGamma: %g  r_ignorehwgamma: %d\n", r_gamma->value, tr.invGamma, r_ignorehwgamma->integer );
 
 	// rendering primitives
 	{

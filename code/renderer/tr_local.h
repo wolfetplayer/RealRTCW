@@ -2164,6 +2164,10 @@ void R_MDC_DecodeXyzCompressed( mdcXyzCompressed_t *xyzComp, vec3_t out, vec3_t 
 #endif
 
 static ID_INLINE qboolean R_UseSoftwareGamma( void ) {
+	// FBO_PostProcess() applies gamma live every frame in this case; don't also bake it in
+	if ( fboEnabled && GL_ProgramAvailable() ) {
+		return qfalse;
+	}
 	return !glConfig.deviceSupportsGamma;
 }
 

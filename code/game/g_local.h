@@ -743,6 +743,7 @@ typedef struct {
 	char        *scriptAI;
 	int reloadPauseTime;                // don't think AI/client's until this time has elapsed
 	int reloadDelayTime;                // don't start loading the savegame until this has expired
+	qboolean pendingCheckpointSave;     // checkpoint save deferred until the player's script runs this frame
 
 	int lastGrenadeKick;
 
@@ -1274,6 +1275,8 @@ extern vmCvar_t g_cvopsChargeTime;
 // jpw
 
 extern vmCvar_t g_playerStart;      //----(SA)	added
+extern vmCvar_t g_checkpointReady;
+extern vmCvar_t g_levelSelectPending;
 
 extern vmCvar_t g_localTeamPref;
 

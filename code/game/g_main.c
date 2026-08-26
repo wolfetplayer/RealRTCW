@@ -145,6 +145,8 @@ vmCvar_t g_cvopsChargeTime;
 // jpw
 
 vmCvar_t g_playerStart;         // set when the player enters the game
+vmCvar_t g_checkpointReady;     // set once a real checkpoint has been saved for the current level
+vmCvar_t g_levelSelectPending;  // mirrors g_level_was_selected until a checkpoint actually saves
 
 vmCvar_t g_localTeamPref;
 
@@ -272,6 +274,8 @@ cvarTable_t gameCvarTable[] = {
 	// jpw
 
 	{&g_playerStart, "g_playerStart", "0", CVAR_ROM, 0, qfalse},
+	{&g_checkpointReady, "g_checkpointReady", "0", CVAR_ROM, 0, qfalse},
+	{&g_levelSelectPending, "g_levelSelectPending", "0", CVAR_ROM, 0, qfalse},
 
 	{&g_maxclients, "sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse},
 	{&g_maxGameClients, "g_maxGameClients", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse},
@@ -1256,14 +1260,10 @@ void G_UpdateCvars( void ) {
 						// now let it think
 						AICast_CastScriptThink();
 
-						// if we are not watching a cutscene, save the game
-						if (!g_entities[0].client->cameraPortal)
+						// deferred: playerstart's own script (loadout grant) hasn't run yet, it runs later this frame in AICast_StartServerFrame()
+						if (g_gametype.integer != GT_SURVIVAL)
 						{
-							if (g_gametype.integer != GT_SURVIVAL)
-							{
-								G_SaveGame(NULL);
-								G_SaveGame("lastcheckpoint");
-							}
+							level.pendingCheckpointSave = qtrue;
 						}
 						trap_Cvar_Set( "cg_norender", "0" );  // camera has started, render 'on'
 						trap_Cvar_Set( "g_playerstart", "0" ); // reset calling of "playerstart" from script
@@ -2430,8 +2430,21 @@ void CheckReloadStatus( void ) {
 				}
 				else
 				{
-					// set the loadgame flag, and restart the server
-					trap_Cvar_Set( "savegame_loading", "2" ); // 2 means it's a restart, so stop rendering until we are loaded
+					// only reload the checkpoint if this level actually reached one; otherwise it's stale from a different map
+					if ( trap_Cvar_VariableIntegerValue( "g_checkpointReady" ) )
+					{
+						trap_Cvar_Set( "savegame_loading", "2" ); // 2 means it's a restart, so stop rendering until we are loaded
+					}
+					else
+					{
+						trap_Cvar_Set( "savegame_loading", "0" );
+
+						// restore it so playerstart grants the level-select loadout again on this restart
+						if ( trap_Cvar_VariableIntegerValue( "g_levelSelectPending" ) )
+						{
+							trap_Cvar_Set( "g_level_was_selected", "1" );
+						}
+					}
 					trap_SendConsoleCommand( EXEC_INSERT, "map_restart\n" );
 				}
 
@@ -2818,6 +2831,16 @@ void G_RunFrame( int levelTime ) {
 	if (g_gametype.integer == GT_SURVIVAL)
 	{
 		AICast_TickSurvivalWave();
+	}
+
+	// playerstart's script has now run (see AICast_StartServerFrame above), safe to checkpoint
+	if ( level.pendingCheckpointSave && !g_entities[0].client->cameraPortal )
+	{
+		level.pendingCheckpointSave = qfalse;
+		G_SaveGame( NULL );
+		G_SaveGame( "lastcheckpoint" );
+		trap_Cvar_Set( "g_checkpointReady", "1" );
+		trap_Cvar_Set( "g_levelSelectPending", "0" );
 	}
 
 	// perform final fixups on the players

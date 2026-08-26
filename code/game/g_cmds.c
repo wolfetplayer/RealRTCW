@@ -1282,6 +1282,8 @@ void Cmd_StopCamera_f( gentity_t *ent ) {
 				if ( g_gametype.integer != GT_SURVIVAL ) {
 					G_SaveGame( NULL );
 					G_SaveGame( "lastcheckpoint" );
+					trap_Cvar_Set( "g_checkpointReady", "1" );
+					trap_Cvar_Set( "g_levelSelectPending", "0" );
 				}
 
 				break;

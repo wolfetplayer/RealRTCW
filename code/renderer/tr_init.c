@@ -135,10 +135,6 @@ cvar_t  *r_primitives;
 cvar_t  *r_texturebits;
 cvar_t  *r_ext_multisample;
 cvar_t  *r_fbo;
-cvar_t  *r_bloom;
-cvar_t  *r_bloom_threshold;
-cvar_t  *r_bloom_intensity;
-cvar_t  *r_bloom_passes;
 
 cvar_t  *r_drawBuffer;
 cvar_t  *r_glIgnoreWicked3D;
@@ -1254,15 +1250,8 @@ void R_Register( void ) {
 	r_depthbits = ri.Cvar_Get( "r_depthbits", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_ext_multisample = ri.Cvar_Get( "r_ext_multisample", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	ri.Cvar_CheckRange( r_ext_multisample, 0, 4, qtrue );
-	r_fbo = ri.Cvar_Get( "r_fbo", "0", CVAR_ARCHIVE | CVAR_LATCH );
+	r_fbo = ri.Cvar_Get( "r_fbo", "1", CVAR_ARCHIVE | CVAR_LATCH );
 	ri.Cvar_CheckRange( r_fbo, 0, 1, qtrue );
-
-	// shared by the \r_fbo 1 ARB-program bloom and the legacy \r_fbo 0 fallback
-	r_bloom = ri.Cvar_Get( "r_bloom", "0", CVAR_ARCHIVE );
-	r_bloom_threshold = ri.Cvar_Get( "r_bloom_threshold", "0.6", CVAR_ARCHIVE );
-	r_bloom_intensity = ri.Cvar_Get( "r_bloom_intensity", "0.5", CVAR_ARCHIVE );
-	r_bloom_passes = ri.Cvar_Get( "r_bloom_passes", "2", CVAR_ARCHIVE );
-	ri.Cvar_CheckRange( r_bloom_passes, 1, 8, qtrue );
 	r_overBrightBits = ri.Cvar_Get( "r_overBrightBits", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_ignorehwgamma = ri.Cvar_Get( "r_ignorehwgamma", "0", CVAR_ARCHIVE | CVAR_LATCH );
 #ifdef USE_OPENGLES

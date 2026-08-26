@@ -112,17 +112,15 @@ void ARB_ProgramDisable( void )
 
 FBO POST-PROCESS EFFECTS
 
-Effects applied while blitting tr.mainFbo to the real backbuffer at the end
-of each frame (see RB_SwapBuffers in tr_backend.c). This renderer has no
-GLSL pipeline, so these are ARB assembly fragment programs instead.
+Applied while blitting tr.mainFbo to the real backbuffer at the end of each
+frame (see RB_SwapBuffers in tr_backend.c). This renderer has no GLSL
+pipeline, so gamma correction is an ARB assembly fragment program instead.
 
 ==============================================================================
 */
 
 typedef enum {
 	GAMMA_FRAGMENT,
-	THRESHOLD_FRAGMENT,
-	BLUR_FRAGMENT,
 	NUM_ARB_PROGRAMS
 } arbProgramNum;
 
@@ -139,79 +137,6 @@ static const char *gammaFP =
 	"POW result.color.z, tex.z, program.local[0].x;\n"
 	"MOV result.color.w, tex.w;\n"
 	"END\n";
-
-// extracts pixels above program.local[0].x (r_bloom_threshold), scaled by program.local[0].y (r_bloom_intensity); first step of FBO_Bloom()
-static const char *thresholdFP =
-	"!!ARBfp1.0\n"
-	"TEMP tex, luma, bright;\n"
-	"TEX tex, fragment.texcoord[0], texture[0], 2D;\n"
-	"DP3 luma.x, tex, {0.299, 0.587, 0.114, 0.0};\n"
-	"SUB luma.x, luma.x, program.local[0].x;\n"
-	"CMP bright, luma.xxxx, {0.0, 0.0, 0.0, 0.0}, tex;\n"
-	"MUL result.color, bright, program.local[0].y;\n"
-	"END\n";
-
-// 5-tap separable Gaussian blur; program.local[0].xy = per-pass texel step (see FBO_Bloom())
-static const char *blurFP =
-	"!!ARBfp1.0\n"
-	"PARAM step = program.local[0];\n"
-	"TEMP tex, sum, coord;\n"
-	"MAD coord, step, {-2.0, -2.0, 0.0, 0.0}, fragment.texcoord[0];\n"
-	"TEX tex, coord, texture[0], 2D;\n"
-	"MUL sum, tex, {0.06136, 0.06136, 0.06136, 0.06136};\n"
-	"MAD coord, step, {-1.0, -1.0, 0.0, 0.0}, fragment.texcoord[0];\n"
-	"TEX tex, coord, texture[0], 2D;\n"
-	"MAD sum, tex, {0.24477, 0.24477, 0.24477, 0.24477}, sum;\n"
-	"TEX tex, fragment.texcoord[0], texture[0], 2D;\n"
-	"MAD sum, tex, {0.38774, 0.38774, 0.38774, 0.38774}, sum;\n"
-	"MAD coord, step, {1.0, 1.0, 0.0, 0.0}, fragment.texcoord[0];\n"
-	"TEX tex, coord, texture[0], 2D;\n"
-	"MAD sum, tex, {0.24477, 0.24477, 0.24477, 0.24477}, sum;\n"
-	"MAD coord, step, {2.0, 2.0, 0.0, 0.0}, fragment.texcoord[0];\n"
-	"TEX tex, coord, texture[0], 2D;\n"
-	"MAD result.color, tex, {0.06136, 0.06136, 0.06136, 0.06136}, sum;\n"
-	"END\n";
-
-
-/*
-==============
-FBO_Ortho2D
-
-Sets up an ordinary bottom-left-origin ortho projection matching an FBO's own
-texture convention, for FBO-to-FBO draws (unlike RB_SetGL2D's top-left/Y-down
-screen space, which is only correct when the destination is the real backbuffer).
-==============
-*/
-static void FBO_Ortho2D( int width, int height )
-{
-	qglMatrixMode( GL_PROJECTION );
-	qglLoadIdentity();
-	qglOrtho( 0, width, 0, height, 0, 1 );
-	qglMatrixMode( GL_MODELVIEW );
-	qglLoadIdentity();
-
-	GL_Cull( CT_TWO_SIDED );
-	qglDisable( GL_CLIP_PLANE0 );
-	qglDisable( GL_FOG );
-}
-
-
-/*
-==============
-RB_FBOQuad
-
-Full-viewport textured quad, texcoords unflipped (see FBO_Ortho2D above).
-==============
-*/
-static void RB_FBOQuad( int width, int height )
-{
-	qglBegin( GL_QUADS );
-		qglTexCoord2f( 0.0f, 0.0f ); qglVertex2f( 0.0f, 0.0f );
-		qglTexCoord2f( 1.0f, 0.0f ); qglVertex2f( (float)width, 0.0f );
-		qglTexCoord2f( 1.0f, 1.0f ); qglVertex2f( (float)width, (float)height );
-		qglTexCoord2f( 0.0f, 1.0f ); qglVertex2f( 0.0f, (float)height );
-	qglEnd();
-}
 
 
 /*
@@ -244,9 +169,7 @@ void ARB_InitPrograms( void )
 
 	qglGenProgramsARB( NUM_ARB_PROGRAMS, arbPrograms );
 
-	if ( !ARB_CompileProgram( GL_FRAGMENT_PROGRAM_ARB, gammaFP, arbPrograms[ GAMMA_FRAGMENT ] ) ||
-		 !ARB_CompileProgram( GL_FRAGMENT_PROGRAM_ARB, thresholdFP, arbPrograms[ THRESHOLD_FRAGMENT ] ) ||
-		 !ARB_CompileProgram( GL_FRAGMENT_PROGRAM_ARB, blurFP, arbPrograms[ BLUR_FRAGMENT ] ) ) {
+	if ( !ARB_CompileProgram( GL_FRAGMENT_PROGRAM_ARB, gammaFP, arbPrograms[ GAMMA_FRAGMENT ] ) ) {
 		qglDeleteProgramsARB( NUM_ARB_PROGRAMS, arbPrograms );
 		Com_Memset( arbPrograms, 0, sizeof( arbPrograms ) );
 		return;
@@ -314,84 +237,4 @@ void FBO_PostProcess( void )
 	qglEnd();
 
 	ARB_ProgramDisable();
-}
-
-
-/*
-==============
-FBO_Bloom
-
-Extracts bright pixels from the just-rendered 3D scene (tr.mainFbo), blurs them,
-and additively composites the glow back into tr.mainFbo -- called from the same
-RB_ExecuteRenderCommands trigger points tr_bloom.c's legacy R_BloomScreen() uses
-(RC_STRETCH_PIC/RC_STRETCH_PIC_GRADIENT/RC_SWAP_BUFFERS), so bloom
-lands before any 2D UI is drawn on top, same as the old implementation.
-==============
-*/
-void FBO_Bloom( void )
-{
-	FBO_t *src, *dst, *tmp;
-	int i;
-
-	if ( !fboEnabled || !arbProgramsReady || !r_bloom->integer ) {
-		return;
-	}
-	if ( backEnd.doneBloom ) {
-		return;
-	}
-	if ( !backEnd.doneSurfaces ) {
-		return;
-	}
-	backEnd.doneBloom = qtrue;
-
-	if ( !tr.bloomFbo[0] || !tr.bloomFbo[1] ) {
-		return;
-	}
-
-	// 1. threshold-extract bright pixels from the main scene into bloomFbo[0]
-	FBO_Bind( tr.bloomFbo[0] );
-	qglViewport( 0, 0, tr.bloomFbo[0]->width, tr.bloomFbo[0]->height );
-	qglScissor( 0, 0, tr.bloomFbo[0]->width, tr.bloomFbo[0]->height );
-	FBO_Ortho2D( tr.bloomFbo[0]->width, tr.bloomFbo[0]->height );
-	GL_State( GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_ONE | GLS_DSTBLEND_ZERO );
-	GL_SelectTexture( 0 );
-	GL_Bind( (image_t *)tr.mainFbo->colorImage );
-	ARB_ProgramEnable( 0, arbPrograms[ THRESHOLD_FRAGMENT ] );
-	qglProgramLocalParameter4fARB( GL_FRAGMENT_PROGRAM_ARB, 0,
-		r_bloom_threshold->value, r_bloom_intensity->value, 0.0f, 0.0f );
-	qglColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
-	RB_FBOQuad( tr.bloomFbo[0]->width, tr.bloomFbo[0]->height );
-
-	// 2. separable blur, ping-ponging horizontal/vertical passes between the two scratch FBOs
-	src = tr.bloomFbo[0];
-	dst = tr.bloomFbo[1];
-	ARB_ProgramEnable( 0, arbPrograms[ BLUR_FRAGMENT ] );
-	for ( i = 0; i < r_bloom_passes->integer * 2; i++ ) {
-		FBO_Bind( dst );
-		qglViewport( 0, 0, dst->width, dst->height );
-		qglScissor( 0, 0, dst->width, dst->height );
-		GL_Bind( (image_t *)src->colorImage );
-		if ( i & 1 ) {
-			qglProgramLocalParameter4fARB( GL_FRAGMENT_PROGRAM_ARB, 0, 0.0f, 1.0f / dst->height, 0.0f, 0.0f );
-		} else {
-			qglProgramLocalParameter4fARB( GL_FRAGMENT_PROGRAM_ARB, 0, 1.0f / dst->width, 0.0f, 0.0f, 0.0f );
-		}
-		RB_FBOQuad( dst->width, dst->height );
-
-		tmp = src; src = dst; dst = tmp;
-	}
-
-	// 3. additively composite the blurred glow back into the main scene, fixed-function
-	FBO_Bind( tr.mainFbo );
-	qglViewport( 0, 0, tr.mainFbo->width, tr.mainFbo->height );
-	qglScissor( 0, 0, tr.mainFbo->width, tr.mainFbo->height );
-	FBO_Ortho2D( tr.mainFbo->width, tr.mainFbo->height );
-	GL_State( GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE );
-	GL_Bind( (image_t *)src->colorImage );
-	ARB_ProgramDisable();
-	qglColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
-	RB_FBOQuad( tr.mainFbo->width, tr.mainFbo->height );
-
-	// restore standard top-left/Y-down 2D screen state for whatever UI draw triggered us
-	RB_SetGL2D();
 }

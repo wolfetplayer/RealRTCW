@@ -20,7 +20,7 @@ along with XreaL source code; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
-// tr_fbo.c -- minimal framebuffer-object core backing tr.mainFbo and the \r_bloom scratch FBOs, trimmed from code/rend2/tr_fbo.c; see tr_arb.c for the ARB fragment program effects that sample these
+// tr_fbo.c -- minimal framebuffer-object core backing tr.mainFbo, trimmed from code/rend2/tr_fbo.c; see tr_arb.c for the gamma-correction ARB fragment program that samples it
 
 #include "tr_local.h"
 
@@ -255,9 +255,7 @@ FBO_Init
 void FBO_Init( void )
 {
 	int width, height;
-	int bloomWidth, bloomHeight;
 	image_t *colorImage;
-	int i;
 
 	ri.Printf( PRINT_ALL, "------- FBO_Init -------\n" );
 
@@ -289,31 +287,6 @@ void FBO_Init( void )
 		return;
 	}
 
-	// half-res ping-pong scratch for \r_bloom, always created alongside so it can toggle live
-	bloomWidth = width / 2;
-	if ( bloomWidth < 4 ) {
-		bloomWidth = 4;
-	}
-	bloomHeight = height / 2;
-	if ( bloomHeight < 4 ) {
-		bloomHeight = 4;
-	}
-
-	for ( i = 0; i < 2; i++ ) {
-		image_t *bloomColorImage = FBO_CreateColorImage( va( "_bloom%d", i ), bloomWidth, bloomHeight, GL_RGBA8 );
-
-		tr.bloomFbo[i] = FBO_Create( va( "_bloom%d", i ), bloomWidth, bloomHeight );
-		FBO_AttachImage( tr.bloomFbo[i], bloomColorImage, GL_COLOR_ATTACHMENT0 );
-
-		if ( !R_CheckFBO( tr.bloomFbo[i] ) ) {
-			ri.Printf( PRINT_WARNING, "WARNING: bloom FBO %i incomplete, disabling \\r_bloom\n", i );
-			FBO_Delete( tr.bloomFbo[0] );
-			FBO_Delete( tr.bloomFbo[1] );
-			tr.bloomFbo[0] = tr.bloomFbo[1] = NULL;
-			break;
-		}
-	}
-
 	fboEnabled = qtrue;
 
 	ARB_InitPrograms();
@@ -342,10 +315,6 @@ void FBO_Shutdown( void )
 	FBO_Delete( tr.mainFbo );
 	tr.mainFbo = NULL;
 
-	FBO_Delete( tr.bloomFbo[0] );
-	FBO_Delete( tr.bloomFbo[1] );
-	tr.bloomFbo[0] = tr.bloomFbo[1] = NULL;
-
 	fboEnabled = qfalse;
 }
 
@@ -365,11 +334,5 @@ void R_FBOList_f( void )
 	ri.Printf( PRINT_ALL, "             size       name\n" );
 	ri.Printf( PRINT_ALL, "----------------------------------------------------------\n" );
 	ri.Printf( PRINT_ALL, "  %4i %4i  %s\n", tr.mainFbo->width, tr.mainFbo->height, tr.mainFbo->name );
-	if ( tr.bloomFbo[0] ) {
-		ri.Printf( PRINT_ALL, "  %4i %4i  %s\n", tr.bloomFbo[0]->width, tr.bloomFbo[0]->height, tr.bloomFbo[0]->name );
-		ri.Printf( PRINT_ALL, "  %4i %4i  %s\n", tr.bloomFbo[1]->width, tr.bloomFbo[1]->height, tr.bloomFbo[1]->name );
-		ri.Printf( PRINT_ALL, " 3 FBOs\n" );
-	} else {
-		ri.Printf( PRINT_ALL, " 1 FBO\n" );
-	}
+	ri.Printf( PRINT_ALL, " 1 FBO\n" );
 }

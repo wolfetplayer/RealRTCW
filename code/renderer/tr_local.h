@@ -1199,7 +1199,6 @@ typedef struct {
 	image_t                 *identityLightImage;    // full of tr.identityLightByte
 
 	FBO_t                   *mainFbo;               // offscreen render target when \r_fbo 1, see tr_fbo.c
-	FBO_t                   *bloomFbo[2];           // half-res ping-pong scratch for \r_bloom, see tr_arb.c
 
 	shader_t                *defaultShader;
 	shader_t                *shadowShader;
@@ -1305,11 +1304,10 @@ void     ARB_ProgramEnable( GLuint vp, GLuint fp );
 void     ARB_ProgramDisable( void );
 qboolean GL_ProgramAvailable( void );
 
-// specific ARB program effects used by the \r_fbo pipeline, see tr_arb.c
+// gamma-correction ARB program used by the \r_fbo pipeline, see tr_arb.c
 void     ARB_InitPrograms( void );
 void     ARB_ShutdownPrograms( void );
 void     FBO_PostProcess( void );
-void     FBO_Bloom( void );
 
 // These two variables should live inside glConfig but can't because of compatibility issues to the original ID vms.
 // If you release a stand-alone game and your mod uses tr_types.h from this build you can safely move them to
@@ -1352,11 +1350,6 @@ extern cvar_t   *r_texturebits;         // number of desired texture bits
 extern cvar_t	*r_ext_multisample;
 
 extern cvar_t   *r_fbo;                 // render into an offscreen FBO instead of directly to the backbuffer, see tr_fbo.c
-
-extern cvar_t   *r_bloom;               // shared by the \r_fbo 1 ARB-program bloom and the legacy \r_fbo 0 fallback (only one runs per frame)
-extern cvar_t   *r_bloom_threshold;     // brightness (0..1) a pixel must exceed to contribute to bloom
-extern cvar_t   *r_bloom_intensity;     // blend strength of the bloom glow
-extern cvar_t   *r_bloom_passes;        // separable blur iterations; higher = wider/softer glow
 
 extern cvar_t   *r_measureOverdraw;     // enables stencil buffer overdraw measurement
 

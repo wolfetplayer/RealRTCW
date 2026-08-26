@@ -1701,22 +1701,14 @@ void RB_ExecuteRenderCommands( const void *data ) {
 		case RC_STRETCH_PIC:
 #ifdef USE_BLOOM
 			//Check if it's time for BLOOM!
-			if ( fboEnabled ) {
-				FBO_Bloom();
-			} else {
-				R_BloomScreen();
-			}
+			R_BloomScreen();
 #endif
 			data = RB_StretchPic( data );
 			break;
 		case RC_STRETCH_PIC_GRADIENT:
 #ifdef USE_BLOOM
 			//Check if it's time for BLOOM!
-			if ( fboEnabled ) {
-				FBO_Bloom();
-			} else {
-				R_BloomScreen();
-			}
+			R_BloomScreen();
 #endif
 			data = RB_StretchPicGradient( data );
 			break;
@@ -1729,11 +1721,7 @@ void RB_ExecuteRenderCommands( const void *data ) {
 		case RC_SWAP_BUFFERS:
 #ifdef USE_BLOOM
 			//Check if it's time for BLOOM!
-			if ( fboEnabled ) {
-				FBO_Bloom();
-			} else {
-				R_BloomScreen();
-			}
+			R_BloomScreen();
 #endif
 			data = RB_SwapBuffers( data );
 			break;

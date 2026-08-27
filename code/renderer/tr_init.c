@@ -608,14 +608,22 @@ RB_TakeScreenshotCmd
 */
 const void *RB_TakeScreenshotCmd( const void *data ) {
 	const screenshotCommand_t	*cmd;
-	
+
 	cmd = (const screenshotCommand_t *)data;
-	
+
+	if ( fboEnabled ) {
+		FBO_PostProcess();
+	}
+
 	if (cmd->jpeg)
 		RB_TakeScreenshotJPEG( cmd->x, cmd->y, cmd->width, cmd->height, cmd->fileName);
 	else
 		RB_TakeScreenshot( cmd->x, cmd->y, cmd->width, cmd->height, cmd->fileName);
-	
+
+	if ( fboEnabled ) {
+		FBO_Bind( tr.mainFbo );
+	}
+
 	return (const void *)(cmd + 1);
 }
 
@@ -715,8 +723,16 @@ void R_LevelShot( void ) {
 
 	Com_sprintf(checkname, sizeof(checkname), "levelshots/%s.tga", tr.world->baseName);
 
+	if ( fboEnabled ) {
+		FBO_PostProcess();
+	}
+
 	allsource = RB_ReadPixels(0, 0, glConfig.vidWidth, glConfig.vidHeight, &offset, &padlen);
 	source = allsource + offset;
+
+	if ( fboEnabled ) {
+		FBO_Bind( tr.mainFbo );
+	}
 
 	buffer = ri.Hunk_AllocateTempMemory(128 * 128*3 + 18);
 	Com_Memset (buffer, 0, 18);

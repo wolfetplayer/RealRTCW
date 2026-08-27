@@ -1,0 +1,30 @@
+car_zombi
+{
+ spawn
+  {
+  }
+ trigger go
+  {
+   wait 1500
+   playsound sound/music/level5/death.wav
+   playanim 1 132 1 20
+  }
+}
+end_i
+{
+
+ spawn
+  {
+  }
+
+ trigger go
+  {
+   gotomarker hh 5000 wait
+   faceangles 0 180 0 100 
+  }
+
+ trigger go1
+  {
+   playanim 1 89 1 140
+  }
+}

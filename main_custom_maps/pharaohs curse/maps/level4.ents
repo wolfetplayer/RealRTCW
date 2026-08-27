@@ -1,0 +1,32 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "weapon_flamethrower"
+"origin" "5289 3671 -111"
+}
+
+{
+"classname" "ammo_fuel"
+"origin" "5319 3685 -111"
+}
+
+{
+"classname" "ammo_fuel"
+"origin" "5287 3635 -111"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

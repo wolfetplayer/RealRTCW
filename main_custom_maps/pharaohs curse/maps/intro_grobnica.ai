@@ -1,0 +1,1148 @@
+player
+{
+ spawn
+  {
+  }
+ playerstart
+ {
+trigger player start_intro_start
+//trigger player start_intro2
+ }
+ trigger start_intro_start
+ {
+  lockplayer on
+  alertentity expert
+  alertentity direktor
+  trigger direktor teleport_start1
+  startcam i34
+  trigger suzu_os1 sou_start
+  trigger suzu_os1 go
+  trigger suzu_os2 go
+  wait 1500
+  mu_queue sound/scenaric/intro_dialog/Announce_1.wav
+  wait 11500
+  mu_stop 100
+  stopcam
+  trigger suzu_os1 sou_stop
+  startcam i35
+  trigger suzu2 go
+  wait 1000
+  trigger direktor go_start1
+  wait 4000
+  startcam i36
+  trigger direktor go_start2
+  trigger expert teleport_start1
+  wait 3000
+  startcam i37
+  wait 3000
+  trigger expert dialog1
+  wait 8000
+  trigger direktor dialog2
+  wait 7000
+  trigger expert dialog2
+  wait 5000
+  trigger direktor dialog3
+  wait 2000
+  trigger direktor go_start3
+  trigger expert go_start1
+  wait 3000
+  trigger direktor go_start4
+  trigger expert go_start2
+  stopcam
+  startcam i38
+  wait 2000
+  trigger direktor dialog4
+  wait 12000
+  trigger player start_intro1
+ }
+ trigger start_intro1
+ {
+  alertentity kristin
+  trigger direktor teleport_1
+  trigger expert teleport_1
+  stopcam
+  startcam i1
+  trigger direktor go_1
+  trigger expert go_1
+  wait 1000
+  trigger direktor dialog5
+  wait 13700
+  trigger direktor teleport_2
+  trigger expert teleport_2
+  stopcam
+  startcam i2
+  trigger direktor go_2
+  trigger expert go_2
+  wait 1500
+  trigger direktor dialog6
+  wait 18000  
+  trigger direktor teleport_3
+  trigger expert teleport_3
+  trigger direktor go_3
+  stopcam
+  startcam i3
+  trigger expert go_3
+  wait 3000
+  trigger direktor dialog7
+  wait 15000
+  trigger direktor dialog8
+  wait 6000
+  trigger kristin kristin_go1
+  startcam i4
+  wait 1000
+  trigger kristin dialog1
+  wait 1200
+  stopcam
+  startcam i4_3
+  trigger expert dialog3
+  wait 1200
+  trigger kristin dialog2
+  wait 5000
+  trigger expert dialog4
+  wait 16600
+  startcam i5
+  wait 500
+  trigger kristin kristin_go2  
+  wait 200
+  trigger kristin dialog3
+  wait 56500
+
+  startcam i5_2
+  trigger direktor dialog9_1
+  wait 4000
+  stopcam
+  startcam i5_2_1
+  trigger direktor dialog9_2
+  wait 10000
+
+  startcam i5_3
+  trigger expert dialog5
+  wait 4500
+  trigger expert final
+  trigger player start_intro2
+ }
+trigger start_intro2
+ {
+  stopcam
+  trigger expert final
+  alertentity kill_scena1
+  alertentity brat1
+  alertentity brat2
+  alertentity car_zombie
+  mu_fade 0 5000
+  mu_start sound/scenaric/miks/main_menu.wav 
+  startcam i6
+  wait 10000
+  stopcam
+  startcam i7
+  wait 10000
+  stopcam
+  startcam i8
+  wait 5000
+  trigger brat2 dialog1
+  wait 7000
+  trigger brat1 dialog1
+  wait 1000
+  trigger d2 go
+  wait 5000
+  trigger brat1 go1
+  trigger brat2 go1
+  wait 10000
+  trigger brat2 dialog2
+  wait 2000
+  startcam i9
+  wait 6000
+  trigger brat1 dialog2
+  wait 7000
+  trigger brat1 go2
+  wait 1000
+  trigger brat2 go2
+  wait 2000
+  startcam i10  
+  wait 3000
+  mu_stop 5000
+  wait 5000
+  trigger brat1 go2_1
+  trigger brat2 go2_1
+  wait 1500
+
+  stopcam
+  startcam i12
+  wait 4000
+
+  stopcam
+  startcam i12_1
+  wait 500
+  trigger brat2 dialog3
+  wait 5000
+  stopcam
+  startcam i12
+  wait 1000
+  trigger brat1 go2_2
+  wait 1000
+  trigger brat1 dialog3
+  wait 3000
+  trigger brat1 dialog4
+  wait 1000
+  trigger brat2 go2_2
+  wait 5000
+  trigger player start_intro2_0
+  }
+
+  trigger start_intro2_0
+  {
+   startcam i13 
+   wait 3000
+   trigger brat2 dialog4
+   wait 3000
+   trigger brat1 dialog5
+   wait 3800
+   trigger brat1 dialog6
+   wait 32500
+   trigger brat2 dialog5
+   wait 2000
+   trigger brat1 dialog7
+   wait 5000
+   stopcam
+   startcam i17
+   trigger brat2 dialog8
+   wait 3000
+   trigger krishka go1
+   wait 2000
+   startcam i18
+   trigger krishka go
+   wait 1000
+   startcam i18_1
+   wait 1000
+   trigger brat1 dialog8
+   wait 3000
+
+   stopcam
+   startcam i18_3
+
+   trigger brat2 dialog6
+   wait 4000
+
+   stopcam
+   startcam i18_2
+   wait 2000
+
+   trigger brat1 dialog9
+   wait 2000
+
+   startcam i19
+   wait 2000
+
+
+   trigger player start_intro2_1
+ }
+trigger start_intro2_1
+ {
+  trigger brat1 anim1
+  trigger brat2 anim1
+  wait 2000
+  trigger brat1 dialog10
+  wait 10000
+  startcam i20
+  trigger car_zombie go_head
+  mu_start sound/scenaric/intro/mumy_start 
+  wait 3000
+  trigger brat2 dialog7
+  wait 3000
+  trigger brat1 dialog11
+  wait 9000
+  trigger car_zombie go1
+  mu_stop
+  mu_start sound/scenaric/intro/mumy_miks
+  startcam i21 
+  wait 1500
+  startcam i22   
+  wait 200
+  trigger brat1 anim2
+  trigger brat2 anim2
+  wait 1000
+  trigger brat1 go3
+  trigger brat2 go3
+  wait 4000
+  startcam i23
+  trigger brat1 go3_1
+  wait 1500
+  trigger d4 go1
+  wait 2500
+  trigger brat1 go4
+  mu_stop 12000
+  wait 2000
+  trigger car_zombie go2
+//  mu_start sound/scenaric/intro/mumy3
+  startcam i25
+  trigger brat1 go5
+  wait 3000
+ 
+// stopcam
+ startcam i25_1
+
+  trigger car_zombie dialog1
+  wait 7000
+  mu_stop
+  mu_start sound/scenaric/intro/mumy_miks
+  trigger car_zombie go3
+
+
+  stopcam
+  startcam i26
+  wait 3000
+
+  stopcam
+  startcam i26_1
+
+  trigger car_zombie go4  ///--------->>>18
+  trigger car_zombie dialog2
+
+
+  wait 3000
+  startcam i27
+  wait 3000
+  trigger pes2 go
+  wait 7000
+  startcam i28    
+  wait 3000
+  trigger pes1 go
+  wait 7000
+  trigger player start_intro2_2
+ }
+trigger start_intro2_2
+ {
+  startcam i29
+  wait 3000
+  trigger d1 go1
+  wait 10000
+  trigger car_zombie go5
+  wait 2000
+  startcam i30
+  wait 13000
+  startcam i31
+  mu_stop 5000
+  trigger player start_intro_end
+ }
+
+
+
+trigger start_intro_end
+{
+  trigger jak go
+  wait 5000
+  mu_start sound/scenaric/intro/miks3 
+  wait 2000
+
+alertentity truss
+startcam i39
+wait 5000
+trigger kolona_1 go
+startcam i39_1
+wait 2000
+startcam i39_2
+wait 600
+trigger kolona_2 go
+alertentity truss
+wait 600
+trigger kolona_3 go
+wait 600
+trigger kolona_4 go
+wait 3000
+startcam i39_3
+trigger krisha_1 go 
+trigger krisha_2 go 
+wait 3000
+startcam i40
+trigger shtir go
+wait 2500
+startcam i41
+alertentity truss
+trigger expert final1
+trigger stolb_multi go
+wait 7500
+trigger player start_intro3
+}
+
+trigger start_intro3
+{
+alertentity expert1
+alertentity car_zombie1
+trigger expert1 go
+startcam i32
+wait 1000
+alertentity truss
+wait 2000
+trigger st1 go
+trigger st2 go
+trigger ch1 go
+wait 2000
+startcam i33
+wait 14500
+stopcam
+startcam i42
+trigger car_zombie1 go
+wait 5500
+stopcam
+startcam i43
+trigger car_zombie1 go1
+trigger car_zombie1 dialog1
+wait 5000
+trigger car_zombie1 go2
+trigger car_zombie1 dialog1_1
+wait 10000                      //------------------------>>>>>>>>>>>>>
+
+alertentity z7
+alertentity z8
+
+stopcam
+startcam i46
+wait 2000
+alertentity start_kam
+trigger z7 go1
+trigger z8 go1
+wait 3500
+
+
+stopcam
+startcam i43
+
+trigger car_zombie1 go2
+trigger car_zombie1 dialog2
+wait 3500
+
+
+alertentity z1
+stopcam
+startcam l1_4_3
+
+trigger z1 go1
+wait 4500
+
+
+
+stopcam
+startcam i43
+
+trigger car_zombie1 go2
+trigger car_zombie1 dialog3
+wait 4000
+
+mu_stop 2000
+stopcam
+
+startcam i45
+trigger mumy2 go
+wait 7000
+stopcam
+startcam i47
+
+
+
+trigger player endmap
+}
+Trigger camerainterrupt
+{
+ trigger player endmap
+}
+trigger endmap
+{
+lockplayer off
+changelevel level1 nostats
+}
+}
+//-----------------------------INTRO 1----------------------------------
+direktor
+{
+ spawn
+  {
+   takeweapon all
+   headlook off
+  }
+   trigger dialog2
+   {
+    headlook off
+    playsound Rassel_2
+   }
+   trigger dialog3
+   {
+    headlook off
+    playsound Rassel_3
+   }
+   trigger dialog4
+   {
+    headlook off
+    playsound Rassel_4
+   }
+   trigger dialog5
+   {
+    headlook off
+    playsound Rassel_5
+   }
+   trigger dialog6
+   {
+    headlook off
+    playsound Rassel_6
+   }
+   trigger dialog7
+   {
+    headlook off
+    playsound Rassel_7
+   }
+   trigger dialog8
+   {
+    headlook off
+    playsound Rassel_8
+   }
+   trigger dialog9_1
+   {
+    headlook off
+    playsound Rassel_9_1
+   }
+   trigger dialog9_2
+   {
+    playsound Rassel_9_2
+   }
+
+   trigger teleport_start1
+   {
+    headlook off
+    teleport direktor_start_pos1 
+    facetargetangles direktor_start_pos1
+   }
+   trigger go_start1
+   {
+    headlook off
+    facetargetangles direktor_start_pos2
+   }
+   trigger go_start2
+   {
+    headlook off
+    playsound Rassel_1
+    walktomarker direktor_start_pos3
+   }
+   trigger go_start3
+   {
+    facetargetangles direktor_start_pos3_1
+    walktomarker direktor_start_pos3_1 nostop
+    walktomarker direktor_start_pos4 
+   }
+   trigger go_start4
+   {
+    teleport direktor_start_pos5
+    facetargetangles direktor_start_pos5
+    walktomarker direktor_start_pos6
+    walktomarker direktor_start_pos7
+   }
+   trigger teleport_1
+   {
+    teleport direktor_pos1
+    facetargetangles direktor_pos1
+   }
+   trigger teleport_2
+   {
+    teleport direktor_pos4
+    facetargetangles direktor_pos4
+   }
+   trigger teleport_3
+   {
+    teleport direktor_pos7
+    facetargetangles direktor_pos7
+   }
+   trigger go_1
+   {
+    walktomarker direktor_pos2 nostop
+    walktomarker direktor_pos3
+   }
+   trigger go_2
+   {
+    walktomarker direktor_pos5 nostop
+    walktomarker direktor_pos6
+   }
+   trigger go_3
+   {
+    walktomarker direktor_pos8 nostop
+    walktomarker direktor_pos9
+    facetargetangles direktor_pos9
+   }
+   trigger go_4
+   {
+    walktomarker direktor_pos10  
+    walktomarker direktor_pos11
+    facetargetangles direktor_pos11
+   }
+}
+expert
+{
+ spawn
+  {
+   takeweapon all
+  }
+  trigger dialog1
+  { 
+   headlook off
+   playsound Dubua_1
+  }
+  trigger dialog2
+  {
+   headlook off
+   playsound Dubua_2
+  }
+  trigger dialog3
+  {
+   headlook off
+   playsound Dubua_3
+  }
+  trigger dialog4
+  {
+   headlook off
+   playsound Dubua_4
+  }
+  trigger dialog5
+  {
+   headlook off
+   playsound Dubua_5
+  }
+  trigger final
+  {
+   teleport expert_final1 
+   facetargetangles expert_final1
+  }
+  trigger final1
+  {
+   gotomarker expert_final2 nostop
+   gotomarker expert_final3
+  }
+  trigger teleport_start1
+  {
+   teleport expert_start_pos1 
+   facetargetangles expert_start_pos1
+   wait 500
+   playsound close
+  }
+  trigger go_start1
+  {
+   facetargetangles expert_start_pos1_1
+   walktomarker expert_start_pos1_1 nostop
+   walktomarker expert_start_pos2
+  }
+  trigger go_start2
+  {
+   teleport expert_start_pos3
+   facetargetangles expert_start_pos3
+   walktomarker expert_start_pos4
+   walktomarker expert_start_pos5
+  }
+  trigger teleport_1
+  { 
+   teleport expert_pos1 
+   facetargetangles expert_pos1
+  }
+  trigger teleport_2
+  {
+   teleport expert_pos4 
+   facetargetangles expert_pos4
+  }
+  trigger teleport_3
+  {
+   teleport expert_pos7 
+   facetargetangles expert_pos7
+  }
+  trigger go_1
+  {
+   walktomarker expert_pos2 nostop
+   walktomarker expert_pos3
+  }
+  trigger go_2
+  {
+   walktomarker expert_pos5 nostop
+   walktomarker expert_pos6
+  }
+  trigger go_3
+  {
+   wait 500
+   walktomarker expert_pos8 nostop
+   walktomarker expert_pos9 
+   wait 500
+   facetargetangles expert_pos9
+  }
+  trigger go_4
+  {
+   walktomarker expert_pos10
+   wait 500
+   facetargetangles expert_pos10
+  }
+}
+kristin
+{
+  trigger dialog1
+  {
+   playsound natali_1
+  }
+  trigger dialog2
+  {
+   playsound natali_2
+  }
+  trigger dialog3
+  {
+   playsound natali_3
+  }
+  trigger kristin_go1
+  {
+   facetargetangles kristin_pos1
+   walktomarker kristin_pos2
+  }
+  trigger kristin_go2
+  {
+   facetargetangles kristin_pos2
+   wait 3000
+   walktomarker kristin_pos3
+   facetargetangles kristin_pos3
+   wait 1000
+   trigger direktor go_4
+   trigger expert go_4
+  }
+}
+expert1
+{
+ spawn
+  {
+   takeweapon all
+  }
+ trigger go
+ {
+  teleport expert1_pos 
+  facetargetangles expert1_pos
+  runtomarker expert1_pos1 nostop
+  runtomarker expert1_pos2 nostop
+  runtomarker expert1_pos3
+ }
+}
+//----------------------------INTRO 2---------------------------------
+brat1
+{
+ spawn
+  {
+   takeweapon all
+  }
+  trigger dialog1
+  {
+   playsound Karl_1
+  }
+  trigger dialog2
+  {
+   playsound Karl_2
+   wait 4000
+   playanim talking both
+  }
+  trigger dialog3
+  {
+   playsound Karl_3
+  }
+  trigger dialog4
+  {
+   playsound Karl_4
+  }
+  trigger dialog5
+  {
+   playsound Karl_5
+  }
+  trigger dialog6
+  {
+   playsound Karl_6
+ wait 2000
+   facetargetangles brat_1_pos2_1
+   wait 21000
+   playanim talking both
+  }
+  trigger dialog7
+  {
+   playsound Karl_7
+   wait 2500
+   facetargetangles brat_1_pos2
+  }
+  trigger dialog8
+  {
+   playsound Karl_8
+  }
+  trigger dialog9
+  {
+   playsound Karl_9
+  }
+  trigger dialog10
+  {
+   playsound Karl_10
+  }
+  trigger dialog11
+  {
+   playsound Karl_11
+  }
+  trigger dialog12
+  {
+   playsound Karl_12
+  }
+  trigger dialog13
+  {               
+   playsound Karl_13
+   playanim frightened both
+
+//   wait 2000
+   playsound sound/scenaric/intro/mumy1.wav
+    wait 6000
+   alertentity kill_brat1
+  }
+  trigger go1
+  {
+   walktomarker brat_1_2_pos1
+   walktomarker brat_1_2_pos2
+   facetargetangles brat_1_2_pos2
+  }
+  trigger go2
+  {
+   clearanim
+   walktomarker brat_1_2_pos3 nostop
+   walktomarker brat_1_2_pos4 nostop
+   walktomarker brat_1_2_pos5 nostop
+  }
+  trigger go2_1
+  {
+   teleport brat_1_pos1 
+   facetargetangles brat_1_pos1
+  }
+
+  trigger go2_2
+  {
+   walktomarker brat_1_pos2
+   facetargetangles brat_1_pos2
+  }
+  trigger go3
+  {
+   wait 2500
+   clearanim
+   runtomarker brat_2_pos2 nostop
+   runtomarker brat_1_pos1 nostop
+   runtomarker brat_1_2_pos10 nostop
+   runtomarker brat_1_2_pos9 nostop
+   runtomarker expert_pos7
+   wait 1000
+   trigger brat1 dialog12
+  }
+  trigger go3_1
+  {
+   playsound brat_1_2
+  }
+  trigger go4
+  {
+  }
+  trigger go5
+  {
+   headlook off    
+   wait 1500
+   facetargetangles expert_pos7 
+   wait 1000
+   trigger brat1 dialog13
+  }
+  trigger anim1
+  {
+   headlook off
+   trigger almaz1 go
+   playanim switch_alarm both  
+   playanim alarm1 torso forever
+  }
+  trigger anim2
+  {
+   playsound Karl_A
+  }
+}
+brat2
+{
+ spawn
+  {
+   takeweapon all
+  }
+  trigger dialog1
+  {               
+   playsound Marsel_1
+  }
+  trigger dialog2
+  {               
+   headlook off
+   playsound Marsel_2
+  }
+  trigger dialog3
+  {               
+   headlook off
+   playsound Marsel_3
+   playanim officer_talking_1 both
+   playanim butt_scratch_1h both
+  }
+  trigger dialog4
+  {               
+   headlook off
+   playsound Marsel_4
+   playanim officer_talking_1 both
+  wait 1000
+  walktomarker brat_2_pos3 
+  }
+  trigger dialog5
+  {               
+   playsound Marsel_5
+   wait 1000
+   facetargetangles brat_2_pos3
+  }
+  trigger dialog6
+  {               
+   playsound Marsel_6
+  }
+  trigger dialog7
+  {               
+   playsound Marsel_7
+  }
+  trigger dialog8
+  {               
+   playsound Karl_Marsel_1
+  }
+  trigger go1
+  {
+   wait 1000
+   walktomarker brat_1_2_pos1
+   facetargetangles brat_1_2_pos1
+  }
+  trigger go2
+  {
+   walktomarker brat_1_2_pos3 nostop
+   walktomarker brat_1_2_pos4 nostop
+   walktomarker brat_1_2_pos5 nostop
+  }
+  trigger go2_1
+  {
+    teleport brat_2_pos1
+    facetargetangles brat_2_pos1
+  }
+  trigger go2_2
+  {
+  walktomarker brat_2_pos2 nostop
+  walktomarker brat_2_pos3 
+  facetargetangles brat_2_pos3
+  }
+  trigger go3
+  {
+   wait 500
+   runtomarker brat_2_pos2 nostop
+   runtomarker brat_1_pos1 nostop
+   alertentity kill_brat2
+  }
+  trigger anim1
+  {
+   headlook off  
+  }
+  trigger anim2
+  {
+// alertentity kill_brat2
+   playsound brat_2
+  }
+}
+
+
+
+car_zombie
+{
+spawn
+ {
+  takeweapon all
+  headlook off
+  trigger car_zombie go
+ }
+
+trigger dialog1
+{
+   playsound mummy_1
+}
+trigger dialog2
+{
+   playsound mummy_18
+}
+
+
+
+trigger go
+ {
+  playanim vostanie1 both forever
+ }
+trigger go_head
+ {
+  headlook on
+ }
+trigger go1
+ {
+  playsound mumy_1
+  playanim vostanie both 
+  playsound mumy_1
+ }
+trigger go2
+ {
+   teleport car_zombie_pos1
+   facetargetangles car_zombie_pos1
+  playanim idle1 both forever  
+ }
+trigger go3
+ {
+   clearanim
+   teleport car_zombie_pos2
+   walktomarker car_zombie_pos2_1
+   facetargetangles car_zombie_pos2_1
+   playanim idle1 both forever  
+ }
+trigger go4
+ {
+   clearanim
+   playanim both_attack1 both 3
+   playanim idle1 both 5
+ }
+trigger go5
+ {
+   clearanim
+   walktomarker car_zombie_pos3 nostop
+   walktomarker car_zombie_pos4 nostop
+   walktomarker car_zombie_pos5 nostop
+ }
+}
+
+car_zombie1
+{
+spawn
+ {
+  takeweapon all
+  headlook off
+ }
+trigger dialog1
+{
+  playsound mummy_8
+  wait 2500
+  playsound mummy_7
+}
+trigger dialog1_1
+{
+  playsound mummy_2
+}
+
+trigger dialog2
+{
+  playsound mummy_3
+}
+
+trigger dialog3
+{
+  playsound mummy_4
+}
+
+trigger go
+ {
+   walktomarker car_zombie1_pos1
+ }
+trigger go1
+{
+
+  headlook on
+  teleport car_zombie1_pos3 
+  playanim idle1 both forever  
+
+ }
+trigger go2
+{
+
+  headlook on
+  playanim idle1 both forever  
+}
+
+}
+mumy2
+{
+spawn
+ {
+  takeweapon all
+  headlook off
+  trigger mumy2 spok
+ }
+trigger spok
+{
+  playanim first_sight1 both forever
+}
+trigger go
+ {
+  wait 1000
+  clearanim
+  playsound mumy_1
+  playanim first_sight both forever  
+ }
+}
+
+z1
+{
+ spawn
+  {
+   knockback off
+   takeweapon monsterattack2
+   noavoid
+   godmode on
+   trigger z1 go
+  }
+   trigger go
+    {
+     nosight 9999999999
+     playanim roll_out1 both forever
+    }
+   trigger go1
+    {
+wait 1000
+     clearanim
+     playsound go1 
+     playanim roll_out both 
+    }
+}
+z7
+{
+ spawn
+  {
+   knockback off
+   takeweapon monsterattack2
+   noavoid
+   godmode on
+   nosight 9999999999
+   trigger z7 go
+  }
+   trigger go
+    {
+     nosight 9999999999
+     playanim off_hole_still both forever
+    }
+   trigger go1
+    {
+     clearanim
+     playsound go1 
+     playanim off_hole both 
+    }
+}
+z8
+{
+ spawn
+  {
+   knockback off
+   takeweapon monsterattack2
+   noavoid
+   godmode on
+   nosight 9999999999
+   trigger z8 go
+  }
+   trigger go
+    {
+     nosight 9999999999
+     playanim off_hole_still both forever
+    }
+   trigger go1
+    {
+     clearanim
+     playsound go1 
+     playanim off_hole both 
+    }
+}

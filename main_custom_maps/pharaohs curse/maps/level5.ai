@@ -1,0 +1,1111 @@
+player
+{
+ spawn
+  {
+                accum 0 set 0
+		mu_fade 0 5000
+                mu_queue  sound/scenaric/miks/main_menu.wav
+  }
+ playerstart
+  {
+                mu_stop 1000
+		mu_queue sound/music/level5/level5.wav
+  }
+
+trigger scene1_1
+ {
+  alertentity war1
+  alertentity war2
+ }
+trigger scene1_2
+ {
+  alertentity war3
+  alertentity war4
+  alertentity war5
+  alertentity war6
+ }
+trigger scene1_3
+ {
+  alertentity war7
+  alertentity war8
+ }
+
+
+trigger scene2_1
+ {
+  alertentity door1
+  alertentity zombi_afa5
+  alertentity zombi_afa6
+
+ }
+trigger scene2_2
+ {
+  alertentity zombi_afa3
+  alertentity zombi_afa1
+ }
+trigger scene2_3
+ {
+  alertentity zombi_afa4
+  alertentity zombi_afa2
+ }
+
+trigger scene3_1
+ {
+  alertentity door4
+  alertentity zombi_afa7
+  alertentity zombi_afa8
+ }
+trigger scene3_2
+ {
+  alertentity zombi_afa9
+ }
+trigger scene3_3
+ {
+  alertentity zombi_afa10
+ }
+trigger scene3_4
+ {
+  alertentity zombi_afa11
+ }
+trigger scene4_1
+ {
+  alertentity door5
+  alertentity zombi1
+  alertentity zombi2
+  alertentity zombi3
+  alertentity zombi4
+ }
+trigger scene4_2
+ {
+  alertentity zombi5
+  alertentity zombi6
+  alertentity zombi7
+  alertentity fem
+ }
+
+trigger scene5
+ {
+//  alertentity door7
+  alertentity war9
+  alertentity war10
+ }
+trigger scene6_1
+ {
+//  alertentity door8
+  alertentity war11
+  alertentity war12
+ }
+trigger scene7_1
+ {
+  alertentity door11
+  alertentity war13
+  alertentity war14
+  alertentity war15
+ }
+trigger scene8_1
+ {
+  alertentity door14
+  alertentity war16
+  alertentity war17
+ }
+trigger scene9_1
+ {
+  alertentity war18
+  alertentity war19
+ }
+
+
+
+trigger scene_end1
+{
+alertentity kill_dark23
+mu_stop 1000
+alertentity player1
+trigger end_i go
+startcam l5_1
+teleport player_pos1
+trigger player1 go
+wait 4500
+alertentity kill_p1
+stopcam
+startcam l5_2
+trigger end_i go1
+wait 6000
+stopcam
+		mu_queue sound/music/level5/level5_end.wav
+startcam l5_3
+trigger car_zombi go
+wait 1600
+		mu_queue sound/music/level5/level5_end1.wav
+wait 8000
+achievement_curse
+		changelevel
+		wait 9000
+		endgame
+}
+
+
+
+
+trigger death_s1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 8
+  alertentity door1
+  accum 0 set 0
+ }
+trigger death_s2_1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  trigger player scene2_2
+  accum 0 set 0
+ }
+trigger death_s2_2
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  trigger player scene2_3
+  accum 0 set 0
+ }
+trigger death_s2_3
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  alertentity door4
+  accum 0 set 0
+ }
+trigger death_s3
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 5
+  alertentity door5
+  accum 0 set 0
+ }
+trigger death_s4_1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 4
+  alertentity door6
+  trigger player scene4_2
+  accum 0 set 0
+ }
+trigger death_s4_2
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 4
+  alertentity door7
+  alertentity door5
+  accum 0 set 0
+ }
+trigger death_s5
+ {
+//  accum 0 inc 1
+//  accum 0 abort_if_not_equal 2
+//  alertentity door7
+//  accum 0 set 0
+ }
+trigger death_s6_1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  alertentity door10
+  alertentity dark1
+  alertentity dark2
+  accum 0 set 0
+ }
+trigger death_s6_2
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  alertentity door11
+  accum 0 set 0
+ }
+trigger death_s7_1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 3
+  alertentity door12
+  alertentity dark3  
+  alertentity dark4  
+  alertentity dark5  
+  accum 0 set 0
+ }
+trigger death_s7_2
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 3
+  alertentity door13
+  alertentity dark10  
+  accum 0 set 0
+ }
+
+trigger death_s8_1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  alertentity dark6
+  alertentity dark7
+  alertentity dark9
+  accum 0 set 0
+ }
+trigger death_s8_2
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 3
+  alertentity door15
+  trigger player scene9_1
+  accum 0 set 0
+ }
+trigger death_s9_1
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  alertentity door16
+  alertentity dark11
+  alertentity dark12
+  accum 0 set 0
+ }
+trigger death_s9_2
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 2
+  alertentity door3
+  alertentity door2
+  alertentity door9
+  alertentity  dark13
+  alertentity  dark14
+  alertentity  dark15
+  alertentity  dark16
+  alertentity  dark17
+  alertentity  dark18
+  alertentity  dark19
+  alertentity  dark20
+  alertentity  dark21
+  alertentity  dark22
+  accum 0 set 0
+ }
+trigger death_s10
+ {
+  accum 0 inc 1
+  accum 0 abort_if_not_equal 10
+  alertentity door9
+  alertentity dark23
+  accum 0 set 0
+ }
+
+}
+
+//---------------------WARIOR--------------------
+war1
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war2
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war3
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war4
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war5
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war6
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war7
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war8
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s1
+   }
+}
+war9
+{
+ attributes
+  {
+  }
+  death
+   {
+//    trigger player death_s5
+   }
+}
+war10
+{
+ attributes
+  {
+  }
+  death
+   {
+//    trigger player death_s5
+   }
+}
+war11
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s6_1
+   }
+}
+war12
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s6_1
+   }
+}
+war13
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s7_1
+   }
+}
+war14
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s7_1
+   }
+}
+war15
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s7_1
+   }
+}
+war16
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s8_1
+   }
+}
+war17
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s8_1
+   }
+}
+war18
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s9_1
+   }
+}
+war19
+{
+ attributes
+  {
+  }
+  death
+   {
+    trigger player death_s9_1
+   }
+}
+
+//-----------ALFA------------------
+zombi_afa1
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s2_2
+   }
+}
+zombi_afa2
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s2_3
+   }
+}
+
+zombi_afa3
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s2_2
+   }
+}
+zombi_afa4
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s2_3
+   }
+}
+
+zombi_afa5
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s2_1
+   }
+}
+zombi_afa6
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s2_1
+   }
+}
+zombi_afa7
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s3
+   }
+}
+zombi_afa8
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s3
+   }
+}
+zombi_afa9
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s3
+   }
+}
+zombi_afa10
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s3
+   }
+}
+zombi_afa11
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+    godmode on
+    nosight 9999999999
+    playsound teleport 
+    sight
+    godmode off
+   }
+  death
+   {
+    trigger player death_s3
+   }
+}
+//--------------------ZOMBI-----------------
+zombi1
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_1
+   }
+}
+zombi2
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_1
+   }
+}
+zombi3
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_1
+   }
+}
+zombi4
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_1
+   }
+}
+zombi5
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_2
+   }
+}
+zombi6
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_2
+   }
+}
+zombi7
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   takeweapon monsterattack2
+   }
+  death
+   {
+    trigger player death_s4_2
+   }
+}
+//--------------FEM-----------------
+fem
+{
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s4_2
+   }
+}
+//-----------------DARK--------------
+dark1
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s6_2
+   }
+ }
+dark2
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s6_2
+   }
+ }
+dark3
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s7_2
+   }
+ }
+dark4
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s7_2
+   }
+ }
+dark5
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s7_2
+   }
+ }
+
+dark6
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s8_2
+   }
+ }
+dark7
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s8_2
+   }
+ }
+dark9
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s8_2
+   }
+ }
+
+
+dark10
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    alertentity door14
+   }
+ }
+
+dark11
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s9_2
+   }
+ }
+
+dark12
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s9_2
+   }
+
+ }
+
+dark13
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark14
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark15
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark16
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark17
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark18
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark19
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark20
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+
+dark21
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+dark22
+{
+ attributes
+  {
+  }
+  spawn 
+   {
+   }
+  death
+   {
+    trigger player death_s10
+   }
+
+ }
+
+
+
+
+
+//----------===========================
+player1
+{
+ spawn
+  {
+  takeweapon all
+   nosight 999999
+  }
+   trigger go
+    {
+     walktomarker player_pos3
+    }
+}

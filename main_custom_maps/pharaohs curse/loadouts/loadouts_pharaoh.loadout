@@ -1,0 +1,58 @@
+
+loadout start
+{
+		giveweapon weapon_knife
+		
+		selectweapon weapon_knife
+}
+
+loadout mid_game
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		
+		setammo ammo_9mm 128
+		setammo ammo_792mm 40
+		
+		setclip weapon_mp40 full
+		setclip weapon_luger full
+		setclip weapon_mauserrifle full
+		
+		selectweapon weapon_mp40
+		
+		giveinventory key_binocs
+}
+
+loadout endgame
+{
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_flamethrower
+		
+		setammo ammo_9mm 300
+		setammo ammo_792mm 100
+		setammo ammo_fuel 50
+		
+		setammo ammo_grenades 10
+		
+		setclip weapon_mp40 full
+		setclip weapon_luger full
+		setclip weapon_mauserrifle full
+		
+		setarmor 50
+		
+		selectweapon weapon_mp40
+		
+		giveinventory key_binocs
+}
+

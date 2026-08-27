@@ -1,0 +1,201 @@
+//
+//Brush Scripting
+//Map: demo5
+//Last edited by: Roder
+//
+panzerturret
+{
+	spawn
+	{	
+		gotomarker a1 50
+		faceangles 0 90 0 gototime
+	}
+	trigger go1
+	{
+		gotomarker a1 20
+		faceangles 0 110 0 gototime
+		wait 1500
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity boom1
+	}
+	trigger go2
+	{
+		gotomarker a1 20
+		faceangles 0 90 0 gototime
+		wait 1500
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity boom2
+	}
+	trigger go3
+	{
+		gotomarker a1 20
+		faceangles 0 130 0 gototime
+		wait 1500
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity boom3
+	}
+	trigger go4
+	{
+		gotomarker a1 20
+		faceangles 0 130 0 gototime
+		wait 1500
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity boom4
+	}
+	trigger go5
+	{
+		gotomarker a1 20
+		faceangles 0 170 0 gototime
+		wait 1500
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity boom5
+	}
+	trigger go6
+	{
+		gotomarker a1 20
+		faceangles 0 210 0 gototime
+		wait 1500
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity boom6
+	}
+	trigger go7
+	{
+		gotomarker a1 20
+		faceangles 0 180 0 gototime
+		wait 1500
+		playsound sound\world\boomin.wav
+		wait 1000
+		playsound sound\world\Explo_Mine1.wav		
+		alertentity demo
+		wait 500
+		alertentity smoke
+	}
+}
+panzer
+{
+	spawn
+	{
+		gotomarker a1 50
+		faceangles 0 140 0 gototime
+	}
+	trigger go1
+	{
+		gotomarker a1 50
+		faceangles 0 140 0 gototime
+		trigger panzerturret spawn
+		trigger panzergun go1
+		trigger panzertrackl go1
+		trigger panzertrackr go1
+		trigger panzertrackl forwardstop
+		trigger panzertrackr forwardstop
+	}
+}
+panzergun
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		attachtotag panzerturret tag_gun
+	}
+}
+panzertrackl
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		attachtotag panzer tag_raild
+	}
+
+	trigger forward
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 0 65 looping forever
+	}
+
+	trigger forwardstop
+	{
+		wait 1000
+		playanim 0 65 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger forwardshort
+	{
+		wait 1000
+		playanim 0 5 50
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger reverse
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 66 130 looping forever
+	}
+
+	trigger reversestop
+	{
+		wait 1000
+		playanim 66 130 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+}
+
+panzertrackr
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		attachtotag panzer tag_railp
+	}
+
+	trigger forward
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 0 65 looping forever
+	}
+
+	trigger forwardstop
+	{
+		wait 1000
+		playanim 0 65 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger forwardshort
+	{
+		wait 1000
+		playanim 0 5 50
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+	trigger reverse
+	{
+		playsound sound/vehicles/tankmove2.wav looping
+		wait 5
+		playanim 66 130 looping forever
+	}
+
+	trigger reversestop
+	{
+		wait 1000
+		playanim 66 130 500
+		playsound sound/vehicles/tankidle.wav looping
+	}
+
+}

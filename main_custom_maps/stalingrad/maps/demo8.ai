@@ -1,0 +1,3561 @@
+//AI Scripting
+//Map: demo8
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 1
+		objectivesneeded 1
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/stalingrad6
+
+		// Weapons
+		sethealth 100
+		setarmor 50
+		// Ammo
+		setammo ammo_ttammo full
+		// Items
+		trigger panzer go1
+		trigger nazi1 go1
+		trigger nazi2 go1
+		trigger nazi3 go1
+		trigger nazi4 go1
+		trigger nazi5 go1
+		trigger nazi6 go1
+		trigger nazi7 go1
+		trigger nazi8 go1
+		trigger nazi9 go1
+		trigger nazi10 go1
+		trigger nazi11 go1
+		trigger nazi12 go1
+		
+	}
+	trigger action1
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/stalingrad8
+		alertentity boom1
+		alertentity boom2
+		trigger nazi1 go2
+		trigger nazi2 go2
+		trigger nazi3 go2
+		trigger nazi4 go2
+		trigger nazi5 go2
+		trigger nazi6 go2
+		trigger nazi7 go2
+		trigger nazi8 go2
+		trigger nazi9 go2
+		trigger nazi10 go2
+		trigger nazi11 go2
+		trigger nazi12 go2
+		trigger par1 go2
+		trigger par2 go2
+		trigger par3 go2
+		trigger par4 go2
+		trigger par5 go2
+		trigger par6 go2
+		trigger par7 go2
+		trigger par8 go2
+		alertentity s1
+		alertentity s2
+		alertentity s3
+		alertentity s4
+		alertentity s5
+		alertentity s6
+		alertentity s7
+		alertentity r1
+		alertentity r2
+		alertentity r3
+		alertentity r4
+		alertentity r5
+		alertentity r6
+		alertentity gren1
+		alertentity gren2
+	}
+	trigger end
+	{
+		accum 0 bitset 1
+		missionfailed
+	}
+	trigger win
+	{
+		objectivemet 1
+		wait 90000
+		trigger player endmap
+	}
+	trigger action3
+	{
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi9
+	}
+	trigger action4
+	{
+		alertentity nazi10
+		alertentity nazi11
+		alertentity nazi12
+		alertentity nazi13
+		
+		savecheckpoint
+	}
+	trigger action5
+	{
+		alertentity nazi14
+		alertentity nazi15
+		alertentity nazi16
+
+		savecheckpoint
+	}
+	trigger action6
+	{
+		alertentity nazi17
+		alertentity nazi18
+	}
+	trigger action7
+	{
+		alertentity nazi19
+		alertentity nazi20
+	}
+	trigger action8
+	{
+		alertentity nazi21
+		alertentity nazi22
+		alertentity nazi23
+		alertentity nazi24
+
+		savecheckpoint
+	}
+	trigger action9
+	{
+		alertentity nazi25
+		alertentity nazi26
+		alertentity nazi27
+		alertentity nazi28
+		alertentity nazi29
+	}
+	trigger action10
+	{
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi32
+	}
+	trigger action11
+	{
+		alertentity nazi33
+		alertentity nazi34
+		alertentity nazi35
+	}
+	trigger action12
+	{
+		alertentity nazi36
+		alertentity nazi37
+		alertentity nazi38
+
+		savecheckpoint
+	}
+	trigger action13
+	{
+		alertentity nazi39
+		alertentity nazi40
+	}
+	trigger action14
+	{
+		alertentity nazi41
+		alertentity nazi42
+	}
+	trigger action15
+	{
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+	}
+	trigger endmap
+	{
+		changelevel demo9 persistent
+	}
+}
+nazi1			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n1spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi1 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d1
+	}
+}
+nazi2			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n2spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi2 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d2
+	}
+}
+nazi3			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n3spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi3 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d3
+	}
+}
+nazi4			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n4spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi4 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d4
+	}
+}
+nazi5			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n5spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi5 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d5
+	}
+}
+nazi6			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n6spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi6 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d6
+	}
+}
+nazi7			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n7spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi7 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d7
+	}
+}
+nazi8			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n8spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi8 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d8
+	}
+}
+nazi9			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n9spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi9 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d9
+	}
+}
+nazi10			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mg42m
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n10spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi10 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d10
+	}
+}
+nazi11			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n11spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi11 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d11
+	}
+}
+nazi12			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n12spot1
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+		runtomarker dead
+		trigger nazi12 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity d12
+	}
+}
+d1			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d1 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d1 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f1
+	}
+}
+d2			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d2 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d2 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f2
+	}
+}
+d3			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d3 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d3 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f3
+	}
+}
+d4			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger d4 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d4 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f4
+	}
+}
+d5			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger d5 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d5 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f5
+	}
+}
+d6			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d6 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d6 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f6
+	}
+}
+d7			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger d7 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d7 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f7
+	}
+}
+d8			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d8 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d8 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f8
+	}
+}
+d9			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger d9 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d9 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f9
+	}
+}
+d10			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d10 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d10 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f10
+	}
+}
+d11			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mg42m
+		trigger d11 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d11 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f11
+	}
+}
+d12			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger d12 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger d12 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity f12
+	}
+}
+par1
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_mosin
+		nosight 99999
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par2
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_mosin
+		nosight 99999
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par3 // mg42-no1
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 50
+	}
+
+	spawn
+	{
+		statetype alert
+		wait 100
+		gotomarker par3spot1
+		facetargetangles par3spot1
+		mount mg42_no1
+		nosight 99999
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun1
+	{
+		unmount
+		wait 100 player
+	}
+	trigger action5
+	{
+		unmount
+		wait 100 player
+	}
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par4
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_ppsh
+		nosight 99999
+		statetype alert
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par5
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_ppsh
+		nosight 99999
+		statetype alert
+		notarget on
+		noavoid
+		wait 100
+		wait forever 0
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par6
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_mosin
+		nosight 99999
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par7
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_mosin
+		nosight 99999
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par8
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_mosin
+		nosight 99999
+		statetype alert
+		notarget on
+	}
+	trigger go2
+	{
+		sight
+		notarget off
+	}
+	
+	enemysight
+	{
+	}
+	pain 30
+	{
+		clearanim
+		resetscript
+		attrib aggression 1.0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+s1			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger s1 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s1 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+s2			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger s2 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s2 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+s3		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger s3 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s3 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+s4		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger s4 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s4 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+s5		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger s5 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s5 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+s6		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger s6 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s6 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+s7			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger s7 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger s7 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+f1			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f1 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f1 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f2			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f2 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f2 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f3			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f3 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f3 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f4			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f4 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f4 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f5			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f5 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f5 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f6			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f6 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f6 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f7			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f7 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f7 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f8			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f8 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f8 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f9			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f9 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f9 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f10			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f10 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f10 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f11			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f11 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f11 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+f12			
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger f12 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger f12 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger player win
+	}
+}
+r1			
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger r1 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger r1 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+r2			
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mauserrifle
+		trigger r2 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger r2 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+r3		
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger r3 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger r3 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+r4		
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger r4 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger r4 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+r5		
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger r5 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger r5 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+r6		
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		giveweaponfull weapon_mp40
+		trigger r6 go1
+	}
+	trigger go1
+	{
+		runtomarker dead
+		trigger r6 stop
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}

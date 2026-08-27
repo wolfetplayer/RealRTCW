@@ -1,0 +1,36 @@
+
+//
+//Brush Scripting
+//Map: demo55a
+//Last edited by: 
+//
+cinema
+{
+	spawn
+	{
+	}
+	trigger on
+	{
+		trigger player film1
+		trigger officer talk1
+		wait 30000
+		trigger player film2
+		wait 20000
+                trigger player endmap
+	}
+}
+radar1
+{
+	spawn
+	{
+	}
+
+	trigger rotateloop
+	{
+		trigger player film1
+		wait 12000
+		trigger player film2
+		wait 13000
+                trigger player endmap
+	}
+}

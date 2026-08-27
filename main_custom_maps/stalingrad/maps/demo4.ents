@@ -1,0 +1,27 @@
+// RealRTCW additional weapons/ammo etc.
+
+{
+"classname" "ammo_127mm"
+"origin" "1278 774 28"
+"angle"  "90"
+}
+
+{
+"classname" "ammo_ttammo_l"
+"origin" "-307 2270 -23"
+"angle"  "90"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

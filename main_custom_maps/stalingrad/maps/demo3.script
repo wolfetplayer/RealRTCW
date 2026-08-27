@@ -1,0 +1,94 @@
+//
+//Brush Scripting
+//Map: demo3
+//Last edited by: Roder
+//
+air1
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		playsound sound\world\flyby.wav 
+		gotomarker a1 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\flyby.wav looping forewer
+		gotomarker a2 1000
+		faceangles 0 90 0 gototime
+		gotomarker a3 1000
+		faceangles 0 90 0 gototime
+		gotomarker a4 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom1
+		gotomarker a5 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom2
+		gotomarker a6 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom3
+		gotomarker a7 1000
+		faceangles 0 90 0 gototime
+		gotomarker a8 1000
+		faceangles 0 90 0 gototime
+	}
+}
+air2
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		playsound sound\world\flyby.wav 
+		gotomarker w1 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\flyby.wav looping forewer
+		gotomarker w2 1000
+		faceangles 0 90 0 gototime
+		gotomarker w3 1000
+		faceangles 0 90 0 gototime
+		gotomarker w4 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom4
+		gotomarker w5 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom5
+		gotomarker w6 1000
+		faceangles 0 90 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom6
+		gotomarker w7 1000
+		faceangles 0 90 0 gototime
+		gotomarker w8 1000
+		faceangles 0 90 0 gototime
+	}
+}
+air3
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		playsound sound\world\flyby.wav 
+		gotomarker s1 1000
+		faceangles 0 80 0 gototime
+		playsound sound\world\flyby.wav looping forewer
+		gotomarker s2 1000
+		faceangles 0 80 0 gototime
+		gotomarker s3 1000
+		faceangles 0 80 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom7
+		gotomarker s4 1000
+		faceangles 0 80 0 gototime
+		gotomarker s5 1000
+		faceangles 0 80 0 gototime
+	}
+}

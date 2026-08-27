@@ -1,0 +1,321 @@
+
+
+
+
+
+handel
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/world/electrocute.wav
+		faceangles -180 0 0 500
+		trigger mgate1 start
+
+    }
+
+    trigger dawn
+    {
+
+		playsound sound/world/electrocute.wav
+		faceangles  0 0 0 500
+
+    }
+}
+
+
+mgate1
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+		wait 100
+
+
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker mg1 20
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+        wait 3000
+        playsound sound/movers/doors/door3_loopo.wav looping
+        gotomarker mg2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+        trigger handel dawn
+
+
+	}
+}
+
+	mgate2
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+		wait 100
+
+
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker mg1a 20
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+}
+
+
+lock1
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/movers/doors/door5_open.wav
+		faceangles 0 -90 0 100
+
+    }
+}
+
+
+lift
+{
+	spawn
+	{
+		gotomarker lt1s 50
+		faceangles 0 0 0 gototime
+
+	}
+
+
+	trigger start
+	{
+
+		trigger rdoor start
+
+		playsound sound/movers/elevators/elev1_loop.wav looping
+
+		gotomarker lt1 50
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav
+		trigger rdoor open
+
+
+
+	}
+}
+
+
+rdoor
+{
+	spawn
+	{
+     gotomarker rd1s 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+        trigger ldoor start
+
+		gotomarker rd1 50
+		faceangles 0 0 0 gototime
+	}
+
+
+
+	trigger open
+	{
+		trigger ldoor open
+		playsound sound/movers/doors/door6_loopc.wav looping
+		gotomarker rd2 30
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/movers/doors/door6_close.wav
+		wait 500
+		trigger brd open
+	}
+}
+
+
+ldoor
+{
+	spawn
+	{
+     gotomarker ld1s 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+		gotomarker ld1 50
+		faceangles 0 0 0 gototime
+	}
+
+	trigger open
+	{
+
+		gotomarker ld2 30
+		faceangles 0 0 0 gototime
+
+	}
+}
+
+
+brd
+{
+	spawn
+	{
+
+	}
+
+	trigger open
+	{
+		trigger bld open
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker brd1s 50
+		faceangles 0 0 0 gototime
+		gotomarker brd1 50
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/movers/doors/door3_endo.wav
+
+	}
+}
+
+
+
+bld
+{
+	spawn
+	{
+
+	}
+
+
+
+
+
+
+	trigger open
+	{
+        gotomarker bld1s 50
+        faceangles 0 0 0 gototime
+		gotomarker bld1 50
+		faceangles 0 0 0 gototime
+		alertentity naz1
+		alertentity naz2
+
+	}
+}
+
+tgate
+{
+	spawn
+	{
+		gotomarker tg1 100
+		faceangles 0 0 0 gototime
+	}
+	trigger mov
+	{
+		alertentity exp1
+		wait 500
+		trigger player exp3
+		gotomarker tg2 500
+		faceangles 0 0 0 gototime
+		wait 200
+
+		gotomarker tg3 10
+		faceangles 90 0 90 gototime
+
+		wait 200
+		gotomarker tg6 100
+		faceangles 0 0 0 gototime
+
+
+
+
+	}
+
+
+
+}
+
+cine
+{
+	spawn
+	{
+
+	}
+
+
+	trigger kino1
+	{
+		trigger player kadr
+		wait 8000
+		playsound sound/fin/f1.wav
+
+
+
+
+
+
+	}
+
+
+
+
+	trigger kino2
+	{
+		trigger player kadr1
+		wait 10000
+		trigger player kadr2
+		wait 30000
+		trigger player kadr3
+
+	}
+
+
+
+
+
+}

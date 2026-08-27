@@ -1,0 +1,499 @@
+
+
+trap2
+{
+	spawn
+	{
+	}
+
+
+	trigger move
+	{
+
+
+		gotomarker tr2 500
+		faceangles 0 345 0 gototime
+    }
+}
+
+trap3
+{
+	spawn
+	{
+	}
+
+
+	trigger move
+	{
+
+
+		gotomarker tr3 500
+		faceangles 0 90 0 gototime
+    }
+}
+
+trap4
+{
+	spawn
+	{
+	}
+
+
+	trigger move
+	{
+
+
+		gotomarker tr4 500
+		faceangles 0 45 0 gototime
+    }
+}
+
+trap5
+{
+	spawn
+	{
+	}
+
+
+	trigger move
+	{
+
+
+		gotomarker tr5 500
+		faceangles 0 0 0 gototime
+    }
+}
+
+trap6
+{
+	spawn
+	{
+	}
+
+
+	trigger move
+	{
+
+
+		gotomarker tr6b 5000
+		faceangles 0 0 0 gototime
+    }
+}
+
+trap7
+{
+	spawn
+	{
+	}
+
+
+	trigger move
+	{
+
+
+		gotomarker tr7b 5000
+		faceangles 0 0 0 gototime
+    }
+}
+
+telega
+{
+	spawn
+	{
+	}
+
+
+	trigger fly
+	{
+
+
+		gotomarker tel1 350
+		faceangles 0 0 90 gototime
+		gotomarker tel2 300
+		faceangles 0 0 180 gototime
+		gotomarker tel3 250
+		faceangles 0 15 270 gototime
+		playsound sound/scenaric/rocket/bridge_fall.wav lopping
+		gotomarker tel4 200
+		faceangles 0 45 270 gototime
+		stopsound
+    }
+}
+
+handel
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/world/electrocute.wav
+		faceangles 0 0 180 500
+		trigger marsh start
+    }
+}
+
+marsh
+{
+	spawn
+	{
+	trigger marsh stat
+	}
+
+
+	trigger stat
+	{
+
+
+
+		faceangles 0 0 45 50
+    }
+
+    	trigger start
+	{
+
+        playsound sound/movers/elevators/elev1_start.wav
+        playsound sound/movers/elevators/elev1_loop.wav looping
+		faceangles 0 0 0 10000
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav
+
+
+    }
+
+}
+
+rezak
+{
+	spawn
+	{
+
+	}
+
+
+	trigger start
+	{
+	trigger rdor tuk
+    }
+
+	trigger go
+	{
+		wait 50
+
+
+
+
+		playsound sound/weapons/flamethrower/fl_stream.wav looping
+		gotomarker r1 5
+		faceangles 0 0 0 gototime
+		gotomarker r1a 5
+		faceangles 0 0 0 gototime
+		gotomarker r1b 5
+		faceangles 0 0 0 gototime
+		alertentity sr1
+
+
+		gotomarker r2 5
+		faceangles 0 0 0 gototime
+		alertentity sr2
+		alertentity er1
+		gotomarker r3 5
+		faceangles 0 0 0 gototime
+		alertentity sr3
+		alertentity er2
+		gotomarker r4 5
+		faceangles 0 0 0 gototime
+		alertentity sr4
+		alertentity er3
+		gotomarker r5a 5
+		faceangles 0 0 0 gototime
+		alertentity er4
+		gotomarker r5 5
+		faceangles 0 0 0 gototime
+		alertentity sr5
+		alertentity er4a
+		gotomarker r6 5
+		faceangles 0 0 0 gototime
+		alertentity sr6
+		alertentity er5
+		gotomarker r7 5
+		faceangles 0 0 0 gototime
+		alertentity sr7
+		alertentity er6
+		gotomarker r8 5
+		faceangles 0 0 0 gototime
+		alertentity sr8
+		alertentity er7
+		gotomarker r9a 5
+		faceangles 0 0 0 gototime
+		alertentity sr9
+		alertentity er8
+		gotomarker r9b 5
+		faceangles 0 0 0 gototime
+
+		gotomarker r9 5
+		faceangles 0 0 0 gototime
+
+
+
+
+		stopsound
+		alertentity naz59
+		alertentity naz60
+
+		alertentity naz62
+		alertentity naz63
+		trigger rdor open
+
+
+
+	}
+}
+
+
+rdor
+{
+	spawn
+	{
+	}
+	trigger tuk
+	{
+        wait 50
+		playsound sound/scenaric/assault/metal_table_fall1.wav looping
+		wait 3000
+		stopsound
+		trigger rezak go
+	}
+
+
+	trigger open
+	{
+		wait 500
+		playsound sound/scenaric/rocket/bridge_2nd_fall.wav lopping
+
+
+		faceangles 15 0 0 500
+
+		faceangles 30 0 0 400
+
+		faceangles 45 0 0 300
+
+		faceangles 60 0 0 200
+
+		faceangles 90 0 0 200
+
+		stopsound
+		playsound  sound/movers/elevators/elev1_end.wav
+		alertentity sr0
+
+
+
+
+
+
+	}
+}
+
+//gate==========================
+
+gate1l
+{
+	spawn
+	{
+	}
+	trigger alarm
+	{
+	playsound sound/world/klaxon.wav looping
+    }
+
+
+	trigger open
+	{
+		wait 2000
+		stopsound
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g1l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g1l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate1r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 2000
+
+		gotomarker g1r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g1r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+}
+
+gate2l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g2l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g2l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate2r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g2r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g2r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+	}
+}
+
+gate7l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 2000
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g7l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g7l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+        trigger kino1 alarm
+
+
+
+	}
+}
+
+gate7r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 2000
+
+		gotomarker g7r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g7r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+}
+//stena====================
+explor
+{
+	spawn
+	{
+	}
+
+
+	trigger bum
+	{
+		wait 50
+		alertentity exr1
+		wait 1000
+		alertentity exr2
+		wait 1000
+		alertentity exr3
+		wait 100
+		alertentity exr4
+
+
+		gotomarker explor1 5000
+		faceangles 0 0 0 gototime
+		alertentity naz33
+
+
+
+
+
+
+	}
+}
+
+kino1
+{
+	spawn
+	{
+	}
+	trigger alarm
+	{
+	playsound sound/scenaric/rocket/ls_intruder.wav
+	wait 100
+	playsound sound/world/klaxon.wav looping
+    }
+
+
+	trigger start
+	{
+
+        wait 50
+		stopsound
+		trigger player movik
+        wait 37500
+    }
+}
+
+
+

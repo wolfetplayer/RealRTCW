@@ -1,0 +1,95 @@
+
+
+
+
+kino
+{
+	spawn
+	{
+
+	}
+
+
+	trigger start
+	{
+		trigger player kadr1
+		wait 8000
+		trigger player mus1
+		alertentity tere
+		wait 2000
+		alertentity bj
+
+
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+}
+
+
+tit
+{
+	spawn
+	{
+    gotomarker tit1 5
+	faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+	 	gotomarker tit2 5000
+	    faceangles 0 0 0 gototime
+	    gotomarker tit3 5
+	    faceangles 0 0 0 gototime
+	    trigger player endmap
+
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+}
+
+
+avto
+{
+	spawn
+	{
+    gotomarker a5 5000
+	faceangles 0 290 0 gototime
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+}

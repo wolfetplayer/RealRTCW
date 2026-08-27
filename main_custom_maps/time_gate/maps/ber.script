@@ -1,0 +1,95 @@
+
+
+taran
+{
+	spawn
+	{
+		accum 0 set 1
+		accum 1 set 1
+		accum 2 set 1
+	}
+
+	trigger begin
+	{
+                     	
+		playsound sound/scenaric/tram/tram_move.wav looping
+		gotomarker tol1 10
+		faceangles 0 0 0 gototime
+                        gotomarker tol2 180
+		faceangles 0 0 0 gototime
+                         gotomarker tol3 180
+		faceangles 0 0 0 gototime
+                         gotomarker tol4 180
+		faceangles 0 12 0 gototime
+                         gotomarker tol5 180
+		faceangles 0 24 0 gototime
+                         gotomarker tol6 180
+		faceangles 0 36 0 gototime
+                         gotomarker tol7 180
+		faceangles 0 48 0 gototime
+                         gotomarker tol8 180
+		faceangles 0 60 0 gototime
+                         gotomarker tol9 180
+		faceangles 0 72 0 gototime
+                         gotomarker tol10 180
+		faceangles 0 86 0 gototime
+                          gotomarker tol11 140
+		faceangles 0 90 0 gototime
+                          gotomarker tol12 100
+		faceangles 0 90 0 gototime
+                          gotomarker tol13 50
+		faceangles 0 90 0 gototime
+                        
+                                               stopsound
+                        playsound sound/scenaric/tram/tram_stop.wav
+                       
+			}
+
+trigger bak
+	{
+                     	
+		playsound sound/scenaric/tram/tram_move.wav looping
+                             gotomarker tol13 50
+		faceangles 0 90 0 gototime
+                            gotomarker tol12 100
+		faceangles 0 90 0 gototime
+                           gotomarker tol11 140
+		faceangles 0 90 0 gototime
+                         gotomarker tol10 180
+		faceangles 0 90 0 gototime
+                         gotomarker tol9 180
+		faceangles 0 86 0 gototime
+                           gotomarker tol8 180
+		faceangles 0 72 0 gototime
+                           gotomarker tol7 180
+		faceangles 0 60 0 gototime
+                           gotomarker tol6 180
+		faceangles 0 48 0 gototime
+                           gotomarker tol5 180
+		faceangles 0 36 0 gototime
+                           gotomarker tol4 180
+		faceangles 0 24 0 gototime
+                           gotomarker tol3 180
+		faceangles 0 12 0 gototime
+                           gotomarker tol2 180
+		faceangles 0 0 0 gototime
+                           gotomarker tol1 220
+		faceangles 0 0 0 gototime
+                             gotomarker tol14 260
+		faceangles 0 0 0 gototime
+                        alertentity tar
+                             gotomarker tol15 260
+		faceangles 0 0 0 gototime
+                        stopsound
+                        alertentity smok
+
+
+
+                         
+		                       
+			}
+
+
+}
+
+

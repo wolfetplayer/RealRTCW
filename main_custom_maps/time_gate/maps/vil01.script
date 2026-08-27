@@ -1,0 +1,139 @@
+
+
+res
+{
+	spawn
+	{
+	}
+
+	trigger cine1
+	{
+		
+		trigger player cine1_cam1
+            
+		wait 30000
+
+            trigger player cine1_cam2
+            
+		wait 30000
+
+            
+            
+            
+      }
+
+}
+
+kino
+{
+	spawn
+	{
+	}
+
+	trigger cine2
+	{
+
+		alertentity bx
+		trigger player cine2_cam1
+            
+		wait 30000
+
+            trigger player cine2_cam2
+            
+		wait 30000
+
+             trigger player cine2_cam3
+            
+		wait 30000
+
+             trigger player cine2_cam4
+            
+		wait 30000
+
+            trigger player cine2_cam5
+            
+		wait 30000
+            
+            trigger player cine2_cam6
+            
+		wait 30000
+
+            trigger player cine2_cam7
+            
+		wait 30000
+            
+            trigger player cine2_cam8
+            
+		wait 30000
+      
+            trigger player cine2_cam9
+            
+		wait 30000
+
+            trigger player cine2_cam10
+            
+		wait 30000
+
+            trigger player cine2_cam11
+            
+		wait 30000
+
+            trigger player cine2_cam12
+            
+		wait 30000
+
+            trigger player cine2_cam13
+            
+		wait 30000
+
+            trigger player cine2_cam14
+            
+		wait 30000
+
+            trigger player cine2_cam15
+            
+		wait 30000
+
+
+            trigger player cine2_cam16
+            
+		wait 30000
+
+
+            trigger player cine2_cam17
+            
+		wait 30000
+
+            trigger player cine2_cam18
+            
+		wait 30000
+
+            trigger player cine2_cam19
+            
+		wait 30000
+
+            trigger player cine2_cam20
+            
+		wait 30000
+
+             trigger player cine2_cam21
+            
+		wait 30000
+            
+             trigger player cine2_cam22
+            
+		wait 30000
+
+
+
+}
+}
+
+    
+
+
+
+
+	
+
+

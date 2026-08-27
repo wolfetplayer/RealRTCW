@@ -1,0 +1,67 @@
+kino
+{
+	spawn
+	{
+	}
+
+	trigger cin
+	{
+
+		
+		trigger player kam1
+            wait 6000
+            alertentity ww
+            trigger player kam3
+            wait 30000
+            trigger player kam2
+            wait 18000
+            trigger player kam5
+            wait 7000
+            trigger player kam4
+            wait 20000
+            
+           
+
+
+        }
+
+}
+
+
+
+avto
+{
+	spawn
+	{
+      wait 100
+      gotomarker a1 100\\ISPR
+	faceangles 0 0 0 gototime
+	}
+
+	
+	trigger mov
+	{
+		
+		playsound sound/world/shift_01.wav looping
+				
+		
+		gotomarker a2 160
+	      faceangles 0 0 0 gototime
+            gotomarker a3 80
+	      faceangles 0 330 0 gototime
+            gotomarker a4 60
+	      faceangles 0 300 0 gototime
+            gotomarker a5 40
+	      faceangles 0 290 0 gototime
+
+	      stopsound
+            wait 1000
+            alertentity bj
+            trigger kes gok
+            trigger civ go
+            trigger civ1 go
+
+}
+
+}
+

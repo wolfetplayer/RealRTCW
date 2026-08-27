@@ -1,0 +1,897 @@
+//
+//AI Scripting
+//Map: tomb4
+
+//Last edited by: Priv
+//
+
+
+
+player
+{
+  spawn
+  {
+   
+  
+  } 
+  playerstart
+  {
+  
+  }
+  
+  trigger action1
+  {
+  alertentity zom1
+  alertentity zom2
+   }
+
+ trigger action2
+  {
+  alertentity zom3
+  alertentity zom4
+  alertentity zom5
+
+  savecheckpoint
+   }
+
+ trigger action3
+  {
+  alertentity zom7
+  alertentity wzom4
+  alertentity wzom5
+  alertentity zom6
+   }
+
+ trigger action4
+  {
+  
+  
+  alertentity zom8
+  savecheckpoint
+   }
+ trigger action5
+  {
+  mu_start sound/music/m_drums
+  alertentity fzom1
+  
+   }
+
+  trigger action6
+  {
+  alertentity fzom2
+  
+   }
+  trigger action7
+  {
+  alertentity boss
+  alertentity zom10
+  alertentity zom9
+  savecheckpoint
+   }
+  trigger endmap
+  {
+  changelevel vil01 persistent
+  
+   }
+
+
+
+
+}
+
+
+zom1
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		attack player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	alertentity zcry1
+      alertentity wzom1
+      alertentity wzom2
+      alertentity wzom3
+		
+	}
+}
+
+zom2
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		attack player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+		
+	}
+}
+
+
+wzom1
+{
+	attributes
+	{
+            aggression 1.0
+	}
+
+	spawn
+	{
+            nosight 10000
+		noaidamage on
+            walktomarker wz1
+            
+	}
+      
+	trigger reset
+	{
+		noaidamage off
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+      
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+wzom2
+{
+	attributes
+	{
+            aggression 1.0 
+	}
+
+	spawn
+	{
+            nosight 10000
+		noaidamage on
+            walktomarker wz2
+	}
+      
+	trigger reset
+	{
+		noaidamage off
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+      
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+
+wzom3
+{
+	attributes
+	{
+            aggression 1.0
+	}
+
+	spawn
+	{
+            nosight 10000
+		noaidamage on
+            walktomarker wz3
+	}
+      
+	trigger reset
+	{
+		noaidamage off
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+      
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+zom3
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+		
+	}
+}
+
+zom4
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+		
+	}
+}
+
+zom5
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+		
+	}
+}
+
+wzom4
+{
+	attributes
+	{
+            aggression 1.0
+	}
+
+	spawn
+	{
+            nosight 10000
+		noaidamage on
+            
+            
+	}
+      
+	trigger reset
+	{
+		noaidamage off
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+      
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+wzom5
+{
+	attributes
+	{
+            aggression 1.0
+	}
+
+	spawn
+	{
+            nosight 10000
+		noaidamage on
+            
+            
+	}
+      
+	trigger reset
+	{
+		noaidamage off
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+      
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+zom6
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+		
+	}
+}
+
+zom7
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+	
+	}
+}
+
+
+zom8
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	alertentity zcry2
+      alertentity wzom6	
+		
+	}
+}
+
+wzom6
+{
+	attributes
+	{
+            aggression 1.0
+	}
+
+	spawn
+	{
+            
+		noaidamage on
+            
+            
+	}
+      
+	trigger reset
+	{
+		noaidamage off
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+      
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+fzom1
+{
+	attributes
+	{
+		fov 240
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+            
+		accum 0 bitreset 0
+		noaidamage on
+		nosight 99999
+		godmode on
+		takeweapon monsterattack2
+		knockback off
+		//alertentity flame1_bust
+		giveweapon monsterattack1
+		playanim off_hole both
+		sight
+		godmode off
+            
+
+		//explicit_routing on
+		//runtomarker f1spot1
+		//explicit_routing off
+		//alertentity hurt01
+		accum 0 bitset 0
+		resetscript
+		attack player
+		
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+            
+		alertentity zcry3
+		accum 0 abort_if_bitset 0
+            
+            
+		
+	}
+
+	enemysight
+	{
+	}
+
+}
+
+fzom2
+{
+	attributes
+	{
+		fov 240
+		starting_health 400
+		hearing_scale 1.0
+		alertness 4000
+	}
+
+	spawn
+	{
+            
+		accum 0 bitreset 0
+		noaidamage on
+		nosight 99999
+		godmode on
+		takeweapon monsterattack2
+		knockback off
+		//alertentity flame1_bust
+		giveweapon monsterattack1
+		playanim off_hole both
+		sight
+		godmode off
+            
+
+		//explicit_routing on
+		//runtomarker f1spot1
+		//explicit_routing off
+		//alertentity hurt01
+		accum 0 bitset 0
+		resetscript
+		attack player
+		
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+            
+	mu_fade 0 0  
+      mu_queue sound/music/c_chant	
+            
+            
+		
+	}
+
+	enemysight
+	{
+	}
+
+}
+
+
+
+boss	
+{
+	attributes
+	{
+		pain_threshold_scale 50
+		aggression 1.0
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = helga has broken gate
+		accum 1 set 0 // 1 = fired fakedeath
+		accum 2 set 0 // 1 = gate blown
+		statetype alert
+		knockback off
+		godmode on
+		nosight 999999
+		wait 5000
+	
+		godmode off
+	
+		playanim attack3 both
+		
+		attrib pain_threshold_scale 10
+		sight
+		accum 0 set 1
+		gotocast player
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	
+	
+
+	death
+	{
+			
+      }
+}
+
+zom9
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 100
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+	
+	}
+}
+
+zom10
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	
+			
+		nosight 100
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	
+	
+	}
+}

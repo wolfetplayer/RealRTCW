@@ -1,0 +1,22 @@
+
+
+kino
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		trigger player film1
+		wait 31000
+		trigger player film2
+
+
+
+
+
+	}
+}
+

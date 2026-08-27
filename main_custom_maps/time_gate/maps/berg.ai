@@ -1,0 +1,1658 @@
+//
+//AI Scripting
+//Map: mine
+
+//Last edited by: WolfETPlayer
+//
+
+
+
+player
+{
+  spawn
+  {
+   mu_queue sound/music/m_tension
+   trigger vagon_up beginup
+  } 
+  playerstart
+  {
+  
+  }
+trigger action100
+{
+alertentity naz102
+alertentity naz103
+alertentity naz104
+alertentity naz105
+
+trigger vagon_dn begindn
+}
+
+trigger action101
+{
+alertentity naz106
+alertentity naz107
+alertentity naz108
+alertentity naz109
+alertentity naz112
+
+savecheckpoint
+
+trigger vagon_dn up
+}
+trigger action102
+{
+alertentity naz110
+alertentity naz111
+alertentity naz112
+alertentity naz113
+alertentity naz114
+alertentity naz115
+}
+
+  trigger action1
+	{
+	alertentity nazi4
+	}
+
+trigger action2
+	{
+	alertentity nazi5
+	}
+
+trigger action3
+	{
+	alertentity nazi6
+            alertentity nazi7
+            alertentity nazi8
+savecheckpoint
+	}
+
+trigger action4
+	{
+	alertentity nazi9
+            alertentity nazi10
+            alertentity nazi11
+	}
+
+
+trigger action5
+	{
+	alertentity nazi12
+            alertentity nazi13
+            
+	}
+
+trigger action6
+	{
+	alertentity nazi14
+            alertentity nazi15
+            alertentity nazi16
+            alertentity nazi17
+
+			savecheckpoint
+	}
+trigger action7
+	{
+	alertentity nazi18
+            alertentity nazi19
+            
+	}
+
+trigger action8
+	{
+	alertentity nazi20
+            alertentity nazi21
+            alertentity nazi22
+            alertentity nazi30
+            alertentity nazi31
+	}
+
+
+
+
+trigger action9
+	{
+	alertentity nazi23
+            alertentity nazi24
+            alertentity nazi25
+            alertentity nazi26
+			savecheckpoint
+	}
+
+ trigger endmap
+  {
+  changelevel bergwerk persistent
+  
+   }
+
+
+
+
+
+
+
+}
+
+//vishka========================
+	
+naz100
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 360
+
+
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+            trigger n100mov
+            {
+            walktomarker n101
+            }
+	
+           enemysight player
+	{
+                        playsound sound/player/infantryss/attack/attack2.wav
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+            trigger naz101 mov
+         
+		
+	}
+
+	}
+
+naz101
+{
+	attributes
+	{
+		
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		
+
+	}
+
+	spawn
+	{
+		giveweapon weapon_luger
+        setammo ammo_9mm 999
+                      	}
+            
+ trigger mov
+{
+godmode on
+facetargetangles n101
+playsound sound/player/infantryss/orders/kook.wav
+wait 2500
+playsound sound/player/infantryss/orders/angreif.wav
+wait 2500
+alertentity trans
+alertentity trans10
+playsound sound/player/infantryss/death/flame_scream1.wav
+wait 2500
+catchfire
+alertentity d1
+godmode off
+
+
+
+}
+
+	
+           enemysight player
+	{
+			}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+
+
+//stancia==========================
+
+naz106
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+
+naz107
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+
+	    takeweapon all
+		giveweapon weapon_luger
+        setammo ammo_9mm 999
+		selectweapon weapon_luger
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+
+naz108
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+
+	    takeweapon all
+		giveweapon weapon_luger
+        setammo ammo_9mm 999
+		selectweapon weapon_luger
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+naz109
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_luger
+        setammo ammo_9mm 999
+		selectweapon weapon_luger
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+naz110
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+naz111
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+naz112
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+
+naz113
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+        takeweapon all
+    giveweapon weapon_mg42m
+    setammo 12.7mm 999
+	setclip mg42m 100
+    selectweapon weapon_mg42m
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+naz114
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+naz115
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+//baza======================================
+
+
+
+	
+
+nazi4 //dokument
+{
+	attributes
+	{
+		alertness 1000
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		//explicit_routing on
+        godmode on           
+        wait 1000            
+		sight
+		
+	}
+
+
+	
+           enemysight player
+	{
+                          playsound MiscHalt
+		explicit_routing off
+		
+	           runtomarker n4spot
+                       godmode off
+                       facetargetangles n4spot
+                       alertentity actbox1
+                       alertentity nazi1
+                       alertentity nazi2
+                       alertentity nazi3
+                       wait 10000 
+
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+nazi1
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+
+nazi2
+{
+	attributes
+	{
+		
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+	}
+
+nazi3
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi5
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		runtomarker n5
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+
+
+	}
+
+
+
+nazi6
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi7
+{
+	attributes
+	{
+	    idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi8
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi9
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi10
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi11
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi12
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi13
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+        takeweapon all
+    giveweapon weapon_mg42m
+    setammo 12.7mm 999
+	setclip mg42m 100
+    selectweapon weapon_mg42m
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi14
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{          
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 3
+		selectweapon weapon_panzerfaust
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi15
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi16
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi17
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		fov 180
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi20
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		
+	}
+
+	spawn
+	{         
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi21
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+
+	}
+
+	spawn
+	{
+
+        wait 5000
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi22
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		
+	}
+
+	spawn
+	{
+        wait 5000
+        takeweapon all
+    giveweapon weapon_mg42m
+    setammo 12.7mm 999
+	setclip mg42m 100
+    selectweapon weapon_mg42m
+        gotocast player
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+//pulemet=================
+
+nazi18
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		statetype alert
+
+		wait 100
+		gotomarker n18
+		facetargetangles n18
+        mount mg42_no1
+		//wait forever 0
+                        
+	}
+
+
+
+//	forced_mg42_unmount destroyed
+//	{
+//  		resetscript
+//		wait 100 player
+//	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun1
+	{
+		unmount
+		wait 100 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+nazi19
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		statetype alert
+		wait 100
+		gotomarker n19
+		facetargetangles n19
+        mount mg42_no2
+		//wait forever 0
+                        
+	}
+
+	
+//	forced_mg42_unmount destroyed
+//	{
+//  		resetscript
+//		wait 100 player
+//	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun1
+	{
+		unmount
+		wait 100 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+
+
+nazi23
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		
+	}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+
+	            wait 5000
+                        resetscript	
+                        walktomarker tun
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi24
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		setammo ammo_grenades 3	
+
+	            wait 5000
+                        resetscript	
+                        walktomarker tun
+		sight
+
+
+	
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi25
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		setammo ammo_grenades 3	
+
+	            wait 5000
+                        resetscript	
+                        walktomarker tun
+		sight
+
+
+	
+                 		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi26
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+			}
+
+	spawn
+	{
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+		setammo ammo_grenades 3	
+
+	            wait 5000
+                        resetscript	
+                        walktomarker tun
+		sight
+
+
+	            
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+
+nazi30
+{
+	attributes
+	{
+	    idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+			}
+
+	spawn
+	{ 
+	    takeweapon all
+		giveweapon weapon_g43
+        setammo ammo_792mm 999
+		selectweapon weapon_g43
+		sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+
+nazi31
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 1600
+			}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp44
+        setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+        sight
+		
+	}
+
+	
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+		
+		
+	}
+}
+

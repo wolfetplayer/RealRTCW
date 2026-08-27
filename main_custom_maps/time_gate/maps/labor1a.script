@@ -1,0 +1,499 @@
+
+
+gate1l
+{
+	spawn
+	{
+	}
+	trigger alarm
+	{
+	playsound sound/world/klaxon.wav looping
+    }
+
+
+	trigger open
+	{
+		wait 50
+		stopsound
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g1l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g1l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate1r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g1r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g1r2 50
+		faceangles 0 0 0 gototime
+		trigger naz6 start
+		trigger naz6a start
+		trigger naz7 start
+
+
+
+
+	}
+}
+
+gate2l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g2l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g2l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate2r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g2r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g2r2 50
+		faceangles 0 0 0 gototime
+		trigger naz10 start
+		trigger naz11 start
+		trigger naz12 start
+
+
+
+	}
+}
+
+
+vent
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		wait 1000
+		playsound sound/scenaric/village2/g2_ya_ya.wav
+		playsound sound/scenaric/village2/g1lc_haha.wav
+		wait 1000
+		playsound sound/scenaric/rocket/bridge_creak1.wav looping
+		gotomarker v1 100
+		faceangles 180 0 0 800
+            faceangles 360 0 0 800
+
+
+		stopsound
+            playsound  sound/movers/doors/door3_endo.wav
+            wait 500
+            playsound sound/scenaric/rocket/bridge_creak3.wav looping
+            trigger ventdoor open
+            gotomarker v4 10
+		faceangles 0 45 0 gototime
+            gotomarker v2 10
+            faceangles 0 90 0 gototime
+            gotomarker v3 10
+            faceangles 0 135 0 gototime
+
+            stopsound
+
+
+	}
+}
+
+ventdoor
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		gotomarker v4 10
+		faceangles 0 45 0 gototime
+		gotomarker v2 10
+		faceangles 0 90 0 gototime
+		gotomarker v3 10
+            faceangles 0 135 0 gototime
+
+
+
+
+
+	}
+}
+
+
+vent2
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		wait 1000
+		playsound sound/scenaric/rocket/bridge_creak1.wav looping
+		gotomarker 2v1 100
+		faceangles 180 0 0 800
+            faceangles 360 0 0 800
+
+
+		stopsound
+            playsound  sound/movers/doors/door3_endo.wav
+            wait 500
+            playsound sound/scenaric/rocket/bridge_creak3.wav looping
+            trigger ventdoor2 open
+            gotomarker 2v4 10
+		faceangles 0 45 0 gototime
+            gotomarker 2v2 10
+            faceangles 0 90 0 gototime
+            gotomarker 2v3 10
+            faceangles 0 135 0 gototime
+
+            stopsound
+
+
+	}
+}
+
+ventdoor2
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		gotomarker 2v4 10
+		faceangles 0 45 0 gototime
+		gotomarker 2v2 10
+		faceangles 0 90 0 gototime
+		gotomarker 2v3 10
+            faceangles 0 135 0 gototime
+
+
+
+
+
+	}
+}
+
+gate3l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g3l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g3l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate3r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g3r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g3r2 50
+		faceangles 0 0 0 gototime
+		trigger naz42 start
+		trigger naz43 start
+		trigger naz44 start
+
+
+
+
+	}
+}
+
+gate4l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g4l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g4l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+
+
+	trigger close
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g4l2 50
+		faceangles 0 0 0 gototime
+		gotomarker g4l3 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/world/electrocute.wav
+        trigger gate4l closes
+
+
+
+	}
+	trigger closes
+	{
+
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g4l2 50
+		faceangles 0 0 0 gototime
+		gotomarker g4l3 70
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound  sound/movers/doors/door3_endo.wav
+		trigger gate4l closes
+
+
+
+
+
+	}
+}
+
+gate4r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g4r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g4r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+
+	}
+
+trigger close
+	{
+		wait 50
+        playsound  sound/scenaric/norway/intruder_alert.wav
+		gotomarker g4r2 50
+		faceangles 0 0 0 gototime
+		gotomarker g4r1 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+}
+
+gate5l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g5l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g5l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate5r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g5r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g5r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+}
+
+gate6l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g6l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g6l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+
+
+	}
+}
+
+gate6r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g6r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g6r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+}
+
+gate7l
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+		playsound sound/movers/doors/door3_loopo.wav looping
+		gotomarker g7l1 50
+		faceangles 0 0 0 gototime
+		gotomarker g7l2 50
+		faceangles 0 0 0 gototime
+		stopsound
+        playsound  sound/movers/doors/door3_endo.wav
+        trigger naz47 start
+
+
+	}
+}
+
+gate7r
+{
+	spawn
+	{
+	}
+
+
+	trigger open
+	{
+		wait 50
+
+		gotomarker g7r1 50
+		faceangles 0 0 0 gototime
+		gotomarker g7r2 50
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+}
+
+
+

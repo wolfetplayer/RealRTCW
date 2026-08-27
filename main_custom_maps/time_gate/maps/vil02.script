@@ -1,0 +1,68 @@
+//
+// Scripting
+//Map:Vil02
+
+//Last edited by: Priv
+//
+
+
+gate
+{
+	spawn
+	{
+		
+	}
+
+	trigger gup
+	{
+            wait 200
+		playsound sound/movers/doors/door6_loopc.wav looping
+		gotomarker g1 200
+		faceangles 0 0 350 gototime
+             gotomarker g3 10
+		faceangles 0 0 300 gototime
+            gotomarker g2 10
+		faceangles 0 0 270 gototime
+            stopsound
+            playsound sound/movers/doors/door6_endc.wav
+                        
+			}
+
+}
+
+vagon
+{
+	spawn
+	{
+		accum 0 set 1
+		accum 1 set 1
+		accum 2 set 1
+	}
+
+	
+trigger start
+
+	         {
+		wait 200
+		playsound sound/scenaric/tram/tram_move.wav looping
+		gotomarker v_dn6 10
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn5 20
+		
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn4 30
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn3 35
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn2 40
+            trigger player endmap
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn1 45
+		
+			}
+
+
+}
+
+	
+

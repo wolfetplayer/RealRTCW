@@ -1,0 +1,267 @@
+//BBRRRRRRR
+//BRR
+//BRBR
+//Brush Scripting
+//Map: Capuzzo Road
+//Author: {SSF}Sage
+//Have fun! Contact me with E-mail at ssf@netti.fi
+//     LLL          oooo      LLL
+//     LLL        oo    oo    LLL 
+//     LLL       oo      oo   LLL 
+//     LLL       oo	 oo   LLL        ftw!
+//     LLL	  oo    oo    LLL
+//     LLLLLLLL     oooo      LLLLLLLL
+//
+////////////////////////////////////////////
+////////////////Truck stuff////////////////
+//////////////////////////////////////////
+truck
+{
+	spawn
+	{
+		wait 50
+
+		faceangles 0 180 0 10
+
+		wait 500
+
+		trigger truck move_start
+
+
+	}
+
+
+	////////////////////////////////////////////
+	////////////Moving the truck///////////////
+	//////////////////////////////////////////
+
+	trigger move_start
+	{
+		//Let's move the truck to the wait position #1
+
+		trigger truck wheels_rotate
+
+
+		gotomarker truck_pc1 220
+		faceangles 0 163 0 gototime
+		gotomarker truck_pc2 220
+		faceangles 0 145 0 gototime
+		gotomarker truck_pc3 220
+		faceangles 0 130 0 gototime
+		gotomarker truck_pc4 220
+		faceangles 0 120 0 gototime
+		gotomarker truck_pc5 220
+		faceangles 0 115 0 gototime
+		gotomarker truck_pc6 220
+		faceangles 0 123 0 gototime
+		gotomarker truck_pc7 230
+		faceangles 0 142 0 gototime
+		gotomarker truck_pc8 240
+		faceangles 0 160 0 gototime
+		gotomarker truck_pc9 240
+		faceangles 0 175 0 gototime
+		gotomarker truck_pc10 245
+		faceangles 0 182 0 gototime
+		gotomarker truck_pc11 250
+		faceangles 0 190 0 gototime
+		gotomarker truck_pc12 255
+		faceangles 0 207 0 gototime
+		gotomarker truck_pc13 260
+		faceangles 0 222 0 gototime
+		gotomarker truck_pc14 265
+		faceangles 0 235 0 gototime
+
+		trigger player fire
+
+		gotomarker truck_pc15 275
+		faceangles 0 245 0 gototime
+		gotomarker truck_pc16 260
+		faceangles 0 250 0 gototime
+		gotomarker truck_pc17 260
+		faceangles 0 247 0 gototime
+		gotomarker truck_pc18 250
+		faceangles 0 237 0 gototime
+		gotomarker truck_pc19 240
+		faceangles 0 237 0 gototime
+		gotomarker truck_pc20 240
+		faceangles 0 230 0 gototime
+		gotomarker truck_pc21 230
+		faceangles 0 245 0 gototime
+
+		trigger nazi_mg_d stop_fire
+
+		gotomarker truck_pc22 220
+		faceangles 0 253 0 gototime
+
+
+		trigger player truck_finished
+
+		trigger truck wheels_stop_rotating
+	}
+
+	trigger wheels_rotate
+	{
+		trigger truck_sound sound_move
+
+		trigger truck_bw rotate
+		trigger truck_fw rotate
+	}
+
+	trigger wheels_stop_rotating
+	{
+		trigger truck_sound stop_and_die
+
+		trigger truck_bw stop_rotating
+		trigger truck_fw stop_rotating
+	}
+}
+
+truck_clip
+{
+	spawn
+	{
+		//Have to deal with the clip separately because of spawning
+		wait 50
+		gotomarker truck_pc22 220
+		faceangles 0 343 0 gototime
+		
+	}
+}
+
+truck_bw
+{
+	spawn
+	{
+		wait 50
+		attachtotag truck tag_wback
+	}
+
+	trigger rotate
+	{
+		faceangles 90 0 0 125
+		faceangles 180 0 0 125
+		faceangles 270 0 0 125
+		faceangles 360 0 0 125
+
+		trigger truck_bw rotate
+	}
+
+	trigger stop_rotating
+	{
+		resetscript
+	}
+}
+
+truck_fw
+{
+	spawn
+	{
+		wait 50
+		attachtotag truck tag_wfront
+	}
+
+	trigger rotate
+	{
+		faceangles 90 0 0 125
+		faceangles 180 0 0 125
+		faceangles 270 0 0 125
+		faceangles 360 0 0 125
+
+		trigger truck_fw rotate
+	}
+
+	trigger stop_rotating
+	{
+		resetscript
+	}
+}
+
+truck_sound
+{
+	spawn
+	{
+		wait 200
+		attachtotag truck tag_wfront
+
+		trigger truck_sound sound_idle
+	}
+
+	trigger start
+	{
+		trigger truck_sound sound_start
+		wait 950
+		trigger truck_sound sound_move
+	}
+
+	trigger fix
+	{
+		wait 600
+		playsound sound/capuzzo/fix.wav volume 96
+	}	
+
+	trigger fixed
+	{
+		stopsound
+		alertentity truck_smoke_kill_r
+	}
+
+	trigger start_and_idle
+	{
+		trigger truck_sound sound_start
+		wait 950
+		trigger truck_sound sound_idle
+	}
+
+	trigger stop_and_die
+	{
+		trigger truck_sound sound_stop
+		wait 950
+		trigger truck_sound sound_steam
+
+		wait 250
+
+		alertentity truck_smoke
+	}
+
+	trigger sound_idle
+	{
+		playsound sound/sounds_sd/truck_idle.wav looping
+	}
+
+	trigger sound_start
+	{
+		stopsound
+		playsound sound/sounds_sd/truck_revup.wav volume 96
+	}
+
+	trigger sound_move
+	{
+		playsound sound/sounds_sd/truck_move.wav looping
+	}
+
+	trigger sound_stop
+	{
+		stopsound
+		playsound sound/sounds_sd/truck_revdown.wav volume 96
+	}
+
+	trigger sound_steam
+	{
+		playsound sound/world/steam.wav looping
+	}
+}
+
+////////////////////////////////////////////
+////////////////Other stuff////////////////
+//////////////////////////////////////////
+
+mg_dd
+{
+	spawn
+	{
+		wait 50
+		alertentity mg_dd
+	}
+}
+
+

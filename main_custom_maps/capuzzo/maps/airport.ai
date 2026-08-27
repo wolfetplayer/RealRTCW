@@ -1,0 +1,1830 @@
+//AI.
+//AI..
+//AI...
+//AI Scripting ding ding dong
+//Map: Capuzzo Airport
+//Author: {SSF}Sage
+//Have fun! Contact me with E-mail at ssf@netti.fi
+//     LLL          oooo      LLL
+//     LLL        oo    oo    LLL 
+//     LLL       oo      oo   LLL 
+//     LLL       oo	 oo   LLL        ftw!
+//     LLL		oo    oo    LLL
+//     LLLLLLLL     oooo      LLLLLLLL
+//
+//The key is bot placement and attributes.
+
+player
+{
+	spawn
+	{
+		accum 0 set 0		//Radio message not sent
+		accum 1 set 0		//Blueprint script status
+		accum 2 set 0		//Cave blackguard randomizer
+		accum 3 set 0		//Deathcounter
+		accum 4 set 0		//Airport is not safe
+		accum 5 set 0		//Attacker deathcounter
+		accum 6 set 0		//Command house deathcounter
+		accum 7 set 0		//valley deathcounter
+
+		objectivesneeded 2
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000 					//% time
+		mu_queue sound/music/m_mission
+
+		//About the Ammo & Guns left from city for realistic testing.. 
+/*
+		
+*/
+	}
+
+	//--------------------------------Sound scripting-------------------------------
+	//
+	//MUSIC
+	//
+	//Valley part: 
+	//Start: MISSION, 1st bot sight: ATTACK, Half past valley: ATTACK_meh, Valley cleared: RELAXED
+	//Airport part:
+	//Entering airport: ALARM, Killed attackers: ATTACK_meh, Breached the cmd wall: ALARM, Cleared cmd house ATTACK_meh, All dead: RELAXED
+	//
+
+	trigger play_mission
+	{
+		mu_fade 0 2500
+		mu_queue sound/music/m_mission
+	}
+
+	trigger play_attack
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_moving
+	}
+
+	trigger play_attack_meh
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_situation
+	}
+
+	trigger play_relaxed
+	{
+		mu_fade 0 2500
+		mu_queue sound/music/m_stealth
+	}
+
+	trigger play_alarm
+	{
+		mu_fade 0 250
+		mu_queue sound/music/m_action
+	}
+
+	//----------------------------------Valley scripting--------------------------
+
+	trigger half_past_valley
+	{
+		trigger player play_attack_meh
+
+		trigger nazi_v5 releasegun
+		trigger nazi_v6 releasegun
+
+		trigger nazi_v8 attack
+
+		//City patrol comes running to sweap the area
+
+		alertentity nazi_r1
+		alertentity nazi_r2
+
+		trigger nazi_r1 kill_the_american
+		trigger nazi_r2 kill_the_american
+
+		savecheckpoint
+	}
+
+	trigger valley_deathcounter
+	{
+		//Are valley bots killed?
+
+		accum 7 inc 1
+
+		accum 7 abort_if_less_than 10
+
+		trigger player play_relaxed
+	}
+
+	//-------------------------------Airport scripting----------------------------
+
+	trigger entering_airport
+	{
+		//Abort trigger valley_deathcounter
+
+		accum 7 inc -1
+
+		//Attack squad
+		alertentity nazi_a1
+		alertentity nazi_a2
+		alertentity nazi_a3
+		alertentity nazi_a4
+
+		//Cowards near entrance
+		alertentity nazi_a5
+		alertentity nazi_a6
+
+		//MG guy, doh...
+		alertentity nazi_amg
+
+		//
+		//--Attack script-->	
+		//
+
+		trigger nazi_a1 ze_attacke
+		trigger nazi_a3 ze_attacke
+
+		wait 200 //Give a little headstart to the 2 bots...
+
+		trigger nazi_a2 ze_attacke
+		trigger nazi_a4 ze_attacke
+
+		wait 50
+
+		//Cheap way to skip sounds file...Bad boy...
+
+		alertentity attack_sound_r
+		
+		trigger player play_alarm
+
+		//Remove some dead bot models to save tris if they are all killed (lazyness)
+
+		accum 7 abort_if_less_than 9	//10-1 bots
+
+		alertentity nazi_v1_kill_r
+		alertentity nazi_v2_kill_r
+		alertentity nazi_v3_kill_r
+		alertentity nazi_v4_kill_r
+		alertentity nazi_v5_kill_r
+		alertentity nazi_v6_kill_r
+		alertentity nazi_v7_kill_r
+		alertentity nazi_v8_kill_r
+
+		savecheckpoint
+	}
+
+	trigger attacker_deathcounter
+	{
+		//Are 4 of  the attackers killed?
+
+		accum 5 inc 1
+
+		accum 5 abort_if_not_equal 4
+
+		trigger player play_attack_meh
+	}
+
+	trigger close_to_hangar
+	{
+		alertentity nazi_a7
+
+		trigger nazi_a7 he_is_coming
+	}
+
+	trigger close_to_flaghouse
+	{
+		trigger nazi_amg releasegun
+
+		alertentity nazi_a8
+		alertentity nazi_a9
+
+		trigger nazi_a8 kill_him
+		trigger nazi_a9 kill_him
+	}
+
+	trigger close_to_midhouse
+	{
+		alertentity nazi_a10
+
+		trigger nazi_a10 attack
+	}
+
+	//----------------------------------Cave scripting----------------------------
+
+	trigger getting_close_to_caves
+	{
+		//Spawn the nazies earlier, so he can hear bullets and act accordingly, not just walk out
+
+		alertentity nazi_c3
+
+		//Select randomly wheater to spawn the guard on left or right
+
+		accum 2 random 2
+
+		trigger player spawn_nazi_c1	
+		trigger player spawn_nazi_c2
+
+		savecheckpoint
+	}
+
+	trigger spawn_nazi_c1
+	{
+		accum 2 abort_if_not_equal 0
+
+		alertentity nazi_c1
+	}
+
+	trigger spawn_nazi_c2
+	{
+		accum 2 abort_if_not_equal 1
+
+		alertentity nazi_c2
+	}
+
+	//............Walk outta cave!............
+
+	trigger entering_caves
+	{
+		trigger player go_nazi_c1	
+		trigger player go_nazi_c2
+
+		savecheckpoint
+	}
+
+	trigger go_nazi_c1
+	{
+		accum 2 abort_if_not_equal 0
+
+		trigger nazi_c1 going_out
+	}
+
+	trigger go_nazi_c2
+	{
+		accum 2 abort_if_not_equal 1
+
+		trigger nazi_c2 going_out
+	}
+
+	//----------------------------Cmd house bot scripting----------------------------
+
+	trigger cmd_door_breached
+	{
+		//Hey what just happened? O_O
+
+		trigger player play_alarm
+
+		alertentity nazi_k1
+		alertentity nazi_k2
+		alertentity nazi_k3
+		alertentity nazi_k4
+		alertentity nazi_k5
+
+		savecheckpoint
+	}
+
+	trigger inside_storage
+	{
+		trigger nazi_k3 coming_inside
+	}
+
+	trigger cmd_house_deathcounter
+	{
+		//House cleared?
+
+		accum 6 inc 1
+		accum 6 abort_if_less_than 5
+
+		//If airport is cleared, abort.
+
+		accum 3 abort_if_equal 28
+
+		trigger player play_attack_meh
+	}
+
+	//--------------------------------Objective scripting----------------------------
+
+	trigger deathcounter
+	{
+		accum 3 inc 1
+		accum 3 abort_if_less_than 28
+
+		alertentity radio_multiple_kill_r
+
+		accum 4 set 1 //Airport is safe! Halleluja!
+
+		trigger player play_relaxed
+
+		trigger player objective1
+	}
+
+	trigger objective1
+	{
+		objectivemet 1
+
+		savecheckpoint
+	}
+
+	trigger radio_activated
+	{
+		accum 4 abort_if_not_equal 1	//Airport safe?
+
+		alertentity radio_kill_r	//Kill the trigger
+
+		wait 250
+
+		alertentity radio_morse_r	//Play morse sound
+
+		wait 10000
+
+		trigger plane fly_pretty_fly	//Plane coming! Yay!
+
+		wait 5000
+
+		alertentity radio_morse_kill_r	//Kill the speaker
+
+		accum 0 set 1
+	}
+
+	trigger command_radio_destroyed
+	{
+		accum 0 abort_if_not_equal 0	//Abort if the message has been sent already..
+
+		//EPIC FAIL YOU IDIOT! HAH!
+
+		alertentity radio_kill_r	//Kill the trigger
+		alertentity radio_morse_kill_r	//Kill the speaker
+
+		wait 1500
+
+		missionfailed
+	}
+
+	trigger blueprints_taken
+	{
+		trigger player drop_off
+	}
+
+	trigger drop_off
+	{
+		//If plane has landed + Blueprints are taken = Blueprints can be captured
+
+		accum 1 inc 1
+		accum 1 abort_if_less_than 2
+
+		alertentity blueprints_drop_off_relay
+	}
+
+	trigger blueprints_captured
+	{
+		objectivemet 2
+
+		print Excellent work! Now get back to the truck.
+
+		wait 2500
+
+		//Truck comes plane goes...
+
+		trigger truck four_wheeled_thingy_to_move
+
+		trigger plane_propella	rotate_a_byebye
+	}
+
+	trigger secret_found
+	{
+		foundsecret
+	}
+
+	trigger endmap
+	{
+		changelevel road persistent
+	}
+}
+
+////////////////////////////////////////////
+////////////////Valley bots////////////////
+//////////////////////////////////////////
+
+nazi_v1
+{
+	attributes
+	{
+		aggression 0.6
+		hearing_scale 1.0
+		running_speed 280
+		walking_speed 140
+	}
+
+	spawn
+	{
+		knockback off
+		statetype alert
+		//nosight 99999999
+	}
+
+	enemysight
+	{
+		trigger player play_attack
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+nazi_v2
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 1.0
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+	
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+nazi_v3
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 1.0
+		walking_speed 130
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		trigger nazi_v3 walk
+	}
+
+	trigger walk
+	{
+		walktomarker m_v3_1 nostop
+		walktomarker m_v3_2 nostop
+		walktomarker m_v3_3 nostop
+		walktomarker m_v3_4 nostop
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	bulletimpact
+	{
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		resetscript
+	}
+
+	inspectbodystart
+	{
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	statechange relaxed combat
+	{
+		resetscript
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange query combat
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}	
+}
+
+nazi_v4
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 1.0
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+
+//-------------------MG42 bot-----------------------
+
+nazi_v5
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		knockback off
+		statetype alert
+
+		wait 100
+
+		mount start_mg
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+
+	trigger releasegun
+	{
+		unmount
+		wait 100 player
+
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	enemysight
+	{
+		trigger nazi_v6 get_into_position
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+		trigger nazi_v6 mg_guy_dead
+	}
+}
+
+
+nazi_v6
+{
+	attributes
+	{
+		aggression 0.8
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		accum 0 set 0		//Player has not gone past the trigger
+
+		//nosight 99999999
+		noavoid
+	}
+
+	trigger get_into_position
+	{
+		walktomarker m_v6_1
+		walktomarker m_v6_2
+		crouchtomarker m_v6_3
+		wait forever 0
+	}
+
+
+	trigger mg_guy_dead
+	{
+		accum 0 abort_if_not_equal 0	//Has player gone past the trigger?
+
+		resetscript
+
+		runtomarker m_v6_mg
+
+		movetype run
+
+		knockback off
+
+		mount start_mg
+	}
+
+	trigger releasegun
+	{
+		accum 0 set 1		//Player has gone past the trigger
+
+		unmount
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+nazi_v7
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 1.0
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}	
+}
+
+
+nazi_v8
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 5.0
+	}
+
+	spawn
+	{
+		//nosight 99999999999
+		wait forever 0
+	}
+
+	trigger attack
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+
+////////////////////////////////////////////
+////////////////Road patrol////////////////
+//////////////////////////////////////////
+
+nazi_r1
+{
+	attributes
+	{
+		aggression 0.9
+		hearing_scale 0.0
+		running_speed 290
+	}
+
+	spawn
+	{
+		//nosight 99999999999
+
+		accum 0 set 0	//Should I inspect? 0=no 1=yes
+
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	trigger kill_the_american
+	{
+		noavoid
+		statetype alert
+
+		knockback off
+
+		wait 100
+
+		runtomarker m_r1_1 nostop
+		runtomarker m_r1_2 nostop
+		runtomarker m_r1_3 nostop
+		runtomarker m_r1_4 nostop
+		runtomarker m_r1_5 nostop
+		runtomarker m_r1_6 nostop
+
+		attrib hearing_scale 0.5
+		accum 0 set 1
+
+		facetargetangles m_r1_6
+
+		wait 450 0
+
+		crouchtomarker m_r1_7 nostop
+
+		headlook off
+
+		wait 8500 0
+
+		runtomarker m_r1_7 nostop
+		runtomarker m_r1_8 nostop
+		runtomarker m_r1_9 nostop
+		runtomarker m_r1_10 nostop
+		runtomarker m_r1_11 nostop
+
+		wait forever 100
+	}
+
+	enemysight
+	{
+
+		resetscript
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 0 abort_if_not_equal 0
+
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+nazi_r2
+{
+	attributes
+	{
+		aggression 0.9
+		hearing_scale 0.0
+		running_speed 300
+	}
+
+	spawn
+	{
+		//nosight 99999999999
+
+		accum 0 set 0	//Should I inspect? 		0=no 1=yes
+		accum 1 set 0	//Ignore enemysight? 		0=no 1 yes
+		accum 2	set 0	//Have I seen the enemy?	0=no 1 yes
+
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	trigger kill_the_american
+	{
+		noavoid
+		statetype alert
+
+		knockback off
+
+		runtomarker m_r2_1 nostop
+		runtomarker m_r2_2 nostop
+		runtomarker m_r2_3 nostop
+		runtomarker m_r2_4 nostop
+		runtomarker m_r2_5 nostop
+
+		attrib hearing_scale 0.5
+		accum 0 set 1
+
+		crouchtomarker m_r2_6 nostop
+
+		movetype run
+
+		runtomarker m_r2_7 nostop
+		runtomarker m_r2_8 nostop
+		runtomarker m_r2_9 nostop
+		wait 250 20
+		runtomarker m_r2_10 nostop
+
+		runtomarker m_r2_11 nostop
+		runtomarker m_r2_12 nostop
+		runtomarker m_r2_13 nostop
+		runtomarker m_r2_14 nostop
+		runtomarker m_r2_15 nostop
+
+		//Follow the path of v6 to the mg
+
+		runtomarker m_v6_1 nostop
+		runtomarker m_v6_2 nostop
+		runtomarker m_v6_mg nostop
+
+		accum 0 set 0
+		accum 1 set 1
+
+		mount start_mg
+
+		alertentity nazi_r2_mg_trigger
+		alertentity nazi_r2_back_up_mg_trigger
+	}
+
+	trigger releasegun
+	{
+		//This can't happen before the bot has mounted the mg and seen the player!
+
+		accum 2 abort_if_equal 0
+
+		unmount
+		resetscript
+
+		accum 0 set 1
+	}
+
+	trigger hey_dont_go
+	{
+		//Backup trigger for mg, because it is possible to sneak past the mg..
+
+		accum 2 abort_if_equal 1
+
+		accum 0 set 1
+		accum 1 set 0
+
+		unmount
+
+		wait 100
+
+		//Go to the damn player who is trying to escape.. This command will be forgotten when the bot sees player.
+
+		runtocast player firetarget
+
+	}
+
+	enemysight
+	{
+		accum 2 set 1
+
+		accum 1 abort_if_equal 1
+
+		resetscript
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_equal 1
+
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 0 abort_if_equal 1
+
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player valley_deathcounter
+	}
+}
+
+////////////////////////////////////////////
+///////////////Airport bots////////////////
+//////////////////////////////////////////
+
+nazi_a1
+{
+	attributes
+	{
+		aggression 0.9
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger ze_attacke
+	{
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player attacker_deathcounter
+	}
+}
+
+nazi_a2
+{
+	attributes
+	{
+		aggression 0.9
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger ze_attacke
+	{
+		wait 200
+
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player attacker_deathcounter
+	}
+}
+
+nazi_a3
+{
+	attributes
+	{
+		aggression 0.9
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger ze_attacke
+	{
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player attacker_deathcounter
+	}
+}
+
+nazi_a4
+{
+	attributes
+	{
+		aggression 0.9
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger ze_attacke
+	{
+		wait 200
+
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player attacker_deathcounter
+	}
+}
+
+
+nazi_a5
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 5
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player attacker_deathcounter
+	}
+}
+
+nazi_a6
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 5
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player attacker_deathcounter
+	}
+}
+	
+//-------------------MG42 bot-----------------------
+
+nazi_amg
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		accum 0 set 0
+
+		knockback off
+		statetype alert
+
+		wait 100
+
+		mount flag_house_mg
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+
+	trigger releasegun
+	{
+		unmount
+		wait 100 player
+
+		resetscript
+
+		runtocast player firetarget
+
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_not_equal 1
+		resetscript
+	}
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+//-------------------Hangar bot-----------------------
+
+nazi_a7
+{
+	attributes
+	{
+		aggression 0.7
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger he_is_coming
+	{
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+//-----------------Flaghouse bots--------------------
+
+nazi_a8
+{
+	attributes
+	{
+		aggression 0.7
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger kill_him
+	{
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+nazi_a9
+{
+	attributes
+	{
+		aggression 0.7
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger kill_him
+	{
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+//-----------------Midhouse bot--------------------
+
+nazi_a10
+{
+	attributes
+	{
+		aggression 0.7
+		hearing_scale 1
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger attack
+	{
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+////////////////////////////////////////////
+/////////////////Cave bots/////////////////
+//////////////////////////////////////////
+
+nazi_c1
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 1.0
+		walking_speed 180
+	}
+
+	spawn
+	{
+		accum 0 set 0		//Has bot detected player? 0=no 1=yes
+
+		setammo ammo_grenades 0
+		knockback off
+	}
+
+	trigger going_out
+	{
+		accum 0 abort_if_not_equal 0
+
+		statetype alert
+
+		walktomarker m_c1_1 nostop
+		walktomarker m_c1_2 nostop
+
+		facetargetangles m_c1_2
+
+		walktomarker m_c1n2_1 nostop
+		walktomarker m_c1n2_2 nostop
+		walktomarker m_c1n2_3 nostop
+
+		headlook on
+
+		wait 10000
+
+		headlook off
+
+		walktocast player firetarget
+	}
+
+	enemysight
+	{
+		resetscript
+
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		deny
+
+		accum 0 abort_if_not_equal 0
+
+		resetscript
+
+		accum 0 set 1
+
+		runtocast player firetarget	
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+nazi_c2
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 1.0
+		walking_speed 180
+	}
+
+	spawn
+	{
+		accum 0 set 0		//Has bot detected player? 0=no 1=yes
+
+		setammo ammo_grenades 0
+		knockback off
+	}
+
+	trigger going_out
+	{
+		accum 0 abort_if_not_equal 0
+
+		statetype alert
+
+		walktomarker m_c2_1 nostop
+		walktomarker m_c2_2 nostop
+
+		facetargetangles m_c2_2
+
+		walktomarker m_c1n2_1 nostop
+		walktomarker m_c1n2_2 nostop
+		walktomarker m_c1n2_3 nostop
+
+		headlook on
+
+		wait 10000
+
+		headlook off
+
+		walktocast player firetarget
+	}
+
+	enemysight
+	{
+		resetscript
+
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		deny
+
+		accum 0 abort_if_not_equal 0
+
+		resetscript
+
+		accum 0 set 1
+
+		runtocast player firetarget	
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+nazi_c3
+{
+	attributes
+	{
+		aggression 0.6
+		inner_detection_radius 2048
+		hearing_scale 2.5
+		fov 300
+	}
+
+	spawn
+	{
+		//nosight 99999999
+	}
+
+	trigger attack
+	{
+		crouchtocast player firetarget
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+	}
+}
+
+////////////////////////////////////////////
+//////////////Command house bots///////////
+//////////////////////////////////////////
+
+nazi_k1
+{
+	attributes
+	{
+		aggression 0.5
+		hearing_scale 1
+		fov 300
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		setammo ammo_grenades 0
+
+		knockback off
+		statetype alert
+
+		runtocast player firetarget
+
+	}
+
+	enemysight
+	{
+		resetscript
+
+		attack player
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player cmd_house_deathcounter
+	}
+}
+
+nazi_k2
+{
+	attributes
+	{
+		aggression 0.5
+		hearing_scale 1
+		fov 300
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		setammo ammo_grenades 0
+
+		knockback off
+		statetype alert
+	}
+
+	enemysight
+	{
+		attack player
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player cmd_house_deathcounter
+	}
+}
+
+nazi_k3
+{
+	attributes
+	{
+		hearing_scale 1
+		fov 300
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		setammo ammo_grenades 0
+
+		knockback off
+		statetype alert
+
+		//Randomness
+
+		accum 0 random 3	//0=Attack 1=Runtocast 2=blank (bot chooses)
+
+		trigger nazi_k3 attack
+		trigger nazi_k3 runtocast
+
+	}
+		
+	trigger attack
+	{
+		accum 0 abort_if_not_equal 0		
+
+		attack player
+	}
+
+	trigger runtocast
+	{
+		accum 0 abort_if_not_equal 1
+
+		wait 500 1024
+
+		runtocast player firetarget
+	}
+
+	trigger coming_inside
+	{
+		//Sometimes bot doesn't go inspect and it takes ages for bot to see the player
+
+		accum 0 abort_if_not_equal 2
+
+		attack player
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player cmd_house_deathcounter
+	}
+}
+
+nazi_k4
+{
+	attributes
+	{
+		aggression 0.4
+		hearing_scale 5
+		inner_detection_radius 2048
+		camper 0.9
+		fov 300
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+
+		knockback off
+		statetype alert
+	}
+
+
+	enemysight
+	{
+		attack player
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player cmd_house_deathcounter
+	}
+}
+
+nazi_k5
+{
+	attributes
+	{
+		aggression 0.3
+		hearing_scale 1
+		fov 300
+		camper 0.9
+		tactical 0.9
+	}
+
+	spawn
+	{
+		//nosight 99999999
+
+		setammo ammo_grenades 0
+
+		knockback off
+		statetype alert
+
+		//Randomness
+
+		accum 0 random 5	//0=Attack 1=crouchtocast 2=behind_door 3=behind_stairs 4=inspect
+
+		trigger nazi_k5 attack
+		trigger nazi_k5 crouchtocast
+		trigger nazi_k5 behind_door
+		trigger nazi_k5 behind_stairs
+		trigger nazi_k5 inspect
+	}
+
+	trigger attack
+	{
+		accum 0 abort_if_not_equal 0
+
+		attack player
+	}
+
+	trigger crouchtocast
+	{
+		accum 0 abort_if_not_equal 1
+
+		avoid player
+		crouchtocast player firetarget
+	}
+
+	trigger behind_door
+	{
+		accum 0 abort_if_not_equal 2
+		
+		gotomarker m_k5_door
+		facetargetangles m_k5_door
+
+		attack player
+	}
+
+	trigger behind_stairs
+	{
+		accum 0 abort_if_not_equal 3
+		
+		runtomarker m_k5_stairs nostop
+		facetargetangles m_k5_stairs
+	}
+
+	trigger inspect
+	{
+		accum 0 abort_if_not_equal 4
+		
+		runtomarker m_k5_stairs nostop
+		facetargetangles m_k5_stairs
+
+		attack player
+	}
+
+
+	enemysight
+	{
+		resetscript
+	}
+
+	//
+		//Following events are denied ONLY to get the bot to go and stay behind_stairs (3)
+	//	
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_equal 3
+
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_equal 3
+
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		accum 0 abort_if_not_equal 3
+
+		deny
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 3
+
+		deny
+	}
+
+	death
+	{
+		trigger player deathcounter
+		trigger player cmd_house_deathcounter
+	}
+}
+

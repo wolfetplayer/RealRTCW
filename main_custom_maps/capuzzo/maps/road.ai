@@ -1,0 +1,931 @@
+//AI.
+//AI..
+//AI...
+//AI Scripting ding ding ding    DONG!
+//Map: Capuzzo Road
+//Author: {SSF}Sage
+//Have fun! Contact me with E-mail at ssf@netti.fi
+//     LLL          oooo      LLL
+//     LLL        oo    oo    LLL 
+//     LLL       oo      oo   LLL 
+//     LLL       oo	   oo    LLL        ftw!
+//     LLL		  oo    oo    LLL
+//     LLLLLLLL     oooo      LLLLLLLL
+//
+//The key is bot placement and attributes.
+
+player
+{
+	spawn
+	{
+
+
+		objectivesneeded 1
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000 					//% time
+		mu_queue sound/music/m_mission
+		
+
+	//About the Ammo & Guns left from city for realistic testing.. 
+/*
+	
+*/
+
+		cvar cg_particleDist 2048		//Smoke distance set to higher
+
+		trigger player cam_1
+
+
+	}
+
+	trigger cam_1
+	{
+		startcam road_1
+	}
+
+	trigger fire
+	{
+		trigger nazi_mg_d fire_truck
+		
+		wait 300
+		trigger player play_alarm
+		wait 200
+
+		trigger nazi_d1 fire_truck
+
+		wait 250
+
+		trigger nazi_d2 fire_truck
+		wait 100
+		trigger nazi_d3 fire_truck
+		trigger nazi_d4 fire_truck
+		wait 250
+		trigger nazi_d5 fire_truck
+		wait 1000
+		trigger nazi_d6 fire_truck
+	}
+
+	trigger truck_finished
+	{
+		trigger player play_attack1
+
+		wait 250
+
+		alertentity nazi_r1
+		alertentity nazi_r2
+		alertentity nazi_r3
+		alertentity nazi_r4
+		alertentity nazi_r5
+
+		trigger nazi_d1 wait
+		trigger nazi_d2 wait
+		trigger nazi_d3 wait
+		trigger nazi_d4 wait
+		trigger nazi_d5 wait
+		trigger nazi_d6 wait
+
+		wait 100
+		trigger nazi_r3 go
+		wait 100
+		trigger nazi_r2 go
+		//wait 250
+		//trigger nazi_r1 go
+
+		//The trigger bugs the mg mounting, kinda workaround
+		wait 500
+		alertentity uphill_trigger
+	}
+
+	trigger up_the_hill
+	{
+		trigger nazi_mg_d releasegun
+		trigger nazi_d1 releasegun
+		alertentity nazi_d_in
+
+		wait 1000
+
+		trigger nazi_d2 reset
+		trigger nazi_d3 reset
+
+		wait 1000
+
+		alertentity nazi_d_out
+
+		trigger nazi_d4 reset
+
+		wait 500
+
+		trigger nazi_d5 reset
+		trigger nazi_d6 reset
+
+		wait 1000
+
+		trigger nazi_d_out go_out
+
+	}
+
+	trigger tools_taken
+	{
+		alertentity truck_trigger
+		trigger player play_mission
+	}
+
+	trigger truck_fixed
+	{
+		//alertentity fade_screen_r
+		trigger truck_sound fix
+
+		startcam road_fade
+
+		wait 100
+
+		trigger truck_sound fixed
+
+		wait 5000
+
+		trigger truck_sound start_and_idle
+
+		objectivemet 1
+
+		alertentity end_trigger
+	}
+
+	trigger truck_fix_sound
+	{
+		//wait 500
+		alertentity truck_fix_sound
+	}
+
+	//MUSIC
+
+
+	trigger play_mission
+	{
+		mu_fade 0 2500
+		mu_queue sound/music/m_mission
+	}
+
+	trigger play_attack1
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_moving
+	}
+
+	trigger play_attack2
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_situation
+	}
+
+	trigger play_relaxed
+	{
+		mu_fade 0 2500
+		mu_queue sound/music/m_stealth
+	}
+
+	trigger play_alarm
+	{
+		mu_fade 0 500
+		mu_queue sound/music/m_action
+	}
+
+	trigger endmap
+	{
+		achievement_capuzzo
+		changelevel
+		wait 9000
+		endgame
+	}
+}
+
+////////////////////////////////////////////
+/////////////////Road bots/////////////////
+//////////////////////////////////////////
+
+nazi_r1
+{
+	attributes
+	{
+		aggression 0.5
+		hearing_scale 5.0
+		fov 350
+	}
+
+	spawn
+	{
+		//noattack 99999
+		//wait 250
+		//runtocast player firetarget
+		statetype alert
+
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		//deny
+	}
+}
+
+nazi_r2
+{
+	attributes
+	{
+		aggression 0.5
+		hearing_scale 5.0
+		fov 350
+	}
+
+	spawn
+	{
+		//noattack 99999
+		//wait 3000
+		//runtocast player firetarget
+		statetype alert
+	}
+
+	trigger go
+	{
+		runtomarker m_r2_1 nostop
+		//runtomarker m_r2_2 nostop
+		runtomarker m_r1_4 nostop
+		//runtomarker m_r2_4 nostop
+		facetargetangles m_r1_4
+	}
+
+	enemysight
+	{
+		//resetscript
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		//deny
+	}
+
+
+}
+
+nazi_r3
+{
+	attributes
+	{
+		aggression 0.7
+		hearing_scale 5.0
+		fov 350
+	}
+
+	spawn
+	{
+		//noattack 99999
+		//wait 2000
+		//runtocast player firetarget
+		statetype alert
+	}
+
+	trigger go
+	{
+		runtomarker m_r3_1 nostop
+		runtomarker m_r3_2 nostop
+		runtomarker m_r3_3 nostop
+		runtomarker m_r3_4 nostop
+		runtomarker m_r1_4 nostop
+
+		facetargetangles m_r1_4
+
+		resetscript
+	}
+
+	statechange alert combat
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		//resetscript
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+//Sand bag campers
+
+nazi_r4
+{
+	attributes
+	{
+		aggression 0.0
+		hearing_scale 5.0
+		camper 1.0
+		attack_crouch 0.8
+		idle_crouch 0.8
+	}
+
+	spawn
+	{
+	//	noattack 999999
+		wait forever 0
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+	attacksound
+	{
+		deny
+	}
+}
+
+nazi_r5
+{
+	attributes
+	{
+		aggression 0.0
+		hearing_scale 5.0
+		camper 1.0
+		attack_crouch 0.8
+		idle_crouch 0.8
+	}
+
+	spawn
+	{
+	//	noattack 999999
+		wait forever 0
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+	attacksound
+	{
+		deny
+	}
+}
+
+////////////////////////////////////////////
+///////////////////DD bots/////////////////
+//////////////////////////////////////////
+
+//backup mg
+nazi_d1		
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 5.0
+		camper 0.9
+	}
+
+	spawn
+	{
+		//noattack 999999
+
+	}
+
+	trigger wait
+	{
+		wait forever 0
+	}
+
+	trigger mg_guy_dead
+	{
+		resetscript
+
+		gotomarker m_d_right
+		facetargetangles m_d_right
+	
+		mount road_mg
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw 1000
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun
+	{
+		unmount
+		wait 100 player
+
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+nazi_d2		
+{
+	attributes
+	{
+		aggression 0.4
+		hearing_scale 5.0
+		camper 0.9
+	}
+
+	spawn
+	{
+		//noattack 999999
+
+	}
+
+	trigger wait
+	{
+		wait forever 0
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw 1250
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+}
+
+nazi_d3		
+{
+	attributes
+	{
+		aggression 0.35
+		hearing_scale 5.0
+		camper 0.9
+	}
+
+	spawn
+	{
+		//noattack 999999
+
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+
+	trigger wait
+	{
+		wait forever 0
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw 2500
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+}
+
+nazi_d4	
+{
+	attributes
+	{
+		aggression 0.4
+		hearing_scale 5.0
+		camper 0.9
+	}
+
+	spawn
+	{
+		//noattack 999999
+
+	}
+
+	trigger wait
+	{
+		wait forever 0
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw 2000
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+}
+
+nazi_d5	
+{
+	attributes
+	{
+		aggression 0.35
+		hearing_scale 5.0
+		camper 0.9
+	}
+
+	spawn
+	{
+		//noattack 999999
+
+	}
+
+	trigger wait
+	{
+		wait forever 0
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw 3000
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+}
+
+nazi_d6	
+{
+	attributes
+	{
+		aggression 0.3
+		hearing_scale 5.0
+		camper 0.9
+	}
+
+	spawn
+	{
+		//noattack 999999
+
+	}
+
+	trigger wait
+	{
+		wait forever 0
+	}
+
+	trigger reset
+	{
+		resetscript
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw 1500
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+}
+
+
+nazi_d_out	
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 0.0
+		camper 0.8
+	}
+
+	spawn
+	{
+		//noattack 999999
+		wait forever 0
+	}
+
+	trigger go_out
+	{
+		resetscript
+
+		gotomarker m_d_1
+		gotomarker m_d_2
+		crouchtomarker m_d_3
+		crouchtomarker m_d_right
+
+		wait 10 player
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+}
+
+nazi_d_in
+{
+	attributes
+	{
+		aggression 0.5
+		camper 0.6
+		idle_crouch 1.0
+		attack_crouch 1.0
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		wait forever 0
+		statetype alert
+	}
+
+	enemysight
+	{
+		resetscript
+		//knockback off
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+}
+
+////////////////////////////////////////////
+/////////////////MG bots/////////////////
+//////////////////////////////////////////
+
+nazi_mg_d
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0	//Gun not released
+
+		knockback off
+		statetype alert
+
+		wait 250
+		mount road_mg
+	}
+
+	trigger fire_truck
+	{
+		fireattarget truck_fw
+	}
+
+	trigger stop_fire
+	{
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun
+	{
+		accum 0 set 1	//Gun released!
+
+		unmount
+		wait 100 player
+
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 0 abort_if_not_equal 0
+
+		trigger nazi_d1 mg_guy_dead
+	}
+}

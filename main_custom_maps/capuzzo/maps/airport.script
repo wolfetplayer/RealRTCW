@@ -1,0 +1,673 @@
+//BBRRRRRRR
+//BRR
+//BRBR
+//Brush Scripting
+//Map: Capuzzo Airport
+//Author: {SSF}Sage
+//Have fun! Contact me with E-mail at ssf@netti.fi
+//     LLL          oooo      LLL
+//     LLL        oo    oo    LLL 
+//     LLL       oo      oo   LLL 
+//     LLL       oo	 oo   LLL        ftw!	
+//     LLL	  oo    oo    LLL
+//     LLLLLLLL     oooo      LLLLLLLL
+//
+////////////////////////////////////////////
+////////////////Plane stuff////////////////
+//////////////////////////////////////////
+
+plane
+{
+	spawn
+	{
+		wait 50
+
+		//the magical trigger for plane testing
+		//wait 2500
+		//trigger plane fly_pretty_fly
+	}
+
+	trigger fly_pretty_fly
+	{
+		wait 20000
+
+		alertentity plane_landing_r
+
+		wait 3500
+
+		alertentity plane		//spawn the plane
+		faceangles 0 0 18 5
+
+		//Ooh it's flying!
+
+		trigger plane_propella rotate_max
+
+		gotomarker plane_pc_0 1600 
+		gotomarker plane_pc_1 1500 
+		gotomarker plane_pc_2 1400 
+		gotomarker plane_pc_3 1300 
+		gotomarker plane_pc_4 1200
+
+		gotomarker plane_pc_5 1100
+		faceangles 0 0 16 gototime
+		gotomarker plane_pc_6 1000
+		faceangles 0 0 10 gototime
+	
+		gotomarker plane_pc_7 900
+		faceangles 0 0 2 gototime
+		gotomarker plane_pc_8 750
+		faceangles 0 0 0 gototime
+
+		gotomarker plane_pc_9 600
+		gotomarker plane_pc_10 450 
+
+		alertentity plane_hurt_toggle
+
+		gotomarker plane_pc_11 300
+
+		trigger plane_propella_dummy landing
+	}
+
+	trigger test
+	{
+		gotomarker plane_pc_11 3500
+		faceangles 0 0 0 gototime
+		wait 3000
+		trigger plane butt_against_tree
+	}
+
+	trigger butt_against_tree
+	{
+		//wait 2500
+
+		trigger propella_hurt turn_backwards
+
+		gotomarker plane_pc_b1 150
+		faceangles 0 -10 0 gototime
+		gotomarker plane_pc_b2 200
+		faceangles 0 -35 0 gototime
+		gotomarker plane_pc_b3 200
+		faceangles 0 -55 0 gototime
+		gotomarker plane_pc_b4 200
+		faceangles 0 -70 0 gototime
+		gotomarker plane_pc_b5 200
+		faceangles 0 -85 0 gototime
+		gotomarker plane_pc_b6 150
+		faceangles 0 -90 0 gototime
+
+		//trigger plane fly_for_your_life
+		trigger plane_propella_dummy backwards_stop
+		
+	}
+
+	trigger fly_for_your_life
+	{
+		wait 2000
+
+		trigger propella_hurt turn_forward
+
+		gotomarker plane_pc2_1 200
+		faceangles 0 -110 0 gototime
+		gotomarker plane_pc2_1b 275
+		faceangles 0 -140 0 gototime
+		gotomarker plane_pc2_2 350
+		faceangles 0 -155 0 gototime
+		gotomarker plane_pc2_2b 400
+		faceangles 0 -170 0 gototime
+		gotomarker plane_pc2_3 450
+		faceangles 0 -180 0 gototime
+		gotomarker plane_pc2_4 700
+
+
+		gotomarker plane_pc2_5 950
+		gotomarker plane_pc2_6 1050
+
+		gotomarker plane_pc2_7 1250
+		faceangles 0 -180 -2 gototime
+		gotomarker plane_pc2_7b 1350
+		faceangles 0 -180 -6 gototime
+		gotomarker plane_pc2_8 1450
+		faceangles 0 -180 -10 gototime
+
+		gotomarker plane_pc2_9 1550
+		gotomarker plane_pc2_10 1700
+		gotomarker plane_pc2_11 1800
+		gotomarker plane_pc2_12 1900
+
+		gotomarker plane_pc2_13 2000
+		gotomarker plane_pc2_14 2100
+		gotomarker plane_pc2_15 2200
+
+		//Remove the plane
+
+		alertentity propella_hurt_toggle
+		trigger plane remove
+
+
+
+	}
+
+	trigger remove
+	{
+		resetscript
+
+		trigger plane_propella stop
+
+		alertentity plane_kill_relay
+	}
+}
+
+//-----------------------------------------------------------------------------
+//-------------------------------plane propella -------------------------------
+//-----------------------------------------------------------------------------
+
+plane_propella
+{
+	spawn
+	{
+		wait 300
+		attachtotag plane tag_propella
+		faceangles 353 0 0 10
+	}
+
+	trigger rotate_max
+	{
+		faceangles 353 0 90 25
+		faceangles 353 0 180 25
+		faceangles 353 0 270 25
+		faceangles 353 0 0 25
+
+		trigger plane_propella rotate_max
+	}
+
+	trigger rotate_max2
+	{
+		faceangles 353 0 270 50
+		faceangles 353 0 180 50
+		faceangles 353 0 90 50
+		faceangles 353 0 0 50
+
+		trigger plane_propella rotate_max2
+	}
+
+	trigger rotate_slow_down
+	{
+		resetscript
+
+		faceangles 353 0 90 50
+		faceangles 353 0 180 50
+		faceangles 353 0 270 50
+		faceangles 353 0 0 50
+
+		faceangles 353 0 90 60
+		faceangles 353 0 180 60
+		faceangles 353 0 270 60
+		faceangles 353 0 0 60
+
+		faceangles 353 0 90 80
+		faceangles 353 0 180 80
+		faceangles 353 0 270 80
+		faceangles 353 0 0 80
+
+		alertentity propella_hurt_toggle
+
+		faceangles 353 0 90 100
+		faceangles 353 0 180 100
+		faceangles 353 0 270 100
+		faceangles 353 0 0 100
+
+		faceangles 353 0 90 120
+		faceangles 353 0 180 120
+		faceangles 353 0 270 120
+		faceangles 353 0 0 120
+
+		faceangles 353 0 90 150
+		faceangles 353 0 180 150
+		faceangles 353 0 270 150
+		faceangles 353 0 0 150
+
+		faceangles 353 0 90 250
+		faceangles 353 0 180 250
+		faceangles 353 0 270 250
+		faceangles 353 0 0 250
+		
+		trigger plane_propella_dummy backwards_start
+	}
+
+	trigger rotate_backwards
+	{
+		faceangles 353 0 270 200
+		faceangles 353 0 180 200
+		faceangles 353 0 90 200
+		faceangles 353 0 0 200
+
+		faceangles 353 0 270 170
+		faceangles 353 0 180 170
+		faceangles 353 0 90 170
+		faceangles 353 0 0 170
+
+		faceangles 353 0 270 120
+		faceangles 353 0 180 120
+		faceangles 353 0 90 120
+		faceangles 353 0 0 120
+
+		faceangles 353 0 270 100
+		faceangles 353 0 180 100
+		faceangles 353 0 90 100
+		faceangles 353 0 0 100
+
+		alertentity propella_hurt_toggle
+
+		faceangles 353 0 270 70
+		faceangles 353 0 180 70
+		faceangles 353 0 90 70
+		faceangles 353 0 0 70
+
+
+		trigger plane_propella_dummy backwards
+	}
+
+	trigger rotate_backwards_stop
+	{
+		resetscript
+
+		faceangles 353 0 270 50
+		faceangles 353 0 180 50
+		faceangles 353 0 90 50
+		faceangles 353 0 0 50
+		
+		faceangles 353 0 270 75
+		faceangles 353 0 180 75
+		faceangles 353 0 90 75
+		faceangles 353 0 0 75
+
+		alertentity propella_hurt_toggle
+
+		faceangles 353 0 270 100
+		faceangles 353 0 180 100
+		faceangles 353 0 90 100
+		faceangles 353 0 0 100
+
+		faceangles 353 0 270 130
+		faceangles 353 0 180 130
+		faceangles 353 0 90 130
+		faceangles 353 0 0 130
+
+		faceangles 353 0 270 150
+		faceangles 353 0 180 150
+		faceangles 353 0 90 150
+		faceangles 353 0 0 150
+
+		faceangles 353 0 270 180
+		faceangles 353 0 180 180
+		faceangles 353 0 90 180
+
+		wait 2000
+
+		//Allow capturing the blueprints if blueprints are taken
+		trigger player drop_off
+
+
+	}
+
+	trigger rotate_a_byebye
+	{
+		alertentity plane_takeoff_r
+
+		wait 300
+
+		faceangles 353 0 180 200
+		faceangles 353 0 270 200
+		faceangles 353 0 0 200
+
+		faceangles 353 0 90 170
+		faceangles 353 0 180 170
+		faceangles 353 0 270 170
+		faceangles 353 0 0 170
+
+		faceangles 353 0 90 120
+		faceangles 353 0 180 120
+		faceangles 353 0 270 120
+		faceangles 353 0 0 120
+
+		faceangles 353 0 90 100
+		faceangles 353 0 180 100
+		faceangles 353 0 270 100
+		faceangles 353 0 0 100
+
+		alertentity propella_hurt_toggle
+
+		faceangles 353 0 90 50
+		faceangles 353 0 180 50
+		faceangles 353 0 270 50
+		faceangles 353 0 0 50
+
+		trigger plane_propella_dummy cya
+	}
+
+	trigger stop
+	{
+		resetscript
+	}
+}
+
+plane_propella_dummy
+{
+	trigger landing
+	{
+		wait 2500
+		trigger plane_propella rotate_slow_down
+	}
+
+	trigger backwards_start
+	{
+		wait 2500
+		alertentity plane_backwards_r
+		wait 100
+
+		trigger plane_propella rotate_backwards
+	}
+
+	trigger backwards
+	{
+		trigger plane_propella rotate_max2
+
+		wait 2000
+
+		trigger plane butt_against_tree
+	}
+	
+	trigger backwards_stop
+	{
+		wait 700
+
+		trigger plane_propella rotate_backwards_stop
+	}
+
+	trigger cya
+	{
+		trigger plane_propella rotate_max
+
+		wait 1650
+
+		trigger plane fly_for_your_life
+	}
+}
+
+propella_hurt
+{
+	spawn
+	{
+		wait 300
+
+		attachtotag plane tag_propella
+	}
+
+	trigger turn_backwards
+	{
+		faceangles 0 -90 0 8000
+	}
+
+	trigger turn_forward
+	{
+		faceangles 0 -180 0 7000
+	}
+}
+
+plane_hurt
+{
+	spawn
+	{
+		wait 300
+
+		attachtotag plane tag_propella
+	}
+}
+
+////////////////////////////////////////////
+////////////////Truck stuff////////////////
+//////////////////////////////////////////
+
+truck
+{
+	spawn
+	{
+		wait 50
+	}
+
+	trigger four_wheeled_thingy_to_move
+	{
+		//Join the Pegazus-campaign for more overly pimped bangtrucks! It's a race for grace!
+
+		alertentity truck
+		alertentity start_truck_kill_r
+
+		faceangles 0 155 0 10		//Turn the pimp machine to the right start angle!
+		
+		trigger truck_sound sound_move
+		trigger truck_bw rotate
+		trigger truck_fw rotate
+
+		gotomarker truck_pc1 210
+		faceangles 0 157 0 gototime
+		gotomarker truck_pc2 200
+		faceangles 0 164 0 gototime
+		gotomarker truck_pc3 200
+		faceangles 0 175 0 gototime
+		gotomarker truck_pc4 190
+		faceangles 0 189 0 gototime
+		gotomarker truck_pc5 170
+		faceangles 0 208 0 gototime
+		gotomarker truck_pc6 150
+		faceangles 0 231 0 gototime
+		gotomarker truck_pc7 130
+		faceangles 0 243 0 gototime
+		gotomarker truck_pc8 90
+		faceangles 0 264 0 gototime
+
+		trigger truck wheels_stop_rotating
+
+		wait 1500
+
+		//Go backwards!
+
+		trigger truck wheels_rotate_backwards
+
+		gotomarker truck_b_pc1 90
+		faceangles 0 278 0 gototime
+		gotomarker truck_b_pc2 90
+		faceangles 0 289 0 gototime
+
+		trigger truck wheels_stop_rotating
+
+		wait 1500
+
+		//Get into the final position!
+
+		trigger truck wheels_rotate
+
+		gotomarker truck_2_pc1 110
+		faceangles 0 306 0 gototime
+		gotomarker truck_2_pc2 150
+		faceangles 0 327 0 gototime
+		gotomarker truck_2_pc3 150
+		faceangles 0 345 0 gototime
+		gotomarker truck_2_pc4 150
+		faceangles 0 2 0 gototime
+		gotomarker truck_2_pc5 100
+		faceangles 0 18 0 gototime
+
+		trigger truck wheels_stop_rotating
+
+		wait 2000
+
+		//That's it folks! Finally this level is ending! Now was it so bad?
+
+		alertentity end_trigger
+	}
+
+	trigger wheels_rotate
+	{
+		trigger truck_sound start
+
+		trigger truck_bw rotate
+		trigger truck_fw rotate
+	}
+
+	trigger wheels_rotate_backwards
+	{
+		trigger truck_sound start
+
+		trigger truck_bw rotate_backwards
+		trigger truck_fw rotate_backwards
+	}
+
+	trigger wheels_stop_rotating
+	{
+		trigger truck_sound stop
+
+		trigger truck_bw stop_rotating
+		trigger truck_fw stop_rotating
+	}
+}
+
+truck_bw
+{
+	spawn
+	{
+		wait 50
+		attachtotag truck tag_wback
+	}
+
+	trigger rotate
+	{
+		faceangles 90 0 0 145
+		faceangles 180 0 0 145
+		faceangles 270 0 0 145
+		faceangles 360 0 0 145
+
+		trigger truck_bw rotate
+	}
+
+	trigger rotate_backwards
+	{
+		faceangles 270 0 0 155
+		faceangles 180 0 0 155
+		faceangles 90 0 0 155
+		faceangles 0 0 0 155
+
+		trigger truck_bw rotate_backwards
+	}
+
+
+	trigger stop_rotating
+	{
+		resetscript
+	}
+}
+
+truck_fw
+{
+	spawn
+	{
+		wait 50
+		attachtotag truck tag_wfront
+	}
+
+	trigger rotate
+	{
+		faceangles 90 0 0 145
+		faceangles 180 0 0 145
+		faceangles 270 0 0 145
+		faceangles 360 0 0 145
+
+		trigger truck_fw rotate
+	}
+
+	trigger rotate_backwards
+	{
+		faceangles 270 0 0 155
+		faceangles 180 0 0 155
+		faceangles 90 0 0 155
+		faceangles 0 0 0 155
+
+		trigger truck_fw rotate_backwards
+	}
+
+	trigger stop_rotating
+	{
+		resetscript
+	}
+}
+
+truck_sound
+{
+	spawn
+	{
+		wait 200
+		attachtotag truck tag_wfront
+	}
+
+	trigger start
+	{
+		trigger truck_sound sound_start
+		wait 950
+		trigger truck_sound sound_move
+	}
+
+	trigger stop
+	{
+		trigger truck_sound sound_stop
+		wait 950
+		trigger truck_sound sound_idle
+	}
+
+	trigger sound_idle
+	{
+		playsound sound/sounds_sd/truck_idle.wav looping
+	}
+
+	trigger sound_start
+	{
+		stopsound
+		playsound sound/sounds_sd/truck_revup.wav volume 96
+	}
+
+	trigger sound_move
+	{
+		playsound sound/sounds_sd/truck_move.wav looping
+	}
+
+	trigger sound_stop
+	{
+		stopsound
+		playsound sound/sounds_sd/truck_revdown.wav volume 96
+	}
+}
+
+////////////////////////////////////////////
+////////////////Misc stuff/////////////////
+//////////////////////////////////////////
+
+cmd_door
+{
+
+	spawn
+	{
+		//Who wants to spawn?
+	}
+
+	death
+	{
+		trigger player cmd_door_breached
+	}
+}
+
+italy_flag
+{
+	spawn
+	{
+		wait 200
+		playanim 1 191 looping forever rate 38
+	}
+}

@@ -17,6 +17,12 @@ player
 	{
 		mu_fade 0 3000
 		mu_queue sound/music/stalingrad2
+
+		#if g_level_was_selected >= 1
+		applyloadout endgame
+		#endif
+		cvar g_level_was_selected 0
+
 		// Weapons
 		sethealth 100
 		setarmor 100

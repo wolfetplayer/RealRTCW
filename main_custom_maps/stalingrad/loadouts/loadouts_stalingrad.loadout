@@ -1,0 +1,73 @@
+// Stalingrad campaign loadouts
+
+loadout start
+{
+		setarmor 75
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_tt33
+		giveweapon weapon_tt33
+		giveweapon weapon_ppsh
+		giveweapon weapon_mosin
+
+		setammo ammo_mosina full
+		setammo ammo_ttammo full
+		setammo ammo_grenades 5
+
+		setclip weapon_tt33 full
+		setclip weapon_dualtt33 full
+		setclip weapon_ppsh full
+		setclip weapon_mosin full
+
+		selectweapon weapon_ppsh
+}
+
+loadout mid_game
+{
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_tt33
+		giveweapon weapon_tt33
+		giveweapon weapon_ppsh
+		giveweapon weapon_mosin
+
+		setammo ammo_mosina full
+		setammo ammo_ttammo full
+		setammo ammo_grenades 5
+
+		setclip weapon_tt33 full
+		setclip weapon_dualtt33 full
+		setclip weapon_ppsh full
+		setclip weapon_mosin full
+
+		selectweapon weapon_ppsh
+}
+
+loadout endgame
+{
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_tt33
+		giveweapon weapon_tt33
+		giveweapon weapon_ppsh
+		giveweapon weapon_mosin
+		giveweapon weapon_dynamite
+
+		setammo ammo_mosina full
+		setammo ammo_ttammo full
+		setammo ammo_grenades 5
+		setammo ammo_dynamite 3
+
+		setclip weapon_tt33 full
+		setclip weapon_dualtt33 full
+		setclip weapon_ppsh full
+		setclip weapon_mosin full
+
+		selectweapon weapon_ppsh
+}

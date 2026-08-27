@@ -17,28 +17,9 @@ player
 	{
 		mu_fade 0 3000
 		mu_queue sound/music/stalingrad1
-		setarmor 75
-		giveinventory key_binocs
 
-		// Weapons
-		giveweapon weapon_knife
-		giveweapon weapon_knife
-		giveweapon weapon_tt33
-		giveweapon weapon_tt33
-		giveweapon weapon_ppsh
-		giveweapon weapon_mosin
-
-		setammo ammo_mosina full
-		setammo ammo_ttammo full
-		setammo ammo_grenades 5
-
-		setclip weapon_tt33 full
-		setclip weapon_dualtt33 full
-		setclip weapon_ppsh full
-		setclip weapon_mosin full
-
-		selectweapon weapon_ppsh
-
+		applyloadout start
+		cvar g_level_was_selected 0
 	}
 	trigger secret1
 	{

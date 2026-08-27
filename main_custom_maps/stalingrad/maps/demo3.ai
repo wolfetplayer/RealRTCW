@@ -17,6 +17,11 @@ player
 		mu_fade 0 3000
 		mu_queue sound/music/stalingrad1
 
+		#if g_level_was_selected >= 1
+		applyloadout mid_game
+		#endif
+		cvar g_level_was_selected 0
+
 		giveinventory holdable_adrenaline
 	}
 	trigger secret1

@@ -17,6 +17,11 @@ player
 		mu_fade 0 3000
 		mu_queue sound/music/stalingrad6
 
+		#if g_level_was_selected >= 1
+		applyloadout mid_game
+		#endif
+		cvar g_level_was_selected 0
+
 		// Weapons
 		sethealth 100
 		// Ammo

@@ -2,18 +2,18 @@
 
 {
 map			"city"
-longname	"Capuzzo City"
+longname	"City"
 chapter		"1"
 }
 
 {
 map			"airport"
-longname	"Capuzzo Airport"
+longname	"Airport"
 chapter		"1"
 }
 
 {
 map			"road"
-longname	"Capuzzo Road"
+longname	"Road"
 chapter		"1"
 }

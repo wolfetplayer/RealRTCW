@@ -1,419 +1,420 @@
 stolb_multi
 {
- spawn
-  {
-  }
- trigger go
-  {
-   wait 3000
-   playanim 0 40 40 20
-//   wait 50
-//   playsound sound/world/stones/spikes.wav
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		wait 3000
+		playanim 0 40 40 20
+		//   wait 50
+		//   playsound sound/world/stones/spikes.wav
+	}
 }
 
 almaz1
 {
- trigger go
- {
-  wait 500
-  gotomarker al_p 700
- }
+	trigger go
+	{
+		wait 500
+		gotomarker al_p 700
+	}
 }
 
 
 
 d2    //тайная дверь (выход воров)
 {
- spawn
-  {
-  }
- trigger go
-  {
-   wait 5000
-   playsound sound/world/moves/mov1.wav
-   alertentity d2_dust1
-   faceangles 0 90 0 5000
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		wait 5000
+		playsound sound/world/moves/mov1.wav
+		alertentity d2_dust1
+		faceangles 0 90 0 5000
+	}
 }
 
 
 
 d4  //дверь в гробницу
 {
- spawn
-  {
-   trigger d4 go
-  }
-trigger go
-  {
-   gotomarker d4_p1 700
-  }
-trigger go1
-  {
-   playsound sound/world/moves/mov1.wav  
-   gotomarker d4_p2 30 wait
-   alertentity d4_stop
-   playsound sound/world/moves/door2_locked.wav
-  }
+	spawn
+	{
+		trigger d4 go
+	}
+	trigger go
+	{
+		gotomarker d4_p1 700
+	}
+	trigger go1
+	{
+		playsound sound/world/moves/mov1.wav
+		gotomarker d4_p2 30 wait
+		alertentity d4_stop
+		playsound sound/world/moves/door2_locked.wav
+	}
 }
 
 
 
 st1   //нижняя половина колонны
 {
- spawn
-  {
-  }
- trigger go
-  {
-   wait 5000
-   playsound sound/world/stones/split3.wav
-   alertentity st1_start_p_trig
-   faceangles -10 0 0 600 
-   faceangles -20 0 0 400
-   faceangles -30 0 0 300
-   faceangles -40 0 0 200
-   faceangles -50 0 0 100
-   faceangles -60 0 0 80 
-   faceangles -70 0 0 60
-   faceangles -80 0 0 30
-   faceangles -90 0 0 10
-   faceangles -120 0 0 5
-   faceangles -130 0 0 3
-   alertentity st1_stop_p_trig
-   playsound sound/world/stones/sqish1.wav
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		wait 5000
+		playsound sound/world/stones/split3.wav
+		alertentity st1_start_p_trig
+		faceangles -10 0 0 600
+		faceangles -20 0 0 400
+		faceangles -30 0 0 300
+		faceangles -40 0 0 200
+		faceangles -50 0 0 100
+		faceangles -60 0 0 80
+		faceangles -70 0 0 60
+		faceangles -80 0 0 30
+		faceangles -90 0 0 10
+		faceangles -120 0 0 5
+		faceangles -130 0 0 3
+		alertentity st1_stop_p_trig
+		playsound sound/world/stones/sqish1.wav
+	}
 }
 
 
-st2 // верняя половина колонны 
+st2 // верняя половина колонны
 {
- spawn
-  {
-  }
-trigger go
-  {
-   wait 5000
-   alertentity st3_start
-trigger kamen go
-   playsound sound/world/stones/split2.wav
-   alertentity st2_start_p_trig
-   gotomarker s2_p1 300 accel
-   faceangles 90 0 0 gototime 
-   gotomarker s2_p2 700
-   faceangles 100 0 0 gototime
-   alertentity st2_stop_p_trig
-   playsound sound/world/stones/sqish1.wav
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		wait 5000
+		alertentity st3_start
+		trigger kamen go
+		playsound sound/world/stones/split2.wav
+		alertentity st2_start_p_trig
+		gotomarker s2_p1 300 accel
+		faceangles 90 0 0 gototime
+		gotomarker s2_p2 700
+		faceangles 100 0 0 gototime
+		alertentity st2_stop_p_trig
+		playsound sound/world/stones/sqish1.wav
+	}
 }
 
 
 ch1  // падоющий подсвешник
 {
- spawn
-  {
-  }
- trigger go
-  {
-   wait 3000
-   playanim 0 20 20 65
-   wait 50
-   playsound sound/world/stones/spikes.wav
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		wait 3000
+		playanim 0 20 20 65
+		wait 50
+		playsound sound/world/stones/spikes.wav
+	}
 }
 
 krishka  // крышка гроба
 {
- spawn
-  {
-  }
- trigger go
-  {
-   gotomarker kr_pos1 700
-   faceangles 0 90 0 gototime
-   alertentity kr_pl
-  }
- trigger go1
-  {
-   playsound sound/world/stones/krishka1.wav
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		gotomarker kr_pos1 700
+		faceangles 0 90 0 gototime
+		alertentity kr_pl
+	}
+	trigger go1
+	{
+		playsound sound/world/stones/krishka1.wav
+	}
 }
 pes1
 {
- spawn
-  {
-  }
-trigger go
-  {
- alertentity pes1_pil
-   playsound sound/world/moves/mov1.wav  
- faceangles 0 90 0 3000
-  }  
+	spawn
+	{
+	}
+	trigger go
+	{
+		alertentity pes1_pil
+		playsound sound/world/moves/mov1.wav
+		faceangles 0 90 0 3000
+	}
 }
 pes2
 {
- spawn
-  {
-  }
-trigger go
-  {
- alertentity pes2_pil
-   playsound sound/world/moves/mov1.wav  
- faceangles 0 -90 0 3000
-  }  
+	spawn
+	{
+	}
+	trigger go
+	{
+		alertentity pes2_pil
+		playsound sound/world/moves/mov1.wav
+		faceangles 0 -90 0 3000
+	}
 }
 d1
 {
- spawn
-  {
-   trigger d1 go
-  }
-trigger go
-  {
-   gotomarker d1_p1 700
-  }
-trigger go1
-  {
-   playsound sound/world/moves/mov1.wav  
-   alertentity d1_stop
-   gotomarker d1_p2 30 wait
-   playsound sound/world/moves/door2_locked.wav
-  }
+	spawn
+	{
+		trigger d1 go
+	}
+	trigger go
+	{
+		gotomarker d1_p1 700
+	}
+	trigger go1
+	{
+		playsound sound/world/moves/mov1.wav
+		alertentity d1_stop
+		gotomarker d1_p2 30 wait
+		playsound sound/world/moves/door2_locked.wav
+	}
 }
 jak
 {
- trigger go
-  {
-  wait 4000 
-  playsound sound/player/jak/play1.wav 
-  playanim 1 29 1 35
-  }
+	trigger go
+	{
+		wait 4000
+		playsound sound/player/jak/play1.wav
+		playanim 1 29 1 35
+	}
 }
 suzu_os1  //сузуки 1
 {
- spawn
-  {
-  }
-trigger sou_start
-{
-playsound sound/scenaric/intro/suzu_ss.wav looping
-}
-trigger sou_start
-{
-stopsound
-}
+	spawn
+	{
+	}
+	trigger sou_start
+	{
+		playsound sound/scenaric/intro/suzu_ss.wav looping
+	}
+	trigger sou_start
+	{
+		stopsound
+	}
 
- trigger go
-  {
- faceangles -90 0 0 80
- faceangles -180 0 0 80
- faceangles -270 0 0 80
- faceangles -360 0 0 80
- trigger suzu_os1 go
-  }
+	trigger go
+	{
+		faceangles -90 0 0 80
+		faceangles -180 0 0 80
+		faceangles -270 0 0 80
+		faceangles -360 0 0 80
+		trigger suzu_os1 go
+	}
 }
 suzu_os2  //сузуки 1
 {
- spawn
-  {
-  }
- trigger go
-  {
- faceangles -90 0 0 80
- faceangles -180 0 0 80
- faceangles -270 0 0 80
- faceangles -360 0 0 80
- trigger suzu_os2 go
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		faceangles -90 0 0 80
+		faceangles -180 0 0 80
+		faceangles -270 0 0 80
+		faceangles -360 0 0 80
+		trigger suzu_os2 go
+	}
 }
 suzu2  //сузуки 2
 {
- spawn
-  {
-  }
- trigger go
-  {
-playsound sound/scenaric/intro/suzu_ss.wav looping
-   gotomarker suzu_pos1 300 wait
-   gotomarker suzu_pos2 200 
-   playanim 0 40 1 10
-   alertentity suzu_stop
-wait 700
-stopsound
-playsound sound/scenaric/intro/stop.wav
-  }
+	spawn
+	{
+	}
+	trigger go
+	{
+		playsound sound/scenaric/intro/suzu_ss.wav looping
+		gotomarker suzu_pos1 300 wait
+		gotomarker suzu_pos2 200
+		playanim 0 40 1 10
+		alertentity suzu_stop
+		wait 700
+		stopsound
+		playsound sound/scenaric/intro/stop.wav
+	}
 }
 shtir
 {
-spawn
-{
-wait 15 
-trigger shtir start
-}
-trigger start
-{
-   gotomarker shtir_pos2 60000 wait 
-}
-trigger go
-{
-alertentity shtir_start
-   playsound sound/world/moves/mov1.wav
-   gotomarker shtir_pos1 200 wait
-   playsound sound/world/stones/sqish1.wav
-alertentity shtir_stop
-}
+	spawn
+	{
+		wait 15
+		trigger shtir start
+	}
+	trigger start
+	{
+		gotomarker shtir_pos2 60000 wait
+	}
+	trigger go
+	{
+		alertentity shtir_start
+		playsound sound/world/moves/mov1.wav
+		gotomarker shtir_pos1 200 wait
+		playsound sound/world/stones/sqish1.wav
+		alertentity shtir_stop
+	}
 }
 
 
 kolona_1
 {
-spawn
-{
-  wait 5
-  trigger kolona_1 start
- }
-trigger start
-{
-    gotomarker kolona_1_pos2 60000
-    faceangles 360 360 360 gototime 
-}
-trigger go
-{
-alertentity kolona_1_start
-    gotomarker kolona_pos2 300 
-    faceangles 280 290 300 gototime 
-    gotomarker kolona_pos1 100 
-    faceangles 180 200 90 gototime 
-    gotomarker kolona_1_pos1 300 
-    faceangles 0 0 0 gototime
-   playsound sound/world/stones/sqish1.wav
-alertentity kolona_1_stop 
-}
+	spawn
+	{
+		wait 5
+		trigger kolona_1 start
+	}
+	trigger start
+	{
+		gotomarker kolona_1_pos2 60000
+		faceangles 360 360 360 gototime
+	}
+	trigger go
+	{
+		alertentity kolona_1_start
+		gotomarker kolona_pos2 300
+		faceangles 280 290 300 gototime
+		gotomarker kolona_pos1 100
+		faceangles 180 200 90 gototime
+		gotomarker kolona_1_pos1 300
+		faceangles 0 0 0 gototime
+		playsound sound/world/stones/sqish1.wav
+		alertentity kolona_1_stop
+	}
 }
 
 
 
 kolona_2
 {
-spawn
- {
-  wait 5
-  trigger kolona_2 start
- }
-trigger start
- {
-    gotomarker kolona_2_pos2 60000
-    faceangles -360 -360 -360 gototime 
- }
-trigger go
-{
-   playsound sound/world/brickfall.wav
-    gotomarker kolona_pos1 200 
-    faceangles -180 -200 -300 gototime 
-    gotomarker kolona_2_pos1 300 
-    faceangles 0 0 0 gototime 
-   playsound sound/world/stones/sqish1.wav
-alertentity kolona_2_stop 
-}
+	spawn
+	{
+		wait 5
+		trigger kolona_2 start
+	}
+	trigger start
+	{
+		gotomarker kolona_2_pos2 60000
+		faceangles -360 -360 -360 gototime
+	}
+	trigger go
+	{
+		playsound sound/world/brickfall.wav
+		gotomarker kolona_pos1 200
+		faceangles -180 -200 -300 gototime
+		gotomarker kolona_2_pos1 300
+		faceangles 0 0 0 gototime
+		playsound sound/world/stones/sqish1.wav
+		alertentity kolona_2_stop
+	}
 
 
 }
 kolona_3
 {
-spawn
- {
-  wait 5
-  trigger kolona_3 start
- }
-trigger start
- {
-    gotomarker kolona_3_pos2 60000
-   faceangles 360 360 360 gototime 
- }
-trigger go
-{
-   playsound sound/world/brickfall.wav
-    gotomarker kolona_pos3 200 
-    faceangles 90 50 45 gototime 
-    gotomarker kolona_3_pos1 300 
-    faceangles 0 0 0 gototime 
-   playsound sound/world/stones/sqish1_2.wav
-alertentity kolona_3_stop 
-}
+	spawn
+	{
+		wait 5
+		trigger kolona_3 start
+	}
+	trigger start
+	{
+		gotomarker kolona_3_pos2 60000
+		faceangles 360 360 360 gototime
+	}
+	trigger go
+	{
+		playsound sound/world/brickfall.wav
+		gotomarker kolona_pos3 200
+		faceangles 90 50 45 gototime
+		gotomarker kolona_3_pos1 300
+		faceangles 0 0 0 gototime
+		playsound sound/world/stones/sqish1_2.wav
+		alertentity kolona_3_stop
+	}
 
 }
 kolona_4
 {
-spawn
- {
-  wait 5
-  trigger kolona_4 start
- }
-trigger start
- {
-  gotomarker kolona_4_pos2 60000
-  faceangles 90 190 190 gototime 
- }
-trigger go
-{
-   playsound sound/world/brickfall.wav
-    gotomarker kolona_pos3 200 
-    faceangles 20 50 5 gototime 
-    gotomarker kolona_4_pos1 300 
-    faceangles 0 0 0 gototime 
-   playsound sound/world/stones/sqish1.wav
-alertentity kolona_4_stop 
-}
+	spawn
+	{
+		wait 5
+		trigger kolona_4 start
+	}
+	trigger start
+	{
+		gotomarker kolona_4_pos2 60000
+		faceangles 90 190 190 gototime
+	}
+	trigger go
+	{
+		playsound sound/world/brickfall.wav
+		gotomarker kolona_pos3 200
+		faceangles 20 50 5 gototime
+		gotomarker kolona_4_pos1 300
+		faceangles 0 0 0 gototime
+		playsound sound/world/stones/sqish1.wav
+		alertentity kolona_4_stop
+	}
 
 }
 krisha_1
 {
-spawn
- {
-  wait 5
-  trigger krisha_1 start
- }
-trigger start
- {
-  gotomarker krisha_1_pos2 60000
-  faceangles 0 90 0 gototime 
- }
-trigger go
-{
-    gotomarker krisha_1_pos1 300 
-    faceangles 0 0 0 gototime 
-   playsound sound/world/stones/sqish1_2.wav
-    alertentity krisha_1_stop 
-}
+	spawn
+	{
+		wait 5
+		trigger krisha_1 start
+	}
+	trigger start
+	{
+		gotomarker krisha_1_pos2 60000
+		faceangles 0 90 0 gototime
+	}
+	trigger go
+	{
+		gotomarker krisha_1_pos1 300
+		faceangles 0 0 0 gototime
+		playsound sound/world/stones/sqish1_2.wav
+		alertentity krisha_1_stop
+	}
 
 }
 krisha_2
 {
-spawn
- {
-  wait 5
-  trigger krisha_2 start
- }
-trigger start
- {
-  gotomarker krisha_2_pos2 60000
-  faceangles 0 -90 0 gototime 
- }
-trigger go
-{
-wait 500
-    gotomarker krisha_2_pos1 300 
-    faceangles 0 0 0 gototime 
-   playsound sound/world/stones/sqish1_2.wav
-    alertentity krisha_2_stop 
-}
+	spawn
+	{
+		wait 5
+		trigger krisha_2 start
+	}
+	trigger start
+	{
+		gotomarker krisha_2_pos2 60000
+		faceangles 0 -90 0 gototime
+	}
+	trigger go
+	{
+		wait 500
+		gotomarker krisha_2_pos1 300
+		faceangles 0 0 0 gototime
+		playsound sound/world/stones/sqish1_2.wav
+		alertentity krisha_2_stop
+	}
 }
 kamen
 {
- trigger go
-  {
-    gotomarker kamen_pos1 600 
-   playsound sound/world/stones/sqish1.wav
-  }
+	trigger go
+	{
+		gotomarker kamen_pos1 600
+		playsound sound/world/stones/sqish1.wav
+	}
 }
+

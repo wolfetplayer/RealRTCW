@@ -1,9 +1,9 @@
-
 loadout start
 {
-		giveweapon weapon_knife
-		
-		selectweapon weapon_knife
+		giveweapon weapon_revolver
+		setammo ammo_revolver 60
+		setclip weapon_revolver 6
+		selectweapon weapon_revolver
 }
 
 loadout mid_game

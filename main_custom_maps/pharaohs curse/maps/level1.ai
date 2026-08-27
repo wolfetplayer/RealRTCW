@@ -1,298 +1,297 @@
 player
 {
- spawn
-  {
-                accum 0 set 0
-                accum 1 set 0
-                accum 2 set 0
-                accum 3 set 0
-                accum 4 set 0
-                accum 5 set 0
-                accum 6 set 0
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		accum 4 set 0
+		accum 5 set 0
+		accum 6 set 0
 		mu_fade 0 5000
-                mu_queue  sound/scenaric/miks/main_menu.wav
-  }
- playerstart
-  {
-        mu_stop 1000
+		mu_queue  sound/scenaric/miks/main_menu.wav
+	}
+	playerstart
+	{
+		mu_stop 1000
 		mu_queue sound/music/level1/level1.wav
-		giveweapon weapon_revolver
-		setammo ammo_revolver 60
-		setclip weapon_revolver 6
-		selectweapon weapon_revolver
-  }
-  trigger vrota_set_0
-  {
-   accum 1 set 1
-  }
-  trigger vrota_set_1
-  {
-   accum 2 set 1
-  }
-  trigger start_vrota
-  {
-  accum 1 abort_if_equal 0
-  accum 2 abort_if_equal 0
-  wait 1500
-  teleport player_pos1
-  alertentity player2
-  wait 10
-  trigger player2 go
-  startcam l1_5_1
-  wait 7000
-  trigger zasov go
-  wait 8000
-  startcam l1_5_2
-  trigger player2 go1
-  wait 2000
-  trigger player endmap
-  }
 
-trigger zombi_sleep
- {
-  accum 0 abort_if_equal 1
+		applyloadout start
+		cvar g_level_was_selected 0
+	}
+	trigger vrota_set_0
+	{
+		accum 1 set 1
+	}
+	trigger vrota_set_1
+	{
+		accum 2 set 1
+	}
+	trigger start_vrota
+	{
+		accum 1 abort_if_equal 0
+		accum 2 abort_if_equal 0
+		wait 1500
+		teleport player_pos1
+		alertentity player2
+		wait 10
+		trigger player2 go
+		startcam l1_5_1
+		wait 7000
+		trigger zasov go
+		wait 8000
+		startcam l1_5_2
+		trigger player2 go1
+		wait 2000
+		trigger player endmap
+	}
 
-  //mu_stop 1000
-  wait 1000
-  teleport player_pos1
-  alertentity player1
-  trigger player1 go
-  startcam l1_4_1
- 
-  //mu_queue sound/scenaric/miks/l1_war1.wav
-  wait 3000
-  startcam l1_4_2
-  wait 3000
-  alertentity kill_p1
-  startcam l1_4_3
-  wait 1000
-  trigger z1 go1
-  accum 0 set 1
-  wait 4000
-  teleport player_pos3
- }
-  trigger go_b1
-   {
-    accum 3 abort_if_equal 0
-    trigger b1 go1
-   }
-  trigger go_d3
-   {
-    alertentity z
-    alertentity z1
-    trigger d3 go
-    trigger player zombi_sleep
-   }
-  trigger go_d5
-   {
-    trigger d5 go
-   }
-  trigger stop_d5
-   {
-    trigger d5 stop
-   }
-  trigger pes1_rotate
-   {
-notarget on
-    trigger pes1 rotate
-wait 3000
-notarget off
-   }
-  trigger pes2_rotate
-   {
-    trigger pes2 rotate
-   }
-  trigger pedal_go
-   {
-    trigger pedal go
-   } 
+	trigger zombi_sleep
+	{
+		accum 0 abort_if_equal 1
 
-  trigger start
-   {
-  trigger flame start
-   }
-  trigger stop
-   {
-  trigger flame stop
-   }    
-  trigger most_go
-   {
-wait 2000
-    startcam l1_1
-    wait 5000
-    startcam l1_2
-    trigger most_1 go_up
-    trigger most_2 go_up
-    trigger most_3 go_up
-    trigger most_4 go_up
-    trigger most_5 go_up
-wait 25000
-    trigger most_1 go_down
-    trigger most_2 go_down
-    trigger most_3 go_down
-    trigger most_4 go_down
-    trigger most_5 go_down
-  }
+		//mu_stop 1000
+		wait 1000
+		teleport player_pos1
+		alertentity player1
+		trigger player1 go
+		startcam l1_4_1
 
-  trigger most_go1
-   {
-    trigger most_1 go_up
-    trigger most_2 go_up
-    trigger most_3 go_up
-    trigger most_4 go_up
-    trigger most_5 go_up
-wait 8000
-    trigger most_1 go_down
-    trigger most_2 go_down
-    trigger most_3 go_down
-    trigger most_4 go_down
-    trigger most_5 go_down
-  }
+		//mu_queue sound/scenaric/miks/l1_war1.wav
+		wait 3000
+		startcam l1_4_2
+		wait 3000
+		alertentity kill_p1
+		startcam l1_4_3
+		wait 1000
+		trigger z1 go1
+		accum 0 set 1
+		wait 4000
+		teleport player_pos3
+	}
+	trigger go_b1
+	{
+		accum 3 abort_if_equal 0
+		trigger b1 go1
+	}
+	trigger go_d3
+	{
+		alertentity z
+		alertentity z1
+		trigger d3 go
+		trigger player zombi_sleep
+	}
+	trigger go_d5
+	{
+		trigger d5 go
+	}
+	trigger stop_d5
+	{
+		trigger d5 stop
+	}
+	trigger pes1_rotate
+	{
+		notarget on
+		trigger pes1 rotate
+		wait 3000
+		notarget off
+	}
+	trigger pes2_rotate
+	{
+		trigger pes2 rotate
+	}
+	trigger pedal_go
+	{
+		trigger pedal go
+	}
 
+	trigger start
+	{
+		trigger flame start
+	}
+	trigger stop
+	{
+		trigger flame stop
+	}
+	trigger most_go
+	{
+		wait 2000
+		startcam l1_1
+		wait 5000
+		startcam l1_2
+		trigger most_1 go_up
+		trigger most_2 go_up
+		trigger most_3 go_up
+		trigger most_4 go_up
+		trigger most_5 go_up
+		wait 25000
+		trigger most_1 go_down
+		trigger most_2 go_down
+		trigger most_3 go_down
+		trigger most_4 go_down
+		trigger most_5 go_down
+	}
 
-
-
-  trigger anubis_on
-   {
-   accum 6 abort_if_equal 1
-    trigger ruchka1 go1
-    wait 2000
-    startcam l1_3 
-    wait 4000
-    stopcam
-   accum 6 set 1
-   accum 4 inc 1
-trigger player activate1
-  }
-  trigger hors_on
-   {
-   accum 5 abort_if_equal 1
-    alertentity war
-    alertentity war1
-    trigger ruchka2 go1
-    wait 2000
-    startcam l1_3 
-   accum 5 set 1
-   accum 4 inc 1
-trigger player activate1
-  }
+	trigger most_go1
+	{
+		trigger most_1 go_up
+		trigger most_2 go_up
+		trigger most_3 go_up
+		trigger most_4 go_up
+		trigger most_5 go_up
+		wait 8000
+		trigger most_1 go_down
+		trigger most_2 go_down
+		trigger most_3 go_down
+		trigger most_4 go_down
+		trigger most_5 go_down
+	}
 
 
 
 
+	trigger anubis_on
+	{
+		accum 6 abort_if_equal 1
+		trigger ruchka1 go1
+		wait 2000
+		startcam l1_3
+		wait 4000
+		stopcam
+		accum 6 set 1
+		accum 4 inc 1
+		trigger player activate1
+	}
+	trigger hors_on
+	{
+		accum 5 abort_if_equal 1
+		alertentity war
+		alertentity war1
+		trigger ruchka2 go1
+		wait 2000
+		startcam l1_3
+		accum 5 set 1
+		accum 4 inc 1
+		trigger player activate1
+	}
 
- trigger d7_down
-  {
-  trigger d7 go1
-  }
 
- trigger d9_close
-  {
-  trigger d9 go1
-  }
 
-  trigger rot_rul1
-  {
-   trigger rul_1 rot
-  }
-  trigger rot_rul2
-  {
-   trigger rul_2 rot
-  }
-  trigger rot_rul3
-  {
-   trigger rul_3 rot
-  }
-  trigger rot_rul4
-  {
-   trigger rul_4 rot
-  }
 
-  trigger rot_n_rul1
-  {
-   trigger n_rul_1 rot
-  }
-  trigger rot_n_rul2
-  {
-   trigger n_rul_2 rot
-  }
-  trigger rot_n_rul3
-  {
-   trigger n_rul_3 rot
-  }
-  trigger rot_n_rul4
-  {
-   trigger n_rul_4 rot
-  }
 
-trigger rot_rul_final
- {
-  trigger rul_finish door_go
- wait 4000
- trigger pol go
- }
-trigger n_rot_rul_final
- {
-  trigger n_rul_finish door_go
- wait 4000
- trigger potolok go
- }
- trigger start_zombi7
-  {
-   alertentity z7
-   alertentity z8
-   trigger d10 go
-   wait 5000
-   alertentity start_kam
-   wait 1000
-  //mu_stop 1000
- // mu_queue sound/scenaric/miks/l1_war2.wav
-   trigger z7 go1
-   trigger z8 go1
-  }
-  trigger start_zombi6
-   {
-    alertentity z3
-    alertentity z4
-    alertentity z5
-    alertentity z6
-    trigger z5 go1
-  //mu_stop 1000
-  //mu_queue sound/scenaric/miks/l1_war2.wav
-    wait 6000
-    trigger z6 go1
-   }
-trigger t3_s1
-{
-     //mu_stop 2000
-    // mu_queue sound/music/level1/level1.wav
-     accum 3 set 1
-}
-trigger start_mus
-{
-    // mu_stop 2000
-     //mu_queue sound/music/level1/level1.wav
-}
-trigger activate1
-{
-accum 4 abort_if_not_equal 2
-alertentity start_active
-}
-trigger start_war3
-{
-  //mu_stop 1000
-  //mu_queue sound/scenaric/miks/l1_war3.wav
-}
+	trigger d7_down
+	{
+		trigger d7 go1
+	}
 
-trigger almaz
- {
-  alertentity almaz_kill_action
- }
-trigger stopd11
- {
-    //  mu_stop 2000
-    // mu_queue sound/music/level1/level1.wav
- }
+	trigger d9_close
+	{
+		trigger d9 go1
+	}
+
+	trigger rot_rul1
+	{
+		trigger rul_1 rot
+	}
+	trigger rot_rul2
+	{
+		trigger rul_2 rot
+	}
+	trigger rot_rul3
+	{
+		trigger rul_3 rot
+	}
+	trigger rot_rul4
+	{
+		trigger rul_4 rot
+	}
+
+	trigger rot_n_rul1
+	{
+		trigger n_rul_1 rot
+	}
+	trigger rot_n_rul2
+	{
+		trigger n_rul_2 rot
+	}
+	trigger rot_n_rul3
+	{
+		trigger n_rul_3 rot
+	}
+	trigger rot_n_rul4
+	{
+		trigger n_rul_4 rot
+	}
+
+	trigger rot_rul_final
+	{
+		trigger rul_finish door_go
+		wait 4000
+		trigger pol go
+	}
+	trigger n_rot_rul_final
+	{
+		trigger n_rul_finish door_go
+		wait 4000
+		trigger potolok go
+	}
+	trigger start_zombi7
+	{
+		alertentity z7
+		alertentity z8
+		trigger d10 go
+		wait 5000
+		alertentity start_kam
+		wait 1000
+		//mu_stop 1000
+		// mu_queue sound/scenaric/miks/l1_war2.wav
+		trigger z7 go1
+		trigger z8 go1
+	}
+	trigger start_zombi6
+	{
+		alertentity z3
+		alertentity z4
+		alertentity z5
+		alertentity z6
+		trigger z5 go1
+		//mu_stop 1000
+		//mu_queue sound/scenaric/miks/l1_war2.wav
+		wait 6000
+		trigger z6 go1
+	}
+	trigger t3_s1
+	{
+		//mu_stop 2000
+		// mu_queue sound/music/level1/level1.wav
+		accum 3 set 1
+	}
+	trigger start_mus
+	{
+		// mu_stop 2000
+		//mu_queue sound/music/level1/level1.wav
+	}
+	trigger activate1
+	{
+		accum 4 abort_if_not_equal 2
+		alertentity start_active
+	}
+	trigger start_war3
+	{
+		//mu_stop 1000
+		//mu_queue sound/scenaric/miks/l1_war3.wav
+	}
+
+	trigger almaz
+	{
+		alertentity almaz_kill_action
+	}
+	trigger stopd11
+	{
+		//  mu_stop 2000
+		// mu_queue sound/music/level1/level1.wav
+	}
 
 
 	trigger endmap
@@ -304,318 +303,318 @@ trigger stopd11
 //----------------------------------------------
 player1
 {
- spawn
-  {
-  takeweapon all
-   nosight 999999
-  }
-   trigger go
-    {
-     playsound play1
-     walktomarker player_pos3
-    }
+	spawn
+	{
+		takeweapon all
+		nosight 999999
+	}
+	trigger go
+	{
+		playsound play1
+		walktomarker player_pos3
+	}
 }
 player2
 {
- spawn
-  {
-  takeweapon all
-   nosight 999999
-  }
-   trigger go
-    {
-     sight
-     walktomarker player2_pos1
-    }
-   trigger go1
-    {
-     sight
-     walktomarker player2_pos2
-    }
+	spawn
+	{
+		takeweapon all
+		nosight 999999
+	}
+	trigger go
+	{
+		sight
+		walktomarker player2_pos1
+	}
+	trigger go1
+	{
+		sight
+		walktomarker player2_pos2
+	}
 }
 
 
 z
 {
- attributes
-  {
-   starting_health 30
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   trigger z go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim roll_out1 both forever
-    }
-   trigger go1
-    {
-     wait 3000
-    godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim roll_out both 
-    }
- death
-  {
-     trigger player t3_s1
-  }
+	attributes
+	{
+		starting_health 30
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		trigger z go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		wait 3000
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim roll_out both
+	}
+	death
+	{
+		trigger player t3_s1
+	}
 }
 z1
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   trigger z1 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim roll_out1 both forever
-    }
-   trigger go1
-    {
-     godmode off
-     clearanim
-     playsound go1 
-     playanim roll_out both 
-     sight
-    }
- death
-  {
-   trigger z go1
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		trigger z1 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim roll_out both
+		sight
+	}
+	death
+	{
+		trigger z go1
+	}
 }
 
 
 
 z3
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   trigger z3 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim roll_out1 both forever
-    }
-   trigger go1
-    {
-    godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim roll_out both 
-    }
- death
-  {
-trigger player start_mus
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		trigger z3 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim roll_out both
+	}
+	death
+	{
+		trigger player start_mus
+	}
 }
 z4
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   trigger z4 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim roll_out1 both forever
-    }
-   trigger go1
-    {
-    godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim roll_out both 
-    }
- death
-  {
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		trigger z4 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim roll_out both
+	}
+	death
+	{
+	}
 }
 z5
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   trigger z5 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim roll_out1 both forever
-    }
-   trigger go1
-    {
-    godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim roll_out both 
-    }
- death
-  {
-    trigger z4 go1
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		trigger z5 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim roll_out both
+	}
+	death
+	{
+		trigger z4 go1
+	}
 }
 z6
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   trigger z6 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim roll_out1 both forever
-    }
-   trigger go1
-    {
-    godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim roll_out both 
-    }
- death
-  {
-   trigger z3 go1
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		trigger z6 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim roll_out both
+	}
+	death
+	{
+		trigger z3 go1
+	}
 }
 z7
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-     nosight 9999999999
-   trigger z7 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim off_hole_still both forever
-    }
-   trigger go1
-    {
-     godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim off_hole both 
-    }
- death
-  {
-   trigger player stopd11
-   trigger d11 go
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger z7 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim off_hole_still both forever
+	}
+	trigger go1
+	{
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim off_hole both
+	}
+	death
+	{
+		trigger player stopd11
+		trigger d11 go
+	}
 }
 z8
 {
- attributes
-  {
-  }
- spawn
-  {
-   knockback off
-   takeweapon monsterattack2
-   noavoid
-   godmode on
-   nosight 9999999999
-   trigger z8 go
-  }
-   trigger go
-    {
-     nosight 9999999999
-     playanim off_hole_still both forever
-    }
-   trigger go1
-    {
-     godmode off
-     sight
-     clearanim
-     playsound go1 
-     playanim off_hole both 
-    }
- death
-  {
-   trigger d10 go1
-  }
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger z8 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim off_hole_still both forever
+	}
+	trigger go1
+	{
+		godmode off
+		sight
+		clearanim
+		playsound go1
+		playanim off_hole both
+	}
+	death
+	{
+		trigger d10 go1
+	}
 }
 war
 {
- spawn
-  {
-  }
- attributes
-  {
-  }
-death
- {
-  trigger player vrota_set_0
-  trigger player start_vrota
- }
+	spawn
+	{
+	}
+	attributes
+	{
+	}
+	death
+	{
+		trigger player vrota_set_0
+		trigger player start_vrota
+	}
 }
 war1
 {
- spawn
-  {
-  }
- attributes
-  {
-  starting_health 70
-  }               
-death
- {
-  trigger player vrota_set_1
-  trigger player start_vrota
- }
+	spawn
+	{
+	}
+	attributes
+	{
+		starting_health 70
+	}
+	death
+	{
+		trigger player vrota_set_1
+		trigger player start_vrota
+	}
 }

@@ -1,272 +1,277 @@
 player
 {
- spawn
-  {
-                accum 0 set 0
-                accum 1 set 0
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
 		mu_fade 0 5000
-                mu_queue  sound/scenaric/miks/main_menu.wav
-  }
- playerstart
-  {
-                mu_stop 1000
+		mu_queue  sound/scenaric/miks/main_menu.wav
+	}
+	playerstart
+	{
+		mu_stop 1000
 		mu_queue sound/music/level4/level4.wav
-  }
 
-trigger scene1
- {
-  alertentity war1
-  alertentity war3
-  alertentity war6
-  alertentity war8
- }
-trigger scene2
- {
-  alertentity war9
-  alertentity war10
- }
-trigger scene3
- {
-  trigger door3 go1
-  wait 1000
-  alertentity d1_explo
-  alertentity war17
-  alertentity war18
-  alertentity war19
- }
+		#if g_level_was_selected >= 1
+		applyloadout mid_game
+		#endif
+		cvar g_level_was_selected 0
+	}
 
-trigger scene4
- {
-  alertentity d3_explo
-  alertentity war23
-  alertentity war24
-  alertentity war25
- }
+	trigger scene1
+	{
+		alertentity war1
+		alertentity war3
+		alertentity war6
+		alertentity war8
+	}
+	trigger scene2
+	{
+		alertentity war9
+		alertentity war10
+	}
+	trigger scene3
+	{
+		trigger door3 go1
+		wait 1000
+		alertentity d1_explo
+		alertentity war17
+		alertentity war18
+		alertentity war19
+	}
 
-trigger scene5
- {
-  alertentity war29
-  alertentity war30
-  alertentity war31
-  alertentity war32
-  alertentity war33
-  alertentity war34
- }
-trigger scene6
- {
-  alertentity war11
-  alertentity war12
-  alertentity war13
-  alertentity war14
-  alertentity war15
-  alertentity war16
- }
-trigger scene7
- {
-  alertentity but1_action
-  trigger door1 go
- }
-trigger scene8
- {
-  trigger door1 go1
-  alertentity zombi_afa1
-  alertentity zombi_afa2
- }
-trigger scene10
- {
-  alertentity zombi_afa4
- }
-trigger scene12
- {
-  alertentity zombi_afa6
-  alertentity zombi_afa8
- }
-trigger scene13
- {
-  alertentity zombi_afa9
- }
-trigger scene14
- {
-  alertentity zombi_afa11
- }
-trigger scene15
- {
-  alertentity zombi_afa12
- }
-trigger scene16
- {
-  trigger door4 go
-  alertentity zombi_afa14
- }
-trigger scene17
- {
-  alertentity zombi_afa16
- }
-trigger scene18
- {
-  alertentity zombi_afa18
- }
-trigger scene19
- {
-  trigger door2_1 go 
-  trigger door2_2 go
-  trigger potolok go 
- }
-trigger scene20
- {
-  alertentity zombi_afa21
-  alertentity zombi_afa22
- }
-trigger scene21
- {
-  alertentity zombi_afa24
-  alertentity zombi_afa25
-  alertentity zombi_afa26
- }
-trigger scene22
- {
-  alertentity zombi_afa28
- }
+	trigger scene4
+	{
+		alertentity d3_explo
+		alertentity war23
+		alertentity war24
+		alertentity war25
+	}
 
-
-trigger scene23
- {
-  alertentity d_1
-  alertentity zombi_afa29
- }
-
-trigger scene24
- {
-  alertentity zombi_afa30
- }
-trigger scene25
- {
-  alertentity zombi_afa31
- }
-trigger scene26
- {
-  alertentity zombi_afa32
- }
-trigger scene27
- {
-  alertentity zombi_afa33
-  alertentity zombi_afa34
- }
-trigger scene28
- {
-  alertentity zombi_afa35
- }
-trigger scene29
- {
-  alertentity zombi_afa36
- }
-trigger scene30
- {
-  alertentity zombi_afa37
- }
-
-trigger scene31
- {
-  alertentity war36
-  alertentity war37
-  alertentity war38
-  alertentity war39
-  alertentity war40
-  alertentity war41
- }
+	trigger scene5
+	{
+		alertentity war29
+		alertentity war30
+		alertentity war31
+		alertentity war32
+		alertentity war33
+		alertentity war34
+	}
+	trigger scene6
+	{
+		alertentity war11
+		alertentity war12
+		alertentity war13
+		alertentity war14
+		alertentity war15
+		alertentity war16
+	}
+	trigger scene7
+	{
+		alertentity but1_action
+		trigger door1 go
+	}
+	trigger scene8
+	{
+		trigger door1 go1
+		alertentity zombi_afa1
+		alertentity zombi_afa2
+	}
+	trigger scene10
+	{
+		alertentity zombi_afa4
+	}
+	trigger scene12
+	{
+		alertentity zombi_afa6
+		alertentity zombi_afa8
+	}
+	trigger scene13
+	{
+		alertentity zombi_afa9
+	}
+	trigger scene14
+	{
+		alertentity zombi_afa11
+	}
+	trigger scene15
+	{
+		alertentity zombi_afa12
+	}
+	trigger scene16
+	{
+		trigger door4 go
+		alertentity zombi_afa14
+	}
+	trigger scene17
+	{
+		alertentity zombi_afa16
+	}
+	trigger scene18
+	{
+		alertentity zombi_afa18
+	}
+	trigger scene19
+	{
+		trigger door2_1 go
+		trigger door2_2 go
+		trigger potolok go
+	}
+	trigger scene20
+	{
+		alertentity zombi_afa21
+		alertentity zombi_afa22
+	}
+	trigger scene21
+	{
+		alertentity zombi_afa24
+		alertentity zombi_afa25
+		alertentity zombi_afa26
+	}
+	trigger scene22
+	{
+		alertentity zombi_afa28
+	}
 
 
+	trigger scene23
+	{
+		alertentity d_1
+		alertentity zombi_afa29
+	}
 
+	trigger scene24
+	{
+		alertentity zombi_afa30
+	}
+	trigger scene25
+	{
+		alertentity zombi_afa31
+	}
+	trigger scene26
+	{
+		alertentity zombi_afa32
+	}
+	trigger scene27
+	{
+		alertentity zombi_afa33
+		alertentity zombi_afa34
+	}
+	trigger scene28
+	{
+		alertentity zombi_afa35
+	}
+	trigger scene29
+	{
+		alertentity zombi_afa36
+	}
+	trigger scene30
+	{
+		alertentity zombi_afa37
+	}
 
-
-
-
+	trigger scene31
+	{
+		alertentity war36
+		alertentity war37
+		alertentity war38
+		alertentity war39
+		alertentity war40
+		alertentity war41
+	}
 
 
 
 
 
 
-trigger death_s1
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 3
-  alertentity d2_explo
-  alertentity war20
-  alertentity war21
-  alertentity war22
-  accum 0 set 0
- }
-trigger death_s2
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 3
-  alertentity d4_explo
-  alertentity war26
-  alertentity war27
-  alertentity war28
-  accum 0 set 0
- }
 
-trigger death_s3
- {
-  accum 1 inc 1
-  accum 1 abort_if_not_equal 18
-  trigger door3 go
-  accum 1 set 0
- }
 
-trigger death_s4
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 6
-  trigger door3 go
-  accum 0 set 0
- }
-trigger death_s5
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 8
-  trigger door4 go1
-  accum 0 set 0
- }
-trigger death_s6
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 3
-  trigger door4 go1
-  accum 0 set 0
- }
-trigger death_s7
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 6
-  alertentity d_1
-  accum 0 set 0
- }
-trigger death_s8
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 9
-  alertentity d_2
-  accum 0 set 0
- }
 
-trigger death_s9
- {
-  accum 0 inc 1
-  accum 0 abort_if_not_equal 6
-teleport player_pos1
-alertentity player1
-trigger player1 go
-startcam l4_1
-wait 5500
-alertentity door_end_level_open
-stopcam
-startcam l4_2
-wait 9000
-  changelevel level5 persistent
- }
+
+
+
+
+	trigger death_s1
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 3
+		alertentity d2_explo
+		alertentity war20
+		alertentity war21
+		alertentity war22
+		accum 0 set 0
+	}
+	trigger death_s2
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 3
+		alertentity d4_explo
+		alertentity war26
+		alertentity war27
+		alertentity war28
+		accum 0 set 0
+	}
+
+	trigger death_s3
+	{
+		accum 1 inc 1
+		accum 1 abort_if_not_equal 18
+		trigger door3 go
+		accum 1 set 0
+	}
+
+	trigger death_s4
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 6
+		trigger door3 go
+		accum 0 set 0
+	}
+	trigger death_s5
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 8
+		trigger door4 go1
+		accum 0 set 0
+	}
+	trigger death_s6
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 3
+		trigger door4 go1
+		accum 0 set 0
+	}
+	trigger death_s7
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 6
+		alertentity d_1
+		accum 0 set 0
+	}
+	trigger death_s8
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 9
+		alertentity d_2
+		accum 0 set 0
+	}
+
+	trigger death_s9
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 6
+		teleport player_pos1
+		alertentity player1
+		trigger player1 go
+		startcam l4_1
+		wait 5500
+		alertentity door_end_level_open
+		stopcam
+		startcam l4_2
+		wait 9000
+		changelevel level5 persistent
+	}
 
 }
 
@@ -274,500 +279,500 @@ wait 9000
 //---------------------WARIOR--------------------
 war17
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war17 go
-   }
-  trigger go
-   {
-      walktomarker w7 
-   }
-  death
-   {
-    trigger player death_s1
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war17 go
+	}
+	trigger go
+	{
+		walktomarker w7
+	}
+	death
+	{
+		trigger player death_s1
+	}
 }
 war18
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war18 go
-   }
-  trigger go
-   {
-      walktomarker w8 
-   }
-  death
-   {
-    trigger player death_s1
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war18 go
+	}
+	trigger go
+	{
+		walktomarker w8
+	}
+	death
+	{
+		trigger player death_s1
+	}
 }
 
 war19
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war19 go
-   }
-  trigger go
-   {
-      walktomarker w9 
-   }
-  death
-   {
-    trigger player death_s1
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war19 go
+	}
+	trigger go
+	{
+		walktomarker w9
+	}
+	death
+	{
+		trigger player death_s1
+	}
 }
 war23
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war23 go
-   }
-  trigger go
-   {
-      walktomarker w13 
-   }
-  death
-   {
-    trigger player death_s2
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war23 go
+	}
+	trigger go
+	{
+		walktomarker w13
+	}
+	death
+	{
+		trigger player death_s2
+	}
 }
 war24
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war24 go
-   }
-  trigger go
-   {
-      walktomarker w14 
-   }
-  death
-   {
-    trigger player death_s2
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war24 go
+	}
+	trigger go
+	{
+		walktomarker w14
+	}
+	death
+	{
+		trigger player death_s2
+	}
 }
 war25
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war25 go
-   }
-  trigger go
-   {
-      walktomarker w15 
-   }
-  death
-   {
-    trigger player death_s2
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war25 go
+	}
+	trigger go
+	{
+		walktomarker w15
+	}
+	death
+	{
+		trigger player death_s2
+	}
 }
 //---------------
 war11
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war11 go
-   }
-  trigger go
-   {
-      walktomarker w6 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war11 go
+	}
+	trigger go
+	{
+		walktomarker w6
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war12
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war12 go
-   }
-  trigger go
-   {
-      walktomarker w5 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war12 go
+	}
+	trigger go
+	{
+		walktomarker w5
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war13
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war13 go
-   }
-  trigger go
-   {
-      walktomarker w4 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war13 go
+	}
+	trigger go
+	{
+		walktomarker w4
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war14
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war14 go
-   }
-  trigger go
-   {
-      walktomarker w3 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war14 go
+	}
+	trigger go
+	{
+		walktomarker w3
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war15
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war15 go
-   }
-  trigger go
-   {
-      walktomarker w2 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war15 go
+	}
+	trigger go
+	{
+		walktomarker w2
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war16
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war16 go
-   }
-  trigger go
-   {
-      walktomarker w1 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war16 go
+	}
+	trigger go
+	{
+		walktomarker w1
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war20
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war20 go
-   }
-  trigger go
-   {
-      walktomarker w10 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war20 go
+	}
+	trigger go
+	{
+		walktomarker w10
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war21
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war21 go
-   }
-  trigger go
-   {
-      walktomarker w11 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war21 go
+	}
+	trigger go
+	{
+		walktomarker w11
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war22
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war22 go
-   }
-  trigger go
-   {
-      walktomarker w12 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war22 go
+	}
+	trigger go
+	{
+		walktomarker w12
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war26
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war26 go
-   }
-  trigger go
-   {
-      walktomarker w16 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war26 go
+	}
+	trigger go
+	{
+		walktomarker w16
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war27
 {
- attributes
- {
-  }
-  spawn
-   {
-    trigger war27 go
-   }
-  trigger go
-   {
-      walktomarker w17 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war27 go
+	}
+	trigger go
+	{
+		walktomarker w17
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war28
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war28 go
-   }
-  trigger go
-   {
-      walktomarker w18 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war28 go
+	}
+	trigger go
+	{
+		walktomarker w18
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war29
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war29 go
-   }
-  trigger go
-   {
-      walktomarker w19 
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war29 go
+	}
+	trigger go
+	{
+		walktomarker w19
+	}
 
-  death
-   {
-    trigger player death_s3
-   }
+	death
+	{
+		trigger player death_s3
+	}
 }
 war30
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war30 go
-   }
-  trigger go
-   {
-      walktomarker w20 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war30 go
+	}
+	trigger go
+	{
+		walktomarker w20
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war31
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war31 go
-   }
-  trigger go
-   {
-      walktomarker w21 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war31 go
+	}
+	trigger go
+	{
+		walktomarker w21
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war32
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war32 go
-   }
-  trigger go
-   {
-      walktomarker w22 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war32 go
+	}
+	trigger go
+	{
+		walktomarker w22
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war33
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war33 go
-   }
-  trigger go
-   {
-      walktomarker w23 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war33 go
+	}
+	trigger go
+	{
+		walktomarker w23
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 war34
 {
- attributes
-  {
-  }
-  spawn
-   {
-    trigger war34 go
-   }
-  trigger go
-   {
-      walktomarker w24 
-   }
-  death
-   {
-    trigger player death_s3
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		trigger war34 go
+	}
+	trigger go
+	{
+		walktomarker w24
+	}
+	death
+	{
+		trigger player death_s3
+	}
 }
 
 //------------------------
 war1
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s4
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s4
+	}
 }
 war3
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s4
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s4
+	}
 }
 war6
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s4
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s4
+	}
 }
 war8
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s4
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s4
+	}
 }
 war9
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s4
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s4
+	}
 }
 war10
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s4
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s4
+	}
 }
 
 
@@ -777,63 +782,63 @@ war10
 
 war36
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s9
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s9
+	}
 }
 war37
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s9
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s9
+	}
 }
 war38
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s9
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s9
+	}
 }
 war39
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s9
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s9
+	}
 }
 war40
 {
-attributes
- {
- }
-  death
-   {
-    trigger player death_s9
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s9
+	}
 }
 war41
 {
- attributes
-  {
-  }
-  death
-   {
-    trigger player death_s9
-   }
+	attributes
+	{
+	}
+	death
+	{
+		trigger player death_s9
+	}
 }
 
 
@@ -843,147 +848,147 @@ war41
 //---------------ALFA
 zombi_afa1
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa2
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa4
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa6
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa8
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa9
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa11
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 zombi_afa12
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s5
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s5
+	}
 }
 
 
@@ -991,57 +996,57 @@ zombi_afa12
 
 zombi_afa14
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s6
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s6
+	}
 }
 zombi_afa16
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s6
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s6
+	}
 }
 zombi_afa18
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s6
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s6
+	}
 }
 
 
@@ -1053,284 +1058,285 @@ zombi_afa18
 
 zombi_afa21
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s7
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s7
+	}
 }
 zombi_afa22
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s7
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s7
+	}
 }
 zombi_afa24
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s7
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s7
+	}
 }
 zombi_afa25
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s7
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s7
+	}
 }
 zombi_afa26
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s7
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s7
+	}
 }
 zombi_afa28
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s7
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s7
+	}
 }
 zombi_afa29
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa30
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa31
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa32
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa33
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa34
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa35
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa36
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 zombi_afa37
 {
- attributes
-  {
-  }
-  spawn 
-   {
-    godmode on
-    nosight 9999999999
-    playsound teleport 
-    sight
-    godmode off
-   }
-  death
-   {
-    trigger player death_s8
-   }
+	attributes
+	{
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s8
+	}
 }
 //----------===========================
 player1
 {
- spawn
-  {
-  takeweapon all
-   nosight 999999
-  }
-   trigger go
-    {
-     walktomarker player_pos3
-    }
+	spawn
+	{
+		takeweapon all
+		nosight 999999
+	}
+	trigger go
+	{
+		walktomarker player_pos3
+	}
 }
+

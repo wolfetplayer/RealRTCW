@@ -39,40 +39,8 @@ player
 		mu_fade 0 1000 					//% time
 		mu_queue sound/music/m_mission
 
-		setarmor 25
-		giveinventory key_binocs
-
-		giveweapon weapon_knife
-		giveweapon weapon_knife
-		
-		giveweapon weapon_revolver
-		giveweapon weapon_thompson
-		
-		setammo ammo_revolver full
-		setammo ammo_45cal 200
-		
-		setclip weapon_revolver full
-		setclip weapon_thompson full
-
-		#if g_dlc1 == 0			
-		giveweapon weapon_m97
-		giveweapon weapon_m1garand
-		setammo ammo_barammo 108
-		setammo ammo_m97ammo 24
-        setclip weapon_m97 full
-		setclip weapon_m1garand full	
-	    #endif	
-
-		#if g_dlc1 == 1
-		giveweapon weapon_auto5
-		giveweapon weapon_m1941
-		setammo ammo_m1941 120
-		setammo ammo_m97ammo 36
-        setclip weapon_auto5 full
-		setclip weapon_m1941 full	
-	    #endif	
-
-		selectweapon weapon_thompson
+		applyloadout city
+		cvar g_level_was_selected 0
 	}
 
 	//MUSIC

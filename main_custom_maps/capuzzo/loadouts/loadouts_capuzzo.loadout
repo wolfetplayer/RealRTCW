@@ -1,0 +1,139 @@
+// Capuzzo campaign loadouts
+//
+// "city" is the campaign start kit and is always applied (verbatim port of
+// the old inline city.ai playerstart give-list).
+//
+// "airport" / "road" are only applied when the player jumps straight to that
+// map from the campaign selection screen (guarded by g_level_was_selected in
+// the .ai). During normal progression the weapons carried over from the
+// previous map are kept, exactly as before.
+//
+// The #if g_dlc1 blocks mirror the original city.ai split: without the DLC the
+// player gets the M97 + M1 Garand, with it the Auto-5 + M1941.
+
+loadout city
+{
+		setarmor 25
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_revolver
+		giveweapon weapon_thompson
+
+		setammo ammo_revolver full
+		setammo ammo_45cal 200
+
+		setclip weapon_revolver full
+		setclip weapon_thompson full
+
+		#if g_dlc1 == 0
+		giveweapon weapon_m97
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 108
+		setammo ammo_m97ammo 24
+		setclip weapon_m97 full
+		setclip weapon_m1garand full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		giveweapon weapon_m1941
+		setammo ammo_m1941 120
+		setammo ammo_m97ammo 36
+		setclip weapon_auto5 full
+		setclip weapon_m1941 full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout airport
+{
+		setarmor 50
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_thompson
+		giveweapon weapon_mp40
+
+		setammo ammo_9mm 150
+		setammo ammo_45cal full
+		setammo ammo_grenades 3
+
+		setclip weapon_luger full
+		setclip weapon_thompson full
+		setclip weapon_mp40 full
+
+		#if g_dlc1 == 0
+		giveweapon weapon_m97
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 150
+		setammo ammo_m97ammo 32
+		setclip weapon_m97 full
+		setclip weapon_m1garand full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout road
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_thompson
+		giveweapon weapon_mp40
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_9mm full
+		setammo ammo_45cal full
+		setammo ammo_panzerfaust 3
+		setammo ammo_grenades 5
+
+		setclip weapon_luger full
+		setclip weapon_thompson full
+		setclip weapon_mp40 full
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 0
+		giveweapon weapon_m97
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 200
+		setammo ammo_m97ammo 40
+		setclip weapon_m97 full
+		setclip weapon_m1garand full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}

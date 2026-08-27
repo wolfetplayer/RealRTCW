@@ -30,6 +30,11 @@ player
 	{
 		mu_fade 0 1000 					//% time
 		mu_queue sound/music/m_mission
+
+		#if g_level_was_selected >= 1
+		applyloadout road
+		#endif
+		cvar g_level_was_selected 0
 		
 
 	//About the Ammo & Guns left from city for realistic testing.. 

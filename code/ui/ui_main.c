@@ -2038,11 +2038,38 @@ static void UI_DrawNetMapPreview( rectDef_t *rect, float scale, vec4_t color ) {
 	}
 }
 
+/*
+==================
+UI_MapPreviewShader
+
+Campaign / create-server map previews live in levelshots/ui_<mapname>
+(optionally levelshots/ui_<mapname>_s<n> for the small variants). When that
+image is missing, fall back to the map's regular levelshot
+(levelshots/<mapname>) before the renderer's own unknownmap fallback kicks in.
+==================
+*/
+static qhandle_t UI_MapPreviewShader( const char *uiName, const char *mapName ) {
+	static const char *exts[] = { "tga", "jpg", "jpeg", "png", "pcx" };
+	char			path[MAX_QPATH];
+	fileHandle_t	f;
+	int				i;
+
+	for ( i = 0; i < (int)ARRAY_LEN( exts ); i++ ) {
+		Com_sprintf( path, sizeof( path ), "levelshots/%s.%s", uiName, exts[i] );
+		if ( trap_FS_FOpenFile( path, &f, FS_READ ) >= 0 ) {
+			trap_FS_FCloseFile( f );
+			return trap_R_RegisterShaderNoMip( va( "levelshots/%s", uiName ) );
+		}
+	}
+
+	return trap_R_RegisterShaderNoMip( va( "levelshots/%s", mapName ) );
+}
+
 static void UI_DrawSmallCreateMapPreview( rectDef_t *rect, float scale, vec4_t color, int number ) {
 
 	if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount &&
 		 uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( va( "levelshots/ui_%s_s%d", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName, number ) ) );
+		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, UI_MapPreviewShader( va( "ui_%s_s%d", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName, number ), uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
 	} else {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( "menu/art/unknownmap" ) );
 	}
@@ -2052,7 +2079,7 @@ static void UI_DrawCreateMapPreview( rectDef_t *rect, float scale, vec4_t color 
 
 	if ( ui_currentNetMap.integer >= 0 && ui_currentNetMap.integer < uiInfo.mapCount &&
 		 uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( va( "levelshots/ui_%s", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) ) );
+		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, UI_MapPreviewShader( va( "ui_%s", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ), uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
 	} else {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap_R_RegisterShaderNoMip( "menu/art/unknownmap" ) );
 	}

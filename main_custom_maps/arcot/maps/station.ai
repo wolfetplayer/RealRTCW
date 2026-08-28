@@ -15,6 +15,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout station
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1500
 		mu_queue sound/music/m_situation
 		giveweapon weapon_sten

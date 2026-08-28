@@ -1,7 +1,0 @@
- ^8MISSION OBJECTIVES:^8
-
-            1-Kill 1º officer.
- 
-            2-Kill 2º officer.
-
-            3-Turn on electric force.

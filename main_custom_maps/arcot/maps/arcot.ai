@@ -24,34 +24,8 @@ player
 		wait 20000
 		stopcam cas1
 
-		giveweapon weapon_knife
-		giveweapon weapon_revolver
-
-		giveweapon weapon_mg42m
-
-		setammo ammo_revolver full
-
-		setammo ammo_127mm 350
-
-		setclip weapon_revolver full
-		setclip weapon_mg42m full
-
-		#if g_dlc1 == 0			
-		giveweapon weapon_m97
-		setammo ammo_m97ammo 40
-        setclip weapon_m97 full	
-	    #endif
-
-		#if g_dlc1 == 1		
-		giveweapon weapon_auto5
-		giveweapon weapon_delisle
-		setammo ammo_45cal 100
-		setammo ammo_m97ammo 50
-        setclip weapon_auto5 full
-		setclip weapon_delisle full	
-	    #endif
-
-		selectweapon weapon_revolver
+		applyloadout arcot
+		cvar g_level_was_selected 0
 
 		wait 2000
 		alertentity time

@@ -1,0 +1,45 @@
+// Arcot - lone commando campaign behind German lines
+// scene is the ending cutscene, tagged green with ^2
+
+{
+map			"arcot"
+longname	"Castle's Command"
+chapter		"1"
+}
+
+{
+map			"arcot_2"
+longname	"Secret Documents"
+chapter		"1"
+}
+
+{
+map			"bunker"
+longname	"The Bunker"
+chapter		"1"
+}
+
+{
+map			"run"
+longname	"Run"
+chapter		"1"
+}
+
+{
+map			"rts"
+longname	"Run to Station"
+chapter		"1"
+}
+
+{
+map			"station"
+longname	"Station"
+chapter		"1"
+}
+
+{
+map			"scene"
+longname	"^2Escape"
+chapter		"1"
+}
+

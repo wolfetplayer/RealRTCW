@@ -18,6 +18,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout arcot_2
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1000 // music fades to 0% in 1 second (1000mSec.)
 		mu_queue sound/music/m_drums
 		alertentity post1

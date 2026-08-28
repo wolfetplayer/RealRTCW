@@ -1,0 +1,5560 @@
+//
+//AI Scripting
+//Map: railhead
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		accum 0 bitset 0		// Camera
+
+		accum 0 bitset 1		// Razreshenie na podyom
+		accum 0 bitset 2		// Used for elevator1's DOWN lever
+		accum 0 bitreset 3		// Used for elevator1's UP lever
+
+		accum 0 bitset 4		// Used for elevator2's DOWN lever
+		accum 0 bitreset 5		// Used for elevator2's UP lever
+
+		accum 0 bitset 6		// gasogony
+		accum 0 bitreset 7		// telezhka
+		accum 0 bitset 8		// nem or meh
+		accum 0 bitset 9		// music
+
+		accum 1 bitset 0		// trevoga
+		accum 1 bitset 1		// albox 1
+		accum 1 bitset 2		// albox 2
+		accum 1 bitset 3		// albox 3
+		accum 1 bitset 4		// albox 4
+		accum 1 bitset 5		// albox 5
+
+		objectivesneeded 1
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1.wav 1000
+		selectweapon weapon_mp40
+	}
+
+
+	playerstart 
+	{
+		trigger counter1 cinematic1
+
+		mu_fade 0 2000
+		mu_queue sound/music/m_grave.wav
+		selectweapon weapon_mp40
+		setclip weapon_mp40 32
+		trigger counter1 slomreshotki
+	}
+
+	trigger cine1_cam0
+	{
+		startcamblack railh_1
+	}
+
+	trigger camerainterrupt
+	{
+		accum 0 abort_if_not_bitset 0
+
+		stopcam
+		trigger counter1 cine1_cleanup
+		accum 0 bitreset 0
+
+	}
+
+	trigger music_change1
+	{
+		accum 0 abort_if_not_bitset 9
+		accum 0 bitreset 9
+
+		mu_fade 0 2000
+		mu_queue sound/music/m_alarm.wav
+	}
+
+//////////////ELEVATOR1//////////////
+
+	trigger e1_toggle_upbtn
+	{
+		accum 0 abort_if_bitset 1 // blokirovka vizova
+		trigger counter1 ldu1
+
+		trigger counter1 ldd1
+
+		trigger e1upbtn toggle
+	}
+
+	trigger e1_toggle_dwnbtn
+	{
+		trigger counter1 ldd1
+
+		trigger counter1 ldu1
+
+		trigger e1dwnbtn toggle
+	}
+
+	trigger e1lever1_toggle
+	{
+		trigger e1lever1 toggle
+	}
+
+	trigger e1_downlever
+	{
+		accum 0 abort_if_not_bitset 2
+		trigger e1lever1 toggle
+	}
+
+	trigger enable_e1downlever
+	{
+		accum 0 bitset 2
+	}
+
+	trigger disable_e1downlever
+	{
+		accum 0 bitreset 2
+	}
+
+	trigger e1_uplever
+	{
+		accum 0 abort_if_not_bitset 3
+		trigger e1lever1 toggle
+	}
+
+	trigger enable_e1uplever
+	{
+		accum 0 bitset 3
+	}
+
+	trigger disable_e1uplever
+	{
+		accum 0 bitreset 3
+	}
+
+//////////////ELEVATOR2//////////////
+
+	trigger e2_toggle_upbtn
+	{
+		trigger counter1 ldu2
+
+		trigger counter1 ldd2
+
+		trigger e2upbtn toggle
+	}
+
+	trigger e2_toggle_dwnbtn
+	{
+		trigger counter1 ldd2
+
+		trigger counter1 ldu2
+
+		trigger e2dwnbtn toggle
+	}
+
+	trigger e2lever1_toggle
+	{
+		trigger e2lever1 toggle
+	}
+
+	trigger e2_downlever
+	{
+		accum 0 abort_if_not_bitset 4
+		trigger e2lever1 toggle
+	}
+
+	trigger enable_e2downlever
+	{
+		accum 0 bitset 4
+	}
+
+	trigger disable_e2downlever
+	{
+		accum 0 bitreset 4
+	}
+
+	trigger e2_uplever
+	{
+		accum 0 abort_if_not_bitset 5
+		trigger e2lever1 toggle
+	}
+
+	trigger enable_e2uplever
+	{
+		accum 0 bitset 5
+	}
+
+	trigger disable_e2uplever
+	{
+		accum 0 bitreset 5
+	}
+
+//////////////ALARM_BOXES//////////////
+
+	trigger explode_alarm1
+	{
+		accum 1 bitreset 1
+	}
+
+	trigger on_alarm1
+	{
+		accum 1 abort_if_not_bitset 1
+		accum 1 bitreset 0
+
+		trigger player music_change1
+
+		accum 0 bitreset 1
+		accum 0 bitreset 8
+
+		trigger counter1 alarmon
+	}
+
+	trigger explode_alarm2
+	{
+		accum 1 bitreset 2
+	}
+
+	trigger on_alarm2
+	{
+		accum 1 abort_if_not_bitset 2
+		accum 1 bitreset 0
+
+		trigger player music_change1
+
+		accum 0 bitreset 1
+		accum 0 bitreset 8
+
+		trigger counter1 alarmon
+	}
+
+	trigger explode_alarm3
+	{
+		accum 1 bitreset 3
+	}
+
+	trigger on_alarm3
+	{
+		accum 1 abort_if_not_bitset 3
+		accum 1 bitreset 0
+
+		trigger player music_change1
+
+		trigger counter1 alarmon
+	}
+
+	trigger explode_alarm4
+	{
+		accum 1 bitreset 4
+	}
+
+	trigger on_alarm4
+	{
+		accum 1 abort_if_not_bitset 4
+		accum 1 bitreset 0
+
+		trigger player music_change1
+
+		trigger counter1 alarmon
+	}
+
+	trigger explode_alarm5
+	{
+		accum 1 bitreset 5
+	}
+
+	trigger on_alarm5
+	{
+		accum 1 abort_if_not_bitset 5
+		accum 1 bitreset 0
+
+		trigger player music_change1
+
+		trigger counter1 alarmon
+	}
+
+//////////////ACTIONS//////////////
+
+	trigger action1
+	{
+		alertentity nem3
+		alertentity nem4
+
+		accum 1 abort_if_bitset 0
+		trigger nem3 alarm2
+		trigger nem4 alarm2
+	}
+
+	trigger action2
+	{
+		alertentity nem5
+		alertentity nem6
+		alertentity nem7
+		alertentity nem8
+		alertentity nem9
+		alertentity officer1
+
+		accum 1 abort_if_bitset 0
+		trigger nem5 alarm2
+		trigger nem6 alarm2
+		trigger nem7 alarm2
+		trigger nem8 alarm2
+		trigger nem9 alarm2
+		trigger officer1 alarm
+	}
+
+	trigger action3
+	{
+		alertentity ucheniy1
+		alertentity ucheniy2
+		alertentity ucheniy3
+		alertentity ucheniy4
+
+		accum 1 abort_if_bitset 0
+		trigger ucheniy1 alarm
+		trigger ucheniy2 alarm2
+		trigger ucheniy3 alarm
+		trigger ucheniy4 alarm
+
+		savecheckpoint
+	}
+
+	trigger action4
+	{
+		trigger player music_change1
+
+		trigger counter1 alarmon
+
+		alertentity nem10
+		alertentity nem11
+		alertentity nem12
+		alertentity nem13
+
+		alertentity nem14
+		alertentity nem15
+
+		alertentity openaction5
+		trigger knopka1 fast
+	}
+
+	trigger action5
+	{
+		alertentity nem16
+		alertentity nem17
+
+		alertentity nem18
+		alertentity nem19
+		alertentity nem20
+
+		savecheckpoint
+	}
+
+	trigger action6
+	{
+		alertentity nem21
+
+		alertentity nem22
+		alertentity nem23
+
+		alertentity nem24
+		alertentity ucheniy5
+		alertentity ucheniy6
+	}
+
+	trigger action7
+	{
+		alertentity nem25
+		alertentity nem26
+
+		alertentity officer2
+	}
+
+	trigger action8
+	{
+		alertentity nem27
+		alertentity nem28
+		alertentity nem29
+		alertentity nem30
+
+		alertentity mehanik3
+
+		savecheckpoint
+	}
+
+	trigger action9
+	{
+		alertentity openaction9
+		alertentity nem31
+		alertentity nem32
+		alertentity nem33
+	}
+
+	trigger action10
+	{
+		alertentity nem34
+		alertentity nem35
+		alertentity nem36
+
+		alertentity nem37
+		alertentity nem38
+
+		trigger e2upbtn toggle
+
+		trigger telbody go1
+	}
+
+	trigger action11
+	{
+		accum 0 abort_if_bitset 7
+		accum 0 bitset 7
+
+		trigger telbody go2
+	}
+
+	trigger action12
+	{
+		alertentity nem39
+		alertentity nem40
+		alertentity nem41
+		alertentity nem42
+
+		savecheckpoint
+	}
+
+	trigger action13
+	{
+		alertentity nem43
+		alertentity nem44
+		alertentity nem45
+
+		alertentity shootergranades
+		wait 5000
+		alertentity shootergranades
+		wait 5000
+	}
+
+	trigger action14
+	{
+		alertentity nem46
+		alertentity nem47
+
+		alertentity pricep
+
+		objectivemet 1
+
+		savecheckpoint
+	}
+
+	trigger vorota_toggle //vorota v metro
+	{
+		trigger knopka1 toggle
+	}
+
+	trigger gass
+	{
+		accum 0 abort_if_not_bitset 8
+		accum 0 bitreset 8
+
+		trigger ventel open
+
+		accum 0 bitreset 1
+		trigger e1upbtn toggle
+	}
+
+	trigger stv2
+	{
+		trigger stvorka toggle
+	}
+
+	trigger povorot
+	{
+		accum 0 abort_if_not_bitset 6
+		trigger ruly open
+//		alertentity stopfire // if not worked garilko1
+		wait 500
+		alertentity garilko1
+		accum 0 bitreset 6
+	}
+
+	trigger usefortochka1
+	{
+		trigger fortochka1 toggle
+	}
+
+	trigger usefortochka2
+	{
+		trigger fortochka2 toggle
+	}
+
+	trigger usefortochka3
+	{
+		trigger fortochka3 toggle
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger endcamera1
+	{
+		startcam railh_3
+	}
+
+	trigger clearcam
+	{
+		stopcam
+	}
+
+	trigger exitmap
+	{
+		changelevel dep_lab persistent
+	}
+
+	trigger endmap
+	{
+		trigger counter1 cinematic2
+		alertentity rus2
+//		alertentity kickrus2
+
+		mu_fade 0 2000
+
+		alertentity netsteni
+		trigger trainglav go1
+		trigger trainzad go1
+		trigger train1 go1
+		trigger train2 go1
+		trigger train3 go1
+		trigger train4 go1
+	}
+}
+
+rus1
+{
+	attributes
+	{
+		starting_health 75
+		aim_accuracy 1.0
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300	
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_45cal 999
+		setclip weapon_mp40 32
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger rus1 begom1
+	}
+
+	trigger begom1
+	{
+		wait 1000
+		runtomarker r1_p1
+		runtomarker r1_p2
+		facetargetangles r1_p2
+		setclip weapon_mp40 0
+		setammo ammo_9mm 50
+		wait 100
+		trigger counter1 kick
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+		clearanim
+	}	
+
+	death
+	{
+		playsound blank
+	}
+}
+
+rus2
+{
+	attributes
+	{
+		starting_health 75
+		aim_accuracy 1.0
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 200
+		alertness 2300	
+	}
+
+	spawn
+	{
+		nosight 99999
+		godmode on
+		notarget on
+		playanim firing_mg42 both
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+		clearanim
+	}	
+
+	death
+	{
+		playsound blank
+	}
+}
+
+nem1
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem1 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		playanim talking_2h both
+		trigger nem1 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		trigger nem1 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem1 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+
+		runtomarker sir1_p1
+		facetargetangles sir1_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm1
+	}
+
+	pain 99
+	{
+		trigger nem1 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem1 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem1 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem1 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem1 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem1 alarm
+	}
+
+	attacksound
+	{
+		trigger nem1 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem1 alarm
+	}
+}
+
+nem2
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem2 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n2_p1
+		walktomarker n2_p2
+		walktomarker n2_p3
+		wait 500
+		walktomarker n2_p2
+		wait 3500
+		trigger nem2 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		trigger nem2 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem2 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+
+		runtomarker sir1_p1
+		facetargetangles sir1_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm1
+	}
+
+	pain 99
+	{
+		trigger nem2 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem2 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem2 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem2 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem2 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem2 alarm
+	}
+
+	attacksound
+	{
+		trigger nem2 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem2 alarm
+	}
+}
+
+nem3
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem3 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		walktomarker n3_p1
+		walktomarker n3_p2
+		walktomarker n3_p3
+		walktomarker n3_p4
+		walktomarker n3_p5
+		wait 1500
+		walktomarker n3_p4
+		walktomarker n3_p6
+		walktomarker n3_p7
+		walktomarker n3_p8
+		walktomarker n3_p9
+		walktomarker n3_p10
+		trigger nem3 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		trigger nem3 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem3 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		runtomarker sir2_p1
+		facetargetangles sir2_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm2
+	}
+
+	pain 99
+	{
+		trigger nem3 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem3 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem3 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem3 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem3 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem3 alarm
+	}
+
+	attacksound
+	{
+		trigger nem3 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem3 alarm
+	}
+}
+
+nem4
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem4 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n4_p1
+		walktomarker n4_p2
+		walktomarker n4_p3
+		walktomarker n4_p4
+		walktomarker n4_p5
+		wait 1500
+		walktomarker n4_p4
+		walktomarker n4_p6
+		trigger nem4 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		trigger nem4 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem4 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		runtomarker sir2_p1
+		facetargetangles sir2_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm2
+	}
+
+	pain 99
+	{
+		trigger nem4 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem4 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem4 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem4 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem4 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem4 alarm
+	}
+
+	attacksound
+	{
+		trigger nem4 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem4 alarm
+	}
+}
+
+nem5
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem5 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		trigger nem5 song
+		walktomarker n5_p1
+		walktomarker n5_p2
+		facetargetangles n5_p2
+		wait 1500
+		walktomarker n5_p3
+		walktomarker n5_p1
+		walktomarker n5_p4
+		walktomarker n5_p6
+		walktomarker n5_p7
+		wait 3500
+		walktomarker n5_p6
+		walktomarker n5_p4
+		trigger nem5 goto
+	}
+
+	trigger song
+	{
+		playsound MiscHum1
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		playsound blank
+
+		resetscript
+		trigger nem5 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem5 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		runtomarker sir3_p1
+		facetargetangles sir3_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm3
+	}
+
+	pain 99
+	{
+		trigger nem5 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem5 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem5 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem5 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem5 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem5 alarm
+	}
+
+	attacksound
+	{
+		trigger nem5 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem5 alarm
+	}
+
+	death
+	{
+		playsound blank
+	}
+}
+
+nem6
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 0 // alarmbox
+		wait 100
+		trigger nem6 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim looking_over_table both
+		trigger nem6 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		trigger nem6 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem6 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+
+		playanim switch_alarm both
+		runtomarker sir3_p1
+		facetargetangles sir3_p1
+		wait 100
+		alertentity activatealarm3
+	}
+
+	pain 99
+	{
+		trigger nem6 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem6 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem6 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem6 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem6 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem6 alarm
+	}
+
+	attacksound
+	{
+		trigger nem6 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem6 alarm
+	}
+	death
+	{
+	}
+}
+
+nem7
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem7 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n7_p1
+		walktomarker n7_p2
+		walktomarker n7_p4
+		walktomarker n7_p5
+		walktomarker n7_p6
+		trigger officer1 goto
+		walktomarker n7_p7
+		facetargetangles n7_p7
+		trigger nem7 talking1
+	}
+
+	trigger goto2
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n7_p6
+		runtomarker n7_p5
+		runtomarker n7_p4
+		walktomarker n7_p2
+		walktomarker n7_p1
+		walktomarker n7_p8
+		walktomarker n7_p9
+		walktomarker n7_p10
+		facetargetangles n7_p10
+	}
+
+	trigger talking1
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound corp_sir
+		wait 1500
+		trigger officer1 talking1
+	}
+
+	trigger talking2
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound corp_just_checked
+		wait 4500
+		trigger officer1 talking2
+	}
+
+	trigger talking3
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound corp_jawol
+		wait 2500
+		trigger officer1 goto2
+		trigger nem7 goto2
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		playsound blank
+
+		resetscript
+		trigger nem7 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem7 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		runtomarker sir3_p1
+		facetargetangles sir3_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm2
+	}
+
+	pain 99
+	{
+		trigger nem7 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem7 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem7 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem7 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem7 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem7 alarm
+	}
+
+	attacksound
+	{
+		trigger nem7 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem7 alarm
+	}
+
+	death
+	{
+		playsound blank
+	}
+}
+
+nem8
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem8 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n8_p1
+		walktomarker n8_p2
+		walktomarker n8_p3
+		walktomarker n8_p4
+		facetargetangles n8_p4
+		wait 2500
+		walktomarker n8_p5
+		trigger nem8 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		trigger nem8 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem8 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+		runtomarker sir4_p1
+		facetargetangles sir4_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm4
+	}
+
+	pain 99
+	{
+		trigger nem8 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem8 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem8 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem8 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem8 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem8 alarm
+	}
+
+	attacksound
+	{
+		trigger nem8 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem8 alarm
+	}
+}
+
+nem9
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1 // alarmbox
+		wait 100
+		trigger nem9 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim tunning_radio both
+		trigger nem9 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		trigger nem9 alarmbox
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger nem9 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+
+		runtomarker sir4_p1
+		facetargetangles sir4_p1
+		wait 100
+		playanim switch_alarm both
+		alertentity activatealarm4
+	}
+
+	pain 99
+	{
+		trigger nem9 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem9 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem9 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem9 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem9 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem9 alarm
+	}
+
+	attacksound
+	{
+		trigger nem9 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem9 alarm
+	}
+}
+
+nem10
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		trigger nem10 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n10_p1
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem10 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem10 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem10 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem10 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem10 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem10 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem11
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		trigger nem11 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n11_p1
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem11 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem11 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem11 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem11 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem11 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem11 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem12
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		trigger nem12 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n10_p1
+		runtomarker n12_p1
+		runtomarker n12_p2
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem12 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem12 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem12 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem12 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem12 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem12 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem13
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		trigger nem13 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n11_p1
+		runtomarker n13_p1
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem13 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem13 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem13 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem13 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem13 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem13 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem14
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem14 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n14_p1
+		walktomarker n14_p2
+		trigger nem14 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem14 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem14 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem14 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem14 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem14 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem14 alarm
+	}
+
+	attacksound
+	{
+		trigger nem14 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem14 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem15
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem15 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n15_p1
+		walktomarker n15_p2
+		trigger nem15 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem15 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem15 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem15 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem15 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem15 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem15 alarm
+	}
+
+	attacksound
+	{
+		trigger nem15 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem15 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem16
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem16 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim tunning_radio both
+		trigger nem16 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem16 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem16 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem16 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem16 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem16 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem16 alarm
+	}
+
+	attacksound
+	{
+		trigger nem16 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem16 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem17
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem17 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim tunning_radio both
+		trigger nem17 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem17 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem17 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem17 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem17 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem17 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem17 alarm
+	}
+
+	attacksound
+	{
+		trigger nem17 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem17 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem18
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem18 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n18_p1
+		walktomarker n18_p2
+		trigger nem18 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem18 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem18 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem18 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem18 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem18 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem18 alarm
+	}
+
+	attacksound
+	{
+		trigger nem18 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem18 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem19
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem19 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n19_p1
+		walktomarker n19_p2
+		trigger nem19 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem19 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem19 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem19 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem19 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem19 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem19 alarm
+	}
+
+	attacksound
+	{
+		trigger nem19 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem19 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem20
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		trigger nem20 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker n20_p1
+		walktomarker n20_p2
+		trigger nem20 goto
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem20 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem20 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem20 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem20 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem20 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem20 alarm
+	}
+
+	attacksound
+	{
+		trigger nem20 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem20 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem21
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		camper 0.1
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		wait 100
+		trigger nem21 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+//		runtomarker n21_p1
+//		facetargetangles n21_p1
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem21 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem21 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem21 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem21 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem21 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem21 alarm
+	}
+
+	attacksound
+	{
+		trigger nem21 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem21 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem22
+{
+	attributes
+	{
+		fov 90
+		alertness 5000
+		inner_detection_radius 6400
+		camper 1.0
+		tactical 0.6
+		aggression 0.7
+		attack_crouch 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+	}
+
+	bulletimpact
+	{
+		trigger nem22 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem22 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem22 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem22 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem22 alarm
+	}
+
+	attacksound
+	{
+		trigger nem22 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem22 alarm
+	}
+
+	enemysight
+	{
+		trigger nem22 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem23
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		trigger nem23 goto
+	}
+
+	trigger goto
+	{
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem23 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem23 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem23 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem23 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem23 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem23 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem24
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem24 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem24 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem24 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem24 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem24 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem24 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem25
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem25 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem25 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem25 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem25 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem25 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem25 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem26
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem26 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem26 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem26 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem26 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem26 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem26 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem27
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.1
+		camper 0.1
+		aggression 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem27 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem27 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem27 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem27 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem27 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem27 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem28
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+
+		trigger nem28 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+
+		attack player
+	}
+
+	trigger goto
+	{
+		cigarette on
+		playanim smoking both
+		wait 1000
+		cigarette off
+		wait 100000
+		trigger nem28 goto
+	}
+
+	pain 95
+	{
+		trigger nem28 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem28 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem28 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem28 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem28 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem28 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem29
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+
+		trigger nem29 goto
+	}
+
+	trigger goto
+	{
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem29 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem29 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem29 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem29 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem29 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem29 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem30
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem30 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem30 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem30 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem30 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem30 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem30 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem31
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		statetype alert
+		trigger nem31 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n31_p1
+		runtomarker n31_p2
+		facetargetangles n31_p2
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem31 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem31 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem31 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem31 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem31 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem31 alarm
+	}
+
+	attacksound
+	{
+		trigger nem31 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem31 alarm
+	}
+}
+
+nem32
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		wait 100
+		statetype alert
+		trigger nem32 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker n32_p1
+		runtomarker n32_p2
+		runtomarker n32_p3
+		facetargetangles n32_p3
+	}
+
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem32 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem32 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem32 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem32 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem32 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem32 alarm
+	}
+
+	attacksound
+	{
+		trigger nem32 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem32 alarm
+	}
+}
+
+nem33
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		trigger nem33 goto
+	}
+
+	trigger goto
+	{
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem33 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem33 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem33 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem33 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem33 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem33 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem34
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		trigger nem34 goto1
+	}
+
+	trigger goto1
+	{
+		wait 250
+		runtomarker n34_p1
+		facetargetangles n34_p1
+
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+		runtomarker n34_p1
+
+		wait forever 0 player
+	}
+
+	pain 99
+	{
+		trigger nem34 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem34 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem34 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem34 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem34 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem34 alarm
+	}
+
+	enemysight
+	{
+		attack player
+
+		accum 0 abort_if_not_bitset 0
+		fireattarget shoot1
+	}
+
+	death
+	{
+		deny
+	}
+}
+
+nem35
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		trigger nem35 goto
+	}
+
+	trigger goto
+	{
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem35 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem35 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem35 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem35 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem35 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem35 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem36
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		trigger nem36 goto
+	}
+
+	trigger goto
+	{
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem36 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem36 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem36 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem36 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem36 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem36 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem37
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger goto2
+	{
+		runtomarker n37_p3 nostop
+		runtomarker n37_p4 nostop
+		runtomarker n37_p5
+		accum 0 abort_if_not_bitset 0
+		runtomarker n37_p6
+		facetargetangles n37_p6
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem37 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem37 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem37 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem37 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem37 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem37 alarm
+	}
+
+	death
+	{
+		deny
+	}
+}
+
+nem38
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		trigger nem38 goto1
+	}
+
+	trigger goto1
+	{
+		runtomarker n38_p3 nostop // firetarget player
+		runtomarker n38_p4 nostop // firetarget player
+		runtomarker n38_p5
+		accum 0 abort_if_not_bitset 0
+		runtomarker n38_p6
+		facetargetangles n38_p6
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem38 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem38 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem38 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem38 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem38 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem38 alarm
+	}
+
+	death
+	{
+		deny
+	}
+}
+
+nem39
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		trigger nem39 goto
+	}
+
+	trigger goto
+	{
+		wait 400
+		runtomarker n39_p1
+		facetargetangles n39_p1
+		runtomarker n39_p2 nostop
+		runtomarker n39_p3
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem39 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem39 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem39 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem39 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem39 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem39 alarm
+	}
+
+	death
+	{
+		deny
+	}
+}
+
+nem40
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		trigger nem40 goto
+	}
+
+	trigger goto
+	{
+		runtomarker n40_p1
+		facetargetangles n40_p1
+
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+
+		wait forever 0 player
+		attack player
+		runtomarker n40_p1
+	}
+
+	pain 99
+	{
+		trigger nem40 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem40 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem40 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem40 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem40 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem40 alarm
+	}
+
+	death
+	{
+		deny
+	}
+}
+
+nem41
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		trigger nem41 goto
+	}
+
+	trigger goto
+	{
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem41 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem41 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem41 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem41 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem41 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem41 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem42
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		trigger nem42 goto
+	}
+
+	trigger goto
+	{
+		runtomarker n42_p1
+		runtomarker n42_p2
+
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+
+		wait forever 0 player
+	}
+
+	pain 99
+	{
+		trigger nem42 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem42 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem42 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem42 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem42 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem42 alarm
+	}
+
+	death
+	{
+		deny
+	}
+}
+
+nem43
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+		tactical 0.6
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		trigger nem43 goto
+	}
+
+	trigger goto
+	{
+		runtomarker n43_p1
+		facetargetangles n43_p1
+
+		wait forever 0 player
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+		runtomarker n43_p1
+
+		wait forever 0 player
+	}
+
+	pain 95
+	{
+		trigger nem43 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem43 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem43 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem43 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem43 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem43 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem44
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		trigger nem44 goto
+	}
+
+	trigger goto
+	{
+		runtomarker n44_p1
+		runtomarker n44_p2
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem44 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem44 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem44 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem44 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem44 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem44 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem45
+{
+	attributes
+	{
+		fov 90
+		alertness 5000
+		inner_detection_radius 6400
+		camper 1.0
+		tactical 0.6
+		aggression 0.7
+		attack_crouch 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+
+		statetype alert
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+	}
+
+	bulletimpact
+	{
+		trigger nem45 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem45 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem45 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem45 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem45 alarm
+	}
+
+	attacksound
+	{
+		trigger nem45 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem45 alarm
+	}
+
+	enemysight
+	{
+		trigger nem45 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem46
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		statetype alert
+		resetscript
+
+		takeweapon weapon_mp44
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem46 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem46 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem46 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem46 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem46 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem46 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem47
+{
+	attributes
+	{
+		fov 180
+		inner_detection_radius 1024
+		tactical 0.9
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		statetype alert
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+
+		attack player
+	}
+
+	pain 95
+	{
+		trigger nem47 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem47 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem47 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem47 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem47 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem47 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem48
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker m1_p2
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem48 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem48 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem48 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem48 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem48 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem48 alarm
+	}
+
+	attacksound
+	{
+		trigger nem48 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem48 alarm
+	}
+}
+
+nem49
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		runtomarker m2_p2
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		attack player
+	}
+
+	pain 99
+	{
+		trigger nem49 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem49 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem49 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem49 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem49 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem49 alarm
+	}
+
+	attacksound
+	{
+		trigger nem49 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem49 alarm
+	}
+}
+
+officer1
+{
+	attributes
+	{
+		fov 110
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_equal 0
+		walktomarker o1_p1
+		walktomarker o1_p2
+		facetargetangles o1_p2
+	}
+
+	trigger goto2
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker o1_p2
+		walktomarker o1_p1
+		walktomarker o1_p3
+		wait 1000
+		trigger officer1 goto2
+	}
+
+	trigger talking1
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound off_corporal
+		wait 1500
+		accum 0 abort_if_not_bitset 0
+		trigger nem7 talking2
+	}
+
+	trigger talking2
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound off_check_again
+		wait 4000
+		accum 0 abort_if_not_bitset 0
+		trigger nem7 talking3
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		playsound blank
+		resetscript
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+		attack player
+	}
+
+	pain 99
+	{
+		trigger officer1 alarm
+	}
+
+	bulletimpact
+	{
+		trigger officer1 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger officer1 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger officer1 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger officer1 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger officer1 alarm
+	}
+
+	attacksound
+	{
+		trigger officer1 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger officer1 alarm
+	}
+
+	death
+	{
+		playsound blank
+	}
+}
+
+officer2
+{
+	attributes
+	{
+		fov 110
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		playsound blank
+		resetscript
+
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 999
+		attack player
+	}
+
+	pain 99
+	{
+		trigger officer2 alarm
+	}
+
+	bulletimpact
+	{
+		trigger officer2 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger officer2 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger officer2 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger officer2 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger officer2 alarm
+	}
+
+	attacksound
+	{
+		trigger officer2 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger officer2 alarm
+	}
+
+	death
+	{
+		playsound blank
+		trigger player action9
+	}
+}
+
+ucheniy1
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+		trigger ucheniy1 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim pointing both
+		wait 2000
+		playanim clipboard both
+		wait 2000
+		walktomarker u1_p1
+		facetargetangles u1_p1
+		wait 3500
+		playanim pointing both
+		walktomarker u1_p2
+		facetargetangles u1_p2
+		wait 3500
+		walktomarker u1_p1
+		walktomarker u1_p3
+		facetargetangles u1_p3
+		trigger ucheniy1 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+		playsound rocket_sci_jeapordize
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger ucheniy1 alarm
+	}
+
+	bulletimpact
+	{
+		trigger ucheniy1 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger ucheniy1 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger ucheniy1 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger ucheniy1 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger ucheniy1 alarm
+	}
+}
+
+ucheniy2
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+		trigger ucheniy2 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		walktomarker u2_p1
+		facetargetangles u2_p1
+		playanim device both
+		wait 3500
+		walktomarker u2_p2
+		facetargetangles u2_p2
+		wait 2000
+		walktomarker u2_p3
+		facetargetangles u2_p3
+		wait 3000
+		trigger ucheniy2 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+		trigger ucheniy2 alarmbox
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+		attack player
+	}
+
+	trigger alarm2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		accum 0 bitreset 1
+
+		statetype alert
+
+		trigger ucheniy2 alarm
+	}
+
+	trigger alarmbox
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+
+		runtomarker sir5_p1
+		facetargetangles sir5_p1
+		wait 100
+		alertentity activatealarm5
+	}
+
+	pain 99
+	{
+		trigger ucheniy2 alarm
+	}
+
+	bulletimpact
+	{
+		trigger ucheniy2 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger ucheniy2 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger ucheniy2 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger ucheniy2 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger ucheniy2 alarm
+	}
+}
+
+ucheniy3
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+		trigger ucheniy3 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		playanim device both
+		wait 3500
+		trigger ucheniy3 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger ucheniy3 alarm
+	}
+
+	bulletimpact
+	{
+		trigger ucheniy3 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger ucheniy3 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger ucheniy3 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger ucheniy3 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger ucheniy3 alarm
+	}
+}
+
+ucheniy4
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+		trigger ucheniy4 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		walktomarker u4_p1
+		walktomarker u4_p2
+		facetargetangles u4_p2
+		wait 3000
+		trigger ucheniy4 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger ucheniy4 alarm
+	}
+
+	bulletimpact
+	{
+		trigger ucheniy4 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger ucheniy4 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger ucheniy4 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger ucheniy4 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger ucheniy4 alarm
+	}
+}
+
+ucheniy5
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+		trigger ucheniy5 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim device both
+		wait 300
+		trigger ucheniy5 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger ucheniy5 alarm
+	}
+
+	bulletimpact
+	{
+		trigger ucheniy5 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger ucheniy5 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger ucheniy5 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger ucheniy5 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger ucheniy5 alarm
+	}
+}
+
+ucheniy6
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+		trigger ucheniy6 goto
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		playanim device both
+		wait 300
+		trigger ucheniy6 goto
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger ucheniy6 alarm
+	}
+
+	bulletimpact
+	{
+		trigger ucheniy6 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger ucheniy6 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger ucheniy6 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger ucheniy6 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger ucheniy6 alarm
+	}
+}
+
+mehanik1
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 0.6
+		camper 0.3
+		alertness 1900
+		fov 110
+		attack_crouch 0.1
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		walktomarker m1_p2
+		walktomarker m1_p3
+		walktomarker m1_p4
+		walktomarker m1_p5
+		walktomarker m1_p6
+		walktomarker m1_p7
+		walktomarker m1_p8
+		trigger mehanik1 working
+	}
+
+	trigger working
+	{
+		takeweapon all
+		facetargetangles m1_p8
+		movetype crouch
+		wait 4000
+		trigger mehanik1 talk1
+		trigger mehanik1 anim_loop
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_not_bitset 0
+
+		playsound m1_verdammt_leak
+		wait 6300
+		trigger mehanik2 anim_loop
+		wait 5
+		trigger mehanik2 talk1
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound m1_thats_right
+		wait 8150
+		trigger mehanik2 anim_loop5
+		wait 5
+		trigger mehanik2 talk2
+	}
+
+	trigger talk3
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound m1_yes_it_was_obvious
+		wait 10000
+		trigger mehanik2 anim_loop4
+		wait 5
+		trigger mehanik2 talk3
+	}
+		
+	trigger talk4
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound m1_makes_perfect_sense
+		wait 5300
+		trigger mehanik2 anim_loop
+		wait 5
+		trigger mehanik1 anim_loop2
+	}
+
+	trigger anim_loop
+	{
+		trigger ventel close1
+		playanim clipboard both
+	}
+
+	trigger anim_loop2
+	{
+		playanim clipboard both
+		trigger mehanik1 anim_loop2
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		playsound blank
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger mehanik1 alarm
+	}
+
+	bulletimpact
+	{
+		trigger mehanik1 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger mehanik1 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger mehanik1 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger mehanik1 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger mehanik1 alarm
+	}
+
+	attacksound
+	{
+		trigger mehanik1 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger mehanik1 alarm
+	}
+
+	enemysight
+	{
+		trigger mehanik1 alarm
+	}
+
+	death
+	{
+		playsound blank
+	}
+}
+
+mehanik2
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+	}
+
+	trigger goto
+	{
+		accum 0 abort_if_not_bitset 0
+
+		walktomarker m2_p2
+		walktomarker m2_p3
+		walktomarker m2_p4
+		walktomarker m2_p5
+		walktomarker m2_p6
+		walktomarker m2_p7
+		walktomarker m2_p8
+	}
+
+	trigger talk1
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound m2_but_we_just
+		wait 2800
+		trigger mehanik1 anim_loop
+		wait 5
+		trigger mehanik1 talk2
+	}
+
+	trigger talk2
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound m2_doesnt_make_sense
+		wait 4300
+		clearanim
+		trigger mehanik1 anim_loop
+		wait 5
+		trigger mehanik1 talk3
+	}
+
+	trigger talk3
+	{
+		accum 0 abort_if_not_bitset 0
+		playsound m2_alright
+		wait 3000
+		trigger mehanik1 anim_loop
+		wait 5
+		trigger mehanik1 talk4	
+	}
+
+	trigger anim_loop
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim clipboard both
+		wait 2300
+		playanim pointing both
+		wait 4000
+	}
+
+	trigger anim_loop3
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim nono both		
+	}
+
+	trigger anim_loop4
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim pointing both
+	}
+
+	trigger anim_loop5
+	{
+		accum 0 abort_if_not_bitset 0
+		playanim talking both
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		playsound blank
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger mehanik2 alarm
+	}
+
+	bulletimpact
+	{
+		trigger mehanik2 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger mehanik2 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger mehanik2 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger mehanik2 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger mehanik2 alarm
+	}
+
+	attacksound
+	{
+		trigger mehanik2 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger mehanik2 alarm
+	}
+
+	enemysight
+	{
+		trigger mehanik2 alarm
+	}
+
+	death
+	{
+		playsound blank
+	}
+}
+
+mehanik3
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+
+		wait 100
+		takeweapon all
+	}
+
+	trigger alarm
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		attack player
+	}
+
+	pain 99
+	{
+		trigger mehanik3 alarm
+	}
+
+	bulletimpact
+	{
+		trigger mehanik3 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger mehanik3 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger mehanik3 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger mehanik3 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger mehanik3 alarm
+	}
+
+	attacksound
+	{
+		trigger mehanik3 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger mehanik3 alarm
+	}
+}

@@ -1,0 +1,52 @@
+//
+//Brush Scripting
+//Map: antarktida
+//Last edited by: Depro777(RU)
+//
+
+haunebu1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles -10 -350 10 gototime
+		gotomarker ha1_p1 500
+
+		faceangles -8 -600 8 gototime
+		gotomarker ha1_p1 500
+
+		faceangles -5 -1000 10 gototime
+		gotomarker ha1_p3 550
+		faceangles -5 -1550 5 gototime
+	}
+}
+
+haunebu2
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles -10 150 10 gototime
+		gotomarker ha2_p1 500
+
+		faceangles -20 180 10 gototime
+		gotomarker ha2_p2 550
+
+		faceangles -23 200 10 gototime
+		gotomarker ha2_p3 500
+
+		faceangles -25 220 10 gototime
+		gotomarker ha2_p4 550
+
+		faceangles -30 240 10 gototime
+		gotomarker ha2_p5 500
+		alertentity shoot
+	}
+}
+

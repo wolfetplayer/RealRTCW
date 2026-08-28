@@ -1,0 +1,684 @@
+//
+//Brush Scripting
+//Map: thirdmis (2mapa)
+//Last edited by: Depro777(RU)
+//
+
+zak
+{
+	spawn
+	{
+	}
+
+	trigger zakrity
+	{
+        gotomarker zakr1 20 wait
+	playsound sound/movers/doors/door2_locked.wav
+	}
+}
+
+
+stena1
+{
+	spawn
+	{
+	}
+
+	trigger go0
+	{
+	gotomarker st1_p1 1000
+	}
+
+	trigger go
+	{
+	trigger stena2 go
+	gotomarker mestovstrechi 40 accel wait
+	playsound sound/movers/doors/door2_loop.wav
+	alertentity bigwall_dust1
+	wait 5000
+	gotomarker st1_p1 40 accel wait
+	}
+}
+stena2
+{
+	spawn
+	{
+	}
+
+	trigger go0
+	{
+	gotomarker st2_p1 1000
+	}
+
+	trigger go
+	{
+	gotomarker mestovstrechi 40 accel wait
+	playsound sound/movers/doors/door2_loop.wav
+	wait 5000
+	gotomarker st2_p1 40 accel wait
+	}
+}
+grob
+{
+	spawn
+	{
+
+	}
+
+	trigger opusk
+	{
+		gotomarker grobmove 30
+		playsound sound/movers/doors/door2_loop.wav
+		wait 500
+		trigger zadvigpol opusk2
+	}
+	trigger proverka1
+	{
+		trigger grob proverka
+		trigger koleso1 sound
+	}
+
+	trigger proverka2
+	{
+		trigger grob proverka
+		trigger koleso2 sound
+	}
+
+	trigger proverka
+	{
+		trigger otkrivately1 proverka
+		trigger otkrivately2 proverka
+	}
+}
+
+zadvigpol
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 1
+	}
+
+	trigger opusk1
+	{
+        	gotomarker zadvigpol1 1000
+	}
+
+	trigger opusk2
+	{
+        	gotomarker zadvigpol2 40 accel wait
+        	gotomarker zadvigpol3 20 accel
+	}
+
+	trigger opusk2
+	{
+        	gotomarker zadvigpol2 40 accel wait
+        	gotomarker zadvigpol3 20 accel
+	}
+
+	trigger choose_reaction1
+	{
+		accum 0 random 2
+		wait 5
+		trigger zadvigpol tactic1
+		wait 5
+		trigger zadvigpol tactic2
+	}
+
+	trigger choose_reaction2
+	{
+		accum 1 random 2
+		wait 5
+		trigger zadvigpol tactic3
+		wait 5
+		trigger zadvigpol tactic4
+	}
+
+	trigger tactic1
+	{
+		accum 0 abort_if_not_equal 0
+
+		alertentity getupwarzombie6a
+		alertentity warzombie6a
+	}
+
+	trigger tactic2
+	{
+		accum 0 abort_if_not_equal 1
+
+		alertentity getupwarzombie6b
+		alertentity warzombie6b
+	}
+
+	trigger tactic3
+	{
+		accum 1 abort_if_not_equal 0
+
+		alertentity getupwarzombie7a
+		alertentity warzombie7a
+	}
+
+	trigger tactic4
+	{
+		accum 1 abort_if_not_equal 1
+
+		alertentity getupwarzombie7b
+		alertentity warzombie7b
+	}
+}
+
+valun
+{
+	spawn
+	{
+		accum 0 set 0
+	}
+
+	trigger  zvuk
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/crypt2/earth_rumble.wav
+	}
+
+	trigger move
+	{
+	trigger valun zvuk
+	alertentity spusk
+	alertentity hur0
+        gotomarker kam0 100
+	faceangles 0 0 -90 gototime
+	alertentity hur0
+	trigger valun move1
+	}
+
+	trigger move1
+	{
+	alertentity hur1
+        gotomarker kam1 200
+	faceangles 0 0 -180 gototime
+	alertentity hur1
+
+	alertentity hur2
+        gotomarker kam2 200
+	faceangles 0 0 -270 gototime
+	alertentity hur2
+
+	alertentity hur3
+        gotomarker kam3 200
+	faceangles 0 0 -360 gototime
+	alertentity hur3
+
+	alertentity hur4
+        gotomarker kam4 200
+	faceangles 0 0 -450 gototime
+	alertentity hur4
+	trigger valun move2
+	}
+
+	trigger move2
+	{
+	alertentity hur5
+        gotomarker kam5 200
+	faceangles 0 0 -540 gototime
+	alertentity hur5
+
+	alertentity hur6
+        gotomarker kam6 200
+	faceangles 0 0 -630 gototime
+	alertentity hur6
+
+	alertentity hur7
+        gotomarker kam7 200
+	faceangles 0 0 -720 gototime
+	alertentity hur7
+
+	alertentity hur8
+        gotomarker kam8 200
+	faceangles 0 0 -810 gototime
+	alertentity hur8
+	trigger valun move3
+	}
+
+	trigger move3
+	{
+	alertentity hur9
+        gotomarker kam9 200
+	faceangles 0 0 -900 gototime
+	alertentity hur9
+
+	alertentity hur10
+        gotomarker kam10 200
+	faceangles 0 0 -990 gototime
+	alertentity hur10
+
+	alertentity hur11
+        gotomarker kam11 200
+	faceangles 0 0 -1080 gototime
+	alertentity hur11
+
+	alertentity hur12
+        gotomarker kam12 200
+	faceangles 0 0 -1170 gototime
+	alertentity hur12
+	trigger valun move4
+	}
+
+	trigger move4
+	{
+	alertentity hur13
+        gotomarker kam13 200
+	faceangles 0 0 -1260 gototime
+	alertentity hur13
+
+	alertentity hur14
+        gotomarker kam14 200
+	faceangles 0 0 -1350 gototime
+	alertentity hur14
+
+	alertentity hur15
+        gotomarker kam15 200
+	faceangles 0 0 -1440 gototime
+	alertentity hur15
+
+	alertentity hur16
+        gotomarker kam16 200
+	faceangles 0 0 -1530 gototime
+	alertentity hur16
+	trigger valun move5
+	}
+
+	trigger move5
+	{
+	alertentity dira3
+
+        gotomarker kam17 200
+	faceangles 0 0 -1600 gototime
+	faceangles 0 0 -1690 gototime
+	faceangles 0 0 -1780 gototime
+	accum 0 set 1
+
+	stopsound
+	alertentity krosh_valun
+	}
+}
+
+valun2
+{
+	spawn
+	{
+	}
+	trigger movet1
+	{
+
+	alertentity puh
+	faceangles 35 0 0 300
+	alertentity hura1
+
+	faceangles 55 0 0 300
+	alertentity hura1
+	alertentity hura2
+
+	faceangles 70 0 0 300
+	alertentity hura2
+	alertentity hura3
+
+	faceangles 90 0 0 300
+	alertentity hura3
+	alertentity hura4
+
+	trigger valun2 movet2
+	}
+
+	trigger movet2
+	{
+	faceangles 115 0 0 300
+	alertentity hura4
+	alertentity hura5
+
+	faceangles 140 0 0 300
+	alertentity hura5
+	alertentity hura6
+
+	faceangles 115 0 0 300
+	alertentity hura6
+	alertentity hura5
+
+	faceangles 90 0 0 300
+	alertentity hura5
+	alertentity hura4
+
+	faceangles 70 0 0 300
+	alertentity hura4
+	alertentity hura3
+
+	faceangles 80 0 0 300
+	alertentity hura3
+	alertentity hura4
+
+	faceangles 90 0 0 300
+	alertentity hura4
+
+	wait 300
+	alertentity padaets
+	wait 100
+	alertentity hura4
+        gotomarker pluhs 300 wait
+	alertentity hura4
+
+	alertentity pluh
+        gotomarker pluhs1 700
+	}
+}
+
+koleso1
+{
+	spawn
+	{
+	}
+
+	trigger fi
+	{
+		faceangles 0 315 0 10 accel
+		trigger otkrivately1 fi1 //peredaet dannie ob simvole v proverochnuyu 1
+		trigger otkrivately2 fi1 //peredaet dannie ob simvole v proverochnuyu 2
+		trigger grob proverka1 //zapuskaet process proverki
+	}
+
+	trigger r
+	{
+		faceangles 0 225 0 10 accel
+		trigger otkrivately1 r1
+		trigger otkrivately2 r1
+		trigger grob proverka1
+	}
+
+	trigger n
+	{
+		faceangles 0 135 0 10 accel
+		trigger otkrivately1 n1
+		trigger otkrivately2 n1
+		trigger grob proverka1
+	}
+
+	trigger sledptici
+	{
+		faceangles 0 45 0 10 accel
+		trigger otkrivately1 sledptici1
+		trigger otkrivately2 sledptici1
+		trigger grob proverka1
+	}
+
+	trigger sound
+	{
+		playsound sound/movers/doors/door2_open.wav
+	}
+}
+
+koleso2
+{
+	spawn
+	{
+	}
+
+	trigger fi
+	{
+		faceangles 0 315 0 10 accel
+		trigger otkrivately1 fi2
+		trigger otkrivately2 fi2
+		trigger grob proverka2
+	}
+
+	trigger r
+	{
+		faceangles 0 225 0 10 accel
+		trigger otkrivately1 r2
+		trigger otkrivately2 r2
+		trigger grob proverka2
+	}
+
+	trigger n
+	{
+		faceangles 0 135 0 10 accel
+		trigger otkrivately1 n2
+		trigger otkrivately2 n2
+		trigger grob proverka2
+	}
+
+	trigger sledptici
+	{
+		faceangles 0 45 0 10 accel
+		trigger otkrivately1 sledptici2
+		trigger otkrivately2 sledptici2
+		trigger grob proverka2
+	}
+
+	trigger sound
+	{
+		playsound sound/movers/doors/door2_open.wav
+	}
+}
+
+otkrivately1
+{
+	spawn
+	{
+		accum 0 set 0 //1 koleso
+		accum 1 set 0 //2 koleso
+		accum 2 bitset 0 //glav dvery
+	}
+
+	trigger proverka //glav dvery
+	{
+		trigger otkrivately1 openglavdvery1 //dlya otkritiya
+		wait 5
+		trigger otkrivately1 openglavdvery2 //dlya zakritiya
+		wait 5
+		trigger otkrivately1 openglavdvery3 //dlya zakritiya
+	}
+
+	trigger openglavdvery1
+	{
+		accum 2 abort_if_not_bitset 0
+
+		accum 0 abort_if_not_equal 4
+		accum 1 abort_if_not_equal 2
+
+		accum 2 bitreset 0
+		alertentity glavdvery
+	}
+
+	trigger openglavdvery2
+	{
+		accum 2 abort_if_bitset 0
+
+		accum 0 abort_if_equal 4 //proverka na nesoblyudeniya odnogo usloviya
+
+		accum 2 bitset 0
+		alertentity glavdvery
+	}
+
+	trigger openglavdvery3
+	{
+		accum 2 abort_if_bitset 0
+
+		accum 1 abort_if_equal 2 //proverka na nesoblyudeniya drugogo usloviya
+
+		accum 2 bitset 0
+		alertentity glavdvery
+	}
+
+	trigger fi1
+	{
+		accum 0 set 1
+	}
+
+	trigger r1
+	{
+		accum 0 set 2
+	}
+
+	trigger n1
+	{
+		accum 0 set 3
+	}
+
+	trigger sledptici1
+	{
+		accum 0 set 4
+	}
+
+	trigger fi2
+	{
+		accum 1 set 1
+	}
+
+	trigger r2
+	{
+		accum 1 set 2
+	}
+
+	trigger n2
+	{
+		accum 1 set 3
+	}
+
+	trigger sledptici2
+	{
+		accum 1 set 4
+	}
+}
+
+otkrivately2
+{
+	spawn
+	{
+		accum 0 set 0 //1 koleso
+		accum 1 set 0 //2 koleso
+		accum 2 bitset 0 //glav dvery
+	}
+
+	trigger proverka //secret area
+	{
+		trigger otkrivately2 opensecretarea1 //dlya otkritiya
+		wait 5
+		trigger otkrivately2 opensecretarea2 //dlya zakritiya
+		wait 5
+		trigger otkrivately2 opensecretarea3 //dlya zakritiya
+	}
+
+	trigger opensecretarea1
+	{
+		accum 2 abort_if_not_bitset 0
+
+		accum 0 abort_if_not_equal 1
+		accum 1 abort_if_not_equal 4
+
+		accum 2 bitreset 0
+		alertentity secretarea
+	}
+
+	trigger opensecretarea2
+	{
+		accum 2 abort_if_bitset 0
+
+		accum 0 abort_if_equal 1 //proverka na nesoblyudeniya odnogo usloviya
+
+		accum 2 bitset 0
+		alertentity secretarea
+	}
+
+	trigger opensecretarea3
+	{
+		accum 2 abort_if_bitset 0
+
+		accum 1 abort_if_equal 4 //proverka na nesoblyudeniya drugogo usloviya
+
+		accum 2 bitset 0
+		alertentity secretarea
+	}
+
+	trigger fi1
+	{
+		accum 0 set 1
+	}
+
+	trigger r1
+	{
+		accum 0 set 2
+	}
+
+	trigger n1
+	{
+		accum 0 set 3
+	}
+
+	trigger sledptici1
+	{
+		accum 0 set 4
+	}
+
+	trigger fi2
+	{
+		accum 1 set 1
+	}
+
+	trigger r2
+	{
+		accum 1 set 2
+	}
+
+	trigger n2
+	{
+		accum 1 set 3
+	}
+
+	trigger sledptici2
+	{
+		accum 1 set 4
+	}
+}
+
+krishkagroba1
+{
+	spawn
+	{
+
+	}
+
+	trigger go
+	{
+		gotomarker kg1_p1 50
+		faceangles 0 0 180 gototime
+		playsound sound/props/chair/chairthud.wav
+	}
+}
+
+
+krishkagroba2
+{
+	spawn
+	{
+
+	}
+
+	trigger go
+	{
+		gotomarker kg2_p1 50
+		faceangles 0 0 -180 gototime
+		playsound sound/props/chair/chairthud.wav
+	}
+}
+krishkagroba3
+
+	spawn
+	{
+
+	}
+
+	trigger go
+	{
+		faceangles 0 10 0 700
+		playsound sound/movers/doors/door2_loop.wav
+		wait 1000
+	}
+}

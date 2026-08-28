@@ -1,0 +1,348 @@
+//
+//Brush Scripting
+//Map: dep_castle
+//Last edited by: Depro777(RU)
+//
+
+stena
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  2 = open
+	}
+
+	trigger go1
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		trigger knopka1 vrasch1
+		wait 5
+		playsound sound/movers/doors/door2_loop.wav
+		faceangles 0 -180 0 2000
+	}
+
+	trigger go2
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		accum 0 set 0
+		trigger knopka1 vrasch2
+		wait 5
+		playsound sound/movers/doors/door2_loop.wav
+		faceangles 0 0 0 2000
+	}
+}
+
+fakel
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger fakel go1
+		wait 50
+		trigger fakel go2
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/switches/butn2.wav
+		trigger knopka1 go1
+		faceangles 0 0 15 800
+		wait 50
+		faceangles 0 0 0 800
+		wait 5
+		trigger stena go1
+	}
+
+	trigger vrasch1
+	{
+		wait 5
+		faceangles 0 -180 0 2000
+	}
+
+	trigger go2
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/switches/butn2.wav
+		trigger knopka1 go2
+		faceangles 0 -180 15 800
+		wait 50
+		faceangles 0 -180 0 800
+		wait 5
+		trigger stena go2
+	}
+
+	trigger vrasch2
+	{
+		wait 5
+		faceangles 0 0 0 2000
+	}
+}
+
+knopka1
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		gotomarker kn1_p1 800
+		wait 150
+		gotomarker kn1_p2 800
+		trigger stena go1
+	}
+
+	trigger vrasch1
+	{
+		wait 5
+		trigger fakel vrasch1
+		faceangles 0 -180 0 2000
+	}
+
+	trigger go2
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		gotomarker kn1_p3 800
+		wait 150
+		gotomarker kn1_p2 800
+		trigger stena go2
+	}
+
+	trigger vrasch2
+	{
+		wait 5
+		trigger fakel vrasch2
+		faceangles 0 0 0 2000
+	}
+}
+
+gear
+{
+	spawn
+	{
+		accum 0 set 0
+	}
+
+	trigger opengear
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		alertentity opengeardoor
+	}
+
+	trigger go0
+	{
+		gotomarker gear_zero 99999
+	}
+
+	trigger go1
+	{
+		faceangles 0 0 90 1000
+
+		faceangles 0 0 180 1000
+
+		faceangles 0 0 270 1000
+
+		faceangles 0 0 360 1000
+		trigger gear go1
+
+	}
+
+	trigger stop
+	{
+		alertentity kill_soli
+		stopsound
+		resetscript
+	}
+}
+
+kletka
+{
+	spawn
+	{
+	}
+
+	trigger open
+	{
+		trigger gear go1
+		playsound sound/movers/doors/door6_loopo.wav looping
+		gotomarker kl_open 20 wait
+		stopsound
+		playsound sound/movers/doors/door6_endc.wav
+		trigger gear stop
+	}
+}
+
+transport
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 -90 0 5
+	}
+
+	trigger goto1
+	{
+		wait 5
+		trigger zad_kol begin
+		trigger per_kol begin
+
+		gotomarker tr_pzero 99999
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p1 400
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p2 400
+
+		faceangles 0 -150 0 gototime
+		gotomarker tr_p3 400
+
+		faceangles 0 -180 0 gototime
+		gotomarker tr_p4 400
+
+		faceangles 0 -180 0 gototime
+		gotomarker tr_p5 200
+
+		trigger transport sound
+
+		trigger per_kol stop
+		trigger zad_kol stop
+
+		faceangles 0 -180 0 gototime
+		gotomarker tr_p6 50
+	}
+
+	trigger goto2
+	{
+		playsound sound/movers/doors/door8_endc.wav
+
+		wait 5
+		trigger per_kol begin
+		trigger zad_kol begin
+
+		faceangles 0 -180 0 gototime
+		gotomarker tr_p7 75
+
+		faceangles 0 -180 0 gototime
+		gotomarker tr_p8 75
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p9 75
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p9_a 75
+
+		faceangles 0 -60 0 gototime
+		gotomarker tr_p7 100
+
+		faceangles 0 0 0 gototime
+		gotomarker tr_p4 200
+
+		faceangles 0 0 0 gototime
+		gotomarker tr_sleep 300
+
+		trigger player theend
+
+		faceangles 0 0 0 gototime
+		gotomarker tr_p3 300
+
+		faceangles 0 0 0 gototime
+		gotomarker tr_p2 400
+
+		faceangles 0 60 0 gototime
+		gotomarker tr_p1 400
+
+		faceangles 0 90 0 gototime
+		gotomarker tr_p0 400
+	}
+
+	trigger sound
+	{
+		playsound sound/world/truck_brakesqueal.wav
+	}
+
+}
+
+per_kol
+{
+	spawn
+	{
+		accum 0 set 0
+
+		wait 5
+		attachtotag transport tag_wfront
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		resetscript
+		trigger zad_kol begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger per_kol begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+zad_kol
+{
+	spawn
+	{
+		wait 5
+		attachtotag transport tag_wback
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		resetscript
+		trigger per_kol begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger zad_kol begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}

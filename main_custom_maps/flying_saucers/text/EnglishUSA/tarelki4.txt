@@ -1,0 +1,17 @@
+                        Vril I
+
+  Technical Data:
+
+Diameter: 11,5 m. 
+Drive: Schumann Levitator.
+Control: Mag Field Impulser 3a.
+Speed: 2900 km/h (theoretically up to 12000 km/h).
+Flight endurance: 0,5 h.
+Armament: 4x110 mm KSK in rotating turret and 2 x MK 108 8x50 mm KSK.
+Armor: Double Victalen.
+Crew: 1 (with room for up to 3 people)
+Employment fitness: 100%
+Hovering capability: 12 minutes.
+All weather, day and night, capability.
+First flight: 1943.
+Available for service: 1944.

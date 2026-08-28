@@ -1,0 +1,336 @@
+//
+//Brush Scripting
+//Map: fstmis
+//Last edited by: Depro777(RU)
+//
+transport
+{
+	spawn
+	{
+		wait 5
+		faceangles 0 -90 0 5
+	}
+
+	trigger goto1
+	{
+		wait 5
+		trigger per_kol begin
+		trigger zad_kol begin
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p1 200
+//		trigger nem13 faceangles
+//		trigger nem14 faceangles
+//		trigger nem15 faceangles
+//		trigger nem16 faceangles
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p2 200
+
+		faceangles 0 -100 0 gototime
+		gotomarker tr_p3 200
+
+		faceangles 0 -110 0 gototime
+		gotomarker tr_p4 200
+
+		faceangles 0 -120 0 gototime
+		gotomarker tr_p5 200
+
+		faceangles 0 -110 0 gototime
+		gotomarker tr_p5 200
+
+		faceangles 0 -100 0 gototime
+		gotomarker tr_p6 200
+
+		faceangles 0 -90 0 gototime
+		gotomarker tr_p7 200
+
+		trigger per_kol stop
+		trigger zad_kol stop
+
+		gotomarker tr_p7 200
+
+		trigger nem13 goto
+		trigger nem14 goto
+		trigger nem15 goto
+		trigger nem16 goto
+	}
+
+}
+
+per_kol
+{
+	spawn
+	{
+		accum 0 set 0
+
+		wait 5
+		attachtotag transport tag_wfront
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		trigger zad_kol begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger per_kol begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+zad_kol
+{
+	spawn
+	{
+		wait 5
+		attachtotag transport tag_wback
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		trigger per_kol begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger zad_kol begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+shkaf
+{
+	spawn
+	{
+	}
+
+	trigger begin
+	{
+		playsound sound/movers/doors/door2_close.wav
+	}
+
+	trigger begin2
+	{
+		faceangles 0 0 0 gototime
+        	gotomarker sh_p1 50
+		faceangles 0 0 0 gototime
+        	gotomarker sh_p2 50
+
+		trigger shkaf stop
+	}
+
+	trigger stop
+	{
+		playsound sound/movers/doors/door2_locked.wav
+	}
+}
+
+soundsex
+{
+	spawn
+	{
+		accum 0 set 1
+	}
+
+	trigger begin
+	{
+		playsound sound/movers/doors/door2_close.wav
+	}
+
+	trigger stop
+	{
+		trigger player cine1_cam0
+		trigger fem2 goto1
+		playsound sound/movers/doors/skripcrov1.wav
+		wait 2000
+		playsound sound/player/bj2/pain50_1.wav
+		wait 2000
+		playsound sound/movers/doors/skripcrov1.wav
+		wait 2000
+		playsound sound/world/jibbit.wav
+		wait 2000
+		playsound sound/movers/doors/skripcrov1.wav
+		playsound sound/player/eliteguard/pain/hurt2.wav
+		wait 2000
+		playsound sound/player/heinrich/attack/hein_yell4.wav
+		playsound sound/player/eliteguard/pain/hurt2.wav
+		wait 2000
+		playsound sound/movers/doors/skripcrov1.wav
+		wait 2000
+		playsound sound/player/eliteguard/pain/hurt3.wav
+		wait 2000
+		playsound sound/movers/doors/skripcrov1.wav
+		wait 2000
+		playsound sound/player/eliteguard/pain/hurt2.wav
+		trigger fem2 goto2
+		trigger player cine1_cam1
+		wait 24000
+		trigger soundsex cine1_cleanup
+	}
+
+	trigger cine1_cleanup
+	{
+		resetscript
+		alertentity evakill
+	}
+
+	trigger stop2
+	{
+//		trigger player cine1_cam2
+//		wait 24000
+		trigger player cine1_cam3
+		wait 24000
+	}
+}
+
+kalitka1_a
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger kalitka1_a open
+		wait 5
+		trigger kalitka1_a close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 90 0 800
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 0 0 1600
+	}
+}
+
+kalitka1_b
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger kalitka1_b open
+		wait 5
+		trigger kalitka1_b close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 -90 0 800
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 0 0 1600
+	}
+}
+
+kalitka2_a
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger kalitka2_a open
+		wait 5
+		trigger kalitka2_a close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 90 0 800
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 0 0 1600
+	}
+}
+
+kalitka2_b
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger kalitka2_b open
+		wait 5
+		trigger kalitka2_b close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 -90 0 800
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 0 0 1600
+	}
+}

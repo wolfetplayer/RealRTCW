@@ -1,0 +1,17 @@
+                        Haunebu II
+
+  Technical Data:
+
+Diameter: 26,3 m.
+Drive: "Thule-Triebwerk-7c, diameter 23,1 m.
+Control: Mag Field Impulser 4a.
+Speed: 6000 km/h (theoretically up to 21000 km/h).
+Flight endurance: 55 h.
+Armament: 6 x 80 mm KSK in 3 rotating turrets 1 x 110 mm KSK in 1 rotating turret
+Armor: Triple Victalen.
+Crew: 9 (with room for up to 20 people)
+Employment fitness: 100%.
+Hovering capability: 19 minutes.
+All weather, day and night, capability.
+First flight: 1942.
+Available for service: 1944.

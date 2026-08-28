@@ -1,0 +1,52 @@
+//
+//Brush Scripting
+//Map: kreml
+//Last edited by: Depro777(RU)
+//
+
+counter1
+{
+	spawn
+	{
+	}
+
+	trigger cinematic1
+	{
+		trigger k1 go
+		wait 6400
+		trigger player cine1_cam1
+		wait 13500
+		trigger player cine1_cam2
+		wait 500
+		alertentity slide_light
+		wait 200
+		alertentity slide1
+		alertentity slide_sound
+		alertentity slide_light
+		wait 4300
+		alertentity slide1
+		alertentity slide_light
+		wait 200
+		alertentity slide2
+		alertentity slide_sound
+		alertentity slide_light
+		wait 4800
+		trigger player cine1_cam3
+		wait 9500
+		trigger player cine1_cam4
+		wait 4500
+		trigger k1 go2
+		wait 4500
+		trigger player cine1_cam5
+		wait 1500
+		alertentity slide2
+		alertentity slide_light
+		wait 200
+		alertentity slide3
+		alertentity slide_sound
+		alertentity slide_light
+		wait 2400
+		mu_play sound/music/l_complete_1
+		trigger player endmap
+	}
+}

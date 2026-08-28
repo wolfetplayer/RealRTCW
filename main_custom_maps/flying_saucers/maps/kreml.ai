@@ -1,0 +1,92 @@
+//
+//AI Scripting
+//Map: kreml (max)
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1.wav 1000
+	}
+
+
+	playerstart 
+	{
+		trigger counter1 cinematic1
+		trigger player cine1_cam0
+
+		mu_fade 0 2000
+		mu_queue sound/music/l_theme.wav
+		mu_play sound/scenaric/kreml/nachalo
+	}
+
+	trigger cine1_cam0
+	{
+		startcamblack krem_1
+	}
+
+	trigger cine1_cam1
+	{
+		startcam krem_2
+	}
+
+	trigger cine1_cam2
+	{
+		startcam krem_3
+	}
+
+	trigger cine1_cam3
+	{
+		startcam krem_4
+	}
+
+	trigger cine1_cam4
+	{
+		startcam krem_5
+	}
+
+	trigger cine1_cam5
+	{
+		startcam krem_6
+	}
+
+	trigger camerainterrupt
+	{
+		changelevel fstmis 4000 silent
+	}
+
+	trigger endmap
+	{
+		changelevel fstmis silent
+	}
+}
+
+k1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		nosight 999999
+		noavoid
+	}
+
+	trigger go
+	{
+		clearanim
+		resetscript
+		walktomarker rp1
+		walktomarker rp2
+		walktomarker rp3
+	}
+	trigger go2
+	{
+		facetargetangles rp3
+	}
+}

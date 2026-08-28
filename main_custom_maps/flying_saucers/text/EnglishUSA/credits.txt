@@ -1,0 +1,16 @@
+
+
+
+^3Author of the addon and the mapper:
+
+^3Texts translated by:
+
+^3Voices:
+Spy:
+Voiceovers:
+
+^3Testers:
+
+
+^3The addon uses the additional weapons 4 mod as well as an ET mod.
+Special thanks to http://wolfmap.ru/community for valuable tips when designing the addon.

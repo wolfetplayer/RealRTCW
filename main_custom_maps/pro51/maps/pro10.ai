@@ -18,6 +18,10 @@ player
   playerstart
   {
 
+		#if g_level_was_selected >= 1
+		applyloadout pro10
+		#endif
+		cvar g_level_was_selected 0
   }
 
   trigger bum

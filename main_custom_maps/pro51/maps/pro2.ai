@@ -23,29 +23,9 @@ spawn
 		mu_fade 0 1000
 		mu_queue sound/music/l_briefing_1
 
-		giveweapon weapon_knife
-		giveweapon weapon_knife
-		giveweapon weapon_knife
-		
-		giveweapon weapon_sten
-		giveweapon weapon_revolver
+		applyloadout pro2
+		cvar g_level_was_selected 0
 
-		setammo ammo_9mm 72
-		setammo ammo_revolver full
-
-		setclip weapon_revolver full
-		setclip weapon_sten full
-
-		setarmor 25
-		giveinventory key_binocs
-
-		#if g_dlc1 == 1
-		giveweapon weapon_delisle
-		setammo ammo_45cal 120
-		setclip weapon_delisle full	
-	    #endif
-
-		selectweapon weapon_sten
         trigger kino1 start
 	}
 

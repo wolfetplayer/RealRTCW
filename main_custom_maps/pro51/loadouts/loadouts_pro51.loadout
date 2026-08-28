@@ -1,0 +1,377 @@
+// pro51 campaign loadouts
+
+loadout pro2
+{
+		setarmor 25
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_revolver
+		giveweapon weapon_sten
+
+		setammo ammo_revolver full
+		setammo ammo_9mm 72
+
+		setclip weapon_revolver full
+		setclip weapon_sten full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 60
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_sten
+}
+
+loadout pro3
+{
+		setarmor 30
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_revolver
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+
+		setammo ammo_revolver full
+		setammo ammo_9mm 150
+
+		setclip weapon_revolver full
+		setclip weapon_luger full
+		setclip weapon_sten full
+
+		#if g_dlc1 == 0
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 30
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_sten
+}
+
+loadout pro4
+{
+		setarmor 40
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+		giveweapon weapon_mp40
+
+		setammo ammo_9mm 250
+		setammo ammo_grenades 3
+
+		setclip weapon_luger full
+		setclip weapon_sten full
+		setclip weapon_mp40 full
+
+		#if g_dlc1 == 0
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 30
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		#endif
+
+		selectweapon weapon_mp40
+}
+
+loadout pro5
+{
+		setarmor 50
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+		giveweapon weapon_mp40
+
+		setammo ammo_9mm 250
+		setammo ammo_grenades 3
+
+		setclip weapon_luger full
+		setclip weapon_sten full
+		setclip weapon_mp40 full
+
+		#if g_dlc1 == 0
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 60
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 24
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_mp40
+}
+
+loadout pro7
+{
+		setarmor 50
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_sten
+
+		setammo ammo_45cal 150
+		setammo ammo_9mm 96
+
+		setclip weapon_sten full
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+
+		#if g_dlc1 == 0
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 65
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_sten
+}
+
+loadout pro9
+{
+		setarmor 75
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+		giveweapon weapon_mp40
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_9mm full
+		setammo ammo_panzerfaust 2
+		setammo ammo_grenades 4
+
+		setclip weapon_luger full
+		setclip weapon_sten full
+		setclip weapon_mp40 full
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 0
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 80
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 30
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		#endif
+
+		selectweapon weapon_mp40
+}
+
+loadout pro10
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+		giveweapon weapon_mp40
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_9mm full
+		setammo ammo_panzerfaust 3
+		setammo ammo_grenades 5
+
+		setclip weapon_luger full
+		setclip weapon_sten full
+		setclip weapon_mp40 full
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 0
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 90
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 36
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		#endif
+
+		selectweapon weapon_mp40
+}
+
+loadout pro11
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+		giveweapon weapon_mp40
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_9mm full
+		setammo ammo_panzerfaust 3
+		setammo ammo_grenades 5
+
+		setclip weapon_luger full
+		setclip weapon_sten full
+		setclip weapon_mp40 full
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 0
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 80
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 30
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		#endif
+
+		selectweapon weapon_mp40
+}
+
+loadout pro12
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+
+		giveweapon weapon_luger
+		giveweapon weapon_sten
+		giveweapon weapon_mp40
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_9mm full
+		setammo ammo_panzerfaust 2
+		setammo ammo_grenades 5
+
+		setclip weapon_luger full
+		setclip weapon_sten full
+		setclip weapon_mp40 full
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 0
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 90
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 36
+		setclip weapon_m97 full
+		#endif
+
+		#if g_dlc1 == 1
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_mp40
+}
+

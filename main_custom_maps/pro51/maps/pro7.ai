@@ -12,45 +12,12 @@ spawn
 	{
 		//abort_if_loadgame
 		mu_start sound/music/m_stealth
-  giveweapon weapon_knife
 
-  giveweapon weapon_colt
-  giveweapon weapon_colt
-
-  giveweapon weapon_sten
-
-  setammo ammo_45cal 150
-  setammo ammo_9mm 96
-
-  setclip weapon_sten full
-  setclip weapon_colt full
-  setclip weapon_akimbo full
-
-  		#if g_dlc1 == 0			
-        giveweapon weapon_mauserrifle
-        giveweapon weapon_sniperscope
-		setammo ammo_792mm 65
-		setclip weapon_mauserrifle full
-		setclip weapon_sniperscope full
-	    #endif	
-
-		#if g_dlc1 == 1
-		giveweapon weapon_m1941
-		giveweapon weapon_m1941scope
-		setammo ammo_m1941 full
-		setclip weapon_m1941 full
-		setclip weapon_m1941scope full	
-	    #endif	
-  
-  selectweapon weapon_sten
-  
-  setarmor 50
-  giveinventory key_binocs
-  
+		applyloadout pro7
 	}
 	playerstart
 	{
-		
+		cvar g_level_was_selected 0
     }
 
 trigger action2

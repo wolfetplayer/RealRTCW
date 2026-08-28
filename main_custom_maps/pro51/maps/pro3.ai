@@ -19,6 +19,12 @@ spawn
 		mu_fade 0 1000
 		mu_queue sound/music/m_grave
 		giveinventory key_binocs
+
+		#if g_level_was_selected >= 1
+		applyloadout pro3
+		#endif
+		cvar g_level_was_selected 0
+
         trigger player bazar
 	}
 trigger bazar

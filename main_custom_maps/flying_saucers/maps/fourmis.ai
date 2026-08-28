@@ -1,0 +1,2537 @@
+//
+//AI Scripting
+//Map: fourmis
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 bitreset 0
+		objectivesneeded 1
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		applyloadout fourmis
+		#endif
+		cvar g_level_was_selected 0
+//		trigger player zaks
+		trigger counter1 cinematic1
+
+		mu_fade 0 1500
+		mu_queue sound/music/c_military.wav
+	}
+
+	trigger cine1_cam0
+	{
+		startcamblack fourmis_1
+	}
+
+	trigger cine1_cam1
+	{
+		startcam fourmis_2
+	}
+
+	trigger camerainterrupt
+	{
+		stopcam
+		trigger counter1 cine1_cleanup
+	}
+
+	trigger action1
+	{
+		alertentity warzombie1
+	}
+
+	trigger zom2action
+	{
+		accum 3 abort_if_bitset 0
+		accum 3 bitset 0
+		mu_play sound/music/s_longout
+		mu_fade 0 8000
+		alertentity zom2actiongo
+		wait 500
+		alertentity zombie2_a
+		wait 400
+		alertentity zombie2_b
+		wait 500
+		alertentity warzombie2_b
+		wait 300
+		alertentity warzombie2_a
+
+		savecheckpoint
+	}
+
+	trigger pugalka
+	{
+		alertentity pugalka_go
+		alertentity helga_zombie
+//		lockplayer on
+	}
+
+	trigger pugalkaoff
+	{
+		alertentity kill_helga
+//		lockplayer off
+	}
+
+	trigger action2
+	{
+		alertentity zombie3_a
+		alertentity zombie3_b
+	}
+
+	trigger action3
+	{
+		alertentity warzombie3_a
+		alertentity warzombie3_b
+
+		savecheckpoint
+	}
+
+	trigger elite1action
+	{
+		alertentity elite2
+		alertentity elite3
+		alertentity elite4
+		alertentity elite5
+
+		trigger elite4 goto
+		trigger elite5 goto
+	}
+
+	trigger action5
+	{
+		alertentity zombie5_a
+		alertentity zombie5_b
+		alertentity warzombie5_a
+		alertentity warzombie5_b
+		alertentity nem4
+		alertentity nem5
+		alertentity nem6
+		alertentity elite1
+
+		savecheckpoint
+	}
+
+	trigger zom6action
+	{
+		mu_play sound/music/s_longout.wav
+		mu_fade 0 8000
+		alertentity zom6actiongo
+		wait 100
+		alertentity zombie6_a
+		wait 100
+		alertentity zombie6_b
+	}
+
+	trigger zom7action
+	{
+		trigger noshka go
+
+		alertentity zom7actiongo
+		mu_play sound/music/s_bighits.wav
+		mu_fade 0 8000
+
+		wait 1300
+		alertentity zombie7_a
+		alertentity zom7actiongo_a
+
+		wait 300
+		alertentity zombie7_c
+		alertentity zom7actiongo_c
+
+		wait 300
+		alertentity zombie7_b
+		alertentity zom7actiongo_b
+
+		wait 300
+		alertentity zombie7_d
+		alertentity zom7actiongo_d
+
+		savecheckpoint
+	}
+
+	trigger action8
+	{
+		alertentity warzombie8_a
+		alertentity warzombie8_b
+		alertentity nem7
+	}
+
+	trigger action9
+	{
+		alertentity zom9actiongo
+		alertentity warzombie9
+
+		trigger duh1 go
+	}
+
+	trigger action10
+	{
+		alertentity zombie10_a
+		alertentity zombie10_b
+	}
+
+	trigger action11
+	{
+		alertentity zombie11
+	}
+
+	trigger action12
+	{
+		alertentity closepanel
+
+		alertentity zombie12_a
+		wait 200
+		alertentity zombie12_b
+
+		wait 3000
+		alertentity zomwar_getup10
+		alertentity warzombie10_a
+		alertentity warzombie10_b
+
+		savecheckpoint
+	}
+
+	trigger action13
+	{
+		alertentity warzombie11_a
+		alertentity warzombie11_b
+
+		alertentity zombie13_a
+		alertentity zombie13_b
+
+		trigger counter2 toggle_pesochek
+
+		wait 2000
+		trigger pinok go
+	}
+
+	trigger action14
+	{
+		alertentity zombie14
+		alertentity vilaziy
+		alertentity closeresh
+
+		savecheckpoint
+	}
+
+	trigger padenie
+	{
+		trigger verevka1 go
+		trigger verevka2 go
+		trigger stupeni1 go
+		trigger stupeni2 go
+	}
+
+	trigger stenknop
+	{
+		trigger counter1 check_deaths3
+	}
+
+	trigger cine1_cam0
+	{
+		startcamblack fourmis_1
+	}
+
+	trigger cine1_cam1
+	{
+		startcamblack fourmis_2
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		achievement_lion
+		foundsecret
+	}
+
+	trigger secret3
+	{
+		foundsecret
+	}
+
+	trigger mission1
+	{
+		objectivemet 1
+	}
+
+	trigger endmap
+	{
+		changelevel dep_castle persistent
+	}
+}
+
+zombie1 //ogneniy
+{
+	attributes
+	{
+		fov 240
+		starting_health 500
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		trigger zombie1 goto1
+	}
+
+	trigger goto1
+	{
+		takeweapon monsterattack2
+		giveweapon monsterattack1
+		alertentity flame1_bust
+		trigger zombie1 goto2
+	}
+
+	trigger goto2
+	{
+		runtomarker zom1_p1
+		alertentity ogonek
+		alertentity stoyatynameste
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie2_a
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		trigger zombie2_a goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom2a_p1
+		resetscript
+		attack player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie2_b
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		trigger zombie2_b goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom2b_p1
+		resetscript
+		attack player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie3_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		trigger zombie3_a goto
+	}
+
+	trigger goto
+	{
+		wait 1000
+		gotomarker zom3a_p1
+		facetargetangles zom3a_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie3_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		trigger zombie3_b goto
+	}
+
+	trigger goto
+	{
+		wait 1000
+		gotomarker zom3b_p1
+		facetargetangles zom3b_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie5_a
+{
+	attributes
+	{
+		fov 240
+		starting_health 500
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		statetype alert
+		trigger zombie5_a goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom5a_p1
+		runtomarker zom5a_p2
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie5_b
+{
+	attributes
+	{
+		fov 240
+		starting_health 500
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		statetype alert
+		trigger zombie5_b goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom5a_p1
+		runtomarker zom5b_p1
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie6_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		statetype alert
+		trigger zombie5_a goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom6a_p1
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie6_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		statetype alert
+		trigger zombie6_b goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom6b_p1
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie7_a
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		nosight 9999
+		playanim roll_out both
+		sight
+		resetscript
+		attack player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths2
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie7_b
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		nosight 9999
+		playanim roll_out both
+		sight
+		resetscript
+		attack player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths2
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie7_c
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		nosight 9999
+		playanim roll_out both
+		sight
+		resetscript
+		attack player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths2
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie7_d
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		nosight 9999
+		playanim roll_out both
+		sight
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+	
+	death
+	{
+		trigger counter1 check_deaths2
+	}
+
+	enemysight
+	{
+	}
+}
+
+zombie11 //ogniniy
+{
+	attributes
+	{
+		fov 240
+		starting_health 120
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		trigger zombie11 goto
+	}
+
+	trigger goto
+	{
+		takeweapon monsterattack2
+		giveweapon monsterattack1
+		alertentity flame1_bust
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	fakedeath
+	{
+		godmode on
+		wait 1000
+		godmode off
+		alertentity flame1_bust
+		takeweapon monsterattack2
+		giveweapon monsterattack1
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+warzombie2_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie2_a goto
+	}
+
+	trigger goto
+	{
+		runtomarker war2a_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+warzombie2_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie2_b goto
+	}
+
+	trigger goto
+	{
+		runtomarker war2b_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie3_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie3_a goto
+	}
+
+	trigger goto
+	{
+		wait 1000
+		gotomarker war3a_p1
+		facetargetangles war3a_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+warzombie3_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie3_b goto
+	}
+
+	trigger goto
+	{
+		wait 1000
+		gotomarker war3b_p1
+		facetargetangles war3b_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie5_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger warzombie5_a goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom5a_p1
+		runtomarker war5a_p1
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{ 
+	}
+}
+warzombie5_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger warzombie5_b goto
+	}
+
+	trigger goto
+	{
+		runtomarker zom5a_p1
+		runtomarker war5b_p1
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+	}
+}
+
+warzombie8_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie8_a goto
+	}
+
+	trigger goto
+	{
+		wait 1000
+		gotomarker war8a_p1
+		facetargetangles war8a_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie8_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie8_b goto
+	}
+
+	trigger goto
+	{
+		wait 1000
+		gotomarker war8b_p1
+		facetargetangles war8b_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie9
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger warzombie9 goto
+	}
+
+	trigger goto
+	{
+		runtomarker war9_p1
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{ 
+	}
+}
+
+zombie12_a
+{
+	attributes
+	{
+		aim_accuracy 1.0
+	}
+
+	spawn
+	{
+		godmode on
+		nosight 99999
+		trigger zombie12_a getup
+	}
+
+	trigger getup
+	{
+		alertentity zom_getup12_a
+		playsound sound\zombie\attack\attack4.wav
+
+		playanim alcove both
+		resetscript
+//		playanim revive both
+
+		godmode off
+		sight
+		gotocast player
+		resetscript
+	}
+
+	death
+	{
+		trigger counter1 check_deaths3
+	}
+}
+
+
+zombie12_b
+{
+	attributes
+	{
+		aim_accuracy 1.0
+	}
+
+	spawn
+	{
+		godmode on
+		nosight 99999
+		trigger zombie12_b getup
+	}
+
+	trigger getup
+	{
+		alertentity zom_getup12_b
+
+		playanim alcove both
+		resetscript
+//		playanim revive both
+
+		godmode off
+		sight
+		gotocast player
+		resetscript
+	}
+
+	death
+	{
+		trigger counter1 check_deaths3
+	}
+}
+
+warzombie10_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie10_a goto
+	}
+
+	trigger goto
+	{
+		gotomarker war10a_p1
+		facetargetangles war10a_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths3
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie10_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie10_b goto
+	}
+
+	trigger goto
+	{
+		gotomarker war10b_p1
+		facetargetangles war10b_p1
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths3
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie11_a
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie11_a goto
+	}
+
+	trigger goto
+	{
+		runtomarker war11a_p1
+		gotomarker war11a_p2
+		gotomarker war11a_p3
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+warzombie11_b
+{
+	attributes
+	{
+		fov 240
+		aggression 1.0
+		hearing_scale 0
+		pain_threshhold_scale 2
+	}
+
+	spawn
+	{
+		trigger warzombie11_b goto
+	}
+
+	trigger goto
+	{
+		runtomarker war11b_p1
+		gotomarker war11b_p2
+		gotomarker war11b_p3
+		resetscript
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+	
+	enemysight
+	{
+		explicit_routing off  
+		resetscript
+	}
+}
+
+zombie13_a
+{
+	attributes
+	{
+		aim_accuracy 1.0
+	}
+
+	spawn
+	{
+		trigger zombie13_a getup
+	}
+
+	trigger getup
+	{
+		knockback off
+		nosight 9999
+		playanim roll_out both
+		sight
+		resetscript
+		attack player
+	}
+
+	death
+	{
+	}
+}
+
+zombie13_b
+{
+	attributes
+	{
+		aim_accuracy 1.0
+	}
+
+	spawn
+	{
+		trigger zombie13_b getup
+	}
+
+	trigger getup
+	{
+		knockback off
+		nosight 9999
+		playanim roll_out both
+		sight
+		resetscript
+		attack player
+	}
+
+	death
+	{
+	}
+}
+
+zombie14
+{
+	attributes
+	{
+		fov 240
+		starting_health 500
+		aggression 1.0
+		attrib hearing_scale 0.0
+	}
+	spawn
+	{
+		trigger zombie14 goto
+	}
+
+	trigger goto
+	{
+		takeweapon monsterattack2
+		giveweapon monsterattack1
+		alertentity flame1_bust
+		nosight 99999
+		playanim alcove both holdframe
+		playanim revive both
+		sight
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity closeresh
+	}
+
+	enemysight
+	{
+	}
+}
+
+nem1
+{
+	attributes
+	{
+		fov 240
+		attack_crouch 0.0
+		idle_crouch 0.0
+		aggression 0.8
+		tactical 0.0
+		camper 1.0
+	}
+
+	spawn
+	{
+		statetype alert
+		setammo ammo_grenades 0	// Grenades
+		trigger nem1 talk1
+	}
+
+	trigger talk1
+	{
+		wait 1000
+		playsound crypt1_cnazi1_1
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		wait 5000
+		resetscript
+	}
+}
+
+nem2
+{
+	attributes
+	{
+		fov 240
+		attack_crouch 0.0
+		idle_crouch 0.0
+		aggression 0.8
+		tactical 1.0
+		camper 1.0
+	}
+
+	spawn
+	{
+		statetype alert
+		setammo ammo_grenades 0	// Grenades
+		trigger nem2 talk1
+	}
+
+	trigger talk1
+	{
+		wait 5000
+		playsound crypt1_cnazi2_1
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		wait 5000
+		resetscript
+	}
+}
+
+nem3
+{
+	attributes
+	{
+		fov 240
+		attack_crouch 0.0
+		idle_crouch 0.0
+		aggression 0.8
+		tactical 0.0
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		setammo ammo_grenades 3	// Grenades
+	}
+
+	trigger talk1
+	{
+		playsound chase
+		wait 15500
+		accum 0 bitset 0
+	}
+
+	trigger yacheyka00
+	{
+		accum 0 bitset 0
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+	}
+
+	inspectsoundend
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+	}
+
+	inspectbodyend
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+//		resetscript
+	}
+}
+
+nem7
+{
+	attributes
+	{
+		fov 240
+		attack_crouch 0.0
+		idle_crouch 0.0
+		aggression 0.8
+		tactical 0.0
+		camper 1.0
+	}
+
+	spawn
+	{
+		statetype alert
+		setammo ammo_grenades 3	// Grenades
+		trigger nem7 go
+	}
+
+	trigger go
+	{
+		wait 300
+		gotomarker n7_p1
+		facetargetangles n7_p1
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+		wait 5000
+		resetscript
+	}
+}
+
+elite1
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp34
+		setammo ammo_9mm 999
+		setclip mp34 32
+		selectweapon weapon_mp34
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+elite2
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp34
+		setammo ammo_9mm 999
+		setclip mp34 32
+		selectweapon weapon_mp34
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths1
+	}
+}
+
+elite3
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp34
+		setammo ammo_9mm 999
+		setclip mp34 32
+		selectweapon weapon_mp34
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths1
+	}
+}
+
+elite4
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp34
+		setammo ammo_9mm 999
+		setclip mp34 32
+		selectweapon weapon_mp34
+	}
+
+	trigger goto
+	{
+		wait 800
+		playsound fema_cover_me
+		wait 800
+		runtomarker el4_p1
+		runtomarker el4_p2
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths1
+	}
+}
+
+elite5
+{
+	attributes
+	{
+		fov 240
+		camper 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp34
+		setammo ammo_9mm 999
+		setclip mp34 32
+		selectweapon weapon_mp34
+	}
+
+	trigger goto
+	{
+		wait 1400
+		playsound fema_take_cover
+
+		runtomarker el5_p1
+		facetargetangles el5_p1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	inspectbodystart
+	{
+		accum 0 abort_if_not_bitset 0
+		deny
+	}
+
+	death
+	{
+		trigger counter1 check_deaths1
+	}
+}
+
+helga_zombie	// reincarnation of helga
+{
+	attributes
+	{
+		pain_threshold_scale 50
+		starting_health 1000
+		aggression 1.0
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = helga has broken gate
+		accum 1 set 0 // 1 = fired fakedeath
+		accum 2 set 0 // 1 = gate blown
+		statetype alert
+		nosight 999999
+		godmode on
+		trigger helga_zombie goto
+	}
+
+	trigger goto
+	{
+		runtomarker hz_p1 nostop
+		runtomarker hz_p2 nostop
+		gotomarker hz_p3
+		gotomarker hz_p4
+		facetargetangles hz_p4
+		playsound sound/beast/skull_shriek2.wav
+		knockback off
+		playanim attack1 both
+		gotomarker hz_p5
+		gotomarker hz_p6
+		trigger stena1 go
+		godmode off
+
+		trigger counter1 pugalo
+
+		playanim death_1 both
+		sethealth 0
+	}
+
+	trigger vsay
+	{
+		playsound sound/beast/beast_death1.wav
+	}
+
+	enemysight
+	{
+		nosight 999999
+	}
+
+	death
+	{
+
+	}
+}

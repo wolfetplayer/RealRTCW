@@ -489,7 +489,13 @@ void AICast_Init( void ) {
 	numcast = 0;
 	numSpawningCast = 0;
 	saveGamePending = qtrue;
-	
+
+	// g_level_was_selected gets consumed by the map script whether or not a checkpoint actually saves; keep our own copy
+	if ( trap_Cvar_VariableIntegerValue( "g_level_was_selected" ) ) {
+		trap_Cvar_Set( "g_levelSelectPending", "1" );
+	}
+	trap_Cvar_Set( "g_checkpointReady", "0" );
+
 	if (g_gametype.integer == GT_SURVIVAL) {
 		AICast_InitSurvival();
 	}
@@ -772,6 +778,8 @@ void AICast_CheckLoadGame( void ) {
 			trap_Cvar_Set( "savegame_loading", "0" ); // in-case it aborts
 			saveGamePending = qfalse;
 			G_LoadGame( NULL );		// always load the "current" savegame
+			trap_Cvar_Set( "g_checkpointReady", "1" );
+			trap_Cvar_Set( "g_levelSelectPending", "0" );
 //			trap_Cvar_Set( "cg_norender", "0" );
 
 			// RF, spawn a thinker that will enable rendering after the client has had time to process the entities and setup the display

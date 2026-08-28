@@ -1,0 +1,19 @@
+// Capuzzo campaign maps for campaign_menu
+
+{
+map			"city"
+longname	"City"
+chapter		"1"
+}
+
+{
+map			"airport"
+longname	"Airport"
+chapter		"1"
+}
+
+{
+map			"road"
+longname	"Road"
+chapter		"1"
+}

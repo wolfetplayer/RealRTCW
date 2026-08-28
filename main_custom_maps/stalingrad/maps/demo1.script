@@ -1,0 +1,97 @@
+//
+//Brush Scripting
+//Map: demo1
+//Last edited by: Roger
+//
+air1
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound\world\flyby.wav 
+		gotomarker a1 1000
+		faceangles 0 180 0 gototime
+		playsound sound\world\flyby.wav looping forewer
+		gotomarker a2 1000
+		faceangles 0 180 0 gototime
+		gotomarker a3 1000
+		faceangles 0 180 0 gototime
+		gotomarker a4 1000
+		faceangles 0 180 0 gototime
+		gotomarker a5 1000
+		faceangles 0 170 0 gototime
+		gotomarker a6 1000
+		faceangles 0 165 0 gototime
+		gotomarker a7 1000
+		faceangles 0 165 0 gototime
+		gotomarker a8 1000
+		faceangles 0 165 0 gototime
+		gotomarker a9 1000
+		faceangles 0 165 0 gototime
+		gotomarker a10 1000
+		faceangles 0 165 0 gototime
+		gotomarker a11 1000
+		faceangles 0 165 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom1
+		gotomarker a12 1000
+		faceangles 0 165 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom2
+		gotomarker a13 1000
+		faceangles 0 165 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom3
+		gotomarker a14 1000
+		faceangles 0 150 0 gototime
+		gotomarker a15 1000
+		faceangles 0 120 0 gototime
+		gotomarker a16 1000
+		faceangles 0 100 0 gototime
+	}
+}
+air2
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound\world\flyby.wav 
+		gotomarker f1 1000
+		faceangles 0 180 0 gototime
+		playsound sound\world\flyby.wav looping forewer
+		gotomarker f2 1000
+		faceangles 0 180 0 gototime
+		gotomarker f3 1000
+		faceangles 0 180 0 gototime
+		gotomarker f4 1000
+		faceangles 0 180 0 gototime
+		gotomarker f5 1000
+		faceangles 0 170 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom4
+		gotomarker f6 1000
+		faceangles 0 165 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom5
+		gotomarker f7 1000
+		faceangles 0 165 0 gototime
+		playsound sound\world\boomin.wav
+		alertentity boom6
+		gotomarker f8 1000
+		faceangles 0 195 0 gototime
+		gotomarker f9 1000
+		faceangles 0 205 0 gototime
+		gotomarker f10 1000
+		faceangles 0 205 0 gototime
+		gotomarker f11 1000
+		faceangles 0 205 0 gototime
+		gotomarker f12 1000
+		faceangles 0 180 0 gototime
+	}
+}

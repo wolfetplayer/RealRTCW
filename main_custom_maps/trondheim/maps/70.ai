@@ -1,0 +1,4154 @@
+//
+//AI Scripting
+//Map: Trondheim DE - level1
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 70
+		objectivesneeded 1		
+		abort_if_loadgame
+		mu_start sound/music/m_stealth
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/m_mission
+
+		applyloadout 70
+		cvar g_level_was_selected 0
+
+		trigger radar1 rotateloop
+		trigger radar2 rotateloop
+		alertentity nazi3
+		alertentity nazi4
+		alertentity nazi5
+		alertentity nazi6
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi9
+		alertentity nazi10
+		alertentity par2
+		alertentity par3
+		alertentity par4
+		alertentity par5
+		alertentity par6
+		alertentity par7
+		alertentity par8
+		alertentity par9
+		alertentity par10
+		alertentity par11
+		alertentity par12
+		alertentity par13
+		alertentity par19
+	}
+	trigger action1
+	{	
+		mu_fade 0 3000
+		mu_queue sound/music/m_situation
+		trigger nazi7 go2
+		alertentity par14
+		alertentity par20
+		alertentity par21
+
+		savecheckpoint
+	}
+	trigger action2
+	{
+		alertentity nazi11
+		alertentity nazi12
+		alertentity nazi13
+		alertentity nazi14
+		alertentity nazi15
+		alertentity nazi16
+		alertentity par50
+		alertentity par51
+		alertentity par53
+		alertentity par54
+		alertentity par55
+		alertentity par56
+		alertentity par57
+		alertentity par58
+		alertentity par59
+
+		savecheckpoint
+
+	}
+	trigger action3
+	{
+	}
+	trigger action4
+	{
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+
+		savecheckpoint
+	}
+	trigger endmap
+	{
+//		resetscript
+		startcam cam6
+		alertentity bj
+		trigger counter1 cine2
+	}
+
+	trigger endmap2
+	{
+		changelevel 70m persistent 4000
+	}
+}
+bj
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		noavoid on
+		nosight 99999
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		headlook off
+		godmode on
+		knockback off
+
+		wait 100
+		explicit_routing on
+		trigger bj talk
+	}
+	trigger talk
+	{
+		walktomarker p1spot1
+		walktomarker p1spot2
+		playsound nazi1
+		trigger nazi16 go1
+	}
+	trigger talk2
+	{
+		wait 2500
+		playsound ok1
+		trigger bj go1
+	}
+	trigger go1
+	{
+		wait 1700
+		walktomarker p1spot1
+		trigger endmap2
+		changelevel 70m persistent 1000
+		walktomarker p1spot3
+		walktomarker p1spot4
+	}
+
+}
+nazi1
+{
+	attributes
+	{
+		//aim_accuracy 0.5
+		//starting_health 40
+		attack_crouch 0.2
+		fov 120
+		aggression 0.8
+		alertness 2048
+	}
+
+	spawn
+	{
+		nosight 99999
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait 2000
+		trigger nazi1 smoking2
+		playsound whistle1
+	}
+
+	trigger smoking2
+	{
+		walktomarker n1spot1
+		walktomarker n1spot2
+		nosight 99999
+		accum 1 abort_if_not_equal 0
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 2000
+		playanim crotch_grab_2h both
+		wait 3000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		playanim crotch_grab_2h both
+		wait 3000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		trigger nazi1 smoking2
+	}
+	trigger gethelp11
+	{
+		accum 0 set 0
+		cigarette off
+		playsound Blank
+		clearanim
+		explicit_routing off
+		accum 1 set 1
+		resetscript
+		wait 1000 player
+		attack
+	}
+
+	enemysight
+	{
+		cigarette off
+		playsound Blank
+		clearanim
+		explicit_routing off
+		accum 1 set 1
+		trigger nazi1 alert11a
+		wait 5
+		
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 2 abort_if_not_equal 0
+		accum 2 set 1
+		accum 0 set 0
+		cigarette off
+		playsound Blank
+		clearanim
+		explicit_routing off
+		statetype alert
+		accum 1 set 1
+		wait 100 player
+	}
+
+	inspectsoundstart
+	{
+		accum 0 set 0
+	}
+
+	trigger alert11a
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 0
+		wait 300
+		resetscript
+		attack
+	}
+
+	trigger n10down	
+	{
+		cigarette off
+		accum 0 set 0
+		accum 2 set 0
+	}
+	death
+	{
+		alertentity remove_nazi1
+		cigarette off
+		accum 0 set 0
+		resetscript
+	}
+}
+nazi2			
+{
+	attributes
+	{
+		//starting_health 40
+		//aim_accuracy 0.4
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype relaxed
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+	
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity remove_nazi2
+	}
+}
+par1
+{
+	attributes
+	{
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		takeweapon all
+	    giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+		statetype alert
+		trigger par1 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1
+	{
+		wait 2000
+		crouchtomarker par1spot1 
+		crouchtomarker par1spot2
+		trigger par1 go2
+	}
+	trigger go2
+	{
+		wait 500
+		trigger par1 go3
+	}
+	trigger go1
+	{
+		wait 1000
+		crouchtomarker par1spot3
+		trigger par1 go4
+	}
+	trigger go4
+	{
+		clearanim	
+		resetscript			
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+		trigger storm objective1
+	}
+}
+par2
+{
+	attributes
+	{
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		trigger par2 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par2spot1
+		facetargetangles par2spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par3
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 1.0
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		trigger par3 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par3spot1
+		facetargetangles par3spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		alertentity remove_par3
+		trigger storm objective1
+	}
+}
+par4
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+	    giveweapon weapon_bar
+		setammo ammo_barammo 999
+		selectweapon weapon_bar	
+		trigger par4 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par4spot1
+		facetargetangles par4spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+		playsound take3
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		alertentity remove_par4
+		trigger storm objective1
+	}
+}
+par5
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+		trigger par5 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par5spot1
+		facetargetangles par5spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par6
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		trigger par6 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par6spot1
+		facetargetangles par6spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		alertentity remove_par6
+		trigger storm objective1
+		alertentity par15
+	}
+}
+par7
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt	
+		trigger par7 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par7spot1
+		facetargetangles par7spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		alertentity remove_par7
+		trigger storm objective1
+		alertentity par16
+	}
+}
+par8
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt	
+		trigger par8 go1
+		playsound take1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par8spot1
+		facetargetangles par8spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		alertentity remove_par8
+		trigger storm objective1
+	}
+}
+par9
+{
+	attributes
+	{
+		//aim_accuracy 0.4
+		//starting_health 35
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_sten
+		setammo ammo_9mm 999
+		selectweapon weapon_sten
+		statetype alert
+		trigger par9 go1
+	}
+	trigger go1			
+	{
+		runtomarker par9spot1
+		facetargetangles par9spot1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+		alertentity remove_par9
+		trigger storm objective1
+		alertentity par18
+	}
+}
+par10
+{
+	attributes
+	{
+		//aim_accuracy 0.4
+		//starting_health 35
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_sten
+		setammo ammo_9mm 999
+		selectweapon weapon_sten
+		statetype alert
+		trigger par9 go1
+	}
+	trigger go1			
+	{
+		runtomarker par9spot1
+		facetargetangles par9spot1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+		alertentity remove_par10
+		trigger storm objective1
+	}
+}
+
+par11
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+		trigger par11 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par11spot1
+		facetargetangles par11spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par11
+		trigger storm objective1
+	}
+}
+par12
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+	}	
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par12spot1
+		facetargetangles par12spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par13
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_bar
+		setammo ammo_barammo 999
+		selectweapon weapon_bar	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par13
+		trigger storm objective1
+	}
+}
+par14
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt
+		playsound take4
+		noavoid on
+		nosight 99999
+		trigger par14 go1
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par14spot1
+		facetargetangles par14spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par15
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par15
+		trigger storm objective1
+	}
+}
+par16
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	trigger go1			
+	{
+		runtomarker par13spot1
+		facetargetangles par13spot1
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par16
+		trigger storm objective1
+	}
+}
+par17
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		followcast player
+		playsound take5
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par17
+		trigger storm objective1
+	}
+}
+par18
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par18
+		trigger storm objective1
+	}
+}
+par19
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+		playsound take5	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par20
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_bar
+		setammo ammo_barammo 999
+		selectweapon weapon_bar	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+		playsound take3
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par20
+		trigger storm objective1
+	}
+}
+par21
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par21
+		trigger storm objective1
+	}
+}
+par22
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		followcast player
+	}
+	pain 50
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par23
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson
+		followcast player
+		playsound take5
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+		playsound take3
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		wait 2000
+		alertentity remove_par23
+		trigger storm objective1
+	}
+}
+par50
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par51
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par60
+	}
+}
+par52
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand	
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par53
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par54
+{
+	attributes
+	{
+		//aim_accuracy 0.4
+		//starting_health 35
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_sten
+		setammo ammo_9mm 999
+		selectweapon weapon_sten
+		statetype alert
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+		trigger storm objective1
+	}
+}
+par55
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par64
+	}
+}
+par56
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par65
+	}
+}
+par57
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par2
+	}
+}
+par58
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par3
+	}
+}
+par59
+{
+	attributes
+	{
+		//aim_accuracy 0.4
+		//starting_health 35
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_sten
+		setammo ammo_9mm 999
+		selectweapon weapon_sten
+		statetype alert
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+		trigger storm objective1
+		alertentity par5
+	}
+}
+par60
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_bar
+		setammo ammo_barammo 999
+		selectweapon weapon_bar
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par7
+	}
+}
+par61
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par8
+	}
+}
+par62
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand	
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+		alertentity par9
+	}
+}
+par63
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par64
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson	
+		followcast player
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+par65
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_m1garand
+		setammo ammo_barammo 999
+		selectweapon weapon_m1garand
+	}
+	pain 50
+	{
+		resetscript
+		followcast nazi16
+	}
+	enemysight
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+		trigger storm objective1
+	}
+}
+
+nazi3				
+{
+	attributes
+	{
+		//starting_health 40
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		selectweapon weapon_mauserrifle
+		setammo 7.92mm 999
+	}
+	trigger go1			
+	{
+		runtomarker n3spot1
+		facetargetangles n3spot1
+		alertentity activatealarm1
+	}
+
+	enemysight
+	{	
+		trigger nazi3 go1		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi4				
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi4 go1
+	}
+	trigger go1			
+	{
+		runtomarker n4spot1
+		runtomarker n4spot2
+		runtomarker n4spot3
+		runtomarker n4spot4
+		facetargetangles n4spot4
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi5				
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi5 go1
+	}
+	trigger go1			
+	{
+		wait 1000
+		runtomarker n5spot1
+		runtomarker n5spot2
+		runtomarker n5spot3
+		runtomarker n5spot4
+		playsound sol4
+		facetargetangles n5spot4
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi6			
+{
+	attributes
+	{
+		//starting_health 40
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi6 go1
+	}
+	trigger go1			
+	{
+		runtomarker n5spot1
+		runtomarker n5spot2
+		runtomarker n5spot3
+		runtomarker n6spot4
+		facetargetangles n6spot4
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity nazi30
+	}
+}
+nazi7
+{
+	attributes
+	{
+		//aim_accuracy 0.7
+		aggression 1.0
+		//starting_health 45
+		fov 300
+		tactical 1.0
+	}
+	inspectsoundstart
+	{
+		deny
+	}
+	spawn
+	{
+		takeweapon mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		trigger nazi7 go1
+	}
+	trigger go1			
+	{
+		wait 5000
+		playsound of1
+
+	}
+	trigger go2		
+	{
+		wait 5000
+		runtomarker n5spot3
+		runtomarker n5spot4
+	}
+	enemysight
+	{
+	}
+	death
+	{
+		alertentity nazi31
+	}
+}
+nazi8			
+{
+	attributes
+	{
+		//starting_health 40
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+	trigger go1			
+	{
+	}
+
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi9			
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		statetype alert
+		takeweapon all
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+	}
+	trigger go1			
+	{
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity nazi32
+	}
+}
+nazi10 // mg42-no2
+{
+	attributes
+	{
+		//aim_accuracy 0.5
+		//starting_health 45
+	}
+
+	spawn
+	{
+		statetype alert
+		wait 100
+		gotomarker n10spot1
+		facetargetangles n10spot1
+		mount mg42_no2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+	trigger releasegun2
+	{
+		unmount
+		wait 100 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+nazi11			
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi11 go1
+	}
+	trigger go1			
+	{
+		runtomarker n11spot1
+		runtomarker n11spot2
+		facetargetangles n11spot2
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity nazi33
+	}
+}
+nazi12			
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi12 go1
+	}
+	trigger go1			
+	{
+		wait 2000
+		runtomarker n12spot1
+		runtomarker n12spot2
+		facetargetangles n12spot2
+		playsound sol3
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity nazi34
+	}
+}
+nazi13			
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi13 go1
+	}
+	trigger go1			
+	{
+		runtomarker n13spot1
+		runtomarker n13spot2
+		facetargetangles n13spot2
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi14
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.6
+		aggression 1.0
+		fov 300
+		alertness 55000
+		attack_crouch 0.9
+		tactical 1.0
+	}
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		trigger nazi14 working1
+	}
+	trigger working1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 abort_if_not_equal 0
+		playsound MiscHum1
+		playanim device both		
+		trigger nazi14 working1
+	}
+	statechange relaxed query
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange alert combat
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 1 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+nazi15
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		aggression 1.0
+		fov 300
+		alertness 55000
+		attack_crouch 0.9
+		tactical 1.0
+	}
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		trigger nazi15 working1
+	}
+	trigger working1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 abort_if_not_equal 0
+		playsound MiscHum1
+		playanim working_with_tools both		
+		trigger nazi15 working1
+	}
+	statechange relaxed query
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange alert combat
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 1 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+nazi16
+{
+	attributes
+	{
+		//aim_accuracy 1.0
+		//starting_health 50
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		nosight 10000
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+	}
+	enemysight
+	{
+		wait forever 0
+	}
+	trigger go1
+	{
+		wait 2000
+		statetype relaxed
+		playsound officer6
+		trigger bj talk2
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+		missionfailed
+	}
+}
+nazi30			
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi30 go1
+	}
+	trigger go1			
+	{
+		runtomarker n30spot1
+		runtomarker n30spot2
+		runtomarker n30spot3
+		facetargetangles n30spot3
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		alertentity nazi7
+	}
+}
+nazi31			
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+	}
+	pain 50
+	{
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi32		
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi32 go1
+	}
+	trigger go1			
+	{
+		runtomarker n32spot1
+		runtomarker n32spot2
+		facetargetangles n32spot2
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi33	
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi33 go1
+	}
+	trigger go1			
+	{
+		runtomarker n33spot1
+		runtomarker n33spot2
+		facetargetangles n33spot2
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi34	
+{
+	attributes
+	{
+		//starting_health 45
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger nazi34 go1
+	}
+	trigger go1			
+	{
+		runtomarker n34spot1
+		runtomarker n34spot2
+		facetargetangles n34spot2
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}

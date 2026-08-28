@@ -1,0 +1,2475 @@
+//
+//AI Scripting
+//Map: dep_castle
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		accum 0 set 0 //smerti 1
+		accum 1 bitreset 0
+		accum 2 set 0 //smerti 2
+		objectivesneeded 3
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+		trigger player zaks
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		applyloadout dep_castle
+		#endif
+		cvar g_level_was_selected 0
+		mu_fade 0 1500
+		mu_queue sound/music/m_tension.wav
+		trigger gear go0
+
+	}
+
+	trigger action1
+	{
+		trigger gear go0
+
+		alertentity nem4
+		alertentity nem5
+		alertentity nem6
+	}
+
+	trigger action2
+	{
+		alertentity nem8
+		alertentity nem13
+		alertentity nem14
+		alertentity nem15
+
+		savecheckpoint
+	}
+
+	trigger action3
+	{
+		alertentity nem7
+		alertentity nem9
+		alertentity nem10
+		alertentity nem11
+	}
+
+	trigger action4
+	{
+		trigger nem10 go1
+		trigger nem11 go1
+		alertentity nem12
+
+	}
+
+	trigger action5
+	{
+		alertentity officer1
+	}
+
+	trigger action6
+	{
+		alertentity nem16
+		alertentity nem17
+
+		alertentity nem18
+		alertentity nem19
+		alertentity nem20
+
+		alertentity nem21
+
+		savecheckpoint
+	}
+
+	trigger action7
+	{
+		alertentity nem22
+		alertentity nem23
+	}
+
+	trigger action8
+	{
+		alertentity parashutist1
+		alertentity parashutist2
+		alertentity parashutist3
+		alertentity parashutist4
+		alertentity parashutist5
+
+		savecheckpoint
+	}
+
+	trigger action9
+	{
+		alertentity parashutist7
+	}
+
+	trigger action10
+	{
+		trigger nem28 go1
+		trigger nem29 go1
+		trigger nem30 go1
+	}
+
+	trigger action11
+	{
+		alertentity nem24
+		alertentity nem25
+		alertentity officer2
+
+		savecheckpoint
+	}
+
+	trigger action12
+	{
+		alertentity nem26
+		alertentity nem27
+	}
+
+	trigger action13
+	{
+		alertentity vpusti_radosty
+		alertentity nem31 //mehanik
+		alertentity parashutist6
+	}
+
+	trigger action14
+	{
+		alertentity nem32
+		alertentity nem33
+		alertentity nem34
+	}
+
+	trigger action15
+	{
+		alertentity nem35
+		alertentity nem36
+		alertentity nem37
+		alertentity radist
+
+		alertentity nem38
+		alertentity nem39
+		alertentity nem40
+		alertentity nem41
+		alertentity nem42
+		alertentity nem43
+		alertentity nem44
+
+		savecheckpoint
+	}
+
+	trigger wake_radio
+	{
+		accum 1 abort_if_bitset 0
+		missionfailed 6 10
+	}
+
+	trigger radioposil
+	{
+		accum 1 abort_if_bitset 0
+		alertentity zvukradio
+		trigger gear opengear //zapros otkrity devery
+
+		wait 800
+
+		accum 1 bitset 0
+		objectivemet 2
+		wait 2000
+		alertentity zvukradio
+	}
+
+	trigger stop_idiotism
+	{
+		alertentity nem28
+		alertentity nem29
+		alertentity nem30
+
+		trigger parashutist4 go2
+		trigger parashutist5 go2
+	}
+
+	trigger activate_gear
+	{
+		trigger kletka open
+		wait 1000
+		trigger player taxi
+	}
+
+	trigger taxi
+	{
+		trigger transport goto1
+		trigger player cine1_cam0
+		wait 2000
+		trigger player cine1_cam1
+		wait 500
+		trigger player cine1_cam2
+		wait 500
+		trigger player cine1_cam3
+		wait 8200
+		alertentity par1
+		alertentity startend
+	}
+
+	trigger talk
+	{
+		trigger par1 goto
+	}
+
+	trigger check_deaths1
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+
+		trigger gear opengear //zapros otkrity devery
+		objectivemet 1
+	}
+
+	trigger check_deaths2
+	{
+		accum 2 inc 1
+		accum 2 abort_if_not_equal 2
+		alertentity dobroradio
+	}
+
+	trigger lockplayer
+	{
+		lockplayer on
+	}
+
+	trigger stenago
+	{
+		trigger fakel toggle
+	}
+
+	trigger music_change1
+	{
+		mu_fade 0 2000
+		mu_queue sound/music/m_moving.wav
+	}
+
+	trigger alarmon
+	{
+		alertentity trevoga
+	}
+
+	trigger cine1_cam0
+	{
+		startcam dep_cas_1
+	}
+
+	trigger cine1_cam1
+	{
+		startcam dep_cas_2
+	}
+
+	trigger cine1_cam2
+	{
+		startcam dep_cas_3
+	}
+
+	trigger cine1_cam3
+	{
+		objectivemet 3
+		startcam dep_cas_4
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		foundsecret
+	}
+
+	trigger endmap
+	{
+		alertentity kill_par1
+		trigger player lockplayer
+		trigger transport goto2
+	}
+
+	trigger theend
+	{
+		changelevel darkles
+	}
+}
+
+nem1				
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+//		accum 1 set 0
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		giveweapon weapon_mp40
+		setammo ammo_9mm 1000
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{
+		accum 0 bitset 0
+		playsound MiscKillHim
+		alertentity nem3
+		clearanim
+		trigger nem1 choose_tactic
+	}
+	
+	trigger choose_tactic
+	{
+		accum 1 random 3
+		wait 5
+		trigger nem1 tactic1
+		wait 5
+		trigger nem1 tactic2
+		wait 5
+		trigger nem1 tactic3
+	}
+
+	trigger tactic1			// total camper
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		wait 3000 player
+	}
+
+	trigger tactic2			// Super aggressive
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+	}
+
+	trigger tactic3			// medium
+	{
+		accum 1 abort_if_not_equal 2
+		resetscript
+		attrib camper 0.6
+		attrib aggression 0.7
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		accum 0 abort_if_not_bitset 0
+	}
+}
+
+nem2				
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+//		accum 1 set 0
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		trigger nem2 go1	
+	}
+
+	trigger go1
+	{
+		playanim tools both HOLDFRAME
+		wait 200
+		playanim tools both HOLDFRAME
+		wait 600
+		trigger nem2 go1
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	enemysight
+	{
+		accum 0 bitset 0
+		alertentity nem3
+		clearanim
+		trigger nem2 choose_tactic
+	}
+	
+	trigger choose_tactic
+	{
+		accum 1 random 3
+		wait 5
+		trigger nem2 tactic1
+		wait 5
+		trigger nem2 tactic2
+		wait 5
+		trigger nem2 tactic3
+	}
+
+	trigger tactic1			// total camper
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		wait 3000 player
+	}
+
+	trigger tactic2			// Super aggressive
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+	}
+
+	trigger tactic3			// medium
+	{
+		accum 1 abort_if_not_equal 2
+		resetscript
+		attrib camper 0.6
+		attrib aggression 0.7
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		accum 0 abort_if_not_bitset 0
+	}
+}
+
+nem3			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem3 go1	
+	}
+
+	trigger go1
+	{
+		runtomarker n3_p1
+		runtomarker n3_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem5			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		statetype alert
+		trigger nem5 go1	
+	}
+
+	trigger go1
+	{
+		wait 600
+		runtomarker n5_p1
+		facetargetangles n5_p1
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem6			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem6 go1	
+	}
+
+	trigger go1
+	{
+		runtomarker n6_p1
+		alertentity activatealarm1
+		trigger player music_change1
+		wait 100
+		runtomarker n6_p2
+		runtomarker n6_p3
+		runtomarker n6_p4
+		facetargetangles n6_p4
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem7			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem7 go1	
+	}
+
+	trigger go1
+	{
+		runtomarker n7_p1
+		runtomarker n7_p2
+		runtomarker n7_p3
+		runtomarker n7_p4
+		runtomarker n7_p5
+		facetargetangles n7_p5
+	}
+
+	enemysight
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+	}
+}
+
+nem8			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem8 go1
+		playsound MiscOverThere1
+	}
+
+	trigger go1
+	{
+		runtomarker n8_p1
+		runtomarker n8_p2
+		facetargetangles n8_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+		playsound blank
+	}
+}
+
+nem10			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert	
+	}
+
+	trigger go1
+	{
+		runtomarker n10_p1
+		runtomarker n11_p2
+		runtomarker n10_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem11			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert	
+	}
+
+	trigger go1
+	{
+		runtomarker n11_p1
+		runtomarker n11_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem12			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem12 go1
+	}
+
+	trigger go1
+	{
+		runtomarker n12_p1
+		runtomarker n12_p2
+		facetargetangles n12_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem13			
+{
+	attributes
+	{
+		camper 1.0
+		tactical 0.2
+		aggression 0.4
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+
+		statetype alert	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+officer1
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		statetype alert	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	death
+	{
+		trigger player check_deaths1
+	}
+}
+
+officer2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		statetype alert	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+
+	death
+	{
+		trigger player check_deaths1
+	}
+}
+
+nem18			
+{
+	attributes
+	{
+		camper 1.0
+		tactical 0.1
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+
+		statetype alert
+		trigger nem18 go1
+	}
+
+	trigger go1
+	{
+		runtomarker n18_p1 nostop
+		runtomarker n18_p2 nostop
+		runtomarker n18_p3 nostop
+		runtomarker n18_p4 nostop
+		runtomarker n18_p5 nostop
+		runtomarker n18_p6
+		facetargetangles n18_p6
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem19			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem19 go1
+	}
+
+	trigger go1
+	{
+		runtomarker n18_p1 nostop
+		runtomarker n18_p2 nostop
+		runtomarker n18_p3 nostop
+		runtomarker n18_p4 nostop
+		runtomarker n18_p5 nostop
+		runtomarker n19_p1
+		facetargetangles n19_p1
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+
+	death
+	{
+	}
+}
+
+nem20
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem20 go1
+	}
+
+	trigger go1
+	{
+		runtomarker n18_p1 nostop
+		runtomarker n18_p2 nostop
+		runtomarker n18_p3 nostop
+		runtomarker n20_p1
+		facetargetangles n20_p1
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+	
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem21 //raneniy
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+//		accum 1 set 0
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		trigger nem21 go1	
+	}
+
+	trigger go1
+	{
+//		playsound Mumble5
+		playanim being_cold both HOLDFRAME
+		wait 600
+		trigger nem21 go1
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		clearanim
+		trigger nem21 choose_tactic
+	}
+	
+	trigger choose_tactic
+	{
+		accum 1 random 3
+		wait 5
+		trigger nem21 tactic1
+		wait 5
+		trigger nem21 tactic2
+		wait 5
+		trigger nem21 tactic3
+	}
+
+	trigger tactic1			// total camper
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript
+		attrib camper 1.0
+		attrib aggression 0.1
+		wait 3000 player
+	}
+
+	trigger tactic2			// Super aggressive
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		attrib camper 0.1
+		attrib aggression 1.0
+	}
+
+	trigger tactic3			// medium
+	{
+		accum 1 abort_if_not_equal 2
+		resetscript
+		attrib camper 0.6
+		attrib aggression 0.7
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		accum 0 abort_if_not_bitset 0
+	}
+}
+
+nem28			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+	}
+
+	trigger go1
+	{
+		runtomarker n28_p0
+		runtomarker n28_p1
+		runtomarker n28_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem29			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+	}
+
+	trigger go1
+	{
+		runtomarker n29_p0
+		runtomarker n29_p1
+		runtomarker n29_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem30			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+
+		statetype alert
+	}
+
+	trigger go1
+	{
+		runtomarker n30_p0
+		runtomarker n30_p1
+		runtomarker n30_p2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nem31
+{
+	attributes
+	{
+		fov 110
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+		accum 0 bitset 0 // 1 = alerted
+		wait 100
+		takeweapon all
+	}
+
+	trigger alarm
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setclip weapon_luger 8 
+		selectweapon weapon_luger
+
+		accum 0 abort_if_not_bitset 0
+		resetscript
+
+		attack player
+		accum 0 bitreset 0
+	}
+
+	pain 99
+	{
+		trigger nem31 alarm
+	}
+
+	bulletimpact
+	{
+		trigger nem31 alarm
+	}
+
+	inspectsoundstart
+	{
+		trigger nem31 alarm
+	}
+
+	inspectsoundend
+	{
+		trigger nem31 alarm
+	}
+
+	inspectbodystart
+	{
+		trigger nem31 alarm
+	}
+
+	inspectbodyend
+	{
+		trigger nem31 alarm
+	}
+
+	attacksound
+	{
+		trigger nem31 alarm
+	}
+
+	inspectfriendlycombatstart
+	{
+		trigger nem31 alarm
+	}
+
+	death
+	{
+	}
+}
+
+nem37			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_792mm 999
+		selectweapon weapon_mp40
+
+		statetype alert	
+	}
+
+	enemysight
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		trigger player check_deaths2
+	}
+}
+
+nem38			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		trigger nem38 go1	
+	}
+
+	trigger go1
+	{
+		runtomarker n38_p1
+		runtomarker n38_p2
+		facetargetangles n38_p2
+	}
+
+	enemysight
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	death
+	{
+		alertentity deathperila1
+	}
+}
+
+radist			
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2300
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_luger
+		giveweapon weapon_luger
+		setammo ammo_792mm 999
+		selectweapon weapon_luger
+
+		statetype alert	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}	
+
+	enemysight
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player check_deaths2
+	}
+}
+
+parashutist1
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger parashutist1 go1
+	}
+	
+	trigger go1			
+	{
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+		runtocast player
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.1
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	enemysight
+	{
+		clearanim
+	}
+
+	death
+	{
+	}
+}
+
+parashutist2
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger parashutist2 go1
+	}
+	
+	trigger go1			
+	{
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+		runtocast player
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.1
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	death
+	{
+	}
+}
+
+parashutist3
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger parashutist3 go1
+	}
+	
+	trigger go1			
+	{
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+		runtocast player
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.1
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	death
+	{
+	}
+}
+
+parashutist4
+{
+	attributes
+	{
+		tactical 0.1
+		aggression 1.0
+		camper 1.0
+		inner_detection_radius 600
+		alertness 2400
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_sniperscope
+//		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+
+		trigger parashutist4 go1
+	}
+
+	trigger go1
+	{
+		runtomarker p4_p1
+		facetargetangles p4_p1
+		attack player
+		wait 600
+		runtomarker p4_p2
+		facetargetangles p4_p2
+		attack player
+		wait 600
+		runtomarker p4_p3
+		facetargetangles p4_p3
+		attack player
+		wait 600
+		trigger parashutist4 go1
+	}
+
+	trigger go2
+	{
+		resetscript
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+//		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+//		resetscript
+	}
+
+	statechange relaxed alert
+	{
+//		resetscript
+	}	
+
+	enemysight
+	{
+		attack player
+	}
+
+	death
+	{
+	}
+}
+
+parashutist5
+{
+	attributes
+	{
+		tactical 0.1
+		aggression 1.0
+		camper 1.0
+		inner_detection_radius 600
+		alertness 2400
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_sniperscope
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+
+		trigger parashutist5 go1
+	}
+
+	trigger go1
+	{
+		runtomarker p5_p1
+		facetargetangles p5_p1
+		attack player
+		wait 600
+		runtomarker p5_p2
+		facetargetangles p5_p2
+		attack player
+		wait 600
+		runtomarker p5_p3
+		facetargetangles p5_p3
+		attack player
+		wait 600
+		trigger parashutist5 go1
+	}
+
+	trigger go2
+	{
+		resetscript
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+//		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+//		resetscript
+	}
+
+	statechange relaxed alert
+	{
+//		resetscript
+	}
+
+	enemysight
+	{
+		attack player
+	}
+
+	death
+	{
+	}
+}
+
+parashutist6
+{
+	attributes
+	{
+		tactical 0.5
+		aggression 1.0
+		camper 0.1
+		inner_detection_radius 1200
+		alertness 2400
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+
+		trigger parashutist6 go1
+	}
+
+	trigger go1
+	{
+		runtomarker p6_p1
+		runtomarker p6_p2
+		facetargetangles p6_p2
+		attack player
+	}
+
+	trigger go2
+	{
+		resetscript
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	enemysight
+	{
+		attack player
+	}
+
+	death
+	{
+	}
+}
+
+
+parashutist7
+{
+	attributes
+	{
+		tactical 1.0
+		aggression 1.0
+		inner_detection_radius 600
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger parashutist7 go1
+	}
+	
+	trigger go1			
+	{
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+		runtocast player
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.1
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+	death
+	{
+	}
+}
+
+nem41 //parashutist8
+{
+	attributes
+	{
+		tactical 0.8
+		aggression 0.8
+		inner_detection_radius 600
+		alertness 2600		
+	}
+
+	spawn
+	{
+		statetype alert
+		trigger nem41 go1
+	}
+	
+	trigger go1			
+	{
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+		runtocast player
+	}
+
+	trigger alarm_on
+	{
+		attrib aim_accuracy 0.1
+		giveweapon weapon_fg42
+		setammo 7.92mm 999
+		selectweapon weapon_fg42
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		clearanim
+	}
+
+
+	death
+	{
+	}
+}
+
+par1
+{
+	attributes
+	{
+		starting_health 120
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+
+		trigger player goto
+	}
+
+	activate player
+	{
+//		Runtocast player noattack
+	}
+
+	trigger goto
+	{
+		playsound p1_runaway
+		wait forever 0 player
+	}
+
+	blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	death player
+	{
+		missionfailed 6 2
+	}
+
+	sight player
+	{
+	}
+
+	enemysight
+	{
+	}
+}

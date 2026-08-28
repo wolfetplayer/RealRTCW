@@ -1,0 +1,138 @@
+// Time Gate campaign loadouts
+
+loadout start
+{
+		giveweapon weapon_knife
+		selectweapon weapon_knife
+}
+
+loadout tombs_veteran
+{
+		giveweapon weapon_knife
+		giveweapon weapon_mp40
+		giveweapon weapon_luger
+		giveweapon weapon_mauserrifle
+
+		setammo ammo_9mm full
+		setammo ammo_792mm full
+
+		setclip weapon_mp40 full
+		setclip weapon_luger full
+		setclip weapon_mauserrifle full
+
+		setarmor 50
+
+		selectweapon weapon_mp40
+}
+
+loadout mid_game
+{
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_silencer
+
+		setammo ammo_9mm 24
+
+		setclip weapon_luger full
+		setclip weapon_silencer full
+
+		setarmor 50
+
+		selectweapon weapon_luger
+}
+
+loadout mines_entry
+{
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_silencer
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+
+		setammo ammo_9mm full
+		setammo ammo_792mm full
+
+		setclip weapon_luger full
+		setclip weapon_silencer full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+
+		setarmor 75
+
+		selectweapon weapon_mp40
+}
+
+loadout mines_assault
+{
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_silencer
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_mp44
+
+		setammo ammo_9mm full
+		setammo ammo_792mm full
+		setammo ammo_44ammo full
+
+		setclip weapon_luger full
+		setclip weapon_silencer full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_mp44 full
+
+		setarmor 75
+
+		selectweapon weapon_mp44
+}
+
+loadout labs_final
+{
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_silencer
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_mp44
+
+		setammo ammo_9mm full
+		setammo ammo_792mm full
+		setammo ammo_44ammo full
+
+		setclip weapon_luger full
+		setclip weapon_silencer full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_mp44 full
+
+		setarmor 100
+
+		selectweapon weapon_mp44
+}
+
+loadout labs_elite
+{
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_silencer
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_mp44
+		giveweapon weapon_venom
+
+		setammo ammo_9mm full
+		setammo ammo_792mm full
+		setammo ammo_44ammo full
+		setammo ammo_127mm full
+
+		setclip weapon_luger full
+		setclip weapon_silencer full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_mp44 full
+		setclip weapon_venom 100
+
+		setarmor 100
+
+		selectweapon weapon_mp44
+}

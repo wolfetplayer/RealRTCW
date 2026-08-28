@@ -1,0 +1,375 @@
+// Scripting
+//Map: pro2
+
+//Last edited by: Priv
+//
+
+
+
+kino1
+{
+	spawn
+	{
+	}
+
+	trigger start
+	{
+
+
+		trigger player kadr1
+		wait 29000
+		trigger player kadr2
+		wait 5000
+		trigger player kadr3
+		wait 8000
+		trigger player kadr4
+
+
+
+
+
+
+
+}
+}
+
+
+
+
+
+trak1
+{
+	spawn
+	{
+      wait 100
+      gotomarker tr1x 100\\ISPR
+	faceangles 0 270 0 gototime
+	}
+
+
+	trigger begin
+	{
+
+		playsound sound/world/shift_01.wav looping
+		trigger lweel1 begin
+		trigger rweel1 begin
+		trigger 4well1 begin
+
+
+		gotomarker tr1a 1000
+	      faceangles 0 270 0 gototime
+
+		gotomarker tr1b 160
+		faceangles 0 270 0 gototime
+		gotomarker tr1c 80
+		faceangles 0 270 0 gototime
+        playsound sound/world/idle_01.wav looping
+        trigger lweel1 stop
+		trigger rweel1 stop
+		trigger 4well1 stop
+		trigger player skadr1
+            alertentity naz5
+            alertentity naz6
+            alertentity naz7
+            alertentity naz8
+            alertentity of2
+
+	}
+}
+
+lweel1
+{
+
+spawn
+{
+attachtotag trak1 tag_w1
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+	}
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+rweel1
+{
+
+spawn
+{
+attachtotag trak1 tag_w2
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+
+4well1
+{
+
+spawn
+{
+attachtotag trak1 tbwheels
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+
+	}
+trigger stop
+	{
+
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+
+}
+
+
+//trak2=================================
+
+trak2
+{
+	spawn
+	{
+      wait 100
+      gotomarker tr2x 100\\ISPR
+	faceangles 0 0 0 gototime
+	}
+
+
+	trigger begin
+	{
+
+		playsound sound/world/shift_01.wav looping
+		trigger lweel2 begin
+		trigger rweel2 begin
+		trigger 4well2 begin
+		trigger trak3 begin
+
+
+		gotomarker trak2a 160
+	      faceangles 0 0 0 gototime
+
+
+        playsound sound/world/idle_01.wav looping
+        trigger lweel2 stop
+		trigger rweel2 stop
+		trigger 4well2 stop
+		trigger player skadr2
+            alertentity naz33
+            alertentity naz34
+            alertentity naz35
+            alertentity naz36
+            alertentity of5
+
+	}
+}
+
+lweel2
+{
+
+spawn
+{
+attachtotag trak2 tag_w1
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+	}
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+rweel2
+{
+
+spawn
+{
+attachtotag trak2 tag_w2
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+
+4well2
+{
+
+spawn
+{
+attachtotag trak2 tbwheels
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+
+	}
+trigger stop
+	{
+
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+
+}
+
+//trak3===========================
+trak3
+{
+	spawn
+	{
+      wait 100
+      gotomarker trak3x 100\\ISPR
+	faceangles 0 0 0 gototime
+	}
+
+
+	trigger begin
+	{
+
+		playsound sound/world/shift_01.wav looping
+		trigger lweel3 begin
+		trigger rweel3 begin
+		trigger 4well3 begin
+
+
+
+		gotomarker tr2x 160
+	      faceangles 0 0 0 gototime
+	      gotomarker trak3a 160
+	      faceangles 0 0 0 gototime
+
+
+        playsound sound/world/idle_01.wav looping
+        trigger lweel3 stop
+		trigger rweel3 stop
+		trigger 4well3 stop
+            alertentity naz37
+            alertentity naz38
+            alertentity naz39
+            alertentity naz40
+            alertentity of6
+
+	}
+}
+
+lweel3
+{
+
+spawn
+{
+attachtotag trak3 tag_w1
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+	}
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+rweel3
+{
+
+spawn
+{
+attachtotag trak3 tag_w2
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+
+4well3
+{
+
+spawn
+{
+attachtotag trak3 tbwheels
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+
+	}
+trigger stop
+	{
+
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+
+}

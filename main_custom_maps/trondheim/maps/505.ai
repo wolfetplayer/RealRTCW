@@ -1,0 +1,358 @@
+//
+//AI Scripting
+//Map: 505
+//Last edited by: Vovstein
+//
+
+player
+{
+	spawn
+	{	
+		abort_if_loadgame
+		mu_start sound/music/m_drums
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/m_drums
+		trigger player cam1
+
+		// Weapons
+		// Items
+	}
+	// --- Start Cameras---
+	trigger cam1
+	{
+		startcam black_01
+	}
+	trigger endmap
+	{
+		changelevel 50d persistent
+	}
+}
+nazi1			
+{
+	attributes
+	{
+		starting_health 190
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype relaxed
+		takeweapon all
+		trigger nazi1 go1
+	}
+	trigger go1
+	{
+		wait 500
+		walktomarker n1spot1
+		walktomarker n1spot2	
+		trigger nazi1 go2
+	}
+	trigger go2
+	{
+		wait 500
+		playsound officer4
+		trigger nazi1 go3		
+	}
+	trigger go3
+	{
+		wait 2000	
+		playsound officer2
+		trigger nazi1 go4		
+	}
+	trigger go4
+	{
+		walktomarker n1spot3
+		changelevel 50d persistent
+		walktomarker n1spot4	
+	}
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2
+{
+	attributes
+	{
+		starting_health 150
+		aim_accuracy 0.6
+		aggression 1.0
+		fov 300
+		alertness 55000
+		attack_crouch 0.9
+		tactical 1.0
+	}
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		trigger nazi2 working1
+	}
+	trigger working1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 abort_if_not_equal 0
+		playsound MiscHum1
+		playanim device both		
+		trigger nazi2 working1
+	}
+	statechange relaxed query
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange alert combat
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 1 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+nazi3
+{
+	attributes
+	{
+		starting_health 150
+		aim_accuracy 0.6
+		aggression 1.0
+		fov 300
+		alertness 55000
+		attack_crouch 0.9
+		tactical 1.0
+	}
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		trigger nazi3 working1
+	}
+	trigger working1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 1 abort_if_not_equal 0
+		playsound MiscHum1
+		playanim device both		
+		trigger nazi3 working1
+	}
+	statechange relaxed query
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 set 1
+		clearanim
+		playsound Blank
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	statechange alert combat
+	{
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectsoundstart
+	{
+		deny
+		accum 1 set 1
+		statetype alert
+		clearanim
+		playsound Blank
+		wait 5 player
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+nazi4			
+{
+	attributes
+	{
+		starting_health 190
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype relaxed
+		takeweapon all
+		trigger nazi4 go1
+	}
+	trigger go1
+	{
+		playsound misc_whistle
+		wait 10000	
+		trigger nazi4 go2
+	}
+	trigger go2
+	{
+		clearanim
+		playsound Blank
+		walktomarker n4spot1
+		wait 6000
+		playanim nazi_salute both
+		playsound ok1
+		trigger nazi4 go3
+	}
+	trigger go3
+	{
+		wait 5000
+		walktomarker n4spot2
+		changelevel 50d persistent
+	}
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}

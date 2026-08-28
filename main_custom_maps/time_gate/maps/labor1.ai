@@ -1,0 +1,766 @@
+//
+//AI Scripting
+//Map: rock
+
+//Last edited by: WolfETPlayer
+//
+
+
+
+player
+{
+  spawn
+  {
+  giveweapon weapon_mp40
+  setammo ammo_9mm 50
+  selectweapon weapon_mp40
+  trigger kino start
+  }
+  playerstart
+  {
+  #if g_level_was_selected >= 1
+  applyloadout labs_final
+  #endif
+  cvar g_level_was_selected 0
+
+  mu_queue sound/laba/mistik.wav
+  }
+  trigger change_themusic
+  {
+   mu_stop 100
+  }
+  trigger film1
+  {
+	startcam lab1
+	trigger naz1 mov1
+  }
+  trigger film2
+  {
+	startcam lab2
+  }
+  trigger film3
+  {
+	startcam lab3
+	trigger naz1 mov2
+	wait 16000
+	stopcam
+	trigger player endmap
+  }
+  trigger endmap
+  {
+	  changelevel labor1a persistent
+  }
+
+
+ trigger relax
+ {
+	 wait 10000
+	 trigger naz2 up
+	 trigger naz4 up
+	 trigger naz5 up
+	 trigger naz7 up
+	 wait 1000
+	 trigger naz6 up
+	 trigger naz3 up
+	 trigger naz12 up
+	 trigger naz13 up
+	 wait 1000
+
+	 trigger naz14 up
+	 trigger naz17 up
+	 trigger naz8 up
+	 trigger naz9 up
+	 wait 1000
+
+	 trigger naz15 up
+	 trigger naz16 up
+	 trigger naz11 up
+	 trigger naz10 up
+
+
+}
+ }
+
+ //babû=======================================
+
+ naz1
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+
+  	trigger mov1
+  	{
+	  	wait 25000
+	  	runtomarker move1 nostop
+	  	facetargetangles move1
+	  	trigger player relax
+        walktomarker move2 nostop
+	  	facetargetangles move2
+	  	wait 1000
+	  	trigger player change_themusic
+	  	facetargetangles move3
+
+	  	walktomarker move3
+	  	trigger player film3
+ }
+		 trigger mov2
+	{
+		headlook off
+	  	playanim talking torso
+	  	playsound sound/laba/bab1.wav
+    }
+
+  	spawn
+  	{
+	takeweapon all
+ 	}
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+
+//narod=======================================
+
+ naz2
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz3
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz4
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz5
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz6
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz7
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz8
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz9
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz10
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz11
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz12
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz13
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz14
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz15
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz16
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}
+
+naz17
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+  	spawn
+  	{
+	takeweapon all
+	playanim alert_crchidle both forever
+
+ 	}
+
+ 		trigger up
+  	{
+	  	clearanim
+    }
+	death
+  	{
+  	resetscript
+  	}
+	bulletimpact
+  	{
+  	deny
+  	}
+  	enemysight
+  	{
+	deny
+ 	}
+	inspectsoundstart
+  	{
+	deny
+ 	}
+}

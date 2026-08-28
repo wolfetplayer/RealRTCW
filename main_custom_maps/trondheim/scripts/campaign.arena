@@ -1,0 +1,172 @@
+// Operation Trondheim - three campaigns in one
+// chapter 1 = Special Forces (UK), 2 = Red Alert (Soviet), 3 = Iron Cross (German)
+// cutscene maps are tagged green with ^2
+
+{
+map			"cutscene1"
+longname	"^2UK Briefing"
+chapter		"1"
+}
+
+{
+map			"30s"
+longname	"Beach Landing"
+chapter		"1"
+}
+
+{
+map			"30"
+longname	"Inner Perimeter"
+chapter		"1"
+}
+
+{
+map			"30a"
+longname	"Communication Center"
+chapter		"1"
+}
+
+{
+map			"30b"
+longname	"Forest"
+chapter		"1"
+}
+
+{
+map			"30c"
+longname	"Cargo Depot"
+chapter		"1"
+}
+
+{
+map			"30d"
+longname	"Old Monastery"
+chapter		"1"
+}
+
+{
+map			"30f"
+longname	"Last Line of Defense"
+chapter		"1"
+}
+
+{
+map			"cutscene2"
+longname	"^2Soviet Briefing"
+chapter		"2"
+}
+
+{
+map			"50a"
+longname	"First Assault"
+chapter		"2"
+}
+
+{
+map			"50b"
+longname	"Underground Bunker"
+chapter		"2"
+}
+
+{
+map			"50b_1"
+longname	"Inner Bunker"
+chapter		"2"
+}
+
+{
+map			"50c"
+longname	"Mountain Pass"
+chapter		"2"
+}
+
+{
+map			"50d"
+longname	"Trondheim Base"
+chapter		"2"
+}
+
+{
+map			"50e"
+longname	"Repair Station"
+chapter		"2"
+}
+
+{
+map			"50e_1"
+longname	"Inner Barracks"
+chapter		"2"
+}
+
+{
+map			"50f"
+longname	"Forest"
+chapter		"2"
+}
+
+{
+map			"cutscene3"
+longname	"^2German Briefing"
+chapter		"3"
+}
+
+{
+map			"70"
+longname	"Beach Attack"
+chapter		"3"
+}
+
+{
+map			"70m"
+longname	"Forest Ambush"
+chapter		"3"
+}
+
+{
+map			"70a"
+longname	"Road to the West Base"
+chapter		"3"
+}
+
+{
+map			"70c"
+longname	"West Base"
+chapter		"3"
+}
+
+{
+map			"70p"
+longname	"Fuel Depot"
+chapter		"3"
+}
+
+{
+map			"70p_1"
+longname	"Flak Guns"
+chapter		"3"
+}
+
+{
+map			"70j"
+longname	"Weapons Facility"
+chapter		"3"
+}
+
+{
+map			"70j_1"
+longname	"Sub Base"
+chapter		"3"
+}
+
+{
+map			"70j_2"
+longname	"Trondheim Radar"
+chapter		"3"
+}
+
+{
+map			"cine3"
+longname	"^2Finale"
+chapter		"3"
+}
+

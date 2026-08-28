@@ -1,0 +1,29 @@
+//
+//AI Scripting
+//Map: 50j
+//Last edited by: 
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 000
+		objectivesneeded 0
+
+		abort_if_loadgame
+		mu_start \sound\music\m_moving
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue /sound/music/m_moving
+	}
+	trigger endmap
+	{
+		changelevel
+		wait 9000
+		endgame
+	}
+}

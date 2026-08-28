@@ -1,0 +1,75 @@
+// pro51 campaign maps for campaign_menu
+// cutscene maps (pro1 / pro6 / pro8) are tagged green with ^2
+
+{
+map			"pro1"
+longname	"^2Headquarters"
+chapter		"1"
+}
+
+{
+map			"pro2"
+longname	"Road to the Town"
+chapter		"1"
+}
+
+{
+map			"pro3"
+longname	"Town"
+chapter		"1"
+}
+
+{
+map			"pro4"
+longname	"Cement Factory"
+chapter		"1"
+}
+
+{
+map			"pro5"
+longname	"Cargo Station"
+chapter		"1"
+}
+
+{
+map			"pro6"
+longname	"^2Headquarters II"
+chapter		"1"
+}
+
+{
+map			"pro7"
+longname	"Lighthouse"
+chapter		"1"
+}
+
+{
+map			"pro8"
+longname	"^2Bombing Run"
+chapter		"1"
+}
+
+{
+map			"pro9"
+longname	"External Battery"
+chapter		"1"
+}
+
+{
+map			"pro10"
+longname	"V3 Battery"
+chapter		"1"
+}
+
+{
+map			"pro11"
+longname	"On the Road"
+chapter		"1"
+}
+
+{
+map			"pro12"
+longname	"Airfield"
+chapter		"1"
+}
+

@@ -1,0 +1,976 @@
+//AI.
+//AI..
+//AI...
+//AI Scripting ding ding ding
+//Map: Capuzzo City
+//Author: {SSF}Sage
+//Have fun! Contact me with E-mail at ssf@netti.fi
+//     LLL          oooo      LLL
+//     LLL        oo    oo    LLL 
+//     LLL       oo      oo   LLL 
+//     LLL       oo	 oo   LLL        ftw!
+//     LLL		oo    oo    LLL
+//     LLLLLLLL     oooo      LLLLLLLL
+//
+//The key is bot placement and attributes.
+
+player
+{
+	spawn
+	{
+		accum 0 bitset 0		//Gate not opened
+		accum 0 bitset 1		//Music: love cleared
+		accum 0 bitset 2		//Music: city cleared
+
+		accum 1 set 0		//Both radios not dead
+		accum 2 set 0		//City deathcounter
+		accum 3 set 0		//City deathcounter2
+		accum 4 set 0		//Love deathcounter
+		accum 5 set 0		//Objective checks
+
+		objectivesneeded 1
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000 					//% time
+		mu_queue sound/music/m_mission
+
+		applyloadout city
+		cvar g_level_was_selected 0
+	}
+
+	//MUSIC
+	//City part:
+	//Going to city: MISSION (start), entering city: ATTACK1, killed everyone in city: MISSION1, door opens: ALARM, killed guys in there: RELAXED
+	//Love part:
+	//Going to love: ATTACK2, love cleared: MISSION2, Going past love: ATTACK1, killed everyone: RELAXED
+
+	trigger play_mission1
+	{
+		mu_fade 0 2500
+		mu_queue sound/music/m_mission
+	}
+
+	trigger play_mission2
+	{
+		accum 0 abort_if_not_bitset 1
+		accum 0 bitreset 1
+
+		mu_fade 0 2500
+		mu_queue sound/music/m_mission
+	}
+
+	trigger play_attack1
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_moving
+	}
+
+	trigger play_attack2
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_situation
+	}
+
+	trigger play_relaxed
+	{
+		mu_fade 0 2500
+		mu_queue sound/music/m_stealth
+	}
+
+	trigger play_alarm
+	{
+		mu_fade 0 250
+		mu_queue sound/music/m_action
+	}
+
+	trigger objective
+	{
+		//Eliminate anything that might prevent the truck from getting forward
+		//The three are: kill everyone in love and desroy gate&barrier
+
+		accum 5 inc 1
+		accum 5 abort_if_less_than 3
+
+		objectivemet 1
+	}
+
+	trigger secret_found
+	{
+		foundsecret
+	}
+
+	trigger endmap
+	{
+		changelevel airport persistent
+	}
+
+	trigger reaching_city
+	{
+		trigger player play_attack1
+
+		alertentity nazi_c2
+		alertentity nazi_c5
+		alertentity nazi_c6
+		alertentity nazi_c8
+		alertentity nazi_c7
+		alertentity nazi_c10
+
+		alertentity nazi_c9
+		alertentity nazi_c11
+		alertentity nazi_c12
+
+		trigger nazi_c6 march_loop
+		trigger nazi_c8 mount
+	}
+
+	trigger halfpastcity
+	{
+		trigger nazi_c8 releasegun
+		trigger nazi_c9 alert
+		trigger nazi_c10 alert
+		trigger nazi_c11 alert
+		trigger nazi_c12 alert
+
+		savecheckpoint
+	}
+
+	trigger button_house
+	{
+		alertentity nazi_c13
+		alertentity nazi_c14
+
+		trigger nazi_c13 open_door
+	}
+
+	trigger kill_radio_speaker
+	{
+		accum 1 inc 1
+		accum 1 abort_if_less_than 2
+
+		alertentity radio_speaker_relay
+	}
+
+	trigger city_deathcount
+	{
+		accum 2 inc 1
+		accum 2 abort_if_less_than 12
+
+		trigger player play_mission1
+
+		trigger truck city_cleared
+
+		//Now when the player goes inside this trigger, the door opens and a soldier comes out
+		alertentity button_house_trigger
+	}
+
+	trigger city_deathcount2
+	{
+		accum 3 inc 1
+		accum 3 abort_if_less_than 2
+
+		//Abort if player magically dodges a bot and cowardly escapes
+		accum 0 abort_if_not_bitset 2
+
+		trigger player play_relaxed
+	}
+
+	trigger open_gate
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		trigger gate2_left open
+		trigger gate2_right open
+
+		alertentity nazi_l1
+		alertentity nazi_l2
+		alertentity nazi_l3
+		alertentity nazi_l4
+		alertentity nazi_l5
+		alertentity nazi_l6
+		alertentity nazi_l7
+		alertentity nazi_l8
+
+		savecheckpoint
+	}
+
+	trigger approaching_love
+	{
+		trigger player play_attack2
+		accum 0 bitreset 2
+	}
+
+	trigger pastlove
+	{
+		//Don't mess up sounds if the player leaves some kills, before going past love
+		accum 0 bitreset 1
+
+		trigger player play_attack1
+
+		alertentity nazi_l9
+		alertentity nazi_l10
+		alertentity nazi_l11
+
+		savecheckpoint
+	}
+
+	trigger love_deathcount
+	{
+		accum 4 inc 1
+
+		//Change music when love is cleared
+		accum 4 abort_if_less_than 8
+		trigger player play_mission2
+
+		accum 4 abort_if_less_than 11
+
+		trigger player play_relaxed
+
+		trigger player objective 
+
+		trigger truck love_cleared
+	}
+}
+
+////////////////////////////////////////////
+/////////////////City bots/////////////////
+//////////////////////////////////////////
+
+nazi_c1
+{
+	attributes
+	{
+		aggression 1.0
+		fov 350
+		hearing_scale 0.0
+		inner_detection_radius 512
+	}
+
+	trigger go
+	{
+		noavoid
+		knockback off
+		statetype alert
+		runtomarker m_c1_1 nostop
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+nazi_c2
+{
+	attributes
+	{
+		aggression 0.4
+		inner_detection_radius 2048
+		hearing_scale 5.0
+		fov 350
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}	
+}
+
+//---------------Bots in first house----------------
+
+nazi_c3
+{
+	attributes
+	{
+		aggression 1.0
+		hearing_scale 3.0
+		attack_crouch 0.8
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		knockback off
+		statetype alert
+
+		noavoid
+	}
+
+	trigger stopcamping
+	{
+		trigger naci_c4 stopcamping
+
+		avoid
+		attrib aggression 0.4
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+nazi_c4
+{
+	attributes
+	{
+		aggression 1.0
+		hearing_scale 3.0
+		attack_crouch 0.0
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+
+		knockback off
+		statetype alert
+
+		noavoid
+	}
+
+	trigger stopcamping
+	{
+		avoid
+		attrib aggression 0.4
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+//-------------------City patrol--------------------
+
+nazi_c5
+{
+	attributes
+	{
+		aggression 0.1
+		camper 0.6
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+nazi_c6
+{
+	attributes
+	{
+		aggression 0.2
+		inner_detection_radius 1024
+		hearing_scale 1.6
+		walking_speed 150
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	trigger march_loop
+	{
+		wait 250
+		walktomarker m_c6_2
+		wait 250
+		walktomarker m_c6_1
+
+		trigger nazi_c6 march_loop
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+		wait 5 player
+	}
+
+	statechange relaxed combat
+	{
+		resetscript
+		wait 5 player
+	}
+
+	statechange query alert
+	{
+		resetscript
+		wait 5 player
+	}
+
+	statechange query combat
+	{
+		resetscript
+		wait 5 player
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}	
+}
+
+//---------------Sniper in small house--------------
+
+nazi_c7
+{
+	attributes
+	{
+		aggression 0.5
+		camper 0.6
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait forever 0
+	}
+
+	trigger alert
+	{
+		resetscript
+		knockback off
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+//-------------------MG42 bot-----------------------
+
+nazi_c8
+{
+	attributes
+	{
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger mount
+	{
+		knockback off
+		statetype alert
+
+		wait 100
+
+		mount city_mg
+	}
+
+	trigger releasegun
+	{
+		unmount
+		wait 100 player
+
+		resetscript
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+//-------------Sneaker in side house----------------
+
+nazi_c9
+{
+	attributes
+	{
+		aggression 0.1
+		camper 0.6
+		hearing_scale 6.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+
+		statetype alert
+		wait forever 0
+	}
+
+	trigger alert
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+//------------------Pit lover ;)--------------------
+
+nazi_c10
+{
+	attributes
+	{
+		aggression 0.1
+		inner_detection_radius 1024
+		hearing_scale 10.0
+	}
+
+	spawn
+	{
+		statetype alert
+		wait forever 0
+	}
+
+	trigger alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}	
+}
+
+//----------------City end patrol-------------------
+
+nazi_c11
+{
+	attributes
+	{
+		aggression 0.3
+		inner_detection_radius 1024
+		hearing_scale 10.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+
+		statetype alert
+		wait forever 0
+	}
+
+	trigger alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+	
+	death
+	{
+		trigger player city_deathcount
+	}	
+}
+
+nazi_c12
+{
+	attributes
+	{
+		aggression 0.3
+		camper 0.3
+		inner_detection_radius 1024
+		hearing_scale 10.0
+	}
+
+	spawn
+	{
+		statetype alert
+		wait forever 0
+	}
+
+	trigger alert
+	{
+		resetscript
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	bulletimpactsound
+	{
+		deny
+	}
+
+	death
+	{
+		trigger player city_deathcount
+	}
+}
+
+//---------------Button house bots------------------
+
+nazi_c13
+{
+	attributes
+	{
+		aggression 0.1
+		camper 0.6
+		hearing_scale 0.0
+		inner_detection_radius 32
+	}
+
+	trigger open_door
+	{
+		explicit_routing off
+
+		wait 2500
+
+		trigger player play_alarm
+
+		//Unlock the button house's door
+		alertentity button_door_relay
+
+		gotomarker m_c13_2 nostop
+
+		explicit_routing on
+	}
+
+	death
+	{
+		trigger player city_deathcount2
+	}
+}
+
+nazi_c14
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 0.0
+		inner_detection_radius 32
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	death
+	{
+		trigger player city_deathcount2
+	}
+}
+
+////////////////////////////////////////////
+/////////////////Love bots/////////////////
+//////////////////////////////////////////
+//I don't love bots... the area is called love
+
+nazi_l1
+{
+	attributes
+	{
+		aggression 0.9
+	}
+
+	trigger attack
+	{
+		trigger player approaching_love
+
+		statetype alert
+
+		gotomarker m_l1_1 nostop
+		facetargetangles m_l1_1
+
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l2
+{
+	attributes
+	{
+		aggression 0.7
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l3
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 2.5
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l4
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 1.5
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l5
+{
+	attributes
+	{
+		aggression 0.3
+		camper 0.6
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l6
+{
+	attributes
+	{
+		aggression 0.3
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l7
+{
+	attributes
+	{
+		aggression 0.1
+		camper 0.8
+		tactical 0.95
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l8
+{
+	attributes
+	{
+		aggression 0.1
+		camper 0.8
+		tactical 0.95
+		attack_crouch 0.0
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+//----------------Last house guy -------------------
+
+nazi_l9
+{
+	attributes
+	{
+		aggression 0.2
+		hearing_scale 10
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		statetype alert
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+//----------------Bots in the cave -----------------
+
+nazi_l10
+{
+	attributes
+	{
+		aggression 0.3
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+
+nazi_l11
+{
+	attributes
+	{
+		aggression 0.3
+	}
+
+	death
+	{
+		trigger player love_deathcount
+	}
+}
+

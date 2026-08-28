@@ -1,0 +1,160 @@
+
+
+
+
+
+gate
+{
+	spawn
+	{
+     gotomarker g1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+		wait 500
+        trigger player kadr1
+        playsound sound/scenaric/rocket/electric_door_start.wav
+        wait 700
+         playsound sound/scenaric/rocket/electric_door_loop.wav looping
+
+		gotomarker g2 20
+		faceangles 90 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/electric_door_end.wav
+		//trigger lift start
+
+	}
+
+
+
+
+
+
+}
+
+
+
+ass
+{
+	spawn
+	{
+     gotomarker ass1 50
+     faceangles 0 0 0 gototime
+     gotomarker ass1 50
+     faceangles 0 180 0 100
+	}
+
+
+	trigger start
+	{
+
+		trigger player kadr2
+		//alertentity zv
+		trigger player hhh
+		trigger dekor start
+		gotomarker ass2 2000
+		faceangles 0 180 0 gototime
+
+
+        playsound sound/scenaric/general/b25.wav looping
+        wait 30000
+        trigger player kadr3
+        gotomarker ass3 80
+		faceangles 0 180 0 gototime
+		 gotomarker ass4 100
+		faceangles 0 180 0 gototime
+		trigger player kadr4
+        //alertentity zv
+        trigger player fff
+		gotomarker ass7 400
+		faceangles 0 180 0 gototime
+		gotomarker ass8 380
+		faceangles 0 180 0 gototime
+		wait 2000
+		trigger text start
+		trigger player ddd
+		trigger player kadr5
+
+
+
+
+
+	}
+
+
+
+
+
+
+}
+
+dekor
+{
+	spawn
+	{
+     gotomarker ass2 50
+     faceangles 0 0 0 gototime
+     gotomarker ass2 50
+     faceangles 0 180 0 100
+	}
+
+
+	trigger start
+	{
+		gotomarker ass2x 1000
+		faceangles 0 180 0 gototime
+
+
+
+
+
+	}
+
+
+
+
+
+
+}
+
+text
+{
+	spawn
+	{
+     gotomarker tex1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+		gotomarker tex2 10
+		faceangles 0 0 0 gototime
+
+
+
+
+
+	}
+
+trigger m1
+{
+mu_fade 0 100
+	mu_queue sound/pro12/mot1.wav
+
+}
+trigger m2
+{
+mu_fade 0 100
+	mu_queue sound/pro12/mot2.wav
+}
+
+
+
+
+
+
+}

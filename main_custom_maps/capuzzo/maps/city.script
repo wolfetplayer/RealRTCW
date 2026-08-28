@@ -1,0 +1,423 @@
+//BBRRRRRRR
+//BRR
+//BRBR
+//Brush Scripting
+//Map: Capuzzo City
+//Author: {SSF}Sage
+//Have fun! Contact me with E-mail at ssf@netti.fi
+//     LLL          oooo      LLL
+//     LLL        oo    oo    LLL 
+//     LLL       oo      oo   LLL 
+//     LLL       oo	 oo   LLL        ftw!
+//     LLL		oo    oo    LLL
+//     LLLLLLLL     oooo      LLLLLLLL
+//
+////////////////////////////////////////////
+////////////////Truck stuff////////////////
+//////////////////////////////////////////
+
+truck
+{
+	spawn
+	{
+		wait 50
+
+		faceangles 0 90 0 10
+
+		accum 0 set 0	//Gate is not destroyed
+		accum 1 set 0	//We are not at the gate
+
+		accum 4 set 0	//We are not at the wait position #2
+		accum 5 set 0	//Love is not cleared
+
+		wait 5000
+
+		trigger truck move_start
+
+
+	}
+
+	////////////////////////////////////////////
+	////////////////Move checks////////////////
+	//////////////////////////////////////////
+
+	trigger city_cleared
+	{
+		trigger truck move_gate
+	}
+
+	trigger gate_destroyed
+	{
+		accum 0 set 1
+
+		accum 1 abort_if_equal 0	//Are we at the gate?
+
+		trigger truck move_city
+	}
+
+
+	trigger love_cleared
+	{
+		accum 5 set 1
+
+		accum 4 abort_if_equal 0	//Are we at the wait position #2?
+
+		trigger truck move_love
+	}
+
+	////////////////////////////////////////////
+	////////////Moving the truck///////////////
+	//////////////////////////////////////////
+
+	trigger move_start
+	{
+		//Let's move the truck to the wait position #1
+
+		trigger truck wheels_rotate
+
+		gotomarker truck_pc0 220
+		faceangles 0 98 0 gototime
+		gotomarker truck_pc1 220
+		faceangles 0 116 0 gototime
+		gotomarker truck_pc2 240
+		faceangles 0 140 0 gototime
+		gotomarker truck_pc3 240
+		faceangles 0 152 0 gototime
+		gotomarker truck_pc4 240
+		faceangles 0 162 0 gototime
+		gotomarker truck_pc5 240
+		faceangles 0 172 0 gototime
+		gotomarker truck_pc6 240
+		faceangles 0 180 0 gototime
+
+		trigger truck wheels_stop_rotating
+	}
+
+
+	trigger move_gate
+	{
+		//Let's move the truck to the gate
+
+		trigger truck wheels_rotate
+
+		gotomarker truck_pc7 220
+		faceangles 0 156 0 gototime
+		gotomarker truck_pc8 220
+		faceangles 0 145 0 gototime
+		gotomarker truck_pc9 240
+		faceangles 0 125 0 gototime
+		gotomarker truck_pc10 220
+		faceangles 0 100 0 gototime
+
+		trigger truck wheels_stop_rotating 
+
+		accum 1 set 1	//We are at the gate
+
+		accum 0 abort_if_equal 0	//Is gate destroyed?
+
+		trigger truck move_city
+
+	}
+
+	trigger move_city
+	{
+		//Let's move the truck to the wait position #2
+
+		trigger truck wheels_rotate
+
+		gotomarker truck_pc11 220
+		faceangles 0 95 0 gototime
+		gotomarker truck_pc12 260
+		faceangles 0 90 0 gototime
+		gotomarker truck_pc13a 290
+		faceangles 0 89 0 gototime
+		gotomarker truck_pc13b 290
+		faceangles 0 86 0 gototime
+		gotomarker truck_pc14 290
+		faceangles 0 88 0 gototime
+		gotomarker truck_pc15 260
+		faceangles 0 92 0 gototime
+		gotomarker truck_pc16 220
+		faceangles 0 70 0 gototime
+		gotomarker truck_pc17 220
+		faceangles 0 33 0 gototime
+
+		gotomarker truck_pc18 220
+		faceangles 0 15 0 gototime
+		gotomarker truck_pc19 220
+		faceangles 0 0 0 gototime
+		gotomarker truck_pc20 220
+		faceangles 0 3 0 gototime
+		gotomarker truck_pc21 240
+		faceangles 0 34 0 gototime
+		gotomarker truck_pc22 260
+		faceangles 0 65 0 gototime
+		gotomarker truck_pc23 260
+		faceangles 0 90 0 gototime
+		gotomarker truck_pc24 260
+		faceangles 0 97 0 gototime
+		gotomarker truck_pc25 240
+		faceangles 0 93 0 gototime
+		gotomarker truck_pc26 220
+		faceangles 0 107 0 gototime
+		gotomarker truck_pc27 220
+		faceangles 0 153 0 gototime
+		gotomarker truck_pc28 220
+		faceangles 0 175 0 gototime
+		gotomarker truck_pc29 220
+		faceangles 0 180 0 gototime
+		gotomarker truck_pc30 220
+		faceangles 0 140 0 gototime
+		gotomarker truck_pc31 240
+		faceangles 0 95 0 gototime
+		gotomarker truck_pc32 270
+		faceangles 0 92 0 gototime
+
+		trigger truck wheels_stop_rotating
+
+		accum 4 set 1	//We are at the wait position #2
+
+		accum 5 abort_if_equal 0	//Is love cleared?
+
+		trigger truck move_love
+
+	}
+
+	trigger move_love
+	{
+		//Let's move the truck to the end
+
+		trigger truck wheels_rotate
+
+		gotomarker truck_pc33 220
+		faceangles 0 90 0 gototime
+		gotomarker truck_pc34 220
+		faceangles 0 85 0 gototime
+		gotomarker truck_pc35 220
+		faceangles 0 60 0 gototime
+		gotomarker truck_pc36 220
+		faceangles 0 35 0 gototime
+		gotomarker truck_pc37 240
+		faceangles 0 15 0 gototime
+		gotomarker truck_pc38 260
+		faceangles 0 3 0 gototime
+		gotomarker truck_pc39 240
+		faceangles 0 0 0 gototime
+
+		alertentity woodenbar		//Destroy the wooden bar
+
+		gotomarker truck_pc40 220
+		faceangles 0 355 0 gototime
+		gotomarker truck_pc41 220
+		faceangles 0 334 0 gototime
+		gotomarker truck_pc42 220
+		faceangles 0 332 0 gototime
+		gotomarker truck_pc43 220a
+		faceangles 0 357 0 gototime
+		gotomarker truck_pc44 220
+		faceangles 0 7 0 gototime
+		gotomarker truck_pc45 220
+		faceangles 0 20 0 gototime
+		gotomarker truck_pc46 220
+		faceangles 0 5 0 gototime
+
+		trigger truck wheels_stop_rotating
+
+		//The truck is in place, so enable the end trigger
+		alertentity end_trigger
+	}
+
+
+
+
+	trigger wheels_rotate
+	{
+		trigger truck_sound start
+
+		trigger truck_bw rotate
+		trigger truck_fw rotate
+	}
+
+	trigger wheels_stop_rotating
+	{
+		trigger truck_sound stop
+
+		trigger truck_bw stop_rotating
+		trigger truck_fw stop_rotating
+	}
+}
+
+truck_bw
+{
+	spawn
+	{
+		wait 50
+		attachtotag truck tag_wback
+	}
+
+	trigger rotate
+	{
+		faceangles 90 0 0 125
+		faceangles 180 0 0 125
+		faceangles 270 0 0 125
+		faceangles 360 0 0 125
+
+		trigger truck_bw rotate
+	}
+
+	trigger stop_rotating
+	{
+		resetscript
+	}
+}
+
+truck_fw
+{
+	spawn
+	{
+		wait 50
+		attachtotag truck tag_wfront
+	}
+
+	trigger rotate
+	{
+		faceangles 90 0 0 125
+		faceangles 180 0 0 125
+		faceangles 270 0 0 125
+		faceangles 360 0 0 125
+
+		trigger truck_fw rotate
+	}
+
+	trigger stop_rotating
+	{
+		resetscript
+	}
+}
+
+truck_sound
+{
+	spawn
+	{
+		wait 200
+		attachtotag truck tag_wfront
+
+		trigger truck_sound sound_idle
+	}
+
+	trigger start
+	{
+		trigger truck_sound sound_start
+		wait 950
+		trigger truck_sound sound_move
+	}
+
+	trigger stop
+	{
+		trigger truck_sound sound_stop
+		wait 950
+		trigger truck_sound sound_idle
+	}
+
+	trigger sound_idle
+	{
+		playsound sound/sounds_sd/truck_idle.wav looping
+	}
+
+	trigger sound_start
+	{
+		stopsound
+		playsound sound/sounds_sd/truck_revup.wav volume 96
+	}
+
+	trigger sound_move
+	{
+		playsound sound/sounds_sd/truck_move.wav looping
+	}
+
+	trigger sound_stop
+	{
+		stopsound
+		playsound sound/sounds_sd/truck_revdown.wav volume 96
+	}
+}
+
+////////////////////////////////////////////
+////////////////Other stuff////////////////
+//////////////////////////////////////////
+
+gate
+{
+	death
+	{
+		//We add this just incase the player is stupid enough to not break the gate
+		//but finishes the other 2 parts, so the objective won't be marked as done
+
+		trigger player objective
+
+		trigger truck gate_destroyed
+	}
+}
+
+gate2_left
+{
+	spawn
+	{
+		wait 100
+		faceangles 0 0 0 100
+	}
+
+	trigger open
+	{
+		wait 2000
+
+		playsound sound/movers/doors/door3_open.wav
+
+		faceangles 0 -15 0 500
+
+		playsound sound/movers/doors/door3_loopo.wav looping
+
+		faceangles 0 -90 0 3500
+
+		stopsound
+		playsound sound/movers/doors/door3_endo.wav
+	}
+}
+
+gate2_right
+{
+	spawn
+	{
+		wait 100
+		faceangles 0 0 0 100
+	}
+
+	trigger open
+	{
+		wait 2000
+
+		faceangles 0 15 0 500
+		faceangles 0 90 0 3500
+	}
+}
+
+pit_mover
+{
+	death
+	{
+		alertentity pit_explo
+		alertentity pit_crack
+		alertentity pit_weffect
+		alertentity pit_debris
+		alertentity pit_debris2
+	}
+}
+
+barrier
+{
+	death
+	{
+		trigger player objective
+	}
+}
+

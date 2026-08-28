@@ -435,7 +435,7 @@ lighting range
 */
 void R_LightScaleTexture( unsigned *in, int inwidth, int inheight, qboolean only_gamma ) {
 	if ( only_gamma ) {
-		if ( !glConfig.deviceSupportsGamma ) {
+		if ( R_UseSoftwareGamma() ) {
 			int i, c;
 			byte    *p;
 
@@ -458,7 +458,7 @@ void R_LightScaleTexture( unsigned *in, int inwidth, int inheight, qboolean only
 
 		c = inwidth * inheight;
 
-		if ( glConfig.deviceSupportsGamma ) {
+		if ( !R_UseSoftwareGamma() ) {
 			for ( i = 0 ; i < c ; i++, p += 4 )
 			{
 				p[0] = s_intensitytable[p[0]];
@@ -1725,15 +1725,19 @@ void R_SetColorMappings( void ) {
 	float g;
 	int inf;
 	int shift;
+	qboolean shaderGamma;
+
+	// when true, FBO_PostProcess() applies gamma itself, so the hw-gamma-only restrictions below don't need to apply
+	shaderGamma = ( fboEnabled && GL_ProgramAvailable() );
 
 	// setup the overbright lighting
 	tr.overbrightBits = r_overBrightBits->integer;
-	if ( !glConfig.deviceSupportsGamma ) {
-		tr.overbrightBits = 0;      // need hardware gamma for overbright
+	if ( !glConfig.deviceSupportsGamma && !shaderGamma ) {
+		tr.overbrightBits = 0;      // need hardware (or shader) gamma for overbright
 	}
 
-	// never overbright in windowed mode
-	if ( !glConfig.isFullscreen ) {
+	// never overbright in windowed mode, unless the FBO gamma shader is compensating
+	if ( !glConfig.isFullscreen && !shaderGamma ) {
 		tr.overbrightBits = 0;
 	}
 
@@ -1766,6 +1770,7 @@ void R_SetColorMappings( void ) {
 	}
 
 	g = r_gamma->value;
+	tr.invGamma = 1.0f / g;
 
 	shift = tr.overbrightBits;
 

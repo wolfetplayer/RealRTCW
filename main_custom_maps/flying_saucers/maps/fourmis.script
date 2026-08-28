@@ -1,0 +1,298 @@
+//
+//Brush Scripting
+//Map: fourmis
+//Last edited by: Depro777(RU)
+//
+
+counter1
+{
+	spawn
+	{
+		accum 0 set 0 //elitguard
+		accum 1 set 0 //zomb_cher
+		accum 2 set 0 //zomb_skel
+	}
+
+	trigger cinematic1
+	{
+		alertentity nem1
+		alertentity nem2
+		alertentity nem3
+		alertentity wurchanie
+		trigger player cine1_cam0
+		wait 8000
+		trigger player cine1_cam1
+		wait 4000
+		alertentity zombie1
+		trigger nem3 talk1
+		wait 4000
+		trigger nem3 yacheyka00
+	}
+
+	trigger cine1_cleanup
+	{
+		resetscript
+		alertentity zombie1
+		trigger nem2 yacheyka00
+	}
+
+	trigger check_deaths1
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 4
+
+		alertentity opendoor1
+	}
+
+	trigger check_deaths2
+	{
+		accum 1 inc 1
+		accum 1 abort_if_not_equal 4
+
+		alertentity opendoor2
+	}
+
+	trigger check_deaths3
+	{
+		accum 2 inc 1
+		accum 2 abort_if_not_equal 5
+
+		alertentity opendoor3
+	}
+
+	trigger pugalo
+	{
+		trigger helga_zombie vsay
+		wait 12000
+		trigger player pugalkaoff
+	}
+}
+
+counter2
+{
+	spawn
+	{
+		accum 0 set 0
+	}
+
+	trigger toggle_pesochek
+	{
+		accum 0 random 5
+
+		wait 5
+		trigger counter2 zaderzhka0
+		wait 5
+		trigger counter2 zaderzhka1
+		wait 5
+		trigger counter2 zaderzhka2
+		wait 5
+		trigger counter2 zaderzhka3
+		wait 5
+		trigger counter2 zaderzhka4
+		wait 5
+		trigger counter2 zaderzhka5
+	}
+
+	trigger zaderzhka0
+	{
+		accum 0 abort_if_not_equal 0
+		wait 12000
+		alertentity pesok
+		wait 12000
+		trigger counter2 toggle_pesochek
+	}
+
+	trigger zaderzhka1
+	{
+		accum 0 abort_if_not_equal 1
+		wait 21000
+		alertentity pesok
+		wait 21000
+		trigger counter2 toggle_pesochek
+	}
+
+	trigger zaderzhka2
+	{
+		accum 0 abort_if_not_equal 2
+		wait 23000
+		alertentity pesok
+		wait 23000
+		trigger counter2 toggle_pesochek
+	}
+
+	trigger zaderzhka3
+	{
+		accum 0 abort_if_not_equal 3
+		wait 32000
+		alertentity pesok
+		wait 32000
+		trigger counter2 toggle_pesochek
+	}
+
+	trigger zaderzhka4
+	{
+		accum 0 abort_if_not_equal 4
+		wait 34000
+		alertentity pesok
+		wait 34000
+		trigger counter2 toggle_pesochek
+	}
+
+	trigger zaderzhka5
+	{
+		accum 0 abort_if_not_equal 5
+		wait 43000
+		alertentity pesok
+		wait 43000
+		trigger counter2 toggle_pesochek
+	}
+}
+
+noshka
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker no_p1 20 wait
+		playsound sound/movers/doors/door2_loop.wav
+		playsound sound/movers/doors/door2_locked.wav
+	}
+}
+
+verevka1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 -70 999 accel wait
+//		trigger verevka1 looping
+	}
+
+	trigger looping
+	{
+		faceangles 0 0 -72 9999 accel wait
+		faceangles 0 0 -73 9999 accel wait
+		trigger verevka1 looping
+	}
+}
+
+verevka2
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 70 999 accel wait
+	}
+}
+
+stupeni1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 -70 500 accel wait
+		trigger stupeni1 looping
+	}
+
+	trigger looping
+	{
+		faceangles 0 0 -71 2500 accel wait
+		faceangles 0 0 -75 2500 accel wait
+		trigger stupeni1 looping
+	}
+}
+
+stupeni2
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 70 999 accel wait
+	}
+}
+
+duh1
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 225 0 gototime
+		gotomarker duh1_p0 99999
+
+		faceangles 0 1355 0 gototime
+		gotomarker duh1_p1 100
+
+		faceangles 0 160 0 gototime
+		gotomarker duh1_p2 150
+
+		faceangles 0 135 0 gototime
+		gotomarker duh1_p3 100
+
+		faceangles 0 120 0 gototime
+		gotomarker duh1_p4 100
+
+		faceangles 0 135 0 gototime
+		gotomarker duh1_p5 100
+
+		faceangles 0 170 0 gototime
+		gotomarker duh1_p6 100
+
+		faceangles 0 180 0 gototime
+		gotomarker duh1_p7 100
+
+		faceangles 0 110 0 gototime
+		gotomarker duh1_p8 100
+
+		trigger duh1 go
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+pinok
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker pin_p1 50
+	}
+}
+
+stena1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker st1_p1 99999
+	}
+}

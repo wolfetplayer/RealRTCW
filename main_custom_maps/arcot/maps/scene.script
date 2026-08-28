@@ -1,0 +1,27 @@
+//
+//Brush Scripting
+//Map: scene - final
+//Edited by: Vicpas
+//
+
+
+text
+{
+	spawn
+	{
+		gotomarker tex1 5
+		faceangles 0 0 0 gototime
+	}
+	
+	trigger go
+	{
+		gotomarker tex3 700
+		faceangles 0 0 0 gototime
+		gotomarker tex2 8
+		faceangles 0 0 0 gototime
+		trigger player endmusic
+		wait 3000
+		trigger player endmap
+	}
+}
+

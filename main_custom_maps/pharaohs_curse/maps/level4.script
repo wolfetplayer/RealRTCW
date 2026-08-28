@@ -1,0 +1,79 @@
+door1
+{
+	trigger go
+	{
+		faceangles 0 130 0 6000
+	}
+	trigger go1
+	{
+		faceangles 0 0 0 6000
+	}
+}
+door2_1
+{
+	trigger go
+	{
+		faceangles 0 130 0 6000
+	}
+	trigger go1
+	{
+		faceangles 0 0 0 6000
+	}
+}
+door2_2
+{
+	trigger go
+	{
+		faceangles 0 -130 0 6000
+	}
+	trigger go1
+	{
+		faceangles 0 0 0 6000
+	}
+}
+
+
+
+
+
+door3
+{
+	trigger go
+	{
+		playsound sound/world/moves/mov1.wav
+		gotomarker door3_pos1 50
+	}
+	trigger go1
+	{
+		playsound sound/world/moves/mov1.wav
+		gotomarker door3_pos2 50
+	}
+}
+
+
+door4
+{
+	trigger go
+	{
+		playsound sound/world/moves/mov1.wav
+		gotomarker door4_pos1 50
+	}
+	trigger go1
+	{
+		playsound sound/world/moves/mov1.wav
+		gotomarker door4_pos2 50
+	}
+}
+
+
+
+
+potolok
+{
+	trigger go
+	{
+		playsound sound/world/moves/mov1.wav
+		gotomarker potolok_p 50
+	}
+}
+

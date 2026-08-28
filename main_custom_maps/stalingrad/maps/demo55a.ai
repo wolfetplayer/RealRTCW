@@ -1,0 +1,372 @@
+//
+//AI Scripting
+//Map: demo55a
+//Last edited by: 
+//
+
+player
+{
+	spawn
+	{
+		trigger player vision
+        cvar g_episode 1		
+		mu_start sound/music/m_stealth
+		notarget on
+	}
+
+	playerstart
+	{
+		trigger radar1 rotateloop
+		trigger player vision
+		notarget on
+	}
+	trigger vision
+	{
+		wait 1000
+		trigger officer talk1
+	}
+	trigger go
+	{
+		trigger officer anim
+	}
+	trigger film1
+	{
+		startcam cam3
+	}
+	trigger film2
+	{
+		startcam cam4
+	}
+	trigger endmap
+	{
+		changelevel demo10 persistent
+	}
+}
+officer			
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 0.6
+		attack_crouch 0.5
+		attack_skill 0.5
+		aim_skill 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		wait 2500
+		walktomarker of1spot1
+		trigger player endmap
+		walktomarker of1spot2
+		walktomarker of1spot3
+	}
+	trigger talk1
+	{
+		playsound sound/stalingrad/demo55anemoficer.wav
+		trigger officer talk2
+	}
+	trigger talk2
+	{
+		wait 24000
+//		playanim talking_1h both
+		trigger officer go1
+	}
+	trigger talk3
+	{
+		wait 2900
+//		playanim talking_1h both
+		playsound officer5
+		trigger nazi1 talk2
+	}
+	trigger talk4
+	{
+		wait 2200
+		playsound officer6
+		trigger officer go1
+	}
+	trigger go2
+	{
+	}
+	trigger anim
+	{
+		wait 1900
+		playanim talking_1h both
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi1			
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 0.6
+		attack_crouch 0.5
+		attack_skill 0.5
+		aim_skill 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker of1spot1
+		walktomarker of1spot2
+		walktomarker of1spot3
+	}
+	trigger talk1
+	{
+		wait 2900
+//		playanim talking_2h both
+		playsound nazi1
+		trigger officer talk3
+	}
+	trigger talk2
+	{
+		wait 3700
+		playsound nazi7
+		trigger nazi2 talk1
+	}
+	trigger go2
+	{
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2			
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 0.6
+		attack_crouch 0.5
+		attack_skill 0.5
+		aim_skill 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker of1spot1
+		walktomarker of1spot2
+		walktomarker of1spot3
+	}
+	trigger talk1
+	{
+		wait 3400
+//		playanim talking_2h both
+		playsound tuk4
+		trigger officer talk4
+	}
+	trigger talk2
+	{
+		wait 3700
+		playsound officer3
+		trigger nazi1 talk1
+	}
+	trigger go2
+	{
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi3			
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 0.6
+		attack_crouch 0.5
+		attack_skill 0.5
+		aim_skill 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker of1spot1
+		walktomarker of1spot2
+		walktomarker of1spot3
+	}
+	trigger talk1
+	{
+		wait 2900
+		playsound nazi1
+		trigger officer talk3
+	}
+	trigger talk2
+	{
+		wait 3700
+		playsound officer3
+		trigger nazi1 talk1
+	}
+	trigger go2
+	{
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}

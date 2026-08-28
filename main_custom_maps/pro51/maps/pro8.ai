@@ -1,0 +1,591 @@
+//
+//AI Scripting
+//Map: rock (cutscene)
+
+//Last edited by: WolfETPlayer
+//
+
+
+
+player
+{
+  spawn
+  {
+  mu_start sound/music/m_mission
+  giveweapon weapon_mp40
+  setammo ammo_9mm 50
+  selectweapon weapon_mp40
+  trigger dzot start
+  }
+  playerstart
+  {
+
+  }
+  trigger bomb
+  {
+	mu_start sound/pro8/bomba.wav
+  }
+  trigger film0
+  {
+	  startcam p8x0
+  }
+
+  trigger film1
+  {
+	  startcam p8x1
+  }
+  trigger film2
+  {
+	  startcam p8x2
+  }
+  trigger film4
+  {
+	  startcam p8x4
+  }
+  trigger film4a
+  {
+	  startcam p8x4a
+  }
+
+  trigger film5
+  {
+	  startcam p8x5
+	  wait 1000
+
+	  trigger luk1 start
+  }
+  trigger film10
+  {
+	  startcam p8x10
+  }
+  trigger film11
+  {
+	  startcam p8x11
+  }
+  trigger film15
+  {
+	  startcam p8x15
+  }
+  trigger film20
+  {
+	  startcam p8x20
+  }
+   trigger film21
+  {
+	  startcam p8x21
+  }
+   trigger film22
+  {
+	  startcam p8x22
+  }
+   trigger film23
+  {
+	  startcam p8x23
+  }
+   trigger film24
+  {
+	  startcam p8x24
+  }
+   trigger film25
+  {
+	  startcam p8x25
+  }
+  trigger film30
+  {
+	  mu_start sound/music/m_mission
+	  startcam p8x30
+  }
+ trigger film26
+  {
+	  startcam p8x5
+
+	  trigger luk1 fin
+
+  }
+
+   trigger endmap
+  {
+	  changelevel pro9 persistent
+  }
+
+
+
+
+
+ }
+
+
+
+
+civ
+{
+  	attributes
+  	{
+  	//alertness 0
+  	//hearing_scale 0
+	//aggression 0
+	//inner_detection_radius
+	//tactical 0.6
+  	}
+
+
+
+  	spawn
+  	{
+
+	takeweapon all
+
+	giveweapon weapon_mp40
+   setammo ammo_9mm 10
+    trigger civ go
+ 	}
+
+ 	trigger go
+  	{
+	//facetargetangles c1
+	//wait 500
+
+    //gotomarker c3 nostop
+    //facetargetangles c1
+    setammo ammo_9mm 10
+    walktomarker c1 nostop
+
+
+
+  	}
+
+  	trigger fin
+  	{
+    //gotomarker c1
+    facetargetangles c3
+
+     wait 500
+    playsound sound/pro8/fin.wav
+ wait 6000
+ setammo ammo_9mm 10
+ //playanim reload_machinegun both
+ wait 100
+ gotomarker c3
+ trigger player endmap
+
+  	}
+
+
+
+
+}
+
+civ1
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+
+
+
+  	spawn
+  	{
+
+	takeweapon all
+
+
+ 	}
+
+
+trigger go
+{
+	 playanim switch_alarm torso
+	 wait 1000
+	 playanim giving_orders torso
+	  wait 1000
+	 playanim open_door torso
+	  wait 1000
+	 playanim switch_alarm torso
+	  wait 1000
+	 playanim giving_orders torso
+	  wait 1000
+	 playanim open_door torso
+	  wait 1000
+	 playanim switch_alarm torso
+	  wait 1000
+	 playanim giving_orders torso
+	  wait 1000
+	 playanim open_door torso
+	  wait 1000
+	 playanim switch_alarm torso
+	  wait 1000
+	 playanim giving_orders torso
+	  wait 1000
+	 playanim open_door torso
+	  wait 1000
+	 playanim switch_alarm torso
+	  wait 1000
+	 playanim giving_orders torso
+	  wait 1000
+	 playanim open_door torso
+	  wait 1000
+	 playanim switch_alarm torso
+	  wait 1000
+	 playanim giving_orders torso
+	  wait 1000
+	 playanim open_door torso
+	  wait 1000
+	   playanim giving_orders torso
+	  wait 1000
+	   playanim switch_alarm torso
+	  wait 1000
+	    playanim giving_orders torso
+	  wait 1000
+	    playanim giving_orders torso
+	  wait 1000
+	   playanim switch_alarm torso
+	  wait 1000
+	     playanim giving_orders torso
+	  wait 1000
+	    playanim giving_orders torso
+	  wait 1000
+
+ }
+
+
+
+}
+
+
+
+of1
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.5
+		starting_health 50
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 30
+
+
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		trigger of1 move1
+	}
+
+      trigger move1
+      {
+	  zoom on
+
+      playanim binocular torso forever
+
+
+
+      }
+       trigger move2
+      {
+      wait 1000
+      clearanim
+      zoom off
+      facetargetangles o1
+      playanim giving_orders torso
+      playsound sound/scenaric/general/misc_american2.wav
+      wait 500
+      trigger naz1 move1
+       wait 2000
+	  alertentity alarm
+	  wait 20000
+	  facetargetangles o2
+	  playanim scratching_chest both forever
+
+
+
+
+      }
+
+
+           enemysight player
+	{
+
+	}
+
+ 	death
+	{
+
+
+	}
+
+	}
+
+naz1
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.5
+		starting_health 50
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.0
+		fov 30
+
+	}
+
+	spawn
+	{
+
+
+
+
+
+
+	}
+
+      trigger move1
+      {
+	  playsound sound/scenaric/general/misc_alarm1.wav
+
+      gotomarker n1
+
+
+
+      }
+
+      trigger move2
+      {
+
+      gotomarker o1
+
+
+
+      }
+
+
+           enemysight player
+	{
+
+	}
+
+ 	death
+	{
+
+
+	}
+
+	}
+
+of2
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.5
+		starting_health 50
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 30
+
+
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+	}
+
+      trigger move1
+      {
+	  playanim giving_orders torso forever
+      playsound sound/scenaric/general/misc_schnell.wav
+
+
+
+
+      }
+
+
+
+           enemysight player
+	{
+
+	}
+
+ 	death
+	{
+
+
+	}
+
+	}
+
+naz2
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.5
+		starting_health 50
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.0
+		fov 30
+
+	}
+
+	spawn
+	{
+
+
+
+ trigger naz2 move
+
+
+	}
+
+      trigger move
+      {
+
+      crouchtomarker n4
+      trigger dzot kadr9a
+       crouchtomarker n3
+        crouchtomarker n2
+      //trigger dzot kadr9a
+
+
+
+      }
+
+
+           enemysight player
+	{
+
+	}
+
+ 	death
+	{
+
+
+	}
+
+	}
+
+naz3
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.5
+		starting_health 50
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.0
+		fov 30
+
+	}
+
+	spawn
+	{
+
+
+
+ trigger naz3 move
+
+
+	}
+
+      trigger move
+      {
+
+      //crouchtomarker n3
+      crouchtomarker n4
+       crouchtomarker n3
+        crouchtomarker n2
+
+
+
+      }
+
+
+           enemysight player
+	{
+
+	}
+
+ 	death
+	{
+
+
+	}
+
+	}
+
+naz4
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.5
+		starting_health 50
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.0
+		fov 30
+
+	}
+
+	spawn
+	{
+
+
+
+ trigger naz4 move
+
+
+	}
+
+      trigger move
+      {
+crouchtomarker n4
+       crouchtomarker n3
+        crouchtomarker n2
+      //crouchtomarker n4
+
+
+
+      }
+
+
+           enemysight player
+	{
+
+	}
+
+ 	death
+	{
+
+
+	}
+
+	}

@@ -1,0 +1,89 @@
+{
+map			"cutscene1"
+longname	"^2Intro"
+chapter		"1"
+}
+
+{
+map			"demo1"
+longname	"Encirclement"
+chapter		"1"
+}
+
+{
+map			"demo2"
+longname	"Encirclement II"
+chapter		"1"
+}
+
+{
+map			"demo3"
+longname	"Fighting Through the City"
+chapter		"1"
+}
+
+{
+map			"cine8"
+longname	"^2Officer's Briefing"
+chapter		"1"
+}
+
+{
+map			"demo4"
+longname	"Train Station"
+chapter		"1"
+}
+
+{
+map			"demo5"
+longname	"Encircled Again!"
+chapter		"1"
+}
+
+{
+map			"cine9"
+longname	"^2Officer's Briefing II"
+chapter		"1"
+}
+
+{
+map			"demo6"
+longname	"Saving Captain Petrenko"
+chapter		"1"
+}
+
+{
+map			"demo7"
+longname	"Sniper Hunt"
+chapter		"1"
+}
+
+{
+map			"demo8"
+longname	"Convoy Ambush"
+chapter		"1"
+}
+
+{
+map			"demo9"
+longname	"Bridge"
+chapter		"1"
+}
+
+{
+map			"demo55a"
+longname	"^2Enemy is Regrouping"
+chapter		"1"
+}
+
+{
+map			"demo10"
+longname	"Last Push"
+chapter		"1"
+}
+
+{
+map			"cine5"
+longname	"^2Victory"
+chapter		"1"
+}

@@ -1,0 +1,2087 @@
+//AI Scripting
+//Map: demo3
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 1
+		objectivesneeded 1
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/stalingrad1
+
+		#if g_level_was_selected >= 1
+		applyloadout mid_game
+		#endif
+		cvar g_level_was_selected 0
+
+		giveinventory holdable_adrenaline
+	}
+	trigger secret1
+	{
+		foundsecret		
+	}
+	trigger action1
+	{
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi9
+
+		savecheckpoint
+	}
+	trigger action2
+	{
+		alertentity nazi10
+		alertentity nazi11
+		alertentity nazi12
+	}
+	trigger action3
+	{
+		alertentity nazi13
+		alertentity nazi14
+		alertentity nazi15
+
+		savecheckpoint
+	}
+	trigger action4
+	{
+		alertentity nazi16
+		alertentity nazi17
+		alertentity nazi18
+		trigger par1 go2
+		trigger par2 go2
+		trigger par3 go2
+	}
+	trigger action5
+	{
+		alertentity nazi19
+		alertentity nazi20
+		alertentity nazi21
+		alertentity nazi22
+		alertentity nazi23
+		trigger par1 go3
+		trigger par2 go3
+		trigger par3 go3
+
+		savecheckpoint
+	}
+	trigger action6
+	{
+		alertentity nazi24
+		alertentity nazi25
+		alertentity nazi26
+		alertentity nazi27
+	}
+	trigger action7
+	{
+		alertentity nazi28
+		alertentity nazi29
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi32
+		alertentity nazi33
+		trigger par1 go4
+		trigger par2 go4
+		trigger par3 go4
+	}
+	trigger action8
+	{
+		alertentity nazi34
+		alertentity nazi35
+
+		savecheckpoint
+	}
+	trigger action9
+	{
+		alertentity nazi36
+		alertentity nazi37
+		alertentity nazi38
+	}
+	trigger action10
+	{
+		alertentity nazi39
+		alertentity nazi40
+		alertentity nazi41
+	}
+	trigger fly2
+	{	
+		trigger air3 go1
+		trigger par1 go1
+		trigger par2 go1
+		alertentity nazi4
+		alertentity nazi5
+		alertentity nazi6
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+
+		savecheckpoint
+	}
+	trigger endmap
+	{
+		changelevel cine8 persistent
+	}
+}
+nazi1		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+		playsound sol1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi3				
+{
+	attributes
+	{
+		tactical 0.5
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+	trigger go1			
+	{
+	}
+	enemysight
+	{
+		playsound sol8
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	inspectsoundend
+	{
+	}
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+par1
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 75
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 100000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		giveweaponfull weapon_ppsh
+		statetype alert
+	}
+	enemysight
+	{
+	}
+	trigger go1
+	{
+		runtomarker par1spot1
+	}
+	trigger go2
+	{
+		runtomarker par1spot2
+	}
+	trigger go3
+	{
+		runtomarker par1spot3
+	}
+	trigger go4
+	{
+		runtomarker par1spot4
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par2
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 75
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 100000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		giveweaponfull weapon_ppsh
+		statetype alert
+	}
+	enemysight
+	{
+	}
+	trigger go1
+	{
+		runtomarker par2spot1
+	}
+	trigger go2
+	{
+		runtomarker par2spot2
+	}
+	trigger go3
+	{
+		runtomarker par2spot3
+	}
+	trigger go4
+	{
+		runtomarker par2spot4
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par3
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		starting_health 75
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 100000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		giveweaponfull weapon_mosin
+		statetype alert
+	}
+	enemysight
+	{
+	}
+	trigger go2
+	{
+		runtomarker par3spot2
+	}
+	trigger go3
+	{
+		runtomarker par3spot3
+	}
+	trigger go4
+	{
+		runtomarker par3spot4
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+nazi4 // mg42-no2
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		statetype alert
+		wait 100
+		gotomarker n4spot1
+		facetargetangles n4spot1
+		mount mg42_no2
+	}
+	forced_mg42_unmount
+	{
+		deny
+	}
+	trigger releasegun2
+	{
+		unmount
+		wait 100 player
+	}
+	trigger action5
+	{
+		unmount
+		wait 100 player
+	}
+	bulletimpact
+	{
+		deny
+	}
+	inspectsoundstart
+	{
+		deny
+	}
+	inspectbodystart
+	{
+		deny
+	}
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+		alertentity dead1
+	}
+}
+dead1 // mg42-no2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		wait 1000
+		gotomarker n4spot1
+		facetargetangles n4spot1
+		mount mg42_no2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun2
+	{
+		unmount
+		wait 100 player
+	}
+	trigger action5
+	{
+		unmount
+		wait 100 player
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+nazi5		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+		playsound sol4
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi6		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+		playsound sol1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi7		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mg42m
+	}
+
+	enemysight
+	{	
+		playsound sol7
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi8		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+		playsound sol1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi9 // mg42-no1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		wait 1000
+		gotomarker n9spot1
+		facetargetangles n9spot1
+		mount mg42_no1
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun1
+	{
+		unmount
+		wait 100 player
+	}
+	trigger action5
+	{
+		unmount
+		wait 100 player
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+nazi10
+{
+	attributes
+	{
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+	pain 30
+	{
+		resetscript
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+nazi11		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi12		
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mg42m
+	}
+
+	enemysight
+	{	
+		playsound sol7
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi13
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		followcast player
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger air1 go1
+		trigger air2 go1
+	}
+}
+nazi14
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		followcast player
+	}
+
+	enemysight
+	{	
+		playsound sol1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi15
+{
+	attributes
+	{
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+	pain 30
+	{
+		resetscript
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+nazi16
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+		followcast player
+	}
+
+	enemysight
+	{	
+		playsound sol7
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi17
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+		followcast player
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi18 // mg42-no3
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		statetype alert
+		wait 1000
+		gotomarker n18spot1
+		facetargetangles n18spot1
+		mount mg42_no3
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger releasegun3
+	{
+		unmount
+		wait 100 player
+	}
+	trigger action5
+	{
+		unmount
+		wait 100 player
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+nazi19
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mg42m
+		followcast player
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi20
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		followcast player
+	}
+
+	enemysight
+	{	
+		playsound sol5
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi21
+{
+	attributes
+	{
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+	pain 30
+	{
+		resetscript
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+nazi22
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+		playsound sol1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi23
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+		playsound sol5
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi24
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi25
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi26
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+		playsound sol5
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi27
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_luger
+
+	}
+
+	enemysight
+	{	
+		playsound sol1
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi28
+{
+	attributes
+	{
+		aggression 1.0
+		fov 300
+		tactical 1.0
+	}
+	inspectsoundstart
+	{
+		deny
+	}
+	spawn
+	{
+		giveweaponfull weapon_luger
+	}
+	enemysight
+	{
+	}
+	death
+	{
+	}
+}	
+nazi29
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+		playsound sol8
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi30
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+		playsound sol8
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi31
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		followcast player
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi32
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+		followcast player
+	}
+
+	enemysight
+	{	
+		playsound sol8
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi33
+{
+	attributes
+	{
+		aggression 1.0
+		fov 120
+	}
+	spawn
+	{
+		accum 1 set 1
+		giveweaponfull weapon_flamethrower
+		statetype alert
+		followcast player
+	}
+}
+nazi34
+{
+	attributes
+	{
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+	pain 30
+	{
+		resetscript
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+nazi35
+{
+	attributes
+	{
+		aggression 1.0
+		fov 120
+	}
+	spawn
+	{
+		accum 1 set 1
+		giveweaponfull weapon_flamethrower
+		statetype alert
+		followcast player
+	}
+}
+nazi36
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi37
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi38
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi39
+{
+	attributes
+	{
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		giveweaponfull weapon_sniperscope
+		statetype alert
+	}
+	pain 30
+	{
+		resetscript
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+nazi40
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_luger
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi41
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweaponfull weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}

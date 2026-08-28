@@ -1,0 +1,70 @@
+//
+//AI Scripting
+//Map: antarktida (max)
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1.wav 1000
+	}
+
+	playerstart 
+	{
+		trigger player cine1_cam0
+
+		mu_fade 0 2000
+		mu_queue sound/music/l_theme.wav
+	}
+
+	trigger cine1_cam0
+	{
+		startcamblack anta_1
+		wait 5500
+		startcam anta_2
+		mu_play sound/music/l_finale.wav
+		wait 2500
+		trigger haunebu2 go
+		wait 1500
+		trigger nem1 go
+		wait 4800
+		trigger haunebu1 go
+		wait 2600
+		changelevel
+		wait 9000
+		endgame
+	}
+}
+
+nem1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		nosight 999999
+		noavoid
+//		mount mg42
+		godmode on
+	}
+
+	trigger go
+	{
+		fireattarget shootufo1 300
+		fireattarget shootufo2 200
+		fireattarget shootufo3 200
+		fireattarget shootufo4 150
+		fireattarget shootufo5 150
+		fireattarget shootufo6 150
+		wait 2000
+		fireattarget shootufo7 300
+		fireattarget shootufo8 200
+		fireattarget shootufo9 200
+	}
+}

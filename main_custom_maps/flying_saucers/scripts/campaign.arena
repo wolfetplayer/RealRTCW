@@ -1,0 +1,75 @@
+// Flying Saucers - Soviet agent campaign
+// cutscene maps (kreml / antarktida) are tagged green with ^2
+
+{
+map			"kreml"
+longname	"^2Kremlin Briefing"
+chapter		"1"
+}
+
+{
+map			"fstmis"
+longname	"Village"
+chapter		"1"
+}
+
+{
+map			"secmis"
+longname	"Engine Facility Complex"
+chapter		"1"
+}
+
+{
+map			"thirdmis"
+longname	"Catacombs"
+chapter		"1"
+}
+
+{
+map			"fourmis"
+longname	"Catacombs II"
+chapter		"1"
+}
+
+{
+map			"dep_castle"
+longname	"Castle"
+chapter		"1"
+}
+
+{
+map			"darkles"
+longname	"Forest"
+chapter		"1"
+}
+
+{
+map			"les"
+longname	"Base in the Forest"
+chapter		"1"
+}
+
+{
+map			"railhead"
+longname	"Support Station"
+chapter		"1"
+}
+
+{
+map			"dep_lab"
+longname	"Research Laboratory"
+chapter		"1"
+}
+
+{
+map			"karyer"
+longname	"Mine"
+chapter		"1"
+}
+
+{
+map			"antarktida"
+longname	"^2Antarctica"
+chapter		"1"
+}
+

@@ -1,0 +1,188 @@
+//Scripting
+//Map: pro4
+
+//Last edited by: Priv & BBald
+//
+
+truckn1
+{
+	spawn
+	{
+      wait 100
+      gotomarker tr1 100\\ISPR
+	  faceangles 0 180 0 gototime
+	}
+
+	trigger start
+	{
+		playsound sound/world/shift_01.wav looping
+		trigger lwheel1 begin
+		trigger rwheel1 begin
+		trigger 4whells1 begin
+
+		gotomarker tr1 1000
+	    faceangles 0 180 0 gototime
+
+		gotomarker tr2 200
+		faceangles 0 180 0 gototime
+
+        gotomarker tr3 100
+		faceangles 0 160 0 gototime
+        gotomarker tr4 80
+		faceangles 0 135 0 gototime
+        gotomarker tr5 80
+		faceangles 0 110 0 gototime
+        gotomarker tr6 80
+		faceangles 0 90 0 gototime
+        gotomarker tr7 200
+		faceangles 0 90 0 gototime
+		
+        playsound sound/world/idle_01.wav looping
+      	trigger rwheel1 stop
+        trigger lwheel1 stop
+		trigger 4whells1 stop
+	}
+}
+
+lwheel1
+{
+spawn
+{
+attachtotag truckn1 tag_w1
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+	}
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+rwheel1
+{
+
+spawn
+{
+attachtotag truckn1 tag_w2
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+trigger stop
+	{
+
+		playanim 0 10 10000
+	}
+
+}
+
+
+4whells1
+{
+
+spawn
+{
+attachtotag truckn1 tbwheels
+}
+
+trigger begin
+	{
+
+		wait 5
+		playanim 0 20 looping forever
+
+
+	}
+trigger stop
+	{
+
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+
+}
+
+handle
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		playsound sound/world/electrocute.wav
+		faceangles 180 0 0 500
+		alertentity vorot
+		trigger player cadr1
+	}
+}
+
+auto
+
+{
+	spawn
+	{
+      wait 100
+      gotomarker auto1 100\\ISPR
+	  faceangles 0 270 0 gototime
+	  playsound sound/world/idle_01.wav looping
+	}
+
+	trigger start
+	{
+		trigger player stop
+		trigger naz11 stop
+		trigger naz12 stop
+		trigger naz13 stop
+		gotomarker auto1 100
+	    faceangles 0 270 0 gototime
+		wait 5000
+		stopsound
+		playsound sound/world/shift_01.wav looping
+		gotomarker auto2 60
+	    faceangles 0 270 0 gototime
+        gotomarker auto3 80
+		faceangles 0 240 0 gototime
+        gotomarker auto4 80
+		faceangles 0 210 0 gototime
+        gotomarker auto5 100
+		faceangles 0 180 0 gototime
+        gotomarker auto6 100
+		faceangles 0 180 0 gototime
+        gotomarker auto7 100
+		faceangles 0 150 0 gototime
+		gotomarker auto8 100
+		faceangles 0 120 0 gototime
+		gotomarker auto9 120
+		faceangles 0 90 0 gototime
+		gotomarker auto10 140
+		faceangles 0 90 0 gototime
+		
+		trigger player endmap
+	}
+	
+	
+	trigger serena
+	{
+		wait 5000
+		trigger player fal
+		wait 5000
+		trigger player piz
+    }
+    
+    
+}

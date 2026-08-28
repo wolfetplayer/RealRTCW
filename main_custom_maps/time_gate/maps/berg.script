@@ -1,0 +1,108 @@
+
+
+vagon_up
+{
+	spawn
+	{
+		accum 0 set 1
+		accum 1 set 1
+		accum 2 set 1
+	}
+
+	trigger beginup
+	{
+                     // alertentity trans
+                      //alertentity trans10
+		wait 200
+		playsound sound/scenaric/tram/tram_move.wav looping
+		gotomarker v_up1 200
+		faceangles 0 0 0 gototime
+                        gotomarker v_up2 200
+		faceangles 0 0 0 gototime
+                        gotomarker v_up3 160
+		faceangles 0 0 0 gototime
+                        gotomarker v_up4 120
+		faceangles 0 0 0 gototime
+                        gotomarker v_up5 80
+		faceangles 0 0 0 gototime
+                         gotomarker v_up6 40
+		faceangles 0 0 0 gototime
+                         gotomarker v_up7 20
+		faceangles 0 0 0 gototime
+                         gotomarker v_up8 10
+		faceangles 0 0 0 gototime
+                        stopsound
+                        playsound sound/scenaric/tram/tram_stop.wav
+                        trigger naz100 n100mov
+			}
+
+}
+
+
+vagon_dn
+{
+	spawn
+	{
+		accum 0 set 1
+		accum 1 set 1
+		accum 2 set 1
+	}
+
+	trigger begindn
+	{
+		wait 200
+		playsound sound/scenaric/tram/tram_move.wav looping
+		gotomarker v_dn1 200
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn2 200
+		
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn3 160
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn4 80
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn5 40
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn6 20
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn7 10
+		faceangles 0 0 0 gototime
+                        stopsound
+                        playsound sound/scenaric/tram/tram_stop.wav
+                                             			}
+
+trigger up
+
+	         {
+		wait 200
+		playsound sound/scenaric/tram/tram_move.wav looping
+		gotomarker v_dn6 10
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn5 20
+		
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn4 40
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn3 80
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn2 160
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn1 200
+		faceangles 0 0 0 gototime
+                         gotomarker v_dn9 160
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn10 80
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn11 40
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn12 20
+		faceangles 0 0 0 gototime
+                        gotomarker v_dn13 10
+		faceangles 0 0 0 gototime
+                        stopsound
+                        playsound sound/scenaric/tram/tram_stop.wav
+
+			}
+
+
+}

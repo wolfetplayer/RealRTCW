@@ -1,0 +1,232 @@
+//
+//AI Scripting
+//Map: rock (cutscene2)
+
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+  spawn
+  {
+  mu_fade 0 1000
+  mu_queue sound/music/l_theme
+
+  trigger kino start
+  }
+  playerstart
+  {
+
+  }
+
+ trigger film
+   {
+	startcam p6x3
+   }
+
+
+trigger film1
+   {
+	startcam p6x1
+   }
+
+trigger film2
+   {
+	startcam p6x2
+   }
+
+trigger film3
+   {
+	startcam p6cam1
+   }
+
+trigger film4
+   {
+	startcam p6x4
+   }
+
+trigger film5
+   {
+	startcam p6x5
+   }
+
+ trigger film6
+   {
+	startcam p6x6
+   }
+
+   trigger film7
+   {
+	startcam p6x7
+   }
+
+   trigger film8
+   {
+	startcam p6x8
+   }
+
+   trigger film9
+   {
+	startcam p6x9
+   }
+
+   trigger film10
+   {
+	startcam p6x10
+   }
+
+   trigger film11
+   {
+	startcam p6x11
+   }
+
+   trigger film12
+   {
+	startcam p6x12
+   }
+   trigger film13
+   {
+	startcam p6x13
+	wait 11000
+    stopcam
+    trigger player endmap
+   }
+
+
+  trigger endmap
+  {
+	  changelevel pro7 silent
+  }
+
+}
+
+director
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+		// wait forever 0 target1
+	}
+
+	trigger talk1
+	{
+		playsound sound/pro6/p6x10.wav
+	}
+
+    trigger talk2
+	{
+		playsound sound/pro6/p6x13.wav
+	}
+
+}
+
+
+jack
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		nosight 999999
+		noavoid
+		wait 5
+		explicit_routing on
+		headlook off
+	}
+
+
+	trigger talk1
+	{
+		playsound sound/pro6/p6x1.wav
+	}
+
+    trigger talk2
+	{
+		playsound sound/pro6/p6x2.wav
+	}
+
+    trigger talk3
+	{
+		playsound sound/pro6/p6x3.wav
+	}
+
+    trigger talk4
+	{
+		playsound sound/pro6/p6x4.wav
+	}
+
+	trigger talk5
+	{
+		playsound sound/pro6/p6x5.wav
+	}
+
+	trigger talk6
+	{
+		playsound sound/pro6/p6x6.wav
+	}
+
+	trigger talk7
+	{
+		playsound sound/pro6/p6x7.wav
+	}
+
+	trigger talk8
+	{
+		playsound sound/pro6/p6x8.wav
+	}
+
+	trigger talk9
+	{
+		playsound sound/pro6/p6x9.wav
+	}
+
+}
+
+
+higgs
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+    trigger talk1
+	{
+		playsound sound/pro6/p6x12.wav
+	}
+
+}
+
+murphy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+            trigger talk1
+	{
+		playsound sound/pro6/p6x11.wav
+	}
+
+
+}
+
+}

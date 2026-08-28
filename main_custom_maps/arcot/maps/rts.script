@@ -1,0 +1,699 @@
+//
+//Ai script
+//Map: Road to Station
+//Last edited Arcot 24
+//
+
+
+
+t2body
+{
+
+ 	spawn
+ 	{
+        	gotomarker 1 100
+	    	faceangles 0 180 0 gototime
+ 	}
+
+ 	trigger pov
+ 	{
+        	gotomarker 1 200
+        	faceangles 0 180 0 gototime
+ 	}
+
+ 	trigger begin
+ 	{
+		wait 3000
+		alertentity dil1
+		wait 3000
+		alertentity dil2
+		wait 5000
+		alertentity dil3
+		wait 1000
+		playsound sound/world/kubel_start.wav
+		playsound sound/world/idle_01.wav looping
+		wait 5000
+		playsound sound/world/shift_01.wav looping
+		gotomarker 1 200
+		faceangles 0 170 0 gototime
+		gotomarker 2 200
+		faceangles 0 165 0 gototime
+		gotomarker 3 200
+		faceangles 0 160 0 gototime
+		gotomarker 4 200
+		faceangles 0 155 0 gototime
+		gotomarker 5 200
+		faceangles 0 150 0 gototime
+		gotomarker 6 200
+		faceangles 0 145 0 gototime
+		gotomarker 7 200
+		faceangles 0 140 0 gototime
+		gotomarker 8 200
+		faceangles 0 135 0 gototime
+		gotomarker 9 200
+		faceangles 0 130 0 gototime
+		gotomarker 10 200
+		faceangles 0 125 0 gototime
+		gotomarker 11 200
+		faceangles 0 120 0 gototime
+		gotomarker 12 200
+		faceangles 0 115 0 gototime
+		gotomarker 13 200
+		faceangles 0 120 0 gototime
+		gotomarker 14 200
+		faceangles 0 125 0 gototime
+		gotomarker 15 200
+		faceangles 0 130 0 gototime
+		gotomarker 16 200
+		faceangles 0 135 0 gototime
+		gotomarker 17 200
+		faceangles 0 140 0 gototime
+		gotomarker 18 200
+		faceangles 0 150 0 gototime
+		gotomarker 19 200
+		faceangles 0 140 0 gototime
+		gotomarker 20 200
+		faceangles 0 135 0 gototime
+		trigger t2body next
+	}
+
+	trigger next
+	{
+		gotomarker 21 200
+		faceangles 0 130 0 gototime
+		gotomarker 22 200
+		faceangles 0 125 0 gototime
+		gotomarker 23 200
+		faceangles 0 120 0 gototime
+		gotomarker 24 200
+		faceangles 0 100 0 gototime
+		gotomarker 25 200
+		faceangles 0 95 0 gototime
+		gotomarker 26 200
+		faceangles 0 90 0 gototime
+		gotomarker 27 200
+		faceangles 0 85 0 gototime
+		gotomarker 28 200
+		faceangles 0 80 0 gototime
+		gotomarker 29 200
+		faceangles 0 70 0 gototime
+		gotomarker 30 200
+		faceangles 0 60 0 gototime
+		gotomarker 31 200
+		faceangles 0 50 0 gototime
+		gotomarker 32 200
+		faceangles 0 40 0 gototime
+		gotomarker 33 200
+		faceangles 0 35 0 gototime
+		gotomarker 34 200
+		faceangles 0 30 0 gototime
+		gotomarker 35 200
+		faceangles 0 25 0 gototime
+		gotomarker 36 200
+		faceangles 0 20 0 gototime
+		gotomarker 37 200
+		faceangles 0 15 0 gototime
+		gotomarker 38 200
+		faceangles 0 10 0 gototime
+		gotomarker 39 200
+		faceangles 0 20 0 gototime
+		gotomarker 40 200
+		trigger t2body next2
+	}
+
+	trigger next2
+	{
+		gotomarker 41 200
+		faceangles 0 27 0 gototime
+		gotomarker 42 200
+		faceangles 0 25 0 gototime
+		gotomarker 43 200
+		faceangles 0 22 0 gototime
+		gotomarker 44 200
+		faceangles 0 19 0 gototime
+		gotomarker 45 200
+		faceangles 0 15 0 gototime
+		gotomarker 46 200
+		faceangles 0 12 0 gototime
+		gotomarker 47 200
+		faceangles 0 8 0 gototime
+		gotomarker 48 200
+		faceangles 0 0 0 gototime
+		gotomarker 49 200
+		faceangles 0 0 0 gototime
+		gotomarker 50 200
+		faceangles 0 0 0 gototime
+		gotomarker 51 200
+		faceangles 0 350 0 gototime
+		gotomarker 52 200
+		faceangles 0 345 0 gototime
+		gotomarker 53 200
+		faceangles 0 335 0 gototime
+		gotomarker 54 200
+		faceangles 0 325 0 gototime
+		gotomarker 55 200
+		faceangles 0 315 0 gototime
+		gotomarker 56 200
+		faceangles 0 305 0 gototime
+		gotomarker 57 200
+		faceangles 0 300 0 gototime
+		gotomarker 58 200
+		faceangles 0 305 0 gototime
+		gotomarker 59 200
+		faceangles 0 310 0 gototime
+		gotomarker 60 200
+		faceangles 0 315 0 gototime
+		trigger t2body next3
+	}
+
+	trigger next3
+	{
+		gotomarker 61 200
+		faceangles 0 325 0 gototime
+		gotomarker 62 200
+		faceangles 0 335 0 gototime
+		gotomarker 63 200
+		faceangles 0 345 0 gototime
+		gotomarker 64 200
+		faceangles 0 360 0 gototime
+                playsound sound/world/idle_01.wav looping
+		wait 1000
+		playsound sound\scenaric\dam\horn_blast.wav
+		wait 5000
+		alertentity opengater
+		alertentity opengatel
+		wait 2000
+                playsound sound/world/shift_01.wav looping
+		gotomarker 65 200
+		faceangles 0 360 0 gototime
+		gotomarker 66 200
+		faceangles 0 5 0 gototime
+		gotomarker 67 200
+		faceangles 0 10 0 gototime
+		gotomarker 68 200
+		faceangles 0 15 0 gototime
+		gotomarker 69 200
+		faceangles 0 20 0 gototime
+		gotomarker 70 200
+		faceangles 0 25 0 gototime
+		gotomarker 71 200
+		faceangles 0 30 0 gototime
+		gotomarker 72 200
+		faceangles 0 35 0 gototime
+		gotomarker 73 200
+		faceangles 0 45 0 gototime
+		gotomarker 74 200
+		faceangles 0 55 0 gototime
+		gotomarker 75 200
+		faceangles 0 65 0 gototime
+		gotomarker 76 200
+		faceangles 0 70 0 gototime
+		gotomarker 77 200
+		faceangles 0 75 0 gototime
+	}		
+}
+
+box
+{
+	spawn
+	{
+		gotomarker 1 100
+	}
+
+	trigger pov
+	{
+		gotomarker 1 200
+		faceangles 0 180 0 gototime
+	}
+
+	trigger begin
+	{
+		wait 3000
+		wait 3000
+		wait 5000
+		wait 1000
+		wait 5000
+		gotomarker 1 200
+		faceangles 0 170 0 gototime
+		gotomarker 2 200
+		faceangles 0 165 0 gototime
+		gotomarker 3 200
+		faceangles 0 160 0 gototime
+		gotomarker 4 200
+		faceangles 0 155 0 gototime
+		gotomarker 5 200
+		faceangles 0 150 0 gototime
+		gotomarker 6 200
+		faceangles 0 145 0 gototime
+		gotomarker 7 200
+		faceangles 0 140 0 gototime
+		gotomarker 8 200
+		faceangles 0 135 0 gototime
+		gotomarker 9 200
+		faceangles 0 130 0 gototime
+		gotomarker 10 200
+		faceangles 0 125 0 gototime
+		gotomarker 11 200
+		faceangles 0 120 0 gototime
+		gotomarker 12 200
+		faceangles 0 115 0 gototime
+		gotomarker 13 200
+		faceangles 0 120 0 gototime
+		gotomarker 14 200
+		faceangles 0 125 0 gototime
+		gotomarker 15 200
+		faceangles 0 130 0 gototime
+		gotomarker 16 200
+		faceangles 0 135 0 gototime
+		gotomarker 17 200
+		faceangles 0 140 0 gototime
+		gotomarker 18 200
+		faceangles 0 150 0 gototime
+		gotomarker 19 200
+		faceangles 0 140 0 gototime
+		gotomarker 20 200
+		faceangles 0 135 0 gototime
+		trigger box next
+	}
+
+	trigger next
+	{
+		gotomarker 21 200
+		faceangles 0 130 0 gototime
+		gotomarker 22 200
+		faceangles 0 125 0 gototime
+		gotomarker 23 200
+		faceangles 0 120 0 gototime
+		gotomarker 24 200
+		faceangles 0 100 0 gototime
+		gotomarker 25 200
+		faceangles 0 95 0 gototime
+		gotomarker 26 200
+		faceangles 0 90 0 gototime
+		gotomarker 27 200
+		faceangles 0 85 0 gototime
+		gotomarker 28 200
+		faceangles 0 80 0 gototime
+		gotomarker 29 200
+		faceangles 0 70 0 gototime
+		gotomarker 30 200
+		faceangles 0 60 0 gototime
+		gotomarker 31 200
+		faceangles 0 50 0 gototime
+		gotomarker 32 200
+		faceangles 0 40 0 gototime
+		gotomarker 33 200
+		faceangles 0 35 0 gototime
+		gotomarker 34 200
+		faceangles 0 30 0 gototime
+		gotomarker 35 200
+		faceangles 0 25 0 gototime
+		gotomarker 36 200
+		faceangles 0 20 0 gototime
+		gotomarker 37 200
+		faceangles 0 15 0 gototime
+		gotomarker 38 200
+		faceangles 0 10 0 gototime
+		gotomarker 39 200
+		faceangles 0 20 0 gototime
+		gotomarker 40 200
+		trigger box next2
+	}
+
+	trigger next2
+	{
+		gotomarker 41 200
+		faceangles 0 27 0 gototime
+		gotomarker 42 200
+		faceangles 0 25 0 gototime
+		gotomarker 43 200
+		faceangles 0 22 0 gototime
+		gotomarker 44 200
+		faceangles 0 19 0 gototime
+		gotomarker 45 200
+		faceangles 0 15 0 gototime
+		gotomarker 46 200
+		faceangles 0 12 0 gototime
+		gotomarker 47 200
+		faceangles 0 8 0 gototime
+		gotomarker 48 200
+		faceangles 0 0 0 gototime
+		gotomarker 49 200
+		faceangles 0 0 0 gototime
+		gotomarker 50 200
+		faceangles 0 0 0 gototime
+		gotomarker 51 200
+		faceangles 0 350 0 gototime
+		gotomarker 52 200
+		faceangles 0 345 0 gototime
+		gotomarker 53 200
+		faceangles 0 335 0 gototime
+		gotomarker 54 200
+		faceangles 0 325 0 gototime
+		gotomarker 55 200
+		faceangles 0 315 0 gototime
+		gotomarker 56 200
+		faceangles 0 305 0 gototime
+		gotomarker 57 200
+		faceangles 0 300 0 gototime
+		gotomarker 58 200
+		faceangles 0 305 0 gototime
+		gotomarker 59 200
+		faceangles 0 310 0 gototime
+		gotomarker 60 200
+		faceangles 0 315 0 gototime
+		trigger box next3
+	}
+
+	trigger next3
+	{
+		gotomarker 61 200
+		faceangles 0 325 0 gototime
+		gotomarker 62 200
+		faceangles 0 335 0 gototime
+		gotomarker 63 200
+		faceangles 0 345 0 gototime
+		gotomarker 64 200
+		faceangles 0 360 0 gototime
+		wait 1000
+		wait 5000
+		wait 2000
+		gotomarker 65 200
+		faceangles 0 360 0 gototime
+		gotomarker 66 200
+		faceangles 0 5 0 gototime
+		gotomarker 67 200
+		faceangles 0 10 0 gototime
+		gotomarker 68 200
+		faceangles 0 15 0 gototime
+		gotomarker 69 200
+		faceangles 0 20 0 gototime
+		gotomarker 70 200
+		faceangles 0 25 0 gototime
+		gotomarker 71 200
+		faceangles 0 30 0 gototime
+		gotomarker 72 200
+		faceangles 0 35 0 gototime
+		gotomarker 73 200
+		faceangles 0 45 0 gototime
+		gotomarker 74 200
+		faceangles 0 55 0 gototime
+		gotomarker 75 200
+		faceangles 0 65 0 gototime
+		gotomarker 76 200
+		faceangles 0 70 0 gototime
+		gotomarker 77 200
+		faceangles 0 75 0 gototime
+	}
+}
+
+box2
+{
+	spawn
+	{
+		gotomarker 1 100
+	}
+
+	trigger pov
+	{
+		gotomarker 1 200
+		faceangles 0 180 0 gototime
+	}
+
+	trigger begin
+	{
+		wait 3000
+		wait 3000
+		wait 5000
+		wait 1000
+		wait 5000
+		gotomarker 1 200
+		faceangles 0 170 0 gototime
+		gotomarker 2 200
+		faceangles 0 165 0 gototime
+		playsound sound\world\frostbite_fabric.wav
+		playsound sound\world\frostbite_record_music.wav looping
+		gotomarker 3 200
+		faceangles 0 160 0 gototime
+		gotomarker 4 200
+		faceangles 0 155 0 gototime
+		gotomarker 5 200
+		faceangles 0 150 0 gototime
+		gotomarker 6 200
+		faceangles 0 145 0 gototime
+		gotomarker 7 200
+		faceangles 0 140 0 gototime
+		gotomarker 8 200
+		faceangles 0 135 0 gototime
+		gotomarker 9 200
+		faceangles 0 130 0 gototime
+		gotomarker 10 200
+		faceangles 0 125 0 gototime
+		gotomarker 11 200
+		faceangles 0 120 0 gototime
+		gotomarker 12 200
+		faceangles 0 115 0 gototime
+		gotomarker 13 200
+		faceangles 0 120 0 gototime
+		gotomarker 14 200
+		faceangles 0 125 0 gototime
+		gotomarker 15 200
+		faceangles 0 130 0 gototime
+		gotomarker 16 200
+		faceangles 0 135 0 gototime
+		gotomarker 17 200
+		faceangles 0 140 0 gototime
+		gotomarker 18 200
+		faceangles 0 150 0 gototime
+		gotomarker 19 200
+		faceangles 0 140 0 gototime
+		gotomarker 20 200
+		faceangles 0 135 0 gototime
+		trigger box2 next
+	}
+
+	trigger next
+	{
+		gotomarker 21 200
+		faceangles 0 130 0 gototime
+		gotomarker 22 200
+		faceangles 0 125 0 gototime
+		gotomarker 23 200
+		faceangles 0 120 0 gototime
+		gotomarker 24 200
+		faceangles 0 100 0 gototime
+		gotomarker 25 200
+		faceangles 0 95 0 gototime
+		gotomarker 26 200
+		faceangles 0 90 0 gototime
+		gotomarker 27 200
+		faceangles 0 85 0 gototime
+		gotomarker 28 200
+		faceangles 0 80 0 gototime
+		gotomarker 29 200
+		faceangles 0 70 0 gototime
+		gotomarker 30 200
+		faceangles 0 60 0 gototime
+		gotomarker 31 200
+		faceangles 0 50 0 gototime
+		gotomarker 32 200
+		faceangles 0 40 0 gototime
+		gotomarker 33 200
+		faceangles 0 35 0 gototime
+		gotomarker 34 200
+		faceangles 0 30 0 gototime
+		gotomarker 35 200
+		faceangles 0 25 0 gototime
+		gotomarker 36 200
+		faceangles 0 20 0 gototime
+		gotomarker 37 200
+		faceangles 0 15 0 gototime
+		gotomarker 38 200
+		faceangles 0 10 0 gototime
+		gotomarker 39 200
+		faceangles 0 20 0 gototime
+		gotomarker 40 200
+		trigger box2 next2
+	}
+
+	trigger next2
+	{
+		gotomarker 41 200
+		faceangles 0 27 0 gototime
+		gotomarker 42 200
+		faceangles 0 25 0 gototime
+		gotomarker 43 200
+		faceangles 0 22 0 gototime
+		gotomarker 44 200
+		faceangles 0 19 0 gototime
+		gotomarker 45 200
+		faceangles 0 15 0 gototime
+		gotomarker 46 200
+		faceangles 0 12 0 gototime
+		gotomarker 47 200
+		faceangles 0 8 0 gototime
+		gotomarker 48 200
+		faceangles 0 0 0 gototime
+		gotomarker 49 200
+		faceangles 0 0 0 gototime
+		gotomarker 50 200
+		faceangles 0 0 0 gototime
+		gotomarker 51 200
+		faceangles 0 350 0 gototime
+		gotomarker 52 200
+		faceangles 0 345 0 gototime
+		gotomarker 53 200
+		faceangles 0 335 0 gototime
+		gotomarker 54 200
+		faceangles 0 325 0 gototime
+		gotomarker 55 200
+		faceangles 0 315 0 gototime
+		gotomarker 56 200
+		faceangles 0 305 0 gototime
+		gotomarker 57 200
+		faceangles 0 300 0 gototime
+		gotomarker 58 200
+		faceangles 0 305 0 gototime
+		gotomarker 59 200
+		faceangles 0 310 0 gototime
+		gotomarker 60 200
+		faceangles 0 315 0 gototime
+		trigger box2 next3
+	}
+
+	trigger next3
+	{
+		gotomarker 61 200
+		faceangles 0 325 0 gototime
+		gotomarker 62 200
+		faceangles 0 335 0 gototime
+		gotomarker 63 200
+		faceangles 0 345 0 gototime
+		gotomarker 64 200
+		faceangles 0 360 0 gototime
+		wait 1000
+		wait 5000
+		wait 2000
+		gotomarker 65 200
+		faceangles 0 360 0 gototime
+		gotomarker 66 200
+		faceangles 0 5 0 gototime
+		gotomarker 67 200
+		faceangles 0 10 0 gototime
+		gotomarker 68 200
+		faceangles 0 15 0 gototime
+		gotomarker 69 200
+		faceangles 0 20 0 gototime
+		gotomarker 70 200
+		faceangles 0 25 0 gototime
+		gotomarker 71 200
+		faceangles 0 30 0 gototime
+		gotomarker 72 200
+		faceangles 0 35 0 gototime
+		gotomarker 73 200
+		faceangles 0 45 0 gototime
+		gotomarker 74 200
+		faceangles 0 55 0 gototime
+		gotomarker 75 200
+		faceangles 0 65 0 gototime
+		gotomarker 76 200
+		faceangles 0 70 0 gototime
+		gotomarker 77 200
+		faceangles 0 75 0 gototime
+	}
+}
+
+me
+{
+	spawn
+	{
+		wait 100
+		gotomarker m1 10000
+		faceangles 0 150 -8 gototime
+	}
+
+	trigger go
+	{
+		gotomarker m1 1500
+		faceangles 10 150 0 gototime
+		gotomarker m2 1500
+		faceangles 10 150 0 gototime
+		gotomarker m3 1500
+		faceangles 10 150 6 gototime
+		gotomarker m4 1600
+		faceangles 10 150 6 gototime
+		gotomarker m5 1500
+		faceangles 10 150 6 gototime
+		gotomarker m6 1500
+		faceangles 10 150 11 gototime
+		gotomarker m7 1500
+		faceangles 10 150 16 gototime
+		gotomarker m8 1500
+		faceangles 10 150 21 gototime
+		gotomarker m9 1500
+		faceangles 10 150 26 gototime
+		gotomarker m10 1500
+		faceangles 10 150 31 gototime
+		gotomarker m11 1500
+		faceangles 10 150 35 gototime
+		gotomarker m12 1500
+		faceangles 10 150 41 gototime
+		gotomarker m13 1500
+		faceangles 10 150 46 gototime
+		gotomarker m14 1500
+		faceangles 10 150 51 gototime
+		gotomarker m15 1500
+		faceangles 10 150 55 gototime
+		alertentity tr_01
+	}
+}
+
+
+me2
+{
+	spawn
+	{
+		wait 100
+		gotomarker start1 10000
+		faceangles 0 150 0 gototime
+	}
+
+	trigger go
+	{
+		wait 1000
+		gotomarker mm1 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm2 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm3 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm4 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm5 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm6 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm7 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm8 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm9 1500
+		faceangles 0 150 0 gototime
+                gotomarker mm10 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm11 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm12 1500
+		faceangles 0 150 0 gototime
+		gotomarker mm13 1500
+		faceangles 0 150 0 gototime
+		alertentity killsmoke
+                gotomarker mm14 1500
+		faceangles 0 150 0 gototime
+                alertentity tr_02
+	}
+}
+
+
+
+   

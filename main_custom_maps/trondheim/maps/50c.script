@@ -1,0 +1,153 @@
+
+//
+//Brush Scripting
+//Map: Assault
+//Last edited by: Mike (110501)
+//
+elevator1
+{
+	spawn
+	{
+	}
+	trigger up
+	{
+		playsound sound/movers/elevators/elev1_start.wav
+		wait 5
+		playsound sound/movers/elevators/elev1_loop.wav looping
+		wait 5000 
+		gotomarker eup 50
+		faceangles 0  0 0 gototime
+		gotomarker tram1 50
+		faceangles 0  0 0 gototime
+		gotomarker tram2 60
+		faceangles 0  0 0 gototime
+		gotomarker tram3 70
+		faceangles 0  0 0 gototime
+		gotomarker tram4 70
+		faceangles 0  0 0 gototime
+		gotomarker tram5 70
+		faceangles 0  0 0 gototime
+		gotomarker tram6 60
+		faceangles 0  0 0 gototime
+		gotomarker edown 50
+		faceangles 0  0 0 gototime
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav	
+	//	trigger checker1 elevator_status_up
+	//	trigger button1 elevator_upcheckin
+	//	trigger button2 elevator_upcheckin
+	}
+	trigger down
+	{
+		playsound sound/movers/elevators/elev1_start.wav
+		wait 5
+		playsound sound/movers/elevators/elev1_loop.wav looping
+		wait 5000
+		gotomarker edown 50
+		faceangles 0  0 0 gototime 
+		gotomarker tram6 60
+		faceangles 0  0 0 gototime
+		gotomarker tram5 70
+		faceangles 0  0 0 gototime
+		gotomarker tram4 70
+		faceangles 0  0 0 gototime
+		gotomarker tram3 70
+		faceangles 0  0 0 gototime
+		gotomarker tram2 60
+		faceangles 0  0 0 gototime
+		gotomarker tram1 50
+		faceangles 0  0 0 gototime
+		gotomarker eup 50
+		faceangles 0  0 0 gototime
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav	
+	//	trigger checker1 elevator_status_down
+	//	trigger button1 elevator_downcheckin
+	//	trigger button2 elevator_downcheckin
+	}
+}
+button1
+{
+	spawn
+	{	
+	}
+
+	trigger elevator_upcheckin
+	{
+	}
+
+	trigger elevator_downcheckin
+	{
+	}
+
+	trigger buttons
+	{		
+		wait 5
+		trigger button1 start
+		wait 5 
+		trigger button1 off		
+	}
+
+	trigger start
+	{
+		gotomarker b1in 50 wait
+		trigger elevator1 up
+		playsound sound/movers/switches/switch.wav
+		wait 15000
+		gotomarker b1start 50 wait 
+		playsound sound/movers/switchesswitch.wav
+		wait 1300
+	}
+
+	trigger off
+	{
+		resetscript
+		gotomarker b1in 50 wait
+		playsound sound/movers/switchesswitch.wav
+		gotomarker b1start 50 wait 
+		playsound sound/movers/switchesswitch.wav
+	}
+}
+
+button2
+{
+	spawn
+	{	
+	}
+
+	trigger elevator_upcheckin
+	{
+	}
+
+	trigger elevator_downcheckin
+	{
+	}
+
+	trigger buttons
+	{
+		wait 5
+		trigger button2 start
+		wait 5
+		trigger button2 off
+	}
+
+	trigger start
+	{
+		gotomarker b2in 50 wait
+		trigger elevator1 down
+		playsound sound/movers/switches/switch.wav
+		wait 15000
+		gotomarker b2start 50 wait 
+		playsound sound/movers/switchesswitch.wav
+		wait 1300
+	}
+
+	trigger off
+	{
+		resetscript
+		gotomarker b2in 50 wait
+		playsound sound/movers/switchesswitch.wav
+		gotomarker b2start 50 wait 
+		playsound sound/movers/switchesswitch.wav
+	}
+}

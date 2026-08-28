@@ -1,0 +1,1855 @@
+
+//AI Scripting
+//Map Arcot_2
+//last edited by Arcot 24
+//02.06.2008
+
+
+player
+{
+	spawn
+	{
+		cvar g_episode 1
+		objectivesneeded 2
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		applyloadout arcot_2
+		#endif
+		cvar g_level_was_selected 0
+		mu_fade 0 1000 // music fades to 0% in 1 second (1000mSec.)
+		mu_queue sound/music/m_drums
+		alertentity post1
+		alertentity post2
+		alertentity of3_kill
+		trigger orel2 on_off
+		trigger table1 motor
+		trigger gus move
+		wait 40000
+		trigger electrik go
+	}
+
+	trigger action1
+	{
+		alertentity arcot1
+		alertentity arcot2
+		alertentity arcot3
+	}
+
+	trigger action2
+	{
+		trigger t2body begin
+	}
+
+	trigger action3
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_alarm
+		alertentity ssunter1
+		alertentity ssunter2
+		alertentity sszoldat1
+		alertentity sszoldat2
+		alertentity of2
+
+		savecheckpoint
+	}
+
+	trigger action4
+	{
+		alertentity nazi3
+		alertentity nazi4
+		alertentity trev
+	}
+
+	trigger action5
+	{
+		alertentity sexy_1
+		alertentity sexy_2
+		alertentity sexy_3
+		alertentity sexy_4
+		alertentity sszoldat3
+		alertentity ssunter3
+		alertentity tablekick
+
+		savecheckpoint
+	}
+
+	trigger action6
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_grave
+	}
+
+	trigger action7
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_tension
+		alertentity mechanic2
+		alertentity opendoor
+
+		savecheckpoint
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		foundsecret
+	}
+
+	trigger changemusic
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_moving
+	}
+
+	trigger destroy
+	{
+		alertentity wakedoor
+	}
+
+	trigger krannik_close
+	{
+		trigger handcrank close
+	}
+
+	trigger dos
+	{
+		trigger shelf fall1
+		trigger barrell1 fall1
+		trigger barrell2 fall1
+		trigger barrell3 fall1
+	}
+
+	trigger zad1
+	{
+		alertentity sexy_5
+		alertentity sexy_6
+		alertentity sexy_7
+		alertentity sszoldat4
+		alertentity opensafe
+		wait 3000
+		mu_fade 0 1000
+		mu_queue sound/music/m_mission
+	}
+
+	trigger zad2
+	{
+		objectivemet 2
+	}
+
+	trigger zad3
+	{
+		objectivemet 1
+	}
+
+	trigger killdoor
+	{
+		wait 300
+		trigger tablekick kick_table
+	}
+
+	trigger orelstart
+	{
+		trigger orel move
+		trigger orel2 move
+	}
+	
+trigger endmap
+	{
+		changelevel bunker persistent
+	}
+}
+
+tablekick
+{
+	attributes
+	{
+		tactical 9.0
+		alertness 2048
+		fov 60
+		aggression 0.5
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 70
+		setclip weapon_mp40 32
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+	trigger kick_table
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+		noattack 2000
+		runtomarker n3spot2
+		facetargetangles n3spot2
+		trigger table1 flip_over
+		playanim kick both
+		resetscript
+		runtomarker n3spot1
+		attack
+		alertentity killscript
+		wait forever 0
+	}
+
+	avoiddanger grenade
+	{
+		clearanim
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_bitset 1
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 0 abort_if_bitset 1
+	}
+
+	death
+	{
+		trigger dead killer
+		alertentity killscript
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_bitset 1
+	}
+}
+
+of3_kill
+{
+	attributes
+	{
+		tactical 9.0
+		alertness 2048
+		fov 60
+		aggression 0.5
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		trigger of3_kill move
+	}
+
+	trigger move
+	{
+		walktomarker p3_3
+		trigger of3_kill dialog
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\escape1\axis12_coded_relax.wav
+		wait 3000
+		playsound sound\scenaric\escape1\axis12_priority_relax.wav
+		wait 5000
+		wait 1500
+		walktomarker les1
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	death
+	{
+	}
+
+	enemysight
+	{
+	}
+}
+
+
+nazi4
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 0.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+		runtomarker n1
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi4 marchloop
+	}
+
+	trigger marchloop
+	{
+		runtomarker tv1
+		runtomarker tv2
+	}
+
+	death
+	{
+		alertentity spal1
+		alertentity spal2
+	}
+
+	enemysight
+	{
+		alertentity spal1
+		alertentity spal2
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+trev
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 0.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+	}
+
+	spawn
+	{
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+	{
+		statetype alert
+		runtomarker alarm1
+		alertentity activatealarm3
+		wait 1000
+		wait forever 0
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+nazi3  /// radioroom
+{
+	attributes
+	{
+		fov 90
+	}
+
+	spawn
+	{
+		accum 1 set 0 // 1 = alerted
+		accum 2 set 0 // 1 = radio tunning on
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+	}
+
+	trigger blocking3
+	{
+		accum 1 set 1
+		statetype alert
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+		attack
+		wait 8000 0
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger nazi3 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger nazi3 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger nazi3 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger nazi3 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger nazi3 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger nazi3 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+	}
+
+	death
+	{
+		trigger dead killer
+		accum 1 set 1
+	}
+}
+
+post1
+{
+	attributes
+	{
+        	inner_detection_radius 2048
+		attack_crouch 0.9
+		aggression 0.9
+		fov 1024
+		alertness 1200
+
+	}
+
+	spawn
+	{
+	    	setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_9mm 999
+		selectweapon weapon_mauserrifle
+		trigger post1 marchloop
+	}
+
+        trigger marchloop
+        {
+                walktomarker post1_1
+                walktomarker post1_2
+                walktomarker post1_3
+		walktomarker post1_5
+		walktomarker post1_6
+		trigger post1 marchloop
+        }
+	
+	enemysight
+	{
+		resetscript
+	}
+
+}
+
+post2
+{
+	attributes
+	{
+		inner_detection_radius 1024
+		attack_crouch 9.2
+		hearing_scale 10
+		aggression 9.50
+		fov 512
+		tactical 10
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger post2 marchloop
+	}
+
+	trigger marchloop
+	{
+		walktomarker p2_1
+		walktomarker p2_2
+		wait 2000
+		trigger post2 marchloop
+	}
+
+	trigger begin1
+	{
+		runtomarker sirena1
+		alertentity activatealarm1
+		statetype alert
+		wait 1000
+		wait forever 0
+	}
+
+	friendlysightcorpse
+	{
+		playsound sound\scenaric\rocket\sci1_man_down.wav
+	}
+
+	enemysight
+	{
+		playsound v2_Gen5_alarm_alarm
+		trigger post2 begin1
+	}
+}
+
+post3
+{
+	attributes
+	{
+		inner_detection_radius 2048
+		attack_crouch 0.2
+		aggression 9.99
+		fov 512
+		alertness 1200
+
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait 5000
+		trigger post3 move
+	}
+
+	trigger move
+	{
+		walktomarker p3_2
+		walktomarker hod1
+	}
+	trigger dialog
+	{
+		playsound sound\scenaric\escape1\c_axis1_jawhol.wav
+		playanim nazi_salute both
+		wait 1000
+		trigger post3 marchloop
+	}
+
+	trigger marchloop
+	{
+		walktomarker p3_1
+		walktomarker p3_2
+		playsound Whistle1
+		walktomarker p3_3
+		walktomarker p3_4
+		playsound yawn
+		trigger post3 marchloop
+	}
+
+	trigger begin3
+	{
+		runtomarker p3_1
+		wait 1000
+		wait forever 0
+	}
+
+	friendlysightcorpse
+
+	{
+		playsound sound\scenaric\rocket\sci1_man_down.wav
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound v2_Gen5_alarm_alarm
+	}
+
+ 	death
+	{
+	}
+
+}
+
+vishka2
+{
+	attributes
+	{
+		attack_crouch 0.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = sighted player
+		accum 1 set 0 // random generator
+		accum 2 set 0 // 1 = truck is past bridge
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger vishka2 marchloop
+
+	}
+
+        enemysight
+	{
+		trigger player changemusic
+		playsound sound\scenaric\village2\Gen_I_must_raise_alarm.wav
+	}
+
+	trigger marchloop
+	{
+		trigger vishka2 bridgelook3
+		wait 30000
+		trigger vishka2 marchloop
+		wait 100
+	}
+
+	trigger bridgelook3
+
+	{
+		accum 2 abort_if_not_equal 0
+		resetscript
+		zoom on
+		attrib alertness 2400
+		playanim binocular both
+		playanim binocular both
+		attrib alertness 2048
+		zoom off
+	}
+}
+
+arcot1
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 0.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger arcot1 marchloop
+	}
+
+	trigger marchloop
+	{
+		runtomarker door1
+		runtomarker door2
+		runtomarker les1
+		runtomarker p3_4
+		runtomarker p3_3
+	}
+
+	enemysight
+	{
+		resetscript
+		statetype alert
+		playsound sound\world\attack2.wav
+	}
+}
+
+arcot2
+{
+attributes
+{
+	inner_detection_radius 384
+	attack_crouch 0.2
+	aggression 9.99
+	fov 120
+	alertness 1200
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		wait 1000
+		trigger arcot2 marchloop
+	}
+
+	trigger marchloop
+	{
+		runtomarker door4
+		runtomarker les1
+	}
+
+	enemysight
+	{
+		resetscript
+		statetype alert
+		playsound sound\world\attack2.wav
+	}
+}
+
+arcot3
+{
+	attributes
+	{
+        	inner_detection_radius 384
+		attack_crouch 9.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+	    	giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+        enemysight
+        {
+                playsound sound\scenaric\general\misc_stop_him.wav
+	}
+}
+
+spal1
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 0.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+        	wait 1000
+        	trigger spal1 marchloop
+	}
+
+        trigger marchloop
+        {
+                runtomarker s
+                runtomarker s2
+                runtomarker sp1
+                runtomarker sp2
+        }
+
+        enemysight
+	{
+		resetscript
+		statetype alert
+	}
+
+	death
+	{
+		trigger dead killer
+		alertentity nazi5
+	}
+}
+
+spal2
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 0.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait 1000
+		trigger spal2 marchloop
+	}
+
+	trigger marchloop
+	{
+		runtomarker s
+		runtomarker sp1
+		runtomarker sp3
+	}
+
+	enemysight
+	{
+		statetype alert
+	}
+
+	death
+	{
+		trigger dead killer
+		alertentity nazi5
+	}
+}
+
+of3
+
+{
+	attributes
+	{
+		inner_detection_radius 1024
+		attack_crouch 0.2
+		aggression 9.99
+		fov 512
+		alertness 1200
+
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+        enemysight
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		clearanim
+		resetscript
+		attrib alertness 2048
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 100
+		wait 1000 0 player
+		resetscript
+	}
+}
+
+of2
+
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 0.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+        enemysight
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		clearanim
+		resetscript
+		attrib alertness 2048
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setammo ammo_9mm 100
+		wait 1000 0 player
+		resetscript
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+
+nazi5
+{
+        attributes
+	{
+		attack_crouch 8.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setammo ammo_9mm 70
+		setclip weapon_mp40 32
+		selectweapon weapon_mp40
+		trigger nazi5 marchloop
+	}
+
+	trigger marchloop
+	{
+		runtomarker nz1
+		runtomarker nz2
+		runtomarker nz3
+		runtomarker nz4
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound sound/scenaric/chateau/hoch_whats_going_on.wav
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+mechanic2
+{
+	attributes
+	{
+		attack_crouch 9.90
+		fov 120
+		inner_detection_radius 384
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		accum 1 set 0 // 1 = others sighted player first
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		wait 100
+		movetype crouch
+		trigger mechanic2 talk
+	}
+
+	trigger working1
+	{
+		accum 0 abort_if_not_equal 0
+		playanim device both
+		trigger mechanic2 working1 forever
+	}
+
+	trigger talk
+	{
+		playsound sound\scenaric\dam\m1_verdammt_leak.wav
+		trigger mechanic2 working1
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	statechange query alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	statechange query combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	bulletimpact
+	{
+		statetype alert
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	inspectsoundstart
+	{
+		statetype alert
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger mechanic2 alert1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger alert1
+	{
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait 50 player
+		wait 1000
+	}
+
+	trigger sighted1 // called by other ai's
+	{
+		accum 1 set 1
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		clearanim
+		statetype alert
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait 50 player
+		wait 1000
+	}
+
+	enemysight
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+	}
+
+	death
+	{
+		accum 1 set 1
+		trigger dead killer
+	}
+}
+
+sexy_1
+{
+        attributes
+	{
+		attack_crouch 0.0
+		alertness 32000
+		running_speed 220
+		crouching_speed 50
+		fov 1024
+		yaw_speed 200
+		tactical 1.0
+		camper 1.0
+		hearing_scale 1.0
+		inner_detection_radius 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 2
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger sexy_1 go
+	}
+
+	trigger go
+	{
+		walktomarker sexy_1_1
+		walktomarker sexy_1_2
+		wait 500
+		trigger sexy_1 go
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger nazi3 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger sexy_1 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger sexy_1 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger sexy_1 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger sexy_1 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger sexy_1 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		resetscript
+	}
+
+        enemysight
+        {
+		resetscript
+		playsound sound\scenaric\general\misc_kill_him.wav
+        }
+
+	death
+	{
+		trigger dead killer
+	}
+
+}
+
+sexy_2
+{
+        attributes
+	{
+		attack_crouch 0.0
+		alertness 32000
+		running_speed 220
+		crouching_speed 50
+		fov 1024
+		yaw_speed 200
+		tactical 1.0
+		camper 1.0
+		hearing_scale 1.0
+		inner_detection_radius 2048
+	}
+
+	spawn
+	{
+		giveweapon weapon_mp40
+		setclip weapon_mp40 32
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger sexy_2 go
+	}
+
+	trigger go
+	{
+		walktomarker sexy_2_1
+		walktomarker sexy_2_2
+		walktomarker sexy_2_3
+		walktomarker sexy_2_4
+		wait 1000
+		walktomarker sexy_2_3
+		walktomarker sexy_2_2
+		walktomarker sexy_2_1
+		trigger sexy_2 go
+	}
+        enemysight
+
+        {
+		resetscript
+		statetype alert
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+sexy_3
+{
+        attributes
+	{
+		attack_crouch 0.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 2
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger sexy_3 smoking
+	}
+
+	trigger smoking
+	{
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 2000
+		playanim crotch_grab_2h both
+		wait 3000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		playanim crotch_grab_2h both
+		wait 3000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		trigger sexy_3 smoking
+	}
+	
+	enemysight
+	{
+		resetscript
+		statetype alert
+	}
+}
+
+sexy_4
+{
+        attributes
+	{
+		attack_crouch 9.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+sexy_5
+{
+        attributes
+	{
+		attack_crouch 9.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	death
+	{
+		trigger t2body killer_2
+	}
+}
+
+sexy_6
+{
+        attributes
+	{
+		attack_crouch 9.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	death
+	{
+		trigger t2body killer_2
+	}
+}
+
+sexy_7
+{
+        attributes
+	{
+		attack_crouch 9.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\general\misc_halt.wav
+		trigger sexy_14 go
+	}
+
+	death
+	{
+		trigger t2body killer_2
+		mu_fade 0 1000
+		mu_queue sound/music/m_moving
+	}
+}
+
+ssunter1
+{
+	attributes
+	{
+        	inner_detection_radius 384
+		attack_crouch 9.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+	    	giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+        enemysight
+        {
+                playsound sound\scenaric\general\misc_halt.wav
+	}
+}
+
+ssunter2
+{
+	attributes
+	{
+        	inner_detection_radius 384
+		attack_crouch 9.2
+		aggression 9.99
+		fov 120
+		alertness 1200
+
+	}
+
+	spawn
+	{
+	    	giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+        enemysight
+        {
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+ssunter3
+{
+	attributes
+	{
+	        aim_accuracy 0.7
+		starting_health 10
+		reaction_time 0.5
+		idle_crouch 0.0
+		attack_crouch 0.0
+		alertness 2500
+		hearing_scale 0.2
+		fov 100
+	}
+
+	spawn
+	{
+		noavoid
+		takeweapon mp40
+		giveweapon weapon_luger
+		selectweapon weapon_luger
+		setclip weapon_luger 12
+		setammo ammo_grenades 0	// Grenades
+		takeweapon grenades
+		wait 5
+		trigger ssunter3 morebeer
+	}
+
+	trigger morebeer
+	{
+		wait 5
+		playsound villdrunk1_1	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_5	// "Shut your filthy hole you slovenly swine!"
+		playanim drunk both
+		playsound villdrunk1_2	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_6	// "Stand at attention soldier, you are a disgrace to the Reich!"
+		playanim drunk both
+		playsound villdrunk1_3	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_7	// "Bring me another beer you dog. Schnell!! Schnell!!"
+		playanim drunk both
+		playsound villdrunk1_4	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_8	// "Hey Fraulhein! Fraulhein! Cominzee here! I'm thirsty!"
+		playanim drunk both
+		playsound villdrunk1_1	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_9	// "Get back to your post you malingering coward! I'll have you shot!"
+		playanim drunk both
+		trigger ssunter3 singloop
+	}
+
+trigger singloop
+	{
+		wait 5
+		playsound villdrunk1_2	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_3	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_4	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		playsound villdrunk1_1	// "Yaaa Yaaa Yaaaa Yaaa, <cough>"
+		playanim drunk both
+		trigger ssunter3 singloop
+	}
+
+	bulletimpact	// TEMPORARILY NOT USED!! COME BACK TO THIS LATER!!
+	{
+		clearanim
+		resetscript
+		playsound blank
+		wait forever 0
+		resetscript
+	}
+
+	inspectsoundstart	// TEMPORARILY NOT USED!! COME BACK TO THIS LATER!!
+	{
+		clearanim
+		resetscript
+		playsound blank
+		wait forever 0
+		resetscript
+	}
+
+	inspectbodystart	// TEMPORARILY NOT USED!! COME BACK TO THIS LATER!!
+	{
+		deny
+	}
+
+	enemysight
+	{
+		clearanim
+		resetscript
+		playsound blank
+		wait forever 0
+		resetscript
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+sszoldat1
+
+{
+	attributes
+	{
+        	inner_detection_radius 384
+		attack_crouch 9.2
+		aggression 9.99
+		fov 512
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		trigger sszoldat1 marchloop
+	}
+
+	trigger marchloop
+	{
+		runtomarker kl2
+		runtomarker kl3
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\general\misc_get_help.wav
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		attrib alertness 2048
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+sszoldat2
+
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 9.2
+		aggression 9.99
+		fov 512
+		alertness 2048
+
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+
+        enemysight
+	{
+		playsound sound\scenaric\general\misc_get_help.wav
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		attrib alertness 2048
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+sszoldat3
+
+{
+	attributes
+	{
+		inner_detection_radius 384
+		attack_crouch 9.2
+		aggression 9.99
+		fov 512
+		alertness 2048
+
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+
+        enemysight
+	{
+		playsound sound\scenaric\general\misc_get_help.wav
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+		attrib alertness 2048
+	}
+
+	death
+	{
+		trigger dead killer
+	}
+}
+
+
+sszoldat4
+{
+        attributes
+	{
+		attack_crouch 9.0
+		alertness 2048
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound sound\scenaric\general\misc_over_there.wav
+	}
+
+	death
+	{
+		trigger t2body killer_2
+	}
+}
+
+electrik
+{
+	attributes
+	{
+		attack_crouch 9.90
+		fov 120
+		inner_detection_radius 384
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		wait 100
+		movetype crouch
+		trigger electrik working1
+	}
+
+	trigger working1
+	{
+		playanim device both forever
+	}
+
+	trigger go
+	{
+		clearanim
+		runtomarker les1
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	statechange query alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	statechange query combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	bulletimpact
+	{
+		statetype alert
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	inspectsoundstart
+	{
+		statetype alert
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger electrik alert1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger alert1
+	{
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait 50 player
+		wait 1000
+	}
+
+	trigger sighted1
+	{
+		accum 1 set 1
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		clearanim
+		statetype alert
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait 50 player
+		wait 1000
+	}
+
+	enemysight
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+	}
+
+	death
+	{
+		accum 1 set 1
+	}
+}
+

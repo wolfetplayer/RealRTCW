@@ -1,0 +1,340 @@
+
+
+dor1
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		wait 50
+		playsound sound/scenaric/rocket/bridge_creak1.wav looping
+		faceangles 0 -90 0 10
+		stopsound
+	}
+
+	trigger close
+	{
+		wait 50
+		trigger dor2 close
+		playsound sound/scenaric/rocket/bridge_creak1.wav looping
+		faceangles 0 0 0 2000
+		stopsound
+	}
+}
+
+dor2
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		wait 50
+		faceangles 0 90 0 10
+		stopsound
+	}
+
+	trigger close
+	{
+		wait 50
+		faceangles 0 0 0 2000
+	}
+}
+
+dor1a
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		trigger player kadr2
+
+		wait 500
+		playsound sound/scenaric/rocket/bridge_creak1.wav looping
+		trigger dor2a start
+		faceangles 0 -90 0 2000
+		stopsound
+		alertentity naz33
+		alertentity naz34
+		alertentity naz35
+		alertentity naz36
+		alertentity naz37
+
+
+
+	}
+}
+
+dor2b
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		wait 50
+		faceangles 0 90 0 2000
+		stopsound
+	}
+}
+
+
+dor1b
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		trigger player kadr3
+
+		wait 500
+		playsound sound/scenaric/rocket/bridge_creak1.wav looping
+		trigger dor2b start
+		faceangles 0 -90 0 2000
+		stopsound
+
+
+
+
+	}
+}
+
+dor2a
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+		wait 50
+		faceangles 0 90 0 2000
+		stopsound
+	}
+}
+
+handel1
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/world/electrocute.wav
+		faceangles 180 0 0 500
+		trigger vor1 start
+
+
+    }
+
+
+}
+
+handel3
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/world/electrocute.wav
+		faceangles 180 0 0 500
+		trigger dor1b start
+
+
+    }
+
+
+}
+
+
+ruchka2
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/world/electrocute.wav
+		faceangles 0 0 -180 500
+		trigger dor1a start
+
+
+    }
+
+
+}
+
+vor1
+{
+	spawn
+	{
+     gotomarker v1a 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+        trigger player kadr1
+        trigger vor2 start
+		gotomarker v1b 20
+		faceangles 0 0 0 gototime
+
+	}
+
+
+}
+
+vor2
+{
+	spawn
+	{
+     gotomarker v2a 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+		gotomarker v2b 20
+		faceangles 0 0 0 gototime
+	}
+
+
+ }
+//transport==============================
+
+ctrak
+{
+	spawn
+	{
+
+
+	}
+
+
+	trigger begin
+	{
+        trigger player stop
+		playsound sound/world/shift_01.wav looping
+		wait 100
+		gotomarker ct1 80
+	    faceangles 0 90 0 gototime
+
+		gotomarker ct2 80
+		faceangles 0 90 0 gototime
+		stopsound
+		playsound sound/world/idle_01.wav looping
+		wait 5000
+		stopsound
+		playsound sound/world/shift_01.wav looping
+		gotomarker ct3 50
+		faceangles 0 90 0 gototime
+		trigger dor1 close
+		trigger naz1 go
+		gotomarker ct4 45
+		faceangles 0 120 0 gototime
+		gotomarker ct5 40
+		faceangles 0 150 0 gototime
+		gotomarker ct6 40
+		faceangles 0 180 0 gototime
+		gotomarker ct7 40
+		faceangles 0 210 0 gototime
+		gotomarker ct8 40
+		faceangles 0 240 0 gototime
+		gotomarker ct9 40
+		faceangles 0 270 0 gototime
+		stopsound
+		playsound sound/world/idle_01.wav looping
+		wait 2000
+		stopsound
+		playsound sound/world/shift_01.wav looping
+		gotomarker ct10 40
+		faceangles 0 270 0 gototime
+		gotomarker ct11 40
+		faceangles 0 270 0 gototime
+		stopsound
+		playsound sound/world/idle_01.wav looping
+        trigger player start
+        trigger player action
+
+
+
+
+
+
+
+
+
+
+	}
+}
+
+stvol
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+		faceangles 0 135 0 2000
+
+	}
+}
+
+dok
+{
+	spawn
+	{
+     gotomarker d1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+		gotomarker d2 2000
+		faceangles 0 0 0 gototime
+	}
+
+
+ }
+
+
+
+
+

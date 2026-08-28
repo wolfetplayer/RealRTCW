@@ -1,0 +1,422 @@
+//
+//AI Scripting
+//Map: the bunker
+//Last edited by: Arcot 24
+//04.01.2008
+
+
+handle
+{
+	spawn
+	{
+	}
+
+	trigger turnon
+	{
+		playsound sound/movers/switches/butn2.wav
+		faceangles 180 0 0 500
+                wait 2000
+                faceangles 0 0 0 500
+	}
+
+	trigger on_off_1
+	{
+		alertentity lamp3
+		wait 300
+		alertentity lamp3
+		trigger handle on_off
+	}
+
+	trigger on_off_2
+	{
+		alertentity lamp4
+		wait 500
+		alertentity lamp4
+		trigger handle on_off
+	}
+		
+}
+
+door
+{
+	spawn
+	{
+	}
+
+	trigger open
+	{
+		playsound sound\movers\doors\door10_open.wav
+		faceangles 0 270 0 1000
+                wait 15000
+                trigger door close
+	}
+
+	trigger close
+       	{
+                playsound sound\movers\doors\door10_open.wav
+		faceangles 0 0 0 1000
+       	}
+
+}
+
+parachute1
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+	        alertentity trooper1
+	        alertentity killstatic1
+		playanim 1 74 looping forever
+		gotomarker p1spot15 150 wait
+		gotomarker p1spot16 150 deccel wait
+		faceangles 0 26 0 500
+	        trigger trooper1 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute1 sink
+	}
+
+	trigger sink
+	{
+		wait 10000
+		gotomarker p1spot17 2 wait
+	        wait 5
+		alertentity killp1
+	}
+}
+
+parachute2
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+                alertentity trooper2
+                alertentity killstatic2
+		playanim 1 74 looping forever
+		gotomarker pp2_1 150 wait
+		gotomarker pp2_2 150 deccel wait
+		faceangles 0 26 0 500
+                trigger trooper2 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute2 sink
+	}
+
+	trigger sink
+	{
+		wait 10000
+		gotomarker pp2_3 2 wait
+                wait 5
+		alertentity killp2
+	}
+}
+
+
+parachute3
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+
+		alertentity trooper3
+		alertentity killstatic3
+		playanim 1 74 looping forever
+		gotomarker pp3_1 150 wait
+		gotomarker pp3_2 150 deccel wait
+		faceangles 0 26 0 500
+		trigger trooper3 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute3 sink
+	}
+
+	trigger sink
+	{
+		wait 10000
+		gotomarker pp3_3 2 wait
+		wait 5
+		alertentity killp3
+	}
+}
+
+parachute4
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+		alertentity trooper4
+		alertentity killstatic4
+		playanim 1 74 looping forever
+		gotomarker pp4_1 150 wait
+		gotomarker pp4_2 150 deccel wait
+		faceangles 0 26 0 500
+		trigger trooper4 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute4 sink
+	}
+
+	trigger sink
+	{
+		wait 10000
+		gotomarker pp4_3 2 wait
+		wait 5
+		alertentity killp4
+	}
+}
+
+parachute5
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+		alertentity trooper5
+		alertentity killstatic5
+		playanim 1 74 looping forever
+		gotomarker pp5_1 150 wait
+		gotomarker pp5_2 150 deccel wait
+		faceangles 0 26 0 500
+		trigger trooper5 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute5 sink
+	}
+
+	trigger sink
+	{
+		wait 10000
+		gotomarker pp5_3 2 wait
+		wait 5
+		alertentity killp5
+	}
+}
+
+
+camera
+{
+	spawn
+	{
+	}
+
+	trigger motor
+	{
+		startcam par1
+		wait 6000
+		startcam par2
+		wait 5000
+		startcam par3
+                wait 5000
+                startcam bunker_2
+                wait 3000
+		startcam bunker_3
+	}
+}
+
+dialog
+{
+	spawn
+	{
+	}
+
+	trigger hotel_conversation
+	{
+		trigger nazi6 conversation1		// ah this is some tasty sory broton..
+		wait 4300
+		trigger nazi7 conversation1
+		wait 2700
+		trigger nazi6 conversation2
+		wait 1700
+		trigger nazi7 conversation2
+		wait 3200
+		trigger nazi6 conversation3
+		wait 2800				
+	}
+
+	trigger bazar3
+	{
+		trigger dialog bazar1
+	}
+
+        trigger bazar2
+
+        {
+		playsound sound\scenaric\general\misc_always.wav
+        }
+ }
+
+doska
+{
+	spawn
+	{
+		wait 5
+		trigger doska swingloop
+	}
+
+	trigger swingloop
+	{
+		faceangles 0 0 2 125
+		faceangles 0 0 4 150
+		faceangles 0 0 6 175
+		faceangles 0 0 8 200
+		faceangles 0 0 10 250
+		faceangles 0 0 8 200
+		faceangles 0 0 6 175
+		faceangles 0 0 4 150
+		faceangles 0 0 2 125
+		faceangles 0 0 0 100
+		faceangles 0 0 -2 125
+		faceangles 0 0 -4 150
+		faceangles 0 0 -6 175
+		faceangles 0 0 -8 200
+		faceangles 0 0 -10 250
+		faceangles 0 0 -8 200
+		faceangles 0 0 -6 175
+		faceangles 0 0 -4 150
+		faceangles 0 0 -2 125
+		faceangles 0 0 0 100
+		trigger doska swingloop
+	}
+
+	death
+	{
+		alertentity kill_doska
+		alertentity doska_ex
+	}
+}
+
+lift
+{
+	spawn
+	{
+		gotomarker 1 100
+		faceangles 0 0 0 gototime
+	}
+
+	trigger move
+	{
+		alertentity l
+		alertentity r
+		alertentity red
+		alertentity 2_green
+		trigger lamp yellow_loop
+		wait 2000
+		playsound sound/scenaric/tram/tram_move.wav looping
+		alertentity green
+		gotomarker 2 50
+		faceangles 0 0 0 gototime
+                gotomarker 3 50
+		faceangles 0 0 0 gototime
+                gotomarker 4 50
+		faceangles 0 0 0 gototime
+                gotomarker 5 50
+		faceangles 0 0 0 gototime
+		trigger lamp stop_yellow
+		alertentity 2_red
+                stopsound
+                playsound sound/scenaric/tram/tram_stop.wav
+		wait 1000
+		alertentity 2_l
+		alertentity 2_r
+	}
+
+	trigger move2
+	{
+		alertentity 2_l
+		alertentity 2_r
+		alertentity 2_red
+		trigger lamp yellow_loop
+		wait 2000
+		playsound sound/scenaric/tram/tram_move.wav looping
+		alertentity 2_green
+		alertentity green
+		gotomarker 5 50
+		faceangles 0 0 0 gototime
+                gotomarker 4 50
+		faceangles 0 0 0 gototime
+                gotomarker 3 50
+		faceangles 0 0 0 gototime
+                gotomarker 2 50
+		faceangles 0 0 0 gototime
+		gotomarker 2 50
+		faceangles 0 0 0 gototime
+		trigger lamp stop_yellow
+		alertentity red
+                stopsound
+                playsound sound/scenaric/tram/tram_stop.wav
+		wait 1000
+		alertentity l
+		alertentity r
+	}
+
+
+}
+
+lamp
+{
+	spawn
+	{
+	}
+
+	trigger yellow_loop
+	{
+		alertentity yellow
+		accum 1 bitreset 0
+		wait 500
+		alertentity yellow
+		accum 1 bitset 0
+		wait 500
+		trigger lamp yellow_loop
+	}
+
+	trigger stop_yellow
+	{
+		resetscript
+		accum 1 abort_if_bitset 0
+		alertentity yellow
+	}
+
+	trigger red_loop
+	{
+		alertentity alarm_on_off
+		accum 1 bitreset 0
+		wait 50
+		alertentity alarm_on_off
+		accum 1 bitset 0
+		wait 50
+		trigger lamp red_loop
+	}
+
+	trigger stop_red
+	{
+		resetscript
+		accum 1 abort_if_bitset 0
+		alertentity alarm_on_off
+	}
+
+}
+
+
+
+
+
+

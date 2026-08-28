@@ -1,0 +1,72 @@
+//
+//Brush Scripting
+//Map: Station
+//Last edited by: Arkot-24
+//
+
+metalbox
+{
+	spawn
+	{
+
+		wait 100
+		faceangles 0 0 0 gototime
+                gotomarker start_1 1000
+	}
+
+	trigger begin2
+	{
+		gotomarker start_1 900
+		playsound sound\world\kick_01.wav
+		gotomarker start_2 900
+		alertentity ts1
+		faceangles 0 0 0 gototime
+		gotomarker start_2 150
+		faceangles 0 0 -4 gototime
+		gotomarker start_2 150
+		faceangles 0 0 0 gototime
+		gotomarker start_2 150
+		faceangles 0 0 4 gototime
+		gotomarker start_2 150
+		faceangles 0 0 0 gototime
+	}
+}
+
+train_escape
+
+{
+	spawn
+	{
+      		wait 100
+      		gotomarker pos1 60\\ISPR
+	  	faceangles 0 360 0 gototime
+		playsound sound/world/idle_01.wav looping
+	}
+
+	trigger start
+	{
+		
+		gotomarker pos1 60
+	    	faceangles 0 360 0 gototime
+		trigger player lockon
+		wait 3000
+		stopsound
+		alertentity open_gate
+		wait 1000
+		alertentity explo1
+		wait 1000
+		playsound sound/scenaric/station/train.wav 
+		gotomarker pos2 80
+	    	faceangles 0 360 0 gototime
+		gotomarker pos3 100
+		faceangles 0 360 0 gototime
+        	gotomarker pos4 100
+		faceangles 0 360 0 gototime
+		gotomarker pos5 100
+		faceangles 0 360 0 gototime
+        	
+	}	
+	
+}
+
+

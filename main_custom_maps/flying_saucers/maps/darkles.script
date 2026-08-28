@@ -1,0 +1,640 @@
+//
+//Brush Scripting
+//Map: darkles
+//Last edited by: Depro777(RU)
+//
+
+haunebu2
+{
+	spawn
+	{
+	}
+
+	trigger go1
+	{
+		playsound sound/world/dam_turbine.wav looping
+		wait 5
+
+		faceangles -10 150 10 gototime
+		gotomarker ha2_p1 300
+
+		faceangles -20 180 10 gototime
+		gotomarker ha2_p2 350
+
+		faceangles -25 200 10 gototime
+		gotomarker ha2_p3 400
+
+		trigger rus1 shootufo
+
+		faceangles -30 220 15 gototime
+		gotomarker ha2_p4 350
+
+		faceangles -35 240 15 gototime
+		gotomarker ha2_p5 400
+
+		faceangles -30 250 20 gototime
+		gotomarker ha2_p6 350
+
+		faceangles -30 270 15 gototime
+		gotomarker ha2_p7 400
+
+		faceangles -30 285 15 gototime
+		gotomarker ha2_p8 350
+
+		faceangles -25 300 25 gototime
+		gotomarker ha2_p9 400
+
+		faceangles -15 320 15 gototime
+		gotomarker ha2_p10 350
+
+		faceangles -10 340 10 gototime
+		gotomarker ha2_p11 400
+
+		faceangles 0 360 0 gototime
+		gotomarker ha2_p12 400
+//		faceangles 0 460 0 gototime
+
+		faceangles -10 280 0 gototime
+		gotomarker ha2_p13 700
+//		faceangles 0 460 0 gototime
+
+		playsound sound/scenaric/general/blank.wav looping
+
+		alertentity killufo
+	}
+}
+
+counter1
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+	}
+
+	trigger camerago
+	{
+		wait 12000
+		trigger player cine1_cam1
+		wait 12000
+		trigger player cine1_cam2
+
+		trigger haunebu2 go1 
+
+		wait 12000
+		trigger player cine1_cam3
+		alertentity rus1b
+		alertentity rus2b
+		alertentity rus3b
+		alertentity nem1
+		alertentity nem2
+
+		wait 12000
+
+		trigger counter1 cine1_cleanup
+	}
+
+	trigger cine1_cleanup
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+
+		resetscript
+
+		alertentity perskill
+		alertentity perskill2
+		alertentity killufo
+
+		trigger transport go1
+		trigger player notarget_off
+	}
+
+	trigger dobro
+	{
+		accum 0 bitreset 1
+	}
+
+	trigger cine2_cleanup
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+
+		resetscript
+
+		trigger player camerainterrupt2
+		trigger transport4 go1
+		alertentity deltran3 //unichtozhaet transport3
+
+		alertentity nem40_a
+		alertentity nem41_a
+		alertentity nem42_a
+		alertentity nem43_a
+		alertentity nem44_a
+	}
+
+	trigger killorno
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+	}
+}
+
+transport
+{
+	spawn
+	{
+		accum 0 set 0
+	
+		wait 5
+		faceangles 0 180 0 5
+	}
+
+	trigger trredlt
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		alertentity deltel
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_equal 2
+
+		alertentity perskill2
+		alertentity perskill3
+
+		wait 1500
+
+		alertentity nem3
+		alertentity nem4
+		alertentity nem5
+		alertentity nem6
+
+		alertentity tryaska1
+
+		trigger per_kol begin
+		trigger zad_kol begin
+
+		gotomarker t1_1 200
+		faceangles 0 180 0 gototime
+
+		gotomarker t1_2 200
+		faceangles 0 210 0 gototime
+
+		faceangles 1 225 0 gototime
+		gotomarker t1_3 200
+
+		faceangles 1 240 0 gototime
+		gotomarker t1_4 200
+
+		faceangles 0 270 0 gototime
+		gotomarker t1_5 200
+		faceangles 0 270 0 gototime
+
+		faceangles 0 270 0 gototime
+		gotomarker t1_6 200
+		faceangles 0 300 0 gototime
+
+		faceangles 0 315 0 gototime
+		gotomarker t1_7 200
+
+		faceangles 0 330 0 gototime
+		gotomarker t1_8 300
+
+		faceangles 0 360 0 gototime
+		gotomarker t1_9 300
+
+		gotomarker t1_10 290
+		faceangles 0 360 0 gototime
+
+		faceangles 0 360 0 gototime
+               	gotomarker t1_11 300
+		faceangles 0 360 0 gototime
+
+		gotomarker t1_12 300
+		faceangles 0 370 0 gototime
+
+		gotomarker t1_13 300
+		faceangles 0 375 0 gototime
+
+		faceangles 0 370 0 gototime
+		gotomarker t1_14 300
+		faceangles 0 370 0 gototime
+
+		faceangles 0 360 0 gototime
+		gotomarker t1_15 300
+		faceangles 0 360 0 gototime
+
+		gotomarker t1_16 300
+		faceangles 0 360 0 gototime
+
+		trigger transport go2
+	}
+
+	trigger go2
+	{
+		faceangles 0 390 0 gototime
+		gotomarker t1_17 300
+		faceangles 0 398 0 gototime
+
+		gotomarker t1_18 300
+		faceangles -4 400 0 gototime
+
+		faceangles -7 400 0 gototime
+		gotomarker t1_19 300
+		faceangles -9 415 0 gototime
+
+		gotomarker t1_20 300
+		faceangles 0 430 0 gototime
+
+		gotomarker t1_21 300
+		faceangles -4 450 0 gototime
+
+		gotomarker t1_22 300
+		faceangles -5 450 0 gototime
+
+		gotomarker t1_23 300
+		faceangles -1 450 0 gototime
+
+		faceangles -4 450 0 gototime
+		gotomarker t1_24 300
+		faceangles -3 480 0 gototime
+
+		gotomarker t1_25 300
+		faceangles -3 490 0 gototime
+
+		gotomarker t1_26 300
+		faceangles -4 495 0 gototime
+
+		faceangles -3 490 0 gototime
+		gotomarker t1_27 300
+		faceangles -3 535 0 gototime
+
+		gotomarker t1_28 300
+		faceangles -4 540 0 gototime
+
+		faceangles -2 540 0 gototime
+		gotomarker t1_29 300
+		faceangles -4 570 0 gototime
+
+		faceangles -2 550 0 gototime
+		gotomarker t1_30 300
+		faceangles 0 560 0 gototime
+
+		trigger nem19 go1
+
+		faceangles -1 560 0 gototime
+		gotomarker t1_31 300
+		faceangles 1 535 0 gototime
+
+		faceangles 0 525 0 gototime
+		gotomarker t1_32 300
+
+		faceangles 0 520 0 gototime
+
+		faceangles 0 515 0 gototime
+		gotomarker t1_33 300
+		faceangles 0 510 0 gototime
+
+		playsound sound/working/bullethitflesh1.wav gototime
+
+		trigger transport2 go1
+
+		alertentity tr_dim //dim is pod kapota
+
+//		trigger per_kol stop
+//		trigger zad_kol stop
+	}
+}
+
+per_kol
+{
+	spawn
+	{
+		accum 0 set 0
+
+		wait 5
+		attachtotag transport tag_wfront
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		trigger zad_kol begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger per_kol begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+zad_kol
+{
+	spawn
+	{
+		wait 5
+		attachtotag transport tag_wback
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		trigger per_kol begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger zad_kol begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+
+transport2
+{
+	spawn
+	{
+		accum 0 set 0
+	
+		wait 5
+		faceangles 0 510 0 5
+	}
+
+	trigger go1
+	{
+
+		gotomarker t1_33sp 99999
+
+		trigger per_kol2 stop
+		trigger zad_kol2 stop
+
+		playsound sound/player/heinrich/armor/armour_crash4.wav
+
+//		alertentity tr_dim //dim is pod kapota
+	}
+}
+
+per_kol2
+{
+	spawn
+	{
+		accum 0 set 0
+
+		wait 5
+		attachtotag transport2 tag_wfront
+		faceangles 0 0 0 50
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+	}
+}
+
+zad_kol2
+{
+	spawn
+	{
+		wait 5
+		attachtotag transport2 tag_wback
+		faceangles 0 0 0 50
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+	}
+}
+
+shlagbaum
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		faceangles 0 0 -60 1
+		wait 750
+		faceangles 0 0 0 1 
+		wait 750
+		accum 0 set 0
+	}
+}
+
+
+transport3
+{
+	spawn
+	{
+		accum 0 set 0
+	
+		wait 5
+		faceangles 0 90 0 5
+		gotomarker tr3_p1 99999
+	}
+
+	trigger go1
+	{
+		accum 0 abort_if_equal 2
+
+		trigger per_kol3 begin
+		trigger zad_kol3 begin
+
+		gotomarker tr3_p1 800
+		faceangles 0 90 0 gototime
+
+		gotomarker tr3_p2 800
+		faceangles 0 80 0 gototime
+
+		faceangles 1 50 0 gototime
+		gotomarker tr3_p3 700
+
+		faceangles 1 45 0 gototime
+		gotomarker tr3_p4 700
+
+		faceangles 0 45 0 gototime
+		gotomarker tr3_p5 600
+
+		faceangles 0 45 0 gototime
+		gotomarker tr3_p6 500
+		faceangles 0 50 0 gototime
+
+		faceangles 0 60 0 gototime
+		gotomarker tr3_p7 400
+
+		faceangles 0 90 0 gototime
+		gotomarker tr3_p8 300
+
+		faceangles 0 90 0 gototime
+		gotomarker tr3_p9 300
+
+		gotomarker tr3_p10 300
+		faceangles 0 105 0 gototime
+		trigger transport3 sound
+
+		faceangles 0 110 0 gototime
+               	gotomarker tr3_p11 150
+		faceangles 0 110 0 gototime
+
+		gotomarker tr3_p12 200
+		faceangles 0 115 0 gototime
+
+		trigger zad_kol3 stop
+		trigger per_kol3 stop
+	}
+
+	trigger sound
+	{
+		playsound sound/world/truck_brakesqueal.wav
+	}
+}
+
+per_kol3
+{
+	spawn
+	{
+		accum 0 set 0
+
+		wait 5
+		attachtotag transport3 tag_wfront
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		trigger zad_kol3 begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger per_kol3 begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+zad_kol3
+{
+	spawn
+	{
+		wait 5
+		attachtotag transport3 tag_wback
+		faceangles 0 0 0 50
+	}
+
+	trigger begin
+	{
+		trigger per_kol3 begin2
+		playsound sound/world/shift_01.wav looping
+	}
+
+	trigger begin2
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 90 0 0 200
+		faceangles 180 0 0 200
+		faceangles 270 0 0 200
+		faceangles 0 0 0 200
+		trigger zad_kol3 begin2
+	}
+
+	trigger stop
+	{
+		accum 0 set 1
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+transport4
+{
+	spawn
+	{
+		accum 0 set 0
+	
+		wait 5
+		faceangles 0 115 0 5
+	}
+
+	trigger go1
+	{
+		gotomarker tr3_p12 99999
+		faceangles 0 115 0 5
+
+		playsound sound/world/idle_01.wav looping
+	}
+
+	trigger go2
+	{
+		gotomarker tr3_p13 99999
+		faceangles 0 190 0 5
+		wait 10
+		alertentity medpack
+		playsound sound/world/idle_01.wav looping
+	}
+}
+
+per_kol4
+{
+	spawn
+	{
+		accum 0 set 0
+
+		wait 5
+		attachtotag transport4 tag_wfront
+		faceangles 0 0 0 50
+	}
+}
+
+zad_kol4
+{
+	spawn
+	{
+		wait 5
+		attachtotag transport4 tag_wback
+		faceangles 0 0 0 50
+	}
+}

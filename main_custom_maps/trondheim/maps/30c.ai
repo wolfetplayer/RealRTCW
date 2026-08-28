@@ -1,0 +1,925 @@
+//
+//AI Scripting
+//Map: Trondheim UK -  ?
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 33
+		objectivesneeded 0		
+		abort_if_loadgame
+		mu_start sound/music/m_tension
+	}
+
+	playerstart
+	{
+		#if g_level_was_selected >= 1
+		applyloadout 30c
+		#endif
+		cvar g_level_was_selected 0
+		mu_fade 0 3000
+		mu_queue sound/music/m_tension
+
+		// Weapons
+		// Ammo
+		// Items
+	}
+	trigger action1
+	{
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi9
+		alertentity nazi10
+	}
+	trigger action2
+	{
+		alertentity nazi11
+		alertentity nazi12
+		alertentity nazi13
+		alertentity nazi14
+	        alertentity nazi15
+			savecheckpoint
+	}
+	trigger action3
+	{
+		alertentity nazi16
+		alertentity nazi17
+		alertentity nazi18
+		alertentity nazi19
+	}
+	trigger endmap
+	{
+		changelevel 30d persistent
+	}
+}
+nazi1				
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2				
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi3				
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{		
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi4			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi5
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		aggression 1.0
+		fov 300
+		tactical 1.0
+	}
+	inspectsoundstart
+	{
+		deny
+	}
+	spawn
+	{
+		takeweapon mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+	enemysight
+	{
+	}
+	death
+	{
+	}
+}
+nazi6
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		aggression 1.0
+		fov 300
+		tactical 1.0
+	}
+	inspectsoundstart
+	{
+		deny
+	}
+	spawn
+	{
+		takeweapon mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+	enemysight
+	{
+	}
+	death
+	{
+	}
+}
+nazi7					
+{
+	attributes
+	{
+		//starting_health 50
+		//aim_accuracy 0.4
+		tactical 0.5
+		//attack_skill 0.75
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mg42m
+		setammo 12.7mm 999
+		setclip mg42m 100
+		selectweapon weapon_mg42m	
+	}
+	trigger go1			
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	inspectsoundend
+	{
+	}
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+nazi8					
+{
+	attributes
+	{
+		//starting_health 50
+		//aim_accuracy 0.4
+		tactical 0.5
+		//attack_skill 0.75
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mg42m
+		setammo 12.7mm 999
+		setclip mg42m 100
+		selectweapon weapon_mg42m
+	}
+	trigger go1			
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	inspectsoundend
+	{
+	}
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+nazi9			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi10			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi11			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi12			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.7
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi13
+{
+	attributes
+	{
+		//aim_accuracy 0.6
+		//starting_health 35
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+	pain 50
+	{
+		resetscript
+		attack player
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+nazi14
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		aggression 1.0
+		fov 300
+		tactical 1.0
+	}
+	inspectsoundstart
+	{
+		deny
+	}
+	spawn
+	{
+		takeweapon mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+	enemysight
+	{
+	}
+	death
+	{
+	}
+}
+nazi15		
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi16					
+{
+	attributes
+	{
+		//starting_health 50
+		//aim_accuracy 0.4
+		tactical 0.5
+		//attack_skill 0.75
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mg42m
+		setammo 12.7mm 999
+		setclip mg42m 100
+		selectweapon weapon_mg42m
+	}
+	trigger go1			
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	inspectsoundend
+	{
+	}
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+nazi17			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.5
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+	
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi18			
+{
+	attributes
+	{
+		//starting_health 35
+		//aim_accuracy 0.4
+		attack_crouch 0.9
+		//attack_skill 0.9
+		//aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi19					
+{
+	attributes
+	{
+		//starting_health 50
+		//aim_accuracy 0.4
+		tactical 0.5
+		//attack_skill 0.75
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mg42m
+		setammo 12.7mm 999
+		setclip mg42m 100
+		selectweapon weapon_mg42m
+	}
+	trigger go1			
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	inspectsoundend
+	{
+	}
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}

@@ -1,0 +1,228 @@
+//
+//AI Scripting
+//Map: rock
+
+//Last edited by: WolfETPlayer
+//
+
+
+
+player
+{
+  spawn
+  {
+  trigger kino start
+  }
+  playerstart
+  {
+  mu_start sound/music/l_briefing_1
+  }
+
+  trigger kadr1
+  {
+
+  startcam fin10
+
+
+
+  }
+  trigger mus1
+  {
+  mu_start sound/music/s_highramp
+  mu_queue sound/music/c_atmos
+  }
+
+  trigger mus2
+  {
+  mu_stop
+  mu_start sound/music/m_assault
+
+  }
+
+   trigger kadr2
+  {
+
+  startcam fin11
+  alertentity kes
+  alertentity civ
+  alertentity civ1
+
+  trigger bj go1
+  }
+
+   trigger kadr3
+  {
+
+  startcam fin12
+  trigger player mus2
+  trigger tit start
+  wait 30000
+  startcam fin12
+  wait 30000
+  startcam fin12
+  wait 30000
+  startcam fin12
+  wait 30000
+		changelevel
+		wait 9000
+		endgame
+
+  }
+
+
+
+
+
+trigger endmap
+  {
+	 changelevel gamefinished 250
+  }
+
+
+ }
+
+ //=====================================
+  bj
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+
+
+
+  	spawn
+  	{
+	takeweapon all
+	godmode on
+	trigger bj go
+ 	}
+
+ 	trigger go
+  	{
+	wait 2000
+	facetargetangles bj1
+	wait 2000
+	alertentity tere
+    walktomarker bj1
+    trigger player kadr2
+
+  	}
+
+  	trigger go1
+  	{
+    walktomarker bj2
+    facetargetangles bj2
+    trigger kes go
+    trigger civ go
+
+  	}
+
+
+}
+
+
+  civ1
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+
+
+
+  	spawn
+  	{
+	takeweapon all
+ 	}
+
+
+
+
+
+
+}
+
+
+ civ
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+
+
+
+  	spawn
+  	{
+	takeweapon all
+ 	}
+
+ 	trigger go
+  	{
+    gotomarker k2
+    facetargetangles k2
+
+
+  	}
+
+
+
+
+}
+
+
+ kes
+{
+  	attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	tactical 0.6
+  	}
+
+
+
+  	spawn
+  	{
+	takeweapon all
+ 	}
+
+ 	trigger go
+  	{
+    gotomarker bj1
+    facetargetangles bj1
+    wait 100
+    playanim giving_orders torso
+    playsound sound/fin/f2.wav
+    wait 8000
+    trigger player kadr3
+
+
+  	}
+
+
+
+
+}
+
+
+
+
+
+
+

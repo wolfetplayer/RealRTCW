@@ -1,0 +1,178 @@
+//
+//AI Scripting
+//Map: cinema2
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 1
+		objectivesneeded 0		
+		abort_if_loadgame
+		mu_start sound/music/m_stealth
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/m_mission
+		trigger player cam1
+
+
+
+		// Weapons
+		// Ammo
+		// Items
+	}
+	trigger cam1
+	{
+		startcam cam1
+	}
+
+	trigger action1
+	{	
+		trigger nazi1 go2
+	}
+	trigger action2
+	{
+	}
+	trigger endmap
+	{
+		changelevel gamefinished 5000
+	}
+}
+par1
+{
+	attributes
+	{
+		aim_accuracy 1.0
+		starting_health 5
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 100000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		nosight 99999
+		statetype relaxed
+		trigger par1 go1
+	}
+	trigger go1
+	{
+		walktomarker par1spot1
+		walktomarker par1spot2
+		trigger player action1
+		walktomarker par1spot3
+		
+	}
+	trigger go2
+	{
+		wait 1000
+		walktomarker par1spot3
+	}
+	pain 50
+	{
+		resetscript
+	}
+	enemysight
+	{
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+		trigger player endmap
+	}
+}
+nazi1
+{
+	attributes
+	{
+		aim_accuracy 2.9
+		starting_health 90
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 100000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		nosight 99999
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+		notarget on
+	}
+	trigger go2
+	{
+		resetscript
+		sight
+		notarget off
+	}
+	pain 50
+	{
+		resetscript
+	}
+	enemysight
+	{
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}

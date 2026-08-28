@@ -150,22 +150,6 @@ itemDef {
 		action { uiScript glCustom }
 	}
 	
-	itemDef {
-		name graphics
-		group grpSystem
-		text "@SYSTEM_APPLYWARNING"
-		textfont UI_FONT_NORMAL
-		decoration
-		style WINDOW_STYLE_EMPTY
-		rect 82 95 341 12
-		textalign ITEM_ALIGN_CENTER
-		textalignx 170
-		textaligny 10
-		textscale .16
-		forecolor 1 1 1 1
-		visible 0
-	}
-
 		itemDef {
  		cvarTest "r_ignorehwgamma"
 		textfont UI_FONT_BIG

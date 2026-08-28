@@ -134,6 +134,7 @@ cvar_t  *r_colorbits;
 cvar_t  *r_primitives;
 cvar_t  *r_texturebits;
 cvar_t  *r_ext_multisample;
+cvar_t  *r_fbo;
 
 cvar_t  *r_drawBuffer;
 cvar_t  *r_glIgnoreWicked3D;
@@ -607,14 +608,22 @@ RB_TakeScreenshotCmd
 */
 const void *RB_TakeScreenshotCmd( const void *data ) {
 	const screenshotCommand_t	*cmd;
-	
+
 	cmd = (const screenshotCommand_t *)data;
-	
+
+	if ( fboEnabled ) {
+		FBO_PostProcess();
+	}
+
 	if (cmd->jpeg)
 		RB_TakeScreenshotJPEG( cmd->x, cmd->y, cmd->width, cmd->height, cmd->fileName);
 	else
 		RB_TakeScreenshot( cmd->x, cmd->y, cmd->width, cmd->height, cmd->fileName);
-	
+
+	if ( fboEnabled ) {
+		FBO_Bind( tr.mainFbo );
+	}
+
 	return (const void *)(cmd + 1);
 }
 
@@ -714,8 +723,16 @@ void R_LevelShot( void ) {
 
 	Com_sprintf(checkname, sizeof(checkname), "levelshots/%s.tga", tr.world->baseName);
 
+	if ( fboEnabled ) {
+		FBO_PostProcess();
+	}
+
 	allsource = RB_ReadPixels(0, 0, glConfig.vidWidth, glConfig.vidHeight, &offset, &padlen);
 	source = allsource + offset;
+
+	if ( fboEnabled ) {
+		FBO_Bind( tr.mainFbo );
+	}
 
 	buffer = ri.Hunk_AllocateTempMemory(128 * 128*3 + 18);
 	Com_Memset (buffer, 0, 18);
@@ -1116,6 +1133,10 @@ void GfxInfo_f( void ) {
 	{
 		ri.Printf( PRINT_ALL, "GAMMA: software w/ %d overbright bits\n", tr.overbrightBits );
 	}
+	ri.Printf( PRINT_ALL, "FBO: %s\n", fboEnabled ? "enabled" : "disabled" );
+	ri.Printf( PRINT_ALL, "FBO gamma shader (ARB programs): %s\n", GL_ProgramAvailable() ? "ready" : "not ready" );
+	ri.Printf( PRINT_ALL, "GL_ARB_vertex_program / GL_ARB_fragment_program: %s\n", glRefConfig.arbPrograms ? "supported" : "NOT supported" );
+	ri.Printf( PRINT_ALL, "r_gamma: %g  tr.invGamma: %g  r_ignorehwgamma: %d\n", r_gamma->value, tr.invGamma, r_ignorehwgamma->integer );
 
 	// rendering primitives
 	{
@@ -1245,6 +1266,8 @@ void R_Register( void ) {
 	r_depthbits = ri.Cvar_Get( "r_depthbits", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_ext_multisample = ri.Cvar_Get( "r_ext_multisample", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	ri.Cvar_CheckRange( r_ext_multisample, 0, 4, qtrue );
+	r_fbo = ri.Cvar_Get( "r_fbo", "1", CVAR_ARCHIVE | CVAR_LATCH );
+	ri.Cvar_CheckRange( r_fbo, 0, 1, qtrue );
 	r_overBrightBits = ri.Cvar_Get( "r_overBrightBits", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	r_ignorehwgamma = ri.Cvar_Get( "r_ignorehwgamma", "0", CVAR_ARCHIVE | CVAR_LATCH );
 #ifdef USE_OPENGLES
@@ -1405,6 +1428,7 @@ void R_Register( void ) {
 	ri.Cmd_AddCommand( "gfxinfo", GfxInfo_f );
 	ri.Cmd_AddCommand( "minimize", GLimp_Minimize );
 	ri.Cmd_AddCommand( "taginfo", R_TagInfo_f );
+	ri.Cmd_AddCommand( "fbolist", R_FBOList_f );
 
 	// Ridah
 	ri.Cmd_AddCommand( "cropimages", R_CropImages_f );
@@ -1493,6 +1517,11 @@ void R_Init( void ) {
 
 	InitOpenGL();
 
+	GLimp_InitExtraExtensions();
+
+	// must run before R_InitImages(): R_SetColorMappings() needs fboEnabled already set
+	FBO_Init();
+
 	R_InitImages();
 
 	R_InitShaders();
@@ -1534,6 +1563,9 @@ void RE_Shutdown( qboolean destroyWindow ) {
 	ri.Cmd_RemoveCommand( "gfxinfo" );
 	ri.Cmd_RemoveCommand( "minimize" );
 	ri.Cmd_RemoveCommand( "taginfo" );
+	ri.Cmd_RemoveCommand( "fbolist" );
+
+	FBO_Shutdown();
 
 	// Ridah
 	ri.Cmd_RemoveCommand( "cropimages" );

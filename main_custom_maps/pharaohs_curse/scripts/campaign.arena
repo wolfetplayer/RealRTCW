@@ -1,0 +1,38 @@
+// campaign maps for campaign_menu; w3d, w3d_sec and malta_menu are intentionally excluded
+
+{
+map			"intro_grobnica"
+longname	"Intro"
+chapter		"1"
+}
+
+{
+map			"level1"
+longname	"Lower Tombs"
+chapter		"1"
+}
+
+{
+map			"level2"
+longname	"Dark Tombs"
+chapter		"1"
+}
+
+{
+map			"level3"
+longname	"Caves"
+chapter		"1"
+}
+
+{
+map			"level4"
+longname	"Lost City"
+chapter		"1"
+}
+
+{
+map			"level5"
+longname	"Cursed Temple"
+chapter		"1"
+}
+

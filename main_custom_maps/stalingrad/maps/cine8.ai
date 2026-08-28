@@ -1,0 +1,405 @@
+//
+//AI Scripting
+//Map: cine8
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		trigger player vision	
+		cvar g_episode 1
+		mu_start sound/music/m_stealth
+		notarget on
+	}
+
+	playerstart
+	{
+		trigger radar1 rotateloop
+		trigger player vision
+		notarget on
+	}
+	trigger vision
+	{
+		wait 1000
+		trigger officer talk1
+	}
+	trigger film1
+	{
+		startcam cam9
+	}
+	trigger film2
+	{
+		startcam cam10
+	}
+	trigger endmap
+	{
+		changelevel demo4 persistent
+	}
+}
+officer			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		wait 2500
+		walktomarker of1spot1
+		trigger nazi1 go1
+		walktomarker of1spot2
+		walktomarker of1spot3
+		walktomarker of1spot4
+		walktomarker of1spot5
+		walktomarker of1spot6
+		walktomarker of1spot7
+	}
+	trigger talk1
+	{
+		playsound  sound/stalingrad/cine8nemoficer.wav
+		trigger nazi1 talk1
+	}
+	trigger talk2
+	{
+		wait 4400
+		trigger officer go1
+	}
+	trigger talk3
+	{
+		wait 2900
+//		playanim talking_1h both
+		playsound officer5
+		trigger nazi1 talk2
+	}
+	trigger talk4
+	{
+		wait 2200
+		playsound officer6
+		trigger officer go1
+	}
+	trigger go2
+	{
+	}
+	trigger anim
+	{
+		wait 1900
+		playanim talking_1h both
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi1			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker n1spot1
+		trigger nazi1 talk2
+	}
+	trigger talk1
+	{
+		wait 22000
+//		playanim talking_2h both
+		playsound sound/stalingrad/cine8soldat1.wav
+		trigger officer talk2
+	}
+	trigger talk2
+	{
+		wait 500
+		playsound sound/stalingrad/cine8soldat1_2.wav
+		trigger nazi2 talk1
+	}
+	trigger talk3
+	{
+		wait 7400
+		trigger nazi1 go2
+	}
+	trigger go2
+	{
+		wait 3500
+		trigger nazi2 smoke
+		walktomarker of1spot1
+		trigger player endmap
+		walktomarker of1spot2
+		walktomarker of1spot3
+		walktomarker of1spot4
+		walktomarker of1spot5
+		walktomarker of1spot6
+		walktomarker of1spot7
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		walktomarker of1spot1
+		walktomarker of1spot2
+		walktomarker of1spot3
+	}
+	trigger talk1
+	{
+		wait 2400
+//		playanim talking_2h both
+		playsound sound/stalingrad/cine8soldat2.wav
+		trigger nazi1 talk3
+	}
+	trigger talk2
+	{
+		wait 3700
+		playsound officer3
+		trigger nazi1 talk1
+	}
+	trigger smoke
+	{
+		accum 1 abort_if_not_equal 0
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 20000
+		trigger nazi2 smoke
+	}
+	trigger go2
+	{
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi3			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		notarget on
+		statetype relaxed
+		nosight 99999
+		trigger nazi3 go1		
+	}
+	trigger go1 
+	{
+		walktomarker n3spot1
+		walktomarker n3spot2
+		walktomarker n3spot3
+		trigger nazi3 go1
+	}
+	trigger talk1
+	{
+		wait 2900
+		playsound nazi1
+		trigger officer talk3
+	}
+	trigger talk2
+	{
+		wait 3700
+		playsound officer3
+		trigger nazi1 talk1
+	}
+	trigger go2
+	{
+	}
+	trigger stop
+	{
+		resetscript
+		trigger player end
+	}
+	pain 30
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}

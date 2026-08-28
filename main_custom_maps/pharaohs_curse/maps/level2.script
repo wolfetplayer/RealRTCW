@@ -1,0 +1,156 @@
+door1
+{
+	spawn
+	{
+		accum 1 set 0
+	}
+	trigger go
+	{
+		accum 1 abort_if_not_equal 9
+		trigger player start_cam1
+		wait 500
+		playsound sound/world/stones/split2.wav
+		gotomarker door1_pos2 50 wait
+		stopsound
+		trigger player start_war
+	}
+	trigger acc
+	{
+		accum 1 inc 1
+		trigger door1 go
+	}
+}
+door2
+{
+	spawn
+	{
+		accum 1 set 0
+	}
+	trigger go
+	{
+		accum 1 abort_if_not_equal 6
+		wait 500
+		playsound sound/world/stones/split2.wav
+		gotomarker door2_pos2 50 wait
+		stopsound
+	}
+
+	trigger go1
+	{
+		playsound sound/world/stones/split2.wav
+		gotomarker door2_pos1 50 wait
+		stopsound
+	}
+
+	trigger acc
+	{
+		accum 1 inc 1
+		trigger door2 go
+	}
+}
+door3
+{
+	spawn
+	{
+		accum 1 set 0
+	}
+	trigger go
+	{
+		accum 1 abort_if_not_equal 4
+		wait 500
+		playsound sound/world/stones/split2.wav
+		gotomarker door3_pos2_1 50 wait
+		gotomarker door3_pos2_2 50 wait
+		stopsound
+	}
+
+
+	trigger acc
+	{
+		accum 1 inc 1
+		trigger door3 go
+	}
+}
+door4
+{
+	trigger go
+	{
+		gotomarker door4_pos2 50 wait
+	}
+}
+
+
+ruchka1
+{
+	spawn
+	{
+		accum 1 set 0
+		trigger ruchka1 go
+	}
+	trigger go
+	{
+		faceangles -15 0 0 1000
+	}
+	trigger go1
+	{
+		accum 1 abort_if_equal 1
+		faceangles 15 0 0 1000
+		trigger player go_zomb
+		trigger door2 go1
+		accum 1 set 1
+	}
+}
+ruchka2
+{
+	spawn
+	{
+		accum 1 set 0
+		trigger ruchka2 go
+	}
+	trigger go
+	{
+		faceangles -15 0 0 1000
+	}
+	trigger go1
+	{
+		accum 1 abort_if_equal 1
+		faceangles 15 0 0 1000
+		trigger door4 go
+		accum 1 set 1
+	}
+}
+
+
+resh
+{
+	spawn
+	{
+		accum 1 set 0
+	}
+	trigger go
+	{
+		accum 1 abort_if_not_equal 1
+		faceangles -100 0 0 6000
+	}
+	trigger acc
+	{
+		wait 3000
+		accum 1 inc 1
+		trigger resh go
+	}
+}
+dor6_1
+{
+	trigger go
+	{
+		faceangles 0 -130 0 6000
+	}
+}
+dor6_2
+{
+	trigger go
+	{
+		faceangles 0 130 0 6000
+	}
+}
+

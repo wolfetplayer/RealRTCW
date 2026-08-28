@@ -1,0 +1,821 @@
+//
+//AI Scripting
+//Map: cinema
+//Last edited by: Vovstein & Sheppard
+//
+
+player
+{
+	spawn
+	{	
+		abort_if_loadgame
+		mu_start sound/music/m_drums
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+	//	mu_queue sound/music/m_drums
+		mu_queue sound/intro
+		trigger player cam1
+
+		// Weapons
+		// Items
+	}
+	// --- Start Cameras---
+	trigger cam1
+	{
+		startcam black_05
+	}
+	trigger endmap
+	{
+		wait 15000
+		changelevel 50a persistent
+	}
+}
+par1
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon weapon_sniperscope
+		takeweapon weapon_mauserrifle
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par1 go1
+	}
+	trigger go1
+	{
+		walktomarker par1spot1 nostop
+		walktomarker par1spot2 nostop
+		walktomarker par1spot3 nostop
+		walktomarker par1spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par2
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon weapon_sniperscope
+		takeweapon weapon_mauserrifle
+	    giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par2 go1
+	}
+	trigger go1
+	{
+		playsound whistle1 looping forewer
+		walktomarker par2spot1 nostop
+		walktomarker par2spot2 nostop
+		walktomarker par2spot3 nostop
+		walktomarker par2spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par3
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+        giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par3 go1
+	}
+	trigger go1
+	{
+		wait 1000
+		walktomarker par1spot1 nostop
+		walktomarker par1spot2 nostop
+		walktomarker par1spot3 nostop
+		walktomarker par1spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par4
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon weapon_sniperscope
+		takeweapon weapon_mauserrifle
+		giveweapon weapon_mosin
+		setammo ammo_mosina 999
+		selectweapon weapon_mosin
+		statetype relaxed
+		trigger par4 go1
+	}
+	trigger go1
+	{
+		wait 1000
+		walktomarker par2spot1 nostop
+		walktomarker par2spot2 nostop
+		walktomarker par2spot3 nostop
+		walktomarker par2spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par5
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par5 go1
+	}
+	trigger go1
+	{
+		wait 1500
+		walktomarker par1spot1 nostop
+		walktomarker par1spot2 nostop
+		walktomarker par1spot3 nostop
+		walktomarker par1spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par6
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par6 go1
+	}
+	trigger go1
+	{
+		wait 1500
+		walktomarker par2spot1 nostop
+		walktomarker par2spot2 nostop
+		walktomarker par2spot3 nostop
+		walktomarker par2spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par7
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_mosin
+		setammo ammo_mosina 999
+		selectweapon weapon_mosin
+		statetype relaxed
+		trigger par7 go1
+	}
+	trigger go1
+	{
+		wait 2000
+		walktomarker par1spot1 nostop
+		walktomarker par1spot2 nostop
+		walktomarker par1spot3 nostop
+		walktomarker par1spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par8
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_mosin
+		setammo ammo_mosina 999
+		selectweapon weapon_mosin
+		statetype relaxed
+		trigger par8 go1
+	}
+	trigger go1
+	{
+		wait 2000
+		walktomarker par2spot1 nostop
+		walktomarker par2spot2 nostop
+		walktomarker par2spot3 nostop
+		walktomarker par2spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par9
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par9 go1
+	}
+	trigger go1
+	{
+		wait 2500
+		walktomarker par1spot1 nostop
+		walktomarker par1spot2 nostop
+		walktomarker par1spot3 nostop
+		walktomarker par1spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par10
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par10 go1
+	}
+	trigger go1
+	{
+		wait 2500
+		walktomarker par2spot1 nostop
+		walktomarker par2spot2 nostop
+		walktomarker par2spot3 nostop
+		walktomarker par2spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par11
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par11 go1
+	}
+	trigger go1
+	{
+		wait 3000
+		walktomarker par1spot1 nostop
+		walktomarker par1spot2 nostop
+		walktomarker par1spot3 nostop
+		walktomarker par1spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par12
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		statetype relaxed
+		trigger par12 go1
+	}
+	trigger go1
+	{
+		wait 3000
+		walktomarker par2spot1 nostop
+		walktomarker par2spot2 nostop
+		walktomarker par2spot3 nostop
+		walktomarker par2spot4 nostop
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par13
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 200
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_tt33
+		setammo ammo_ttammo 999
+		selectweapon weapon_tt33
+		statetype relaxed
+		trigger par13 go1
+	}
+	trigger go1
+	{
+		walktomarker par13spot1 nostop
+		walktomarker par13spot2 nostop
+		wait 50000
+		walktomarker par13spot3 nostop
+		trigger par13 go2
+	}
+	trigger go2
+	{
+		changelevel 50a persistent
+		accum 1 abort_if_not_equal 0
+		zoom on
+		playanim binocular both
+		wait 200
+		playanim binocular both
+		wait 200
+		playanim binocular both
+		wait 200
+		playanim binocular both
+		zoom off
+		wait 2000
+		trigger par13 go2
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+

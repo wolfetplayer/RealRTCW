@@ -1,0 +1,524 @@
+
+player
+{
+	spawn
+	{
+     
+	takeweapon all
+		
+	}
+
+
+	playerstart
+     {
+		
+            mu_fade 0 3000
+	     // mu_stop sound/music/s_highramp
+	    //  mu_queue sound/music/c_atmos	
+            trigger res cine1
+            
+            
+	}
+
+	trigger cine1_cam1
+	{
+		startcam c1_vil1
+            wait 25000
+                       
+     		
+            
+            mu_start sound/music/s_highramp
+	        mu_queue sound/music/c_atmos
+            alertentity r_tes1
+
+            wait 5000
+            startcam c2_vil1
+            wait 6000
+            alertentity bj
+            wait 17000
+            alertentity r_tes1
+            wait 300
+            mu_stop sound/music/c_atmos
+            
+      }
+
+      trigger action1
+       {
+       trigger kino cine2
+       
+       }
+
+      
+      	
+ trigger cine2_cam1
+	  {
+            
+		startcam c3_vil1
+            trigger nazi n_move
+            
+            
+            wait 6510
+            startcam c4_vil1
+            trigger bx b_move
+            
+            
+            wait 11140
+            startcam c5_vil1
+            trigger nazi n_move1
+            
+            wait 9190
+            startcam c6_vil1
+            trigger bx b_move1
+
+            
+            wait 12830
+            startcam c7_vil1
+            trigger nazi n_move2
+            
+            wait 1810
+            startcam c8_vil1
+            trigger bx b_move2
+       
+
+            wait 4010
+            startcam c9_vil1
+            trigger nazi n_move3
+            
+            wait 9780
+            startcam c10_vil1
+            trigger bx b_move3
+
+            wait 4000
+            startcam c11_vil1
+            
+            trigger nazi n_move4
+            
+            
+            wait 26500
+            startcam c12_vil1
+            trigger bx b_move4
+
+             wait 12910
+            startcam c13_vil1
+            
+            trigger nazi n_move5
+            
+            
+            wait 12210
+            startcam c6_vil1
+            trigger bx b_move5
+
+
+               wait 5620
+            startcam c7_vil1
+            
+            trigger nazi n_move6
+            
+            
+            wait 22770
+            startcam c8_vil1
+            trigger bx b_move6
+
+
+                 wait 2060
+            startcam c9_vil1
+            
+            trigger nazi n_move7
+            
+            
+            wait 8770
+            startcam c10_vil1
+            trigger bx b_move7
+
+                 wait 2890
+            startcam c11_vil1
+            
+            trigger nazi n_move8
+            
+            
+            wait 10930
+            startcam c10_vil1
+            trigger bx b_move8
+
+
+            wait 3600
+            startcam c13_vil1
+            
+            trigger nazi n_move9
+            
+            wait 30000
+            startcam c13_vil1
+            wait 1600
+            mu_queue sound/music/l_theme
+            startcam c14_vil1
+            trigger bx b_move9
+            trigger nazi n_move10
+            
+           }
+
+      trigger kin
+           {
+           
+            startcam c15_vil1
+            trigger nazi n_move11
+            wait 5630
+            trigger bx b_move10
+
+
+     
+          } 
+      
+     		
+            
+            
+        
+	
+
+	
+	trigger camerainterrupt
+	{
+		changelevel vil02 4000 silent
+	}
+
+	trigger endmap
+	{
+		changelevel vil02 
+		
+	}
+}
+
+
+//==========================================================
+
+bj
+{
+  	
+  	spawn
+  	{
+	takeweapon all
+      noavoid
+      godmode on
+      nosight 99999
+      trigger bj comein
+ 	}
+
+	trigger comein
+  	{
+      playanim plane_2 both
+      //giveweapon weapon_mp40
+          
+      runtomarker bj1
+      gotomarker bj2
+           
+      facetargetangles bj2
+      wait 2000
+      facetargetangles bj3
+      wait 2000
+      facetargetangles bj2
+      setammo ammo_9mm 200
+      playanim reload both
+      wait 5000
+      gotomarker bj3
+       
+	
+   	}
+       
+      
+	
+
+
+}
+
+
+bx
+{
+  	 attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	
+	tactical 0.6
+  	}
+
+
+
+
+  	spawn
+  	{
+	takeweapon all
+      
+      godmode on
+      nosight 99999
+      giveweapon weapon_luger
+      setammo ammo_9mm 200
+      selectweapon weapon_luger
+      
+ 	}
+      trigger b_move
+      {
+      wait 1000
+      facetargetangles bx2
+      wait 100
+      walktomarker bx1
+      wait 100
+      alertentity k1
+      wait 100
+      facetargetangles bx2
+      playsound sound/vil/b1.wav
+      
+      
+      }
+      
+      trigger  b_move1
+      {
+	
+      walktomarker bx2 nostop
+      walktomarker bx3
+      facetargetangles bx3
+      playsound sound/vil/b2.wav
+      
+      
+      }
+
+      trigger  b_move2
+      {
+      wait 200
+      playsound sound/vil/b3.wav
+      
+      }
+      trigger  b_move3
+      {
+      wait 100
+      playsound sound/vil/b4.wav
+      
+      }
+      trigger  b_move4
+      {
+      wait 100
+      playsound sound/vil/b5.wav
+      
+      }
+
+      trigger  b_move5
+      {
+      wait 100
+      playsound sound/vil/b6.wav
+      
+      }
+
+	      
+       trigger  b_move6
+      {
+      wait 200
+      playsound sound/vil/b7.wav
+      
+      }
+
+       trigger  b_move7
+      {
+      wait 100
+      playsound sound/vil/b8.wav
+      
+      }
+
+
+       trigger  b_move8
+      {
+      wait 100
+      playsound sound/vil/b9.wav
+      
+      }
+
+       trigger  b_move9
+      {
+      
+      walktomarker bx4
+      facetargetangles bx4
+      trigger player kin
+
+      }
+
+
+         trigger  b_move10
+      {
+      
+      wait 100
+      facetargetangles bx5
+      walktomarker bx5
+      trigger nazi n_move12
+      }
+
+   
+
+
+	
+
+
+}
+
+
+nazi
+{
+
+      attributes
+  	{
+  	alertness 0
+  	hearing_scale 0
+	aggression 0
+	inner_detection_radius 0
+	
+	tactical 0.6
+  	}
+  	
+  	spawn
+  	{
+	takeweapon all
+	
+      
+      godmode on
+      nosight 99999
+ 	}
+
+	 trigger n_move
+      {
+      wait 1000
+      facetargetangles naz1
+      wait 100
+      walktomarker naz1
+      playanim alert_strafe_1h_R torso	
+      playsound sound/vil/n1.wav
+      
+      }
+
+      trigger  n_move1 
+      {
+	wait 500
+      playsound sound/vil/n2.wav
+      
+      }
+
+      trigger  n_move2
+      {
+	wait 200
+      
+      playsound sound/vil/n3.wav
+      
+      
+      }
+
+      
+      trigger  n_move3
+      {
+    
+	wait 100
+      
+      playsound sound/vil/n4.wav
+      
+      
+      }
+
+      trigger  n_move4
+      {
+	wait 100
+      playanim talking_1h torso
+      playsound sound/vil/n5.wav
+      wait 13300
+      playsound sound/vil/n6.wav
+      
+
+      }
+
+      
+       trigger  n_move5
+      {
+    
+	wait 100
+      playanim talking_1h torso
+      playsound sound/vil/n7.wav
+      
+      
+      }
+
+
+        trigger  n_move6
+      {
+    
+	wait 100
+      
+      playsound sound/vil/n8.wav
+      
+      
+      }
+
+        trigger  n_move7
+      {
+    
+	wait 100
+      playanim talking_1h torso
+      playsound sound/vil/n9.wav
+      
+      
+      }
+
+
+        trigger  n_move8
+      {
+    
+	wait 100
+      playanim talking_1h torso
+      playsound sound/vil/n10.wav
+      
+      
+      }
+
+
+        trigger  n_move9
+      {
+    
+	wait 100
+      playanim talking_1h torso
+      playsound sound/vil/n11.wav
+      
+      
+      }
+
+
+          trigger  n_move10
+      {
+      
+      walktomarker naz2
+      facetargetangles naz2
+      }
+
+           trigger  n_move11
+      {
+    
+	wait 500
+      playanim alert_strafe_1h_R torso
+      playsound sound/vil/n12.wav
+      
+      
+      }
+
+            trigger  n_move12
+      {
+      wait 500
+	walktomarker naz3
+      facetargetangles naz3
+      playanim looking_over_table torso
+      wait 500
+      trigger player endmap
+      
+      }
+
+
+
+
+
+
+
+}
+
+

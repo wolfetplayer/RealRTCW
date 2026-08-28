@@ -1,0 +1,568 @@
+
+
+dzot
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+     trigger player film0
+     wait 18000
+     trigger player film1
+     wait 29000
+     trigger civ1 go
+      trigger player film2
+      alertentity morze
+      trigger text start
+     wait 29000
+
+    trigger player film10
+    alertentity morze
+    wait 10000
+     trigger player film11
+     trigger bomber1 start
+    wait 29000
+    trigger player film10
+    trigger of1 move2
+    wait 12000
+
+
+    alertentity ex28
+    trigger player film4
+    wait 5000
+     trigger player film5
+
+
+
+
+	}
+
+		trigger kadr1
+	{
+		trigger player bomb
+		//alertentity ex28
+		trigger player film15
+		trigger bomber1 kadr5
+		alertentity ex29
+		wait 1000
+		alertentity ex20
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex21
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex22
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex23
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex24
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex25
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex26
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex27
+
+		wait 500
+		trigger dzot kadr3
+
+	}
+
+	trigger kadr2
+	{
+		trigger player film21
+		//trigger naz1 move2
+		wait 1000
+		alertentity ex9
+		wait 800
+		alertentity ex10
+		wait 700
+		alertentity ex11
+		wait 700
+		alertentity ex6
+		wait 500
+		alertentity ex7
+		wait 800
+		alertentity ex8
+		wait 1000
+		trigger dzot kadr5
+	}
+
+	trigger kadr3
+	{
+	//trigger player bomb
+    trigger player film20
+    trigger of2 move1
+    wait 2000
+    alertentity ex1
+    wait 1500
+    alertentity ex3
+    wait 500
+    alertentity ex3
+    wait 500
+    trigger brik start
+
+	}
+
+	trigger kadr4
+	{
+	 trigger player film4
+	 wait 1000
+
+    trigger bomba start
+
+    wait 5000
+
+    trigger dzot kadr1
+	}
+
+		trigger kadr5
+	{
+		alertentity smok
+		trigger player film22
+		trigger bomber1 kadr5
+		alertentity ex29
+		wait 1000
+		alertentity ex20
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex21
+		wait 500
+		alertentity ex29
+		wait 1200
+		trigger player film23
+		alertentity ex22
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex23
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex24
+		wait 500
+		alertentity ex29
+		trigger player film24
+		wait 1100
+		alertentity ex25
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex26
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex27
+
+		wait 500
+		trigger dzot kadr6
+
+	}
+
+	trigger kadr6
+	{
+	 trigger player film0
+	 wait 5000
+	 trigger dzot kadr7
+
+	}
+
+
+		trigger kadr7
+	{
+
+		trigger player film1
+
+		alertentity ex29
+		wait 1000
+		alertentity ex20
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex21
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex22
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex23
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex24
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex25
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex26
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex27
+
+		wait 500
+
+		trigger dzot kadr8
+
+	}
+		trigger kadr8
+	{
+
+
+
+		alertentity ex29
+		wait 1000
+		alertentity ex20
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex21
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex22
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex23
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex24
+		wait 500
+		alertentity ex29
+		wait 1100
+		alertentity ex25
+		wait 500
+		alertentity ex29
+		wait 1200
+		alertentity ex26
+		wait 500
+		alertentity ex29
+		wait 1000
+		alertentity ex27
+
+		wait 500
+
+		trigger dzot kadr9
+
+	}
+
+	trigger kadr9
+	{
+		alertentity naz2
+		alertentity naz3
+		alertentity naz4
+		trigger player film25
+
+	}
+	trigger kadr9a
+	{
+
+		alertentity ex60
+		wait 800
+		alertentity ex61
+		wait 700
+		alertentity ex62
+		wait 1000
+
+		trigger player film30
+		trigger bomber1 kadr5
+		wait 5000
+		trigger player film26
+
+	}
+
+	trigger kadr11
+	{
+	trigger player film0
+	trigger civ fin
+	 wait 5000
+	}
+}
+
+
+brik
+{
+	spawn
+	{
+    gotomarker b1 5
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	gotomarker b2 1000
+	faceangles 0 0 0 gototime
+	alertentity ex4
+	wait 500
+	trigger brik2 start
+
+    }
+
+}
+
+text
+{
+	spawn
+	{
+    gotomarker tex1 500
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	gotomarker tex2 5
+	faceangles 0 0 0 gototime
+
+
+    }
+
+}
+
+brik2
+{
+	spawn
+	{
+
+	}
+
+	trigger start
+	{
+	alertentity ex5
+	faceangles -70 0 0 100
+	wait 2000
+	trigger dzot kadr2
+
+
+    }
+
+}
+
+
+bomber1
+{
+	spawn
+	{
+    gotomarker bom1 5
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	playsound sound/scenaric/general/b25.wav looping
+	gotomarker bom2 30
+	faceangles 0 0 0 gototime
+
+
+    }
+
+    trigger kadr5
+    {
+	 alertentity ex30
+		wait 800
+	alertentity ex31
+		wait 500
+	alertentity ex32
+		wait 800
+	alertentity ex33
+		wait 700
+	alertentity ex34
+		wait 800
+
+	alertentity ex30
+		wait 800
+	alertentity ex31
+		wait 500
+	alertentity ex32
+		wait 800
+	alertentity ex33
+		wait 700
+	alertentity ex34
+		wait 800
+    alertentity ex30
+		wait 800
+	alertentity ex31
+		wait 500
+	alertentity ex32
+		wait 800
+	alertentity ex33
+		wait 700
+	alertentity ex34
+		wait 800
+}
+
+}
+
+
+bomba
+{
+	spawn
+	{
+    gotomarker bomb1 5
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	gotomarker bomb2 100
+	faceangles 0 0 0 gototime
+
+
+    }
+
+}
+
+luk1
+{
+	spawn
+	{
+
+	}
+
+	trigger start
+	{
+	playsound sound/world/klaxon.wav
+	wait 1000
+	trigger luk2 start
+	faceangles 90 0 0 5000
+	wait 2000
+	trigger bbb1 start
+	wait 2000
+	trigger bbb2 start
+	wait 2000
+	trigger bbb3 start
+	wait 4000
+	trigger dzot kadr1
+
+
+    }
+
+    trigger fin
+	{
+	playsound sound/world/klaxon.wav
+	wait 1000
+	trigger luk2 fin
+	faceangles 0 0 0 5000
+	wait 3000
+
+	trigger dzot kadr11
+
+
+    }
+
+}
+
+luk2
+{
+	spawn
+	{
+
+	}
+
+	trigger start
+	{
+	faceangles -90 0 0 5000
+
+
+    }
+
+     trigger fin
+	{
+	wait 1000
+
+	faceangles 0 0 0 5000
+
+
+    }
+
+}
+
+bbb1
+{
+	spawn
+	{
+    gotomarker bo1 5
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	playsound sound/pro8/Exp_5.wav
+	gotomarker bo2 100
+	faceangles 0 0 0 gototime
+    gotomarker bo3 150
+	faceangles 0 0 0 gototime
+	gotomarker bo4 200
+	faceangles 0 0 0 gototime
+
+    }
+
+}
+
+bbb2
+{
+	spawn
+	{
+    gotomarker bo1 5
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	playsound sound/pro8/Exp_5.wav
+	gotomarker bo2 100
+	faceangles 0 0 0 gototime
+    gotomarker bo3 150
+	faceangles 0 0 0 gototime
+	gotomarker bo4 200
+	faceangles 0 0 0 gototime
+
+    }
+
+}
+
+bbb3
+{
+	spawn
+	{
+    gotomarker bo1 5
+		faceangles 0 0 0 gototime
+	}
+
+	trigger start
+	{
+	playsound sound/pro8/Exp_5.wav
+	gotomarker bo2 100
+	faceangles 0 0 0 gototime
+	gotomarker bo3 150
+	faceangles 0 0 0 gototime
+	gotomarker bo4 200
+	faceangles 0 0 0 gototime
+
+
+
+    }
+
+}

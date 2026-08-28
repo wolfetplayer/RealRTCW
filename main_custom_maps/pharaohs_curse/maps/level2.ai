@@ -1,0 +1,1182 @@
+player
+{
+	spawn
+	{
+		accum 0 set 0
+		mu_fade 0 5000
+		mu_queue  sound/scenaric/miks/main_menu.wav
+	}
+	playerstart
+	{
+		mu_stop 1000
+		mu_queue sound/music/level2/level2.wav
+
+		#if g_level_was_selected >= 1
+		applyloadout mid_game
+		#endif
+		cvar g_level_was_selected 0
+	}
+
+	trigger go_ruchka1
+	{
+		trigger ruchka1 go1
+	}
+	trigger go_ruchka2
+	{
+		trigger ruchka2 go1
+	}
+
+	trigger start_katarga
+	{
+		alertentity zombi14
+		wait 5000
+		trigger zombi14 go1
+	}
+
+
+
+	trigger start_start
+	{
+		wait 3000
+		alertentity zombi1
+		alertentity z1
+		trigger zombi1 go1
+		alertentity zombi4
+		alertentity z4
+		trigger zombi4 go1
+		wait 1000
+		alertentity zombi2
+		alertentity z2
+		trigger zombi2 go1
+		alertentity zombi6
+		alertentity z6
+		trigger zombi6 go1
+		wait 2000
+		alertentity zombi5
+		alertentity z5
+		trigger zombi5 go1
+		wait 500
+		alertentity zombi3
+		alertentity z3
+		trigger zombi3 go1
+		wait 2000
+		alertentity zombi7
+		alertentity z7
+		trigger zombi7 go1
+		wait 800
+		alertentity zombi8
+		alertentity z8
+		trigger zombi8 go1
+		wait 300
+		alertentity zombi9
+		alertentity z9
+		trigger zombi9 go1
+	}
+
+	trigger start_cam1
+	{
+		startcam l2_1
+	}
+	trigger start_war
+	{
+		alertentity war1
+		alertentity war2
+		trigger war1 go
+		trigger war2 go
+		wait 500
+		alertentity war3
+		alertentity war4
+		trigger war3 go
+		trigger war4 go
+		wait 500
+		alertentity war5
+		alertentity war6
+		trigger war5 go
+		trigger war6 go
+		wait 500
+		trigger war1 go1
+		trigger war2 go1
+		trigger war3 go1
+		trigger war4 go1
+		trigger war5 go1
+		trigger war6 go1
+		wait 4000
+		stopcam
+		trigger war1 go2
+		trigger war2 go2
+		trigger war3 go2
+		trigger war4 go2
+		trigger war5 go2
+		trigger war6 go2
+	}
+
+	trigger go_zomb
+	{
+		wait 5000
+		alertentity zombi10
+		alertentity z10
+		wait 1000
+		alertentity zombi11
+		alertentity z11
+		wait 1000
+		alertentity zombi12
+		alertentity z12
+		wait 1000
+		alertentity zombi13
+		alertentity z13
+	}
+
+
+	trigger active_z15_z16
+	{
+		alertentity zombi15
+		alertentity zombi16
+	}
+	trigger active_z17
+	{
+		alertentity zombi17
+	}
+	trigger active_z18
+	{
+		alertentity zombi18
+	}
+	trigger active_z19_z20
+	{
+		alertentity zombi19
+		alertentity zombi20
+	}
+	trigger active_z21
+	{
+		alertentity zombi21
+	}
+	trigger active_z22
+	{
+		alertentity zombi22
+	}
+	trigger active_z23
+	{
+		alertentity zombi23
+	}
+	trigger active_z24
+	{
+		alertentity zombi24
+	}
+	trigger active_z25
+	{
+		alertentity zombi25
+	}
+	trigger active_z26
+	{
+		alertentity zombi26
+	}
+	trigger active_z27
+	{
+		alertentity zombi27
+	}
+	trigger Lzombi_go
+	{
+		alertentity zombiL1
+	}
+
+
+
+	trigger zombi_alfa_s
+	{
+		alertentity zombi_alfa
+		alertentity zombi_alfa1
+		alertentity zombi_alfa2
+		alertentity zombi_alfa3
+	}
+	trigger aktivate_end
+	{
+		//mu_stop 1000
+		//mu_queue sound/scenaric/miks/l1_war2.wav
+		alertentity zombi_alfa9
+		alertentity zombi_alfa5
+	}
+
+	trigger death_s1
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 8
+		trigger dor6_1 go
+		trigger dor6_2 go
+		accum 0 set 0
+	}
+
+	trigger trigger_a
+	{
+		alertentity trigger_aktivate
+	}
+
+	trigger endmaps
+	{
+		lockplayer off
+		changelevel level3 persistent
+	}
+}
+
+
+//----------------------------ZOMBI------------------------------
+zombi1
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi1 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi2
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi2 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi3
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi3 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi4
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi4 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi5
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi5 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim off_hole_still both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim off_hole both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi6
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi6 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi7
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi7 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi8
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi8 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+zombi9
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi9 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim alcove_1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim alcove both
+		sight
+	}
+	fakedeath
+	{
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door1 acc
+		accum 0 set 1
+	}
+}
+
+
+
+zombi10
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+	}
+	death
+	{
+		trigger door3 acc
+	}
+}
+zombi11
+{
+	attributes
+	{
+		starting_health 100
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+	}
+	death
+	{
+		trigger door3 acc
+	}
+}
+zombi12
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+	}
+	death
+	{
+		trigger door3 acc
+	}
+}
+zombi13
+{
+	attributes
+	{
+		starting_health 100
+	}
+	spawn
+	{
+		knockback off
+		takeweapon monsterattack2
+	}
+	death
+	{
+		trigger door3 acc
+	}
+}
+zombi14
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		takeweapon monsterattack2
+		noavoid
+		godmode on
+		nosight 9999999999
+		trigger zombi14 go
+	}
+	trigger go
+	{
+		nosight 9999999999
+		playanim roll_out1 both forever
+	}
+	trigger go1
+	{
+		godmode off
+		clearanim
+		playsound go1
+		playanim roll_out both
+		sight
+	}
+	death
+	{
+		trigger resh acc
+	}
+}
+zombi15
+{
+	attributes
+	{
+	}
+}
+zombi16
+{
+	attributes
+	{
+	}
+}
+zombi17
+{
+	attributes
+	{
+	}
+}
+zombi18
+{
+	attributes
+	{
+	}
+}
+zombi19
+{
+	attributes
+	{
+	}
+}
+zombi20
+{
+	attributes
+	{
+	}
+}
+zombi21
+{
+	attributes
+	{
+	}
+}
+zombi22
+{
+	attributes
+	{
+	}
+}
+zombi23
+{
+	attributes
+	{
+	}
+}
+zombi24
+{
+	attributes
+	{
+	}
+}
+zombi25
+{
+	attributes
+	{
+	}
+}
+zombi26
+{
+	attributes
+	{
+	}
+}
+zombi27
+{
+	attributes
+	{
+	}
+}
+
+zombiL1
+{
+	spawn
+	{
+		wait 50
+		trigger zombiL1 go
+	}
+	attributes
+	{
+	}
+	trigger go
+	{
+		runtomarker Lzombi_pos1
+		facetargetangles Lzombi_pos1
+		runtomarker Lzombi_pos2
+		facetargetangles Lzombi_pos2
+	}
+	death
+	{
+		alertentity zombiL2
+	}
+}
+zombiL2
+{
+	spawn
+	{
+		wait 50
+		trigger zombiL2 go
+	}
+	attributes
+	{
+	}
+	trigger go
+	{
+		runtomarker Lzombi_pos1
+		facetargetangles Lzombi_pos1
+		runtomarker Lzombi_pos2
+		facetargetangles Lzombi_pos2
+	}
+	death
+	{
+		alertentity zombiL3
+	}
+}
+zombiL4
+{
+	spawn
+	{
+		wait 50
+		trigger zombiL4 go
+	}
+	attributes
+	{
+	}
+	trigger go
+	{
+		runtomarker Lzombi_pos1
+		facetargetangles Lzombi_pos1
+		runtomarker Lzombi_pos2
+		facetargetangles Lzombi_pos2
+	}
+}
+
+
+//--------------------------------WARIORR----------------------
+war1
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		noavoid
+		godmode on
+		nosight 9999999999
+	}
+	trigger go
+	{
+		headlook off
+		walktomarker war1_p1
+		facetargetangles war1_p1
+	}
+	trigger go1
+	{
+		walktomarker war1_p2
+	}
+	trigger go2
+	{
+		godmode off
+		sight
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door2 acc
+		accum 0 set 1
+	}
+}
+war2
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		noavoid
+		godmode on
+		nosight 9999999999
+	}
+	trigger go
+	{
+		headlook off
+		walktomarker war2_p1
+		facetargetangles war2_p1
+	}
+	trigger go1
+	{
+		walktomarker war2_p2
+	}
+	trigger go2
+	{
+		godmode off
+		sight
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door2 acc
+		accum 0 set 1
+	}
+}
+war3
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		noavoid
+		godmode on
+		nosight 9999999999
+	}
+	trigger go
+	{
+		headlook off
+		walktomarker war3_p1
+		facetargetangles war3_p1
+	}
+	trigger go1
+	{
+		walktomarker war3_p2
+	}
+	trigger go2
+	{
+		godmode off
+		sight
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door2 acc
+		accum 0 set 1
+	}
+}
+war4
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		noavoid
+		godmode on
+		nosight 9999999999
+	}
+	trigger go
+	{
+		headlook off
+		walktomarker war4_p1
+		facetargetangles war4_p1
+	}
+	trigger go1
+	{
+		walktomarker war4_p2
+	}
+	trigger go2
+	{
+		godmode off
+		sight
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door2 acc
+		accum 0 set 1
+	}
+}
+war5
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		noavoid
+		godmode on
+		nosight 9999999999
+	}
+	trigger go
+	{
+		headlook off
+		walktomarker war5_p1
+		facetargetangles war5_p1
+	}
+	trigger go1
+	{
+		walktomarker war5_p2
+	}
+	trigger go2
+	{
+		godmode off
+		sight
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door2 acc
+		accum 0 set 1
+	}
+}
+war6
+{
+	attributes
+	{
+	}
+	spawn
+	{
+		accum 0 set 0
+		knockback off
+		noavoid
+		godmode on
+		nosight 9999999999
+	}
+	trigger go
+	{
+		headlook off
+		walktomarker war6_p1
+		facetargetangles war6_p1
+	}
+	trigger go1
+	{
+		walktomarker war6_p2
+	}
+	trigger go2
+	{
+		godmode off
+		sight
+	}
+	death
+	{
+		accum 1 abort_if_equal 1
+		trigger door2 acc
+		accum 0 set 1
+	}
+}
+
+
+
+
+
+
+
+
+
+zombi_alfa9
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+		alertentity zombi_alfa7
+	}
+}
+zombi_alfa5
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+		alertentity zombi_alfa11
+	}
+}
+zombi_alfa7
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+		alertentity zombi_alfa8
+	}
+}
+zombi_alfa11
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+		alertentity zombi_alfa4
+	}
+}
+zombi_alfa4
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+		alertentity zombi_alfa6
+	}
+}
+zombi_alfa8
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+		alertentity zombi_alfa10
+	}
+}
+zombi_alfa6
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+	}
+}
+zombi_alfa10
+{
+	attributes
+	{
+		starting_health 60
+	}
+	spawn
+	{
+		godmode on
+		nosight 9999999999
+		playsound teleport
+		sight
+		godmode off
+	}
+	death
+	{
+		trigger player death_s1
+	}
+}
+

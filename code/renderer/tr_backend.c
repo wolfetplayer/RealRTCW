@@ -1660,7 +1660,16 @@ const void  *RB_SwapBuffers( const void *data ) {
 
 	GLimp_LogComment( "***************** RB_SwapBuffers *****************\n\n\n" );
 
+	if ( fboEnabled ) {
+		// blits tr.mainFbo to the real backbuffer, applying gamma correction -- see tr_arb.c
+		FBO_PostProcess();
+	}
+
 	GLimp_EndFrame();
+
+	if ( fboEnabled ) {
+		FBO_Bind( tr.mainFbo );
+	}
 
 	backEnd.projection2D = qfalse;
 

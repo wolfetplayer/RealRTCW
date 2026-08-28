@@ -1,0 +1,812 @@
+//
+//AI Scripting
+//Map: tomb2
+
+//Last edited by: Priv
+//
+
+
+
+player
+{
+  spawn
+  {
+   applyloadout start
+   cvar g_level_was_selected 0
+
+  }
+  playerstart
+  {
+  mu_start sound/music/x_atmos
+  }
+
+
+
+  trigger action1
+	{
+	alertentity zom1
+	}
+trigger action2
+	{
+	alertentity zom4
+      alertentity zom5
+	}
+ trigger action3
+      {
+      alertentity zom6
+      }
+ trigger action4
+      {
+      alertentity zom7
+      alertentity zom8
+      alertentity zom9
+
+	  savecheckpoint
+      }
+ trigger action5
+      {
+      alertentity zom10
+            
+      alertentity zom11
+      }
+ trigger action6
+      {
+      alertentity zom12
+      
+      alertentity zom13
+	  savecheckpoint
+      }
+  trigger action7
+      {
+      alertentity zom14
+      alertentity zom15
+      }
+  trigger action8
+     {
+      alertentity zom16
+      alertentity zom17
+      alertentity zom18
+
+	  savecheckpoint
+      }
+  trigger endmap
+	{
+	changelevel tomb3 persistent
+	}
+
+
+}
+	
+
+zom1
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger  action1
+		alertentity z1			// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom2
+            alertentity zom3
+		
+	}
+}
+
+zom2
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		alertentity z2			// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom3
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		alertentity z3			// break the cover
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom4
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		alertentity z4			// break the cover
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom5
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 10000
+		playanim revive both
+		gotocast player
+		sight
+            trigger zom5 marchlop
+	}
+      trigger marchlop
+      {
+      walktomarker zo5
+      }
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom6
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		
+	//	playanim revive both
+		runtocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom7
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom8
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom9
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom10
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom11
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom12
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom13
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+
+
+
+zom14
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		takeweapon monsterattack2
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom15
+
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+	//	trigger player killed_zombie
+		takeweapon monsterattack2
+		nosight 1000
+		playanim revive both
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+
+	}
+}
+
+zom16
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom19
+            
+		
+	}
+}
+
+zom17
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom20
+            
+		
+	}
+}
+
+zom18
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom21
+            
+		
+	}
+}
+
+zom19
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom22
+            
+		
+	}
+}
+
+zom20
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom23
+            
+		
+	}
+}
+zom21
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		alertentity zom24
+            
+		
+	}
+}
+
+zom22
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+            
+		
+	}
+}
+zom23
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+           // nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+            
+		
+	}
+}
+
+
+zom24
+{
+	attributes
+	{
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+            //nosight 1000
+		//playanim revive both
+
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+		
+            
+		
+	}
+}
+
+
+
+

@@ -1,0 +1,442 @@
+//
+//Brush Scripting
+//Map: secmis
+//Last edited by: Depro777(RU)
+//
+
+duh1
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 70 0 gototime
+		gotomarker duh1_p1 150
+
+		faceangles 0 30 0 gototime
+		gotomarker duh1_p2 150
+
+		faceangles 0 -30 0 gototime
+		gotomarker duh1_p3 150
+
+		faceangles 0 -90 0 gototime
+		gotomarker duh1_p4 150
+
+		faceangles 0 -150 0 gototime
+		gotomarker duh1_p5 150
+
+		faceangles 0 -210 0 gototime
+		gotomarker duh1_p6 150
+
+		faceangles 0 -270 0 gototime
+		gotomarker duh1_p7 150
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+duh2
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 30 0 gototime
+		gotomarker duh2_p1 75
+
+		faceangles 0 -30 0 gototime
+		gotomarker duh2_p2 150
+
+		faceangles 0 -90 0 gototime
+		gotomarker duh2_p3 150
+
+		faceangles 0 -150 0 gototime
+		gotomarker duh2_p4 150
+
+		faceangles 0 -210 0 gototime
+		gotomarker duh2_p5 150
+
+		faceangles 0 -270 0 gototime
+		gotomarker duh2_p6 150
+
+		faceangles 0 -330 0 gototime
+		gotomarker duh2_p7 150
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+duh3
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 -30 0 gototime
+		gotomarker duh3_p1 150
+
+		faceangles 0 -90 0 gototime
+		gotomarker duh3_p2 150
+
+		faceangles 0 -150 0 gototime
+		gotomarker duh3_p3 150
+
+		faceangles 0 -210 0 gototime
+		gotomarker duh3_p4 150
+
+		faceangles 0 -270 0 gototime
+		gotomarker duh3_p5 150
+
+		faceangles 0 -330 0 gototime
+		gotomarker duh3_p6 150
+
+		faceangles 0 -390 0 gototime
+		gotomarker duh3_p7 150
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+duh4
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 -90 0 gototime
+		gotomarker duh4_p1 150
+
+		faceangles 0 -150 0 gototime
+		gotomarker duh4_p2 150
+
+		faceangles 0 -210 0 gototime
+		gotomarker duh4_p3 150
+
+		faceangles 0 -270 0 gototime
+		gotomarker duh4_p4 150
+
+		faceangles 0 -330 0 gototime
+		gotomarker duh4_p5 150
+
+		faceangles 0 -390 0 gototime
+		gotomarker duh4_p6 150
+
+		faceangles 0 -450 0 gototime
+		gotomarker duh4_p7 150
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+duh5
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 -150 0 gototime
+		gotomarker duh5_p1 75
+
+		faceangles 0 -210 0 gototime
+		gotomarker duh5_p2 150
+
+		faceangles 0 -270 0 gototime
+		gotomarker duh5_p3 150
+
+		faceangles 0 -330 0 gototime
+		gotomarker duh5_p4 150
+
+		faceangles 0 -390 0 gototime
+		gotomarker duh5_p5 150
+
+		faceangles 0 -450 0 gototime
+		gotomarker duh5_p6 150
+
+		faceangles 0 -510 0 gototime
+		gotomarker duh5_p7 150
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+duh6
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger go
+	{
+		faceangles 0 -210 0 gototime
+		gotomarker duh6_p1 150
+
+		faceangles 0 -270 0 gototime
+		gotomarker duh6_p2 150
+
+		faceangles 0 -330 0 gototime
+		gotomarker duh6_p3 150
+
+		faceangles 0 -390 0 gototime
+		gotomarker duh6_p4 150
+
+		faceangles 0 -450 0 gototime
+		gotomarker duh6_p5 150
+
+		faceangles 0 -510 0 gototime
+		gotomarker duh6_p6 150
+
+		faceangles 0 -570 0 gototime
+		gotomarker duh6_p7 150
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/beast/skull_shriek2.wav
+	}
+}
+
+stena1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker duh3_p7 1000
+	}
+}
+
+stena2
+{
+	spawn
+	{
+	}
+}
+
+tahinator_body
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+	trigger go
+	{
+		trigger tahinator_hands clear_go
+		trigger tahinator_hands loop
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p2 30
+		trigger tahinator_hands on2
+		trigger tahinator_hands go2
+
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p3 30
+		trigger tahinator_hands on1
+		trigger tahinator_hands go3
+		alertentity tesla1
+		alertentity tesla2
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p2 30
+		trigger tahinator_hands on1
+		trigger tahinator_hands go2
+		alertentity tesla1
+		alertentity tesla2
+		alertentity tesla3
+		alertentity tesla4
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p3 30
+		trigger tahinator_hands on1
+		trigger tahinator_hands go3
+		alertentity tesla3
+		alertentity tesla4
+		alertentity tesla5
+		alertentity tesla6
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p2 30
+		trigger tahinator_hands on1
+		trigger tahinator_hands go2
+		alertentity tesla5
+		alertentity tesla6
+		alertentity tesla7
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p3 30
+		trigger tahinator_hands on1
+		trigger tahinator_hands go3
+		alertentity tesla7
+		alertentity tesla1
+		alertentity tesla5
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p2 30
+//		trigger tahinator_hands on1
+		trigger tahinator_hands go2
+		alertentity tesla1
+		alertentity tesla5
+		trigger tahinator_hands on2
+
+		faceangles 0 0 0 gototime
+		gotomarker tah1_p1 30
+		trigger tahinator_hands go1
+	}
+
+	trigger loop_off
+	{
+		wait 100
+		playsound sound/world/slow_fan_02.wav
+	}
+}
+
+tahinator_hands
+{
+	spawn
+	{
+		trigger tahinator_hands clear_go
+	}
+
+	trigger clear_go
+	{
+		accum 0 set 0 //  0 = can  1 = cant
+		accum 1 set 0 //  0 = cant  6 = can
+	}
+
+	trigger go1
+	{
+		gotomarker tah1_p1 30
+		trigger richag close
+		accum 0 set 1
+	}
+
+	trigger go2
+	{
+		gotomarker tah1_p2 30
+	}
+
+	trigger go3
+	{
+		gotomarker tah1_p3 30
+	}
+
+	trigger on1
+	{
+		accum 0 abort_if_not_equal 0
+		faceangles 0 -90 0 600
+		faceangles 0 -180 0 600
+		faceangles 0 -270 0 600
+		faceangles 0 -360 0 600	
+	}
+
+	trigger on2
+	{
+		faceangles 0 -90 0 600
+		faceangles 0 -180 0 600
+		faceangles 0 -270 0 600
+		faceangles 0 -360 0 600
+		faceangles 0 -450 0 600
+		faceangles 0 -540 0 600
+		faceangles 0 -630 0 600
+		faceangles 0 -720 0 600		
+	}
+
+	trigger loop
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/world/dam_turbine.wav looping
+	}
+
+	trigger spec
+	{
+		trigger player teslagoscpec
+		trigger tahinator_hands loop_off
+	}
+
+	trigger loop_off
+	{
+		wait 100
+		playsound sound/scenaric/village2/misc_blank.wav looping
+	}
+}
+
+richag
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/switches/switch.wav
+		faceangles 0 0 180 800
+	}
+
+	trigger close
+	{
+//		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/switches/switch.wav
+		faceangles 0 0 0 1600
+		trigger tahinator_hands spec
+	}
+}
+
+radios
+{
+	spawn
+	{
+	}
+	trigger go
+	{
+		playsound sound/world/amb_radio_02.wav
+	}
+}

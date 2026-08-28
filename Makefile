@@ -2051,11 +2051,14 @@ endif
 Q3ROBJ = \
   $(B)/renderer/tr_altivec.o \
   $(B)/renderer/tr_animation.o \
+  $(B)/renderer/tr_arb.o \
   $(B)/renderer/tr_backend.o \
   $(B)/renderer/tr_bsp.o \
   $(B)/renderer/tr_cmds.o \
   $(B)/renderer/tr_cmesh.o \
   $(B)/renderer/tr_curve.o \
+  $(B)/renderer/tr_extensions.o \
+  $(B)/renderer/tr_fbo.o \
   $(B)/renderer/tr_flares.o \
   $(B)/renderer/tr_font.o \
   $(B)/renderer/tr_image.o \

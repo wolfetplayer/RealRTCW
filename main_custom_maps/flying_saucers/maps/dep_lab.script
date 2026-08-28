@@ -1,0 +1,673 @@
+//
+//Brush Scripting
+//Map: dep_lab
+//Last edited by: Depro777(RU)
+//
+
+counter1
+{
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 0 bitreset 1 //ss1
+		accum 0 bitreset 2 //ss2
+		accum 0 bitreset 3 //ss3
+		accum 0 bitreset 4 //enemy or friend?
+	}
+
+	trigger cinematic1
+	{
+		wait 7400
+		trigger player cine1_cam1
+		wait 7000
+		trigger player cine1_cam2
+		alertentity rus1
+	}
+
+	trigger cine1_cleanup
+	{
+		resetscript
+
+		trigger trainglav go2
+		trigger trainzad go2
+		trigger train1 go2
+		trigger train2 go2
+		trigger train3 go2
+		trigger train4 go2
+
+	}
+
+	trigger cinematic2
+	{
+		trigger player endcamera1
+		wait 1000
+		trigger player endcamera2
+		wait 2500
+		trigger player exitmap
+	}
+
+	trigger reshotkago
+	{
+		wait 1000
+		alertentity openreshotka
+	}
+
+	trigger ss1
+	{
+		accum 0 abort_if_bitset 1
+		accum 0 bitset 1
+
+		trigger player music_change4
+		alertentity openeldoor1
+		alertentity nem3
+		alertentity nem4
+	}
+
+	trigger ss2
+	{
+		accum 0 abort_if_bitset 2
+		accum 0 bitset 2
+
+		trigger player music_change4
+		alertentity openeldoor2
+
+		alertentity nem10
+		alertentity nem11
+		alertentity nem12
+
+		alertentity mehanik1
+		alertentity mehanik2
+
+		alertentity officer1
+		alertentity scientist3
+	}
+
+	trigger ss3
+	{
+		accum 0 abort_if_bitset 3
+		accum 0 bitset 3
+
+		trigger player music_change2
+
+		alertentity scientist4
+		alertentity nem13
+		alertentity ss3
+	}
+
+	trigger he_is_enemy
+	{
+		accum 0 bitset 4
+	}
+
+	trigger friend_or_enemy
+	{
+		trigger counter1 enemy
+		wait 5
+		trigger counter1 friend
+	}
+
+	trigger friend
+	{
+		accum 0 abort_if_bitset 4
+
+		alertentity loper1_a
+	}
+
+	trigger enemy
+	{
+		accum 0 abort_if_not_bitset 4
+
+		alertentity loper1_e
+	}
+
+}
+
+trainglav
+{
+	spawn
+	{
+		accum 0 set 0 //proverka povrezhdeniya dveri
+
+		gotomarker tr1_p1 99999
+		faceangles 0 -90 0 gototime
+	}
+
+	trigger go1
+	{
+		trigger trainglav goloop
+
+		gotomarker tr1_p1 99999
+		faceangles 0 -90 0 gototime
+		wait 7500
+
+		gotomarker tr1_p2 400
+		faceangles 0 -70 0 gototime
+
+		gotomarker tr1_p3 400
+		faceangles 0 -20 0 gototime
+
+		gotomarker tr1_p4 400
+		faceangles 0 0 0 gototime
+
+		gotomarker tr1_p5 400
+		faceangles 0 0 0 gototime
+
+		alertentity demdoor
+		accum 0 set 1
+	}
+
+	trigger go2
+	{
+		gotomarker tr1_p5 99999
+		faceangles 0 0 0 gototime
+
+		accum 0 abort_if_not_equal 0
+		alertentity demdoor2
+	}
+
+	trigger goloop
+	{
+		playsound sound/world/radarcloseambient.wav looping
+	}
+}
+trainzad
+{
+	spawn
+	{
+		gotomarker tr3_p1 99999 wait
+		faceangles 0 -90 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker tr3_p1 99999 wait
+		faceangles 0 -80 0 gototime
+		wait 7500
+
+		gotomarker tr3_p2 400
+		faceangles 0 -75 0 gototime
+
+		gotomarker tr3_p3 400
+		faceangles 0 -30 0 gototime
+
+		gotomarker tr3_p4 400
+		faceangles 0 0 0 gototime
+
+		gotomarker tr3_p5 400
+		faceangles 0 0 0 gototime
+	}
+
+	trigger go2
+	{
+		gotomarker tr3_p5 99999
+		faceangles 0 0 0 gototime
+	}
+}
+
+train1
+{
+	spawn
+	{
+		gotomarker tr1_p1 99999 wait
+		faceangles 0 -90 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker tr1_p1 99999 wait
+		faceangles 0 -80 0 gototime
+		wait 7500
+
+		gotomarker tr1_p2 400
+		faceangles 0 -60 0 gototime
+
+		gotomarker tr1_p3 400
+		faceangles 0 -10 0 gototime
+
+		gotomarker tr1_p4 400
+		faceangles 0 0 0 gototime
+
+		gotomarker tr1_p5 400
+		faceangles 0 0 0 gototime
+	}
+
+	trigger go2
+	{
+		gotomarker tr1_p5 99999
+		faceangles 0 0 0 gototime
+	}
+
+}
+
+train2
+{
+	spawn
+	{
+		gotomarker tr2_p1 99999 wait
+		faceangles 0 -90 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker tr2_p1 99999 wait
+		faceangles 0 -78 0 gototime
+		wait 7500
+
+		gotomarker tr2_p2 400
+		faceangles 0 -63 0 gototime
+
+		gotomarker tr2_p3 400
+		faceangles 0 -24 0 gototime
+
+		gotomarker tr2_p4 400
+		faceangles 0 0 0 gototime
+
+		gotomarker tr2_p5 400
+		faceangles 0 0 0 gototime
+	}
+
+	trigger go2
+	{
+		gotomarker tr2_p5 99999
+		faceangles 0 0 0 gototime
+	}
+
+}
+
+train3
+{
+	spawn
+	{
+		gotomarker tr3_p1 99999 wait
+		faceangles 0 -90 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker tr3_p1 99999 wait
+		faceangles 0 -81 0 gototime
+		wait 7500
+
+		gotomarker tr3_p2 400
+		faceangles 0 -76 0 gototime
+
+		gotomarker tr3_p3 400
+		faceangles 0 -32 0 gototime
+
+		gotomarker tr3_p4 400
+		faceangles 0 0 0 gototime
+
+		gotomarker tr3_p5 400
+		faceangles 0 0 0 gototime
+	}
+
+	trigger go2
+	{
+		gotomarker tr3_p5 99999
+		faceangles 0 0 0 gototime
+	}
+
+}
+
+train4
+{
+	spawn
+	{
+		gotomarker tr4_p1 99999 wait
+		faceangles 0 -90 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker tr4_p1 99999 wait
+		faceangles 0 -82 0 gototime
+		wait 7500
+
+		gotomarker tr4_p2 400
+		faceangles 0 -76 0 gototime
+
+		gotomarker tr4_p3 400
+		faceangles 0 -32 0 gototime
+
+		gotomarker tr4_p4 400
+		faceangles 0 0 0 gototime
+
+		gotomarker tr4_p5 400
+		faceangles 0 0 0 gototime
+	}
+
+	trigger go2
+	{
+		gotomarker tr4_p5 99999
+		faceangles 0 0 0 gototime
+	}
+
+}
+
+richag1a
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger richag1a open
+		wait 5
+		trigger richag1a close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/switches/switch.wav
+		faceangles 0 0 -180 800
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/switches/switch.wav
+		faceangles 0 0 0 800
+	}
+}
+
+richag1b
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger richag1b open
+		wait 5
+		trigger richag1b close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/switches/switch.wav
+		faceangles 0 0 180 800
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/switches/switch.wav
+		faceangles 0 0 0 800
+	}
+}
+
+podyomnik
+{
+	spawn
+	{
+		accum 0 set 1 //  0 = down  1 = up
+	}
+
+	trigger toggle
+	{
+		trigger podyomnik down
+		wait 5
+		trigger podyomnik up
+	}
+
+	trigger up
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 2
+		playsound sound/movers/elevators/elev1_start.wav
+
+		trigger knopka on
+
+		gotomarker po_down2 40
+		faceangles 0 0 0 gototime
+
+		gotomarker po_up2 80
+		faceangles 0 0 0 gototime
+
+		gotomarker po_up 35
+		faceangles 0 0 0 gototime
+
+		trigger knopka off
+		playsound sound/movers/elevators/elev1_end.wav
+
+		accum 0 set 1
+	}
+
+	trigger down
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 2
+		playsound sound/movers/elevators/elev1_start.wav
+
+		trigger knopka on
+
+		gotomarker po_up2 40
+		faceangles 0 0 0 gototime
+
+		gotomarker po_down2 80
+		faceangles 0 0 0 gototime
+		gotomarker po_down 35
+		faceangles 0 0 0 gototime
+
+		trigger knopka off
+		playsound sound/movers/elevators/elev1_end.wav
+
+		accum 0 set 0
+	}
+}
+
+knopka
+{
+	spawn
+	{
+	}
+
+	trigger on
+	{
+		playsound sound/movers/switches/switch.wav
+		gotomarker kn_on 20
+
+	}
+
+	trigger off
+	{
+		gotomarker kn_off 20
+	}
+}
+
+reshotka
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		trigger counter1 reshotkago
+		gotomarker resh_p1 40
+		faceangles 0 0 0 gototime
+
+		playsound sound/movers/doors/door2_close.wav
+
+		gotomarker resh_p2 75
+		faceangles 0 60 0 gototime
+
+	}
+}
+
+lampa
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 130 30 0 900
+
+		faceangles 70 30 0 900 wait
+
+		faceangles 80 20 0 500 gototime
+
+		gotomarker lam_p2 300
+
+		alertentity slomreshka
+
+		faceangles 90 10 0 500 gototime
+		gotomarker lam_p2 300
+
+
+//		playsound sound/movers/doors/door2_close.wav
+	}
+}
+
+platforma
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		playsound sound/movers/doors/door3_loopo.wav
+		gotomarker pl_p1 70 gototime
+		wait 5
+		resetscript
+		playsound sound/movers/doors/door3_endo.wav
+		wait 200
+		trigger ss2 go
+	}
+}
+
+lift
+{
+
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger toggle
+	{
+		alertentity closepath
+
+		trigger lift up
+		wait 5
+		trigger lift down
+	}
+
+	trigger soundloop
+	{
+		playsound sound/movers/elevators/elev1_loop.wav looping
+	}
+
+	trigger down
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		wait 5
+		playsound sound/movers/elevators/elev1_start.wav
+		trigger lift soundloop
+		gotomarker lift_p2 50 wait
+		gotomarker lift_p1 50 deccel wait
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav
+		trigger knopka2 off
+		trigger knopka1 off
+	}
+
+	trigger up
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		wait 5
+		playsound sound/movers/elevators/elev1_start.wav
+		trigger lift soundloop
+		gotomarker lift_p3 50 wait
+		gotomarker lift_p4 50 deccel wait
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav
+		trigger knopka2 off
+		trigger knopka1 off
+	}
+}
+
+knopka1
+{
+	spawn
+	{
+		accum 0 bitset 0
+		wait 5
+		gotomarker kn1_p1 10 wait
+	}
+
+	trigger on
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		playsound basein_switch
+		gotomarker kn1_p2 10 wait
+		trigger lift toggle
+	}
+
+	trigger off
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound basein_switch
+		gotomarker kn1_p1 10 wait
+	}
+}
+
+knopka2
+{
+	spawn
+	{
+		accum 0 bitset 0
+		wait 5
+		gotomarker kn2_p1 10 wait
+	}
+
+	trigger on
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		playsound basein_switch
+		gotomarker kn2_p2 10 wait
+		trigger lift toggle
+	}
+
+	trigger off
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound basein_switch
+		gotomarker kn2_p1 10 wait
+	}
+}
+
+stol
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger bac
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		faceangles 0 0 76 1000
+		playsound ass_table_fall
+	}
+}

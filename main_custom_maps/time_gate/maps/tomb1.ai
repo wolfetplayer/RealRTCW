@@ -1,0 +1,178 @@
+
+player
+{
+	
+spawn
+	{
+		
+
+		abort_if_loadgame
+		mu_start sound/music/l_theme
+        trigger kino cin
+	}
+
+	playerstart
+	{
+		
+      }
+
+
+
+//kino====================
+trigger kam1
+ {
+           
+
+            startcam c1_tom
+             }
+
+
+
+
+trigger kam2
+        {
+            
+            startcam c2_tom
+            trigger avto mov
+            
+            
+
+}
+
+trigger kam3
+    {
+     startcam c3_tom
+    }
+trigger kam4
+{
+ startcam c4_tom
+}
+trigger kam5
+{
+ startcam c5_tom
+}
+
+
+
+ trigger level
+	{
+	changelevel tomb2 persistent
+      }
+
+
+
+}
+
+
+bj
+{
+  	
+  	spawn
+  	{
+       takeweapon all
+
+	 trigger bj go
+ 	}
+
+	trigger go
+  	{
+      wait 500          
+      walktomarker bj1
+      wait 3000
+      facetargetangles bj2
+      
+      walktomarker bj3 nostop     
+      walktomarker bj4 nostop    
+      facetargetangles bj4
+
+	
+   	}
+       
+      
+	
+
+
+}
+
+kes
+{
+  	
+  	spawn
+  	{
+	takeweapon all
+      
+ 	}
+
+	trigger gok
+  	{
+                
+      walktomarker kes1
+      wait 100
+      playsound sound/tomb/t1.wav
+      wait 3500
+      facetargetangles bj2
+      walktomarker bj2
+
+           
+      
+       
+	
+   	}
+       
+      
+	
+
+
+}
+
+civ
+{
+  	
+  	spawn
+  	{
+	takeweapon all
+      
+ 	}
+
+	trigger go
+  	{
+              
+      walktomarker civ_1
+      
+           
+      
+       
+	
+   	}
+       
+      
+	
+
+
+}
+
+civ1
+{
+  	
+  	spawn
+  	{
+	 takeweapon all
+     
+ 	}
+
+	trigger go
+  	{
+             
+      walktomarker civ1_1
+      
+           
+      
+       
+	
+   	}
+       
+      
+	
+
+
+}

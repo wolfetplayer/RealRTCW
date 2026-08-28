@@ -1,0 +1,163 @@
+
+//
+//Brush scripting
+//Map RuN
+// 08/11/07
+//last edited by Arcot 24
+//  
+
+lodka
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 1 set 0
+		trigger lodka choose_float
+	}
+
+	trigger go1
+	{
+		wait 733
+		trigger lodka choose_flat
+	}
+
+	trigger choose_float
+	{
+		accum 1 random 3
+		trigger lodka float1
+		wait 5
+		trigger lodka float2
+		wait 5
+		trigger lodka float3
+	}
+
+	trigger float1
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript	
+		faceangles 0 0 357 4300
+		faceangles 0 0 0 4300
+		faceangles 0 0 4 4000	
+		faceangles 0 0 0 4300	
+		trigger lodka choose_float
+	}
+
+	trigger float2
+	{
+		accum 1 abort_if_not_equal 1
+		resetscript
+		faceangles 0 357 4 4300
+		faceangles 0 0 0 4300
+		faceangles 0 4 357 4000	
+		faceangles 0 0 0 4300
+		trigger lodka choose_float
+	}
+	
+	trigger float3
+	{
+		accum 1 abort_if_not_equal 2
+		resetscript
+		faceangles 0 5 6 4300
+		faceangles 0 0 0 4300
+		faceangles 0 356 354 4000	
+		faceangles 0 0 0 4300
+		trigger lodka choose_float
+	}
+
+}
+
+balka
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 1 set 0
+	}
+
+	trigger go
+	{
+		gotomarker b_1 50
+		faceangles 0 0 0 gototime
+		gotomarker b_2 50
+		faceangles 0 350 0 gototime
+		gotomarker b_3 50
+		faceangles 0 330 0 gototime
+		gotomarker b_4 50
+		faceangles 0 300 0 gototime
+		gotomarker b_5 50
+		faceangles 0 290 0 gototime
+		gotomarker b_6 50
+		faceangles 0 340 0 gototime
+		gotomarker b_7 50
+		faceangles 0 0 0 gototime
+		gotomarker b_8 50
+		faceangles 0 0 0 gototime
+		gotomarker b_9 50
+		faceangles 0 0 0 gototime
+		alertentity tr_02
+	}
+}
+
+poezd
+{
+	spawn
+	{
+		accum 0 bitset 0
+		accum 1 set 0
+	}
+
+	trigger go
+	{
+		wait 5000
+		gotomarker k1 500
+		faceangles 0 0 0 gototime
+		gotomarker k2 500
+		faceangles 0 0 0 gototime
+		gotomarker k3 500
+		faceangles 0 0 0 gototime
+		alertentity tr_01
+	}
+}
+
+zvuk_1
+{
+	spawn
+	{
+	}
+
+	trigger begin
+	{
+		wait 13000
+		alertentity sava
+		trigger zvuk_1 begin
+	}
+}
+
+zvuk_2
+{
+	spawn
+	{
+	}
+
+	trigger begin
+	{
+		alertentity shoroh
+		wait 4000
+		trigger zvuk_2 begin
+	}
+}
+
+checker
+{
+
+	spawn
+	{
+	}	
+	
+	trigger death
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 38
+		trigger player objective_2
+	}
+}	

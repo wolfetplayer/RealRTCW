@@ -1,0 +1,2717 @@
+//
+//AI Scripting
+//Map: pro9
+
+//Last edited by: WolfETPlayer
+//
+
+
+
+player
+{
+  spawn
+  {
+  mu_start sound/music/x_military
+  trigger lift start
+
+  }
+  playerstart
+  {
+
+		#if g_level_was_selected >= 1
+		applyloadout pro10
+		#endif
+		cvar g_level_was_selected 0
+  }
+
+  trigger bum
+  {
+	  trigger roket start
+ }
+
+  trigger two
+  {
+	  trigger ruk2 start
+ }
+ trigger krant
+ {
+	 missionfailed
+ }
+ trigger fin
+ {
+	 missionfailed
+ }
+
+ trigger zap
+ {
+	 alertentity b1
+	 wait 500
+	 alertentity b2
+	 wait 300
+	 alertentity b3
+	 wait 300
+	 alertentity b4
+	 wait 300
+	 alertentity b5
+	 wait 300
+	 alertentity b6
+	 wait 300
+	 alertentity b7
+}
+
+trigger kadr1
+{
+	startcam p10x1
+	wait 4500
+	stopcam
+}
+
+trigger kadr2
+{
+	startcam p10x2
+	wait 3700
+	stopcam
+	trigger player endmap
+}
+trigger action1
+{
+	alertentity naz2
+	alertentity naz3
+	alertentity naz4
+}
+
+trigger action2
+{
+	alertentity naz5
+	alertentity of1
+
+}
+
+trigger action3
+{
+	alertentity naz6
+	alertentity naz7
+	alertentity naz8
+	alertentity of2
+
+	savecheckpoint
+}
+
+trigger action4
+{
+	alertentity naz9
+	alertentity naz10
+	alertentity naz11
+	alertentity naz12
+}
+trigger action5
+{
+	alertentity naz13
+	alertentity naz14
+	alertentity naz15
+}
+
+trigger action6
+{
+	alertentity naz16
+	alertentity naz17
+	alertentity naz18
+	alertentity naz19
+
+	savecheckpoint
+}
+trigger action7
+{
+	alertentity naz20
+	alertentity naz21
+	alertentity naz22
+	alertentity naz23
+	alertentity naz24
+}
+
+trigger action8
+{
+	alertentity of3
+	alertentity naz25
+	alertentity naz26
+
+}
+
+trigger action9
+{
+	alertentity naz27
+	alertentity naz28
+	alertentity naz29
+	alertentity naz30
+
+	savecheckpoint
+}
+
+trigger action10
+{
+	alertentity naz31
+	alertentity naz32
+	alertentity naz33
+
+}
+
+trigger action11
+{
+	alertentity naz34
+	alertentity naz35
+	alertentity naz36
+
+}
+
+trigger action12
+{
+	alertentity naz37
+	alertentity naz38
+	alertentity naz39
+	alertentity naz40
+	alertentity naz40x
+	alertentity naz40y
+
+	savecheckpoint
+}
+
+trigger action13
+{
+	alertentity naz41
+	alertentity naz41x
+	alertentity naz41y
+
+}
+
+trigger action14
+{
+	alertentity naz42
+	alertentity naz43
+	alertentity naz40y
+
+}
+
+trigger action15
+{
+	alertentity naz44
+	alertentity naz45
+	alertentity naz46
+	alertentity of4
+	alertentity of5
+	alertentity of6
+	alertentity naz46x
+	alertentity naz46y
+	alertentity naz46z
+
+	savecheckpoint
+}
+
+
+
+
+
+trigger endmap
+	{
+
+		changelevel pro11 persistent
+	}
+
+ trigger aaa
+{
+mu_fade 0 1500
+	mu_queue sound/music/m_situation
+}
+
+trigger bbb
+{
+mu_fade 0 1500
+	mu_queue sound/music/x_military
+}
+
+trigger ccc
+{
+mu_fade 0 1500
+	mu_queue sound/music/x_tension
+}
+
+trigger ddd
+{
+mu_fade 0 1500
+	mu_queue sound/music/x_action
+}
+
+
+
+
+ }
+
+ //======Vragi==============
+
+naz1
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+
+	}
+
+
+           enemysight player
+	{
+trigger player aaa
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz2
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz3
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      trigger naz4 go
+
+
+	}
+
+	trigger go
+	{
+	gotomarker n4
+	statetype alert
+
+    }
+
+	bulletimpact
+	{
+		deny
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+ of1
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.5
+
+
+	}
+
+	spawn
+	{
+        takeweapon all
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		statetype alert
+	}
+
+
+
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+
+
+	}
+
+
+
+	}
+
+	naz5
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz6
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      trigger naz6 go
+
+
+	}
+
+	trigger go
+	{
+	gotomarker n6
+	statetype alert
+
+    }
+
+	bulletimpact
+	{
+		deny
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz7
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+      setammo ammo_9mm 999
+      trigger naz7 go
+
+
+	}
+
+	trigger go
+	{
+	gotomarker n7
+	statetype alert
+
+    }
+
+	bulletimpact
+	{
+		deny
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+of2
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.5
+
+
+	}
+
+	spawn
+	{
+        takeweapon all
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		statetype alert
+	}
+
+
+
+           enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+ 	death
+	{
+
+
+	}
+
+
+
+	}
+
+	naz8
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz9
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz10
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz11
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz12
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      trigger naz12 go
+
+
+	}
+
+	trigger go
+	{
+	gotomarker n12
+	statetype alert
+
+    }
+
+	bulletimpact
+	{
+		deny
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz13
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz14
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+trigger player bbb
+	}
+
+}
+
+naz15
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz16
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+       	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+      trigger naz16 go
+
+
+	}
+
+	trigger go
+	{
+	gotomarker n16
+	statetype alert
+
+    }
+
+	bulletimpact
+	{
+		deny
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz17
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+
+      trigger naz17 go
+
+
+	}
+
+	trigger go
+	{
+	gotomarker n17
+	statetype alert
+
+    }
+
+	bulletimpact
+	{
+		deny
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz18
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz19
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+trigger player ccc
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz20
+{
+	attributes
+	{
+
+
+	    aim_accuracy 0.4
+		starting_health 35
+		reaction_time 0.1
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+
+
+	statetype alert
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz21
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz22
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz23
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz24
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		knockback off
+		statetype alert
+		wait 100
+		gotomarker n24
+		facetargetangles n24
+        mount mg1
+
+	}
+
+	//	forced_mg42_unmount destroyed
+//	{
+//  		resetscript
+//		wait 100 player
+//	}
+
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+
+	trigger releasegun1
+	{
+		unmount
+		wait 100 player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+}
+
+of3
+{
+	attributes
+	{
+
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+		 takeweapon all
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+
+
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz25
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz26
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz30
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz27
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz29
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz28
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz31
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz32
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz33
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz35
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz36
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz34
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+
+	naz37
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+
+	naz38
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+
+	naz39
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+
+	naz40
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+naz41
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+
+            
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+      statetype alert
+       wait forever 0
+       trigger player ddd
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz43
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+      giveweapon weapon_mp40
+      setammo ammo_9mm 999
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz46
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz44
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+    	  giveweapon weapon_mauserrifle
+	  setammo ammo_792mm 999
+	  selectweapon weapon_mauserrifle
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+	naz45
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.4
+        fov 360
+
+	}
+
+	spawn
+	{
+
+
+
+
+	statetype alert
+	gotocast player
+
+	}
+
+
+           enemysight player
+	{
+resetscript
+	}
+
+	death
+	{
+
+	}
+
+}
+
+of4
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+     takeweapon all
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+of5
+{
+	attributes
+	{
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+     takeweapon all
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+of6
+{
+	attributes
+	{
+
+
+		idle_crouch 0.0
+		attack_crouch 0.0
+        fov 360
+
+	}
+
+	spawn
+	{
+     takeweapon all
+        giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+
+      statetype alert
+       wait forever 0
+
+
+	}
+
+
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	pain
+	{
+		resetscript
+    }
+
+
+           enemysight player
+	{
+
+	}
+
+	death
+	{
+
+	}
+
+}
+
+
+
+
+

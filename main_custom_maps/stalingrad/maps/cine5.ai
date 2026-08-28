@@ -1,0 +1,591 @@
+//
+//AI Scripting
+//Map: cine5
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+	spawn
+	{
+		mu_start sound/music/m_stealth
+		cvar g_episode 1
+		notarget on
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/cine5
+		trigger radar1 rotateloop
+		trigger player vision
+		notarget on
+	}
+	trigger vision
+	{
+		wait 5000
+		trigger nazi1 go1
+		trigger nazi2 go1
+		trigger nazi3 go1
+		trigger nazi4 go1
+	}
+	trigger film1
+	{
+		startcam cam5
+	}
+	trigger film2
+	{
+		startcam cam6
+	}
+	trigger film3
+	{
+		startcam cam7
+	}
+	trigger endmap
+	{
+		changelevel
+		wait 9000
+		endgame
+	}
+}
+nazi1			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		wait 1000
+		walktomarker n1spot1
+		walktomarker n1spot2
+	}
+	trigger go2
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		wait 3000
+		walktomarker n2spot1
+		walktomarker n2spot2
+	}
+	trigger go2
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi3			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		wait 5000
+		walktomarker n1spot1
+		walktomarker n1spot2
+	}
+	trigger go2
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi4			
+{
+	attributes
+	{
+		starting_health 60
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		pain_threshhold_scale 1.0		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon mp40
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger go1 
+	{
+		wait 5000
+		walktomarker n2spot1
+		walktomarker n2spot2
+	}
+	trigger go2
+	{
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+par1
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		starting_health 40
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_mosin
+		selectweapon weapon_mosin
+		setammo ammo_mosina 999
+		setammo ammo_grenades 9
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	enemysight
+	{
+		wait forever 0
+	}
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger rem_clear
+	{
+		accum 0 bitreset 0
+	}
+
+	death
+	{
+	}
+}
+par2
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 40
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		setammo ammo_grenades 9
+		notarget on
+		statetype relaxed
+		nosight 99999			
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par3
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 40
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_ppsh
+		setammo ammo_ttammo 999
+		selectweapon weapon_ppsh
+		setammo ammo_grenades 9
+		notarget on
+		statetype relaxed
+		nosight 99999			
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}
+par4
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 180
+		attack_crouch 0.2
+		fov 120
+		aggression 0.8
+		alertness 2048
+	}
+
+	spawn
+	{
+		accum 0 set 1 // 0=enemy spotted already
+		accum 1 set 0 // 1= don't play looping anim
+		accum 2 set 0 // one bullet impact
+		setammo ammo_grenades 0
+		notarget on
+		statetype relaxed
+		nosight 99999		
+
+		wait 2000
+		trigger par4 smoking2
+	}
+
+	trigger smoking2
+	{
+		wait 5000
+		accum 1 abort_if_not_equal 0
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 20000
+		trigger par4 smoking2
+	}
+	trigger gethelp11
+	{
+		accum 0 set 0
+		cigarette off
+		playsound Blank
+		clearanim
+		explicit_routing off
+		accum 1 set 1
+		resetscript
+		wait 1000 player
+		attack
+	}
+
+	enemysight
+	{
+		cigarette off
+		playsound Blank
+		clearanim
+		explicit_routing off
+		accum 1 set 1
+		trigger par4 alert11a
+		wait 5
+		
+	}
+
+	bulletimpact
+	{
+		deny
+		accum 2 abort_if_not_equal 0
+		accum 2 set 1
+		accum 0 set 0
+		cigarette off
+		playsound Blank
+		clearanim
+		explicit_routing off
+		statetype alert
+		accum 1 set 1
+		wait 100 player
+	}
+
+	inspectsoundstart
+	{
+		accum 0 set 0
+	}
+
+	trigger alert11a
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 0
+		wait 300
+		resetscript
+		attack
+	}
+
+	trigger n10down	
+	{
+		cigarette off
+		accum 0 set 0
+		accum 2 set 0
+	}
+	death
+	{
+		cigarette off
+		accum 0 set 0
+		resetscript
+	}
+}
+par5
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		starting_health 40
+		fov 360
+		tactical 1.0
+		camper 0.5
+		alertness 55000
+		aggression 1.0
+		Attack_skill 1.0
+	}
+	spawn
+	{
+		accum 0 bitset 0
+		accum 0 bitset 1
+		takeweapon all
+		giveweapon weapon_tt33
+		setammo ammo_ttammo 999
+		selectweapon weapon_tt33
+		setammo ammo_grenades 9
+		notarget on
+		statetype relaxed
+		nosight 99999			
+	}
+	enemysight
+	{
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	death
+	{
+	}
+}

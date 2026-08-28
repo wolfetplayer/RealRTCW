@@ -3969,6 +3969,10 @@ void Item_Slider_Paint( itemDef_t *item ) {
 	DC->setColor( newColor );
 	DC->drawHandlePic( x, y, SLIDER_WIDTH, SLIDER_HEIGHT, DC->Assets.sliderBar );
 
+	if ( item->cvar ) {
+		DC->drawText( x + SLIDER_WIDTH + 8, item->textRect.y, item->font, item->textscale, newColor, va( "%.2f", DC->getCVarValue( item->cvar ) ), 0, 0, item->textStyle );
+	}
+
 	x = Item_Slider_ThumbPosition( item );
 	DC->drawHandlePic( x - ( SLIDER_THUMB_WIDTH / 2 ), y - 2, SLIDER_THUMB_WIDTH, SLIDER_THUMB_HEIGHT, DC->Assets.sliderThumb );
 }

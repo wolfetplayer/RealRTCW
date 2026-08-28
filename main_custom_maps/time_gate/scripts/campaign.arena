@@ -1,0 +1,85 @@
+// Time Gate campaign maps for campaign_menu; all maps are chapter 1
+
+{
+map			"tomb1"
+longname	"Excavation"
+chapter		"1"
+}
+
+{
+map			"tomb2"
+longname	"Burial Crypts"
+chapter		"1"
+}
+
+{
+map			"tomb3"
+longname	"Catacomb Labyrinth"
+chapter		"1"
+}
+
+{
+map			"tomb4"
+longname	"Catacomb Gate"
+chapter		"1"
+}
+
+{
+map			"vil01"
+longname	"^2Time Transition"
+chapter		"1"
+}
+
+{
+map			"vil02"
+longname	"Village"
+chapter		"1"
+}
+
+{
+map			"berg"
+longname	"Cable Railway"
+chapter		"1"
+}
+
+{
+map			"bergwerk"
+longname	"Mines Facility"
+chapter		"1"
+}
+
+{
+map			"ber"
+longname	"Railway Track"
+chapter		"1"
+}
+
+{
+map			"labor1"
+longname	"^2Labs Cutscene"
+chapter		"1"
+}
+
+{
+map			"labor1a"
+longname	"Labs II"
+chapter		"1"
+}
+
+{
+map			"labor2"
+longname	"Labs III"
+chapter		"1"
+}
+
+{
+map			"labor3"
+longname	"Labs Gate"
+chapter		"1"
+}
+
+{
+map			"fin"
+longname	"^2Finale"
+chapter		"1"
+}

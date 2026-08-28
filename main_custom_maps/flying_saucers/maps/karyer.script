@@ -1,0 +1,750 @@
+//
+//Brush Scripting
+//Map: karyer
+//Last edited by: Depro777(RU)
+//
+
+counter1
+{
+	spawn
+	{
+		accum 0 set 0 //kamera
+		accum 1 bitset 0 //kill_scenu
+		accum 2 set 0 //check_deaths+vzriv
+		accum 3 set 0 //check_deaths 1,2
+	}
+
+	trigger cinematic1
+	{
+		trigger player cine1_cam0
+		wait 2000
+		trigger counter1 stvorki_close
+		wait 18000
+		alertentity openandclose
+
+		accum 0 set 1
+
+		wait 1000
+		accum 1 abort_if_not_bitset 0
+		accum 1 bitreset 0
+		alertentity nem0
+		alertentity kill_scenu
+	}
+
+	trigger cinematic2
+	{
+		accum 0 set 2
+		trigger player cine1_cam1
+		wait 15000
+	}
+
+	trigger cinematic3
+	{
+		accum 2 inc 1
+		accum 2 abort_if_not_equal 2
+
+		trigger katki1 startposition2
+		trigger katki2 startposition2
+		trigger zhdplatforma startposition2
+
+		trigger ufo_body startposition1
+		trigger ufo_loposti startposition1
+		trigger voditely startposition1
+
+		trigger player cine1_cam2
+		wait 8000
+
+		alertentity struyaognya
+		trigger ufo_body startposition2
+		trigger ufo_loposti startposition2
+		trigger voditely startposition2
+
+		trigger player cine1_cam3
+		wait 10000
+
+		trigger player endmap
+	}
+
+	trigger cine_toggle
+	{
+		trigger counter1 cine1_cleanup1
+		wait 5
+		trigger counter1 cine1_cleanup2
+	}
+
+	trigger cine1_cleanup1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		resetscript
+		alertentity openandclose
+
+		trigger stvorka1l fast_close
+		trigger stvorka1p fast_close
+		trigger stvorka2l fast_close
+		trigger stvorka2p fast_close
+		trigger stvorka3l fast_close
+		trigger stvorka3p fast_close
+
+		accum 1 abort_if_not_bitset 0
+		accum 1 bitreset 0
+		wait 400
+		alertentity nem0
+		alertentity kill_scenu
+	}
+
+	trigger cine1_cleanup2
+	{
+		accum 0 abort_if_not_equal 2
+		accum 0 set 1
+		trigger super1 reset
+		resetscript
+	}
+
+	trigger stvorki_close
+	{
+		trigger stvorka1l close
+		trigger stvorka1p close
+		trigger stvorka2l close
+		trigger stvorka2p close
+		trigger stvorka3l close
+		trigger stvorka3p close
+	}
+
+	trigger action12
+	{
+		alertentity trooper10
+		alertentity trooper11
+
+		alertentity nem29
+		alertentity nem30
+
+		alertentity opendoor2
+	}
+
+	trigger check_deaths1
+	{
+		accum 3 inc 1
+		accum 3 abort_if_not_equal 4
+
+		trigger counter1 action13
+	}
+
+	trigger action13
+	{
+		alertentity trooper12
+		alertentity trooper13
+
+		alertentity nem31
+		alertentity nem32
+
+		alertentity opendoor5
+	}
+
+	trigger check_deaths2
+	{
+		accum 3 inc 1
+		accum 3 abort_if_not_equal 8
+
+		alertentity opendoor3
+		alertentity nem33
+	}
+
+	trigger zhara
+	{
+		trigger player cine1_cam4
+
+		trigger ogony1 go
+		wait 500
+		trigger ogony2 go
+		wait 200
+		trigger ogony3 go
+	}
+
+
+}
+
+stvorka1l
+{
+	spawn
+	{
+	}
+
+	trigger open
+	{
+		faceangles 0 0 0 gototime
+        	gotomarker st1l_open 99999
+	}
+
+	trigger close
+	{
+        	gotomarker st1l_close 50
+	}
+
+	trigger fast_close
+	{
+		resetscript
+        	gotomarker st1l_close 99999
+	}
+}
+
+stvorka1p
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger open
+	{
+		faceangles 0 0 0 gototime
+		gotomarker st1p_open 99999
+	}
+
+	trigger close
+	{
+		gotomarker st1p_close 50
+	}
+
+	trigger fast_close
+	{
+		resetscript
+		gotomarker st1p_close 99999
+	}
+}
+
+stvorka2l
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger open
+	{
+		faceangles 0 0 0 gototime
+        	gotomarker st2l_open 99999
+	}
+
+	trigger close
+	{
+        	gotomarker st2l_close 50
+	}
+
+	trigger fast_close
+	{
+		resetscript
+		gotomarker st2l_close 99999
+	}
+}
+
+stvorka2p
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger open
+	{
+		faceangles 0 0 0 gototime
+        	gotomarker st2p_open 99999
+	}
+
+	trigger close
+	{
+        	gotomarker st2p_close 50
+	}
+
+	trigger fast_close
+	{
+		resetscript
+		gotomarker st2p_close 99999
+	}
+}
+
+stvorka3l
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger open
+	{
+		faceangles 0 0 0 gototime
+        	gotomarker st3l_open 99999
+	}
+
+	trigger close
+	{
+        	gotomarker st3l_close 50
+	}
+
+	trigger fast_close
+	{
+		resetscript
+		gotomarker st3l_close 99999
+	}
+}
+
+stvorka3p
+{
+	spawn
+	{
+		accum 0 bitreset 0
+	}
+
+	trigger open
+	{
+		faceangles 0 0 0 gototime
+        	gotomarker st3p_open 99999
+	}
+
+	trigger close
+	{
+        	gotomarker st3p_close 50
+	}
+
+	trigger fast_close
+	{
+		resetscript
+		gotomarker st3p_close 99999
+	}
+}
+
+ogony1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 0 gototime
+		gotomarker og1_p1 99999
+		faceangles 0 0 0 gototime
+		gotomarker og1_p2 150
+	}
+}
+
+ogony2
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 0 gototime
+		gotomarker og2_p1 99999
+		faceangles 0 0 0 gototime
+		gotomarker og2_p2 150
+	}
+}
+
+ogony3
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 0 gototime
+		gotomarker og3_p1 99999
+		faceangles 0 0 0 gototime
+		gotomarker og3_p2 150
+	}
+}
+
+pol1
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 60 gototime
+	}
+}
+
+pol2
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		trigger lvper go
+		trigger prper go
+		faceangles 0 0 -42 700
+		playsound sound/scenaric/rocket/bridge_fall.wav
+		wait 800
+		gotomarker p2_p1 150
+		faceangles 0 0 0 gototime
+	}
+}
+
+lvper
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 -42 700
+		wait 800
+		gotomarker lp_p1 150
+		faceangles 0 0 0 gototime
+
+		wait 600
+		gotomarker lp_p1 150
+		faceangles 90 0 0 150
+	}
+}
+
+prper
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		faceangles 0 0 -42 700
+		wait 800
+		gotomarker pp_p1 150
+		faceangles 0 0 0 gototime
+
+		wait 500
+		gotomarker pp_p1 150
+		faceangles -90 0 0 150
+	}
+}
+
+lift
+{
+
+	spawn
+	{
+		accum 0 bitreset 0
+		alertentity closepath
+	}
+
+	trigger toggle
+	{
+		alertentity closepath
+
+		trigger lift up
+		wait 5
+		trigger lift down
+	}
+
+	trigger soundloop
+	{
+		playsound sound/movers/elevators/elev1_loop.wav looping
+	}
+
+	trigger down
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		wait 5
+		playsound sound/movers/elevators/elev1_start.wav
+		trigger lift soundloop
+		gotomarker el_p2 50 wait
+		gotomarker el_p1 50 deccel wait
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav
+		trigger knopka2 off
+		trigger knopka1 off
+	}
+
+	trigger up
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		wait 5
+		playsound sound/movers/elevators/elev1_start.wav
+		trigger lift soundloop
+		gotomarker el_p3 50 wait
+		gotomarker el_p4 50 deccel wait
+		stopsound
+		playsound sound/movers/elevators/elev1_end.wav
+		trigger knopka2 off
+		trigger knopka1 off
+	}
+}
+
+knopka1
+{
+	spawn
+	{
+		accum 0 bitset 0
+		wait 5
+		gotomarker kn1_p1 10 wait
+	}
+
+	trigger on
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		playsound basein_switch
+		gotomarker kn1_p2 10 wait
+		trigger lift toggle
+	}
+
+	trigger off
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound basein_switch
+		gotomarker kn1_p1 10 wait
+	}
+}
+
+knopka2
+{
+	spawn
+	{
+		accum 0 bitset 0
+		wait 5
+		gotomarker kn2_p1 10 wait
+	}
+
+	trigger on
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		playsound basein_switch
+		gotomarker kn2_p2 10 wait
+		trigger lift toggle
+	}
+
+	trigger off
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		playsound basein_switch
+		gotomarker kn2_p1 10 wait
+	}
+}
+
+locker1
+{
+	spawn
+	{
+		accum 0 set 0 //  0 = closed  1 = open
+	}
+
+	trigger toggle
+	{
+		trigger locker1 open
+		wait 5
+		trigger locker1 close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 85 0 700
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_equal 1
+		accum 0 set 0
+		playsound sound/movers/doors/door8_open.wav
+		faceangles 0 0 0 700
+	}
+}
+
+ufo_body
+{
+	spawn
+	{
+	}
+
+	trigger startposition1
+	{
+		faceangles 0 -90 0 50
+		gotomarker ufo_p1 99999
+	}
+
+	trigger startposition2
+	{
+		playsound sound/scenaric/assault/jet_takeoff.wav
+
+		faceangles 0 -90 0 0
+		gotomarker ufo_p2 200
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p3 350
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p4 400
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p5 700
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p6 900
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p7 1200
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p8 1500
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p9 1750
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p10 2000
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p11 2000
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p12 2500
+
+		faceangles 0 -90 0 50
+		gotomarker ufo_p13 3000
+	}
+}
+
+ufo_loposti
+{
+	spawn
+	{
+		accum 0 set 0
+	}
+
+	trigger startposition1
+	{
+		attachtotag ufo_body tag_floor
+	}
+
+	trigger startposition2
+	{
+		faceangles 0 90 0 1500
+		faceangles 0 180 0 1250
+		faceangles 0 270 0 900
+		faceangles 0 360 0 600
+		trigger ufo_loposti startposition2
+	}
+
+	trigger startposition3
+	{
+		accum 0 inc 1
+		faceangles 0 90 0 400
+		faceangles 0 180 0 400
+		faceangles 0 270 0 400
+		faceangles 0 360 0 400
+		trigger ufo_loposti startposition4
+		wait 5
+		trigger ufo_loposti startposition3
+	}
+
+	trigger startposition4
+	{
+		accum 0 abort_if_less_than 3
+		faceangles 0 90 0 100
+		faceangles 0 180 0 100
+		faceangles 0 270 0 100
+		faceangles 0 360 0 100
+		trigger ufo_loposti startposition4
+	}
+}
+
+voditely
+{
+	spawn
+	{
+	}
+
+	trigger startposition1
+	{
+		attachtotag ufo_body tag_stul
+	}
+}
+
+katki1
+{
+	spawn
+	{
+	}
+
+	trigger startposition1
+	{
+		faceangles 0 90 0 1
+	}
+
+	trigger startposition2
+	{
+		gotomarker kat1_p1 99999
+		faceangles 0 90 0 1
+	}
+}
+
+katki2
+{
+	spawn
+	{
+	}
+
+	trigger startposition1
+	{
+		faceangles 0 90 0 1
+	}
+
+	trigger startposition2
+	{
+		gotomarker kat2_p1 99999
+		faceangles 0 90 0 1
+	}
+}
+
+zhdplatforma
+{
+	spawn
+	{
+	}
+
+	trigger startposition1
+	{
+		faceangles 0 90 0 1
+	}
+
+	trigger startposition2
+	{
+		gotomarker zhd_p1 99999
+		faceangles 0 90 0 1
+	}
+}
+
+dvery_kuzova
+{
+	trigger open
+	{
+		trigger dk go
+		playsound sound/scenaric/rocket/locker_open.wav
+		faceangles -90 0 0 1800
+	}
+}
+
+dk
+{
+	trigger go
+	{
+		gotomarker dk_p1 100
+		wait 1600
+		alertentity dk_kill
+	}
+}

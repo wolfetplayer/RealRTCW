@@ -1,0 +1,23 @@
+//
+//Brush Scripting
+//Map: 50e_1
+//Last edited by: Vovstein
+//
+vent1
+{
+	spawn
+	{
+		trigger vent1 ventloop 
+	}
+
+	trigger ventloop
+	{
+		faceangles 0 0 90 200
+		faceangles 0 0 180 200
+		faceangles 0 0 270 200
+		faceangles 0 0 360 200
+		trigger vent1 ventloop
+	}
+}
+
+	

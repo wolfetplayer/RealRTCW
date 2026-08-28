@@ -522,6 +522,13 @@ void    SV_LoadGame_f( void ) {
 		Com_Printf( "You must specify a savegame to load\n" );
 		return;
 	}
+
+	// refuse lastcheckpoint until this level has actually saved one, else it's stale from another map
+	if ( !Q_stricmp( filename, "lastcheckpoint" ) && !Cvar_VariableIntegerValue( "g_checkpointReady" ) ) {
+		Com_Printf( "No checkpoint reached yet on this level.\n" );
+		return;
+	}
+
 	if ( Q_strncmp( filename, "save/", 5 ) && Q_strncmp( filename, "save\\", 5 ) ) {
 		Q_strncpyz( filename, va( "save/%s", filename ), sizeof( filename ) );
 	}

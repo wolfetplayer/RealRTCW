@@ -1,0 +1,57 @@
+// Ghosts of War - German Lieutenant, occult horror at Paderborn
+// cutscene1 is the intro cutscene, tagged green with ^2
+
+{
+map			"cutscene1"
+longname	"^2Prologue"
+chapter		"1"
+}
+
+{
+map			"roadtobase2"
+longname	"Road to the Base"
+chapter		"1"
+}
+
+{
+map			"darkforest"
+longname	"Dark Forest"
+chapter		"1"
+}
+
+{
+map			"darkcastle"
+longname	"Dark Castle"
+chapter		"1"
+}
+
+{
+map			"darkchurch"
+longname	"Defiled Church"
+chapter		"1"
+}
+
+{
+map			"darkcrypt1"
+longname	"Catacombs"
+chapter		"1"
+}
+
+{
+map			"darkcrypt2"
+longname	"The Crypt"
+chapter		"1"
+}
+
+{
+map			"statement"
+longname	"The Ascent"
+chapter		"1"
+}
+
+{
+map			"darkend"
+longname	"General Kraust"
+chapter		"1"
+}
+

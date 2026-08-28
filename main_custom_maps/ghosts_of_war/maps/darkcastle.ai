@@ -22,6 +22,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout darkcastle
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1000
 		mu_queue sound/music/c_military
 		trigger counter1 cinematic1
@@ -121,8 +125,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -137,10 +139,7 @@ nazi1
 		wait 250
 		explicit_routing on
 		wait 5
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 
 	trigger look_at_snd1
@@ -192,8 +191,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -207,10 +204,7 @@ nazi2
 		nosight 99999
 		wait 500
 		explicit_routing on
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 
 	trigger look_at_snd1
@@ -252,8 +246,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -267,10 +259,7 @@ nazi3
 		nosight 99999
 		wait 750
 		explicit_routing on 
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mg42m
 	}
 
 	trigger look_at_snd1
@@ -316,7 +305,6 @@ zombie5
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -359,7 +347,6 @@ warzombie7
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -383,7 +370,6 @@ warzombie8
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -407,7 +393,6 @@ warzombie9
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -431,7 +416,6 @@ warzombie10
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -455,7 +439,6 @@ zombie10
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}

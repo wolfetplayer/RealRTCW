@@ -20,6 +20,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout darkcrypt1
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1000
 		mu_queue sound/music/c_military
 	}
@@ -125,7 +129,6 @@ zombie1
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -172,7 +175,6 @@ zombie2
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -218,7 +220,6 @@ zombie3
 {
 	attributes
 	{
-		starting_health 50
 	}
 
 	spawn
@@ -262,7 +263,6 @@ zombie4
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -304,7 +304,6 @@ zombie5
 {
 	attributes
 	{
-		starting_health 50
 	}
 
 	spawn
@@ -347,7 +346,6 @@ zombie6
 {
 	attributes
 	{
-		starting_health 200
 		fov 360
 		hearing_scale 0.0
 	}
@@ -411,7 +409,6 @@ zombie7
 	attributes
 	{
 		fov 240
-		starting_health 80
 		hearing_scale 0
 	}
 
@@ -485,7 +482,6 @@ zombie8
 	attributes
 	{
 		fov 240
-		starting_health 80
 		hearing_scale 0
 	}
 
@@ -557,7 +553,6 @@ zombie9
 {
 	attributes
 	{
-		starting_health 200
 		fov 360
 		hearing_scale 0.0
 	}
@@ -616,7 +611,6 @@ zombie10
 {
 	attributes
 	{
-		starting_health 200
 		fov 360
 		hearing_scale 0.0
 	}
@@ -675,7 +669,6 @@ flamer0
 {
 	attributes
 	{
-		starting_health 250
 	}
 
 	spawn
@@ -729,7 +722,6 @@ zombie11
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -772,7 +764,6 @@ zombie12
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -815,7 +806,6 @@ zombie13
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -858,7 +848,6 @@ zombie14
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -901,7 +890,6 @@ zombie15
 {
 	attributes
 	{
-		starting_health 80
 		hearing_scale 2.0
 	}
 
@@ -944,7 +932,6 @@ flamer1
 {
 	attributes
 	{
-		starting_health 150
 	}
 
 	spawn
@@ -999,7 +986,6 @@ flamer2
 {
 	attributes
 	{
-		starting_health 250
 	}
 
 	spawn

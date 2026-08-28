@@ -23,15 +23,13 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout darkend
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1000
 		mu_queue sound/music/c_chant
 		trigger player action1
-
-		giveweapon weapon_flamethrower
-		giveweapon weapon_venom
-		setammo ammo_fuel 60
-		setammo ammo_127mm 200
-
 	}
 
 	trigger action1
@@ -80,7 +78,6 @@ dark1
 
 	attributes
 	{
-		starting_health 105
 	}
 
 	spawn
@@ -111,7 +108,6 @@ dark2
 
 	attributes
 	{
-		starting_health 105
 	}
 
 	spawn
@@ -144,7 +140,6 @@ dark3
 
 	attributes
 	{
-		starting_health 105
 	}
 
 	spawn
@@ -175,7 +170,6 @@ dark4
 
 	attributes
 	{
-		starting_health 105
 	}
 
 	spawn
@@ -206,7 +200,6 @@ dark5
 
 	attributes
 	{
-		starting_health 105
 	}
 
 	spawn
@@ -237,7 +230,6 @@ dark6
 
 	attributes
 	{
-		starting_health 105
 	}
 
 	spawn
@@ -269,13 +261,10 @@ heinrich
 
 	attributes
 	{
-		starting_health 5000
 		alertness 50000
-		aim_accuracy 1.0
 		aggression 1.0
 		camper 0.0
 		tactical 0.0
-		reaction_time 1.0
 		aim_skill 1.0
 		fov 360
 		statetype alert
@@ -340,7 +329,6 @@ fem1
 
 	attributes
 	{
-		starting_health 200
 	}
 
 	spawn

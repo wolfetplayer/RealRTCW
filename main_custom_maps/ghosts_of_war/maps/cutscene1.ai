@@ -18,18 +18,8 @@ player
 		mu_fade 0 3000
 		mu_queue sound/music/m_stealth
 
-		// Weapons
-		// Ammo
-		giveweapon weapon_knife
-		giveweapon weapon_luger
-		giveweapon weapon_mp40
-		setammo ammo_9mm 200
-		setammo ammo_grenades 4
-
-		// Items
-		giveinventory key_binocs
-		setarmor 100
-		selectweapon weapon_mp40
+		applyloadout roadtobase2
+		cvar g_level_was_selected 0
 
 		trigger t2body go1
 		trigger t2body cinematic1
@@ -86,8 +76,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 4
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -132,8 +120,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 4
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -178,8 +164,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 4
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -270,8 +254,6 @@ znazi1
 {
 	attributes
 	{
-		starting_health 4
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -358,8 +340,6 @@ znazi2
 {
 	attributes
 	{
-		starting_health 4
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -417,8 +397,6 @@ znazi3
 {
 	attributes
 	{
-		starting_health 4
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -471,13 +449,10 @@ driver
 {
 	attributes
 	{
-		starting_health 40
 		alertness 6000
-		aim_accuracy 1.0
 		aim_skill 1.0
 		attack_skill 1.0
 		attack_crouch 0.0
-		reaction_time 0.1
 		camper 1.0
 		tactical 1.0
 		running_speed 320

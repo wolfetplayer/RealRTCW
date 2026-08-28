@@ -22,12 +22,10 @@ player
 	{
 		mu_fade 0 1000
 		mu_queue sound/music/c_military
-		giveweapon weapon_knife
-
-		setammo ammo_44ammo 120
-
-		setammo ammo_dynamite 2
-		selectweapon weapon_mp44
+		#if g_level_was_selected >= 1
+		applyloadout darkcrypt2
+		#endif
+		cvar g_level_was_selected 0
 	}
 	
 
@@ -127,7 +125,6 @@ helga_zombie	// reincarnation of helga
 	attributes
 	{
 		pain_threshold_scale 50
-		starting_health 1000
 		aggression 1.0
 		fov 360
 	}
@@ -165,7 +162,6 @@ zombie1
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -212,7 +208,6 @@ zombie2
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -258,7 +253,6 @@ zombie3
 {
 	attributes
 	{
-		starting_health 100
 	}
 
 	spawn
@@ -301,7 +295,6 @@ zombie4
 {
 	attributes
 	{
-		starting_health 100
 	}
 
 	spawn
@@ -344,7 +337,6 @@ zombie5
 {
 	attributes
 	{
-		starting_health 90
 		aggression 1.0
 		fov 360
 	}
@@ -368,7 +360,6 @@ zombie6
 {
 	attributes
 	{
-		starting_health 90
 		aggression 1.0
 		fov 360
 	}
@@ -392,7 +383,6 @@ zombie7
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -435,7 +425,6 @@ zombie8
 {
 	attributes
 	{
-		starting_health 100
 	}
 
 	spawn
@@ -478,7 +467,6 @@ zombie9
 {
 	attributes
 	{
-		starting_health 100
 	}
 
 	spawn
@@ -521,7 +509,6 @@ zombie10
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -564,7 +551,6 @@ zombie11
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -607,7 +593,6 @@ zombie12
 {
 	attributes
 	{
-		starting_health 50
 		hearing_scale 2.0
 	}
 
@@ -650,7 +635,6 @@ zombie13
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -674,7 +658,6 @@ zombie14
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -698,7 +681,6 @@ zombie15
 {
 	attributes
 	{
-		starting_health 90
 		aggression 1.0
 		fov 360
 	}
@@ -722,7 +704,6 @@ zombie16
 {
 	attributes
 	{
-		starting_health 90
 		aggression 1.0
 		fov 360
 	}
@@ -746,7 +727,6 @@ zombie17
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -770,7 +750,6 @@ zombie18
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -793,7 +772,6 @@ zombie19
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -816,7 +794,6 @@ zombie20
 {
 	attributes
 	{
-		starting_health 90
 		aggression 1.0
 		fov 360
 	}
@@ -840,7 +817,6 @@ zombie21
 {
 	attributes
 	{
-		starting_health 90
 		aggression 1.0
 		fov 360
 	}
@@ -864,7 +840,6 @@ zombie22
 {
 	attributes
 	{
-		starting_health 100
 	}
 
 	spawn
@@ -916,7 +891,6 @@ zombie23
 {
 	attributes
 	{
-		starting_health 100
 	}
 
 	spawn
@@ -968,7 +942,6 @@ flamer0
 {
 	attributes
 	{
-		starting_health 250
 	}
 
 	spawn

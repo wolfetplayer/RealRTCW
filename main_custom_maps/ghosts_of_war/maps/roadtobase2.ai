@@ -20,6 +20,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout roadtobase2
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1000
 		mu_queue sound/music/c_military
 	}
@@ -59,8 +63,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.8
 		tactical 1.0
 		camper 1.0
 		aggression 0.2
@@ -72,10 +74,7 @@ nazi1
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		trigger nazi1 go1	
 	}
 	trigger go1			
@@ -119,8 +118,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.6
 		tactical 1.0
 		camper 1.0
 		aggression 0.2
@@ -132,10 +129,7 @@ nazi2
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		trigger nazi2 go1	
 	}
 	trigger go1			
@@ -179,8 +173,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.8
 		tactical 1.0
 		camper 1.0
 		aggression 0.2
@@ -192,10 +184,7 @@ nazi3
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle	
+		giveweaponfull weapon_mauserRifle
 	}
 	pain 10
 	{
@@ -233,8 +222,6 @@ nazi4
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -247,10 +234,7 @@ nazi4
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 99
 	}
 	pain 30
@@ -287,8 +271,6 @@ nazi5
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -301,10 +283,7 @@ nazi5
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 99
 	}
 	pain 30
@@ -340,8 +319,6 @@ nazi6
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.8
 		tactical 1.0
 		camper 1.0
 		aggression 0.2
@@ -353,10 +330,7 @@ nazi6
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		trigger nazi6 go1	
 	}
 	trigger go1			
@@ -400,8 +374,6 @@ nazi7
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.8
 		tactical 1.0
 		camper 1.0
 		aggression 0.2
@@ -413,10 +385,7 @@ nazi7
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		trigger nazi7 go1	
 	}
 	trigger go1			
@@ -460,8 +429,6 @@ nazi8					// this is nazi on submarine
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.8
 		tactical 1.0
 		camper 1.0
 		aggression 0.2
@@ -473,10 +440,7 @@ nazi8					// this is nazi on submarine
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		trigger nazi8 go1	
 	}
 
@@ -542,8 +506,6 @@ nazi9
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -556,10 +518,7 @@ nazi9
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mg42m
 		setammo ammo_grenades 99
 	}
 	pain 30
@@ -595,8 +554,6 @@ nazi10
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -609,10 +566,7 @@ nazi10
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 99
 	}
 	pain 30
@@ -648,8 +602,6 @@ nazi11
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -662,10 +614,7 @@ nazi11
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mg42m
 		setammo ammo_grenades 99
 	}
 	pain 30

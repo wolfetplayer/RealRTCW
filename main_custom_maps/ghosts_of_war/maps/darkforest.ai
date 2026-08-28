@@ -22,10 +22,10 @@ player
 	{
 		mu_fade 0 1000
 		mu_queue sound/music/c_military
-		giveweapon weapon_knife
-		giveweapon weapon_mp40
-		setammo ammo_9mm 82
-		selectweapon weapon_mp40
+		#if g_level_was_selected >= 1
+		applyloadout darkforest
+		#endif
+		cvar g_level_was_selected 0
 	}
 	
 	trigger action1
@@ -96,8 +96,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -110,17 +108,13 @@ nazi1
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
-		setammo ammo_grenades 99
+		giveweaponfull weapon_mp44
 		giveweapon weapon_grenadelauncher
+		setammo ammo_grenades 99
 	}
 	pain 30
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -152,8 +146,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 30
-		aim_accuracy 0.7
 		tactical 0.5
 		attack_skill 0.75
 		aggression 0.5
@@ -166,11 +158,8 @@ nazi2
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
+		giveweaponfull weapon_g43
 		setammo ammo_grenades 9
-		giveweapon weapon_g43
-		selectweapon weapon_g43
-		setammo 7.92mm 999
 	}
 	trigger go1			
 	{
@@ -201,8 +190,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 30
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -215,17 +202,13 @@ nazi3
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
-		setammo ammo_grenades 99
+		giveweaponfull weapon_mp44
 		giveweapon weapon_grenadelauncher
+		setammo ammo_grenades 99
 	}
 	pain 30
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -257,8 +240,6 @@ nazi4
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -271,16 +252,12 @@ nazi4
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp44
 		giveweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 	}
 	pain 30
 	{
-		attrib aim_accuracy 0.4
 		attrib camper 0.3
 	}
 	enemysight
@@ -313,8 +290,6 @@ znazi1
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -327,15 +302,11 @@ znazi1
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -367,8 +338,6 @@ znazi2
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -381,15 +350,11 @@ znazi2
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -421,8 +386,6 @@ znazi3
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -435,15 +398,11 @@ znazi3
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -475,8 +434,6 @@ znazi4
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -489,15 +446,11 @@ znazi4
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -529,8 +482,6 @@ znazi5
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -543,15 +494,11 @@ znazi5
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -583,8 +530,6 @@ znazi6
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -597,15 +542,11 @@ znazi6
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mg42m
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -637,8 +578,6 @@ znazi7
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -651,15 +590,11 @@ znazi7
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -691,7 +626,6 @@ zombie1
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -715,8 +649,6 @@ znazi8
 {
 	attributes
 	{
-		starting_health 70
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -729,15 +661,11 @@ znazi8
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -769,7 +697,6 @@ zombie2
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -793,7 +720,6 @@ zombie3
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -817,7 +743,6 @@ zombie4
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -841,7 +766,6 @@ zombie5
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -865,8 +789,6 @@ znazi9
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -879,15 +801,11 @@ znazi9
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mg42m
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -919,8 +837,6 @@ znazi10
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -933,15 +849,11 @@ znazi10
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_g43
-		setammo 7.92mm 999
-		selectweapon weapon_g43
+		giveweaponfull weapon_g43
 	}
 	pain 40
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.4
 	}
 	enemysight
 	{	
@@ -973,7 +885,6 @@ zombie6
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -997,7 +908,6 @@ zombie7
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -1021,7 +931,6 @@ zombie8
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -1045,7 +954,6 @@ zombie9
 {
 	attributes
 	{
-		starting_health 50
 		aggression 1.0
 		fov 360
 	}
@@ -1069,7 +977,6 @@ zombie10
 {
 	attributes
 	{
-		starting_health 70
 		aggression 1.0
 		fov 360
 	}
@@ -1093,7 +1000,6 @@ zombie11
 {
 	attributes
 	{
-		starting_health 80
 		aggression 1.0
 		fov 360
 	}

@@ -1,0 +1,216 @@
+loadout roadtobase2
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+
+		setammo ammo_9mm 200
+		setammo ammo_792mm 60
+		setammo ammo_grenades 4
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+
+		selectweapon weapon_mp40
+}
+
+loadout darkforest
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+
+		setammo ammo_9mm 250
+		setammo ammo_792mm 80
+		setammo ammo_grenades 4
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+
+		selectweapon weapon_mp40
+}
+
+loadout darkcastle
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+		giveweapon weapon_mp44
+
+		setammo ammo_9mm 250
+		setammo ammo_792mm 80
+		setammo ammo_grenades 4
+		setammo ammo_44ammo 180
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+		setclip weapon_mp44 full
+
+		selectweapon weapon_mp40
+}
+
+loadout darkchurch
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+		giveweapon weapon_mp44
+		giveweapon weapon_mg42m
+
+		setammo ammo_9mm 250
+		setammo ammo_792mm 80
+		setammo ammo_grenades 5
+		setammo ammo_44ammo 180
+		setammo ammo_127mm 300
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+		setclip weapon_mp44 full
+		setclip weapon_mg42m full
+
+		selectweapon weapon_mp40
+}
+
+loadout darkcrypt1
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+		giveweapon weapon_mp44
+		giveweapon weapon_mg42m
+
+		setammo ammo_9mm 275
+		setammo ammo_792mm 90
+		setammo ammo_grenades 5
+		setammo ammo_44ammo 180
+		setammo ammo_127mm 300
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+		setclip weapon_mp44 full
+		setclip weapon_mg42m full
+
+		selectweapon weapon_mp40
+}
+
+loadout darkcrypt2
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+		giveweapon weapon_mp44
+		giveweapon weapon_mg42m
+
+		setammo ammo_9mm 275
+		setammo ammo_792mm 90
+		setammo ammo_grenades 5
+		setammo ammo_44ammo 180
+		setammo ammo_127mm 300
+		setammo ammo_dynamite 2
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+		setclip weapon_mp44 full
+		setclip weapon_mg42m full
+
+		selectweapon weapon_mp40
+}
+
+loadout statement
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+		giveweapon weapon_mp44
+		giveweapon weapon_mg42m
+
+		setammo ammo_9mm 300
+		setammo ammo_792mm 90
+		setammo ammo_grenades 6
+		setammo ammo_44ammo 180
+		setammo ammo_127mm 300
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+		setclip weapon_mp44 full
+		setclip weapon_mg42m full
+
+		selectweapon weapon_mp40
+}
+
+loadout darkend
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_g43
+		giveweapon weapon_mp44
+		giveweapon weapon_mg42m
+
+		setammo ammo_9mm 300
+		setammo ammo_792mm 90
+		setammo ammo_grenades 6
+		setammo ammo_44ammo 180
+		setammo ammo_127mm 300
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_g43 full
+		setclip weapon_mp44 full
+		setclip weapon_mg42m full
+
+		selectweapon weapon_mp40
+}
+

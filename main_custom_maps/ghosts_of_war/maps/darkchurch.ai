@@ -1,0 +1,162 @@
+//
+//AI Scripting
+//Map: darkchurch
+//Last edited by: Dan
+//
+
+player
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 bitreset 0	// Used for if the player goes around which will skip the scooby doo scene.
+
+		cvar g_episode 1
+		objectivesneeded 2
+		suggestweapon weapon_mp40
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/c_military
+	}
+	trigger action1
+	{
+		mu_play sound/music/s_longout
+		mu_fade 0 2000
+		mu_queue sound/music/c_chant 2000
+		alertentity warzombie4
+		alertentity warzombie5
+		alertentity nazi4
+		alertentity nazi5
+	}
+
+	trigger action2
+	{
+		mu_play sound/music/s_longout
+		mu_fade 0 2000
+		mu_queue sound/music/c_chant 2000
+		alertentity zombie4
+		alertentity zombie5
+	}
+	trigger action3
+	{
+		mu_start sound/music/c_atmos 2000
+		alertentity warzombie6
+		alertentity warzombie7
+	}
+	trigger action4
+	{
+		alertentity nazi6
+		alertentity nazi7
+		alertentity nazi8
+		alertentity warzombie8
+		alertentity warzombie9
+		alertentity warzombie10
+		alertentity zombie6
+		alertentity zombie7
+		alertentity zombie8
+	}
+	trigger action5
+	{
+	}
+	trigger action6
+	{
+	}
+	trigger action7
+	{
+	}
+	trigger action8
+	{
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+	}
+	trigger got_objective2
+	{
+		objectivemet 2
+	}
+	trigger endmap
+	{
+		changelevel darkcrypt1 persistent
+	}
+}
+warzombie6
+{
+	attributes
+	{
+		starting_health 90
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+warzombie7
+{
+	attributes
+	{
+		starting_health 90
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+warzombie9
+{
+	attributes
+	{
+		starting_health 90
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript
+	}
+
+	death
+	{
+		objectivemet 2
+	}
+}

@@ -1,0 +1,477 @@
+//
+//AI Scripting
+//Map: darkcastle
+//Last edited by: Dan
+//
+
+player
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 bitreset 0	// Used for if the player goes around which will skip the scooby doo scene.
+
+		cvar g_episode 1
+		objectivesneeded 2
+		suggestweapon weapon_mp40
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/c_military
+		trigger counter1 cinematic1
+		trigger counter2 cinematic1
+//		trigger player cam1
+	}
+	trigger cam1
+	{
+		startcamblack crypt01
+	}
+
+	trigger cam2
+	{
+		startcam dak1
+	}
+
+	trigger cam3
+	{
+		startcam dak2
+	}
+
+	trigger cam4
+	{
+		startcam dak3
+	}
+	trigger dead
+	{
+		stopcam
+	}
+	trigger action1
+	{
+		mu_play sound/music/s_longout
+		mu_fade 0 2000
+		mu_queue sound/music/c_chant 2000
+		alertentity zombie3
+		alertentity zombie4
+		alertentity warzombie3
+		alertentity nazi4
+	}
+
+	trigger action2
+	{
+		mu_play sound/music/s_longout
+		mu_fade 0 2000
+		mu_queue sound/music/c_chant 2000
+		alertentity zombie5
+	}
+	trigger action3
+	{
+		mu_start sound/music/c_atmos 2000
+		alertentity nazi5
+		alertentity nazi6
+		alertentity nazi7
+		alertentity warzombie4
+		alertentity warzombie5
+		alertentity zombie6
+		alertentity zombie7
+		alertentity zombie8
+	}
+	trigger action4
+	{
+		alertentity warzombie6
+		alertentity zombie9
+	}
+	trigger action5
+	{
+		alertentity warzombie7
+		alertentity warzombie8
+		alertentity warzombie9
+	}
+	trigger action6
+	{
+		alertentity zombie10
+		alertentity warzombie10
+
+	}
+	trigger action7
+	{
+	}
+	trigger action8
+	{
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+	}
+	trigger got_objective2
+	{
+		objectivemet 2
+	}
+	trigger endmap
+	{
+		changelevel darkchurch persistent
+	}
+}
+nazi1
+{
+	attributes
+	{
+		starting_health 40
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0	
+	}
+
+	spawn
+	{
+		nosight 99999
+		wait 250
+		explicit_routing on
+		wait 5
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger look_at_snd1
+	{
+		statetype alert
+	}
+
+	trigger look_anim
+	{
+		wait forever 0
+	}
+
+	trigger talk1
+	{
+		playsound crypt1_cnazi1_1	// print It's like a slaughterhouse in here...
+	}
+
+	trigger talk2
+	{
+		playsound crypt1_cnazi3_1	// print Don't ask me... No one ever tells me anything...
+	}
+
+	trigger talk3
+	{
+		playsound crypt1_cnazi1_3	// print Mein Gott! Did you hear that?
+	}
+
+	trigger talk4
+	{
+		playsound crypt1_cnazi3_2	// print We have to get out of here... Follow me back to the entrance.
+	}
+
+	trigger go1
+	{
+		wait 10
+		runtomarker n1spot1 nostop
+		runtomarker n1spot2 nostop
+		trigger nazi1 go2
+	}
+	trigger go2
+	{
+		sight
+		wait 250
+		explicit_routing off
+	}
+}
+
+nazi2
+{
+	attributes
+	{
+		starting_health 40
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0	
+	}
+
+	spawn
+	{
+		nosight 99999
+		wait 500
+		explicit_routing on
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger look_at_snd1
+	{
+		statetype alert
+	}
+
+	trigger talk1
+	{
+		playsound crypt1_cnazi2_1	// print I know... Those things are everywhere.
+	}
+
+	trigger talk2
+	{
+		playsound crypt1_cnazi2_2	// print Ya, and I wish I hadn't.
+	}
+
+	trigger talk3
+	{
+		playsound crypt1_cnazi2_3	// print They've sealed us in here!
+	}
+
+	trigger go1
+	{
+		wait 500
+		runtomarker n2spot1 nostop
+		runtomarker n2spot2 nostop
+		trigger nazi2 go2
+	}
+	trigger go2
+	{
+		sight
+		wait 250
+		explicit_routing off
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+		starting_health 40
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0	
+	}
+
+	spawn
+	{
+		nosight 99999
+		wait 750
+		explicit_routing on 
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger look_at_snd1
+	{
+		wait 500 0
+		statetype alert
+	}
+
+	trigger talk1
+	{
+		playsound crypt1_cnazi1_2	// print What are they? Where did they all come from?
+	}
+
+	trigger talk3
+	{
+		playsound crypt1_cnazi1_4	// print What!? The ladder... It's destroyed.
+	}
+
+	trigger talk5
+	{
+		setclip weapon_mp40 0
+		setammo ammo_9mm 90
+		playsound crypt1_cnazi1_5	// print Get ready, they're coming...
+		wait 2000
+		trigger player dead
+	}
+
+	trigger go1
+	{
+		wait 10
+		runtomarker n3spot1 nostop
+		runtomarker n3spot2 nostop
+		trigger nazi3 go2
+	}
+	trigger go2
+	{
+		sight
+		wait 250
+		explicit_routing off
+	}
+}
+zombie5
+{
+	attributes
+	{
+		starting_health 50
+		hearing_scale 2.0
+	}
+
+	spawn
+	{
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+	
+	death
+	{
+	}
+
+	enemysight player
+	{
+		attack player
+		resetscript
+	}
+}
+warzombie7
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+warzombie8
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+warzombie9
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+warzombie10
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+zombie10
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}

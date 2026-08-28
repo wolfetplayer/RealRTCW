@@ -1,0 +1,361 @@
+///
+///
+/// Dan
+/// darkend
+/// 
+//
+// 
+//
+
+player
+{
+
+	spawn
+	{
+		accum 0 bitreset 0
+		abort_if_loadgame
+		mu_fade 0 1000
+		mu_queue sound/music/c_atmos
+
+		cvar g_episode 6
+		objectivesneeded 1		
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/c_chant
+		trigger player action1
+
+		giveweapon weapon_flamethrower
+		giveweapon weapon_venom
+		setammo ammo_fuel 60
+		setammo ammo_127mm 200
+
+	}
+
+	trigger action1
+	{
+		trigger heinrich begin
+//		alertentity smoke1
+		alertentity dark1
+		alertentity dark2
+		alertentity dark3
+//		alertentity spirit1
+//		alertentity spirit2
+//		alertentity spirit3
+//		alertentity spirit4
+	}
+	trigger start1
+	{
+//		alertentity smoke1
+		alertentity dark1
+		alertentity dark2
+		alertentity dark3
+	}
+	trigger start2
+	{
+//		alertentity smoke2
+		alertentity dark4
+		alertentity dark5
+		alertentity dark6
+	}
+	trigger changelevel
+	{
+		objectivemet 1
+		wait 3500 
+		changelevel
+		wait 9000
+		endgame
+	}
+
+	death
+	{
+		resetscript
+	}
+}
+
+dark1
+{
+
+	attributes
+	{
+		starting_health 105
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		trigger dark1 talk1
+	}
+	trigger talk1
+	{
+		trigger dark1 go1
+	}
+	trigger go1
+	{
+		sight
+		knockback on
+		gotocast player
+		resetscript
+	}
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+dark2
+{
+
+	attributes
+	{
+		starting_health 105
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		trigger dark2 talk1
+	}
+	trigger talk1
+	{
+		playsound end_ss_powerup
+		trigger dark2 go1
+	}
+	trigger go1
+	{
+		sight
+		knockback on
+		gotocast player
+		resetscript
+	}
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+dark3
+{
+
+	attributes
+	{
+		starting_health 105
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		trigger dark3 talk1
+	}
+	trigger talk3
+	{
+		trigger dark3 go1
+	}
+	trigger go1
+	{
+		sight
+		knockback on
+		gotocast player
+		resetscript
+	}
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+dark4
+{
+
+	attributes
+	{
+		starting_health 105
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		trigger dark4 talk1
+	}
+	trigger talk1
+	{
+		trigger dark4 go1
+	}
+	trigger go1
+	{
+		sight
+		knockback on
+		gotocast player
+		resetscript
+	}
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+dark5
+{
+
+	attributes
+	{
+		starting_health 105
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		trigger dark5 talk1
+	}
+	trigger talk1
+	{
+		trigger dark5 go1
+	}
+	trigger go1
+	{
+		sight
+		knockback on
+		gotocast player
+		resetscript
+	}
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+dark6
+{
+
+	attributes
+	{
+		starting_health 105
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		wait 5
+		trigger dark6 talk1
+	}
+	trigger talk1
+	{
+		trigger dark6 go1
+	}
+	trigger go1
+	{
+		sight
+		knockback on
+		gotocast player
+		resetscript
+	}
+	death
+	{
+		trigger heinrich warzombiedead
+	}
+}
+
+heinrich
+{
+
+	attributes
+	{
+		starting_health 5000
+		alertness 50000
+		aim_accuracy 1.0
+		aggression 1.0
+		camper 0.0
+		tactical 0.0
+		reaction_time 1.0
+		aim_skill 1.0
+		fov 360
+		statetype alert
+	}
+
+	spawn
+	{
+		nosight 99999
+		knockback off
+		noavoid off
+		takeweapon monsterattack2
+		trigger heinrich still
+	}
+	pain 2500
+	{
+		playanim laughing both
+		trigger player start2
+		wait 500
+		clearanim
+		resetscript
+	}
+	trigger sight_on 
+	{
+		sight
+	}
+
+	trigger still
+	{
+		playanim lift_still both
+		trigger heinrich still
+	}
+
+	trigger begin
+	{
+		explicit_routing on
+		sight
+		//giveweapon monsterattack3
+		gotocast player
+	}
+
+	trigger warzombiedead
+	{
+  		  accum 1 inc 1
+  		  accum 1 abort_if_less_than 3
+  		  giveweapon monsterattack2
+  		  accum 1 set 0
+	}
+
+ 	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger player changelevel
+	}
+}
+
+fem1
+{
+
+	attributes
+	{
+		starting_health 200
+	}
+
+	spawn
+	{
+		attack player
+	}
+
+	trigger getup
+	{
+		playanim get_up both
+	}
+		
+	enemysight
+	{
+		attack player
+		resetscript
+	}
+}

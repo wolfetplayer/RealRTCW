@@ -1,0 +1,541 @@
+//AI Scripting
+//Map: cutscene1
+//Last edited by: Dan
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 78
+		objectivesneeded 1		
+		abort_if_loadgame
+		mu_start sound/music/m_stealth
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/m_stealth
+
+		// Weapons
+		// Ammo
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		setammo ammo_9mm 200
+		setammo ammo_grenades 4
+
+		// Items
+		giveinventory key_binocs
+		setarmor 100
+		selectweapon weapon_mp40
+
+		trigger t2body go1
+		trigger t2body cinematic1
+
+	}
+	trigger action1
+	{	
+		mu_fade 0 1000
+		mu_queue sound\music\c_military
+		alertentity znazi4
+		alertentity znazi5
+		alertentity znazi6
+		alertentity znazi7
+		alertentity znazi8
+		trigger driver talk1
+	}
+	trigger go
+	{	
+		trigger znazi1 shot
+		trigger znazi2 shot
+		trigger znazi3 shot
+	}
+	trigger cam4
+	{
+		startcamblack crypt01 
+	}
+	trigger cam1
+	{
+		startcam cine1
+	}
+	trigger dead
+	{
+		stopcam
+	}
+	trigger cam2
+	{
+		startcam cine2
+	}
+
+	trigger cam3
+	{
+		startcam cine3
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+	}
+	trigger endmap
+	{
+		changelevel roadtobase2 persistent 4000
+	}
+}
+nazi1			
+{
+	attributes
+	{
+		starting_health 4
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2			
+{
+	attributes
+	{
+		starting_health 4
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi3			
+{
+	attributes
+	{
+		starting_health 4
+		aim_accuracy 0.4
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0	
+	}
+	trigger anim_loop
+	{
+		playanim talking_1h both
+	}
+	spawn
+	{
+		notarget on
+		statetype relaxed
+		nosight 99999
+		takeweapon all
+		trigger nazi3 talk1	
+	}
+	trigger talk1
+	{
+		wait 1000
+		playsound driver_open_gate
+		wait 4200
+		trigger znazi1 talk1
+	}
+	trigger talk2
+	{
+		playsound driver_what_do_you_mean_closed
+		wait 5000
+		clearanim
+		wait 200
+		trigger znazi1 anim_loop2
+		wait 5
+		trigger znazi1 talk2
+	}
+	trigger talk3
+	{
+		playsound driver_delivery_for_gen
+		wait 9500
+		clearanim
+		trigger znazi1 anim_loop2
+		wait 5
+		trigger znazi1 talk3
+	}
+	trigger talk4
+	{
+		playsound guard_due_to_radio		// Due to radio...
+		wait 11500
+		clearanim
+		trigger znazi1 anim_loop	
+		wait 5
+		trigger znazi1 talk5
+	}
+	trigger anim_loop2
+	{
+		wait 3000
+		playanim talking_1h both
+		wait 8000
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi1			
+{
+	attributes
+	{
+		starting_health 4
+		aim_accuracy 0.4
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+	trigger anim_loop2
+	{
+		wait 5
+		playanim talking_2h both
+	}
+	spawn
+	{
+		notarget on
+		statetype relaxed
+		nosight 99999
+	}
+	trigger talk1
+	{
+		playsound guard_sorry_road_closed
+		wait 3000
+		trigger nazi3 anim_loop
+		clearanim
+		wait 5
+		trigger nazi3 talk2
+	}
+	trigger talk2
+	{
+		playsound guard_I_know
+		wait 15800
+		trigger nazi3 anim_loop	
+		clearanim
+		wait 5
+		trigger nazi3 talk3
+	}
+	trigger talk3
+	{
+		playsound guard_sorry_blacked_out
+		wait 2700
+//		trigger znazi2 anim_loop	
+		wait 5
+		trigger nazi3 talk4
+	}
+	trigger talk5
+	{
+		wait 1500
+		trigger player go
+	}
+	trigger shot
+	{
+		fireattarget shot3 1500
+		notarget off
+		sight	
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger player got_objective1
+	}
+}
+znazi2			
+{
+	attributes
+	{
+		starting_health 4
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		notarget on
+		statetype relaxed
+		nosight 99999	
+	}
+	trigger shot
+	{
+		fireattarget shot1 1500
+		notarget off
+		sight		
+	}
+	trigger anim_loop
+	{
+		wait 5
+		playanim reload_machinegun both
+		wait 10
+		clearanim
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi3			
+{
+	attributes
+	{
+		starting_health 4
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		notarget on
+		statetype relaxed
+		nosight 99999		
+	}
+	trigger shot
+	{
+		fireattarget shot2 1500
+		notarget off
+		sight
+		wait 5
+		trigger t2body cinematic2
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+driver	
+{
+	attributes
+	{
+		starting_health 40
+		alertness 6000
+		aim_accuracy 1.0
+		aim_skill 1.0
+		attack_skill 1.0
+		attack_crouch 0.0
+		reaction_time 0.1
+		camper 1.0
+		tactical 1.0
+		running_speed 320
+		crouching_speed 160
+		fov 240
+		yaw_speed 500
+		alertness 16000
+		hearing_scale 4.0	
+	}
+
+	spawn
+	{
+		clearanim
+		statetype alert
+		giveweapon weapon_luger	
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		playsound blank
+		resetscript
+		followcast player
+	}
+
+	pain 10
+	{
+		attrib aggression 1.0
+		attrib camper 1.0
+	}
+	trigger talk1
+	{
+		clearanim
+		statetype alert
+		wait 500
+		playsound MiscWhatsThat
+	}
+	enemysight
+	{
+		clearanim
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}

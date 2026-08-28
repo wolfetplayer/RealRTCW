@@ -1,0 +1,1115 @@
+//
+//AI Scripting
+//Map: darkforest
+//Last edited by: Dan
+//
+
+player
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		cvar g_episode 1
+		objectivesneeded 2
+		suggestweapon weapon_mp40
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/c_military
+		giveweapon weapon_knife
+		giveweapon weapon_mp40
+		setammo ammo_9mm 82
+		selectweapon weapon_mp40
+	}
+	
+	trigger action1
+	{
+		mu_play sound/music/s_longout
+		mu_fade 0 2000
+		mu_queue sound/music/c_chant 2000
+		alertentity znazi5
+		alertentity znazi6
+		alertentity znazi7
+	}
+
+	trigger action2
+	{
+		mu_play sound/music/s_longout
+		mu_fade 0 2000
+		mu_queue sound/music/c_chant 2000
+		alertentity zombie1 
+		alertentity znazi8
+	}
+	trigger action3
+	{
+		mu_start sound/music/c_atmos 2000
+		alertentity zombie2
+		alertentity zombie3
+		alertentity zombie4
+		alertentity zombie5
+	}
+	trigger action4
+	{
+		alertentity znazi9
+		alertentity znazi10
+	}
+	trigger action5
+	{
+		alertentity zombie6
+		alertentity zombie7
+		alertentity zombie8
+		alertentity zombie9
+		alertentity zombie10
+		alertentity zombie11
+	}
+	trigger action6
+	{
+	}
+	trigger action7
+	{
+	}
+	trigger action8
+	{
+	}
+	trigger got_objective1
+	{
+		objectivemet 1
+	}
+	trigger got_objective2
+	{
+		objectivemet 2
+	}
+	trigger endmap
+	{
+		changelevel darkcastle persistent
+	}
+
+}
+
+nazi1			
+{
+	attributes
+	{
+		starting_health 40
+		aim_accuracy 0.4
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		setammo ammo_grenades 99
+		giveweapon weapon_grenadelauncher
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi2				
+{
+	attributes
+	{
+		starting_health 30
+		aim_accuracy 0.7
+		tactical 0.5
+		attack_skill 0.75
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		setammo ammo_grenades 9
+		giveweapon weapon_g43
+		selectweapon weapon_g43
+		setammo 7.92mm 999
+	}
+	trigger go1			
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+	inspectsoundend
+	{
+	}
+	inspectbodystart
+	{
+		clearanim
+	}
+	inspectbodyend
+	{
+	}
+	death
+	{
+	}
+}
+nazi3			
+{
+	attributes
+	{
+		starting_health 30
+		aim_accuracy 0.4
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		setammo ammo_grenades 99
+		giveweapon weapon_grenadelauncher
+	}
+	pain 30
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+nazi4			
+{
+	attributes
+	{
+		starting_health 40
+		aim_accuracy 0.4
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		setammo ammo_grenades 9
+		giveweapon weapon_grenadelauncher
+	}
+	pain 30
+	{
+		attrib aim_accuracy 0.4
+		attrib camper 0.3
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi1			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi2			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi3			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi4			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi5			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi6			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi7			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+zombie1
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		resetscript		// resume normal combat now
+	}
+
+	death
+	{
+	}
+}
+znazi8			
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+zombie2
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie3
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie4
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie5
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+znazi9			
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+znazi10			
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_g43
+		setammo 7.92mm 999
+		selectweapon weapon_g43
+	}
+	pain 40
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.4
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+zombie6
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie7
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie8
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie9
+{
+	attributes
+	{
+		starting_health 50
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie10
+{
+	attributes
+	{
+		starting_health 70
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}
+zombie11
+{
+	attributes
+	{
+		starting_health 80
+		aggression 1.0
+		fov 360
+	}
+	
+	spawn
+	{
+		gotocast player
+		sight
+	}
+
+	enemysight player
+	{
+		gotocast player
+	}
+
+	death
+	{
+	}
+}

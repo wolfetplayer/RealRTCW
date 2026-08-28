@@ -11,18 +11,9 @@ player
 {
   spawn
   {
-  giveweapon weapon_knife
-  giveweapon weapon_luger
-  giveweapon weapon_silencer
-  
-  setammo ammo_9mm 24
-  
-  setclip luger 8
-  
-  setarmor 50
-  
-  selectweapon weapon_luger
-  
+  applyloadout mid_game
+  cvar g_level_was_selected 0
+
   }
   playerstart
   {

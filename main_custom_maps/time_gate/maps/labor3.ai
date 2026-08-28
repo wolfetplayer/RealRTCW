@@ -19,6 +19,11 @@ player
   }
   playerstart
   {
+  #if g_level_was_selected >= 1
+  applyloadout labs_elite
+  #endif
+  cvar g_level_was_selected 0
+
   mu_fade 0 1000
   mu_queue sound/music/x_atmos
 

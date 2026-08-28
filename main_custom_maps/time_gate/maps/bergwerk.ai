@@ -19,6 +19,12 @@ player
 
         mu_fade 0 1000
 		mu_queue sound/music/m_stealth
+
+		#if g_level_was_selected >= 1
+		applyloadout mines_assault
+		#endif
+		cvar g_level_was_selected 0
+
 		// misc
 		setarmor 50
 		selectweapon weapon_mp44

@@ -16,6 +16,11 @@ player
   }
   playerstart
   {
+  #if g_level_was_selected >= 1
+  applyloadout labs_elite
+  #endif
+  cvar g_level_was_selected 0
+
   mu_start sound/music/x_tension
   }
 

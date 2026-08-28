@@ -11,10 +11,10 @@ player
 {
   spawn
   {
-   giveweapon weapon_knife
-   selectweapon weapon_knife
-  
-  } 
+   applyloadout start
+   cvar g_level_was_selected 0
+
+  }
   playerstart
   {
   mu_start sound/music/x_atmos

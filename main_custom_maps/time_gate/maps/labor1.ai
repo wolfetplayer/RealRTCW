@@ -18,6 +18,11 @@ player
   }
   playerstart
   {
+  #if g_level_was_selected >= 1
+  applyloadout labs_final
+  #endif
+  cvar g_level_was_selected 0
+
   mu_queue sound/laba/mistik.wav
   }
   trigger change_themusic

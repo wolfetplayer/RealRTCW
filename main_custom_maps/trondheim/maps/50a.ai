@@ -19,34 +19,8 @@ player
 		mu_fade 0 3000
 		mu_queue sound/music/m_action
 
-		// Weapons
-		giveweapon weapon_knife
-		giveweapon weapon_knife
-
-		giveweapon weapon_tt33
-		giveweapon weapon_tt33
-
-		giveweapon weapon_ppsh
-		giveweapon weapon_mosin
-
-		giveweapon weapon_mg42m
-		
-		// Ammo
-		setammo ammo_grenades 4
-		setammo ammo_ttammo full
-		setammo ammo_mosina 55
-		setammo ammo_127mm 200
-		
-		setclip ppsh full
-		setclip tt33 full
-		setclip weapon_dualtt33 full
-		setclip mosin full
-		setclip weapon_mg42m full
-		
-		// Items
-		setarmor 75
-		giveinventory key_binocs
-		selectweapon weapon_ppsh
+		applyloadout 50a
+		cvar g_level_was_selected 0
 	}
 	trigger action1
 	{

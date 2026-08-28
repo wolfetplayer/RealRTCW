@@ -20,40 +20,9 @@ player
 		mu_fade 0 1500
 		mu_queue sound/music/m_action
 
-		// Weapons
-		giveweapon weapon_colt
-		giveweapon weapon_knife
-		giveweapon weapon_bar
-		giveweapon weapon_thompson
-		giveweapon weapon_m97
-		// Ammo
-		setammo ammo_grenades_american 5
-		setammo ammo_barammo full
-		setammo ammo_45cal full
-		
-		setclip weapon_thompson full
-		setclip weapon_colt full
-		setclip weapon_bar full
+		applyloadout 30s
+		cvar g_level_was_selected 0
 
-		#if g_dlc1 == 0			
-		giveweapon weapon_m97
-		setammo ammo_m97ammo 32
-        setclip weapon_m97 full	
-	    #endif
-
-		#if g_dlc1 == 1			
-		giveweapon weapon_auto5
-		giveweapon weapon_m1941
-		setammo ammo_m97ammo 40
-		setammo ammo_m1941 full
-        setclip weapon_auto5 full	
-		setclip weapon_m1941 full
-	    #endif
-
-		// Items
-		setarmor 100
-		giveinventory key_binocs
-		selectweapon weapon_thompson
 		trigger player cam1
 	}
 	// --- Start Cameras---

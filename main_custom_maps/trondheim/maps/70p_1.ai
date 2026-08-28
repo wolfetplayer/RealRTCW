@@ -16,6 +16,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout 70p_1
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 3000
 		mu_queue sound/music/m_mission
 

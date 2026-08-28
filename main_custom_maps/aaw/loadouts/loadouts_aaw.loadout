@@ -1,0 +1,105 @@
+
+loadout aaw
+{
+
+}
+
+loadout aaw2
+{
+		setarmor 25
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+
+		setammo ammo_9mm 250
+		setammo ammo_792mm 150
+		setammo ammo_grenades 3
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+
+		selectweapon weapon_mp40
+}
+
+loadout aaw3
+{
+		setarmor 25
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+
+		setammo ammo_9mm 300
+		setammo ammo_792mm 150
+		setammo ammo_grenades 3
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+
+		selectweapon weapon_mp40
+}
+
+loadout aaw4
+{
+		setarmor 30
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_9mm 300
+		setammo ammo_792mm 180
+		setammo ammo_panzerfaust 3
+		setammo ammo_grenades 4
+
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		setclip weapon_panzerfaust 1
+
+		selectweapon weapon_mp40
+}
+
+loadout aaw5
+{
+		setarmor 75
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_luger
+		giveweapon weapon_thompson
+		giveweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		giveweapon weapon_panzerfaust
+
+		setammo ammo_45cal 120
+		setammo ammo_9mm 300
+		setammo ammo_792mm 180
+		setammo ammo_panzerfaust 3
+		setammo ammo_grenades 4
+
+		setclip weapon_thompson full
+		setclip weapon_luger full
+		setclip weapon_mp40 full
+		setclip weapon_mauserrifle full
+		setclip weapon_sniperscope full
+		setclip weapon_panzerfaust 1
+
+		selectweapon weapon_thompson
+}
+

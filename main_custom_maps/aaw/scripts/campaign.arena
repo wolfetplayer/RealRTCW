@@ -1,0 +1,32 @@
+// Alone at War - Escape from Offlag (escaped Allied POW)
+
+{
+map			"aaw"
+longname	"Prison Camp"
+chapter		"1"
+}
+
+{
+map			"aaw2"
+longname	"The Cover-up"
+chapter		"1"
+}
+
+{
+map			"aaw3"
+longname	"Hour of the Sniper"
+chapter		"1"
+}
+
+{
+map			"aaw4"
+longname	"The Messenger"
+chapter		"1"
+}
+
+{
+map			"aaw5"
+longname	"Camp Attack"
+chapter		"1"
+}
+

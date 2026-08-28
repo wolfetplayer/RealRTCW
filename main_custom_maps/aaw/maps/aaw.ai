@@ -31,14 +31,8 @@ player 										//Player info
 
 	playerstart
 	{
-		// Weapons
-
-
-		// Ammo
-
-
-		// Items
-		setarmor 25
+		applyloadout aaw
+		cvar g_level_was_selected 0
 	}
 
 	trigger cementary1						//Triggers when player destroy wall at cementary
@@ -156,7 +150,6 @@ grave_nazi1
 	attributes
 	{
 		fov 300
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 1.0
 		inner_detection_radius 15000
@@ -169,11 +162,7 @@ grave_nazi1
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		setammo ammo_grenades 3
 
 	}
@@ -200,7 +189,6 @@ grave_officer1							// Boss of Camp A ??? Having only luger ???
 	attributes
 	{
 		leader 0.5						//what will hapen ?
-		aim_accuracy 1.0
 		aim_skill 1.0
 		attack_skill 1.0
 		inner_detection_radius 3000
@@ -212,12 +200,8 @@ grave_officer1							// Boss of Camp A ??? Having only luger ???
 
 	spawn
 	{
-		sethealth 50
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
+		giveweaponfull weapon_luger
 		setammo ammo_grenades 2
-		selectweapon weapon_luger
 		statetype alert
 		wait forever
 	}
@@ -232,7 +216,6 @@ grave_nazi2
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 1.0
 		inner_detection_radius 15000
@@ -245,14 +228,8 @@ grave_nazi2
 
 	spawn
 	{
-		sethealth 50
-		takeweapon all
-		giveweapon weapon_luger
-		giveweapon weapon_mauserRifle
-		setammo ammo_9mm 999
-		setammo ammo_792mm 150
+		giveweaponfull weapon_mauserRifle
 		setammo ammo_grenades 3
-		selectweapon weapon_mauserRifle
 	}
 
 	trigger lookplayer
@@ -275,7 +252,6 @@ grave_drz1
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -288,11 +264,7 @@ grave_drz1
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 	}
 
 	trigger lookplayer
@@ -317,7 +289,6 @@ grave_nazi3
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1000
@@ -329,14 +300,9 @@ grave_nazi3
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		giveweapon weapon_grenadelauncher
-		setammo ammo_9mm 999
 		setammo ammo_grenades 999
-		setammo ammo_792mm 150
-		selectweapon weapon_mauserRifle
 	}
 
 	enemysight player
@@ -374,7 +340,6 @@ grave_nazi4
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 10000
@@ -387,14 +352,9 @@ grave_nazi4
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		giveweapon weapon_grenadelauncher
-		setammo ammo_9mm 999
 		setammo ammo_grenades 999
-		setammo ammo_792mm 150
-		selectweapon weapon_mauserRifle
 	}
 
 	enemysight player
@@ -432,7 +392,6 @@ grave_nazi5
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 10000
@@ -445,14 +404,9 @@ grave_nazi5
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		giveweapon weapon_grenadelauncher
-		setammo ammo_9mm 999
 		setammo ammo_grenades 999
-		setammo ammo_792mm 150
-		selectweapon weapon_mauserRifle
 	}
 
 	enemysight player
@@ -490,7 +444,6 @@ grave_nazi6
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 10000
@@ -503,14 +456,9 @@ grave_nazi6
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mauserRifle
+		giveweaponfull weapon_mauserRifle
 		giveweapon weapon_grenadelauncher
-		setammo ammo_9mm 999
 		setammo ammo_grenades 999
-		setammo ammo_792mm 150
-		selectweapon weapon_mauserRifle
 	}
 
 	enemysight player
@@ -548,7 +496,6 @@ grave_nazi7
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -568,13 +515,8 @@ grave_nazi7
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_luger
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
 		trigger grave_nazi7 cementary_attack
 	}
 
@@ -595,7 +537,6 @@ grave_nazi8
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -609,12 +550,8 @@ grave_nazi8
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 		trigger grave_nazi8 cementary_attack
 	}
 
@@ -641,7 +578,6 @@ grave_nazi9
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -655,12 +591,8 @@ grave_nazi9
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
 		trigger grave_nazi9 cementary_attack
 	}
 
@@ -687,7 +619,6 @@ grave_nazi10
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -701,12 +632,8 @@ grave_nazi10
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
 		trigger grave_nazi10 cementary_attack
 	}
 
@@ -738,7 +665,6 @@ underground_passage1_nazi5
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -753,12 +679,8 @@ underground_passage1_nazi5
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
 	}
 
 	enemysight
@@ -777,7 +699,6 @@ underground_passage1_nazi6
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -792,12 +713,8 @@ underground_passage1_nazi6
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	death
@@ -810,7 +727,6 @@ underground_passage1_nazi7
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -825,12 +741,8 @@ underground_passage1_nazi7
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	death
@@ -844,7 +756,6 @@ underground_passage1_nazi8
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -859,12 +770,8 @@ underground_passage1_nazi8
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	enemysight
@@ -885,7 +792,6 @@ underground_passage1_nazi9
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 3000
@@ -899,12 +805,8 @@ underground_passage1_nazi9
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	death
@@ -917,7 +819,6 @@ underground_passage1_nazi10
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 10000
@@ -931,12 +832,8 @@ underground_passage1_nazi10
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	death
@@ -949,7 +846,6 @@ underground_passage1_nazi11
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 5000
@@ -963,12 +859,8 @@ underground_passage1_nazi11
 	spawn
 	{
 		statetype alert
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	death
@@ -983,7 +875,6 @@ underground_passage1_nazi1
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -997,13 +888,8 @@ underground_passage1_nazi1
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_luger
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	trigger charge
@@ -1027,7 +913,6 @@ underground_passage1_nazi2
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -1041,13 +926,8 @@ underground_passage1_nazi2
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_luger
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	trigger charge
@@ -1072,7 +952,6 @@ underground_passage1_nazi3
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -1086,12 +965,8 @@ underground_passage1_nazi3
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	trigger charge
@@ -1116,7 +991,6 @@ underground_passage1_nazi4
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 1.0
 		inner_detection_radius 1024
@@ -1130,12 +1004,8 @@ underground_passage1_nazi4
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	trigger charge
@@ -1172,7 +1042,6 @@ pow1
 		hearing_scale 0.0
 		attack_crouch 0.0
 		attack_skill 0.0
-		aim_accuracy 0.0
 		aim_skill 0.0
 		agression 0.0
 		inner_detection_radius 0.0
@@ -1240,7 +1109,6 @@ pow2
 		hearing_scale 0.0
 		attack_crouch 0.0
 		attack_skill 0.0
-		aim_accuracy 0.0
 		aim_skill 0.0
 		agression 0.0
 		inner_detection_radius 0.0
@@ -1302,7 +1170,6 @@ camp_door_1_nazi_left
 {
 	attributes
 	{
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		attack_crouch 0.6
@@ -1314,7 +1181,6 @@ camp_door_1_nazi_left
 	}
 	spawn
 	{
-		sethealth 200
 	}
 	death
 	{
@@ -1326,7 +1192,6 @@ camp_door_1_nazi_right
 {
 	attributes
 	{
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		attack_crouch 0.6
@@ -1338,7 +1203,6 @@ camp_door_1_nazi_right
 	}
 	spawn
 	{
-		sethealth 200
 	}
 	death
 	{
@@ -1350,7 +1214,6 @@ camp_door_1_nazi_inside1
 {
 	attributes
 	{
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		attack_crouch 0.6
@@ -1362,7 +1225,6 @@ camp_door_1_nazi_inside1
 	}
 	spawn
 	{
-		sethealth 200
 	}
 	death
 	{
@@ -1374,7 +1236,6 @@ camp_door_1_nazi_inside2
 {
 	attributes
 	{
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		attack_crouch 0.6
@@ -1386,7 +1247,6 @@ camp_door_1_nazi_inside2
 	}
 	spawn
 	{
-		sethealth 200
 	}
 	death
 	{

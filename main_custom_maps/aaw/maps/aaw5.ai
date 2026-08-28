@@ -29,25 +29,11 @@ player 										//Player info
 
 	playerstart
 	{
-	       // Weapons
-		giveweapon weapon_knife
-		giveweapon weapon_thompson
-		selectweapon weapon_thompson
-		suggestweapon weapon_thompson
+		#if g_level_was_selected >= 1
+		applyloadout aaw5
+		#endif
+		cvar g_level_was_selected 0
 
-		// Ammo
-		setammo ammo_panzerfaust 0
-		setammo ammo_fuel 0
-		setammo ammo_792mm 0
-		setammo ammo_9mm 0
-		setammo ammo_45cal 50
-		setammo ammo_30cal 0
-		setammo ammo_grenades 0
-		setclip weapon_thompson 30
-		
-		// Items
-		setarmor 50
-		giveinventory key_binocs
 		//trigger player lockon 
 		trigger player musicmission
 	}
@@ -446,9 +432,7 @@ bj1
 		nosight 999999
 		knockback off
 		headlook off
-		takeweapon all
-		giveweapon weapon_thompson
-		selectweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		trigger bj1 go
 	}
 	
@@ -488,14 +472,12 @@ siergiej						// This guy gives me pain in the ....
 	{
 		// camper 0.1
 		running_speed 300		// he is so slow........  :-(	// 300 is the max? 1000 do not help !
-		starting_health	100
 		tactical 0.3
 		alertness 0.0
 		fov 360
 		hearing_scale 0.0
 		attack_crouch 0.9
 		attack_skill 0.8
-		aim_accuracy 0.7
 		aim_skill 0.6
 		agression 0.0
 		inner_detection_radius 0.0
@@ -604,12 +586,10 @@ siergiej2						// This guy gives me pain in the ....
 	{
 		// camper 0.1
 		running_speed 300
-		starting_health	50
 		tactical 0
 		fov 360
 		attack_crouch 0
 		attack_skill 0
-		aim_accuracy 0
 		aim_skill 0
 		agression 0.0
 		hearing_scale 0.0
@@ -738,12 +718,10 @@ siergiej3						// This guy gives me pain in the ....
 	{
 		// camper 0.1
 		running_speed 300
-		starting_health	50
 		tactical 0
 		fov 360
 		attack_crouch 0
 		attack_skill 0
-		aim_accuracy 0
 		aim_skill 0
 		agression 0.0
 		hearing_scale 0.0
@@ -825,12 +803,10 @@ camp1_partisan1
 	{
 
 		// camper 0.1
-		starting_health	120
 		tactical 1.0
 		fov 360
 		attack_crouch 0.0
 		attack_skill 1.0
-		aim_accuracy 1.0
 		aim_skill 1.0
 		agression 0.5
 		inner_detection_radius 5000
@@ -841,10 +817,7 @@ camp1_partisan1
 
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 500
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		statetype alert
 		trigger camp1_partisan1 mount_part_mg_1
 	}
@@ -893,12 +866,10 @@ camp1_partisan2
 
 		// camper 0.1
 		running_speed 300
-		starting_health	50
 		tactical 0.3
 		fov 180
 		attack_crouch 0.0
 		attack_skill 0.8
-		aim_accuracy 0.9
 		aim_skill 0.8
 		agression 0.5
 		inner_detection_radius 5000
@@ -909,10 +880,7 @@ camp1_partisan2
 
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 500
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		statetype relaxed
 	}
 
@@ -946,12 +914,10 @@ camp1_partisan3
 
 		// camper 0.1
 		running_speed 300
-		starting_health	50
 		tactical 0.3
 		fov 180
 		attack_crouch 0.0
 		attack_skill 0.8
-		aim_accuracy 0.9
 		aim_skill 0.8
 		agression 0.5
 		inner_detection_radius 5000
@@ -962,10 +928,7 @@ camp1_partisan3
 
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 500
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		statetype relaxed
 		trigger camp1_partisan3 mount_part_mg_2
 	}
@@ -1000,12 +963,10 @@ camp1_partisan4 // patroling guy
 
 		// camper 0.1
 		running_speed 300
-		starting_health	50
 		tactical 0.0
 		fov 360
 		attack_crouch 0.9
 		attack_skill 0.8
-		aim_accuracy 0.9
 		aim_skill 0.8
 		agression 0.5
 		inner_detection_radius 5000
@@ -1016,10 +977,7 @@ camp1_partisan4 // patroling guy
 
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 500
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		statetype relaxed
 	}
 
@@ -1072,7 +1030,6 @@ nazi_corridor1
 		aggression 1.0
 		fov 240
 		inner_detection_radius 1024
-		starting_health 35
 		tactical 1.0
 		camper 1.0
 		attack_skill 1.0
@@ -1117,7 +1074,6 @@ nazi_corridor2
 		aggression 1.0
 		fov 240
 		inner_detection_radius 1024
-		starting_health 35
 		tactical 1.0
 		camper 1.0
 		attack_skill 1.0
@@ -1154,7 +1110,6 @@ nazi_corridor3
 		aggression 1.0
 		fov 240
 		inner_detection_radius 1024
-		starting_health 35
 		tactical 1.0
 		camper 1.0
 		attack_skill 1.0
@@ -1197,7 +1152,6 @@ officer1
 		aggression 1.0
 		fov 240
 		inner_detection_radius 512
-		starting_health 35
 		tactical 1.0
 		camper 1.0
 		attack_skill 1.0
@@ -1207,12 +1161,7 @@ officer1
 	
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_panzerfaust
-		setammo ammo_panzerfaust 2
-		selectweapon weapon_panzerfaust
-		giveweapon weapon_luger
-		setammo ammo_9mm 400
+		giveweaponfull weapon_panzerfaust
 		godmode on
 		
 	}
@@ -1245,8 +1194,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1268,7 +1215,6 @@ nazi1
 	pain 30
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.7
 	}
 
 	enemysight
@@ -1302,8 +1248,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.7
 		tactical 0.5
 		attack_skill 0.75
 		aggression 0.5
@@ -1353,8 +1297,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1375,7 +1317,6 @@ nazi3
 	pain 30
 	{
 		attrib aggression 1.0
-		attrib aim_accuracy 0.7
 	}
 
 	enemysight
@@ -1409,8 +1350,6 @@ nazi4
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1430,7 +1369,6 @@ nazi4
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1465,8 +1403,6 @@ nazi5
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 1.0
 		attack_skill 1.0
 		aim_skill 1.0
@@ -1487,7 +1423,6 @@ nazi5
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1522,8 +1457,6 @@ nazi6
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 1.0
 		attack_skill 1.0
 		aim_skill 1.0
@@ -1543,7 +1476,6 @@ nazi6
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1578,8 +1510,6 @@ nazi7
 {
 	attributes
 	{
-		aim_accuracy 0.9
-		starting_health 20
 		aggression 1.0
 		fov 240
 	}
@@ -1596,7 +1526,6 @@ nazi7
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1629,8 +1558,6 @@ nazi8
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1653,7 +1580,6 @@ nazi8
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1688,8 +1614,6 @@ nazi9
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1710,7 +1634,6 @@ nazi9
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1745,8 +1668,6 @@ nazi10
 {
 	attributes
 	{
-		aim_accuracy 0.9
-		starting_health 20
 		aggression 1.0
 		fov 240
 	}
@@ -1763,7 +1684,6 @@ nazi10
 
 	pain 30
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.3
 	}
 
@@ -1796,8 +1716,6 @@ nazi11
 {
 	attributes
 	{
-		starting_health 50
-		aim_accuracy 1.0
 		aggression 1.0
 		attack_skill 1.0
 		aim_skill 1.0
@@ -1878,8 +1796,6 @@ nazi12
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1914,7 +1830,6 @@ nazi12
 		
 	pain 30
 	{
-		attrib aim_accuracy 0.7
 		attrib camper 0.3
 		resetscript
 	}
@@ -1952,8 +1867,6 @@ nazi13
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1989,7 +1902,6 @@ nazi13
 		
 	pain 30
 	{
-		attrib aim_accuracy 0.7
 		attrib camper 0.3
 		resetscript
 	}
@@ -2027,8 +1939,6 @@ nazi14
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -2063,7 +1973,6 @@ nazi14
 		
 	pain 30
 	{
-		attrib aim_accuracy 0.7
 		attrib camper 0.3
 		resetscript
 	}
@@ -2101,8 +2010,6 @@ nazi15
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -2138,7 +2045,6 @@ nazi15
 		
 	pain 30
 	{
-		attrib aim_accuracy 0.7
 		attrib camper 0.3
 		resetscript
 	}
@@ -2176,8 +2082,6 @@ part_radio
 {
 	attributes
 	{
-		starting_health 5
-		aim_accuracy 0.2
 		attack_crouch 0.0
 		attack_skill 0.2
 		aim_skill 0.2
@@ -2189,10 +2093,7 @@ part_radio
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		wait forever 0 player
 	}
 
@@ -2236,12 +2137,9 @@ nazi_mg42_3
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 1.0
 		aggression 1.0
 		attack_skill 1.0
 		aim_skill 1.0
-		reaction_time 1.0
 		hearing_scale 1.0
 		idle_crouch 0.0
 		alertness 64000
@@ -2316,8 +2214,6 @@ sniper1
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.9
 		idle_crouch 0.5
 		attack_crouch 1.0
 		attack_skill 1.0
@@ -2325,18 +2221,14 @@ sniper1
 		aggression 1.0
 		pain_threshhold_scale 2.0
 		inner_detection_radius 2048
-		reaction_time 1.0
 		alertness 32000
 		fov 120
 	}
 
 	spawn
 	{
-		takeweapon all
+		giveweaponfull weapon_sniperscope
 		setammo ammo_grenades 0
-		giveweapon weapon_sniperscope
-		setammo ammo_792mm 999
-		selectweapon weapon_sniperscope
 		noavoid
 		statetype alert
 		wait 100
@@ -2401,8 +2293,6 @@ sniper2
 {
 	attributes
 	{
-		starting_health 20
-		aim_accuracy 0.8
 		idle_crouch 0.5
 		attack_crouch 1.0
 		attack_skill 1.0
@@ -2410,18 +2300,14 @@ sniper2
 		aggression 1.0
 		pain_threshhold_scale 2.0
 		inner_detection_radius 2048
-		reaction_time 1.0
 		alertness 64000
 		fov 240
 	}
 
 	spawn
 	{
-		takeweapon all
+		giveweaponfull weapon_sniperscope
 		setammo ammo_grenades 0
-		giveweapon weapon_sniperscope
-		setammo ammo_792mm 999
-		selectweapon weapon_sniperscope
 		statetype alert
 	}
 
@@ -2473,11 +2359,9 @@ trooper1
 {
 	attributes
 	{
-		starting_health 50
 		idle_crouch 0.0
 		attack_crouch 0.0
 		attack_skill 0.7
-		aim_accuracy 0.6
 		aim_skill 0.3
 	}
 
@@ -2559,11 +2443,9 @@ trooper2
 {
 	attributes
 	{
-		starting_health 50
 		idle_crouch 0.0
 		attack_crouch 0.0
 		attack_skill 0.7
-		aim_accuracy 0.6
 		aim_skill 0.3
 	}
 
@@ -2645,11 +2527,9 @@ trooper3
 {
 	attributes
 	{
-		starting_health 35
 		idle_crouch 0.0
 		attack_crouch 0.0
 		attack_skill 0.7
-		aim_accuracy 0.6
 		aim_skill 0.3
 	}
 
@@ -2727,11 +2607,9 @@ trooper4
 {
 	attributes
 	{
-		starting_health 35
 		idle_crouch 0.0
 		attack_crouch 0.0
 		attack_skill 0.7
-		aim_accuracy 0.6
 		aim_skill 0.3
 	}
 
@@ -2813,14 +2691,11 @@ mech1
 {
 	attributes
 	{
-		starting_health 10
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
 		aggression 0.5
 		tactical 1.0
-		reaction_time 1.0
 		hearing_scale 1.0
 	}
 	
@@ -2863,14 +2738,11 @@ mech2
 {
 	attributes
 	{
-		starting_health 10
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
 		aggression 0.5
 		tactical 1.0
-		reaction_time 1.0
 		hearing_scale 1.0
 	}
 	
@@ -2918,10 +2790,7 @@ partisan_final
 
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_sten
-		setclip 9mm 999
-		selectweapon weapon_sten
+		giveweaponfull weapon_sten
 		wait forever 0 player
 	}
 
@@ -2955,10 +2824,7 @@ partisan_final2
 
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mp40
-		setclip 9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		wait forever 0 player
 	}
 

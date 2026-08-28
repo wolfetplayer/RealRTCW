@@ -32,6 +32,10 @@ player 										//Player info
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout aaw3
+		#endif
+		cvar g_level_was_selected 0
 		// mu_fade 0 5000
 		// mu_queue sound/music/c_military
 
@@ -144,8 +148,6 @@ right_tower_nazi_1 						//right_tower
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 300
@@ -159,10 +161,7 @@ right_tower_nazi_1 						//right_tower
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		nosight 99999
 	}
 
@@ -204,8 +203,6 @@ right_tower_nazi_2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -219,10 +216,7 @@ right_tower_nazi_2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 
 	}
 
@@ -244,8 +238,6 @@ center_right_tower_nazi_1				////////////////center_right_tower
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 100
@@ -297,8 +289,6 @@ center_right_tower_nazi_2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -313,10 +303,7 @@ center_right_tower_nazi_2
 	{
 
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp44
-		selectweapon weapon_mp44
-		setammo ammo_44ammo 999
+		giveweaponfull weapon_mp44
 		runtomarker center_right_tower_marker nostop
 
 	}
@@ -338,8 +325,6 @@ center_right_tower_nazi_3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -353,10 +338,7 @@ center_right_tower_nazi_3
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker center_right_tower_marker nostop
 
 	}
@@ -379,8 +361,6 @@ center_left_tower_nazi_1		/////////////////////center_left_tower
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 100
@@ -389,7 +369,6 @@ center_left_tower_nazi_1		/////////////////////center_left_tower
 		attack_crouch 0.8
 		Aggression 0.8
 		tactical 0.8
-		reaction_time 0.8
 	}
 
 	spawn
@@ -458,8 +437,6 @@ center_left_tower_nazi_2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -473,10 +450,7 @@ center_left_tower_nazi_2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_fg42
-		setammo ammo_792mm 999
-		selectweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		runtomarker center_left_tower_marker nostop
 
 	}
@@ -498,8 +472,6 @@ center_left_tower_nazi_3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -513,10 +485,7 @@ center_left_tower_nazi_3
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker center_left_tower_marker nostop
 
 	}
@@ -537,8 +506,6 @@ left_tower_nazi_1						/////////////////////////////////////////////////////////
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 500
@@ -552,10 +519,7 @@ left_tower_nazi_1						/////////////////////////////////////////////////////////
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp44
-		selectweapon weapon_mp44
-		setammo ammo_44ammo 999
+		giveweaponfull weapon_mp44
 		nosight 99999
 	}
 
@@ -597,8 +561,6 @@ left_tower_nazi_2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -612,10 +574,7 @@ left_tower_nazi_2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 
 	}
 
@@ -639,8 +598,6 @@ mg1_nazi1								// mg1
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -654,10 +611,7 @@ mg1_nazi1								// mg1
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg1_marker nostop
 		mount mg_1
 		statetype alert
@@ -685,8 +639,6 @@ mg1_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 15
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -700,10 +652,7 @@ mg1_nazi2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg1_marker nostop
 		mount mg_1
 		statetype alert
@@ -726,8 +675,6 @@ mg1_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 20
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -741,10 +688,7 @@ mg1_nazi3
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp44
-		selectweapon weapon_mp44
-		setammo ammo_44ammo 999
+		giveweaponfull weapon_mp44
 		runtomarker mg1_marker nostop
 		mount mg_1
 		statetype alert
@@ -767,8 +711,6 @@ mg1_nazi4
 	attributes
 	{
 		fov 300
-		starting_health 15
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -782,10 +724,7 @@ mg1_nazi4
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp44
-		selectweapon weapon_mp44
-		setammo ammo_44ammo 999
+		giveweaponfull weapon_mp44
 		runtomarker mg1_marker nostop
 		mount mg_1
 		statetype alert
@@ -807,8 +746,6 @@ mg2_nazi1								// mg2
 	attributes
 	{
 		fov 300
-		starting_health 15
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -822,10 +759,7 @@ mg2_nazi1								// mg2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp44
-		selectweapon weapon_mp44
-		setammo ammo_44ammo 999
+		giveweaponfull weapon_mp44
 		runtomarker mg2_marker_1 nostop
 		facetargetangles mg2_marker_2
 		runtomarker mg2_marker_2 nostop
@@ -855,8 +789,6 @@ mg2_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -870,10 +802,7 @@ mg2_nazi2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg2_marker_1 nostop
 		facetargetangles mg2_marker_2
 		runtomarker mg2_marker_2 nostop
@@ -906,8 +835,6 @@ mg2_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -921,10 +848,7 @@ mg2_nazi3
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg2_marker_1 nostop
 		facetargetangles mg2_marker_2
 		runtomarker mg2_marker_2 nostop
@@ -957,8 +881,6 @@ mg2_nazi4
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -973,10 +895,7 @@ mg2_nazi4
 	{
 		trigger player music1
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg2_marker_1 nostop
 		facetargetangles mg2_marker_2
 		runtomarker mg2_marker_2 nostop
@@ -1008,8 +927,6 @@ mg3_nazi1								// mg3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -1023,10 +940,7 @@ mg3_nazi1								// mg3
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg3_marker_1 nostop
 		facetargetangles mg3_marker_2
 		runtomarker mg3_marker_2 nostop
@@ -1056,8 +970,6 @@ mg3_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -1071,10 +983,7 @@ mg3_nazi2
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg3_marker_1 nostop
 		facetargetangles mg3_marker_2
 		runtomarker mg3_marker_2 nostop
@@ -1108,8 +1017,6 @@ mg3_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -1123,10 +1030,7 @@ mg3_nazi3
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg3_marker_1 nostop
 		facetargetangles mg3_marker_2
 		runtomarker mg3_marker_2 nostop
@@ -1160,8 +1064,6 @@ mg3_nazi4
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -1175,10 +1077,7 @@ mg3_nazi4
 	spawn
 	{
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		runtomarker mg3_marker_1 nostop
 		facetargetangles mg3_marker_2
 		runtomarker mg3_marker_2 nostop
@@ -1212,7 +1111,6 @@ camp_door_1_nazi_right_inside
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		attack_crouch 0.5
@@ -1225,7 +1123,6 @@ camp_door_1_nazi_right_inside
 
 	spawn
 	{
-		sethealth 20
 		nosight 99999
 	}
 
@@ -1259,7 +1156,6 @@ camp_door_1_nazi_left_inside
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		attack_crouch 0.5
@@ -1272,7 +1168,6 @@ camp_door_1_nazi_left_inside
 
 	spawn
 	{
-		sethealth 20
 		nosight 99999
 	}
 
@@ -1306,7 +1201,6 @@ camp_door_1_nazi_b1
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		attack_crouch 0.5
@@ -1319,7 +1213,6 @@ camp_door_1_nazi_b1
 
 	spawn
 	{
-		sethealth 20
 		nosight 99999
 	}
 
@@ -1353,7 +1246,6 @@ camp_door_1_nazi_b2
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		attack_crouch 0.5
@@ -1366,7 +1258,6 @@ camp_door_1_nazi_b2
 
 	spawn
 	{
-		sethealth 20
 		nosight 99999
 	}
 
@@ -1406,7 +1297,6 @@ pow1
 		hearing_scale 0.0
 		attack_crouch 0.0
 		attack_skill 0.0
-		aim_accuracy 0.0
 		aim_skill 0.0
 		agression 0.0
 		inner_detection_radius 0.0
@@ -1502,7 +1392,6 @@ pow2
 		hearing_scale 0.0
 		attack_crouch 0.0
 		attack_skill 0.0
-		aim_accuracy 0.0
 		aim_skill 0.0
 		agression 0.0
 		inner_detection_radius 0.0

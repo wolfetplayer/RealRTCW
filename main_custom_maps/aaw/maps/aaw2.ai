@@ -30,6 +30,10 @@ player 										//Player info
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout aaw2
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 5000
 		mu_queue sound/music/m_drums
 
@@ -211,7 +215,6 @@ nazi_trap1
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.2
 		attack_crouch 0.5
@@ -224,12 +227,8 @@ nazi_trap1
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 	}
 
 	trigger charge
@@ -257,7 +256,6 @@ nazi_trap2
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.2
 		attack_crouch 0.5
@@ -270,12 +268,8 @@ nazi_trap2
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		setammo ammo_9mm 999
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
 		trigger nazi_trap2 charge
 	}
 
@@ -308,19 +302,14 @@ checkpoint_nazi
 {
 	attributes
 	{
-		aim_accuracy 0.4
-		starting_health 25
 		hearing_scale 0.8
 		aggression 0.8
 	}
 
 	spawn
 	{
+		giveweaponfull weapon_luger
 		setammo ammo_grenades 3
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
-		selectweapon weapon_luger
 
 		trigger checkpoint_nazi play_animation1
 
@@ -359,7 +348,6 @@ nazi1_hallway_to_ammo_1
 {
 	attributes
 	{
-		starting_health 25
 	}
 
 	spawn
@@ -423,7 +411,6 @@ nazi2_hallway_to_ammo_1
 {
 	attributes
 	{
-		starting_health 25
 	}
 
 	spawn
@@ -454,8 +441,6 @@ ammo_nazi1	// Smoking guy  -------------> Smoking nazi script by Byz, Email: una
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -563,8 +548,6 @@ ammo_nazi2 					//guy reading some shit
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -577,11 +560,8 @@ ammo_nazi2 					//guy reading some shit
 
 	spawn
 	{
+		giveweaponfull weapon_mp44
 		setammo ammo_grenades 3
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
 	}
 
 	enemysight player
@@ -606,8 +586,6 @@ ammo_nazi3 					//guy standing next to guy reading some nazi shit
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 5000
@@ -620,11 +598,8 @@ ammo_nazi3 					//guy standing next to guy reading some nazi shit
 
 	spawn
 	{
+		giveweaponfull weapon_mp44
 		setammo ammo_grenades 3
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
 
 	}
 
@@ -639,7 +614,6 @@ ammo_nazi3_patrol
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 1024
@@ -653,11 +627,7 @@ ammo_nazi3_patrol
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 		trigger ammo_nazi3_patrol patrol
 	}
 
@@ -685,7 +655,6 @@ ammo_nazi4
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.3
 		inner_detection_radius 10000
@@ -698,12 +667,8 @@ ammo_nazi4
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	enemysight player
@@ -735,7 +700,6 @@ ammo_nazi5
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.3
 		inner_detection_radius 10000
@@ -748,12 +712,8 @@ ammo_nazi5
 
 	spawn
 	{
-		sethealth 30
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	enemysight player
@@ -786,7 +746,6 @@ ammo_nazi6
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.3
 		inner_detection_radius 10000
@@ -799,12 +758,8 @@ ammo_nazi6
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 	}
 
 	enemysight player
@@ -837,7 +792,6 @@ ammo_nazi7
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.3
 		inner_detection_radius 10000
@@ -850,7 +804,6 @@ ammo_nazi7
 
 	spawn
 	{
-		sethealth 25
 		takeweapon all
 		giveweapon weapon_mp40
 		setammo ammo_9mm 999
@@ -893,7 +846,6 @@ ammo_nazi8
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -906,12 +858,8 @@ ammo_nazi8
 	spawn
 	{
 		nosight 999999
-		sethealth 25
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 
 		trigger mg_42_use
@@ -952,7 +900,6 @@ ammo_nazi9
 {
 	attributes
 	{
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.3
 		inner_detection_radius 0
@@ -965,12 +912,8 @@ ammo_nazi9
 	spawn
 	{
 		nosight 999999
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 3
-		selectweapon weapon_mp40
 		noaidamage on
 		trigger ammo_nazi9 mg_42_use
 	}
@@ -1020,7 +963,6 @@ ammo_nazi10
 {
 	attributes
 	{
-		aim_accuracy 0.3
 		aim_skill 0.3
 		attack_skill 0.3
 		inner_detection_radius 0
@@ -1033,7 +975,6 @@ ammo_nazi10
 	spawn
 	{
 		nosight 999999
-		sethealth 25
 		takeweapon all
 		giveweapon weapon_mp40
 		setammo ammo_9mm 999
@@ -1088,7 +1029,6 @@ ammo_nazi11
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.3
 		inner_detection_radius 0
@@ -1101,7 +1041,6 @@ ammo_nazi11
 	spawn
 	{
 		nosight 999999
-		sethealth 20
 		takeweapon all
 		giveweapon weapon_mp40
 		setammo ammo_9mm 999
@@ -1153,7 +1092,6 @@ ammo_nazi12 // 2 guys taking control of first MG2
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 0
@@ -1166,7 +1104,6 @@ ammo_nazi12 // 2 guys taking control of first MG2
 	spawn
 	{
 		nosight 999999
-		sethealth 20
 		takeweapon all
 		giveweapon weapon_mp40
 		setammo ammo_9mm 999
@@ -1211,7 +1148,6 @@ ammo_nazi13
 {
 	attributes
 	{
-		aim_accuracy 0.4
 		aim_skill 0.5
 		attack_skill 0.3
 		inner_detection_radius 0
@@ -1224,12 +1160,8 @@ ammo_nazi13
 	spawn
 	{
 		nosight 999999
-		sethealth 20
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		trigger ammo_nazi13 mg_42_use
 	}
 
@@ -1287,7 +1219,6 @@ Ammo_facility_hiding_1
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 1000
@@ -1299,11 +1230,7 @@ Ammo_facility_hiding_1
 
 	spawn
 	{
-		sethealth 20
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 		statetype alert
 	}
 
@@ -1318,7 +1245,6 @@ Ammo_facility_hiding_2
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 10000
@@ -1331,11 +1257,7 @@ Ammo_facility_hiding_2
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 		statetype alert
 	}
 
@@ -1350,7 +1272,6 @@ Ammo_facility_hiding_3 				//sniper on the cran
 {
 	attributes
 	{
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 1.0
 		inner_detection_radius 10000
@@ -1363,7 +1284,6 @@ Ammo_facility_hiding_3 				//sniper on the cran
 
 	spawn
 	{
-		sethealth 25
 		takeweapon all
 		giveweapon weapon_sniperscope
 		setammo ammo_792mm 150
@@ -1380,7 +1300,6 @@ Ammo_main_charge1_nazi1
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 10000
@@ -1393,7 +1312,6 @@ Ammo_main_charge1_nazi1
 
 	spawn
 	{
-		sethealth 25
 		takeweapon all
 		giveweapon weapon_mp40
 		setammo ammo_9mm 999
@@ -1428,7 +1346,6 @@ Ammo_main_charge1_nazi2
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 10000
@@ -1441,11 +1358,7 @@ Ammo_main_charge1_nazi2
 
 	spawn
 	{
-		sethealth 25
-		takeweapon all
-		giveweapon weapon_mp44
-		setammo ammo_44ammo 999
-		selectweapon weapon_mp44
+		giveweaponfull weapon_mp44
 	}
 
 	trigger charge
@@ -1475,7 +1388,6 @@ Ammo_main_charge1_nazi3
 {
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.6
 		inner_detection_radius 10000
@@ -1488,7 +1400,6 @@ Ammo_main_charge1_nazi3
 
 	spawn
 	{
-		sethealth 25
 		takeweapon all
 		giveweapon weapon_mp40
 		setammo ammo_9mm 999
@@ -1522,20 +1433,15 @@ airplane_worker_1 							// Plane workers
 {
 	attributes
 	{
-		aim_accuracy 0.4
-		starting_health 10
 		hearing_scale 0.1
 		aggression 0.5
 	}
 
 	spawn
 	{
-		setammo ammo_grenades 10
+		giveweaponfull weapon_luger
 		giveweapon weapon_grenadelauncher
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
-		selectweapon weapon_luger
+		setammo ammo_grenades 10
 	}
 
 	enemysight
@@ -1559,20 +1465,15 @@ airplane_worker_2
 {
 	attributes
 	{
-		aim_accuracy 0.4
-		starting_health 10
 		hearing_scale 0.1
 		aggression 0.5
 	}
 
 	spawn
 	{
-		setammo ammo_grenades 10
+		giveweaponfull weapon_luger
 		giveweapon weapon_grenadelauncher
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
-		selectweapon weapon_luger
+		setammo ammo_grenades 10
 	}
 
 	death
@@ -1587,7 +1488,6 @@ airplane_worker_officer
 	attributes
 	{
 		leader 0.5					// Why realy I should have it ?????
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		inner_detection_radius 0
@@ -1599,7 +1499,6 @@ airplane_worker_officer
 
 	spawn
 	{
-		sethealth 20
 		takeweapon all
 		giveweapon weapon_luger
 		setammo ammo_9mm 999
@@ -1624,7 +1523,6 @@ airplane_worker_liftman
 
 	attributes
 	{
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 3000
@@ -1636,11 +1534,7 @@ airplane_worker_liftman
 
 	spawn
 	{
-		sethealth 10
-		takeweapon all
-		giveweapon weapon_luger
-		setammo ammo_9mm 999
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		statetype alert
 		trigger airplane_worker_liftman use_lift
 	}

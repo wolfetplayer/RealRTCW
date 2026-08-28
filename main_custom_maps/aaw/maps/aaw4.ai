@@ -30,6 +30,10 @@ player 										//Player info
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout aaw4
+		#endif
+		cvar g_level_was_selected 0
 	mu_fade 0 5000
 	mu_queue sound/music/m_mission
 
@@ -229,8 +233,6 @@ leader_1					// blackguard // Leader for band of 5 blackguards nazis
 	{
 		leader 1.0
 		fov 220
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.8
 		inner_detection_radius 5000
@@ -277,8 +279,6 @@ leader_follower_1			//blackguard
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.8
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 8000
@@ -312,8 +312,6 @@ leader_follower_2			//blackguard
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.7
 		aim_skill 0.6
 		attack_skill 0.8
 		inner_detection_radius 10000
@@ -349,8 +347,6 @@ leader_follower_3			//blackguard
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 5000
@@ -382,8 +378,6 @@ leader_follower_4			//blackguard
 	attributes
 	{
 		fov 220
-		starting_health 30
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 5000
@@ -417,8 +411,6 @@ leader_follower_5			//blackguard
 	attributes
 	{
 		fov 220
-		starting_health 30
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 8000
@@ -456,14 +448,12 @@ siergiej						// This guy gives me pain in the ....
 	{
 		// camper 0.1
 		running_speed 300		// he is so slow........  :-(	// 300 is the max? 1000 do not help !
-		starting_health	100
 		tactical 0.3
 		alertness 0.0
 		fov 360
 		hearing_scale 0.0
 		attack_crouch 0.9
 		attack_skill 0.8
-		aim_accuracy 0.7
 		aim_skill 0.6
 		agression 0.0
 		inner_detection_radius 0.0
@@ -573,7 +563,6 @@ siergiej						// This guy gives me pain in the ....
 		attrib alertness 3000
 		attrib hearing_scale 0.5
 		attrib inner_detection_radius 3000
-		attrib reaction_time 1.0
 		attrib agression 1.0
 		attrib leader 1.0
 		statetype alert
@@ -639,8 +628,6 @@ mg4_nazi1	///////////////////////////////////////////// mg4
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -648,7 +635,6 @@ mg4_nazi1	///////////////////////////////////////////// mg4
 		hearing_scale 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -657,10 +643,7 @@ mg4_nazi1	///////////////////////////////////////////// mg4
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg4_nazi1 run_and_mount
 	}
 
@@ -704,8 +687,6 @@ mg4_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -713,7 +694,6 @@ mg4_nazi2
 		hearing_scale 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -722,10 +702,7 @@ mg4_nazi2
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg4_nazi2 run_and_mount
 	}
 
@@ -765,8 +742,6 @@ mg4_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -774,7 +749,6 @@ mg4_nazi3
 		hearing_scale 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -783,10 +757,7 @@ mg4_nazi3
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg4_nazi3 run_and_mount
 	}
 
@@ -825,8 +796,6 @@ mg5_nazi1	///////////////////////////////////// mg5
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -834,7 +803,6 @@ mg5_nazi1	///////////////////////////////////// mg5
 		hearing_scale 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -843,10 +811,7 @@ mg5_nazi1	///////////////////////////////////// mg5
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg5_nazi1 run_and_mount
 
 	}
@@ -893,8 +858,6 @@ mg5_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -902,7 +865,6 @@ mg5_nazi2
 		hearing_scale 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -911,10 +873,7 @@ mg5_nazi2
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg5_nazi2 run_and_mount
 
 	}
@@ -955,8 +914,6 @@ mg5_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -964,7 +921,6 @@ mg5_nazi3
 		hearing_scale 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -973,10 +929,7 @@ mg5_nazi3
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg5_nazi3 run_and_mount
 
 	}
@@ -1016,8 +969,6 @@ mg6_nazi1	//////////////////////////////mg6
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1026,7 +977,6 @@ mg6_nazi1	//////////////////////////////mg6
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1035,10 +985,7 @@ mg6_nazi1	//////////////////////////////mg6
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg6_nazi1 run_and_mount
 	}
 
@@ -1078,8 +1025,6 @@ mg6_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1088,7 +1033,6 @@ mg6_nazi2
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1097,10 +1041,7 @@ mg6_nazi2
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg6_nazi2 run_and_mount
 	}
 
@@ -1139,8 +1080,6 @@ mg6_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1149,7 +1088,6 @@ mg6_nazi3
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1158,10 +1096,7 @@ mg6_nazi3
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg6_nazi3 run_and_mount
 	}
 
@@ -1200,8 +1135,6 @@ mg7_nazi1		//////////////////////////////////// mg7
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1210,7 +1143,6 @@ mg7_nazi1		//////////////////////////////////// mg7
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1219,10 +1151,7 @@ mg7_nazi1		//////////////////////////////////// mg7
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg7_nazi1 run_and_mount
 	}
 
@@ -1263,8 +1192,6 @@ mg7_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1273,7 +1200,6 @@ mg7_nazi2
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1282,10 +1208,7 @@ mg7_nazi2
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg7_nazi2 run_and_mount
 	}
 
@@ -1324,8 +1247,6 @@ mg7_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 25
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1334,7 +1255,6 @@ mg7_nazi3
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1343,10 +1263,7 @@ mg7_nazi3
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg7_nazi3 run_and_mount
 	}
 
@@ -1384,8 +1301,6 @@ mg8_nazi1		//////////////////////////////////// mg8
 	attributes
 	{
 		fov 300
-		starting_health 30
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1394,7 +1309,6 @@ mg8_nazi1		//////////////////////////////////// mg8
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1403,10 +1317,7 @@ mg8_nazi1		//////////////////////////////////// mg8
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg8_nazi1 run_to_mg
 	}
 
@@ -1477,8 +1388,6 @@ mg8_nazi2
 	attributes
 	{
 		fov 300
-		starting_health 30
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1487,7 +1396,6 @@ mg8_nazi2
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1496,10 +1404,7 @@ mg8_nazi2
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg8_nazi2 run_to_mg
 	}
 
@@ -1555,8 +1460,6 @@ mg8_nazi3
 	attributes
 	{
 		fov 300
-		starting_health 30
-		aim_accuracy 0.6
 		aim_skill 0.6
 		attack_skill 0.5
 		inner_detection_radius 0
@@ -1565,7 +1468,6 @@ mg8_nazi3
 		attack_crouch 0.0
 		Aggression 0.8
 		tactical 0.0
-		reaction_time 1.0
 		yaw_speed 500
 		attack_crouch 0.8
 	}
@@ -1574,10 +1476,7 @@ mg8_nazi3
 	{
 		nosight 999999
 		noaidamage on
-		takeweapon all
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 999
+		giveweaponfull weapon_mp40
 		trigger mg8_nazi3 run_to_mg
 	}
 
@@ -1632,8 +1531,6 @@ forest_sniper1
 	attributes
 	{
 		fov 240
-		starting_health 20
-		aim_accuracy 0.7
 		aim_skill 0.7
 		attack_skill 0.8
 		inner_detection_radius 5000
@@ -1672,8 +1569,6 @@ forest_sniper2
 	attributes
 	{
 		fov 240
-		starting_health 20
-		aim_accuracy 0.9
 		aim_skill 0.8
 		attack_skill 0.8
 		inner_detection_radius 5000
@@ -1708,8 +1603,6 @@ forest_sniper3
 	attributes
 	{
 		fov 240
-		starting_health 20
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		inner_detection_radius 5000
@@ -1751,8 +1644,6 @@ officer
 	{
 		running_speed 300
 		fov 240
-		starting_health 50
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		inner_detection_radius 0
@@ -1817,7 +1708,6 @@ officer_2 								// Jego wcielenie //////////////////////////////////////
 {
 	attributes
 	{
-		starting_health 30
 		inner_detection_radius 0
 		alertness 0
 		hearing_scale 0.0
@@ -1841,8 +1731,6 @@ officer_2 								// Jego wcielenie //////////////////////////////////////
 		attrib inner_detection_radius 500
 		attrib alertness 500
 		attrib hearing_scale 0.5
-		attrib starting_health 40
-		attrib aim_accuracy 0.8
 		attrib aim_skill 0.8
 		attrib attack_crouch 1.0
 		attrib Aggression 0.5
@@ -1927,8 +1815,6 @@ forest_nazi1 //Blackguard - guy standing on top of bunker 1
 	attributes
 	{
 		fov 220
-		starting_health 20
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 500
@@ -1964,8 +1850,6 @@ venom1
 	attributes
 	{
 		fov 240
-		starting_health 80
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		inner_detection_radius 500
@@ -1992,8 +1876,6 @@ venom2
 	attributes
 	{
 		fov 240
-		starting_health 80
-		aim_accuracy 0.8
 		aim_skill 0.8
 		attack_skill 0.8
 		inner_detection_radius 500
@@ -2024,8 +1906,6 @@ under_nazi1 			//patroling	blackguard
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		inner_detection_radius 200
@@ -2109,8 +1989,6 @@ under_nazi2
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 500
@@ -2160,8 +2038,6 @@ under_nazi3
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 500
@@ -2196,8 +2072,6 @@ under_nazi4
 	attributes
 	{
 		fov 220
-		starting_health 25
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.8
 		inner_detection_radius 500
@@ -2231,8 +2105,6 @@ under_venom1
 	attributes
 	{
 		fov 240
-		starting_health 80
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		inner_detection_radius 500
@@ -2271,8 +2143,6 @@ under_venom2
 	attributes
 	{
 		fov 240
-		starting_health 80
-		aim_accuracy 0.5
 		aim_skill 0.5
 		attack_skill 0.5
 		inner_detection_radius 500

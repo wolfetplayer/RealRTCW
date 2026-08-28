@@ -1,0 +1,2477 @@
+//
+//AI Scripting
+//Map: station
+//Last edited by: arcot 24
+//
+
+player
+{
+	spawn
+	{
+		objectivesneeded 2
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_situation
+		giveweapon weapon_sten
+	        selectweapon weapon_sten
+	        setammo ammo_9mm 120
+		alertentity chas2
+		wait 2000
+		alertentity tr_01
+	}
+
+	trigger action1
+	{
+		alertentity musa3
+		alertentity musa4
+		alertentity musa5
+		alertentity bibo1
+		alertentity bibo2
+		alertentity bibo3
+		alertentity bibo4
+		alertentity bibo5
+	}
+
+	trigger action2
+	{
+		alertentity nazi1
+		alertentity nazi2
+		alertentity nazi3
+		alertentity nazi4
+		alertentity nazi5
+		alertentity nazi6
+
+		savecheckpoint
+	}
+
+	trigger action3
+	{
+		alertentity psih
+		alertentity aleks
+		alertentity art6
+		alertentity krot3
+		alertentity krot4
+		alertentity of2
+		alertentity krot5
+		alertentity krot6
+		alertentity poezd1
+		alertentity art5
+	}
+
+	trigger action4
+	{
+                alertentity art1
+		alertentity art2
+		alertentity art3
+		alertentity art4
+		alertentity opendoor2
+		alertentity pod1
+		alertentity pod2
+		alertentity pod3
+		alertentity pod4
+		alertentity muslim
+		alertentity of1
+		mu_fade 0 1500
+		mu_queue sound/music/m_moving
+
+		savecheckpoint
+	}
+
+	trigger action5
+	{
+		alertentity zaur1
+		alertentity zaur2
+		alertentity zaur3
+	}
+
+	trigger zad1
+	{
+		objectivemet 1
+		alertentity opendoor1
+		alertentity waketrig
+		alertentity wolf_4
+		alertentity wolf_5
+		alertentity wolf_6
+		alertentity wolf_7
+		alertentity krot7
+		alertentity trigger_action4
+		mu_fade 0 1500
+		mu_queue sound/music/m_grave
+
+		savecheckpoint
+	}
+
+	trigger zad2
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/m_mission
+		objectivemet 2
+		alertentity wolf_1
+		alertentity wolf_2
+		alertentity wolf_3
+		alertentity action_final
+	}
+	
+	trigger camera
+	{
+		startcam station1
+		mu_fade 0 1500
+		mu_queue sound/music/m_mission
+	}
+
+	trigger trap
+	{
+		alertentity poezd2
+	}
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger metalbox_down
+	{
+		trigger metalbox begin2
+	}
+
+	trigger lockon
+	{
+		lockplayer on
+	}
+
+	trigger escape
+	{
+		trigger train_escape start
+	}
+	
+	trigger endmap
+	{
+		achievement_arkot
+		changelevel scene nostats
+	}
+}
+
+chas1
+{
+	attributes
+	{
+		aggression 0.8
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+	        giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\8.wav
+        }
+}
+
+chas2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+	        giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger chas2 go
+	}
+	
+	trigger go	
+	{
+		wait 2000
+		gotomarker as3 nostop
+		statetype alert
+	}
+	
+	enemysight
+        {
+		resetscript
+		playsound sound\scenaric\run\9.wav
+        }
+}
+
+sklad1
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+                giveweapon weapon_luger
+		selectweapon weapon_luger
+		wait 100
+		trigger sklad1 run
+	}
+
+	trigger run
+	{
+                walktomarker for2
+		walktomarker s1_4
+		trigger sklad1 run
+	}
+
+	trigger alert
+	{
+		resetscript
+		statetype alert
+	}
+
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad1 alert
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad1 alert
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad1 alert
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad1 alert
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad1 alert
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad1 alert
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\2.wav
+		trigger sklad4 run
+	}
+
+	death
+	{
+		trigger sklad4 run
+	}
+}
+
+sklad2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		wait 100
+		trigger sklad2 run
+	}
+
+	trigger run
+	{
+		walktomarker s2_1 nostop
+		walktomarker s2_3 nostop
+		walktomarker s2_6 nostop
+		trigger sklad2 run
+	}
+
+	trigger alert
+	{
+		resetscript
+		statetype alert
+	}
+
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad2 alert
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad2 alert
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad2 alert
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad2 alert
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad2 alert
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad2 alert
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\1.wav
+		trigger sklad4 run
+	}
+
+	death
+	{
+		trigger sklad4 run
+	}
+}
+
+sklad3
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 100
+		trigger sklad3 run
+	}
+
+	trigger run
+	{
+		walktomarker s3_1 nostop
+		walktomarker s3_5 nostop
+		trigger sklad3 run
+	}
+
+	trigger alert
+	{
+		resetscript
+		statetype alert
+	}
+
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad3 alert
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad3 alert
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad3 alert
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad3 alert
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad3 alert
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		clearanim
+		trigger sklad3 alert
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	attacksound
+	{
+		deny
+	}
+
+	enemysight
+	{
+		playsound MiscHalt
+		trigger sklad4 run
+	}
+
+	death
+	{
+		trigger sklad4 run
+	}
+}
+
+sklad4
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	trigger run
+	{
+		runtomarker s4_4 nostop
+		trigger sklad4 alert
+	}
+
+	trigger alert
+	{
+		resetscript
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\3.wav
+	}
+}
+
+sklad5
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		wait 100
+	}
+
+	trigger run
+	{
+		walktomarker s5_1 nostop
+		walktomarker s5_2 nostop
+		trigger sklad4 alert
+	}
+
+	trigger alert
+	{
+		resetscript
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\4.wav
+	}
+}
+
+poezd1
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 100
+		trigger poezd1 walk
+	}
+
+	trigger walk
+	{
+		walktomarker p1_1 nostop
+		walktomarker p1_2 nostop
+		walktomarker p1_3 nostop
+		walktomarker p1_4 nostop
+		walktomarker p1_5 nostop
+		walktomarker p1_6 nostop
+		walktomarker p1_7 nostop
+		trigger poezd1 walk
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound sound\scenaric\run\5.wav
+	}
+}
+
+poezd2
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		fireattarget in_01 2000
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi6
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 100
+		trigger nazi6 run
+	}
+
+	trigger run
+	{
+		runtomarker h7 nostop
+		runtomarker nazi6_stop nostop
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\12.wav
+	}
+}
+
+nazi5
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+                giveweapon weapon_luger
+		selectweapon weapon_luger
+		wait 300
+		trigger nazi5 run
+	}
+
+	trigger run
+	{
+		runtomarker h7 nostop
+		runtomarker nazi5_stop nostop
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\13.wav
+	}
+}
+
+nazi4
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 600
+		trigger nazi4 run
+	}
+
+	trigger run
+	{
+		runtomarker h7 nostop
+		runtomarker nazi4_stop nostop
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\14.wav
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 900
+		trigger nazi3 run
+	}
+
+	trigger run
+	{
+		runtomarker h7 nostop
+		runtomarker nazi3_stop nostop
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\15.wav
+                statetype alert
+        }
+}
+
+nazi2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+	        giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		wait 1100
+		trigger nazi2 run
+	}
+
+	trigger run
+	{
+		runtomarker h7 nostop
+		runtomarker nazi2_stop nostop
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\16.wav
+                statetype alert
+        }
+}
+
+nazi1
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 100
+		trigger nazi1 run
+	}
+
+	trigger run
+	{
+		runtomarker h7 nostop
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\17.wav
+                statetype alert
+        }
+}
+
+of1
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999	
+		selectweapon weapon_luger
+		wait forever 0 player
+	}
+	
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	inspectbodystart
+	{
+		deny
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\2.wav
+        }
+}
+
+of2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait forever 0 player
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\11.wav
+	}
+}
+
+aleks
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\10.wav
+                statetype alert
+        }
+}
+
+art1
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		hearing_scale 1.0
+		inner_detection_radius 512
+                tactical 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\3.wav
+                statetype alert
+        }
+}
+
+art2
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		hearing_scale 1.0
+		inner_detection_radius 512
+                tactical 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\4.wav
+                statetype alert
+        }
+}
+
+art3
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		hearing_scale 1.0
+		inner_detection_radius 512
+                tactical 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\5.wav
+                statetype alert
+        }
+}
+
+art4
+{
+	attributes
+	{
+		attack_crouch 1.0
+		aggression 1.0
+		hearing_scale 1.0
+		inner_detection_radius 512
+                tactical 1.0
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\6.wav
+                statetype alert
+        }
+}
+
+art5
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger art5 go
+	}
+
+	trigger go
+	{
+		movetype walk
+		runtomarker art5_1
+		runtomarker art5_2
+		runtomarker art5_3
+		runtomarker art5_4
+		runtomarker art5_5
+		statetype alert
+		wait 3000
+		trigger art5 go
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound sound\scenaric\run\11.wav
+	}
+}
+
+art6
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\10.wav
+                statetype alert
+        }
+}
+
+psih
+{
+	attributes
+	{
+		alertness 6000
+		attack_crouch 0.0
+		reaction_time 0.1
+		camper 1.0
+		tactical 1.0
+		running_speed 260
+		crouching_speed 120
+		fov 240
+		yaw_speed 500
+		alertness 16000
+		hearing_scale 4.0
+	}
+
+	spawn
+	{
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 6
+		selectweapon weapon_panzerfaust
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\7.wav
+                statetype alert
+        }
+}
+
+krot2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\11.wav
+                statetype alert
+        }
+}
+
+
+krot3
+{
+	attributes
+	{
+		fov 110
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+	        giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		
+		
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\9.wav
+                statetype alert
+        }
+}
+
+krot4
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\10.wav
+                statetype alert
+        }
+}
+
+krot5
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\10.wav
+                statetype alert
+        }
+}
+
+krot6
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger krot6 go
+	}
+
+	trigger go
+	{
+		movetype walk
+		runtomarker krot6_1
+		runtomarker krot6_2
+		runtomarker krot6_3
+		runtomarker krot6_4
+		runtomarker krot6_5
+		statetype alert
+		wait 3000
+		trigger krot6 go
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound sound\scenaric\run\12.wav
+	}
+}
+
+krot7
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+        enemysight
+        {
+		playsound sound\scenaric\run\11.wav
+                statetype alert
+        }
+}
+
+musa1
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+	        giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	trigger blocking3
+	{
+		statetype alert
+		clearanim
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		resetscript
+		attack
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa1 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa1 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa1 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa1 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa1 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa1 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+		playsound sound\scenaric\run\13.wav
+	}
+
+	death
+	{
+	}
+}
+
+musa2
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	trigger blocking3
+	{
+		statetype alert
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		resetscript
+		attack
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa2 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa2 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa2 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa2 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa2 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa2 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+		playsound sound\scenaric\run\12.wav
+	}
+
+	death
+	{
+	}
+}
+
+musa3
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		accum 1 set 0 // 1 = alerted
+		accum 2 set 0 // 1 = radio tunning on
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger musa3 go
+	}
+
+	trigger go
+	{
+		runtomarker bb9
+		runtomarker bb10
+	}
+
+	trigger blocking3
+	{
+		statetype alert
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		resetscript
+		attack
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa3 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa3 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa3 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa3 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa3 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa3 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+		playsound sound\scenaric\run\14.wav
+	}
+
+	death
+	{
+	}
+}
+
+musa4
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		accum 1 set 0 // 1 = alerted
+		accum 2 set 0 // 1 = radio tunning on
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger musa4 go
+	}
+
+	trigger go
+	{
+		runtomarker bb8
+		runtomarker bb9
+	}
+
+	trigger blocking3
+	{
+		statetype alert
+		clearanim
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		resetscript
+		attack
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa4 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa4 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+		playsound sound\scenaric\run\15.wav
+	}
+
+	death
+	{
+	}
+}
+
+musa5
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	trigger blocking3
+	{
+		statetype alert
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		resetscript
+		attack
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger musa4 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa4 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger musa4 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+		playsound sound\scenaric\run\16.wav
+	}
+
+	death
+	{
+	}
+}
+
+bibo1
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 100
+		trigger bibo1 run
+	}
+
+	trigger run
+	{
+		runtomarker bb6 nostop
+		runtomarker bb7 nostop
+	    	runtomarker bb8 nostop
+		runtomarker bb9 nostop
+		runtomarker bb10 nostop
+	}
+
+        enemysight
+	{
+		resetscript
+		playsound sound\scenaric\run\10.wav
+	}
+}
+
+bibo2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 500
+		trigger bibo2 run
+	}
+
+	trigger run
+	{
+		runtomarker bb1 nostop
+		runtomarker bb2 nostop
+		runtomarker bb3 nostop
+		runtomarker bb4 nostop
+		runtomarker bb5 nostop
+		runtomarker bb6 nostop
+		runtomarker bb7 nostop
+	    	runtomarker bb8 nostop
+		runtomarker bb9 nostop
+	}
+
+        enemysight
+	{
+		resetscript
+		playsound sound\scenaric\run\17.wav
+	}
+}
+
+bibo3
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		wait 1000
+		trigger bibo3 run
+	}
+
+	trigger run
+	{
+		runtomarker bb1 nostop
+		runtomarker bb2 nostop
+		runtomarker bb3 nostop
+		runtomarker bb4 nostop
+		runtomarker bb5 nostop
+		runtomarker bb6 nostop
+		runtomarker bb7 nostop
+	    	runtomarker bb8 nostop
+	}
+
+        enemysight
+	{
+		resetscript
+		playsound sound\scenaric\run\1.wav
+	}
+}
+
+bibo4
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 1500
+		trigger bibo4 run
+	}
+
+	trigger run
+	{
+		runtomarker bb1 nostop
+		runtomarker bb2 nostop
+		runtomarker bb3 nostop
+		runtomarker bb4 nostop
+		runtomarker bb5 nostop
+		runtomarker bb6 nostop
+		runtomarker bb7 nostop
+	}
+
+	enemysight
+        {
+		resetscript
+		playsound sound\scenaric\run\2.wav
+	}
+}
+
+bibo5
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		wait 2000
+		trigger bibo5 run
+	}
+
+	trigger run
+	{
+		runtomarker bb1 nostop
+		runtomarker bb2 nostop
+		runtomarker bb3 nostop
+		runtomarker bb4 nostop
+		runtomarker bb5 nostop
+		runtomarker bb6 nostop
+	}
+
+	enemysight
+        {
+		resetscript
+		playsound sound\scenaric\run\3.wav
+               
+        }
+}
+
+zaur1
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\4.wav
+		statetype alert
+	}
+}
+
+zaur2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\5.wav
+		statetype alert
+	}
+}
+
+zaur3
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\6.wav
+		statetype alert
+	}
+}
+
+pod1
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\7.wav
+		statetype alert
+	}
+}
+
+pod2
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\8.wav
+		statetype alert
+	}
+}
+
+pod3
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\9.wav
+		statetype alert
+	}
+}
+
+pod4
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\10.wav
+		statetype alert
+	}
+}
+
+wolf_1
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger wolf_1 go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker bb10
+		runtomarker bb9
+		runtomarker bb7
+		runtomarker bb6
+		runtomarker bb5
+		runtomarker bb1
+		runtomarker h7
+		runtomarker t6
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\12.wav
+		statetype alert
+	}
+}
+
+wolf_2
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger wolf_2 go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker bb10
+		runtomarker bb9
+		runtomarker bb7
+		runtomarker bb6
+		runtomarker bb5
+		runtomarker bb1
+		runtomarker h7
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\13.wav
+		statetype alert
+	}
+}
+
+wolf_3
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger wolf_2 go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker bb10
+		runtomarker bb9
+		runtomarker bb7
+		runtomarker bb6
+		runtomarker bb5
+		runtomarker bb1
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\14.wav
+		statetype alert
+	}
+}
+
+wolf_6
+{
+	attributes
+	{
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+	        giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		
+	}
+
+	enemysight
+        {
+		playsound sound\scenaric\run\8.wav
+                statetype alert
+        }
+}
+
+wolf_7
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		setammo ammo_9mm 999
+        	giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger wolf_2 go
+	}
+
+	trigger go
+	{
+		movetype run
+		walktomarker wolf_7_1
+		walktomarker wolf_7_2
+		walktomarker wolf_7_3
+		walktomarker wolf_7_4
+		trigger wolf_7 go
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\15.wav
+		statetype alert
+	}
+}
+
+zaur1
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger zaur1 go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker asds
+		runtomarker asds2
+		runtomarker s4_4
+		runtomarker s5_2
+		runtomarker s1_4
+		runtomarker s2_1
+		runtomarker as6
+		runtomarker bb10
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\17.wav
+	}
+}
+
+zaur3
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger zaur3 go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker asds
+		runtomarker asds2
+		runtomarker s4_4
+		runtomarker s5_2
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\1.wav
+	}
+}
+
+zaur2
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger zaur2 go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker asds
+		runtomarker asds2
+		runtomarker s4_4
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\2.wav
+	}
+}
+
+muslim
+{
+	attributes
+	{
+		fov 360
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger muslim go
+	}
+
+	trigger go
+	{
+		movetype run
+		runtomarker s4_4
+		runtomarker s5_2
+		statetype alert
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\run\3.wav
+	}
+}

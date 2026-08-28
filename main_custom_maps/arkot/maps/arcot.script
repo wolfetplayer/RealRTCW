@@ -1,0 +1,79 @@
+
+//AI Scripting
+//Map : Arcot
+//last edited by arcot 24
+//25.05.2008
+//11:02
+
+me109no1
+{
+	spawn
+	{
+		wait 6000
+		gotomarker no1loc1 10000
+		faceangles 0 16 0 gototime
+	}
+
+	trigger cycle1
+	{
+		wait 1000
+		gotomarker no1loc2 1500
+		faceangles 0 16 8 gototime
+		gotomarker no1loc3 1500
+		faceangles 0 16 8 gototime
+		gotomarker no1loc4 1500
+		faceangles 0 16 0 gototime
+		gotomarker no1loc5 1500
+		faceangles 0 16 -8 gototime
+		gotomarker no1loc6 1500
+		faceangles 0 16 0 gototime
+		gotomarker no1loc7 1500
+		faceangles 0 16 12 gototime
+		gotomarker no1loc8 1500
+		faceangles 0 16 12 gototime
+		gotomarker no1final 1500
+		faceangles 0 16 0 gototime
+	}
+}
+
+me109no2
+{
+	spawn
+	{
+		wait 6000
+		gotomarker no2loc1 10000
+		faceangles 0 16 -8 gototime
+	}
+
+	trigger cycle2
+	{
+		wait 1000
+		gotomarker no2loc2 1500
+		faceangles 0 16 -8 gototime
+		gotomarker no2loc3 1500
+		faceangles 0 16 0 gototime
+		gotomarker no2loc4 1500
+		faceangles 0 16 0 gototime
+		gotomarker no2loc5 1600
+		faceangles 0 16 -12 gototime
+		gotomarker no2loc6 1500
+		faceangles 0 16 -12 gototime
+		gotomarker no2loc7 1500
+		faceangles 0 16 0 gototime
+		gotomarker no2loc8 1500
+		faceangles 0 16 6 gototime
+		gotomarker no2final 1500
+		faceangles 0 16 6 gototime
+	}
+
+	trigger zv
+	{
+		wait 9000
+		trigger nazis ring
+	}
+}
+
+
+
+
+

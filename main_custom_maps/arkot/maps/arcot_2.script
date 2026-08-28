@@ -1,0 +1,427 @@
+//
+//BRUSH scripting
+//Map Arcot_2
+//02/06/08
+//last edited by Arcot 24
+
+barrell1
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell1_spot1 25
+		faceangles 0 0 15 gototime
+		gotomarker barrell1_spot2 25 wait
+		wait 895
+	//	faceangles 0 0 17 gototime
+	//	gotomarker barrell1_spot3 150 wait
+	//	faceangles 0 0 20 gototime
+	//	gotomarker barrell1_spot4 150 wait
+	//	faceangles 0 0 23 gototime
+		gotomarker barrell1_spot5 500 accel
+		faceangles 0 0 60 gototime
+		alertentity barrell1_func
+		alertentity soundbarrell1
+		alertentity effect1
+		alertentity killbarrell1
+	}
+}
+
+barrell2
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell2_spot1 75
+		faceangles 0 0 15 gototime
+		gotomarker barrell2_spot2 75 wait
+		wait 890
+	//	faceangles 0 0 17 gototime
+	//	gotomarker barrell2_spot3 160 wait
+	//	faceangles 0 0 20 gototime
+	//	gotomarker barrell2_spot4 150 wait
+	//	faceangles 0 0 23 gototime
+		gotomarker barrell2_spot5 500 accel
+		faceangles 0 0 85 gototime
+		alertentity barrell2_func
+		alertentity soundbarrell2
+		alertentity effect2
+		alertentity killbarrell2
+	}
+}
+
+barrell3
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+		wait 65
+		gotomarker barrell3_spot1 50
+		faceangles 0 0 15 gototime
+		gotomarker barrell3_spot2 50 wait
+		wait 900
+		//faceangles 0 0 17 200
+		//gotomarker barrell3_spot3 150
+		//faceangles 0 0 20 gototime
+		//gotomarker barrell3_spot4 150
+		//faceangles 0 0 60 gototime
+		gotomarker barrell3_spot5 500 accel
+		faceangles 0 0 80 gototime
+		alertentity barrell3_func_explode_now
+		alertentity soundbarrell3
+		alertentity effect3
+		alertentity killbarrell3
+	}
+}
+
+shelf
+{
+	spawn
+	{
+	}
+
+	trigger fall1
+	{
+//		faceangles 0 0 3 500
+		trigger barrell3 fall1
+		trigger barrell2 fall1
+		trigger barrell1 fall1
+		faceangles 0 0 3 500
+		playsound sound/movers/doors/door4_locked.wav
+		wait 700
+		faceangles 0 0 90 500 accel
+		alertentity pil
+		wait 5
+		faceangles 0 0 85 500
+		wait 5
+		faceangles 0 0 83 225
+		wait 5
+		faceangles 0 0 90 175
+		wait 5
+		faceangles 0 0 87 150
+		wait 5
+		faceangles 0 0 90 100
+	}
+}
+
+t2body
+{
+	spawn
+	{
+		accum 0 set 0
+		wait 1000
+		gotomarker spot1 100
+		faceangles 0 270 0 gototime
+	}
+
+
+
+	trigger begin
+	{
+		wait 1000
+		playsound sound/world/shift_01.wav looping
+		trigger wb3 begin
+		trigger wl3 begin
+		trigger wr3 begin
+		gotomarker spot1 250
+		faceangles 0 270 0 gototime
+		gotomarker spot2 250
+		faceangles 0 270 0 gototime
+		gotomarker spot3 250
+		faceangles 0 270 0 gototime
+		trigger wb3 stop2
+		trigger wl3 stop2
+		trigger wr3 stop2
+                stopsound
+	}
+
+	trigger killer_2
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 4
+		alertentity trigger_action6_on
+		mu_fade 0 1000
+                mu_queue sound/music/m_mission
+	}
+}
+
+wb3
+{
+	spawn
+	{
+		wait 1000
+		attachtotag t2body tag_q3
+	}
+
+	trigger begin
+	{
+		playsound sound/world/shift_01.wav looping
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+	trigger stop2
+	{
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+}
+
+wl3
+{
+	spawn
+	{
+		wait 1000
+		attachtotag t2body tag_q2
+	}
+
+	trigger begin
+	{
+		playsound sound/world/shift_01.wav looping
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+	trigger stop2
+	{
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+}
+
+wr3
+{
+	spawn
+	{
+		wait 1000
+		attachtotag t2body tag_q1
+	}
+
+	trigger begin
+	{
+		playsound sound/world/shift_01.wav looping
+		wait 5
+		playanim 0 20 looping forever
+	}
+
+	trigger stop2
+	{
+		wait 1000
+		playsound sound/world/idle_01.wav looping
+		playanim 0 20 10000
+	}
+}
+
+table1
+{
+	spawn
+	{
+		accum 0 bitreset 0	// ON/OFF, checks to see how far the table is from flipping.
+	}
+
+	trigger flip_over
+	{
+		wait 700
+		accum 0 bitset 0
+		alertentity table_push
+		alertentity kill_table_trig
+		gotomarker table1_spot1 20
+		faceangles -45 -2 0 gototime
+		faceangles -90 -3 0 60
+		faceangles -87 -4 0 100
+		faceangles -90 -5 0 100
+		alertentity table_push_kill
+	}
+
+	trigger play_snd
+	{
+		playsound ass_table_fall
+	}
+
+	trigger user_flip_over
+	{
+		accum 0 bitset 0
+		alertentity kill_table_trig
+		gotomarker table1_spot1 20
+		faceangles -45 -2 0 gototime
+		faceangles -90 -3 0 60
+		faceangles -87 -4 0 100
+		faceangles -90 -5 0 100
+	}
+
+	trigger stop_flip
+	{
+		accum 0 abort_if_bitset 0
+		resetscript
+	}
+
+	trigger motor
+	{
+		startcam arcot_2_1
+		wait 3000
+		startcam arcot_2_2
+		wait 10000
+		startcam arcot_2_3
+		wait 10000
+		startcam arcot_2_4
+		wait 6000
+		startcam arcot_2_5
+		wait 4000
+		startcam arcot_2_6
+		wait 3000
+		trigger post3 dialog
+		wait 500
+		alertentity of_kill
+		wait 3000
+		alertentity breakalarm
+		wait 2000
+		alertentity time
+		alertentity kill_electrik
+		wait 500
+		alertentity tik_tak
+		alertentity kill_gus
+
+	}
+
+
+}
+
+orel
+{
+	spawn
+	{
+		accum 0 set 0
+		wait 200
+	}
+
+	trigger move
+	{
+		alertentity tr_01
+		accum 0 set 0
+		faceangles 0 360 0 1
+		gotomarker orel_start 164 wait
+		gotomarker orel_start_2 164
+		faceangles 0 360 0 1
+		gotomarker orel_end 164
+	}
+}
+
+orel2
+{
+	spawn
+	{
+		accum 0 set 0
+		wait 200
+	}
+
+	trigger move
+	{
+		accum 0 set 0
+		faceangles 0 360 0 1
+		gotomarker orel2_start 164 
+		gotomarker orel2_2 164
+		faceangles 0 360 0 1
+		alertentity tr_01
+		gotomarker orel2_end 164
+		
+	}
+	
+	trigger on_off
+	{
+		alertentity lights_on_off
+		wait 500
+		alertentity lights_on_off
+		wait 200
+		alertentity lights_on_off
+		wait 480
+		alertentity lights_on_off
+		wait 380
+		alertentity lights_on_off
+		wait 230
+		trigger orel2 on_off
+	}
+}
+
+gus
+{
+	spawn
+	{
+		accum 0 set 0
+		gotomarker gg1 1000
+	}
+
+	trigger move
+	{
+		wait 29500
+		gotomarker gus_start 9000
+		faceangles 0 360 0 1
+		gotomarker gus_start 164 wait
+		faceangles 0 360 0 1
+		gotomarker gus_start_end 164
+	}
+}
+
+gaz
+{
+	spawn
+	{
+		gotomarker gz1 100
+		faceangles 0 270 0 gototime
+	}
+
+	trigger begin
+	{
+		gotomarker gz2 1000
+		faceangles 0 80 0 gototime
+	}
+}
+
+dead
+{
+	spawn
+	{
+	}
+
+	trigger killer
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 17
+		mu_fade 0 1000
+                mu_queue sound/music/m_mission
+	}
+}
+
+handcrank
+{
+
+	spawn
+	{
+	}
+
+	trigger close
+	{
+		wait 5
+		faceangles -90 0 0 500
+		faceangles -180 0 0 500
+		faceangles -270 0 0 500
+		faceangles 0 0 0 500
+		alertentity smoke_off
+	}
+}
+
+
+
+

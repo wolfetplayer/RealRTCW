@@ -1,0 +1,654 @@
+//
+// AI Scripting
+// Map: Road to Station
+// Last edited by: Arcot 24
+// 23.12.2008
+
+player
+{
+	spawn
+	{
+		objectivesneeded 1
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_stealth
+		wait 2000
+		alertentity time
+		wait 500
+		alertentity tik_tak
+		wait 4000
+		alertentity km
+	}
+
+        trigger stop
+        {
+	        lockplayer on
+        }
+
+        trigger action1
+	{
+		alertentity nazi1
+		alertentity nazi2
+		alertentity nazi3
+		alertentity nazi4
+                trigger t2body pov
+                trigger box pov
+                trigger box2 pov
+	}
+
+	trigger action2
+	{
+		alertentity zvuk3
+		wait 3000
+		wait 3000
+		alertentity kuku
+		trigger me go
+                trigger me2 go
+                wait 12000
+                alertentity nazi5
+                alertentity nazi6
+                alertentity nazi7
+                alertentity nazi8
+		wait 500
+                startcam rts_1
+		wait 13000
+		alertentity driver
+		wait 8000
+		alertentity wait
+
+		savecheckpoint
+	}
+
+	trigger action3
+	{
+		objectivemet 1
+                alertentity kill_nazi6
+		alertentity nazi9
+		alertentity kill_trigger_action6
+		alertentity off_ai_sight
+		trigger player stop
+		wait 1000
+                trigger nazi7 visoff
+                trigger nazi5 visoff
+		wait 2000
+		alertentity remember
+
+		savecheckpoint
+	}
+
+	trigger action4
+	{
+                missionfailed 6 5
+	}
+
+        trigger action5
+        {
+		alertentity nazi10
+		alertentity nazi11
+                trigger nazi10 visoff
+                trigger nazi11 visoff
+        }
+
+	trigger endmap
+	{
+		changelevel station persistent
+	}
+
+        trigger failed
+        {
+                wait 1000
+                missionfailed 6 10
+        }
+}
+
+nazi1
+{
+	attributes
+	{
+		attack_crouch 10
+		aggression 10
+		hearing_scale 10
+		inner_detection_radius 512
+                tactical 10
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+    	        trigger nazi1 go
+	}
+
+	trigger go
+	{
+		walktomarker l4_2 nostop
+		walktomarker l3_3 nostop
+		walktomarker l1_3 nostop
+		walktomarker l2_4 nostop
+	}
+
+        enemysight
+        {
+                resetscript
+                statetype alert
+        }
+}
+
+nazi2
+{
+	attributes
+	{
+		attack_crouch 10
+		aggression 10
+                tactical 10
+		hearing_scale 10
+		inner_detection_radius 256
+	}
+
+	spawn
+	{
+                setammo ammo_grenades 0
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+    	        trigger nazi2 go
+	}
+
+	trigger go
+	{
+		walktomarker l3_2 nostop
+		walktomarker l3_3 nostop
+		walktomarker l3_4 nostop
+		walktomarker l1_4 nostop
+	}
+
+        enemysight
+        {
+                resetscript
+                statetype alert
+        }
+}
+
+nazi3
+{
+	attributes
+	{
+		attack_crouch 10
+		aggression 10
+		hearing_scale 10
+                tactical 10
+		inner_detection_radius 512
+	}
+
+	spawn
+	{
+                setammo ammo_grenades 0
+		takeweapon mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 500
+		selectweapon weapon_mauserrifle
+    	        trigger nazi3 go
+	}
+
+	trigger go
+	{
+		walktomarker l2_1 nostop
+		walktomarker l3_2 nostop
+		walktomarker l3_3 nostop
+		walktomarker l3_4 nostop
+	}
+
+        enemysight
+        {
+                resetscript
+                statetype alert
+        }
+}
+
+
+nazi4
+{
+	attributes
+	{
+		attack_crouch 10
+		aggression 10
+		hearing_scale 10
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		 giveweapon weapon_mp40
+		 setammo ammo_792mm 999
+		 selectweapon weapon_mp40
+    	         trigger nazi4 go
+	}
+
+	trigger go
+	{
+		walktomarker l2_1 nostop
+		walktomarker l4_2 nostop
+		walktomarker l3_3 nostop
+		walktomarker l1_3 nostop
+	}
+
+        enemysight
+        {
+                resetscript
+                statetype alert
+        }
+}
+
+nazi5
+{
+	attributes
+	{
+		attack_crouch 0.9
+		aggression 0.9
+		hearing_scale 0.9
+		inner_detection_radius 110
+		fov 56
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+                giveweapon weapon_mp40
+                setammo ammo_792mm 64
+                selectweapon weapon_mp40
+ 		takeweapon weapon_mp40
+                trigger nazi5 go
+	}
+
+	trigger go
+	{
+		walktomarker nz1 nostop
+	        walktomarker nz2 nostop
+                walktomarker nz3 nostop
+                trigger nazi5 go       
+	}
+
+        trigger visoff
+        {
+                knockback off
+                noavoid
+		noattack 999999
+        }
+
+	enemysight
+	{
+                wait 1000
+		missionfailed 6 5
+        }
+
+        death
+	{  
+                missionfailed 6 5
+        }
+}
+
+
+nazi6
+{
+	attributes
+	{
+		attack_crouch 0.0
+		aggression 0.0
+		hearing_scale 3.0
+		inner_detection_radius 64
+                fov 8
+	}
+
+	spawn
+	{
+                giveweapon weapon_mp40
+		setammo ammo_792mm 999
+		selectweapon weapon_mp40
+                trigger nazi6 go
+	}
+
+        trigger visoff
+	{
+                knockback off
+		noavoid
+		noattack 999999
+        }
+
+	trigger go
+	{
+		runtomarker s2 nostop
+		runtomarker s3 nostop
+		runtomarker s4 nostop
+		runtomarker s5 nostop
+		runtomarker s6 nostop
+		runtomarker s7 nostop
+		runtomarker s8 nostop
+		runtomarker s9 nostop
+		runtomarker s10 nostop
+		runtomarker s11 nostop
+		runtomarker s12 nostop
+		runtomarker s13 nostop
+		runtomarker s14 nostop
+		wait 5000
+		trigger nazi6 go2
+	}
+
+	trigger go2
+	{
+		crouchtomarker s14 nostop
+		crouchtomarker s13 nostop
+		crouchtomarker s12 nostop
+		crouchtomarker s11 nostop
+		crouchtomarker s10 nostop
+		crouchtomarker s9 nostop
+		crouchtomarker s8 nostop
+		crouchtomarker s7 nostop
+		crouchtomarker s6 nostop
+                missionfailed 6 5
+	}
+                
+	enemysight
+	{
+                wait 3000
+		missionfailed 6 5
+        }
+
+        death
+	{
+                missionfailed 6 5
+        }
+}
+
+nazi7
+{
+	attributes
+	{
+		attack_crouch 0.0
+		aggression 0.60
+		hearing_scale 3.0
+		inner_detection_radius 128
+                fov 64
+	}
+
+	spawn
+	{
+
+		accum 0 set 0
+		setammo ammo_grenades 0
+                giveweapon weapon_mp40
+                setammo ammo_792mm 64
+                selectweapon weapon_mp40
+ 		takeweapon weapon_mp40
+                playsound sound\scenaric\forest\axis15_meingott.wav
+                trigger nazi7 go
+	}
+
+        trigger visoff
+
+        {
+                knockback off
+		noavoid
+		noattack 999999
+        }
+
+
+	trigger go
+	{
+		runtomarker ss1 nostop
+		runtomarker ss2 nostop
+		runtomarker ss3 nostop
+		runtomarker ss4 nostop
+		runtomarker ss5 nostop
+		runtomarker ss6 nostop
+		runtomarker ss7 nostop
+		runtomarker ss8 nostop
+		runtomarker ss9 nostop
+		runtomarker ss10 nostop
+		runtomarker ss11 nostop
+                runtomarker ss12 nostop
+		runtomarker s1 nostop
+                runtomarker ss13 nostop
+                runtomarker ss14 nostop
+                runtomarker s15 nostop
+		statetype alert
+	}
+
+	trigger go2
+	{
+		runtomarker ss14 nostop
+		runtomarker ss13 nostop
+                runtomarker s1 nostop
+		runtomarker ss12 nostop
+		runtomarker ss11 nostop
+		runtomarker ss10 nostop
+		runtomarker ss9 nostop
+		runtomarker ss8 nostop
+		runtomarker ss7 nostop
+		runtomarker ss6 nostop
+		runtomarker ss5 nostop
+		runtomarker ss4 nostop
+                runtomarker ss3 nostop
+		runtomarker ss2 nostop
+                runtomarker ss1 nostop
+                trigger nazi7 go3
+	}
+
+        trigger go3
+        {
+                walktomarker ss1 nostop
+                walktomarker ss2 nostop
+                walktomarker ss3 nostop
+                trigger nazi7 go3
+        }
+	enemysight
+	{
+                wait 3000
+		missionfailed 6 5
+        }
+
+        death
+	{
+        }
+}
+
+nazi8
+{
+	attributes
+	{
+		attack_crouch 10
+		aggression 10
+		hearing_scale 10
+                fov 128
+		inner_detection_radius 1024
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mauserrifle
+                knockback off
+                noavoid
+		noattack 999999
+		statetype alert
+	}
+}
+
+nazi9
+{
+	attributes
+	{
+		attack_crouch 10
+		aggression 10
+		hearing_scale 3.0
+		inner_detection_radius 64
+                fov 64
+	}
+
+	spawn
+	{
+                giveweapon weapon_mp40
+		setammo ammo_792mm 999
+		selectweapon weapon_mp40
+                knockback off
+		noavoid
+		noattack 999999
+                trigger nazi9 go
+	}
+
+	trigger go
+	{
+		runtomarker s6 nostop
+		runtomarker s5 nostop
+		runtomarker s4 nostop
+		runtomarker s3 nostop
+		runtomarker s2 nostop
+		trigger nazi9 go3
+	}
+
+        trigger go3
+        {
+                trigger t2body begin
+                trigger box begin
+                trigger box2 begin
+		wait 10000
+		trigger nazi9 go4
+        }
+
+	trigger go4
+	{
+		walktomarker s3
+		walktomarker ss3
+		walktomarker ss2
+		trigger nazi9 go4
+	}
+                
+	enemysight
+	{
+        }
+
+}
+
+nazi10
+{
+	attributes
+	{
+		attack_crouch 0.0
+		aggression 0.60
+		hearing_scale 0.0
+		inner_detection_radius 256
+	}
+
+	spawn
+	{
+                knockback off
+		noavoid
+		noattack 999999
+		accum 0 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mauserrifle
+    	        trigger nazi10 kuri
+	}
+
+	trigger kuri
+	{
+		wait 200
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 5000
+		playanim crotch_grab_2h both
+		wait 4000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 5000
+		playanim crotch_grab_2h both
+		wait 7000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		trigger nazi10 kuri
+        }
+
+	trigger visoff
+	{
+                knockback off
+		noavoid
+		noattack 999999
+        }
+
+        enemysight
+	{
+        }
+
+        death
+	{
+        }
+ }
+
+
+nazi11
+{
+	attributes
+	{
+		attack_crouch 0.10
+		aggression 0.60
+		hearing_scale 1.0
+		inner_detection_radius 256
+	}
+
+	spawn
+	{
+                knockback off
+		noavoid
+		noattack 999999
+		accum 0 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mauserrifle
+                wait 3000
+    	        trigger nazi11 kuri
+	}
+
+	trigger kuri
+	{
+		wait 200
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 5000
+		playanim crotch_grab_2h both
+		wait 4000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 5000
+		playanim crotch_grab_2h both
+		wait 7000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 2000
+		trigger nazi11 kuri
+        }
+
+        enemysight
+	{
+        }
+
+	trigger visoff
+	{
+                knockback off
+		noavoid
+		noattack 999999
+        }
+
+        death
+	{
+        }
+ }
+

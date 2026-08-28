@@ -1,0 +1,40 @@
+//
+//AI Scripting
+//Map: scene - final
+//Edited by: vicpas
+//
+
+player
+{
+	spawn
+	{
+		mu_start sound/music/l_briefing_2
+	}
+	
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_start sound/music/m_mission
+		trigger player camera1
+	}
+	
+	trigger camera1
+	{
+		startcam scene
+		trigger text go
+	}
+
+	trigger endmusic
+	{
+		mu_fade 0 500
+		mu_queue sound/music/l_finale.wav
+	}
+	
+	trigger endmap
+	{
+		changelevel
+		wait 9000
+		endgame
+	}
+}
+

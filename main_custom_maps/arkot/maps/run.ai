@@ -1,0 +1,4125 @@
+// AI scripting
+// Map RuN
+// Last edited by arcot 24
+// 19.05.2008
+
+
+
+player
+{
+	spawn
+	{
+		cvar g_episode 4
+		objectivesneeded 2
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1500
+		mu_queue sound\music\m_drums
+		giveinventory key_binocs
+		trigger zvuk_1 begin
+		wait 2000
+		alertentity time
+		wait 500
+		alertentity tik_tak
+	}
+
+	trigger action1
+	{
+		alertentity most_1
+		alertentity most_2
+	}
+
+
+	trigger action2
+	{
+		trigger balka go
+		alertentity derevo_snaiper
+	}
+
+	trigger action3
+	{
+		alertentity nazi2
+		alertentity nazi3
+		alertentity nazi4
+		alertentity nazi5
+
+		savecheckpoint
+	}
+
+	trigger action4
+	{
+		alertentity nazi8
+		alertentity nazi9
+		alertentity nazi30
+		alertentity nazi31
+		alertentity nazi32
+		alertentity nazi33
+		alertentity radist_1
+		alertentity house_sniper
+		alertentity of1
+		alertentity of2
+	}
+
+	trigger action5
+	{
+		alertentity nazi18
+		alertentity nazi19
+		alertentity nazi20
+		alertentity nazi21
+
+		savecheckpoint
+	}
+
+	trigger action6
+	{
+		alertentity nazi22
+		alertentity nazi23
+		alertentity nazi24
+		alertentity nazi25
+		alertentity nazi26
+		alertentity nazi26a
+		alertentity nazi27
+		alertentity nazi28
+		alertentity nazi29
+		alertentity nazi30
+
+		savecheckpoint
+	}
+
+	trigger action7
+	{
+		mu_fade 0 1500
+		mu_queue sound\music\m_drums
+	}
+
+	trigger action8
+	{
+		alertentity zvonok
+		wait 5000
+		alertentity zvonok
+		wait 5000
+		alertentity zvonok
+		wait 5000
+		alertentity zvonok
+	}
+
+	trigger action9
+	{
+		alertentity moto
+		wait 10000
+		trigger player changemusic_2
+	}
+
+	trigger action10
+	{
+		alertentity poezd_sound
+		trigger poezd go
+		alertentity kill_trigger_2
+	}
+
+	trigger action11
+	{
+		alertentity poezd_sound
+		trigger poezd go
+		alertentity kill_trigger_1
+
+		savecheckpoint
+	}
+
+	trigger action12
+	{
+		alertentity nazi10
+		alertentity nazi11
+		alertentity nazi12
+		alertentity nazi13
+	}
+
+	trigger destroy_radio
+	{
+		objectivemet 1
+	}
+	
+	trigger objective_2
+	{
+		objectivemet 2
+	}
+
+	trigger veter
+	{
+		alertentity wind
+		wait 2000
+		trigger player veter
+	}
+
+	trigger sava_1
+	{
+
+		wait 25000
+		alertentity sava
+		wait 35000
+		alertentity sava
+		wait 50000
+		alertentity sava
+		wait 40000
+		trigger player sava_1
+	}
+
+	trigger sava_2
+	{
+		alertentity night
+		wait 13000
+		trigger player sava_2
+	}
+
+	trigger changemusic_1
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_moving
+	}
+
+	trigger changemusic_2
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_action
+	}
+
+	trigger endmap
+	{
+		changelevel rts persistent
+	}
+}
+
+// oficerss ================================================================
+
+of1
+{
+	attributes
+	{
+		idle_crouch 0.0
+		attack_crouch 0.0
+		hearing_scale 0.2
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+	}
+
+	enemysight player
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of1 active1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of1 active1
+	}
+
+	statechange query alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of1 active1
+	}
+
+	statechange query combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of1 active1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		trigger of1 active1
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		trigger of1 active1
+	}
+
+	enemysight
+	{
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger statue1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound Blank
+		clearanim
+		statetype alert
+		playsound MiscWhatsThat
+		trigger of1 active1
+	}
+
+	trigger awaken1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		trigger of1 active1
+	}
+
+	trigger active1
+	{
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+of2
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+	}
+
+	enemysight player
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of2 active1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of2 active1
+	}
+
+	statechange query alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of2 active1
+	}
+
+	statechange query combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		trigger of2 active1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		trigger of2 active1
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		trigger of2 active1
+	}
+
+	enemysight
+	{
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	trigger statue1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		playsound Blank
+		clearanim
+		statetype alert
+		playsound MiscWhatsThat
+		trigger of2 active1
+	}
+
+	trigger awaken1
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+		trigger of2 active1
+	}
+
+	trigger active1
+	{
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+most_1
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo grenades 0
+		giveweapon weapon_mp40
+		setammo ammo_45cal 999
+		selectweapon weapon_mp40
+		trigger most_1 go
+	}
+
+	trigger go
+	{
+		walktomarker most_1_1
+		wait 300
+		walktomarker most_1_2
+		trigger most_1 go
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\1.wav
+		wait 7000
+		playsound sound\scenaric\run\2.wav
+		wait 4500
+		playsound sound\scenaric\run\3.wav
+		wait 3000
+		playsound sound\scenaric\run\4.wav
+		wait 6000
+		playsound sound\scenaric\run\5.wav
+		wait 4500
+		trigger most_1 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger most_1 dialog
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+most_2
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo grenades 0
+		trigger most_2 go
+	}
+
+	trigger go
+	{
+		walktomarker most_2_1
+		wait 300
+		walktomarker most_2_2
+		trigger most_2 go
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 3000
+		playsound sound\scenaric\run\7.wav
+		wait 5500
+		playsound sound\scenaric\run\8.wav
+		wait 7000
+		playsound sound\scenaric\run\9.wav
+		wait 5000
+		playsound sound\scenaric\run\10.wav
+		wait 8500
+		trigger most_2 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		accum 0 abort_if_not_equal 1
+		trigger most_2 dialog
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi2
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		trigger nazi2 go
+	}
+
+	trigger go
+	{
+		runtomarker most_2_1
+		runtomarker centr
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\14.wav
+		wait 3000
+		playsound sound\scenaric\run\15.wav
+		wait 4500
+		playsound sound\scenaric\run\16.wav
+		wait 5000
+		trigger nazi2 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi2 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi3 go
+	}
+
+	trigger go
+	{
+		runtomarker nz2
+		runtomarker most_1_2
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\2.wav
+		wait 3000
+		playsound sound\scenaric\run\5.wav
+		wait 4500
+		playsound sound\scenaric\run\8.wav
+		wait 5000
+		trigger nazi3 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi3 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi4
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		wait 3000
+		trigger nazi4 go
+	}
+
+	trigger go
+	{
+		runtomarker nz2
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\1.wav
+		wait 5000
+		playsound sound\scenaric\run\4.wav
+		wait 6500
+		playsound sound\scenaric\run\10.wav
+		wait 3000
+		trigger nazi4 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi4 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi5
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi5 go
+	}
+
+	trigger go
+	{
+		runtomarker nz1
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\1.wav
+		wait 7000
+		playsound sound\scenaric\run\4.wav
+		wait 3000
+		playsound sound\scenaric\run\10.wav
+		wait 2500
+		trigger nazi5 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi5 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi8
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi8 go
+	}
+
+	trigger go
+	{
+		runtomarker nazi8_1
+		runtomarker nazi8_2
+		runtomarker nazi8_3
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\5.wav
+		wait 7000
+		playsound sound\scenaric\run\7.wav
+		wait 3000
+		playsound sound\scenaric\run\12.wav
+		wait 2500
+		trigger nazi8 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi8 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi9
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		trigger nazi9 go
+	}
+
+	trigger go
+	{
+		runtomarker nazi8_1
+		runtomarker nazi8_2
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\8.wav
+		wait 3000
+		playsound sound\scenaric\run\9.wav
+		wait 5000
+		playsound sound\scenaric\run\13.wav
+		wait 3500
+		trigger nazi9 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi9 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi10
+{
+	attributes
+	{
+		alertness 32000
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi10 go
+	}
+
+	trigger go
+	{
+		walktomarker nazi10_1
+		walktomarker nazi10_2
+		walktomarker nazi10_3
+		trigger nazi10 smoking
+	}
+
+	trigger smoking
+	{
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 1000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 20000
+		playanim butt_scratch_2h torso
+		wait 5000
+		playanim butt_scratch_2h torso
+		wait 3000
+		trigger nazi10 go
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\3.wav
+		wait 3000
+		playsound sound\scenaric\run\2.wav
+		wait 5000
+		playsound sound\scenaric\run\1.wav
+		wait 3500
+		trigger nazi10 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi10 dialog
+		resetscript
+		statetype alert
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi11
+{
+	attributes
+	{
+		alertness 32000
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		trigger nazi11 go
+	}
+
+	trigger go
+	{
+		walktomarker nazi11_1
+		walktomarker nazi11_2
+		walktomarker nazi11_3
+		trigger nazi11 smoking
+
+	}
+
+	trigger smoking
+	{
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 1000
+		playsound Cough2
+		playanim coughing_2h both
+		wait 20000
+		playanim butt_scratch_2h torso
+		wait 10000
+		wait 25000
+		trigger nazi11 go
+        }
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\4.wav
+		wait 4000
+		playsound sound\scenaric\run\5.wav
+		wait 5000
+		playsound sound\scenaric\run\6.wav
+		wait 2500
+		trigger nazi11 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi11 dialog
+		resetscript
+		statetype alert
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi12
+{
+	attributes
+	{
+		alertness 32000
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi12 go
+	}
+
+	trigger go
+	{
+		walktomarker nazi12_1
+		walktomarker nazi12_2
+		wait 500
+		playsound Cough2
+		playanim coughing_2h both
+		wait 1000
+		trigger nazi12 go
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\7.wav
+		wait 4000
+		playsound sound\scenaric\run\8.wav
+		wait 5000
+		playsound sound\scenaric\run\9.wav
+		wait 2500
+		trigger nazi12 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi12 dialog
+		resetscript
+		statetype alert
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi13
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		trigger nazi13 go
+	}
+
+	trigger go
+	{
+		walktomarker nazi13_1
+		walktomarker nazi13_2
+		walktomarker nazi13_3
+		playanim butt_scratch_2h torso
+		walktomarker nazi13_4
+		playsound Whistle1
+		walktomarker nazi13_5
+		walktomarker nazi8_2
+		wait 300
+		statetype alert
+		wait 2000
+		runtomarker nazi8_3
+		wait 1000
+		playsound sound\scenaric\church\axis2_done_that.wav
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\10.wav
+		wait 2000
+		playsound sound\scenaric\run\11.wav
+		wait 4000
+		playsound sound\scenaric\run\12.wav
+		wait 3500
+		trigger nazi13 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi13 dialog
+		resetscript
+		statetype alert
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi14
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi14 go
+	}
+
+	trigger go
+	{
+		walktomarker s2
+		walktomarker s3
+		walktomarker s4
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\1.wav
+		wait 7000
+		playsound sound\scenaric\run\2.wav
+		wait 4500
+		playsound sound\scenaric\run\3.wav
+		wait 3000
+		playsound sound\scenaric\run\4.wav
+		wait 6000
+		playsound sound\scenaric\run\5.wav
+		wait 4500
+		trigger nazi14 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi14 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi15
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi15 go
+	}
+
+	trigger go
+	{
+		walktomarker s2
+		walktomarker s3
+		walktomarker s5
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 3000
+		playsound sound\scenaric\run\7.wav
+		wait 5500
+		playsound sound\scenaric\run\8.wav
+		wait 7000
+		playsound sound\scenaric\run\9.wav
+		wait 5000
+		playsound sound\scenaric\run\10.wav
+		wait 8500
+		trigger nazi15 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi15 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+
+nazi16
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		trigger nazi16 go
+	}
+
+	trigger go
+	{
+		walktomarker s3
+		playsound sound\scenaric\general\misc_always.wav
+		walktomarker s6
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\9.wav
+		wait 5000
+		playsound sound\scenaric\run\10.wav
+		wait 8000
+		playsound sound\scenaric\run\11.wav
+		wait 4000
+		playsound sound\scenaric\run\12.wav
+		wait 2000
+		trigger nazi16 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi16 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi17
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi17 go
+	}
+
+	trigger go
+	{
+		walktomarker s3
+		walktomarker ss4
+		walktomarker s4
+		walktomarker s7
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		playsound sound\scenaric\general\misc_stop_him.wav
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger player action3
+		trigger player changemusic_1
+		trigger checker death
+	}
+}
+
+nazi18
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi18 go
+	}
+
+	trigger go
+	{
+		runtomarker g1
+		runtomarker g2
+		runtomarker g3
+		runtomarker g4
+		runtomarker g5
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\1.wav
+		wait 7000
+		playsound sound\scenaric\run\2.wav
+		wait 4500
+		playsound sound\scenaric\run\3.wav
+		wait 3000
+		playsound sound\scenaric\run\4.wav
+		wait 6000
+		playsound sound\scenaric\run\5.wav
+		wait 4500
+		trigger nazi18 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi18 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi19
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		trigger nazi19 go
+	}
+
+	trigger go
+	{
+		runtomarker g1
+		runtomarker g2
+		runtomarker g3
+		runtomarker g4
+		runtomarker g6
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 5000
+		playsound sound\scenaric\run\7.wav
+		wait 3500
+		playsound sound\scenaric\run\8.wav
+		wait 2000
+		playsound sound\scenaric\run\9.wav
+		wait 4000
+		playsound sound\scenaric\run\10.wav
+		wait 2500
+		trigger nazi19 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi19 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi20
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi20 go
+	}
+
+	trigger go
+	{
+		runtomarker g1
+		runtomarker g2
+		runtomarker g3
+		runtomarker g4
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 3000
+		playsound sound\scenaric\run\7.wav
+		wait 2500
+		playsound sound\scenaric\run\8.wav
+		wait 3000
+		playsound sound\scenaric\run\9.wav
+		wait 5000
+		playsound sound\scenaric\run\10.wav
+		wait 3500
+		trigger nazi20 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi20 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi21
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi21 go
+	}
+
+	trigger go
+	{
+		runtomarker g1
+		runtomarker g2
+		runtomarker g3
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 6000
+		playsound sound\scenaric\run\9.wav
+		wait 4500
+		playsound sound\scenaric\run\4.wav
+		wait 5000
+		playsound sound\scenaric\run\9.wav
+		wait 2000
+		playsound sound\scenaric\run\14.wav
+		wait 4500
+		trigger nazi21 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi21 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi22
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi22 go
+	}
+
+	trigger go
+	{
+		runtomarker gg1
+		runtomarker gg2
+		runtomarker gg3
+		runtomarker gg4
+		runtomarker gg5
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 6000
+		playsound sound\scenaric\run\9.wav
+		wait 4500
+		playsound sound\scenaric\run\4.wav
+		wait 5000
+		playsound sound\scenaric\run\9.wav
+		wait 2000
+		playsound sound\scenaric\run\14.wav
+		wait 4500
+		trigger nazi22 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi22 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+
+}
+
+nazi23
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi23 go
+	}
+
+	trigger go
+	{
+		runtomarker gg1
+		runtomarker gg2
+		runtomarker gg3
+		runtomarker gg4
+		runtomarker gg6
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\5.wav
+		wait 7000
+		playsound sound\scenaric\run\11.wav
+		wait 3500
+		playsound sound\scenaric\run\3.wav
+		wait 2000
+		playsound sound\scenaric\run\15.wav
+		wait 4000
+		playsound sound\scenaric\run\12.wav
+		wait 6500
+		trigger nazi23 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi23 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+
+}
+
+nazi24
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi24 go
+	}
+
+	trigger go
+	{
+		runtomarker gg1
+		runtomarker gg2
+		runtomarker gg3
+		runtomarker gg4
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 2000
+		playsound sound\scenaric\run\7.wav
+		wait 3500
+		playsound sound\scenaric\run\9.wav
+		wait 3000
+		playsound sound\scenaric\run\10.wav
+		wait 4000
+		playsound sound\scenaric\run\13.wav
+		wait 5500
+		trigger nazi24 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi24 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+
+}
+
+nazi25
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		trigger nazi25 go
+	}
+
+	trigger go
+	{
+		runtomarker gg1
+		runtomarker gg2
+		runtomarker gg3
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\10.wav
+		wait 4000
+		playsound sound\scenaric\run\11.wav
+		wait 2500
+		playsound sound\scenaric\run\12.wav
+		wait 5000
+		playsound sound\scenaric\run\13.wav
+		wait 6000
+		playsound sound\scenaric\run\14.wav
+		wait 7500
+		trigger nazi25 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi25 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi26
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\10.wav
+		wait 4000
+		playsound sound\scenaric\run\11.wav
+		wait 2500
+		playsound sound\scenaric\run\12.wav
+		wait 5000
+		playsound sound\scenaric\run\13.wav
+		wait 6000
+		playsound sound\scenaric\run\14.wav
+		wait 7500
+		trigger nazi26 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi26 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi26a
+{
+	attributes
+	{
+		attack_crouch 0.5
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 2.0
+		camper 1.0
+		inner_detection_radius 1024
+		fov 360
+	}
+
+	spawn
+	{
+		takeweapon weapon_mp40
+		giveweapon weapon_mauserrifle
+		setammo ammo_792mm 999
+		selectweapon weapon_mauserrifle
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\odb38\naz1.wav
+		wait 4000
+		playsound sound\scenaric\odb38\naz2.wav
+		wait 2500
+		playsound sound\scenaric\odb38\naz3.wav
+		wait 5000
+		playsound sound\scenaric\odb38\naz4.wav
+		wait 6000
+		playsound sound\scenaric\odb38\naz5.wav
+		wait 7500
+		trigger nazi26a dialog
+	}
+
+	pain 100
+	{
+		attrib aggression 0.5
+		attrib camper 0.5
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	enemysight
+	{
+		trigger nazi26a dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi27
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\1.wav
+		wait 7000
+		playsound sound\scenaric\run\2.wav
+		wait 6500
+		playsound sound\scenaric\run\3.wav
+		wait 7000
+		playsound sound\scenaric\run\4.wav
+		wait 8000
+		playsound sound\scenaric\run\5.wav
+		wait 5500
+		trigger nazi27 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi27 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+
+}
+
+nazi28
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 6000
+		playsound sound\scenaric\run\7.wav
+		wait 7500
+		playsound sound\scenaric\run\8.wav
+		wait 5000
+		playsound sound\scenaric\run\9.wav
+		wait 8000
+		playsound sound\scenaric\run\10.wav
+		wait 3500
+		trigger nazi28 dialog
+	}
+
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi28 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi29
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi30
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\6.wav
+		wait 6000
+		playsound sound\scenaric\run\7.wav
+		wait 7500
+		playsound sound\scenaric\run\8.wav
+		wait 5000
+		playsound sound\scenaric\run\9.wav
+		wait 8000
+		playsound sound\scenaric\run\10.wav
+		wait 3500
+		trigger nazi30 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi30 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi31
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		setammo ammo_grenades 6
+		takeweapon weapon_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\11.wav
+		wait 7000
+		playsound sound\scenaric\run\12.wav
+		wait 8500
+		playsound sound\scenaric\run\13.wav
+		wait 5000
+		playsound sound\scenaric\run\14.wav
+		wait 9000
+		playsound sound\scenaric\run\15.wav
+		wait 4500
+		trigger nazi31 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi31 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+nazi32
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\2.wav
+		wait 6000
+		playsound sound\scenaric\run\5.wav
+		wait 7500
+		playsound sound\scenaric\run\8.wav
+		wait 4000
+		playsound sound\scenaric\run\9.wav
+		wait 7000
+		playsound sound\scenaric\run\12.wav
+		wait 3500
+		trigger nazi32 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi32 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+
+}
+
+
+nazi33
+{
+	attributes
+	{
+		alertness 1152
+		inner_detection_radius 2048
+		fov 1024
+		aggression 0.9
+		tactical 0.9
+		attack_crouch 0.9
+                hearing_scale 0.9
+	}
+
+	spawn
+	{
+		accum 0 set 0 // 1 = alerted
+		giveweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		selectweapon weapon_mauserrifle
+		statetype alert
+	}
+
+	trigger dialog
+	{
+		playsound sound\scenaric\run\3.wav
+		wait 5000
+		playsound sound\scenaric\run\6.wav
+		wait 4500
+		playsound sound\scenaric\run\13.wav
+		wait 3000
+		playsound sound\scenaric\run\10.wav
+		wait 5000
+		playsound sound\scenaric\run\11.wav
+		wait 2500
+		trigger nazi33 dialog
+	}
+
+	statechange relaxed query
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+		statetype alert
+	}
+
+	statechange relaxed alert
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	statechange relaxed combat
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	bulletimpact
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	trigger awaken4 // called by other ai's
+	{
+		accum 0 abort_if_not_equal 0
+		accum 0 set 1
+	}
+
+	enemysight
+	{
+		trigger nazi33 dialog
+		resetscript
+		accum 0 abort_if_not_equal 1
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+
+
+derevo_snaiper					// This is eg who is in tree...
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.1
+		inner_detection_radius 200
+		alertness 2000
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		selectweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		trigger derevo_snaiper go1
+	}
+
+	trigger go1
+	{
+		walktomarker derevo_1
+		movetype crouch
+		wait forever 0
+	}
+
+	pain 10
+	{
+//		attrib aggression 0.3
+//		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		movetype crouch
+		clearanim
+		attrib alertness 2400
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker death
+	}
+
+}
+
+
+//in house...
+house_sniper
+{
+	attributes
+	{
+		tactical 1.0
+		camper 1.0
+		aggression 0.1
+		inner_detection_radius 1024
+		alertness 2000
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		accum 1 set 0
+		accum 2 set 0
+		accum 3 set 0
+		takeweapon all
+		giveweapon weapon_mauserrifle
+		selectweapon weapon_mauserrifle
+		setammo 7.92mm 999
+		trigger house_sniper oops
+	}
+
+	trigger oops
+	{
+		walktomarker mg1_take
+		movetype crouch
+		wait forever 0
+	}
+
+	pain 10
+	{
+		attrib aggression 0.3
+		attrib camper 1.0
+	}
+
+	enemysight
+	{
+		accum 0 bitset 20
+		movetype crouch
+		clearanim
+		attrib alertness 2400
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+
+radist_1  /// radioroom
+{
+	attributes
+	{
+		fov 90
+	}
+
+	spawn
+	{
+		accum 1 set 0 // 1 = alerted
+		accum 2 set 0 // 1 = radio tunning on
+		setammo ammo_grenades 0
+		takeweapon weapon_mp40
+	}
+
+	trigger blocking3
+	{
+		accum 1 set 1
+		statetype alert
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+		attack
+		wait 8000 0
+	}
+
+	statechange relaxed alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger radist_1 quickdraw
+	}
+
+	statechange relaxed combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger radist_1 quickdraw
+	}
+
+	statechange query alert
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger radist_1 quickdraw
+	}
+
+	statechange query combat
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		trigger radist_1 quickdraw
+	}
+
+	bulletimpact
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger radist_1 quickdraw
+	}
+
+	inspectsoundstart
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		statetype alert
+		trigger radist_1 quickdraw
+	}
+
+	trigger quickdraw
+	{
+		playsound Blank
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		wait 50 player
+		resetscript
+	}
+
+	trigger alert3 // called by others
+	{
+		accum 1 abort_if_not_equal 0
+		accum 1 set 1
+		playsound Blank
+		statetype alert
+		clearanim
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		resetscript
+		wait 100 player
+	}
+
+        enemysight
+	{
+		playsound sound\scenaric\run\11.wav
+	}
+
+	death
+	{
+		trigger checker death
+	}
+}
+

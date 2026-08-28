@@ -2120,6 +2120,7 @@ void RB_CalcDiffuseColor_altivec( unsigned char *colors );
 void R_InitFreeType( void );
 void R_DoneFreeType( void );
 void RE_RegisterFont( const char *fontName, int pointSize, fontInfo_t *font );
+void RE_RegisterUtf8Font( const char *fontName, utf8FontInfo_t *font );
 
 #ifdef USE_BLOOM
 //Bloom Stuff

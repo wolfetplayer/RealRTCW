@@ -29,6 +29,8 @@ If you have questions concerning this license or the applicable additional terms
 // cg_drawtools.c -- helper functions called by cg_draw, cg_scoreboard, cg_info, etc
 #include "cg_local.h"
 
+extern utf8FontInfo_t utf8Font;
+
 static screenPlacement_e cg_horizontalPlacement = PLACE_CENTER;
 static screenPlacement_e cg_verticalPlacement = PLACE_CENTER;
 static screenPlacement_e cg_lastHorizontalPlacement = PLACE_CENTER;
@@ -397,6 +399,135 @@ void CG_DrawChar2( int x, int y, int width, int height, int ch ) {
 						   cgs.media.menucharsetShader );
 }
 
+
+void CG_DrawChar_Utf8( int x, int y, float scale, int unicode ) {
+	float ax, ay, aw, ah;
+	float s1, t1, s2, t2;
+	glyphInfo_t *glyph;
+
+	if ( unicode == ' ' || unicode >= UTF8_GLYPHS_PER_FONT ) {
+		return;
+	}
+
+	if ( !utf8Font.loaded ) {
+		Com_Error( ERR_DROP, "CG_DrawChar_Utf8: utf8Font is not initialized");
+		return;
+	}
+
+	glyph = &utf8Font.glyphs[unicode];
+
+	s1 = glyph->s;
+	t1 = glyph->t;
+	s2 = glyph->s2;
+	t2 = glyph->t2;
+	
+	ax = x;
+	ay = y - glyph->top * scale;
+	aw = glyph->imageWidth * scale;
+	ah = glyph->imageHeight * scale;
+	CG_AdjustFrom640( &ax, &ay, &aw, &ah );
+	
+	trap_R_DrawStretchPic( ax, ay, aw, ah,
+							s1, t1, s2, t2,
+							glyph->glyph );
+}
+
+void CG_DrawStringExt_Utf8( int x, int y, const char *string, const float *setColor,
+					   qboolean forceColor, qboolean shadow, float scale, int maxChars ) {
+	vec4_t color;
+	const char *s;
+	int xx;
+	int count;
+	int charBytes;
+	float useScale;
+	uint32_t unicode;
+	utf8FontInfo_t *ufnt = &utf8Font;
+	glyphInfo_t *glyph;
+
+	if ( maxChars <= 0 ) {
+		maxChars = 32767;
+	}
+
+	if ( !ufnt || !ufnt->loaded ) {
+		// CG_DrawStringExt( x, y, string, setColor, forceColor, shadow, charWidth, charHeight, maxChars );
+		Com_Error( ERR_DROP, "CG_DrawUtf8StringExt: utf8Font is not initialized");
+		return;
+	}
+
+	useScale = ufnt->glyphScale * scale;
+
+	if ( shadow ) {
+		color[0] = color[1] = color[2] = 0;
+		color[3] = setColor[3];
+		trap_R_SetColor( color );
+		
+		s = string;
+		xx = x;
+		count = 0;
+		
+		while ( *s && count < maxChars ) {
+			if ( Q_IsColorString( s ) ) {
+				s += 2;
+				continue;
+			}
+			
+			unicode = Q_utf8ToCodePoint( s );
+			if ( unicode < UTF8_GLYPHS_PER_FONT ) {
+				CG_DrawChar_Utf8( xx + 1, y + 1, useScale, unicode );
+			} else {
+				s++;
+				continue;
+			}
+			
+			glyph = &ufnt->glyphs[unicode];
+			charBytes = Q_utf8bytesLength( s );
+			if ( charBytes <= 0 ) {
+				charBytes = 1;
+			}
+			s += charBytes;
+			xx += glyph->xSkip * useScale;
+			count++;
+		}
+	}
+
+	s = string;
+	xx = x;
+	count = 0;
+	trap_R_SetColor( setColor );
+
+	while ( *s && count < maxChars ) {
+		if ( Q_IsColorString( s ) ) {
+			if ( !forceColor ) {
+				memcpy( color, g_color_table[ColorIndex( *( s + 1 ) )], sizeof( color ) );
+				color[3] = setColor[3];
+				trap_R_SetColor( color );
+			}
+			s += 2;
+			continue;
+		}
+		
+		unicode = Q_utf8ToCodePoint( s );
+		if ( unicode < UTF8_GLYPHS_PER_FONT ) {
+			CG_DrawChar_Utf8( xx, y, useScale, unicode );
+		} else {
+			s++;
+			continue;
+		}
+
+		glyph = &ufnt->glyphs[unicode];
+		charBytes = Q_utf8bytesLength( s );
+		if ( charBytes <= 0 ) {
+			charBytes = 1;
+		}
+		s += charBytes;
+		xx += glyph->xSkip * useScale;
+		count++;
+	}
+
+	trap_R_SetColor( NULL );
+}
+
+
 // JOSEPH 4-25-00
 /*
 ==================
@@ -723,6 +854,102 @@ int CG_DrawStrlen( const char *str ) {
 	}
 
 	return count;
+}
+
+/*
+=================
+CG_DrawStrCount
+
+Returns glyphs count, skiping color escape codes
+support utf8 format, and compatible with latin-1 format
+=================
+*/
+int CG_DrawStrCount( const char *str ) {
+	const char *s = str;
+	int count = 0;
+
+	while ( *s ) {
+		if ( Q_IsColorString( s ) ) {
+			s += 2;
+			continue;
+		} else {
+			count++;
+			s += Q_utf8bytesLength(s);
+		}
+	}
+
+	return count;
+}
+
+/*
+=================
+CG_DrawStrWidth_Utf8
+
+Returns full characters width, skiping color escape codes
+=================
+*/
+float CG_DrawStrWidth_Utf8( const char *str, float scale ) {
+	const char *s = str;
+	int count;
+	float out;
+	float useScale;
+	glyphInfo_t *glyph;
+
+	if ( !utf8Font.loaded ) {
+		Com_Error( ERR_DROP, "CG_DrawStrlen_Utf8: utf8Font is not initialized");
+		return -1;
+	}
+
+	useScale = utf8Font.glyphScale * scale;
+	out = 0;
+	count = 0;
+	while ( *s ) {
+		if ( Q_IsColorString( s ) ) {
+			s += 2;
+			continue;
+		} else {
+			int unicode = Q_utf8ToCodePoint(s);
+			if ( unicode < 0 || unicode >= UTF8_GLYPHS_PER_FONT ) {
+				unicode = '?';
+			}
+
+			glyph = &utf8Font.glyphs[unicode];
+			out += glyph->xSkip;
+			s += Q_utf8bytesLength(s);
+			count++;
+		}
+	}
+
+	return out * useScale;
+}
+
+/*
+=================
+CG_DrawStrWidth_Utf8
+
+Returns the max height value of character in this line string
+=================
+*/
+float CG_DrawStrHeight_Utf8( const char* str, float scale ) {
+	const char *p = str;
+	float h, maxHeight;
+	int32_t unicode;
+	glyphInfo_t *glyph;
+	utf8FontInfo_t *ufnt = &utf8Font;
+	float useScale = ufnt->glyphScale * scale;
+	
+	maxHeight = 0;
+	while ( p && *p ) {
+		unicode = Q_utf8ToCodePoint(p);
+		glyph = &utf8Font.glyphs[unicode];
+		h = glyph->height * useScale;
+		if ( h > maxHeight ) {
+			maxHeight = h;
+		}
+		p += Q_utf8bytesLength(p);
+	}
+	
+	return maxHeight;
 }
 
 /*

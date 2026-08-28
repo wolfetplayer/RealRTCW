@@ -3340,11 +3340,10 @@ void Item_Text_AutoWrapped_Paint( itemDef_t *item ) {
 	char text[1024];
 	const char *p, *textPtr, *newLinePtr;
 	char buff[1024];
-	int width, height, len, textWidth, newLine, newLineWidth;
+	int width, height, len, textWidth, textHeight, newLine, newLineWidth;
 	float y;
 	vec4_t color;
 
-	textWidth = 0;
 	newLinePtr = NULL;
 
 	if ( item->text == NULL ) {
@@ -3363,6 +3362,10 @@ void Item_Text_AutoWrapped_Paint( itemDef_t *item ) {
 	Item_TextColor( item, &color );
 	Item_SetTextExtents( item, &width, &height, textPtr );
 
+	textWidth = 0;
+	textHeight = height;
+	int textToBorderDist = (int) MIN(item->window.rect.w * 0.1f, 5.0f);	// prevent the small-sized font locate exactly on the boundary line
+
 	y = item->textaligny;
 	len = 0;
 	buff[0] = '\0';
@@ -3370,12 +3373,18 @@ void Item_Text_AutoWrapped_Paint( itemDef_t *item ) {
 	newLineWidth = 0;
 	p = textPtr;
 	while ( p ) {
+		int32_t unicode = Q_utf8ToCodePoint(p);
 		if ( *p == ' ' || *p == '\t' || *p == '\n' || *p == '\0' ) {
 			newLine = len;
 			newLinePtr = p + 1;
 			newLineWidth = textWidth;
+		} else if ( Q_IsUtf8BreakOpportunity(unicode) ) {
+			newLine = len;
+			newLinePtr = p;
+			newLineWidth = textWidth;
 		}
-		textWidth = DC->textWidth( buff, item->font, item->textscale, 0 );
+		textWidth = DC->textWidth( buff, item->font, item->textscale, 0 ) + textToBorderDist;
+		textHeight = DC->textHeight( buff, item->font, item->textscale, 0 );
 		if ( ( newLine && textWidth > item->window.rect.w ) || *p == '\n' || *p == '\0' ) {
 			if ( len ) {
 				if ( item->textalignment == ITEM_ALIGN_LEFT ) {
@@ -3388,21 +3397,40 @@ void Item_Text_AutoWrapped_Paint( itemDef_t *item ) {
 				item->textRect.y = y;
 				ToWindowCoords( &item->textRect.x, &item->textRect.y, &item->window );
 				//
+				if ( Q_IsUtf8BreakOpportunity(unicode) ) {
+					newLine += Q_utf8bytesLength(p) - 1;
+				}
 				buff[newLine] = '\0';
+				if ( Q_IsUtf8StringNeedBidi( buff ) ) {
+					Q_TransToUtf8BidiString( buff, sizeof(buff) );
+				}
 				DC->drawText( item->textRect.x, item->textRect.y, item->font, item->textscale, color, buff, 0, 0, item->textStyle );
 			}
 			if ( *p == '\0' ) {
 				break;
 			}
 			//
-			y += height + 5;
+			if ( strlen(buff) && buff[0] == 32 && textHeight < BIGCHAR_HEIGHT ) {
+				textHeight = height * 0.9f;
+			}
+
+			if ( item->textlinespacing ) {
+				y += (item->font < FONT_UTF_DEFAULT) ? (height + item->textlinespacing) : (textHeight + item->textlinespacing);
+			} else {
+				y += (item->font < FONT_UTF_DEFAULT) ? (height + 5) : (textHeight + (int)MIN(textHeight * 0.25f + 1, 5));
+			}
+
 			p = newLinePtr;
 			len = 0;
 			newLine = 0;
 			newLineWidth = 0;
 			continue;
 		}
-		buff[len++] = *p++;
+		// buff[len++] = *p++;
+		// ensure that we don't truncate multi byte characters
+		for ( int i = Q_utf8bytesLength(p); i > 0; i-- ) {
+			buff[len++] = *p++;
+		}
 
 		if ( buff[len - 1] == 13 ) {
 			buff[len - 1] = ' ';
@@ -5839,6 +5867,14 @@ qboolean ItemParse_hideCvar( itemDef_t *item, int handle ) {
 	return qfalse;
 }
 
+// added for adjust text line spacing
+qboolean ItemParse_textLineSpacing( itemDef_t *item, int handle ) {
+	if ( !PC_Int_Parse( handle, &item->textlinespacing ) ) {
+		return qfalse;
+	}
+	return qtrue;
+}
+
 
 keywordHash_t itemParseKeywords[] = {
 	{"name", ItemParse_name, NULL},
@@ -5878,6 +5914,7 @@ keywordHash_t itemParseKeywords[] = {
 	{"textscale", ItemParse_textscale, NULL},
 	{"textstyle", ItemParse_textstyle, NULL},
 	{"textfont", ItemParse_textfont, NULL},
+	{"textlinespacing", ItemParse_textLineSpacing, NULL},
 	{"backcolor", ItemParse_backcolor, NULL},
 	{"forecolor", ItemParse_forecolor, NULL},
 	{"bordercolor", ItemParse_bordercolor, NULL},

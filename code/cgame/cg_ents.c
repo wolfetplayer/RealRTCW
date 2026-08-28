@@ -38,6 +38,7 @@ If you have questions concerning this license or the applicable additional terms
 
 ///////////////////////
 extern int propellerModel;
+extern utf8FontInfo_t utf8Font;
 ///////////////////////
 
 /*
@@ -770,12 +771,18 @@ void CG_DrawHoldableSelect( void ) {
 		if ( item ) {
 			name = cgs.itemPrintNames[ item - bg_itemlist ];
 			if ( name ) {
-				//----(SA)	trying smaller text
-//				w = CG_DrawStrlen( name ) * BIGCHAR_WIDTH;
-				w = CG_DrawStrlen( name ) * 10;
-				x = ( SCREEN_WIDTH - w ) / 2;
-//				CG_DrawBigStringColor(x, y - 22, name, color);
-				CG_DrawStringExt2( x, y + 74, name, color, qfalse, qtrue, 10, 10, 0 );
+				if ( !cg_enableUtf8Font.integer ) {
+					//----(SA)	trying smaller text
+//					w = CG_DrawStrlen( name ) * BIGCHAR_WIDTH;
+					w = CG_DrawStrlen( name ) * 10;
+					x = ( SCREEN_WIDTH - w ) / 2;
+//					CG_DrawBigStringColor(x, y - 22, name, color);
+					CG_DrawStringExt2( x, y + 74, name, color, qfalse, qtrue, 10, 10, 0 );
+				} else {
+					w = CG_DrawStrWidth_Utf8( name, cg_hudUtf8FontScale.value * 0.9f );
+					x = ( SCREEN_WIDTH - w ) / 2;
+					CG_DrawStringExt_Utf8( x, y + 74, name, color, qfalse, qtrue, cg_hudUtf8FontScale.value * 0.9f, 0  );
+				}
 			}
 		}
 	}

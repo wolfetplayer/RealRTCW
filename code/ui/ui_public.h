@@ -158,7 +158,9 @@ typedef enum {
 	// New in IORTCW
 	UI_ALLOC = 900,
 
-	UI_R_REGISTERSMARTSKIN
+	UI_R_REGISTERSMARTSKIN,
+
+	UI_R_REGISTERUTF8FONT
 
 } uiImport_t;
 

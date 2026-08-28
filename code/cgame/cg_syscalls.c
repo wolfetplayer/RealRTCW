@@ -302,6 +302,10 @@ void trap_R_RegisterFont( const char *fontName, int pointSize, fontInfo_t *font 
 	syscall( CG_R_REGISTERFONT, fontName, pointSize, font );
 }
 
+void trap_R_RegisterUtf8Font( const char *fontName, utf8FontInfo_t *font ) {
+	syscall( CG_R_REGISTERUTF8FONT, fontName, font );
+}
+
 void    trap_R_ClearScene( void ) {
 	syscall( CG_R_CLEARSCENE );
 }

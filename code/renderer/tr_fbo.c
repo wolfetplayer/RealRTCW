@@ -292,6 +292,14 @@ void FBO_Init( void )
 	ARB_InitPrograms();
 
 	FBO_Bind( tr.mainFbo );
+
+	// exp. fix for corrupted UI on Steam Deck
+	qglViewport( 0, 0, tr.mainFbo->width, tr.mainFbo->height );
+	qglScissor( 0, 0, tr.mainFbo->width, tr.mainFbo->height );
+	qglColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+	qglDepthMask( GL_TRUE );
+	qglClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+	qglClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 }
 
 

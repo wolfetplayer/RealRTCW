@@ -1,0 +1,38 @@
+// RealRTCW additional weapons/ammo etc.
+
+
+{
+"classname" "weapon_bar"
+"origin" "3486 -2308 103"
+"angle" "90"
+}
+
+{
+"classname" "ammo_barammo_l"
+"origin" "3482 -2364 87"
+}
+
+{
+"classname" "ammo_barammo_l"
+"origin" "3482 -2258 87"
+}
+
+{
+"classname" "holdable_bandages"
+"origin" "68 -3474 94"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

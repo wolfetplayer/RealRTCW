@@ -1,0 +1,1662 @@
+//////////////////////////////////////////////////////////
+//	RTCW AI Script										//
+//														//
+//	Map:	Alone at War - Escape from Offlag			//
+//			Alone at War - Part 2						//
+//														//
+//	Last edited by: KoS - Saturday, 29 June 2002 		//
+//														//
+//	Crimson Editor(c) 3.40 (freeware)					//
+//	Editor compatibility for Rtcw by Tram Design		//
+//														//
+//////////////////////////////////////////////////////////
+
+// If you have any questions, remarks about this map meet me
+// at the Tram design forum - http://www.planetwolfenstein.com/tramdesign
+// Or visit my site at: http://kos.nem3d.net
+
+// You are free to copy want you want from this script as long as you don`t profit from that.
+
+
+player 										//Player info
+{
+	spawn
+	{
+		cvar g_episode 8
+		objectivesneeded 2
+
+		abort_if_loadgame
+	}
+
+	playerstart
+	{
+		mu_fade 0 5000
+		mu_queue sound/music/m_drums
+
+		// Weapons							//delete after level finish
+//		takeweapon all						//delete after level finish
+//		giveweapon weapon_mauserRifle		//delete after level finish
+//		giveweapon weapon_sniperscope		//delete after level finish
+//		giveweapon weapon_luger				//delete after level finish
+//		giveweapon weapon_mp40				//delete after level finish
+//		selectweapon weapon_mp40			//delete after level finish
+
+		// Ammo								//delete after level finish
+//		setammo ammo_grenades 3				//delete after level finish
+//		setammo ammo_9mm 250				//delete after level finish
+//		setammo ammo_792mm 150				//delete after level finish
+
+
+		// Items							//delete after level finish
+//		setarmor 25							//delete after level finish
+//		giveinventory key_binocs			//delete after level finish
+	}
+
+
+	trigger kill_ammo_mg1
+	{
+		alertentity kill_at_ones_nazi_trap1
+		alertentity kill_at_ones_nazi_trap2
+	}
+
+
+	trigger unmount_mg2
+	{
+		trigger ammo_nazi8 unmount_mg_42
+		alertentity remove_at_ones_ammo_nazi9
+		alertentity remove_at_ones_ammo_nazi10
+		alertentity remove_at_ones_ammo_nazi11
+
+		// trigger ammo_nazi9 go_teleport
+		// trigger ammo_nazi10 go_teleport
+		// trigger ammo_nazi11 go_teleport
+	}
+
+	trigger unmount_ammo_mg3
+	{
+		mu_play sound/music/s_bighits 0
+		trigger player music_stop
+		trigger ammo_nazi12 free_ammo_mg3
+		trigger ammo_nazi13 free_ammo_mg3
+	}
+
+	trigger objective1
+	{
+		objectivemet 1								// mission objective 1 complete
+	}
+
+	trigger objective2
+	{
+		objectivemet 2								// mission objective 2 complete
+	}
+
+	trigger nazi_trap								//Nazi trap at the barel
+	{
+		alertentity nazi_trap1
+		trigger nazi_trap1 charge
+	}
+
+	trigger ammo_depot_1							// Entering ammo depot 1
+	{
+		alertentity ammo_nazi1
+		alertentity ammo_nazi2
+		alertentity ammo_nazi3
+		alertentity ammo_nazi3_patrol
+	}
+
+	trigger ammo_depot_2							// Nazi charge in ammo depot 2
+	{
+		alertentity ammo_nazi4
+		alertentity ammo_nazi5
+		alertentity ammo_nazi6
+		alertentity ammo_nazi7
+		trigger ammo_nazi4 charge
+		trigger ammo_nazi5 charge
+		trigger ammo_nazi6 charge
+		trigger ammo_nazi7 charge
+	}
+
+	trigger ammo_depot_3							// Nazi at mg42 at the end of hallway ammo depot2
+	{
+		alertentity ammo_nazi8
+		alertentity ammo_nazi12
+		trigger ammo_nazi8 mg_42_use
+	}
+
+	trigger hiding_ammo_main						//Nazi hiding at ammo main facility
+	{
+		alertentity Ammo_facility_hiding_1
+		alertentity Ammo_facility_hiding_2
+		alertentity Ammo_facility_hiding_3
+
+	}
+
+	trigger Ammo_main_charge1						//Nazi ambush 1
+	{
+		alertentity Ammo_main_charge1_nazi1
+		alertentity Ammo_main_charge1_nazi2
+		alertentity Ammo_main_charge1_nazi3
+		trigger Ammo_main_charge1_nazi1 charge
+		trigger Ammo_main_charge1_nazi2 charge
+		trigger Ammo_main_charge1_nazi3 charge
+	}
+
+	trigger airplane_workers 						// workers at airplane
+
+	{
+		alertentity airplane_worker_1
+		alertentity airplane_worker_2
+	}
+
+	trigger airplane_worker_officer_trigger 		// workers at airplane - officer
+	{
+		alertentity airplane_worker_officer
+	}
+
+	trigger airplane_worker_liftman_trigger			// liftman
+	{
+		alertentity airplane_worker_liftman
+	}
+
+
+/////////////////////////// Music trigers///////////////////
+
+	trigger music_stop				//STOP !!!!!!!!!!
+	{
+		wait 10000
+		mu_stop 0 5000
+	}
+
+	trigger music1
+	{
+		mu_fade 0 3000
+		mu_queue /sound/music/m_action.wav
+	}
+
+	trigger music2  						// After the plain
+	{
+		mu_fade 0 2000
+		mu_queue /sound/music/l_theme.wav
+	}
+
+	trigger music3
+	{
+		mu_play /sound/music/s_longout.wav 0
+	}
+
+	trigger music4
+	{
+		mu_play /sound/music/s_lowramp.wav 0
+	}
+
+/////////////////////////sicreds////////////////////////
+
+	trigger sicred1
+	{
+		foundsecret
+	}
+
+/////////////////////////end map////////////////////////
+	trigger endmap
+	{
+		changelevel aaw3 4000 persistent
+	}
+}
+
+/////////////////////////////////////////////////////////////
+///////////// Nazi at barel trap/////////////// /////////////
+/////////////////////////////////////////////////////////////
+
+nazi_trap1
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.2
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+		inner_detection_radius 3000
+		alertness 3000
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	trigger charge
+	{
+	explicit_routing on
+	runtomarker nazi_trap1_1 nostop
+	facetargetangles trap
+	mount ammo_mg1
+	wait forever
+	}
+
+	forced_mg42_unmount
+	{
+	deny
+	}
+
+	death
+	{
+	alertentity nazi_trap2
+	alertentity remove_nazi_trap1
+	}
+}
+
+nazi_trap2
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.2
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+		inner_detection_radius 2000
+		alertness 2000
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger nazi_trap2 charge
+	}
+
+	trigger charge
+	{
+	explicit_routing on
+	runtomarker nazi_trap1_1 nostop
+	facetargetangles trap
+	mount ammo_mg1
+	wait forever
+	}
+
+	forced_mg42_unmount
+	{
+	deny
+	}
+
+	death
+	{
+	alertentity remove_nazi_trap2
+	}
+}
+
+/////////////////////////////////////////////////////////////
+///////////// Nazi at checkpoint/////////////// /////////////
+/////////////////////////////////////////////////////////////
+
+checkpoint_nazi
+
+{
+	attributes
+	{
+		aim_accuracy 0.4
+		starting_health 25
+		hearing_scale 0.8
+		aggression 0.8
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 3
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+
+		trigger checkpoint_nazi play_animation1
+
+	}
+
+	trigger play_animation1
+	{
+	playanim looking_over_table both
+	playsound whistle
+	trigger checkpoint_nazi play_animation1					//restarts anim.
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound MiscStopHim
+	}
+
+	inspectsoundstart
+	{
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_checkpoint_nazi
+	}
+}
+
+/////////////////////////////////////////////////////////////
+///////////// Nazi at hallway to Ammo depot 1 //////////////////////////
+/////////////////////////////////////////////////////////////
+
+nazi1_hallway_to_ammo_1
+
+{
+	attributes
+	{
+		starting_health 25
+	}
+
+	spawn
+	{
+		// takeweapon mp40
+		// fireattarget
+		// giveweapon weapon_grenadelauncher
+		// selectweapon weapon_grenadelauncher
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 999
+		trigger nazi1_hallway_to_ammo_1 talk
+	}
+
+	// trigger toss_grenade
+	// {
+	//	crouchtomarker ???
+	//	selectweapon weapon_grenadelauncher
+	//	fireattarget ???? 3000
+	//	selectweapon weapon_sten
+	// }
+
+
+	trigger talk
+	{
+		wait 3000
+		playsound talk_1
+		wait 6000
+		playsound talk_2
+		trigger nazi2_hallway_to_ammo_1 talk
+	}
+
+	enemysight
+	{
+		takeweapon weapon_mp40
+		giveweapon weapon_grenadelauncher
+		selectweapon weapon_grenadelauncher
+		fireattarget ammo1_grenade_target1 5000
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		trigger nazi1_hallway_to_ammo_1 grenade_loop
+		}
+
+		trigger grenade_loop
+		{
+		wait 10000
+		selectweapon weapon_grenadelauncher
+		fireattarget ammo1_grenade_target1 3000
+		selectweapon weapon_mp40
+		trigger nazi1_hallway_to_ammo_1 grenade_loop //  restart loop
+		}
+
+	death
+	{
+		alertentity remove_nazi1_hallway_to_ammo_1
+	}
+}
+
+nazi2_hallway_to_ammo_1
+
+{
+	attributes
+	{
+		starting_health 25
+	}
+
+	spawn
+	{
+	}
+
+	trigger talk
+	{
+		wait 3000
+		playsound talk_3
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_nazi2_hallway_to_ammo_1
+	}
+}
+
+
+ammo_nazi1	// Smoking guy  -------------> Smoking nazi script by Byz, Email: unaimed@hotmail.com
+			// taken from ai_list1.pk3 a complete list of all AI in RTCW.
+
+{
+	attributes
+	{
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.7
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		setammo ammo_9mm 999
+		takeweapon weapon_mp40
+		wait 100
+		trigger ammo_nazi1 smoking
+	}
+
+	trigger smoking
+	{
+		cigarette on
+		playanim smoking both
+		cigarette off
+		playsound cough2
+		playanim coughing_1h both
+		wait 1000
+		trigger ammo_nazi1 standguard
+	}
+
+	trigger standguard
+	{
+		giveweapon weapon_mp40
+		wait 5000
+		trigger ammo_nazi1 anim_loop
+	}
+
+	trigger anim_loop
+	{
+		accum 0 random 4
+		trigger ammo_nazi1 rnd0
+		trigger ammo_nazi1 rnd1
+		trigger ammo_nazi1 rnd2
+		trigger ammo_nazi1 rnd3
+	}
+
+	trigger rnd0
+	{
+		accum 0 abort_if_not_equal 0
+		playsound cough2
+		playanim coughing_2h both
+		wait 4000
+		trigger ammo_nazi1 anim_loop
+	}
+
+	trigger rnd1
+	{
+		accum 0 abort_if_not_equal 1
+		playanim butt_scratch_1h both
+		wait 3500
+		trigger ammo_nazi1 anim_loop
+	}
+
+	trigger rnd2
+	{
+		accum 0 abort_if_not_equal 2
+		playanim crotch_grab_2h both
+		wait 3500
+		trigger ammo_nazi1 anim_loop
+	}
+
+	trigger rnd3
+	{
+		accum 0 abort_if_not_equal 3
+		playanim scratching_chest both
+		wait 5000
+		trigger ammo_nazi1 anim_loop
+	}
+
+	enemysight player
+	{
+		resetscript
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		cigarette off
+	}
+
+	inspectsoundstart
+	{
+		resetscript
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		cigarette off
+	}
+
+	death
+	{
+		cigarette off
+		alertentity remove_ammo_nazi1
+	}
+}
+
+ammo_nazi2 					//guy reading some shit
+
+{
+	attributes
+	{
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 1.0
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 3
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	enemysight player
+	{
+		resetscript
+	}
+
+	inspectsoundstart
+	{
+		resetscript
+		playsound MiscStopHim
+	}
+
+		death
+	{
+		alertentity remove_ammo_nazi2
+	}
+}
+
+ammo_nazi3 					//guy standing next to guy reading some nazi shit
+
+{
+	attributes
+	{
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 1.0
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 3
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+
+	}
+
+		death
+	{
+		alertentity remove_ammo_nazi3
+	}
+}
+
+ammo_nazi3_patrol
+
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.5
+		inner_detection_radius 1000
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.8
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		trigger ammo_nazi3_patrol patrol
+	}
+
+	trigger patrol
+	{
+		walktomarker ammo_nazi3_patrol1
+		walktomarker ammo_nazi3_patrol2
+		walktomarker ammo_nazi3_patrol3
+		walktomarker ammo_nazi3_patrol2
+		trigger ammo_nazi3_patrol patrol						// restarts patroling
+	}
+
+	death
+	{
+	alertentity remove_ammo_nazi3_patrol
+	}
+}
+
+
+/////////////////////////////////////////////////////////////
+///////////// Nazi charging in Ammo Depot 2 /////////////////
+/////////////////////////////////////////////////////////////
+
+ammo_nazi4
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.3
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.8
+		}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	trigger charge
+	{
+	facetargetangles ammo_depot_2_1
+	runtomarker ammo_depot_2_1 nostop
+	facetargetangles ammo_depot_2_2
+	runtomarker ammo_depot_2_2 nostop
+	facetargetangles ammo_depot_2_3
+	runtomarker ammo_depot_2_3 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+	alertentity remove_ammo_nazi4
+	}
+}
+
+ammo_nazi5
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.3
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.8
+		}
+
+	spawn
+	{
+		sethealth 30
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	trigger charge
+	{
+	facetargetangles ammo_depot_2_1
+	wait 500
+	runtomarker ammo_depot_2_1 nostop
+	facetargetangles ammo_depot_2_2
+	runtomarker ammo_depot_2_2 nostop
+	facetargetangles ammo_depot_2_3
+	runtomarker ammo_depot_2_3 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+	alertentity remove_ammo_nazi5
+	}
+}
+
+ammo_nazi6
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.3
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.8
+		}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	trigger charge
+	{
+	facetargetangles ammo_depot_2_1
+	wait 1000
+	runtomarker ammo_depot_2_1 nostop
+	facetargetangles ammo_depot_2_2
+	runtomarker ammo_depot_2_2 nostop
+	facetargetangles ammo_depot_2_3
+	runtomarker ammo_depot_2_3 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+	alertentity remove_ammo_nazi6
+	}
+}
+
+ammo_nazi7
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.3
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.8
+		}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon grenade
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	trigger charge
+	{
+	facetargetangles ammo_depot_2_1
+	wait 1500
+	runtomarker ammo_depot_2_1 nostop
+	facetargetangles ammo_depot_2_2
+	runtomarker ammo_depot_2_2 nostop
+	facetargetangles ammo_depot_2_3
+	runtomarker ammo_depot_2_3 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+	alertentity remove_ammo_nazi7
+	}
+}
+
+
+/////////////////////////////////////////////////////////////
+///////////// Nazi taking hold of MG1 in ammo depot //////
+/////////////////////////////////////////////////////////////
+
+ammo_nazi8
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.4
+		}
+
+	spawn
+	{
+		nosight 999999
+		sethealth 25
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+		trigger mg_42_use
+	{
+		explicit_routing on
+		facetargetangles ammo_mg2_1
+		runtomarker ammo_mg2_1 nostop
+		facetargetangles ammo_mg2_2
+		runtomarker ammo_mg2_2 nostop
+		facetargetangles ammo_mg2_0
+		mount ammo_mg2
+		sight
+		attrib inner_detection_radius 3000
+		attrib alertness 3000
+		attrib hearing_scale 0.5
+	}
+
+	trigger unmount_mg_42
+	{
+		unmount
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity ammo_nazi9
+		alertentity remove_ammo_nazi8
+	}
+}
+
+ammo_nazi9
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.3
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.10
+		Aggression 0.8
+		tactical 0.4
+		}
+
+	spawn
+	{
+		nosight 999999
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+		noaidamage on
+		trigger ammo_nazi9 mg_42_use
+	}
+
+		trigger mg_42_use
+	{
+		wait 3000
+		explicit_routing on
+		facetargetangles ammo_mg2_1
+		runtomarker ammo_mg2_1 nostop
+		facetargetangles ammo_mg2_2
+		runtomarker ammo_mg2_2 nostop
+		facetargetangles ammo_mg2_0
+		mount ammo_mg2
+		sight
+		attrib inner_detection_radius 3000
+		attrib alertness 3000
+		attrib hearing_scale 0.5
+	}
+
+	// trigger go_teleport
+	// {
+	// 	teleport destination_1
+	//	sight
+	// 	attrib fov 360
+	// 	attrib inner_detection_radius 3000
+	// 	attrib alertness 3000
+	// 	attrib hearing_scale 0.5
+	// 	unmount
+	// 	statetype alert
+	// 	resetscript
+	// }
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity ammo_nazi10
+		alertentity remove_ammo_nazi9
+	}
+}
+
+ammo_nazi10
+{
+	attributes
+	{
+		aim_accuracy 0.3
+		aim_skill 0.3
+		attack_skill 0.3
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.2
+		tactical 0.2
+		}
+
+	spawn
+	{
+		nosight 999999
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		noaidamage on
+		selectweapon weapon_mp40
+		trigger ammo_nazi10 mg_42_use
+	}
+
+		trigger mg_42_use
+	{
+		wait 3000
+		explicit_routing on
+		facetargetangles ammo_mg2_1
+		runtomarker ammo_mg2_1 nostop
+		facetargetangles ammo_mg2_2
+		runtomarker ammo_mg2_2 nostop
+		facetargetangles ammo_mg2_0
+		mount ammo_mg2
+		sight
+		attrib inner_detection_radius 3000
+		attrib alertness 3000
+		attrib hearing_scale 0.5
+	}
+
+	// trigger go_teleport
+	// {
+	// 	teleport destination_2
+	// 	sight
+	// 	attrib fov 360
+	// 	attrib inner_detection_radius 3000
+	// 	attrib alertness 3000
+	// 	attrib hearing_scale 0.5
+	// 	unmount
+	// 	statetype alert
+	// 	resetscript
+	// }
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity ammo_nazi11
+		alertentity remove_ammo_nazi10
+	}
+}
+
+ammo_nazi11
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.3
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.4
+		}
+
+	spawn
+	{
+		nosight 999999
+		sethealth 20
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		noaidamage on
+		trigger ammo_nazi11 mg_42_use
+	}
+
+		trigger mg_42_use
+	{
+		wait 4000
+		explicit_routing on
+		facetargetangles ammo_mg2_1
+		runtomarker ammo_mg2_1 nostop
+		facetargetangles ammo_mg2_2
+		runtomarker ammo_mg2_2 nostop
+		facetargetangles ammo_mg2_0
+		mount ammo_mg2
+		sight
+		attrib inner_detection_radius 3000
+		attrib alertness 3000
+		attrib hearing_scale 0.5
+	}
+
+	// trigger go_teleport
+	// {
+	// 	teleport destination_3
+	// 	sight
+	// 	attrib fov 360
+	// 	attrib inner_detection_radius 3000
+	// 	attrib alertness 3000
+	// 	attrib hearing_scale 0.5
+	// 	unmount
+	// 	statetype alert
+	// 	resetscript
+	// }
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity remove_ammo_nazi11
+	}
+}
+
+ammo_nazi12 // 2 guys taking control of first MG2
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		}
+
+	spawn
+	{
+		nosight 999999
+		sethealth 20
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		noaidamage on
+		selectweapon weapon_mp40
+		trigger ammo_nazi12 mg_42_use
+	}
+
+		trigger mg_42_use
+	{
+		mount ammo_mg3
+		sight
+		attrib hearing_scale 0.5
+		attrib inner_detection_radius 1200
+		attrib alertness 1200
+	}
+
+	trigger free_ammo_mg3
+	{
+		unmount
+	 	facetargetangles free_mg_4_marker
+	 	attrib fov 360
+	 	attrib inner_detection_radius 3000
+		attrib alertness 3000
+		statetype alert
+	 	wait forever
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity ammo_nazi13
+		alertentity remove_ammo_nazi12
+	}
+}
+
+ammo_nazi13
+{
+	attributes
+	{
+		aim_accuracy 0.4
+		aim_skill 0.5
+		attack_skill 0.3
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		}
+
+	spawn
+	{
+		nosight 999999
+		sethealth 20
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger ammo_nazi13 mg_42_use
+	}
+
+		trigger mg_42_use
+	{
+		wait 3000
+		facetargetangles ammo_mg3_mounter
+		runtomarker ammo_mg3_mounter
+		facetargetangles Ammo_main_charge1_marker1
+		wait 1000
+		mount ammo_mg3
+		sight
+		attrib hearing_scale 0.5
+		attrib inner_detection_radius 1200
+		attrib alertness 1200
+	}
+
+//	trigger go_teleport
+//	{
+//	teleport destination_5
+//	resetscript
+//	}
+
+	trigger free_ammo_mg3
+	{
+		unmount
+		teleport destination_5
+		sight
+		attrib fov 360
+		attrib inner_detection_radius 10000
+		attrib alertness 10000
+		attrib hearing_scale 0.9
+		statetype alert
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity remove_ammo_nazi13
+	}
+}
+
+
+///////////////////////////////////////////////////////////////
+///////Nazi guards and workers at ammo main facility///////////
+///////////////////////////////////////////////////////////////
+
+Ammo_facility_hiding_1
+
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 1000
+		alertness 1000
+		hearing_scale 0.5
+		Aggression 0.8
+		tactical 0.2
+		}
+
+	spawn
+	{
+		sethealth 20
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_ammo_facility_hiding_1
+	}
+}
+
+Ammo_facility_hiding_2
+
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.5
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.5
+		}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_ammo_facility_hiding_2
+	}
+}
+
+Ammo_facility_hiding_3 				//sniper on the cran
+
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 1.0
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.5
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.5
+		}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 150
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_Ammo_facility_hiding_3
+	}
+}
+
+Ammo_main_charge1_nazi1
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.5
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 10
+		giveweapon weapon_grenadelauncher
+	}
+
+	trigger charge
+	{
+		facetargetangles Ammo_main_charge1_marker1
+		runtomarker Ammo_main_charge1_marker1 nostop
+		facetargetangles Ammo_main_charge1_marker2
+		runtomarker Ammo_main_charge1_marker2 nostop
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	death
+	{
+		alertentity remove_Ammo_main_charge1_nazi1
+	}
+}
+
+Ammo_main_charge1_nazi2
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.5
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	trigger charge
+	{
+		facetargetangles Ammo_main_charge1_marker1
+		runtomarker Ammo_main_charge1_marker1 nostop
+		facetargetangles Ammo_main_charge1_marker2
+		runtomarker Ammo_main_charge1_marker2 nostop
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	death
+	{
+		alertentity remove_Ammo_main_charge1_nazi2
+	}
+}
+
+Ammo_main_charge1_nazi3
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.6
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.5
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+	}
+
+	trigger charge
+	{
+		facetargetangles Ammo_main_charge1_marker1
+		runtomarker Ammo_main_charge1_marker1 nostop
+		facetargetangles Ammo_main_charge1_marker2
+		runtomarker Ammo_main_charge1_marker2 nostop
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	death
+	{
+		alertentity remove_Ammo_main_charge1_nazi3
+	}
+}
+
+airplane_worker_1 							// Plane workers
+
+{
+	attributes
+	{
+		aim_accuracy 0.4
+		starting_health 10
+		hearing_scale 0.1
+		aggression 0.5
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 10
+		giveweapon weapon_grenadelauncher
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	enemysight
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	death
+	{
+		alertentity remove_airplane_worker_1
+	}
+}
+
+airplane_worker_2
+
+{
+	attributes
+	{
+		aim_accuracy 0.4
+		starting_health 10
+		hearing_scale 0.1
+		aggression 0.5
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 10
+		giveweapon weapon_grenadelauncher
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	death
+	{
+		alertentity remove_airplane_worker_2
+	}
+}
+
+airplane_worker_officer
+
+{
+	attributes
+	{
+		leader 0.5					// Why realy I should have it ?????
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0
+		Aggression 1.0
+		tactical 1.0
+	}
+
+	spawn
+	{
+		sethealth 20
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		runtomarker Ammo_main_charge1_marker2
+		attrib inner_detection_radius 3000
+		attrib alertness 3000
+		attrib hearing_scale 1.0
+		attrib fov 360
+		statetype alert
+		resetscript
+	}
+
+	death
+	{
+	alertentity remove_airplane_worker_officer
+	}
+}
+
+airplane_worker_liftman
+
+{
+
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 3000
+		alertness 2500
+		hearing_scale 0.5
+		Aggression 0.5
+		tactical 0.7
+	}
+
+	spawn
+	{
+		sethealth 10
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		statetype alert
+		trigger airplane_worker_liftman use_lift
+	}
+
+	trigger use_lift
+	{
+		alertentity lift_down_activatior_relay
+		wait 10000
+		alertentity lift_down_activatior_relay
+		wait 10000
+		trigger airplane_worker_liftman use_lift 		//restarts lift sequence
+	}
+
+	death
+	{
+	alertentity remove_airplane_worker_liftman
+	resetscript
+	}
+}

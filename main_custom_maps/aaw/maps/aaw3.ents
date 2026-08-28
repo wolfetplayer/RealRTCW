@@ -1,0 +1,27 @@
+// RealRTCW additional weapons/ammo etc.
+
+
+{
+"classname" "holdable_adrenaline"
+"origin" "1462 4595 63"
+}
+
+{
+"classname" "ammo_44ammo_l"
+"origin" "-305 4593 63"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1395 @@
+//////////////////////////////////////////////////////////
+//	RTCW AI Script										//
+//														//
+//	Map:	Alone at War - Escape from Offlag			//
+//			Alone at War - Part 1						//
+//														//
+//	Last edited by: KoS - Saturday, 29 June 2002 		//
+//														//
+//	Crimson Editor(c) 3.40 (freeware)					//
+//	Editor compatibility for Rtcw by Tram Design		//
+//														//
+//////////////////////////////////////////////////////////
+
+// If you have any questions, remarks about this map meet me
+// at the Tram design forum - http://www.planetwolfenstein.com/tramdesign
+// Or visit my site at: http://kos.nem3d.net
+
+// You are free to copy want you want from this script as long as you don`t profit from that.
+
+
+player 										//Player info
+{
+	spawn
+	{
+		cvar g_episode 7
+		objectivesneeded 2
+
+		abort_if_loadgame
+		accum 0 bitset 3 					// mission objective
+		}
+
+	playerstart
+	{
+		// Weapons
+
+
+		// Ammo
+
+
+		// Items
+		setarmor 25
+	}
+
+	trigger cementary1						//Triggers when player destroy wall at cementary
+	{
+		alertentity grave_nazi1
+		trigger grave_nazi1 lookplayer
+		alertentity grave_nazi2
+		trigger grave_nazi2 lookplayer
+		alertentity grave_drz1
+		trigger grave_drz1 lookplayer
+		alertentity grave_officer1
+	}
+
+		trigger cementary2						// Triggers nazi attack at cementary (8 nazis)
+	{
+		mu_fade 0 5000
+		mu_start sound/music/s_highramp.wav 4000
+		mu_start sound/music/m_situation.wav 5000
+		alertentity grave_nazi3
+		alertentity grave_nazi4
+		alertentity grave_nazi5
+		alertentity grave_nazi6
+		trigger grave_nazi3 cementary_attack
+		trigger grave_nazi4 cementary_attack
+		trigger grave_nazi5 cementary_attack
+		trigger grave_nazi6 cementary_attack
+		trigger music1
+	}
+
+		trigger underground_passage0				// Triggers nazi hiding behind crates
+	{
+		alertentity underground_passage1_nazi5
+	}
+
+		trigger underground_passage1				// Triggers nazi underground charge (4 nazis)+3 hiding
+	{
+		alertentity underground_passage1_nazi1
+		alertentity underground_passage1_nazi2
+		alertentity underground_passage1_nazi3
+		alertentity underground_passage1_nazi4
+		alertentity underground_passage1_nazi6		// 1 nazi hiding (no trigger action)
+		alertentity underground_passage1_nazi7		// 1 nazi hiding (no trigger action)
+		alertentity underground_passage1_nazi8		// 1 nazi hiding (no trigger action)
+		trigger underground_passage1_nazi1 charge
+		trigger underground_passage1_nazi2 charge
+		trigger underground_passage1_nazi3 charge
+		trigger underground_passage1_nazi4 charge
+	}
+
+/////////////////////////// Music trigers///////////////////
+
+	trigger music_stop				//STOP !!!!!!!!!!
+	{
+	mu_stop 1000
+	}
+
+	trigger music1				//Entering barak
+	{
+	mu_play sound/music/s_query.wav 0
+	}
+
+	trigger music2 				//Entering cementary1
+	{
+	mu_fade 0 5000
+	mu_start /sound/music/m_grave.wav 3000
+	}
+
+	trigger music3 				//Entering cementary2
+	{
+	mu_fade 0 3000
+	mu_queue /sound/music/m_action.wav 3000
+	}
+
+	trigger music4 				//entering catacombs
+	{
+	mu_fade 0 5000
+	mu_queue /sound/music/m_tension.wav
+	}
+
+/////////////////////Sicred triggers////////////////////////////
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		foundsecret
+	}
+
+/////////////////////////Objectives////////////////////////
+	trigger objective_1
+	{
+		objectivemet 1				// mission objective complete
+	}
+
+	trigger objective_2
+	{
+		objectivemet 2				// mission objective complete
+	}
+
+/////////////////////////end map////////////////////////
+	trigger endmap
+	{
+		changelevel aaw2 persistent
+	}
+}
+
+/////////////////////////////////////////////////////////////
+///////////// Graveyard AI's start here (12 AIs) ////////////
+////////////////////////////////////////////////////////////
+
+grave_nazi1
+{
+	attributes
+	{
+		fov 300
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 1.0
+		inner_detection_radius 15000
+		alertness 15000
+		hearing_scale 0.8
+		inner_detection_radius 15000
+		Aggression 0.8
+		tactical 1.0
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		setammo ammo_grenades 3
+
+	}
+
+	trigger lookplayer
+	{
+		explicit_routing on
+		facetargetangles cementary_lookplayer1
+		runtomarker cementary_lookplayer1 nostop
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_nazi1
+	}
+}
+
+grave_officer1							// Boss of Camp A ??? Having only luger ???
+										// he is strong in nazi powers ???
+{
+	attributes
+	{
+		leader 0.5						//what will hapen ?
+		aim_accuracy 1.0
+		aim_skill 1.0
+		attack_skill 1.0
+		inner_detection_radius 3000
+		alertness 2500
+		hearing_scale 1.0
+		Aggression 1.0
+		tactical 1.0
+	}
+
+	spawn
+	{
+		sethealth 50
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		setammo ammo_grenades 2
+		selectweapon weapon_luger
+		statetype alert
+		wait forever
+	}
+
+	death
+	{
+		alertentity remove_grave_officer1
+	}
+}
+
+grave_nazi2
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 1.0
+		inner_detection_radius 15000
+		alertness 15000
+		hearing_scale 0.8
+		inner_detection_radius 15000
+		Aggression 0.8
+		tactical 1.0
+	}
+
+	spawn
+	{
+		sethealth 50
+		takeweapon all
+		giveweapon weapon_luger
+		giveweapon weapon_mauserRifle
+		setammo ammo_9mm 999
+		setammo ammo_792mm 150
+		setammo ammo_grenades 3
+		selectweapon weapon_mauserRifle
+	}
+
+	trigger lookplayer
+	{
+	explicit_routing on
+	facetargetangles cementary_lookplayer
+	runtomarker cementary_lookplayer nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_nazi2
+	}
+}
+
+grave_drz1
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.8
+		inner_detection_radius 640
+		Aggression 0.8
+		tactical 1.0
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	trigger lookplayer
+	{
+	explicit_routing on
+	facetargetangles cementary_lookplayer2
+	runtomarker cementary_lookplayer2 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_drz1
+	}
+}
+
+///////////			4 + 4 (death respawn) guys after grave trigger
+
+grave_nazi3
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1000
+		alertness 1000
+		hearing_scale 0.8
+		Aggression 0.8
+		tactical 0.0
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mauserRifle
+		giveweapon weapon_grenadelauncher
+		setammo ammo_9mm 999
+		setammo ammo_grenades 999
+		setammo ammo_792mm 150
+		selectweapon weapon_mauserRifle
+	}
+
+	enemysight player
+	{
+	playsound intruder_alarm
+	resetscript
+	statetype alert
+	}
+
+	trigger cementary_attack
+	{
+	facetargetangles cementary_attack_7
+	runtomarker cementary_attack_7 nostop
+	facetargetangles cementary_attack_10
+	runtomarker cementary_attack_10 nostop
+	facetargetangles cementary_attack_11
+	runtomarker cementary_attack_11 nostop
+	facetargetangles cementary_attack_12
+	runtomarker cementary_attack_12 nostop
+	facetargetangles cementary_attack_13
+	runtomarker cementary_attack_13 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+		alertentity grave_nazi7
+		alertentity remove_grave_nazi3
+	}
+}
+
+grave_nazi4
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.0
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mauserRifle
+		giveweapon weapon_grenadelauncher
+		setammo ammo_9mm 999
+		setammo ammo_grenades 999
+		setammo ammo_792mm 150
+		selectweapon weapon_mauserRifle
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	trigger cementary_attack
+	{
+	facetargetangles cementary_attack_7
+	wait 15000
+	runtomarker cementary_attack_7 nostop
+	facetargetangles cementary_attack_10
+	runtomarker cementary_attack_10 nostop
+	facetargetangles cementary_attack_11
+	runtomarker cementary_attack_11 nostop
+	facetargetangles cementary_attack_12
+	runtomarker cementary_attack_12 nostop
+	facetargetangles cementary_attack_13
+	runtomarker cementary_attack_13 nostop
+	statetype alert
+	wait forever
+	resetscript
+	}
+
+	death
+	{
+		alertentity grave_nazi8
+		alertentity remove_grave_nazi4
+	}
+}
+
+grave_nazi5
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.0
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mauserRifle
+		giveweapon weapon_grenadelauncher
+		setammo ammo_9mm 999
+		setammo ammo_grenades 999
+		setammo ammo_792mm 150
+		selectweapon weapon_mauserRifle
+	}
+
+	enemysight player
+	{
+	resetscript
+	statetype alert
+	}
+
+	trigger cementary_attack
+	{
+		facetargetangles cementary_attack_7
+		wait 30000
+		runtomarker cementary_attack_7 nostop
+		facetargetangles cementary_attack_10
+		runtomarker cementary_attack_10 nostop
+		facetargetangles cementary_attack_11
+		runtomarker cementary_attack_11 nostop
+		facetargetangles cementary_attack_12
+		runtomarker cementary_attack_12 nostop
+		facetargetangles cementary_attack_13
+		runtomarker cementary_attack_13 nostop
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity grave_nazi9
+		alertentity remove_grave_nazi5
+	}
+}
+
+grave_nazi6
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		inner_detection_radius 10000
+		Aggression 0.8
+		tactical 0.0
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mauserRifle
+		giveweapon weapon_grenadelauncher
+		setammo ammo_9mm 999
+		setammo ammo_grenades 999
+		setammo ammo_792mm 150
+		selectweapon weapon_mauserRifle
+	}
+
+	enemysight player
+	{
+		resetscript
+		statetype alert
+	}
+
+	trigger cementary_attack
+	{
+		facetargetangles cementary_attack_7
+		runtomarker cementary_attack_7 nostop
+		facetargetangles cementary_attack_10
+		wait 45000
+		runtomarker cementary_attack_10 nostop
+		facetargetangles cementary_attack_11
+		runtomarker cementary_attack_11 nostop
+		facetargetangles cementary_attack_12
+		runtomarker cementary_attack_12 nostop
+		facetargetangles cementary_attack_13
+		runtomarker cementary_attack_13 nostop
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity grave_nazi10
+		alertentity remove_grave_nazi6
+	}
+}
+
+grave_nazi7
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.8
+		inner_detection_radius 1000
+		attack_crouch 0.9
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	enemysight player
+	{
+		resetscript
+		statetype alert
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger grave_nazi7 cementary_attack
+	}
+
+	trigger cementary_attack
+	{
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_nazi7
+	}
+}
+
+grave_nazi8
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.8
+		inner_detection_radius 1000
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+		trigger grave_nazi8 cementary_attack
+	}
+
+	enemysight player
+	{
+		resetscript
+		statetype alert
+	}
+
+	trigger cementary_attack
+	{
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_nazi8
+	}
+}
+
+grave_nazi9
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.8
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger grave_nazi9 cementary_attack
+	}
+
+	enemysight player
+	{
+		resetscript
+		statetype alert
+	}
+
+	trigger cementary_attack
+	{
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_nazi9
+	}
+}
+
+grave_nazi10
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.8
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		trigger grave_nazi10 cementary_attack
+	}
+
+	enemysight player
+	{
+		resetscript
+		statetype alert
+	}
+
+	trigger cementary_attack
+	{
+		statetype alert
+		wait forever
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_grave_nazi10
+	}
+}
+
+
+/////////////////////////////////////////////////////////////
+/// Underground passage AI's start here (8 AIs) /////////////
+/////////////////////////////////////////////////////////////
+
+underground_passage1_nazi5
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.0
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{
+		noattack 1000
+		playsound who_are_you
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi5
+	}
+}
+
+underground_passage1_nazi6
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.0
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi6
+	}
+}
+
+underground_passage1_nazi7
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.0
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		alertentity underground_passage1_nazi11
+		alertentity remove_underground_passage1_nazi7
+	}
+}
+
+underground_passage1_nazi8
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.0
+		inner_detection_radius 1000
+		attack_crouch 0.6
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	enemysight
+	{
+		noattack 1000
+		playsound who_are_you
+	}
+
+	death
+	{
+		alertentity underground_passage1_nazi9
+		alertentity remove_underground_passage1_nazi8
+	}
+}
+
+
+underground_passage1_nazi9
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 3000
+		alertness 2500
+		hearing_scale 0.8
+		attack_crouch 0.3
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi9
+	}
+}
+
+underground_passage1_nazi10
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi10
+	}
+}
+
+underground_passage1_nazi11
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.3
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		statetype alert
+		sethealth 25
+		takeweapon all
+		setammo ammo_grenades 3
+		setammo ammo_9mm 999
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+	}
+
+	death
+	{
+		mu_fade 0 5000
+		mu_queue /sound/music/l_theme.wav
+		alertentity remove_underground_passage1_nazi11
+	}
+}
+
+underground_passage1_nazi1
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.7
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	trigger charge
+	{
+		facetargetangles grave_marker10
+		runtomarker grave_marker10 nostop
+		facetargetangles grave_marker9
+		runtomarker grave_marker9 nostop
+		facetargetangles grave_marker8
+		runtomarker grave_marker8 nostop
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi1
+	}
+}
+
+underground_passage1_nazi2
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.7
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_luger
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	trigger charge
+	{
+		facetargetangles grave_marker10
+		runtomarker grave_marker10 nostop
+		facetargetangles grave_marker9
+		runtomarker grave_marker9 nostop
+		facetargetangles grave_marker8
+		wait 5000
+		runtomarker grave_marker8 nostop
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi2
+	}
+}
+
+underground_passage1_nazi3
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.6
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	trigger charge
+	{
+		facetargetangles grave_marker10
+		runtomarker grave_marker10 nostop
+		facetargetangles grave_marker9
+		wait 5000
+		runtomarker grave_marker9 nostop
+		facetargetangles grave_marker8
+		runtomarker grave_marker8 nostop
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_underground_passage1_nazi3
+	}
+}
+
+underground_passage1_nazi4
+{
+	attributes
+	{
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 1.0
+		inner_detection_radius 1024
+		alertness 2500
+		hearing_scale 0.6
+		inner_detection_radius 1000
+		attack_crouch 0.7
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		sethealth 25
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		setammo ammo_grenades 3
+		selectweapon weapon_mp40
+	}
+
+	trigger charge
+	{
+		facetargetangles grave_marker10
+		runtomarker grave_marker10 nostop
+		wait 3000
+		facetargetangles grave_marker9
+		runtomarker grave_marker9 nostop
+		facetargetangles grave_marker8
+		runtomarker grave_marker8 nostop
+		resetscript
+	}
+
+	death
+	{
+		alertentity underground_passage1_nazi10
+		alertentity remove_underground_passage1_nazi4
+	}
+}
+
+
+//////////////////////////////////
+// Prisoners script starts here///
+///////////////////////////////////
+
+pow1
+{
+	attributes
+	{
+		tactical 0.0
+		alertness 0.0
+		fov 360
+		hearing_scale 0.0
+		attack_crouch 0.0
+		attack_skill 0.0
+		aim_accuracy 0.0
+		aim_skill 0.0
+		agression 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		noavoid
+		nosight 999999
+		statetype relaxed
+		takeweapon all
+		trigger pow1 marchloop 		// This will begin the Marching loop.
+	}
+
+    trigger marchloop
+    {
+      facetargetangles pow1-1
+	  walktomarker pow1-1 nostop
+	  facetargetangles pow1-2
+      walktomarker pow1-2 nostop
+      facetargetangles b1d1_out
+      walktomarker b1d1_out nostop
+      facetargetangles b1d1_in
+      walktomarker b1d1_in nostop
+      facetargetangles pow1-3
+      walktomarker pow1-3
+      facetargetangles pow1-2
+      playsound pow_cough
+      wait 5000
+      facetargetangles b1d1_in
+      walktomarker b1d1_in nostop
+      facetargetangles b1d1_out
+      walktomarker b1d1_out nostop
+      facetargetangles pow1-2
+      walktomarker pow1-2 nostop
+      playsound pow_cough
+      wait 5000
+      trigger pow1 marchloop 		// Restarts the marching loop.
+    }
+
+	blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	activate player
+	{
+		wait 5000
+	}
+
+	death player
+	{
+		missionfailed 8 12
+	}
+}
+
+pow2
+{
+	attributes
+	{
+		tactical 0.0
+		alertness 0.0
+		fov 360
+		hearing_scale 0.0
+		attack_crouch 0.0
+		attack_skill 0.0
+		aim_accuracy 0.0
+		aim_skill 0.0
+		agression 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		noavoid
+		nosight 999999
+		statetype relaxed
+		takeweapon all
+		trigger pow2 marchloop // This will begin the Marching loop.
+	}
+
+    trigger marchloop
+    {
+      facetargetangles pow2-1
+	  walktomarker pow2-1 nostop
+	  facetargetangles pow2-2
+	  playsound pow_cough
+      wait 10000
+	  walktomarker pow2-2 nostop
+	  facetargetangles pow2-1
+	  walktomarker pow2-1 nostop
+	  facetargetangles pow2-3
+	  playsound pow_cough
+	  wait 10000
+	  walktomarker pow2-3 nostop
+	  facetargetangles pow2-4
+	  walktomarker pow2-4 nostop
+	  facetargetangles pow2-5
+	  playsound pow_cough
+	  wait 10000
+	  trigger pow2 marchloop // Restarts the marching loop.
+    }
+
+    blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	activate player
+	{
+		wait 5000
+	}
+
+	death player
+	{
+		missionfailed 8 12
+	}
+}
+
+////////////////////////////////////////////////////
+//	Guards between Camp A and camb B start here ////
+////////////////////////////////////////////////////
+
+camp_door_1_nazi_left
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		attack_crouch 0.6
+		AGGRESSION 0.8
+		tactical 0.5
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.2
+	}
+	spawn
+	{
+		sethealth 200
+	}
+	death
+	{
+		alertentity remove_camp_door_1_nazi_left
+	}
+}
+
+camp_door_1_nazi_right
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		attack_crouch 0.6
+		AGGRESSION 0.8
+		tactical 0.5
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.2
+	}
+	spawn
+	{
+		sethealth 200
+	}
+	death
+	{
+		alertentity remove_camp_door_1_nazi_right
+	}
+}
+
+camp_door_1_nazi_inside1
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		attack_crouch 0.6
+		AGGRESSION 0.8
+		tactical 0.5
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.2
+	}
+	spawn
+	{
+		sethealth 200
+	}
+	death
+	{
+		alertentity remove_camp_door_1_nazi_inside1
+	}
+}
+
+camp_door_1_nazi_inside2
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		attack_crouch 0.6
+		AGGRESSION 0.8
+		tactical 0.5
+		inner_detection_radius 10000
+		alertness 10000
+		hearing_scale 0.2
+	}
+	spawn
+	{
+		sethealth 200
+	}
+	death
+	{
+		alertentity remove_camp_door_1_nazi_inside2
+	}
+}

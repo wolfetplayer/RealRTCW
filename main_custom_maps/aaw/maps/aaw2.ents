@@ -1,0 +1,26 @@
+// RealRTCW additional weapons/ammo etc.
+
+
+{
+"classname" "weapon_mp44"
+"origin" "1276 3049 -984"
+}
+
+{
+"classname" "ammo_44ammo_l"
+"origin" "566 3693 -509"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

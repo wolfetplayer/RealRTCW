@@ -1,0 +1,961 @@
+//////////////////////////////////////////////////////////////////////////
+//	RTCW Brush Script						//	
+//									//
+//	Episode:	Alone at War - Escape from Offlag		//
+//			Alone at War - Part 5				//
+//			This is stand-alone level but you should 	//
+//			play levels 1-4 of this series			//
+//									//
+//	Last edited by: KoS - Saturday, 29 June 2002 			//
+//									//
+//	Crimson Editor(c) 3.40 (freeware)				//
+//	Editor compatibility for Rtcw by Tram Design			//
+//									//
+//////////////////////////////////////////////////////////////////////////
+
+signleg1
+{
+	spawn
+	{
+	}
+
+	trigger choosefall
+	{
+		accum 0 random 3
+		wait 5
+		trigger signleg1 fall1
+		wait 5
+		trigger signleg1 fall2
+		wait 5
+		trigger signleg1 fall3
+	}
+
+	trigger fall1
+	{
+		accum 0 abort_if_not_equal 0
+		resetscript
+		faceangles 30 4 0 500
+		faceangles 60 8 0 250
+		playsound ass_sign_fall
+		faceangles 90 12 0 100
+	}
+
+	trigger fall2
+	{
+		accum 0 abort_if_not_equal 1
+		resetscript
+		faceangles -30 20 0 450
+		faceangles -60 40 0 250
+		playsound ass_sign_fall
+		faceangles -90 60 0 100
+	}
+
+	trigger fall3
+	{
+		accum 0 abort_if_not_equal 2
+		resetscript
+		faceangles -2 60 0 500
+		faceangles -30 65 0 450
+		faceangles -60 70 0 250
+		playsound ass_sign_fall
+		faceangles -90 75 0 100
+	}
+}
+
+signleg2
+{
+	spawn
+	{
+	}
+
+	trigger choosefall
+	{
+		wait 50
+		accum 0 random 3
+		wait 5
+		trigger signleg2 fall1
+		wait 5
+		trigger signleg2 fall2
+		wait 5
+		trigger signleg2 fall3
+	}
+
+	trigger fall1
+	{
+		accum 0 abort_if_not_equal 0
+		resetscript
+		faceangles -10 1 0 300
+		faceangles -30 5 0 450
+		faceangles -60 10 0 250
+		playsound ass_sign_fall
+		faceangles -90 15 0 100
+	}
+
+	trigger fall2
+	{
+		accum 0 abort_if_not_equal 1
+		resetscript
+		faceangles 30 4 0 450
+		faceangles 60 8 0 250
+		playsound ass_sign_fall
+		faceangles 90 12 0 100
+	}
+
+	trigger fall3
+	{
+		accum 0 abort_if_not_equal 2
+		resetscript
+		faceangles -10 1 0 300
+		faceangles -30 20 0 450
+		faceangles -60 40 0 250
+		playsound ass_sign_fall
+		faceangles -90 60 0 100
+	}
+}
+
+board1
+{
+	spawn
+	{
+		accum 0 bitset 0 // bitset = away, bitreset = close
+		wait 5000
+		faceangles 0 45 0 100
+	}
+
+	trigger clockwise
+	{
+		faceangles 0 45 -90 100
+		faceangles 0 45 -180 100
+		faceangles 0 45 -270 100
+		faceangles 0 45 -360 100
+		faceangles 0 45 -90 250
+		faceangles 0 45 -180 300
+		faceangles 0 45 -270 350
+		faceangles 0 45 -360 400
+		faceangles 0 45 -90 450
+		faceangles 0 45 -180 500
+		faceangles 0 45 -270 550
+		faceangles 0 45 -360 600
+		faceangles 0 45 -10 75
+		faceangles 0 45 -20 100
+		faceangles 0 45 -30 125
+		faceangles 0 45 -40 175
+		faceangles 0 45 -50 250
+		faceangles 0 45 -60 350
+		faceangles 0 45 -50 325
+		faceangles 0 45 -40 300
+		faceangles 0 45 -30 250
+		faceangles 0 45 -20 200
+		faceangles 0 45 -10 150
+		faceangles 0 45 0 100
+		faceangles 0 45 10 125
+		faceangles 0 45 20 150
+		faceangles 0 45 30 225
+		faceangles 0 45 40 300
+		faceangles 0 45 30 275
+		faceangles 0 45 20 250
+		faceangles 0 45 10 200
+		faceangles 0 45 0 150
+		faceangles 0 45 -10 225
+		faceangles 0 45 -20 300
+		faceangles 0 45 -10 275
+		faceangles 0 45 0 250
+	}
+
+	trigger counter_clockwise
+	{
+		faceangles 0 45 90 100
+		faceangles 0 45 180 100
+		faceangles 0 45 270 100
+		faceangles 0 45 360 100
+		faceangles 0 45 90 250
+		faceangles 0 45 180 300
+		faceangles 0 45 270 350
+		faceangles 0 45 360 400
+		faceangles 0 45 90 450
+		faceangles 0 45 180 500
+		faceangles 0 45 270 550
+		faceangles 0 45 360 600
+		faceangles 0 45 10 75
+		faceangles 0 45 20 100
+		faceangles 0 45 30 125
+		faceangles 0 45 40 175
+		faceangles 0 45 50 250
+		faceangles 0 45 60 350
+		faceangles 0 45 50 325
+		faceangles 0 45 40 300
+		faceangles 0 45 30 250
+		faceangles 0 45 20 200
+		faceangles 0 45 10 150
+		faceangles 0 45 0 100
+		faceangles 0 45 -10 125
+		faceangles 0 45 -20 150
+		faceangles 0 45 -30 225
+		faceangles 0 45 -40 300
+		faceangles 0 45 -30 275
+		faceangles 0 45 -20 250
+		faceangles 0 45 -10 200
+		faceangles 0 45 0 150
+		faceangles 0 45 10 225
+		faceangles 0 45 20 300
+		faceangles 0 45 10 275
+		faceangles 0 45 0 250
+	}
+}
+
+gate
+{
+	spawn
+	{
+	}
+
+	trigger toggle
+	{
+		trigger gate open
+		wait 10
+		trigger gate close
+	}
+
+	trigger open
+	{
+		accum 0 abort_if_bitset 0
+		accum 0 bitset 0
+		wait 500
+		playsound sound/scenaric/rocket/electric_door_start.wav
+        	wait 700
+         	playsound sound/scenaric/rocket/electric_door_loop.wav looping
+		gotomarker g2 20
+		alertentity activate_door_02
+		faceangles 270 0 0 gototime
+	}
+
+	trigger close
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		wait 500
+		playsound sound/scenaric/rocket/electric_door_start.wav
+        	wait 700
+         	playsound sound/scenaric/rocket/electric_door_loop.wav looping
+		gotomarker g1 25
+		alertentity activate_door_02_02
+		faceangles 0 0 0 gototime
+	}
+	
+	trigger yellow_loop
+	{
+		alertentity l1_yellow
+		accum 1 bitreset 1
+		wait 1000
+		alertentity l1_yellow
+		accum 1 bitset 1 
+		wait 500
+		trigger gate yellow_loop
+	}
+
+	trigger stop_yellow
+	{
+		resetscript
+		accum 1 abort_if_bitset 0
+		alertentity l1_yellow
+		stopsound
+		playsound sound/scenaric/rocket/electric_door_end.wav
+	}
+}
+
+counter1
+{
+	spawn
+	{
+		accum 0 set 0	
+	}
+
+	trigger counter
+	{
+		accum 1 inc 1
+		accum 1 abort_if_not_equal 2
+		trigger player objective1
+		alertentity remove_team1
+		trigger player actionpara
+	}
+
+	trigger counter2
+	{
+		accum 0 inc 1
+		accum 0 abort_if_not_equal 2
+		alertentity final_action
+		alertentity end
+	}	
+}
+
+zp_m1_chsx_forest
+	
+{
+	spawn
+	{
+		wait 100
+	}
+
+	trigger f0
+	{
+		gotomarker tank_pos1 60\\ISPR
+	  	faceangles 0 0 0 gototime
+	}
+
+	trigger f1
+	{
+		wait 100
+		gotomarker tank_pos2 40
+		faceangles 0 350 0 400
+		faceangles -2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 2 350 0 500
+		faceangles 0 350 0 400
+		faceangles -2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 0 350 0 500
+		faceangles 2 350 0 400
+		faceangles 0 350 0 500
+		faceangles 0 350 0 500
+	}
+	
+	trigger f2
+	{
+		wait 100
+		gotomarker tank_pos3 30000
+		faceangles 0 225 0 400
+		gotomarker tank_pos4 40
+		faceangles 0 205 0 400
+		faceangles -2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 2 205 0 500
+		faceangles 0 205 0 400
+		faceangles -2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 0 205 0 500
+		faceangles 2 205 0 400
+		faceangles 0 205 0 500
+		faceangles 0 205 0 500		
+	}
+
+	trigger tc1
+	{
+	}
+}
+
+zp_m1_tur_forest2 //fyi: avg 180 turn for tiger approx 1 min irl
+
+{
+	spawn
+	{
+		wait 100
+	}
+
+	trigger f0
+	{
+		gotomarker tank_pos1 60\\ISPR
+	  	faceangles 0 0 0 gototime
+		playsound sound/vehicles/tankmove2.wav looping
+	}
+
+	trigger f1
+	{
+		wait 100
+		gotomarker tank_pos2 40
+		faceangles 0 350 0 400
+		faceangles -2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 2 350 0 500
+		faceangles 0 350 0 400
+		faceangles -2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 0 350 0 500
+		faceangles 2 350 0 400
+		faceangles 0 350 0 500
+		faceangles 0 350 0 500
+	}
+
+	trigger f2
+	{
+		wait 100
+		gotomarker tank_pos3 30000
+		faceangles 0 225 0 400
+		gotomarker tank_pos4 40
+		faceangles 0 205 0 400
+		faceangles -2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 2 205 0 500
+		faceangles 0 205 0 400
+		faceangles -2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 0 205 0 500
+		faceangles 2 205 0 400
+		faceangles 0 205 0 500
+		faceangles 0 205 0 500
+		wait 35000
+		trigger zp_m1_tur_forest2 tc1
+	}
+
+	trigger tc1
+	{
+		stopsound
+		wait 3000
+		playsound sound/scenaric/tram/tram_stop.wav
+		faceangles 0 280 0 4000
+	}
+}
+
+zp_m1_cn_forest2
+	
+{
+	spawn
+	{
+		wait 100
+	}
+
+	trigger f0
+	{
+		gotomarker tank_pos1 60\\ISPR
+	  	faceangles 0 0 0 gototime
+	}
+
+	trigger f1
+	{
+		wait 100
+		gotomarker tank_pos2 40
+		faceangles 0 350 0 400
+		faceangles -2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 2 350 0 500
+		faceangles 0 350 0 400
+		faceangles -2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 2 350 0 500
+		faceangles 0 350 0 400
+		faceangles 0 350 0 500
+		faceangles 2 350 0 400
+		faceangles 0 350 0 500
+		faceangles 0 350 0 500
+	}
+
+	trigger f2
+	{
+		wait 100
+		gotomarker tank_pos3 30000
+		faceangles 0 225 0 400
+		gotomarker tank_pos4 40
+		faceangles 0 205 0 400
+		faceangles -2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 2 205 0 500
+		faceangles 0 205 0 400
+		faceangles -2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 2 205 0 500
+		faceangles 0 205 0 400
+		faceangles 0 205 0 500
+		faceangles 2 205 0 400
+		faceangles 0 205 0 500
+		faceangles 0 205 0 500
+		wait 35000
+		trigger zp_m1_cn_forest2 tc1
+	}
+
+	trigger tc1
+	{
+		wait 3000
+		playsound sound/scenaric/tram/tram_stop.wav
+		faceangles 0 280 0 4000
+	}
+}
+
+zp_m1_whll
+	
+{
+	spawn
+	{
+		wait 100
+		attachtotag zp_m1_chsx_forest tag_zp_m1_whll
+	}
+
+	trigger f1
+	{
+		wait 100
+		playanim 1 37 looping 40000
+
+	}
+
+	trigger f2
+	{
+		wait 100
+		playanim 1 37 looping 40000
+	}
+}
+
+zp_m1_whlr
+
+{
+	spawn
+	{
+		wait 100
+		attachtotag zp_m1_chsx_forest tag_whlr
+	}
+
+	trigger f1
+	{
+		wait 100
+		playanim 1 37 looping 40000
+	}
+
+	trigger f2
+	{
+		wait 100
+		playanim 1 37 looping 40000
+
+	}
+}
+
+zp_m1_trkl
+	
+{
+	spawn
+	{
+		wait 100
+		attachtotag zp_m1_chsx_forest tag_trkl
+	}
+
+	trigger f1
+	{
+		wait 100
+		playanim 1 37 looping 40000
+
+	}
+
+	trigger f2
+	{
+		wait 100
+		playanim 1 37 looping 40000
+	}
+}
+
+zp_m1_trkr
+
+{
+	spawn
+	{
+		wait 100
+		attachtotag zp_m1_chsx_forest tag_trkr
+	}
+
+	trigger f1
+	{
+		wait 100
+		playanim 1 37 looping 40000
+	}
+	
+	trigger f2
+	{
+		wait 100
+		playanim 1 37 looping 40000
+	}
+}
+
+house_fire
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker house_fire_1 10000
+	}
+}
+
+cabinet
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker house_fire_1 10000
+	}
+}
+
+dialog
+{
+	spawn
+	{
+	}
+	
+	trigger start
+	{
+		startcam aaw5_1
+		wait 1000
+		alertentity bj1
+	}
+}
+
+explo_fire1												// Script mover.
+{
+	spawn
+	{
+	}
+
+	trigger go
+
+	{
+		gotomarker explo_fire1_stop 10000				// [Apper] mover.
+	}
+}
+
+// Mover for first M109 bombing plain ///////////////////////////////////////////////////////////////
+
+m109													// Script mover for M109 bombing plain
+{
+	spawn
+	{
+		playsound sound\se_bunker\nib_plane.wav looping 
+		gotomarker m109_0 10000	
+		faceangles 0 180 0 gototime
+	}
+
+	trigger go
+	{
+		gotomarker m109_1 1000
+		faceangles 0 180 0 gototime
+		gotomarker bomb_spot_0 1000
+		faceangles 0 180 0 gototime
+		trigger m109_bomb drop
+		gotomarker m109_2 1000
+		faceangles 0 180 0 gototime
+		gotomarker m109_3 1000
+		faceangles 0 180 0 gototime
+		gotomarker m109_4 1000
+		faceangles 0 180 0 gototime
+		wait 100
+		alertentity kill_m109
+	}
+}
+
+m109_bomb												// Script mover for dropping the bomb
+{
+	spawn
+	{
+	}
+
+	trigger drop
+	{
+		gotomarker bomb_spot_0 15000
+		faceangles 0 0 0 gototime
+		playsound sound\world\boomin2.wav
+		gotomarker bomb_spot_1 800
+		faceangles -60 0 180 gototime
+		alertentity remove_bomb
+		alertentity explo1_starting
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Mover for second M109 bombing plain ///////////////////////////////////////////////////////////////
+
+m109_2													// Script mover for second M109 bombing plain
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		playsound sound\se_bunker\nib_plane.wav looping 
+		gotomarker m109_2_0 10000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_1 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_2 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_3 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_4 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_bomb_spot_0 1000
+		faceangles 0 360 0 gototime
+		trigger m109_bomb_2 drop2
+		gotomarker m109_2_5 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_6 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_7 1000
+		faceangles 0 360 0 gototime
+		gotomarker m109_2_8 1000
+		faceangles 0 360 0 gototime
+		wait 100
+		alertentity kill_m109_2
+	}
+}
+
+m109_bomb_2											// Script mover for dropping the bomb
+{
+	spawn
+	{
+	}
+
+	trigger drop2
+	{
+		gotomarker m109_2_bomb_spot_0 15000
+		faceangles 0 0 0 gototime
+		playsound sound\world\boomin2.wav
+		gotomarker m109_2_bomb_spot_1 800
+		faceangles 60 0 180 gototime
+		alertentity remove_bomb_2
+		alertentity house_fire1
+		trigger player ammo_explo
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+fire_tree_and_ammo										// [Appear] mover for tree fire and ammo fire
+{
+	spawn
+	{
+	}
+
+	trigger go
+
+	{
+		gotomarker fire_tree_and_ammo_path1 10000
+		alertentity tree_fire_smoke
+		alertentity tree_fire_sound
+		alertentity tree_fire_dlight
+		trigger tree fall
+	}
+}
+
+tree													 // mover for falling tree
+{
+	spawn
+	{
+	}
+
+	trigger fall
+	{
+		wait 6000										//TimeMer
+		alertentity killtreesmoke
+		alertentity kill_tree_dlight
+		alertentity tree_creak2							// sound of falling tree 2
+		gotomarker tree_path1 40
+		faceangles 0 0 45 gototime
+		alertentity tree_creak1							// sound of falling tree 1
+		trigger mound start
+		gotomarker tree_path2 150
+		faceangles 0 0 90 gototime
+		alertentity tree_impact_sound
+		alertentity tree_dust
+		alertentity give_new_tree_smoke
+		wait 30000
+		alertentity remove_small_smoke
+	}
+}
+
+
+flying_cover 											// Mover for flaing cover of ammo (mortals shells box)
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker flying_cover_path1 1000
+		faceangles 180 0 0 gototime
+		gotomarker flying_cover_path2 700
+		faceangles 0 180 0 gototime
+		gotomarker flying_cover_path3 400
+		faceangles 0 0 180 gototime
+		gotomarker flying_cover_path4 700
+		faceangles 180 180 180 gototime
+		gotomarker flying_cover_path5 700
+		faceangles 80 0 0 gototime
+		alertentity cover_dust
+	}
+}
+
+ammo_fire_up 											// Appear move fire
+{
+	spawn
+	{
+	}
+
+	trigger go
+	{
+		gotomarker ammo_fire_up_path1 10000
+	}
+}
+
+mound
+{
+	spawn
+	{
+	}
+
+	trigger start
+	{
+		gotomarker p_1 180
+		faceangles 0 0 0 gototime
+	}
+}
+
+opel
+{
+	spawn
+	{
+	}
+	
+	trigger start
+	{
+		gotomarker opel_pos1 30000
+		faceangles 0 180 0 gototime
+		playsound sound/world/idle_01.wav looping
+		trigger player objective2
+	}
+ 	
+	trigger start2
+	{
+		playsound sound/world/shift_01.wav looping
+		gotomarker opel_pos2 60
+		faceangles 0 180 0 gototime
+		gotomarker opel_pos3 60
+		faceangles 0 145 0 gototime
+	}
+}
+
+parachute1
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+	        alertentity trooper1
+	        alertentity killstatic1
+		playanim 1 74 looping forever
+		gotomarker p1spot15 150 wait
+		gotomarker p1spot16 150 deccel wait
+		faceangles 0 26 0 500
+	        trigger trooper1 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute1 sink
+	}
+
+	trigger sink
+	{
+		wait 5000
+		gotomarker p1spot17 2 wait
+
+	}
+}
+
+parachute2
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+                alertentity trooper2
+                alertentity killstatic2
+		playanim 1 74 looping forever
+		gotomarker pp2_1 150 wait
+		gotomarker pp2_2 150 deccel wait
+		faceangles 0 26 0 500
+                trigger trooper2 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute2 sink
+	}
+
+	trigger sink
+	{
+		wait 5000
+		gotomarker pp2_3 2 wait
+                
+	}
+}
+
+
+parachute3
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+
+		alertentity trooper3
+		alertentity killstatic3
+		playanim 1 74 looping forever
+		gotomarker pp3_1 150 wait
+		gotomarker pp3_2 150 deccel wait
+		faceangles 0 26 0 500
+		trigger trooper3 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute3 sink
+	}
+
+	trigger sink
+	{
+		wait 5000
+		gotomarker pp3_3 2 wait
+	
+	}
+}
+
+parachute4
+{
+	spawn
+	{
+		accum 0 bitreset 0	// Used incase the parachute deflates,
+	}
+
+	trigger go
+	{
+		alertentity trooper4
+		alertentity killstatic4
+		playanim 1 74 looping forever
+		gotomarker pp4_1 150 wait
+		gotomarker pp4_2 150 deccel wait
+		faceangles 0 26 0 500
+		trigger trooper4 go
+		playanim 53 180 2000
+		wait 100
+		trigger parachute4 sink
+	}
+
+	trigger sink
+	{
+		wait 5000
+		gotomarker pp4_3 2 wait
+
+	}
+}

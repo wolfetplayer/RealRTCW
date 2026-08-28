@@ -1,0 +1,2302 @@
+//////////////////////////////////////////////////////////
+//	RTCW AI Script										//
+//														//
+//	Map:	Alone at War - Escape from Offlag			//
+//			Alone at War - Part 4						//
+//														//
+//	Last edited by: KoS - Saturday, 29 June 2002 		//
+//														//
+//	Crimson Editor(c) 3.40 (freeware)					//
+//	Editor compatibility for Rtcw by Tram Design		//
+//														//
+//////////////////////////////////////////////////////////
+
+// If you have any questions, remarks about this map meet me
+// at the Tram design forum - http://www.planetwolfenstein.com/tramdesign
+// Or visit my site at: http://kos.nem3d.net
+
+// You are free to copy want you want from this script as long as you don`t profit from that.
+
+
+player 										//Player info
+{
+	spawn
+	{
+		cvar g_episode 10
+		objectivesneeded 3
+
+		abort_if_loadgame
+	}
+
+	playerstart
+	{
+	mu_fade 0 5000
+	mu_queue sound/music/m_mission
+
+		// Weapons
+		// takeweapon all
+		// giveweapon weapon_mauserRifle
+		// giveweapon weapon_sniperscope
+		// giveweapon weapon_luger
+		// giveweapon weapon_mp40
+		// selectweapon weapon_mp40
+
+		// Ammo
+		// setammo ammo_grenades 3
+		// setammo ammo_9mm 300
+		// setammo ammo_792mm 150
+
+		// Items
+		// setarmor 25
+		// giveinventory key_binocs
+	}
+
+	trigger relax_siergiej
+	{
+		trigger siergiej relax
+	}
+
+	trigger reset_siergiej
+	{
+		trigger siergiej resetsiergiej
+	}
+
+	trigger lockon
+	{
+		lockplayer on
+	}
+
+	trigger lockoff
+	{
+		lockplayer off
+	}
+
+	trigger siergiej_will_follow
+	{
+		trigger siergiej siergiej_will_follow2
+	}
+
+	trigger siergiej_starton
+	{
+		trigger siergiej dialog
+	}
+
+	trigger siergiej_free
+	{
+		trigger siergiej free
+	}
+
+	trigger objective1
+	{
+		objectivemet 1								// got letter
+	}
+
+	trigger blackguard
+	{
+		alertentity forest_nazi1				 //blackguard
+		alertentity mg4_nazi1
+	}
+
+	trigger go_1
+	{
+		alertentity mg8_nazi1
+		// mu_fade 0 5000
+		// mu_queue sound/music/m_moving
+	}
+
+	trigger go_2
+	{
+		alertentity mg5_nazi1
+		alertentity venom1
+		alertentity venom2
+	}
+
+	trigger go_3
+	{
+		alertentity mg7_nazi1
+		alertentity mg6_nazi1
+	}
+
+	trigger unmount_mg4
+	{
+		mu_play sound/music/s_bighits 0		//when standing on top of bunker 1 and going into it
+		// mu_fade 0 4000
+		mu_queue sound/music/m_mission		//returns to "m_mission" music
+		trigger mg4_nazi1 free_mg_4
+		trigger mg4_nazi2 free_mg_4
+		trigger mg4_nazi3 free_mg_4
+		///////////////////////////
+
+	}
+
+	trigger unmount_mg5	 	//////////////////////mg5 + mg6 + mg8
+	{
+
+		mu_play sound/music/s_barrelfall 0 			// entering bunker 2
+		// playsound _blank_
+		// mu_queue sound/scenaric/general/blank 0
+
+		///////////////////////////
+		trigger mg5_nazi1 free_mg_5
+		trigger mg5_nazi2 free_mg_5
+		trigger mg5_nazi3 free_mg_5
+
+		///////////////////////////
+		trigger mg6_nazi1 free_mg_6
+		trigger mg6_nazi2 free_mg_6
+		trigger mg6_nazi3 free_mg_6
+
+		///////////////////////////
+		trigger mg8_nazi1 free_mg_8
+		trigger mg8_nazi2 free_mg_8
+		trigger mg8_nazi3 free_mg_8
+
+		///////////////////////////
+		alertentity kill_ai_wall_1
+		alertentity kill_ai_wall_2
+	}
+
+	trigger unmount_mg7
+	{
+		trigger mg7_nazi1 free_mg_7
+		trigger mg7_nazi2 free_mg_7
+		trigger mg7_nazi3 free_mg_7
+		///////////////////////////
+	}
+
+	//////////////////////// Underground triggers //////////////////////////
+
+	trigger under_start		// underground bunker complex starts here - with discovery of Siergiej
+	{
+		alertentity siergiej
+		alertentity under_nazi1
+		alertentity under_nazi2
+		alertentity under_nazi3
+		alertentity under_nazi4
+		alertentity under_venom1
+		alertentity under_venom2
+		trigger dialog 3_guys_talk 			//under_nazi2 talk
+	}
+
+	trigger officer_documents
+	{
+		alertentity officer_2
+		mu_fade 0 3000
+		mu_play sound/music/s_highramp.wav 0
+	}
+
+	trigger officer_turnback
+	{
+		trigger officer_2 turnback
+	}
+
+	//////////////////////// Music ////////////////////////
+	trigger music_action_1
+	{
+		mu_play sound/music/s_longout 0
+	}
+
+	trigger music_action_2
+	{
+		mu_fade 0 4000
+		mu_queue sound/music/x_atmos 		//very good background music
+	}
+
+	trigger music_action_3
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_assault 0
+	}
+
+	/////////////////////////sicreds////////////////////////
+
+	trigger sicred1
+	{
+		foundsecret
+	}
+
+
+	/////////////////////////end map////////////////////////
+	trigger endmap
+	{
+		changelevel aaw5 persistent
+	}
+}
+
+leader_1					// blackguard // Leader for band of 5 blackguards nazis
+{
+	attributes
+	{
+		leader 1.0
+		fov 220
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.8
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.2
+		tactical 0.5
+	}
+
+	// trigger march
+	//{
+	//	walktomarker leader_1
+	//	walktomarker leader_2
+	//	walktomarker leader_3
+	//	walktomarker leader_4
+	//	walktomarker leader_5
+	//	walktomarker leader_6
+	//	walktomarker leader_7
+	//	walktomarker leader_8
+	//	resetscript
+	//}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound intruder_alarm
+		wait 2000
+		playsound intruder_alarm
+	}
+
+	death
+	{
+		alertentity remove_leader_1
+	}
+}
+
+leader_follower_1			//blackguard
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.8
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 8000
+		alertness 8000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.2
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound go_and_get_help
+		wait 4000
+		playsound intruder_alarm
+	}
+
+	death
+	{
+		alertentity leader_follower_1
+	}
+}
+
+leader_follower_2			//blackguard
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.7
+		aim_skill 0.6
+		attack_skill 0.8
+		inner_detection_radius 10000
+		alertness 5000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.2
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound intruder_alarm
+		wait 3000
+		playsound lets_go_sznel
+		wait 10000
+		playsound lets_go_sznel
+	}
+
+	death
+	{
+		alertentity leader_follower_2
+	}
+}
+
+leader_follower_3			//blackguard
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.2
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound move_fools
+	}
+
+	death
+	{
+		alertentity leader_follower_3
+	}
+}
+
+leader_follower_4			//blackguard
+{
+	attributes
+	{
+		fov 220
+		starting_health 30
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.2
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound whats_going_on_in_here
+		wait 10000
+		playsound go_and_get_help
+	}
+
+	death
+	{
+		alertentity leader_follower_4
+	}
+}
+
+leader_follower_5			//blackguard
+{
+	attributes
+	{
+		fov 220
+		starting_health 30
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 8000
+		alertness 8000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound whats_going_on_in_here
+		wait 10000
+		playsound go_and_get_help
+	}
+
+	death
+	{
+		alertentity leader_follower_5
+	}
+}
+
+siergiej						// This guy gives me pain in the ....
+								// He walk and do everything he wants
+								// :-( and gets in the way all the time. buuuuuuuuuuuu
+								// I think I was debugging him in the engine 50 times at least.
+{
+	attributes
+	{
+		// camper 0.1
+		running_speed 300		// he is so slow........  :-(	// 300 is the max? 1000 do not help !
+		starting_health	100
+		tactical 0.3
+		alertness 0.0
+		fov 360
+		hearing_scale 0.0
+		attack_crouch 0.9
+		attack_skill 0.8
+		aim_accuracy 0.7
+		aim_skill 0.6
+		agression 0.0
+		inner_detection_radius 0.0
+
+	}
+
+	spawn
+	{
+		nosight 999999
+		// noattack 999999
+		statetype relaxed
+		takeweapon all
+	}
+
+    trigger dialog 		//when he see player for first time
+    {
+		wait 1000
+		playsound siergiej_is_it_you
+		wait 1000
+		trigger siergiej focus_on_player
+		wait 3000
+		playsound siergiej_glad_to_see_you
+		wait 8000
+		playsound let_me_out_2		// let me out and I will help you !
+		wait 5000
+		trigger siergiej letmeout
+	}
+
+
+    trigger focus_on_player
+    {
+	    followcast player
+    }
+
+    trigger letmeout
+    {
+	    wait 1000
+	    playsound let_me_out_1				// let me out !!
+	    wait 10000
+	    trigger siergiej letmeout			 // restart
+    }
+
+    trigger free
+    {
+	    pushaway player
+	    wait 5
+	    pushaway player
+	    wait 5
+	    pushaway player
+	    wait 5
+	    trigger player lockon
+	    gotomarker s1
+	    wait 1000
+	    gotomarker s2
+	    followcast player
+	    playsound sieriej_thanks 			 	//thanks for helping me out
+	    wait 3000
+	    trigger siergiej got3
+	    wait 500
+	    alertentity kill_food
+	    alertentity kill_weapon
+	    alertentity kill_vine
+	    gotomarker food nostop
+	    playsound sieriej_food				// OOOOoo food, I'm very hungry, I must it something before we can proside
+	    wait 3000
+	    playsound siergiej_food
+	    wait 1000
+	    gotomarker weapon nostop
+	    followcast player
+	    playsound sieriej_finds_weapon
+	    wait 1000
+	    playsound siergiej_weapon_1
+	    wait 1000
+	    playsound siergiej_weapon_2
+	    giveweapon weapon_mp40
+	    setammo ammo_9mm 999
+	    selectweapon weapon_mp40
+	    gotomarker vine
+	    playsound sieriej_finds_vine 		//And..... the vine
+	    wait 2000
+	    playsound siergiej_vine
+	    wait 1000
+	    playsound siergiej_vine
+	    trigger siergiej leader_and_5
+	    trigger siergiej lets_go
+	}
+
+    trigger lets_go		// proclames he is ready to go with player
+    {
+		wait 1000
+	    gotomarker s2
+	    wait 500
+	    gotomarker s1
+	    wait 2000
+	    gotomarker s2
+	    followcast player
+	    playsound sieriej_not_eat_everything
+	    wait 2000
+	    gotomarker food
+	    trigger player lockoff
+		gotomarker s3
+		gotomarker s_wait
+		wait 500
+		facetargetangles s3
+		playsound sieriej_ready				//we_are ready! we are now ready to go!!
+		sight
+		attrib alertness 3000
+		attrib hearing_scale 0.5
+		attrib inner_detection_radius 3000
+		attrib reaction_time 1.0
+		attrib agression 1.0
+		attrib leader 1.0
+		statetype alert
+		wait forever
+		resetscript
+    }
+
+	trigger siergiej_will_follow2
+	{
+		followcast player
+		avoid
+	}
+
+   	trigger resetsiergiej
+   	{
+		resetscript
+		statetype alert
+		wait forever
+	}
+
+	trigger leader_and_5
+	{
+		alertentity leader_1
+		alertentity leader_follower_1
+		alertentity leader_follower_2
+		alertentity leader_follower_3
+		alertentity leader_follower_4
+		alertentity leader_follower_5
+	}
+
+
+	trigger relax
+	{
+		// noattack 999999
+		statetype relaxed
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	trigger got3
+	{
+		objectivemet 3							// got Siergiej
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 8 10		// 8 - seconds of sreen fade-out to mission failed
+								// 10 - nr. of mission fail info in "strings.txt"
+	}
+
+	death						// Death caused by enemy
+	{
+		missionfailed 10 11 	// Survival of Siergiej is essential to continuances of your mission.
+								// He must survive
+	}
+}
+
+mg4_nazi1	///////////////////////////////////////////// mg4
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg4_nazi1 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_4
+		runtomarker marker_mg_4
+		mount mg_4
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_4
+	{
+		unmount
+	 	facetargetangles free_mg_4_marker
+	 }
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	enemysight
+	{
+		playsound who_are_you
+	}
+
+	death
+	{
+		alertentity mg4_nazi2
+		alertentity remove_mg4_nazi1
+	}
+}
+
+mg4_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg4_nazi2 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_4
+		runtomarker marker_mg_4
+		mount mg_4
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_4
+	{
+		unmount
+	 	facetargetangles free_mg_4_marker
+		teleport trash
+		alertentity remove_mg4_nazi2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg4_nazi3
+	}
+}
+
+mg4_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg4_nazi3 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_4
+		runtomarker marker_mg_4
+		mount mg_4
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_4
+	{
+		unmount
+	 	facetargetangles free_mg_4_marker
+	 	teleport trash
+	 	alertentity remove_mg4_nazi3
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+	}
+}
+
+mg5_nazi1	///////////////////////////////////// mg5
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg5_nazi1 run_and_mount
+
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_5
+		runtomarker marker_mg_5
+		mount mg_5
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_5
+	{
+		unmount
+	 	facetargetangles free_mg_5_marker
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	enemysight
+	{
+		playsound whats_going_on_in_here
+		wait 10000
+		playsound go_and_get_help
+	}
+
+	death
+	{
+		alertentity mg5_nazi2
+		alertentity remove_mg5_nazi1
+	}
+}
+
+mg5_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg5_nazi2 run_and_mount
+
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_5
+		runtomarker marker_mg_5
+		mount mg_5
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_5
+	{
+		unmount
+	 	facetargetangles free_mg_5_marker
+	 	teleport trash
+	 	alertentity remove_mg5_nazi2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg5_nazi3
+	}
+}
+
+mg5_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg5_nazi3 run_and_mount
+
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_5
+		runtomarker marker_mg_5
+		mount mg_5
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_5
+	{
+		unmount
+	 	facetargetangles free_mg_5_marker
+	 	teleport trash
+	 	alertentity remove_mg5_nazi3
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+ 	}
+}
+
+mg6_nazi1	//////////////////////////////mg6
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg6_nazi1 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_6
+		runtomarker marker_mg_6
+		mount mg_6
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_6
+	{
+		unmount
+	 	facetargetangles free_mg_6_marker
+	 	statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg6_nazi2
+		alertentity remove_mg6_nazi1
+	}
+}
+
+mg6_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg6_nazi2 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_6
+		runtomarker marker_mg_6
+		mount mg_6
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_6
+	{
+		unmount
+	 	teleport trash
+	 	alertentity remove_mg6_nazi2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg6_nazi3
+	}
+}
+
+mg6_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg6_nazi3 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_6
+		runtomarker marker_mg_6
+		mount mg_6
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_6
+	{
+		unmount
+	 	teleport trash
+	 	alertentity remove_mg6_nazi3
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+	}
+}
+
+
+mg7_nazi1		//////////////////////////////////// mg7
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg7_nazi1 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_7
+		runtomarker marker_mg_7
+		mount mg_7
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_7
+	{
+		unmount
+		facetargetangles free_mg_7_marker
+	 	statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg6_nazi1
+		alertentity mg7_nazi2
+		alertentity remove_mg7_nazi1
+	}
+}
+
+mg7_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg7_nazi2 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_7
+		runtomarker marker_mg_7
+		mount mg_7
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_7
+	{
+		unmount
+		teleport trash
+		alertentity remove_mg7_nazi2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg7_nazi3
+	}
+}
+
+mg7_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg7_nazi3 run_and_mount
+	}
+
+	trigger run_and_mount
+	{
+		facetargetangles marker_mg_7
+		runtomarker marker_mg_7
+		mount mg_7
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_7
+	{
+		unmount
+		teleport trash
+		alertentity remove_mg7_nazi3
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+	}
+}
+
+mg8_nazi1		//////////////////////////////////// mg8
+{
+	attributes
+	{
+		fov 300
+		starting_health 30
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg8_nazi1 run_to_mg
+	}
+
+	trigger run_to_mg
+	{
+		facetargetangles start_run
+		runtomarker start_run
+		facetargetangles officer_marker11
+		runtomarker officer_marker11
+		facetargetangles officer_marker11a
+		runtomarker officer_marker11a
+		facetargetangles officer_marker10
+		runtomarker officer_marker10
+		facetargetangles marker_mg_8
+		runtomarker marker_mg_8
+		mount mg_8
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+
+	// trigger free_mg_8
+	// {
+	//	unmount
+	//	facetargetangles free_mg_8_marker
+	//	takeweapon weapon_mp40
+	//	setammo ammo_grenades 999
+	//	giveweapon weapon_grenadelauncher
+	//	selectweapon weapon_grenadelauncher
+	//	fireattarget free_mg_8_marker 8000
+	//	giveweapon weapon_mp40
+	//	selectweapon weapon_mp40
+	//	statetype alert
+	// }
+
+
+	trigger free_mg_8
+	{
+		unmount
+	 	statetype alert
+	}
+
+	enemysight player
+	{
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg8_nazi2
+		alertentity forest_sniper1
+		alertentity remove_mg8_nazi1
+	}
+}
+
+mg8_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 30
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg8_nazi2 run_to_mg
+	}
+
+	trigger run_to_mg
+	{
+		facetargetangles start_run
+		runtomarker start_run
+		facetargetangles officer_marker11
+		runtomarker officer_marker11
+		facetargetangles officer_marker11a
+		runtomarker officer_marker11a
+		facetargetangles officer_marker10
+		runtomarker officer_marker10
+		facetargetangles marker_mg_8
+		runtomarker marker_mg_8
+		mount mg_8
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_8
+	{
+		unmount
+		teleport trash
+		alertentity remove_mg8_nazi2
+	}
+
+	enemysight player
+	{
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity mg8_nazi3
+		alertentity forest_sniper2
+		alertentity remove_mg8_nazi2
+	}
+}
+
+mg8_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 30
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.0
+		Aggression 0.8
+		tactical 0.0
+		reaction_time 1.0
+		yaw_speed 500
+		attack_crouch 0.8
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger mg8_nazi3 run_to_mg
+	}
+
+	trigger run_to_mg
+	{
+		facetargetangles start_run
+		runtomarker start_run
+		facetargetangles officer_marker11
+		runtomarker officer_marker11
+		facetargetangles officer_marker11a
+		runtomarker officer_marker11a
+		facetargetangles officer_marker10
+		runtomarker officer_marker10
+		facetargetangles marker_mg_8
+		runtomarker marker_mg_8
+		mount mg_8
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+		statetype alert
+	}
+
+	trigger free_mg_8
+	{
+		unmount
+	 	teleport trash
+		alertentity remove_mg8_nazi3
+	}
+
+	enemysight player
+	{
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg8_nazi3
+		alertentity forest_sniper3
+	}
+}
+
+forest_sniper1
+{
+	attributes
+	{
+		fov 240
+		starting_health 20
+		aim_accuracy 0.7
+		aim_skill 0.7
+		attack_skill 0.8
+		inner_detection_radius 5000
+		alertness 2000
+		hearing_scale 0.8
+		attack_crouch 0.9
+		Aggression 0.8
+		tactical 0.2
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 150
+	}
+
+	enemysight
+	{
+		playsound intruder_alarm
+		wait 10000
+		playsound go_and_get_help
+		wait 10000
+		playsound move_fools
+	}
+
+	death
+	{
+		alertentity remove_forest_sniper1
+	}
+}
+
+forest_sniper2
+{
+	attributes
+	{
+		fov 240
+		starting_health 20
+		aim_accuracy 0.9
+		aim_skill 0.8
+		attack_skill 0.8
+		inner_detection_radius 5000
+		alertness 2000
+		hearing_scale 0.8
+		attack_crouch 0.8
+		Aggression 0.5
+		tactical 0.2
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 150
+	}
+
+	enemysight
+	{
+		playsound whats_going_on_in_here
+	}
+
+	death
+	{
+		alertentity remove_forest_sniper2
+	}
+}
+
+forest_sniper3
+{
+	attributes
+	{
+		fov 240
+		starting_health 20
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		inner_detection_radius 5000
+		alertness 2000
+		hearing_scale 0.8
+		attack_crouch 0.8
+		Aggression 0.5
+		tactical 0.2
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 150
+	}
+
+	enemysight
+	{
+		playsound go_and_get_help
+		wait 10000
+		playsound go_and_get_help
+	}
+
+	death
+	{
+		alertentity remove_forest_sniper3
+	}
+}
+
+////////////////////////////  Officer SCRIPT ////////////////////////////////////////////////////////////////////////
+////////////////////////////  Officer SCRIPT ////////////////////////////////////////////////////////////////////////
+////////////////////////////  Officer SCRIPT ////////////////////////////////////////////////////////////////////////
+
+officer
+{
+	attributes
+	{
+		running_speed 300
+		fov 240
+		starting_health 50
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+		attack_crouch 0.7
+		Aggression 0.2
+		tactical 1.0
+		camper 0.3
+	}
+
+	spawn
+	{
+		nosight 999999
+		noaidamage on
+		takeweapon all
+		godmode on
+		trigger officer go
+	}
+
+	blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	trigger go
+	{
+		wait 500
+		facetargetangles officer_marker1
+		runtomarker officer_marker1 nostop
+		facetargetangles officer_marker2
+		runtomarker officer_marker2 nostop
+		facetargetangles officer_marker3
+		runtomarker officer_marker3 nostop
+		facetargetangles officer_marker4
+		runtomarker officer_marker4 nostop
+		facetargetangles officer_marker5
+		runtomarker officer_marker5 nostop
+		facetargetangles officer_marker6
+		runtomarker officer_marker6 nostop
+		facetargetangles officer_marker7
+		runtomarker officer_marker7 nostop
+		facetargetangles officer_marker8
+		runtomarker officer_marker8 nostop
+		facetargetangles officer_marker9
+		runtomarker officer_marker9 nostop
+		facetargetangles officer_marker12
+		runtomarker officer_marker12 nostop
+		facetargetangles officer_marker13
+		runtomarker officer_marker13 nostop
+		runtomarker officer_marker_end nostop
+		alertentity kill_officer
+	}
+
+	death
+	{
+	}
+}
+
+officer_2 								// Jego wcielenie //////////////////////////////////////
+{
+	attributes
+	{
+		starting_health 30
+		inner_detection_radius 0
+		alertness 0
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		nosight 999999
+		takeweapon all
+		trigger officer_2 door
+	}
+
+	trigger turnback
+	{
+		wait 5000
+		statetype alert
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		sight
+		attrib fov 240
+		attrib inner_detection_radius 500
+		attrib alertness 500
+		attrib hearing_scale 0.5
+		attrib starting_health 40
+		attrib aim_accuracy 0.8
+		attrib aim_skill 0.8
+		attrib attack_crouch 1.0
+		attrib Aggression 0.5
+		attrib tactical 1.0
+		facetargetangles under7
+		playsound intruder_alarm_alarm
+	}
+
+	trigger door
+	{
+		facetargetangles officer_2_marker_1
+		walktomarker officer_2_marker_1
+		trigger officer_2 open_this_door
+	}
+
+	trigger open_this_door
+	{
+		wait 5
+		playsound officer_bang_bang
+		wait 2000
+		playsound officer_doc1
+		wait 3000
+		playsound officer_doc2
+		wait 3000
+		playsound officer_bang_bang
+		wait 3000
+		playsound officer_doc3
+		wait 3000
+		playsound officer_doc1
+		trigger officer_2 bang_and_animate
+	}
+
+	trigger bang_and_animate
+	{
+		wait 6000
+		playsound officer_bang_bang
+		// 	playanim looking_over_table both
+		trigger officer_2 bang_and_animate
+	}
+
+
+	// trigger open_this_door			//animation too long. Must // this
+	// {
+	// 	wait 5
+	// 	playsound officer_bang_bang
+	// 	playanim looking_over_table both
+	// 	playsound officer_doc1
+	// 	playanim looking_over_table both
+	// 	playsound officer_bang_bang
+	// 	playanim looking_over_table both
+	// 	playsound officer_doc2
+	// 	playanim looking_over_table both
+	// 	playsound officer_bang_bang
+	// 	playanim looking_over_table both
+	// 	playsound officer_doc3
+	// 	trigger officer_2 bang_and_animate
+	// }
+
+	// trigger bang_and_animate
+	// {
+	// 	wait 5
+	// 	playanim looking_over_table both
+	// 	playsound officer_bang_bang
+	// 	trigger officer_2 bang_and_animate
+	// }
+
+	death
+	{
+		objectivemet 2									// got officer
+	}
+}
+
+////////////////////////////// end officer script /////////////////////////////////////////////////
+////////////////////////////// end officer script /////////////////////////////////////////////////
+////////////////////////////// end officer script /////////////////////////////////////////////////
+
+
+
+
+forest_nazi1 //Blackguard - guy standing on top of bunker 1
+{
+	attributes
+	{
+		fov 220
+		starting_health 20
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 500
+		alertness 3000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 0.2
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound intruder_alarm
+		wait 2000
+		playsound intruder_alarm
+		wait 2000
+		playsound go_and_get_help
+	}
+
+	death
+	{
+		alertentity remove_forest_nazi1
+	}
+}
+
+venom1
+{
+	attributes
+	{
+		fov 240
+		starting_health 80
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		inner_detection_radius 500
+		alertness 3000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 1.0
+		tactical 1.0
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	death
+	{
+		alertentity remove_venom1
+	}
+}
+
+venom2
+{
+	attributes
+	{
+		fov 240
+		starting_health 80
+		aim_accuracy 0.8
+		aim_skill 0.8
+		attack_skill 0.8
+		inner_detection_radius 500
+		alertness 3000
+		hearing_scale 0.6
+		attack_crouch 0.8
+		Aggression 1.0
+		tactical 1.0
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	death
+	{
+		alertentity remove_venom2
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////Underground //////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+under_nazi1 			//patroling	blackguard
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		inner_detection_radius 200
+		alertness 1000
+		hearing_scale 0.2
+		attack_crouch 0.8
+		Aggression 0.5
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		trigger under_nazi1 patrol
+	}
+
+	trigger patrol
+	{
+		playsound la_la_3
+		facetargetangles under1
+		walktomarker under1 nostop
+		playsound la_la_3
+		facetargetangles under2
+		walktomarker under2 nostop
+		facetargetangles under3
+		playsound la_la_3
+		walktomarker under3 nostop
+		facetargetangles under4
+		walktomarker under4 nostop
+		playsound la_la_3
+		facetargetangles under5
+		walktomarker under5 nostop
+		facetargetangles under6
+		walktomarker under6 nostop
+		facetargetangles under7
+		walktomarker under7 nostop
+		playsound la_la_3
+		facetargetangles under6
+		playsound la_la_3
+		wait 5000
+		walktomarker under6 nostop
+		facetargetangles under5
+		walktomarker under5 nostop
+		facetargetangles under4
+		walktomarker under4 nostop
+		facetargetangles under3
+		walktomarker under3 nostop
+		facetargetangles under2
+		walktomarker under2 nostop
+		trigger patrol				// restart patroling
+	}
+
+	trigger get_alerted
+	{
+		attrib inner_detection_radius 500
+		attrib alertness 500
+		attrib hearing_scale 0.5
+		wait 2000
+		playsound under_nazi1_voice1
+	}
+
+	enemysight
+	{
+		noattack 4000
+		playsound who_are_you
+		wait 500
+		playsound intruder_alarm_alarm
+		// attack
+		trigger under_nazi1 get_alerted
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_under_nazi1
+	}
+}
+
+under_nazi2
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 500
+		alertness 500
+		hearing_scale 0.4
+		attack_crouch 0.8
+		Aggression 0.5
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		trigger under_nazi2 bla_bla
+	}
+
+	trigger bla_bla
+	{
+		wait 5000
+		playsound bla_bal_1
+		wait 5000
+		playsound bla_bal_2
+		wait 5000
+		playsound bla_bal_3
+		wait 5000
+		playsound bla_bal_4
+		wait 5000
+		playsound bla_bal_5
+		trigger under_nazi2 bla_bla 		//restart
+	}
+
+	enemysight
+	{
+		wait 1000
+		playsound under_nazi1_voice1
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_under_nazi2
+	}
+}
+
+under_nazi3
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 500
+		alertness 500
+		hearing_scale 0.4
+		attack_crouch 0.8
+		Aggression 0.5
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		wait 1000
+		playsound who_are_you
+		wait 2000
+		playsound intruder_alarm_alarm
+	}
+
+	death
+	{
+		alertentity remove_under_nazi3
+	}
+}
+
+under_nazi4
+{
+	attributes
+	{
+		fov 220
+		starting_health 25
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.8
+		inner_detection_radius 500
+		alertness 500
+		hearing_scale 0.3
+		attack_crouch 0.8
+		Aggression 0.5
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound protect_the_gold
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_under_nazi4
+	}
+}
+
+under_venom1
+{
+
+	attributes
+	{
+		fov 240
+		starting_health 80
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		inner_detection_radius 500
+		alertness 500
+		hearing_scale 0.0
+		attack_crouch 0.5
+		Aggression 1.0
+		tactical 1.0
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	trigger give_ears
+	{
+		attrib hearing_scale 0.8
+	}
+
+	enemysight
+	{
+		attrib hearing_scale 0.5
+		playsound whats_going_on
+	}
+
+	death
+	{
+		alertentity remove_under_venom1
+	}
+}
+
+under_venom2
+{
+
+	attributes
+	{
+		fov 240
+		starting_health 80
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		inner_detection_radius 500
+		alertness 500
+		hearing_scale 0.2			// we will see if he will react ?
+		attack_crouch 0.5
+		Aggression 1.0
+		tactical 1.0
+	}
+
+	spawn
+	{
+		noaidamage on
+	}
+
+	enemysight
+	{
+		playsound venom2_voice1
+		attrib hearing_scale 0.8
+		trigger under_venom1 give_ears
+	}
+
+	death
+	{
+		alertentity remove_under_venom2
+	}
+}

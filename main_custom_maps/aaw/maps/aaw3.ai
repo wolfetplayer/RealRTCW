@@ -1,0 +1,1605 @@
+//////////////////////////////////////////////////////////
+//	RTCW AI Script										//
+//														//
+//	Map:	Alone at War - Escape from Offlag			//
+//			Alone at War - Part 3						//
+//														//
+//	Last edited by: KoS - Saturday, 29 June 2002 		//
+//														//
+//	Crimson Editor(c) 3.40 (freeware)					//
+//	Editor compatibility for Rtcw by Tram Design		//
+//														//
+//////////////////////////////////////////////////////////
+
+// If you have any questions, remarks about this map meet me
+// at the Tram design forum - http://www.planetwolfenstein.com/tramdesign
+// Or visit my site at: http://www.nem3d.net/kos
+
+// You are free to copy want you want from this script as long as you don`t profit from that,
+// and don't forget ID Software should have creadit for what they have made for you!
+
+
+
+player 										//Player info
+{
+	spawn
+	{
+		cvar g_episode 9
+		
+		objectivesneeded 1
+		abort_if_loadgame
+	}
+
+	playerstart
+	{
+		// mu_fade 0 5000
+		// mu_queue sound/music/c_military
+
+		// Weapons
+		// takeweapon all
+		// giveweapon weapon_mauserRifle
+		// giveweapon weapon_sniperscope
+		// giveweapon weapon_luger
+		// giveweapon weapon_mp40
+		// selectweapon weapon_mp40
+
+		// Ammo
+		// setammo ammo_grenades 3
+		// setammo ammo_9mm 300
+		// setammo ammo_792mm 150
+
+		// Items
+		// setarmor 25
+		// giveinventory key_binocs
+	}
+
+
+
+	trigger 4guards_alerted
+	{
+		trigger camp_door_1_nazi_right_inside give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+	}
+
+
+	trigger kill_mg2
+	{
+		trigger mg2_nazi2 go_teleport
+		trigger mg2_nazi3 go_teleport
+		trigger mg2_nazi4 go_teleport
+	}
+
+	trigger kill_mg3
+	{
+		trigger mg3_nazi2 go_teleport
+		trigger mg3_nazi3 go_teleport
+		trigger mg3_nazi4 go_teleport
+	}
+
+	trigger objective1
+	{
+		objectivemet 1								// mission objective 1 complete
+	}
+
+	trigger towers_guards 							// whem player comes off the toalette in camp B
+	{
+		alertentity right_tower_nazi_1
+		alertentity center_right_tower_nazi_1
+		alertentity center_left_tower_nazi_1
+		alertentity left_tower_nazi_1
+	}
+
+	trigger dont_cross								// Triggers (don't cross section of camp B)
+	{
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+	}
+
+		/////////////////////////sicreds////////////////////////
+
+	trigger sicred1
+	{
+		foundsecret
+	}
+
+	trigger sicred2
+	{
+		foundsecret
+	}
+
+
+
+	/////////////////////////// Music trigers///////////////////
+
+	trigger music1
+	{
+		mu_fade 0 0
+		mu_queue /sound/music/m_action.wav 0
+	}
+
+	trigger music2
+	{
+		mu_fade 0 2000
+		mu_queue /sound/music/l_theme.wav
+	}
+
+	/////////////////////////end map////////////////////////
+	trigger endmap
+	{
+		changelevel aaw4 persistent
+	}
+}
+
+///////////////////////////////////////////////////////////////////// 			towers_guards
+
+right_tower_nazi_1 						//right_tower
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 300
+		alertness 300
+		hearing_scale 0.0
+		attack_crouch 0.5
+		Aggression 1.0
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		nosight 99999
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib hearing_scale 0.8
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+	}
+
+	enemysight player
+	{
+		statetype alert
+		attrib Aggression 1.0
+	}
+
+	death
+	{
+		alertentity remove_right_tower_nazi_1
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity right_tower_nazi_2
+	}
+}
+
+right_tower_nazi_2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 1.0
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+
+	}
+
+	enemysight player
+	{
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_right_tower_nazi_2
+	}
+}
+
+
+
+center_right_tower_nazi_1				////////////////center_right_tower
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 100
+		alertness 100
+		hearing_scale 0.0
+		attack_crouch 0.5
+		Aggression 0.5
+		tactical 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 99999
+		giveweapon weapon_fg42
+		setammo ammo_792mm 999
+		selectweapon weapon_fg42
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.0
+	}
+
+	death
+	{
+		alertentity remove_center_right_tower_nazi_1
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity center_right_tower_nazi_2
+	}
+}
+
+center_right_tower_nazi_2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp44
+		selectweapon weapon_mp44
+		setammo ammo_44ammo 999
+		runtomarker center_right_tower_marker nostop
+
+	}
+
+	enemysight player
+	{
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_center_right_tower_nazi_2
+		alertentity center_right_tower_nazi_3
+	}
+}
+
+center_right_tower_nazi_3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker center_right_tower_marker nostop
+
+	}
+
+	enemysight player
+	{
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_center_right_tower_nazi_3
+	}
+}
+
+
+center_left_tower_nazi_1		/////////////////////center_left_tower
+								/////////////////// blackguard with binecolars
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 100
+		alertness 100
+		hearing_scale 0.0
+		attack_crouch 0.8
+		Aggression 0.8
+		tactical 0.8
+		reaction_time 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		nosight 99999
+		trigger center_left_tower_nazi_1 patrol
+	}
+
+	trigger patrol
+	{
+		facetargetangles patrol2
+		walktomarker patrol2
+		giveinventory key_binocs
+		zoom on
+		facetargetangles looking
+		playanim binocular both
+		facetargetangles looking
+		wait 5000 looking
+		zoom off
+		facetargetangles patrol3
+		walktomarker patrol3
+		facetargetangles patrol2
+		walktomarker patrol2
+		facetargetangles patrol1
+		walktomarker patrol1
+		trigger center_left_tower_nazi_1 patrol 		//Restart
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+		attrib hearing_scale 0.8
+	}
+
+	enemysight player
+	{
+		statetype alert
+		attrib Aggression 1.0
+		resetscript
+	}
+
+	death
+	{
+		alertentity remove_center_left_tower_nazi_1
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity center_left_tower_nazi_2
+	}
+}
+
+center_left_tower_nazi_2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_fg42
+		setammo ammo_792mm 999
+		selectweapon weapon_fg42
+		runtomarker center_left_tower_marker nostop
+
+	}
+
+	enemysight player
+	{
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_center_left_tower_nazi_2
+		alertentity center_left_tower_nazi_3
+	}
+}
+
+center_left_tower_nazi_3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker center_left_tower_marker nostop
+
+	}
+
+	enemysight player
+	{
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_center_left_tower_nazi_3
+	}
+}
+
+left_tower_nazi_1						/////////////////////////////////////////////////////////left_tower
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 500
+		alertness 500
+		hearing_scale 0.0
+		attack_crouch 0.6
+		Aggression 1.0
+		tactical 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp44
+		selectweapon weapon_mp44
+		setammo ammo_44ammo 999
+		nosight 99999
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib hearing_scale 0.8
+		attrib inner_detection_radius 5000
+		attrib alertness 5000
+	}
+
+	enemysight player
+	{
+		statetype alert
+		attrib Aggression 1.0
+	}
+
+	death
+	{
+		alertentity remove_left_tower_nazi_1
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity left_tower_nazi_2
+	}
+}
+
+left_tower_nazi_2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.0
+		Aggression 1.0
+		tactical 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+
+	}
+
+	enemysight player
+	{
+		statetype alert
+	}
+
+	death
+	{
+		alertentity remove_left_tower_nazi_2
+	}
+}
+
+
+
+///////////////////////////////////////////////////////////////// 			MG guards
+
+mg1_nazi1								// mg1
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.6
+		Aggression 0.8
+		tactical 0.5
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg1_marker nostop
+		mount mg_1
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		trigger player music1
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity remove_mg1_nazi1
+		alertentity mg1_nazi2
+	}
+}
+
+mg1_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 15
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg1_marker nostop
+		mount mg_1
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg1_nazi2
+		alertentity mg1_nazi3
+	}
+}
+
+mg1_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 20
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp44
+		selectweapon weapon_mp44
+		setammo ammo_44ammo 999
+		runtomarker mg1_marker nostop
+		mount mg_1
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg1_nazi3
+		alertentity mg1_nazi4
+	}
+}
+
+mg1_nazi4
+{
+	attributes
+	{
+		fov 300
+		starting_health 15
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.8
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp44
+		selectweapon weapon_mp44
+		setammo ammo_44ammo 999
+		runtomarker mg1_marker nostop
+		mount mg_1
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg1_nazi4
+	}
+}
+
+mg2_nazi1								// mg2
+{
+	attributes
+	{
+		fov 300
+		starting_health 15
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp44
+		selectweapon weapon_mp44
+		setammo ammo_44ammo 999
+		runtomarker mg2_marker_1 nostop
+		facetargetangles mg2_marker_2
+		runtomarker mg2_marker_2 nostop
+		mount mg_2
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		trigger player music1
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity remove_mg2_nazi1
+		alertentity mg2_nazi2
+	}
+}
+
+mg2_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg2_marker_1 nostop
+		facetargetangles mg2_marker_2
+		runtomarker mg2_marker_2 nostop
+		mount mg_2
+		statetype alert
+	}
+
+	trigger go_teleport
+	{
+		teleport tele1
+		statetype alert
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg2_nazi2
+		alertentity mg2_nazi3
+	}
+}
+
+mg2_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg2_marker_1 nostop
+		facetargetangles mg2_marker_2
+		runtomarker mg2_marker_2 nostop
+		mount mg_2
+		statetype alert
+	}
+
+	trigger go_teleport
+	{
+		teleport tele1
+		statetype alert
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg2_nazi3
+		alertentity mg2_nazi4
+	}
+}
+
+mg2_nazi4
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		trigger player music1
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg2_marker_1 nostop
+		facetargetangles mg2_marker_2
+		runtomarker mg2_marker_2 nostop
+		mount mg_2
+		statetype alert
+	}
+
+	trigger go_teleport
+	{
+		teleport tele2
+		statetype alert
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg2_nazi4
+	}
+}
+
+mg3_nazi1								// mg3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg3_marker_1 nostop
+		facetargetangles mg3_marker_2
+		runtomarker mg3_marker_2 nostop
+		mount mg_3
+		statetype alert
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		trigger player music1
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity remove_mg3_nazi1
+		alertentity mg3_nazi2
+	}
+}
+
+mg3_nazi2
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg3_marker_1 nostop
+		facetargetangles mg3_marker_2
+		runtomarker mg3_marker_2 nostop
+		mount mg_3
+		statetype alert
+	}
+
+	trigger go_teleport
+	{
+		teleport tele2
+		statetype alert
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg3_nazi2
+		alertentity mg3_nazi3
+	}
+}
+
+
+mg3_nazi3
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 0.8
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg3_marker_1 nostop
+		facetargetangles mg3_marker_2
+		runtomarker mg3_marker_2 nostop
+		mount mg_3
+		statetype alert
+	}
+
+	trigger go_teleport
+	{
+		teleport tele3
+		statetype alert
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg3_nazi3
+		alertentity mg3_nazi4
+	}
+}
+
+
+mg3_nazi4
+{
+	attributes
+	{
+		fov 300
+		starting_health 25
+		aim_accuracy 0.6
+		aim_skill 0.6
+		attack_skill 0.5
+		inner_detection_radius 5000
+		alertness 5000
+		hearing_scale 1.0
+		attack_crouch 0.5
+		Aggression 0.8
+		tactical 0.1
+	}
+
+	spawn
+	{
+		noaidamage on
+		takeweapon all
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		runtomarker mg3_marker_1 nostop
+		facetargetangles mg3_marker_2
+		runtomarker mg3_marker_2 nostop
+		mount mg_3
+		statetype alert
+	}
+
+
+	trigger go_teleport
+	{
+		teleport tele3
+		statetype alert
+		attrib fov 360
+		resetscript
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+		death
+	{
+		alertentity remove_mg3_nazi4
+	}
+}
+
+////////////////////////////////////////////4 Gate Guards //////////////////////////////////////////
+
+camp_door_1_nazi_right_inside
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		attack_crouch 0.5
+		AGGRESSION 1.0
+		tactical 0.5
+		inner_detection_radius 80
+		alertness 80
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		sethealth 20
+		nosight 99999
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib inner_detection_radius 10000
+		attrib alertness 10000
+		attrib hearing_scale 0.8
+	}
+
+	death
+	{
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		alertentity left_tower_nazi_2
+		alertentity remove_camp_door_1_nazi_right_inside
+	}
+}
+
+camp_door_1_nazi_left_inside
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		attack_crouch 0.5
+		AGGRESSION 1.0
+		tactical 0.5
+		inner_detection_radius 80
+		alertness 80
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		sethealth 20
+		nosight 99999
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib inner_detection_radius 10000
+		attrib alertness 10000
+		attrib hearing_scale 0.8
+	}
+
+	death
+	{
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity left_tower_nazi_2
+		alertentity remove_camp_door_1_nazi_left_inside
+	}
+}
+
+camp_door_1_nazi_b1
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		attack_crouch 0.5
+		AGGRESSION 1.0
+		tactical 0.5
+		inner_detection_radius 80
+		alertness 80
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		sethealth 20
+		nosight 99999
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib inner_detection_radius 10000
+		attrib alertness 10000
+		attrib hearing_scale 0.8
+	}
+
+	death
+	{
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b2 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity left_tower_nazi_2
+		alertentity remove_camp_door_1_nazi_b1
+	}
+}
+
+camp_door_1_nazi_b2
+{
+	attributes
+	{
+		aim_accuracy 0.5
+		aim_skill 0.5
+		attack_skill 0.5
+		attack_crouch 0.5
+		AGGRESSION 1.0
+		tactical 0.5
+		inner_detection_radius 80
+		alertness 80
+		hearing_scale 0.5
+	}
+
+	spawn
+	{
+		sethealth 20
+		nosight 99999
+	}
+
+	trigger give_sight
+	{
+		sight
+		attrib inner_detection_radius 10000
+		attrib alertness 10000
+		attrib hearing_scale 0.8
+	}
+
+	death
+	{
+		trigger player music1
+		alertentity mg1_nazi1
+		alertentity mg2_nazi1
+		alertentity mg3_nazi1
+		trigger right_tower_nazi_1 give_sight
+		trigger center_right_tower_nazi_1 give_sight
+		trigger center_left_tower_nazi_1 give_sight
+		trigger left_tower_nazi_1 give_sight
+		trigger camp_door_1_nazi_b1 give_sight
+		trigger camp_door_1_nazi_left_inside give_sight
+		trigger camp_door_1_nazi_right_inside give_sight
+		alertentity left_tower_nazi_2
+		alertentity remove_camp_door_1_nazi_b2
+	}
+}
+
+pow1
+{
+	attributes
+	{
+		tactical 0.0
+		alertness 0.0
+		fov 360
+		hearing_scale 0.0
+		attack_crouch 0.0
+		attack_skill 0.0
+		aim_accuracy 0.0
+		aim_skill 0.0
+		agression 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		noavoid
+		nosight 999999
+		statetype relaxed
+		takeweapon all
+		trigger pow1 marchloop 		// This will begin the Marching loop.
+	}
+
+    trigger marchloop
+    {
+      noattack 999999
+	  facetargetangles pow1-1
+	  walktomarker pow1-1 nostop
+	  playsound pow_cough
+	  wait 5000
+	  facetargetangles pow1-2
+      walktomarker pow1-2 nostop
+      facetargetangles pow1-3
+      playsound pow_cough
+      wait 2000
+      walktomarker pow1-3 nostop
+      facetargetangles pow1-2
+      walktomarker pow1-2 nostop
+      trigger pow1 marchloop 		// Restarts the marching loop.
+    }
+
+	blocked player
+	{
+		deny
+		pushaway player
+	}
+
+	enemysightcorpse
+	{
+		statetype relaxed
+	}
+
+	friendlysightcorpse
+	{
+		statetype relaxed
+	}
+
+	inspectsoundstart
+	{
+		statetype relaxed
+	}
+
+	inspectsoundend
+	{
+		statetype relaxed
+	}
+
+	attacksound
+	{
+		statetype relaxed
+	}
+
+	bulletimpactsound
+	{
+		statetype relaxed
+	}
+
+	inspectfriendlycombatstart
+	{
+		statetype relaxed
+	}
+
+	pain 90
+	{
+		statetype relaxed
+	}
+
+	death player
+	{
+		missionfailed 8 12		// 8 - seconds of sreen fade-out to mission failed
+								// 10 - nr. of mission fail info in "strings.txt"
+	}
+}
+
+pow2
+{
+	attributes
+	{
+		tactical 0.0
+		alertness 0.0
+		fov 360
+		hearing_scale 0.0
+		attack_crouch 0.0
+		attack_skill 0.0
+		aim_accuracy 0.0
+		aim_skill 0.0
+		agression 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		noavoid
+		nosight 999999
+		statetype relaxed
+		takeweapon all
+		trigger pow2 marchloop // This will begin the Marching loop.
+	}
+
+    trigger marchloop
+    {
+		noattack 999999
+	    facetargetangles pow0
+		walktomarker pow0
+	    facetargetangles pow2-1
+		walktomarker pow2-1
+		facetargetangles pow2-2
+		walktomarker pow2-2 nostop
+		facetargetangles pow2-3
+		playsound pow_cough
+      	wait 5000
+		statetype relaxed
+		walktomarker pow2-3 nostop
+		facetargetangles pow2-4
+		walktomarker pow2-4 nostop
+		facetargetangles pow2-5
+		walktomarker pow2-5
+		wait 5000
+		statetype relaxed
+		facetargetangles pow2-4
+		walktomarker pow2-4 nostop
+		facetargetangles pow2-3
+		playsound pow_cough
+		wait 5000
+		statetype relaxed
+		walktomarker pow2-3 nostop
+		facetargetangles pow2-2
+		walktomarker pow2-2 nostop
+		facetargetangles pow2-1
+		walktomarker pow2-1
+		trigger pow2 marchloop // Restarts the marching loop.
+    }
+
+    blocked player
+	{
+		deny
+		pushaway player
+	}
+
+		enemysightcorpse
+	{
+		statetype relaxed
+	}
+
+	friendlysightcorpse
+	{
+		statetype relaxed
+	}
+
+	inspectsoundstart
+	{
+		statetype relaxed
+	}
+
+	inspectsoundend
+	{
+		statetype relaxed
+	}
+
+	attacksound
+	{
+		statetype relaxed
+	}
+
+	bulletimpactsound
+	{
+		statetype relaxed
+	}
+
+	inspectfriendlycombatstart
+	{
+		statetype relaxed
+	}
+
+	pain 90
+	{
+		statetype relaxed
+	}
+
+	death player
+	{
+		missionfailed 8 12		// 8 - seconds of sreen fade-out to mission failed
+								// 10 - nr. of mission fail info in "strings.txt"
+	}
+}

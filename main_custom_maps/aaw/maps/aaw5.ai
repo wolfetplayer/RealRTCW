@@ -1,0 +1,2985 @@
+//////////////////////////////////////////////////////////////////////////
+//	RTCW AI Script							//
+//									//
+//	Episode:	Alone at War - Escape from Offlag		//
+//			Alone at War - Part 5				//
+//			This is stand-alone level but you should 	//
+//			play levels 1-4 of this series			//
+//									//
+//	Last edited by: KoS - Saturday, 29 June 2002 			//
+//									//
+//	Crimson Editor(c) 3.40 (freeware)				//
+//	Editor compatibility for Rtcw by Tram Design			//
+//									//
+//////////////////////////////////////////////////////////////////////////
+
+
+// Tram design forum - http://www.planetwolfenstein.com/tramdesign
+
+player 										//Player info
+{
+	spawn
+	{
+		cvar g_episode 11
+		objectivesneeded 2
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+	       // Weapons
+		giveweapon weapon_knife
+		giveweapon weapon_thompson
+		selectweapon weapon_thompson
+		suggestweapon weapon_thompson
+
+		// Ammo
+		setammo ammo_panzerfaust 0
+		setammo ammo_fuel 0
+		setammo ammo_792mm 0
+		setammo ammo_9mm 0
+		setammo ammo_45cal 50
+		setammo ammo_30cal 0
+		setammo ammo_grenades 0
+		setclip weapon_thompson 30
+		
+		// Items
+		setarmor 50
+		giveinventory key_binocs
+		//trigger player lockon 
+		trigger player musicmission
+	}
+
+	trigger musicmoving
+	{
+		accum 1 abort_if_equal 1
+		accum 1 set 2
+		mu_fade 0 3000
+		mu_queue sound/music/m_moving
+	}
+
+	trigger musicmission
+	{
+		accum 1 abort_if_equal 2
+		accum 1 set 2
+		mu_fade 0 5000
+		mu_queue sound/music/m_mission
+	}
+
+	trigger musicsituation
+	{
+		accum 1 abort_if_equal 3
+		accum 1 set 3
+		mu_fade 0 3000
+		mu_queue sound/music/m_situation
+	}
+
+	trigger musicassault
+	{
+		accum 1 abort_if_equal 4
+		accum 1 set 4
+		mu_fade 0 3000
+		mu_queue sound/music/m_assault
+	}
+	
+	trigger attack
+	{
+		trigger camp1_partisan4 alert
+		wait 2500
+		trigger camp1_partisan3 alert
+		wait 2000
+		stopcam
+		alertentity remove_bj1
+		teleport bj_2
+		wait 5000
+		trigger player first_attack
+	}
+
+	trigger first_attack
+	{
+		alertentity officer1
+		alertentity nazi1
+		alertentity nazi2
+		alertentity nazi3
+		alertentity nazi4
+		alertentity nazi5
+		alertentity nazi6
+		alertentity nazi7
+		alertentity nazi8
+		alertentity nazi9
+		alertentity nazi10
+		trigger officer1 fire1
+		wait 3000
+		trigger m109 go
+		trigger siergiej2 attack
+		alertentity remove_fire
+		trigger player musicmoving
+	}
+
+	trigger second_attack
+	{
+		trigger m109_2 go
+		trigger siergiej3 go
+	}
+
+	trigger wake_up_tank
+	{
+		trigger zp_m1_chsx_forest f0
+		trigger zp_m1_tur_forest2 f0
+		trigger zp_m1_cn_forest2 f0
+		trigger zp_m1_whll f0
+		trigger zp_m1_whlr f0
+		trigger zp_m1_trkl f0
+		trigger zp_m1_trkr f0
+		wait 1000
+		trigger zp_m1_chsx_forest f1
+		trigger zp_m1_tur_forest2 f1
+		trigger zp_m1_cn_forest2 f1
+		trigger zp_m1_whll f1
+		trigger zp_m1_whlr f1
+		trigger zp_m1_trkl f1
+		trigger zp_m1_trkr f1
+		alertentity nazi12
+		alertentity nazi13
+		alertentity nazi14
+		alertentity nazi15
+		startcam aaw5_2
+		trigger player musicsituation
+	}
+
+	trigger spawn_gunners
+	{
+		trigger zp_m1_chsx_forest f2
+		trigger zp_m1_tur_forest2 f2
+		trigger zp_m1_cn_forest2 f2
+		trigger zp_m1_whll f2
+		trigger zp_m1_whlr f2
+		trigger zp_m1_trkl f2
+		trigger zp_m1_trkr f2
+		trigger nazi12 go2
+		trigger nazi14 go2
+		trigger nazi13 go2
+		trigger nazi15 go2
+		alertentity remove_mg42
+		alertentity nazi_mg42_3
+		alertentity nazi11
+		alertentity mech1
+		alertentity mech2
+		alertentity part_radio
+		startcam aaw5_3
+		wait 23000
+		startcam aaw5_5
+		wait 6000
+		startcam aaw5_4
+	}			
+
+	trigger relax_siergiej
+	{
+		trigger siergiej relax
+	}
+
+	trigger reset_siergiej
+	{
+		trigger siergiej resetsiergiej
+	}
+
+	trigger lockon
+	{
+		lockplayer on
+	}
+
+	trigger lockoff
+	{
+		lockplayer off
+	}
+
+	trigger action_corridor
+	{
+		alertentity unlock_01
+		alertentity nazi_corridor1
+		alertentity nazi_corridor2
+		alertentity nazi_corridor3
+	}
+
+	trigger signblow
+	{
+		trigger signleg1 choosefall
+		trigger signleg2 choosefall
+	}
+
+	trigger gocounter
+	{
+		alertentity removespin
+		trigger board1 counter_clockwise
+	}
+
+	trigger goclock
+	{
+		alertentity removespin
+		trigger board1 clockwise
+	}
+
+	trigger radio1
+	{
+		trigger counter1 counter
+	}
+
+	trigger radio2
+	{
+		trigger counter1 counter
+	}
+
+	trigger open_close
+  	{
+		trigger gate toggle
+		wait 1300
+		trigger gate yellow_loop
+		wait 10000
+		trigger gate stop_yellow
+ 	}
+
+	trigger housefire
+	{
+		trigger house_fire go	
+		trigger cabinet go			
+	}
+
+	trigger siergiej_will_follow
+	{
+		trigger siergiej siergiej_will_follow2
+	}
+
+	trigger siergiej_starton
+	{
+		trigger siergiej dialog
+	}
+
+	trigger camp1_spawn_partisans
+	{
+		alertentity camp1_partisan1
+		alertentity camp1_partisan2
+		alertentity camp1_partisan3
+		alertentity camp1_partisan4
+		alertentity siergiej3
+	}
+
+	////////////////// camp1_partisan1_player_attack /////////////
+
+	trigger camp1_partisan1_player_attack
+	{
+		// trigger ?? c1_p1_a1
+		// trigger ?? c1_p1_a1
+	}
+
+	trigger start_dialog
+	{
+		trigger dialog start
+	}
+
+	//////////////////////////////////////////////////////////////
+
+	///////////////////////// Objectives ////////////////////////
+
+	trigger objective1
+	{
+		objectivemet 1
+		trigger counter1 counter2
+		alertentity activate_button
+	}
+
+	trigger objective2
+	{
+		objectivemet 2
+		trigger counter1 counter2
+	}
+
+	/////////////////////////secrets////////////////////////
+
+	trigger secret1
+	{
+		foundsecret
+	}
+
+	trigger secret2
+	{
+		foundsecret
+		alertentity remove_team2
+	}
+
+	trigger secret3
+	{
+		foundsecret
+	}
+	
+/////////////////////////////////////////////////////////	
+	
+	trigger explofire1
+	{
+		trigger explo_fire1	go 				// Trigger group. [APPEAR] script mover for fire.
+		trigger fire_tree_and_ammo go		// Triggers Appear mover for tree and ammo fire
+	}
+
+	trigger ammo_explo
+	{
+		alertentity sparks1
+		wait 2000
+		alertentity sparks1
+		wait 2000
+		alertentity sparks1
+		wait 2000
+		alertentity ammo_smoke
+		wait 5000							// trigger timer
+		alertentity ammo_cover_open_sound
+		trigger player ammo_cover_open_smoke0
+
+	}
+
+	trigger ammo_cover_open_smoke0
+	{
+		trigger flying_cover go
+		alertentity ammo_cover_open_smoke0
+		wait 1000
+		alertentity ammo_cover_open_smoke0
+		trigger ammo_fire_up go		// -------------> mover
+		trigger player creaking
+	}
+
+	trigger creaking
+	{
+		wait 3000
+		alertentity creaking2
+		wait 3200
+		alertentity blow-up
+	}
+
+////////////////////////////////////////////////////////////////
+
+	
+	trigger bombing2						// Second plain attack
+	{
+		wait 1000							// Main Counter/Timer for Second plain attack
+		trigger m109_nr2 go
+		trigger m109_nr2_bomb drop			// Start for bomb drop
+	}
+
+
+////////////////////////////////////////////////////////////////
+
+	
+	trigger death_player
+	{
+		trigger player lockon
+		alertentity halt1
+		wait 200
+		alertentity shoot
+		wait 1000
+		trigger player die
+	}
+
+	trigger die
+	{
+		alertentity pipec1
+		missionfailed
+		sethealth 0
+	}
+
+	trigger actionpara
+	{
+		alertentity cargo_flyby
+		trigger parachute1 go
+		trigger parachute2 go
+		trigger parachute3 go
+		trigger parachute4 go
+		alertentity attack2
+		trigger player musicassault
+	}
+
+	trigger snipers
+	{
+		alertentity sniper1
+		alertentity sniper2
+	}
+
+	trigger alert_opel
+	{
+		trigger opel start
+		alertentity alert_static4
+		wait 3000
+		alertentity partisan_final
+		alertentity partisan_final2
+		trigger player musicmission
+	}
+
+	trigger final
+	{
+		trigger opel start2
+	}
+
+/////////////////////////end map////////////////////////////////
+	trigger endmap
+	{
+		changelevel
+		wait 9000
+		endgame
+	}
+}
+
+bj1
+{
+	attributes
+	{
+		walking_speed 180
+		alertness 0.0
+		tactical 0.0
+		camper 0.0
+		inner_detection_radius 256
+		hearing_scale_not_pvs 0.0
+		hearing_scale 0.0
+		fov 60
+	}
+	
+	spawn
+	{
+		noattack 999999
+		nosight 999999
+		knockback off
+		headlook off
+		takeweapon all
+		giveweapon weapon_thompson
+		selectweapon weapon_thompson
+		trigger bj1 go
+	}
+	
+	trigger talk1
+	{
+		playsound sound/aaw5/whats_going_on.wav
+		wait 4000
+		trigger siergiej3 talk2
+	}
+	
+	trigger talk2
+	{
+		playsound sound/aaw5/get_out_here.wav
+		wait 3000
+		trigger player attack
+		wait 2000
+		trigger siergiej3 alert
+	}	
+	
+	trigger go
+	{
+		explicit_routing on
+		walktomarker bj_1
+		trigger siergiej3 talk1
+		walktomarker bj_2
+		facetargetangles bj_2
+		trigger bj1 talk1
+	}
+}
+
+siergiej						// This guy gives me pain in the ....
+								// He walk and do everything he wants
+								// :-( and gets in the way all the time. buuuuuuuuuuuu
+								// I think I was debugging him in the engine 50 times at least.
+{
+	attributes
+	{
+		// camper 0.1
+		running_speed 300		// he is so slow........  :-(	// 300 is the max? 1000 do not help !
+		starting_health	100
+		tactical 0.3
+		alertness 0.0
+		fov 360
+		hearing_scale 0.0
+		attack_crouch 0.9
+		attack_skill 0.8
+		aim_accuracy 0.7
+		aim_skill 0.6
+		agression 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		nosight 999999
+		// noattack 999999
+		statetype relaxed
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger siergiej walk
+	}
+	
+	trigger walk
+	{
+		wait 3000
+		playsound sound/aaw5/letsgo.wav
+		walktomarker siergiej_pos1
+		facetargetangles siergiej_pos1
+		statetype alert
+	}
+
+	trigger walk2
+	{
+		walktomarker s_fire1
+		facetargetangles s_fire2
+		walktomarker s_fire2
+		walktomarker s_fire3
+		facetargetangles s_fire3
+		runtomarker to_partisans_1 nostop
+		runtomarker to_partisans_2 nostop
+		runtomarker to_partisans_3 nostop
+		runtomarker to_partisans_4 nostop
+		runtomarker to_partisans_5 nostop
+		runtomarker to_partisans_6 nostop
+		runtomarker to_partisans_7 nostop
+		runtomarker to_partisans_8 nostop
+		runtomarker to_partisans_9 nostop
+		runtomarker to_partisans_10 nostop
+		facetargetangles to_partisans_10
+		walktomarker siergiej_pos2
+		resetscript
+		statetype alert
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		runtomarker camp1_partisan2_marker1 nostop
+		runtomarker camp1_partisan4_patrol3
+		playsound villp4_7
+		wait 2500
+		playsound sound/aaw5/guard.wav
+	}
+		
+
+    	trigger focus_on_player
+    	{
+	    	followcast player
+    	}
+
+    	trigger siergiej_will_follow2
+	{
+		followcast player
+		avoid
+	}
+
+   	trigger resetsiergiej
+   	{
+		resetscript
+		statetype alert
+		wait forever
+	}
+
+	
+	trigger relax
+	{
+		// noattack 999999
+		statetype relaxed
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 8 10		// 8 - seconds of sreen fade-out to mission failed
+								// 10 - nr. of mission fail info in "strings.txt"
+	}
+
+	death						// Death caused by enemy
+	{
+		missionfailed 10 11 	// Survival of Siergiej is essential to continuances of your mission.
+								// He must survive
+	}
+}
+
+siergiej2						// This guy gives me pain in the ....
+{
+	attributes
+	{
+		// camper 0.1
+		running_speed 300
+		starting_health	50
+		tactical 0
+		fov 360
+		attack_crouch 0
+		attack_skill 0
+		aim_accuracy 0
+		aim_skill 0
+		agression 0.0
+		hearing_scale 0.0
+		alertness 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		nosight 999999
+		noattack 999999
+		statetype relaxed
+		takeweapon all
+		trigger siergiej2 dialog
+	}
+
+    	trigger dialog 						//start game
+    	{
+		wait 3000
+		walktomarker s_fire0
+		facetargetangles s_fire0
+		playsound sound/aaw5/n_help.wav				//hey, we need your help!
+		wait 3000
+		trigger player lockoff
+		playsound sound/aaw5/rescued.wav
+		walktomarker s_fire1
+		wait 1000
+		facetargetangles s_fire2
+		walktomarker s_fire2
+		wait 1000
+	    	alertentity kill_table_weapon
+	    	giveweapon weapon_mp40
+	    	setammo ammo_9mm 999
+	    	selectweapon weapon_mp40
+		playsound sound/aaw5/letsgo2.wav		//let's go
+	    	facetargetangles s_fire3
+	    	walktomarker s_fire3
+	    	wait forever 0 player
+	}
+
+	trigger siergiej2_follow_me
+	{
+		alertentity kill_table_weapon
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 999
+		trigger siergiej2 focus_on_player
+		wait 8000
+		noavoid
+		runtomarker to_partisans_1 nostop
+		trigger siergiej walk2
+		runtomarker to_partisans_2 nostop
+		runtomarker to_partisans_3 nostop
+		runtomarker to_partisans_4 nostop
+		runtomarker to_partisans_5 nostop
+		runtomarker to_partisans_6 nostop
+		runtomarker to_partisans_7 nostop
+		godmode on
+		runtomarker to_partisans_8 nostop
+		trigger camp1_partisan1 reset
+		godmode off
+		wait 3000
+		facetargetangles to_partisans_9
+		runtomarker to_partisans_9 nostop
+		runtomarker to_partisans_10 nostop
+		trigger camp1_partisan2 go_platform
+		wait 500
+		runtomarker to_partisans_11
+		facetargetangles to_partisans_11
+		playsound villp4_1
+		trigger siergiej2 resetsiergiej2
+	}
+
+	trigger focus_on_player
+    	{
+	    	followcast player
+    	}
+
+    	trigger siergiej2_will_follow2
+	{
+		followcast player
+		avoid
+	}
+
+   	trigger resetsiergiej2
+   	{
+		resetscript
+		statetype relaxed
+	}
+
+	trigger attack
+	{
+		explicit_routing on
+		runtomarker to_partisans_12
+		facetargetangles to_partisans_12	
+		statetype alert
+	}
+
+	trigger relax
+	{
+		// noattack 999999
+		statetype relaxed
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 8 10		// 8 - seconds of sreen fade-out to mission failed
+								// 10 - nr. of mission fail info in "strings.txt"
+	}
+	
+	death
+	{
+		trigger camp1_partisan1 run
+		trigger siergiej go
+	}
+}
+
+siergiej3						// This guy gives me pain in the ....
+{
+	attributes
+	{
+		// camper 0.1
+		running_speed 300
+		starting_health	50
+		tactical 0
+		fov 360
+		attack_crouch 0
+		attack_skill 0
+		aim_accuracy 0
+		aim_skill 0
+		agression 0.0
+		hearing_scale 0.0
+		alertness 0.0
+		inner_detection_radius 0.0
+	}
+
+	spawn
+	{
+		nosight 999999
+		noattack 999999
+		statetype relaxed
+		takeweapon all
+	}
+
+    	trigger talk1						
+    	{
+		walktomarker par_1
+		facetargetangles par_1
+		playsound sound/aaw5/armedforces.wav
+		playanim giving_orders both
+	    	wait forever
+	}
+
+	trigger talk2						
+    	{
+		walktomarker par_2
+		facetargetangles par_2
+		playsound sound/aaw5/transm.wav
+		wait 9000
+		trigger bj1 talk2
+	}
+
+	trigger alert
+	{
+		gotomarker par_3
+		facetargetangles par_3
+		playsound sound/aaw5/careful.wav
+		alertentity remove_mp40
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		wait 2000
+		walktomarker par_1
+		wait 1000
+		walktomarker par_4
+		facetargetangles par_4
+		playsound sound/aaw5/guard.wav
+		statetype alert
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		gotomarker par_3
+	}	
+		
+	trigger relax
+	{
+		// noattack 999999
+		statetype relaxed
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 8 12		// 8 - seconds of sreen fade-out to mission failed
+								// 12 - nr. of mission fail info in "strings.txt"
+	}
+}
+
+camp1_partisan1
+{
+	attributes
+	{
+
+		// camper 0.1
+		starting_health	120
+		tactical 1.0
+		fov 360
+		attack_crouch 0.0
+		attack_skill 1.0
+		aim_accuracy 1.0
+		aim_skill 1.0
+		agression 0.5
+		inner_detection_radius 5000
+		hearing_scale 0.5
+		alertness 32000
+
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		statetype alert
+		trigger camp1_partisan1 mount_part_mg_1
+	}
+
+	trigger run
+	{
+		resetscript
+		unmount part_mg_1
+		explicit_routing on
+		runtomarker camp1_partisan2_marker3
+	}
+
+	trigger mount_part_mg_1
+	{
+		mount part_mg_1
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	sight player
+	{
+		playsound sound/aaw5/saved.wav
+		wait 3500
+		trigger camp1_partisan2 speaker
+	}
+
+	enemysight
+	{
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 7 13		// 7 - seconds of sreen fade-out to mission failed
+								// 13 - nr. of mission fail info in "strings.txt"
+								// -------> "Mission Failed\nYou killed a fellow partisan"
+	}
+}
+
+camp1_partisan2
+{
+	attributes
+	{
+
+		// camper 0.1
+		running_speed 300
+		starting_health	50
+		tactical 0.3
+		fov 180
+		attack_crouch 0.0
+		attack_skill 0.8
+		aim_accuracy 0.9
+		aim_skill 0.8
+		agression 0.5
+		inner_detection_radius 5000
+		hearing_scale 0.8
+		alertness 32000
+
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		statetype relaxed
+	}
+
+	trigger speaker
+	{
+		playsound sound/aaw5/soldier.wav
+	}
+
+	trigger go_platform
+	{
+		runtomarker camp1_partisan2_marker1 nostop
+		runtomarker camp1_partisan2_marker2 nostop
+		runtomarker camp1_partisan2_marker3 nostop
+		walktomarker camp1_partisan2_marker4 nostop
+		resetscript
+		statetype alert
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 7 13		// 7 - seconds of sreen fade-out to mission failed
+								// 13 - nr. of mission fail info in "strings.txt"
+								// -------> "Mission Failed\nYou killed a fellow partisan"
+	}
+}
+
+camp1_partisan3
+{
+	attributes
+	{
+
+		// camper 0.1
+		running_speed 300
+		starting_health	50
+		tactical 0.3
+		fov 180
+		attack_crouch 0.0
+		attack_skill 0.8
+		aim_accuracy 0.9
+		aim_skill 0.8
+		agression 0.5
+		inner_detection_radius 5000
+		hearing_scale 0.8
+		alertness 32000
+
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		statetype relaxed
+		trigger camp1_partisan3 mount_part_mg_2
+	}
+
+	trigger mount_part_mg_2
+	{
+		mount part_mg_2
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+	
+	trigger alert
+	{
+		playsound sound/aaw5/u_attack.wav
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 7 13		// 7 - seconds of sreen fade-out to mission failed
+								// 13 - nr. of mission fail info in "strings.txt"
+								// -------> "Mission Failed\nYou killed a fellow partisan"
+	}
+}
+
+camp1_partisan4 // patroling guy
+{
+	attributes
+	{
+
+		// camper 0.1
+		running_speed 300
+		starting_health	50
+		tactical 0.0
+		fov 360
+		attack_crouch 0.9
+		attack_skill 0.8
+		aim_accuracy 0.9
+		aim_skill 0.8
+		agression 0.5
+		inner_detection_radius 5000
+		hearing_scale 0.8
+		alertness 32000
+
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 500
+		selectweapon weapon_mp40
+		statetype relaxed
+	}
+
+	trigger patrol
+	{
+		noavoid
+		walktomarker camp1_partisan4_patrol1 nostop
+		walktomarker camp1_partisan4_patrol2 nostop
+		walktomarker camp1_partisan4_patrol3 nostop
+		facetargetangles camp1_partisan4_patrol2
+		wait 10000
+		walktomarker camp1_partisan4_patrol2 nostop
+		walktomarker camp1_partisan4_patrol1 nostop
+		facetargetangles camp1_partisan4_patrol2
+		wait 5000
+		trigger camp1_partisan4 patrol //restart
+	}
+
+	trigger alert
+	{
+		playsound sound/aaw5/hearsomething2.wav
+		statetype alert
+		trigger camp1_partisan4 patrol
+	}
+
+	enemysight
+	{
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	death player				// Death caused by player
+	{
+		missionfailed 7 13		// 7 - seconds of sreen fade-out to mission failed
+								// 13 - nr. of mission fail info in "strings.txt"
+								// -------> "Mission Failed\nYou killed a fellow partisan"
+	}
+}
+
+nazi_corridor1
+{
+
+	attributes
+	{
+		alertness 64000 	
+		hearing_scale 0.7
+		aggression 1.0
+		fov 240
+		inner_detection_radius 1024
+		starting_health 35
+		tactical 1.0
+		camper 1.0
+		attack_skill 1.0
+		idle_crouch 0.5
+		attack_crouch 1.0
+	}
+	
+	spawn
+	{
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 400
+		playsound sound/scenaric/general/misc_hes_here.wav
+		wait 1000
+		trigger nazi_corridor1 run
+	}
+	
+	trigger run
+	{
+		runtomarker nazi_corridor_pos1 nostop
+		runtomarker nazi_corridor_pos2
+		fireattarget player 3000
+	}
+
+	enemysight
+	{
+	}
+	
+	death
+	{
+		trigger nazi_corridor3 talk
+	}
+}
+
+nazi_corridor2
+{
+
+	attributes
+	{
+		alertness 64000 	
+		hearing_scale 0.7
+		aggression 1.0
+		fov 240
+		inner_detection_radius 1024
+		starting_health 35
+		tactical 1.0
+		camper 1.0
+		attack_skill 1.0
+		idle_crouch 0.5
+		attack_crouch 1.0
+	}
+	
+	spawn
+	{
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 400
+		wait 5000
+		trigger nazi_corridor2 run
+	}
+	
+	trigger run
+	{
+		followcast nazi_corridor1
+	}
+
+	enemysight
+	{
+	}
+}
+
+nazi_corridor3
+{
+
+	attributes
+	{
+		alertness 64000 	
+		hearing_scale 0.7
+		aggression 1.0
+		fov 240
+		inner_detection_radius 1024
+		starting_health 35
+		tactical 1.0
+		camper 1.0
+		attack_skill 1.0
+		idle_crouch 0.5
+		attack_crouch 1.0
+	}
+	
+	spawn
+	{
+		giveweapon weapon_mp40
+		selectweapon weapon_mp40
+		setammo ammo_9mm 400
+		wait 5000
+		trigger nazi_corridor3 run
+	}
+	
+	trigger run
+	{
+		runtomarker nazi_corridor_pos1 nostop
+		runtomarker nazi_corridor_pos2
+		fireattarget player 3000
+	}
+
+	trigger talk
+	{
+		playsound sound/scenaric/escape2/axis23_protect.wav
+	}
+
+	enemysight
+	{
+	}
+}
+	
+officer1
+{
+	attributes
+	{
+		alertness 16000 	
+		hearing_scale 0.7
+		aggression 1.0
+		fov 240
+		inner_detection_radius 512
+		starting_health 35
+		tactical 1.0
+		camper 1.0
+		attack_skill 1.0
+		idle_crouch 0.5
+		attack_crouch 1.0
+	}
+	
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 2
+		selectweapon weapon_panzerfaust
+		giveweapon weapon_luger
+		setammo ammo_9mm 400
+		godmode on
+		
+	}
+	
+	trigger fire1
+	{
+		fireattarget shot01
+	}
+	
+	enemysight
+	{
+		noavoid
+		explicit_routing on
+		gotomarker officer1_pos1
+		fireattarget shot02 1000
+		gotomarker officer1_pos2
+		godmode off
+	}
+	
+	bulletimpact
+	{
+	}
+	
+	death
+	{
+	}
+}
+
+nazi1			
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		
+	}
+	
+	pain 30
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.7
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi2				
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.7
+		tactical 0.5
+		attack_skill 0.75
+		aggression 0.5
+		inner_detection_radius 300
+		alertness 2500
+		fov 260			
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		setammo ammo_grenades 9
+		giveweapon weapon_mauserrifle
+		selectweapon weapon_mauserrifle
+		setammo 7.92mm 999
+	}
+	
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi3			
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.6
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	pain 30
+	{
+		attrib aggression 1.0
+		attrib aim_accuracy 0.7
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi4			
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 999
+		selectweapon weapon_mp44
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi5			
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 1.0
+		attack_skill 1.0
+		aim_skill 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi6			
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 1.0
+		attack_skill 1.0
+		aim_skill 1.0
+		aggression 1.0
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi7
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 20
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 9
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+		statetype alert
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+
+nazi8		
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0
+		alertness 2000		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		wait forever 0
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi9		
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+
+nazi10
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		starting_health 20
+		aggression 1.0
+		fov 240
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 9
+		giveweapon weapon_mauserrifle
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+		statetype alert
+	}
+
+	pain 30
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death 
+	{
+	}
+}
+
+nazi11
+{
+	attributes
+	{
+		starting_health 50
+		aim_accuracy 1.0
+		aggression 1.0
+		attack_skill 1.0
+		aim_skill 1.0
+		idle_crouch 0.0
+		alertness 32000
+		fov 240
+	} 
+	
+	spawn
+	{ 
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait 9000
+		trigger nazi11 go
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		gotomarker mg42_3_pos1
+		wait 2000 
+		gotomarker mg42_3_pos2
+		nosight 999999
+		wait 2000
+		gotomarker mg42_3_pos3
+		wait 1000
+		gotomarker mg42_3_pos4
+		facetargetangles mg42_3_pos4
+		wait 3000
+		gotomarker nazi11_pos1
+		wait forever 0
+		sight
+		trigger part_radio go
+	}
+
+	forced_mg42_unmount
+	{
+		deny
+	}
+
+	trigger go2
+	{
+		explicit_routing on
+		gotomarker mg42_3_pos5
+		nosight 999
+		mount mg42_3
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	inspectbodystart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+		deny
+	}
+	
+	inspectfriendlycombatstart
+	{
+		deny
+	} 
+	
+	death
+	{
+	}  
+}
+
+nazi12		
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		trigger nazi12 go
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		walktomarker nazi12_pos1
+	}
+
+	trigger go2
+	{
+		teleport nazi12_pos2
+		walktomarker nazi12_pos3
+		wait forever 
+	}
+		
+	pain 30
+	{
+		attrib aim_accuracy 0.7
+		attrib camper 0.3
+		resetscript
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nazi13		
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 0.0
+		fov 240
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		trigger nazi13 go
+	}
+
+	trigger go
+	{
+		wait 3000
+		explicit_routing on
+		walktomarker nazi12_pos1
+	}
+	
+	trigger go2
+	{
+		teleport nazi13_pos1
+		walktomarker nazi13_pos2
+		wait forever 
+	}	
+		
+	pain 30
+	{
+		attrib aim_accuracy 0.7
+		attrib camper 0.3
+		resetscript
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nazi14		
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		fov 360
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		trigger nazi14 go
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		walktomarker nazi14_pos1
+	}
+
+	trigger go2
+	{
+		teleport nazi14_pos2
+		walktomarker nazi14_pos3
+		wait forever 
+	}
+		
+	pain 30
+	{
+		attrib aim_accuracy 0.7
+		attrib camper 0.3
+		resetscript
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nazi15		
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 0.0
+		fov 240
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		trigger nazi15 go
+	}
+
+	trigger go
+	{
+		wait 3000
+		explicit_routing on
+		walktomarker nazi14_pos1
+	}
+
+	trigger go2
+	{
+		teleport nazi15_pos1
+		walktomarker nazi15_pos2
+		wait forever 
+	}
+		
+	pain 30
+	{
+		attrib aim_accuracy 0.7
+		attrib camper 0.3
+		resetscript
+	}
+
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+part_radio
+{
+	attributes
+	{
+		starting_health 5
+		aim_accuracy 0.2
+		attack_crouch 0.0
+		attack_skill 0.2
+		aim_skill 0.2
+		aggression 0.5
+		fov 120
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype alert
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		wait forever 0 player
+	}
+
+	trigger go
+	{
+		gotocast nazi11
+	}
+
+	enemysight
+	{
+		playsound sound/player/infantryss/rel_quer/hmm1.wav
+		noattack 999
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectsoundend
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectbodyend
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+nazi_mg42_3
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 1.0
+		aggression 1.0
+		attack_skill 1.0
+		aim_skill 1.0
+		reaction_time 1.0
+		hearing_scale 1.0
+		idle_crouch 0.0
+		alertness 64000
+		fov 360
+	} 
+	
+	spawn
+	{ 
+		accum 0 bitreset 0
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		statetype alert
+		trigger nazi_mg42_3 go		
+	}
+
+	trigger go
+	{
+		explicit_routing on
+		gotomarker mg42_3_pos1
+		facetargetangles mg42_3_pos1
+		fireattarget part_radio 2500
+		wait 2000
+		gotomarker mg42_3_pos2
+		nosight 999999
+		wait 1000
+		gotomarker mg42_3_pos3
+		wait 2000
+		gotomarker mg42_3_pos4
+		wait 4000
+		sight
+		gotomarker mg42_3_pos5
+		nosight 9999
+		mount mg42_3
+	}
+	
+	forced_mg42_unmount
+	{
+		deny
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	inspectbodystart
+	{
+		deny
+	}
+	
+	bulletimpact
+	{
+	}
+	
+	inspectfriendlycombatstart
+	{
+		deny
+	} 
+	
+	enemysight
+	{
+	}
+	
+	death
+	{
+		trigger nazi11 go2
+	}  
+}
+
+sniper1
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.9
+		idle_crouch 0.5
+		attack_crouch 1.0
+		attack_skill 1.0
+		aim_skill 1.0
+		aggression 1.0
+		pain_threshhold_scale 2.0
+		inner_detection_radius 2048
+		reaction_time 1.0
+		alertness 32000
+		fov 120
+	}
+
+	spawn
+	{
+		takeweapon all
+		setammo ammo_grenades 0
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+		noavoid
+		statetype alert
+		wait 100
+		wait forever 0
+	}
+
+	avoiddanger panzerfaust
+	{
+		attrib alertness 64000
+		attrib fov 240
+		attrib camper 1.0
+		attrib tactical 1.0
+	}
+
+	trigger alarm_on
+	{
+		wait 1000
+		fireattarget player 3000
+		alertentity activate_alarm
+		accum 1 set 0
+	}
+
+	enemysight
+	{
+		resetscript
+		playsound MiscHalt
+		trigger sniper alarm_on
+	}
+
+	pain 50
+	{
+		movetype crouch
+		attack player
+	}
+
+	bulletimpact
+	{
+		deny
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+sniper2
+{
+	attributes
+	{
+		starting_health 20
+		aim_accuracy 0.8
+		idle_crouch 0.5
+		attack_crouch 1.0
+		attack_skill 1.0
+		aim_skill 1.0
+		aggression 1.0
+		pain_threshhold_scale 2.0
+		inner_detection_radius 2048
+		reaction_time 1.0
+		alertness 64000
+		fov 240
+	}
+
+	spawn
+	{
+		takeweapon all
+		setammo ammo_grenades 0
+		giveweapon weapon_sniperscope
+		setammo ammo_792mm 999
+		selectweapon weapon_sniperscope
+		statetype alert
+	}
+
+	trigger alarm_on
+	{
+		wait 1000
+		explicit_routing on
+		gotomarker sniper2_pos1
+		fireattarget player 3000
+		accum 1 set 0
+	}
+	
+	enemysight
+	{
+		trigger sniper2 alarm_on
+	}
+
+	pain 50
+	{
+		movetype crouch
+		attack player
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	inspectbodystart
+	{
+		deny
+	}
+
+	inspectfriendlycombatstart
+	{
+		deny
+	}
+
+	death
+	{
+	}
+}
+
+trooper1
+{
+	attributes
+	{
+		starting_health 50
+		idle_crouch 0.0
+		attack_crouch 0.0
+		attack_skill 0.7
+		aim_accuracy 0.6
+		aim_skill 0.3
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 bitreset 3
+		accum 1 bitreset 2	// On/Off
+		accum 1 bitreset 4	// Used for their "fake-death" while parachuting.
+		accum 1 bitreset 5	// Used for the kill_trooper hurt brush.
+		knockback off
+		noavoid
+		noattack 999999 // BUG FIX!!!!
+		trigger trooper4 animloop
+	}
+	
+	trigger animloop
+	{
+		playanim parachute both forever
+	}
+
+	trigger go
+	{
+		attack
+		parachute off
+		accum 1 bitset 4
+		explicit_routing on
+		sight
+		clearanim
+		resetscript
+		avoid
+		knockback on
+		statetype alert
+		explicit_routing off
+	}
+
+	avoiddanger player
+	{
+		denyactivate
+	}
+
+	statechange alert combat
+	{
+		accum 1 abort_if_not_bitset 2
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpactsound
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+	
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+trooper2
+{
+	attributes
+	{
+		starting_health 50
+		idle_crouch 0.0
+		attack_crouch 0.0
+		attack_skill 0.7
+		aim_accuracy 0.6
+		aim_skill 0.3
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 bitreset 3
+		accum 1 bitreset 2	// On/Off
+		accum 1 bitreset 4	// Used for their "fake-death" while parachuting.
+		accum 1 bitreset 5	// Used for the kill_trooper hurt brush.
+		knockback off
+		noavoid
+		noattack 999999 // BUG FIX!!!!
+		trigger trooper4 animloop
+	}
+	
+	trigger animloop
+	{
+		playanim parachute both forever
+	}
+
+	trigger go
+	{
+		attack
+		parachute off
+		accum 1 bitset 4
+		explicit_routing on
+		sight
+		clearanim
+		resetscript
+		avoid
+		knockback on
+		statetype alert
+		explicit_routing off
+	}
+
+	avoiddanger player
+	{
+		denyactivate
+	}
+
+	statechange alert combat
+	{
+		accum 1 abort_if_not_bitset 2
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpactsound
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+	
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+trooper3
+{
+	attributes
+	{
+		starting_health 35
+		idle_crouch 0.0
+		attack_crouch 0.0
+		attack_skill 0.7
+		aim_accuracy 0.6
+		aim_skill 0.3
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 bitreset 3
+		accum 1 bitreset 2	// On/Off
+		accum 1 bitreset 4	// Used for their "fake-death" while parachuting.
+		accum 1 bitreset 5	// Used for the kill_trooper hurt brush.
+		knockback off
+		noavoid
+	        noattack 999999 // BUG FIX!!!!
+		trigger trooper3 animloop
+	}
+
+	trigger animloop
+	{
+		playanim parachute both forever
+	}
+
+	trigger go
+	{
+		attack
+		parachute off
+		accum 1 bitset 4
+		explicit_routing on
+		sight
+		clearanim
+		resetscript
+		avoid
+		knockback on
+		statetype alert
+		explicit_routing off
+	}
+
+	avoiddanger player
+	{
+		denyactivate
+	}
+
+	statechange alert combat
+	{
+		accum 1 abort_if_not_bitset 2
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpactsound
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+trooper4
+{
+	attributes
+	{
+		starting_health 35
+		idle_crouch 0.0
+		attack_crouch 0.0
+		attack_skill 0.7
+		aim_accuracy 0.6
+		aim_skill 0.3
+	}
+
+	spawn
+	{
+		accum 0 set 0
+		accum 1 bitreset 3
+		accum 1 bitreset 2	// On/Off
+		accum 1 bitreset 4	// Used for their "fake-death" while parachuting.
+		accum 1 bitreset 5	// Used for the kill_trooper hurt brush.
+		knockback off
+		noavoid
+		noattack 999999 // BUG FIX!!!!
+		trigger trooper4 animloop
+	}
+	
+	trigger animloop
+	{
+		playanim parachute both forever
+	}
+
+	trigger go
+	{
+		attack
+		parachute off
+		accum 1 bitset 4
+		explicit_routing on
+		sight
+		clearanim
+		resetscript
+		avoid
+		knockback on
+		statetype alert
+		explicit_routing off
+	}
+
+	avoiddanger player
+	{
+		denyactivate
+	}
+
+	statechange alert combat
+	{
+		accum 1 abort_if_not_bitset 2
+		resetscript
+	}
+
+	inspectfriendlycombatstart
+	{
+	}
+
+	bulletimpactsound
+	{
+	}
+
+	bulletimpact
+	{
+	}
+
+	inspectsoundstart
+	{
+	}
+
+	inspectbodystart
+	{
+	}
+	
+	death
+	{
+	}
+
+	enemysight
+	{
+		resetscript
+	}
+}
+
+mech1
+{
+	attributes
+	{
+		starting_health 10
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		reaction_time 1.0
+		hearing_scale 1.0
+	}
+	
+	spawn
+	{
+		takeweapon all
+	}
+	
+	enemysight
+	{
+		accum 0 abort_if_equal 1
+		resetscript		
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	inspectsoundstart
+	{
+		resetscript		
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+	
+	bulletimpact
+	{
+		resetscript		
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+ 	death
+	{
+	}
+}
+
+mech2
+{
+	attributes
+	{
+		starting_health 10
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 1.0
+		reaction_time 1.0
+		hearing_scale 1.0
+	}
+	
+	spawn
+	{
+		takeweapon all
+	}
+
+	enemysight
+	{
+		resetscript		
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+	inspectsoundstart
+	{
+		resetscript		
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+	
+	bulletimpact
+	{
+		accum 0 abort_if_equal 2
+		resetscript		
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	}
+
+ 	death
+	{
+	}
+}
+
+partisan_final
+{
+	attributes
+	{
+		fov 240
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_sten
+		setclip 9mm 999
+		selectweapon weapon_sten
+		wait forever 0 player
+	}
+
+	sight player
+	{
+		playsound sound/aaw5/hey_this_way.wav
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+}
+
+partisan_final2
+{
+	attributes
+	{
+		fov 240
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_mp40
+		setclip 9mm 999
+		selectweapon weapon_mp40
+		wait forever 0 player
+	}
+
+	sight player
+	{
+		wait 3000
+		playsound sound/aaw5/get_hell_here.wav
+	}
+
+	blocked player
+	{
+		pushaway player
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+}

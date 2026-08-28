@@ -1,0 +1,32 @@
+// RealRTCW additional weapons/ammo etc.
+
+
+{
+"classname" "ammo_m97ammo"
+"origin" "-669 8192 39"
+}
+
+{
+"classname" "ammo_m97ammo"
+"origin" "-684 8192 39"
+}
+
+{
+"classname" "ammo_44ammo_l"
+"origin" "-118 7806 -377"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

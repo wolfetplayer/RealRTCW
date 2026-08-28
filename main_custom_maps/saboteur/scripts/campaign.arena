@@ -1,0 +1,56 @@
+// Saboteur - Allied commando, coast raid to the V2 rocket
+
+{
+map			"normandy"
+longname	"Beach Landing"
+chapter		"1"
+}
+
+{
+map			"seabase"
+longname	"Sea Fortress"
+chapter		"1"
+}
+
+{
+map			"techicalbunker"
+longname	"Technical Bunker"
+chapter		"1"
+}
+
+{
+map			"support"
+longname	"To the Main Target"
+chapter		"1"
+}
+
+{
+map			"UnderBase"
+longname	"Steel Gates"
+chapter		"1"
+}
+
+{
+map			"UnderBase2"
+longname	"One Step Closer"
+chapter		"1"
+}
+
+{
+map			"SecretWeapon"
+longname	"Underground Complex"
+chapter		"1"
+}
+
+{
+map			"SecretWeapon2"
+longname	"Engineering Complex"
+chapter		"1"
+}
+
+{
+map			"EndMission"
+longname	"The Rocket"
+chapter		"1"
+}
+

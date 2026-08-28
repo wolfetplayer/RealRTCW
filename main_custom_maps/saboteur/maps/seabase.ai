@@ -18,6 +18,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout seabase
+		#endif
+		cvar g_level_was_selected 0
 		
 		// Weapons
 		// Ammo
@@ -25,14 +29,6 @@ player
 //		setammo ammo_grenades_american 5
 //		setammo ammo_45cal 250
 //		setammo ammo_30cal 250
-		setclip weapon_thompson 30
-		setclip weapon_sten 32
-		setclip m97 6
-		setclip bar 20
-		setclip weapon_m1garand 5
-		setclip weapon_colt 8
-		setclip weapon_akimbo 8
-		setclip weapon_revolver 6
 
 		mu_fade 0 1000
 		mu_queue sound/music/m_moving
@@ -128,8 +124,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -141,16 +135,12 @@ nazi1
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -177,8 +167,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -190,16 +178,12 @@ nazi2
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -226,8 +210,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -239,16 +221,12 @@ nazi3
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -275,8 +253,6 @@ nazi4
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -288,16 +264,12 @@ nazi4
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -324,9 +296,6 @@ nazi5
 {
 	attributes
 	{
-		aim_accuracy 0.4
-		starting_health 25
-		reaction_time 0.1
 		tactical 1.0
 		alertness 55000
 		attack_crouch 0.9
@@ -343,7 +312,6 @@ nazi5
 	{
 		resetscript
 		attrib aggression 0.2
-		attrib aim_accuracy 0.3
 	}
 	enemysight
 	{		
@@ -356,8 +324,6 @@ nazi6
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -369,16 +335,12 @@ nazi6
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -405,8 +367,6 @@ nazi7
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -418,16 +378,12 @@ nazi7
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -454,8 +410,6 @@ nazi8
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -467,17 +421,12 @@ nazi8
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -504,8 +453,6 @@ nazi9
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -517,16 +464,12 @@ nazi9
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -553,8 +496,6 @@ nazi10
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -566,17 +507,12 @@ nazi10
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
-		setclip weapon_mauserRifle 5
+		giveweaponfull weapon_mauserRifle
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -603,8 +539,6 @@ nazi11
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -616,16 +550,12 @@ nazi11
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -652,8 +582,6 @@ nazi12
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -665,16 +593,12 @@ nazi12
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -701,8 +625,6 @@ nazi13
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -714,16 +636,12 @@ nazi13
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -750,8 +668,6 @@ nazi14
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.7
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -763,18 +679,13 @@ nazi14
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -801,8 +712,6 @@ nazi15
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -814,18 +723,13 @@ nazi15
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -852,8 +756,6 @@ nazi16
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		tactical 2.0
 		aggression 0.5
 		camper 1.0
@@ -901,8 +803,6 @@ nazi17
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -914,16 +814,12 @@ nazi17
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -950,8 +846,6 @@ nazi18
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -963,17 +857,12 @@ nazi18
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1000,8 +889,6 @@ nazi19
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1013,18 +900,13 @@ nazi19
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mauserRifle
-		setammo ammo_792mm 999
-		selectweapon weapon_mauserRifle
-		setclip weapon_mauserRifle 5
+		giveweaponfull weapon_mauserRifle
 		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1051,8 +933,6 @@ nazi20
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1064,18 +944,13 @@ nazi20
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 		wait forever 0 player
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1102,8 +977,6 @@ nazi21
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1115,17 +988,12 @@ nazi21
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1152,8 +1020,6 @@ nazi22
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1165,16 +1031,12 @@ nazi22
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1201,8 +1063,6 @@ nazi23
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1214,16 +1074,12 @@ nazi23
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1250,8 +1106,6 @@ nazi24
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.5
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1263,16 +1117,12 @@ nazi24
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1299,9 +1149,6 @@ nazi25
 {
 	attributes
 	{
-		aim_accuracy 0.9
-		starting_health 25
-		reaction_time 0.1
 		tactical 1.0
 		alertness 55000
 		attack_crouch 0.9
@@ -1319,7 +1166,6 @@ nazi25
 	{
 		resetscript
 		attrib aggression 0.2
-		attrib aim_accuracy 0.3
 	}
 	enemysight
 	{		
@@ -1332,8 +1178,6 @@ nazi26
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1345,16 +1189,12 @@ nazi26
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1381,8 +1221,6 @@ nazi27
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1394,16 +1232,12 @@ nazi27
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1430,8 +1264,6 @@ nazi28
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1443,16 +1275,12 @@ nazi28
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1479,8 +1307,6 @@ nazi29
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.5
 		tactical 2.0
 		aggression 0.5
 		camper 1.0
@@ -1527,9 +1353,6 @@ nazi30
 {
 	attributes
 	{
-		aim_accuracy 0.4
-		starting_health 25
-		reaction_time 0.1
 		tactical 1.0
 		alertness 55000
 		attack_crouch 0.9
@@ -1546,7 +1369,6 @@ nazi30
 	{
 		resetscript
 		attrib aggression 0.2
-		attrib aim_accuracy 0.3
 	}
 	enemysight
 	{		
@@ -1559,8 +1381,6 @@ nazi31
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1572,18 +1392,13 @@ nazi31
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1610,8 +1425,6 @@ nazi32
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1623,17 +1436,13 @@ nazi32
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1660,8 +1469,6 @@ nazi33 // mg42-no1
 {
 	attributes
 	{
-		aim_accuracy 0.6
-		starting_health 25
 	}
 
 	spawn
@@ -1715,8 +1522,6 @@ nazi34
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1728,16 +1533,12 @@ nazi34
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1764,8 +1565,6 @@ nazi35
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1777,16 +1576,12 @@ nazi35
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1813,8 +1608,6 @@ nazi36
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1826,17 +1619,12 @@ nazi36
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1863,8 +1651,6 @@ nazi37
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -1876,16 +1662,12 @@ nazi37
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 50
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -1912,9 +1694,6 @@ nazi38
 {
 	attributes
 	{
-		aim_accuracy 0.6
-		starting_health 25
-		reaction_time 0.1
 		tactical 1.0
 		alertness 55000
 		attack_crouch 0.9
@@ -1931,7 +1710,6 @@ nazi38
 	{
 		resetscript
 		attrib aggression 0.2
-		attrib aim_accuracy 0.3
 	}
 	enemysight
 	{		

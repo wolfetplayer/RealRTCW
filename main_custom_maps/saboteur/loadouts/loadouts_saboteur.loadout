@@ -1,0 +1,408 @@
+loadout normandy
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 150
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_revolver
+		setammo ammo_revolver full
+		setclip weapon_revolver full
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m1garand
+		setammo ammo_30cal 60
+		setclip weapon_m1garand full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 40
+		setclip weapon_m97 full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_bar
+}
+
+loadout seabase
+{
+		setarmor 55
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 120
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_revolver
+		setammo ammo_revolver full
+		setclip weapon_revolver full
+		giveweapon weapon_m1garand
+		setammo ammo_30cal 60
+		setclip weapon_m1garand full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout techicalbunker
+{
+		setarmor 75
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 150
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_revolver
+		setammo ammo_revolver full
+		setclip weapon_revolver full
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 40
+		setclip weapon_m97 full
+		giveweapon weapon_mp40
+		setammo ammo_9mm 200
+		setclip weapon_mp40 full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout support
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 150
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m1garand
+		setammo ammo_30cal 60
+		setclip weapon_m1garand full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 40
+		setclip weapon_m97 full
+		giveweapon weapon_fg42
+		setammo ammo_792mm 100
+		setclip weapon_fg42 full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout UnderBase
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 150
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 40
+		setclip weapon_m97 full
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 180
+		setclip weapon_mp44 full
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 1
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout UnderBase2
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 175
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m1garand
+		setammo ammo_30cal 60
+		setclip weapon_m1garand full
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 180
+		setclip weapon_mp44 full
+		giveweapon weapon_mg42m
+		setammo ammo_127mm 300
+		setclip weapon_mg42m full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout SecretWeapon
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 175
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 180
+		setclip weapon_mp44 full
+		giveweapon weapon_fg42
+		setammo ammo_792mm 100
+		setclip weapon_fg42 full
+		giveweapon weapon_mg42m
+		setammo ammo_127mm 300
+		setclip weapon_mg42m full
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 2
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout SecretWeapon2
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 200
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m1garand
+		setammo ammo_30cal 60
+		setclip weapon_m1garand full
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 180
+		setclip weapon_mp44 full
+		giveweapon weapon_fg42
+		setammo ammo_792mm 100
+		setclip weapon_fg42 full
+		giveweapon weapon_mg42m
+		setammo ammo_127mm 300
+		setclip weapon_mg42m full
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 2
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout EndMission
+{
+		setarmor 100
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 200
+		setammo ammo_grenades_american 4
+
+		setclip weapon_colt full
+		setclip weapon_akimbo full
+		setclip weapon_thompson full
+
+		giveweapon weapon_bar
+		setammo ammo_barammo 200
+		setclip weapon_bar full
+		giveweapon weapon_m1garand
+		setammo ammo_30cal 60
+		setclip weapon_m1garand full
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 40
+		setclip weapon_m97 full
+		giveweapon weapon_mp44
+		setammo ammo_44ammo 180
+		setclip weapon_mp44 full
+		giveweapon weapon_fg42
+		setammo ammo_792mm 100
+		setclip weapon_fg42 full
+		giveweapon weapon_mg42m
+		setammo ammo_127mm 300
+		setclip weapon_mg42m full
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 3
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 100
+		setclip weapon_delisle full
+		giveweapon weapon_m1941
+		giveweapon weapon_m1941scope
+		setammo ammo_m1941 full
+		setclip weapon_m1941 full
+		setclip weapon_m1941scope full
+		#endif
+
+		selectweapon weapon_bar
+}
+

@@ -18,6 +18,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout UnderBase2
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 3000
 		mu_queue sound/music/m_moving
 
@@ -84,8 +88,6 @@ nazi1
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -97,17 +99,12 @@ nazi1
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 	}
 	pain 20
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -134,8 +131,6 @@ nazi2
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -147,16 +142,12 @@ nazi2
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 9
 	}
 	pain 20
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -183,8 +174,6 @@ nazi3
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.6
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -196,17 +185,12 @@ nazi3
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_g43
-		setammo ammo_792mm 999
-		setclip g43 10
-		selectweapon weapon_g43
+		giveweaponfull weapon_g43
 		setammo ammo_grenades 9
 	}
 	pain 20
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -233,15 +217,10 @@ nazi4
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.6
 	}
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mauserrifle
-		setclip 7.92mm 999
-		selectweapon weapon_mauserrifle
+		giveweaponfull weapon_mauserrifle
 	}
 	inspectsoundstart
 	{
@@ -266,16 +245,10 @@ nazi5
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.3
 	}
 	spawn
 	{
-		takeweapon all
-		giveweapon weapon_mg42m
-		setammo 12.7mm 999
-		setclip mg42m 100
-		selectweapon weapon_mg42m
+		giveweaponfull weapon_mg42m
 	}
 	inspectsoundstart
 	{
@@ -300,8 +273,6 @@ nazi6
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -313,18 +284,13 @@ nazi6
 	spawn
 	{
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		selectweapon weapon_mp34
+		giveweaponfull weapon_mp34
 		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 30
 	{
 		attrib aggression 0.2
-		attrib aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -351,8 +317,6 @@ nazi7
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		tactical 1.0
 		aggression 1.0
 		inner_detection_radius 200
@@ -398,8 +362,6 @@ nazi8
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		tactical 1.0
 		aggression 1.0
 		inner_detection_radius 200
@@ -445,8 +407,6 @@ nazi9
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		tactical 1.0
 		aggression 1.0
 		inner_detection_radius 200
@@ -492,8 +452,6 @@ nazi10	//flamethrower
 {
 	attributes
 	{
-		starting_health 100
-		aim_accuracy 0.3
 		tactical 0.5
 		attack_skill 0.75
 		aggression 1.0
@@ -538,8 +496,6 @@ nazi11	//Venom
 {
 	attributes
 	{
-		starting_health 100
-		aim_accuracy 0.3
 		tactical 0.5
 		attack_skill 0.75
 		aggression 0.5
@@ -550,10 +506,7 @@ nazi11	//Venom
 
 	spawn
 	{
-		takeweapon all
-		giveweapon venom
-		setammo 12.7mm 999
-		selectweapon venom
+		giveweaponfull weapon_venom
 		followcast player	
 	}
 	trigger go1			
@@ -585,8 +538,6 @@ nazi12
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -599,18 +550,13 @@ nazi12
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp34
 		giveweapon weapon_grenadelauncher
-		selectweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 10
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.7
 		followcast player
 	}
@@ -644,8 +590,6 @@ nazi13
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -658,17 +602,13 @@ nazi13
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp40
 		giveweapon weapon_grenadelauncher
-		selectweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 10
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.7
 		followcast player
 	}
@@ -702,8 +642,6 @@ nazi14
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -716,19 +654,13 @@ nazi14
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp34
 		giveweapon weapon_grenadelauncher
-		selectweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 10
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.7
 		followcast player
 	}
@@ -762,8 +694,6 @@ nazi15
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -776,18 +706,13 @@ nazi15
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp40
 		giveweapon weapon_grenadelauncher
-		selectweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 10
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.7
 		followcast player
 	}
@@ -821,8 +746,6 @@ nazi16
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -835,19 +758,13 @@ nazi16
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		takeweapon all
-		giveweapon weapon_mp34
-		setammo ammo_9mm 999
-		setclip mp34 32
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp34
 		giveweapon weapon_grenadelauncher
-		selectweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 10
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.7
 		followcast player
 	}
@@ -881,8 +798,6 @@ nazi17
 {
 	attributes
 	{
-		starting_health 25
-		aim_accuracy 0.4
 		attack_crouch 0.9
 		attack_skill 0.9
 		aim_skill 0.9
@@ -895,18 +810,13 @@ nazi17
 	{
 		accum 0 bitreset 0
 		statetype alert
-		takeweapon all
-		takeweapon all
-		giveweapon weapon_mp40
-		setammo ammo_9mm 999
-		setammo ammo_grenades 9
+		giveweaponfull weapon_mp40
 		giveweapon weapon_grenadelauncher
-		selectweapon weapon_grenadelauncher
+		setammo ammo_grenades 9
 		followcast player
 	}
 	pain 10
 	{
-		attrib aim_accuracy 0.6
 		attrib camper 0.7
 		followcast player
 	}
@@ -940,8 +850,6 @@ nazi18
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		tactical 1.0
 		aggression 1.0
 		inner_detection_radius 200
@@ -987,8 +895,6 @@ nazi19
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		tactical 1.0
 		aggression 1.0
 		inner_detection_radius 200
@@ -1034,8 +940,6 @@ nazi20
 {
 	attributes
 	{
-		starting_health 40
-		aim_accuracy 0.4
 		tactical 1.0
 		aggression 1.0
 		inner_detection_radius 200
@@ -1081,8 +985,6 @@ nazi21	//flamethrower
 {
 	attributes
 	{
-		starting_health 100
-		aim_accuracy 0.3
 		tactical 0.5
 		attack_skill 0.75
 		aggression 1.0
@@ -1127,8 +1029,6 @@ nazi22	//venom
 {
 	attributes
 	{
-		starting_health 100
-		aim_accuracy 0.3
 		tactical 0.5
 		attack_skill 0.75
 		aggression 0.5
@@ -1139,10 +1039,7 @@ nazi22	//venom
 
 	spawn
 	{
-		takeweapon all
-		giveweapon venom
-		setammo 12.7mm 999
-		selectweapon venom	
+		giveweaponfull weapon_venom
 	}
 	trigger go1			
 	{

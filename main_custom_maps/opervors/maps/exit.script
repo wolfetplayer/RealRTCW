@@ -1,0 +1,71 @@
+//
+//Brush Scripting
+//Map: Exit (for O.V.)
+//Last edited by: Tef Johs
+//
+
+
+director	// labels for camera play during dialogue intro sequence
+{
+	spawn
+	{		
+	 
+	}
+
+	trigger cam1
+	{
+		trigger player camera1
+	}
+}
+
+
+boatride		// controls and move the boat during the river navigation 
+{
+	spawn
+	{
+
+	}
+
+	trigger move1
+	{
+		wait 100
+		playsound sound/world/splashes.wav looping
+		gotomarker boatspot1 35 turntotarget wait
+
+		trigger boatride move2		
+	}
+
+	trigger move2
+	{
+		resetscript
+		
+		gotomarker boatspot2 35 turntotarget wait		
+		trigger boatride move3
+	}
+	
+	trigger move3
+	{
+		resetscript
+
+		gotomarker boatspot3 35 turntotarget wait		
+		trigger boatride move4
+	}
+	
+	trigger move4
+	{
+		resetscript
+
+		gotomarker boatspot4 35 turntotarget wait				
+		trigger boatride move5
+	}
+
+	trigger move5
+	{
+		resetscript
+
+		gotomarker boatspot5 35 0 turntotarget wait
+		halt
+		stopsound	
+	}
+}
+

@@ -1,0 +1,210 @@
+//
+//Brush Scripting
+//Map: Intro (for O.V.)
+//Last edited by: Tef Johs
+//
+
+
+director	// labels for camera play during dialogue intro sequence
+{
+	spawn
+	{		
+	 
+	}
+
+	trigger cam1
+	{
+		trigger player camera1
+	}
+
+	trigger cam2
+	{
+		trigger player camera2
+	}
+
+	trigger cam3
+	{
+		trigger player camera3
+	}
+
+	trigger cam3b
+	{
+		trigger player camera3b
+	}
+
+	trigger cam4
+	{
+		trigger player camera4
+	}
+
+	trigger cam5
+	{
+		trigger player camera5
+	}
+
+	trigger cam6
+	{
+		trigger player camera6
+	}
+
+	trigger cam7
+	{
+		trigger player camera7
+	}
+}
+
+
+
+dialogue	// controls dialogue between Nazi1 and Nazi2, their deaths, and ending
+{
+	spawn
+	{		
+		accum 0 set 1 //Nazi1 still lives when 1 - reinforce check
+		accum 1 set 1 //Nazi2 still lives when 1 - reinforce check	
+	}
+
+	trigger wakenazi2
+	{
+		wait 2000
+		alertentity nazi2
+	}
+	
+	trigger nazi1_2
+	{
+		
+		wait 500
+		trigger nazi1 nazi1line1
+
+		wait 2000
+		trigger nazi2 nazi2line1
+
+		wait 3000
+		trigger nazi1 nazi1line2
+
+		wait 5000
+		trigger nazi2 nazi2line2
+
+		wait 7000
+		trigger nazi1 nazi1line3
+
+		wait 4000
+		trigger nazi2 nazi2line3
+
+		wait 10000
+		trigger nazi1 nazi1line4
+
+		wait 6000
+		trigger nazi2 nazi2line4
+
+		wait 4500
+
+		trigger nazi2 walk2
+		trigger nazi1 patrol2
+	}
+	
+	trigger reinforce1
+	{
+		accum 0 set 0
+		accum 1 abort_if_equal 1
+		trigger dialogue reinforce
+			
+	}		
+
+	trigger reinforce2
+	{		
+		accum 1 set 0
+		accum 0 abort_if_equal 1
+		trigger dialogue reinforce
+	}	
+
+	
+	trigger reinforce
+	{
+		wait 1000
+		alertentity nazi3
+		wait 3000
+		alertentity nazi4
+		trigger dialogue nextmap
+	}	
+				
+	trigger nextmap
+	{		
+		alertentity intro_end
+		trigger player objective1
+	}
+
+	death
+	{
+
+	}
+}
+
+
+boatride		// controls and move the boat during the river navigation 
+{
+	spawn
+	{
+
+	}
+
+	trigger introspeech
+	{	
+		wait 900	
+		playsound sound/scenaric/dam/1933_reichstag.wav
+	}			
+
+	trigger move1
+	{
+		wait 100
+		playsound sound/world/splashes.wav looping
+		gotomarker boatspot1 45 turntotarget wait
+
+		trigger boatride move2		
+	}
+
+	trigger move2
+	{
+		resetscript
+		
+		gotomarker boatspot2 45 turntotarget wait		
+		trigger boatride move3
+	}
+	
+	trigger move3
+	{
+		resetscript
+
+		gotomarker boatspot3 45 turntotarget wait		
+		trigger boatride move4
+	}
+	
+	trigger move4
+	{
+		resetscript
+
+		gotomarker boatspot4 45 turntotarget wait				
+		trigger boatride move5
+	}
+
+	trigger move5
+	{
+		resetscript
+		trigger player unlockinboat		//time to get freedom back
+		trigger player autosave
+
+		gotomarker boatspot5 45 turntotarget wait				
+		faceangles 0 0 0 8000
+
+		trigger boatride move6			
+	}
+
+	trigger move6
+	{
+		resetscript
+
+		gotomarker boatspot6 30 0 turntotarget wait
+		halt
+		stopsound	
+	}
+}
+

@@ -1,0 +1,209 @@
+//
+//Brush Scripting
+//Map: tefcw3 (for O.V.)
+//Last edited by: Tef Johs
+//
+
+
+director					// labels for camera play tefcw3
+{
+	spawn
+	{		
+	 
+	}
+
+	trigger cam1
+	{
+		trigger player camera1
+	}
+
+	trigger cam2
+	{
+		trigger player camera2
+	}
+}
+
+
+
+dialogue					// controls all dialogue in tefcw3
+{
+	spawn
+	{		
+	
+	}
+	
+	trigger dial1				// Two nazis in entry hallway 
+	{				
+		trigger nazi1 nazi1line1
+		wait 4500
+		
+		trigger nazi1 nazi1line2
+		wait 2000
+
+		trigger nazi2 nazi2line1
+		wait 3500
+
+		trigger nazi1 nazi1line3
+		wait 7500
+		
+		trigger nazi2 nazi2line2
+		wait 5000
+	}
+		
+	death
+	{
+
+	}
+}
+
+
+spawner						// all-purpose spawner for tefcw3
+{					
+	spawn
+	{
+	
+	}
+
+	trigger nazi38				// Nazis spawning when still inside	
+	{			
+		alertentity nazi3
+		wait 100
+		alertentity nazi4
+		wait 100
+		alertentity nazi5
+		wait 100
+		alertentity nazi6
+		wait 100
+		alertentity nazi7
+		wait 100
+		alertentity nazi8
+	}
+
+	trigger nazi918				// Nazis spawning when just outside	
+	{			
+		alertentity nazi9
+		wait 100
+		alertentity nazi10
+		wait 100
+		alertentity nazi11
+		wait 100
+		alertentity nazi12
+		wait 100
+		alertentity nazi13
+		wait 100
+		alertentity nazi14
+		wait 100
+		alertentity nazi15
+		wait 100
+		alertentity nazi16
+		wait 100
+		alertentity nazi17
+		wait 100
+		alertentity nazi18
+	}
+
+	trigger naziblack1			// Blackguards in facility main hallway
+	{
+		alertentity nazi19
+		wait 100
+		alertentity nazi20
+		wait 100
+		alertentity nazi21
+		wait 100
+		alertentity nazi22
+		wait 100
+		alertentity nazi23
+		wait 100
+		alertentity nazi24
+		wait 100
+		alertentity nazi25
+		wait 100
+		alertentity nazi26	
+	}
+
+	trigger doctors1			// Scientists in main lab
+	{
+		alertentity doctor1
+		wait 100
+		alertentity doctor2
+		wait 100
+		alertentity doctor3
+		wait 100
+		alertentity doctor4
+		wait 100
+		alertentity nazi31
+		wait 100
+		alertentity nazi32		// Blackguards in inner hallway
+		wait 100
+		alertentity nazi33		
+	}
+
+	trigger sector1				// Nazis, scientists Sector 1
+	{
+		alertentity nazi27
+		wait 100
+		alertentity nazi28
+		wait 100
+		alertentity nazi29
+		wait 100
+		alertentity nazi30
+		wait 100
+		alertentity doctor5
+		wait 100
+		alertentity doctor6
+		wait 100
+		alertentity doctor7
+	}
+
+	trigger sector2				// Nazis, scientists Sector 2
+	{
+		alertentity nazi34
+		wait 100
+		alertentity nazi35
+		wait 100
+		alertentity nazi36
+		wait 100
+		alertentity nazi37
+		wait 100
+		alertentity nazi38
+		wait 100
+		alertentity doctor8
+		wait 100
+		alertentity doctor9
+		wait 100
+		alertentity doctor10
+	}
+
+	trigger exithall				
+	{
+		alertentity proto1			// Protosoldier
+		wait 100
+		alertentity nazi45			// Outside exit soldiers
+		wait 100
+		alertentity nazi46
+		wait 100
+		alertentity nazi47
+		wait 100
+		alertentity nazi48
+	}
+
+	trigger centreroom				// Nazis in centre room
+	{
+		alertentity nazi39
+		wait 100
+		alertentity nazi40
+		wait 100
+		alertentity nazi41
+		wait 100
+		alertentity nazi42
+		wait 100
+		alertentity nazi43
+		wait 100
+		alertentity nazi44
+		wait 100
+		alertentity doctor11
+		wait 100
+		alertentity doctor12
+	}	
+}
+

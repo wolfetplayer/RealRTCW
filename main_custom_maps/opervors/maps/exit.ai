@@ -1,0 +1,105 @@
+//
+//AI Scripting
+//Map: Exit (for O.V.)
+//Last edited by: Tef Johs
+//
+
+player
+{
+	spawn
+	{
+		objectivesneeded 1
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/l_theme
+				
+		trigger player introsequence
+	}
+
+	trigger introsequence		//plays the opening scene
+	{
+		trigger director cam1
+		wait 10000	
+	}
+
+	trigger endmusic
+	{
+		mu_fade 0 500
+		mu_queue sound/music/s_highramp
+		wait 12000
+		mu_stop 500		
+	}
+
+	trigger camera1				//max time = 10s
+	{
+		startcam exit_cam1	
+	}
+
+	trigger startboat
+	{
+		wait 1000
+		trigger player lockinboat	//lock player 	
+	}
+	
+	trigger lockinboat
+	{
+		lockplayer on
+		wait 100
+		trigger player objective1
+		wait 500
+		trigger boatride move1		//starts the actual boat
+	}
+		
+	trigger objective1			// gotten into the boat
+	{
+		objectivemet 1
+	}
+
+	trigger endmap				// changes to escape1 of original game
+	{	
+		changelevel
+		wait 9000
+		endgame
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{			
+		setammo ammo_grenades 5
+		givearmor item_armor_head
+		giveweapon weapon_mp40
+		setammo ammo_9mm 100
+		selectweapon weapon_mp40		
+	}
+
+	enemysight
+	{
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+		resetscript
+	}
+
+	death
+	{	
+
+	}
+}
+
+

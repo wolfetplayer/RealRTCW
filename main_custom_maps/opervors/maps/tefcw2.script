@@ -1,0 +1,242 @@
+//
+//Brush Scripting
+//Map: tefcw2 (for O.V.)
+//Last edited by: Tef Johs
+//
+
+
+director			// labels for camera play tefcw2
+{
+	spawn
+	{		
+	 
+	}
+
+	trigger cam1
+	{
+		trigger player camera1
+	}
+
+
+	trigger cam2
+	{
+		trigger player camera2
+	}
+}
+
+
+
+dialogue	
+{
+	spawn
+	{		
+	
+	}
+
+	trigger nazi1lock			// makes sure gate's getting locked
+	{
+		trigger nazi1 overthere
+		wait 2500
+		trigger player lockgate
+	}
+	
+	trigger dial1				// the two officers in the dining area
+	{				
+		trigger officer2 offic2line1
+		wait 2000
+		
+		trigger officer3 offic3line1
+		wait 3000
+
+		trigger officer2 offic2line2
+		wait 3500
+
+		trigger officer3 offic3line2
+		wait 3000	
+	}
+
+	trigger dial2				// the 4 officers on 2nd floor area
+	{				
+		trigger officer5 offic5line
+		wait 2500
+		
+		trigger officer6 offic6line
+		wait 1000
+
+		trigger officer7 offic7line
+		wait 5000
+
+		trigger officer8 offic8line
+		wait 3000	
+	}
+			
+	death
+	{
+
+	}
+}
+
+
+spawner					// all-purpose spawner for tefcw2
+{					
+	spawn
+	{
+	
+	}
+
+	trigger nazi1call		// When player gets sighted by nazi1	
+	{
+		wait 500
+		alertentity nazi3
+		wait 100
+		alertentity nazi4
+		wait 100
+		alertentity nazi5
+		wait 100
+		alertentity officer1
+	}
+	
+	trigger nazi6789		// Group of nazis in entryway tunnel
+	{
+		alertentity nazi6
+		wait 100
+		alertentity nazi7
+		wait 100
+		alertentity nazi8
+		wait 100
+		alertentity nazi9
+	}
+
+	trigger nazi1011		// Two nazis patroling perimeter
+	{
+		alertentity nazi10
+		wait 100
+		alertentity nazi11
+	}
+
+
+	trigger nazi1214		// Coming out of the main gate
+	{
+		alertentity nazi12
+		wait 800
+		alertentity nazi13
+		wait 800
+		alertentity nazi14
+	}
+
+	trigger canonfodder		// When player tries the mg42
+	{
+		alertentity nazi15
+		wait 500
+		alertentity nazi16
+		wait 500
+		alertentity nazi17
+		wait 500
+		alertentity nazi18
+	}
+
+	trigger castlenazi		// 1st nazi in castle, patroling outer hallway
+	{
+		alertentity nazi19	
+	}
+
+	trigger castle1			// When 1st nazi in outer hallway dies
+	{
+		alertentity nazi20
+		wait 100
+		trigger nazi20 startwalk1
+		wait 200
+		alertentity nazi21
+		wait 100
+		trigger nazi21 startwalk2
+		wait 200
+		alertentity nazi22
+		wait 100
+		trigger nazi22 startwalk3
+	}
+	
+	trigger officers_1		// Mumbling officers at dinner table
+	{
+		alertentity officer2
+		wait 100
+		alertentity officer3
+		wait 100
+		
+		trigger dialogue dial1
+		trigger spawner nazi2335
+	}
+
+	trigger nazi2335		// All nazis in inner hallway
+	{
+		alertentity nazi23
+		wait 100
+		alertentity nazi24
+		wait 100
+		alertentity nazi25
+		wait 100
+		alertentity nazi26
+		wait 100
+		alertentity nazi27
+		wait 100
+		alertentity nazi28
+		wait 100
+		alertentity nazi35
+	}
+
+	trigger office_1		// All nazis in main working area
+	{
+		alertentity nazi29
+		wait 100
+		alertentity nazi36
+		wait 100
+		alertentity nazi31
+		wait 100
+		alertentity nazi32
+		wait 100
+		alertentity nazi33	// Cellar guard 1
+		wait 100
+		alertentity nazi34	// Cellar guard 2
+		wait 100
+		alertentity nazi30	
+	}
+
+	trigger office_2		// All nazis in kommandantur office
+	{
+		alertentity nazi37
+		wait 100
+		alertentity nazi38
+		wait 100
+		alertentity nazi39
+		wait 100
+		alertentity officer4	// Kommandant Fleicher (Objective 2)
+	}
+
+	trigger office_3		// All nazis on 2nd floor prechambers
+	{
+		alertentity nazi41
+		wait 100
+		alertentity nazi42
+	}
+
+	trigger office_4		// All officers on 2nd floor conference
+	{
+		alertentity officer5
+		wait 100
+		alertentity officer6
+		wait 100
+		alertentity officer7
+		wait 100
+		alertentity officer8	
+	}
+
+	trigger elites1			// Eliteguards on 2nd floor - endgame
+	{
+		alertentity elite1
+		wait 100
+		alertentity elite2
+		wait 100
+		alertentity elite3
+		wait 100
+		alertentity elite4
+	}
+}

@@ -1,0 +1,198 @@
+//
+//Brush Scripting
+//Map: tefcw4 (for O.V.)
+//Last edited by: Tef Johs
+//
+
+
+director					// labels for camera play tefcw4
+{
+	spawn
+	{		
+	 
+	}
+
+	trigger cam1
+	{
+		trigger player camera1
+	}
+
+	trigger cam2
+	{
+		trigger player camera2
+	}
+}
+
+
+
+dialogue					// controls all dialogue in tefcw4
+{
+	spawn
+	{		
+	
+	}
+	
+	trigger dial1				// Two trench nazis in cave pathway
+	{				
+		trigger nazi1 nazi1line1
+		wait 4500
+
+		trigger nazi2 nazi2line1
+		wait 3500
+
+		trigger nazi1 nazi1line2
+		wait 1500
+		
+		trigger nazi2 nazi2line2
+		wait 2000
+	}
+	
+	trigger dial2				// Two nazis in right wing
+	{				
+		trigger nazi16 nazi16line1
+		wait 1500
+
+		trigger nazi17 nazi17line1
+		wait 6500
+
+		trigger nazi16 nazi16line2
+		wait 2500
+	}
+	
+	death
+	{
+
+	}
+}
+
+
+spawner						// all-purpose spawner for tefcw4
+{					
+	spawn
+	{
+	
+	}
+
+	trigger nazibase1			// Nazis at the base entry 	
+	{			
+		alertentity nazi6
+		wait 100
+		alertentity nazi7
+		wait 100
+		alertentity nazi8
+		wait 100
+		alertentity nazi9
+	}
+
+	trigger nazibase2			// Nazis right (soldier's) wing 	
+	{			
+		alertentity nazi10
+		wait 100
+		alertentity nazi11
+		wait 100
+		alertentity nazi12
+		wait 100
+		alertentity nazi13
+		wait 100
+		alertentity nazi14
+		wait 100
+		alertentity nazi15
+		wait 100
+		alertentity nazi21
+		wait 100
+		alertentity nazi22
+		wait 100
+		alertentity nazi23
+		wait 100
+		alertentity nazi24
+		wait 100
+		alertentity nazi25
+		wait 100
+		alertentity officer1
+		wait 100
+		alertentity officer2
+	}
+
+	trigger nazibase3			// Nazis south (officer's) wing 	
+	{			
+		alertentity nazi26
+		wait 100
+		alertentity nazi27
+		wait 100
+		alertentity nazi28
+		wait 100
+		alertentity nazi29
+		wait 100
+		alertentity nazi30
+		wait 100
+		alertentity officer3
+		wait 100
+		alertentity officer4
+		wait 100
+		alertentity officer5
+		wait 100
+		alertentity officer6
+		wait 100
+		alertentity officer7
+		wait 100
+		alertentity officer8
+		wait 100
+		alertentity nazi31
+		wait 100
+		alertentity nazi32
+		wait 100
+		alertentity nazi33
+		wait 100
+		alertentity nazi34
+		wait 100
+		alertentity nazi35
+	}
+
+	trigger nazibase4			// Nazis left wing 	
+	{			
+		alertentity nazi16
+		wait 100
+		alertentity nazi17
+		wait 100
+		alertentity nazi18
+		wait 100
+		alertentity nazi19
+		wait 100
+		alertentity nazi20
+	}
+
+	trigger nazibase5			// Nazis exit hallways	
+	{			
+		alertentity nazi36
+		wait 100
+		alertentity nazi37
+		wait 100
+		alertentity nazi38
+		wait 100
+		alertentity nazi39
+		wait 100
+		alertentity nazi40
+		wait 100
+		alertentity nazi41
+		wait 100
+		alertentity nazi42
+		wait 100
+		alertentity nazi43
+		wait 100
+		alertentity nazi44
+	}
+
+	trigger nazibase6			// Nazis exit outdoor area	
+	{			
+		alertentity nazi45
+		wait 100
+		alertentity nazi46
+		wait 100
+		alertentity supersol_1
+		wait 100
+		alertentity supersol_2
+		wait 100
+		alertentity vorsichtig
+	}
+}
+

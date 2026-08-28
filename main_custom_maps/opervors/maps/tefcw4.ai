@@ -1,0 +1,2224 @@
+//
+//AI Scripting
+//Map: tefcw4 (for O.V.)
+//Last edited by: Tef Johs
+//
+
+player
+{
+	spawn
+	{
+		objectivesneeded 4
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/c_chant
+			
+		trigger player introsequence
+	}
+
+	trigger introsequence			//plays the opening overview cutscene
+	{
+		
+		trigger director cam1
+		wait 20000
+		
+		trigger player changemusic2			
+	}
+
+	trigger changemusic1
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_action
+	}
+
+	trigger changemusic2
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_drums
+	}
+
+	trigger changemusic3
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/l_theme
+	}
+
+	trigger changemusic4
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_situation
+	}
+
+	trigger changemusic5
+	{
+		mu_fade 0 1000
+		mu_queue sound/music/m_mission
+	}
+
+	trigger changemusic6
+	{
+		mu_fade 0 500
+		mu_queue sound/music/l_finale
+	}
+
+	trigger playfinale
+	{
+		wait 200
+		trigger player changemusic6
+		wait 11000
+		mu_stop 1000
+	}
+
+	trigger camera1				
+	{
+		startcam tefcw4_cam1		// max playtime 20 sec
+	}
+
+	trigger camera2				
+	{
+		startcam tefcw4_cam2		// max playtime 10 sec
+	}
+
+	trigger opendoor1
+	{
+		startcam tefcw4_opdoor1		// max playtime 5 secs
+		wait 5000
+	}	
+
+	trigger opendoor2
+	{
+		startcam tefcw4_opdoor2		// max playtime 5 secs
+		wait 5000
+	}	
+
+	trigger opendoor3
+	{
+		startcam tefcw4_opdoor3		// max playtime 5 secs
+		wait 5000
+	}	
+
+	trigger action1
+	{
+		trigger spawner nazibase3
+		wait 100
+		trigger dialogue dial1
+	}
+
+	trigger action2
+	{
+		trigger spawner nazibase1
+	}
+
+	trigger action3
+	{
+		trigger spawner nazibase2
+		wait 100
+		trigger player changemusic5
+		wait 100
+		trigger player autosave
+	}
+
+	trigger action4
+	{
+		trigger spawner nazibase4
+	}
+
+	trigger action5
+	{
+		trigger dialogue dial2
+	}
+
+	trigger action6
+	{
+		trigger spawner nazibase5
+	}
+
+	trigger action7
+	{
+		trigger player changemusic4
+		wait 100
+		trigger player autosave
+	}
+
+	trigger action8
+	{
+		trigger spawner nazibase6
+		wait 100
+		trigger director cam2
+		wait 10000
+	}
+
+	trigger action9
+	{
+		trigger player changemusic1
+	}
+
+	trigger action10
+	{
+		trigger supersol_1 supersol1walk
+		wait 100
+		trigger supersol_2 supersol2walk
+	}
+
+	trigger autosave
+	{
+		savegame
+ 	}
+
+	trigger secret1				// Compartment room in larger hallway
+	{
+		foundsecret
+	}
+	
+	trigger objective1			// Obtained access to Soldier's Wing
+	{
+		objectivemet 1
+	}
+
+	trigger objective2			// Obtained access to Officer's Wing
+	{
+		objectivemet 2
+	}
+
+	trigger objective3			// Obtained access to Exit Hallways
+	{
+		objectivemet 3
+	}
+
+	trigger objective4			// Eliminated Oberst Vorsichtig
+	{
+		objectivemet 4
+	}
+
+	trigger endmap
+	{		
+		changelevel exit persistent
+	}
+
+	death
+	{
+
+	}
+}
+
+
+nazi1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0  				//checks state of dialogue
+
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson		
+	}
+
+	trigger nazi1line1
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/village2/g1_tasty_sb.wav
+		playanim talking_2h torso					
+	}
+
+	trigger nazi1line2
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/village2/g1lc_haha.wav					
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		clearanim					
+		wait 400
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1200
+		accum 0 set 1
+
+		resetscript							
+	}
+
+	death
+	{
+		accum 0 set 1
+	}
+}
+
+nazi2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0  				//checks state of dialogue
+
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson		
+	}
+
+	trigger nazi2line1
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/village2/g2_not_bad.wav
+		playanim talking_2h torso					
+	}
+
+	trigger nazi2line2
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/village2/g2_ya_ya.wav					
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		clearanim					
+		playsound sound/scenaric/general/misc_american.wav
+		wait 1200
+		accum 0 set 1
+
+		resetscript								
+	}
+
+	death
+	{
+		accum 0 set 1
+	}
+}
+
+nazi3
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson		
+	}
+	
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi4
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson
+
+		trigger nazi4 smoking1		
+	}
+	
+	trigger smoking1
+	{
+		cigarette on
+		wait 2000
+		playanim smoking torso
+		wait 8000
+		
+		trigger nazi4 smoking1
+	}
+
+	enemysight
+	{	
+		cigarette off
+		clearanim					
+		playsound sound/scenaric/general/misc_stop_him.wav
+		wait 1800
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi5
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson		
+	}
+	
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi6
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson
+
+		trigger nazi6 startwalk1		
+	}
+	
+	trigger startwalk1
+	{
+		walktomarker nazi6_1 nostop
+		walktomarker nazi6_2 nostop
+		walktomarker nazi6_3 nostop
+		walktomarker nazi6_4 nostop
+		walktomarker nazi6_5 
+		facetargetangles nazi6_5
+		wait 3000
+
+		trigger nazi6 startwalk1
+	}
+
+	enemysight
+	{	
+		wait 100					
+		playsound sound/scenaric/general/misc_alarm1.wav
+		wait 1800
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi7
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_american.wav
+		wait 1200
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi8
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1500
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi9
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi10
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40
+
+		trigger nazi10 nazi10walk		
+	}
+	
+	trigger nazi10walk
+	{
+		walktomarker nazi10_1
+		wait 1000
+		walktomarker nazi10_2
+		wait 1000
+
+		trigger nazi10 nazi10walk
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi11
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi12
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 400					
+		playsound sound/scenaric/escape2/axis23_move_fools.wav
+		wait 2400
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi13
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 400					
+		playsound sound/scenaric/general/misc_american2.wav
+		wait 1400
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi14
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{						
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi15
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1200
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer1
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{						
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer2
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 200					
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1200
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi16
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0  				//checks state of dialogue
+
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	trigger nazi16line1
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/escape2/axis11_what.wav
+		playanim talking_2h torso					
+	}
+
+	trigger nazi16line2
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/escape2/axis10_sigh.wav					
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		clearanim					
+		wait 400
+		playsound sound/scenaric/general/misc_american2.wav
+		wait 1200
+		accum 0 set 1
+
+		resetscript							
+	}
+
+	death
+	{
+		accum 0 set 1
+	}
+}
+
+nazi17
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		accum 0 set 0  				//checks state of dialogue
+
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40	
+	}
+
+	trigger nazi17line1
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/scenaric/escape2/axis2_bad_case.wav
+		playanim talking_2h torso					
+	}
+
+	
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		clearanim					
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+		accum 0 set 1
+
+		resetscript								
+	}
+
+	death
+	{
+		accum 0 set 1
+	}
+}
+
+nazi18
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1400
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi19
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_stop_him.wav
+		wait 2000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi20
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{						
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi21
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_alarm1.wav
+		wait 1800
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi22
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1600
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi23
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 300
+		playsound sound/scenaric/general/misc_american2.wav
+		wait 1400
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi24
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{						
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi25
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1300
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi26
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweapon weapon_colt
+		setammo ammo_45cal 50
+		selectweapon weapon_colt	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{		
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi27
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweapon weapon_colt
+		setammo ammo_45cal 50
+		selectweapon weapon_colt		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{			
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi28
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		giveweapon weapon_colt
+		setammo ammo_45cal 50
+		selectweapon weapon_colt	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_american.wav
+		wait 1300
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi29
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1100
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi30
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	inspectsoundstart
+	{
+		deny
+	}
+
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1500
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer3
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 100					
+		playsound sound/scenaric/village2/gen5_alarm_alarm.wav
+		wait 3000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer4
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 200					
+		playsound sound/scenaric/general/misc_stop_him.wav
+		wait 1800
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer5
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+	
+	enemysight
+	{					
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1000
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer6
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 200					
+		playsound sound/scenaric/general/misc_american2.wav
+		wait 1600
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer7
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+	
+	enemysight
+	{	
+		wait 200					
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1200
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+officer8
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_luger
+		givearmor item_armor_head
+		setammo ammo_9mm 30
+		selectweapon weapon_luger		
+	}
+	
+	enemysight
+	{						
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1600
+
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi31
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi32
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1200
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi33
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	enemysight
+	{	
+		wait 300
+		playsound sound/scenaric/general/misc_american.wav
+		wait 1500
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi34
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi35
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1500
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi36
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40
+
+		trigger nazi36 nazi36walk		
+	}
+
+	trigger nazi36walk
+	{
+		walktomarker ledgespot1 nostop
+		walktomarker ledgespot2 nostop
+		walktomarker ledgespot3
+		wait 1000
+	
+		trigger nazi36 nazi36walk
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_american.wav
+		wait 1300
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi37
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_stop_him.wav
+		wait 1900
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi38
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1600
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi39
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi40
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_american2.wav
+		wait 1500
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi41
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1200
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi42
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1700
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi43
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1300
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi44
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40		
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_halt.wav
+		wait 1000
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi45
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_thompson
+		givearmor item_armor_head
+		setammo ammo_45cal 50
+		selectweapon weapon_thompson
+
+		trigger nazi45 nazi45walk		
+	}
+
+	trigger nazi45walk
+	{
+		walktomarker exitledge1 nostop
+		walktomarker exitledge2
+		wait 1000
+	
+		trigger nazi45 nazi45walk
+	}
+	
+	enemysight
+	{	
+		playsound sound/scenaric/general/misc_american.wav
+		wait 1300
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+nazi46
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		givearmor item_armor_head
+		setammo ammo_9mm 50
+		selectweapon weapon_mp40
+
+		trigger nazi46 nazi46walk		
+	}
+
+	trigger nazi46walk
+	{
+		walktomarker exitledge2 nostop
+		walktomarker exitledge3 
+		wait 1000
+	
+		trigger nazi46 nazi46walk
+	}
+	
+	enemysight
+	{	
+		wait 300
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 1500
+					
+		resetscript								
+	}
+
+	death
+	{
+
+	}
+}
+
+supersol_1
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aggression 0.8
+		starting_health 500
+	}
+
+	spawn
+	{
+		setammo ammo_127mm 800
+		setammo ammo_panzerfaust 25
+		giveweapon weapon_panzerfaust
+		giveweapon weapon_venom
+		selectweapon weapon_venom
+	}
+
+	trigger supersol1walk
+	{
+		walktomarker areaspot3 nostop
+		walktomarker areaspot4
+		
+		facetargetangles areaspot4
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{					
+		resetscript								
+	}
+
+	death
+	{
+		alertentity opendoors1
+	}
+}
+
+supersol_2
+{
+	attributes
+	{
+		aim_accuracy 0.8
+		aggression 0.8
+		starting_health 500
+	}
+
+	spawn
+	{
+		setammo ammo_127mm 800
+		setammo ammo_panzerfaust 25
+		giveweapon weapon_panzerfaust 
+		giveweapon weapon_venom
+		selectweapon weapon_panzerfaust
+	}
+
+	trigger supersol2walk
+	{
+		walktomarker areaspot1 nostop
+		walktomarker areaspot2
+		
+		facetargetangles areaspot2
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+		
+	enemysight
+	{		
+		resetscript								
+	}
+
+	death
+	{
+		alertentity opendoors2
+	}
+}
+
+vorsichtig
+{
+	attributes
+	{
+		aim_accuracy 0.9
+		aggression 0.8
+		starting_health 300
+		running_speed 350
+	}
+
+	spawn
+	{
+		setammo ammo_grenades_american 10
+		giveweapon weapon_luger
+		giveweapon weapon_fg42
+		givearmor item_armor_body
+		givearmor item_armor_head
+		setammo ammo_9mm 350
+		setammo ammo_792mm 200
+		selectweapon weapon_luger	
+	}
+
+	inspectsoundstart
+	{
+		deny
+	}
+	
+	enemysight
+	{	
+		wait 100
+		playsound sound/scenaric/xlabs/death_i_will_deal.wav
+		wait 2500
+		selectweapon weapon_fg42
+			
+		resetscript								
+	}
+
+	death
+	{
+		trigger player playfinale
+		alertentity exitdoors1
+		alertentity exitdoors2
+		trigger player objective4
+	}
+}
+
+

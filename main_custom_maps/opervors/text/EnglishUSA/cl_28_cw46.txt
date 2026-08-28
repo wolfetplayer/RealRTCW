@@ -1,0 +1,24 @@
+CHECKPOINT 1 
+
+Primary Entrance
+Report Table
+
+Date: March 4, 1944
+
+
+Time    Name                          Business
+-------------------------------------------------------------
+0930    Maj. Schnieder          Inspection
+1215     Capt. Volger              Dog walking
+1430    Corp. Kluncken          Guard change
+1600    Oberst Vorsichtig      Dock visit
+
+-------------------------------------------------------------
+
+Checkpoint 1,
+Fritz Aberklein, Corporal,
+Outpost Base
+
+
+
+

@@ -1,0 +1,524 @@
+//
+//AI Scripting
+//Map: Intro (for O.V.)
+//Last edited by: Tef Johs
+//
+
+player
+{
+	spawn
+	{
+		objectivesneeded 1
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_2
+	}
+
+	playerstart
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/l_theme
+		
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		givearmor item_armor_head
+		setammo ammo_45cal 50	
+				
+		trigger player introsequence
+	}
+
+	trigger introsequence		//plays out the actual opening scene
+	{
+		trigger director cam1
+		wait 40000
+
+		trigger director cam3
+		wait 10000
+
+		trigger director cam2
+		wait 10000
+
+		trigger director cam4
+		wait 15000
+
+		trigger director cam6
+		wait 9500		
+
+		trigger director cam3
+		wait 8000
+
+		trigger director cam2
+		wait 6000
+		
+		trigger director cam3b
+		wait 3000
+
+		trigger director cam6
+		wait 3000
+
+		trigger director cam3b
+		wait 5500
+
+		trigger director cam6
+		wait 6500
+
+		trigger director cam3b
+		wait 4500
+
+		trigger director cam6
+		wait 7500
+
+		trigger director cam3b
+		wait 8000
+
+		trigger director cam6
+		wait 10000
+
+		trigger director cam7
+		wait 35000
+		
+		trigger player startboat	//get the boat going with player in
+	
+	}
+
+	trigger camera1				//max time = 40s
+	{
+		startcam intro_cam1_int	
+	}
+
+	trigger camera2				//max time = 10s
+	{
+		startcam intro_cam2_int
+	}
+
+	trigger camera3				//max time = 10s
+	{
+		startcam intro_cam3_fix
+	}
+
+	trigger camera3b			//max time = 10s
+	{
+		startcam intro_cam3b_fix
+	}
+
+	trigger camera4				//max time = 15s
+	{
+		startcam intro_cam4_int
+	}
+
+	trigger camera5				//max time = 5s
+	{
+		startcam intro_cam5_int
+	}
+
+	trigger camera6				//max time = 10s
+	{
+		startcam intro_cam6_fix
+	}
+
+	trigger camera7				//max time = 35s
+	{
+		startcam intro_cam7_int
+	}
+
+	trigger startboat
+	{
+		trigger player lockinboat	//lock player temporarily
+		trigger boatride introspeech
+		wait 1000
+
+		trigger boatride move1		//starts the actual boat	
+	}
+	
+	trigger lockinboat
+	{
+		lockplayer on
+	}
+
+	trigger unlockinboat
+	{
+		lockplayer off
+		selectweapon weapon_colt	//autoselect weapon colt when free		
+	}
+
+	trigger autosave
+	{
+		savegame
+ 	}
+		
+	trigger objective1
+	{
+		objectivemet 1
+	}
+
+	trigger endmap
+	{		
+		changelevel tefcw1  persistent
+	}
+
+	death
+	{
+
+	}
+}
+
+
+
+nazi1
+{
+	attributes
+	{
+		fov 180
+		alertness 10000
+	}
+
+	spawn
+	{
+		accum 0 set 0  //checks state of marching loop1 og 2
+		accum 1 set 0  //checks state of enemysight dialogue
+
+		statetype alert
+	
+		setammo ammo_grenades 0
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		selectweapon weapon_mp40
+		wait 100
+		
+		trigger nazi1 patrol1
+	}
+
+	trigger patrol1
+	{
+		accum 0 abort_if_not_equal 0
+		walktomarker nazi1spot1 nostop
+		walktomarker nazi1spot2
+		
+
+		wait 1000
+
+		trigger dialogue wakenazi2
+
+
+		playanim being_cold both
+		playsound sound/scenaric/general/misc_shiver2.wav
+		cigarette on
+		playanim smoking torso
+		wait 200
+		cigarette off
+
+		playanim talking_2h both
+		playsound sound/scenaric/general/misc_always.wav		
+
+		trigger nazi1 patrol1			
+	}
+
+	sight nazi2
+	{
+		accum 0 abort_if_not_equal 0
+
+
+		walktomarker nazi1spot3
+		facetargetangles nazi1spot3
+		wait 500
+		
+		trigger nazi1 startdialogue1				
+	}
+
+
+	trigger startdialogue1
+	{
+		trigger dialogue nazi1_2
+	}
+
+
+	trigger patrol2
+	{
+		accum 0 abort_if_not_equal 1
+		resetscript
+		walktomarker nazi1spot1 nostop
+		walktomarker nazi1spot2
+		headlook on
+		playanim being_cold both
+		wait 6000
+		headlook off
+
+		trigger nazi1 patrol2			
+	}
+	
+	trigger nazi1line1
+	{
+		playanim talking_2h torso
+		playsound sound/scenaric/escape1/axis2_hey_hans.wav
+		cigarette on 	
+				
+	}
+
+	trigger nazi1line2
+	{
+
+		playanim talking_2h torso
+		playsound sound/scenaric/village1/axis0_its_freezing.wav
+		wait 1000 
+		playanim smoking both							
+	}
+
+	trigger nazi1line3
+	{
+		playanim talking_2h torso
+		playsound sound/scenaric/dam/m2_alright.wav 
+	}
+	
+	trigger nazi1line4
+	{
+
+		playanim talking_2h torso
+		playsound sound/scenaric/escape2/axis1_polish_weapon.wav 
+		wait 1000
+		playanim smoking torso
+		wait 1000
+		cigarette off
+
+		accum 0 set 1
+	}	
+
+	trigger alarmreply2
+	{
+		accum 1 abort_if_not_equal 1
+		playsound sound/scenaric/general/misc_get_help.wav
+		wait 1000
+  		playsound sound/scenaric/general/misc_schnell.wav
+		wait 1000
+		resetscript		
+	}
+	
+	enemysight
+	{
+		accum 1 abort_if_not_equal 0
+		resetscript
+		movetype run
+		wait 1000
+		playsound sound/scenaric/general/misc_alarm1.wav
+		gotomarker nazi1spot3  				
+		wait 2000
+		
+		accum 1 set 1
+		trigger nazi2 alarmreply1		
+
+	}
+
+	death
+	{
+		accum 1 set 0
+		trigger dialogue reinforce1
+	}
+}
+
+
+nazi2
+{
+	attributes
+	{
+		fov 240
+		alertness 16000
+	}
+
+	spawn
+	{
+		accum 0 set 0	//as for nazi1
+		accum 1 set 0	//as for nazi1
+		
+		statetype alert
+		
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		selectweapon weapon_mp40
+		wait 100
+
+		trigger nazi2 walk1
+	}
+
+	trigger walk1
+	{
+		accum 0 abort_if_not_equal 0
+		playsound sound/movers/doors/door4_open.wav
+		wait 1200
+		playsound sound/movers/doors/door4_endc.wav
+
+		walktomarker nazi2spot1 
+		facetargetangles nazi2spot1
+		zoom on
+		playanim binocular torso 
+		wait 9000
+		zoom off
+		wait 500
+		cigarette on
+		playanim smoking torso
+		accum 0 set 1
+	}
+	
+	trigger nazi2line1
+	{
+		playanim talking_2h torso
+		playsound sound/scenaric/escape1/axis2_ya.wav 
+				
+	}
+
+	trigger nazi2line2
+	{
+
+		playanim talking_2h torso
+		playsound sound/scenaric/village1/axis1_colder_than_last_night.wav
+		wait 1500 
+	}
+
+	trigger nazi2line3
+	{
+
+		playanim talking_2h torso
+		playsound sound/scenaric/escape2/axis11_heard.wav 	
+				
+	}
+
+	trigger nazi2line4
+	{
+		playanim talking_2h torso
+		playsound sound/scenaric/escape1/axis2_good_luck.wav 
+		wait 800
+		playanim smoking torso
+		wait 1000
+		cigarette off
+	}
+
+
+	trigger walk2
+	{
+		accum 0 abort_if_not_equal 1
+		resetscript
+		walktomarker nazi2spot2
+		wait 1000
+		walktomarker nazi2spot1 
+		zoom on
+		playanim binocular torso 
+		wait 9000
+		zoom off
+		wait 1500
+
+		trigger nazi2 walk2
+	}
+
+	trigger alarmreply1
+	{		
+		accum 1 abort_if_not_equal 0
+		wait 100
+		resetscript
+		movetype run
+		gotomarker nazi2spot1
+		
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 3000
+		playsound sound/scenaric/general/misc_kill_him.wav
+		wait 3000
+		playsound sound/scenaric/general/misc_schnell.wav
+		
+		wait 1000
+		accum 1 set 1
+		
+		trigger nazi1 alarmreply2
+		resetscript
+	}
+	
+	enemysight
+	{
+		resetscript
+	}
+
+	death
+	{
+		trigger dialogue reinforce2
+	}
+}
+
+
+nazi3
+{
+	attributes
+	{
+		fov 240
+		alertness 16000
+	}
+
+	spawn
+	{	
+		
+		statetype alert		
+		
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		selectweapon weapon_mp40
+		wait 100
+		
+		playsound sound/movers/doors/door4_open.wav
+		wait 800
+		gotomarker nazi34spot1 nostop
+		gotomarker nazi2spot2
+		
+	}
+
+	enemysight
+	{
+		wait 400
+		playsound sound/scenaric/general/misc_stop_him.wav
+		wait 1500
+
+		resetscript
+	}
+
+	death
+	{	
+
+	}
+}
+
+nazi4
+{
+	attributes
+	{
+		fov 240
+		running_speed 250
+		alertness 16000
+	}
+
+	spawn
+	{	
+		
+		statetype alert
+		
+		setammo ammo_grenades 5
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		selectweapon weapon_mp40
+		wait 100
+		
+		playsound sound/movers/doors/door4_open.wav
+		wait 1200
+		playsound sound/movers/doors/door4_endc.wav
+		gotomarker nazi34spot1 
+	}
+
+	enemysight	
+	{
+		playsound sound/scenaric/general/misc_american2.wav
+		wait 1200
+
+		resetscript
+	}
+
+	death
+	{	
+
+	}
+}
+

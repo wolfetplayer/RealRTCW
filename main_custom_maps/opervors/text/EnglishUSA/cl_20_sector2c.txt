@@ -1,0 +1,17 @@
+Medical Supervision Board
+Diagnosis Table, Surgery Room 1
+
+Patient: Paul Fritzenbauer
+Status: Patient has deceased
+Date of Surgery: January 26, 1944
+
+Other Notes: Paul Fritzenbauer died abruptly when his brain was taken out of his scull without any anaesthesia.
+
+
+Medical Supervisor, Sector 2
+Dr. Robert R. Aschhoel
+Outpost Lab Facilities
+
+
+
+

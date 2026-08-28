@@ -1,0 +1,215 @@
+//
+//Brush Scripting
+//Map: tefcw1 (for O.V.)
+//Last edited by: Tef Johs
+//
+
+
+director	// labels for camera play during intro sequence tefcw1
+{
+	spawn
+	{		
+	 
+	}
+
+	trigger cam1
+	{
+		trigger player camera1
+	}
+
+	trigger cam2
+	{
+		trigger player camera2
+	}
+
+	trigger cam3
+	{
+		trigger player camera3
+	}
+
+	trigger cam4
+	{
+		trigger player camera4
+	}
+
+	trigger cam5
+	{
+		trigger player camera5
+	}
+
+	trigger cam6
+	{
+		trigger player camera6
+	}
+
+	trigger cam7
+	{
+		trigger player camera7
+	}
+}
+
+
+
+dialogue	
+{
+	spawn
+	{		
+	
+	}
+	
+	trigger cin_dial		// controls dialogue between Nazi1 and Officer1
+	{		
+		wait 500
+		
+		trigger officer1 offic1line1
+		wait 1500
+		
+		trigger nazi1 nazi1line1
+		wait 1500
+
+		trigger officer1 offic1line2
+		wait 4000
+
+		trigger nazi1 nazi1line2
+		wait 5000
+
+		trigger officer1 offic1line3
+		wait 4000
+
+		trigger nazi1 nazi1line3
+		wait 3000	
+		
+		trigger dialogue movesoldiers
+	}
+	
+	trigger movesoldiers
+	{
+		trigger officer1 startwalk2
+		wait 3000
+		trigger nazi1 patrol2
+	}	
+	
+	trigger office_1			// the two officers in the main office
+	{				
+		trigger officer4 offic4line1
+		wait 1500
+		
+		trigger officer5 offic5line1
+		wait 1500
+
+		trigger officer4 offic4line2
+		wait 1500
+
+		trigger officer5 offic5line2
+		wait 3000	
+	}
+
+	trigger hallway1			// "I know he's here" etc.		
+	{				
+		trigger nazi31 nazi31line1
+		wait 1500
+		
+		trigger nazi32 nazi32line1
+		wait 1500
+
+		trigger nazi31 nazi31line2
+		wait 2000
+
+		trigger nazi32 patrol1
+	}
+			
+	death
+	{
+
+	}
+}
+
+
+spawner		// all-purpose spawner for tefcw1
+{					
+	spawn
+	{
+		accum 0 bitset 0	// Checks who sees player first in large area
+	}
+
+	trigger nazi3call		// If nazi3 gets to the radio, this will trigger
+	{
+		alertentity nazi5
+		wait 100
+		alertentity nazi6
+		wait 100
+		alertentity nazi7
+	}
+
+	trigger reinforce1		// When player steps into the bedroom
+	{
+		alertentity nazi10
+		wait 100
+		alertentity nazi11
+	}
+	
+
+	trigger nazialert1
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		
+		trigger spawner nazialert
+	}
+
+	trigger nazialert2
+	{
+		accum 0 abort_if_not_bitset 0
+		accum 0 bitreset 0
+		
+		trigger spawner nazialert
+	}
+	
+	trigger nazialert		// When player gets spotted by nazi1 OR officer1
+	{
+		alertentity nazi13
+		wait 100
+		alertentity nazi14
+		wait 100
+		alertentity nazi15
+		wait 100
+		alertentity nazi16
+		wait 100
+		alertentity nazi17
+		wait 100
+		alertentity nazi18
+	}	
+
+	trigger office_1		// When player approach main office	
+	{
+		alertentity officer4
+		wait 100
+		alertentity officer5	// Objective 1 officer (Major Soberhammer)	
+	}
+	
+	trigger crateroom		// When player approach large crateroom 
+	{
+		alertentity nazi24
+		wait 100
+		alertentity nazi25
+		wait 100
+		alertentity nazi26
+		wait 100
+		alertentity nazi27
+		wait 100
+		alertentity nazi28	// Wine cellar part
+		wait 100
+		alertentity nazi29
+		wait 100
+		alertentity nazi30
+	}
+
+	trigger endarea			// Exit area guards
+	{	
+		alertentity nazi36
+		wait 100
+		alertentity nazi37
+	}
+}
+
+

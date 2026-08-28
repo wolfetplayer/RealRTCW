@@ -16,6 +16,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout tefcw2
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1500
 		mu_queue sound/music/c_chant
 			
@@ -213,11 +217,9 @@ nazi1
 	{
 		accum 0 set 0  			//checks state of nazi1walk
 
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40		
+		setammo ammo_grenades 5
 	}
 
 	trigger nazi1walk
@@ -271,10 +273,8 @@ nazi2
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 	
 	}
 
@@ -311,9 +311,7 @@ nazi3
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	
 	}
 
@@ -345,10 +343,8 @@ nazi4
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 	
 	}
 
@@ -374,10 +370,8 @@ nazi5
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 	}
 
 	inspectsoundstart
@@ -441,10 +435,8 @@ nazi6
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		statetype alert
 		trigger nazi6 startrunning
@@ -484,10 +476,8 @@ nazi7
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		statetype alert
 	}
@@ -522,10 +512,8 @@ nazi8
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		statetype alert
 	}
@@ -560,10 +548,8 @@ nazi9
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		statetype alert
 	}
@@ -595,10 +581,8 @@ nazi10
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		trigger nazi10 startwalk1
 	}
@@ -648,10 +632,8 @@ nazi11
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		trigger nazi11 startwalk1
 	}
@@ -692,10 +674,8 @@ nazi12
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 
 		trigger nazi12 startwalk1
 	}
@@ -730,10 +710,8 @@ nazi13
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		trigger nazi13 startwalk1
 	}
@@ -768,10 +746,8 @@ nazi14
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 
 		trigger nazi14 startwalk1
 	}
@@ -805,10 +781,8 @@ nazi15
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi15 startwalk1
 	}
@@ -847,10 +821,8 @@ nazi16
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi16 startwalk1
 	}
@@ -889,10 +861,8 @@ nazi17
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi17 startwalk1
 	}
@@ -931,10 +901,8 @@ nazi18
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi18 startwalk1
 	}
@@ -974,10 +942,8 @@ nazi19
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_body
-		setammo ammo_45cal 150
-		selectweapon weapon_thompson
 
 		trigger nazi19 startwalk1
 	}
@@ -1022,10 +988,8 @@ nazi20
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 150
-		selectweapon weapon_thompson
 	}
 
 	trigger startwalk1
@@ -1060,10 +1024,8 @@ nazi21
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 150
-		selectweapon weapon_thompson
 	}
 
 	trigger startwalk2
@@ -1097,10 +1059,8 @@ nazi22
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 150
-		selectweapon weapon_thompson
 	}
 
 	trigger startwalk3
@@ -1136,9 +1096,7 @@ officer2
 	spawn
 	{	
 		accum 0 set 0			//check if interrupted					
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1183,9 +1141,7 @@ officer3
 	spawn
 	{			
 		accum 0 set 0			//check if interrupted			
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1230,10 +1186,8 @@ nazi23
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 150
-		selectweapon weapon_thompson
 
 		trigger nazi23 startwalk
 	}
@@ -1269,10 +1223,8 @@ nazi24
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 150
-		selectweapon weapon_thompson
 
 		trigger nazi24 startwalk
 	}
@@ -1308,9 +1260,7 @@ nazi25
 
 	spawn
 	{					
-		giveweapon weapon_colt
-		setammo ammo_45cal 100
-		selectweapon weapon_colt
+		giveweaponfull weapon_colt
 	}
 
 	inspectsoundstart
@@ -1340,9 +1290,7 @@ nazi26
 
 	spawn
 	{					
-		giveweapon weapon_colt
-		setammo ammo_45cal 100
-		selectweapon weapon_colt
+		giveweaponfull weapon_colt
 
 		trigger nazi26 grabbing
 	}
@@ -1383,9 +1331,7 @@ nazi27
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1415,9 +1361,7 @@ nazi28
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1448,9 +1392,7 @@ nazi29
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		trigger nazi29 tuning1
 	}
@@ -1487,9 +1429,7 @@ nazi30
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	enemysight
@@ -1515,9 +1455,7 @@ nazi31
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	enemysight
@@ -1543,9 +1481,7 @@ nazi32
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		trigger nazi32 tuning1
 	}
@@ -1582,10 +1518,8 @@ nazi33
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 
 		statetype alert
 		explicit_routing off
@@ -1617,10 +1551,8 @@ nazi34
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		
 		statetype alert
 		explicit_routing off
@@ -1652,10 +1584,8 @@ nazi35
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	inspectsoundstart
@@ -1685,10 +1615,8 @@ nazi36
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 
 		trigger nazi36 startwalk
 	}
@@ -1727,10 +1655,8 @@ nazi37
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	enemysight
@@ -1756,10 +1682,8 @@ nazi38
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	enemysight
@@ -1784,10 +1708,8 @@ nazi39
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	enemysight
@@ -1813,11 +1735,9 @@ officer4					// Kommandantur officer, objective 2
 
 	spawn
 	{					
-		giveweapon weapon_luger
+		giveweaponfull weapon_luger
 		givearmor item_armor_body
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_luger
 	}
 
 	enemysight
@@ -1842,10 +1762,8 @@ nazi40
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	inspectsoundstart
@@ -1875,10 +1793,8 @@ nazi41
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	inspectsoundstart
@@ -1908,10 +1824,8 @@ nazi42
 
 	spawn
 	{					
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 100
-		selectweapon weapon_thompson
 	}
 
 	inspectsoundstart
@@ -1942,9 +1856,7 @@ officer5
 	spawn
 	{			
 		accum 0 set 0			//check if interrupted			
-		giveweapon weapon_luger
-		setammo ammo_9mm 50
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1984,9 +1896,7 @@ officer6
 	spawn
 	{			
 		accum 0 set 0			//check if interrupted			
-		giveweapon weapon_luger
-		setammo ammo_9mm 50
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -2026,9 +1936,7 @@ officer7
 	spawn
 	{			
 		accum 0 set 0			//check if interrupted			
-		giveweapon weapon_luger
-		setammo ammo_9mm 50
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -2068,9 +1976,7 @@ officer8
 	spawn
 	{			
 		accum 0 set 0			//check if interrupted			
-		giveweapon weapon_luger
-		setammo ammo_9mm 50
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -2108,10 +2014,8 @@ elite1
 
 	spawn
 	{					
-		giveweapon weapon_silencer
+		giveweaponfull weapon_silencer
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_silencer
 	}
 
 	enemysight
@@ -2136,10 +2040,8 @@ elite2
 
 	spawn
 	{					
-		giveweapon weapon_silencer
+		giveweaponfull weapon_silencer
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_silencer
 	}
 
 	enemysight
@@ -2165,10 +2067,8 @@ elite3
 
 	spawn
 	{					
-		giveweapon weapon_silencer
+		giveweaponfull weapon_silencer
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_silencer
 	}
 
 	enemysight
@@ -2193,10 +2093,8 @@ elite4
 
 	spawn
 	{					
-		giveweapon weapon_silencer
+		giveweaponfull weapon_silencer
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_silencer
 	}
 
 	enemysight

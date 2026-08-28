@@ -16,6 +16,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout tefcw3
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1500
 		mu_queue sound/music/c_chant
 			
@@ -189,11 +193,9 @@ nazi1
 	{
 		accum 0 set 0  			//checks state of dialogue
 
-		setammo ammo_grenades 5
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 50
-		selectweapon weapon_thompson		
+		setammo ammo_grenades 5
 	}
 
 	trigger nazi1line1
@@ -245,11 +247,9 @@ nazi2
 	{
 		accum 0 set 0  			//checks state of dialogue
 
-		setammo ammo_grenades 5
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 50
-		selectweapon weapon_thompson		
+		setammo ammo_grenades 5
 	}
 
 	trigger nazi2line1
@@ -292,11 +292,9 @@ nazi3
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 50
-		selectweapon weapon_thompson
+		setammo ammo_grenades 5
 
 		trigger nazi3 nazi3walk		
 	}
@@ -333,11 +331,9 @@ nazi4
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_thompson
+		giveweaponfull weapon_thompson
 		givearmor item_armor_head
-		setammo ammo_45cal 50
-		selectweapon weapon_thompson
+		setammo ammo_grenades 5
 
 		trigger nazi4 nazi4walk		
 	}
@@ -382,11 +378,9 @@ nazi5
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 	}
 
 	friendlysightcorpse
@@ -416,11 +410,9 @@ nazi6
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 
 	friendlysightcorpse
@@ -450,11 +442,9 @@ nazi7
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi7 nazi7walk		
 	}
@@ -505,11 +495,9 @@ nazi8
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi8 nazi8walk		
 	}
@@ -551,10 +539,8 @@ nazi9
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 		
 	enemysight
@@ -579,10 +565,8 @@ nazi10
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 		
@@ -609,11 +593,9 @@ nazi11
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 		
 	enemysight
@@ -638,10 +620,8 @@ nazi12
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 	friendlysightcorpse
@@ -671,10 +651,8 @@ nazi13
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 	friendlysightcorpse
@@ -705,10 +683,8 @@ nazi14
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 	friendlysightcorpse
@@ -735,10 +711,8 @@ nazi15
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 	inspectfriendlycombatstart
@@ -768,11 +742,9 @@ nazi16
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -802,11 +774,9 @@ nazi17
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -836,10 +806,8 @@ nazi18
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 	inspectsoundstart
@@ -869,11 +837,9 @@ nazi19
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 50
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 
 		trigger nazi19 nazi19walk		
 	}
@@ -917,11 +883,9 @@ nazi20
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 50
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 
 		trigger nazi20 nazi20walk	
 	}
@@ -966,11 +930,9 @@ nazi21
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 
 		trigger nazi21 nazi21walk	
 	}
@@ -1012,11 +974,9 @@ nazi22
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1047,11 +1007,9 @@ nazi23
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1081,11 +1039,9 @@ nazi24
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42	
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1116,11 +1072,9 @@ nazi25
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42	
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1150,11 +1104,9 @@ nazi26
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42	
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1328,10 +1280,8 @@ nazi27
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 
 	inspectsoundstart
@@ -1361,11 +1311,9 @@ nazi28
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi28 nazi28walk		
 	}
@@ -1407,10 +1355,8 @@ nazi29
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 		
 	enemysight
@@ -1435,10 +1381,8 @@ nazi30
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 		
 	enemysight
@@ -1463,10 +1407,8 @@ nazi31
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi31 nazi31walk	
 	}
@@ -1593,11 +1535,9 @@ nazi32
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 
 		trigger nazi32 nazi32walk	
 	}
@@ -1638,11 +1578,9 @@ nazi33
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_fg42
+		giveweaponfull weapon_fg42
 		givearmor item_armor_head
-		setammo ammo_792mm 30
-		selectweapon weapon_fg42
+		setammo ammo_grenades 5
 
 		trigger nazi33 nazi33walk	
 	}
@@ -1684,10 +1622,8 @@ nazi34
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi34 playtalk	
 	}
@@ -1728,10 +1664,8 @@ nazi35
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi35 playtalk	
 	}
@@ -1773,10 +1707,8 @@ nazi36
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
 
 		trigger nazi36 playtalk	
 	}
@@ -1817,10 +1749,8 @@ nazi37
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 		
 	enemysight
@@ -1845,10 +1775,8 @@ nazi38
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40	
 	}
 		
 	enemysight
@@ -2056,10 +1984,8 @@ nazi39
 
 	spawn
 	{
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40	
 	}
 		
 	enemysight
@@ -2081,11 +2007,9 @@ nazi40
 
 	spawn
 	{
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 		
 	enemysight
@@ -2107,11 +2031,9 @@ nazi41
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi41 nazi41walk	
 	}
@@ -2148,11 +2070,9 @@ nazi42
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi42 nazi42walk	
 	}
@@ -2188,11 +2108,9 @@ nazi43
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi43 nazi43walk	
 	}
@@ -2229,11 +2147,9 @@ nazi44
 
 	spawn
 	{
-		setammo ammo_grenades 5
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 50
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi44 nazi44walk	
 	}
@@ -2270,11 +2186,9 @@ nazi45
 
 	spawn
 	{
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 		
 	enemysight
@@ -2300,11 +2214,9 @@ nazi46
 
 	spawn
 	{
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 		
 	enemysight
@@ -2329,11 +2241,9 @@ nazi47
 
 	spawn
 	{
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 		
 	enemysight
@@ -2359,11 +2269,9 @@ nazi48
 
 	spawn
 	{
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_body
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40	
+		setammo ammo_grenades 5
 	}
 		
 	enemysight

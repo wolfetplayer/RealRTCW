@@ -1,0 +1,148 @@
+
+
+loadout intro
+{
+		setarmor 50
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 120
+
+		setclip weapon_colt full
+		setclip weapon_thompson full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_colt
+}
+
+loadout tefcw1
+{
+		setarmor 50
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 150
+		setammo ammo_grenades_american 2
+
+		setclip weapon_colt full
+		setclip weapon_thompson full
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 120
+		setclip weapon_mp40 full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_colt
+}
+
+loadout tefcw2
+{
+		setarmor 60
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 150
+		setammo ammo_grenades_american 3
+
+		setclip weapon_colt full
+		setclip weapon_thompson full
+
+		giveweapon weapon_luger
+		setammo ammo_9mm 60
+		setclip weapon_luger full
+		giveweapon weapon_silencer
+		setclip weapon_silencer full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout tefcw3
+{
+		setarmor 75
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 175
+		setammo ammo_grenades_american 3
+
+		setclip weapon_colt full
+		setclip weapon_thompson full
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 120
+		setclip weapon_mp40 full
+		giveweapon weapon_fg42
+		setammo ammo_792mm 80
+		setclip weapon_fg42 full
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_thompson
+}
+
+loadout tefcw4
+{
+		setarmor 75
+		giveinventory key_binocs
+
+		giveweapon weapon_knife
+		giveweapon weapon_colt
+		giveweapon weapon_thompson
+
+		setammo ammo_45cal 175
+		setammo ammo_grenades_american 3
+
+		setclip weapon_colt full
+		setclip weapon_thompson full
+
+		giveweapon weapon_mp40
+		setammo ammo_9mm 120
+		setclip weapon_mp40 full
+		giveweapon weapon_fg42
+		setammo ammo_792mm 80
+		setclip weapon_fg42 full
+		giveweapon weapon_panzerfaust
+		setammo ammo_panzerfaust 1
+		setclip weapon_panzerfaust 1
+
+		#if g_dlc1 == 1
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
+		#endif
+
+		selectweapon weapon_thompson
+}
+

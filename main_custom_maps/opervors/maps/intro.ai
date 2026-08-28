@@ -19,11 +19,9 @@ player
 		mu_fade 0 1500
 		mu_queue sound/music/l_theme
 		
-		giveweapon weapon_knife
-		giveweapon weapon_colt
-		givearmor item_armor_head
-		setammo ammo_45cal 50	
-				
+		applyloadout intro
+		cvar g_level_was_selected 0
+
 		trigger player introsequence
 	}
 
@@ -179,10 +177,8 @@ nazi1
 
 		statetype alert
 	
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 0
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 		
 		trigger nazi1 patrol1
@@ -330,10 +326,8 @@ nazi2
 		
 		statetype alert
 		
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 
 		trigger nazi2 walk1
@@ -454,10 +448,8 @@ nazi3
 		
 		statetype alert		
 		
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 		
 		playsound sound/movers/doors/door4_open.wav
@@ -496,10 +488,8 @@ nazi4
 		
 		statetype alert
 		
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 		
 		playsound sound/movers/doors/door4_open.wav

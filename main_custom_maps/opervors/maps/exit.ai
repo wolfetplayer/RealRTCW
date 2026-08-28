@@ -82,11 +82,9 @@ nazi1
 
 	spawn
 	{			
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40		
+		setammo ammo_grenades 5
 	}
 
 	enemysight

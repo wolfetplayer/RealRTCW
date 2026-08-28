@@ -1,0 +1,36 @@
+{
+map			"intro"
+longname	"^2Infiltration"
+chapter		"1"
+}
+
+{
+map			"tefcw1"
+longname	"Nazi Plateau"
+chapter		"1"
+}
+
+{
+map			"tefcw2"
+longname	"Lost Castle"
+chapter		"1"
+}
+
+{
+map			"tefcw3"
+longname	"Lab Facility"
+chapter		"1"
+}
+
+{
+map			"tefcw4"
+longname	"Military Base"
+chapter		"1"
+}
+
+{
+map			"exit"
+longname	"^2Escape"
+chapter		"1"
+}
+

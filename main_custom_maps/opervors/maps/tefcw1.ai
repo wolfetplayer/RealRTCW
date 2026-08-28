@@ -16,6 +16,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout tefcw1
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1500
 		mu_queue sound/music/c_chant
 			
@@ -205,10 +209,8 @@ nazi1
 		accum 0 set 0  		//checks state of patrol1
 		accum 1 set 0  		//checks if dialogue is interrupted
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 		
 		trigger nazi1 patrol1
@@ -315,11 +317,9 @@ officer1
 		accum 0 set 0	//checks start walking
 		accum 1 set 0	//checks if dialogue is interrupted
 		
-		setammo ammo_grenades 5
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		giveweapon weapon_mp40
-		selectweapon weapon_mp40
-		setammo ammo_9mm 200
+		setammo ammo_grenades 5
 		wait 100
 	}
 
@@ -436,10 +436,8 @@ nazi2
 
 		statetype alert	
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 		wait 100
 	}
 	
@@ -492,9 +490,7 @@ nazi3
 	{	
 		accum 0 bitset 0	//checks which event comes first
 					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		wait 100
 		
 		trigger nazi3 patrol1
@@ -574,10 +570,8 @@ nazi4
 	spawn
 	{						
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 		wait 100
 	}
 	
@@ -622,10 +616,8 @@ nazi5
 	{						
 		statetype alert
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 		wait 100
 
 		trigger nazi5 checkout
@@ -663,10 +655,8 @@ nazi6
 	{						
 		statetype alert
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 	}
 	
@@ -694,10 +684,8 @@ nazi7
 	{						
 		statetype alert
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 
 		trigger nazi7 checkout
@@ -732,10 +720,8 @@ officer2
 
 	spawn
 	{						
+		giveweaponfull weapon_luger
 		setammo ammo_grenades 5
-		giveweapon weapon_luger
-		setammo ammo_9mm 100
-		selectweapon weapon_luger
 		wait 100
 	}
 	
@@ -763,10 +749,8 @@ nazi8
 
 	spawn
 	{						
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 
 		trigger nazi8 standstill
@@ -804,10 +788,8 @@ nazi9
 
 	spawn
 	{						
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 
 		trigger nazi9 standstill
@@ -846,9 +828,7 @@ officer3
 
 	spawn
 	{						
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 
 		trigger officer3 relaxed
@@ -892,10 +872,8 @@ nazi10
 	{						
 		statetype alert
 
+		giveweaponfull weapon_mp40
 		setammo ammo_grenades 5
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		wait 100
 	}
 	
@@ -922,9 +900,7 @@ nazi11
 	{						
 		statetype alert
 
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	enemysight
@@ -949,10 +925,8 @@ nazi12
 
 	spawn
 	{						
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 	}
 
 	inspectsoundstart
@@ -983,10 +957,8 @@ nazi13
 
 	spawn
 	{						
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 		
 		statetype alert
 		trigger nazi13 runoutside
@@ -1023,10 +995,8 @@ nazi14
 
 	spawn
 	{						
-		giveweapon weapon_colt
+		giveweaponfull weapon_colt
 		givearmor item_armor_head
-		setammo ammo_45cal 40
-		selectweapon weapon_colt
 		
 		statetype alert
 		explicit_routing off
@@ -1060,9 +1030,7 @@ nazi15
 
 	spawn
 	{						
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		statetype alert
 
 		trigger nazi15 runoutside
@@ -1098,9 +1066,7 @@ nazi16
 
 	spawn
 	{						
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		statetype alert
 
 		trigger nazi16 runoutside
@@ -1135,10 +1101,8 @@ nazi17
 
 	spawn
 	{						
-		giveweapon weapon_colt
+		giveweaponfull weapon_colt
 		givearmor item_armor_head
-		setammo ammo_45cal 50
-		selectweapon weapon_colt
 		statetype alert
 
 		explicit_routing off
@@ -1172,10 +1136,8 @@ nazi18
 
 	spawn
 	{						
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 
 		trigger nazi18 runoutside
 	}
@@ -1211,9 +1173,7 @@ nazi19
 
 	spawn
 	{						
-		giveweapon weapon_colt
-		setammo ammo_45cal 50
-		selectweapon weapon_colt
+		giveweaponfull weapon_colt
 
 		explicit_routing off
 	}
@@ -1242,9 +1202,7 @@ nazi20
 
 	spawn
 	{						
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		explicit_routing off
 	}
@@ -1277,9 +1235,7 @@ nazi21
 
 	spawn
 	{						
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		explicit_routing off
 	}
@@ -1313,9 +1269,7 @@ nazi22
 
 	spawn
 	{						
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		trigger nazi22 patrol1
 	}
@@ -1354,9 +1308,7 @@ officer4
 	spawn
 	{	
 		accum 0 set 0			//check if interrupted					
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1402,9 +1354,7 @@ officer5
 	spawn
 	{			
 		accum 0 set 0			//check if interrupted			
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1449,10 +1399,8 @@ nazi23
 
 	spawn
 	{	
-		setammo ammo_grenades 5					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi23 patrol1
 	}
@@ -1494,10 +1442,8 @@ nazi24
 
 	spawn
 	{	
-		setammo ammo_grenades 5					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1529,10 +1475,8 @@ nazi25
 
 	spawn
 	{				
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1564,11 +1508,9 @@ nazi26
 
 	spawn
 	{	
-		setammo ammo_grenades 5					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		setammo ammo_grenades 5
 	}
 
 	inspectsoundstart
@@ -1600,9 +1542,7 @@ nazi27
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1634,10 +1574,8 @@ nazi28
 
 	spawn
 	{	
-		setammo ammo_grenades 5					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
+		setammo ammo_grenades 5
 
 		trigger nazi28 patrol1
 	}
@@ -1678,9 +1616,7 @@ nazi29
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		trigger nazi29 staring
 	}
@@ -1719,9 +1655,7 @@ nazi30
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 
 		trigger nazi30 staring
 	}
@@ -1764,9 +1698,7 @@ nazi31
 	{	
 		accum 0 set 0		// Check if interrupted
 				
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1813,9 +1745,7 @@ nazi32
 	{	
 		accum 0 set 0		// Check if interrupted
 				
-		giveweapon weapon_mp40
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	trigger nazi32line1
@@ -1864,9 +1794,7 @@ nazi33
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1897,9 +1825,7 @@ officer6
 
 	spawn
 	{					
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1931,9 +1857,7 @@ officer7
 
 	spawn
 	{					
-		giveweapon weapon_luger
-		setammo ammo_9mm 150
-		selectweapon weapon_luger
+		giveweaponfull weapon_luger
 		wait 100
 	}
 
@@ -1965,9 +1889,7 @@ nazi34
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -1997,9 +1919,7 @@ nazi35
 
 	spawn
 	{					
-		giveweapon weapon_mp40
-		setammo ammo_9mm 100
-		selectweapon weapon_mp40
+		giveweaponfull weapon_mp40
 	}
 
 	inspectsoundstart
@@ -2030,10 +1950,8 @@ nazi36
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 	}
 
 	enemysight
@@ -2058,10 +1976,8 @@ nazi37
 
 	spawn
 	{					
-		giveweapon weapon_mp40
+		giveweaponfull weapon_mp40
 		givearmor item_armor_head
-		setammo ammo_9mm 150
-		selectweapon weapon_mp40
 	}
 
 	enemysight

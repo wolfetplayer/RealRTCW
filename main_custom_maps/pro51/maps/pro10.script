@@ -1,0 +1,203 @@
+
+
+ruk2
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/scenaric/rocket/tailgate_close.wav
+		faceangles 180 0 0 500
+		wait 1000
+		trigger dor1 start
+
+
+    }
+
+    trigger zap
+ {
+	 alertentity b1
+	 wait 500
+	 alertentity b2
+	 wait 300
+	 alertentity b3
+	 wait 300
+	 alertentity b4
+	 wait 300
+	 alertentity b5
+	 wait 300
+	 alertentity b6
+	 wait 300
+	 alertentity b7
+}
+
+
+}
+
+op1
+{
+	spawn
+	{
+     gotomarker opx1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+        playsound sound/scenaric/rocket/electric_door_start.wav
+        wait 700
+         playsound sound/scenaric/rocket/electric_door_loop.wav looping
+        trigger op2 start
+		gotomarker opx2 20
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/electric_door_end.wav
+		//trigger lift start
+
+	}
+
+
+
+
+
+
+}
+
+op2
+{
+	spawn
+	{
+     gotomarker opy1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+		gotomarker opy2 20
+		faceangles 0 0 0 gototime
+	}
+
+
+
+
+ }
+
+ lift
+{
+	spawn
+	{
+     gotomarker ff1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+        playsound sound/scenaric/rocket/elev_start1.wav
+        wait 1000
+         playsound sound/scenaric/rocket/elev_loop1.wav looping
+
+		gotomarker ff2 50
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/elev_end1.wav
+		trigger op1 start
+
+	}
+
+
+
+
+}
+
+dor1
+{
+	spawn
+	{
+     gotomarker d1x 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+        trigger player kadr1
+        playsound sound/scenaric/rocket/electric_door_start.wav
+        wait 700
+         playsound sound/scenaric/rocket/electric_door_loop.wav looping
+        trigger dor2 start
+		gotomarker d1y 20
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/electric_door_end.wav
+		//trigger lift start
+
+	}
+
+
+
+
+
+
+}
+
+dor2
+{
+	spawn
+	{
+     gotomarker d2x 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+		gotomarker d2y 20
+		faceangles 0 0 0 gototime
+	}
+
+
+
+
+ }
+
+ roket
+{
+	spawn
+	{
+     gotomarker bu1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+        trigger player kadr2
+		gotomarker bu2 100
+		faceangles 0 0 0 gototime
+		trigger ruk2 zap
+		gotomarker bu3 200
+		faceangles 0 0 0 gototime
+
+
+	}
+
+
+
+
+}

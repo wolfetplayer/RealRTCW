@@ -1,0 +1,291 @@
+//
+//AI Scripting
+//Map: rock (cutscene1)
+
+//Last edited by: WolfETPlayer
+//
+
+
+
+player
+{
+  spawn
+  {
+  mu_fade 0 1000
+  mu_queue sound/music/l_theme
+ 
+  trigger kino start
+  }
+  playerstart
+  {
+
+  }
+ // trigger change_themusic
+//  {
+  // mu_stop 100
+ // }
+  trigger film1
+  {
+	startcam room1
+	
+            
+  }
+trigger film1x
+  {
+            
+	startcam room11
+	
+            
+  }
+
+
+ trigger film2
+  {
+	startcam room2
+	
+            
+  }
+ trigger film3
+  {
+	startcam room3
+	
+            
+  }
+ trigger film4
+  {
+	startcam room4
+	
+            
+  }
+ trigger film5
+  {
+	startcam room5
+	
+            
+  }
+
+ trigger film6
+  {
+	startcam room6
+	
+            
+  }
+ trigger film7
+  {
+	startcam room7
+	
+            
+  }
+
+ trigger film8
+  {
+	startcam room8
+	
+            
+  }
+ trigger film9
+  {
+	startcam room9
+	
+            
+  }
+
+   trigger film10
+  {
+            startcam room20
+            trigger player cmus
+          	
+            
+  }
+trigger cmus
+{
+  mu_stop
+  mu_fade 0 3000
+  mu_start sound/music/s_highramp
+  mu_queue sound/music/m_mission
+}
+
+
+ trigger film11
+  {
+	startcam room21
+            trigger text go
+	
+            
+  }
+ trigger film11a
+  {
+	startcam room21
+            
+	
+            
+  }
+
+ 
+ trigger film12
+  {
+	startcam room22
+            wait 29000
+            stopcam
+
+            trigger player endmap
+	
+            
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //trigger film2
+  //{
+	//startcam lab2
+ // }
+   trigger endmap
+  {
+	  changelevel pro2 silent 
+  }
+
+
+ }
+
+director
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+		// wait forever 0 target1
+	}
+
+	trigger talk1
+	{
+		playsound sound/p51/p6.wav
+
+	}
+
+            trigger talk2
+	{
+		playsound sound/p51/p7.wav
+
+	}
+
+
+	
+	trigger reset	// This is used so that this AI does not jerk in the last camera (fade to black).
+	{
+		playanim seated both forever
+	}
+
+	trigger anim_loop2
+	{
+		playanim seated_2 both
+	
+            }
+
+}
+
+
+jack
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		nosight 999999
+		noavoid
+		wait 5
+		explicit_routing on
+		headlook off
+	}
+
+	
+	trigger talk1
+	{
+		playsound sound/p51/p1.wav
+
+	}
+
+            trigger talk2
+	{
+		playsound sound/p51/p3.wav
+
+	}
+
+            trigger talk3
+	{
+		playsound sound/p51/p5.wav
+
+	}
+
+            trigger talk4
+	{
+		playsound sound/p51/p8.wav
+
+	}
+
+
+
+
+	}
+
+
+higgs
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+            trigger talk1
+	{
+		playsound sound/p51/p4.wav
+
+	}
+
+
+	}
+
+
+murphy
+{
+	attributes
+	{
+	}
+
+	spawn
+	{
+		headlook off
+		noavoid
+	}
+
+            trigger talk1
+	{
+		playsound sound/p51/p2.wav
+
+	}
+
+
+	}
+
+
+

@@ -1,0 +1,136 @@
+
+
+ruk
+{
+	spawn
+	{
+	}
+
+
+	trigger start
+	{
+
+
+		playsound sound/scenaric/rocket/tailgate_close.wav
+		faceangles 0 0 180 500
+		wait 500
+		trigger lift start
+
+
+    }
+
+
+}
+
+op1
+{
+	spawn
+	{
+     gotomarker opx1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+        playsound sound/scenaric/rocket/electric_door_start.wav
+        wait 700
+         playsound sound/scenaric/rocket/electric_door_loop.wav looping
+        trigger op2 start
+		gotomarker opx2 20
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/electric_door_end.wav
+		//trigger lift start
+
+	}
+
+	trigger cl
+	{
+
+        playsound sound/scenaric/rocket/electric_door_start.wav
+        wait 700
+         playsound sound/scenaric/rocket/electric_door_loop.wav looping
+        trigger op2 cl
+		gotomarker opx1 20
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/electric_door_end.wav
+		trigger lift dn
+
+	}
+
+
+
+
+}
+
+op2
+{
+	spawn
+	{
+     gotomarker opy1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+
+		gotomarker opy2 20
+		faceangles 0 0 0 gototime
+	}
+
+	trigger cl
+	{
+
+
+		gotomarker opy1 20
+		faceangles 0 0 0 gototime
+	}
+
+
+ }
+
+ lift
+{
+	spawn
+	{
+     gotomarker ff1 50
+     faceangles 0 0 0 gototime
+	}
+
+
+	trigger start
+	{
+
+        playsound sound/scenaric/rocket/elev_start1.wav
+        wait 1000
+         playsound sound/scenaric/rocket/elev_loop1.wav looping
+
+		gotomarker ff2 50
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/elev_end1.wav
+		trigger op1 start
+
+	}
+
+	trigger dn
+	{
+
+        playsound sound/scenaric/rocket/elev_start1.wav
+        wait 1000
+         playsound sound/scenaric/rocket/elev_loop1.wav looping
+
+		gotomarker ff1 20
+		faceangles 0 0 0 gototime
+		stopsound
+		playsound sound/scenaric/rocket/elev_end1.wav
+
+	}
+
+
+}

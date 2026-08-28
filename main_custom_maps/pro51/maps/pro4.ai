@@ -1,0 +1,1400 @@
+//
+//AI Scripting
+//Map: pro4 (stealth)
+
+//Last edited by: WolfETPlayer
+//
+
+player
+{
+
+spawn
+	{
+		abort_if_loadgame
+		mu_start sound/music/m_tension
+	}
+	playerstart
+	{
+		
+     }
+trigger tr
+{
+trigger truckn1 start
+}
+trigger vorota
+{
+trigger handle start
+}
+trigger cadr1
+{
+startcam xxx
+wait 8000
+stopcam
+}
+trigger endmap
+	{
+		changelevel pro5 persistent
+	}
+
+trigger autox
+{
+	trigger auto start
+}
+
+trigger piz
+{
+missionfailed	
+}	
+	
+trigger fff
+{
+trigger auto serena
+}
+trigger fal
+{
+mu_stop 100
+mu_start sound/pro4/klaxon.wav
+
+}
+	
+
+trigger action1
+{
+alertentity of2
+
+savecheckpoint
+}
+
+trigger action2
+{
+alertentity naz5
+alertentity naz6
+}
+
+trigger action3
+{
+alertentity naz7
+alertentity of3
+alertentity naz10
+
+savecheckpoint
+}
+
+trigger action4
+{
+alertentity naz8
+}
+
+trigger action5
+{
+alertentity naz9
+alertentity naz15
+
+savecheckpoint
+}
+
+trigger action6
+{
+alertentity naz11
+alertentity naz12
+alertentity naz13
+}
+
+trigger action7
+{
+alertentity naz14
+}
+
+trigger action8
+{
+alertentity of4
+
+savecheckpoint
+}
+
+trigger action9
+{
+alertentity meh1
+}
+
+trigger action10
+{
+alertentity of5
+alertentity naz17
+trigger naz15 start3
+}
+
+trigger stop
+{
+	lockplayer on
+}
+
+}
+
+
+//nazi=========================================================
+
+naz1
+{
+	attributes
+	{
+		hearing_scale 0.2
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz1 start
+	}
+
+	trigger start
+	{
+	   cigarette on
+	   playanim smoking torso forever
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+		clearanim
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+		clearanim
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+		clearanim
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		clearanim
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz2
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz2 start
+	}
+	
+	
+		
+	  
+	bulletimpact
+	{
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz3
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz3 start
+	}
+
+	trigger start
+	{
+	   walktomarker n3s1
+	   facetargetangles n3s1
+	   wait 200
+	   walktomarker n3s2
+	   facetargetangles n3s2
+	   wait 200
+	   walktomarker n3s3
+	   facetargetangles n3s3
+	   wait 200
+	   walktomarker n3s4
+	   facetargetangles n3s4
+	   wait 200
+	   trigger naz3 start 
+    }
+    
+	bulletimpact
+	{
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+		
+	}
+	
+}
+ 
+naz4
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+	trigger naz4 start
+	}
+
+	trigger start
+	{
+	   walktomarker n4s1
+	   facetargetangles n4s1
+	   wait 200
+	   walktomarker n4s2
+	   facetargetangles n4s2
+	   wait 200
+	   playanim smoking torso
+	   wait 20000 
+	   clearanim
+	   walktomarker n4s3
+	   facetargetangles n4s3
+	   wait 200
+	   walktomarker n4s4
+	   facetargetangles n4s4
+	   wait 200
+	   walktomarker n4s5
+	   facetargetangles n4s5
+	   wait 600
+	   trigger naz4 start 
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz5
+{
+	attributes
+	{
+		hearing_scale 0.3
+		fov 90
+	}
+
+	spawn
+	{
+	trigger naz5 start
+	}
+
+	trigger start
+	{
+	   wait 1500
+	   walktomarker n5s1
+	   facetargetangles n5s1
+	   wait 500
+	   walktomarker n5s2
+	   facetargetangles n5s2
+	   wait 500
+	   trigger naz5 start 
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz6
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+	trigger naz6 start
+	}
+
+	trigger start
+	{
+	   wait 1500
+	   walktomarker n6s1
+	   facetargetangles n6s1
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz7
+{
+	attributes
+	{
+		hearing_scale 0.9
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz7 start
+	}
+
+	trigger start
+	{
+	   cigarette on
+	   playanim smoking torso forever
+    }
+    
+	bulletimpact
+	{
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz8
+{
+	attributes
+	{
+		hearing_scale 0.3
+		fov 90
+	}
+
+	spawn
+	{
+	trigger naz8 start
+	}
+
+	trigger start
+	{
+	   walktomarker n8s1
+	   wait 50
+	   walktomarker n8s2
+	   facetargetangles n8s2
+	   wait 1500
+	   walktomarker n8s3
+	   facetargetangles n8s3
+	   wait 200
+	   trigger naz8 start
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz9
+{
+	attributes
+	{
+		alertness 1000
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz9 start
+	}
+
+	trigger start
+	{
+	   gotomarker n9s1
+	   gotomarker n9s2
+	   gotomarker n9s3
+	   facetargetangles n9s3
+	   trigger of4 start
+    }
+    
+    trigger start2   
+    {
+       gotomarker n9s4
+	   facetargetangles n9s4
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+		
+	}
+	
+}
+
+naz10
+{
+	attributes
+	{
+		hearing_scale 0.3
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz10 start
+	}
+
+	trigger start
+	{
+	   walktomarker n10s1
+	   facetargetangles n10s1
+	   wait 500
+	   walktomarker n10s2
+	   facetargetangles n12s2
+	   wait 100
+	   trigger naz10 start
+	}
+	  
+	bulletimpact
+	{
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz11
+{
+	attributes
+	{
+		hearing_scale 0.3
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz11 start
+	}
+
+	trigger start
+	{
+	   walktomarker n11s1
+	   facetargetangles n11s1
+	   wait 200
+	   walktomarker n11s2
+	   facetargetangles n3s2
+	   wait 200
+	   walktomarker n11s3
+	   facetargetangles n11s3
+	   wait 200
+	   walktomarker n11s4
+	   facetargetangles n11s4
+	   wait 200
+	   trigger naz11 start 
+    }
+    
+    trigger stop
+    {
+	    attrib inner_detection_radius 1
+	    attrib fov 1
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+		
+	}
+	
+}
+
+naz12
+{
+	attributes
+	{
+		hearing_scale 0.3
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz12 start
+	}
+
+	trigger start
+	{
+	   walktomarker n12s1
+	   facetargetangles n12s1
+	   wait 100
+	   walktomarker n12s2
+	   facetargetangles n12s2
+	   wait 100
+	   trigger naz12 start 
+    }
+    
+    trigger stop
+    {
+	    attrib inner_detection_radius 1
+	    attrib fov 1
+    }
+    
+	bulletimpact
+	{
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+		
+	}
+	
+}
+
+naz13
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 30
+	}
+
+	spawn
+	{
+		trigger naz13 start
+	}
+
+	trigger start
+	{
+	   cigarette on
+	   playanim smoking torso forever
+    }
+    
+    trigger stop
+    {
+	    attrib inner_detection_radius 1
+	    attrib fov 1
+    }
+    
+	bulletimpact
+	{
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz14
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz14 start
+	}
+
+	trigger start
+	{
+	   cigarette on
+	   playanim smoking torso forever
+    }
+    
+	bulletimpact
+	{
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+		resetscript
+		cigarette off
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		resetscript
+		cigarette off
+		trigger player fff
+	}
+
+	death
+	{
+	}
+}
+ 
+naz15
+{
+	attributes
+	{
+		alertness 1000
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+		trigger naz15 start
+	}
+
+	trigger start
+	{
+	   gotomarker n15s1
+	   gotomarker n15s2
+	   facetargetangles n15s2
+    }
+    
+    trigger start2
+    {   
+	   gotomarker n15s3
+	   facetargetangles n15s3
+    } 
+    
+    trigger start3
+    {  
+	   walktomarker n15s4
+	   facetargetangles n15s4
+	   walktomarker n15s5
+	   facetargetangles n15s5
+	   trigger naz15 start3
+    }
+    
+	bulletimpact
+	{
+		trigger player fff
+	}
+
+	inspectsoundstart
+	{
+		playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+		playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+		playsound blank
+		trigger player fff
+	}
+
+	death
+	{
+		
+	}
+	
+}
+
+naz16
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 90
+	}
+
+	spawn
+	{
+	trigger naz16 start
+	}
+
+	trigger start
+	{
+	   walktomarker n16s1
+	   facetargetangles n16s1
+	   wait 200
+	   walktomarker n16s2
+	   facetargetangles n16s2
+	   wait 200
+	   trigger naz16 start 
+    }
+    
+    trigger stop
+    {
+	    attrib inner_detection_radius 1
+	    attrib fov 1
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+naz17
+{
+	attributes
+	{
+		hearing_scale 0.1
+		fov 180
+	}
+
+	spawn
+	{
+    }
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+// oficerss ================================================================
+
+of2
+{
+	attributes
+	{
+		idle_crouch 0.5
+		attack_crouch 0.5
+		hearing_scale 0.3
+		fov 90
+	}
+    spawn
+	{
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	
+	     trigger of2 start
+	}
+
+	trigger start
+	{
+	   walktomarker of2s1
+	   facetargetangles of2s1
+	   wait 50
+	   walktomarker of2s2
+	   facetargetangles of2s2
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+		
+	}
+
+	
+}
+
+of3
+{
+	attributes
+	{
+		idle_crouch 0.5
+		attack_crouch 0.5
+		alertness 1500
+		hearing_scale 0.2
+		fov 30
+	}
+spawn
+	{
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		trigger of3 start
+	}
+
+	trigger start
+	{
+		playanim looking_over_table torso forever
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}
+
+of4
+{
+	attributes
+	{
+		alertness 1000
+		idle_crouch 0.5
+		attack_crouch 0.5
+		hearing_scale 0.1
+		fov 90
+	}
+    spawn
+	{
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	
+	}
+
+	trigger start
+	{
+	   playanim giving_orders torso
+	   wait 100
+	   trigger naz9 start2
+	   trigger naz15 start2
+	   gotomarker of4s1
+	   facetargetangles of2s2
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+		
+	}
+	
+}
+
+of5
+{
+	attributes
+	{
+		idle_crouch 0.5
+		attack_crouch 0.5
+		hearing_scale 0.1
+		fov 90
+		walking_speed 120
+	}
+    spawn
+	{
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+	
+	     trigger of5 start
+	}
+
+	trigger start
+	{
+	   walktomarker of5s1
+	   facetargetangles of2s1
+	   walktomarker of5s2
+	   facetargetangles of5s2
+	   walktomarker of5s3
+	   facetargetangles of5s3
+	   walktomarker of5s4
+	   facetargetangles of5s4
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    trigger player fff
+	}
+
+	death
+	{
+		
+    }	
+		
+}
+
+// mech =========================================================
+
+meh1
+{
+	attributes
+	{
+		hearing_scale 0.3
+		fov 90
+	}
+
+	spawn
+    {
+		takeweapon all
+		giveweapon weapon_luger
+		setammo ammo_9mm 999
+		selectweapon weapon_luger
+		trigger meh1 start
+    }
+
+	trigger start
+	{
+	   walktomarker m1s1
+	   facetargetangles m1s1
+	   walktomarker m1s2
+	   facetargetangles m1s2
+	   playanim clean_parts_1 both forever
+    }
+    
+	bulletimpact
+	{
+		playsound blank
+		clearanim
+		resetscript
+	    trigger player fff
+	}
+
+	inspectsoundstart
+	{
+	    playsound blank
+	    clearanim
+		resetscript
+        trigger player fff
+	}
+
+	inspectbodystart
+	{
+	    playsound blank
+	    clearanim
+		resetscript
+        trigger player fff
+	}
+	
+	enemysight player
+	{
+	    playsound blank
+	    clearanim
+		resetscript
+	    trigger player fff
+	}
+
+	death
+	{
+	}
+}

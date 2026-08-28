@@ -1,0 +1,103 @@
+
+
+kino
+{
+	spawn
+	{
+
+	}
+
+
+	trigger start
+{
+		trigger player film1
+		           wait 10000
+                        trigger player film1x
+		           wait 6000
+
+            trigger player film2
+            wait 100
+	trigger jack talk1 
+            wait 12010
+            trigger player film3
+            wait 100
+            trigger murphy talk1 
+            wait 6040
+           
+            trigger player film4
+            wait 100
+	trigger jack talk2 
+                        wait  7290
+            trigger player film5
+             wait 100
+	trigger higgs talk1 
+                         wait 3400
+            trigger player film6
+             wait 100
+	trigger jack talk3
+                        wait 16800
+            trigger player film7
+             wait 100
+	trigger director talk1 
+                        wait 8330
+            trigger player film8
+             wait 100
+	trigger director talk2
+                        wait 7920
+            trigger player film9
+             wait 100
+	trigger jack talk4
+                        wait 1460
+          
+           trigger player film10
+            
+           wait 29000
+           trigger player film11
+            
+           wait 29000
+                       trigger player film11a
+            
+           wait 29000
+           trigger player film12
+            
+         
+
+
+
+
+
+
+
+
+
+
+
+	}
+
+
+}
+
+text
+{
+
+spawn
+{
+
+  gotomarker tex1 5
+  faceangles 0 0 0 gototime
+
+}
+trigger go
+{
+ gotomarker tex3 500
+  faceangles 0 0 0 gototime
+
+gotomarker tex2 5
+faceangles 0 0 0 gototime
+
+
+
+}
+
+}
+

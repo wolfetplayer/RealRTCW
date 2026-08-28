@@ -1,0 +1,116 @@
+//
+//Brash Scripting
+//Map: pro3
+
+//Last edited by: Priv
+//
+
+
+chek
+{
+	spawn
+	{
+	accum 2 set 0
+
+	}
+
+	trigger start
+	{
+
+
+		trigger kes bazar1
+		wait 18500
+		trigger pro bazar1
+		wait 9700
+		trigger kes bazar2
+		wait 21200
+		trigger pro bazar2
+		wait 2800
+		trigger chek baz3
+		wait 4000
+
+
+}
+
+trigger kil1
+	{
+		accum 2 inc 1
+		accum 2 abort_if_less_than 6
+		trigger kes bazar4
+
+
+
+	}
+
+
+trigger  baz3
+	{
+	    wait 100
+		playsound sound/scenaric/crypt2/stone_coffin_pound.wav
+		wait 3500
+		trigger chek baz4
+	}
+	trigger  baz4
+	{
+	    wait 100
+		playsound sound/pro3/nem.wav
+		wait 3500
+		trigger chek baz5
+	}
+
+	trigger  baz5
+	{
+        trigger player endbazar
+		trigger kes bazar3
+
+
+
+
+	}
+
+	trigger fin
+	{
+		trigger kes1 bazar
+}
+
+
+
+
+
+
+
+
+
+
+
+}
+
+pro
+{
+	spawn
+	{
+	}
+
+trigger  bazar1
+	{
+	    wait 100
+		playsound sound/pro3/pl1.wav
+	}
+
+trigger  bazar2
+	{
+	    wait 100
+		playsound sound/pro3/pl2.wav
+	}
+
+	trigger  bazar3
+	{
+	   trigger chek baz3
+	}
+	trigger  bazar4
+	{
+	    trigger chek baz4
+	}
+
+
+}

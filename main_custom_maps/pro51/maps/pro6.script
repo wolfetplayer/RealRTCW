@@ -1,0 +1,100 @@
+
+
+kino
+{
+	spawn
+	{
+
+	}
+
+trigger start
+{
+	trigger player film
+	wait 10000
+	trigger kino s1
+	wait 10000
+
+	trigger player film1
+	wait 200
+	trigger jack talk1
+    wait 12340
+    trigger player film2
+	wait 200
+    trigger jack talk2
+    wait 5640
+    trigger player film3
+	wait 200
+    trigger jack talk3
+    wait 18700
+    trigger player film4
+	wait 200
+    trigger jack talk4
+    wait 12000
+    trigger player film5
+    wait 200
+    trigger jack talk5
+    wait 7000
+     trigger player film6
+    wait 200
+    trigger jack talk6
+    wait 12350
+    trigger player film7
+    wait 200
+    trigger kino s1
+    wait 2000
+    trigger kino s2
+    trigger jack talk7
+    wait 18250
+    trigger player film8
+    wait 200
+    trigger kino s2
+    wait 2000
+    trigger kino s3
+    wait 100
+    trigger jack talk8
+    wait 9200
+    trigger player film9
+    wait 200
+    trigger jack talk9
+    wait 6000
+     trigger player film10
+    wait 200
+    trigger director talk1
+    wait 12100
+     trigger player film11
+    wait 200
+
+    trigger higgs talk1
+    wait 6200
+     trigger player film12
+    wait 200
+    trigger murphy talk1
+    wait 6600
+    trigger player film13
+    wait 200
+    trigger director talk2
+    wait 7000
+
+}
+
+trigger s1
+   {
+   alertentity sl1
+   alertentity ss
+   }
+
+
+trigger s2
+   {
+   alertentity sl2
+   alertentity ss
+   }
+
+trigger s3
+   {
+   alertentity sl3
+   alertentity ss
+   }
+
+
+}

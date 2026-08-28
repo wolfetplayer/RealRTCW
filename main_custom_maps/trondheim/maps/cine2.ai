@@ -1,0 +1,512 @@
+
+//
+//AI Scripting
+//Map: Cine2
+//Last edited by: Vovstein
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 3332
+		objectivesneeded 0
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 1500
+		mu_queue sound/music/l_briefing_2
+
+		trigger player cam1
+		trigger par1 talk
+	}
+
+	// ---Start Camera Section---
+	trigger cam1
+	{
+		startcam value
+	}
+	trigger battle
+	{
+		trigger rus2 go1
+		trigger rus3 go1
+		trigger par1 go1
+		trigger par2 go1
+		trigger par3 go1
+	}
+	trigger endmap
+	{
+		changelevel 70j 200
+	}
+}
+
+par1
+{
+	attributes
+	{
+		starting_health 80
+		aim_accuracy 0.9
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9		
+	}
+	spawn
+	{
+		accum 0 bitreset 0
+		takeweapon all
+		statetype relaxed
+		giveweapon weapon_colt
+		setammo ammo_45cal 999
+		selectweapon weapon_colt
+		setammo ammo_grenades 99	
+		givearmor item_armor_body
+		headlook off
+		knockback off
+		noavoid on
+           	nosight 99999
+	}
+	trigger talk
+	{
+		wait 2500
+		playsound nazi1
+		trigger rus1 talk
+	}
+	trigger talk2
+	{
+		wait 2500
+		playsound officer1
+		trigger rus1 talk2
+	}
+	trigger talk3
+	{
+		wait 2500
+		playsound officer3
+		trigger rus1 talk4
+	}
+	trigger talk4
+	{
+		trigger player battle
+	}
+	trigger go1
+	{
+		resetscript
+		headlook on
+		godmode off
+		knockback on
+		noavoid off
+	}
+	pain 50
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+}
+par2
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.6
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson
+		setammo ammo_grenades 99	
+		headlook off
+		knockback off
+		noavoid on
+		nosight 99999
+	}
+	trigger go1
+	{
+		resetscript
+		headlook on
+		godmode off
+		knockback on
+		noavoid off
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+}
+par3
+{
+	attributes
+	{
+		starting_health 70
+		aim_accuracy 0.6
+		tactical 2.0
+		aggression 0.5
+		camper 1.0
+		inner_detection_radius 200
+		alertness 55000
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9		
+	}
+
+	spawn
+	{
+		takeweapon all
+		giveweapon weapon_thompson
+		setammo ammo_45cal 999
+		selectweapon weapon_thompson
+		setammo ammo_grenades 99	
+		headlook off
+		knockback off
+		noavoid on
+		nosight 99999
+	}
+	trigger go1
+	{
+		resetscript
+		headlook on
+		godmode off
+		knockback on
+		noavoid off
+	}
+	pain 60
+	{
+	}
+	enemysight
+	{
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	statechange query alert	
+	{
+		resetscript
+	}
+
+	statechange relaxed alert
+	{
+		resetscript
+	}	
+
+	death
+	{
+	}
+}
+rus1		
+{
+	attributes
+	{
+		starting_health 5
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype relaxed
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+        	headlook off
+		knockback off
+		noavoid on
+		nosight 99999
+	}
+	trigger talk
+	{
+		wait 2500
+		playsound take4
+		trigger par1 talk2
+	}
+	trigger talk2
+	{
+		wait 2500
+		playsound nazi4
+		trigger par1 talk3
+	}
+	trigger talk4
+	{
+		wait 2500
+		playsound ok1
+		trigger par1 talk4
+	}
+	pain 100
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+		changelevel 70j 200
+		trigger rus2 go1
+		trigger rus3 go1
+		trigger par1 go1
+        	trigger par2 go1
+        	trigger par3 go1
+	}
+}	
+rus2		
+{
+	attributes
+	{
+		starting_health 80
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype relaxed
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		headlook off
+		knockback off
+		noavoid on
+		nosight 99999
+	}
+	trigger go1
+	{
+		resetscript
+		headlook on
+		godmode off
+		knockback on
+		noavoid off
+	}
+	pain 100
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}
+rus3		
+{
+	attributes
+	{
+		starting_health 80
+		aim_accuracy 0.5
+		attack_crouch 0.9
+		attack_skill 0.9
+		aim_skill 0.9
+		aggression 0.5
+		tactical 2.0
+		pain_threshhold_scale 2.0		
+	}
+
+	spawn
+	{
+		accum 0 bitreset 0
+		statetype relaxed
+		takeweapon all
+		giveweapon weapon_mp40
+		setammo ammo_9mm 999
+		selectweapon weapon_mp40
+		setammo ammo_grenades 9
+		headlook off
+        	knockback off
+		noavoid on
+		nosight 99999
+	}
+	trigger go1
+	{
+		resetscript
+		headlook on
+		godmode off
+		knockback on
+		noavoid off
+	}
+	pain 100
+	{
+		attrib aim_accuracy 0.6
+		attrib camper 0.3
+	}
+	enemysight
+	{	
+	}
+
+	inspectsoundstart
+	{
+		clearanim
+	}
+
+	inspectsoundend
+	{
+	}
+
+	inspectbodystart
+	{
+		clearanim
+	}
+
+	inspectbodyend
+	{
+	}
+
+	death
+	{
+	}
+}		

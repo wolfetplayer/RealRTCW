@@ -1,0 +1,85 @@
+//
+//Brush Scripting
+//Map: 70j_2
+//Last edited by: Vovstein
+//
+radar1
+{
+	spawn
+	{
+		playsound sound/multiplayer/radar_loop02.wav looping
+		trigger radar1 rotateloop 
+	}
+
+	trigger rotateloop
+	{
+		faceangles 0 90 0 1000
+		faceangles 0 180 0 1000
+		faceangles 0 270 0 1000
+		faceangles 0 360 0 1000
+		trigger radar1 rotateloop
+	}
+}
+radar2
+{
+	spawn
+	{
+		playsound sound/multiplayer/radar_loop02.wav looping
+		trigger radar2 rotateloop 
+	}
+
+	trigger rotateloop
+	{
+		faceangles 0 90 0 2000
+		faceangles 0 180 0 2000
+		faceangles 0 270 0 2000
+		faceangles 0 360 0 2000
+		trigger radar2 rotateloop
+	}
+}
+radar3
+{
+	spawn
+	{
+		playsound sound/multiplayer/radar_loop02.wav looping
+		trigger radar3 rotateloop 
+	}
+
+	trigger rotateloop
+	{
+		faceangles 0 360 0 3000
+		faceangles 0 270 0 3000
+		faceangles 0 180 0 3000
+		faceangles 0 90 0 3000
+		trigger radar3 rotateloop
+	}
+}
+button
+{
+	spawn
+	{	
+		gotomarker pos2 50 wait
+	}
+
+	trigger go1
+	{
+		wait 170000
+		trigger button defend
+	}
+
+	trigger defend
+	{
+		gotomarker pos1 50 wait
+		alertentity boom1
+		alertentity boom2
+		alertentity boom3
+		trigger player fail
+	}
+
+	trigger win
+	{		
+		wait 5
+		gotomarker pos3 50 wait
+		trigger player cine
+	}
+}

@@ -1,0 +1,37 @@
+//
+//Brush Scripting
+//Map: Cine3
+//Last edited by: Vovstein
+//
+submarine
+{
+	spawn
+	{
+
+	}
+
+	trigger go1
+	{
+
+		gotomarker s1 20 wait
+		gotomarker s2 10 wait
+		trigger trap go1
+		gotomarker s3 20 wait
+		trigger player endmap
+		gotomarker s4 30 wait
+	}
+}
+trap
+{
+	spawn
+	{
+
+	}
+
+	trigger go1
+	{
+
+		gotomarker a1 20 wait
+		gotomarker a2 20 wait
+	}
+}

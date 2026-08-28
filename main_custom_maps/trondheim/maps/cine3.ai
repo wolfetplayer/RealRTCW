@@ -1,0 +1,79 @@
+//
+//AI Scripting
+//Map: Cine3
+//Last edited by: Vovstein
+//
+
+player
+{
+	spawn
+	{
+		cvar g_episode 3333
+		objectivesneeded 0
+
+		abort_if_loadgame
+		mu_start sound/music/l_briefing_1
+	}
+
+	playerstart
+	{
+		mu_fade 0 3000
+		mu_queue sound/music/t_2
+
+		trigger player cam1
+		trigger nazi1 anim
+	}
+
+	// ---Start Camera Section---
+	trigger cam1
+	{
+		startcam editor
+	}
+	trigger endmap
+	{
+		changelevel
+		wait 9000
+		endgame
+	}
+}
+nazi1
+{
+	attributes
+	{
+		hearing_scale 0.0
+	}
+
+	spawn
+	{
+		trigger nazi1 anim
+	}
+	trigger anim
+	{
+		wait 5 
+		cigarette on
+		playanim smoking both
+		cigarette off
+		wait 500
+		trigger nazi1 choose_anim
+	}
+	trigger choose_anim
+	{
+		walktomarker n1spot1
+		facetargetangles n1spot1
+		walktomarker n1spot2
+		facetargetangles n1spot2
+		walktomarker n1spot3
+		facetargetangles n1spot3
+		walktomarker n1spot4
+		facetargetangles n1spot4
+//		changelevel gamefinished 2000
+		trigger trap go1
+		trigger nazi1 state
+	}
+	trigger state
+	{
+		alertentity remove_nazi1
+		trigger submarine go1
+	}
+
+}

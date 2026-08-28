@@ -1,0 +1,42 @@
+//
+//AI Scripting
+//Map: Cutscene11
+//Last edited by: 
+//
+
+player
+{
+	spawn
+	{
+		accum 0 set 0
+		accum 1 set 0
+		accum 2 bitreset 0	// Used for if the player goes around which will skip the scooby doo scene.
+		cvar g_episode 28
+		objectivesneeded 0
+		suggestweapon weapon_mp40
+
+		abort_if_loadgame
+		mu_start \sound\music\m_moving
+	}
+
+	playerstart
+	{
+		mu_fade 0 1000
+		mu_queue /sound/music/m_moving
+		//trigger player 30c_1	// Camera1	
+	}
+
+	// --- Start cinematic 1 cameras ---
+	//trigger 30c_1
+	//{
+	//	startcamblack 30c_1
+	//}
+
+	// --- End cinematic 1 cameras ---
+	trigger endmap
+	{
+		changelevel
+		wait 9000
+		endgame
+	}
+}

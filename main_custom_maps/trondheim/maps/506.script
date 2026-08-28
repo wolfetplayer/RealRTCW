@@ -1,0 +1,162 @@
+//
+//Brush Scripting
+//Map: 506
+//Last edited by: Vovstein
+//
+
+
+door1
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		wait 500
+		playsound sound/scenaric/assault/big_gate1.wav
+		wait 400
+		playsound sound/scenaric/assault/big_gate2.wav looping forever
+		gotomarker a1 30
+		stopsound
+		playsound sound/scenaric/assault/big_gate3.wav
+
+	}
+	trigger go2
+	{
+		wait 500
+		playsound sound/scenaric/assault/big_gate1.wav
+		wait 400
+		playsound sound/scenaric/assault/big_gate2.wav looping forever
+		gotomarker a2 30
+		stopsound
+		playsound sound/scenaric/assault/big_gate3.wav
+
+	}
+}
+t2body
+{
+	spawn
+	{
+		gotomarker car1 0
+		faceangles 0 270 0 gototime
+	}
+	trigger go1
+	{
+		playsound sound/world/shift_01.wav looping
+		trigger t2bwheels go1
+		trigger t2lwheel go1
+		trigger t2rwheel go1
+		playsound sound/world/idle_01.wav looping
+		gotomarker car1 0
+		faceangles 0 270 0 gototime
+		gotomarker car2 20
+		faceangles 0 270 0 gototime
+		gotomarker car3 20
+		faceangles 0 270 0 gototime
+		gotomarker car4 20
+		faceangles 0 270 0 gototime
+		gotomarker car5 20
+		faceangles 0 270 0 gototime
+		gotomarker car6 20
+		faceangles 0 270 0 gototime
+		gotomarker car7 20
+		faceangles 0 270 0 gototime
+	}
+}
+t2cargo
+{
+	spawn
+	{
+		gotomarker car1 0
+		faceangles 0 270 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker car1 0
+		faceangles 0 270 0 gototime
+		gotomarker car2 20
+		faceangles 0 270 0 gototime
+		gotomarker car3 20
+		faceangles 0 270 0 gototime
+		gotomarker car4 20
+		faceangles 0 270 0 gototime
+		gotomarker car5 20
+		faceangles 0 270 0 gototime
+		gotomarker car6 20
+		faceangles 0 270 0 gototime
+		gotomarker car7 20
+		faceangles 0 270 0 gototime
+	}
+}
+t2bwheels
+{
+	spawn
+	{
+		wait 1000
+		attachtotag t2body tbwheels
+	}
+
+	trigger go1
+	{
+		playsound sound/world/shift_01.wav looping
+		wait 5
+		playanim 0 20 looping forever
+	}
+}
+
+t2rwheel
+{
+	spawn
+	{
+		wait 1000
+		attachtotag t2body tag_w2
+	}
+
+	trigger go1
+	{
+		wait 5
+		playanim 0 20 looping forever		
+	}
+}
+
+t2lwheel
+{
+	spawn
+	{
+		wait 1000
+		attachtotag t2body tag_w1
+	}
+
+	trigger go1
+	{
+		wait 5
+		playanim 0 20 looping forever		
+	}
+}
+t2tail
+{
+	spawn
+	{
+		gotomarker car1 0
+		faceangles 0 270 0 gototime
+	}
+
+	trigger go1
+	{
+		gotomarker car1 0
+		faceangles 0 270 0 gototime
+		gotomarker car2 50
+		faceangles 0 270 0 gototime
+		gotomarker car3 80
+		faceangles 0 270 0 gototime
+		gotomarker car4 100
+		faceangles 0 270 0 gototime
+		gotomarker car5 100
+		faceangles 0 270 0 gototime
+		gotomarker car6 100
+		faceangles 0 270 0 gototime
+		gotomarker car7 80
+		faceangles 0 270 0 gototime
+	}
+}

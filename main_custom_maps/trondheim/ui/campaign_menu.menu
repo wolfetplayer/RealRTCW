@@ -1,0 +1,663 @@
+#include "ui/menudef.h"
+
+{
+// MAIN WINDOW
+
+  menuDef {
+    	name "campaign_menu"
+    	visible MENU_FALSE
+    	fullscreen 1
+    	rect 0 0 640 480
+		focusColor .9 .9 .9 1
+    	style 1
+    	border 1
+      	style WINDOW_STYLE_FILLED
+		forecolor 0 0 0 0
+		backcolor 0 0 0 0
+
+	onOpen {
+		setcvar g_gameskill 2 ;
+		uiScript loadCampaignArenas ;
+		setitemcolor fadebox backcolor 0 0 0 1 ;
+		fadeout fadebox ;
+		show back ;
+		show campCreate ;
+		show campOptions ;
+		hide campPacks ;
+	}
+
+	onEsc {
+		close campaign_menu;
+		open main
+	}
+
+itemDef
+	{
+		name realrtcw_background
+		style WINDOW_STYLE_SHADER
+		rect -120 -9.25 917 500
+		background "realrtcw_background"
+		visible 1
+		decoration
+	}
+
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+
+
+	//  MAP PREVIEW  //
+
+				itemDef {
+					name				mappreview
+					group				campCreate
+					ownerdraw		     UI_CREATEMAPPREVIEW
+					rect				29 146 229 114
+					visible				1
+					}
+
+				itemDef {
+					name				mappreview
+					group				campCreate
+					style				WINDOW_STYLE_FILLED
+					rect				28 145 230 115
+					border				1
+					bordercolor			.5 .5 .5 .5
+					visible				1
+					}
+
+				 itemDef {
+					name			maplist
+					group			campCreate
+					rect			28 280 230 144
+					type			ITEM_TYPE_LISTBOX
+					style			WINDOW_STYLE_FILLED
+					elementwidth	240
+					elementheight	15
+					textfont		UI_FONT_NORMAL
+					textscale		.23
+					elementtype		LISTBOX_TEXT
+					feeder			FEEDER_ALLMAPS
+					textstyle		6
+					textaligny		0
+					border			1
+					bordercolor		.5 .5 .5 .5
+					forecolor		1 1 1 1
+					backcolor		0 0 0 0
+					outlinecolor	.7 .7 .0 .25
+					visible			1
+					columns			1 2 190 35
+					mouseEnter {
+
+						}
+					mouseExit {
+
+						setitemcolor maplist bordercolor .5 .5 .5 .5 }
+					}
+					
+		itemDef {
+		name chapter_type
+		group campCreate
+		text "@CAMP_FILTER"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "ui_camp_chapter"
+		cvarFloatList { "@CAMP_FILTER_ALL" 0 "Special Forces" 1 "Red Alert" 2 "Iron Cross" 3 }
+		rect  -55 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 115
+		textaligny 10
+		textscale .21
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .0
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+
+  		itemDef {
+	    name campwindow1
+	    group campCreate
+	    rect 288 140 300 290
+	    style WINDOW_STYLE_FILLED
+	    border 1
+	    bordercolor .5 .5 .5 .5
+	    forecolor 1 1 1 1
+	    backcolor 0 0 0 .8
+	    visible 0
+	    decoration
+	}
+
+
+				// End of bottom left map selection border image
+
+			// Settings
+
+				itemDef {
+					name			window
+					group			campOptions
+					text			"@CAMP_OPTIONS"
+					textfont		UI_FONT_NORMAL
+					textalign		ITEM_ALIGN_CENTER
+					textalignx		145
+					textaligny		14
+					textscale		.25
+					rect			294 145 290 20
+					style			WINDOW_STYLE_FILLED
+					border			1
+					bordercolor		.5 .5 .5 .5
+					forecolor		1 1 1 1
+					backcolor		.3 0.5 0.2 .25
+					visible			1
+					decoration
+					}
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@CAMP_GAMESKILL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_gameskill"
+		cvarFloatList { "@CAMP_GAMESKILL_EASY" 0 "@CAMP_GAMESKILL_MEDIUM" 1 "@CAMP_GAMESKILL_HARD" 2 "@CAMP_GAMESKILL_MAX" 3 "@CAMP_GAMESKILL_REALISM" 4 }
+		rect			295 170 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@CAMP_BONUSMODE"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "ui_camp_bonusmode"
+		cvarFloatList { "@CAMP_BONUSMODE_NONE" 0 "@CAMP_BONUSMODE_PARK" 1 "@CAMP_BONUSMODE_IRONMAN" 2 "@CAMP_BONUSMODE_HARDCORE" 3 "@CAMP_BONUSMODE_999" 4 "@CAMP_BONUSMODE_NIGHTMARE" 5 }
+		rect			295 185 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@GM_VANILLA_GUNS"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_vanilla_guns"
+		cvarFloatList { "@GM_GUNS_HD" 0 "@GM_GUNS_VANILLA" 1 }
+		rect			295 200 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@GM_REALISMM"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG
+		cvar "g_realism"
+		rect			295 215 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@GM_FALLOFF"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG
+		cvar "g_weaponfalloff"
+		rect			295 230 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@GM_REGEN"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_regen"
+		cvarFloatList { "@GM_REGEN_OFF" 0 "@GM_REGEN_FULL" 1 "@GM_REGEN_PARTIAL" 2 }
+		rect			295 245 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name gameplay
+		group campOptions
+		text "@GM_OVERHEAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG
+		cvar "g_overheal"
+		cvarFloatList { "@GM_OVERHEAL_CLASSIC" 0 "@GM_OVERHEAL_MODERN" 1 }
+		rect			295 260 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name view
+		group campOptions
+		type ITEM_TYPE_MULTI
+		text "@HUD_STYLE"
+		cvar "cg_hudstyle"
+		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
+		rect			295 275 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+    }
+
+		itemDef {
+		name contentpacks
+		group campOptions
+		text "@CONTENTPACKS"
+		type 1
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		rect			295 397 290 16
+		textalignx 145
+		textaligny 12
+		textscale .24
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .3
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+		action { hide campOptions ; show campPacks }
+    }
+
+// Content Packs sub-panel, shares the campwindow1 box with campOptions
+
+				itemDef {
+					name			packswindow
+					group			campPacks
+					text			"@CONTENTPACKS_APPLY"
+					textfont		UI_FONT_NORMAL
+					textalign		ITEM_ALIGN_CENTER
+					textalignx		145
+					textaligny		14
+					textscale		.22
+					rect			294 145 290 20
+					style			WINDOW_STYLE_FILLED
+					border			1
+					bordercolor		.5 .5 .5 .5
+					forecolor		1 1 1 1
+					backcolor		.3 0.5 0.2 .25
+					visible			0
+					decoration
+					}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_WORLDTEXTURES"
+		cvar "fs_hd_worldtextures"
+		rect 295 170 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_WORLDMODELS"
+		cvar "fs_hd_worldmodels"
+		rect 295 185 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_CHARACTERS"
+		cvar "fs_hd_characters"
+		rect 295 200 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_SOUNDS"
+		cvar "fs_hd_sounds"
+		rect 295 215 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_ICONS"
+		cvar "fs_hd_icons"
+		rect 295 230 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_MAPS"
+		cvar "fs_re_maps"
+		rect 295 245 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+   		name packs
+		group campPacks
+      	type ITEM_TYPE_YESNO
+		text "@HDASSETS_DEPACK"
+		cvar "fs_de_pack"
+		rect 295 260 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+        textfont UI_FONT_BIG
+      	forecolor 1 1 1 1
+      	visible 0
+	}
+
+		itemDef {
+		name packsback
+		group campPacks
+		textfont UI_FONT_BIG
+		text "@CREDITS_BACK"
+		type 1
+		textscale .24
+		style WINDOW_STYLE_FILLED
+		rect 295 300 138 20
+		textalign ITEM_ALIGN_CENTER
+		textalignx 69
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { hide campPacks ; show campOptions }
+		mouseEnter { setitemcolor packsback backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor packsback backcolor .1 .1 .1 .1 }
+	}
+
+		itemDef {
+		name packsapply
+		group campPacks
+		textfont UI_FONT_BIG
+		text "@SYSTEM_APPLY"
+		type 1
+		textscale .24
+		style WINDOW_STYLE_FILLED
+		rect 445 300 138 20
+		textalign ITEM_ALIGN_CENTER
+		textalignx 69
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { exec "game_restart" }
+		mouseEnter { setitemcolor packsapply backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor packsapply backcolor .1 .1 .1 .1 }
+	}
+
+
+
+				itemDef {
+					name				start
+					group				campCreate
+					text				"@SURV_BEGIN"
+					type				1
+					textfont			UI_FONT_NORMAL
+					style				0
+					textstyle			6
+					rect				510 450 120 14
+					textalign			0
+					textscale			.25
+					textalignx			5
+					textaligny			12
+					forecolor			.9 .9 .9 .9
+					visible				1
+					//border			1
+					//bordercolor		1 1 1 1
+					mouseEnter {
+						show message_start ;
+						show start_alt ;
+						hide start }
+					action {
+						close campaign_menu ;
+						setcvar g_level_was_selected 1 ;
+						uiScript StartCampaign
+					}
+					}
+
+					itemDef {
+					name				start_alt
+					group				campCreate
+					textfont			UI_FONT_NORMAL
+					text				"@SURV_BEGIN"
+					type				1
+					style				0
+					textstyle			6
+					rect				510 450 120 14
+					textalign			0
+					textscale			.25
+					textalignx			5
+					textaligny			12
+					forecolor			.6 .6 .6 .6
+					visible				1
+					type				ITEM_TYPE_BUTTON
+					//border 1
+					//bordercolor 1 1 1 1
+					mouseExit {
+						hide message_start ;
+						hide start_alt ;
+						show start }
+					action {
+						close campaign_menu ;
+						setcvar g_level_was_selected 1 ;
+						uiScript StartCampaign
+					}
+					}
+
+// End of Create Server
+
+// Start of BACK Button
+
+
+		itemDef {
+			name gotobar
+			style 2
+			rect 0 445 640 20
+			textscale 0.4
+			textalign 0		// center
+			textalignx 60        	// x alignment point for text
+			 // use it to offset left/right text from the edge
+			 // or to center the text on a different point
+			textaligny 21
+			style 2
+			border 4
+			bordercolor 0.5 0.5 0.5 0.0
+			bordersize 2
+			backcolor 0.5 0.5 .5 0.0
+			visible 1
+			mouseEnter { setcolor backcolor .5 0.5 0.5 .5 }
+			mouseExit { setcolor backcolor .5 .5 .5 .0 }
+			decoration
+			}
+
+		itemDef {
+			name back
+			text "@SURV_MAINMENU"
+			type 1
+			style 0
+			textstyle 6
+			rect 30 450 90 14
+			textalign 0
+			textfont UI_FONT_NORMAL
+			textscale .255
+			textalignx 6
+			textaligny 12
+			forecolor .9 .9 .9 .9
+			visible 1
+			action {
+			close campaign_menu ;
+			open main }
+
+			mouseEnter {
+			hide back ;
+			show back_alt ;
+			show message_back
+			}
+			}
+
+		itemDef {
+			name back_alt
+			text "@SURV_MAINMENU"
+			type 1
+			style 0
+			textstyle 6
+			rect 30 450 90 14
+			textalign 0
+			textfont UI_FONT_NORMAL
+			textscale .255
+			textalignx 6
+			textaligny 12
+			forecolor .6 .6 .6 .6
+			visible 1
+			type ITEM_TYPE_BUTTON
+			action {
+			hide grpControls ;
+			close campaign_menu ;
+			open main }
+
+			mouseExit {
+			hide back_alt ;
+			show back ;
+			hide message_back }
+			}
+
+
+
+
+}
+}

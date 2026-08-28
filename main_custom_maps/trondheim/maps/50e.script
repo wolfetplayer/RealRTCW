@@ -1,0 +1,166 @@
+//
+//Brush Scripting
+//Map: 50E
+//Last edited by: Vovstein
+//
+
+tiger
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		wait 2000
+		playsound sound\world\veh_tank_on1.wav 
+		wait 5
+		playsound sound\world\veh_track_move.wav looping forewer
+		gotomarker h1 70
+		faceangles 0  0 0 gototime
+		gotomarker h2 80
+		faceangles 0  0 0 gototime
+		gotomarker h3 90
+		faceangles 0  0 0 gototime
+		gotomarker h4 80
+		faceangles 0  0 0 gototime
+		gotomarker h5 70
+		faceangles 0  0 0 gototime
+		gotomarker h6 70
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity shot1
+		faceangles 1  0 -1 gototime
+		gotomarker h7 60
+		faceangles 0  0 0 gototime
+		gotomarker h8 60
+		faceangles 1  0 -1 gototime
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity shot2
+		gotomarker h9 60
+		faceangles 0 0 0 gototime
+		gotomarker h10 60
+		faceangles 0 0 0 gototime
+		alertentity tiger2
+		playsound sound\world\veh_tank_off1.wav
+
+	}
+	trigger go2
+	{
+		wait 500
+		playsound sound\world\veh_tank_on1.wav 
+		wait 5
+		gotomarker h11 60
+		faceangles 0  0 0 gototime
+		gotomarker h12 70
+		faceangles 0  0 0 gototime
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity shot3
+		gotomarker h13 60
+		faceangles 0  0 0 gototime
+		alertentity hit1
+		alertentity alfa2
+		alertentity hit3
+		playsound sound\world\veh_tank_off1.wav
+
+	}
+	trigger go3
+	{
+		wait 500
+		playsound sound\world\veh_tank_on1.wav 
+		wait 5
+		gotomarker h13 2
+		faceangles 0  350 0 gototime
+		wait 3000
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity shot4
+		playsound sound\world\veh_tank_off1.wav
+
+	}
+	trigger go4
+	{
+		wait 500
+		playsound sound\world\veh_tank_on1.wav 
+		wait 5
+		gotomarker h13 2
+		faceangles 0  0 0 gototime
+		wait 3000
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity shot5
+		playsound sound\world\veh_tank_off1.wav
+
+	}
+	trigger go5
+	{
+		wait 500
+		playsound sound\world\veh_tank_on1.wav 
+		wait 5
+		gotomarker h13 2
+		faceangles 0  0 0 gototime
+		wait 3000
+		playsound sound\world\TankFire.wav
+		playsound sound\world\TankFire1.wav
+		alertentity shot6
+		playsound sound\world\veh_tank_off1.wav
+
+	}
+}
+door1
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		wait 500
+		playsound sound/scenaric/assault/big_gate1.wav
+		wait 400
+		playsound sound/scenaric/assault/big_gate2.wav looping forever
+		gotomarker a1 30
+		stopsound
+		playsound sound/scenaric/assault/big_gate3.wav
+
+	}
+	trigger go2
+	{
+		wait 500
+		playsound sound/scenaric/assault/big_gate1.wav
+		wait 400
+		playsound sound/scenaric/assault/big_gate2.wav looping forever
+		gotomarker a2 30
+		stopsound
+		playsound sound/scenaric/assault/big_gate3.wav
+
+	}
+}
+door2
+{
+	spawn
+	{
+	}
+	trigger go1
+	{
+		wait 500
+		playsound sound/scenaric/assault/big_gate1.wav
+		wait 400
+		playsound sound/scenaric/assault/big_gate2.wav looping forever
+		gotomarker a3 30
+		stopsound
+		playsound sound/scenaric/assault/big_gate3.wav
+
+	}
+	trigger go2
+	{
+		wait 500
+		playsound sound/scenaric/assault/big_gate1.wav
+		wait 400
+		playsound sound/scenaric/assault/big_gate2.wav looping forever
+		gotomarker a4 30
+		stopsound
+		playsound sound/scenaric/assault/big_gate3.wav
+
+	}
+}

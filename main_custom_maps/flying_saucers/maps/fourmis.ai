@@ -20,6 +20,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout fourmis
+		#endif
+		cvar g_level_was_selected 0
 //		trigger player zaks
 		trigger counter1 cinematic1
 

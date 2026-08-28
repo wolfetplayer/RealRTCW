@@ -39,6 +39,10 @@ player
 
 	playerstart 
 	{
+		#if g_level_was_selected >= 1
+		applyloadout railhead
+		#endif
+		cvar g_level_was_selected 0
 		trigger counter1 cinematic1
 
 		mu_fade 0 2000

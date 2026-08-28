@@ -20,6 +20,10 @@ player
 
 	playerstart 
 	{
+		#if g_level_was_selected >= 1
+		applyloadout secmis
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 2000
 		mu_queue sound/music/m_tension.wav
 	}

@@ -27,23 +27,8 @@ player
 		mu_fade 0 1500
 		mu_queue sound/music/m_tension.wav
 
-		giveweapon weapon_knife
-		giveweapon weapon_ppsh
-		giveweapon weapon_mosin
-		giveweapon weapon_mg42m
-		giveinventory key_binocs
-
-		setclip weapon_ppsh full
-		setclip weapon_mosin full
-		setclip weapon_mg42m full
-
-		selectweapon weapon_mg42m
-
-		setammo ammo_ttammo full
-		setammo ammo_mosina 50
-		setammo ammo_127mm 400
-		setammo ammo_grenades_american 5
-		setarmor 75
+		applyloadout darkles
+		cvar g_level_was_selected 0
 
 		trigger counter1 camerago
 		trigger player cine1_cam0

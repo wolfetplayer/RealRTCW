@@ -20,6 +20,10 @@ player
 
 	playerstart
 	{
+		#if g_level_was_selected >= 1
+		applyloadout les
+		#endif
+		cvar g_level_was_selected 0
 		mu_fade 0 1500
 		mu_queue sound/music/m_stealth.wav
 

@@ -26,18 +26,8 @@ player
 		mu_fade 0 2000
 		mu_queue sound/music/m_drums.wav
 
-		giveweapon weapon_knife
-		giveweapon weapon_tt33
-		giveweapon weapon_tt33
-
-		setammo ammo_ttammo full
-
-		setclip weapon_tt33 full
-		setclip weapon_dualtt33 full
-
-		selectweapon weapon_tt33
-		setarmor 100
-		giveinventory key_binocs
+		applyloadout fstmis
+		cvar g_level_was_selected 0
 	}
 
 	trigger sobitie1

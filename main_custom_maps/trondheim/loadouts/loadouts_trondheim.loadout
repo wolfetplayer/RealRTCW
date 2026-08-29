@@ -98,10 +98,6 @@ loadout 30a
 		setclip weapon_thompson full
 		setclip weapon_bar full
 
-		giveweapon weapon_sten
-		setammo ammo_9mm 120
-		setclip weapon_sten full
-
 		#if g_dlc1 == 0
 		giveweapon weapon_m97
 		setammo ammo_m97ammo 28

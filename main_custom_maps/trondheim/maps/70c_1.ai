@@ -85,7 +85,6 @@ nazi1
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 
 	enemysight
@@ -304,7 +303,6 @@ nazi5
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	trigger go1		
 	{
@@ -411,7 +409,6 @@ nazi7
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -466,7 +463,6 @@ nazi8
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -521,7 +517,6 @@ nazi9
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -576,7 +571,6 @@ nazi10
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -631,7 +625,6 @@ nazi11
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -734,7 +727,6 @@ nazi13
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	
@@ -882,7 +874,6 @@ nazi16
 	{
 		resetscript
 		attrib aggression 0.9
-		attrib //aim_accuracy 0.6
 	}
 	enemysight
 	{	

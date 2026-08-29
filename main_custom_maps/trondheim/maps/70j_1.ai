@@ -553,7 +553,6 @@ nazi3
 	}
 	pain 30
 	{
-		attrib //aim_accuracy 0.4
 		attrib camper 0.3
 	}
 	enemysight

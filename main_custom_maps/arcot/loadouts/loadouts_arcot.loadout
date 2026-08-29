@@ -1,4 +1,4 @@
-// Arcot - campaign loadouts (lone Allied commando)
+// Arcot
 
 loadout arcot
 {
@@ -7,13 +7,14 @@ loadout arcot
 
 		giveweapon weapon_knife
 		giveweapon weapon_revolver
-		giveweapon weapon_mg42m
+		giveweapon weapon_sten
 
 		setammo ammo_revolver full
 		setammo ammo_127mm 350
+		setammo ammo_9mm 150
 
 		setclip weapon_revolver full
-		setclip weapon_mg42m full
+		setclip weapon_sten full
 
 		#if g_dlc1 == 0
 		giveweapon weapon_m97
@@ -52,9 +53,6 @@ loadout arcot_2
 		giveweapon weapon_mauserrifle
 		setammo ammo_792mm 50
 		setclip weapon_mauserrifle full
-		giveweapon weapon_mg42m
-		setammo ammo_127mm 300
-		setclip weapon_mg42m full
 
 		#if g_dlc1 == 0
 		giveweapon weapon_m97
@@ -95,12 +93,6 @@ loadout bunker
 		giveweapon weapon_mauserrifle
 		setammo ammo_792mm 60
 		setclip weapon_mauserrifle full
-		giveweapon weapon_mg42m
-		setammo ammo_127mm 300
-		setclip weapon_mg42m full
-		giveweapon weapon_panzerfaust
-		setammo ammo_panzerfaust 2
-		setclip weapon_panzerfaust 1
 
 		#if g_dlc1 == 0
 		giveweapon weapon_m97
@@ -115,11 +107,6 @@ loadout bunker
 		giveweapon weapon_delisle
 		setammo ammo_delisle 120
 		setclip weapon_delisle full
-		giveweapon weapon_m1941
-		giveweapon weapon_m1941scope
-		setammo ammo_m1941 full
-		setclip weapon_m1941 full
-		setclip weapon_m1941scope full
 		#endif
 
 		selectweapon weapon_sten
@@ -202,11 +189,6 @@ loadout rts
 		giveweapon weapon_delisle
 		setammo ammo_delisle 140
 		setclip weapon_delisle full
-		giveweapon weapon_m1941
-		giveweapon weapon_m1941scope
-		setammo ammo_m1941 full
-		setclip weapon_m1941 full
-		setclip weapon_m1941scope full
 		#endif
 
 		selectweapon weapon_sten
@@ -254,11 +236,6 @@ loadout station
 		giveweapon weapon_delisle
 		setammo ammo_delisle 140
 		setclip weapon_delisle full
-		giveweapon weapon_m1941
-		giveweapon weapon_m1941scope
-		setammo ammo_m1941 full
-		setclip weapon_m1941 full
-		setclip weapon_m1941scope full
 		#endif
 
 		selectweapon weapon_sten

@@ -2983,6 +2983,7 @@ meh
 //////////////�� ����� �������////////////
 
 vishka
+{
 	attributes
 	{
 		attack_crouch 0.1

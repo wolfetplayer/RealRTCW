@@ -8,108 +8,108 @@ loadout fstmis
 		giveweapon weapon_tt33
 
 		setammo ammo_ttammo full
+		setammo ammo_grenades_american 5
 
 		setclip weapon_tt33 full
 		setclip weapon_dualtt33 full
 
 		selectweapon weapon_tt33
+		
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 40
+		setclip weapon_auto5 full
+		#endif
 }
 
 loadout secmis
 {
 		setarmor 100
 		giveinventory key_binocs
-
+		
 		giveweapon weapon_knife
 		giveweapon weapon_tt33
 		giveweapon weapon_tt33
-		giveweapon weapon_silencer
-		giveweapon weapon_ppsh
 
 		setammo ammo_ttammo full
-		setammo ammo_9mm 120
-		setammo ammo_grenades_american 2
+		setammo ammo_grenades_american 5
 
 		setclip weapon_tt33 full
 		setclip weapon_dualtt33 full
-		setclip weapon_silencer full
-		setclip weapon_ppsh full
 
+		selectweapon weapon_tt33
+		
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 40
 		setclip weapon_auto5 full
 		#endif
 
-		selectweapon weapon_ppsh
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		setclip weapon_mp40 full
+
+		selectweapon weapon_mp40
 }
 
 loadout thirdmis
 {
 		setarmor 100
 		giveinventory key_binocs
-
+		
 		giveweapon weapon_knife
 		giveweapon weapon_tt33
 		giveweapon weapon_tt33
-		giveweapon weapon_silencer
-		giveweapon weapon_ppsh
 
 		setammo ammo_ttammo full
-		setammo ammo_9mm 150
-		setammo ammo_grenades_american 3
+		setammo ammo_grenades_american 5
 
 		setclip weapon_tt33 full
 		setclip weapon_dualtt33 full
-		setclip weapon_silencer full
-		setclip weapon_ppsh full
 
-		giveweapon weapon_mosin
-		setammo ammo_mosina 60
-		setclip weapon_mosin full
-
+		selectweapon weapon_tt33
+		
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 40
 		setclip weapon_auto5 full
 		#endif
 
-		selectweapon weapon_ppsh
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		setclip weapon_mp40 full
+
+		selectweapon weapon_mp40
 }
 
 loadout fourmis
 {
 		setarmor 100
 		giveinventory key_binocs
-
+		
 		giveweapon weapon_knife
 		giveweapon weapon_tt33
 		giveweapon weapon_tt33
-		giveweapon weapon_silencer
-		giveweapon weapon_ppsh
 
 		setammo ammo_ttammo full
-		setammo ammo_9mm 200
-		setammo ammo_grenades_american 3
+		setammo ammo_grenades_american 5
 
 		setclip weapon_tt33 full
 		setclip weapon_dualtt33 full
-		setclip weapon_silencer full
-		setclip weapon_ppsh full
 
-		giveweapon weapon_mosin
-		setammo ammo_mosina 60
-		setclip weapon_mosin full
-		giveweapon weapon_mp40
-		setclip weapon_mp40 full
-
+		selectweapon weapon_tt33
+		
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 40
 		setclip weapon_auto5 full
 		#endif
 
-		selectweapon weapon_ppsh
+		giveweapon weapon_mp40
+		setammo ammo_9mm 150
+		setclip weapon_mp40 full
+
+		selectweapon weapon_mp40
 }
 
 loadout dep_castle
@@ -120,17 +120,13 @@ loadout dep_castle
 		giveweapon weapon_knife
 		giveweapon weapon_tt33
 		giveweapon weapon_tt33
-		giveweapon weapon_silencer
-		giveweapon weapon_ppsh
 
 		setammo ammo_ttammo full
 		setammo ammo_9mm 220
-		setammo ammo_grenades_american 4
+		setammo ammo_grenades_american 5
 
 		setclip weapon_tt33 full
 		setclip weapon_dualtt33 full
-		setclip weapon_silencer full
-		setclip weapon_ppsh full
 
 		giveweapon weapon_mp40
 		setclip weapon_mp40 full
@@ -139,9 +135,6 @@ loadout dep_castle
 		setammo ammo_792mm 60
 		setclip weapon_mauserrifle full
 		setclip weapon_sniperscope full
-		giveweapon weapon_panzerfaust
-		setammo ammo_panzerfaust 1
-		setclip weapon_panzerfaust 1
 
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5
@@ -149,7 +142,7 @@ loadout dep_castle
 		setclip weapon_auto5 full
 		#endif
 
-		selectweapon weapon_ppsh
+		selectweapon weapon_mp40
 }
 
 // ===== Mission 2: Flying Saucers =====
@@ -165,13 +158,19 @@ loadout darkles
 		giveweapon weapon_mg42m
 
 		setammo ammo_ttammo full
-		setammo ammo_mosina 50
+		setammo ammo_mosina full
 		setammo ammo_127mm 400
 		setammo ammo_grenades_american 5
 
 		setclip weapon_ppsh full
 		setclip weapon_mosin full
 		setclip weapon_mg42m full
+		
+		#if g_dlc1 == 1
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 40
+		setclip weapon_auto5 full
+		#endif
 
 		selectweapon weapon_mg42m
 }
@@ -236,9 +235,6 @@ loadout railhead
 		giveweapon weapon_mg42m
 		setammo ammo_127mm 300
 		setclip weapon_mg42m full
-		giveweapon weapon_panzerfaust
-		setammo ammo_panzerfaust 2
-		setclip weapon_panzerfaust 1
 
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5
@@ -274,11 +270,6 @@ loadout dep_lab
 		giveweapon weapon_fg42
 		setammo ammo_792mm 90
 		setclip weapon_fg42 full
-		giveweapon weapon_tesla
-		setammo ammo_cell full
-		giveweapon weapon_panzerfaust
-		setammo ammo_panzerfaust 2
-		setclip weapon_panzerfaust 1
 
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5
@@ -317,13 +308,6 @@ loadout karyer
 		giveweapon weapon_mg42m
 		setammo ammo_127mm 300
 		setclip weapon_mg42m full
-		giveweapon weapon_tesla
-		setammo ammo_cell full
-		giveweapon weapon_flamethrower
-		setammo ammo_fuel full
-		giveweapon weapon_panzerfaust
-		setammo ammo_panzerfaust 3
-		setclip weapon_panzerfaust 1
 
 		#if g_dlc1 == 1
 		giveweapon weapon_auto5

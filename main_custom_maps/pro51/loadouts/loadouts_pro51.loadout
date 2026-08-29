@@ -93,6 +93,9 @@ loadout pro4
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 50
 		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
 		#endif
 
 		selectweapon weapon_mp40
@@ -116,24 +119,20 @@ loadout pro5
 		setclip weapon_luger full
 		setclip weapon_sten full
 		setclip weapon_mp40 full
-
-		#if g_dlc1 == 0
+		
 		giveweapon weapon_mauserrifle
 		giveweapon weapon_sniperscope
 		setammo ammo_792mm 60
 		setclip weapon_mauserrifle full
 		setclip weapon_sniperscope full
+
+		#if g_dlc1 == 0
 		giveweapon weapon_m97
 		setammo ammo_m97ammo 24
 		setclip weapon_m97 full
 		#endif
 
 		#if g_dlc1 == 1
-		giveweapon weapon_m1941
-		giveweapon weapon_m1941scope
-		setammo ammo_m1941 full
-		setclip weapon_m1941 full
-		setclip weapon_m1941scope full
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 50
 		setclip weapon_auto5 full
@@ -164,6 +163,9 @@ loadout pro7
 		setclip weapon_akimbo full
 
 		#if g_dlc1 == 0
+		giveweapon weapon_m97
+		setammo ammo_m97ammo 36
+		setclip weapon_m97 full
 		giveweapon weapon_mauserrifle
 		giveweapon weapon_sniperscope
 		setammo ammo_792mm 65
@@ -177,6 +179,9 @@ loadout pro7
 		setammo ammo_m1941 full
 		setclip weapon_m1941 full
 		setclip weapon_m1941scope full
+		giveweapon weapon_auto5
+		setammo ammo_m97ammo 50
+		setclip weapon_auto5 full
 		giveweapon weapon_delisle
 		setammo ammo_delisle 80
 		setclip weapon_delisle full
@@ -227,6 +232,9 @@ loadout pro9
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 50
 		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
 		#endif
 
 		selectweapon weapon_mp40
@@ -274,6 +282,9 @@ loadout pro10
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 50
 		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
 		#endif
 
 		selectweapon weapon_mp40
@@ -321,6 +332,9 @@ loadout pro11
 		giveweapon weapon_auto5
 		setammo ammo_m97ammo 50
 		setclip weapon_auto5 full
+		giveweapon weapon_delisle
+		setammo ammo_delisle 80
+		setclip weapon_delisle full
 		#endif
 
 		selectweapon weapon_mp40

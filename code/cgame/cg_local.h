@@ -868,6 +868,8 @@ typedef struct {
 
 	// input state sent to server
 	int weaponSelect;
+	qboolean holstered;                 // weapon deliberately put away (WP_NONE) via the "holster" command
+	int holsterWeapon;                  // weapon to bring back out when un-holstering
 	int holdableSelect;                 // (SA) which holdable item is currently held ("selected").  When the client is ready to use it, send "use item <holdableSelect>"
 
 	// auto rotating items
@@ -2262,6 +2264,7 @@ void CG_NextWeapon_f( void );
 void CG_PrevWeapon_f( void );
 void CG_Weapon_f( void );
 void CG_WeaponBank_f( void );
+void CG_Holster_f( void );             // put the weapon away / bring it back
 void CG_WeaponSuggest( int weap );
 void CG_ResetSimpleZoom(void);
 

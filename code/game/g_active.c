@@ -1227,6 +1227,7 @@ void ClientThink_real( gentity_t *ent ) {
 	pm.pmove_fixed = pmove_fixed.integer | client->pers.pmoveFixed;
 	pm.pmove_msec = pmove_msec.integer;
 	pm.pmext = &client->pmext;
+	pm.holster = client->holstered;   // honour a deliberate holster request
 
 	pm.noWeapClips = ( g_dmflags.integer & DF_NO_WEAPRELOAD ) > 0;
 	if ( ent->aiCharacter && AICast_NoReload( ent->s.number ) ) {

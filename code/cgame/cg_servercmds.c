@@ -708,6 +708,8 @@ static void CG_MapRestart( void ) {
 	}
 	// always clear the weapon selection
 	cg.weaponSelect = WP_NONE;
+	cg.holstered = qfalse;      // drop any holster state across a map restart / reload
+	cg.holsterWeapon = WP_NONE;
 	// clear out the player weapon info
 	memset( &cg_entities[0].pe.weap, 0, sizeof( cg_entities[0].pe.weap ) );
 	// check for server set weapons we might not know about

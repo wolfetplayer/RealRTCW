@@ -991,12 +991,32 @@ rect 260 3.5 47 20
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 142
 		textaligny 10
-		textscale .23        
+		textscale .23
 		forecolor 1 1 1 1
 		style WINDOW_STYLE_FILLED
 		backcolor 1 1 1 .07
 		visible 0
-        textfont UI_FONT_BIG		
+        textfont UI_FONT_BIG
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name shoot
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_HOLSTER"
+		cvar "holster"
+		rect 82 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		visible 0
+        textfont UI_FONT_BIG
 		mouseenter { show keyBindStatus }
 		mouseexit { hide keyBindStatus }
     }

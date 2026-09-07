@@ -553,6 +553,7 @@ void CG_PredictPlayerState( void ) {
 	cg_pmove.trace = CG_TraceCapsule;
 	cg_pmove.pointcontents = CG_PointContents;
 	cg_pmove.pmext = &cg.pmext;
+	cg_pmove.holster = cg.holstered;  // predict the holster the same way the server sees it
 	if ( cg_pmove.ps->pm_type == PM_DEAD ) {
 		cg_pmove.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;
 		// DHM-Nerve added:: EF_DEAD is checked for in Pmove functions, but wasn't being set

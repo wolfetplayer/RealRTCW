@@ -2177,6 +2177,14 @@ void ClientCommand( int clientNum ) {
 		return;
 	}
 
+	// player put the weapon away / brought it back (the "holster" command)
+	if ( Q_stricmp( cmd, "holster" ) == 0 ) {
+		char arg[8];
+		trap_Argv( 1, arg, sizeof( arg ) );
+		ent->client->holstered = atoi( arg ) ? qtrue : qfalse;
+		return;
+	}
+
 	// ignore all other commands when at intermission
 	if ( level.intermissiontime ) {
 		Cmd_Say_f( ent, qfalse, qtrue );

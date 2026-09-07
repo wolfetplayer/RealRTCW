@@ -265,6 +265,9 @@ void CG_Respawn( void ) {
 	// display weapons available
 	cg.weaponSelectTime = cg.time;
 
+	cg.holstered = qfalse;      // never respawn with the weapon holstered
+	cg.holsterWeapon = WP_NONE;
+
 	cg.holdableSelectTime = 0;  //----(SA) reset holdable timer
 
 	cg.pmext.bAutoReload = ( cg_autoReload.integer > 0 ); // autoreload

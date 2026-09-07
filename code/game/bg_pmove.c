@@ -227,7 +227,9 @@ static void PM_StartWeaponAnim( int anim ) {
 		return;
 	}
 
-	if ( pm->cmd.weapon == WP_NONE ) {
+	// allow the drop animation to play while holstering (cmd.weapon == WP_NONE but a
+	// real weapon is still in hand); only skip when there is genuinely no weapon to animate
+	if ( pm->cmd.weapon == WP_NONE && pm->ps->weapon == WP_NONE ) {
 		return;
 	}
 
@@ -235,7 +237,7 @@ static void PM_StartWeaponAnim( int anim ) {
 }
 
 static void PM_ContinueWeaponAnim( int anim ) {
-	if ( pm->cmd.weapon == WP_NONE ) {
+	if ( pm->cmd.weapon == WP_NONE && pm->ps->weapon == WP_NONE ) {
 		return;
 	}
 
@@ -2339,7 +2341,10 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		return;
 	}
 
-	if ( !pm->ps->aiChar && !( pm->ps->eFlags & EF_DEAD ) && ( newweapon == WP_NONE ) ) {   // RF, dont allow changing to null weapon
+	// dont allow changing to null weapon unless the player deliberately holstered (pm->holster,
+	// set from the "holster" command).  A transient empty weapon request from the client
+	// (e.g. during a load) must never put the weapon away.
+	if ( !pm->ps->aiChar && !( pm->ps->eFlags & EF_DEAD ) && ( newweapon == WP_NONE ) && !pm->holster ) {
 		return;
 	}
 
@@ -2365,15 +2370,29 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 		return;
 	}
 
-	if ( !pm->ps->aiChar && !oldweapon ) {    // go straight to the new weapon
+	if ( !pm->ps->aiChar && !oldweapon ) {    // coming from empty hands to a weapon
 		pm->ps->weaponDelay = 0;
-		pm->ps->weaponTime = 0;
-		pm->ps->weaponstate = WEAPON_RAISING;
 		pm->ps->weapon = newweapon;
+
+		// play a proper raise (un-holstering, or picking up your first weapon)
+		// rather than snapping it into view - but keep the initial spawn equip instant
+		if ( newweapon != WP_NONE && !( pm->ps->pm_flags & PMF_RESPAWNED ) ) {
+			switchtime = ( pm->ps->perks[PERK_WEAPONHANDLING] >= 2 ) ? 100 : 250;
+			pm->ps->weaponstate = WEAPON_RAISING;
+			pm->ps->weaponTime += switchtime;
+			BG_UpdateConditionValue( pm->ps->clientNum, ANIM_COND_WEAPON, newweapon, qtrue );
+			BG_AnimScriptEvent( pm->ps, ANIM_ET_RAISEWEAPON, qfalse, qfalse );
+			PM_StartWeaponAnim( PM_RaiseAnimForWeapon( newweapon ) );
+		} else {
+			pm->ps->weaponTime = 0;
+			pm->ps->weaponstate = WEAPON_RAISING;
+		}
 		return;
 	}
 
-	altswitch = (qboolean)( newweapon == ammoTable[oldweapon].weapAlts );
+	// holstering (newweapon == WP_NONE) is a plain drop, never an alt-mode switch
+	// (ammoTable[oldweapon].weapAlts is 0 for most weapons, which would otherwise match)
+	altswitch = (qboolean)( newweapon != WP_NONE && newweapon == ammoTable[oldweapon].weapAlts );
 
 	showdrop = qtrue;
 
@@ -2425,7 +2444,7 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	}
 
 	// it's an alt mode, play different anim
-	if ( newweapon == ammoTable[oldweapon].weapAlts ) {
+	if ( newweapon != WP_NONE && newweapon == ammoTable[oldweapon].weapAlts ) {
 		PM_StartWeaponAnim( PM_AltSwitchFromForWeapon( oldweapon ) );
 	} else {
 		PM_StartWeaponAnim( PM_DropAnimForWeapon( oldweapon ) );
@@ -2496,6 +2515,15 @@ static void PM_FinishWeaponChange( void ) {
 	oldweapon = pm->ps->weapon;
 
 	pm->ps->weapon = newweapon;
+
+	// finished holstering - the weapon is put away, there is nothing to raise
+	if ( newweapon == WP_NONE ) {
+		pm->ps->weaponstate = WEAPON_READY;
+		pm->ps->weaponTime = 0;
+		pm->ps->weaponDelay = 0;
+		BG_UpdateConditionValue( pm->ps->clientNum, ANIM_COND_WEAPON, WP_NONE, qtrue );
+		return;
+	}
 
 	if ( pm->ps->weaponstate == WEAPON_DROPPING_TORELOAD ) {
 		pm->ps->weaponstate = WEAPON_RAISING_TORELOAD;  //----(SA)	added

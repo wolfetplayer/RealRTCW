@@ -4531,6 +4531,9 @@ void CG_FinishWeaponChange( int lastweap, int newweap ) {
 	}
 
 	cg.weaponSelect     = newweap;
+
+	// any real weapon selection clears the holster; only the "holster" command asks for WP_NONE
+	cg.holstered = (qboolean)( newweap == WP_NONE );
 }
 
 qboolean CG_WeaponSupportsSimpleZoom( int weap ) {
@@ -4953,6 +4956,66 @@ void CG_LastWeaponUsed_f( void ) {
 	} else {    // switchback no longer selectable, reset cycle
 		cg.switchbackWeapon = 0;
 	}
+}
+
+/*
+==============
+CG_Holster_f
+	dedicated key to put the weapon away (select WP_NONE) and bring it back out
+==============
+*/
+void CG_Holster_f( void ) {
+	int newweap;
+
+	if ( !cg.snap ) {
+		return;
+	}
+
+	if ( cg.snap->ps.pm_flags & PMF_FOLLOW ) {
+		return;
+	}
+
+	// only while running around normally (not dead / intermission / frozen in a cutscene)
+	if ( cg.snap->ps.pm_type != PM_NORMAL ) {
+		return;
+	}
+
+	// not while manning the mg42
+	if ( cg.snap->ps.eFlags & EF_MG42_ACTIVE ) {
+		return;
+	}
+
+	if ( cg.time - cg.weaponSelectTime < cg_weaponCycleDelay.integer ) {
+		return; // force pause so holding it down won't spam
+	}
+
+	cg.weaponSelectTime = cg.time;  // flash the weapon icon
+
+	trap_S_StartSoundEx( NULL, cg.snap->ps.clientNum, CHAN_WEAPON, cgs.media.nullSound, SND_CUTOFF );
+
+	if ( cg.weaponSelect != WP_NONE ) {
+		// put the weapon away
+		cg.holsterWeapon = cg.weaponSelect;
+		CG_FinishWeaponChange( cg.weaponSelect, WP_NONE );
+	} else {
+		// bring a weapon back out - prefer the one we holstered, then the last-used weapon
+		newweap = cg.holsterWeapon;
+
+		if ( newweap == WP_NONE || !CG_WeaponSelectable( newweap ) ) {
+			newweap = cg.switchbackWeapon;
+		}
+
+		if ( newweap == WP_NONE || !CG_WeaponSelectable( newweap ) ) {
+			// nothing sensible remembered - let the cycle logic find the first usable weapon
+			CG_NextWeap( qtrue );
+		} else {
+			CG_FinishWeaponChange( WP_NONE, newweap );
+		}
+	}
+
+	// tell the server whether the weapon is now holstered (CG_FinishWeaponChange updated
+	// cg.holstered); our own prediction reads cg.holstered directly in CG_PredictPlayerState
+	trap_SendClientCommand( va( "holster %i", cg.holstered ? 1 : 0 ) );
 }
 
 /*

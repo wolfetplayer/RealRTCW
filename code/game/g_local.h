@@ -649,6 +649,8 @@ struct gclient_s {
 	int healthRegenStartTime;
 
 	qboolean hasPurchased;
+
+	qboolean holstered;            // weapon put away via the "holster" command (kept at struct end for savegame compat)
 };
 
 

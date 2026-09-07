@@ -283,7 +283,7 @@ typedef struct
 	qboolean	releasedFire;
 	int lastRecoilDeltaTime;
 	int weapRecoilDuration;
-	float weapRecoilPitch;       
+	float weapRecoilPitch;
 	float weapRecoilYaw;
 	int weapRecoilTime;
 } pmoveExt_t;
@@ -299,6 +299,7 @@ typedef struct {
 	qboolean noFootsteps;           // if the game is setup for no footsteps by the server
 	qboolean noWeapClips;               // if the game is setup for no weapon clips by the server
 	qboolean gauntletHit;           // true if a gauntlet attack would actually hit something
+	qboolean holster;               // player deliberately holstered (the "holster" command) - allows switching to WP_NONE
 
 	// results (out)
 	int numtouch;

@@ -292,7 +292,8 @@ static void CG_ItemPickup( int itemNum ) {
 			}
 		}
 
-		if ( cg_autoswitch.integer && cg.predictedPlayerState.weaponstate != WEAPON_RELOADING ) {
+		// while deliberately holstered, don't let a pickup pull a weapon out
+		if ( cg_autoswitch.integer && !cg.holstered && cg.predictedPlayerState.weaponstate != WEAPON_RELOADING ) {
 
 			//	0 - "Off"
 			//	1 - "Always Switch"

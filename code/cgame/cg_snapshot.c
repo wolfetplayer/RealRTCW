@@ -361,7 +361,8 @@ static snapshot_t *CG_ReadNextSnapshot( void ) {
 			CG_AddLagometerSnapshotInfo( dest );
 
 			// RF, if we have no weapon selected, and this snapshots says we have a weapon, then switch to that
-			if ( cg.snap && !cg.weaponSelect && cg.snap->ps.weapon ) {
+			// ...unless the player deliberately holstered (WP_NONE via the "holster" command)
+			if ( cg.snap && !cg.weaponSelect && !cg.holstered && cg.snap->ps.weapon ) {
 				cg.weaponSelect = cg.snap->ps.weapon;
 				cg.weaponSelectTime = cg.time;
 			}

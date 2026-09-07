@@ -1,0 +1,1287 @@
+<?xml version="1.0"?>
+<!--
+ Return to Castle Wolfenstein entity definition file for GtkRadiant
+ Revised for xml by redfella
+ Version: 1.1
+ Last updated: 07-19-2004
+-->
+<classes>
+<!--
+=============================================================================
+
+ Class entities
+
+=============================================================================
+-->
+
+
+<point name="ai_soldier" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+soldier entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'infantryss/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point>
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_american" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+american entity 
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'american/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_zombie" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+zombie entity 
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'zombie/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+<flag key="PortalZombie" name="Portal Zombie" bit="2"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_warzombie" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+warrior zombie entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'warrior/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+<flag key="PortalZombie" name="Portal Zombie" bit="2"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_femzombie" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+zombie entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'femzombie/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_venom" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+venom entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'venom/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_loper" color="1 0.25 0" box="-32 -32 -24 32 32 48">
+loper entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'loper/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_boss_helga" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+helga entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'helga/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_boss_heinrich" color="1 0.25 0" box="-32 -32 -24 32 32 156">
+heinrich entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'helga/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_partisan" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'partisan/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_civilian" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'civilian/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_eliteguard" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+elite guard entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'eliteguard/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_supersoldier" color="1 0.25 0" box="-32 -32 -24 32 32 64">
+supersoldier entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'supersoldier/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_protosoldier" color="1 0.25 0" box="-32 -32 -24 32 32 64">
+protosoldier entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'protosoldier/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_blackguard" color="1 0.25 0" box="-16 -16 -24 16 16 64">
+black guard entity
+-------- KEYS --------
+<skin key="skin" name="Player Skin">the .skin file to use for this character (must exist in the player characters directory, otherwise 'blackguard/default' is used)</skin>
+<skin key="head" name="Head Skin">the .skin file to use for his head (must exist in the pc's dir, otherwise 'default' is used)</skin>
+<string key="ainame" name="AI Name">name of AI</string>
+<flag key="TriggerSpawn" name="Trigger Spawn" bit="0"/>
+<flag key="NoRevive" name="No Revive" bit="1"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ai_marker" color="1 0.5 0" box="-18 -18 -24 18 18 48">
+marker
+<flag key="NODROP" name="No Drop" bit="0"/>
+<flag key="AI" name="AI" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<group name="ai_trigger" color="1 0.5 0">
+Triggered only by the player touching it
+-------- KEYS --------
+<real key="wait" name="Repeat Delay">time in seconds between triggerings, -1 = one time only (default)</real>
+<string key="ainame" name="AI Name">name of AI to target (use "player" for the.. player)</string>
+<target key="target" name="Target">trigger identifier for that AI script</target>
+<flag key="STARTOFF" name="Start Off" bit="0"/>
+</group>
+
+
+<!--
+=============================================================================
+
+ITEM_* ENTITIES
+
+=============================================================================
+-->
+
+
+<point name="item_clipboard" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/clipboard/clipboard.md3">
+(the clipboard laying flat is 'clipboard2.md3')
+-------- KEYS --------
+<model key="model" name="Model">defaults to 'models/powerups/clipboard/clipboard.md3' (the clipboard laying flat is 'clipboard2.md3')</model>
+<string key="popup" name="Popup Menu">menu to popup. no default since you won't want the same clipboard laying around. (clipboard will display a 'put popup here' message)</string>
+<string key="notebookpage" name="NoteBook Page Name">when clipboard is picked up, this page (menu) will be added to your notebook (FIXME: TODO: more info goes here)
+We currently use:
+clip_interrogation
+clip_codeddispatch
+clip_alertstatus</string>
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="PERSISTANT" name="Persistent" bit="2"/>
+</point>
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_treasure" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/treasure/goldbar.md3">
+Items the player picks up that are just used to tally a score at end-level
+-------- KEYS --------
+<model key="model" name="Model">defaults to 'models/powerups/treasure/goldbar.md3'</model>
+<string key="noise" name="Noise">sound to play on pickup. defaults to 'sound/pickup/treasure/gold.wav'</string>
+<string key="message" name="Item Message">what to call the item when it's picked up. defaults to "Treasure Item"</string>
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health_small" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_s.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_m.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health_large" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_l.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health_turkey" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_t1.md3">
+multi-stage health item.
+gives amount on first use based on skill:
+skill 1: 50
+skill 2: 50
+skill 3: 50
+skill 4: 40
+skill 5: 30
+
+then gives 15 on "finishing up"
+player will only eat what he needs. health at 90, turkey fills up and leaves remains (leaving 15). health at 5 you eat the whole thing.
+
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health_breadandmeat" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_b1.md3">
+multi-stage health item.
+amount on first use is based on skill:
+
+then gives 10 on "finishing up"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health_wall_box" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_wallbox.md3">
+single use health with dual state model.
+please set the suspended flag to keep it from falling on the ground.
+defaults to 50 pts health
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="RESPAWN" name="Respawn" bit="2"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_health_wall" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/health/health_w.md3">
+defaults to 50 pts health.
+you will probably want to check the 'suspended' box to keep it from falling to the ground
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="RESPAWN" name="Respawn" bit="2"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_stamina_stein" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/instant/stamina_stein.md3">
+defaults to 30 sec stamina boost
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_stamina_brandy" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/instant/stamina_brandy1.md3">
+defaults to 30 sec stamina boost
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_armor_body" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/armor/armor_body1.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_armor_body_hang" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/armor/armor_body2.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="RESPAWN" name="Respawn" bit="2"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="item_armor_head" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/armor/armor_head1.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+
+WEAPON_* ENTITIES
+
+=============================================================================
+-->
+
+
+<point name="weapon_knife" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/knife/knife.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_luger" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/luger/luger.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_mauserRifle" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/mauser/mauser.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_thompson" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/thompson/thompson.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_sten" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/sten/sten.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_colt" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/colt/colt.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_mp40" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/mp40/mp40.md3">
+<integer key="stand" name="Stand">values:
+no value: laying in a default position on it's side (default)
+2: upright, barrel pointing up, slightly angled (rack mount)</integer>
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_fg42" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/fg42/fg42.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_silencer" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/sp5/sp5.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_panzerfaust" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/panzerfaust/pf.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_venom" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/venom/pu_venom.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_flamethrower" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/flamethrower/pu_flamethrower.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_tesla" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/tesla/pu_tesla.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_sniperScope" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/mauser/pu_mauser_scope.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="weapon_snooperrifle" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/weapons2/garand/garand.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+
+AMMO_* ENTITIES
+
+=============================================================================
+-->
+
+
+<point name="ammo_9mm_small" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am9mm_s.md3">
+used by: Luger pistol, MP40 machinegun
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_9mm" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am9mm_m.md3">
+used by: Luger pistol, MP40 machinegun
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_9mm_large" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am9mm_l.md3">
+used by: Luger pistol, MP40 machinegun
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_45cal_small" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am45cal_s.md3">
+used by: Thompson, Colt
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_45cal" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am45cal_m.md3">
+used by: Thompson, Colt
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_45cal_large" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am45cal_l.md3">
+used by: Thompson, Colt
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_792mm_small" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am792mm_s.md3">
+used by: Mauser rifle, FG42
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_792mm" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am792mm_m.md3">
+used by: Mauser rifle, FG42
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_792mm_large" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am792mm_l.md3">
+used by: Mauser rifle, FG42
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_30cal_small" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am30cal_s.md3">
+used by: Garand rifle
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_30cal" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am30cal_m.md3">
+used by: Garand rifle
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_30cal_large" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am30cal_l.md3">
+used by: Garand rifle
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_127mm" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/am127mm.md3">
+used by: Venom gun
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_grenades" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/amgren_bag.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_grenades_american" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/amgrenus_bag.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_dynamite" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/dynamite.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_cell" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/amcell.md3">
+used by: Tesla Boosts recharge on Tesla
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_fuel" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/amfuel.md3">
+used by: Flamethrower
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="ammo_panzerfaust" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/ammo/ampf.md3">
+used by: German Panzerfaust
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+
+HOLDABLE_* ENTITIES
+
+=============================================================================
+-->
+
+
+<point name="holdable_medkit" color=".3 .3 1" box="-16 -16 -16 16 16 16" model="models/powerups/holdable/medkit.md3">
+pickup sound : "sound/pickup/holdable/get_medkit.wav"
+use sound : "sound/pickup/holdable/get_medkit.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_wine" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/wine.md3">
+pickup sound : "sound/pickup/holdable/get_wine.wav"
+use sound : "sound/pickup/holdable/use_wine.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_stamina" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/stamina.md3">
+Protection from fatigue Using the "sprint" key will not fatigue the character.
+pickup sound : "sound/pickup/holdable/get_stamina.wav"
+use sound : "sound/pickup/holdable/use_stamina.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_book1" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/venom_book.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_book2" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/paranormal_book.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_book3" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/zemphr_book.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_11" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/11.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_12" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/12.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_13" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/13.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_14" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/14.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="holdable_15" color=".3 .3 1" box="-8 -8 -8 8 8 8" model="models/powerups/holdable/15.md3">
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+
+KEY_* ENTITIES
+
+=============================================================================
+-->
+
+
+<point name="key_skull1" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/skull.md3">
+key 1
+pickup sound : "sound/pickup/keys/skull.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_chalice2" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/chalice.md3">
+key 2
+pickup sound : "sound/pickup/keys/chalice.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_eye3" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/eye.md3">
+key 3
+pickup sound : "sound/pickup/keys/eye.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_radio4" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/radio_port.md3">
+key 4
+pickup sound : "sound/pickup/keys/radio.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_satchelcharge5" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/satchel_charge.md3">
+key 5
+pickup sound : "sound/pickup/keys/satchelcharge.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_binocs" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/binoculars.md3">
+Binoculars.
+pickup sound : "sound/pickup/keys/binocs.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_7" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key7.md3">
+key 7
+pickup sound : "sound/pickup/keys/key7.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key8" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 8
+pickup sound : "sound/pickup/keys/key8.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key9" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 9
+pickup sound : "sound/pickup/keys/key9.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key10" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 10
+pickup sound : "sound/pickup/keys/key10.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key11" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 11
+pickup sound : "sound/pickup/keys/key11.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key12" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 12
+pickup sound : "sound/pickup/keys/key12.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key13" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 13
+pickup sound : "sound/pickup/keys/key13.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key14" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 14
+pickup sound : "sound/pickup/keys/key14.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key15" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 15
+pickup sound : "sound/pickup/keys/key15.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point> 
+
+
+<!--
+=============================================================================
+-->
+
+
+<point name="key_key16" color="1 1 0" box="-8 -8 -8 8 8 8" model="models/powerups/keys/key.md3">
+key 16
+pickup sound : "sound/pickup/keys/key16.wav"
+<flag key="SUSPENDED" name="Suspended" bit="0"/>
+<flag key="SPIN" name="Spin" bit="1"/>
+<flag key="RESPAWN" name="Respawn" bit="3"/>
+</point>
+
+</classes>

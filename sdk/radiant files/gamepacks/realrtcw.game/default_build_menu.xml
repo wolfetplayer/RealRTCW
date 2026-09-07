@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project version="2.0">
+<var name="q3map2">&quot;[RadiantPath]q3map2.[ExecutableType]&quot; -v[ExtraResoucePath][ExtraResourcePaths]<cond value="[MonitorAddress]"> -connect [MonitorAddress]</cond> -game wolf -fs_basepath &quot;[EnginePath]&quot;<cond value="[GameName]"> -fs_game [GameName]</cond></var>
+<build name="Q3Map2: (single) BSP -meta">
+<command>[q3map2] -meta &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single) -vis">
+<command>[q3map2] -vis &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single test) -vis -fast">
+<command>[q3map2] -vis -fast &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single test) -light -faster">
+<command>[light] -faster &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single test) -light -fast">
+<command>[q3map2] -light -fast &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single) -light -fast -super 2">
+<command>[q3map2] -light -fast -super 2 &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single) -light -fast -super 2 -filter">
+<command>[q3map2] -light -fast -super 2 -filter &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (single) -light -fast -super 2 -filter -bounce 8">
+<command>[q3map2] -light -fast -super 2 -filter -bounce 8 &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (test) BSP -meta, -vis, -light -fast -filter">
+<command>[q3map2] -meta &quot;[MapFile]&quot;</command>
+<command>[q3map2] -vis -saveprt &quot;[MapFile]&quot;</command>
+<command>[q3map2] -light -fast -filter &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (test-custom)">
+<command>[q3map2] -meta -v -custinfoparms &quot;[MapFile]&quot;</command>
+<command>[q3map2] -vis -saveprt -v &quot;[MapFile]&quot;</command>
+<command>[q3map2] -light -fast -nocollapse -samples 2 -v &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (final) BSP -meta, -vis, -light -fast -filter -super 2">
+<command>[q3map2] -meta &quot;[MapFile]&quot;</command>
+<command>[q3map2] -vis -saveprt &quot;[MapFile]&quot;</command>
+<command>[q3map2] -light -fast -filter -super 2 &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (final) BSP -meta, -vis, -light -fast -filter -super 2">
+<command>[q3map2] -meta &quot;[MapFile]&quot;</command>
+<command>[q3map2] -vis -saveprt &quot;[MapFile]&quot;</command>
+<command>[q3map2] -light -fast -filter -super 2 &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (final-custom)">
+<command>[q3map2] -meta -v -custinfoparms &quot;[MapFile]&quot;</command>
+<command>[q3map2] -vis -saveprt &quot;[MapFile]&quot;</command>
+<command>[q3map2] -light -fast -nocollapse -samples 2 -bounce 8 -v &quot;[MapFile]&quot;</command>
+</build>
+<build name="Q3Map2: (simulate old style -light -extra) BSP -meta, -vis, -light -super 2">
+<command>[q3map2] -meta &quot;[MapFile]&quot;</command>
+<command>[q3map2] -vis -saveprt &quot;[MapFile]&quot;</command>
+<command>[q3map2] -light -super 2 &quot;[MapFile]&quot;</command>
+</build>
+</project>

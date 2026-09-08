@@ -538,6 +538,9 @@ extern cvar_t  *cl_waitForFire;
 // NERVE - SMF - localization
 extern cvar_t  *cl_language;
 extern cvar_t  *cl_drawCineSubtitles;
+
+extern cvar_t  *cl_enableUtf8Font;
+extern cvar_t  *cl_hudUtf8FontScale;
 // -NERVE - SMF
 
 //=================================================
@@ -722,6 +725,12 @@ void    SCR_DrawStringExt( int x, int y, float size, const char *string, float *
 void    SCR_DrawStringExt2( int x, int y, float size, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape, int font );
 void    SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType, int font );
 
+int CG_DrawStrCount( const char *str );
+void SCR_DrawChar_Utf8( int x, int y, float scale, int unicode, qboolean adjust640 );
+void SCR_DrawStringExt_Utf8( int x, int y, float scale, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape, qboolean shadow, qboolean adjust640 );
+int SCR_GetStringWidth_Utf8( const char *string, float scale, int limit );
+int SCR_GetStringHeight_Utf8( const char *string, float scale, int limit );
+void SCR_Text_AutoWrapped_Paint_Utf8( float x, float y, float scale, const char *text, float maxLineWidth, vec4_t color, int alignType, qboolean shadow, qboolean adjust640 );
 
 //
 // cl_cin.c

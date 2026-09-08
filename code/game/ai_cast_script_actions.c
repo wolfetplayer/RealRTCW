@@ -3657,6 +3657,22 @@ qboolean AICast_ScriptAction_Print( cast_state_t *cs, char *params ) {
 
 /*
 =================
+AICast_ScriptAction_PrintSubtitle
+
+  syntax: printsubtitle <text>
+=================
+*/
+qboolean AICast_ScriptAction_PrintSubtitle( cast_state_t *cs, char *params ) {
+	if ( !params || !params[0] ) {
+		G_Error( "AI Scripting: printsubtitle requires text\n" );
+	}
+
+	trap_SendServerCommand( -1, va( "cpst %s", params ) );
+	return qtrue;
+}
+
+/*
+=================
 AICast_ScriptAction_FaceTargetAngles
 
   syntax: facetargetangles <targetname>

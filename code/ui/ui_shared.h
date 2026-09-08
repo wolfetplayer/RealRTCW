@@ -255,6 +255,7 @@ typedef struct itemDef_s {
 	float textaligny;               // ( optional ) text alignment x coord
 	float textscale;                // scale percentage from 72pts
 	int textStyle;                  // ( optional ) style, normal and shadowed are it for now
+	int textlinespacing;            // ( optional ) adjust spacing between text lines, if not set or set 0, will auto caculate
 	const char *text;               // display text
 	qboolean textSavegameInfo;      //----(SA)	added
 	void *parent;                   // menu owner

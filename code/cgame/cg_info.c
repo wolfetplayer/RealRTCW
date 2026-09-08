@@ -219,6 +219,16 @@ void CG_DrawExitStats( void ) {
 	int vars[MAX_STATS_VARS];
 	char *formatStr = NULL; // TTimo: init
 	int varIndex = 0;     // TTimo: init
+	int font;
+	float scale;
+
+	if ( !cg_enableUtf8Font.integer ) {
+		font = UI_FONT_BIG;
+		scale = 0.225f;
+	} else {
+		font = FONT_UTF_DEFAULT;
+		scale = cg_hudUtf8FontScale.value * 0.75f;
+	}
 
 	if ( cg_paused.integer ) {
 		// no draw if any menu's are up	 (or otherwise paused)
@@ -277,17 +287,17 @@ void CG_DrawExitStats( void ) {
 	color2[0] = color2[1] = color2[2] = 1;
 	color2[3] = color[3];
 	//----(SA)	scale change per MK
-	CG_Text_Paint( 270, 120, 2, 0.313f, color2, va( "%s", CG_translateString( "end_title" ) ), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE );
+	CG_Text_Paint( 270, 120, font, scale * 1.4f, color2, va( "%s", CG_translateString( "end_title" ) ), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE );
 
 	color2[0] = color2[1] = color2[2] = 1;
 	if ( cg.cursorHintIcon == HINT_NOEXIT ) {
 		// "exit not available"
 		//----(SA)	scale change per MK
-		CG_Text_Paint( 260, 320, 2, 0.225f, color2, va( "%s", CG_translateString( "end_noexit" ) ), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE );
+		CG_Text_Paint( 260, 320, font, scale, color2, va( "%s", CG_translateString( "end_noexit" ) ), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE );
 	} else {
 		// "forward to proceed"
 		//----(SA)	scale change per MK
-		CG_Text_Paint( 250, 320, 2, 0.225f, color2, va( "%s", CG_translateString( "end_exit" ) ), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE );
+		CG_Text_Paint( 250, 320, font, scale, color2, va( "%s", CG_translateString( "end_exit" ) ), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE );
 	}
 
 	mstats = (char*)str + 2;    // add offset for 's='
@@ -332,7 +342,7 @@ void CG_DrawExitStats( void ) {
 				break;
 			}
 
-			CG_Text_Paint( statsItems[i].formatX, y, 2, 0.3, statsItems[i].formatColor, formatStr, 0, 0, statsItems[i].formatFlags );
+			CG_Text_Paint( statsItems[i].formatX, y, font, scale * 1.3f, statsItems[i].formatColor, formatStr, 0, 0, statsItems[i].formatFlags );
 		}
 
 		if ( i == 1 ) {  // 'objectives'
@@ -348,7 +358,7 @@ void CG_DrawExitStats( void ) {
 			}
 		}
 
-		CG_Text_Paint( statsItems[i].labelX, y, 2, 0.3, color2, va( "%s:", CG_translateString( statsItems[i].label ) ), 0, 0, statsItems[i].labelFlags );
+		CG_Text_Paint( statsItems[i].labelX, y, font, scale * 1.3f, color2, va( "%s:", CG_translateString( statsItems[i].label ) ), 0, 0, statsItems[i].labelFlags );
 	}
 
 	COM_Parse( &mstats );

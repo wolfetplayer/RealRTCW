@@ -58,6 +58,7 @@ qboolean G_ScriptAction_Accum( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MissionFailed( gentity_t *ent, char *params );
 qboolean G_ScriptAction_MissionSuccess( gentity_t *ent, char *params );
 qboolean G_ScriptAction_Print( gentity_t *ent, char *params );
+qboolean G_ScriptAction_PrintSubtitle( gentity_t *ent, char *params );
 
 //1NTERRUPTOR
 qboolean G_ScriptAction_AccumGameTime(gentity_t *ent, char *params);
@@ -159,6 +160,8 @@ g_script_stack_action_t gScriptActions[] =
 	{"mu_stop",                  G_ScriptAction_MusicStop},  // (int time)						// time to fadeout
 	{"mu_fade",                  G_ScriptAction_MusicFade},  // (float target_volume, int time)	// time to fade to target
 	{"mu_queue",             G_ScriptAction_MusicQueue}, // (char *new_music)				// music that will start when previous fades to 0
+
+	{"printsubtitle",		G_ScriptAction_PrintSubtitle},
 
 	{NULL,                      0}
 };

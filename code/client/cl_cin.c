@@ -2891,7 +2891,7 @@ static void CIN_LoadCinematicSubtitle( int handle ) {
 		token = COM_ParseExt(&text, qfalse);
 		cinTable[handle].subtitles[i].endTime = atoi(token);
 
-		token = COM_ParseExt(&text, qfalse);
+		token = COM_ParseExt2(&text, qfalse, qtrue);
 		Q_strncpyz( cinTable[handle].subtitles[i].lineText, token, sizeof(cinTable[handle].subtitles[i].lineText) );
 
 		token = COM_ParseExt(&text, qfalse);
@@ -2976,9 +2976,14 @@ static void CIN_DrawCinematicSubtitle( int handle ) {
 				y = subs[i].y0;
 			}
 
-			SCR_Text_AutoWrapped_Paint( x, y, subs[i].sizeScale, subs[i].lineText,
+			if ( cl_enableUtf8Font->integer ) {
+				SCR_Text_AutoWrapped_Paint_Utf8( x, y, subs[i].sizeScale * cl_hudUtf8FontScale->value, subs[i].lineText,
+										subs[i].width, color, TEXT_ALIGN_CENTER, qtrue, qtrue );
+			} else {
+				SCR_Text_AutoWrapped_Paint( x, y, subs[i].sizeScale, subs[i].lineText,
 										subs[i].width, color, TEXT_ALIGN_CENTER,
 										cls.subtitleCharSetShader );
+			}
 		}
 	}
 

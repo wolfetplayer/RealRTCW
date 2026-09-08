@@ -38,6 +38,8 @@ cvar_t      *cl_graphheight;
 cvar_t      *cl_graphscale;
 cvar_t      *cl_graphshift;
 
+extern utf8FontInfo_t utf8Font;
+
 /*
 ================
 SCR_DrawNamedPic
@@ -418,7 +420,6 @@ void SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text
 	int len, textWidth, newLine, newLineWidth;
 	float x2, y2, maxLineHeight;
 	float size;
-	vec4_t backColor;
 
 	if ( !font ) {
 		Com_DPrintf(S_COLOR_YELLOW "SCR_Text_AutoWrapped_Paint: switch to the default charSetShader\n");
@@ -437,9 +438,6 @@ void SCR_Text_AutoWrapped_Paint( float x, float y, float scale, const char *text
 	}
 
 	re.SetColor( color );
-
-	backColor[0] = backColor[1] = backColor[2] = 0;
-	backColor[3] = 1.0;
 
 	size = BIGCHAR_HEIGHT * scale;
 	maxLineHeight = BIGCHAR_HEIGHT * scale;
@@ -761,4 +759,340 @@ void SCR_UpdateScreen( void ) {
 	}
 
 	recursive = 0;
+}
+
+/*
+=================
+SCR_DrawStrCount
+
+Returns glyphs count, skiping color escape codes
+support utf8 format, and compatible with latin-1 format
+=================
+*/
+int CG_DrawStrCount( const char *str ) {
+	const char *s = str;
+	int count = 0;
+
+	while ( *s ) {
+		if ( Q_IsColorString( s ) ) {
+			s += 2;
+			continue;
+		} else {
+			count++;
+			s += Q_utf8bytesLength(s);
+		}
+	}
+
+	return count;
+}
+
+/*
+=================
+SCR_DrawUtf8Char
+=================
+*/
+void SCR_DrawChar_Utf8( int x, int y, float scale, int unicode, qboolean adjust640 ) {
+	float ax, ay, aw, ah;
+	float s1, t1, s2, t2;
+	glyphInfo_t *glyph;
+
+	if ( unicode == ' ' || unicode < 0 || unicode >= UTF8_GLYPHS_PER_FONT ) {
+		return;
+	}
+
+	if ( !utf8Font.loaded ) {
+		Com_Error(ERR_DROP, "SCR_DrawChar_Utf8: utf8Font is not initialized");
+		return;
+	}
+
+	glyph = &utf8Font.glyphs[unicode];
+
+	s1 = glyph->s;
+	t1 = glyph->t;
+	s2 = glyph->s2;
+	t2 = glyph->t2;
+	
+	ax = x;
+	ay = y - glyph->top * scale;
+	aw = glyph->imageWidth * scale;
+	ah = glyph->imageHeight * scale;
+	
+	if ( adjust640 ) {
+		SCR_AdjustFrom640( &ax, &ay, &aw, &ah );
+	}
+	
+	re.DrawStretchPic( ax, ay, aw, ah,
+							s1, t1, s2, t2,
+							glyph->glyph );
+}
+
+/*
+==================
+SCR_DrawStringExt_Utf8
+
+Coordinates are at 640 by 480 virtual resolution
+==================
+*/
+void SCR_DrawStringExt_Utf8( int x, int y, float scale, const char *string, float *setColor, qboolean forceColor,
+							qboolean noColorEscape, qboolean shadow, qboolean adjust640 ) {
+	vec4_t color;
+	const char *s;
+	int xx;
+	int count;
+	int charBytes;
+	float useScale;
+	uint32_t unicode;
+	glyphInfo_t *glyph;
+
+	if ( !utf8Font.loaded ) {
+		Com_Error(ERR_DROP, "SCR_DrawStringExt_Utf8: utf8Font is not initialized");
+		return;
+	}
+
+	useScale = utf8Font.glyphScale * scale;
+
+	if ( shadow ) {
+		color[0] = color[1] = color[2] = 0;
+		color[3] = setColor[3];
+		re.SetColor( color );
+		
+		s = string;
+		xx = x;
+		count = 0;
+		
+		while (*s) {
+			if ( Q_IsColorString( s ) ) {
+				s += 2;
+				continue;
+			}
+			
+			unicode = Q_utf8ToCodePoint( s );
+			if ( unicode < UTF8_GLYPHS_PER_FONT ) {
+				SCR_DrawChar_Utf8( xx + 1, y + 1, useScale, unicode, adjust640 );
+			} else {
+				s++;
+				continue;
+			}
+			
+			glyph = &utf8Font.glyphs[unicode];
+			charBytes = Q_utf8bytesLength( s );
+			if ( charBytes <= 0 ) {
+				charBytes = 1;
+			}
+			s += charBytes;
+			xx += glyph->xSkip * useScale;
+			count++;
+		}
+	}
+
+	s = string;
+	xx = x;
+	count = 0;
+	re.SetColor( setColor );
+
+	while (*s) {
+		if ( Q_IsColorString( s ) ) {
+			if ( !forceColor ) {
+				memcpy( color, g_color_table[ColorIndex( *( s + 1 ) )], sizeof( color ) );
+				color[3] = setColor[3];
+				re.SetColor( color );
+			}
+			s += 2;
+			continue;
+		}
+		
+		unicode = Q_utf8ToCodePoint( s );
+		if ( unicode < UTF8_GLYPHS_PER_FONT ) {
+			SCR_DrawChar_Utf8( xx, y, useScale, unicode, adjust640 );
+		} else {
+			s++;
+			continue;
+		}
+
+		glyph = &utf8Font.glyphs[unicode];
+		charBytes = Q_utf8bytesLength( s );
+		if ( charBytes <= 0 ) {
+			charBytes = 1;
+		}
+		s += charBytes;
+		xx += glyph->xSkip * useScale;
+		count++;
+	}
+
+	re.SetColor( NULL );
+}
+
+/*
+==================
+SCR_GetStringWidth_Utf8
+
+  set limit to 0 for no limit
+==================
+*/
+int SCR_GetStringWidth_Utf8( const char *string, float scale, int limit ) {
+	int count,len;
+	float out;
+	glyphInfo_t *glyph;
+	float useScale;
+	const char *s = string;
+
+	if ( !utf8Font.loaded ) {
+		Com_Error(ERR_DROP, "SCR_GetStringWidth_Utf8: utf8Font is not initialized");
+		return 0;
+	}
+
+	useScale = scale * utf8Font.glyphScale;
+	out = 0;
+	if ( string ) {
+		len = strlen( string );
+		if ( limit > 0 && len > limit ) {
+			len = limit;
+		}
+		count = 0;
+		while ( s && *s && count < len ) {
+			if ( Q_IsColorString( s ) ) {
+				s += 2;
+				continue;
+			} else {
+				uint32_t utf8_index = Q_utf8ToCodePoint(s);
+				uint32_t glyph_index = utf8_index % (UTF8_GLYPHS_PER_FONT - 1);
+				glyph = &utf8Font.glyphs[glyph_index];
+				out += glyph->xSkip;
+				s += Q_utf8bytesLength(s);
+				count++;
+			}
+		}
+	}
+	return out * useScale;
+}
+
+/*
+==================
+SCR_GetStringHeight_Utf8
+
+  set limit to 0 for no limit
+==================
+*/
+int SCR_GetStringHeight_Utf8( const char *string, float scale, int limit ) {
+	int count,len;
+	float out;
+	glyphInfo_t *glyph;
+	float useScale;
+	const char *s = string;
+
+	if ( !utf8Font.loaded ) {
+		Com_Error(ERR_DROP, "SCR_GetStringWidth_Utf8: utf8Font is not initialized");
+		return 0;
+	}
+
+	useScale = scale * utf8Font.glyphScale;
+	out = 0;
+	if ( string ) {
+		len = strlen( string );
+		if ( limit > 0 && len > limit ) {
+			len = limit;
+		}
+		count = 0;
+		while ( s && *s && count < len ) {
+			if ( Q_IsColorString( s ) ) {
+				s += 2;
+				continue;
+			} else {
+				uint32_t utf8_index = Q_utf8ToCodePoint(s);
+				uint32_t glyph_index = utf8_index % (UTF8_GLYPHS_PER_FONT - 1);
+				glyph = &utf8Font.glyphs[glyph_index];
+				if ( glyph->height > out ) {
+					out = glyph->height;
+				}
+				s += Q_utf8bytesLength(s);
+				count++;
+			}
+		}
+	}
+	return out * useScale;
+}
+
+/*
+==================
+SCR_Text_AutoWrapped_Paint_Utf8
+==================
+*/
+void SCR_Text_AutoWrapped_Paint_Utf8( float x, float y, float scale, const char *text, float maxLineWidth, 
+									vec4_t color, int alignType, qboolean shadow, qboolean adjust640 ) {
+	const char *p, *textPtr, *newLinePtr;
+	char buff[4096];
+	int len, textWidth, newLine, newLineWidth;
+	float x2, y2, maxLineHeight;
+
+	newLinePtr = NULL;
+	if ( !text || !text[0] ) {
+		return;
+	} else {
+		textPtr = text;
+	}
+
+	if ( !color ) {
+		return;
+	}
+
+	re.SetColor( color );
+
+	textWidth = 0;
+	maxLineHeight = SCR_GetStringHeight_Utf8(text, scale, 0);
+
+	x2 = x;
+	y2 = y;
+	len = 0;
+	buff[0] = '\0';
+	newLine = 0;
+	newLineWidth = 0;
+	p = textPtr;
+	while ( p ) {
+		if ( *p == ' ' || *p == '\t' || *p == '\n' || *p == '\0' ) {
+			newLine = len;
+			newLinePtr = p + 1;
+			newLineWidth = textWidth;
+		} else if ( Q_isUtf8Char(p) ) {
+			newLine = len;
+			newLinePtr = p;
+			newLineWidth = textWidth;
+		}
+
+		textWidth = SCR_GetStringWidth_Utf8(buff, scale, 0);
+		if ( ( newLine && textWidth > maxLineWidth ) || *p == '\n' || *p == '\0' ) {
+			if ( len ) {
+				if ( alignType == TEXT_ALIGN_LEFT ) {
+					x2 = x;
+				} else if ( alignType == TEXT_ALIGN_RIGHT ) {
+					x2 = x + maxLineWidth - newLineWidth;
+				} else if ( alignType == TEXT_ALIGN_CENTER ) {
+					x2 = x + (maxLineWidth - newLineWidth) / 2;
+				}
+				if ( Q_isUtf8Char(p) ) newLine += Q_utf8bytesLength(p) - 1;
+				buff[newLine] = '\0';
+				SCR_DrawStringExt_Utf8( x2, y2, scale, buff, color, qfalse, qfalse, shadow, adjust640 );
+			}
+			if ( *p == '\0' ) {
+				break;
+			}
+
+			y2 += maxLineHeight + 3.0f;
+			p = newLinePtr;
+			len = 0;
+			newLine = 0;
+			newLineWidth = 0;
+			continue;
+		}
+		// buff[len++] = *p++;
+		// ensure that we don't truncate multi byte characters
+		for ( int i = Q_utf8bytesLength(p); i > 0; i-- ) {
+			buff[len++] = *p++;
+		}
+
+		if ( buff[len-1] == 13 ) {
+			buff[len-1] = ' ';
+		}
+
+		buff[len] = '\0';
+	}
 }

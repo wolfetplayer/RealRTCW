@@ -842,6 +842,7 @@ void    COM_SetCurrentParseLine( int line );
 int     COM_GetCurrentParseLine( void );
 char    *COM_Parse( char **data_p );
 char    *COM_ParseExt( char **data_p, qboolean allowLineBreak );
+char    *COM_ParseExt2( char **data_p, qboolean allowLineBreaks, qboolean allowEscapeChar );
 int     COM_Compress( char *data_p );
 void	COM_ParseError( char *format, ... ) __attribute__ ((format (printf, 1, 2)));
 void	COM_ParseWarning( char *format, ... ) __attribute__ ((format (printf, 1, 2)));
@@ -1744,7 +1745,7 @@ typedef enum {
 } connstate_t;
 
 // font support
-
+#define MAX_FONTS 6
 #define GLYPH_START 0
 #define GLYPH_END 255
 #define GLYPH_CHARSTART 32
@@ -1844,5 +1845,27 @@ typedef enum {
 	LANGUAGE_SPANISH,
 	MAX_LANGUAGES
 } languages_t;
+
+
+// for unicode support (utf8 format)
+int Q_utf8bytesLength( const char *utf8 );
+qboolean Q_isUtf8Char( const char *c );
+qboolean Q_isUtf8String( const char *str );
+uint32_t Q_utf8ToCodePoint( const char *utf8 );
+qboolean Q_IsUtf8BreakOpportunity( uint32_t unicode );
+qboolean Q_IsUtf8TightSpacing( uint32_t unicode );
+qboolean Q_IsUtf8StringNeedBidi( const char *str );
+void Q_TransToUtf8BidiString( char *str, int maxLen );
+
+#define MAX_UTF8_FONTS 5
+#define UFontIndex( n ) ( n - MAX_FONTS + 1 )
+#define UTF8_GLYPHS_PER_FONT	65536
+typedef struct {
+	glyphInfo_t glyphs[UTF8_GLYPHS_PER_FONT];
+	float glyphScale;
+	char name[MAX_QPATH];
+	qboolean loaded;
+} utf8FontInfo_t;
+
 
 #endif  // __Q_SHARED_H

@@ -1094,6 +1094,22 @@ qboolean G_ScriptAction_Print( gentity_t *ent, char *params ) {
 
 /*
 =================
+G_ScriptAction_PrintSubtitle
+
+  syntax: printsubtitle <text>
+=================
+*/
+qboolean G_ScriptAction_PrintSubtitle( gentity_t *ent, char *params ) {
+	if ( !params || !params[0] ) {
+		G_Error( "AI Scripting: printsubtitle requires text\n" );
+	}
+
+	trap_SendServerCommand( -1, va( "cpst %s", params ) );
+	return qtrue;
+}
+
+/*
+=================
 1NTERRUPTOR
 
 G_ScriptAction_AccumGameTime

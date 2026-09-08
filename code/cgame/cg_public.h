@@ -224,7 +224,9 @@ typedef enum {
 	// New in IORTCW
 	CG_ALLOC = 900,
 
-	CG_R_REGISTERSMARTSKIN
+	CG_R_REGISTERSMARTSKIN,
+
+	CG_R_REGISTERUTF8FONT
 
 } cgameImport_t;
 

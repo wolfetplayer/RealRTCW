@@ -1079,6 +1079,7 @@ void            trap_LAN_MarkServerVisible( int source, int n, qboolean visible 
 void            trap_GetCDKey( char *buf, int buflen );
 void            trap_SetCDKey( char *buf );
 void            trap_R_RegisterFont( const char *pFontname, int pointSize, fontInfo_t *font );
+void			trap_R_RegisterUtf8Font( const char *fontName, utf8FontInfo_t *font );
 void            trap_S_StopBackgroundTrack( void );
 void            trap_S_StartBackgroundTrack( const char *intro, const char *loop, int fadeupTime );
 int             trap_CIN_PlayCinematic( const char *arg0, int xpos, int ypos, int width, int height, int bits );

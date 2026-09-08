@@ -98,9 +98,13 @@ If you have questions concerning this license or the applicable additional terms
 FT_Library ftLibrary = NULL;
 #endif
 
-#define MAX_FONTS 6
 static int registeredFontCount = 0;
 static fontInfo_t registeredFont[MAX_FONTS];
+
+// TODO // XXX
+#define UNICODE_DAT_HEADER "UNIC"	// for sparse data storage
+static int utf8RegisteredFontCount = 0;
+static utf8FontInfo_t utf8RegisteredFont[MAX_UTF8_FONTS];
 
 #ifdef BUILD_FREETYPE
 void R_GetGlyphInfo( FT_GlyphSlot glyph, int *left, int *right, int *width, int *top, int *bottom, int *height, int *pitch ) {
@@ -548,6 +552,265 @@ void RE_RegisterFont( const char *fontName, int pointSize, fontInfo_t *font ) {
 #endif
 }
 
+void RE_RegisterUtf8Font( const char *fontName, utf8FontInfo_t *font ) {
+#ifdef BUILD_FREETYPE
+	FT_Face face;
+	int j, k, xOut, yOut, lastStart, imageNumber;
+	int scaledSize, newSize, maxHeight, left;
+	unsigned char *out, *imageBuff;
+	glyphInfo_t *glyph;
+	image_t *image;
+	qhandle_t h;
+	float max;
+	float dpi = 72;
+	float glyphScale;
+	int pointSize = 24;
+#endif
+	void *faceData;
+	int i, len;
+	char name[1024];
+
+	if ( !fontName || !fontName[0] ) {
+		ri.Printf(PRINT_ALL, "RE_RegisterUtf8Font: called with empty name\n");
+		return;
+	}
+
+	R_IssuePendingRenderCommands();
+
+	if ( utf8RegisteredFontCount >= MAX_UTF8_FONTS ) {
+		ri.Printf( PRINT_WARNING, "RE_RegisterUtf8Font: Too many utf8 fonts registered already.\n" );
+		return;
+	}
+
+	// Com_sprintf( name, sizeof( name ), "fonts/fontImage_%i.dat",pointSize );
+	Com_sprintf( name, sizeof( name ), "fonts/%s.dat", fontName );
+	for ( i = 0; i < utf8RegisteredFontCount; i++ ) {
+		if ( Q_stricmp( name, utf8RegisteredFont[i].name ) == 0 ) {
+			Com_Memcpy( font, &utf8RegisteredFont[i], sizeof( utf8FontInfo_t ) );
+			return;
+		}
+	}
+
+	len = ri.FS_ReadFile( name, NULL );
+	if ( len == 0 ) {
+		if ( utf8RegisteredFontCount == 0 ) {
+			Com_Printf(S_COLOR_YELLOW "RE_RegisterUtf8Font: Coulnd not found or empty file \"%s\"\n", name);
+		}
+		return;
+	}
+
+	if ( len <= sizeof( utf8FontInfo_t ) + UTF8_GLYPHS_PER_FONT * sizeof(int) ) {
+		ri.FS_ReadFile( name, &faceData );
+		fdOffset = 0;
+		fdFile = faceData;
+
+		qboolean isNewFormat = qfalse;	// sparse data storage
+		char header[strlen(UNICODE_DAT_HEADER) + 1];
+		Q_strncpyz( header, (const char *)&fdFile[fdOffset], strlen(UNICODE_DAT_HEADER) + 1 );
+		if ( !Q_stricmpn( header, UNICODE_DAT_HEADER, strlen(UNICODE_DAT_HEADER) ) ) {
+			isNewFormat = qtrue;
+			fdOffset += strlen(UNICODE_DAT_HEADER);
+		}
+
+		if ( isNewFormat ) {
+			int unicode;
+			ri.Printf(PRINT_DEVELOPER, "reading unicode glyphs info from sparse data storage format DAT...\n");
+			while ( fdOffset < len - 1 - sizeof(font->glyphScale) - sizeof(font->name) ) {
+				unicode                           = readInt();
+				font->glyphs[unicode].height      = readInt();
+				font->glyphs[unicode].top         = readInt();
+				font->glyphs[unicode].bottom      = readInt();
+				font->glyphs[unicode].pitch       = readInt();
+				font->glyphs[unicode].xSkip       = readInt();
+				font->glyphs[unicode].imageWidth  = readInt();
+				font->glyphs[unicode].imageHeight = readInt();
+				font->glyphs[unicode].s           = readFloat();
+				font->glyphs[unicode].t           = readFloat();
+				font->glyphs[unicode].s2          = readFloat();
+				font->glyphs[unicode].t2          = readFloat();
+				font->glyphs[unicode].glyph       = readInt();
+				Q_strncpyz(font->glyphs[unicode].shaderName, (const char *)&fdFile[fdOffset], sizeof(font->glyphs[unicode].shaderName));
+				fdOffset += sizeof(font->glyphs[unicode].shaderName);
+			}
+		} else {
+			ri.Printf(PRINT_DEVELOPER, "loading unicode glyphs info from DAT...\n");
+			for ( i = 0; i < UTF8_GLYPHS_PER_FONT; i++ ) {
+				font->glyphs[i].height      = readInt();
+				font->glyphs[i].top         = readInt();
+				font->glyphs[i].bottom      = readInt();
+				font->glyphs[i].pitch       = readInt();
+				font->glyphs[i].xSkip       = readInt();
+				font->glyphs[i].imageWidth  = readInt();
+				font->glyphs[i].imageHeight = readInt();
+				font->glyphs[i].s           = readFloat();
+				font->glyphs[i].t           = readFloat();
+				font->glyphs[i].s2          = readFloat();
+				font->glyphs[i].t2          = readFloat();
+				font->glyphs[i].glyph       = readInt();
+				Q_strncpyz(font->glyphs[i].shaderName, (const char *)&fdFile[fdOffset], sizeof(font->glyphs[i].shaderName));
+				fdOffset += sizeof(font->glyphs[i].shaderName);
+			}
+		}
+
+		font->glyphScale = readFloat();
+		Com_Memcpy( font->name, &fdFile[fdOffset], MAX_QPATH );
+
+//		Com_Memcpy(font, faceData, sizeof(fontInfo_t));
+		Q_strncpyz( font->name, name, sizeof( font->name ) );
+		int validNum = 0;
+		for ( i = GLYPH_START; i <= UTF8_GLYPHS_PER_FONT - 1; i++ ) {
+			font->glyphs[i].glyph = RE_RegisterShaderNoMip( font->glyphs[i].shaderName );
+			
+			if ( font->glyphs[i].glyph ) {
+				validNum += 1;
+				// Com_Printf("utf8 character %d, shader id: %d\n", i, font->glyphs[i].glyph);
+			}
+		}
+		Com_Printf("\"%s\" loaded, total %d valid glyphs\n", font->name, validNum);
+		
+		// utf8RegisteredFont[utf8RegisteredFontCount].loaded = qtrue;
+		font->loaded = qtrue;
+		Com_Memcpy( &utf8RegisteredFont[utf8RegisteredFontCount++], font, sizeof( utf8FontInfo_t ) );
+		ri.FS_FreeFile(faceData);
+		return;
+	}
+
+#ifndef BUILD_FREETYPE
+	ri.Printf( PRINT_WARNING, "RE_RegisterUtf8Font: FreeType code not available\n" ); // JPW NERVE was PRINT_ALL
+#else
+	// these below won't work for utf8 fonts, so we need to use external tools:
+	// https://github.com/C-ColinTH/RTCW-font
+	return;
+
+	if ( ftLibrary == NULL ) {
+		ri.Printf( PRINT_WARNING, "RE_RegisterUtf8Font: FreeType not initialized.\n" ); // JPW NERVE was PRINT_ALL
+		return;
+	}
+
+	len = ri.FS_ReadFile( fontName, &faceData );
+	if ( len <= 0 ) {
+		ri.Printf(PRINT_WARNING, "RE_RegisterUtf8Font: Unable to read font file '%s'\n", fontName);
+		return;
+	}
+
+	// allocate on the stack first in case we fail
+	if ( FT_New_Memory_Face( ftLibrary, faceData, len, 0, &face ) ) {
+		ri.Printf(PRINT_WARNING, "RE_RegisterUtf8Font: FreeType, unable to allocate new face.\n");
+		return;
+	}
+
+
+	if ( FT_Set_Char_Size( face, pointSize << 6, pointSize << 6, dpi, dpi ) ) {
+		ri.Printf(PRINT_WARNING, "RE_RegisterUtf8Font: FreeType, unable to set face char size.\n");
+		return;
+	}
+
+	//*font = &registeredFonts[utf8RegisteredFontCount++];
+
+	// make a 256x256 image buffer, once it is full, register it, clean it and keep going
+	// until all glyphs are rendered
+
+	out = ri.Z_Malloc( 256 * 256 );
+	if ( out == NULL ) {
+		ri.Printf(PRINT_WARNING, "RE_RegisterUtf8Font: ri.Z_Malloc failure during output image creation.\n");
+		return;
+	}
+	Com_Memset( out, 0, 256 * 256 );
+
+	maxHeight = 0;
+
+	for ( i = GLYPH_START; i <= GLYPH_END; i++ ) {
+		RE_ConstructGlyphInfo( out, &xOut, &yOut, &maxHeight, face, (unsigned char)i, qtrue );
+	}
+
+	xOut = 0;
+	yOut = 0;
+	i = GLYPH_START;
+	lastStart = i;
+	imageNumber = 0;
+
+	while ( i <= UTF8_GLYPHS_PER_FONT ) {
+
+		if ( i == UTF8_GLYPHS_PER_FONT ) {
+			// upload/save current image buffer
+			xOut = yOut = -1;
+		} else {
+			glyph = RE_ConstructGlyphInfo(out, &xOut, &yOut, &maxHeight, face, (unsigned char)i, qfalse);
+		}
+
+		if ( xOut == -1 || yOut == -1 ) {
+			// ran out of room
+			// we need to create an image from the bitmap, set all the handles in the glyphs to this point
+			//
+
+			scaledSize = 256 * 256;
+			newSize = scaledSize * 4;
+			imageBuff = ri.Z_Malloc( newSize );
+			left = 0;
+			max = 0;
+			for ( k = 0; k < ( scaledSize ) ; k++ ) {
+				if ( max < out[k] ) {
+					max = out[k];
+				}
+			}
+
+			if ( max > 0 ) {
+				max = 255 / max;
+			}
+
+			for ( k = 0; k < ( scaledSize ) ; k++ ) {
+				imageBuff[left++] = 255;
+				imageBuff[left++] = 255;
+				imageBuff[left++] = 255;
+
+				imageBuff[left++] = ( (float)out[k] * max );
+			}
+
+			Com_sprintf( name, sizeof( name ), "fonts/utf8fontImage_%i.tga", imageNumber++ );
+			if ( r_saveFontData->integer ) {
+				WriteTGA( name, imageBuff, 256, 256 );
+			}
+
+			// Com_sprintf (name, sizeof(name), "fonts/fontImage_%i_%i", imageNumber++, pointSize);
+			image = R_CreateImage( name, imageBuff, 256, 256, IMGTYPE_COLORALPHA, IMGFLAG_CLAMPTOEDGE, 0 );
+			h = RE_RegisterShaderFromImage( name, LIGHTMAP_2D, image, qfalse );
+			for ( j = lastStart; j < i; j++ ) {
+				font->glyphs[j].glyph = h;
+				Q_strncpyz( font->glyphs[j].shaderName, name, sizeof( font->glyphs[j].shaderName ) );
+			}
+			lastStart = i;
+			Com_Memset( out, 0, 256 * 256 );
+			xOut = 0;
+			yOut = 0;
+			ri.Free( imageBuff );
+			if ( i == UTF8_GLYPHS_PER_FONT )
+				i++;
+		} else {
+			Com_Memcpy( &font->glyphs[i], glyph, sizeof( glyphInfo_t ) );
+			i++;
+		}
+	}
+
+	// change the scale to be relative to 1 based on 72 dpi ( so dpi of 144 means a scale of .5 )
+	glyphScale = 72.0f / dpi;
+
+	// we also need to adjust the scale based on point size relative to 48 points as the ui scaling is based on a 48 point font
+	glyphScale *= 48.0f / pointSize;
+
+	utf8RegisteredFont[utf8RegisteredFontCount].glyphScale = glyphScale;
+	font->glyphScale = glyphScale;
+	Com_Memcpy( &utf8RegisteredFont[utf8RegisteredFontCount++], font, sizeof( fontInfo_t ) );
+
+	if ( r_saveFontData->integer ) {
+		ri.FS_WriteFile( "fonts/utf8fontImage_%d.dat", font, sizeof( fontInfo_t ) );
+	}
+
+	ri.Free( out );
+
+	ri.FS_FreeFile( faceData );
+#endif
+}
+
 
 
 void R_InitFreeType( void ) {
@@ -557,6 +820,7 @@ void R_InitFreeType( void ) {
 	}
 #endif
 	registeredFontCount = 0;
+	utf8RegisteredFontCount = 0;
 }
 
 
@@ -568,5 +832,6 @@ void R_DoneFreeType( void ) {
 	}
 #endif
 	registeredFontCount = 0;
+	utf8RegisteredFontCount = 0;
 }
 

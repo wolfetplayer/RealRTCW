@@ -170,6 +170,7 @@ qboolean AICast_ScriptAction_Defend( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_DefendStop( cast_state_t *cs, char *params ) ;
 
 qboolean AICast_ScriptAction_ApplyLoadout( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_PrintSubtitle( cast_state_t *cs, char *params );
 
 
 // Achievement condition functions
@@ -467,6 +468,7 @@ cast_script_stack_action_t scriptActions[] =
 		{"defend_stop", AICast_ScriptAction_DefendStop, NULL},
 
 		{"applyloadout", AICast_ScriptAction_ApplyLoadout, NULL},
+		{"printsubtitle", AICast_ScriptAction_PrintSubtitle, NULL},
 		// Achievements (core game)
 		{"achievement_map_w3d", AICast_ScriptAction_AchievementGeneric, &ACH_W3D_1},
 		{"achievement_map_w3dsec", AICast_ScriptAction_AchievementGeneric, &ACH_W3D_2},

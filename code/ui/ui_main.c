@@ -40,6 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "ui_local.h"
 #include "../steam/steam.h"
+#include "ui_armory.h"
 
 uiInfo_t uiInfo;
 
@@ -1354,6 +1355,13 @@ static void UI_DrawHandicap( rectDef_t *rect, int font, float scale, vec4_t colo
 	i = 20 - h / 5;
 
 	Text_Paint( rect->x, rect->y, font, scale, color, handicapValues[i], 0, 0, textStyle );
+}
+
+static void UI_DrawArmoryPoints( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	char text[32];
+
+	Com_sprintf( text, sizeof( text ), "%d / %d", UI_Armory_PointsTotal() - UI_Armory_PointsUsed(), UI_Armory_PointsTotal() );
+	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
 }
 
 //----(SA)	added
@@ -2818,6 +2826,9 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 	switch ( ownerDraw ) {
 	case UI_HANDICAP:
 		UI_DrawHandicap( &rect, font, scale, color, textStyle );
+		break;
+	case UI_ARMORY_POINTS:
+		UI_DrawArmoryPoints( &rect, font, scale, color, textStyle );
 		break;
 	case UI_EFFECTS:
 		UI_DrawEffects( &rect, scale, color );
@@ -4871,6 +4882,21 @@ static void UI_RunMenuScript( char **args ) {
 			UI_LoadArenasIntoMapList();
 			UI_MapCountByGameType( qfalse );
 			Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, "campaign_menu" );
+		} else if ( Q_stricmp( name, "loadArmoryRoster" ) == 0 ) {
+			UI_Armory_LoadRosterForCurrentMap();
+		} else if ( Q_stricmp( name, "armoryConfirm" ) == 0 ) {
+			char cmd[1024];
+			UI_Armory_BuildConfirmCommand( cmd, sizeof( cmd ) );
+			trap_Cmd_ExecuteText( EXEC_APPEND, cmd );
+			trap_Key_SetCatcher( trap_Key_GetCatcher() & ~KEYCATCH_UI );
+			trap_Key_ClearStates();
+			trap_Cvar_Set( "cl_paused", "0" );
+			Menus_CloseAll();
+		} else if ( Q_stricmp( name, "armoryCancel" ) == 0 ) {
+			trap_Key_SetCatcher( trap_Key_GetCatcher() & ~KEYCATCH_UI );
+			trap_Key_ClearStates();
+			trap_Cvar_Set( "cl_paused", "0" );
+			Menus_CloseAll();
 		} else if ( Q_stricmp( name, "StartCampaign" ) == 0 ) {
 			trap_Cvar_Set( "cg_thirdPerson", "0" );
 			trap_Cvar_Set( "cg_cameraOrbit", "0" );
@@ -6129,6 +6155,13 @@ static int UI_FeederCount( float feederID ) {
 		return uiInfo.spawnCount;
 	}
 	// -NERVE - SMF
+	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
+		return UI_Armory_WeaponCount();
+	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
+		return UI_Armory_EquipCount();
+	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
+		return UI_Armory_BuildCount();
+	}
 	return 0;
 }
 
@@ -6379,6 +6412,25 @@ static const char *UI_FeederItemText( float feederID, int index, int column, qha
 			return uiInfo.demoList[index];
 		}
 	}
+	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
+		if ( column == 0 ) {
+			*handle = UI_Armory_WeaponIcon( index );
+			return "";
+		}
+		return UI_Armory_WeaponName( index );
+	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
+		if ( column == 0 ) {
+			*handle = UI_Armory_EquipIcon( index );
+			return "";
+		}
+		return UI_Armory_EquipName( index );
+	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
+		if ( column == 0 ) {
+			*handle = UI_Armory_BuildIcon( index );
+			return "";
+		}
+		return UI_Armory_BuildName( index );
+	}
 	// NERVE - SMF
 	else if ( feederID == FEEDER_PICKSPAWN ) {
 		return uiInfo.spawnPoints[index];
@@ -6526,6 +6578,13 @@ static void UI_FeederSelection( float feederID, int index ) {
 		trap_Cmd_ExecuteText( EXEC_NOW, va( "setspawnpt %i\n", index ) );
 	}
 	// -NERVE - SMF
+	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
+		UI_Armory_ToggleWeapon( index );
+	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
+		UI_Armory_ToggleEquip( index );
+	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
+		UI_Armory_RemoveBuildIndex( index );
+	}
 }
 
 // TTimo: unused
@@ -7466,6 +7525,13 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			trap_Key_SetCatcher( KEYCATCH_UI );
 			Menus_CloseAll();
 			Menus_ActivateByName( "notebook" );
+			return;
+
+		case UIMENU_LOADOUT:
+			trap_Cvar_Set( "cl_paused", "1" );
+			trap_Key_SetCatcher( KEYCATCH_UI );
+			Menus_CloseAll();
+			Menus_ActivateByName( "armory_loadout" );
 			return;
 
 		case UIMENU_BOOK1:

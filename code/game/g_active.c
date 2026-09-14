@@ -589,10 +589,10 @@ if ((g_regen.integer == 1 || g_regen.integer == 2 || g_gametype.integer == GT_SU
 			// resilience PRO: slight armor regen tied to healthRegenStartTime gate
 			if ( g_gametype.integer == GT_SURVIVAL ) {
 				if ( !ent->aiCharacter && client->ps.perks[PERK_RESILIENCE] >= 2 ) {
-					if ( client->ps.stats[STAT_ARMOR] < 100 ) {
+					if ( client->ps.stats[STAT_ARMOR] < G_GetArmorCap( client ) ) {
 						client->ps.stats[STAT_ARMOR] += 2;
-						if ( client->ps.stats[STAT_ARMOR] > 100 ) {
-							client->ps.stats[STAT_ARMOR] = 100;
+						if ( client->ps.stats[STAT_ARMOR] > G_GetArmorCap( client ) ) {
+							client->ps.stats[STAT_ARMOR] = G_GetArmorCap( client );
 						}
 					}
 				}
@@ -603,7 +603,7 @@ if ((g_regen.integer == 1 || g_regen.integer == 2 || g_gametype.integer == GT_SU
 		// count down armor when over max
 		if (g_gametype.integer != GT_SURVIVAL)
 		{
-			if (client->ps.stats[STAT_ARMOR] > 100)
+			if (client->ps.stats[STAT_ARMOR] > G_GetArmorCap( client ))
 			{
 				client->ps.stats[STAT_ARMOR]--;
 			}

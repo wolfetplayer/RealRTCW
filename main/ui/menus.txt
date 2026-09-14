@@ -29,5 +29,7 @@
 
 	loadMenu { "ui/briefing.menu" }		//----(SA)	added
 
+	loadMenu { "ui/armory_loadout.menu" }	// Hub armory loadout builder
+
 
 }

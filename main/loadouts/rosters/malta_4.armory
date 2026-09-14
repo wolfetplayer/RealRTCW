@@ -1,0 +1,16 @@
+// Weapon roster for this armory - weapon_knife is a baseline grant, not listed here (see g_armory.c)
+
+weapon weapon_sten
+weapon weapon_thompson
+weapon weapon_fg42
+weapon weapon_snooperrifle
+weapon weapon_venom
+weapon weapon_tesla
+weapon weapon_m97
+weapon weapon_bar
+
+#if g_dlc1 == 1
+weapon weapon_auto5
+weapon weapon_m1941
+weapon weapon_m1941scope
+#endif

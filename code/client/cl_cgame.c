@@ -881,6 +881,8 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_BOOK4 );
 			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "pregame" ) )    { //----(SA) added
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_PREGAME );
+			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "armory_loadout" ) ) {
+				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_LOADOUT );
 			} else {
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_CLIPBOARD );
 			}

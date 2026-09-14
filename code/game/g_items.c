@@ -1437,12 +1437,20 @@ int Pickup_Health( gentity_t *ent, gentity_t *other ) {
 
 //======================================================================
 
+// Armor cap: 100 normally, 200 while the Heavy Armor armory perk is active.
+int G_GetArmorCap( gclient_t *client ) {
+	if ( client && client->ps.perks[PERK_HEAVYARMOR] ) {
+		return 200;
+	}
+	return 100;
+}
+
 int Pickup_Armor( gentity_t *ent, gentity_t *other ) {
 	other->client->ps.stats[STAT_ARMOR] += ent->item->quantity;
 //	if ( other->client->ps.stats[STAT_ARMOR] > other->client->ps.stats[STAT_MAX_HEALTH] * 2 ) {
 //		other->client->ps.stats[STAT_ARMOR] = other->client->ps.stats[STAT_MAX_HEALTH] * 2;
-	if ( other->client->ps.stats[STAT_ARMOR] > 100 ) {
-		other->client->ps.stats[STAT_ARMOR] = 100;
+	if ( other->client->ps.stats[STAT_ARMOR] > G_GetArmorCap( other->client ) ) {
+		other->client->ps.stats[STAT_ARMOR] = G_GetArmorCap( other->client );
 	}
 
 	// single player has no respawns	(SA)

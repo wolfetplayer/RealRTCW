@@ -101,6 +101,9 @@ If you have questions concerning this license or the applicable additional terms
 #define FEEDER_CINEMATICS           0x0f    // cinematics
 #define FEEDER_SAVEGAMES            0x10    // savegames
 #define FEEDER_PICKSPAWN            0x11    // NERVE - SMF - wolf mp pick spawn point
+#define FEEDER_ARMORY_WEAPONS       0x12    // hub armory: weapon roster
+#define FEEDER_ARMORY_EQUIP         0x13    // hub armory: equipment
+#define FEEDER_ARMORY_BUILD         0x14    // hub armory: current build
 
 // display flags
 #define CG_SHOW_BLUE_TEAM_HAS_REDFLAG       0x00000001
@@ -333,6 +336,8 @@ If you have questions concerning this license or the applicable additional terms
 #define UI_CREATEMAPPREVIEW         264
 #define UI_CREATEMAPPREVIEW_SMALL1  265
 #define UI_CREATEMAPPREVIEW_SMALL2  266
+
+#define UI_ARMORY_POINTS            267    // hub armory: "points remaining / total" readout
 
 
 #define VOICECHAT_GETFLAG           "getflag"                // command someone to get the flag

@@ -189,54 +189,7 @@ player
 	{
 		trigger waters greetings
 		trigger player lock_waters
-	}
-	
-	trigger select_loadout_1
-	{
-	    accum 3 set 1
-		objectivemet 2
-		trigger waters goodtogo
-	}
-	
-	trigger select_loadout_2
-	{
-	    accum 3 set 2
-		objectivemet 2
-		trigger waters goodtogo
-	}
-	
-	trigger give_loadout_1
-	{
-	     accum 3 abort_if_not_equal 1
-
-		#if g_fullarsenal == 0
-        applyloadout norway_vanilla_1
-		#endif
-
-		#if g_fullarsenal == 1
-        applyloadout norway_realrtcw_1
-		#endif
-		
-		#if g_fullarsenal == 2
-        applyloadout norway_vanilla_shotgun_1
-		#endif
-	}
-	
-	trigger give_loadout_2
-	{
-	     accum 3 abort_if_not_equal 2
-		 
-		#if g_fullarsenal == 0
-        applyloadout norway_vanilla_2
-		#endif
-
-		#if g_fullarsenal == 1
-        applyloadout norway_realrtcw_2
-		#endif
-		
-		#if g_fullarsenal == 2
-        applyloadout norway_vanilla_shotgun_2
-		#endif
+		openloadoutmenu
 	}
 	
 	trigger secret1
@@ -251,8 +204,6 @@ player
 	
 	trigger endmap
 	{
-		trigger player give_loadout_1
-		trigger player give_loadout_2
 		globalaccum 0 set 1
 		changelevel norway persistent
 	}

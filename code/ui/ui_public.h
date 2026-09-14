@@ -183,7 +183,8 @@ typedef enum {
 	UIMENU_WM_PICKPLAYER,   // NERVE - SMF - for multiplayer only
 	UIMENU_WM_QUICKMESSAGE, // NERVE - SMF
 	UIMENU_WM_LIMBO,        // NERVE - SMF
-	UIMENU_BRIEFING         //----(SA)	added
+	UIMENU_BRIEFING,        //----(SA)	added
+	UIMENU_LOADOUT          // Hub armory point-budget loadout builder
 } uiMenuCommand_t;
 
 #define SORT_HOST           0

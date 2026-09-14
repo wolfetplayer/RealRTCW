@@ -1056,6 +1056,12 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	// Hub armory: open the loadout builder (a same-scene pause-overlay, unlike rockandroll above)
+	if ( !strcmp( cmd, "armory_loadout" ) ) {
+		trap_UI_Popup( "armory_loadout" );
+		return;
+	}
+
 
 
 	// ensure a file gets into a build (mainly for scripted music calls)

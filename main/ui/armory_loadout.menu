@@ -1,0 +1,229 @@
+#include "ui/menudef.h"
+{
+
+menuDef {
+	name "armory_loadout"
+	visible 0
+	fullscreen 0
+	rect 0 0 640 480
+	focusColor 1 .75 0 1
+	style 1
+	border 1
+
+	onOpen { uiScript loadArmoryRoster }
+	onESC { uiScript armoryCancel }
+
+	itemDef {
+		name background
+		rect 20 20 600 440
+		style WINDOW_STYLE_FILLED
+		backcolor 0 0 0 .6
+		border 1
+		bordercolor .5 .5 .5 .6
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name title
+		text "Choose Your Loadout"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .3
+		rect 20 32 600 20
+		textalign ITEM_ALIGN_CENTER
+		textalignx 300
+		textaligny 14
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name pointsLabel
+		text "Points remaining:"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .22
+		rect 230 56 110 16
+		textaligny 12
+		forecolor .85 .85 .85 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name pointsValue
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_ARMORY_POINTS
+		textfont UI_FONT_BIG
+		textscale .22
+		rect 340 56 60 16
+		textaligny 12
+		forecolor 1 .85 .3 1
+		visible 1
+		decoration
+	}
+
+	//////////////// weapons (left) ////////////////
+
+	itemDef {
+		name weaponsLabel
+		text "Weapons"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .24
+		rect 40 82 170 16
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name weaponList
+		rect 40 102 170 300
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		elementwidth 170
+		elementheight 20
+		textscale .19
+		columns 2  2 20 0  26 140 22
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_ARMORY_WEAPONS
+		textalign ITEM_ALIGN_LEFT
+		textaligny 14
+		forecolor .9 .9 .9 1
+		backcolor .12 .12 .12 .45
+		outlinecolor .5 .5 .5 .3
+		visible 1
+	}
+
+	//////////////// current build (middle) ////////////////
+
+	itemDef {
+		name buildLabel
+		text "Your Loadout"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .24
+		rect 235 82 170 16
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name buildList
+		rect 235 102 170 300
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		elementwidth 170
+		elementheight 20
+		textscale .19
+		columns 2  2 20 0  26 140 22
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_ARMORY_BUILD
+		textalign ITEM_ALIGN_LEFT
+		textaligny 14
+		forecolor 1 .9 .6 1
+		backcolor .12 .12 .12 .45
+		outlinecolor .5 .5 .5 .3
+		visible 1
+	}
+
+	//////////////// equipment (right) ////////////////
+
+	itemDef {
+		name equipLabel
+		text "Equipment"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .24
+		rect 430 82 170 16
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name equipList
+		rect 430 102 170 300
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		elementwidth 170
+		elementheight 20
+		textscale .19
+		columns 2  2 20 0  26 140 22
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_ARMORY_EQUIP
+		textalign ITEM_ALIGN_LEFT
+		textaligny 14
+		forecolor .9 .9 .9 1
+		backcolor .12 .12 .12 .45
+		outlinecolor .5 .5 .5 .3
+		visible 1
+	}
+
+	//////////////// buttons ////////////////
+
+	itemDef {
+		name confirmButton
+		text "Confirm Loadout"
+		type ITEM_TYPE_BUTTON
+		rect 235 420 170 20
+		textscale .25
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		backcolor 0 .3 0 .35
+		textaligny 13
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 85
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor confirmButton backcolor 0 .5 0 .45 }
+		mouseExit { setitemcolor confirmButton backcolor 0 .3 0 .35 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryConfirm }
+		visible 1
+	}
+
+	itemDef {
+		name cancelButton
+		text "Cancel"
+		type ITEM_TYPE_BUTTON
+		rect 40 420 170 20
+		textscale .25
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		backcolor .3 0 0 .35
+		textaligny 13
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 85
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor cancelButton backcolor .5 0 0 .45 }
+		mouseExit { setitemcolor cancelButton backcolor .3 0 0 .35 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryCancel }
+		visible 1
+	}
+
+	itemDef {
+		name hint
+		text "Click a weapon or equipment item to add it to your loadout. Click an item in the middle list to remove it."
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .16
+		rect 40 450 520 14
+		textalign ITEM_ALIGN_CENTER
+		textalignx 260
+		forecolor .7 .7 .7 1
+		visible 1
+		decoration
+	}
+}
+}

@@ -529,6 +529,11 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 		scale *= pm->ps->runSpeedScale;
 	}
 
+	// Lightweight Gear: +15% move speed
+	if ( pm->ps->perks[PERK_LIGHTWEIGHT] ) {
+		scale *= 1.15f;
+	}
+
 	if ( pm->ps->pm_type == PM_NOCLIP ) {
 		scale *= 3;
 	}
@@ -1109,9 +1114,9 @@ static void PM_WalkMove( void ) {
 				pm->ps->jumpTime = pm->cmd.serverTime;
 
 #ifdef GAMEDLL
-				if (pm->ps->perks[PERK_RUNNER])
+				if (pm->ps->perks[PERK_RUNNER] || pm->ps->perks[PERK_LIGHTWEIGHT])
 				{
-					stamtake = 0; // No stamina take if the player has the PERK_RUNNER perk
+					stamtake = 0; // No stamina take if the player has the PERK_RUNNER or PERK_LIGHTWEIGHT perk
 				}
 				else if (g_realism.value)
 				{
@@ -1123,9 +1128,9 @@ static void PM_WalkMove( void ) {
 				}
 #endif
 #ifdef CGAMEDLL
-				if (pm->ps->perks[PERK_RUNNER])
+				if (pm->ps->perks[PERK_RUNNER] || pm->ps->perks[PERK_LIGHTWEIGHT])
 				{
-					stamtake = 0; // No stamina take if the player has the PERK_RUNNER perk
+					stamtake = 0; // No stamina take if the player has the PERK_RUNNER or PERK_LIGHTWEIGHT perk
 				}
 				else if (cg_realism.value)
 				{
@@ -2271,8 +2276,8 @@ static void PM_BeginWeaponReload( int weapon ) {
 		break;
 	}
 
-	// If PERK_WEAPONHANDLING perk is active, reduce reloadTime by half
-	if (pm->ps->perks[PERK_WEAPONHANDLING])
+	// If PERK_WEAPONHANDLING or PERK_TACTICALGLOVES is active, reduce reloadTime by half
+	if (pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES])
 	{
 		reloadTime *= 0.5;
 		reloadTimeFull *= 0.5;
@@ -2282,7 +2287,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	{
 		if (pm->ps->ammoclip[BG_FindClipForWeapon(weapon)] == 0)
 		{
-			PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
+			PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]) ? WEAP_RELOAD2_FAST : WEAP_RELOAD2);
 			if (pm->ps->weaponstate == WEAPON_READY)
 			{
 				pm->ps->weaponTime += reloadTimeFull;
@@ -2295,7 +2300,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 		}
 		else
 		{
-			PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
+			PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
 			if (pm->ps->weaponstate == WEAPON_READY)
 			{
 				pm->ps->weaponTime += reloadTime;
@@ -2309,7 +2314,7 @@ static void PM_BeginWeaponReload( int weapon ) {
 	}
 	else
 	{
-		PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
+		PM_ContinueWeaponAnim((pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]) ? WEAP_RELOAD1_FAST : WEAP_RELOAD1);
 		if (pm->ps->weaponstate == WEAPON_READY)
 		{
 			pm->ps->weaponTime += reloadTime;
@@ -2637,7 +2642,7 @@ static void PM_ReloadClip(int weapon) {
 		if (weapon == WP_M97 || weapon == WP_AUTO5) {
 			ammomove = 1;
 
-			if (pm->ps->perks[PERK_WEAPONHANDLING]) {
+			if (pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]) {
 				ammomove++;
 			}
 
@@ -4673,8 +4678,8 @@ void PM_Sprint( void ) {
     int staminaRecharge = 500;
 
 
-    // Check if the player has PERK_RUNNER
-    if (pm->ps->perks[PERK_RUNNER] > 0) {
+    // Check if the player has PERK_RUNNER or PERK_LIGHTWEIGHT
+    if (pm->ps->perks[PERK_RUNNER] > 0 || pm->ps->perks[PERK_LIGHTWEIGHT] > 0) {
         // Remove stamina drain
         staminaDrain = 0;
     }
@@ -5102,7 +5107,7 @@ PM_BeginM97Reload
 */
 void PM_BeginM97Reload(void) {
 	int anim;
-	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING]);
+	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]);
 
 	// Choose which first person animation to play
 	if (pm->ps->ammoclip[BG_FindClipForWeapon(WP_M97)] == 0) {
@@ -5128,7 +5133,7 @@ void PM_BeginM97Reload(void) {
 
 // Jaymod
 void PM_M97Reload() {
-	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING]);
+	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]);
 
 	// Transition from shell + pump
 	if (pm->ps->holdable[HI_M97] == M97_RELOADING_BEGIN_PUMP) {
@@ -5208,7 +5213,7 @@ PM_BeginAuto5Reload
 */
 void PM_BeginAuto5Reload(void) {
 	int anim;
-	qboolean fastReload = (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING]);
+	qboolean fastReload = (pm->ps->powerups[PW_HASTE_SURV] || pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]);
 
 	// Choose which first person animation to play
 	if (pm->ps->ammoclip[BG_FindClipForWeapon(WP_AUTO5)] == 0) {
@@ -5233,7 +5238,7 @@ void PM_BeginAuto5Reload(void) {
 }
 
 void PM_Auto5Reload(void) {
-	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING]);
+	qboolean fastReload = (pm->ps->perks[PERK_WEAPONHANDLING] || pm->ps->perks[PERK_TACTICALGLOVES]);
 
 	// Transition from shell + pump
 	if (pm->ps->holdable[HI_AUTO5] == AUTO5_RELOADING_BEGIN_PUMP) {

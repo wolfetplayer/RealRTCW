@@ -7312,6 +7312,84 @@ weapon_magicammo (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 		{0,0,0,0,0,0}
 	},
 
+/*QUAKED perk_heavyarmor(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Armory equipment: raises the armor cap to 200 for the current chapter
+*/
+	{
+		"perk_heavyarmor",
+		"sound/pickup/holdable/get_bandages.wav",
+		{
+		"models/powerups/holdable/bandages.md3",
+		0,
+		0
+		},
+
+		"icons/perk_heavyarmor",
+		"Heavy Armor",
+		1,
+		IT_PERK,
+		WP_NONE,
+		PERK_HEAVYARMOR,
+		0,
+		0,
+		0,
+		"",
+		"",
+		{0,0,0,0,0,0}
+	},
+
+/*QUAKED perk_lightweight(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Armory equipment: infinite stamina and increased move speed for the current chapter
+*/
+	{
+		"perk_lightweight",
+		"sound/pickup/holdable/get_bandages.wav",
+		{
+		"models/powerups/holdable/bandages.md3",
+		0,
+		0
+		},
+
+		"icons/perk_lightweight",
+		"Lightweight Gear",
+		1,
+		IT_PERK,
+		WP_NONE,
+		PERK_LIGHTWEIGHT,
+		0,
+		0,
+		0,
+		"",
+		"",
+		{0,0,0,0,0,0}
+	},
+
+/*QUAKED perk_tacticalgloves(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Armory equipment: faster weapon reload for the current chapter
+*/
+	{
+		"perk_tacticalgloves",
+		"sound/pickup/holdable/get_bandages.wav",
+		{
+		"models/powerups/holdable/bandages.md3",
+		0,
+		0
+		},
+
+		"icons/perk_tacticalgloves",
+		"Tactical Gloves",
+		1,
+		IT_PERK,
+		WP_NONE,
+		PERK_TACTICALGLOVES,
+		0,
+		0,
+		0,
+		"",
+		"",
+		{0,0,0,0,0,0}
+	},
+
 	// end of list marker
 	{NULL}
 };

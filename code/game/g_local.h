@@ -844,6 +844,8 @@ void G_SpawnItem( gentity_t *ent, gitem_t *item );
 void FinishSpawningItem( gentity_t *ent );
 void Think_Weapon( gentity_t *ent );
 int ArmorIndex( gentity_t *ent );
+int G_GetArmorCap( gclient_t *client );
+void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipArg );
 void Fill_Clip( playerState_t *ps, int weapon );
 void    Add_Ammo( gentity_t *ent, int weapon, int count, qboolean fillClip );
 void Touch_Item( gentity_t *ent, gentity_t *other, trace_t *trace );
@@ -1187,6 +1189,13 @@ extern vmCvar_t g_survivalBosses;
 
 extern vmCvar_t g_weaponWheelDilation;
 extern vmCvar_t g_weaponWheelDilationRamp;
+
+extern vmCvar_t g_loadoutPoints;
+extern vmCvar_t g_loadoutWeaponCost;
+extern vmCvar_t g_loadoutCostFullAmmoBag;
+extern vmCvar_t g_loadoutCostHeavyArmor;
+extern vmCvar_t g_loadoutCostLightweightGear;
+extern vmCvar_t g_loadoutCostTacticalGloves;
 
 extern vmCvar_t g_playerSurvivalClass;
 

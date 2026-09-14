@@ -199,6 +199,13 @@ vmCvar_t g_mapname;
 vmCvar_t g_weaponWheelDilation;
 vmCvar_t g_weaponWheelDilationRamp;
 
+vmCvar_t g_loadoutPoints;
+vmCvar_t g_loadoutWeaponCost;
+vmCvar_t g_loadoutCostFullAmmoBag;
+vmCvar_t g_loadoutCostHeavyArmor;
+vmCvar_t g_loadoutCostLightweightGear;
+vmCvar_t g_loadoutCostTacticalGloves;
+
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
 	{&g_cheats, "sv_cheats", "", 0, qfalse},
@@ -232,6 +239,14 @@ cvarTable_t gameCvarTable[] = {
 	{&g_midgame, "g_midgame", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_vanilla_guns, "g_vanilla_guns", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 	{&g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
+
+	// Armory loadout builder (hub maps) - points budget and per-item costs, easy to retune
+	{&g_loadoutPoints, "g_loadoutPoints", "10", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutWeaponCost, "g_loadoutWeaponCost", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutCostFullAmmoBag, "g_loadoutCostFullAmmoBag", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutCostHeavyArmor, "g_loadoutCostHeavyArmor", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutCostLightweightGear, "g_loadoutCostLightweightGear", "3", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutCostTacticalGloves, "g_loadoutCostTacticalGloves", "2", CVAR_ARCHIVE, 0, qfalse},
 	{&g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

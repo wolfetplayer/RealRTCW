@@ -2703,11 +2703,13 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/ai_team.o \
   $(B)/$(BASEGAME)/game/bg_animation.o \
   $(B)/$(BASEGAME)/game/bg_misc.o \
+  $(B)/$(BASEGAME)/game/bg_armory.o \
   $(B)/$(BASEGAME)/game/bg_pmove.o \
   $(B)/$(BASEGAME)/game/bg_slidemove.o \
   $(B)/$(BASEGAME)/game/bg_lib.o \
   $(B)/$(BASEGAME)/game/g_active.o \
   $(B)/$(BASEGAME)/game/g_alarm.o \
+  $(B)/$(BASEGAME)/game/g_armory.o \
   $(B)/$(BASEGAME)/game/g_bot.o \
   $(B)/$(BASEGAME)/game/g_client.o \
   $(B)/$(BASEGAME)/game/g_cmds.o \
@@ -2766,8 +2768,10 @@ Q3UIOBJ_ = \
   $(B)/$(BASEGAME)/ui/ui_gameinfo.o \
   $(B)/$(BASEGAME)/ui/ui_players.o \
   $(B)/$(BASEGAME)/ui/ui_shared.o \
+  $(B)/$(BASEGAME)/ui/ui_armory.o \
   \
   $(B)/$(BASEGAME)/ui/bg_misc.o \
+  $(B)/$(BASEGAME)/ui/bg_armory.o \
   $(B)/$(BASEGAME)/ui/bg_lib.o \
   \
   $(B)/$(BASEGAME)/ui/q_math.o \

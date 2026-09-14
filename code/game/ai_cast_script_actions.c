@@ -1823,6 +1823,25 @@ qboolean AICast_ScriptAction_ApplyLoadout( cast_state_t *cs, char *params ) {
 
 /*
 =================
+AICast_ScriptAction_OpenLoadoutMenu
+	syntax: openloadoutmenu
+=================
+*/
+qboolean AICast_ScriptAction_OpenLoadoutMenu( cast_state_t *cs, char *params ) {
+	gentity_t *player;
+
+	player = AICast_FindEntityForName( "player" );
+	if ( !player || !player->client ) {
+		return qfalse;
+	}
+
+	trap_SendServerCommand( player->client->ps.clientNum, "armory_loadout\n" );
+
+	return qtrue;
+}
+
+/*
+=================
 AICast_ScriptAction_GiveWeapon
 
   syntax: giveweapon <pickupname>

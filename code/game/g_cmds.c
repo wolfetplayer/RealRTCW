@@ -358,7 +358,7 @@ void Cmd_Give_f( gentity_t *ent ) {
 			if ( amount ) {
 				ent->client->ps.stats[STAT_ARMOR] += amount;
 			} else {
-				ent->client->ps.stats[STAT_ARMOR] = 100;
+				ent->client->ps.stats[STAT_ARMOR] = G_GetArmorCap( ent->client );
 			}
 		if ( !give_all ) {
 			return;
@@ -2174,6 +2174,16 @@ void ClientCommand( int clientNum ) {
 		char arg[8];
 		trap_Argv( 1, arg, sizeof( arg ) );
 		ent->client->ps.simpleZoomed = atoi( arg ) ? qtrue : qfalse;
+		return;
+	}
+
+	// Hub armory: sp_loadout_confirm <weapon_classname,...> <equip_id,...>
+	if ( Q_stricmp( cmd, "sp_loadout_confirm" ) == 0 ) {
+		char weaponArg[1024];
+		char equipArg[1024];
+		trap_Argv( 1, weaponArg, sizeof( weaponArg ) );
+		trap_Argv( 2, equipArg, sizeof( equipArg ) );
+		G_Armory_Confirm( ent, weaponArg, equipArg );
 		return;
 	}
 

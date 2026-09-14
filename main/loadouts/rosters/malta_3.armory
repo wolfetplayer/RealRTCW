@@ -1,19 +1,33 @@
 // Weapon roster for this armory - weapon_knife is a baseline grant, not listed here (see g_armory.c)
 
-weapon weapon_thompson
-weapon weapon_fg42
+weapon weapon_thompson recommended
+weapon weapon_fg42 recommended
 weapon weapon_snooperrifle
 weapon weapon_flamethrower
-weapon weapon_sten
+weapon weapon_sten recommended
 weapon weapon_panzerfaust
+
+#if g_fullarsenal == 1
 weapon weapon_m97
+#endif
+#if g_fullarsenal == 2
+weapon weapon_m97
+#endif
+
+#if g_fullarsenal == 1
 weapon weapon_m1garand
 weapon weapon_browning
 weapon weapon_poisongas
 weapon weapon_bar
 weapon weapon_mg42m
+#endif
 
 #if g_dlc1 == 1
+#if g_fullarsenal == 1
 weapon weapon_m1941
 weapon weapon_m1941scope
 #endif
+#endif
+
+equip heavyarmor recommended
+equip fullammobag recommended

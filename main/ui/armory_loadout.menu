@@ -17,7 +17,7 @@ menuDef {
 		name background
 		rect 20 20 600 440
 		style WINDOW_STYLE_FILLED
-		backcolor 0 0 0 .6
+		backcolor 0 0 0 .85
 		border 1
 		bordercolor .5 .5 .5 .6
 		forecolor 1 1 1 1
@@ -27,7 +27,7 @@ menuDef {
 
 	itemDef {
 		name title
-		text "Choose Your Loadout"
+		text "@ARMORY_TITLE"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .3
@@ -42,7 +42,7 @@ menuDef {
 
 	itemDef {
 		name pointsLabel
-		text "Points remaining:"
+		text "@ARMORY_POINTS_LABEL"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .22
@@ -70,11 +70,12 @@ menuDef {
 
 	itemDef {
 		name weaponsLabel
-		text "Weapons"
+		text "@ARMORY_WEAPONS"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .24
-		rect 40 82 170 16
+		rect 40 88 170 18
+		textaligny 13
 		forecolor 1 1 1 1
 		visible 1
 		decoration
@@ -82,12 +83,12 @@ menuDef {
 
 	itemDef {
 		name weaponList
-		rect 40 102 170 300
+		rect 40 110 170 260
 		type ITEM_TYPE_LISTBOX
 		style WINDOW_STYLE_FILLED
 		textfont UI_FONT_BIG
 		elementwidth 170
-		elementheight 20
+		elementheight 24
 		textscale .19
 		columns 2  2 20 0  26 140 22
 		elementtype LISTBOX_TEXT
@@ -95,7 +96,7 @@ menuDef {
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor .9 .9 .9 1
-		backcolor .12 .12 .12 .45
+		backcolor .12 .12 .12 .7
 		outlinecolor .5 .5 .5 .3
 		visible 1
 	}
@@ -104,11 +105,12 @@ menuDef {
 
 	itemDef {
 		name buildLabel
-		text "Your Loadout"
+		text "@ARMORY_BUILD"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .24
-		rect 235 82 170 16
+		rect 235 88 170 18
+		textaligny 13
 		forecolor 1 1 1 1
 		visible 1
 		decoration
@@ -116,12 +118,12 @@ menuDef {
 
 	itemDef {
 		name buildList
-		rect 235 102 170 300
+		rect 235 110 170 260
 		type ITEM_TYPE_LISTBOX
 		style WINDOW_STYLE_FILLED
 		textfont UI_FONT_BIG
 		elementwidth 170
-		elementheight 20
+		elementheight 24
 		textscale .19
 		columns 2  2 20 0  26 140 22
 		elementtype LISTBOX_TEXT
@@ -129,7 +131,7 @@ menuDef {
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor 1 .9 .6 1
-		backcolor .12 .12 .12 .45
+		backcolor .12 .12 .12 .7
 		outlinecolor .5 .5 .5 .3
 		visible 1
 	}
@@ -138,11 +140,12 @@ menuDef {
 
 	itemDef {
 		name equipLabel
-		text "Equipment"
+		text "@ARMORY_EQUIPMENT"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .24
-		rect 430 82 170 16
+		rect 430 88 170 18
+		textaligny 13
 		forecolor 1 1 1 1
 		visible 1
 		decoration
@@ -150,12 +153,12 @@ menuDef {
 
 	itemDef {
 		name equipList
-		rect 430 102 170 300
+		rect 430 110 170 260
 		type ITEM_TYPE_LISTBOX
 		style WINDOW_STYLE_FILLED
 		textfont UI_FONT_BIG
 		elementwidth 170
-		elementheight 20
+		elementheight 24
 		textscale .19
 		columns 2  2 20 0  26 140 22
 		elementtype LISTBOX_TEXT
@@ -163,7 +166,7 @@ menuDef {
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor .9 .9 .9 1
-		backcolor .12 .12 .12 .45
+		backcolor .12 .12 .12 .7
 		outlinecolor .5 .5 .5 .3
 		visible 1
 	}
@@ -171,10 +174,52 @@ menuDef {
 	//////////////// buttons ////////////////
 
 	itemDef {
-		name confirmButton
-		text "Confirm Loadout"
+		name randomizeButton
+		text "@ARMORY_RANDOMIZE"
 		type ITEM_TYPE_BUTTON
-		rect 235 420 170 20
+		rect 40 378 170 20
+		textscale .25
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		backcolor 0 0 .3 .35
+		textaligny 13
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 85
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor randomizeButton backcolor 0 0 .5 .45 }
+		mouseExit { setitemcolor randomizeButton backcolor 0 0 .3 .35 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryRandomize }
+		visible 1
+	}
+
+	itemDef {
+		name recommendedButton
+		text "@ARMORY_RECOMMENDED"
+		type ITEM_TYPE_BUTTON
+		rect 235 378 170 20
+		textscale .25
+		style 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		backcolor .25 .2 0 .35
+		textaligny 13
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 85
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor recommendedButton backcolor .4 .35 0 .45 }
+		mouseExit { setitemcolor recommendedButton backcolor .25 .2 0 .35 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryRecommended }
+		visible 1
+	}
+
+	itemDef {
+		name confirmButton
+		text "@ARMORY_CONFIRM"
+		type ITEM_TYPE_BUTTON
+		rect 235 402 170 20
 		textscale .25
 		style 1
 		border 1
@@ -193,9 +238,9 @@ menuDef {
 
 	itemDef {
 		name cancelButton
-		text "Cancel"
+		text "@ARMORY_CANCEL"
 		type ITEM_TYPE_BUTTON
-		rect 40 420 170 20
+		rect 40 402 170 20
 		textscale .25
 		style 1
 		border 1
@@ -214,11 +259,11 @@ menuDef {
 
 	itemDef {
 		name hint
-		text "Click a weapon or equipment item to add it to your loadout. Click an item in the middle list to remove it."
+		text "@ARMORY_HINT"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .16
-		rect 40 450 520 14
+		rect 40 430 520 14
 		textalign ITEM_ALIGN_CENTER
 		textalignx 260
 		forecolor .7 .7 .7 1

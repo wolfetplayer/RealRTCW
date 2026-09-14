@@ -58,7 +58,7 @@ static gitem_t *UI_Armory_WeaponItem( int index ) {
 
 const char *UI_Armory_WeaponName( int index ) {
 	gitem_t *item = UI_Armory_WeaponItem( index );
-	return item ? item->pickup_name : "";
+	return item ? BG_Armory_GetPickupName( item ) : "";
 }
 
 qhandle_t UI_Armory_WeaponIcon( int index ) {
@@ -69,7 +69,13 @@ qhandle_t UI_Armory_WeaponIcon( int index ) {
 	}
 	if ( armoryWeaponIcons[index] == -1 ) {
 		item = UI_Armory_WeaponItem( index );
-		armoryWeaponIcons[index] = item ? trap_R_RegisterShaderNoMip( item->icon ) : 0;
+		armoryWeaponIcons[index] = 0;
+		if ( item ) {
+			armoryWeaponIcons[index] = BG_Armory_GetWeaponIconFromFile( armoryRoster.weapons[index] );
+			if ( !armoryWeaponIcons[index] ) {
+				armoryWeaponIcons[index] = trap_R_RegisterShaderNoMip( item->icon );
+			}
+		}
 	}
 	return armoryWeaponIcons[index];
 }
@@ -113,9 +119,44 @@ static const armoryEquipDef_t *UI_Armory_EquipDef( int index ) {
 	return &list[index];
 }
 
+static const struct { const char *id; const char *key; } armoryEquipKeys[] = {
+	{ "fullammobag",    "ARMORY_EQUIP_FULLAMMOBAG" },
+	{ "heavyarmor",     "ARMORY_EQUIP_HEAVYARMOR" },
+	{ "lightweight",    "ARMORY_EQUIP_LIGHTWEIGHT" },
+	{ "tacticalgloves", "ARMORY_EQUIP_TACTICALGLOVES" },
+};
+
+static char     armoryEquipNames[ARMORY_MAX_EQUIP][64];
+static qboolean armoryEquipNamesResolved = qfalse;
+
+void UI_Armory_ResolveEquipTranslations( void ) {
+	int i, j, count;
+	const armoryEquipDef_t *list = BG_Armory_GetEquipList( &count );
+
+	for ( i = 0; i < count && i < ARMORY_MAX_EQUIP; i++ ) {
+		const char *translated = NULL;
+
+		for ( j = 0; j < (int)( sizeof( armoryEquipKeys ) / sizeof( armoryEquipKeys[0] ) ); j++ ) {
+			if ( !Q_stricmp( armoryEquipKeys[j].id, list[i].id ) ) {
+				translated = TranslateTable_Find( armoryEquipKeys[j].key );
+				break;
+			}
+		}
+		Q_strncpyz( armoryEquipNames[i], translated ? translated : list[i].displayName, sizeof( armoryEquipNames[i] ) );
+	}
+	armoryEquipNamesResolved = qtrue;
+}
+
 const char *UI_Armory_EquipName( int index ) {
 	const armoryEquipDef_t *def = UI_Armory_EquipDef( index );
-	return def ? def->displayName : "";
+
+	if ( !def ) {
+		return "";
+	}
+	if ( armoryEquipNamesResolved && index >= 0 && index < ARMORY_MAX_EQUIP ) {
+		return armoryEquipNames[index];
+	}
+	return def->displayName;
 }
 
 qhandle_t UI_Armory_EquipIcon( int index ) {
@@ -301,4 +342,67 @@ void UI_Armory_BuildConfirmCommand( char *out, int outSize ) {
 
 	Com_sprintf( out, outSize, "sp_loadout_confirm %s %s\n",
 		weaponList[0] ? weaponList : "none", equipList[0] ? equipList : "none" );
+}
+
+//========================= randomize / recommended =========================
+
+void UI_Armory_ApplyRecommended( void ) {
+	int i;
+
+	UI_Armory_Reset();
+
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		if ( armoryRoster.recommended[i] ) {
+			UI_Armory_ToggleWeapon( i );
+		}
+	}
+	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
+		if ( armoryRoster.equipRecommended[i] ) {
+			UI_Armory_ToggleEquip( i );
+		}
+	}
+}
+
+void UI_Armory_Randomize( void ) {
+	int candIndex[ARMORY_MAX_ROSTER_WEAPONS + ARMORY_MAX_EQUIP];
+	qboolean candIsWeapon[ARMORY_MAX_ROSTER_WEAPONS + ARMORY_MAX_EQUIP];
+	int numCand = 0;
+	int i, j, equipCount;
+
+	UI_Armory_Reset();
+
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		candIsWeapon[numCand] = qtrue;
+		candIndex[numCand] = i;
+		numCand++;
+	}
+	equipCount = UI_Armory_EquipCount();
+	for ( i = 0; i < equipCount; i++ ) {
+		candIsWeapon[numCand] = qfalse;
+		candIndex[numCand] = i;
+		numCand++;
+	}
+
+	for ( i = numCand - 1; i > 0; i-- ) {
+		int tmpIndex;
+		qboolean tmpIsWeapon;
+
+		j = rand() % ( i + 1 );
+
+		tmpIndex = candIndex[i];
+		candIndex[i] = candIndex[j];
+		candIndex[j] = tmpIndex;
+
+		tmpIsWeapon = candIsWeapon[i];
+		candIsWeapon[i] = candIsWeapon[j];
+		candIsWeapon[j] = tmpIsWeapon;
+	}
+
+	for ( i = 0; i < numCand; i++ ) {
+		if ( candIsWeapon[i] ) {
+			UI_Armory_ToggleWeapon( candIndex[i] );
+		} else {
+			UI_Armory_ToggleEquip( candIndex[i] );
+		}
+	}
 }

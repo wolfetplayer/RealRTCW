@@ -4884,6 +4884,10 @@ static void UI_RunMenuScript( char **args ) {
 			Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, "campaign_menu" );
 		} else if ( Q_stricmp( name, "loadArmoryRoster" ) == 0 ) {
 			UI_Armory_LoadRosterForCurrentMap();
+		} else if ( Q_stricmp( name, "armoryRandomize" ) == 0 ) {
+			UI_Armory_Randomize();
+		} else if ( Q_stricmp( name, "armoryRecommended" ) == 0 ) {
+			UI_Armory_ApplyRecommended();
 		} else if ( Q_stricmp( name, "armoryConfirm" ) == 0 ) {
 			char cmd[1024];
 			UI_Armory_BuildConfirmCommand( cmd, sizeof( cmd ) );
@@ -7254,6 +7258,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	UI_ParseGameInfo("gameinfo.txt");
 	UI_LoadArenas();
 	UI_ResolveArenaLongnames();
+	UI_Armory_ResolveEquipTranslations();
 
 	menuSet = UI_Cvar_VariableString( "ui_menuFiles" );
 	if ( menuSet == NULL || menuSet[0] == '\0' ) {

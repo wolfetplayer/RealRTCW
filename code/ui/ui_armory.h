@@ -17,6 +17,9 @@ server, which is the sole source of truth for what actually gets granted.
 void UI_Armory_Reset( void );
 void UI_Armory_LoadRosterForCurrentMap( void );
 
+// Must run before UI_FreeTranslateTable() frees the table.
+void UI_Armory_ResolveEquipTranslations( void );
+
 int UI_Armory_WeaponCount( void );
 const char  *UI_Armory_WeaponName( int index );
 qhandle_t   UI_Armory_WeaponIcon( int index );
@@ -37,6 +40,9 @@ void        UI_Armory_RemoveBuildIndex( int index );
 
 int UI_Armory_PointsTotal( void );
 int UI_Armory_PointsUsed( void );
+
+void UI_Armory_ApplyRecommended( void );
+void UI_Armory_Randomize( void );
 
 // Fills out (size outSize) with "sp_loadout_confirm <weapons> <equip>\n"
 void UI_Armory_BuildConfirmCommand( char *out, int outSize );

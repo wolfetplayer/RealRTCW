@@ -15,8 +15,10 @@ builder. Stateless: no gentity_t access, no server commands.
 
 // A parsed weapon roster for one hub map: which weapons are selectable.
 typedef struct {
-	int weapons[ARMORY_MAX_ROSTER_WEAPONS];    // weapon_t values, in file order
+	int weapons[ARMORY_MAX_ROSTER_WEAPONS];        // weapon_t values, in file order
+	qboolean recommended[ARMORY_MAX_ROSTER_WEAPONS]; // "weapon <classname> recommended" flag, parallel to weapons[]
 	int numWeapons;
+	qboolean equipRecommended[ARMORY_MAX_EQUIP];   // "equip <id> recommended" flags, indexed same as BG_Armory_GetEquipList()
 } armoryRoster_t;
 
 // One of the 4 fixed equipment/perk items offered in every armory.
@@ -35,5 +37,11 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out );
 const armoryEquipDef_t *BG_Armory_GetEquipList( int *count );
 const armoryEquipDef_t *BG_Armory_FindEquip( const char *id );
 int BG_Armory_GetEquipCost( const armoryEquipDef_t *def );
+
+// Localized pickup name; falls back to item->pickup_name.
+const char *BG_Armory_GetPickupName( const gitem_t *item );
+
+// Icon from the weapon's .weap file; returns 0 if not found.
+qhandle_t BG_Armory_GetWeaponIconFromFile( weapon_t weaponNum );
 
 #endif // __BG_ARMORY_H__

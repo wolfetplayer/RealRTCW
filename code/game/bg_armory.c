@@ -31,6 +31,7 @@ static int BG_Armory_CvarInt( const char *var_name ) {
 #endif
 
 #define ARMORY_FILE_BUFSIZE ( 16 * 1024 )
+#define ARMORY_MAX_IF_DEPTH 4
 
 static const armoryEquipDef_t armoryEquipList[] = {
 	{ "fullammobag",    "Full Ammo Bag",     "icons/perk_fullammobag",    -1,                  "g_loadoutCostFullAmmoBag" },
@@ -72,16 +73,17 @@ int BG_Armory_GetEquipCost( const armoryEquipDef_t *def ) {
 ===============
 BG_Armory_LoadRoster
 
-NOTE: this handles "#if"/"#endif" itself rather than relying on COM_ParseExt's
-built-in support for it, since that's compiled GAMEDLL-only and would silently
-no-op in cgame/ui builds.
+NOTE: this handles "#if"/"#endif" itself (COM_ParseExt's version is GAMEDLL-only),
+and nests them so a weapon can require more than one condition at once.
 ===============
 */
 qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 	static char fileBuf[ARMORY_FILE_BUFSIZE];
 	fileHandle_t f;
-	int len;
+	int len, i;
 	char *p, *tok;
+	qboolean skipStack[ARMORY_MAX_IF_DEPTH];
+	int ifDepth = 0;
 	qboolean skipping = qfalse;
 
 	if ( !out || !rosterFile || !rosterFile[0] ) {
@@ -89,6 +91,9 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 	}
 
 	out->numWeapons = 0;
+	for ( i = 0; i < ARMORY_MAX_EQUIP; i++ ) {
+		out->equipRecommended[i] = qfalse;
+	}
 
 	len = trap_FS_FOpenFile( rosterFile, &f, FS_READ );
 	if ( len <= 0 || !f ) {
@@ -121,12 +126,30 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 			value = atoi( valueStr );
 			cvarVal = BG_Armory_CvarInt( cvarname );
 
-			skipping = ( cvarVal != value );
+			if ( ifDepth < ARMORY_MAX_IF_DEPTH ) {
+				skipStack[ifDepth++] = ( cvarVal != value );
+			}
+			skipping = qfalse;
+			for ( i = 0; i < ifDepth; i++ ) {
+				if ( skipStack[i] ) {
+					skipping = qtrue;
+					break;
+				}
+			}
 			continue;
 		}
 
 		if ( !Q_stricmp( tok, "#endif" ) ) {
+			if ( ifDepth > 0 ) {
+				ifDepth--;
+			}
 			skipping = qfalse;
+			for ( i = 0; i < ifDepth; i++ ) {
+				if ( skipStack[i] ) {
+					skipping = qtrue;
+					break;
+				}
+			}
 			continue;
 		}
 
@@ -136,13 +159,48 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 
 		if ( !Q_stricmp( tok, "weapon" ) ) {
 			char classname[64];
+			char marker[32];
+			char *savedP;
 			gitem_t *item;
+			qboolean isRecommended;
 
 			Q_strncpyz( classname, COM_ParseExt( &p, qfalse ), sizeof( classname ) );
+
+			savedP = p;
+			Q_strncpyz( marker, COM_ParseExt( &p, qfalse ), sizeof( marker ) );
+			if ( !Q_stricmp( marker, "recommended" ) ) {
+				isRecommended = qtrue;
+			} else {
+				isRecommended = qfalse;
+				p = savedP;   // not a marker for this line - push back for the next loop iteration
+			}
+
 			item = BG_FindItemForClassName( classname );
 
 			if ( item && item->giType == IT_WEAPON && out->numWeapons < ARMORY_MAX_ROSTER_WEAPONS ) {
+				out->recommended[out->numWeapons] = isRecommended;
 				out->weapons[out->numWeapons++] = item->giTag;
+			}
+			continue;
+		}
+
+		if ( !Q_stricmp( tok, "equip" ) ) {
+			char equipId[64];
+			char marker[32];
+			int idx;
+
+			Q_strncpyz( equipId, COM_ParseExt( &p, qfalse ), sizeof( equipId ) );
+			Q_strncpyz( marker, COM_ParseExt( &p, qfalse ), sizeof( marker ) );
+
+			if ( Q_stricmp( marker, "recommended" ) ) {
+				continue;
+			}
+
+			for ( idx = 0; idx < ARMORY_NUM_EQUIP && idx < ARMORY_MAX_EQUIP; idx++ ) {
+				if ( !Q_stricmp( armoryEquipList[idx].id, equipId ) ) {
+					out->equipRecommended[idx] = qtrue;
+					break;
+				}
 			}
 			continue;
 		}
@@ -151,4 +209,107 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 	}
 
 	return qtrue;
+}
+
+static char armoryPickupNames[MAX_ITEMS][MAX_QPATH];
+static qboolean armoryPickupNamesLoaded = qfalse;
+
+// Positional load of text/pickupnames.txt, mirroring CG_LoadPickupNames() in cg_main.c (cgame-only, not reachable from ui.qvm).
+static void BG_Armory_LoadPickupNames( void ) {
+	static char buffer[ARMORY_FILE_BUFSIZE];
+	char *text;
+	fileHandle_t f;
+	int len, i;
+	char *token;
+
+	armoryPickupNamesLoaded = qtrue;   // set first so a missing file doesn't retry every call
+
+	len = trap_FS_FOpenFile( "text/pickupnames.txt", &f, FS_READ );
+	if ( len <= 0 || !f ) {
+		return;
+	}
+	if ( len >= ARMORY_FILE_BUFSIZE ) {
+		trap_FS_FCloseFile( f );
+		return;
+	}
+	trap_FS_Read( buffer, len, f );
+	buffer[len] = '\0';
+	trap_FS_FCloseFile( f );
+
+	text = buffer;
+	for ( i = 0; i < bg_numItems && i < MAX_ITEMS; i++ ) {
+		token = COM_ParseExt( &text, qtrue );
+		if ( !token[0] ) {
+			break;
+		}
+		if ( !Q_stricmp( token, "---" ) ) {
+			if ( bg_itemlist[i].pickup_name && bg_itemlist[i].pickup_name[0] ) {
+				Q_strncpyz( armoryPickupNames[i], bg_itemlist[i].pickup_name, MAX_QPATH );
+			}
+		} else {
+			Q_strncpyz( armoryPickupNames[i], token, MAX_QPATH );
+		}
+	}
+}
+
+const char *BG_Armory_GetPickupName( const gitem_t *item ) {
+	int index;
+
+	if ( !item ) {
+		return "";
+	}
+	if ( !armoryPickupNamesLoaded ) {
+		BG_Armory_LoadPickupNames();
+	}
+
+	index = (int)( item - bg_itemlist );
+	if ( index < 0 || index >= MAX_ITEMS || !armoryPickupNames[index][0] ) {
+		return item->pickup_name;
+	}
+	return armoryPickupNames[index];
+}
+
+#ifndef GAMEDLL
+extern qhandle_t trap_R_RegisterShaderNoMip( const char *name );
+#endif
+
+// bg_misc.c's gitem_t.icon is stale for several weapons; reads the real one from the .weap file instead.
+qhandle_t BG_Armory_GetWeaponIconFromFile( weapon_t weaponNum ) {
+#ifdef GAMEDLL
+	return 0;
+#else
+	char *filename;
+	char path[MAX_QPATH];
+	int handle;
+	pc_token_t token;
+	qhandle_t icon = 0;
+
+	filename = BG_GetWeaponFilename( weaponNum );
+	if ( !filename || !filename[0] ) {
+		return 0;
+	}
+
+	if ( BG_Armory_CvarInt( "g_vanilla_guns" ) ) {
+		Com_sprintf( path, sizeof( path ), "weapons/vanilla/%s", filename );
+	} else {
+		Com_sprintf( path, sizeof( path ), "weapons/%s", filename );
+	}
+
+	handle = trap_PC_LoadSource( path );
+	if ( !handle ) {
+		return 0;
+	}
+
+	while ( trap_PC_ReadToken( handle, &token ) ) {
+		if ( !Q_stricmp( token.string, "weaponIcon" ) ) {
+			if ( trap_PC_ReadToken( handle, &token ) ) {
+				icon = trap_R_RegisterShaderNoMip( token.string );
+			}
+			break;
+		}
+	}
+
+	trap_PC_FreeSource( handle );
+	return icon;
+#endif
 }

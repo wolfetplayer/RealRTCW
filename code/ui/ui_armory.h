@@ -19,6 +19,7 @@ void UI_Armory_LoadRosterForCurrentMap( void );
 
 // Must run before UI_FreeTranslateTable() frees the table.
 void UI_Armory_ResolveEquipTranslations( void );
+void UI_Armory_ResolveWeaponDescTranslations( void );
 
 int UI_Armory_WeaponCount( void );
 const char  *UI_Armory_WeaponName( int index );
@@ -32,11 +33,23 @@ qhandle_t   UI_Armory_EquipIcon( int index );
 qboolean    UI_Armory_EquipPicked( int index );
 void        UI_Armory_ToggleEquip( int index );
 
-// Combined "current build" list: picked weapons then picked equipment; clicking an entry removes it.
+// Click highlights only; a separate "+" button adds the highlighted item, so a description can show first.
+void        UI_Armory_SelectWeapon( int index );
+void        UI_Armory_SelectEquip( int index );
+void        UI_Armory_AddSelectedWeapon( void );
+void        UI_Armory_AddSelectedEquip( void );
+qhandle_t   UI_Armory_SelectedWeaponIcon( void );
+const char  *UI_Armory_SelectedWeaponDesc( void );
+qhandle_t   UI_Armory_SelectedEquipIcon( void );
+const char  *UI_Armory_SelectedEquipDesc( void );
+
+// Combined "current build" list: picked weapons then picked equipment, same select-then-act flow ("-Remove" button).
 int UI_Armory_BuildCount( void );
 const char  *UI_Armory_BuildName( int index );
 qhandle_t   UI_Armory_BuildIcon( int index );
 void        UI_Armory_RemoveBuildIndex( int index );
+void        UI_Armory_SelectBuild( int index );
+void        UI_Armory_RemoveSelectedBuild( void );
 
 int UI_Armory_PointsTotal( void );
 int UI_Armory_PointsUsed( void );

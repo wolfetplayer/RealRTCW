@@ -4354,7 +4354,9 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 					for ( j = 0; j < listPtr->numColumns; j++ ) {
 						text = DC->feederItemText( item->special, i, j, &optionalImage );
 						if ( optionalImage >= 0 ) {
-							DC->drawHandlePic( x + 4 + listPtr->columnInfo[j].pos, y - 1 + listPtr->elementHeight / 2, listPtr->columnInfo[j].width, listPtr->columnInfo[j].width, optionalImage );
+							// weapon icons are landscape (wide) art; a square box crushes them, so draw shorter than wide
+							int iconH = (int)( listPtr->columnInfo[j].width * 0.6f );
+							DC->drawHandlePic( x + 4 + listPtr->columnInfo[j].pos, y + ( listPtr->elementHeight - iconH ) / 2, listPtr->columnInfo[j].width, iconH, optionalImage );
 						} else if ( text ) {
 							DC->drawText( x + 4 + listPtr->columnInfo[j].pos, y + listPtr->elementHeight, item->font, item->textscale, item->window.foreColor, text, 0, listPtr->columnInfo[j].maxChars, item->textStyle );
 						}

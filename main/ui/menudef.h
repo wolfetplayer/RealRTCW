@@ -338,6 +338,8 @@ If you have questions concerning this license or the applicable additional terms
 #define UI_CREATEMAPPREVIEW_SMALL2  266
 
 #define UI_ARMORY_POINTS            267    // hub armory: "points remaining / total" readout
+#define UI_ARMORY_WEAPON_DESC       268    // hub armory: icon + description of the currently-selected weapon
+#define UI_ARMORY_EQUIP_DESC        269    // hub armory: icon + description of the currently-selected equipment item
 
 
 #define VOICECHAT_GETFLAG           "getflag"                // command someone to get the flag

@@ -1364,6 +1364,27 @@ static void UI_DrawArmoryPoints( rectDef_t *rect, int font, float scale, vec4_t 
 	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
 }
 
+// Big icon on top (no background), description text near the bottom of rect.
+static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle, qhandle_t icon, const char *desc ) {
+	int iconW = 110;
+	int iconH = 56;
+
+	if ( icon ) {
+		DC->drawHandlePic( rect->x + ( rect->w - iconW ) / 2, rect->y, iconW, iconH, icon );
+	}
+	if ( desc && desc[0] ) {
+		Text_Paint( rect->x + 4, rect->y + rect->h - 6, font, scale, color, desc, 0, 0, textStyle );
+	}
+}
+
+static void UI_DrawArmoryWeaponDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), UI_Armory_SelectedWeaponDesc() );
+}
+
+static void UI_DrawArmoryEquipDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), UI_Armory_SelectedEquipDesc() );
+}
+
 //----(SA)	added
 /*
 ==============
@@ -2829,6 +2850,12 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 		break;
 	case UI_ARMORY_POINTS:
 		UI_DrawArmoryPoints( &rect, font, scale, color, textStyle );
+		break;
+	case UI_ARMORY_WEAPON_DESC:
+		UI_DrawArmoryWeaponDesc( &rect, font, scale, color, textStyle );
+		break;
+	case UI_ARMORY_EQUIP_DESC:
+		UI_DrawArmoryEquipDesc( &rect, font, scale, color, textStyle );
 		break;
 	case UI_EFFECTS:
 		UI_DrawEffects( &rect, scale, color );
@@ -4884,10 +4911,19 @@ static void UI_RunMenuScript( char **args ) {
 			Menu_SetFeederSelection( NULL, FEEDER_ALLMAPS, 0, "campaign_menu" );
 		} else if ( Q_stricmp( name, "loadArmoryRoster" ) == 0 ) {
 			UI_Armory_LoadRosterForCurrentMap();
+			// sync the listbox widgets to our own selection state, or the description panel stays blank until clicked
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, 0, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, 0, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryRandomize" ) == 0 ) {
 			UI_Armory_Randomize();
 		} else if ( Q_stricmp( name, "armoryRecommended" ) == 0 ) {
 			UI_Armory_ApplyRecommended();
+		} else if ( Q_stricmp( name, "armoryAddWeapon" ) == 0 ) {
+			UI_Armory_AddSelectedWeapon();
+		} else if ( Q_stricmp( name, "armoryAddEquip" ) == 0 ) {
+			UI_Armory_AddSelectedEquip();
+		} else if ( Q_stricmp( name, "armoryRemoveSelected" ) == 0 ) {
+			UI_Armory_RemoveSelectedBuild();
 		} else if ( Q_stricmp( name, "armoryConfirm" ) == 0 ) {
 			char cmd[1024];
 			UI_Armory_BuildConfirmCommand( cmd, sizeof( cmd ) );
@@ -6417,22 +6453,10 @@ static const char *UI_FeederItemText( float feederID, int index, int column, qha
 		}
 	}
 	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
-		if ( column == 0 ) {
-			*handle = UI_Armory_WeaponIcon( index );
-			return "";
-		}
 		return UI_Armory_WeaponName( index );
 	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
-		if ( column == 0 ) {
-			*handle = UI_Armory_EquipIcon( index );
-			return "";
-		}
 		return UI_Armory_EquipName( index );
 	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
-		if ( column == 0 ) {
-			*handle = UI_Armory_BuildIcon( index );
-			return "";
-		}
 		return UI_Armory_BuildName( index );
 	}
 	// NERVE - SMF
@@ -6583,11 +6607,11 @@ static void UI_FeederSelection( float feederID, int index ) {
 	}
 	// -NERVE - SMF
 	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
-		UI_Armory_ToggleWeapon( index );
+		UI_Armory_SelectWeapon( index );
 	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
-		UI_Armory_ToggleEquip( index );
+		UI_Armory_SelectEquip( index );
 	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
-		UI_Armory_RemoveBuildIndex( index );
+		UI_Armory_SelectBuild( index );
 	}
 }
 
@@ -7259,6 +7283,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	UI_LoadArenas();
 	UI_ResolveArenaLongnames();
 	UI_Armory_ResolveEquipTranslations();
+	UI_Armory_ResolveWeaponDescTranslations();
 
 	menuSet = UI_Cvar_VariableString( "ui_menuFiles" );
 	if ( menuSet == NULL || menuSet[0] == '\0' ) {

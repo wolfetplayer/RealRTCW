@@ -19,6 +19,10 @@ static qhandle_t armoryWeaponIcons[ARMORY_MAX_ROSTER_WEAPONS];
 static qboolean  armoryEquipPicked[ARMORY_MAX_EQUIP];
 static qhandle_t armoryEquipIcons[ARMORY_MAX_EQUIP];
 
+static int selectedWeaponIndex = -1;
+static int selectedEquipIndex = -1;
+static int selectedBuildIndex = -1;
+
 void UI_Armory_Reset( void ) {
 	int i;
 
@@ -30,6 +34,9 @@ void UI_Armory_Reset( void ) {
 		armoryEquipPicked[i] = qfalse;
 		armoryEquipIcons[i] = -1;
 	}
+	selectedWeaponIndex = -1;
+	selectedEquipIndex = -1;
+	selectedBuildIndex = -1;
 }
 
 void UI_Armory_LoadRosterForCurrentMap( void ) {
@@ -127,14 +134,27 @@ static const struct { const char *id; const char *key; } armoryEquipKeys[] = {
 };
 
 static char     armoryEquipNames[ARMORY_MAX_EQUIP][64];
+static char     armoryEquipDescs[ARMORY_MAX_EQUIP][96];
 static qboolean armoryEquipNamesResolved = qfalse;
 
+// Weapon descriptions, indexed by weapon_t - resolved for every weapon up front, since no roster is loaded yet here.
+static char     armoryWeaponDescs[WP_NUM_WEAPONS][96];
+static qboolean armoryWeaponDescsResolved = qfalse;
+
+// "ARMORY_DESC_<id, uppercased>" - same convention for both weapons and equipment.
+static void UI_Armory_LookupDescKey( const char *id, char *out, int outSize ) {
+	Com_sprintf( out, outSize, "ARMORY_DESC_%s", id );
+	Q_strupr( out );
+}
+
+// IMPORTANT: must run (with UI_Armory_ResolveWeaponDescTranslations) before UI_FreeTranslateTable() frees the table, or every @KEY lookup here fails silently.
 void UI_Armory_ResolveEquipTranslations( void ) {
 	int i, j, count;
 	const armoryEquipDef_t *list = BG_Armory_GetEquipList( &count );
 
 	for ( i = 0; i < count && i < ARMORY_MAX_EQUIP; i++ ) {
 		const char *translated = NULL;
+		char key[64];
 
 		for ( j = 0; j < (int)( sizeof( armoryEquipKeys ) / sizeof( armoryEquipKeys[0] ) ); j++ ) {
 			if ( !Q_stricmp( armoryEquipKeys[j].id, list[i].id ) ) {
@@ -143,8 +163,41 @@ void UI_Armory_ResolveEquipTranslations( void ) {
 			}
 		}
 		Q_strncpyz( armoryEquipNames[i], translated ? translated : list[i].displayName, sizeof( armoryEquipNames[i] ) );
+
+		UI_Armory_LookupDescKey( list[i].id, key, sizeof( key ) );
+		translated = TranslateTable_Find( key );
+		Q_strncpyz( armoryEquipDescs[i], translated ? translated : "", sizeof( armoryEquipDescs[i] ) );
 	}
 	armoryEquipNamesResolved = qtrue;
+}
+
+void UI_Armory_ResolveWeaponDescTranslations( void ) {
+	gitem_t *it;
+
+	for ( it = bg_itemlist + 1; it->classname; it++ ) {
+		const char *classname;
+		char key[64];
+		const char *translated;
+		int weaponNum;
+
+		if ( it->giType != IT_WEAPON ) {
+			continue;
+		}
+		weaponNum = it->giTag;
+		if ( weaponNum <= WP_NONE || weaponNum >= WP_NUM_WEAPONS ) {
+			continue;
+		}
+
+		classname = it->classname;
+		if ( !Q_stricmpn( classname, "weapon_", 7 ) ) {
+			classname += 7;
+		}
+		UI_Armory_LookupDescKey( classname, key, sizeof( key ) );
+
+		translated = TranslateTable_Find( key );
+		Q_strncpyz( armoryWeaponDescs[weaponNum], translated ? translated : "", sizeof( armoryWeaponDescs[weaponNum] ) );
+	}
+	armoryWeaponDescsResolved = qtrue;
 }
 
 const char *UI_Armory_EquipName( int index ) {
@@ -268,6 +321,21 @@ void UI_Armory_RemoveBuildIndex( int index ) {
 	} else {
 		armoryEquipPicked[equipIndex] = qfalse;
 	}
+}
+
+void UI_Armory_SelectBuild( int index ) {
+	if ( index < 0 || index >= UI_Armory_BuildCount() ) {
+		return;
+	}
+	selectedBuildIndex = index;
+}
+
+void UI_Armory_RemoveSelectedBuild( void ) {
+	if ( selectedBuildIndex < 0 || selectedBuildIndex >= UI_Armory_BuildCount() ) {
+		return;
+	}
+	UI_Armory_RemoveBuildIndex( selectedBuildIndex );
+	selectedBuildIndex = -1;   // indices shift after a removal, so drop the stale selection
 }
 
 //================================ points =================================
@@ -405,4 +473,63 @@ void UI_Armory_Randomize( void ) {
 			UI_Armory_ToggleEquip( candIndex[i] );
 		}
 	}
+}
+
+//===================== select (highlight) + add + description =====================
+
+void UI_Armory_SelectWeapon( int index ) {
+	if ( index < 0 || index >= armoryRoster.numWeapons ) {
+		return;
+	}
+	selectedWeaponIndex = index;
+}
+
+void UI_Armory_SelectEquip( int index ) {
+	if ( index < 0 || index >= UI_Armory_EquipCount() ) {
+		return;
+	}
+	selectedEquipIndex = index;
+}
+
+void UI_Armory_AddSelectedWeapon( void ) {
+	if ( selectedWeaponIndex < 0 || armoryWeaponPicked[selectedWeaponIndex] ) {
+		return;   // nothing selected, or already added - removal only happens via the build list
+	}
+	UI_Armory_ToggleWeapon( selectedWeaponIndex );
+}
+
+void UI_Armory_AddSelectedEquip( void ) {
+	if ( selectedEquipIndex < 0 || armoryEquipPicked[selectedEquipIndex] ) {
+		return;
+	}
+	UI_Armory_ToggleEquip( selectedEquipIndex );
+}
+
+qhandle_t UI_Armory_SelectedWeaponIcon( void ) {
+	return UI_Armory_WeaponIcon( selectedWeaponIndex );
+}
+
+// Reads the cache built by UI_Armory_ResolveWeaponDescTranslations() - see its comment for why.
+const char *UI_Armory_SelectedWeaponDesc( void ) {
+	int weaponNum;
+
+	if ( selectedWeaponIndex < 0 || selectedWeaponIndex >= armoryRoster.numWeapons ) {
+		return "";
+	}
+	weaponNum = armoryRoster.weapons[selectedWeaponIndex];
+	if ( !armoryWeaponDescsResolved || weaponNum <= WP_NONE || weaponNum >= WP_NUM_WEAPONS ) {
+		return "";
+	}
+	return armoryWeaponDescs[weaponNum];
+}
+
+qhandle_t UI_Armory_SelectedEquipIcon( void ) {
+	return UI_Armory_EquipIcon( selectedEquipIndex );
+}
+
+const char *UI_Armory_SelectedEquipDesc( void ) {
+	if ( !armoryEquipNamesResolved || selectedEquipIndex < 0 || selectedEquipIndex >= ARMORY_MAX_EQUIP ) {
+		return "";
+	}
+	return armoryEquipDescs[selectedEquipIndex];
 }

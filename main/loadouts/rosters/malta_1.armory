@@ -1,8 +1,12 @@
 // Weapon roster for this armory - weapon_knife is a baseline grant, not listed here (see g_armory.c)
 
 weapon weapon_silencer
-weapon weapon_thompson recommended
-weapon weapon_snooperrifle
+weapon weapon_luger
+weapon weapon_mp40
+weapon weapon_mauserrifle
+weapon weapon_sniperscope
+weapon weapon_thompson
+weapon weapon_snooperrifle recommended
 weapon weapon_colt recommended
 weapon weapon_sten recommended
 

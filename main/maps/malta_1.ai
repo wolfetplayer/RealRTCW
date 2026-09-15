@@ -194,12 +194,6 @@ player
 		accum 4 set 1
 	}
 	
-	trigger armory_start
-	{
-		trigger waters greetings
-		openloadoutmenu
-	}
-	
 	trigger shocktreatment
 	{
 		trigger handle turnon
@@ -215,6 +209,11 @@ player
 	   alertentity dream_eg1
 	   alertentity dream_eg2
 	   alertentity dream_hunter
+	}
+	
+	trigger armory
+	{
+	  openloadoutmenu
 	}
 	
 	trigger secret1
@@ -2384,12 +2383,13 @@ waters
 	trigger walktothetable
 	{
 	   wait 100
-	   playsound waters_meandlt
+	   //playsound waters_meandlt
 	   walktomarker waters_spot2 nostop
 	   facetargetangles waters_spot2
-	   playsound waters_meandlt2
-	   wait 7000
-	   trigger waters briefing
+	   playsound waters_gladtoseeya
+	   //playsound waters_meandlt2
+	   //wait 7000
+	   //trigger waters briefing
 	}
 	
 	trigger briefing

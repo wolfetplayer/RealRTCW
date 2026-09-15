@@ -21,7 +21,6 @@ void UI_Armory_LoadRosterForCurrentMap( void );
 void UI_Armory_ResolveEquipTranslations( void );
 void UI_Armory_ResolveWeaponDescTranslations( void );
 
-int UI_Armory_WeaponCount( void );
 const char  *UI_Armory_WeaponName( int index );
 qhandle_t   UI_Armory_WeaponIcon( int index );
 qboolean    UI_Armory_WeaponPicked( int index );
@@ -33,6 +32,16 @@ qhandle_t   UI_Armory_EquipIcon( int index );
 qboolean    UI_Armory_EquipPicked( int index );
 void        UI_Armory_ToggleEquip( int index );
 
+// Source-column view (weaponList/equipList feeders): excludes items already in the build.
+int         UI_Armory_AvailableWeaponCount( void );
+const char  *UI_Armory_AvailableWeaponName( int availIndex );
+qhandle_t   UI_Armory_AvailableWeaponIcon( int availIndex );
+void        UI_Armory_SelectAvailableWeapon( int availIndex );
+int         UI_Armory_AvailableEquipCount( void );
+const char  *UI_Armory_AvailableEquipName( int availIndex );
+qhandle_t   UI_Armory_AvailableEquipIcon( int availIndex );
+void        UI_Armory_SelectAvailableEquip( int availIndex );
+
 // Click highlights only; a separate "+" button adds the highlighted item, so a description can show first.
 void        UI_Armory_SelectWeapon( int index );
 void        UI_Armory_SelectEquip( int index );
@@ -40,6 +49,7 @@ void        UI_Armory_AddSelectedWeapon( void );
 void        UI_Armory_AddSelectedEquip( void );
 qhandle_t   UI_Armory_SelectedWeaponIcon( void );
 const char  *UI_Armory_SelectedWeaponDesc( void );
+qboolean    UI_Armory_SelectedWeaponIsWide( void );
 qhandle_t   UI_Armory_SelectedEquipIcon( void );
 const char  *UI_Armory_SelectedEquipDesc( void );
 
@@ -50,6 +60,7 @@ qhandle_t   UI_Armory_BuildIcon( int index );
 void        UI_Armory_RemoveBuildIndex( int index );
 void        UI_Armory_SelectBuild( int index );
 void        UI_Armory_RemoveSelectedBuild( void );
+int         UI_Armory_SelectedBuildIndex( void );
 
 int UI_Armory_PointsTotal( void );
 int UI_Armory_PointsUsed( void );

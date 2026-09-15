@@ -10,14 +10,13 @@ menuDef {
 	style 1
 	border 1
 
-	onOpen { uiScript loadArmoryRoster }
-	onESC { uiScript armoryCancel }
+	onOpen { play "sound/misc/kcaction.wav" ; uiScript loadArmoryRoster }
 
 	itemDef {
 		name background
 		rect 20 20 600 440
 		style WINDOW_STYLE_FILLED
-		backcolor 0 0 0 .85
+		backcolor 0 0 0 .96
 		border 1
 		bordercolor .5 .5 .5 .6
 		forecolor 1 1 1 1
@@ -104,9 +103,9 @@ menuDef {
 
 	itemDef {
 		name weaponsDescBg
-		rect 40 150 170 32
+		rect 40 130 170 52
 		style WINDOW_STYLE_FILLED
-		backcolor .1 .1 .1 .6
+		backcolor .1 .1 .1 .85
 		visible 1
 		decoration
 	}
@@ -117,7 +116,7 @@ menuDef {
 		ownerdraw UI_ARMORY_WEAPON_DESC
 		rect 40 82 170 100
 		textfont UI_FONT_BIG
-		textscale .17
+		textscale .19
 		forecolor .85 .85 .85 1
 		visible 1
 		decoration
@@ -161,7 +160,7 @@ menuDef {
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor .9 .9 .9 1
-		backcolor .12 .12 .12 .7
+		backcolor .12 .12 .12 .88
 		outlinecolor .5 .5 .5 .3
 		visible 1
 	}
@@ -190,44 +189,23 @@ menuDef {
 	//////////////// current build (middle) ////////////////
 
 	itemDef {
-		name randomizeButton
-		text "@ARMORY_RANDOMIZE"
+		name confirmButton
+		text "@ARMORY_CONFIRM"
 		type ITEM_TYPE_BUTTON
-		rect 235 100 170 28
-		textscale .22
+		rect 235 100 170 66
+		textscale .32
 		style 1
 		border 1
 		bordercolor .5 .5 .5 .5
-		backcolor 0 0 .3 .35
-		textaligny 15
+		backcolor 0 .3 0 .35
+		textaligny 42
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
 		textalignx 85
 		forecolor 1 1 1 1
-		mouseEnter { setitemcolor randomizeButton backcolor 0 0 .5 .45 }
-		mouseExit { setitemcolor randomizeButton backcolor 0 0 .3 .35 }
-		action { play "sound/misc/kcswish.wav" ; uiScript armoryRandomize }
-		visible 1
-	}
-
-	itemDef {
-		name recommendedButton
-		text "@ARMORY_RECOMMENDED"
-		type ITEM_TYPE_BUTTON
-		rect 235 138 170 28
-		textscale .22
-		style 1
-		border 1
-		bordercolor .5 .5 .5 .5
-		backcolor .25 .2 0 .35
-		textaligny 15
-		textfont UI_FONT_BIG
-		textalign ITEM_ALIGN_CENTER
-		textalignx 85
-		forecolor 1 1 1 1
-		mouseEnter { setitemcolor recommendedButton backcolor .4 .35 0 .45 }
-		mouseExit { setitemcolor recommendedButton backcolor .25 .2 0 .35 }
-		action { play "sound/misc/kcswish.wav" ; uiScript armoryRecommended }
+		mouseEnter { setitemcolor confirmButton backcolor 0 .5 0 .45 }
+		mouseExit { setitemcolor confirmButton backcolor 0 .3 0 .35 }
+		action { play "sound/misc/kcaction.wav" ; uiScript armoryConfirm }
 		visible 1
 	}
 
@@ -269,7 +247,7 @@ menuDef {
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor 1 .9 .6 1
-		backcolor .12 .12 .12 .7
+		backcolor .12 .12 .12 .88
 		outlinecolor .5 .5 .5 .3
 		visible 1
 	}
@@ -296,44 +274,44 @@ menuDef {
 	}
 
 	itemDef {
-		name cancelButton
-		text "@ARMORY_CANCEL"
+		name randomizeButton
+		text "@ARMORY_RANDOMIZE"
 		type ITEM_TYPE_BUTTON
 		rect 235 440 83 18
-		textscale .2
+		textscale .15
 		style 1
 		border 1
 		bordercolor .5 .5 .5 .5
-		backcolor .3 0 0 .35
-		textaligny 13
+		backcolor 0 0 .3 .35
+		textaligny 12
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
 		textalignx 41
 		forecolor 1 1 1 1
-		mouseEnter { setitemcolor cancelButton backcolor .5 0 0 .45 }
-		mouseExit { setitemcolor cancelButton backcolor .3 0 0 .35 }
-		action { play "sound/misc/kcswish.wav" ; uiScript armoryCancel }
+		mouseEnter { setitemcolor randomizeButton backcolor 0 0 .5 .45 }
+		mouseExit { setitemcolor randomizeButton backcolor 0 0 .3 .35 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryRandomize }
 		visible 1
 	}
 
 	itemDef {
-		name confirmButton
-		text "@ARMORY_CONFIRM"
+		name recommendedButton
+		text "@ARMORY_RECOMMENDED"
 		type ITEM_TYPE_BUTTON
 		rect 322 440 83 18
-		textscale .2
+		textscale .13
 		style 1
 		border 1
 		bordercolor .5 .5 .5 .5
-		backcolor 0 .3 0 .35
-		textaligny 13
+		backcolor .25 .2 0 .35
+		textaligny 12
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
 		textalignx 41
 		forecolor 1 1 1 1
-		mouseEnter { setitemcolor confirmButton backcolor 0 .5 0 .45 }
-		mouseExit { setitemcolor confirmButton backcolor 0 .3 0 .35 }
-		action { play "sound/misc/kcswish.wav" ; uiScript armoryConfirm }
+		mouseEnter { setitemcolor recommendedButton backcolor .4 .35 0 .45 }
+		mouseExit { setitemcolor recommendedButton backcolor .25 .2 0 .35 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryRecommended }
 		visible 1
 	}
 
@@ -341,9 +319,9 @@ menuDef {
 
 	itemDef {
 		name equipDescBg
-		rect 430 150 170 32
+		rect 430 130 170 52
 		style WINDOW_STYLE_FILLED
-		backcolor .1 .1 .1 .6
+		backcolor .1 .1 .1 .85
 		visible 1
 		decoration
 	}
@@ -354,7 +332,7 @@ menuDef {
 		ownerdraw UI_ARMORY_EQUIP_DESC
 		rect 430 82 170 100
 		textfont UI_FONT_BIG
-		textscale .17
+		textscale .19
 		forecolor .85 .85 .85 1
 		visible 1
 		decoration
@@ -398,7 +376,7 @@ menuDef {
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor .9 .9 .9 1
-		backcolor .12 .12 .12 .7
+		backcolor .12 .12 .12 .88
 		outlinecolor .5 .5 .5 .3
 		visible 1
 	}

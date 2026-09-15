@@ -52,10 +52,6 @@ void UI_Armory_LoadRosterForCurrentMap( void ) {
 
 //=============================== weapons ===============================
 
-int UI_Armory_WeaponCount( void ) {
-	return armoryRoster.numWeapons;
-}
-
 static gitem_t *UI_Armory_WeaponItem( int index ) {
 	if ( index < 0 || index >= armoryRoster.numWeapons ) {
 		return NULL;
@@ -102,28 +98,88 @@ void UI_Armory_ToggleWeapon( int index ) {
 		armoryWeaponPicked[index] = qfalse;
 		return;
 	}
-	if ( UI_Armory_PointsUsed() + (int)trap_Cvar_VariableValue( "g_loadoutWeaponCost" ) > UI_Armory_PointsTotal() ) {
+	if ( UI_Armory_PointsUsed() + BG_Armory_GetWeaponCost( armoryRoster.weapons[index] ) > UI_Armory_PointsTotal() ) {
 		return;  // over budget, deny
 	}
 	armoryWeaponPicked[index] = qtrue;
 }
 
+// Source-list view: only weapons not already in the build. Raw index stays what Toggle/Picked/etc use.
+static int UI_Armory_RawIndexForAvailableWeapon( int availIndex ) {
+	int i, n = 0;
+
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		if ( !armoryWeaponPicked[i] ) {
+			if ( n == availIndex ) {
+				return i;
+			}
+			n++;
+		}
+	}
+	return -1;
+}
+
+int UI_Armory_AvailableWeaponCount( void ) {
+	int i, n = 0;
+
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		if ( !armoryWeaponPicked[i] ) {
+			n++;
+		}
+	}
+	return n;
+}
+
+const char *UI_Armory_AvailableWeaponName( int availIndex ) {
+	return UI_Armory_WeaponName( UI_Armory_RawIndexForAvailableWeapon( availIndex ) );
+}
+
+qhandle_t UI_Armory_AvailableWeaponIcon( int availIndex ) {
+	return UI_Armory_WeaponIcon( UI_Armory_RawIndexForAvailableWeapon( availIndex ) );
+}
+
+void UI_Armory_SelectAvailableWeapon( int availIndex ) {
+	UI_Armory_SelectWeapon( UI_Armory_RawIndexForAvailableWeapon( availIndex ) );
+}
+
 //============================== equipment ==============================
 
-int UI_Armory_EquipCount( void ) {
-	int count;
+// Maps a compact (post-roster-filter) equip index to its raw index into BG_Armory_GetEquipList()/equipRecommended[].
+static int UI_Armory_RawEquipIndex( int compactIndex ) {
+	int i, n = 0, count;
+
 	BG_Armory_GetEquipList( &count );
-	return count;
+	for ( i = 0; i < count && i < ARMORY_MAX_EQUIP; i++ ) {
+		if ( armoryRoster.equipPresent[i] ) {
+			if ( n == compactIndex ) {
+				return i;
+			}
+			n++;
+		}
+	}
+	return -1;
+}
+
+int UI_Armory_EquipCount( void ) {
+	int i, count, n = 0;
+
+	BG_Armory_GetEquipList( &count );
+	for ( i = 0; i < count && i < ARMORY_MAX_EQUIP; i++ ) {
+		if ( armoryRoster.equipPresent[i] ) {
+			n++;
+		}
+	}
+	return n;
 }
 
 static const armoryEquipDef_t *UI_Armory_EquipDef( int index ) {
-	int count;
+	int count, rawIndex = UI_Armory_RawEquipIndex( index );
 	const armoryEquipDef_t *list = BG_Armory_GetEquipList( &count );
 
-	if ( index < 0 || index >= count ) {
+	if ( rawIndex < 0 ) {
 		return NULL;
 	}
-	return &list[index];
+	return &list[rawIndex];
 }
 
 static const struct { const char *id; const char *key; } armoryEquipKeys[] = {
@@ -131,6 +187,7 @@ static const struct { const char *id; const char *key; } armoryEquipKeys[] = {
 	{ "heavyarmor",     "ARMORY_EQUIP_HEAVYARMOR" },
 	{ "lightweight",    "ARMORY_EQUIP_LIGHTWEIGHT" },
 	{ "tacticalgloves", "ARMORY_EQUIP_TACTICALGLOVES" },
+	{ "grenades",       "ARMORY_EQUIP_GRENADES" },
 };
 
 static char     armoryEquipNames[ARMORY_MAX_EQUIP][64];
@@ -201,15 +258,17 @@ void UI_Armory_ResolveWeaponDescTranslations( void ) {
 }
 
 const char *UI_Armory_EquipName( int index ) {
-	const armoryEquipDef_t *def = UI_Armory_EquipDef( index );
+	int rawIndex = UI_Armory_RawEquipIndex( index );
+	const armoryEquipDef_t *def;
 
-	if ( !def ) {
+	if ( rawIndex < 0 ) {
 		return "";
 	}
-	if ( armoryEquipNamesResolved && index >= 0 && index < ARMORY_MAX_EQUIP ) {
-		return armoryEquipNames[index];
+	if ( armoryEquipNamesResolved ) {
+		return armoryEquipNames[rawIndex];
 	}
-	return def->displayName;
+	def = UI_Armory_EquipDef( index );
+	return def ? def->displayName : "";
 }
 
 qhandle_t UI_Armory_EquipIcon( int index ) {
@@ -246,6 +305,44 @@ void UI_Armory_ToggleEquip( int index ) {
 		return;  // over budget, deny
 	}
 	armoryEquipPicked[index] = qtrue;
+}
+
+// Source-list view: only equip items not already in the build. Present-compact index stays what Toggle/Picked/etc use.
+static int UI_Armory_PresentIndexForAvailableEquip( int availIndex ) {
+	int i, n = 0;
+
+	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
+		if ( !armoryEquipPicked[i] ) {
+			if ( n == availIndex ) {
+				return i;
+			}
+			n++;
+		}
+	}
+	return -1;
+}
+
+int UI_Armory_AvailableEquipCount( void ) {
+	int i, n = 0;
+
+	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
+		if ( !armoryEquipPicked[i] ) {
+			n++;
+		}
+	}
+	return n;
+}
+
+const char *UI_Armory_AvailableEquipName( int availIndex ) {
+	return UI_Armory_EquipName( UI_Armory_PresentIndexForAvailableEquip( availIndex ) );
+}
+
+qhandle_t UI_Armory_AvailableEquipIcon( int availIndex ) {
+	return UI_Armory_EquipIcon( UI_Armory_PresentIndexForAvailableEquip( availIndex ) );
+}
+
+void UI_Armory_SelectAvailableEquip( int availIndex ) {
+	UI_Armory_SelectEquip( UI_Armory_PresentIndexForAvailableEquip( availIndex ) );
 }
 
 //=========================== combined build list ========================
@@ -336,6 +433,12 @@ void UI_Armory_RemoveSelectedBuild( void ) {
 	}
 	UI_Armory_RemoveBuildIndex( selectedBuildIndex );
 	selectedBuildIndex = -1;   // indices shift after a removal, so drop the stale selection
+	selectedWeaponIndex = -1;  // the removed item reappears in the source list at some other position
+	selectedEquipIndex = -1;
+}
+
+int UI_Armory_SelectedBuildIndex( void ) {
+	return selectedBuildIndex;
 }
 
 //================================ points =================================
@@ -346,11 +449,10 @@ int UI_Armory_PointsTotal( void ) {
 
 int UI_Armory_PointsUsed( void ) {
 	int i, used = 0;
-	int weaponCost = (int)trap_Cvar_VariableValue( "g_loadoutWeaponCost" );
 
 	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
 		if ( armoryWeaponPicked[i] ) {
-			used += weaponCost;
+			used += BG_Armory_GetWeaponCost( armoryRoster.weapons[i] );
 		}
 	}
 	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
@@ -425,7 +527,8 @@ void UI_Armory_ApplyRecommended( void ) {
 		}
 	}
 	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
-		if ( armoryRoster.equipRecommended[i] ) {
+		int rawIndex = UI_Armory_RawEquipIndex( i );
+		if ( rawIndex >= 0 && armoryRoster.equipRecommended[rawIndex] ) {
 			UI_Armory_ToggleEquip( i );
 		}
 	}
@@ -436,8 +539,14 @@ void UI_Armory_Randomize( void ) {
 	qboolean candIsWeapon[ARMORY_MAX_ROSTER_WEAPONS + ARMORY_MAX_EQUIP];
 	int numCand = 0;
 	int i, j, equipCount;
+	int targetBudget = UI_Armory_PointsTotal();
 
 	UI_Armory_Reset();
+
+	// about half the time, cap below the full pool so randomize doesn't always max it out
+	if ( rand() % 100 < 50 ) {
+		targetBudget = targetBudget * ( 50 + rand() % 51 ) / 100;
+	}
 
 	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
 		candIsWeapon[numCand] = qtrue;
@@ -467,9 +576,21 @@ void UI_Armory_Randomize( void ) {
 	}
 
 	for ( i = 0; i < numCand; i++ ) {
+		int cost;
+
 		if ( candIsWeapon[i] ) {
+			cost = BG_Armory_GetWeaponCost( armoryRoster.weapons[candIndex[i]] );
+			if ( UI_Armory_PointsUsed() + cost > targetBudget ) {
+				continue;
+			}
 			UI_Armory_ToggleWeapon( candIndex[i] );
 		} else {
+			const armoryEquipDef_t *def = UI_Armory_EquipDef( candIndex[i] );
+
+			cost = def ? BG_Armory_GetEquipCost( def ) : 0;
+			if ( UI_Armory_PointsUsed() + cost > targetBudget ) {
+				continue;
+			}
 			UI_Armory_ToggleEquip( candIndex[i] );
 		}
 	}
@@ -491,11 +612,47 @@ void UI_Armory_SelectEquip( int index ) {
 	selectedEquipIndex = index;
 }
 
+// Inverse of UI_Armory_ResolveBuildIndex - finds a picked item's position in the combined build list.
+static int UI_Armory_BuildIndexForWeapon( int weaponIndex ) {
+	int i, n = 0;
+
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		if ( armoryWeaponPicked[i] ) {
+			if ( i == weaponIndex ) {
+				return n;
+			}
+			n++;
+		}
+	}
+	return -1;
+}
+
+static int UI_Armory_BuildIndexForEquip( int equipIndex ) {
+	int i, n = 0;
+
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		if ( armoryWeaponPicked[i] ) {
+			n++;
+		}
+	}
+	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
+		if ( armoryEquipPicked[i] ) {
+			if ( i == equipIndex ) {
+				return n;
+			}
+			n++;
+		}
+	}
+	return -1;
+}
+
 void UI_Armory_AddSelectedWeapon( void ) {
 	if ( selectedWeaponIndex < 0 || armoryWeaponPicked[selectedWeaponIndex] ) {
 		return;   // nothing selected, or already added - removal only happens via the build list
 	}
 	UI_Armory_ToggleWeapon( selectedWeaponIndex );
+	selectedBuildIndex = UI_Armory_BuildIndexForWeapon( selectedWeaponIndex );   // so Remove works right away
+	selectedWeaponIndex = -1;   // it just left the source list
 }
 
 void UI_Armory_AddSelectedEquip( void ) {
@@ -503,6 +660,8 @@ void UI_Armory_AddSelectedEquip( void ) {
 		return;
 	}
 	UI_Armory_ToggleEquip( selectedEquipIndex );
+	selectedBuildIndex = UI_Armory_BuildIndexForEquip( selectedEquipIndex );
+	selectedEquipIndex = -1;
 }
 
 qhandle_t UI_Armory_SelectedWeaponIcon( void ) {
@@ -523,13 +682,26 @@ const char *UI_Armory_SelectedWeaponDesc( void ) {
 	return armoryWeaponDescs[weaponNum];
 }
 
+qboolean UI_Armory_SelectedWeaponIsWide( void ) {
+	if ( selectedWeaponIndex < 0 || selectedWeaponIndex >= armoryRoster.numWeapons ) {
+		return qfalse;
+	}
+	return BG_Armory_IsWideIcon( armoryRoster.weapons[selectedWeaponIndex] );
+}
+
 qhandle_t UI_Armory_SelectedEquipIcon( void ) {
 	return UI_Armory_EquipIcon( selectedEquipIndex );
 }
 
 const char *UI_Armory_SelectedEquipDesc( void ) {
-	if ( !armoryEquipNamesResolved || selectedEquipIndex < 0 || selectedEquipIndex >= ARMORY_MAX_EQUIP ) {
+	int rawIndex;
+
+	if ( !armoryEquipNamesResolved || selectedEquipIndex < 0 || selectedEquipIndex >= UI_Armory_EquipCount() ) {
 		return "";
 	}
-	return armoryEquipDescs[selectedEquipIndex];
+	rawIndex = UI_Armory_RawEquipIndex( selectedEquipIndex );
+	if ( rawIndex < 0 ) {
+		return "";
+	}
+	return armoryEquipDescs[rawIndex];
 }

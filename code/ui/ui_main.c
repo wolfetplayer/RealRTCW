@@ -1364,25 +1364,62 @@ static void UI_DrawArmoryPoints( rectDef_t *rect, int font, float scale, vec4_t 
 	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
 }
 
-// Big icon on top (no background), description text near the bottom of rect.
-static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle, qhandle_t icon, const char *desc ) {
-	int iconW = 110;
-	int iconH = 56;
+// Big icon on top sized by aspect (no background); iconH must match armory_loadout.menu's descBg gap.
+static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle, qhandle_t icon, const char *desc, qboolean wide ) {
+	int iconH = 48;
+	int iconW = wide ? 94 : iconH;
+	char buff[1024];
+	const char *p, *newLinePtr;
+	int len, newLine, textWidth, lineHeight;
+	float y, maxY;
 
 	if ( icon ) {
 		DC->drawHandlePic( rect->x + ( rect->w - iconW ) / 2, rect->y, iconW, iconH, icon );
 	}
-	if ( desc && desc[0] ) {
-		Text_Paint( rect->x + 4, rect->y + rect->h - 6, font, scale, color, desc, 0, 0, textStyle );
+	if ( !desc || !desc[0] ) {
+		return;
+	}
+
+	lineHeight = Text_Height( "Ag", font, scale, 0 ) + 3;
+	y = rect->y + iconH + lineHeight;
+	maxY = rect->y + rect->h;
+
+	len = 0;
+	buff[0] = '\0';
+	newLine = 0;
+	newLinePtr = desc;
+	p = desc;
+	while ( p ) {
+		if ( *p == ' ' || *p == '\t' || *p == '\n' || *p == '\0' ) {
+			newLine = len;
+			newLinePtr = p + 1;
+		}
+		textWidth = Text_Width( buff, font, scale, 0 );
+		if ( ( newLine && textWidth > rect->w - 4 ) || *p == '\n' || *p == '\0' ) {
+			if ( len && y <= maxY ) {
+				buff[newLine] = '\0';
+				Text_Paint( rect->x + 2, y, font, scale, color, buff, 0, 0, textStyle );
+			}
+			if ( *p == '\0' ) {
+				break;
+			}
+			y += lineHeight;
+			p = newLinePtr;
+			len = 0;
+			newLine = 0;
+			continue;
+		}
+		buff[len++] = *p++;
+		buff[len] = '\0';
 	}
 }
 
 static void UI_DrawArmoryWeaponDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
-	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), UI_Armory_SelectedWeaponDesc() );
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), UI_Armory_SelectedWeaponDesc(), UI_Armory_SelectedWeaponIsWide() );
 }
 
 static void UI_DrawArmoryEquipDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
-	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), UI_Armory_SelectedEquipDesc() );
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), UI_Armory_SelectedEquipDesc(), qfalse );
 }
 
 //----(SA)	added
@@ -4916,23 +4953,36 @@ static void UI_RunMenuScript( char **args ) {
 			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, 0, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryRandomize" ) == 0 ) {
 			UI_Armory_Randomize();
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, -1, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryRecommended" ) == 0 ) {
 			UI_Armory_ApplyRecommended();
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, -1, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryAddWeapon" ) == 0 ) {
 			UI_Armory_AddSelectedWeapon();
+			// sync the build listbox's own highlight to the newly-added item
+			if ( UI_Armory_SelectedBuildIndex() >= 0 ) {
+				Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, UI_Armory_SelectedBuildIndex(), "armory_loadout" );
+			}
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, -1, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryAddEquip" ) == 0 ) {
 			UI_Armory_AddSelectedEquip();
+			if ( UI_Armory_SelectedBuildIndex() >= 0 ) {
+				Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, UI_Armory_SelectedBuildIndex(), "armory_loadout" );
+			}
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryRemoveSelected" ) == 0 ) {
 			UI_Armory_RemoveSelectedBuild();
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryConfirm" ) == 0 ) {
 			char cmd[1024];
 			UI_Armory_BuildConfirmCommand( cmd, sizeof( cmd ) );
 			trap_Cmd_ExecuteText( EXEC_APPEND, cmd );
-			trap_Key_SetCatcher( trap_Key_GetCatcher() & ~KEYCATCH_UI );
-			trap_Key_ClearStates();
-			trap_Cvar_Set( "cl_paused", "0" );
-			Menus_CloseAll();
-		} else if ( Q_stricmp( name, "armoryCancel" ) == 0 ) {
 			trap_Key_SetCatcher( trap_Key_GetCatcher() & ~KEYCATCH_UI );
 			trap_Key_ClearStates();
 			trap_Cvar_Set( "cl_paused", "0" );
@@ -6196,9 +6246,9 @@ static int UI_FeederCount( float feederID ) {
 	}
 	// -NERVE - SMF
 	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
-		return UI_Armory_WeaponCount();
+		return UI_Armory_AvailableWeaponCount();
 	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
-		return UI_Armory_EquipCount();
+		return UI_Armory_AvailableEquipCount();
 	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
 		return UI_Armory_BuildCount();
 	}
@@ -6453,9 +6503,9 @@ static const char *UI_FeederItemText( float feederID, int index, int column, qha
 		}
 	}
 	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
-		return UI_Armory_WeaponName( index );
+		return UI_Armory_AvailableWeaponName( index );
 	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
-		return UI_Armory_EquipName( index );
+		return UI_Armory_AvailableEquipName( index );
 	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
 		return UI_Armory_BuildName( index );
 	}
@@ -6607,9 +6657,9 @@ static void UI_FeederSelection( float feederID, int index ) {
 	}
 	// -NERVE - SMF
 	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
-		UI_Armory_SelectWeapon( index );
+		UI_Armory_SelectAvailableWeapon( index );
 	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
-		UI_Armory_SelectEquip( index );
+		UI_Armory_SelectAvailableEquip( index );
 	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
 		UI_Armory_SelectBuild( index );
 	}

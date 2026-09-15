@@ -205,6 +205,7 @@ vmCvar_t g_loadoutCostFullAmmoBag;
 vmCvar_t g_loadoutCostHeavyArmor;
 vmCvar_t g_loadoutCostLightweightGear;
 vmCvar_t g_loadoutCostTacticalGloves;
+vmCvar_t g_loadoutCostGrenades;
 
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -247,6 +248,7 @@ cvarTable_t gameCvarTable[] = {
 	{&g_loadoutCostHeavyArmor, "g_loadoutCostHeavyArmor", "1", CVAR_ARCHIVE, 0, qfalse},
 	{&g_loadoutCostLightweightGear, "g_loadoutCostLightweightGear", "3", CVAR_ARCHIVE, 0, qfalse},
 	{&g_loadoutCostTacticalGloves, "g_loadoutCostTacticalGloves", "2", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutCostGrenades, "g_loadoutCostGrenades", "1", CVAR_ARCHIVE, 0, qfalse},
 	{&g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

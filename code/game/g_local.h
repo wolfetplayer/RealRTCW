@@ -1196,6 +1196,7 @@ extern vmCvar_t g_loadoutCostFullAmmoBag;
 extern vmCvar_t g_loadoutCostHeavyArmor;
 extern vmCvar_t g_loadoutCostLightweightGear;
 extern vmCvar_t g_loadoutCostTacticalGloves;
+extern vmCvar_t g_loadoutCostGrenades;
 
 extern vmCvar_t g_playerSurvivalClass;
 

@@ -28,3 +28,6 @@ weapon weapon_m1941scope
 
 equip heavyarmor recommended
 equip fullammobag recommended
+equip tacticalgloves
+equip lightweight
+equip grenades

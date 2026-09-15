@@ -41,6 +41,17 @@ static qboolean G_Armory_WeaponInRoster( const armoryRoster_t *roster, int weapo
 	return qfalse;
 }
 
+static qboolean G_Armory_EquipInRoster( const armoryRoster_t *roster, const armoryEquipDef_t *def ) {
+	int count, idx;
+	const armoryEquipDef_t *list = BG_Armory_GetEquipList( &count );
+
+	idx = (int)( def - list );
+	if ( idx < 0 || idx >= count || idx >= ARMORY_MAX_EQUIP ) {
+		return qfalse;
+	}
+	return roster->equipPresent[idx];
+}
+
 // Comma-separated -> space-separated, so COM_ParseExt (splits on whitespace only) can tokenize it.
 static void G_Armory_CommaToSpace( char *s ) {
 	while ( *s ) {
@@ -74,6 +85,7 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 	const armoryEquipDef_t *pickedEquip[ARMORY_MAX_PICKS];
 	int numPickedEquip = 0;
 	qboolean fullAmmoBag = qfalse;
+	qboolean grenadesFull = qfalse;
 
 	int totalCost;
 	int i;
@@ -116,7 +128,7 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 		pickedWeapons[numPickedWeapons++] = item->giTag;
 	}
 
-	// equipment: validate against the fixed 4-entry table
+	// equipment: validate against the fixed 4-entry table, then against what this map's roster actually offers
 	Q_strncpyz( buf, equipArg ? equipArg : "", sizeof( buf ) );
 	G_Armory_CommaToSpace( buf );
 	p = buf;
@@ -132,18 +144,23 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 		}
 
 		def = BG_Armory_FindEquip( tok );
-		if ( !def ) {
+		if ( !def || !G_Armory_EquipInRoster( &roster, def ) ) {
 			continue;
 		}
 
-		if ( def->perkTag < 0 ) {
-			fullAmmoBag = qtrue;    // Full Ammo Bag: no perk, just an ammo-grant flag
+		if ( !Q_stricmp( def->id, "fullammobag" ) ) {
+			fullAmmoBag = qtrue;    // no perk, just an ammo-grant flag - weapons only, not grenades
+		} else if ( !Q_stricmp( def->id, "grenades" ) ) {
+			grenadesFull = qtrue;   // same idea as Full Ammo Bag, but scoped to grenade-type weapons
 		}
 		pickedEquip[numPickedEquip++] = def;
 	}
 
 	// budget: reject the whole thing if over, no partial application
-	totalCost = numPickedWeapons * g_loadoutWeaponCost.integer;
+	totalCost = 0;
+	for ( i = 0; i < numPickedWeapons; i++ ) {
+		totalCost += BG_Armory_GetWeaponCost( pickedWeapons[i] );
+	}
 	for ( i = 0; i < numPickedEquip; i++ ) {
 		totalCost += BG_Armory_GetEquipCost( pickedEquip[i] );
 	}
@@ -160,7 +177,8 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 	for ( i = 0; i < numPickedWeapons; i++ ) {
 		gitem_t *item = BG_FindItemForWeapon( pickedWeapons[i] );
 		int maxAmmo = BG_GetMaxAmmo( &ent->client->ps, pickedWeapons[i], 1.0f );
-		int target = fullAmmoBag ? maxAmmo : maxAmmo / 2;
+		qboolean giveFull = BG_Armory_IsGrenadeWeapon( pickedWeapons[i] ) ? grenadesFull : fullAmmoBag;
+		int target = giveFull ? maxAmmo : maxAmmo / 2;
 		char args[64];
 
 		AICast_ScriptAction_GiveWeapon( cs, item->classname );

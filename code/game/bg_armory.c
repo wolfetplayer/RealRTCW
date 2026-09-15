@@ -34,10 +34,11 @@ static int BG_Armory_CvarInt( const char *var_name ) {
 #define ARMORY_MAX_IF_DEPTH 4
 
 static const armoryEquipDef_t armoryEquipList[] = {
-	{ "fullammobag",    "Full Ammo Bag",     "icons/perk_fullammobag",    -1,                  "g_loadoutCostFullAmmoBag" },
-	{ "heavyarmor",     "Heavy Armor",       "icons/perk_heavyarmor",     PERK_HEAVYARMOR,      "g_loadoutCostHeavyArmor" },
-	{ "lightweight",    "Lightweight Gear",  "icons/perk_lightweight",    PERK_LIGHTWEIGHT,     "g_loadoutCostLightweightGear" },
-	{ "tacticalgloves", "Tactical Gloves",   "icons/perk_tacticalgloves", PERK_TACTICALGLOVES,  "g_loadoutCostTacticalGloves" },
+	{ "fullammobag",    "Full Ammo Bag",       "icons/perk_fullammobag",    -1,                  "g_loadoutCostFullAmmoBag" },
+	{ "heavyarmor",     "Heavy Armor",         "icons/perk_heavyarmor",     PERK_HEAVYARMOR,      "g_loadoutCostHeavyArmor" },
+	{ "lightweight",    "Lightweight Gear",    "icons/perk_lightweight",    PERK_LIGHTWEIGHT,     "g_loadoutCostLightweightGear" },
+	{ "tacticalgloves", "Tactical Gloves",     "icons/perk_tacticalgloves", PERK_TACTICALGLOVES,  "g_loadoutCostTacticalGloves" },
+	{ "grenades",       "Additional Grenades", "icons/perk_grenades",       -1,                  "g_loadoutCostGrenades" },
 };
 #define ARMORY_NUM_EQUIP ( sizeof( armoryEquipList ) / sizeof( armoryEquipList[0] ) )
 
@@ -69,6 +70,28 @@ int BG_Armory_GetEquipCost( const armoryEquipDef_t *def ) {
 	return BG_Armory_CvarInt( def->costCvarName );
 }
 
+int BG_Armory_GetWeaponCost( weapon_t weaponNum ) {
+	int base = BG_Armory_CvarInt( "g_loadoutWeaponCost" );
+
+	switch ( weaponNum ) {
+	case WP_VENOM:
+	case WP_TESLA:
+		return base * 2;
+	default:
+		return base;
+	}
+}
+
+qboolean BG_Armory_IsGrenadeWeapon( weapon_t weaponNum ) {
+	switch ( weaponNum ) {
+	case WP_GRENADE_LAUNCHER:
+	case WP_GRENADE_PINEAPPLE:
+		return qtrue;
+	default:
+		return qfalse;
+	}
+}
+
 /*
 ===============
 BG_Armory_LoadRoster
@@ -92,6 +115,7 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 
 	out->numWeapons = 0;
 	for ( i = 0; i < ARMORY_MAX_EQUIP; i++ ) {
+		out->equipPresent[i] = qfalse;
 		out->equipRecommended[i] = qfalse;
 	}
 
@@ -192,13 +216,13 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 			Q_strncpyz( equipId, COM_ParseExt( &p, qfalse ), sizeof( equipId ) );
 			Q_strncpyz( marker, COM_ParseExt( &p, qfalse ), sizeof( marker ) );
 
-			if ( Q_stricmp( marker, "recommended" ) ) {
-				continue;
-			}
-
+			// listing an equip item at all is what makes it selectable - "recommended" is just an extra marker
 			for ( idx = 0; idx < ARMORY_NUM_EQUIP && idx < ARMORY_MAX_EQUIP; idx++ ) {
 				if ( !Q_stricmp( armoryEquipList[idx].id, equipId ) ) {
-					out->equipRecommended[idx] = qtrue;
+					out->equipPresent[idx] = qtrue;
+					if ( !Q_stricmp( marker, "recommended" ) ) {
+						out->equipRecommended[idx] = qtrue;
+					}
 					break;
 				}
 			}
@@ -312,4 +336,38 @@ qhandle_t BG_Armory_GetWeaponIconFromFile( weapon_t weaponNum ) {
 	trap_PC_FreeSource( handle );
 	return icon;
 #endif
+}
+
+// Same case list as the "wideweap" switch in cg_weapons.c/cg_draw.c, which draws this exact weaponIcon asset.
+qboolean BG_Armory_IsWideIcon( weapon_t weaponNum ) {
+	switch ( weaponNum ) {
+	case WP_THOMPSON:
+	case WP_MP40:
+	case WP_MP34:
+	case WP_PPSH:
+	case WP_MOSIN:
+	case WP_G43:
+	case WP_M1GARAND:
+	case WP_BAR:
+	case WP_M30:
+	case WP_MP44:
+	case WP_MG42M:
+	case WP_M97:
+	case WP_AUTO5:
+	case WP_BROWNING:
+	case WP_STEN:
+	case WP_MAUSER:
+	case WP_DELISLE:
+	case WP_GARAND:
+	case WP_VENOM:
+	case WP_TESLA:
+	case WP_PANZERFAUST:
+	case WP_FLAMETHROWER:
+	case WP_FG42:
+	case WP_FG42SCOPE:
+	case WP_M1941:
+		return qtrue;
+	default:
+		return qfalse;
+	}
 }

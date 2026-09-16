@@ -63,6 +63,31 @@ static void G_Armory_CommaToSpace( char *s ) {
 	}
 }
 
+// Shared by every give path below (roster weapons and weapon-granting equip picks alike).
+static void G_Armory_GrantWeaponWithAmmo( cast_state_t *cs, gentity_t *ent, weapon_t weaponNum, qboolean fullAmmoBag, qboolean grenadesFull ) {
+	gitem_t *item = BG_FindItemForWeapon( weaponNum );
+	int maxAmmo;
+	char args[64];
+
+	if ( !item ) {
+		return;
+	}
+
+	AICast_ScriptAction_GiveWeapon( cs, item->classname );
+
+	maxAmmo = BG_GetMaxAmmo( &ent->client->ps, weaponNum, 1.0f );
+	if ( maxAmmo > 0 ) {
+		qboolean giveFull = BG_Armory_IsGrenadeWeapon( weaponNum ) ? grenadesFull : fullAmmoBag;
+		int target = giveFull ? maxAmmo : maxAmmo / 2;
+
+		Com_sprintf( args, sizeof( args ), "%s %d", item->classname, target );
+		AICast_ScriptAction_SetAmmo( cs, args );
+
+		Com_sprintf( args, sizeof( args ), "%s full", item->classname );
+		AICast_ScriptAction_SetClip( cs, args );
+	}
+}
+
 /*
 ===============
 G_Armory_Confirm
@@ -195,52 +220,22 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 				Com_sprintf( classname, sizeof( classname ), "perk_%s", equipList[ei].id );
 				AICast_ScriptAction_GivePerk( cs, classname );
 			}
+			if ( equipList[ei].weaponTag != WP_NONE ) {
+				G_Armory_GrantWeaponWithAmmo( cs, ent, equipList[ei].weaponTag, fullAmmoBag, grenadesFull );
+			}
 		}
 	}
 
 	// perma weapons: mapper-forced picks, always granted, free of charge
 	for ( i = 0; i < roster.numWeapons; i++ ) {
-		gitem_t *item;
-		int maxAmmo;
-
 		if ( !roster.perma[i] ) {
 			continue;
 		}
-		item = BG_FindItemForWeapon( roster.weapons[i] );
-		if ( !item ) {
-			continue;
-		}
-
-		AICast_ScriptAction_GiveWeapon( cs, item->classname );
-
-		maxAmmo = BG_GetMaxAmmo( &ent->client->ps, roster.weapons[i], 1.0f );
-		if ( maxAmmo > 0 ) {
-			qboolean giveFull = BG_Armory_IsGrenadeWeapon( roster.weapons[i] ) ? grenadesFull : fullAmmoBag;
-			int target = giveFull ? maxAmmo : maxAmmo / 2;
-			char args[64];
-
-			Com_sprintf( args, sizeof( args ), "%s %d", item->classname, target );
-			AICast_ScriptAction_SetAmmo( cs, args );
-
-			Com_sprintf( args, sizeof( args ), "%s full", item->classname );
-			AICast_ScriptAction_SetClip( cs, args );
-		}
+		G_Armory_GrantWeaponWithAmmo( cs, ent, roster.weapons[i], fullAmmoBag, grenadesFull );
 	}
 
 	for ( i = 0; i < numPickedWeapons; i++ ) {
-		gitem_t *item = BG_FindItemForWeapon( pickedWeapons[i] );
-		int maxAmmo = BG_GetMaxAmmo( &ent->client->ps, pickedWeapons[i], 1.0f );
-		qboolean giveFull = BG_Armory_IsGrenadeWeapon( pickedWeapons[i] ) ? grenadesFull : fullAmmoBag;
-		int target = giveFull ? maxAmmo : maxAmmo / 2;
-		char args[64];
-
-		AICast_ScriptAction_GiveWeapon( cs, item->classname );
-
-		Com_sprintf( args, sizeof( args ), "%s %d", item->classname, target );
-		AICast_ScriptAction_SetAmmo( cs, args );
-
-		Com_sprintf( args, sizeof( args ), "%s full", item->classname );
-		AICast_ScriptAction_SetClip( cs, args );
+		G_Armory_GrantWeaponWithAmmo( cs, ent, pickedWeapons[i], fullAmmoBag, grenadesFull );
 	}
 
 	for ( i = 0; i < numPickedEquip; i++ ) {
@@ -249,6 +244,9 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 
 			Com_sprintf( classname, sizeof( classname ), "perk_%s", pickedEquip[i]->id );
 			AICast_ScriptAction_GivePerk( cs, classname );
+		}
+		if ( pickedEquip[i]->weaponTag != WP_NONE ) {
+			G_Armory_GrantWeaponWithAmmo( cs, ent, pickedEquip[i]->weaponTag, fullAmmoBag, grenadesFull );
 		}
 	}
 }

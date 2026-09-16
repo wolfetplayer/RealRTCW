@@ -1198,6 +1198,9 @@ extern vmCvar_t g_loadoutCostLightweightGear;
 extern vmCvar_t g_loadoutCostTacticalGloves;
 extern vmCvar_t g_loadoutCostGrenades;
 extern vmCvar_t g_loadoutCostCamoSuit;
+extern vmCvar_t g_loadoutCostAirstrikeSignal;
+extern vmCvar_t g_loadoutCostGasGrenade;
+extern vmCvar_t g_loadoutCostSmokeGrenade;
 
 extern vmCvar_t g_camoSuitFovScale;
 extern vmCvar_t g_camoSuitRangeScale;

@@ -11,7 +11,7 @@ builder. Stateless: no gentity_t access, no server commands.
 #define __BG_ARMORY_H__
 
 #define ARMORY_MAX_ROSTER_WEAPONS  32
-#define ARMORY_MAX_EQUIP           8   // safe upper bound for fixed local arrays; actual count from BG_Armory_GetEquipList
+#define ARMORY_MAX_EQUIP           12  // safe upper bound for fixed local arrays; actual count from BG_Armory_GetEquipList
 
 // A parsed weapon roster for one hub map: which weapons are selectable.
 typedef struct {
@@ -24,12 +24,13 @@ typedef struct {
 	qboolean equipPerma[ARMORY_MAX_EQUIP];         // "equip <id> perma" flags, indexed same as BG_Armory_GetEquipList()
 } armoryRoster_t;
 
-// One of the 4 fixed equipment/perk items offered in every armory.
+// One of the fixed equipment/perk items offered in every armory.
 typedef struct {
 	const char  *id;            // stable short id (used in the confirm command + UI lookups)
 	const char  *displayName;
 	const char  *icon;
 	int         perkTag;        // perk_t value granted on pick, or -1 (Full Ammo Bag: no perk)
+	int         weaponTag;      // weapon_t granted on pick (with ammo, same as a roster weapon pick), or WP_NONE
 	const char  *costCvarName;  // g_loadoutCost* cvar backing this item's point cost
 } armoryEquipDef_t;
 
@@ -45,7 +46,7 @@ int BG_Armory_GetEquipCost( const armoryEquipDef_t *def );
 // Per-weapon point cost (g_loadoutWeaponCost, doubled for WP_VENOM/WP_TESLA).
 int BG_Armory_GetWeaponCost( weapon_t weaponNum );
 
-// True only for the pineapple grenade and rifle grenade launcher - these ignore Full Ammo Bag, boosted by "grenades" instead.
+// True for grenade-type throwables (pineapple, rifle grenade launcher, airstrike signal, gas/smoke grenade) - these ignore Full Ammo Bag, boosted by "grenades" instead.
 qboolean BG_Armory_IsGrenadeWeapon( weapon_t weaponNum );
 
 // Localized pickup name; falls back to item->pickup_name.

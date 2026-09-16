@@ -19,7 +19,6 @@ weapon weapon_m97
 #if g_fullarsenal == 1
 weapon weapon_m1garand
 weapon weapon_browning
-weapon weapon_poisongas
 weapon weapon_bar
 weapon weapon_mg42m
 #endif
@@ -36,3 +35,6 @@ equip fullammobag recommended
 equip tacticalgloves
 equip lightweight
 equip grenades
+equip camosuit
+equip gasgrenade
+equip smokegrenade

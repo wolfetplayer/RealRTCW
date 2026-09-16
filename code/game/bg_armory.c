@@ -34,12 +34,15 @@ static int BG_Armory_CvarInt( const char *var_name ) {
 #define ARMORY_MAX_IF_DEPTH 4
 
 static const armoryEquipDef_t armoryEquipList[] = {
-	{ "fullammobag",    "Full Ammo Bag",       "icons/perk_fullammobag",    -1,                  "g_loadoutCostFullAmmoBag" },
-	{ "heavyarmor",     "Heavy Armor",         "icons/perk_heavyarmor",     PERK_HEAVYARMOR,      "g_loadoutCostHeavyArmor" },
-	{ "lightweight",    "Lightweight Gear",    "icons/perk_lightweight",    PERK_LIGHTWEIGHT,     "g_loadoutCostLightweightGear" },
-	{ "tacticalgloves", "Tactical Gloves",     "icons/perk_tacticalgloves", PERK_TACTICALGLOVES,  "g_loadoutCostTacticalGloves" },
-	{ "grenades",       "Additional Grenades", "icons/perk_grenades",       -1,                  "g_loadoutCostGrenades" },
-	{ "camosuit",       "Camo Suit",           "icons/perk_camosuit",       PERK_CAMOSUIT,        "g_loadoutCostCamoSuit" },
+	{ "fullammobag",     "Full Ammo Bag",       "icons/perk_fullammobag",     -1,                  WP_NONE,       "g_loadoutCostFullAmmoBag" },
+	{ "heavyarmor",      "Heavy Armor",         "icons/perk_heavyarmor",      PERK_HEAVYARMOR,      WP_NONE,       "g_loadoutCostHeavyArmor" },
+	{ "lightweight",     "Lightweight Gear",    "icons/perk_lightweight",     PERK_LIGHTWEIGHT,     WP_NONE,       "g_loadoutCostLightweightGear" },
+	{ "tacticalgloves",  "Tactical Gloves",     "icons/perk_tacticalgloves",  PERK_TACTICALGLOVES,  WP_NONE,       "g_loadoutCostTacticalGloves" },
+	{ "grenades",        "Additional Grenades", "icons/perk_grenades",        -1,                  WP_NONE,       "g_loadoutCostGrenades" },
+	{ "camosuit",        "Camo Suit",           "icons/perk_camosuit",        PERK_CAMOSUIT,        WP_NONE,       "g_loadoutCostCamoSuit" },
+	{ "airstrikesignal", "Airstrike Signal",    "icons/iconw_smokegrenade_1", -1,                  WP_AIRSTRIKE,  "g_loadoutCostAirstrikeSignal" },
+	{ "gasgrenade",      "Gas Grenade",         "icons/iconw_poisongrenade_1",-1,                  WP_POISONGAS,  "g_loadoutCostGasGrenade" },
+	{ "smokegrenade",    "Smoke Grenade",       "icons/iconw_smokebomb_1",    -1,                  WP_SMOKE_BOMB, "g_loadoutCostSmokeGrenade" },
 };
 #define ARMORY_NUM_EQUIP ( sizeof( armoryEquipList ) / sizeof( armoryEquipList[0] ) )
 
@@ -87,6 +90,9 @@ qboolean BG_Armory_IsGrenadeWeapon( weapon_t weaponNum ) {
 	switch ( weaponNum ) {
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
+	case WP_AIRSTRIKE:
+	case WP_POISONGAS:
+	case WP_SMOKE_BOMB:
 		return qtrue;
 	default:
 		return qfalse;

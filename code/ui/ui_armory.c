@@ -205,8 +205,11 @@ static const struct { const char *id; const char *key; } armoryEquipKeys[] = {
 	{ "heavyarmor",     "ARMORY_EQUIP_HEAVYARMOR" },
 	{ "lightweight",    "ARMORY_EQUIP_LIGHTWEIGHT" },
 	{ "tacticalgloves", "ARMORY_EQUIP_TACTICALGLOVES" },
-	{ "grenades",       "ARMORY_EQUIP_GRENADES" },
-	{ "camosuit",       "ARMORY_EQUIP_CAMOSUIT" },
+	{ "grenades",         "ARMORY_EQUIP_GRENADES" },
+	{ "camosuit",         "ARMORY_EQUIP_CAMOSUIT" },
+	{ "airstrikesignal",  "ARMORY_EQUIP_AIRSTRIKESIGNAL" },
+	{ "gasgrenade",       "ARMORY_EQUIP_GASGRENADE" },
+	{ "smokegrenade",     "ARMORY_EQUIP_SMOKEGRENADE" },
 };
 
 static char     armoryEquipNames[ARMORY_MAX_EQUIP][64];

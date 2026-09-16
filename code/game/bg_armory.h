@@ -54,7 +54,7 @@ const char *BG_Armory_GetPickupName( const gitem_t *item );
 // Icon from the weapon's .weap file; returns 0 if not found.
 qhandle_t BG_Armory_GetWeaponIconFromFile( weapon_t weaponNum );
 
-// True for landscape weaponIcon art (rifles, SMGs, LMGs...); false (square) for pistols, scopes, knife.
+// True for weapons whose weaponIcon art is 128x64 landscape rather than 64x64 square.
 qboolean BG_Armory_IsWideIcon( weapon_t weaponNum );
 
 #endif // __BG_ARMORY_H__

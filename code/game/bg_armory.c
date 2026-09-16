@@ -348,7 +348,7 @@ qhandle_t BG_Armory_GetWeaponIconFromFile( weapon_t weaponNum ) {
 #endif
 }
 
-// Same case list as the "wideweap" switch in cg_weapons.c/cg_draw.c, which draws this exact weaponIcon asset.
+// Superset of cg_weapons.c/cg_draw.c's "wideweap" switch - also covers scope alt-fires and WP_HDM, whose art is 128x64 too.
 qboolean BG_Armory_IsWideIcon( weapon_t weaponNum ) {
 	switch ( weaponNum ) {
 	case WP_THOMPSON:
@@ -376,6 +376,11 @@ qboolean BG_Armory_IsWideIcon( weapon_t weaponNum ) {
 	case WP_FG42:
 	case WP_FG42SCOPE:
 	case WP_M1941:
+	case WP_SNIPERRIFLE:
+	case WP_SNOOPERSCOPE:
+	case WP_DELISLESCOPE:
+	case WP_M1941SCOPE:
+	case WP_HDM:
 		return qtrue;
 	default:
 		return qfalse;

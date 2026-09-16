@@ -1423,9 +1423,9 @@ static const char *UI_ArmoryDescWithPrice( const char *desc, int cost, char *buf
 	}
 	label = TranslateTable_Find( "ARMORY_PRICE_LABEL" );
 	if ( desc && desc[0] ) {
-		Com_sprintf( buf, bufSize, "%s\n\n%s %d", desc, label ? label : "Price:", cost );
+		Com_sprintf( buf, bufSize, "%s\n\n^2%s^7 %d", desc, label ? label : "Price:", cost );
 	} else {
-		Com_sprintf( buf, bufSize, "%s %d", label ? label : "Price:", cost );
+		Com_sprintf( buf, bufSize, "^2%s^7 %d", label ? label : "Price:", cost );
 	}
 	return buf;
 }

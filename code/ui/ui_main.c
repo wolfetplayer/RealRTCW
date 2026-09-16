@@ -1414,12 +1414,32 @@ static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_
 	}
 }
 
+// Appends a translated "Price: N" line below the description; cost < 0 (nothing selected) leaves desc untouched.
+static const char *UI_ArmoryDescWithPrice( const char *desc, int cost, char *buf, int bufSize ) {
+	const char *label;
+
+	if ( cost < 0 ) {
+		return desc;
+	}
+	label = TranslateTable_Find( "ARMORY_PRICE_LABEL" );
+	if ( desc && desc[0] ) {
+		Com_sprintf( buf, bufSize, "%s\n\n%s %d", desc, label ? label : "Price:", cost );
+	} else {
+		Com_sprintf( buf, bufSize, "%s %d", label ? label : "Price:", cost );
+	}
+	return buf;
+}
+
 static void UI_DrawArmoryWeaponDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
-	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), UI_Armory_SelectedWeaponDesc(), UI_Armory_SelectedWeaponIsWide() );
+	char buf[160];
+	const char *desc = UI_ArmoryDescWithPrice( UI_Armory_SelectedWeaponDesc(), UI_Armory_SelectedWeaponCost(), buf, sizeof( buf ) );
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), desc, UI_Armory_SelectedWeaponIsWide() );
 }
 
 static void UI_DrawArmoryEquipDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
-	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), UI_Armory_SelectedEquipDesc(), qfalse );
+	char buf[160];
+	const char *desc = UI_ArmoryDescWithPrice( UI_Armory_SelectedEquipDesc(), UI_Armory_SelectedEquipCost(), buf, sizeof( buf ) );
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), desc, qfalse );
 }
 
 //----(SA)	added

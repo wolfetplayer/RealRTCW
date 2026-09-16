@@ -733,6 +733,14 @@ const char *UI_Armory_SelectedWeaponDesc( void ) {
 	return armoryWeaponDescs[weaponNum];
 }
 
+// Points required to add the currently highlighted weapon to the build; -1 if nothing is selected.
+int UI_Armory_SelectedWeaponCost( void ) {
+	if ( selectedWeaponIndex < 0 || selectedWeaponIndex >= armoryRoster.numWeapons ) {
+		return -1;
+	}
+	return BG_Armory_GetWeaponCost( armoryRoster.weapons[selectedWeaponIndex] );
+}
+
 qboolean UI_Armory_SelectedWeaponIsWide( void ) {
 	if ( selectedWeaponIndex < 0 || selectedWeaponIndex >= armoryRoster.numWeapons ) {
 		return qfalse;
@@ -755,4 +763,15 @@ const char *UI_Armory_SelectedEquipDesc( void ) {
 		return "";
 	}
 	return armoryEquipDescs[rawIndex];
+}
+
+// Points required to add the currently highlighted equipment item to the build; -1 if nothing is selected.
+int UI_Armory_SelectedEquipCost( void ) {
+	const armoryEquipDef_t *def;
+
+	if ( selectedEquipIndex < 0 || selectedEquipIndex >= UI_Armory_EquipCount() ) {
+		return -1;
+	}
+	def = UI_Armory_EquipDef( selectedEquipIndex );
+	return def ? BG_Armory_GetEquipCost( def ) : -1;
 }

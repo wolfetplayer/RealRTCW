@@ -49,9 +49,11 @@ void        UI_Armory_AddSelectedWeapon( void );
 void        UI_Armory_AddSelectedEquip( void );
 qhandle_t   UI_Armory_SelectedWeaponIcon( void );
 const char  *UI_Armory_SelectedWeaponDesc( void );
+int         UI_Armory_SelectedWeaponCost( void );
 qboolean    UI_Armory_SelectedWeaponIsWide( void );
 qhandle_t   UI_Armory_SelectedEquipIcon( void );
 const char  *UI_Armory_SelectedEquipDesc( void );
+int         UI_Armory_SelectedEquipCost( void );
 
 // Combined "current build" list: picked weapons then picked equipment, same select-then-act flow ("-Remove" button).
 int UI_Armory_BuildCount( void );

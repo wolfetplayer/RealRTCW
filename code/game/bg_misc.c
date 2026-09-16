@@ -7390,6 +7390,32 @@ Armory equipment: faster weapon reload for the current chapter
 		{0,0,0,0,0,0}
 	},
 
+/*QUAKED perk_camosuit(.3 .3 1) (-8 -8 -8) (8 8 8) SUSPENDED SPIN - RESPAWN
+Armory equipment: harder for hostile AI to spot for the current chapter
+*/
+	{
+		"perk_camosuit",
+		"sound/pickup/holdable/get_bandages.wav",
+		{
+		"models/powerups/holdable/bandages.md3",
+		0,
+		0
+		},
+
+		"icons/perk_camosuit",
+		"Camo Suit",
+		1,
+		IT_PERK,
+		WP_NONE,
+		PERK_CAMOSUIT,
+		0,
+		0,
+		0,
+		"",
+		"",
+		{0,0,0,0,0,0}
+	},
+
 	// end of list marker
 	{NULL}
 };

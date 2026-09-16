@@ -206,6 +206,11 @@ vmCvar_t g_loadoutCostHeavyArmor;
 vmCvar_t g_loadoutCostLightweightGear;
 vmCvar_t g_loadoutCostTacticalGloves;
 vmCvar_t g_loadoutCostGrenades;
+vmCvar_t g_loadoutCostCamoSuit;
+
+vmCvar_t g_camoSuitFovScale;
+vmCvar_t g_camoSuitRangeScale;
+vmCvar_t g_camoSuitInnerRadiusScale;
 
 cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -249,6 +254,10 @@ cvarTable_t gameCvarTable[] = {
 	{&g_loadoutCostLightweightGear, "g_loadoutCostLightweightGear", "3", CVAR_ARCHIVE, 0, qfalse},
 	{&g_loadoutCostTacticalGloves, "g_loadoutCostTacticalGloves", "2", CVAR_ARCHIVE, 0, qfalse},
 	{&g_loadoutCostGrenades, "g_loadoutCostGrenades", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutCostCamoSuit, "g_loadoutCostCamoSuit", "2", CVAR_ARCHIVE, 0, qfalse},
+	{&g_camoSuitFovScale, "g_camoSuitFovScale", "0.6", CVAR_ARCHIVE, 0, qfalse},
+	{&g_camoSuitRangeScale, "g_camoSuitRangeScale", "0.5", CVAR_ARCHIVE, 0, qfalse},
+	{&g_camoSuitInnerRadiusScale, "g_camoSuitInnerRadiusScale", "0.5", CVAR_ARCHIVE, 0, qfalse},
 	{&g_class, "g_class", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_noobTube, "g_noobTube", "0", CVAR_ARCHIVE, 0, qfalse},
 	{&g_aiCollision, "g_aiCollision", "1", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},

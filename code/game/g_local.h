@@ -1197,6 +1197,11 @@ extern vmCvar_t g_loadoutCostHeavyArmor;
 extern vmCvar_t g_loadoutCostLightweightGear;
 extern vmCvar_t g_loadoutCostTacticalGloves;
 extern vmCvar_t g_loadoutCostGrenades;
+extern vmCvar_t g_loadoutCostCamoSuit;
+
+extern vmCvar_t g_camoSuitFovScale;
+extern vmCvar_t g_camoSuitRangeScale;
+extern vmCvar_t g_camoSuitInnerRadiusScale;
 
 extern vmCvar_t g_playerSurvivalClass;
 

@@ -493,6 +493,7 @@ typedef enum {
 	PERK_HEAVYARMOR,        // armory equipment: raises armor cap to 200 for the current chapter
 	PERK_LIGHTWEIGHT,       // armory equipment: infinite stamina + move speed for the current chapter
 	PERK_TACTICALGLOVES,    // armory equipment: faster reload for the current chapter
+	PERK_CAMOSUIT,          // armory equipment: harder for hostile AI to spot, for the current chapter
 	NUM_PERKS
 } perk_t;
 

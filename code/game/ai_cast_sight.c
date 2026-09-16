@@ -280,6 +280,9 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	// RF, if they were visible last check, then give us a full FOV, since we are aware of them
 	if ( cs->aiState >= AISTATE_ALERT && vis->visible_timestamp == vis->lastcheck_timestamp ) {
 		fov = 360;
+	} else if ( destent->client && destent->client->ps.perks[PERK_CAMOSUIT] && !AICast_SameTeam( cs, ent ) ) {
+		// camo suit: only narrows FOV before AI is already aware (case above)
+		fov *= g_camoSuitFovScale.value;
 	}
 	//calculate middle of bounding box
 	VectorAdd( destent->r.mins, destent->r.maxs, middle );
@@ -322,8 +325,15 @@ qboolean AICast_CheckVisibility( gentity_t *srcent, gentity_t *destent ) {
 	dist = VectorLength( dir );
 	//
 	// alertness is visible range
-	if ( cs->bs && dist > cs->attributes[ALERTNESS] ) {
-		return qfalse;
+	{
+		float sightRange = cs->attributes[ALERTNESS];
+
+		if ( destent->client && destent->client->ps.perks[PERK_CAMOSUIT] && !AICast_SameTeam( cs, ent ) ) {
+			sightRange *= g_camoSuitRangeScale.value;
+		}
+		if ( cs->bs && dist > sightRange ) {
+			return qfalse;
+		}
 	}
 	// check FOV
 	if ( !AICast_InFieldOfVision( viewangles, fov, entangles ) ) {
@@ -417,6 +427,9 @@ void AICast_UpdateVisibility( gentity_t *srcent, gentity_t *destent, qboolean sh
 		idr = cs->attributes[INNER_DETECTION_RADIUS];
 		if ( cs->aiFlags & AIFL_ZOOMING ) {
 			idr *= 10;
+		}
+		if ( destent->client && destent->client->ps.perks[PERK_CAMOSUIT] ) {
+			idr *= g_camoSuitInnerRadiusScale.value;
 		}
 		if ( !( vis->flags & AIVIS_ENEMY ) && VectorDistance( vis->visible_pos, g_entities[cs->entityNum].r.currentOrigin ) < idr ) {
 			// RF, moved them over to AICast_ScanForEnemies()

@@ -39,6 +39,7 @@ static const armoryEquipDef_t armoryEquipList[] = {
 	{ "lightweight",    "Lightweight Gear",    "icons/perk_lightweight",    PERK_LIGHTWEIGHT,     "g_loadoutCostLightweightGear" },
 	{ "tacticalgloves", "Tactical Gloves",     "icons/perk_tacticalgloves", PERK_TACTICALGLOVES,  "g_loadoutCostTacticalGloves" },
 	{ "grenades",       "Additional Grenades", "icons/perk_grenades",       -1,                  "g_loadoutCostGrenades" },
+	{ "camosuit",       "Camo Suit",           "icons/perk_camosuit",       PERK_CAMOSUIT,        "g_loadoutCostCamoSuit" },
 };
 #define ARMORY_NUM_EQUIP ( sizeof( armoryEquipList ) / sizeof( armoryEquipList[0] ) )
 

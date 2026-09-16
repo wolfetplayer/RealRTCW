@@ -4346,8 +4346,14 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 			y = item->window.rect.y + 1;
 			for ( i = listPtr->startPos; i < count; i++ ) {
 				const char *text;
+				vec4_t rowColorBuf;
+				float *rowColor = item->window.foreColor;
 				// always draw at least one
 				// which may overdraw the box if it is too small for the element
+
+				if ( DC->feederItemColor && DC->feederItemColor( item->special, i, rowColorBuf ) ) {
+					rowColor = rowColorBuf;
+				}
 
 				if ( listPtr->numColumns > 0 ) {
 					int j;
@@ -4358,7 +4364,7 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 							int iconH = (int)( listPtr->columnInfo[j].width * 0.6f );
 							DC->drawHandlePic( x + 4 + listPtr->columnInfo[j].pos, y + ( listPtr->elementHeight - iconH ) / 2, listPtr->columnInfo[j].width, iconH, optionalImage );
 						} else if ( text ) {
-							DC->drawText( x + 4 + listPtr->columnInfo[j].pos, y + listPtr->elementHeight, item->font, item->textscale, item->window.foreColor, text, 0, listPtr->columnInfo[j].maxChars, item->textStyle );
+							DC->drawText( x + 4 + listPtr->columnInfo[j].pos, y + listPtr->elementHeight, item->font, item->textscale, rowColor, text, 0, listPtr->columnInfo[j].maxChars, item->textStyle );
 						}
 					}
 				} else {
@@ -4366,7 +4372,7 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 					if ( optionalImage >= 0 ) {
 						//DC->drawHandlePic(x + 4 + listPtr->elementHeight, y, listPtr->columnInfo[j].width, listPtr->columnInfo[j].width, optionalImage);
 					} else if ( text ) {
-						DC->drawText( x + 4, y + listPtr->elementHeight, item->font, item->textscale, item->window.foreColor, text, 0, 0, item->textStyle );
+						DC->drawText( x + 4, y + listPtr->elementHeight, item->font, item->textscale, rowColor, text, 0, 0, item->textStyle );
 					}
 				}
 

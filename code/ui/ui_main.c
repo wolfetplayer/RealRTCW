@@ -6665,6 +6665,16 @@ static void UI_FeederSelection( float feederID, int index ) {
 	}
 }
 
+// Greys out mapper-forced "perma" rows in the armory build list (see ui_armory.c/UI_Armory_BuildIsPerma).
+static qboolean UI_FeederItemColor( float feederID, int index, vec4_t outColor ) {
+	if ( feederID == FEEDER_ARMORY_BUILD && UI_Armory_BuildIsPerma( index ) ) {
+		outColor[0] = outColor[1] = outColor[2] = 0.5f;
+		outColor[3] = 1.0f;
+		return qtrue;
+	}
+	return qfalse;
+}
+
 // TTimo: unused
 /*
 static qboolean Team_Parse(char **p) {
@@ -7291,6 +7301,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	uiInfo.uiDC.getbonusString = &UI_bonusString;
 	uiInfo.uiDC.feederSelection = &UI_FeederSelection;
 	uiInfo.uiDC.feederAddItem = &UI_FeederAddItem;                  // NERVE - SMF
+	uiInfo.uiDC.feederItemColor = &UI_FeederItemColor;
 	uiInfo.uiDC.setBinding = &trap_Key_SetBinding;
 	uiInfo.uiDC.getBindingBuf = &trap_Key_GetBindingBuf;
 	uiInfo.uiDC.keynumToStringBuf = &trap_Key_KeynumToStringBuf;

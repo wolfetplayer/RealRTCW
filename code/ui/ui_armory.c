@@ -23,6 +23,8 @@ static int selectedWeaponIndex = -1;
 static int selectedEquipIndex = -1;
 static int selectedBuildIndex = -1;
 
+static int UI_Armory_RawEquipIndex( int compactIndex );   // defined below; needed by UI_Armory_Reset above it
+
 void UI_Armory_Reset( void ) {
 	int i;
 
@@ -37,6 +39,19 @@ void UI_Armory_Reset( void ) {
 	selectedWeaponIndex = -1;
 	selectedEquipIndex = -1;
 	selectedBuildIndex = -1;
+
+	// perma items are mapper-forced picks: always in the build, regardless of what triggered this reset
+	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
+		if ( armoryRoster.perma[i] ) {
+			armoryWeaponPicked[i] = qtrue;
+		}
+	}
+	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
+		int rawIndex = UI_Armory_RawEquipIndex( i );
+		if ( rawIndex >= 0 && armoryRoster.equipPerma[rawIndex] ) {
+			armoryEquipPicked[i] = qtrue;
+		}
+	}
 }
 
 void UI_Armory_LoadRosterForCurrentMap( void ) {
@@ -93,6 +108,9 @@ qboolean UI_Armory_WeaponPicked( int index ) {
 void UI_Armory_ToggleWeapon( int index ) {
 	if ( index < 0 || index >= armoryRoster.numWeapons ) {
 		return;
+	}
+	if ( armoryRoster.perma[index] ) {
+		return;   // mapper-forced pick: always on, can't be toggled off
 	}
 	if ( armoryWeaponPicked[index] ) {
 		armoryWeaponPicked[index] = qfalse;
@@ -293,9 +311,14 @@ qboolean UI_Armory_EquipPicked( int index ) {
 
 void UI_Armory_ToggleEquip( int index ) {
 	const armoryEquipDef_t *def = UI_Armory_EquipDef( index );
+	int rawIndex;
 
 	if ( !def ) {
 		return;
+	}
+	rawIndex = UI_Armory_RawEquipIndex( index );
+	if ( rawIndex >= 0 && armoryRoster.equipPerma[rawIndex] ) {
+		return;   // mapper-forced pick: always on, can't be toggled off
 	}
 	if ( armoryEquipPicked[index] ) {
 		armoryEquipPicked[index] = qfalse;
@@ -408,9 +431,22 @@ qhandle_t UI_Armory_BuildIcon( int index ) {
 	return UI_Armory_EquipIcon( equipIndex );
 }
 
+qboolean UI_Armory_BuildIsPerma( int index ) {
+	int weaponIndex, equipIndex, rawIndex;
+
+	if ( UI_Armory_ResolveBuildIndex( index, &weaponIndex, &equipIndex ) ) {
+		return weaponIndex >= 0 && armoryRoster.perma[weaponIndex];
+	}
+	rawIndex = UI_Armory_RawEquipIndex( equipIndex );
+	return rawIndex >= 0 && armoryRoster.equipPerma[rawIndex];
+}
+
 void UI_Armory_RemoveBuildIndex( int index ) {
 	int weaponIndex, equipIndex;
 
+	if ( UI_Armory_BuildIsPerma( index ) ) {
+		return;   // mapper-forced pick: not removable
+	}
 	if ( UI_Armory_ResolveBuildIndex( index, &weaponIndex, &equipIndex ) ) {
 		if ( weaponIndex >= 0 ) {
 			armoryWeaponPicked[weaponIndex] = qfalse;
@@ -423,6 +459,9 @@ void UI_Armory_RemoveBuildIndex( int index ) {
 void UI_Armory_SelectBuild( int index ) {
 	if ( index < 0 || index >= UI_Armory_BuildCount() ) {
 		return;
+	}
+	if ( UI_Armory_BuildIsPerma( index ) ) {
+		return;   // mapper-forced pick: not selectable
 	}
 	selectedBuildIndex = index;
 }
@@ -451,14 +490,21 @@ int UI_Armory_PointsUsed( void ) {
 	int i, used = 0;
 
 	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
-		if ( armoryWeaponPicked[i] ) {
+		if ( armoryWeaponPicked[i] && !armoryRoster.perma[i] ) {
 			used += BG_Armory_GetWeaponCost( armoryRoster.weapons[i] );
 		}
 	}
 	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
-		if ( armoryEquipPicked[i] ) {
-			used += BG_Armory_GetEquipCost( UI_Armory_EquipDef( i ) );
+		int rawIndex;
+
+		if ( !armoryEquipPicked[i] ) {
+			continue;
 		}
+		rawIndex = UI_Armory_RawEquipIndex( i );
+		if ( rawIndex >= 0 && armoryRoster.equipPerma[rawIndex] ) {
+			continue;   // free of charge
+		}
+		used += BG_Armory_GetEquipCost( UI_Armory_EquipDef( i ) );
 	}
 	return used;
 }
@@ -478,8 +524,8 @@ void UI_Armory_BuildConfirmCommand( char *out, int outSize ) {
 	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
 		gitem_t *item;
 
-		if ( !armoryWeaponPicked[i] ) {
-			continue;
+		if ( !armoryWeaponPicked[i] || armoryRoster.perma[i] ) {
+			continue;   // perma items are granted server-side unconditionally, not sent as a pick
 		}
 		item = UI_Armory_WeaponItem( i );
 		if ( !item ) {
@@ -495,9 +541,14 @@ void UI_Armory_BuildConfirmCommand( char *out, int outSize ) {
 	first = qtrue;
 	for ( i = 0; i < UI_Armory_EquipCount(); i++ ) {
 		const armoryEquipDef_t *def;
+		int rawIndex;
 
 		if ( !armoryEquipPicked[i] ) {
 			continue;
+		}
+		rawIndex = UI_Armory_RawEquipIndex( i );
+		if ( rawIndex >= 0 && armoryRoster.equipPerma[rawIndex] ) {
+			continue;   // perma items are granted server-side unconditionally, not sent as a pick
 		}
 		def = UI_Armory_EquipDef( i );
 		if ( !def ) {

@@ -1,5 +1,7 @@
-// Weapon roster for this armory - weapon_knife is a baseline grant, not listed here (see g_armory.c)
+// Weapon roster for this armory
 
+weapon weapon_knife perma
+weapon weapon_grenadepineapple perma
 weapon weapon_sten recommended
 weapon weapon_thompson recommended
 weapon weapon_fg42

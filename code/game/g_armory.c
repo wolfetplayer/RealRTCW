@@ -30,12 +30,13 @@ qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params );
 
 #define ARMORY_MAX_PICKS 40
 
+// Perma items are excluded here so a (stale or modified) client can never double-pick/double-charge them.
 static qboolean G_Armory_WeaponInRoster( const armoryRoster_t *roster, int weapon ) {
 	int i;
 
 	for ( i = 0; i < roster->numWeapons; i++ ) {
 		if ( roster->weapons[i] == weapon ) {
-			return qtrue;
+			return !roster->perma[i];
 		}
 	}
 	return qfalse;
@@ -49,7 +50,7 @@ static qboolean G_Armory_EquipInRoster( const armoryRoster_t *roster, const armo
 	if ( idx < 0 || idx >= count || idx >= ARMORY_MAX_EQUIP ) {
 		return qfalse;
 	}
-	return roster->equipPresent[idx];
+	return roster->equipPresent[idx] && !roster->equipPerma[idx];
 }
 
 // Comma-separated -> space-separated, so COM_ParseExt (splits on whitespace only) can tokenize it.
@@ -173,6 +174,58 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 	cs = AICast_GetCastState( ent->s.number );
 
 	AICast_ScriptAction_GiveWeapon( cs, "weapon_knife" );  // baseline, not counted against points
+
+	// perma equip: mapper-forced picks, contribute to the ammo-boost flags exactly like a real pick would
+	{
+		int equipCount, ei;
+		const armoryEquipDef_t *equipList = BG_Armory_GetEquipList( &equipCount );
+
+		for ( ei = 0; ei < equipCount && ei < ARMORY_MAX_EQUIP; ei++ ) {
+			if ( !roster.equipPerma[ei] ) {
+				continue;
+			}
+			if ( !Q_stricmp( equipList[ei].id, "fullammobag" ) ) {
+				fullAmmoBag = qtrue;
+			} else if ( !Q_stricmp( equipList[ei].id, "grenades" ) ) {
+				grenadesFull = qtrue;
+			}
+			if ( equipList[ei].perkTag >= 0 ) {
+				char classname[64];
+
+				Com_sprintf( classname, sizeof( classname ), "perk_%s", equipList[ei].id );
+				AICast_ScriptAction_GivePerk( cs, classname );
+			}
+		}
+	}
+
+	// perma weapons: mapper-forced picks, always granted, free of charge
+	for ( i = 0; i < roster.numWeapons; i++ ) {
+		gitem_t *item;
+		int maxAmmo;
+
+		if ( !roster.perma[i] ) {
+			continue;
+		}
+		item = BG_FindItemForWeapon( roster.weapons[i] );
+		if ( !item ) {
+			continue;
+		}
+
+		AICast_ScriptAction_GiveWeapon( cs, item->classname );
+
+		maxAmmo = BG_GetMaxAmmo( &ent->client->ps, roster.weapons[i], 1.0f );
+		if ( maxAmmo > 0 ) {
+			qboolean giveFull = BG_Armory_IsGrenadeWeapon( roster.weapons[i] ) ? grenadesFull : fullAmmoBag;
+			int target = giveFull ? maxAmmo : maxAmmo / 2;
+			char args[64];
+
+			Com_sprintf( args, sizeof( args ), "%s %d", item->classname, target );
+			AICast_ScriptAction_SetAmmo( cs, args );
+
+			Com_sprintf( args, sizeof( args ), "%s full", item->classname );
+			AICast_ScriptAction_SetClip( cs, args );
+		}
+	}
 
 	for ( i = 0; i < numPickedWeapons; i++ ) {
 		gitem_t *item = BG_FindItemForWeapon( pickedWeapons[i] );

@@ -17,9 +17,11 @@ builder. Stateless: no gentity_t access, no server commands.
 typedef struct {
 	int weapons[ARMORY_MAX_ROSTER_WEAPONS];        // weapon_t values, in file order
 	qboolean recommended[ARMORY_MAX_ROSTER_WEAPONS]; // "weapon <classname> recommended" flag, parallel to weapons[]
+	qboolean perma[ARMORY_MAX_ROSTER_WEAPONS];     // "weapon <classname> perma" flag, parallel to weapons[]
 	int numWeapons;
 	qboolean equipPresent[ARMORY_MAX_EQUIP];       // "equip <id>" was listed at all, indexed same as BG_Armory_GetEquipList()
 	qboolean equipRecommended[ARMORY_MAX_EQUIP];   // "equip <id> recommended" flags, indexed same as BG_Armory_GetEquipList()
+	qboolean equipPerma[ARMORY_MAX_EQUIP];         // "equip <id> perma" flags, indexed same as BG_Armory_GetEquipList()
 } armoryRoster_t;
 
 // One of the 4 fixed equipment/perk items offered in every armory.
@@ -32,6 +34,7 @@ typedef struct {
 } armoryEquipDef_t;
 
 // Reads and parses a roster file; safe to call from game, cgame or ui.
+// "perma" marks an item as mapper-forced: always granted, free, never player-removable.
 qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out );
 
 // Fixed equipment table, not file-driven; costs come from cvars.

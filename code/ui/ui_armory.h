@@ -62,6 +62,9 @@ void        UI_Armory_SelectBuild( int index );
 void        UI_Armory_RemoveSelectedBuild( void );
 int         UI_Armory_SelectedBuildIndex( void );
 
+// True for a mapper-forced "perma" entry: always in the build, greyed out, not selectable/removable/costed.
+qboolean    UI_Armory_BuildIsPerma( int index );
+
 int UI_Armory_PointsTotal( void );
 int UI_Armory_PointsUsed( void );
 

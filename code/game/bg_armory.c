@@ -117,6 +117,7 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 	for ( i = 0; i < ARMORY_MAX_EQUIP; i++ ) {
 		out->equipPresent[i] = qfalse;
 		out->equipRecommended[i] = qfalse;
+		out->equipPerma[i] = qfalse;
 	}
 
 	len = trap_FS_FOpenFile( rosterFile, &f, FS_READ );
@@ -187,6 +188,7 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 			char *savedP;
 			gitem_t *item;
 			qboolean isRecommended;
+			qboolean isPerma;
 
 			Q_strncpyz( classname, COM_ParseExt( &p, qfalse ), sizeof( classname ) );
 
@@ -194,8 +196,13 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 			Q_strncpyz( marker, COM_ParseExt( &p, qfalse ), sizeof( marker ) );
 			if ( !Q_stricmp( marker, "recommended" ) ) {
 				isRecommended = qtrue;
+				isPerma = qfalse;
+			} else if ( !Q_stricmp( marker, "perma" ) ) {
+				isRecommended = qfalse;
+				isPerma = qtrue;
 			} else {
 				isRecommended = qfalse;
+				isPerma = qfalse;
 				p = savedP;   // not a marker for this line - push back for the next loop iteration
 			}
 
@@ -203,6 +210,7 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 
 			if ( item && item->giType == IT_WEAPON && out->numWeapons < ARMORY_MAX_ROSTER_WEAPONS ) {
 				out->recommended[out->numWeapons] = isRecommended;
+				out->perma[out->numWeapons] = isPerma;
 				out->weapons[out->numWeapons++] = item->giTag;
 			}
 			continue;
@@ -216,12 +224,14 @@ qboolean BG_Armory_LoadRoster( const char *rosterFile, armoryRoster_t *out ) {
 			Q_strncpyz( equipId, COM_ParseExt( &p, qfalse ), sizeof( equipId ) );
 			Q_strncpyz( marker, COM_ParseExt( &p, qfalse ), sizeof( marker ) );
 
-			// listing an equip item at all is what makes it selectable - "recommended" is just an extra marker
+			// listing an equip item at all is what makes it selectable - "recommended"/"perma" are extra markers
 			for ( idx = 0; idx < ARMORY_NUM_EQUIP && idx < ARMORY_MAX_EQUIP; idx++ ) {
 				if ( !Q_stricmp( armoryEquipList[idx].id, equipId ) ) {
 					out->equipPresent[idx] = qtrue;
 					if ( !Q_stricmp( marker, "recommended" ) ) {
 						out->equipRecommended[idx] = qtrue;
+					} else if ( !Q_stricmp( marker, "perma" ) ) {
+						out->equipPerma[idx] = qtrue;
 					}
 					break;
 				}

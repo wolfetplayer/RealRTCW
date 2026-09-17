@@ -278,13 +278,13 @@ menuDef {
 		name confirmButton
 		text "@ARMORY_CONFIRM"
 		type ITEM_TYPE_BUTTON
-		rect 235 100 170 66
-		textscale .32
+		rect 235 131 170 47
+		textscale .28
 		style 1
 		border 1
 		bordercolor .5 .5 .5 .5
 		backcolor 0 .3 0 .35
-		textaligny 42
+		textaligny 31
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
 		textalignx 85
@@ -366,16 +366,16 @@ menuDef {
 		name randomizeButton
 		text "@ARMORY_RANDOMIZE"
 		type ITEM_TYPE_BUTTON
-		rect 235 440 83 18
-		textscale .15
+		rect 235 85 170 20
+		textscale .2
 		style 1
 		border 1
 		bordercolor .5 .5 .5 .5
 		backcolor 0 0 .3 .35
-		textaligny 12
+		textaligny 13
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
-		textalignx 41
+		textalignx 85
 		forecolor 1 1 1 1
 		mouseEnter { setitemcolor randomizeButton backcolor 0 0 .5 .45 }
 		mouseExit { setitemcolor randomizeButton backcolor 0 0 .3 .35 }
@@ -387,16 +387,16 @@ menuDef {
 		name recommendedButton
 		text "@ARMORY_RECOMMENDED"
 		type ITEM_TYPE_BUTTON
-		rect 322 440 83 18
-		textscale .13
+		rect 235 108 170 20
+		textscale .2
 		style 1
 		border 1
 		bordercolor .5 .5 .5 .5
 		backcolor .25 .2 0 .35
-		textaligny 12
+		textaligny 13
 		textfont UI_FONT_BIG
 		textalign ITEM_ALIGN_CENTER
-		textalignx 41
+		textalignx 85
 		forecolor 1 1 1 1
 		mouseEnter { setitemcolor recommendedButton backcolor .4 .35 0 .45 }
 		mouseExit { setitemcolor recommendedButton backcolor .25 .2 0 .35 }

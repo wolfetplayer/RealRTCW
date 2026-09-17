@@ -4366,7 +4366,8 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 							int iconH = wide ? (int)( iconW * 0.6f ) : iconW;
 							DC->drawHandlePic( x + 4 + listPtr->columnInfo[j].pos, y + ( listPtr->elementHeight - iconH ) / 2, iconW, iconH, optionalImage );
 						} else if ( text ) {
-							DC->drawText( x + 4 + listPtr->columnInfo[j].pos, y + listPtr->elementHeight, item->font, item->textscale, rowColor, text, 0, listPtr->columnInfo[j].maxChars, item->textStyle );
+							int textH = DC->textHeight( text, item->font, item->textscale, listPtr->columnInfo[j].maxChars );
+							DC->drawText( x + 4 + listPtr->columnInfo[j].pos, y + ( listPtr->elementHeight + textH ) / 2, item->font, item->textscale, rowColor, text, 0, listPtr->columnInfo[j].maxChars, item->textStyle );
 						}
 					}
 				} else {

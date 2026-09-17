@@ -222,7 +222,7 @@ menuDef {
 		textscale .24
 		rect 43 186 167 22
 		textalign ITEM_ALIGN_CENTER
-		textalignx 75
+		textalignx 84
 		textaligny 16
 		forecolor 1 .9 .6 1
 		visible 1
@@ -312,7 +312,7 @@ menuDef {
 		textscale .24
 		rect 238 186 167 22
 		textalign ITEM_ALIGN_CENTER
-		textalignx 75
+		textalignx 84
 		textaligny 16
 		forecolor 1 .9 .6 1
 		visible 1
@@ -444,7 +444,7 @@ menuDef {
 		textscale .24
 		rect 433 186 167 22
 		textalign ITEM_ALIGN_CENTER
-		textalignx 75
+		textalignx 84
 		textaligny 16
 		forecolor 1 .9 .6 1
 		visible 1

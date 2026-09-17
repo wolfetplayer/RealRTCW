@@ -1368,20 +1368,21 @@ static void UI_DrawArmoryPoints( rectDef_t *rect, int font, float scale, vec4_t 
 static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle, qhandle_t icon, const char *desc, qboolean wide ) {
 	int iconH = 48;
 	int iconW = wide ? 94 : iconH;
+	int iconTopMargin = 8; // keeps the icon clear of the column's top border
 	char buff[1024];
 	const char *p, *newLinePtr;
 	int len, newLine, textWidth, lineHeight;
 	float y, maxY;
 
 	if ( icon ) {
-		DC->drawHandlePic( rect->x + ( rect->w - iconW ) / 2, rect->y, iconW, iconH, icon );
+		DC->drawHandlePic( rect->x + ( rect->w - iconW ) / 2, rect->y + iconTopMargin, iconW, iconH, icon );
 	}
 	if ( !desc || !desc[0] ) {
 		return;
 	}
 
 	lineHeight = Text_Height( "Ag", font, scale, 0 ) + 3;
-	y = rect->y + iconH + lineHeight;
+	y = rect->y + iconTopMargin + iconH + lineHeight;
 	maxY = rect->y + rect->h;
 
 	len = 0;

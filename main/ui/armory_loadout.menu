@@ -186,7 +186,7 @@ menuDef {
 
 	itemDef {
 		name weaponsDescBg
-		rect 43 130 167 52
+		rect 43 138 167 44
 		style WINDOW_STYLE_FILLED
 		backcolor .1 .1 .1 .85
 		visible 1
@@ -408,7 +408,7 @@ menuDef {
 
 	itemDef {
 		name equipDescBg
-		rect 433 130 167 52
+		rect 433 138 167 44
 		style WINDOW_STYLE_FILLED
 		backcolor .1 .1 .1 .85
 		visible 1

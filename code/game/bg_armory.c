@@ -41,7 +41,7 @@ static const armoryEquipDef_t armoryEquipList[] = {
 	{ "grenades",        "Additional Grenades", "icons/perk_grenades",        -1,                  WP_NONE,       "g_loadoutCostGrenades" },
 	{ "camosuit",        "Camo Suit",           "icons/perk_camosuit",        PERK_CAMOSUIT,        WP_NONE,       "g_loadoutCostCamoSuit" },
 	{ "airstrikesignal", "Airstrike Signal",    "icons/iconw_smokegrenade_1", -1,                  WP_AIRSTRIKE,  "g_loadoutCostAirstrikeSignal" },
-	{ "gasgrenade",      "Gas Grenade",         "icons/iconw_poisongrenade_1",-1,                  WP_POISONGAS,  "g_loadoutCostGasGrenade" },
+	{ "gasgrenade",      "Gas Grenade",         "icons/iconw_gasgrenade_1",-1,                  WP_POISONGAS,  "g_loadoutCostGasGrenade" },
 	{ "smokegrenade",    "Smoke Grenade",       "icons/iconw_smokebomb_1",    -1,                  WP_SMOKE_BOMB, "g_loadoutCostSmokeGrenade" },
 };
 #define ARMORY_NUM_EQUIP ( sizeof( armoryEquipList ) / sizeof( armoryEquipList[0] ) )

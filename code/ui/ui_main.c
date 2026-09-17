@@ -6523,10 +6523,22 @@ static const char *UI_FeederItemText( float feederID, int index, int column, qha
 		}
 	}
 	else if ( feederID == FEEDER_ARMORY_WEAPONS ) {
+		if ( column == 0 ) {
+			*handle = UI_Armory_AvailableWeaponIcon( index );
+			return "";
+		}
 		return UI_Armory_AvailableWeaponName( index );
 	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
+		if ( column == 0 ) {
+			*handle = UI_Armory_AvailableEquipIcon( index );
+			return "";
+		}
 		return UI_Armory_AvailableEquipName( index );
 	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
+		if ( column == 0 ) {
+			*handle = UI_Armory_BuildIcon( index );
+			return "";
+		}
 		return UI_Armory_BuildName( index );
 	}
 	// NERVE - SMF
@@ -6535,6 +6547,18 @@ static const char *UI_FeederItemText( float feederID, int index, int column, qha
 	}
 	// -NERVE - SMF
 	return "";
+}
+
+
+static qboolean UI_FeederItemIsWide( float feederID, int index ) {
+	if ( feederID == FEEDER_ARMORY_WEAPONS ) {
+		return UI_Armory_AvailableWeaponIsWide( index );
+	} else if ( feederID == FEEDER_ARMORY_EQUIP ) {
+		return qfalse;
+	} else if ( feederID == FEEDER_ARMORY_BUILD ) {
+		return UI_Armory_BuildIconIsWide( index );
+	}
+	return qtrue;
 }
 
 
@@ -7322,6 +7346,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	uiInfo.uiDC.feederSelection = &UI_FeederSelection;
 	uiInfo.uiDC.feederAddItem = &UI_FeederAddItem;                  // NERVE - SMF
 	uiInfo.uiDC.feederItemColor = &UI_FeederItemColor;
+	uiInfo.uiDC.feederItemIsWide = &UI_FeederItemIsWide;
 	uiInfo.uiDC.setBinding = &trap_Key_SetBinding;
 	uiInfo.uiDC.getBindingBuf = &trap_Key_GetBindingBuf;
 	uiInfo.uiDC.keynumToStringBuf = &trap_Key_KeynumToStringBuf;

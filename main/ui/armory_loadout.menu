@@ -25,16 +25,32 @@ menuDef {
 	}
 
 	itemDef {
+		name backgroundGradientTrim
+		rect 20 20 600 440
+		style WINDOW_STYLE_EMPTY
+		border WINDOW_BORDER_KCGRADIENT
+		bordersize 4
+		bordercolor .8 .65 .3 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
 		name title
 		text "@ARMORY_TITLE"
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .3
+		textstyle 6
 		rect 20 32 600 20
 		textalign ITEM_ALIGN_CENTER
 		textalignx 300
 		textaligny 14
 		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor .15 .13 .08 .55
+		border 1
+		bordercolor .6 .55 .35 .5
 		visible 1
 		decoration
 	}
@@ -45,6 +61,7 @@ menuDef {
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .28
+		textstyle 6
 		rect 185 54 165 20
 		textalign ITEM_ALIGN_RIGHT
 		textalignx 165
@@ -60,6 +77,7 @@ menuDef {
 		ownerdraw UI_ARMORY_POINTS
 		textfont UI_FONT_BIG
 		textscale .28
+		textstyle 6
 		rect 355 54 90 20
 		textaligny 15
 		forecolor 1 .85 .3 1
@@ -70,11 +88,33 @@ menuDef {
 	//////////////// column outlines (equal for all three) ////////////////
 
 	itemDef {
+		name weaponsColumnFrame
+		rect 37 79 176 344
+		style WINDOW_STYLE_FILLED
+		backcolor 0 0 0 .85
+		border 1
+		bordercolor .5 .45 .3 .25
+		visible 1
+		decoration
+	}
+
+	itemDef {
 		name weaponsColumnOutline
 		rect 40 82 170 338
 		style WINDOW_STYLE_EMPTY
-		border 2
+		border 1
 		bordercolor .6 .55 .35 .6
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name buildColumnFrame
+		rect 232 79 176 344
+		style WINDOW_STYLE_FILLED
+		backcolor 0 0 0 .85
+		border 1
+		bordercolor .5 .45 .3 .25
 		visible 1
 		decoration
 	}
@@ -83,8 +123,51 @@ menuDef {
 		name buildColumnOutline
 		rect 235 82 170 338
 		style WINDOW_STYLE_EMPTY
-		border 2
+		border 1
 		bordercolor .6 .55 .35 .6
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name flowArrowLeft
+		text ">"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .4
+		textstyle 6
+		rect 208 240 24 20
+		textalign ITEM_ALIGN_CENTER
+		textalignx 12
+		textaligny 14
+		forecolor 1 .8 .3 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name flowArrowRight
+		text "<"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .4
+		textstyle 6
+		rect 405 240 24 20
+		textalign ITEM_ALIGN_CENTER
+		textalignx 12
+		textaligny 14
+		forecolor 1 .8 .3 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name equipColumnFrame
+		rect 427 79 176 344
+		style WINDOW_STYLE_FILLED
+		backcolor 0 0 0 .85
+		border 1
+		bordercolor .5 .45 .3 .25
 		visible 1
 		decoration
 	}
@@ -93,7 +176,7 @@ menuDef {
 		name equipColumnOutline
 		rect 430 82 170 338
 		style WINDOW_STYLE_EMPTY
-		border 2
+		border 1
 		bordercolor .6 .55 .35 .6
 		visible 1
 		decoration
@@ -103,7 +186,7 @@ menuDef {
 
 	itemDef {
 		name weaponsDescBg
-		rect 40 130 170 52
+		rect 43 130 167 52
 		style WINDOW_STYLE_FILLED
 		backcolor .1 .1 .1 .85
 		visible 1
@@ -114,7 +197,7 @@ menuDef {
 		name weaponsDescPanel
 		type ITEM_TYPE_OWNERDRAW
 		ownerdraw UI_ARMORY_WEAPON_DESC
-		rect 40 82 170 100
+		rect 43 82 167 100
 		textfont UI_FONT_BIG
 		textscale .19
 		forecolor .85 .85 .85 1
@@ -124,7 +207,7 @@ menuDef {
 
 	itemDef {
 		name weaponsHeaderBg
-		rect 40 186 170 22
+		rect 43 186 167 22
 		style WINDOW_STYLE_FILLED
 		backcolor .22 .2 .1 .85
 		visible 1
@@ -137,7 +220,7 @@ menuDef {
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .24
-		rect 40 186 170 22
+		rect 43 186 167 22
 		textalign ITEM_ALIGN_CENTER
 		textalignx 75
 		textaligny 16
@@ -148,21 +231,24 @@ menuDef {
 
 	itemDef {
 		name weaponList
-		rect 40 210 170 198
+		rect 43 210 167 198
 		type ITEM_TYPE_LISTBOX
 		style WINDOW_STYLE_FILLED
 		textfont UI_FONT_BIG
-		elementwidth 170
+		elementwidth 167
 		elementheight 22
 		textscale .2
 		elementtype LISTBOX_TEXT
 		feeder FEEDER_ARMORY_WEAPONS
+		columns 2 2 20 1 26 140 24
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor .9 .9 .9 1
 		backcolor .12 .12 .12 .88
-		outlinecolor .5 .5 .5 .3
+		outlinecolor 1 .75 0 .22
 		visible 1
+		mouseEnter { setitemcolor weaponsColumnOutline bordercolor 1 .8 .3 .9 }
+		mouseExit { setitemcolor weaponsColumnOutline bordercolor .6 .55 .35 .6 }
 	}
 
 	itemDef {
@@ -211,7 +297,7 @@ menuDef {
 
 	itemDef {
 		name buildHeaderBg
-		rect 235 186 170 22
+		rect 238 186 167 22
 		style WINDOW_STYLE_FILLED
 		backcolor .22 .2 .1 .85
 		visible 1
@@ -224,7 +310,7 @@ menuDef {
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .24
-		rect 235 186 170 22
+		rect 238 186 167 22
 		textalign ITEM_ALIGN_CENTER
 		textalignx 75
 		textaligny 16
@@ -235,21 +321,24 @@ menuDef {
 
 	itemDef {
 		name buildList
-		rect 235 210 170 198
+		rect 238 210 167 198
 		type ITEM_TYPE_LISTBOX
 		style WINDOW_STYLE_FILLED
 		textfont UI_FONT_BIG
-		elementwidth 170
+		elementwidth 167
 		elementheight 22
 		textscale .2
 		elementtype LISTBOX_TEXT
 		feeder FEEDER_ARMORY_BUILD
+		columns 2 2 20 1 26 140 24
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor 1 .9 .6 1
 		backcolor .12 .12 .12 .88
-		outlinecolor .5 .5 .5 .3
+		outlinecolor 1 .75 0 .22
 		visible 1
+		mouseEnter { setitemcolor buildColumnOutline bordercolor 1 .8 .3 .9 }
+		mouseExit { setitemcolor buildColumnOutline bordercolor .6 .55 .35 .6 }
 	}
 
 	itemDef {
@@ -319,7 +408,7 @@ menuDef {
 
 	itemDef {
 		name equipDescBg
-		rect 430 130 170 52
+		rect 433 130 167 52
 		style WINDOW_STYLE_FILLED
 		backcolor .1 .1 .1 .85
 		visible 1
@@ -330,7 +419,7 @@ menuDef {
 		name equipDescPanel
 		type ITEM_TYPE_OWNERDRAW
 		ownerdraw UI_ARMORY_EQUIP_DESC
-		rect 430 82 170 100
+		rect 433 82 167 100
 		textfont UI_FONT_BIG
 		textscale .19
 		forecolor .85 .85 .85 1
@@ -340,7 +429,7 @@ menuDef {
 
 	itemDef {
 		name equipHeaderBg
-		rect 430 186 170 22
+		rect 433 186 167 22
 		style WINDOW_STYLE_FILLED
 		backcolor .22 .2 .1 .85
 		visible 1
@@ -353,7 +442,7 @@ menuDef {
 		type ITEM_TYPE_TEXT
 		textfont UI_FONT_BIG
 		textscale .24
-		rect 430 186 170 22
+		rect 433 186 167 22
 		textalign ITEM_ALIGN_CENTER
 		textalignx 75
 		textaligny 16
@@ -364,21 +453,24 @@ menuDef {
 
 	itemDef {
 		name equipList
-		rect 430 210 170 198
+		rect 433 210 167 198
 		type ITEM_TYPE_LISTBOX
 		style WINDOW_STYLE_FILLED
 		textfont UI_FONT_BIG
-		elementwidth 170
+		elementwidth 167
 		elementheight 22
 		textscale .2
 		elementtype LISTBOX_TEXT
 		feeder FEEDER_ARMORY_EQUIP
+		columns 2 2 20 1 26 140 24
 		textalign ITEM_ALIGN_LEFT
 		textaligny 14
 		forecolor .9 .9 .9 1
 		backcolor .12 .12 .12 .88
-		outlinecolor .5 .5 .5 .3
+		outlinecolor 1 .75 0 .22
 		visible 1
+		mouseEnter { setitemcolor equipColumnOutline bordercolor 1 .8 .3 .9 }
+		mouseExit { setitemcolor equipColumnOutline bordercolor .6 .55 .35 .6 }
 	}
 
 	itemDef {

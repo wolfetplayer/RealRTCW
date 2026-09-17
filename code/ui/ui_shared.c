@@ -4360,9 +4360,11 @@ void Item_ListBox_Paint( itemDef_t *item ) {
 					for ( j = 0; j < listPtr->numColumns; j++ ) {
 						text = DC->feederItemText( item->special, i, j, &optionalImage );
 						if ( optionalImage >= 0 ) {
-							// weapon icons are landscape (wide) art; a square box crushes them, so draw shorter than wide
-							int iconH = (int)( listPtr->columnInfo[j].width * 0.6f );
-							DC->drawHandlePic( x + 4 + listPtr->columnInfo[j].pos, y + ( listPtr->elementHeight - iconH ) / 2, listPtr->columnInfo[j].width, iconH, optionalImage );
+							// non-wide (square/portrait) art is drawn as a square so it isn't crushed
+							qboolean wide = !DC->feederItemIsWide || DC->feederItemIsWide( item->special, i );
+							int iconW = listPtr->columnInfo[j].width;
+							int iconH = wide ? (int)( iconW * 0.6f ) : iconW;
+							DC->drawHandlePic( x + 4 + listPtr->columnInfo[j].pos, y + ( listPtr->elementHeight - iconH ) / 2, iconW, iconH, optionalImage );
 						} else if ( text ) {
 							DC->drawText( x + 4 + listPtr->columnInfo[j].pos, y + listPtr->elementHeight, item->font, item->textscale, rowColor, text, 0, listPtr->columnInfo[j].maxChars, item->textStyle );
 						}

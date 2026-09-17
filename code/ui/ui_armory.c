@@ -156,6 +156,15 @@ qhandle_t UI_Armory_AvailableWeaponIcon( int availIndex ) {
 	return UI_Armory_WeaponIcon( UI_Armory_RawIndexForAvailableWeapon( availIndex ) );
 }
 
+qboolean UI_Armory_AvailableWeaponIsWide( int availIndex ) {
+	int rawIndex = UI_Armory_RawIndexForAvailableWeapon( availIndex );
+
+	if ( rawIndex < 0 || rawIndex >= armoryRoster.numWeapons ) {
+		return qfalse;
+	}
+	return BG_Armory_IsWideIcon( armoryRoster.weapons[rawIndex] );
+}
+
 void UI_Armory_SelectAvailableWeapon( int availIndex ) {
 	UI_Armory_SelectWeapon( UI_Armory_RawIndexForAvailableWeapon( availIndex ) );
 }
@@ -433,6 +442,16 @@ qhandle_t UI_Armory_BuildIcon( int index ) {
 		return weaponIndex >= 0 ? UI_Armory_WeaponIcon( weaponIndex ) : 0;
 	}
 	return UI_Armory_EquipIcon( equipIndex );
+}
+
+// Equipment icons are always square (see UI_DrawArmoryEquipDesc); only weapon icons can be wide.
+qboolean UI_Armory_BuildIconIsWide( int index ) {
+	int weaponIndex, equipIndex;
+
+	if ( UI_Armory_ResolveBuildIndex( index, &weaponIndex, &equipIndex ) ) {
+		return weaponIndex >= 0 && BG_Armory_IsWideIcon( armoryRoster.weapons[weaponIndex] );
+	}
+	return qfalse;
 }
 
 qboolean UI_Armory_BuildIsPerma( int index ) {

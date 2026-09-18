@@ -219,6 +219,8 @@ static const struct { const char *id; const char *key; } armoryEquipKeys[] = {
 	{ "airstrikesignal",  "ARMORY_EQUIP_AIRSTRIKESIGNAL" },
 	{ "gasgrenade",       "ARMORY_EQUIP_GASGRENADE" },
 	{ "smokegrenade",     "ARMORY_EQUIP_SMOKEGRENADE" },
+	{ "extraknives",      "ARMORY_EQUIP_EXTRAKNIVES" },
+	{ "binoculars",       "ARMORY_EQUIP_BINOCULARS" },
 };
 
 static char     armoryEquipNames[ARMORY_MAX_EQUIP][64];

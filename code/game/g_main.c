@@ -210,6 +210,8 @@ vmCvar_t g_loadoutCostCamoSuit;
 vmCvar_t g_loadoutCostAirstrikeSignal;
 vmCvar_t g_loadoutCostGasGrenade;
 vmCvar_t g_loadoutCostSmokeGrenade;
+vmCvar_t g_loadoutCostExtraKnives;
+vmCvar_t g_loadoutCostBinoculars;
 
 vmCvar_t g_camoSuitFovScale;
 vmCvar_t g_camoSuitRangeScale;
@@ -250,17 +252,19 @@ cvarTable_t gameCvarTable[] = {
 	{&g_dlc1, "g_dlc1", "0", CVAR_ARCHIVE | CVAR_LATCH, 0, qfalse},
 
 	// Armory loadout builder (hub maps) - points budget and per-item costs, easy to retune
-	{&g_loadoutPoints, "g_loadoutPoints", "10", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutWeaponCost, "g_loadoutWeaponCost", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostFullAmmoBag, "g_loadoutCostFullAmmoBag", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostHeavyArmor, "g_loadoutCostHeavyArmor", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostLightweightGear, "g_loadoutCostLightweightGear", "3", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostTacticalGloves, "g_loadoutCostTacticalGloves", "2", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostGrenades, "g_loadoutCostGrenades", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostCamoSuit, "g_loadoutCostCamoSuit", "2", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostAirstrikeSignal, "g_loadoutCostAirstrikeSignal", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostGasGrenade, "g_loadoutCostGasGrenade", "1", CVAR_ARCHIVE, 0, qfalse},
-	{&g_loadoutCostSmokeGrenade, "g_loadoutCostSmokeGrenade", "1", CVAR_ARCHIVE, 0, qfalse},
+	{&g_loadoutPoints, "g_loadoutPoints", "10", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutWeaponCost, "g_loadoutWeaponCost", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostFullAmmoBag, "g_loadoutCostFullAmmoBag", "2", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostHeavyArmor, "g_loadoutCostHeavyArmor", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostLightweightGear, "g_loadoutCostLightweightGear", "3", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostTacticalGloves, "g_loadoutCostTacticalGloves", "2", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostGrenades, "g_loadoutCostGrenades", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostCamoSuit, "g_loadoutCostCamoSuit", "2", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostAirstrikeSignal, "g_loadoutCostAirstrikeSignal", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostGasGrenade, "g_loadoutCostGasGrenade", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostSmokeGrenade, "g_loadoutCostSmokeGrenade", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostExtraKnives, "g_loadoutCostExtraKnives", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
+	{&g_loadoutCostBinoculars, "g_loadoutCostBinoculars", "0", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
 	{&g_camoSuitFovScale, "g_camoSuitFovScale", "0.6", CVAR_ARCHIVE, 0, qfalse},
 	{&g_camoSuitRangeScale, "g_camoSuitRangeScale", "0.5", CVAR_ARCHIVE, 0, qfalse},
 	{&g_camoSuitInnerRadiusScale, "g_camoSuitInnerRadiusScale", "0.5", CVAR_ARCHIVE, 0, qfalse},

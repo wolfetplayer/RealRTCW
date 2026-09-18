@@ -27,8 +27,12 @@ qboolean AICast_ScriptAction_GiveWeapon( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SetAmmo( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_SetClip( cast_state_t *cs, char *params );
 qboolean AICast_ScriptAction_GivePerk( cast_state_t *cs, char *params );
+qboolean AICast_ScriptAction_SetArmor( cast_state_t *cs, char *params );
 
-#define ARMORY_MAX_PICKS 40
+#define ARMORY_MAX_PICKS ARMORY_MAX_ROSTER_WEAPONS
+
+// Baseline throwing-knife count; the "Additional Throwing Knives" equip raises it to the .weap cap instead.
+#define ARMORY_KNIFE_BASE_AMMO 3
 
 // Perma items are excluded here so a (stale or modified) client can never double-pick/double-charge them.
 static qboolean G_Armory_WeaponInRoster( const armoryRoster_t *roster, int weapon ) {
@@ -64,7 +68,7 @@ static void G_Armory_CommaToSpace( char *s ) {
 }
 
 // Shared by every give path below (roster weapons and weapon-granting equip picks alike).
-static void G_Armory_GrantWeaponWithAmmo( cast_state_t *cs, gentity_t *ent, weapon_t weaponNum, qboolean fullAmmoBag, qboolean grenadesFull ) {
+static void G_Armory_GrantWeaponWithAmmo( cast_state_t *cs, gentity_t *ent, weapon_t weaponNum, qboolean fullAmmoBag, qboolean grenadesFull, qboolean extraKnives ) {
 	gitem_t *item = BG_FindItemForWeapon( weaponNum );
 	int maxAmmo;
 	char args[64];
@@ -77,14 +81,43 @@ static void G_Armory_GrantWeaponWithAmmo( cast_state_t *cs, gentity_t *ent, weap
 
 	maxAmmo = BG_GetMaxAmmo( &ent->client->ps, weaponNum, 1.0f );
 	if ( maxAmmo > 0 ) {
-		qboolean giveFull = BG_Armory_IsGrenadeWeapon( weaponNum ) ? grenadesFull : fullAmmoBag;
-		int target = giveFull ? maxAmmo : maxAmmo / 2;
+		int target;
+
+		if ( weaponNum == WP_KNIFE ) {
+			// "Additional Throwing Knives" equip: full (the .weap-defined cap) instead of the baseline count.
+			target = extraKnives ? maxAmmo : ARMORY_KNIFE_BASE_AMMO;
+			if ( target > maxAmmo ) {
+				target = maxAmmo;
+			}
+		} else {
+			qboolean giveFull = BG_Armory_IsGrenadeWeapon( weaponNum ) ? grenadesFull : fullAmmoBag;
+			target = giveFull ? maxAmmo : maxAmmo / 2;
+		}
 
 		Com_sprintf( args, sizeof( args ), "%s %d", item->classname, target );
 		AICast_ScriptAction_SetAmmo( cs, args );
 
 		Com_sprintf( args, sizeof( args ), "%s full", item->classname );
 		AICast_ScriptAction_SetClip( cs, args );
+	}
+}
+
+// Shared by both perk-granting loops below - Heavy Armor also needs an immediate armor grant, not just the raised cap.
+static void G_Armory_GrantPerk( cast_state_t *cs, gentity_t *ent, const armoryEquipDef_t *def ) {
+	char classname[64];
+
+	if ( def->perkTag < 0 ) {
+		return;
+	}
+
+	Com_sprintf( classname, sizeof( classname ), "perk_%s", def->id );
+	AICast_ScriptAction_GivePerk( cs, classname );
+
+	if ( def->perkTag == PERK_HEAVYARMOR ) {
+		char armorArgs[16];
+
+		Com_sprintf( armorArgs, sizeof( armorArgs ), "%d", G_GetArmorCap( ent->client ) );
+		AICast_ScriptAction_SetArmor( cs, armorArgs );
 	}
 }
 
@@ -112,6 +145,8 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 	int numPickedEquip = 0;
 	qboolean fullAmmoBag = qfalse;
 	qboolean grenadesFull = qfalse;
+	qboolean extraKnivesFull = qfalse;
+	qboolean wantBinoculars = qfalse;
 
 	int totalCost;
 	int i;
@@ -178,6 +213,10 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 			fullAmmoBag = qtrue;    // no perk, just an ammo-grant flag - weapons only, not grenades
 		} else if ( !Q_stricmp( def->id, "grenades" ) ) {
 			grenadesFull = qtrue;   // same idea as Full Ammo Bag, but scoped to grenade-type weapons
+		} else if ( !Q_stricmp( def->id, "extraknives" ) ) {
+			extraKnivesFull = qtrue;   // same idea, scoped to the knife's throwing-knife count
+		} else if ( !Q_stricmp( def->id, "binoculars" ) ) {
+			wantBinoculars = qtrue;    // no perk/weapon - grants the INV_BINOCS inventory bit directly
 		}
 		pickedEquip[numPickedEquip++] = def;
 	}
@@ -198,8 +237,6 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 	// grant - applies immediately, no applyloadout/endmap bookkeeping
 	cs = AICast_GetCastState( ent->s.number );
 
-	AICast_ScriptAction_GiveWeapon( cs, "weapon_knife" );  // baseline, not counted against points
-
 	// perma equip: mapper-forced picks, contribute to the ammo-boost flags exactly like a real pick would
 	{
 		int equipCount, ei;
@@ -213,17 +250,20 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 				fullAmmoBag = qtrue;
 			} else if ( !Q_stricmp( equipList[ei].id, "grenades" ) ) {
 				grenadesFull = qtrue;
+			} else if ( !Q_stricmp( equipList[ei].id, "extraknives" ) ) {
+				extraKnivesFull = qtrue;
+			} else if ( !Q_stricmp( equipList[ei].id, "binoculars" ) ) {
+				wantBinoculars = qtrue;
 			}
-			if ( equipList[ei].perkTag >= 0 ) {
-				char classname[64];
-
-				Com_sprintf( classname, sizeof( classname ), "perk_%s", equipList[ei].id );
-				AICast_ScriptAction_GivePerk( cs, classname );
-			}
+			G_Armory_GrantPerk( cs, ent, &equipList[ei] );
 			if ( equipList[ei].weaponTag != WP_NONE ) {
-				G_Armory_GrantWeaponWithAmmo( cs, ent, equipList[ei].weaponTag, fullAmmoBag, grenadesFull );
+				G_Armory_GrantWeaponWithAmmo( cs, ent, equipList[ei].weaponTag, fullAmmoBag, grenadesFull, extraKnivesFull );
 			}
 		}
+	}
+
+	if ( wantBinoculars ) {
+		ent->client->ps.stats[STAT_KEYS] |= ( 1 << INV_BINOCS );
 	}
 
 	// perma weapons: mapper-forced picks, always granted, free of charge
@@ -231,22 +271,17 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 		if ( !roster.perma[i] ) {
 			continue;
 		}
-		G_Armory_GrantWeaponWithAmmo( cs, ent, roster.weapons[i], fullAmmoBag, grenadesFull );
+		G_Armory_GrantWeaponWithAmmo( cs, ent, roster.weapons[i], fullAmmoBag, grenadesFull, extraKnivesFull );
 	}
 
 	for ( i = 0; i < numPickedWeapons; i++ ) {
-		G_Armory_GrantWeaponWithAmmo( cs, ent, pickedWeapons[i], fullAmmoBag, grenadesFull );
+		G_Armory_GrantWeaponWithAmmo( cs, ent, pickedWeapons[i], fullAmmoBag, grenadesFull, extraKnivesFull );
 	}
 
 	for ( i = 0; i < numPickedEquip; i++ ) {
-		if ( pickedEquip[i]->perkTag >= 0 ) {
-			char classname[64];
-
-			Com_sprintf( classname, sizeof( classname ), "perk_%s", pickedEquip[i]->id );
-			AICast_ScriptAction_GivePerk( cs, classname );
-		}
+		G_Armory_GrantPerk( cs, ent, pickedEquip[i] );
 		if ( pickedEquip[i]->weaponTag != WP_NONE ) {
-			G_Armory_GrantWeaponWithAmmo( cs, ent, pickedEquip[i]->weaponTag, fullAmmoBag, grenadesFull );
+			G_Armory_GrantWeaponWithAmmo( cs, ent, pickedEquip[i]->weaponTag, fullAmmoBag, grenadesFull, extraKnivesFull );
 		}
 	}
 }

@@ -40,9 +40,11 @@ static const armoryEquipDef_t armoryEquipList[] = {
 	{ "tacticalgloves",  "Tactical Gloves",     "icons/perk_tacticalgloves",  PERK_TACTICALGLOVES,  WP_NONE,       "g_loadoutCostTacticalGloves" },
 	{ "grenades",        "Additional Grenades", "icons/perk_grenades",        -1,                  WP_NONE,       "g_loadoutCostGrenades" },
 	{ "camosuit",        "Camo Suit",           "icons/perk_camosuit",        PERK_CAMOSUIT,        WP_NONE,       "g_loadoutCostCamoSuit" },
-	{ "airstrikesignal", "Airstrike Signal",    "icons/iconw_smokegrenade_1", -1,                  WP_AIRSTRIKE,  "g_loadoutCostAirstrikeSignal" },
+	{ "airstrikesignal", "Airstrike Signal",    "icons/iconw_airstrike_1", -1,                  WP_AIRSTRIKE,  "g_loadoutCostAirstrikeSignal" },
 	{ "gasgrenade",      "Gas Grenade",         "icons/iconw_gasgrenade_1",-1,                  WP_POISONGAS,  "g_loadoutCostGasGrenade" },
 	{ "smokegrenade",    "Smoke Grenade",       "icons/iconw_smokebomb_1",    -1,                  WP_SMOKE_BOMB, "g_loadoutCostSmokeGrenade" },
+	{ "extraknives",     "Additional Throwing Knives", "icons/iconw_knife_1", -1,             WP_NONE,       "g_loadoutCostExtraKnives" },
+	{ "binoculars",      "Binoculars",          "icons/binocs",               -1,                  WP_NONE,       "g_loadoutCostBinoculars" },
 };
 #define ARMORY_NUM_EQUIP ( sizeof( armoryEquipList ) / sizeof( armoryEquipList[0] ) )
 
@@ -78,6 +80,9 @@ int BG_Armory_GetWeaponCost( weapon_t weaponNum ) {
 	int base = BG_Armory_CvarInt( "g_loadoutWeaponCost" );
 
 	switch ( weaponNum ) {
+	case WP_KNIFE:
+	case WP_GRENADE_PINEAPPLE:
+		return 0;   // always free, independent of the roster's "perma" marker
 	case WP_VENOM:
 	case WP_TESLA:
 		return base * 2;

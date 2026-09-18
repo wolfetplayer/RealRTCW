@@ -10,8 +10,8 @@ builder. Stateless: no gentity_t access, no server commands.
 #ifndef __BG_ARMORY_H__
 #define __BG_ARMORY_H__
 
-#define ARMORY_MAX_ROSTER_WEAPONS  32
-#define ARMORY_MAX_EQUIP           12  // safe upper bound for fixed local arrays; actual count from BG_Armory_GetEquipList
+#define ARMORY_MAX_ROSTER_WEAPONS  64
+#define ARMORY_MAX_EQUIP           32  // safe upper bound for fixed local arrays; actual count from BG_Armory_GetEquipList
 
 // A parsed weapon roster for one hub map: which weapons are selectable.
 typedef struct {

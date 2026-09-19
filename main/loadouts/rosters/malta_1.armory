@@ -28,6 +28,9 @@ weapon weapon_m97
 #if g_dlc1 == 1
 #if g_fullarsenal == 1
 weapon weapon_delisle
+weapon weapon_auto5
+weapon weapon_m1941
+weapon weapon_m1941scope
 #endif
 #endif
 

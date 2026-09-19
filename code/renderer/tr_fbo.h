@@ -32,7 +32,8 @@ typedef struct FBO_s {
 
 	GLuint   frameBuffer;
 
-	struct image_s *colorImage;    // texture attachment
+	struct image_s *colorImage;    // texture attachment, 0 if this FBO uses colorBuffer instead
+	GLuint   colorBuffer;          // multisample color renderbuffer, 0 if this FBO uses colorImage instead
 	GLuint   depthBuffer;          // combined depth/stencil renderbuffer, 0 if none
 
 	int      width;
@@ -43,10 +44,14 @@ extern qboolean fboEnabled;    // r_fbo->integer && glRefConfig.framebufferObjec
 
 FBO_t    *FBO_Create( const char *name, int width, int height );
 void      FBO_AttachImage( FBO_t *fbo, struct image_s *image, GLenum attachment );
-void      FBO_CreateDepthBuffer( FBO_t *fbo, GLenum format );
+void      FBO_CreateColorBuffer( FBO_t *fbo, GLenum format, int samples );
+void      FBO_CreateDepthBuffer( FBO_t *fbo, GLenum format, int samples );
 qboolean  R_CheckFBO( const FBO_t *fbo );
 void      FBO_Bind( FBO_t *fbo );    // NULL binds the real backbuffer
+void      FBO_BindMain( void );      // binds whichever FBO scene rendering should target (msaaFbo if active, else mainFbo)
 void      FBO_FastBlit( const FBO_t *src, const FBO_t *dst, GLbitfield buffers, GLenum filter );
+void      FBO_ResolveMultisample( void );    // no-op unless tr.msaaFbo is active; resolves it into tr.mainFbo
+qboolean  FBO_ReadDepthPixel( int x, int y, float *depth );
 
 void      FBO_Init( void );
 void      FBO_Shutdown( void );

@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 qboolean fboEnabled = qfalse;
 
 static FBO_t *currentFbo = NULL;
+static FBO_t *depthResolveFbo = NULL;    // 1x1 scratch target used by FBO_ReadDepthPixel()
 
 
 /*
@@ -112,21 +113,53 @@ void FBO_AttachImage( FBO_t *fbo, struct image_s *image, GLenum attachment )
 
 /*
 ==============
+FBO_CreateColorBuffer
+
+Attaches a multisample renderbuffer as the color target. Used for tr.msaaFbo,
+which can't use a texture attachment: this renderer's ARB fragment program
+has no way to sample an individual multisample subsample, so the multisample
+image can only ever be read via FBO_ResolveMultisample()'s blit, never bound
+as a texture directly.
+==============
+*/
+void FBO_CreateColorBuffer( FBO_t *fbo, GLenum format, int samples )
+{
+	if ( !fbo->colorBuffer ) {
+		qglGenRenderbuffers( 1, &fbo->colorBuffer );
+	}
+
+	qglBindRenderbuffer( GL_RENDERBUFFER, fbo->colorBuffer );
+	qglRenderbufferStorageMultisample( GL_RENDERBUFFER, samples, format, fbo->width, fbo->height );
+
+	qglBindFramebuffer( GL_FRAMEBUFFER, fbo->frameBuffer );
+	qglFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, fbo->colorBuffer );
+}
+
+
+/*
+==============
 FBO_CreateDepthBuffer
 
 Attaches a renderbuffer as the depth target. GL_DEPTH24_STENCIL8 (or
 GL_DEPTH_STENCIL) additionally binds it as the stencil target, since
 r_shadows/r_measureOverdraw need a working stencil buffer under \r_fbo 1 too.
+
+`samples` > 0 allocates multisample storage instead (for tr.msaaFbo); pass 0
+for an ordinary single-sample depth buffer.
 ==============
 */
-void FBO_CreateDepthBuffer( FBO_t *fbo, GLenum format )
+void FBO_CreateDepthBuffer( FBO_t *fbo, GLenum format, int samples )
 {
 	if ( !fbo->depthBuffer ) {
 		qglGenRenderbuffers( 1, &fbo->depthBuffer );
 	}
 
 	qglBindRenderbuffer( GL_RENDERBUFFER, fbo->depthBuffer );
-	qglRenderbufferStorage( GL_RENDERBUFFER, format, fbo->width, fbo->height );
+	if ( samples > 0 ) {
+		qglRenderbufferStorageMultisample( GL_RENDERBUFFER, samples, format, fbo->width, fbo->height );
+	} else {
+		qglRenderbufferStorage( GL_RENDERBUFFER, format, fbo->width, fbo->height );
+	}
 
 	qglBindFramebuffer( GL_FRAMEBUFFER, fbo->frameBuffer );
 	qglFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo->depthBuffer );
@@ -196,6 +229,102 @@ void FBO_Bind( FBO_t *fbo )
 
 /*
 ==============
+FBO_BindMain
+
+Binds whichever FBO scene rendering should target: tr.msaaFbo when
+multisampling is active, otherwise tr.mainFbo directly.
+==============
+*/
+void FBO_BindMain( void )
+{
+	FBO_Bind( tr.msaaFbo ? tr.msaaFbo : tr.mainFbo );
+}
+
+
+/*
+==============
+FBO_ResolveMultisample
+
+Resolves tr.msaaFbo down into tr.mainFbo's single-sample color/depth/stencil
+storage. No-op if multisampling isn't active. Must be called before anything
+reads back a "finished frame" from tr.mainFbo -- FBO_PostProcess()'s gamma
+pass, screenshots, video capture, r_measureOverdraw's stencil readback --
+since none of those can read directly from a multisample-backed framebuffer.
+
+Leaves tr.mainFbo bound on exit.
+==============
+*/
+void FBO_ResolveMultisample( void )
+{
+	if ( !tr.msaaFbo ) {
+		return;
+	}
+
+	qglBindFramebuffer( GL_READ_FRAMEBUFFER, tr.msaaFbo->frameBuffer );
+	qglBindFramebuffer( GL_DRAW_FRAMEBUFFER, tr.mainFbo->frameBuffer );
+
+	qglScissor( 0, 0, tr.mainFbo->width, tr.mainFbo->height );
+
+	qglBlitFramebuffer( 0, 0, tr.msaaFbo->width, tr.msaaFbo->height,
+		0, 0, tr.mainFbo->width, tr.mainFbo->height,
+		GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST );
+
+	qglBindFramebuffer( GL_FRAMEBUFFER, tr.mainFbo->frameBuffer );
+	currentFbo = tr.mainFbo;
+}
+
+
+/*
+==============
+FBO_ReadDepthPixel
+
+Single-texel substitute for qglReadPixels( ..., GL_DEPTH_COMPONENT, ... ) that
+works while tr.msaaFbo is the bound framebuffer (RB_TestFlare's mid-frame
+corona occlusion test) -- reading directly from a multisample-backed
+framebuffer is invalid per spec. Blits just the requested texel into a
+1x1 single-sample scratch FBO and reads that back instead.
+
+Returns qfalse without touching *depth if multisampling isn't active, so the
+caller can fall back to an ordinary glReadPixels; leaves tr.msaaFbo bound
+on exit either way.
+==============
+*/
+qboolean FBO_ReadDepthPixel( int x, int y, float *depth )
+{
+	GLint prevScissor[4];
+
+	if ( !tr.msaaFbo ) {
+		return qfalse;
+	}
+
+	if ( !depthResolveFbo ) {
+		depthResolveFbo = FBO_Create( "_msaaDepthResolve", 1, 1 );
+		FBO_CreateDepthBuffer( depthResolveFbo, GL_DEPTH24_STENCIL8, 0 );
+	}
+
+	// unlike FBO_ResolveMultisample() (called only at frame end), this runs mid-frame,
+	// so the scissor rect has to be restored afterward for the rest of the frame's draws
+	qglGetIntegerv( GL_SCISSOR_BOX, prevScissor );
+	qglScissor( 0, 0, 1, 1 );
+
+	qglBindFramebuffer( GL_READ_FRAMEBUFFER, tr.msaaFbo->frameBuffer );
+	qglBindFramebuffer( GL_DRAW_FRAMEBUFFER, depthResolveFbo->frameBuffer );
+	qglBlitFramebuffer( x, y, x + 1, y + 1, 0, 0, 1, 1, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
+
+	qglBindFramebuffer( GL_READ_FRAMEBUFFER, depthResolveFbo->frameBuffer );
+	qglReadPixels( 0, 0, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, depth );
+
+	qglScissor( prevScissor[0], prevScissor[1], prevScissor[2], prevScissor[3] );
+
+	qglBindFramebuffer( GL_FRAMEBUFFER, tr.msaaFbo->frameBuffer );
+	currentFbo = tr.msaaFbo;
+
+	return qtrue;
+}
+
+
+/*
+==============
 FBO_FastBlit
 ==============
 */
@@ -236,6 +365,10 @@ static void FBO_Delete( FBO_t *fbo )
 		qglDeleteTextures( 1, &( (image_t *)fbo->colorImage )->texnum );
 		fbo->colorImage = NULL;
 	}
+	if ( fbo->colorBuffer ) {
+		qglDeleteRenderbuffers( 1, &fbo->colorBuffer );
+		fbo->colorBuffer = 0;
+	}
 	if ( fbo->depthBuffer ) {
 		qglDeleteRenderbuffers( 1, &fbo->depthBuffer );
 		fbo->depthBuffer = 0;
@@ -255,12 +388,14 @@ FBO_Init
 void FBO_Init( void )
 {
 	int width, height;
+	int samples;
 	image_t *colorImage;
 
 	ri.Printf( PRINT_ALL, "------- FBO_Init -------\n" );
 
 	fboEnabled = qfalse;
 	tr.mainFbo = NULL;
+	tr.msaaFbo = NULL;
 	currentFbo = NULL;
 
 	if ( !glRefConfig.framebufferObject ) {
@@ -278,7 +413,7 @@ void FBO_Init( void )
 
 	tr.mainFbo = FBO_Create( "_main", width, height );
 	FBO_AttachImage( tr.mainFbo, colorImage, GL_COLOR_ATTACHMENT0 );
-	FBO_CreateDepthBuffer( tr.mainFbo, GL_DEPTH24_STENCIL8 );
+	FBO_CreateDepthBuffer( tr.mainFbo, GL_DEPTH24_STENCIL8, 0 );
 
 	if ( !R_CheckFBO( tr.mainFbo ) ) {
 		ri.Printf( PRINT_WARNING, "WARNING: main FBO incomplete, disabling \\r_fbo\n" );
@@ -289,9 +424,29 @@ void FBO_Init( void )
 
 	fboEnabled = qtrue;
 
+	samples = 0;
+	if ( glRefConfig.framebufferMultisample && r_ext_multisample->integer > 0 ) {
+		GLint maxSamples = 0;
+
+		qglGetIntegerv( GL_MAX_SAMPLES, &maxSamples );
+		samples = ( r_ext_multisample->integer > maxSamples ) ? maxSamples : r_ext_multisample->integer;
+	}
+
+	if ( samples > 1 ) {
+		tr.msaaFbo = FBO_Create( "_msaa", width, height );
+		FBO_CreateColorBuffer( tr.msaaFbo, GL_RGBA8, samples );
+		FBO_CreateDepthBuffer( tr.msaaFbo, GL_DEPTH24_STENCIL8, samples );
+
+		if ( !R_CheckFBO( tr.msaaFbo ) ) {
+			ri.Printf( PRINT_WARNING, "WARNING: multisample FBO incomplete, disabling \\r_ext_multisample\n" );
+			FBO_Delete( tr.msaaFbo );
+			tr.msaaFbo = NULL;
+		}
+	}
+
 	ARB_InitPrograms();
 
-	FBO_Bind( tr.mainFbo );
+	FBO_BindMain();
 }
 
 
@@ -311,6 +466,12 @@ void FBO_Shutdown( void )
 	ARB_ShutdownPrograms();
 
 	FBO_Bind( NULL );
+
+	FBO_Delete( depthResolveFbo );
+	depthResolveFbo = NULL;
+
+	FBO_Delete( tr.msaaFbo );
+	tr.msaaFbo = NULL;
 
 	FBO_Delete( tr.mainFbo );
 	tr.mainFbo = NULL;
@@ -334,5 +495,8 @@ void R_FBOList_f( void )
 	ri.Printf( PRINT_ALL, "             size       name\n" );
 	ri.Printf( PRINT_ALL, "----------------------------------------------------------\n" );
 	ri.Printf( PRINT_ALL, "  %4i %4i  %s\n", tr.mainFbo->width, tr.mainFbo->height, tr.mainFbo->name );
-	ri.Printf( PRINT_ALL, " 1 FBO\n" );
+	if ( tr.msaaFbo ) {
+		ri.Printf( PRINT_ALL, "  %4i %4i  %s\n", tr.msaaFbo->width, tr.msaaFbo->height, tr.msaaFbo->name );
+	}
+	ri.Printf( PRINT_ALL, " %i FBO%s\n", tr.msaaFbo ? 2 : 1, tr.msaaFbo ? "s" : "" );
 }

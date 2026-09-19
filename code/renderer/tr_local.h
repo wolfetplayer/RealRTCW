@@ -1199,6 +1199,7 @@ typedef struct {
 	image_t                 *identityLightImage;    // full of tr.identityLightByte
 
 	FBO_t                   *mainFbo;               // offscreen render target when \r_fbo 1, see tr_fbo.c
+	FBO_t                   *msaaFbo;               // multisample render target backing mainFbo when \r_ext_multisample > 1, see tr_fbo.c
 
 	shader_t                *defaultShader;
 	shader_t                *shadowShader;

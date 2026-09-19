@@ -690,6 +690,10 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 	stencilBits = r_stencilbits->value;
 	samples = r_ext_multisample->value;
 
+	if ( r_fbo->integer ) {
+		samples = 0;
+	}
+
 	for (i = 0; i < 16; i++)
 	{
 		int testColorBits, testDepthBits, testStencilBits;

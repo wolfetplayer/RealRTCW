@@ -359,9 +359,11 @@ void RB_TestFlare( flare_t *f ) {
 #ifdef USE_OPENGLES
 	screenZ = 0;
 #else
-	qglReadPixels( f->windowX, f->windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
+	if ( !FBO_ReadDepthPixel( f->windowX, f->windowY, &depth ) ) {
+		qglReadPixels( f->windowX, f->windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
+	}
 
-	screenZ = backEnd.viewParms.projectionMatrix[14] / 
+	screenZ = backEnd.viewParms.projectionMatrix[14] /
 		( ( 2*depth - 1 ) * backEnd.viewParms.projectionMatrix[11] - backEnd.viewParms.projectionMatrix[10] );
 #endif
 

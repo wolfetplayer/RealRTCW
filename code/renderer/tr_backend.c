@@ -1633,6 +1633,10 @@ const void  *RB_SwapBuffers( const void *data ) {
 
 	cmd = (const swapBuffersCommand_t *)data;
 
+	if ( fboEnabled ) {
+		FBO_ResolveMultisample();
+	}
+
 	// we measure overdraw by reading back the stencil buffer and
 	// counting up the number of increments that have happened
 #ifndef USE_OPENGLES
@@ -1668,7 +1672,7 @@ const void  *RB_SwapBuffers( const void *data ) {
 	GLimp_EndFrame();
 
 	if ( fboEnabled ) {
-		FBO_Bind( tr.mainFbo );
+		FBO_BindMain();
 	}
 
 	backEnd.projection2D = qfalse;

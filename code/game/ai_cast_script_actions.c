@@ -2396,6 +2396,69 @@ qboolean AICast_ScriptAction_TakeWeapon( cast_state_t *cs, char *params ) {
 	return qtrue;
 }
 
+/*
+=================
+AICast_ScriptAction_SuspendWeapons
+
+  syntax: suspendweapons
+=================
+*/
+qboolean AICast_ScriptAction_SuspendWeapons( cast_state_t *cs, char *params ) {
+	gentity_t *ent = &g_entities[cs->entityNum];
+	gclient_t *client = ent->client;
+
+	if ( !client || client->rangeLoadoutSuspended ) {
+		return qtrue;	// already suspended - don't clobber the real snapshot on a retrigger
+	}
+
+	client->rangeSavedWeapon = client->ps.weapon;
+	memcpy( client->rangeSavedWeapons, client->ps.weapons, sizeof( client->rangeSavedWeapons ) );
+	memcpy( client->rangeSavedAmmo, client->ps.ammo, sizeof( client->rangeSavedAmmo ) );
+	memcpy( client->rangeSavedAmmoClip, client->ps.ammoclip, sizeof( client->rangeSavedAmmoClip ) );
+	memcpy( client->rangeSavedHoldable, client->ps.holdable, sizeof( client->rangeSavedHoldable ) );
+	client->rangeLoadoutSuspended = qtrue;
+
+	memset( client->ps.weapons, 0, sizeof( client->ps.weapons ) );
+	memset( client->ps.ammo, 0, sizeof( client->ps.ammo ) );
+	memset( client->ps.ammoclip, 0, sizeof( client->ps.ammoclip ) );
+	memset( client->ps.holdable, 0, sizeof( client->ps.holdable ) );
+	if ( cs->bs ) {
+		cs->weaponNum = WP_NONE;
+	} else {
+		client->ps.weapon = WP_NONE;
+	}
+
+	return qtrue;
+}
+
+/*
+=================
+AICast_ScriptAction_RestoreWeapons
+
+  syntax: restoreweapons
+=================
+*/
+qboolean AICast_ScriptAction_RestoreWeapons( cast_state_t *cs, char *params ) {
+	gentity_t *ent = &g_entities[cs->entityNum];
+	gclient_t *client = ent->client;
+
+	if ( !client || !client->rangeLoadoutSuspended ) {
+		return qtrue;	// nothing suspended - safe no-op (e.g. called defensively from playerstart)
+	}
+
+	memcpy( client->ps.weapons, client->rangeSavedWeapons, sizeof( client->ps.weapons ) );
+	memcpy( client->ps.ammo, client->rangeSavedAmmo, sizeof( client->ps.ammo ) );
+	memcpy( client->ps.ammoclip, client->rangeSavedAmmoClip, sizeof( client->ps.ammoclip ) );
+	memcpy( client->ps.holdable, client->rangeSavedHoldable, sizeof( client->ps.holdable ) );
+	if ( cs->bs ) {
+		cs->weaponNum = client->rangeSavedWeapon;
+	} else {
+		client->ps.weapon = client->rangeSavedWeapon;
+	}
+	client->rangeLoadoutSuspended = qfalse;
+
+	return qtrue;
+}
 
 /*
 ==============

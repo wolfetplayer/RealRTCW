@@ -652,9 +652,10 @@ void ReadClient( fileHandle_t f, gclient_t *client, int size ) {
 	client->pers.weaponWheelOpen = qfalse;
 
 	// never resume a savegame with the weapon holstered - bring one back out.
-	// (Saves written before this field existed simply don't set it; clear it defensively.)
+	// same story for rangeLoadoutSuspended - no valid snapshot exists in an old save.
 	if ( size < (int)sizeof( gclient_t ) ) {
 		client->holstered = qfalse;
+		client->rangeLoadoutSuspended = qfalse;
 	}
 	if ( client->holstered ) {
 		client->holstered = qfalse;

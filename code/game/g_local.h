@@ -651,6 +651,13 @@ struct gclient_s {
 	qboolean hasPurchased;
 
 	qboolean holstered;            // weapon put away via the "holster" command (kept at struct end for savegame compat)
+
+	qboolean rangeLoadoutSuspended;         // qtrue while the real loadout below is stashed away
+	int rangeSavedWeapon;                   // ps.weapon at suspend time
+	int rangeSavedWeapons[MAX_WEAPONS / ( sizeof( int ) * 8 )];
+	int rangeSavedAmmo[MAX_WEAPONS];
+	int rangeSavedAmmoClip[MAX_WEAPONS];
+	int rangeSavedHoldable[MAX_HOLDABLE];
 };
 
 

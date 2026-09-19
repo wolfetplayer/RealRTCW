@@ -210,8 +210,6 @@ vmCvar_t g_loadoutCostCamoSuit;
 vmCvar_t g_loadoutCostAirstrikeSignal;
 vmCvar_t g_loadoutCostGasGrenade;
 vmCvar_t g_loadoutCostSmokeGrenade;
-vmCvar_t g_loadoutCostExtraKnives;
-vmCvar_t g_loadoutCostBinoculars;
 
 vmCvar_t g_camoSuitFovScale;
 vmCvar_t g_camoSuitRangeScale;
@@ -263,8 +261,6 @@ cvarTable_t gameCvarTable[] = {
 	{&g_loadoutCostAirstrikeSignal, "g_loadoutCostAirstrikeSignal", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
 	{&g_loadoutCostGasGrenade, "g_loadoutCostGasGrenade", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
 	{&g_loadoutCostSmokeGrenade, "g_loadoutCostSmokeGrenade", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
-	{&g_loadoutCostExtraKnives, "g_loadoutCostExtraKnives", "1", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
-	{&g_loadoutCostBinoculars, "g_loadoutCostBinoculars", "0", CVAR_ARCHIVE | CVAR_CHEAT, 0, qfalse},
 	{&g_camoSuitFovScale, "g_camoSuitFovScale", "0.6", CVAR_ARCHIVE, 0, qfalse},
 	{&g_camoSuitRangeScale, "g_camoSuitRangeScale", "0.5", CVAR_ARCHIVE, 0, qfalse},
 	{&g_camoSuitInnerRadiusScale, "g_camoSuitInnerRadiusScale", "0.5", CVAR_ARCHIVE, 0, qfalse},

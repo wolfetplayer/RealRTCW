@@ -1,6 +1,5 @@
 // Weapon roster for this armory
 
-weapon weapon_knife recommended
 weapon weapon_grenadepineapple recommended
 
 weapon weapon_silencer
@@ -42,5 +41,3 @@ equip grenades
 equip camosuit recommended
 equip gasgrenade
 equip smokegrenade
-equip extraknives recommended
-equip binoculars recommended

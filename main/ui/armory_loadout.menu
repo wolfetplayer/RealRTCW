@@ -291,7 +291,7 @@ menuDef {
 		forecolor 1 1 1 1
 		mouseEnter { setitemcolor confirmButton backcolor 0 .5 0 .45 }
 		mouseExit { setitemcolor confirmButton backcolor 0 .3 0 .35 }
-		action { play "sound/misc/kcaction.wav" ; uiScript armoryConfirm }
+		action { play "sound/pickup/armor/body_pickup.wav" ; uiScript armoryConfirm }
 		visible 1
 	}
 

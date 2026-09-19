@@ -612,6 +612,7 @@ const void *RB_TakeScreenshotCmd( const void *data ) {
 	cmd = (const screenshotCommand_t *)data;
 
 	if ( fboEnabled ) {
+		FBO_ResolveMultisample();
 		FBO_PostProcess();
 	}
 
@@ -621,7 +622,7 @@ const void *RB_TakeScreenshotCmd( const void *data ) {
 		RB_TakeScreenshot( cmd->x, cmd->y, cmd->width, cmd->height, cmd->fileName);
 
 	if ( fboEnabled ) {
-		FBO_Bind( tr.mainFbo );
+		FBO_BindMain();
 	}
 
 	return (const void *)(cmd + 1);
@@ -724,6 +725,7 @@ void R_LevelShot( void ) {
 	Com_sprintf(checkname, sizeof(checkname), "levelshots/%s.tga", tr.world->baseName);
 
 	if ( fboEnabled ) {
+		FBO_ResolveMultisample();
 		FBO_PostProcess();
 	}
 
@@ -731,7 +733,7 @@ void R_LevelShot( void ) {
 	source = allsource + offset;
 
 	if ( fboEnabled ) {
-		FBO_Bind( tr.mainFbo );
+		FBO_BindMain();
 	}
 
 	buffer = ri.Hunk_AllocateTempMemory(128 * 128*3 + 18);
@@ -923,9 +925,17 @@ const void *RB_TakeVideoFrameCmd( const void *data )
 	avipadlen = avipadwidth - linelen;
 
 	cBuf = PADP(cmd->captureBuffer, packAlign);
-		
+
+	if ( fboEnabled ) {
+		FBO_ResolveMultisample();
+	}
+
 	qglReadPixels(0, 0, cmd->width, cmd->height, GL_RGB,
 		GL_UNSIGNED_BYTE, cBuf);
+
+	if ( fboEnabled ) {
+		FBO_BindMain();
+	}
 
 	memcount = padwidth * cmd->height;
 

@@ -31,5 +31,7 @@
 
 	loadMenu { "ui/armory_loadout.menu" }	// Hub armory loadout builder
 
+	loadMenu { "ui/cardgame.menu" }		// Malta hub War card mini-game
+
 
 }

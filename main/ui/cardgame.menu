@@ -1,0 +1,485 @@
+#include "ui/menudef.h"
+{
+
+menuDef {
+	name "cardgame"
+	visible 0
+	fullscreen 0
+	rect 0 0 640 480
+	focusColor 1 .75 0 1
+	style 1
+	border 1
+
+	// Sized with a generous margin beyond the felt's own rect (20,54,600,404 below) to contain it reliably.
+	itemDef {
+		name background
+		rect 8 8 624 464
+		style WINDOW_STYLE_FILLED
+		backcolor 0 .12 .04 .96
+		border 1
+		bordercolor .5 .5 .5 .6
+		forecolor 1 1 1 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name backgroundGradientTrim
+		rect 8 8 624 464
+		style WINDOW_STYLE_EMPTY
+		border WINDOW_BORDER_KCGRADIENT
+		bordersize 4
+		bordercolor .8 .65 .3 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name title
+		text "@CARDGAME_TITLE"
+		type ITEM_TYPE_TEXT
+		textfont UI_FONT_BIG
+		textscale .3
+		textstyle 6
+		rect 20 32 600 20
+		textalign ITEM_ALIGN_CENTER
+		textalignx 300
+		textaligny 14
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor .15 .13 .08 .55
+		border 1
+		bordercolor .6 .55 .35 .5
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name tableFelt
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_TABLE_BG
+		rect 20 54 600 404
+		visible 1
+		decoration
+	}
+
+	//////////////// the 24-slot table ////////////////
+
+	itemDef {
+		name cardSlot0
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 0
+		rect 24 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick0 }
+	}
+
+	itemDef {
+		name cardSlot1
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 1
+		rect 98 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick1 }
+	}
+
+	itemDef {
+		name cardSlot2
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 2
+		rect 172 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick2 }
+	}
+
+	itemDef {
+		name cardSlot3
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 3
+		rect 246 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick3 }
+	}
+
+	itemDef {
+		name cardSlot4
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 4
+		rect 320 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick4 }
+	}
+
+	itemDef {
+		name cardSlot5
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 5
+		rect 394 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick5 }
+	}
+
+	itemDef {
+		name cardSlot6
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 6
+		rect 468 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick6 }
+	}
+
+	itemDef {
+		name cardSlot7
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 7
+		rect 542 60 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick7 }
+	}
+
+	itemDef {
+		name cardSlot8
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 8
+		rect 24 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick8 }
+	}
+
+	itemDef {
+		name cardSlot9
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 9
+		rect 98 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick9 }
+	}
+
+	itemDef {
+		name cardSlot10
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 10
+		rect 172 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick10 }
+	}
+
+	itemDef {
+		name cardSlot11
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 11
+		rect 246 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick11 }
+	}
+
+	itemDef {
+		name cardSlot12
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 12
+		rect 320 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick12 }
+	}
+
+	itemDef {
+		name cardSlot13
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 13
+		rect 394 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick13 }
+	}
+
+	itemDef {
+		name cardSlot14
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 14
+		rect 468 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick14 }
+	}
+
+	itemDef {
+		name cardSlot15
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 15
+		rect 542 160 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick15 }
+	}
+
+	itemDef {
+		name cardSlot16
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 16
+		rect 24 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick16 }
+	}
+
+	itemDef {
+		name cardSlot17
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 17
+		rect 98 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick17 }
+	}
+
+	itemDef {
+		name cardSlot18
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 18
+		rect 172 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick18 }
+	}
+
+	itemDef {
+		name cardSlot19
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 19
+		rect 246 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick19 }
+	}
+
+	itemDef {
+		name cardSlot20
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 20
+		rect 320 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick20 }
+	}
+
+	itemDef {
+		name cardSlot21
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 21
+		rect 394 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick21 }
+	}
+
+	itemDef {
+		name cardSlot22
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 22
+		rect 468 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick22 }
+	}
+
+	itemDef {
+		name cardSlot23
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_SLOT
+		special 23
+		rect 542 260 68 92
+		forecolor 1 1 1 1
+		visible 1
+		action { uiScript cardGamePick23 }
+	}
+
+	//////////////// result banner + bet / deal controls ////////////////
+
+	itemDef {
+		name resultText
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_RESULT
+		textfont UI_FONT_BIG
+		textscale .22
+		textstyle 6
+		textaligny 16
+		rect 20 356 600 22
+		forecolor 1 .9 .5 1
+		visible 1
+		decoration
+	}
+
+	// Backing plaque for the chips readout, matching the title bar's dark-plaque-with-gold-edge look.
+	itemDef {
+		name chipsPlaque
+		rect 164 376 320 20
+		style WINDOW_STYLE_FILLED
+		backcolor .15 .13 .08 .6
+		border 1
+		bordercolor .6 .55 .35 .6
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name chipsReadout
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_CARDGAME_CHIPS
+		textfont UI_FONT_BIG
+		textscale .22
+		textstyle 6
+		textaligny 12
+		rect 252 378 145 20
+		forecolor 1 .85 .3 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name betDownButton
+		text "@CARDGAME_BET_MINUS"
+		type ITEM_TYPE_BUTTON
+		rect 290 400 30 26
+		textscale .24
+		style 1
+		border 1
+		bordersize 2
+		bordercolor .55 .45 .25 .8
+		backcolor .25 .1 .06 .55
+		textaligny 18
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 15
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor betDownButton backcolor .4 .18 .1 .72 ; setitemcolor betDownButton bordercolor .85 .7 .35 1 }
+		mouseExit { setitemcolor betDownButton backcolor .25 .1 .06 .55 ; setitemcolor betDownButton bordercolor .55 .45 .25 .8 }
+		action { uiScript cardGameBetDown }
+		visible 1
+	}
+
+	itemDef {
+		name betUpButton
+		text "@CARDGAME_BET_PLUS"
+		type ITEM_TYPE_BUTTON
+		rect 325 400 30 26
+		textscale .24
+		style 1
+		border 1
+		bordersize 2
+		bordercolor .55 .45 .25 .8
+		backcolor .12 .2 .08 .55
+		textaligny 18
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 15
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor betUpButton backcolor .2 .32 .13 .72 ; setitemcolor betUpButton bordercolor .85 .7 .35 1 }
+		mouseExit { setitemcolor betUpButton backcolor .12 .2 .08 .55 ; setitemcolor betUpButton bordercolor .55 .45 .25 .8 }
+		action { uiScript cardGameBetUp }
+		visible 1
+	}
+
+	itemDef {
+		name dealButton
+		text "@CARDGAME_DEAL"
+		type ITEM_TYPE_BUTTON
+		rect 410 400 60 26
+		textscale .18
+		style 1
+		border 1
+		bordersize 2
+		bordercolor .55 .45 .25 .8
+		backcolor .3 .2 .05 .6
+		textaligny 18
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 30
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor dealButton backcolor .45 .32 .1 .78 ; setitemcolor dealButton bordercolor .85 .7 .35 1 }
+		mouseExit { setitemcolor dealButton backcolor .3 .2 .05 .6 ; setitemcolor dealButton bordercolor .55 .45 .25 .8 }
+		action { uiScript cardGameDeal }
+		visible 1
+	}
+
+	itemDef {
+		name continueButton
+		text "@CARDGAME_NEXT"
+		type ITEM_TYPE_BUTTON
+		rect 478 400 60 26
+		textscale .18
+		style 1
+		border 1
+		bordersize 2
+		bordercolor .55 .45 .25 .8
+		backcolor .08 .14 .22 .55
+		textaligny 18
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 30
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor continueButton backcolor .14 .22 .34 .72 ; setitemcolor continueButton bordercolor .85 .7 .35 1 }
+		mouseExit { setitemcolor continueButton backcolor .08 .14 .22 .55 ; setitemcolor continueButton bordercolor .55 .45 .25 .8 }
+		action { play "sound/cardgame/click.wav" ; uiScript cardGameContinue }
+		visible 1
+	}
+
+	itemDef {
+		name exitButton
+		text "@CARDGAME_EXIT"
+		type ITEM_TYPE_BUTTON
+		rect 546 400 54 26
+		textscale .18
+		style 1
+		border 1
+		bordersize 2
+		bordercolor .55 .45 .25 .8
+		backcolor .22 .08 .06 .55
+		textaligny 18
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 27
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor exitButton backcolor .35 .13 .1 .72 ; setitemcolor exitButton bordercolor .85 .7 .35 1 }
+		mouseExit { setitemcolor exitButton backcolor .22 .08 .06 .55 ; setitemcolor exitButton bordercolor .55 .45 .25 .8 }
+		action { play "sound/cardgame/click.wav" ; uiScript cardGameExit }
+		visible 1
+	}
+
+}
+}

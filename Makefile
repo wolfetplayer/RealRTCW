@@ -2769,6 +2769,7 @@ Q3UIOBJ_ = \
   $(B)/$(BASEGAME)/ui/ui_players.o \
   $(B)/$(BASEGAME)/ui/ui_shared.o \
   $(B)/$(BASEGAME)/ui/ui_armory.o \
+  $(B)/$(BASEGAME)/ui/ui_cardgame.o \
   \
   $(B)/$(BASEGAME)/ui/bg_misc.o \
   $(B)/$(BASEGAME)/ui/bg_armory.o \

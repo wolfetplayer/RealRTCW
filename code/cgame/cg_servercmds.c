@@ -1062,6 +1062,12 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	// Malta hub: open the War card mini-game
+	if ( !strcmp( cmd, "cardgame" ) ) {
+		trap_UI_Popup( "cardgame" );
+		return;
+	}
+
 
 
 	// ensure a file gets into a build (mainly for scripted music calls)

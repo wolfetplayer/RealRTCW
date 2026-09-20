@@ -41,6 +41,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "ui_local.h"
 #include "../steam/steam.h"
 #include "ui_armory.h"
+#include "ui_cardgame.h"
 
 uiInfo_t uiInfo;
 
@@ -704,6 +705,8 @@ void _UI_Refresh( int realtime ) {
 
 
 	UI_UpdateCvars();
+
+	UI_CardGame_RunFrame();
 
 	if ( Menu_Count() > 0 ) {
 		// paint all the menus
@@ -1441,6 +1444,94 @@ static void UI_DrawArmoryEquipDesc( rectDef_t *rect, int font, float scale, vec4
 	char buf[160];
 	const char *desc = UI_ArmoryDescWithPrice( UI_Armory_SelectedEquipDesc(), UI_Armory_SelectedEquipCost(), buf, sizeof( buf ) );
 	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), desc, qfalse );
+}
+
+// Item_OwnerDraw_Paint doesn't true-center ownerdraw text, so center it by hand here.
+static void CardGame_PaintCentered( rectDef_t *rect, int font, float scale, vec4_t color, const char *text, int textStyle ) {
+	float centerX = rect->x + rect->w / 2;
+	float width = Text_Width( text, font, scale, 0 );
+
+	Text_Paint( centerX - width / 2, rect->y, font, scale, color, text, 0, 0, textStyle );
+}
+
+static void UI_DrawCardGameChips( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	CardGame_PaintCentered( rect, font, scale, color, UI_CardGame_ChipsText(), textStyle );
+}
+
+// Colored by what it's saying: amber for a tie/war, green for a win, red for a loss, itemDef forecolor otherwise.
+static void UI_DrawCardGameResult( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	const char *text = UI_CardGame_ResultText();
+	cardGamePhase_t phase = UI_CardGame_Phase();
+	vec4_t outcomeColor;
+
+	if ( !text || !text[0] ) {
+		return;
+	}
+
+	if ( phase == CG_PHASE_WAR_ANNOUNCE ) {
+		outcomeColor[0] = 1.0f; outcomeColor[1] = 0.6f; outcomeColor[2] = 0.15f; outcomeColor[3] = 1.0f;
+		color = outcomeColor;
+	} else if ( phase == CG_PHASE_ROUND_OVER || phase == CG_PHASE_GAME_OVER ) {
+		if ( UI_CardGame_ResultIsWin() ) {
+			outcomeColor[0] = 0.4f; outcomeColor[1] = 1.0f; outcomeColor[2] = 0.4f; outcomeColor[3] = 1.0f;
+		} else {
+			outcomeColor[0] = 1.0f; outcomeColor[1] = 0.35f; outcomeColor[2] = 0.3f; outcomeColor[3] = 1.0f;
+		}
+		color = outcomeColor;
+	}
+
+	CardGame_PaintCentered( rect, font, scale, color, text, textStyle );
+}
+
+// Ownerdraw, not a "background" shader, so the felt shares the card slots' placement path.
+static qhandle_t cardGameTableBgShader = -1;
+static void UI_DrawCardGameTableBg( rectDef_t *rect ) {
+	if ( cardGameTableBgShader == -1 ) {
+		cardGameTableBgShader = trap_R_RegisterShaderNoMip( "ui/assets/cards/table.jpg" );
+	}
+	if ( cardGameTableBgShader ) {
+		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, cardGameTableBgShader );
+	}
+}
+
+static qboolean CardGame_MouseOverRect( rectDef_t *rect ) {
+	return uiInfo.uiDC.cursorx >= rect->x && uiInfo.uiDC.cursorx <= rect->x + rect->w &&
+		   uiInfo.uiDC.cursory >= rect->y && uiInfo.uiDC.cursory <= rect->y + rect->h;
+}
+
+// Highlight priority: opponent's pending pick (red) > eliminated (dimmed) > non-pickable (neutral) > hover (gold).
+static void UI_DrawCardGameSlot( rectDef_t *rect, float special, vec4_t color ) {
+	int slot = (int)special;
+	qhandle_t icon = UI_CardGame_TableSlotIcon( slot );
+	vec4_t drawColor;
+
+	if ( !icon ) {
+		return;
+	}
+
+	// Drop shadow so the card doesn't sit perfectly flush with the felt.
+	{
+		vec4_t shadowColor = { 0.0f, 0.0f, 0.0f, 0.4f };
+		DC->setColor( shadowColor );
+		UI_DrawHandlePic( rect->x + 4, rect->y + 4, rect->w, rect->h, uiInfo.uiDC.whiteShader );
+		DC->setColor( NULL );
+	}
+
+	if ( UI_CardGame_PendingOpponentSlot() == slot ) {
+		drawColor[0] = 1.0f; drawColor[1] = 0.3f; drawColor[2] = 0.3f; drawColor[3] = 1.0f;
+	} else if ( UI_CardGame_TableSlotIsEliminated( slot ) ) {
+		drawColor[0] = drawColor[1] = drawColor[2] = 0.4f; drawColor[3] = 1.0f;
+	} else if ( !UI_CardGame_TableSlotIsPlayable( slot ) ) {
+		drawColor[0] = drawColor[1] = drawColor[2] = drawColor[3] = 1.0f;
+	} else if ( CardGame_MouseOverRect( rect ) ) {
+		drawColor[0] = 1.0f; drawColor[1] = 0.85f; drawColor[2] = 0.3f; drawColor[3] = 1.0f;
+	} else {
+		Vector4Copy( color, drawColor );
+	}
+
+	DC->setColor( drawColor );
+	UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, icon );
+	DC->setColor( NULL );
 }
 
 //----(SA)	added
@@ -2914,6 +3005,18 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 		break;
 	case UI_ARMORY_EQUIP_DESC:
 		UI_DrawArmoryEquipDesc( &rect, font, scale, color, textStyle );
+		break;
+	case UI_CARDGAME_CHIPS:
+		UI_DrawCardGameChips( &rect, font, scale, color, textStyle );
+		break;
+	case UI_CARDGAME_RESULT:
+		UI_DrawCardGameResult( &rect, font, scale, color, textStyle );
+		break;
+	case UI_CARDGAME_TABLE_BG:
+		UI_DrawCardGameTableBg( &rect );
+		break;
+	case UI_CARDGAME_SLOT:
+		UI_DrawCardGameSlot( &rect, special, color );
 		break;
 	case UI_EFFECTS:
 		UI_DrawEffects( &rect, scale, color );
@@ -5008,6 +5111,25 @@ static void UI_RunMenuScript( char **args ) {
 			trap_Key_ClearStates();
 			trap_Cvar_Set( "cl_paused", "0" );
 			Menus_CloseAll();
+		} else if ( Q_stricmp( name, "cardGameBetUp" ) == 0 ) {
+			UI_CardGame_SetBet( UI_CardGame_CurrentBet() + 1 );
+		} else if ( Q_stricmp( name, "cardGameBetDown" ) == 0 ) {
+			UI_CardGame_SetBet( UI_CardGame_CurrentBet() - 1 );
+		} else if ( Q_stricmp( name, "cardGameDeal" ) == 0 ) {
+			UI_CardGame_Deal();
+		} else if ( Q_stricmp( name, "cardGameContinue" ) == 0 ) {
+			UI_CardGame_ContinueAfterRound();
+		} else if ( Q_stricmp( name, "cardGameExit" ) == 0 ) {
+			trap_Key_SetCatcher( trap_Key_GetCatcher() & ~KEYCATCH_UI );
+			trap_Key_ClearStates();
+			trap_Cvar_Set( "cl_paused", "0" );
+			Menus_CloseAll();
+		} else if ( !Q_stricmpn( name, "cardGamePick", 12 ) ) {
+			// one itemDef per table slot calls "cardGamePick<N>" - see cardgame.menu
+			int slot = atoi( name + 12 );
+			if ( UI_CardGame_TableSlotIsPlayable( slot ) ) {
+				UI_CardGame_PlayerPick( slot );
+			}
 		} else if ( Q_stricmp( name, "StartCampaign" ) == 0 ) {
 			trap_Cvar_Set( "cg_thirdPerson", "0" );
 			trap_Cvar_Set( "cg_cameraOrbit", "0" );
@@ -7391,6 +7513,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	UI_ResolveArenaLongnames();
 	UI_Armory_ResolveEquipTranslations();
 	UI_Armory_ResolveWeaponDescTranslations();
+	UI_CardGame_ResolveTranslations();
 
 	menuSet = UI_Cvar_VariableString( "ui_menuFiles" );
 	if ( menuSet == NULL || menuSet[0] == '\0' ) {
@@ -7669,6 +7792,14 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			trap_Key_SetCatcher( KEYCATCH_UI );
 			Menus_CloseAll();
 			Menus_ActivateByName( "armory_loadout" );
+			return;
+
+		case UIMENU_CARDGAME:
+			trap_Cvar_Set( "cl_paused", "1" );
+			trap_Key_SetCatcher( KEYCATCH_UI );
+			Menus_CloseAll();
+			UI_CardGame_Reset();
+			Menus_ActivateByName( "cardgame" );
 			return;
 
 		case UIMENU_BOOK1:

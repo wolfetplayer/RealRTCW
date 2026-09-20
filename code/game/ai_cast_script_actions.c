@@ -1842,6 +1842,25 @@ qboolean AICast_ScriptAction_OpenLoadoutMenu( cast_state_t *cs, char *params ) {
 
 /*
 =================
+AICast_ScriptAction_OpenCardGameMenu
+	syntax: opencardgamemenu
+=================
+*/
+qboolean AICast_ScriptAction_OpenCardGameMenu( cast_state_t *cs, char *params ) {
+	gentity_t *player;
+
+	player = AICast_FindEntityForName( "player" );
+	if ( !player || !player->client ) {
+		return qfalse;
+	}
+
+	trap_SendServerCommand( player->client->ps.clientNum, "cardgame\n" );
+
+	return qtrue;
+}
+
+/*
+=================
 AICast_ScriptAction_GiveWeapon
 
   syntax: giveweapon <pickupname>

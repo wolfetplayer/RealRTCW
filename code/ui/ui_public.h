@@ -184,7 +184,8 @@ typedef enum {
 	UIMENU_WM_QUICKMESSAGE, // NERVE - SMF
 	UIMENU_WM_LIMBO,        // NERVE - SMF
 	UIMENU_BRIEFING,        //----(SA)	added
-	UIMENU_LOADOUT          // Hub armory point-budget loadout builder
+	UIMENU_LOADOUT,         // Hub armory point-budget loadout builder
+	UIMENU_CARDGAME         // Malta hub "War" card mini-game
 } uiMenuCommand_t;
 
 #define SORT_HOST           0

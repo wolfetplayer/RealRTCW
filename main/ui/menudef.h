@@ -341,6 +341,11 @@ If you have questions concerning this license or the applicable additional terms
 #define UI_ARMORY_WEAPON_DESC       268    // hub armory: icon + description of the currently-selected weapon
 #define UI_ARMORY_EQUIP_DESC        269    // hub armory: icon + description of the currently-selected equipment item
 
+#define UI_CARDGAME_CHIPS           270    // Malta hub War card game: chip / bet / pot readout
+#define UI_CARDGAME_RESULT          273    // Malta hub War card game: flow-prompt / round-result / finale banner (one shared text region)
+#define UI_CARDGAME_SLOT            274    // Malta hub War card game: one table slot; itemDef's "special" is the slot index (0-23)
+#define UI_CARDGAME_TABLE_BG        275    // Malta hub War card game: felt table background (ownerdraw so it shares the same placement as the cards, not the WINDOW_STYLE_SHADER letterboxing)
+
 
 #define VOICECHAT_GETFLAG           "getflag"                // command someone to get the flag
 #define VOICECHAT_OFFENSE           "offense"                // command someone to go on offense

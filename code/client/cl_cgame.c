@@ -883,6 +883,8 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_PREGAME );
 			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "armory_loadout" ) ) {
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_LOADOUT );
+			} else if ( VMA( 1 ) && !Q_stricmp( VMA( 1 ), "cardgame" ) ) {
+				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_CARDGAME );
 			} else {
 				VM_Call( uivm, UI_SET_ACTIVE_MENU, UIMENU_CLIPBOARD );
 			}

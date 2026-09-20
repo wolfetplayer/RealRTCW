@@ -624,7 +624,7 @@ bar_guy1
 
     activate player
     {
-	  deny
+	  opencardgamemenu
     }	  
 	
 	trigger stop_it

@@ -658,6 +658,13 @@ struct gclient_s {
 	int rangeSavedAmmo[MAX_WEAPONS];
 	int rangeSavedAmmoClip[MAX_WEAPONS];
 	int rangeSavedHoldable[MAX_HOLDABLE];
+
+	// sitting on a target_sit (kept at struct end for savegame compat)
+	qboolean sitting;
+	int sitSpotEntNum;              // the target_sit entity we're sitting on
+	vec3_t sitReturnOrigin;         // where to put them back on standing up
+	qboolean sitForcedHolster;      // qtrue if sitting down force-holstered the weapon
+	int sitSavedWeapon;             // ps.weapon at the moment we force-holstered
 };
 
 
@@ -987,6 +994,11 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles );
 
 
 int G_GetEnemyPosition(gentity_t *ent, gentity_t *targ);
+
+//
+// g_target.c
+//
+void Unsit( gentity_t *ent );      // stand up from a target_sit, if sitting on one
 
 //
 // g_weapon.c

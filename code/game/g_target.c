@@ -428,6 +428,124 @@ void SP_target_teleporter( gentity_t *self ) {
 
 //==========================================================
 
+#define SIT_NOWEAPON    1
+
+/*
+==============
+sit_use
+
+Sits the activator down on this spot: snaps them to our origin/angle and freezes
+their movement (see the "sitting" freeze in g_active.c). Pressing activate again
+or jumping stands them back up (Unsit, below) at wherever they sat down from.
+==============
+*/
+void sit_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
+	gclient_t *client;
+
+	if ( !activator || !activator->client ) {
+		return;
+	}
+	client = activator->client;
+
+	if ( self->active ) {
+		return;     // already occupied
+	}
+
+	// remember where to put them back when they stand up (angles are left as-is on
+	// standing up, so whichever way they were looking while seated is preserved)
+	VectorCopy( client->ps.origin, client->sitReturnOrigin );
+
+	trap_UnlinkEntity( activator );
+	VectorCopy( self->s.origin, client->ps.origin );
+	client->ps.origin[2] += 1;     // nudge up off the floor, same as TeleportPlayer
+	SetClientViewAngle( activator, self->s.angles );
+	// toggle the teleport bit so client-side prediction/interpolation snaps
+	// instead of smoothing through the abrupt origin change (see TeleportPlayer)
+	client->ps.eFlags ^= EF_TELEPORT_BIT;
+	BG_PlayerStateToEntityState( &client->ps, &activator->s, qtrue );
+	VectorCopy( client->ps.origin, activator->r.currentOrigin );
+	trap_LinkEntity( activator );
+
+	if ( ( self->spawnflags & SIT_NOWEAPON ) && client->ps.weapon != WP_NONE ) {
+		client->sitSavedWeapon = client->ps.weapon;
+		client->sitForcedHolster = qtrue;
+		client->ps.weapon = WP_NONE;
+	} else {
+		client->sitForcedHolster = qfalse;
+	}
+
+	client->sitting = qtrue;
+	client->sitSpotEntNum = self->s.number;
+	client->ps.pm_flags |= PMF_SITTING;
+
+	self->active = qtrue;
+	self->r.ownerNum = activator->s.number;
+	activator->active = qtrue;
+}
+
+/*
+==============
+Unsit
+
+Stands the player up out of whatever target_sit they're sitting on (if any).
+Restores the weapon they were holding if sitting down force-holstered it, and
+puts them back at the spot they sat down from.
+==============
+*/
+void Unsit( gentity_t *ent ) {
+	gclient_t *client = ent->client;
+	gentity_t *spot;
+
+	if ( !client || !client->sitting ) {
+		return;
+	}
+
+	client->sitting = qfalse;
+	client->ps.pm_flags &= ~PMF_SITTING;
+
+	if ( client->sitSpotEntNum >= 0 && client->sitSpotEntNum < level.num_entities ) {
+		spot = &g_entities[ client->sitSpotEntNum ];
+		if ( spot->active && spot->r.ownerNum == ent->s.number ) {
+			spot->active = qfalse;
+			spot->r.ownerNum = spot->s.number;
+		}
+	}
+
+	if ( client->sitForcedHolster ) {
+		client->ps.weapon = client->sitSavedWeapon;
+		client->sitForcedHolster = qfalse;
+	}
+
+	trap_UnlinkEntity( ent );
+	VectorCopy( client->sitReturnOrigin, client->ps.origin );
+	// viewangles are intentionally left untouched - stand up facing whichever way
+	// they were looking while seated, not the direction they sat down from
+	client->ps.eFlags ^= EF_TELEPORT_BIT;      // see sit_use
+	BG_PlayerStateToEntityState( &client->ps, &ent->s, qtrue );
+	VectorCopy( client->ps.origin, ent->r.currentOrigin );
+	trap_LinkEntity( ent );
+
+	ent->active = qfalse;
+}
+
+/*QUAKED target_sit (1 0 1) (-8 -8 -8) (8 8 8) NOWEAPON
+Point a func_invisible_user (or any other trigger) at this to sit the activator
+down here - they're snapped to this entity's origin/angle and frozen in place
+(they can still look around) until they press activate again or jump.
+NOWEAPON: instantly holster the player's weapon for as long as they're sitting,
+restoring it when they stand back up.
+*/
+void SP_target_sit( gentity_t *self ) {
+	if ( !self->targetname ) {
+		G_Printf( "untargeted %s at %s\n", self->classname, vtos( self->s.origin ) );
+	}
+
+	self->use = sit_use;
+	self->r.ownerNum = self->s.number;
+}
+
+//==========================================================
+
 
 /*QUAKED target_relay (1 1 0) (-8 -8 -8) (8 8 8) RED_ONLY BLUE_ONLY RANDOM NOKEY_ONLY TAKE_KEY NO_LOCKED_NOISE
 This doesn't perform any actions except fire its targets.

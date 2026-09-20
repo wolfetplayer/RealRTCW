@@ -432,6 +432,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	self->client->ps.pm_type = PM_DEAD;
 	self->client->pers.weaponWheelOpen = qfalse;
 
+	if ( self->client->sitting ) {
+		Unsit( self );
+	}
+
 	if ( attacker ) {
 		killer = attacker->s.number;
 		if ( attacker->client ) {

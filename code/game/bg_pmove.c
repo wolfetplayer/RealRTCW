@@ -1829,6 +1829,13 @@ static void PM_CheckDuck( void ) {
 		return;
 	}
 
+	// disable crouching while sitting on a target_sit
+	if ( pm->ps->pm_flags & PMF_SITTING ) {
+		pm->maxs[2] = pm->ps->maxs[2];
+		pm->ps->viewheight = pm->ps->standViewHeight;
+		return;
+	}
+
 	if ( pm->cmd.upmove < 0 ) { // duck
 		pm->ps->pm_flags |= PMF_DUCKED;
 	} else
@@ -2376,6 +2383,12 @@ void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload ) { //-
 	}
 
 	if ( !pm->ps->aiChar && !oldweapon ) {    // coming from empty hands to a weapon
+		// stay disarmed while sitting on a NOWEAPON target_sit, even if the client
+		// keeps requesting its last-selected weapon every usercmd
+		if ( pm->ps->pm_flags & PMF_SITTING ) {
+			return;
+		}
+
 		pm->ps->weaponDelay = 0;
 		pm->ps->weapon = newweapon;
 
@@ -4901,7 +4914,7 @@ void PmoveSingle( pmove_t *pmove ) {
 		pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN;
 	}
 
-	if ( pm->ps->pm_type >= PM_DEAD || pm->ps->pm_flags & PMF_LIMBO ) {         // DHM - Nerve
+	if ( pm->ps->pm_type >= PM_DEAD || pm->ps->pm_flags & ( PMF_LIMBO | PMF_SITTING ) ) {         // DHM - Nerve
 		pm->cmd.forwardmove = 0;
 		pm->cmd.rightmove = 0;
 		pm->cmd.upmove = 0;

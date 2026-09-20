@@ -256,6 +256,7 @@ void SP_target_position( gentity_t *ent );
 void SP_target_location( gentity_t *ent );
 void SP_target_push( gentity_t *ent );
 void SP_target_script_trigger( gentity_t *ent );
+void SP_target_sit( gentity_t *ent );
 
 //---- (SA) Wolf targets
 // targets
@@ -521,6 +522,7 @@ spawn_t spawns[] = {
 	{"target_location", SP_target_location},
 	{"target_push", SP_target_push},
 	{"target_script_trigger", SP_target_script_trigger},
+	{"target_sit", SP_target_sit},
 
 	//---- (SA) Wolf targets
 	{"target_alarm",     SP_target_alarm},

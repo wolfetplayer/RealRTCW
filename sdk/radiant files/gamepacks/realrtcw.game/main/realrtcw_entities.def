@@ -1850,6 +1850,16 @@ When triggered, fires a laser.  You can either set a target or a direction.
 The activator will be teleported away.
 */
 
+/*QUAKED target_sit (1 0 1) (-8 -8 -8) (8 8 8) NOWEAPON
+Point a func_invisible_user (or any other trigger) at this to sit the activator
+down here - they're snapped to this entity's origin/angle and frozen in place
+(they can still look around) until they press activate again or jump, at which
+point they're stood back up wherever they sat down from.
+"angle" which way the player faces while sitting
+NOWEAPON - instantly holster the player's weapon for as long as they're sitting,
+restoring it when they stand back up.
+*/
+
 /*QUAKED target_relay (1 1 0) (-8 -8 -8) (8 8 8) RED_ONLY BLUE_ONLY RANDOM NOKEY_ONLY TAKE_KEY NO_LOCKED_NOISE
 This doesn't perform any actions except fire its targets.
 The activator can be forced to be from a certain team.

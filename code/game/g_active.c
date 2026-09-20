@@ -1129,6 +1129,15 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 	}
 
+	if ( client->sitting && ucmd->upmove > 0 && client->pers.oldcmd.upmove <= 0 ) {
+		Unsit( ent );
+	}
+
+
+	if ( client->sitting ) {
+		VectorClear( client->ps.velocity );
+	}
+
 	if ( ( ( saveGamePending || !ent->aiCharacter ) && g_reloading.integer && ( g_reloading.integer != RELOAD_FAILED ) ) || client->cameraPortal ) {
 
 		ucmd->buttons = 0;

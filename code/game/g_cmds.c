@@ -1457,10 +1457,15 @@ void Cmd_Activate_f( gentity_t *ent ) {
 //			Use_BinaryMover (traceEnt, ent, ent);
 //			traceEnt->active = qtrue;
 		} else if ( !Q_stricmp( traceEnt->classname, "func_invisible_user" ) )     {
+			qboolean wasSitting = ent->client->sitting;
 			if ( walking ) {
 				traceEnt->flags |= FL_SOFTACTIVATE;     // no noise
 			}
 			traceEnt->use( traceEnt, ent, ent );
+			if ( !wasSitting && ent->client->sitting ) {
+				return;     // just sat down on this press - don't fall through to the
+							// dismount cascade below and immediately stand back up
+			}
 		} else if ( !Q_stricmp( traceEnt->classname, "props_footlocker" ) )     {
 			traceEnt->use( traceEnt, ent, ent );
 		} else if ( !Q_stricmp( traceEnt->classname, "script_mover" ) )     {
@@ -1572,7 +1577,11 @@ void Cmd_Activate_f( gentity_t *ent ) {
 
 	if ( ent->active ) {
 
-		if ( ent->client->ps.persistant[PERS_HWEAPON_USE] ) {
+		if ( ent->client->sitting ) {
+			// stand up
+			Unsit( ent );
+
+		} else if ( ent->client->ps.persistant[PERS_HWEAPON_USE] ) {
 			// we wish to dismount mg42
 			ent->active = 2;
 

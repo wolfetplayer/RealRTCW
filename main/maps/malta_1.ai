@@ -221,6 +221,8 @@ player
 	trigger armory
 	{
 	  openloadoutmenu
+	  objectivemet 2
+	  accum 4 set 2
 	}
 	
 	trigger secret1

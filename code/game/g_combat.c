@@ -967,6 +967,11 @@ void G_DamageExt( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		return;
 	}
 
+	// gas masks/armor make these troop types immune to poison gas damage
+	if ( mod == MOD_POISONGAS && ( targ->aiCharacter == AICHAR_SUPERSOLDIER || targ->aiCharacter == AICHAR_SUPERSOLDIER_LAB || targ->aiCharacter == AICHAR_VENOM || targ->aiCharacter == AICHAR_PROTOSOLDIER ) ) {
+		return;
+	}
+
 //----(SA)	added
 	if ( !targ->aiCharacter && targ->client && targ->client->cameraPortal ) {
 		// get out of damage in sp if in cutscene.

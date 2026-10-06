@@ -5103,6 +5103,11 @@ static void UI_RunMenuScript( char **args ) {
 			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, -1, "armory_loadout" );
 			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, -1, "armory_loadout" );
 			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
+		} else if ( Q_stricmp( name, "armoryClearAll" ) == 0 ) {
+			UI_Armory_Reset();
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_WEAPONS, -1, "armory_loadout" );
+			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
 		} else if ( Q_stricmp( name, "armoryConfirm" ) == 0 ) {
 			char cmd[1024];
 			UI_Armory_BuildConfirmCommand( cmd, sizeof( cmd ) );
@@ -7591,6 +7596,10 @@ void _UI_KeyEvent( int key, qboolean down ) {
                 } else {
                     return; // already started; eat keys
                 }
+            }
+
+            if ( !Q_stricmp( menu->window.name, "armory_loadout" ) && key == K_ESCAPE ) {
+                return; // armory is a one-use trigger; don't let a stray ESC close it without picking gear
             }
         }
     }

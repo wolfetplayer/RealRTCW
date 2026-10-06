@@ -720,21 +720,35 @@ static int UI_Armory_BuildIndexForEquip( int equipIndex ) {
 	return -1;
 }
 
+static void UI_Armory_PlayPickupSound( const char *path ) {
+	trap_S_StartLocalSound( trap_S_RegisterSound( path ), CHAN_LOCAL );
+}
+
 void UI_Armory_AddSelectedWeapon( void ) {
-	if ( selectedWeaponIndex < 0 || armoryWeaponPicked[selectedWeaponIndex] ) {
+	int index = selectedWeaponIndex;
+
+	if ( index < 0 || armoryWeaponPicked[index] ) {
 		return;   // nothing selected, or already added - removal only happens via the build list
 	}
-	UI_Armory_ToggleWeapon( selectedWeaponIndex );
-	selectedBuildIndex = UI_Armory_BuildIndexForWeapon( selectedWeaponIndex );   // so Remove works right away
+	UI_Armory_ToggleWeapon( index );
+	if ( armoryWeaponPicked[index] ) {
+		UI_Armory_PlayPickupSound( "sound/pickup/armor/body_pickup.wav" );
+	}
+	selectedBuildIndex = UI_Armory_BuildIndexForWeapon( index );   // so Remove works right away
 	selectedWeaponIndex = -1;   // it just left the source list
 }
 
 void UI_Armory_AddSelectedEquip( void ) {
-	if ( selectedEquipIndex < 0 || armoryEquipPicked[selectedEquipIndex] ) {
+	int index = selectedEquipIndex;
+
+	if ( index < 0 || armoryEquipPicked[index] ) {
 		return;
 	}
-	UI_Armory_ToggleEquip( selectedEquipIndex );
-	selectedBuildIndex = UI_Armory_BuildIndexForEquip( selectedEquipIndex );
+	UI_Armory_ToggleEquip( index );
+	if ( armoryEquipPicked[index] ) {
+		UI_Armory_PlayPickupSound( "sound/pickup/armor/head_pickup.wav" );
+	}
+	selectedBuildIndex = UI_Armory_BuildIndexForEquip( index );
 	selectedEquipIndex = -1;
 }
 

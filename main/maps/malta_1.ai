@@ -99,6 +99,11 @@ player
 		//lockplayer off
 	}
 	
+	trigger activate_cards
+	{
+	    opencardgamemenu
+	}
+	
 	trigger leap_of_faith
 	{
 	    achievement_malta_leap
@@ -626,7 +631,7 @@ bar_guy1
 
     activate player
     {
-	  opencardgamemenu
+	  deny
     }	  
 	
 	trigger stop_it

@@ -624,8 +624,18 @@ Com_StringContains
 */
 char *Com_StringContains( char *str1, char *str2, int casesensitive ) {
 	int len, i, j;
+	size_t l1, l2;
 
-	len = strlen( str1 ) - strlen( str2 );
+	l1 = strlen( str1 );
+	l2 = strlen( str2 );
+	if ( l2 > l1 ) {
+		// substring is longer than haystack; the loop below would
+		// not execute, but the unsigned subtraction would underflow
+		// before being truncated into int and produce indeterminate
+		// loop bounds. Bail explicitly.
+		return NULL;
+	}
+	len = (int)( l1 - l2 );
 	for ( i = 0; i <= len; i++, str1++ ) {
 		for ( j = 0; str2[j]; j++ ) {
 			if ( casesensitive ) {

@@ -266,4 +266,12 @@ void G_Armory_Confirm( gentity_t *ent, const char *weaponArg, const char *equipA
 		Com_sprintf( armorArgs, sizeof( armorArgs ), "%d", G_GetArmorCap( ent->client ) );
 		AICast_ScriptAction_SetArmor( cs, armorArgs );
 	}
+
+	{
+		gentity_t *waters = AICast_FindEntityForName( "waters" );
+
+		if ( waters && waters->client ) {
+			AICast_ScriptEvent( AICast_GetCastState( waters->s.number ), "trigger", "goodtogo" );
+		}
+	}
 }

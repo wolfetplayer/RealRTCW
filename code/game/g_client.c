@@ -1331,8 +1331,6 @@ void ClientSpawn( gentity_t *ent ) {
 
 	client->pers.teamState.state = TEAM_ACTIVE;
 
-	client->ps.classWeaponTime = -999999;
-
 	// toggle the teleport bit so the client knows to not lerp
 	flags = ent->client->ps.eFlags & EF_TELEPORT_BIT;
 	flags ^= EF_TELEPORT_BIT;
@@ -1415,6 +1413,8 @@ void ClientSpawn( gentity_t *ent ) {
 	client->ps.sprintExertTime = 0;
 
 	client->ps.friction = 1.0;
+
+	client->ps.classWeaponTime = -999999;
 	// done.
     
 	// autoreload

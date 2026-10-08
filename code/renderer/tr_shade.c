@@ -450,9 +450,24 @@ static void DrawMultitextured( shaderCommands_t *input, int stage ) {
 	qglEnable( GL_TEXTURE_2D );
 	qglEnableClientState( GL_TEXTURE_COORD_ARRAY );
 
-	if ( r_lightmap->integer ) {
+	if ( pStage->isMaskBlend ) {
+		// camo mask blend
+		qglTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_RGB_SCALE, 2.0f );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE );
+		qglTexEnvf( GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA );
+		glState.texEnv[glState.currenttmu] = GL_COMBINE;   // invalidate GL_TexEnv's cache so the next ordinary stage re-asserts its own mode
+	} else if ( r_lightmap->integer ) {
+		qglTexEnvf( GL_TEXTURE_ENV, GL_RGB_SCALE, 1.0f );   // undo a prior mask-blend stage's x2 scale; GL_TexEnv()'s cache doesn't track this
 		GL_TexEnv( GL_REPLACE );
 	} else {
+		qglTexEnvf( GL_TEXTURE_ENV, GL_RGB_SCALE, 1.0f );
 		GL_TexEnv( tess.shader->multitextureEnv );
 	}
 

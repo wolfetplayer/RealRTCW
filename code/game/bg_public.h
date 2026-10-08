@@ -605,7 +605,7 @@ typedef enum {
 	WP_NUM_WEAPONS
 } weapon_t;
 
-#define MAX_WEAPON_CAMOS 5   // 0 means "none"
+#define MAX_WEAPON_CAMOS 8   // 0 means "none"
 
 extern int reloadableWeapons[];
 

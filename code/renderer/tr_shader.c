@@ -647,6 +647,38 @@ static qboolean ParseStage( shaderStage_t *stage, char **text ) {
 			}
 		}
 		//
+		// maskMap <name> - sources this stage's ALPHA from a second texture instead of 'map's own alpha, for masked camo-style overlays
+		//
+		else if ( !Q_stricmp( token, "maskMap" ) ) {
+			imgType_t type = IMGTYPE_COLORALPHA;
+			imgFlags_t flags = IMGFLAG_NONE;
+
+			token = COM_ParseExt( text, qfalse );
+			if ( !token[0] ) {
+				ri.Printf( PRINT_WARNING, "WARNING: missing parameter for 'maskMap' keyword in shader '%s'\n", shader.name );
+				return qfalse;
+			}
+
+			if ( !qglActiveTextureARB ) {
+				ri.Printf( PRINT_WARNING, "WARNING: 'maskMap' needs multitexture support, ignoring in shader '%s'\n", shader.name );
+				continue;
+			}
+
+			if (!shader.noMipMaps)
+				flags |= IMGFLAG_MIPMAP;
+
+			if (!shader.noPicMip)
+				flags |= IMGFLAG_PICMIP;
+
+			stage->bundle[1].image[0] = R_FindImageFileExt( token, type, flags, shader.characterMip );
+			if ( !stage->bundle[1].image[0] ) {
+				ri.Printf( PRINT_WARNING, "WARNING: R_FindImageFileExt could not find '%s' in shader '%s'\n", token, shader.name );
+				return qfalse;
+			}
+			stage->bundle[1].tcGen = TCGEN_TEXTURE;
+			stage->isMaskBlend = qtrue;
+		}
+		//
 		// clampmap <name>
 		//
 		else if ( !Q_stricmp( token, "clampmap" ) ) {

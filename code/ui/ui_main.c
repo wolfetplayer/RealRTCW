@@ -1368,17 +1368,29 @@ static void UI_DrawArmoryPoints( rectDef_t *rect, int font, float scale, vec4_t 
 }
 
 // Big icon on top sized by aspect (no background); iconH must match armory_loadout.menu's descBg gap.
-static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle, qhandle_t icon, const char *desc, qboolean wide ) {
+// camoIcon (0 = none) draws a small square pattern swatch immediately to the icon's right.
+static void UI_DrawArmoryIconDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle, qhandle_t icon, qhandle_t camoIcon, const char *desc, qboolean wide ) {
 	int iconH = 48;
 	int iconW = wide ? 94 : iconH;
 	int iconTopMargin = 8; // keeps the icon clear of the column's top border
+	int iconX = rect->x + ( rect->w - iconW ) / 2;
 	char buff[1024];
 	const char *p, *newLinePtr;
 	int len, newLine, textWidth, lineHeight;
 	float y, maxY;
 
 	if ( icon ) {
-		DC->drawHandlePic( rect->x + ( rect->w - iconW ) / 2, rect->y + iconTopMargin, iconW, iconH, icon );
+		DC->drawHandlePic( iconX, rect->y + iconTopMargin, iconW, iconH, icon );
+	}
+	if ( camoIcon ) {
+		int swatchSize = 32;
+		int swatchX = iconX + iconW + 3;
+		int swatchY = rect->y + iconTopMargin + ( iconH - swatchSize ) / 2;
+		vec4_t borderColor = { .5f, .7f, .8f, .8f };
+
+		DC->fillRect( swatchX, swatchY, swatchSize, swatchSize, colorBlack );
+		DC->drawHandlePic( swatchX, swatchY, swatchSize, swatchSize, camoIcon );
+		DC->drawRect( swatchX, swatchY, swatchSize, swatchSize, 1, borderColor );
 	}
 	if ( !desc || !desc[0] ) {
 		return;
@@ -1435,15 +1447,27 @@ static const char *UI_ArmoryDescWithPrice( const char *desc, int cost, char *buf
 }
 
 static void UI_DrawArmoryWeaponDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
-	char buf[160];
-	const char *desc = UI_ArmoryDescWithPrice( UI_Armory_SelectedWeaponDesc(), UI_Armory_SelectedWeaponCost(), buf, sizeof( buf ) );
-	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), desc, UI_Armory_SelectedWeaponIsWide() );
+	// price is drawn separately (UI_DrawArmoryWeaponPrice) at a fixed spot so the camo button can sit next to it
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedWeaponIcon(), UI_Armory_SelectedWeaponCamoIcon(), UI_Armory_SelectedWeaponDesc(), UI_Armory_SelectedWeaponIsWide() );
+}
+
+static void UI_DrawArmoryWeaponPrice( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	int cost = UI_Armory_SelectedWeaponCost();
+	const char *label;
+	char text[32];
+
+	if ( cost < 0 ) {
+		return;
+	}
+	label = TranslateTable_Find( "ARMORY_PRICE_LABEL" );
+	Com_sprintf( text, sizeof( text ), "^2%s^7 %d", label ? label : "Price:", cost );
+	Text_Paint( rect->x, rect->y, font, scale, color, text, 0, 0, textStyle );
 }
 
 static void UI_DrawArmoryEquipDesc( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
 	char buf[160];
 	const char *desc = UI_ArmoryDescWithPrice( UI_Armory_SelectedEquipDesc(), UI_Armory_SelectedEquipCost(), buf, sizeof( buf ) );
-	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), desc, qfalse );
+	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), 0, desc, qfalse );
 }
 
 // blank when no weapon is highlighted
@@ -3018,6 +3042,9 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 		break;
 	case UI_ARMORY_WEAPON_CAMO:
 		UI_DrawArmoryWeaponCamo( &rect, font, scale, color, textStyle );
+		break;
+	case UI_ARMORY_WEAPON_PRICE:
+		UI_DrawArmoryWeaponPrice( &rect, font, scale, color, textStyle );
 		break;
 	case UI_CARDGAME_CHIPS:
 		UI_DrawCardGameChips( &rect, font, scale, color, textStyle );

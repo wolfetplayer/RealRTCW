@@ -141,6 +141,41 @@ extern void (APIENTRYP qglPNTrianglesfATI)(GLenum pname, GLfloat param);
 #define GL_COMPRESSED_RGBA_S3TC_DXT3_EXT                  0x83F2
 #define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT                  0x83F3
 
+// GL1.3-core / ARB_texture_env_combine constants, used by the weapon-camo maskMap stage
+#ifndef GL_COMBINE
+#define GL_COMBINE                          0x8570
+#endif
+#ifndef GL_COMBINE_RGB
+#define GL_COMBINE_RGB                      0x8571
+#endif
+#ifndef GL_COMBINE_ALPHA
+#define GL_COMBINE_ALPHA                     0x8572
+#endif
+#ifndef GL_SOURCE0_RGB
+#define GL_SOURCE0_RGB                       0x8580
+#endif
+#ifndef GL_SOURCE1_RGB
+#define GL_SOURCE1_RGB                       0x8581
+#endif
+#ifndef GL_SOURCE0_ALPHA
+#define GL_SOURCE0_ALPHA                     0x8588
+#endif
+#ifndef GL_OPERAND0_RGB
+#define GL_OPERAND0_RGB                      0x8590
+#endif
+#ifndef GL_OPERAND1_RGB
+#define GL_OPERAND1_RGB                      0x8591
+#endif
+#ifndef GL_OPERAND0_ALPHA
+#define GL_OPERAND0_ALPHA                    0x8598
+#endif
+#ifndef GL_PREVIOUS
+#define GL_PREVIOUS                          0x8578
+#endif
+#ifndef GL_RGB_SCALE
+#define GL_RGB_SCALE                         0x8573
+#endif
+
 #endif // USE_OPENGLES
 
 // GL_EXT_texture_filter_anisotropic constants

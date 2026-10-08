@@ -822,6 +822,8 @@ int UI_Armory_SelectedEquipCost( void ) {
 
 #define CAMO_CVAR_NAME "cg_weaponCamos"
 
+static qhandle_t armoryCamoPatternIcons[MAX_WEAPON_CAMOS];   // lazy-loaded, indexed by camoIndex-1
+
 // follows whichever list (build/source) was clicked last, not just "is selectedBuildIndex set"
 static weapon_t UI_Armory_CamoTargetWeapon( void ) {
 	int weaponIndex, equipIndex;
@@ -922,6 +924,19 @@ const char *UI_Armory_SelectedWeaponCamoName( void ) {
 		return "None";
 	}
 	return va( "%d", camoIndex );
+}
+
+// shared across every weapon - same 8 camouflage_0N.png pattern swatches regardless of which weapon is selected
+qhandle_t UI_Armory_SelectedWeaponCamoIcon( void ) {
+	int camoIndex = UI_Armory_SelectedWeaponCamoIndex();
+
+	if ( camoIndex <= 0 || camoIndex > MAX_WEAPON_CAMOS ) {
+		return 0;
+	}
+	if ( !armoryCamoPatternIcons[camoIndex - 1] ) {
+		armoryCamoPatternIcons[camoIndex - 1] = trap_R_RegisterShaderNoMip( va( "camos/camouflage_%02d.png", camoIndex ) );
+	}
+	return armoryCamoPatternIcons[camoIndex - 1];
 }
 
 void UI_Armory_CycleSelectedWeaponCamo( void ) {

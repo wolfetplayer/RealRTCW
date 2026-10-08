@@ -352,6 +352,8 @@ typedef struct {
 
 	qboolean isDetail;
 	qboolean isFogged;              // used only for shaders that have fog disabled, so we can enable it for individual stages
+
+	qboolean isMaskBlend;            // bundle[0]=map supplies RGB, bundle[1]=maskMap supplies ALPHA via GL_COMBINE (see DrawMultitextured)
 } shaderStage_t;
 
 struct shaderCommands_s;

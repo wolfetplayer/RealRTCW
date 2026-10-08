@@ -340,6 +340,7 @@ If you have questions concerning this license or the applicable additional terms
 #define UI_ARMORY_POINTS            267    // hub armory: "points remaining / total" readout
 #define UI_ARMORY_WEAPON_DESC       268    // hub armory: icon + description of the currently-selected weapon
 #define UI_ARMORY_EQUIP_DESC        269    // hub armory: icon + description of the currently-selected equipment item
+#define UI_ARMORY_WEAPON_CAMO       276    // hub armory: "Camo: <name>" label for the currently-selected weapon
 
 #define UI_CARDGAME_CHIPS           270    // Malta hub War card game: chip / bet / pot readout
 #define UI_CARDGAME_RESULT          273    // Malta hub War card game: flow-prompt / round-result / finale banner (one shared text region)

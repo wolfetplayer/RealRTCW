@@ -602,9 +602,10 @@ typedef enum {
 	WP_SNIPER,              
 	WP_MORTAR,           
 	VERYBIGEXPLOSION,       	
-	WP_NUM_WEAPONS 
+	WP_NUM_WEAPONS
 } weapon_t;
 
+#define MAX_WEAPON_CAMOS 5   // 0 means "none"
 
 extern int reloadableWeapons[];
 

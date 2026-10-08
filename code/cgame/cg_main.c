@@ -41,6 +41,7 @@ displayContextDef_t cgDC;
 
 int forceModelModificationCount = -1;
 int hudStyleModificationCount = -1;
+int weaponCamosModificationCount = -1;
 extern menuDef_t *menuScoreboard;
 
 void CG_Init( int serverMessageNum, int serverCommandSequence );
@@ -330,6 +331,8 @@ vmCvar_t cg_simpleZoomFov;
 vmCvar_t cg_simpleZoomTimeMs;
 vmCvar_t cg_simpleZoomVenomScale;
 
+vmCvar_t cg_weaponCamos;
+
 typedef struct {
 	vmCvar_t    *vmCvar;
 	char        *cvarName;
@@ -597,6 +600,8 @@ cvarTable_t cvarTable[] = {
 	{&cg_simpleZoomTimeMs, "cg_simpleZoomTimeMs", "120", CVAR_ARCHIVE},
 	{&cg_simpleZoomVenomScale, "cg_simpleZoomVenomScale", "0.5", CVAR_ARCHIVE},
 
+	{&cg_weaponCamos, "cg_weaponCamos", "", CVAR_ARCHIVE},   // camo index per weapon_t
+
 };
 int cvarTableSize = ARRAY_LEN( cvarTable );
 void CG_setClientFlags( void );
@@ -624,6 +629,8 @@ void CG_RegisterCvars( void ) {
 
 	forceModelModificationCount = cg_forceModel.modificationCount;
 	hudStyleModificationCount = cg_hudStyle.modificationCount;
+	weaponCamosModificationCount = cg_weaponCamos.modificationCount;
+	CG_ParseWeaponCamos();
 
 	trap_Cvar_Register( NULL, "model", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
 	trap_Cvar_Register( NULL, "head", DEFAULT_HEAD, CVAR_USERINFO | CVAR_ARCHIVE );
@@ -687,6 +694,11 @@ void CG_UpdateCvars( void ) {
 		hudStyleModificationCount = cg_hudStyle.modificationCount;
 		CG_LoadHudMenu();
 		menuScoreboard = NULL;
+	}
+
+	if ( weaponCamosModificationCount != cg_weaponCamos.modificationCount ) {
+		weaponCamosModificationCount = cg_weaponCamos.modificationCount;
+		CG_ParseWeaponCamos();
 	}
 }
 

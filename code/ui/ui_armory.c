@@ -22,6 +22,7 @@ static qhandle_t armoryEquipIcons[ARMORY_MAX_EQUIP];
 static int selectedWeaponIndex = -1;
 static int selectedEquipIndex = -1;
 static int selectedBuildIndex = -1;
+static qboolean lastWeaponSelectWasBuild = qfalse;   // for the camo picker
 
 static int UI_Armory_RawEquipIndex( int compactIndex );   // defined below; needed by UI_Armory_Reset above it
 
@@ -39,6 +40,7 @@ void UI_Armory_Reset( void ) {
 	selectedWeaponIndex = -1;
 	selectedEquipIndex = -1;
 	selectedBuildIndex = -1;
+	lastWeaponSelectWasBuild = qfalse;
 
 	// perma items are mapper-forced picks: always in the build, regardless of what triggered this reset
 	for ( i = 0; i < armoryRoster.numWeapons; i++ ) {
@@ -487,6 +489,7 @@ void UI_Armory_SelectBuild( int index ) {
 		return;   // mapper-forced pick: not selectable
 	}
 	selectedBuildIndex = index;
+	lastWeaponSelectWasBuild = qtrue;
 }
 
 void UI_Armory_RemoveSelectedBuild( void ) {
@@ -677,6 +680,7 @@ void UI_Armory_SelectWeapon( int index ) {
 		return;
 	}
 	selectedWeaponIndex = index;
+	lastWeaponSelectWasBuild = qfalse;
 }
 
 void UI_Armory_SelectEquip( int index ) {
@@ -736,6 +740,7 @@ void UI_Armory_AddSelectedWeapon( void ) {
 	}
 	selectedBuildIndex = UI_Armory_BuildIndexForWeapon( index );   // so Remove works right away
 	selectedWeaponIndex = -1;   // it just left the source list
+	lastWeaponSelectWasBuild = qtrue;
 }
 
 void UI_Armory_AddSelectedEquip( void ) {
@@ -811,4 +816,122 @@ int UI_Armory_SelectedEquipCost( void ) {
 	}
 	def = UI_Armory_EquipDef( selectedEquipIndex );
 	return def ? BG_Armory_GetEquipCost( def ) : -1;
+}
+
+//===================== camo: persistent per-weapon cosmetic preference =====================
+
+#define CAMO_CVAR_NAME "cg_weaponCamos"
+
+// follows whichever list (build/source) was clicked last, not just "is selectedBuildIndex set"
+static weapon_t UI_Armory_CamoTargetWeapon( void ) {
+	int weaponIndex, equipIndex;
+
+	if ( lastWeaponSelectWasBuild ) {
+		if ( selectedBuildIndex >= 0 && UI_Armory_ResolveBuildIndex( selectedBuildIndex, &weaponIndex, &equipIndex ) && weaponIndex >= 0 ) {
+			return (weapon_t)armoryRoster.weapons[weaponIndex];
+		}
+		return WP_NONE;
+	}
+	if ( selectedWeaponIndex >= 0 && selectedWeaponIndex < armoryRoster.numWeapons ) {
+		return (weapon_t)armoryRoster.weapons[selectedWeaponIndex];
+	}
+	return WP_NONE;
+}
+
+static int UI_Armory_GetWeaponCamoByNum( weapon_t weaponNum ) {
+	char buf[MAX_CVAR_VALUE_STRING];
+	const char *s;
+	int i, value;
+
+	if ( weaponNum <= WP_NONE || weaponNum >= WP_NUM_WEAPONS ) {
+		return 0;
+	}
+
+	trap_Cvar_VariableStringBuffer( CAMO_CVAR_NAME, buf, sizeof( buf ) );
+	s = buf;
+	for ( i = 0; i < weaponNum && s; i++ ) {
+		s = strchr( s, ',' );
+		if ( s ) {
+			s++;
+		}
+	}
+	if ( !s || !*s ) {
+		return 0;
+	}
+	value = atoi( s );
+	if ( value < 0 || value > MAX_WEAPON_CAMOS ) {
+		return 0;
+	}
+	return value;
+}
+
+static void UI_Armory_SetWeaponCamoByNum( weapon_t weaponNum, int camoIndex ) {
+	char buf[MAX_CVAR_VALUE_STRING];
+	char out[MAX_CVAR_VALUE_STRING];
+	const char *s;
+	int i;
+
+	if ( weaponNum <= WP_NONE || weaponNum >= WP_NUM_WEAPONS ) {
+		return;
+	}
+
+	trap_Cvar_VariableStringBuffer( CAMO_CVAR_NAME, buf, sizeof( buf ) );
+	s = buf;
+	out[0] = '\0';
+
+	for ( i = 0; i < WP_NUM_WEAPONS; i++ ) {
+		int value;
+
+		if ( i == weaponNum ) {
+			value = camoIndex;
+		} else {
+			value = ( s && *s ) ? atoi( s ) : 0;
+		}
+		if ( value < 0 || value > MAX_WEAPON_CAMOS ) {
+			value = 0;
+		}
+
+		if ( i > 0 ) {
+			Q_strcat( out, sizeof( out ), "," );
+		}
+		Q_strcat( out, sizeof( out ), va( "%d", value ) );
+
+		if ( s ) {
+			s = strchr( s, ',' );
+			if ( s ) {
+				s++;
+			}
+		}
+	}
+
+	trap_Cvar_Set( CAMO_CVAR_NAME, out );
+}
+
+int UI_Armory_SelectedWeaponCamoIndex( void ) {
+	return UI_Armory_GetWeaponCamoByNum( UI_Armory_CamoTargetWeapon() );
+}
+
+const char *UI_Armory_SelectedWeaponCamoName( void ) {
+	int camoIndex;
+
+	if ( UI_Armory_CamoTargetWeapon() == WP_NONE ) {
+		return "";
+	}
+	camoIndex = UI_Armory_SelectedWeaponCamoIndex();
+	if ( camoIndex <= 0 ) {
+		return "None";
+	}
+	return va( "%d", camoIndex );
+}
+
+void UI_Armory_CycleSelectedWeaponCamo( void ) {
+	weapon_t weaponNum = UI_Armory_CamoTargetWeapon();
+	int camoIndex;
+
+	if ( weaponNum == WP_NONE ) {
+		return;
+	}
+	camoIndex = UI_Armory_GetWeaponCamoByNum( weaponNum );
+	camoIndex = ( camoIndex + 1 ) % ( MAX_WEAPON_CAMOS + 1 );
+	UI_Armory_SetWeaponCamoByNum( weaponNum, camoIndex );
 }

@@ -272,6 +272,42 @@ menuDef {
 		visible 1
 	}
 
+	itemDef {
+		name weaponsCamoLabel
+		type ITEM_TYPE_OWNERDRAW
+		ownerdraw UI_ARMORY_WEAPON_CAMO
+		rect 43 432 100 16
+		textfont UI_FONT_BIG
+		textscale .16
+		textalign ITEM_ALIGN_LEFT
+		textalignx 4
+		textaligny 11
+		forecolor .85 .85 .85 1
+		visible 1
+		decoration
+	}
+
+	itemDef {
+		name weaponsCamoTag
+		text "@ARMORY_CAMO"
+		type ITEM_TYPE_BUTTON
+		rect 148 432 62 16
+		textscale .16
+		style WINDOW_STYLE_FILLED
+		backcolor .1 .3 .4 .9
+		border 1
+		bordercolor .5 .7 .8 .8
+		textaligny 11
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_CENTER
+		textalignx 31
+		forecolor 1 1 1 1
+		mouseEnter { setitemcolor weaponsCamoTag backcolor .15 .45 .6 .95 }
+		mouseExit { setitemcolor weaponsCamoTag backcolor .1 .3 .4 .9 }
+		action { play "sound/misc/kcswish.wav" ; uiScript armoryCycleCamo }
+		visible 1
+	}
+
 	//////////////// current build (middle) ////////////////
 
 	itemDef {

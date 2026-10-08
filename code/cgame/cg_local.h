@@ -696,6 +696,7 @@ typedef struct weaponInfo_s {
     qhandle_t legskin;
 	qhandle_t upgradedSkin;
 	qhandle_t upgradedMapSkin;
+	qhandle_t camoSkin[MAX_WEAPON_CAMOS];  // from "<base>_camoN.skin"
 //----(SA)	end
 
 	qboolean droppedAnglesHack;
@@ -1035,6 +1036,8 @@ typedef struct {
 	int weaponSelectTime;
 	int weaponAnimation;
 	int weaponAnimationTime;
+
+	int weaponCamoIndex[WP_NUM_WEAPONS];    // 0 == none, parsed from cg_weaponCamos
 
     refdef_t *refdef_current;                       ///< Handling of some drawing elements for MV (not only MV!) RealRTCW
 
@@ -1874,6 +1877,7 @@ extern vmCvar_t cg_gun_y;
 extern vmCvar_t cg_gun_z;
 extern vmCvar_t cg_drawGun;
 extern vmCvar_t cg_drawFPGun;
+extern vmCvar_t cg_weaponCamos;             // CSV of camo index by weapon_t
 extern vmCvar_t cg_drawGamemodels;
 extern vmCvar_t cg_cursorHints;
 extern vmCvar_t cg_hintFadeTime;            //----(SA)	added
@@ -2306,6 +2310,7 @@ void CG_RailTrail( clientInfo_t *ci, vec3_t start, vec3_t end, int type );   //-
 void CG_GrappleTrail( centity_t *ent, const weaponInfo_t *wi );
 void CG_AddViewWeapon( playerState_t *ps );
 void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent );
+void CG_ParseWeaponCamos( void );
 void CG_DrawWeaponSelect( void );
 void CG_DrawHoldableSelect( void );
 

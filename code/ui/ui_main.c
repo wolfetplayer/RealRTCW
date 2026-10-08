@@ -1446,6 +1446,16 @@ static void UI_DrawArmoryEquipDesc( rectDef_t *rect, int font, float scale, vec4
 	UI_DrawArmoryIconDesc( rect, font, scale, color, textStyle, UI_Armory_SelectedEquipIcon(), desc, qfalse );
 }
 
+// blank when no weapon is highlighted
+static void UI_DrawArmoryWeaponCamo( rectDef_t *rect, int font, float scale, vec4_t color, int textStyle ) {
+	const char *name = UI_Armory_SelectedWeaponCamoName();
+
+	if ( !name[0] ) {
+		return;
+	}
+	Text_Paint( rect->x, rect->y, font, scale, color, va( "Camo: %s", name ), 0, 0, textStyle );
+}
+
 // Item_OwnerDraw_Paint doesn't true-center ownerdraw text, so center it by hand here.
 static void CardGame_PaintCentered( rectDef_t *rect, int font, float scale, vec4_t color, const char *text, int textStyle ) {
 	float centerX = rect->x + rect->w / 2;
@@ -3005,6 +3015,9 @@ static void UI_OwnerDraw( float x, float y, float w, float h, float text_x, floa
 		break;
 	case UI_ARMORY_EQUIP_DESC:
 		UI_DrawArmoryEquipDesc( &rect, font, scale, color, textStyle );
+		break;
+	case UI_ARMORY_WEAPON_CAMO:
+		UI_DrawArmoryWeaponCamo( &rect, font, scale, color, textStyle );
 		break;
 	case UI_CARDGAME_CHIPS:
 		UI_DrawCardGameChips( &rect, font, scale, color, textStyle );
@@ -5098,6 +5111,8 @@ static void UI_RunMenuScript( char **args ) {
 				Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, UI_Armory_SelectedBuildIndex(), "armory_loadout" );
 			}
 			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_EQUIP, -1, "armory_loadout" );
+		} else if ( Q_stricmp( name, "armoryCycleCamo" ) == 0 ) {
+			UI_Armory_CycleSelectedWeaponCamo();
 		} else if ( Q_stricmp( name, "armoryRemoveSelected" ) == 0 ) {
 			UI_Armory_RemoveSelectedBuild();
 			Menu_SetFeederSelection( NULL, FEEDER_ARMORY_BUILD, -1, "armory_loadout" );

@@ -20,6 +20,7 @@ void UI_Armory_LoadRosterForCurrentMap( void );
 // Must run before UI_FreeTranslateTable() frees the table.
 void UI_Armory_ResolveEquipTranslations( void );
 void UI_Armory_ResolveWeaponDescTranslations( void );
+void UI_Armory_ResolveCamoNameTranslations( void );
 
 const char  *UI_Armory_WeaponName( int index );
 qhandle_t   UI_Armory_WeaponIcon( int index );

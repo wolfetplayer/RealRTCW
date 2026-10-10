@@ -4189,3 +4189,691 @@ models/weapons/smgs/sten/wpn_base2_camo8
 	}
 }
 
+models/weapons/auto_rifles/m1941/wpn_base_camo1
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_01.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo2
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_02.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo3
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_03.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo4
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_04.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo5
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_05.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo6
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_06.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo7
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_07.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/auto_rifles/m1941/wpn_base_camo8
+{
+	{
+		map models/weapons/auto_rifles/m1941/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_08.png
+		maskMap models/weapons/auto_rifles/m1941/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo1
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_01.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo2
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_02.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo3
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_03.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo4
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_04.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo5
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_05.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo6
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_06.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo7
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_07.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/rifles/delisle/wpn_base_camo8
+{
+	{
+		map models/weapons/rifles/delisle/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .14
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_08.png
+		maskMap models/weapons/rifles/delisle/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo1
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_01.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo2
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_02.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo3
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_03.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo4
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_04.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo5
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_05.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo6
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_06.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo7
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_07.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_base_camo8
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_base.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_08.png
+		maskMap models/weapons/shotguns/auto5/wpn_base_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo1
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_01.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo2
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_02.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo3
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_03.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo4
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_04.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo5
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_05.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo6
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_06.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo7
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_07.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+
+models/weapons/shotguns/auto5/wpn_barrel_camo8
+{
+	{
+		map models/weapons/shotguns/auto5/wpn_barrel.jpg
+		rgbGen lightingDiffuse
+	}
+	{
+		map textures/effects/envmap_slateH.tga
+		blendFunc GL_SRC_ALPHA GL_ONE
+		alphaGen const .1
+		tcMod scale 1.6 1.6
+		tcGen environment
+		rgbGen lightingDiffuse
+	}
+	{
+		map camos/camouflage_08.png
+		maskMap models/weapons/shotguns/auto5/wpn_barrel_mask.png
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen lightingDiffuse
+	}
+}
+

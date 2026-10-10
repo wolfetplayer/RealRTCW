@@ -2,6 +2,11 @@
 # firearm using the mp44/thompson maskMap pipeline. Data-driven: one entry per
 # weapon describing its "main" surfaces (get camo'd) and "accessory" surfaces
 # (stay at their stock default shader, same idea as hqhand/hqarm).
+# Pass -OnlyIds to regenerate a subset (e.g. just-added weapons) without re-touching everyone else's already-correct output.
+
+param(
+    [string[]]$OnlyIds
+)
 
 $CamosRoot = "G:\Steam\steamapps\common\RealRTCW\camos"
 $Compositor = Join-Path $PSScriptRoot "composite_camo.ps1"
@@ -93,7 +98,28 @@ $Weapons = @(
        mains=@(@{surf="wpn"; shaderName="wpn_base"; tex="wpn_base.jpg"; alphaGen=".14"; tcMod="1.2 1.2"}) },
 
     @{ id="thompson";       dir="smgs/thompson";             hands="v_thompson_hand";  accessories=$HandDefaults;
-       mains=@(@{surf="wpn"; shaderName="wpn_base"; tex="wpn_base.jpg"; alphaGen=".10"; tcMod="1.2 1.2"}) }
+       mains=@(@{surf="wpn"; shaderName="wpn_base"; tex="wpn_base.jpg"; alphaGen=".10"; tcMod="1.2 1.2"}) },
+
+    # DLC1 weapons (z_zrealrtcw_dlc1.pk3)
+    @{ id="m1941";          dir="auto_rifles/m1941";        hands="v_m1941_hand";      accessories=$HandDefaults + @(
+           "wpn_scope,models/weapons/auto_rifles/m1941/wpn_scope.jpg",
+           "wpn_clip,models/weapons/rifles/mosin/wpn_clip.jpg" );
+       mains=@(@{surf="wpn"; shaderName="wpn_base"; tex="wpn_base.jpg"; alphaGen=".14"; tcMod=$null}) },
+
+    @{ id="delisle";        dir="rifles/delisle";           hands="v_delisle_hand";    accessories=$HandDefaults + @("scope,models/weapons/rifles/delisle/wpn_scope.jpg");
+       mains=@(@{surf="wpn"; shaderName="wpn_base"; tex="wpn_base.jpg"; alphaGen=".14"; tcMod=$null}) },
+
+    # wpn_trigger shares wpn_base's own texture (same atlas, separate smartskin surface) - camo'd via the aliases
+    # mechanism below instead of its own mains entry, so it doesn't get a redundant mask/shader of its own.
+    # wpn_barrel is a genuinely separate texture (confirmed low-saturation/metal via pixel sampling) so it's a
+    # second main surface, like mg42/sten's wpn2. wpn_stock is left as an accessory (confirmed high-saturation/
+    # wood via pixel sampling, same "don't repaint the wood" policy as every other weapon's grip/stock).
+    @{ id="auto5";          dir="shotguns/auto5";            hands="v_auto5_hand";     accessories=$HandDefaults + @("wpn_stock,models/weapons/shotguns/auto5/wpn_stock.jpg");
+       mains=@(
+           @{surf="wpn";        shaderName="wpn_base";   tex="wpn_base.jpg";   alphaGen=".1"; tcMod="1.6 1.6"},
+           @{surf="wpn_barrel"; shaderName="wpn_barrel"; tex="wpn_barrel.jpg"; alphaGen=".1"; tcMod="1.6 1.6"}
+       );
+       aliases=@(@{surf="wpn_trigger"; shaderName="wpn_base"}) }
 )
 
 # alias weapons: identical texture/geometry to another weapon, so they just reuse that
@@ -102,6 +128,12 @@ $Aliases = @(
     @{ id="colt2";  dir="pistols/colt2";   hands="v_colt2_hand";  reuseDir="pistols/colt"; surf="wpn"; shaderName="wpn_base"; accessories=$HandDefaults },
     @{ id="tt33_2"; dir="pistols/tt33_2";  hands="v_tt33_2_hand"; reuseDir="pistols/tt33"; surf="wpn"; shaderName="wpn_base"; accessories=$HandDefaults }
 )
+
+if ($OnlyIds) {
+    $Weapons = $Weapons | Where-Object { $OnlyIds -contains $_.id }
+    $Aliases = $Aliases | Where-Object { $OnlyIds -contains $_.id }
+    Write-Output "Scoped to: $($OnlyIds -join ', ')"
+}
 
 Write-Output "=== Building masks ==="
 foreach ($w in $Weapons) {
@@ -120,6 +152,11 @@ foreach ($w in $Weapons) {
         $lines = New-Object System.Collections.Generic.List[string]
         foreach ($m in $w.mains) {
             $lines.Add("$($m.surf),models/weapons/$($w.dir)/$($m.shaderName)_camo$i")
+        }
+        if ($w.aliases) {
+            foreach ($al in $w.aliases) {
+                $lines.Add("$($al.surf),models/weapons/$($w.dir)/$($al.shaderName)_camo$i")
+            }
         }
         foreach ($a in $w.accessories) { $lines.Add($a) }
         $skinPath = Join-Path $outDir "$($w.hands)_camo$i.skin"

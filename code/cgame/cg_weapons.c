@@ -3125,6 +3125,80 @@ void CG_ParseWeaponCamos( void ) {
 
 /*
 ==============
+CG_TestCamo_f
+
+Cheat command: sets (or, with no argument, cycles) the camo on the weapon
+currently in the player's hands, writing straight into cg_weaponCamos the
+same way the armory UI does. Lets camo art be test-fired in the field
+without a trip through the armory.
+==============
+*/
+void CG_TestCamo_f( void ) {
+	weapon_t weaponNum;
+	const weaponInfo_t *weapon;
+	char buf[MAX_CVAR_VALUE_STRING];
+	char out[MAX_CVAR_VALUE_STRING];
+	const char *s;
+	int i, camoIndex;
+
+	trap_Cvar_VariableStringBuffer( "sv_cheats", buf, sizeof( buf ) );
+	if ( !atoi( buf ) ) {
+		CG_Printf( "testcamo: cheats must be enabled (devmap/spdevmap)\n" );
+		return;
+	}
+
+	if ( !cg.snap ) {
+		return;
+	}
+
+	weaponNum = (weapon_t)cg.snap->ps.weapon;
+	if ( weaponNum <= WP_NONE || weaponNum >= WP_NUM_WEAPONS ) {
+		return;
+	}
+	weapon = &cg_weapons[weaponNum];
+
+	if ( trap_Argc() > 1 ) {
+		camoIndex = atoi( CG_Argv( 1 ) );
+	} else {
+		camoIndex = ( cg.weaponCamoIndex[weaponNum] + 1 ) % ( MAX_WEAPON_CAMOS + 1 );
+	}
+	if ( camoIndex < 0 || camoIndex > MAX_WEAPON_CAMOS ) {
+		camoIndex = 0;
+	}
+	if ( camoIndex > 0 && !weapon->camoSkin[camoIndex - 1] ) {
+		CG_Printf( "testcamo: weapon %d has no camo skin %d\n", weaponNum, camoIndex );
+		return;
+	}
+
+	trap_Cvar_VariableStringBuffer( "cg_weaponCamos", buf, sizeof( buf ) );
+	s = buf;
+	out[0] = '\0';
+
+	for ( i = 0; i < WP_NUM_WEAPONS; i++ ) {
+		int value = ( i == weaponNum ) ? camoIndex : ( ( s && *s ) ? atoi( s ) : 0 );
+
+		if ( value < 0 || value > MAX_WEAPON_CAMOS ) {
+			value = 0;
+		}
+		if ( i > 0 ) {
+			Q_strcat( out, sizeof( out ), "," );
+		}
+		Q_strcat( out, sizeof( out ), va( "%d", value ) );
+
+		if ( s ) {
+			s = strchr( s, ',' );
+			if ( s ) {
+				s++;
+			}
+		}
+	}
+	trap_Cvar_Set( "cg_weaponCamos", out );
+
+	CG_Printf( "testcamo: weapon %d camo set to %d\n", weaponNum, camoIndex );
+}
+
+/*
+==============
 CG_CustomWeaponSkin
 
 Picks which skin (if any) should override a held weapon part's base skin for

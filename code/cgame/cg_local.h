@@ -2311,6 +2311,7 @@ void CG_GrappleTrail( centity_t *ent, const weaponInfo_t *wi );
 void CG_AddViewWeapon( playerState_t *ps );
 void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent );
 void CG_ParseWeaponCamos( void );
+void CG_TestCamo_f( void );
 void CG_DrawWeaponSelect( void );
 void CG_DrawHoldableSelect( void );
 

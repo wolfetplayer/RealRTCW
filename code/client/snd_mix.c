@@ -284,6 +284,9 @@ void S_SetVoiceAmplitudeFrom16( const sfx_t *sc, int sampleOffset, int count, in
 	for ( i = 0; i < count; i++ ) {
 		if ( sampleOffset >= SND_CHUNK_SIZE ) {
 			chunk = chunk->next;
+			if ( !chunk ) {
+				chunk = sc->soundData;
+			}
 			samples = chunk->sndChunk;
 			sampleOffset = 0;
 		}
@@ -528,6 +531,9 @@ static void S_PaintChannelFrom16_scalar( channel_t *ch, const sfx_t *sc, int cou
 
 			if (sampleOffset == SND_CHUNK_SIZE) {
 				chunk = chunk->next;
+				if ( !chunk ) {
+					chunk = sc->soundData;
+				}
 				samples = chunk->sndChunk;
 				sampleOffset = 0;
 			}
@@ -703,6 +709,9 @@ void S_PaintChannelFromMuLaw( channel_t *ch, sfx_t *sc, int count, int sampleOff
 			samples++;
 			if (chunk != NULL && samples == (byte *)chunk->sndChunk+(SND_CHUNK_SIZE*2)) {
 				chunk = chunk->next;
+				if ( !chunk ) {
+					chunk = sc->soundData;
+				}
 				samples = (byte *)chunk->sndChunk;
 			}
 		}

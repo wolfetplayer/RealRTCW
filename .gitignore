@@ -3,6 +3,7 @@ Makefile.local
 *.swp
 *tags
 *~
+*.orig
 
 # OS X
 ####################

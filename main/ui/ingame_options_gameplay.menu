@@ -1,0 +1,272 @@
+// NOTE: fragment of the "ingame_options" menuDef (ui/ingame_options.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    GAMEPLAY             //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//itemDef {
+	//name ctr_performance
+	//text "@GAMEPLAY"
+	//type 1
+	//textscale .23
+	//group grpControlbutton
+//	rect 50 10 100 12
+	//rect 50 10 100 12
+	//textalign 1
+	//textalignx 50
+	//textfont UI_FONT_BIG
+	//textaligny 10
+	//forecolor 1 1 1 1
+	//backcolor .1 .1 .1 0 
+	//visible 1
+	//action { hide grpOptions ; show gameplay }
+	//mouseEnter { setitemcolor ctr_performance backcolor .1 .37 .1 1 }
+	//mouseExit { setitemcolor ctr_performance backcolor .37 .1 .1 1 }
+	//}
+
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_ARSENAL"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_fullarsenal"
+		cvarFloatList { "@GM_ARSENAL_CLASSIC" 0 "@GM_ARSENAL_REALRTCW" 1 }
+		rect 82 30 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_MIDGAME"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_midgame"
+		cvarFloatList { "@GM_MIDGAME_CLASSIC" 0 "@GM_MIDGAME_HUB" 1 "@GM_MIDGAME_HUBANDCUTSCENE" 2 }
+		rect 82 45 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_REALISMM"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_realism"
+		rect 82 60 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_REWARDS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_endmapbonus"
+		rect 82 75 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_DOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawndogs"
+		rect 82 90 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_PRIESTS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnpriests"
+		rect 82 105 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_XDOGS"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_spawnxshepherds"
+		rect 82 120 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_ADDENEMIES"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_reinforce"
+		cvarFloatList { "@GM_ADDENEMIES_NO" 0 "@GM_ADDENEMIES_MORE" 1 "@GM_ADDENEMIES_EVENMORE" 2 }
+		rect 82 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_FALLOFF"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_weaponfalloff"
+		rect 82 155 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_STRAFEJUMP"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_jumptime"
+		rect 82 170 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_AIRESPAWN"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "g_airespawn"
+		cvarFloatList { "@GM_AIRESPAWN_NO" 0 "@GM_AIRESPAWN_ONCE" 1 "@GM_AIRESPAWN_INFINITE" -1 }
+		rect 82 185 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_AIHEADSHOT"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_aicanheadshot"
+		rect 82 200 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name gameplay
+		group grpOptions
+		text "@GM_AIRIFLES"
+		type ITEM_TYPE_YESNO
+        textfont UI_FONT_BIG		
+		cvar "g_fireonthemove"
+		rect 82 215 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                      VIEW                    //////////////////////////////////////////               
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	

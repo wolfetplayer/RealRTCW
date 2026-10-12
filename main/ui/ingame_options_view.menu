@@ -1,0 +1,362 @@
+// NOTE: fragment of the "ingame_options" menuDef (ui/ingame_options.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+    itemDef {
+	name ctr_view
+	text "@HUD"
+	type 1
+	textscale .23
+	group grpControlbutton
+	rect 50 10 100 12
+	textalign 1
+	textalignx 50
+	textfont UI_FONT_BIG
+	textaligny 10
+	forecolor 1 1 1 1
+	backcolor .1 .1 .1 0 
+	visible 1
+	action { hide grpOptions ; show view }
+	mouseEnter { setitemcolor ctr_view backcolor .1 .37 .1 1 }
+		mouseExit { setitemcolor ctr_view backcolor .37 .1 .1 1 }
+
+}
+
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_ENABLE"
+		cvar "cg_draw2D"
+		rect 82 45 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_MULTI
+		text "@HUD_STYLE_INGAME"
+		cvar "cg_hudstyle"
+		cvarFloatList { "@HUD_WOLF09" 1 "@HUD_PS2" 2 "@HUD_XBOX" 3 "@HUD_ET" 4 "@HUD_VANILLA" 5 }
+		rect 82 60 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@HUD_ALPHA"
+		cvarfloat "cg_hudAlpha" .6 .1 1
+		rect 82 75 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07        
+      	forecolor 1 1 1 1
+      	visible 0
+   	}
+	
+	itemDef {
+		name view				
+		type ITEM_TYPE_MULTI	
+		group grpOptions
+		text "@HUD_CURSORHINTS"
+		cvar "cg_cursorHints"
+		cvarFloatList { "@HUD_STROBE" 2 "@HUD_ALPHAPULSE" 3 "@HUD_CURSORSOLID" 4 "@OFF" 0 "@HUD_CURSORSIZEPULSE" 1 }
+		textalign ITEM_ALIGN_RIGHT
+		rect 82 90 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textfont UI_FONT_BIG
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3"; "4" }
+				
+		type ITEM_TYPE_MULTI
+		text "@HUD_STATUS"
+		cvar "cg_hudstatus"
+		cvarFloatList { "@HUD_STATUS_3" 3 "@HUD_STATUS_4" 4 "@HUD_STATUS_5" 5 }
+		rect 82 105 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3"; "4" }
+				
+		type ITEM_TYPE_MULTI
+		text "@HUD_STATUS"
+		cvar "cg_hudstatus"
+		cvarFloatList { "@HUD_STATUS_3" 3 "@HUD_STATUS_4" 4 "@HUD_STATUS_5" 5 }
+		rect 82 105 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+			itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_BLOOD"
+		cvar "cg_bloodBlend"
+		rect 82 120 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_STAMINA"
+		cvar "cg_hudstamina"
+		rect 82 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_STAMINA"
+		cvar "cg_hudstamina"
+		rect 82 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "3"; "5" }
+		
+		type ITEM_TYPE_YESNO
+		text "@HUD_WEAPONICON"
+		cvar "cg_hudweapicon"
+		rect 82 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "3"; "5" }
+		
+		type ITEM_TYPE_YESNO
+		text "@HUD_WEAPONICON"
+		cvar "cg_hudweapicon"
+		rect 82 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		hideCvar	{ "2"; "3"; "4"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_AMMOCLIP"
+		cvar "cg_hudammoclip"
+		rect 82 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		
+		cvarTest 	"cg_hudstyle"
+		showCvar	{ "2"; "3"; "4"; "5" }
+				
+		type ITEM_TYPE_YESNO
+		text "@HUD_AMMOCLIP"
+		cvar "cg_hudammoclip"
+		rect 82 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 .5
+		visible 0 
+		decoration
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_JOURNAL"
+		cvar "cg_journalstyle"
+		rect 82 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		type ITEM_TYPE_YESNO
+		text "@HUD_CHECKPOINT"
+		cvar "cg_drawCheckpoint"
+		rect 82 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name view
+		group grpOptions
+		text "@SYSTEM_APPLY"
+		type 1	
+		textscale .25
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		rect 181 250 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { play "sound/misc/kcaction.wav" ; exec "vid_restart" ; hide grpOptions ; hide view }
+		}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    CROSSHAIR              ////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,0 +1,392 @@
+// NOTE: fragment of the "ingame_controls" menuDef (ui/ingame_controls.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+itemDef {
+	name ctr_miscellaneous
+	text "@CONTROLS_MISC"
+	type 1
+	textscale .23
+	group grpControlbutton
+	textfont UI_FONT_BIG
+	rect 372 3.5 45 20
+//	rect 280 3.5 45 20
+	textalign 1
+	textalignx 22
+	textaligny 14
+	border 1
+	bordercolor .1 .1 .1 0
+	forecolor 1 1 1 1
+	backcolor .1 .1 .1 0 
+	visible 1
+	action { hide grpControls ; show misc }
+	mouseEnter { setitemcolor ctr_miscellaneous backcolor .1 .37 .1 1 }
+      	mouseExit { setitemcolor ctr_miscellaneous backcolor .37 .1 .1 1 }
+	}
+
+		itemDef {
+	    name misc
+		group grpControls
+	    text "@CONTROLS_ACTIONS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 190 25 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_ACTIVATE"
+		cvar "+activate"
+		rect 82 50 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_YESNO
+		text "@CONTROLS_AUTOPICKUP"
+		cvar "cg_autoactivate"
+		rect 82 65 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textfont UI_FONT_BIG
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07          
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+   	}
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_MULTI
+		text "@CONTROLS_AUTOSWITCH"
+		cvar "cg_autoswitch"
+		cvarFloatList { "@OFF" 0 "@CONTROLS_ALWAYSSWITCH" 1 "@CONTROLS_IFNEW" 2 "@CONTROLS_IFBETTER" 3 "@CONTROLS_NEWORBETTER" 4 "@CONTROLS_NEWANDBETTER" 5 }
+		rect 82 80 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23        
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0
+    }
+	
+	
+	itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_KICK"
+		cvar "+kick"
+		rect 82 95 290 12
+		textfont UI_FONT_BIG
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                    
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+
+	
+
+	itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_QUICKGRENADE"
+		cvar "+quickgren"
+		rect 82 110 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textfont UI_FONT_BIG
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_YESNO
+		text "@CONTROLS_AUTORELOAD"
+		cvar "cg_autoreload"
+		rect 82 125 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textfont UI_FONT_BIG
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07          
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+   	}
+	
+		itemDef {
+	    name misc
+		group grpControls
+	    text "@CONTROLS_INVENTORY"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 190 140 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_NEXTITEM"
+		cvar "itemnext"
+		rect 82 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_PREVITEM"
+		cvar "itemprev"
+		rect 82 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_USEITEM"
+		cvar "+useitem"
+		rect 82 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_NOTEBOOK"
+		cvar "notebook"
+		rect 82 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textfont UI_FONT_BIG
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                   
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+	}
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_BINOCS"
+		cvar "+zoom"
+		rect 82 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+	    name misc
+		group grpControls
+	    text "@CONTROLS_SAVELOAD"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 190 240 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+
+	itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_QUICKSAVE"
+		cvar "savegame quicksave"
+		rect 82 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142 
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+
+	itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_QUICKLOAD"
+		cvar "loadgame quicksave"
+		rect 82 280 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142 
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+	
+		itemDef {
+		name misc
+		group grpControls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_CHECKPOINT"
+		cvar "loadgame lastcheckpoint"
+		rect 82 295 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142 
+		textaligny 10
+		textscale .23  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07                  
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+  	}
+
+
+
+itemDef {
+      name yesno_message
+      rect 0 310 300 15 
+	text "@YESNOMESSAGE"
+textfont UI_FONT_BIG	
+	forecolor 1 .75 0 1
+	textscale .230
+	textalignx 221
+	textalign 1
+	textaligny 20
+	visible 0
+      	decoration 
+	}
+
+itemDef {
+      name slider_message
+      rect 0 310 300 15 
+	text "@SLIDERMESSAGE"
+textfont UI_FONT_BIG	
+	forecolor 1 .75 0 1
+	textscale .230
+	textalignx 221
+	textalign 1
+	textaligny 20
+	visible 0
+      	decoration 
+	}
+
+
+
+
+

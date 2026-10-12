@@ -1,0 +1,260 @@
+// NOTE: fragment of the "ingame_system" menuDef (ui/ingame_system.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+	itemDef {
+		name ctr_sound
+	    text "@SOUND"
+		type 1
+		textscale .23
+		group grpControlbutton
+		rect 340 10 100 12
+		textalign 1
+		textalignx 50
+		textfont UI_FONT_BIG
+		textaligny 10
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 0 
+		visible 1
+		action { hide grpSystem ; show sound }
+		mouseEnter { setitemcolor ctr_sound backcolor .1 .37 .1 1 }
+		mouseExit { setitemcolor ctr_sound backcolor .37 .1 .1 1 }
+	}
+	
+		 itemDef {
+	    name sound
+		group grpSystem
+	    text "@SOUND_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 190 25 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+	itemDef {
+	    name sound
+		group grpsystem
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@SOUND_EFFECTS"
+		cvarfloat "s_volume" 0.7 0 1
+		rect 82 50 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22    
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07   
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+		name sound
+		group grpsystem
+		type ITEM_TYPE_SLIDER
+		textfont UI_FONT_BIG
+		text "@SOUND_MUSIC"
+		cvarfloat "s_musicvolume" 0.25 0 1
+		rect 82 75 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22   
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		 itemDef {
+	    name sound
+		group grpSystem
+	    text "@SOUND_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 190 100 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name sound
+		textfont UI_FONT_BIG
+		group grpsystem
+		type ITEM_TYPE_YESNO
+		text "@SOUND_SUBTITLES"
+		cvar "cg_drawsubtitles"
+	    rect 82 125 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sound
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		group grpsystem
+		text "@SOUND_SUBSSIZE"
+		rect 82 140 290 12
+		cvar "cg_subtitlesize"
+		cvarFloatList { "@SOUND_SUBS_VERYSMALL" 5 "@SOUND_SUBS_SMALL" 7 "@SOUND_SUBS_MEDIUM" 9 "@SOUND_SUBS_LARGE" 12 "@SOUND_SUBS_EXTRALARGE" 16 }
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+	
+		itemDef {
+		name sound
+		textfont UI_FONT_BIG
+		group grpsystem
+		type ITEM_TYPE_YESNO
+		text "@SOUND_SUBSSHADOW"
+		cvar "cg_subtitleshadow"
+		rect 82 155 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+	
+		itemDef {
+		name sound
+		textfont UI_FONT_BIG
+		group grpsystem
+		type ITEM_TYPE_YESNO
+		text "@SOUND_OPENAL"
+		cvar "s_useOpenAL"
+		rect 82 170 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sound
+		textfont UI_FONT_BIG
+		group grpsystem
+		type ITEM_TYPE_YESNO
+		text "@SOUND_MUTEMIN"
+		cvar "s_muteWhenMinimized"
+		rect 82 185 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sound
+		textfont UI_FONT_BIG
+		group grpsystem
+		type ITEM_TYPE_YESNO
+		text "@SOUND_MUTEUNFOCUS"
+		cvar "s_muteWhenUnfocused"
+		rect 82 200 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+		itemDef {
+		name sound
+		textfont UI_FONT_BIG
+		group grpsystem
+		type ITEM_TYPE_YESNO
+		text "@SOUND_HITSOUNDS"
+		cvar "cg_hitSounds"
+		rect 82 215 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+
+
+	
+	
+
+
+
+	itemDef {
+		name applysystem
+		group grpapplySystem
+		text "@SOUND_APPLY"
+		type 1
+		style WINDOW_STYLE_FILLED	
+		textscale .25
+		textfont UI_FONT_BIG
+		rect 181 140 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 1
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { play "sound/misc/kcaction.wav" ; 
+open in_snd_restart_popmenu ; hide sound ; hide applysystem }
+		mouseEnter { setitemcolor applysystem backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor applysystem backcolor .1 .1 .1 .1 }
+
+		}
+
+
+
+

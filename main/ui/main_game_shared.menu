@@ -1,0 +1,105 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                                    GAME OPTIONS           ////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	itemDef {
+	    name gowindow
+	    group gomenus
+	    rect 220 102 443 330	
+	    style WINDOW_STYLE_FILLED
+	    border 1
+	    bordercolor .5 .5 .5 .5
+	    forecolor 1 1 1 1
+	    backcolor 0 0 0 .8
+	    visible 0
+	    decoration
+	}
+	
+	itemDef {
+		name gowindow2
+		group gomenus
+		rect 222 104 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25  
+		visible 0
+		decoration
+	}
+	
+	itemDef {
+	    name gameplaybutton
+	    text "@GAMEPLAY"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 230 108 64 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show gameplay }
+	}
+	
+	itemDef {
+	    name viewbutton
+	    text "@HUD"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 330 108 50 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show view }
+	}
+	
+    itemDef {
+	    name crosshairbutton
+	    text "@VIEW"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 430 108 55 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show crosshair }
+	}
+	
+    itemDef {
+	    name content_packs_button
+	    text "@CONTENTPACKS"
+	    type 1
+	    textscale .23
+	    group gomenus
+		textfont UI_FONT_BIG
+	    style WINDOW_STYLE_FILLED
+	    rect 530 108 65 25
+	    textalign 1
+	    textalignx 50
+	    textaligny 10
+	    forecolor 1 1 1 1
+	    backcolor .1 .1 .1 0 
+	    visible 0
+	    action { hide options ; show content_packs }
+	}
+	
+	

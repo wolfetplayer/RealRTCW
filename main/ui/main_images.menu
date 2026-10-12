@@ -1,0 +1,316 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               IMAGES            //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+itemDef
+	{
+		name realrtcw_logo
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_logo.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main.tga"
+		visible 1
+		decoration
+	}
+	
+	
+// Socials
+
+	itemDef {
+		name social_border
+		group socials
+		rect 0 450 320 32 
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 1
+		decoration
+		
+ 	    cvarTest "cg_showSocials"
+	    showcvar { "1" }
+	
+	}	
+	
+	
+itemDef
+	{
+		name socials_close
+		style WINDOW_STYLE_SHADER
+		rect 310 445 12 12
+		background "ui/assets/check_no.tga"
+		visible 1
+		type 1
+		
+	    action 
+		{ 
+		setCvar cg_showSocials "0"; 
+		}
+		
+		cvarTest "cg_showSocials"
+	    showcvar { "1" }
+	}
+	
+itemDef 
+    {
+	name discord_button
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 5 460 89 13
+	background "ui/assets/disc_logo.png"
+	visible 1
+	action { uiScript validate_openURL "https://discord.gg/Tns4CjA" }
+	
+ 	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+	mouseEnter { show "discord_button2" } 
+	mouseExit { hide "discord_button2" } 	
+    }
+	
+itemDef 
+    {
+	name discord_button2
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 5 460 89 13
+	background "ui/assets/disc_logo2.png"
+	visible 0
+	action { uiScript validate_openURL "https://discord.gg/Tns4CjA" }
+	
+ 	cvarTest "cg_showSocials"
+	showcvar { "1" }
+    }
+	
+itemDef 
+    {
+	name patreon_button
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 115 460 89 13
+	background "ui/assets/patr_logo.png"
+	visible 1
+	action { uiScript validate_openURL "https://www.patreon.com/c/aardwolf4ever" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+	mouseEnter { show "patreon_button2" } 
+	mouseExit { hide "patreon_button2" } 	
+    }
+	
+itemDef 
+    {
+	name patreon_button2
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 115 460 89 13
+	background "ui/assets/patr_logo2.png"
+	visible 0
+	action { uiScript validate_openURL "https://www.patreon.com/c/aardwolf4ever" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+    }
+	
+itemDef 
+    {
+	name pp_button
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 225 460 89 13
+	background "ui/assets/pp_logo.png"
+	visible 1
+	action { uiScript validate_openURL "https://www.paypal.com/donate/?hosted_button_id=ALA66LGSMQM5W" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+	mouseEnter { show "pp_button2" } 
+	mouseExit { hide "pp_button2" } 	
+    }
+	
+itemDef 
+    {
+	name pp_button2
+	group socials
+	type 1
+	style WINDOW_STYLE_SHADER
+	rect 225 460 89 13
+	background "ui/assets/pp_logo2.png"
+	visible 0
+	action { uiScript validate_openURL "https://www.paypal.com/donate/?hosted_button_id=ALA66LGSMQM5W" }
+	
+	cvarTest "cg_showSocials"
+	showcvar { "1" }
+	
+    }
+
+itemDef
+	{
+		name realrtcw_main_newgame
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_newgame.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_loadgame
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_loadgame.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_options
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_options.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_addons
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_addons.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_credits
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_credits.tga"
+		visible 1
+		decoration
+	}
+
+itemDef
+	{
+		name realrtcw_main_quit
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_main_quit.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_load_load
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load_load.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_load_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_load_back.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_controls
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_controls.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_system
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_system.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_game
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_game.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_defaults
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_defaults.tga"
+		visible 1
+		decoration
+	}
+	
+itemDef
+	{
+		name realrtcw_options_back
+		style WINDOW_STYLE_SHADER
+		rect -107 0 480 480
+		background "ui/assets/realrtcw_options_back.tga"
+		visible 1
+		decoration
+	}
+	

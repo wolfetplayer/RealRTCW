@@ -1,0 +1,299 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               LOOK CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name lookbutton
+	    text "@LOOK"
+	    type 1
+	    textscale .23
+	    group controlbuttons
+	    type ITEM_TYPE_BUTTON
+	    style WINDOW_STYLE_FILLED
+	    rect 250 105 45 20
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	    action { hide controls ; show look }
+	    mouseEnter { setitemcolor ctr_look backcolor .3 .6 .3 .0 } 
+	    mouseExit { setitemcolor ctr_look backcolor .1 .1 .1 0 } 
+	}
+
+    itemDef {
+	    name look
+	    text "@CONTROLS"
+ 	    type 1
+	    textfont UI_FONT_BIG
+	    style 0	
+	    textstyle 6
+	    rect 222.5 -12 64 14 
+	    textalign ITEM_ALIGN_CENTER
+	    textscale .23		
+	    textalignx 2
+	    textaligny 12
+	    forecolor .9 .9 .9 1
+	    visible 0 
+	    decoration
+    }
+	
+	    itemDef {
+	    name look
+		group controls
+	    text "@MOUSE_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@MOUSE_SENS"
+		cvarfloat "sensitivity" 5 1 30
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@MOUSE_INVERT"
+		cvar "ui_mousePitch"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		action { uiScript update ui_mousePitch }
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+    }
+
+	itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@MOUSE_SMOOTH"
+		cvar "m_filter"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show yesno_message }
+		mouseexit { hide yesno_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_MULTI
+		text "@MOUSE_ACCEL"
+		cvar "cl_mouseAccelStyle"
+		cvarFloatList { "@MOUSE_ACCEL_STYLE1" 0 "@MOUSE_ACCEL_STYLE2" 1  }
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	
+	
+		itemDef {
+	    name look
+		group controls
+	    text "@GAMEPAD_SETTINGS"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 210 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@GAMEPAD_ENABLE"
+		cvar "in_joystick"
+		rect 300 235 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@GAMEPAD_ANALOG"
+		cvar "in_joystickuseanalog"
+		rect 300 250 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@GAMEPAD_MOVESENS"
+        cvarfloat "j_moveSens"  1.0   0.2   2.0
+		rect 300 265 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@GAMEPAD_LOOKSENS"
+        cvarfloat "j_lookSens"  1.0   0.2   3.0
+		rect 300 280 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_SLIDER
+		text "@GAMEPAD_UISENS"
+        cvarfloat "j_uiSpeed"  700 300 1000
+		rect 300 295 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07            
+		forecolor 1 1 1 1
+		visible 0 
+		mouseenter { show slider_message }
+		mouseexit { hide slider_message }
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_MULTI
+		text "@GAMEPAD_ASSIST"
+		cvar "j_aimassist"
+		cvarFloatList { "@GAMEPAD_ASSIST_OFF" 0 "@GAMEPAD_ASSIST_WEAK" 1 "@GAMEPAD_ASSIST_MID" 2 "@GAMEPAD_ASSIST_STRONG" 3  }
+		rect 300 310 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name look
+		group controls
+		type ITEM_TYPE_YESNO
+		text "@GAMEPAD_INVERTLOOK"
+		cvar "j_invertLook"
+		rect 300 325 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		textfont UI_FONT_BIG
+		backcolor 1 1 1 .07           
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	
+

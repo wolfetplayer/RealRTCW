@@ -1,0 +1,308 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////              MOVE CONTROLS MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    itemDef {
+	    name movebutton
+	    text "@CONTROLS_MOVE"
+	    type 1
+	    textscale .23
+	    group controlbuttons
+	    type ITEM_TYPE_BUTTON
+	    style WINDOW_STYLE_FILLED
+	    background "ui/assets/button_back.tga"
+	    rect 350 105 45 20
+	    textalign 1
+	    textalignx 22
+		textfont UI_FONT_BIG
+	    textaligny 14
+	    border 1
+	    bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1 
+	    backcolor .1 .1 .1 0
+	    visible 0
+	    action { hide controls ; show move }
+	    mouseEnter { show message_move ; setitemcolor ctr_move backcolor .3 .3 .3 0  } 
+	    mouseExit { hide message_move ; setitemcolor ctr_move backcolor .1 .1 .1 0 } 
+	}
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_FWD"
+		cvar "+forward"
+		rect 300 135 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    		}
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_BWD"
+		cvar "+back"
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23                   
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LFT"
+		cvar "+moveleft"
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_RGT"
+		cvar "+moveright"
+		rect 300 180 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_TRNLFT"
+		cvar "+left"
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+	}
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_TRNRGT"
+		cvar "+right"
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus } 
+	}
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_STRAFE"
+		cvar "+strafe"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+	}
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_JUMP"
+		cvar "+moveup"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_TOOGLECROUCH"
+		cvar "=movedown"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_CROUCH"
+		cvar "+movedown"
+		rect 300 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_SPRINT"
+		cvar "+sprint"
+		rect 300 300 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+    }
+	
+		itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_WALK"
+		cvar "+speed"
+		rect 300 315 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142 
+		textaligny 10
+		textscale .23            
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+    }
+
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LEANLEFT"
+		cvar "+leanleft"
+		rect 300 345 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+
+	itemDef {
+		name move
+		group controls
+		type ITEM_TYPE_BIND
+		text "@CONTROLS_LEANRIGHT"
+		cvar "+leanright"
+		rect 300 360 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23           
+		forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		textfont UI_FONT_BIG
+		visible 0 
+		mouseenter { show keyBindStatus }
+		mouseexit { hide keyBindStatus }
+    }
+		

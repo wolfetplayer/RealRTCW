@@ -1,0 +1,68 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             ADDONS MENU                       ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	itemDef {
+		name modmenu3
+		group modmenus
+		rect 200 120 437 249 //200 110 437 249
+		type ITEM_TYPE_LISTBOX
+		style WINDOW_STYLE_FILLED
+		elementwidth 120
+		elementheight 20
+		textscale .25
+		elementtype LISTBOX_TEXT
+		feeder FEEDER_MODS
+		textalign 1
+		textfont UI_FONT_BIG
+		textalignx 0
+		textaligny -8
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 0.8
+		outlinecolor .45 .45 .45 .20
+		visible 0
+		doubleClick { uiScript RunMod }
+	}
+
+	itemDef {
+		name modmenu4
+		text "@ADDONS_LAUNCH"
+		type 1
+	    group modmenus
+		textscale .3
+		style WINDOW_STYLE_FILLED		
+		rect 250 370 100 20
+		textalign 1
+		textalignx 48
+		textfont UI_FONT_BIG
+		textaligny 14
+		backcolor 0 0 0 0.8
+		border 1
+		bordercolor .1 .1 .1 .3
+		visible 0
+		action { uiScript RunMod }		
+	}
+	
+	itemDef {
+		name modmenu4
+		text "@ADDONS_UNLOAD"
+		type 1
+	    group modmenus
+		textscale .3
+		style WINDOW_STYLE_FILLED		
+		rect 450 370 100 20
+		textalign 1
+		textalignx 48
+		textfont UI_FONT_BIG
+		textaligny 14
+		backcolor 0 0 0 0.8
+		border 1
+		bordercolor .1 .1 .1 .3
+		visible 0
+		action { uiscript RunMod; setcvar fs_game Main }		
+	}
+	

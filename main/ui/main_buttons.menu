@@ -1,0 +1,171 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////                        MAIN MENU BUTTONS    //////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+	// NEW GAME BUTTON
+	itemDef { 
+	    name newgamemenu
+	    group mainmenus
+	    text ""
+	    type 1
+	    rect 10 144 178 26
+	    visible 1 
+		
+	    action 
+		{ 
+		open play_menu; 
+		hide modmenus; 
+		hide load_menu; 
+		hide optionsmenugroup; 
+		hide credits; 
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0"; 
+		setcvar g_nopickupchallenge "0"; 
+		setCvar g_decaychallenge "0" ;
+		close main;
+		}
+		
+	    mouseEnter { show "realrtcw_main_newgame" } 
+	    mouseExit { hide "realrtcw_main_newgame" } 	
+	}
+	
+	// LOAD GAME BUTTON
+	itemDef {
+		name loadgamemenu
+		text ""
+		group mainmenus
+		type 1
+	    rect 10 177 178 26
+		visible 1 
+		textfont UI_FONT_BIG
+		
+		action 
+		{ 
+		open load_menu; 
+		hide modmenus; 
+		hide newgamemenugroup; 
+		hide optionsmenugroup; 
+		hide credits;
+		hide realrtcw_main;
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0"; 
+		setcvar g_nopickupchallenge "0";
+		setCvar g_decaychallenge "0"
+		}
+		
+	    mouseEnter { show "realrtcw_main_loadgame" } 
+	    mouseExit { hide "realrtcw_main_loadgame" } 	
+    }
+		
+    // OPTIONS BUTTON
+	itemDef {
+		name optionsmenu
+		text ""
+		group mainmenus
+		type 1
+	    rect 10 210 178 26
+		visible 1
+		textfont UI_FONT_BIG
+		
+		action 
+		{ 
+		hide mainmenus; 
+		show optionsmenugroup; 
+		hide modmenus; 
+		hide newgamemenugroup; 
+		hide load_menu; 
+		hide credits;
+		hide realrtcw_main;
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		show realrtcw_options
+		}
+		
+	    mouseEnter { show "realrtcw_main_options" } 
+	    mouseExit { hide "realrtcw_main_options" }  
+    }
+	
+    // ADDONS BUTTON	
+	itemDef {
+        name modmenu
+        text ""
+		group mainmenus
+ 	    type 1
+	    rect 10 243 178 26
+	    visible 1
+		
+	    action 
+		{ 
+		uiScript loadMods; 
+		hide newgamemenugroup; 
+		hide optionsmenugroup; 
+		hide load_menu; 
+		show modmenus; 
+		hide credits; 
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0"; 
+		setcvar g_nopickupchallenge "0"; 
+		setCvar g_decaychallenge "0" 
+		}
+		
+	    mouseEnter { show "realrtcw_main_addons" } 
+	    mouseExit { hide "realrtcw_main_addons" }  	
+	}
+	
+	// CREDITS BUTTON
+	itemDef {
+        name creditsmenu
+        text ""
+		group mainmenus
+ 	    type 1
+	    rect 10 276 178 26
+	    visible 1
+		
+	    action 
+		{ 
+		hide newgamemenugroup; 
+		hide optionsmenugroup; 
+		hide load_menu; 
+		hide modmenus; 
+		setCvar g_nohudchallenge "0"; 
+		setCvar g_ironchallenge "0";
+		setcvar g_nopickupchallenge "0"; 
+		setCvar g_decaychallenge "0"; 
+		show credits1; 
+		show credits0 
+		}	
+		
+	    mouseEnter { show "realrtcw_main_credits" } 
+	    mouseExit { hide "realrtcw_main_credits" }	
+	}
+	
+	// QUIT BUTTON
+	itemDef {
+		name quit
+		text ""
+		group mainmenus
+		type 1
+	    rect 10 309 178 26
+		visible 1 
+		
+		action 
+		{ 
+		uiScript "quit" 
+		}	
+		
+	    mouseEnter { show "realrtcw_main_quit" } 
+	    mouseExit { hide "realrtcw_main_quit" }
+    }
+	

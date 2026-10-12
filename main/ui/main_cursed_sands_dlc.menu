@@ -1,0 +1,80 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+	//
+	//
+	//	CURSED SANDS
+	//
+	//
+
+		//	WINDOW	//
+		
+		itemDef 
+		{
+			group			grpEE
+			name 			ee_window
+		
+			cvarTest 	"g_ee_dlc"
+			showCvar	{ "1" }
+		
+			rect 			400 432 240 48	
+			style 			WINDOW_STYLE_FILLED
+			border 			1
+			bordercolor 	.5 .5 .5 .5
+			forecolor 		1 1 1 1
+			backcolor 		0 0 0 .25
+			visible 		1
+			decoration
+		}
+		
+			//	CLICKABLE LINK	//
+		
+			itemDef
+			{
+				group	grpEE
+				name	ee
+			
+				cvarTest 	"g_ee_dlc"
+				showCvar	{ "1" }
+					
+				type ITEM_TYPE_BUTTON
+				rect 402 434 236 44
+				
+				border 			1
+				bordercolor 	0 0 0 0
+				
+				visible 1
+				
+				style WINDOW_STYLE_SHADER
+				background "ui/assets/ee"
+				forecolor .8 .8 .8 1
+				
+				action { exec "game_restart EE" }
+				
+				mouseEnter { setitemcolor ee forecolor 1 1 1 1 }
+				mouseExit { setitemcolor ee forecolor .8 .8 .8 1 }
+			}
+		
+		/*	//	CLICKABLE CHECK	//
+	
+			itemDef
+			{
+				group	grpEE
+				name	ee_check
+			
+				cvarTest 	"g_ee_dlc"
+				showCvar	{ "1" }
+					
+				type ITEM_TYPE_BUTTON
+				rect 630 432 12 12
+				visible 1
+		
+				style WINDOW_STYLE_SHADER
+				background "ui/assets/check_no"
+				forecolor .6 .6 .6 1
+				
+				action { play "sound/menu/select.wav"; setCvar g_ee_dlc "0" }
+				
+				mouseEnter { setitemcolor ee_check forecolor 1 .1 .1 1 }
+				mouseExit { setitemcolor ee_check forecolor .6 .6 .6 1 }
+			}
+		*/

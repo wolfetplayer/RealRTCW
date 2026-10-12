@@ -1,0 +1,120 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             CREDITS MENU                      ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+		
+	itemDef {
+		name credits1
+		group credits
+		rect 205 100 440 350	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 0
+		decoration
+	}
+	
+	itemDef {
+		name credits1
+		text "@CREDITS_PSYCHO"
+		type 1
+	    group credits
+		textscale .3
+		style WINDOW_STYLE_FILLED		
+		rect 530 410 100 20
+		textalign 1
+		textalignx 48
+		textfont UI_FONT_BIG
+		textaligny 14
+		backcolor .5 0.0 0.0 .25
+		forecolor 1 0 0 1
+		border 1
+		bordercolor .1 .0 .0 .3
+		visible 0
+		action { setCvar g_gameskill "1" ; exec "spmap w3d" }		
+	}
+	
+	
+	itemDef {
+	name credits1
+	group credits
+	rect 225 117.5 500 500 
+	textfile "text/EnglishUSA/creditsp1.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits1
+	group credits
+	rect 395 117.5 500 500 
+	textfile "text/EnglishUSA/creditsp1_2.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits1
+	group credits
+	rect 530 117.5 500 500 
+	textfile "text/EnglishUSA/creditsp1_3.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits2
+	group credits
+	rect 225 117.5 500 500 
+	textfile "text/EnglishUSA/patronsp1.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits2
+	group credits
+	rect 395 117.5 500 500 
+	textfile "text/EnglishUSA/patronsp2.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+
+	itemDef {
+	name credits2
+	group credits
+	rect 530 117.5 500 500 
+	textfile "text/EnglishUSA/patronsp3.txt"
+	textscale .20
+	textfont UI_FONT_BIG
+	forecolor 1 1 1 1
+	visible 0
+	decoration
+	autowrapped
+}
+

@@ -1,0 +1,346 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               GRAPHICS SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	    itemDef {
+	    name systembutton
+	    text "@SYSTEM_GRAPHICS"
+	    type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+	    rect 335 105 45 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor 1 1 1 1
+ 	    visible 0
+	    action { hide system ; show iortcwgraphics ; show graphicsapply }
+	}
+
+    itemDef {
+    	name iortcwgraphics				
+	    group system
+	    text "@SYSTEM_PRESET"
+   	    type ITEM_TYPE_MULTI
+	    textfont UI_FONT_BIG
+	    cvar "ui_glCustom"
+	    cvarFloatList { "@SYSTEM_ULTRA" 0 "@SYSTEM_HIGHQUALITY" 1 "@SYSTEM_NORMALQUALITY" 2 "@SYSTEM_LOWQUALITY" 3 "@SYSTEM_CUSTOMQUALITY" 4 }
+	    cvarTest		"ui_glCustom"
+	    hideCvar		{ "999" }	// 999 is 'recommended'
+	    rect 300 140 290 12
+   	    textalign ITEM_ALIGN_RIGHT
+   	    textalignx 142 
+   	    textaligny 10
+	    textscale .22
+	    style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+   	    visible 0 
+	    action { uiScript update "ui_glCustom" }
+	}
+
+	itemDef {
+		name iortcwgraphics				
+		group system
+		text "@SYSTEM_DEFAULTPRESET"
+		textfont UI_FONT_BIG
+		type ITEM_TYPE_BUTTON	
+		cvarTest		"ui_glCustom"
+		showCvar		{ "999" }	// 999 is 'recommended'
+		rect 300 140 290 12
+		textalign ITEM_ALIGN_CENTER
+		textalignx 142
+		textaligny 10
+		textscale .22
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+		style WINDOW_STYLE_FILLED
+		visible 0
+		action {setcvar ui_glCustom 0; uiScript update "ui_glCustom" }
+	}
+
+	itemDef {
+   		name iortcwgraphics
+		group system
+      	type ITEM_TYPE_YESNO
+		text "@SYSTEM_GLEXTENSIONS"
+		cvar "r_allowExtensions"
+		textfont UI_FONT_BIG
+		rect 300 165 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+      	visible 0
+		action { uiScript glCustom }
+	}
+	
+
+	itemDef {
+      	name iortcwgraphics
+		group system
+      	type ITEM_TYPE_MULTI			
+		text "@SYSTEM_LIGHTING"
+		cvar "r_vertexlight"
+		cvarFloatList { "@SYSTEM_LIGHTMAP" 0 "@SYSTEM_VERTEX" 1  }
+		rect 300 180 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22   
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07     
+      	forecolor 1 1 1 1
+		textfont UI_FONT_BIG
+      	visible 0 
+		action { uiScript glCustom }
+	}
+
+	itemDef {
+   		name iortcwgraphics
+		group system
+    	type ITEM_TYPE_MULTI
+		text "@SYSTEM_GEODETAIL"
+		cvar "r_lodbias"
+		cvarFloatList { "@SYSTEM_VERYLOWGEO" 2 "@SYSTEM_LOWGEO" 1 "@SYSTEM_MEDIUMGEO" 0 "@SYSTEM_HIGHGEO" -1 "@SYSTEM_VERYHIGHGEO" -2   }
+		rect 300 195 290 12
+      	textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom ; uiScript update "r_lodbias" }
+	}
+
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_MULTI
+		text "@SYSTEM_CHARTEXTURES"
+		cvar "r_picmip2"
+		cvarFloatList { "@SYSTEM_CHARLOW" 3 "@SYSTEM_CHARNORMAL" 2 "@SYSTEM_CHARHIGH" 1 "@SYSTEM_CHAREXTRA" 0 }
+		rect 300 210 290 12
+      	textalign ITEM_ALIGN_RIGHT
+		textfont UI_FONT_BIG
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+   	}
+	
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_MULTI
+		text "@SYSTEM_GENTEXTURES"
+		textfont UI_FONT_BIG
+		cvar "r_picmip"
+		cvarFloatList { "@SYSTEM_GENTEXTURESLOW" 2 "@SYSTEM_GENTEXTURESMED" 1 "@SYSTEM_GENTEXTURESHIGH" 0 }
+		rect 300 225 290 12
+	    textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+ 		action { uiScript glCustom }
+   	}
+
+	itemDef {
+      	name iortcwgraphics
+		group system
+      	type ITEM_TYPE_MULTI
+		text "@SYSTEM_TEXTUREFILTER"
+		textfont UI_FONT_BIG
+		cvar "r_texturemode"
+		cvarStrList { "@SYSTEM_BILINEAR", "GL_LINEAR_MIPMAP_NEAREST", "@SYSTEM_TRILINEAR", "GL_LINEAR_MIPMAP_LINEAR"  }
+		rect 300 240 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22  
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07      
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+	}
+
+itemDef {
+   		name iortcwgraphics
+		group system
+   		type ITEM_TYPE_MULTI
+		textfont UI_FONT_BIG
+		text "@SYSTEM_COLORDEPTH"
+		cvar "r_colorbits"
+		cvarFloatList { "@SYSTEM_DEPTHDESKTOP" 0 "@SYSTEM_16BIT" 16 "@SYSTEM_32BIT" 32 }
+		rect 300 255 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07      
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom ; uiScript update "r_colorbits" }
+	}
+
+	itemDef {
+      	name iortcwgraphics
+		group system
+      	type ITEM_TYPE_YESNO
+		text "@SYSTEM_COMPRESSTEXTURES"
+		textfont UI_FONT_BIG
+		cvar "r_ext_compressed_textures"
+		rect 300 270 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+	}
+		
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_MULTI
+		text "@SYSTEM_TEXTUREQUALITY"
+		textfont UI_FONT_BIG
+		cvar "r_texturebits"
+		cvarFloatList { "@SYSTEM_DEFAULT" 0 "@SYSTEM_16BIT " 16 "@SYSTEM_32BIT" 32 }
+		rect 300 285 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+
+	itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@SYSTEM_DISTANCEFOG"
+		cvar "r_ext_NV_fog_dist"
+		rect 300 300 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		name iortcwgraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@SYSTEM_ANISOTROPIC"
+		cvar "r_ext_texture_filter_anisotropic"
+		rect 300 325 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142
+      	textaligny 10
+		textscale .23 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		textfont UI_FONT_BIG
+		showcvar { "1" }
+ 		name iortcwgraphics
+		group system
+      	type ITEM_TYPE_SLIDER
+		text "@SYSTEM_MAXANISOTROPY"
+		cvarfloat "r_ext_max_anisotropy" 0 0 16
+		rect 300 340 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142 
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+	
+		itemDef {
+		textfont UI_FONT_BIG
+		showcvar { "1" }
+ 		name iortcwgraphics
+		group system
+      	type ITEM_TYPE_SLIDER
+		text "@SYSTEM_MULTISAMPLE"
+		cvarfloat "r_ext_multisample" 0 0 4
+		rect 300 355 290 12
+      	textalign ITEM_ALIGN_RIGHT
+      	textalignx 142 
+      	textaligny 10
+		textscale .22 
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07       
+      	forecolor 1 1 1 1
+      	visible 0 
+		action { uiScript glCustom }
+    }
+
+
+	itemDef {
+		name graphicsapply
+		textfont UI_FONT_BIG
+		text "@SYSTEM_APPLY"
+		type 1	
+		textscale .25
+		style WINDOW_STYLE_FILLED
+		group system
+		rect 395 390 100 20
+		textalign 1
+		textalignx 50
+		textaligny 15
+		forecolor 1 1 1 1
+		backcolor .1 .1 .1 .1 
+		visible 0
+		border 1
+		bordercolor .5 .5 .5 .5
+		action { exec "vid_restart"  }
+		mouseEnter { setitemcolor graphicsapply backcolor .5 .5 .5 .25 }
+      	mouseExit { setitemcolor graphicsapply backcolor .1 .1 .1 .1 }
+	}
+	
+	

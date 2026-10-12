@@ -1,0 +1,52 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	itemDef 
+	{
+		name sysmenu
+		group systemmenus
+		rect 220 102 443 315	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 0
+		decoration
+	}
+
+	itemDef 
+	{
+		name systembutton1
+		group systemmenus
+		rect 222 104 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		backcolor .3 0.6 0.2 .25 
+		visible 0
+		decoration
+	}
+
+    itemDef {
+	    name ctr_graphics
+	    text "@SYSTEM"
+		group systemmenus
+ 	    type 1
+	    textfont UI_FONT_BIG
+	    style 0	
+	    textstyle 6
+	    rect 222.5 -12 64 14 
+	    textalign ITEM_ALIGN_CENTER
+	    textscale .22		
+	    textalignx 2
+	    textaligny 12
+	    forecolor .9 .9 .9 .8
+	    visible 0 
+	    decoration
+	}
+	

@@ -1,0 +1,35 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               CONTROLS MENU           //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	itemDef {
+		name controlsmenu1
+		group controlsmenus
+		rect 220 102 443 320	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .5 .5 .5 .5
+		forecolor 1 1 1 1
+		backcolor 0 0 0 .8
+		visible 0
+		decoration
+	}
+
+	itemDef {
+		name controlsmenu2
+		group controlsmenus
+		rect 222 104 439 20	
+		style WINDOW_STYLE_FILLED
+		border 1
+		bordercolor .1 .1 .1 .2
+		forecolor 1 1 1 1
+		//backcolor .5 0.5 0.5 .25
+        backcolor .3 0.6 0.2 .25 
+		visible 0
+		decoration
+	}
+
+

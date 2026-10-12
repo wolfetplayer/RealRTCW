@@ -1,0 +1,207 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             OPTIONS MENU BUTTONS                       //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// CONTROLS BUTTON
+	itemDef {
+	    name controlsmenu
+		group optionsmenugroup
+ 	    type 1
+	    rect 10 144 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_controls" } 
+	    mouseExit { hide "realrtcw_options_controls" }
+		
+	    action 
+		{ 
+		show controlsmenus;
+		show controlbuttons;
+		show look;
+		hide gomenus;
+		hide performance;
+		hide gameplay;
+		hide crosshair;
+		hide content_packs;
+		hide realrtcw;
+		hide view;
+		hide systemmenus;
+		hide graphics;
+		hide iortcwgraphics;
+		hide performancegraphics;
+		hide graphicsapply;
+		hide applysys;
+		hide sounds;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn;
+		hide shoot;
+		hide move;
+		hide misc
+		}
+	}
+	
+	// SYSTEM BUTTON
+	itemDef {
+        name systemmenu
+		group optionsmenugroup
+ 	    type 1
+	    rect 10 177 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_system" } 
+	    mouseExit { hide "realrtcw_options_system" }	
+		
+	    action 
+		{ 
+		show graphics;
+		show systemmenus;
+		show graphicsapply;
+		hide gomenus;
+		hide performance;
+		hide gameplay;
+		hide crosshair;
+		hide content_packs;
+		hide realrtcw;
+		hide view;
+		hide controlsmenus;
+		hide controlbuttons;
+		hide look;
+		hide shoot;
+		hide misc;
+		hide shoot_advanced;
+		hide move;
+		hide advancedshootbutton;
+		hide sounds;
+		hide applysys;
+		hide iortcwgraphics;
+		hide performancegraphics;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn
+		}
+	}
+	
+	// GAME OPTIONS BUTTON
+	itemDef {
+        name gameoptionsmenu
+		group optionsmenugroup
+ 	    type 1
+	    rect 10 210 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_game" } 
+	    mouseExit { hide "realrtcw_options_game" }	
+		
+	    action 
+		{ 
+		show gomenus;
+		show gameplay;
+		hide graphics;
+		hide iortcwgraphics;
+		hide performancegraphics;
+		hide systemmenus;
+		hide graphicsapply;
+		hide controlsmenus;
+		hide controlbuttons;
+		hide look;
+		hide shoot;
+		hide move;
+		hide misc;
+		hide shoot_advanced;
+		hide advancedshootbutton;
+		hide sounds;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn;
+		hide view;
+		hide applysys;
+		hide crosshair;
+		hide content_packs
+		}
+	}
+	
+	// DEFAULTS BUTTON
+	itemDef {
+      	name defaultsmenu
+		group optionsmenugroup
+ 	    type 1
+	    textstyle 6
+	    rect 10 243 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_defaults" } 
+	    mouseExit { hide "realrtcw_options_defaults" }	
+		
+	    action 
+		{ 
+		uiScript resetDefaults  
+		}
+	}
+	
+	// BACK BUTTON
+	itemDef {
+        name backmenu
+		group optionsmenugroup
+ 	    type 1
+        rect 10 276 178 26
+	    visible 0 
+		
+	    mouseEnter { show "realrtcw_options_back" } 
+	    mouseExit { hide "realrtcw_options_back" }
+		
+        action 
+		{ 
+		hide optionsmenugroup; 
+		show mainmenus;  
+		hide gomenus; 
+		hide performance; 
+		hide gameplay; 
+		hide crosshair;
+		hide content_packs;  
+		hide realrtcw; 
+		hide view; 
+		hide systemmenus; 
+		hide graphics; 
+		hide iortcwgraphics; 
+		hide performancegraphics; 
+		hide graphicsapply; 
+		hide controlsmenus; 
+		hide controlbuttons; 
+		hide look; 
+		hide shoot; 
+		hide move; 
+		hide shoot_advanced; 
+		hide advancedshootbutton; 
+		hide misc;
+		hide sounds;
+		hide steamsettings;
+		hide steamreset_btn;
+		hide steamreset_warn;
+		hide applysys;
+
+		hide realrtcw_main_newgame;
+		hide realrtcw_main_loadgame;
+		hide realrtcw_main_options;
+		hide realrtcw_main_addons;
+		hide realrtcw_main_discord;
+		hide realrtcw_main_credits;
+		hide realrtcw_main_quit;
+		
+		hide realrtcw_load;
+		hide realrtcw_load_load;
+		hide realrtcw_load_back;
+		
+		hide realrtcw_options;
+		hide realrtcw_options_controls;
+		hide realrtcw_options_system;
+		hide realrtcw_options_game;
+		hide realrtcw_options_defaults;
+		hide realrtcw_options_back;
+		
+		show realrtcw_main
+		}
+    }
+	

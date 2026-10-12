@@ -1,0 +1,228 @@
+// NOTE: fragment of the "main" menuDef (ui/main.menu), pulled in via #include. Not a standalone menu - do not add to menus.txt.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////               PERFORMANCE SYSTEM MENU          //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		itemDef {
+	    name systembutton
+	    text "@PERFORMANCE"
+	    type ITEM_TYPE_BUTTON
+		textfont UI_FONT_BIG
+	    textscale .23
+	    group systemmenus
+	    style WINDOW_STYLE_FILLED
+		rect 420 105 47 20
+	    textalign 1
+	    textalignx 22
+	    textaligny 14
+	    forecolor 1 1 1 1
+ 	    visible 0
+	    action { hide system ; show performancegraphics ; hide graphicsapply }
+	}
+	
+		itemDef {
+	    name performancegraphics
+		group system
+	    text "@GM_MISC"
+	    textscale .25
+		decoration
+	    style WINDOW_STYLE_FILLED
+	    rect 410 125 290 12
+	    textalign 1
+		textfont UI_FONT_BIG
+	    textalignx 22
+	    textaligny 14
+	    border 1
+	    //bordercolor .1 .1 .1 0
+	    forecolor 1 1 1 1
+	    visible 0
+	}
+	
+		itemDef {
+		name performancegraphics
+		group system
+		text "@PERF_WALLMARK"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "cg_markTime"
+        cvarFloatList {"@PERF_MARK_NORMAL" 20000 "@PERF_MARK_SHORT" 10000 "@OFF" 0 "@PERF_MARK_LONG" 30000 "@PERF_MARK_VERYLONG" 99999  }
+		rect 300 150 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	itemDef {
+		name performancegraphics
+		group system
+		text "@PERF_BRASS"
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		cvar "cg_brassTime"
+		cvarFloatList { "@PERF_BRASS_ULTRA" 10000 "@PERF_BRASS_HIGH" 2500 "@PERF_BRASS_MED" 1250 "@OFF" 0 }
+		rect 300 165 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+		itemDef {
+		name performancegraphics
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		group system
+		text "@PERF_CORONA"
+		rect 300 180 290 12
+		cvar "cg_coronafardist"
+		cvarFloatList { "@PERF_CORONA_NORMAL" 1536 "@PERF_CORONA_FAR" 4096 "@PERF_CORONA_VERYFAR" 8000 "@PERF_CORONA_ULTRA" 16000 "@OFF" 0 "@PERF_CORONA_NEAR" 800 }
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0
+	}
+	
+		itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_FOLIAGE"
+		cvar "r_drawfoliage"
+		rect 300 195 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_DYNAMICLIGHTS"
+		cvar "r_dynamiclight"
+		rect 300 210 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_LQSKY"
+		cvar "r_fastsky"
+		rect 300 225 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+    itemDef {
+	    name performancegraphics
+	    group system
+	    type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+	    text "@PERF_PORTALSKIES"
+	    cvar "cg_skybox"
+		rect 300 240 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0  
+	}
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_SYNCFRAME"
+		cvar "r_finish"
+		rect 300 255 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+	
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_YESNO
+		textfont UI_FONT_BIG
+		text "@PERF_PATRICLES"
+		cvar "cg_wolfparticles"
+		rect 300 270 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .22
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+    }
+
+	itemDef {
+		name performancegraphics
+		group system
+		type ITEM_TYPE_MULTI
+        textfont UI_FONT_BIG		
+		text "@PERF_FOGTYPE"
+		cvarTest "r_ext_NV_fog_dist"
+		showcvar { "1" }
+		cvar "r_nv_fogdist_mode"
+		cvarStrList { "@PERF_RADIAL", "GL_EYE_RADIAL_NV", "@PERF_PLANE", "GL_EYE_PLANE_ABSOLUTE_NV" }
+		rect 300 285 290 12
+		textalign ITEM_ALIGN_RIGHT
+		textalignx 142
+		textaligny 10
+		textscale .23
+		style WINDOW_STYLE_FILLED
+		backcolor 1 1 1 .07
+		forecolor 1 1 1 1
+		visible 0 
+	}
+	

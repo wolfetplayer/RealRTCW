@@ -1834,7 +1834,7 @@ case EV_FILL_CLIP:
 		CG_ResetSimpleZoom();
 	}
     if ( cg_weapons[es->weapon].reloadSound ) {
-        if ( cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
+        if ( cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] || cg.predictedPlayerState.perks[PERK_TACTICALGLOVES] ) {
             trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSoundFast, SND_REQUESTCUT );
         } else {
             trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadSound, SND_REQUESTCUT );
@@ -1847,7 +1847,7 @@ case EV_FILL_CLIP_FULL:
 		CG_ResetSimpleZoom();
 	}
     if ( cg_weapons[es->weapon].reloadFullSound ) {
-        if (cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] ) {
+        if (cg.predictedPlayerState.perks[PERK_WEAPONHANDLING] || cg.predictedPlayerState.perks[PERK_TACTICALGLOVES] ) {
             trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSoundFast, SND_REQUESTCUT );
         } else {
             trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFullSound, SND_REQUESTCUT );

@@ -49,10 +49,10 @@ static const char DEFAULT_XDG_DATA_HOME[] = {'.', 'l', 'o', 'c', 'a', 'l', PATH_
 
 #ifdef STEAM
 // Used to store the Steam RTCW installation path
-static char steamPath[ MAX_OSPATH ] = { 0 };
+static char steamGamePath[ MAX_OSPATH ] = { 0 };
 
-// Used to store the Steam RTCW installation path
-static char realsteamPath[ MAX_OSPATH ] = { 0 };
+// Used to store the Steam Workshop content path
+static char steamWorkshopPath[ MAX_OSPATH ] = { 0 };
 
 #endif
 
@@ -120,6 +120,133 @@ char *Sys_DefaultHomePath(void)
 }
 
 #ifdef STEAM
+
+static qboolean UNIX_PathExists(const char *path, qboolean wantDir)
+{
+	struct stat st;
+
+	if (stat(path, &st) != 0)
+		return qfalse;
+
+	if (wantDir)
+		return S_ISDIR(st.st_mode) ? qtrue : qfalse;
+
+	return qtrue;
+}
+
+static qboolean DirExists(const char *path)
+{
+	return UNIX_PathExists(path, qtrue);
+}
+
+static qboolean FileExists(const char *path)
+{
+	return UNIX_PathExists(path, qfalse);
+}
+
+// Unix counterpart to sys_win32.c's FindSteamPaths()
+static void FindSteamPaths(void)
+{
+	static qboolean done = qfalse;
+	static char *steamapp_game_subdir     = "/steamapps/common/" STEAMPATH_NAME;
+	static char *steamapp_workshop_subdir = "/steamapps/workshop/content/" STEAMPATH_REALAPPID;
+	static char *game_keyfile_path        = "/Main/pak0.pk3";
+#ifdef __APPLE__
+	static char *rootCandidates[] = {
+		"/Library/Application Support/Steam",
+		NULL
+	};
+#else
+	// Native install, Steam's own compat symlinks, and the Flatpak sandbox path
+	static char *rootCandidates[] = {
+		"/.steam/steam",
+		"/.steam/root",
+		"/.local/share/Steam",
+		"/.var/app/com.valvesoftware.Steam/.local/share/Steam",
+		NULL
+	};
+#endif
+	char *home;
+	char steamRoot[ MAX_OSPATH ] = { 0 };
+	char libfile_path[ MAX_OSPATH ];
+	char key[ 100 ];
+	char path[ MAX_OSPATH ];
+	char keyfile_path[ MAX_OSPATH ];
+	FILE *fp;
+	int i;
+
+	if (done)
+		return;
+	done = qtrue;
+
+	home = getenv("HOME");
+	if (!home)
+	{
+		Com_Printf("WARNING: Failed to determine home directory for Steam detection\n");
+		return;
+	}
+
+	for (i = 0; rootCandidates[i]; i++)
+	{
+		Com_sprintf(steamRoot, sizeof(steamRoot), "%s%s", home, rootCandidates[i]);
+		Com_sprintf(libfile_path, sizeof(libfile_path), "%s/steamapps/libraryfolders.vdf", steamRoot);
+
+		if (FileExists(libfile_path))
+			break;
+
+		steamRoot[0] = '\0';
+	}
+
+	if (!*steamRoot)
+	{
+		Com_Printf("WARNING: Failed to find a Steam installation\n");
+		return;
+	}
+
+	fp = fopen(libfile_path, "r");
+	if (!fp)
+	{
+		Com_Printf("Failed to open Steam libraryfolders.vdf - using Steam install location\n");
+
+		Com_sprintf(steamGamePath, sizeof(steamGamePath), "%s%s", steamRoot, steamapp_game_subdir);
+		Com_sprintf(steamWorkshopPath, sizeof(steamWorkshopPath), "%s%s", steamRoot, steamapp_workshop_subdir);
+		return;
+	}
+
+	while (fscanf(fp, "%99s", key) != EOF)
+	{
+		if (strcmp(key, "\"path\"") == 0)
+		{
+			if (fscanf(fp, " \"%255[^\"]\"", path) != 1 || !*path)
+				continue;
+
+			if (!*steamGamePath)
+			{
+				Com_sprintf(steamGamePath, sizeof(steamGamePath), "%s%s", path, steamapp_game_subdir);
+
+				// Ignores stale/empty installations that lack the actual game data
+				Com_sprintf(keyfile_path, sizeof(keyfile_path), "%s%s", steamGamePath, game_keyfile_path);
+
+				if (!FileExists(keyfile_path))
+					steamGamePath[0] = '\0';
+			}
+
+			if (!*steamWorkshopPath)
+			{
+				Com_sprintf(steamWorkshopPath, sizeof(steamWorkshopPath), "%s%s", path, steamapp_workshop_subdir);
+
+				if (!DirExists(steamWorkshopPath))
+					steamWorkshopPath[0] = '\0';
+			}
+
+			if (*steamGamePath && *steamWorkshopPath)
+				break;
+		}
+	}
+
+	fclose(fp);
+}
+
 /*
 ================
 Sys_SteamPath
@@ -127,24 +254,10 @@ Sys_SteamPath
 */
 char *Sys_SteamPath( void )
 {
-	// Disabled since Steam doesn't let you install RTCW on Mac/Linux
-#if 0
-	char *p;
-
-	if( ( p = getenv( "HOME" ) ) != NULL )
-	{
-#ifdef __APPLE__
-		char *steamPathEnd = "/Library/Application Support/Steam/SteamApps/common/" STEAMPATH_NAME;
-#else
-		char *steamPathEnd = "/.steam/steam/SteamApps/common/" STEAMPATH_NAME;
-#endif
-		Com_sprintf(steamPath, sizeof(steamPath), "%s%s", p, steamPathEnd);
-	}
-#endif
-
-	return steamPath;
+	FindSteamPaths();
+	return steamGamePath;
 }
-	
+
 /*
 ================
 Sys_SteamWorkshopPath
@@ -152,7 +265,8 @@ Sys_SteamWorkshopPath
 */
 char *Sys_SteamWorkshopPath( void )
 {
-	return realsteamPath;
+	FindSteamPaths();
+	return steamWorkshopPath;
 }
 
 #endif

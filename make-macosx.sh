@@ -61,7 +61,7 @@ elif [ -d /Developer/SDKs/MacOSX10.6.sdk ]; then
 	ARCH_SDK=/Developer/SDKs/MacOSX10.6.sdk
 	ARCH_CFLAGS="-isysroot /Developer/SDKs/MacOSX10.6.sdk"
 	ARCH_MACOSX_VERSION_MIN="10.6"
-elif [ $MACOS_MAJOR_VER == 10 ] && [ $MACOS_MINOR_VER >= 9 ] || [ $MACOS_MAJOR_VER > 10 ]; then
+elif { [ "$MACOS_MAJOR_VER" -eq 10 ] && [ "$MACOS_MINOR_VER" -ge 9 ]; } || [ "$MACOS_MAJOR_VER" -gt 10 ]; then
 	ARCH_MACOSX_VERSION_MIN="10.9"
 else
 	ARCH_MACOSX_VERSION_MIN="10.7"

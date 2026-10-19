@@ -188,13 +188,11 @@ void R_DrawElements( int numIndexes, const glIndex_t *indexes ) {
 
 	primitives = r_primitives->integer;
 
-	// default is to use triangles if compiled vertex arrays are present
+	// default is to use triangles; the glBegin/glEnd strip path is
+	// very slow on modern drivers (e.g. macOS GL-on-Metal flushes
+	// inside glEnd), with or without compiled vertex arrays
 	if ( primitives == 0 ) {
-		if ( qglLockArraysEXT ) {
-			primitives = 2;
-		} else {
-			primitives = 1;
-		}
+		primitives = 2;
 	}
 
 	if ( primitives == 2 ) {

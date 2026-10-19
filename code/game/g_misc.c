@@ -1395,7 +1395,7 @@ void SP_dlight( gentity_t *ent ) {
 	i = (int)( ent->dl_stylestring[offset] ) - (int)'a';
 	i = i * ( 1000.0f / 24.0f );
 
-	ent->s.constantLight =  (int)ent->dl_color[0] | ( (int)ent->dl_color[1] << 8 ) | ( (int)ent->dl_color[2] << 16 ) | ( i / 4 << 24 );
+	ent->s.constantLight =  (int)ent->dl_color[0] | ( (int)ent->dl_color[1] << 8 ) | ( (int)ent->dl_color[2] << 16 ) | ( (unsigned)( i / 4 ) << 24 );
 
 	ent->use = use_dlight;
 

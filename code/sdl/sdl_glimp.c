@@ -1181,6 +1181,29 @@ static void GLimp_InitExtensions( qboolean fixedFunction )
 		{
 			ri.Printf( PRINT_ALL, "...GL_EXT_compiled_vertex_array not found\n" );
 		}
+
+		// GL_ARB_occlusion_query, core in OpenGL 1.5; used for non-blocking flare visibility tests
+		if ( QGL_VERSION_ATLEAST( 1, 5 ) )
+		{
+#define GLE( ret, name, ... ) qgl##name = (name##proc *) SDL_GL_GetProcAddress( "gl" #name );
+			QGL_ARB_occlusion_query_PROCS;
+#undef GLE
+			if ( qglGenQueries && qglDeleteQueries && qglBeginQuery && qglEndQuery && qglGetQueryObjectuiv )
+			{
+				ri.Printf( PRINT_ALL, "...using GL_ARB_occlusion_query\n" );
+			}
+			else
+			{
+#define GLE( ret, name, ... ) qgl##name = NULL;
+				QGL_ARB_occlusion_query_PROCS;
+#undef GLE
+				ri.Printf( PRINT_ALL, "...GL_ARB_occlusion_query not found\n" );
+			}
+		}
+		else
+		{
+			ri.Printf( PRINT_ALL, "...GL_ARB_occlusion_query not found\n" );
+		}
 	}
 
 	textureFilterAnisotropic = qfalse;

@@ -46,6 +46,7 @@ QGL_DESKTOP_1_1_FIXED_FUNCTION_PROCS;
 QGL_3_0_PROCS;
 QGL_ARB_framebuffer_object_PROCS;
 QGL_ARB_vertex_fragment_program_PROCS;
+QGL_ARB_occlusion_query_PROCS;
 #undef GLE
 
 #ifdef USE_OPENGLES

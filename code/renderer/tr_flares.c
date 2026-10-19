@@ -97,6 +97,14 @@ typedef struct flare_s {
 flare_t r_flareStructs[MAX_FLARES];
 flare_t     *r_activeFlares, *r_inactiveFlares;
 
+// when occlusion queries are available they replace the per-flare depth
+// readback, which stalls the pipeline until the GPU has finished the frame.
+// query results are picked up a frame or more later, so the CPU never waits.
+static GLuint flareQueries[MAX_FLARES];
+static qboolean flareQueryPending[MAX_FLARES];
+static qboolean flareQueryVisible[MAX_FLARES];
+static qboolean flareQueriesActive;
+
 int flareCoeff;
 
 /*
@@ -127,6 +135,19 @@ void R_ClearFlares( void ) {
 	for ( i = 0 ; i < MAX_FLARES ; i++ ) {
 		r_flareStructs[i].next = r_inactiveFlares;
 		r_inactiveFlares = &r_flareStructs[i];
+	}
+
+	// names from a destroyed context are silently ignored by glDeleteQueries
+	if ( flareQueriesActive && qglDeleteQueries ) {
+		qglDeleteQueries( MAX_FLARES, flareQueries );
+	}
+	flareQueriesActive = qfalse;
+	memset( flareQueryPending, 0, sizeof( flareQueryPending ) );
+	memset( flareQueryVisible, 0, sizeof( flareQueryVisible ) );
+
+	if ( qglGenQueries ) {
+		qglGenQueries( MAX_FLARES, flareQueries );
+		flareQueriesActive = qtrue;
 	}
 
 	R_SetFlareCoeff();
@@ -210,6 +231,10 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, float s
 		f->inPortal = backEnd.viewParms.isPortal;
 		f->addedFrame = -1;
 		f->id = id;
+
+		// a result still in flight belongs to the previous owner of this slot
+		flareQueryPending[f - r_flareStructs] = qfalse;
+		flareQueryVisible[f - r_flareStructs] = qfalse;
 	}
 
 	f->flags = flags;
@@ -338,6 +363,105 @@ FLARE BACK END
 
 /*
 ==================
+RB_BeginFlareQueries
+
+Sets up a window space projection, with z mapped straight to depth,
+and depth-test-only state for drawing the occlusion probes
+==================
+*/
+static void RB_BeginFlareQueries( void ) {
+	qglMatrixMode( GL_MODELVIEW );
+	qglPushMatrix();
+	qglLoadIdentity();
+	qglMatrixMode( GL_PROJECTION );
+	qglPushMatrix();
+	qglLoadIdentity();
+	qglOrtho( backEnd.viewParms.viewportX, backEnd.viewParms.viewportX + backEnd.viewParms.viewportWidth,
+			  backEnd.viewParms.viewportY, backEnd.viewParms.viewportY + backEnd.viewParms.viewportHeight,
+			  0, -1 );
+
+	// the portal clip plane is in eye space and would cut the window space probes
+	if ( backEnd.viewParms.isPortal ) {
+		qglDisable( GL_CLIP_PLANE0 );
+	}
+
+	qglDepthRange( 0, 1 );
+	GL_State( 0 );      // depth test (LEQUAL) on, depth writes off, no blend, no alpha test
+	qglColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+}
+
+/*
+==================
+RB_EndFlareQueries
+==================
+*/
+static void RB_EndFlareQueries( void ) {
+	qglColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+
+	qglPopMatrix();
+	qglMatrixMode( GL_MODELVIEW );
+	qglPopMatrix();
+
+	if ( backEnd.viewParms.isPortal ) {
+		qglEnable( GL_CLIP_PLANE0 );
+	}
+}
+
+/*
+==================
+RB_QueryFlare
+
+Returns the visibility from the most recent finished query for this flare,
+and starts a new one when the previous result has been collected.
+The probe is a single point 24 units in front of the flare, so it passes
+the depth test exactly when the readback test below would see the flare.
+==================
+*/
+static qboolean RB_QueryFlare( flare_t *f ) {
+	int idx = f - r_flareStructs;
+	GLuint result;
+	float probeZ, ndcZ, depth;
+	vec3_t point;
+	float *proj = backEnd.viewParms.projectionMatrix;
+
+	if ( flareQueryPending[idx] ) {
+		qglGetQueryObjectuiv( flareQueries[idx], GL_QUERY_RESULT_AVAILABLE, &result );
+		if ( !result ) {
+			return flareQueryVisible[idx];
+		}
+		qglGetQueryObjectuiv( flareQueries[idx], GL_QUERY_RESULT, &result );
+		flareQueryVisible[idx] = ( result > 0 );
+		flareQueryPending[idx] = qfalse;
+	}
+
+	// eye space z is negative in front of the viewer; keep the probe off the near plane
+	probeZ = f->eyeZ + 24;
+	if ( probeZ > -r_znear->value ) {
+		probeZ = -r_znear->value;
+	}
+	ndcZ = ( proj[10] * probeZ + proj[14] ) / ( proj[11] * probeZ );
+	depth = 0.5f * ndcZ + 0.5f;
+	if ( depth < 0 ) {
+		depth = 0;
+	} else if ( depth > 1 ) {
+		depth = 1;
+	}
+
+	point[0] = f->windowX + 0.5f;
+	point[1] = f->windowY + 0.5f;
+	point[2] = depth;   // glOrtho near 0 / far -1 maps z directly to window depth
+
+	qglVertexPointer( 3, GL_FLOAT, 0, point );
+	qglBeginQuery( GL_SAMPLES_PASSED, flareQueries[idx] );
+	qglDrawArrays( GL_POINTS, 0, 1 );
+	qglEndQuery( GL_SAMPLES_PASSED );
+	flareQueryPending[idx] = qtrue;
+
+	return flareQueryVisible[idx];
+}
+
+/*
+==================
 RB_TestFlare
 ==================
 */
@@ -351,26 +475,32 @@ void RB_TestFlare( flare_t *f ) {
 
 	backEnd.pc.c_flareTests++;
 
-	// doing a readpixels is as good as doing a glFinish(), so
-	// don't bother with another sync
-	glState.finishCalled = qfalse;
-
-	// read back the z buffer contents
-#ifdef USE_OPENGLES
-	screenZ = 0;
-#else
-	if ( !FBO_ReadDepthPixel( f->windowX, f->windowY, &depth ) ) {
-		qglReadPixels( f->windowX, f->windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
-	}
-
-	screenZ = backEnd.viewParms.projectionMatrix[14] /
-		( ( 2*depth - 1 ) * backEnd.viewParms.projectionMatrix[11] - backEnd.viewParms.projectionMatrix[10] );
-#endif
-
 	visible = (qboolean)( f->flags & 1 );
 
-	if ( -f->eyeZ - -screenZ  > 24 )
-		visible = qfalse;
+	if ( flareQueriesActive ) {
+		if ( !RB_QueryFlare( f ) ) {
+			visible = qfalse;
+		}
+	} else {
+		// doing a readpixels is as good as doing a glFinish(), so
+		// don't bother with another sync
+		glState.finishCalled = qfalse;
+
+		// read back the z buffer contents
+#ifdef USE_OPENGLES
+		screenZ = 0;
+#else
+		if ( !FBO_ReadDepthPixel( f->windowX, f->windowY, &depth ) ) {
+			qglReadPixels( f->windowX, f->windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
+		}
+
+		screenZ = backEnd.viewParms.projectionMatrix[14] /
+			( ( 2*depth - 1 ) * backEnd.viewParms.projectionMatrix[11] - backEnd.viewParms.projectionMatrix[10] );
+#endif
+
+		if ( -f->eyeZ - -screenZ  > 24 )
+			visible = qfalse;
+	}
 
 	if ( visible ) {
 		if ( !f->visible ) {
@@ -567,6 +697,10 @@ void RB_RenderFlares( void ) {
 	RB_AddCoronaFlares();
 
 	// perform z buffer readback on each flare in this view
+	if ( flareQueriesActive ) {
+		RB_BeginFlareQueries();
+	}
+
 	draw = qfalse;
 	prev = &r_activeFlares;
 	while ( ( f = *prev ) != NULL ) {
@@ -585,6 +719,8 @@ void RB_RenderFlares( void ) {
 			RB_TestFlare( f );
 			if ( f->drawIntensity ) {
 				draw = qtrue;
+			} else if ( flareQueriesActive && flareQueryPending[f - r_flareStructs] ) {
+				// keep it until its query result has been collected
 			} else {
 				// this flare has completely faded out, so remove it from the chain
 				*prev = f->next;
@@ -595,6 +731,10 @@ void RB_RenderFlares( void ) {
 		}
 
 		prev = &f->next;
+	}
+
+	if ( flareQueriesActive ) {
+		RB_EndFlareQueries();
 	}
 
 	if ( !draw ) {

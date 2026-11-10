@@ -288,6 +288,7 @@ static	cvar_t		*fs_workshop;
 static cvar_t      *fs_basepath;
 static cvar_t      *fs_basegame;
 static cvar_t      *fs_gamedirvar;
+static qboolean     fs_totalConversion = qfalse; // active fs_game is a self-contained total conversion
 static searchpath_t    *fs_searchpaths;
 static int fs_readCount;                    // total bytes read
 static int fs_loadCount;                    // total files read
@@ -3418,6 +3419,76 @@ void FS_GetModDescription( const char *modDir, char *description, int descriptio
 
 /*
 ================
+FS_IsVanillaRetailPak
+================
+*/
+static qboolean FS_IsVanillaRetailPak( const char *baseNoExt )
+{
+	int i;
+
+	if ( !Q_stricmp( baseNoExt, "pak0" ) ) {
+		return qtrue;
+	}
+	for ( i = 1; i <= 4; i++ ) {
+		if ( !Q_stricmp( baseNoExt, va( "sp_pak%d", i ) ) ) {
+			return qtrue;
+		}
+	}
+	return qfalse;
+}
+
+/*
+================
+FS_DirHasMarkerFile
+================
+*/
+static qboolean FS_DirHasMarkerFile( const char *path, const char *dir, const char *filename )
+{
+	char *markerPath;
+
+	if ( !path || !path[0] ) {
+		return qfalse;
+	}
+	markerPath = FS_BuildOSPath( path, dir, filename );
+	return FS_FileInPathExists( markerPath );
+}
+
+/*
+================
+FS_DetectTotalConversion
+================
+*/
+static qboolean FS_DetectTotalConversion( const char *modDir )
+{
+	if ( !modDir || !modDir[0] ) {
+		return qfalse;
+	}
+
+#ifdef STEAM
+	if ( fs_steampath && FS_DirHasMarkerFile( fs_steampath->string, modDir, "totalconversion.txt" ) ) {
+		return qtrue;
+	}
+	if ( fs_workshop && FS_DirHasMarkerFile( fs_workshop->string, modDir, "totalconversion.txt" ) ) {
+		return qtrue;
+	}
+#endif
+	if ( fs_basepath && FS_DirHasMarkerFile( fs_basepath->string, modDir, "totalconversion.txt" ) ) {
+		return qtrue;
+	}
+#ifdef __APPLE__
+	if ( fs_apppath && FS_DirHasMarkerFile( fs_apppath->string, modDir, "totalconversion.txt" ) ) {
+		return qtrue;
+	}
+#endif
+	if ( fs_homepath && FS_DirHasMarkerFile( fs_homepath->string, modDir, "totalconversion.txt" ) ) {
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
+/*
+================
 FS_AddModDirectories
 
 adds the directory to the head of the path, then loads the zip headers
@@ -3458,7 +3529,10 @@ void FS_AddModDirectories() {
 			// check file mod.txt in workshop item directory
 			path = FS_BuildOSPath( steam, name, "mod.txt" ); // eugeny
 			if (FS_FileInPathExists(path)) {
-				FS_AddGameDirectory( steam, name );
+				// total conversions only load via explicit fs_game, never auto-merged
+				if ( !FS_DetectTotalConversion( name ) ) {
+					FS_AddGameDirectory( steam, name );
+				}
 			}
 		}
 	}
@@ -3960,6 +4034,15 @@ void FS_AddGameDirectory( const char *path, const char *dir ) {
 
 	qsort( sorted, numfiles, sizeof(char *), paksort );
 
+	// in total conversion mode, main/fs_basegame only contribute vanilla retail paks
+	qboolean filterToVanillaPaks = qfalse;
+	if ( fs_totalConversion && fs_gamedirvar && fs_gamedirvar->string[0] &&
+		 Q_stricmp( dir, fs_gamedirvar->string ) != 0 &&
+		 ( ( com_basegame && !Q_stricmp( dir, com_basegame->string ) ) ||
+		   ( fs_basegame && fs_basegame->string[0] && !Q_stricmp( dir, fs_basegame->string ) ) ) ) {
+		filterToVanillaPaks = qtrue;
+	}
+
 for ( i = 0 ; i < numfiles ; i++ ) {
     if ( Q_strncmp( sorted[i],"mp_",3 ) ) {
         if ( !Q_strncmp( sorted[i],"zz_",3 ) ) {
@@ -3977,6 +4060,14 @@ for ( i = 0 ; i < numfiles ; i++ ) {
 			continue;
 		}
 		// --- DLC gating end ---
+
+		if (filterToVanillaPaks && !FS_IsVanillaRetailPak(baseNoExt))
+		{
+			if (fs_debug && fs_debug->integer) {
+				Com_Printf("fs-tc: skipping '%s' from '%s' (total conversion mode)\n", sorted[i], dir);
+			}
+			continue;
+		}
 
 		pakfile = FS_BuildOSPath( path, dir, sorted[i] );
         if ( ( pak = FS_LoadZipFile( pakfile, sorted[i] ) ) == 0 ) {
@@ -4325,6 +4416,13 @@ static void FS_Startup( const char *gameName )
 #ifdef __APPLE__
 	fs_apppath = Cvar_Get ("fs_apppath", Sys_DefaultAppPath(), CVAR_INIT|CVAR_PROTECTED );
 #endif
+
+	// detect total conversion before mounting anything
+	fs_totalConversion = fs_gamedirvar->string[0] ? FS_DetectTotalConversion( fs_gamedirvar->string ) : qfalse;
+	if ( fs_totalConversion ) {
+		Com_Printf( "fs: '%s' is a total conversion - only vanilla retail paks will be taken from '%s'\n",
+			fs_gamedirvar->string, gameName );
+	}
 
 	// Load gate rules, then prime cvars once (active fs_game last) before mounting any dir.
 	FS_LoadGateRulesEarly(gameName);

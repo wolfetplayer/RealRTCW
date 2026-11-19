@@ -422,6 +422,16 @@ FILE *Sys_FOpen( const char *ospath, const char *mode ) {
 		return NULL;
 	}
 
+#ifdef UTF8
+	wchar_t wpath[MAX_PATH];
+	wchar_t wmode[16];
+
+	if ( MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, ospath, -1, wpath, MAX_PATH) != 0 ) {
+		MultiByteToWideChar(CP_UTF8, 0, mode, -1, wmode, 16);
+		return _wfopen(wpath, wmode);
+	}
+#endif
+
 	return fopen( ospath, mode );
 }
 
@@ -563,15 +573,23 @@ Sys_ListFiles
 */
 char **Sys_ListFiles( const char *directory, const char *extension, char *filter, int *numfiles, qboolean wantsubs )
 {
-	char		search[MAX_OSPATH];
 	int			nfiles;
 	char		**listCopy;
 	char		*list[MAX_FOUND_FILES];
-	struct _finddata_t findinfo;
 	intptr_t		findhandle;
 	int			flag;
 	int			i;
 	int			extLen;
+
+#ifdef UTF8
+	wchar_t wsearch[MAX_OSPATH];
+	wchar_t wdirectory[MAX_OSPATH];
+	wchar_t wextension[MAX_OSPATH];
+	struct _wfinddata_t wfindinfo;
+#else
+	char		search[MAX_OSPATH];
+	struct _finddata_t findinfo;
+#endif
 
 	if (filter) {
 
@@ -607,17 +625,50 @@ char **Sys_ListFiles( const char *directory, const char *extension, char *filter
 
 	extLen = strlen( extension );
 
-	Com_sprintf( search, sizeof(search), "%s\\*%s", directory, extension );
-
 	// search
 	nfiles = 0;
 
+#ifdef UTF8
+	MultiByteToWideChar(CP_UTF8, 0, directory, -1, wdirectory, MAX_OSPATH);
+    MultiByteToWideChar(CP_UTF8, 0, extension, -1, wextension, MAX_OSPATH);
+
+	_snwprintf(wsearch, MAX_OSPATH, L"%ls\\*%ls", wdirectory, wextension);
+	findhandle = _wfindfirst(wsearch, &wfindinfo);
+#else
+	Com_sprintf( search, sizeof(search), "%s\\*%s", directory, extension );
 	findhandle = _findfirst (search, &findinfo);
+#endif
+
 	if (findhandle == -1) {
 		*numfiles = 0;
 		return NULL;
 	}
 
+#ifdef UTF8
+	do {
+        if ( (!wantsubs && flag ^ (wfindinfo.attrib & _A_SUBDIR)) || (wantsubs && wfindinfo.attrib & _A_SUBDIR) ) {
+            if (*extension) {
+                char checkFilename[MAX_OSPATH];
+                WideCharToMultiByte(CP_UTF8, 0, wfindinfo.name, -1, checkFilename, MAX_OSPATH, NULL, NULL);
+                
+                if ( strlen(checkFilename) < extLen ||
+                    Q_stricmp(checkFilename + strlen(checkFilename) - extLen, extension) ) {
+                    continue; // didn't match
+                }
+            }
+            
+            if ( nfiles == MAX_FOUND_FILES - 1 ) {
+                break;
+            }
+            
+            char *wfilename = Z_Malloc(MAX_OSPATH);
+            WideCharToMultiByte(CP_UTF8, 0, wfindinfo.name, -1, wfilename, MAX_OSPATH, NULL, NULL);
+            
+            list[nfiles] = wfilename;
+            nfiles++;
+        }
+    } while ( _wfindnext(findhandle, &wfindinfo) != -1 );
+#else
 	do {
 		if ( (!wantsubs && flag ^ ( findinfo.attrib & _A_SUBDIR )) || (wantsubs && findinfo.attrib & _A_SUBDIR) ) {
 			if (*extension) {
@@ -635,6 +686,7 @@ char **Sys_ListFiles( const char *directory, const char *extension, char *filter
 			nfiles++;
 		}
 	} while ( _findnext (findhandle, &findinfo) != -1 );
+#endif
 
 	list[ nfiles ] = 0;
 
